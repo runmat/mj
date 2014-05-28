@@ -1,0 +1,57 @@
+﻿Public Class VehicleRegistrationZul
+
+    Public Auftragsgrund As String
+    Public Aenderungskennzeichen As String
+    Public FahrzeugIdent As String
+    Public Datum_Zulassung_Vorgabe As String
+    Public Briefnummer As String
+    Public Referenz1 As String
+    Public Referenz2 As String
+    Public Versandart As String
+    Public Zul_Kreis As String
+    Public WKZ As String
+    Public WKZ_2 As String
+    Public WKZ_3 As String
+    Public WKZ_reserviert_auf As String
+    Public Bemerkung As String
+    Public Feinstaub As String
+    Public Versicherungstraeger As String
+    Public Versicherungsmakler As String
+    Public Vnehmer_Code As String
+    Public Vnehmer_Name1 As String
+    Public Vnehmer_Name2 As String
+    Public Vnehmer_Strasse As String
+    Public Vnehmer_Hausnummer As String
+    Public Vnehmer_PLZ As String
+    Public Vnehmer_Ort As String
+    Public Vnehmer_Land As String
+    Public eVB_Nummer As String
+    Public eVB_gueltig_von As String
+    Public eVB_gueltig_bis As String
+    Public ZulAuf As String
+    Public Halter_Code As String
+    Public Halter_Name1 As String
+    Public Halter_Name2 As String
+    Public Halter_Strasse As String
+    Public Halter_Hausnummer As String
+    Public Halter_PLZ As String
+    Public Halter_Ort As String
+    Public Halter_Land As String
+    Public Empf_SuS_Code As String
+    Public Empf_SuS_Name1 As String
+    Public Empf_SuS_Name2 As String
+    Public Empf_SuS_Strasse As String
+    Public Empf_SuS_Hausnummer As String
+    Public Empf_SuS_PLZ As String
+    Public Empf_SuS_Ort As String
+    Public Empf_SuS_Land As String
+    Public Empf_Brief_Code As String
+    Public Empf_Brief_Name1 As String
+    Public Empf_Brief_Name2 As String
+    Public Empf_Brief_Strasse As String
+    Public Empf_Brief_Hausnummer As String
+    Public Empf_Brief_PLZ As String
+    Public Empf_Brief_Ort As String
+    Public Empf_Brief_Land As String
+
+End Class

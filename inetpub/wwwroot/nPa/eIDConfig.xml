@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<eid-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../nPAConnector/Configuration/eIDConfiguration.xsd">
+  <eid-services>
+    <eid-service type="OpenLimit" name="init">
+      <url>https://eid001.init-ag.de/epa</url>
+      <encryptionCertificate xsi:type="CERCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\eIdServiceEncr.cer</Location>
+        <Password>pass1234</Password>
+      </encryptionCertificate>
+        <encryptionCertificate xsi:type="CERCertificate">
+            <Location>C:\inetpub\wwwroot\nPa\eIdServiceSign.cer</Location>
+            <Password>pass1234</Password>
+        </encryptionCertificate>
+    </eid-service>
+  </eid-services>
+  <profiles>
+    <profile name="basicProfile" eidservice="init">
+      <service-provider-issuer-url>https://eid001.init-ag.de/kroschke/referenzbetrieb</service-provider-issuer-url>
+      <!-- Testserver -->
+      <!--<default-assertion-consumer-url>https://sgwt.kroschke.de/npa/Send.aspx</default-assertion-consumer-url>-->
+      <!-- Test local-->
+      <default-assertion-consumer-url>http://localhost/npa/Send.aspx</default-assertion-consumer-url>
+      <eIDFunc type="DataRetrieval">
+        <value name="FamilyNames" />
+        <value name="GivenNames" />
+        <value name="AcademicTitle" />
+        <value name="DateOfBirth" />
+        <value name="PlaceOfResidence" />
+        <value name="ArtisticName" />
+        <value name="PlaceOfBirth" />
+      </eIDFunc>
+      <encryptionKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeEncrCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </encryptionKey>
+      <!-- 
+		<signatureKey xsi:type="MSStoreCertificate">
+			<StoreLocation>LocalMachine</StoreLocation>
+			<StoreName>My</StoreName>
+			<Name>Sig_SP_Cert</Name>
+			<Password>test</Password>
+		</signatureKey> 
+    -->
+      <signatureKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeSignCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </signatureKey>
+    </profile>
+    <profile name="ageVerificationProfile" eidservice="init">
+        <service-provider-issuer-url>https://eid001.init-ag.de/kroschke/referenzbetrieb</service-provider-issuer-url>
+        <!-- Testserver -->
+        <!--<default-assertion-consumer-url>https://sgwt.kroschke.de/npa/SAMLAssertionConsumer.aspx</default-assertion-consumer-url>-->
+        <!-- Test local-->
+        <default-assertion-consumer-url>http://localhost/npa/SAMLAssertionConsumer.aspx</default-assertion-consumer-url>
+      <eIDFunc type="AgeVerification">
+        <age value="18" />
+      </eIDFunc>
+      <encryptionKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeEncrCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </encryptionKey>
+      <signatureKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeSignCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </signatureKey>
+    </profile>
+    <profile name="communityVerificationProfile" eidservice="init">
+        <service-provider-issuer-url>https://eid001.init-ag.de/kroschke/referenzbetrieb</service-provider-issuer-url>
+        <!-- Testserver -->
+        <!--<default-assertion-consumer-url>https://sgwt.kroschke.de/npa/SAMLAssertionConsumer.aspx</default-assertion-consumer-url>-->
+        <!-- Test local-->
+        <default-assertion-consumer-url>http://localhost/npa/SAMLAssertionConsumer.aspx</default-assertion-consumer-url>
+      <eIDFunc type="CommunityIdVerification">
+        <communityId value="027613" />
+      </eIDFunc>
+      <encryptionKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeEncrCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </encryptionKey>
+      <signatureKey xsi:type="PFXCertificate">
+        <Location>C:\inetpub\wwwroot\nPa\KroschkeSignCert.pfx</Location>
+        <Password>S33gelschiff</Password>
+      </signatureKey>
+    </profile>
+  </profiles>
+</eid-config>

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://kroschke.de/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://kroschke.de/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://kroschke.de/">
+      <s:element name="WMInsertFreisetzung_Zul">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleRegistrations" type="tns:ArrayOfVehicleRegistrationZul" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVehicleRegistrationZul">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VehicleRegistrationZul" nillable="true" type="tns:VehicleRegistrationZul" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VehicleRegistrationZul">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Auftragsgrund" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Aenderungskennzeichen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FahrzeugIdent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Datum_Zulassung_Vorgabe" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Briefnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenz1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenz2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versandart" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zul_Kreis" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_reserviert_auf" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Feinstaub" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versicherungstraeger" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versicherungsmakler" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vnehmer_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_Nummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_gueltig_von" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_gueltig_bis" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ZulAuf" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Land" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WMInsertFreisetzung_ZulResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WMInsertFreisetzung_ZulResult" type="tns:ArrayOf_Error" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOf_Error">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="_Error" nillable="true" type="tns:_Error" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="_Error">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WMInsertFreisetzung_SonstDL">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleRegistrations" type="tns:ArrayOfVehicleRegistrationSonst" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVehicleRegistrationSonst">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VehicleRegistrationSonst" nillable="true" type="tns:VehicleRegistrationSonst" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VehicleRegistrationSonst">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Auftragsgrund" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Aenderungskennzeichen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FahrzeugIdent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Datum_Durchfuehrung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Briefnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Akt_Kennzeichen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenz1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenz2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versandart" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zul_Kreis" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WKZ_reserviert_auf" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versicherungstraeger" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versicherungsmakler" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Feinstaub" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_Nummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_gueltig_von" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eVB_gueltig_bis" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ZulAuf" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_SuS_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Brief_Land" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WMInsertFreisetzung_SonstDLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WMInsertFreisetzung_SonstDLResult" type="tns:ArrayOf_Error" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WMInsertFreisetzung_EndgVers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleRegistrations" type="tns:ArrayOfVehicleRegistrationEndgVers" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVehicleRegistrationEndgVers">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VehicleRegistrationEndgVers" nillable="true" type="tns:VehicleRegistrationEndgVers" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VehicleRegistrationEndgVers">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Akt_Kennzeichen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FahrzeugIdent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenznummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Haendler_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zustellart" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WMInsertFreisetzung_EndgVersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WMInsertFreisetzung_EndgVersResult" type="tns:ArrayOf_Error" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WMInsertFreisetzung_TempVers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="VehicleRegistrations" type="tns:ArrayOfVehicleRegistrationTempVers" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVehicleRegistrationTempVers">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VehicleRegistrationTempVers" nillable="true" type="tns:VehicleRegistrationTempVers" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VehicleRegistrationTempVers">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Akt_Kennzeichen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FahrzeugIdent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Referenznummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Briefnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Halter_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Haendler_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Name1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Name2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Strasse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Hausnummer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_PLZ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Ort" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Empf_Land" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zustellart" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Versandgrund" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="WMInsertFreisetzung_TempVersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WMInsertFreisetzung_TempVersResult" type="tns:ArrayOf_Error" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WMGetFreisetzung_Status">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WMGetFreisetzung_StatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WMGetFreisetzung_StatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WMInsertFreisetzung_ZulSoapIn">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_Zul" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_ZulSoapOut">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_ZulResponse" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_SonstDLSoapIn">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_SonstDL" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_SonstDLSoapOut">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_SonstDLResponse" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_EndgVersSoapIn">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_EndgVers" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_EndgVersSoapOut">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_EndgVersResponse" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_TempVersSoapIn">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_TempVers" />
+  </wsdl:message>
+  <wsdl:message name="WMInsertFreisetzung_TempVersSoapOut">
+    <wsdl:part name="parameters" element="tns:WMInsertFreisetzung_TempVersResponse" />
+  </wsdl:message>
+  <wsdl:message name="WMGetFreisetzung_StatusSoapIn">
+    <wsdl:part name="parameters" element="tns:WMGetFreisetzung_Status" />
+  </wsdl:message>
+  <wsdl:message name="WMGetFreisetzung_StatusSoapOut">
+    <wsdl:part name="parameters" element="tns:WMGetFreisetzung_StatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceDataSoap">
+    <wsdl:operation name="WMInsertFreisetzung_Zul">
+      <wsdl:input message="tns:WMInsertFreisetzung_ZulSoapIn" />
+      <wsdl:output message="tns:WMInsertFreisetzung_ZulSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_SonstDL">
+      <wsdl:input message="tns:WMInsertFreisetzung_SonstDLSoapIn" />
+      <wsdl:output message="tns:WMInsertFreisetzung_SonstDLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_EndgVers">
+      <wsdl:input message="tns:WMInsertFreisetzung_EndgVersSoapIn" />
+      <wsdl:output message="tns:WMInsertFreisetzung_EndgVersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_TempVers">
+      <wsdl:input message="tns:WMInsertFreisetzung_TempVersSoapIn" />
+      <wsdl:output message="tns:WMInsertFreisetzung_TempVersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WMGetFreisetzung_Status">
+      <wsdl:input message="tns:WMGetFreisetzung_StatusSoapIn" />
+      <wsdl:output message="tns:WMGetFreisetzung_StatusSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceDataSoap" type="tns:ServiceDataSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WMInsertFreisetzung_Zul">
+      <soap:operation soapAction="http://kroschke.de/WMInsertFreisetzung_Zul" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_SonstDL">
+      <soap:operation soapAction="http://kroschke.de/WMInsertFreisetzung_SonstDL" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_EndgVers">
+      <soap:operation soapAction="http://kroschke.de/WMInsertFreisetzung_EndgVers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_TempVers">
+      <soap:operation soapAction="http://kroschke.de/WMInsertFreisetzung_TempVers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMGetFreisetzung_Status">
+      <soap:operation soapAction="http://kroschke.de/WMGetFreisetzung_Status" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceDataSoap12" type="tns:ServiceDataSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WMInsertFreisetzung_Zul">
+      <soap12:operation soapAction="http://kroschke.de/WMInsertFreisetzung_Zul" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_SonstDL">
+      <soap12:operation soapAction="http://kroschke.de/WMInsertFreisetzung_SonstDL" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_EndgVers">
+      <soap12:operation soapAction="http://kroschke.de/WMInsertFreisetzung_EndgVers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMInsertFreisetzung_TempVers">
+      <soap12:operation soapAction="http://kroschke.de/WMInsertFreisetzung_TempVers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WMGetFreisetzung_Status">
+      <soap12:operation soapAction="http://kroschke.de/WMGetFreisetzung_Status" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ServiceData">
+    <wsdl:port name="ServiceDataSoap" binding="tns:ServiceDataSoap">
+      <soap:address location="http://localhost/SixtServiceLeas/ServiceData.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceDataSoap12" binding="tns:ServiceDataSoap12">
+      <soap12:address location="http://localhost/SixtServiceLeas/ServiceData.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

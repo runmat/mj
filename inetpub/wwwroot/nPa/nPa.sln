@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nPa", "nPa.csproj", "{B6E5D866-49D3-4B38-81FC-04134D9C3F60}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Beauftragung2", "..\Services\Components\ComCommon\Beauftragung2\Beauftragung2.vbproj", "{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Services", "..\Services\Services.vbproj", "{F19383BF-CD5E-4431-A35D-FD09FE100D89}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ErpBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccProjectName0 = .
+		SccAuxPath0 = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = nPa.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\Services\\Components\\ComCommon\\Beauftragung2\\Beauftragung2.vbproj
+		SccProjectName2 = ../CKAG2/Services/Components/ComCommon/Beauftragung2
+		SccLocalPath2 = ..\\Services\\Components\\ComCommon\\Beauftragung2
+		SccProjectUniqueName3 = ..\\Services\\Services.vbproj
+		SccProjectName3 = ../CKAG2/Services
+		SccLocalPath3 = ..\\Services
+		SccProjectUniqueName4 = ..\\..\\..\\Work\\ErpBase\\Base.vbproj
+		SccProjectName4 = ../Work/ErpBase
+		SccLocalPath4 = ..\\..\\..\\Work\\ErpBase
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Debug|x86.ActiveCfg = Release|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Debug|x86.Build.0 = Release|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Release|x86.ActiveCfg = Release|x86
+		{B6E5D866-49D3-4B38-81FC-04134D9C3F60}.Release|x86.Build.0 = Release|x86
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1EDFCE5-89A2-4F2A-B948-96278F8BC363}.Release|x86.ActiveCfg = Release|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19383BF-CD5E-4431-A35D-FD09FE100D89}.Release|x86.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

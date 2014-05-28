@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import />
+      <s:element name="Put">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="anmeldename" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" ref="Ruecklaeuferschnittstelle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="PutResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="anmeldename" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ids" type="tns:ArrayOfLong" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="ListResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified">
+      <s:element name="Ruecklaeuferschnittstelle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="fehlercode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Stammdaten">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeoption" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kundennummer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kundenname" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Nutzer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Vertragsnummer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kennzeichen" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Fahrgestellnummer" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Erstzulassung" type="s:date" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Hersteller" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Serie" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Treibstoffart" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbauart" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Leistung" type="s:positiveInteger" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Winterreifen" type="s:integer" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Abholung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                              <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeprotokoll">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Eingangsdatum" type="s:date" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmedatum" type="s:date" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmezeit" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmeort" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Standort" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="KM-stand_Ruecknahme" type="s:positiveInteger" />
+                  <s:element minOccurs="0" maxOccurs="1" name="KM-stand_nachTransfer" type="s:positiveInteger" />
+                  <s:element minOccurs="1" maxOccurs="1" name="ZB1" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Serviceheft" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="GueltigeHU" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Radio-Code-Karte" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="NaviCD_DVD" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Bordwerkzeug" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Reserverad" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Reifen-Reparatur-Set" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Laderaumabdeckung" type="s:boolean" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahme_unter_Vorbehalt_Grund" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_innen" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_aussen" type="s:boolean" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Stilllegung_erfolgt">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Stilllegungstermin" type="s:date" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbereitungsauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Reparaturen" type="ArrayOfRuecklaeuferschnittstelleAufbereitungAufbereitungsauftragPosition" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung_erfolgt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Aufbereitet_am" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Verwertung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Verwertungsentscheidung">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Entscheidung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Verkaufskanal" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Fahrzeug_eingestellt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Angebotsnummer" type="s:positiveInteger" />
+                        <s:element minOccurs="0" maxOccurs="1" name="link" type="s:anyURI" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="Transport">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Transportauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Nummer" type="s:long" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                              <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Prozessende">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="vorgang_abgeschlossen" type="s:integer" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+          <s:attribute name="vorgangsid" type="s:long" use="required" />
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRuecklaeuferschnittstelleAufbereitungAufbereitungsauftragPosition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Position">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="Bezeichnung" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="Massnahme" type="s:string" />
+                <s:element minOccurs="1" maxOccurs="1" name="Reparaturkosten" type="s:decimal" />
+                <s:element minOccurs="0" maxOccurs="1" name="Typ" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PutResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="fehlercode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Stammdaten">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeoption" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kundennummer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kundenname" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Nutzer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Vertragsnummer" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Kennzeichen" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Fahrgestellnummer" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Erstzulassung" type="s:date" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Hersteller" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Serie" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Treibstoffart" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbauart" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Leistung" type="s:positiveInteger" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Winterreifen" type="s:integer" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Abholung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                              <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeprotokoll">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Eingangsdatum" type="s:date" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmedatum" type="s:date" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmezeit" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmeort" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Standort" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="KM-stand_Ruecknahme" type="s:positiveInteger" />
+                  <s:element minOccurs="0" maxOccurs="1" name="KM-stand_nachTransfer" type="s:positiveInteger" />
+                  <s:element minOccurs="1" maxOccurs="1" name="ZB1" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Serviceheft" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="GueltigeHU" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Radio-Code-Karte" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="NaviCD_DVD" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Bordwerkzeug" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Reserverad" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Reifen-Reparatur-Set" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Laderaumabdeckung" type="s:boolean" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Ruecknahme_unter_Vorbehalt_Grund" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_innen" type="s:boolean" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_aussen" type="s:boolean" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Stilllegung_erfolgt">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Stilllegungstermin" type="s:date" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbereitungsauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Reparaturen" type="ArrayOfRuecklaeuferschnittstelleAufbereitungAufbereitungsauftragPosition" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung_erfolgt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Aufbereitet_am" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Verwertung">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Verwertungsentscheidung">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Entscheidung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Verkaufskanal" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Fahrzeug_eingestellt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Angebotsnummer" type="s:positiveInteger" />
+                        <s:element minOccurs="0" maxOccurs="1" name="link" type="s:anyURI" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="Transport">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="Transportauftrag">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Nummer" type="s:long" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                              <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                <s:complexType>
+                                  <s:sequence>
+                                    <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                    <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                  </s:sequence>
+                                </s:complexType>
+                              </s:element>
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                  <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                        <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="Prozessende">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="vorgang_abgeschlossen" type="s:integer" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+          <s:attribute name="vorgangsid" type="s:long" use="required" />
+        </s:complexType>
+      </s:element>
+      <s:element name="ListResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Ruecklaeuferschnittstellen" type="ArrayOfRuecklaeuferschnittstelle" />
+            <s:element minOccurs="0" maxOccurs="1" name="fehlercode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRuecklaeuferschnittstelle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ruecklaeuferschnittstelle" nillable="true">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                <s:element minOccurs="0" maxOccurs="1" name="fehlercode" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="Stammdaten">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeoption" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Kundennummer" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Kundenname" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Nutzer" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Vertragsnummer" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Kennzeichen" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Fahrgestellnummer" type="s:string" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Erstzulassung" type="s:date" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Hersteller" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Serie" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Treibstoffart" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Aufbauart" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Leistung" type="s:positiveInteger" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Winterreifen" type="s:integer" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Abholung">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="0" maxOccurs="1" name="Abholauftrag">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                              <s:complexType>
+                                <s:sequence>
+                                  <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                    <s:complexType>
+                                      <s:sequence>
+                                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                      </s:sequence>
+                                    </s:complexType>
+                                  </s:element>
+                                  <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                    <s:complexType>
+                                      <s:sequence>
+                                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                      </s:sequence>
+                                    </s:complexType>
+                                  </s:element>
+                                </s:sequence>
+                              </s:complexType>
+                            </s:element>
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Rueckgabeprotokoll">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Eingangsdatum" type="s:date" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmedatum" type="s:date" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmezeit" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Ruecknahmeort" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Standort" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="KM-stand_Ruecknahme" type="s:positiveInteger" />
+                      <s:element minOccurs="0" maxOccurs="1" name="KM-stand_nachTransfer" type="s:positiveInteger" />
+                      <s:element minOccurs="1" maxOccurs="1" name="ZB1" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Serviceheft" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="GueltigeHU" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Radio-Code-Karte" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="NaviCD_DVD" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Bordwerkzeug" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Reserverad" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Reifen-Reparatur-Set" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Laderaumabdeckung" type="s:boolean" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Ruecknahme_unter_Vorbehalt_Grund" type="s:string" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_innen" type="s:boolean" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Ruecknahmeschaeden_aussen" type="s:boolean" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                      <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Stilllegung_erfolgt">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                      <s:element minOccurs="1" maxOccurs="1" name="Stilllegungstermin" type="s:date" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="0" maxOccurs="1" name="Aufbereitungsauftrag">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Reparaturen" type="ArrayOfRuecklaeuferschnittstelleAufbereitungAufbereitungsauftragPosition" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Aufbereitung_erfolgt">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Aufbereitet_am" type="s:date" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Verwertung">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="0" maxOccurs="1" name="Verwertungsentscheidung">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Entscheidung" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Verkaufskanal" type="s:string" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Fahrzeug_eingestellt">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Angebotsnummer" type="s:positiveInteger" />
+                            <s:element minOccurs="0" maxOccurs="1" name="link" type="s:anyURI" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="Transport">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="0" maxOccurs="1" name="Transportauftrag">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Transportart" type="s:string" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum_von" type="s:date" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum_bis" type="s:date" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Bemerkung" type="s:string" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Nummer" type="s:long" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Adressen">
+                              <s:complexType>
+                                <s:sequence>
+                                  <s:element minOccurs="0" maxOccurs="1" name="Abholort">
+                                    <s:complexType>
+                                      <s:sequence>
+                                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                      </s:sequence>
+                                    </s:complexType>
+                                  </s:element>
+                                  <s:element minOccurs="0" maxOccurs="1" name="Zielort">
+                                    <s:complexType>
+                                      <s:sequence>
+                                        <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                                        <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                                      </s:sequence>
+                                    </s:complexType>
+                                  </s:element>
+                                </s:sequence>
+                              </s:complexType>
+                            </s:element>
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Abholtermin_bestaetigt">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Bestaetigter_Abholtermin" type="s:date" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                      <s:element minOccurs="0" maxOccurs="1" name="Eingang_Zielort">
+                        <s:complexType>
+                          <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Datum" type="s:date" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Firma" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Strasse" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Postleitzahl" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Ort" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Ansprechpartner" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Telefon" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Abholung" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Protokoll_Zielort" type="s:string" />
+                          </s:sequence>
+                        </s:complexType>
+                      </s:element>
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" maxOccurs="1" name="Prozessende">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element minOccurs="1" maxOccurs="1" name="zuletzt_aktualisiert" type="s:dateTime" />
+                      <s:element minOccurs="0" maxOccurs="1" name="vorgang_abgeschlossen" type="s:integer" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+              </s:sequence>
+              <s:attribute name="vorgangsid" type="s:long" use="required" />
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="PutSoapIn">
+    <wsdl:part name="parameters" element="tns:Put" />
+  </wsdl:message>
+  <wsdl:message name="PutSoapOut">
+    <wsdl:part name="parameters" element="tns:PutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListSoapIn">
+    <wsdl:part name="parameters" element="tns:List" />
+  </wsdl:message>
+  <wsdl:message name="ListSoapOut">
+    <wsdl:part name="parameters" element="tns:ListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PostSoap">
+    <wsdl:operation name="Put">
+      <wsdl:input message="tns:PutSoapIn" />
+      <wsdl:output message="tns:PutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="List">
+      <wsdl:input message="tns:ListSoapIn" />
+      <wsdl:output message="tns:ListSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PostSoap" type="tns:PostSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Put">
+      <soap:operation soapAction="http://tempuri.org/Put" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="List">
+      <soap:operation soapAction="http://tempuri.org/List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PostSoap12" type="tns:PostSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Put">
+      <soap12:operation soapAction="http://tempuri.org/Put" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="List">
+      <soap12:operation soapAction="http://tempuri.org/List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Post">
+    <wsdl:port name="PostSoap" binding="tns:PostSoap">
+      <soap:address location="http://localhost:55514/Ruecklaeuferschnittstelle.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PostSoap12" binding="tns:PostSoap12">
+      <soap12:address location="http://localhost:55514/Ruecklaeuferschnittstelle.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

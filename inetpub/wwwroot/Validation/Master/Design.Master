@@ -1,0 +1,43 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Design.master.vb" Inherits="Validation.Design" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="Christoph Kroschke AG" />
+	<meta content="Christoph Kroschke AG" name="Copyright" />
+	<link href="../Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+            	 
+
+</head>
+<body id="top">
+<form id="Form1" runat="server">
+    <div id="website">
+        <div id="header">
+        <div id="headerContent" runat="server">
+            <div id="PlaceHeader" runat="Server" class="dvHead">
+            </div>
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="websitefoot">
+        <div id="footfoot">
+            <div id="footer">
+                 <div class="leftAlign">
+                     © 2001 &#8211; 2013 DAD Deutscher Auto Dienst GmbH / Christoph Kroschke GmbH
+                <div class="rightAlign">
+                    <a href="#top">Top
+                        <img src="../Images/top.gif" alt="nach oben" /></a></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+ </body>        
+</html> 

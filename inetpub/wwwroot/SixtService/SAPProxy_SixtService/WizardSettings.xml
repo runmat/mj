@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ClassName="SAPProxy_SixtService" TargetDirectory="C:\temp\SAPProxy_SixtService" Namespace="SAPProxy_SixtService" Type="JavaMetaDataProvider" ToolsDir="C:\Programme\SAP\SAP .NET Connector\" xmlns="http://tempuri.org/ProxyAppInput.xsd">
+  <Destination>
+    <Client>10</Client>
+    <AppServerHost>192.168.10.172</AppServerHost>
+    <Language />
+    <Username>web_rfc</Username>
+    <SystemNumber>0</SystemNumber>
+    <LogonGroup />
+    <MsgServerHost />
+    <SAPSystemName />
+    <Type>3</Type>
+    <DestinationName>CKQ</DestinationName>
+  </Destination>
+  <Modules Name="Z_M_IMP_ZUL_AUFTR_1" />
+  <Modules Name="Z_M_READ_TAB_EQUI_AND_001" />
+  <Modules Name="Z_M_EXP_BRIEFDATEN" />
+  <Modules Name="Z_M_EXPORT_ZUL_001" />
+</Settings>
