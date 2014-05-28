@@ -1,0 +1,43 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@{ var gridName = "GridAnzeigeDatenPuG"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseAnzeigeDatenPuGSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Klaerfall>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("KlaerfaelleAjaxBinding", "Leasing")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Leasingvertragsnummer).Width(100).Title("").Filterable(false).Sortable(false)
+                 .ClientTemplate(
+                    "<button onclick='KlaerfallDetails(\"<#= data.Leasingvertragsnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white info-sign'></i></button>"
+                )
+            ;
+            columns.Bound(c => c.Leasingvertragsnummer);
+            columns.Bound(c => c.Kundennummer);
+            columns.Bound(c => c.Status);
+            columns.Bound(c => c.Name1);
+            columns.Bound(c => c.Name2);
+            columns.Bound(c => c.Name3);
+            columns.Bound(c => c.Strasse);
+            columns.Bound(c => c.Plz);
+            columns.Bound(c => c.Ort);
+            columns.Bound(c => c.Email);
+            columns.Bound(c => c.Email2);
+        }
+    )
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Leasingvertragsnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportKlaerfaelleFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportKlaerfaelleFilteredPDF", "Leasing");
+    })
+)
+

@@ -1,0 +1,48 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceGebuehrenauslageViewModel 
+
+@{ var gridName = "GridAuftraege"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseAuftraegeSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Auftrag>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("AuftraegeAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Auftragsnummer).Width(100).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='AuftragEdit(\"<#= data.Auftragsnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+            )
+        ;
+
+        columns.XBound(c => c.Rechnungseingangsdatum);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Kreditnehmer);
+        columns.XBound(c => c.DatumTempVersand);
+        columns.XBound(c => c.KreditorAusBestellung);
+        columns.XBound(c => c.GrundDerAuslage);
+        columns.XBound(c => c.Wert);
+        columns.XBound(c => c.Gebuehren);
+        columns.XBound(c => c.BemerkungZeile1).HtmlAttributes(new { style = "min-width: 50px; white-space: normal" });
+        columns.XBound(c => c.BemerkungZeile2).HtmlAttributes(new { style = "min-width: 50px; white-space: normal" });
+        columns.XBound(c => c.Erledigt);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Rechnungseingangsdatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAuftraegeFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportAuftraegeFilteredPDF", "Finance");
+    })
+)

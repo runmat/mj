@@ -1,0 +1,125 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutohausPortalMvc", "AutohausPortalMvc.csproj", "{E86B27EC-F063-4855-B15C-EE93256CB27D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTools", "..\..\..\work\Tools\MvcTools\MvcTools.csproj", "{EE073662-9DA7-4B2C-8877-893A044EB157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTools", "..\..\..\work\Tools\WebTools\WebTools.csproj", "{540F0A45-F018-4489-8153-4504CA663CFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTools", "..\..\..\work\Tools\DocumentTools\DocumentTools.csproj", "{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainLogic", "..\..\..\work\CkgDomainLogic\Lib\CkgDomainLogic.csproj", "{D8B336B9-0D12-4AA8-B6D2-536425C228E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTools35", "..\..\..\work\Tools\WebTools35\WebTools35.csproj", "{772437C2-C72D-4F33-9727-312F8868C94D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalMvcTools", "PortalMvcTools\PortalMvcTools.csproj", "{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainCommon", "..\..\..\work\CkgDomainLogic\CkgDomainCommon\CkgDomainCommon.csproj", "{116FCA66-F690-41B3-86F5-B8BF7BBA2949}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainAutohaus", "..\..\..\Work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj", "{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\..\\work\\Tools\\MvcTools\\MvcTools.csproj
+		SccProjectName1 = ../Work/Tools/MvcTools
+		SccLocalPath1 = ..\\..\\..\\work\\Tools\\MvcTools
+		SccProjectUniqueName2 = ..\\..\\..\\work\\Tools\\GeneralTools\\GeneralTools.csproj
+		SccProjectName2 = ../Work/Tools/GeneralTools
+		SccLocalPath2 = ..\\..\\..\\work\\Tools\\GeneralTools
+		SccProjectUniqueName3 = ..\\..\\..\\work\\Tools\\WebTools\\WebTools.csproj
+		SccProjectName3 = ../Work/Tools/WebTools
+		SccLocalPath3 = ..\\..\\..\\work\\Tools\\WebTools
+		SccProjectUniqueName4 = ..\\..\\..\\work\\Tools\\DocumentTools\\DocumentTools.csproj
+		SccProjectName4 = ../Work/Tools/DocumentTools
+		SccLocalPath4 = ..\\..\\..\\work\\Tools\\DocumentTools
+		SccProjectUniqueName5 = ..\\..\\..\\work\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
+		SccProjectName5 = ../Work/CkgDomainLogic/Lib
+		SccLocalPath5 = ..\\..\\..\\work\\CkgDomainLogic\\Lib
+		SccProjectUniqueName6 = ..\\..\\..\\work\\Tools\\WebTools35\\WebTools35.csproj
+		SccProjectName6 = ../Work/Tools/WebTools35
+		SccLocalPath6 = ..\\..\\..\\work\\Tools\\WebTools35
+		SccProjectUniqueName7 = AutohausPortalMvc.csproj
+		SccLocalPath7 = .
+		SccProjectUniqueName8 = PortalMvcTools\\PortalMvcTools.csproj
+		SccProjectName8 = PortalMvcTools
+		SccLocalPath8 = PortalMvcTools
+		SccProjectUniqueName9 = ..\\..\\..\\work\\CkgDomainLogic\\CkgDomainCommon\\CkgDomainCommon.csproj
+		SccProjectName9 = ../Work/CkgDomainLogic/CkgDomainCommon
+		SccLocalPath9 = ..\\..\\..\\work\\CkgDomainLogic\\CkgDomainCommon
+		SccProjectUniqueName10 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainAutohaus\\CkgDomainAutohaus.csproj
+		SccProjectName10 = ../Work/CkgDomainLogic/CkgDomainAutohaus
+		SccLocalPath10 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainAutohaus
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E86B27EC-F063-4855-B15C-EE93256CB27D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{540F0A45-F018-4489-8153-4504CA663CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540F0A45-F018-4489-8153-4504CA663CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540F0A45-F018-4489-8153-4504CA663CFE}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{540F0A45-F018-4489-8153-4504CA663CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540F0A45-F018-4489-8153-4504CA663CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{772437C2-C72D-4F33-9727-312F8868C94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772437C2-C72D-4F33-9727-312F8868C94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772437C2-C72D-4F33-9727-312F8868C94D}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{772437C2-C72D-4F33-9727-312F8868C94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772437C2-C72D-4F33-9727-312F8868C94D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

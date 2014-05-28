@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model CocEntity
+
+@if (Model.AUFTRAG_DAT == null)
+{
+    <h5>
+        Es existiert ein noch nicht beauftragter Datensatz mit FIN <strong>@Model.VIN</strong>. <br />
+        Wollen Sie den Datensatz wirklich überschreiben?
+    </h5>
+
+    <div class="margin-top-15 pull-right">
+        <button type="button" class="btn green" onclick="DuplicateVinDialogConfirmIgnoreOnSaving();"><i class="icon-ok"></i> Überschreiben</button>
+        <button type="button" class="btn" onclick="DuplicateVinDialogClose();">Abbrechen</button>  
+    </div>
+}
+else 
+{
+    <h5> 
+        Es ist bereits ein Fahrzeug mit der FIN <strong>@Model.VIN</strong> beauftragt worden. <br /> 
+        Soll ein neuer Datensatz mit geänderten Fahrzeugdaten erstellt werden?   
+    </h5>
+ 
+    <div class="margin-top-15 pull-right">
+        <button type="button" class="btn green" onclick="DuplicateVinDialogConfirmIgnoreOnSaving();"><i class="icon-ok"></i> Anlegen</button>
+        <button type="button" class="btn" onclick="DuplicateVinDialogClose();">Abbrechen</button>  
+    </div>
+}

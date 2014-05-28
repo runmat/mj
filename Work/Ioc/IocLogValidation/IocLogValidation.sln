@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IocLogValidation", "RefImpl\IocLogValidation.csproj", "{7796693B-F712-42E1-98B8-AF2B03E9A489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IocLogValidationBibl", "RefImplBibl\IocLogValidationBibl.csproj", "{32DB1A16-D4CB-4B5A-82A1-AF2526EC781A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = RefImpl\\IocLogValidation.csproj
+		SccProjectName1 = RefImpl
+		SccLocalPath1 = RefImpl
+		SccProjectUniqueName2 = RefImplBibl\\IocLogValidationBibl.csproj
+		SccProjectName2 = RefImplBibl
+		SccLocalPath2 = RefImplBibl
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7796693B-F712-42E1-98B8-AF2B03E9A489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7796693B-F712-42E1-98B8-AF2B03E9A489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7796693B-F712-42E1-98B8-AF2B03E9A489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7796693B-F712-42E1-98B8-AF2B03E9A489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32DB1A16-D4CB-4B5A-82A1-AF2526EC781A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DB1A16-D4CB-4B5A-82A1-AF2526EC781A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32DB1A16-D4CB-4B5A-82A1-AF2526EC781A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DB1A16-D4CB-4B5A-82A1-AF2526EC781A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

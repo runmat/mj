@@ -1,0 +1,59 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model VersEventOrtBox
+
+<div id="VersEventOrtBoxDetailsDiv" class="portlet transparent">
+    @using (Ajax.BeginForm("VersEventOrtBoxDetailsFormSave", "Insurance", null,
+                           new MvcAjaxOptions("VersEventOrtBoxDetailsDiv") { OnComplete = "VersEventOrtBoxDetailsFormPreparePrivateAjax();" }, new { id = "VersEventOrtBoxForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.VersOrtID)
+        
+        @Html.HiddenFor(m => m.LoeschDatum)
+        @Html.HiddenFor(m => m.LoeschUser)
+
+                
+        @Html.FormTemplateControl("", @<text><i id="VersEventOrtBoxDetailsIcon"></i> Box bearbeiten</text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBoxFor(m => m.BoxName, new { @class = "m-wrap", col = "left" })
+
+        @Html.FormTextBoxFor(m => m.BoxNr, new { @class = "m-wrap xsmall", col = "right" })
+
+        @Html.FormRadioButtonListFor(m => m.BoxArt, VersEventOrtBox.BoxArten.ToSelectList(), new { @class = "m-wrap", col = "left" })
+
+        @Html.FormTextBoxFor(m => m.TaktungMinuten, new { @class = "m-wrap xsmall", col = "right" })
+
+        <div id="WrapperVersicherungID">
+            @Html.FormDropDownListFor(m => m.VersicherungID, VersEventOrtBox.Versicherungen.ToSelectList(), new { @class = "m-wrap" })
+        </div>
+        <div id="WrapperTechnikerName">
+            @Html.FormTextBoxFor(m => m.TechnikerName, new { @class = "m-wrap" })
+        </div>
+
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            BreadcrumbsShow(3, true, $("#VersEventOrtBoxForm input[name='BoxName']"));
+
+            VersEventOrtBox_BoxArtRadios_Process('@Model.BoxArt');
+            VersEventOrtBox_BoxArtRadios_Bind();
+
+            $("#VersEventOrtBoxDetailsDiv").animate({opacity: 1}, _modelStateValid ? _proxyEditDetailsFadeDuration : 10);
+        </script>
+    }
+
+    <form action="#" class="form-horizontal" onsubmit="return false;">
+        @Html.FormTemplateControl("Blocker Termine", @<text>@Html.Partial("Konfigurator/BoxBlockerTermineGrid")</text>, new { @class = "m-wrap" })
+
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="button" onclick="$('#VersEventOrtBoxForm').submit();" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" onclick="VersEventOrtBoxCloseDetails();" class="btn">Abbrechen</button>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,125 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Services.Master.vb"
+    Inherits="CKG.Services.Services" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register TagPrefix="uc1" TagName="menue" Src="../Menue/ServicesMenue.ascx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server" title="">
+    <title></title>
+    <meta http-equiv="Page-Enter" content="blendTrans(Duration=0)" />
+    <meta http-equiv="Page-Exit" content="blendTrans(Duration=0)" />
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+      <link href="/Services/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+   <%--<link href="/Services/Customize/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+    --%>
+
+    <script src="/Services/JScript/Jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
+    <script src="/Services/JScript/services.js" type="text/javascript"></script>
+
+</head>
+<body id="top">
+    <form id="Form1" runat="server" enctype="multipart/form-data" >
+    <asp:ScriptManager ID="Scriptmanager1" runat="server" EnableScriptGlobalization="true"
+        EnableScriptLocalization="true" LoadScriptsBeforeUI="true" ScriptMode="Release">
+    </asp:ScriptManager>
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+        <ProgressTemplate>
+            <div class="divProgress">
+            </div>
+            <div class="divWait">
+                <table cellpadding="2" cellspacing="2">
+                    <tr>
+                        <td>
+                            <asp:Image ID="Image1" runat="server" ImageUrl="/Services/Images/indicator.gif" ImageAlign="Middle" /><br />
+                        </td>
+                        <td align="left">
+                            <asp:Label ID="Label1" runat="server" CssClass="WaitControl" Text="Bitte warten..."
+                                Font-Size="14px" Font-Bold="True"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="left">
+                            <asp:Label ID="Label2" runat="server" CssClass="WaitControl" Text="Ihr Vorgang wird bearbeitet. Dies kann einige Zeit in Anspruch nehmen."
+                                Font-Size="12px"></asp:Label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <div id="website">
+        <div id="header">
+            <div id="headerContent" runat="server">            
+                <div style="padding-right:0px; float:right; text-align:right;width:947px; vertical-align:middle;" id="imgLogoDIV" runat="server">                        
+                        <asp:Image ID="imgLogo" ImageUrl="/Services/Images/LogoPlatzhalter.png" alt="DAD Logo" class="dadLogo2" runat="server" />
+                </div>
+                <div id="PlaceHeader" runat="Server" class="dvHead">
+                </div>
+                <ul id="navigation">
+                    <li runat="server" id="tdHauptmenue">
+                        <asp:HyperLink ID="lnkHauptmenue" runat="server" NavigateUrl="/Services/Start/Login.aspx">Startseite</asp:HyperLink></li>
+                    <li runat="server" id="tdChangePasword">
+                        <asp:HyperLink ID="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/Services/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></li>
+                    <%--<li id="tdLogout" runat="server">
+                        <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" NavigateUrl="/Services/Start/Logout.aspx">Abmelden</asp:HyperLink></li>--%>
+                    <li id="tdHandbuch" runat="server">
+                        <asp:HyperLink ID="lnkHandbuch" runat="server" Target="_blank">Handbuch</asp:HyperLink></li>
+                    <li id="tdContact" runat="server">
+                        <asp:HyperLink ID="lnkContact" NavigateUrl="/Services/Info/ContactPage.aspx" runat="server">Kontakt</asp:HyperLink></li>
+                    <li id="tdResponsible" runat="server">
+                        <asp:HyperLink ID="lnkResponsible" NavigateUrl="/Services/Info/ResponsiblePage.aspx"
+                            runat="server">Ansprechpartner</asp:HyperLink></li>
+                    <li id="tdImpressum" runat="server">
+                        <asp:HyperLink ID="lnkImpressum" NavigateUrl="/Services/Info/Impressum.aspx" runat="server">Impressum</asp:HyperLink></li>
+                </ul>                
+                <ul id="userinfo">
+                    
+                    <li><span>
+                        <asp:Label ID="lblBenutzer" runat="server"></asp:Label></span> <span class="bold">
+                            <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
+                    <li class="logout">
+                        <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="/Services/Images/navLogout.gif"
+                            NavigateUrl="/Services/Start/Logout.aspx"></asp:HyperLink>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="innerContentLeft" runat="server">
+            <div id="sidebar">
+                <uc1:menue ID="Menue1" runat="server" />                
+            </div>
+            <div id="sidebarRight" runat="server" 
+                style="float: right; margin: 54px 0px 0px 971px; position: absolute; z-index:2;" 
+                visible="false">
+                <asp:Image runat="server" ImageUrl="/Services/Images/TVRahmenSmall.png" style="position:absolute; z-index:3;"/>
+                <a runat="server" href="./../Downloads/DADQS_de.exe" style="text-decoration: none;">
+                    <img src="/Services/Images/TeamviewerLogoSmall.png" alt="Download TeamViewer"
+                    title="Download TeamViewer" style="position:relative; z-index:4; margin:5px 0px 0px 5px;border:0px;"/>
+                </a>                
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="websitefoot">
+        <div id="footfoot">
+            <div id="footer">
+                <div class="leftAlign">
+                        <asp:Label ID="lblCopyright" runat="server" Text="© 2001 &#8211; year DAD Deutscher Auto Dienst GmbH / Christoph Kroschke GmbH"></asp:Label>
+                </div>
+                <div class="rightAlign">
+                    <a href="#top">Top
+                        <img src="/Services/Images/top.gif" alt="nach oben" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <asp:Label ID="JavaScriptBlock" runat="server"></asp:Label>
+    
+    </form>
+    
+</body>
+</html>

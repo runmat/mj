@@ -1,0 +1,21 @@
+﻿@using PortalMvcTools.Web
+@model MvcAppZulassungsdienst.ViewModels.BeauftragungViewModel
+
+@Html.Partial("Partial/LayoutPage/Styles")
+
+ <div class="portlet app-view">
+   
+    @Html.FormWizard("icon-edit", "Beauftragung", new[] { "Basisdaten","Halterdaten", "Dienstleistungen", "Absenden!" })
+        
+        <div id="header" class="heading ">
+            <strong>Übersicht erfasste Käufe </strong>für <span id="lieferant" style="font-weight: bold">
+                                                              @Model.Beauftragungsdaten.Kunden </span>
+        </div>
+        <div id="container" class="container">
+            @Html.Partial("")
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn green margin-left-25" onclick="CheckPrepareNewCocOrder()"><i class="icon-arrow-right"></i> Weiter</button>
+            <span id="hintCocTypenFilter" class="label label-important margin-left-20 hide"><i class="icon-bell"></i> <span></span></span>
+        </div>
+</div>

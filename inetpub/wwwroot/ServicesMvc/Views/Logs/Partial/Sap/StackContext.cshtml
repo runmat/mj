@@ -1,0 +1,24 @@
+﻿@model StackContext 
+
+<div class="stack-context">
+    
+    @if (Model.StackFrames.ToListOrEmptyList().Any())
+    {
+        <a href="#" onclick="return ShowStackContext($(this)); " class="btn gray mini tooltips" data-original-title="Stack Aufrufliste anzeigen ... " data-placement="top">
+            <i class="icon-reorder"></i>
+        </a>
+    }
+    
+    <div class="hide">
+        @for (var i = 0; i < Model.StackFrames.ToListOrEmptyList().Count; i++ )
+        {
+            var stackFrame = Model.StackFrames[i];
+        
+            <div class="stack-frame">
+                <span class="number">@(i+1).</span> 
+                <div class="content">@stackFrame</div>
+            </div>
+        }
+    </div>
+
+</div>

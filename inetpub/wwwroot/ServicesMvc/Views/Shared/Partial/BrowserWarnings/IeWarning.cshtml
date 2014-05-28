@@ -1,0 +1,13 @@
+﻿@{
+    var ieVersion = (int)@ViewBag.IeVersion;
+    var ieWarningMessage = (string)@ViewBag.IeWarningMessage;
+    var ieExplicitVersion = (bool)@ViewBag.IeExplicitVersion;
+
+    var ieOperator = ieExplicitVersion ? "" : "lte";
+}
+
+<!--[if @ieOperator IE @ieVersion]> 
+    @Html.FormAlert(ieWarningMessage)
+<![endif]-->
+
+

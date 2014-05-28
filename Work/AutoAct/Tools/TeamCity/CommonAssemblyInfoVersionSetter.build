@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="VersionAssemblies" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<MSBuildCommunityTasksPath Condition="'$(MSBuildCommunityTasksLib)' == ''">$(MSBuildProjectDirectory)\..\..\AutoAct\packages\MSBuildTasks.1.4.0.61\tools\</MSBuildCommunityTasksPath>
+	</PropertyGroup>
+	<Import Project="$(MSBuildProjectDirectory)\..\..\AutoAct\packages\MSBuildTasks.1.4.0.61\tools\MSBuild.Community.Tasks.Targets"/>
+	<PropertyGroup>
+		<Version>$(BUILD_NUMBER)</Version>
+	</PropertyGroup>
+	<Target Name="VersionAssemblies">
+		<FileUpdate Files="..\..\AutoAct\CommonAssemblyInfo.cs" Regex="AssemblyVersion\s*\(\s*&quot;.*&quot;\s*\)\s*\]" ReplacementText="AssemblyVersion(&quot;$(Version)&quot;)]"/>
+		<FileUpdate Files="..\..\AutoAct\CommonAssemblyInfo.cs" Regex="AssemblyFileVersion\s*\(\s*&quot;.*&quot;\s*\)\s*\]" ReplacementText="AssemblyFileVersion(&quot;$(Version)&quot;)]"/>
+	</Target>
+</Project>

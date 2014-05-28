@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{947F160C-56EB-4159-BC78-DE9C15794460}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CKGDatabaseAdminLib</RootNamespace>
+    <AssemblyName>CKGDatabaseAdminLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\GAC\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\ILoginUserMessageDataService.cs" />
+    <Compile Include="Contracts\IApplicationBapiDataService.cs" />
+    <Compile Include="Contracts\IApplicationCopyDataService.cs" />
+    <Compile Include="Contracts\IFieldTranslationCopyDataService.cs" />
+    <Compile Include="Contracts\IBapi2Report4CsvExportDataService.cs" />
+    <Compile Include="DbContext.cs" />
+    <Compile Include="Models\DbModels\Application.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\DbModels\ApplicationField.cs" />
+    <Compile Include="Models\DbModels\ColumnTranslation.cs" />
+    <Compile Include="Models\DbModels\DbModelBase.cs" />
+    <Compile Include="Models\DbModels\BAPI.cs" />
+    <Compile Include="Models\DbModels\ApplicationInfo.cs" />
+    <Compile Include="Models\DbModels\Bapi2Report4CsvExport.cs" />
+    <Compile Include="Models\DbModels\LoginUserMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationBapiDataServiceSql.cs" />
+    <Compile Include="Services\ApplicationCopyDataServiceSql.cs" />
+    <Compile Include="Services\FieldTranslationCopyDataServiceSql.cs" />
+    <Compile Include="Services\Bapi2Report4CsvExportDataServiceSql.cs" />
+    <Compile Include="Services\LoginUserMessageDataServiceSql.cs" />
+    <Compile Include="ViewModels\ChildViewModels\ApplicationBapiViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\FieldTranslationCopyViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\ApplicationCopyViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\LoginUserMessageViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CkgDomainLogic\Lib\CkgDomainLogic.csproj">
+      <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
+      <Name>CkgDomainLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WpfTools4\WpfTools4.csproj">
+      <Project>{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}</Project>
+      <Name>WpfTools4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

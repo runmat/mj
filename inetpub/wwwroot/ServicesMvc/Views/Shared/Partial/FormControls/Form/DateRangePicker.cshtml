@@ -1,0 +1,18 @@
+﻿@model MvcTools.Models.FormDateRangePickerModel 
+
+<div class="FormDateRangePickerWrapper">
+    
+    @Model.ControlHtmlStartDate
+    @Model.ControlHtmlEndDate
+    <label class="FormDateRangePickerCheckBox">
+        <span>@Model.ControlHtml @Model.InlineDisplayNameHtml</span>
+    </label>
+    
+    <div id="wrapper-date-range-@Model.DateRangeProperty" class="FormDateRangePicker hide" data-init="FormDateRangePickerPrepare('@Model.DateRangeProperty')">
+        <span  id="rangePicker-date-range-@Model.DateRangeProperty" class="btn">
+            &nbsp;<i class="icon-calendar"></i>
+            &nbsp;<span class=""></span> 
+            &nbsp;<b class="caret"></b>&nbsp;
+        </span>
+    </div>
+</div>

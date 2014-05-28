@@ -1,0 +1,46 @@
+﻿@using CkgDomainLogic.Feinstaub.Models
+@using CkgDomainLogic.Feinstaub.ViewModels
+@model AutohausFeinstaubVergabeViewModel
+
+@Html.SpanAlert("spanAlertFeinstaubVergabe")
+
+<div id="divFeinstaubCheck">
+    @using (Html.FormOuterLayer())
+    {
+        using (Html.FormInnerLayer(1, "Feinstaubplaketten", "", "formopener searchHeader"))
+        {
+            @Html.Partial("Partial/Check", new FeinstaubCheckUI())
+        }
+    }
+</div>
+
+<div id="divFeinstaubVergabe"></div>
+
+@Html.Partial("Partial/_ScriptsGeneral")
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        initOpenformsRaw(1);
+    }
+
+    function FormPreparePrivateAjax() {
+        FormInitStyles();
+    }
+
+    function ShowFeinstaubVergabe(result) {
+        $("#divFeinstaubVergabe").html(result);
+        $("#divFeinstaubCheck").slideUp();
+        $("#divFeinstaubVergabe").slideDown();
+
+        FormPreparePrivateAjax();
+    }
+
+    function CloseFeinstaubVergabe() {
+        $("#divFeinstaubVergabe").slideUp(function () {
+            $("#divFeinstaubCheck").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+</script>

@@ -1,0 +1,362 @@
+﻿ * html  .dadLogo2 
+{
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 19px;
+	padding-left: 591px;
+	height: 28px;
+}
+
+
+ * html  div#header {
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	height: 120px;
+	width: 947px;
+	margin-left: 26px;
+	
+
+	}
+
+ * html  div#header ul#navigation li {
+	background-color: #2B4C91;
+	border-top: 1px solid #2B4C91;
+	border-left: 1px solid #bbbbbb;
+}
+
+ * html  div#header ul#navigation li.active a {
+	color: #2B4C91;
+}
+
+ * html  div#sidebar {
+	margin-top: 50px;
+}
+
+ * html  div#content {
+	width: 945px;
+}
+
+ * html  div#content div#navigationSubmenu a.active {
+	color: #2B4C91;
+}
+
+ * html  div#content div#query {
+	background-color: #2B4C91;
+	color: #ffffff
+}
+
+ * html  div#content div#innerContent div div.innerContentHeading {
+background-color: #2B4C91;
+}
+
+ * html  div#content div#innerContentRight div#innerContentRightHeading {
+	background-color: #2B4C91;
+}
+ * html  div#content div#innerContentLeft2 div#innerContentLeftHeading {
+	background-color: #2B4C91;
+
+}
+
+ * html  .Menutitle{	
+	background-color: #2B4C91;
+}
+
+ * html  A.MainmenuLink:hover {
+	color: #ffffff;
+	width:100%
+}
+
+ * html  td.MainmenuItemAlternate:hover {
+	background-color: #2B4C91;
+	color: #ffffff;
+	height: 10px;
+	line-height: 22px;
+	padding-left: 15px;
+}
+
+
+ * html  .Busybutton 
+{
+    padding-top: 2px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+ * html  .BusybuttonLarge 
+{
+    padding-top: 2px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+
+ * html  .Adminbutton 
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/Gear.png);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: right;
+	font-size:10px;
+	font-weight:bold;
+	color: #2B4C91;
+}
+
+ * html  .LinksVerwaltung {
+    padding-top: 4px;
+	background-color: #dfdfdf;
+	background-image: url(../../../Images/overflowUpsideDown.png);
+	color: #000000;
+	width: 180px;
+	height:23px;
+	vertical-align:middle;
+	font-size:12px;
+	font-weight:bold;
+	
+}
+
+ * html  .LinksVerwaltung:hover {
+	background-color: #2B4C91;
+}
+
+ * html  div#content div#navigationSubmenu a:hover { color: #9FB8D1; }
+
+ * html  .Tablebutton 
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+ * html  A.Tablebutton
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+ * html  A.Tablebutton:hover
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #2B4C91;
+
+}
+ * html  A.Tablebutton:visited
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+ * html  A.Tablebutton:active
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+ * html  div#content div#innerContentRight div#data {
+	float: left;
+	width: 100%;
+	height: 640px
+}
+
+ * html  div#content div#innerContentRight div#data table .cellBorderGray {
+
+	
+}
+ * html  div#content div#innerContentRight div#TableQuery table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	color: #333333;
+	width: 100%; 
+	display: block; 
+
+	
+}
+ * html  .InputTextbox
+{   
+    height:14px;
+    font-family: Verdana, sans-serif;
+	font-size: 11px;	
+	border-style:solid;
+	border-width:1px;
+	border-color: #B5B5B5;
+	   }
+    
+  * html  .TablebuttonLarge 
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/buttonLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+ * html  A.TablebuttonLarge
+{
+    padding-top: 4px;
+	background-image: url(../../../images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+ * html  A.TablebuttonLarge:hover
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #2B4C91;
+
+}
+
+
+  * html  .TablebuttonMiddle
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/buttonMiddle.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+ * html  A.TablebuttonMiddle
+{
+    padding-top: 4px;
+	background-image: url(../../../images/buttonMiddle.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+
+ * html  .ExcelDiv
+{
+    background-image: url(../../../Images/overflow.png);
+	color: #ffffff;
+	font-weight: bold;
+	float: left;
+	height: 22px;
+	line-height: 22px;
+	width: 100%;
+	background-color: #2B4C91;
+	float:right;
+	margin-bottom: 10px;
+
+	
+    }
+  * html   .HeadDiv
+{
+
+	border-left-color:#dfdfdf;
+	border-left-width:1px;
+	border-left-style:solid;
+	border-right-color:#dfdfdf;
+	border-right-width:1px;
+	border-right-style:solid;
+	color: #333333;
+
+	
+    }
+    
+
+ * html  .Tablehead {
+	background-image: url(../../../Images/headerBig.png);
+	height:30px;
+	background-repeat:repeat-x
+}
+
+ * html  .DropDowns
+{
+    font-family:Verdana,sans-serif;
+    font-size:11px;
+    height:20px;
+    }
+    
+  * html  .TableLabel
+{
+    font-family:Verdana,sans-serif;
+    font-size:9px;
+    color:#595959;
+    }
+    
+  * html   .TableLink
+{
+    font-family:Verdana,sans-serif;
+      font-weight: bold; 
+      font-size: 9px ;
+    color:#ffffff;
+    }
+    
+ * html    .TableLinkHead
+{
+    font-family:Verdana,sans-serif;
+    font-size:9px ;
+    color:#000000;
+    font-weight: normal; 
+    }
+    
+  * html  .InfoBoxFlat
+ {
+	background-color: #FFE97F;
+    background-image: url(../../../Images/overflowupdown.png);
+    border-color:#2B4C91;
+    border-style:solid;
+    border-width:1px;
+ 
+     }
+
+ * html  .dvHead{height: 28px;}
+
+ * html  .ImpressumHead {
+	background-color: #2B4C91;
+}

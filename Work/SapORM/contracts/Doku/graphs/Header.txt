@@ -1,0 +1,1 @@
+ITA 6186 (Ablösung SAP-Connector und BizTalkAdapter im Portalbereich)        -        Matthias Jenzen        -         29.01.2013

@@ -1,0 +1,43 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model Schadenfall
+
+<div id="SchadenfallDetailsDiv" class="portlet">
+    @using (Ajax.BeginForm("SchadenfallDetailsFormSave", "Insurance", null,
+                            new MvcAjaxOptions("SchadenfallDetailsDiv") { OnComplete = "EditSchadenfallComplete();" }, new { id = "SchadenfallDetailsForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormDropDownListFor(m => m.EventID, (ViewBag.AuswahlEvents as SelectList), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.VersicherungID, (ViewBag.AuswahlVersicherungen as SelectList), new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onkeypress = "return CleanUpKennzeichen();" })
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap", col = "right", @onkeypress = "return CleanUpEMail();" })
+        
+        @Html.FormTextBoxFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap", col = "left", @onkeypress = "return CleanUpTelefonnummer();" })
+        @Html.FormTextBoxFor(m => m.SelbstbeteiligungsHoehe, new { @class = "m-wrap", col = "right", @onkeypress = "return NumbersOnlyInt();" })
+        
+        @Html.FormTextBoxFor(m => m.Referenznummer, new { @class = "m-wrap", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Sammelbesichtigung, new { @class = "m-wrap", col = "right" })
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseSchadenfallEdit();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+

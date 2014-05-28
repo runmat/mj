@@ -1,0 +1,77 @@
+﻿@model  CkgDomainLogic.Ueberfuehrung.Models.Fahrzeug
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("FahrzeugEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "FahrzeugEdit_FormPreparePrivateAjax();" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @Html.HiddenFor(m => m.FahrzeugIndex)
+        @Html.HiddenFor(m => m.RequestLoadCarData)
+        @Html.HiddenFor(m => m.RequestLoadCarDataSource)
+
+        using (Html.BeginDiv("leftform"))
+        {
+            @Html.FormTextBoxFor(m => m.FIN, labelCssClass: "FormLabelNormalWs") 
+            @Html.FormAction("FinDatenErgaenzen(" + formID + ", 'FIN');", "datenbutton_small", "Lädt passende Fahrzeugdaten auf Basis der Fahrgestellnummer.")
+    
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.KennzeichenOrt, labelCssClass: "FormLabelNormalWs", cssClass: "FormTextblockSmallS") 
+            @Html.FormTextBoxFor(m => m.KennzeichenRest, labelCssClass: "FormLabelSmallS", cssClass: "FormTextblockNormalSm")
+            @Html.FormAction("FinDatenErgaenzen(" + formID + ", 'Kennzeichen');", "datenbutton_small", "Lädt passende Fahrzeugdaten auf Basis des Kennzeichens.")
+
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.Typ, labelCssClass: "FormLabelNormalWs") 
+
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.Referenznummer, labelCssClass: "FormLabelNormalWs") 
+
+            @Html.FormNewLine()
+            @Html.FormDropDownListFor(m => m.Fahrzeugwert, Model.FahrzeugwertOptions, labelCssClass: "FormLabelNormalWs") 
+        }
+
+        using (Html.BeginDiv("rightform"))
+        {
+            @Html.FormRadioButtonFor(m => m.FahrzeugZugelassen, "J", "Ja", labelCssClass: "FormLabelWide") 
+            @Html.FormRadioButtonFor(m => m.FahrzeugZugelassen, "N", "Nein", labelCssClass: null)
+            
+            @Html.FormNewLine("top17")
+            @Html.FormRadioButtonFor(m => m.ZulassungsauftragAnDAD, "J", "Ja", labelCssClass: "FormLabelWide") 
+            @Html.FormRadioButtonFor(m => m.ZulassungsauftragAnDAD, "N", "Nein", labelCssClass: null)
+            
+            @Html.FormNewLine("top17")
+            @Html.FormDropDownListSmallFor(m => m.Bereifung, Model.BereifungOptions, labelCssClass: "FormLabelWideS") 
+
+            @Html.FormNewLine()
+            @Html.FormDropDownListSmallFor(m => m.Fahrzeugklasse, Model.FahrzeugklasseOptions, labelCssClass: "FormLabelWideS") 
+
+            @Html.FormNewLine("top13")
+            @Html.FormClear(formID, marginLeft: 10)
+            @Html.HiddenFor(m => m.UiIndex)
+
+            @Html.FormMandatoriesHint()
+        }
+        
+        @Html.FormNewLine()
+    }
+}
+
+<script type="text/javascript">
+    
+    function FahrzeugEdit_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+        @Html.Partial("Partial/ValidationErrorScripts")
+    }
+            
+    function FinDatenErgaenzen(formId, source) {
+        var form = GetClosestAjaxForm(formId);
+        if (!AjaxFormIsValid(form))
+            return;
+                
+        form.find("#RequestLoadCarData").val(true);
+        form.find("#RequestLoadCarDataSource").val(source);
+        form.submit();
+    }
+</script>

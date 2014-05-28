@@ -1,0 +1,100 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.Models.RoutingInfo
+
+<style type="text/css">
+    
+    .routeBody 
+    {
+        padding-left: 10px;
+        color:#333;
+        background-color:#eeefef;
+    }
+    
+    #directions-panel 
+    {
+        margin-top: 10px;
+        float: left;
+        height: 500px;
+        width: 430px;
+        background-color: white;
+        overflow-y: auto;
+    }
+
+    #map-canvas-route {
+        margin-top: 20px;
+        float: left;
+        margin-left: 10px;
+        height: 490px;
+        width: 490px;
+        padding: 3px;
+        border: 1px solid gray;
+    }
+    
+    .routeInfo {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        padding: 3px;
+        font-size: 1.1em;
+        text-align: left;
+    }
+    .routeInfoAddress {
+        font-weight: bold;
+    }
+    
+    .adp-summary {
+        font-size: 1.5em;
+        font-weight: bold;
+        background-color: ivory;
+        padding: 3px;
+        border: 1px solid gray;
+        margin-bottom: 10px;
+    }
+</style>
+
+<script type="text/javascript">
+    
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+
+    function googleDirectionsInitialize() {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var mapOptions = {
+            zoom: 11,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: new google.maps.LatLng(53.675806, 10.254119)
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas-route'), mapOptions);
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directions-panel'));
+    }
+
+    function googleDirectionsCalcRoute() {
+
+        googleDirectionsInitialize();
+
+        var start = '@Model.StartAdresse.AdresseAsRouteInfo';
+        var end = '@Model.ZielAdresse.AdresseAsRouteInfo';
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    }
+
+</script>
+
+<div class="routeBody">
+    <div class="routeInfo">
+        Start: 
+        <span class="routeInfoAddress">@Model.StartAdresse.AdresseAsRouteInfoComplete </span>
+        , Ziel: 
+        <span class="routeInfoAddress">@Model.ZielAdresse.AdresseAsRouteInfoComplete </span>
+    </div>
+
+    <div id="directions-panel"></div>
+    <div id="map-canvas-route"></div>
+</div>

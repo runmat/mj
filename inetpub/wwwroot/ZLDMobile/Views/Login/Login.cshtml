@@ -1,0 +1,32 @@
+﻿@model CkgDomainLogic.Zulassung.MobileErfassung.Models.UiModels.Anmeldeinformationen
+
+@section Header {
+    <h1>ZLD Mobile - Anmeldung</h1>
+}
+
+<h2>@ViewBag.Message</h2>
+
+@using (Html.BeginForm("Anmelden", "Login", FormMethod.Post, new { data_ajax = "false" }))
+{
+    @Html.ValidationSummary()
+
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider" class="CenterAlignedText">Bitte geben Sie Benutzername und Kennwort ein</li>
+
+        <li data-role="fieldcontain">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName)            
+        </li>
+
+        <li data-role="fieldcontain">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password)            
+        </li>
+
+        <li>
+            <input type="submit" value="Anmelden"/>
+        </li>
+    </ul>
+}
+
+@Html.Partial("Partial/_LoginScripts")

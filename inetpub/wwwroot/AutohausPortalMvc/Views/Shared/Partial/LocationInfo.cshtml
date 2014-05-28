@@ -1,0 +1,96 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.Models.RoutingInfo
+
+<style type="text/css">
+    
+    .routeBody 
+    {
+        padding-left: 10px;
+        color:#333;
+        background-color:#eeefef;
+    }
+    
+    #directions-panel 
+    {
+        margin-top: 10px;
+        float: left;
+        height: 500px;
+        width: 430px;
+        background-color: white;
+        overflow-y: auto;
+    }
+
+    #map-canvas-location {
+        margin-top: 20px;
+        float: left;
+        margin-left: 10px;
+        height: 490px;
+        width: 490px;
+        padding: 3px;
+        border: 1px solid gray;
+    }
+    
+    .routeInfo {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        padding: 3px;
+        font-size: 1.1em;
+        text-align: left;
+    }
+    .routeInfoAddress {
+        font-weight: bold;
+    }
+    
+    .adp-summary {
+        font-size: 1.5em;
+        font-weight: bold;
+        background-color: ivory;
+        padding: 3px;
+        border: 1px solid gray;
+        margin-bottom: 10px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var geocoder;
+    var map;
+
+    function googleGeocoderInitialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(53.675806, 10.254119);
+        var mapOptions = {
+            zoom: 12,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas-location'), mapOptions);
+    }
+
+    function googleGeocoderShowAddress() {
+
+        googleGeocoderInitialize();
+
+        var address = '@Model.StartAdresse.AdresseAsRouteInfo';
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Die Adress-Geocodierung war nicht erfolgreich aus folgendem Grund: ' + status);
+            }
+        });
+    }
+
+</script>
+
+<div class="routeBody">
+    <div class="routeInfo">
+        Adresse: 
+        <span class="routeInfoAddress">@Model.StartAdresse.AdresseAsRouteInfoComplete </span>
+    </div>
+
+    <div id="map-canvas-location"></div>
+</div>

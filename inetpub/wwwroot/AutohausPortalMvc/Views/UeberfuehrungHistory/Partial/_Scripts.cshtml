@@ -1,0 +1,104 @@
+﻿
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        initOpenformsRaw(1);
+        FormPrepare(false);
+        LoadingHide();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormInitStyles();
+        LoadingHide();
+    }
+
+
+    // --
+    // -- Step 2, Grid mit Aufträgen
+    // --
+
+    function HistoryAuftraegeRequestShow() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "UeberfuehrungHistory/HistoryAuftraegeShow",
+                success: function (result) {
+                    HistoryAuftraegeShow(result);
+                }
+            });
+    }
+
+    function HistoryAuftraegeShow(result) {
+        $("#HistoryAuftraegeGrid").html(result);
+        FormPreparePrivateAjax();
+        $("#HistoryAuftraegeFilter").slideUp();
+        $("#HistoryAuftraegeGrid").slideDown();
+    }
+    
+    function HistoryAuftraegeHide() {
+        $("#HistoryAuftraegeGrid").slideUp();
+        $("#HistoryAuftraegeFilter").slideDown();
+    }
+
+    function GridCocItems_OnDataBound() {
+        FilteredData_Grid_OnDataBound($(this));
+
+        LoadingHide();
+
+        $("#GridHistoryAuftraege tr").on("click", function () {
+            var grid = $("#GridHistoryAuftraege").data("tGrid");
+            var dataItem = grid.dataItem(this);
+            HistoryAuftragDetailsRequestShow(dataItem.AuftragsNr, dataItem.Fahrt);
+        });
+    }
+
+
+    // --
+    // -- Step 3, Auftrags-Details
+    // --
+   
+    function HistoryAuftragDetailsRequestShow(auftragsNr, fahrt) {
+        $.ajax(
+            {
+                type: "POST",
+                data: { auftragsNr: auftragsNr, fahrt: fahrt },
+                url: "UeberfuehrungHistory/HistoryAuftragDetailsRequestShow",
+                success: function (result) {
+                    HistoryAuftragDetailsShow(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status + ' - ' + thrownError);
+                }
+            });
+    }
+
+    function HistoryAuftragDetailsShow(result) {
+        $("#HistoryAuftragDetails").html(result);
+        FormPreparePrivateAjax();
+        $("#HistoryAuftraegeGrid").slideUp();
+        $("#HistoryAuftragDetails").slideDown();
+    }
+
+    function HistoryAuftragDetailsHide() {
+        $("#HistoryAuftragDetails").slideUp();
+        $("#HistoryAuftraegeGrid").slideDown();
+    }
+
+    function ShowBigImage(tour, fileNr) {
+        //alert(fileNr);
+        $.ajax(
+            {
+                type: "POST",
+                data: { tour : tour, fileNr: fileNr },
+                url: "UeberfuehrungHistory/HistoryAuftragShowBigImage",
+                success: function (result) {
+                    //alert(result);
+                    var detailWindow = $("#HistoryAuftragBigImage").data("tWindow");
+                    $("#InnerHistoryAuftragBigImage").html(result);
+                    detailWindow.center().open();
+                }
+            });
+    }
+
+    
+</script>

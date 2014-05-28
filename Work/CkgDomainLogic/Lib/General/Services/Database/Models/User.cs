@@ -1,0 +1,47 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using GeneralTools.Contracts;
+
+namespace CkgDomainLogic.General.Database.Models
+{
+    [Table("WebUser")]
+    public class User : IUserSecurityRuleDataProvider
+    {
+        [Key]
+        public int UserID { get; set; }
+
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
+        public string Reference { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public int CustomerID { get; set; }
+
+        public bool TestUser { get; set; }
+
+        public bool AccountIsLockedOut { get; set; }
+
+        public bool Approved { get; set; }
+
+        public DateTime? LastPwdChange { get; set; }
+        
+        public int FailedLogins { get; set; }
+
+        
+        #region User Security Rules
+
+        public bool UserIsApproved { get { return Approved; } }
+
+        public bool UserIsDisabled { get { return AccountIsLockedOut; } }
+        
+        public int UserCountFailedLogins { get { return FailedLogins; } }
+
+        #endregion
+    }
+}

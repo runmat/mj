@@ -1,0 +1,96 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Login.master.cs" Inherits="AutohausPortal.MasterPage.Login" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head id="Head1" runat="server">
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="Christoph Kroschke GmbH" />
+	<meta content="Christoph Kroschke GmbH" name="Copyright" /> 
+    <link href="../Styles/kroschkeportal.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/ezmark.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/jquery.selectBox.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+		<!--[if lte IE 10]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/iestyles.css">
+		<![endif]--><!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie7styles.css">
+		<![endif]--><!--[if lte IE 6]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie6styles.css">
+		<![endif]-->
+</head>
+<!--Skriptdefinitionen nicht im head-Bereich, da sonst der Switch zum IE9-ContentMode nicht funktioniert-->
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-1.7.1.js"></script> 
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery.selectBox.js"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-ui.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/ezmark.js?23052013"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/kroschkeportal.js?26052014"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var vis = $("#ctl00_backlink").attr("visible");
+
+        if (vis == undefined || vis == "true") {
+            $("#head").attr("class", "breadcrump");
+        } else {
+            $("#head").attr("class", "login");
+        }
+    });
+</script>
+<body id="top" class="start">
+     <form id="Form1" runat="server" style="margin: 0">     
+        <div id="maincontainer">
+			<!--head-->
+			<div id="head" class="login">
+				<div class="logo">
+					<img src="/AutohausPortal/images/kroschke-logo.gif" width="382" height="51" alt="Kroschke" />
+				</div>
+				<!--metanavigation-->
+                <div id="metanavigation">
+                    <div class="metalinks">
+                        &nbsp;</div>
+                        <div class="metabutton">
+                        <asp:HyperLink ID="lnkAnmeldung" NavigateUrl="/AutohausPortal/Start/Login.aspx" runat="server">Anmeldung</asp:HyperLink></div>
+                    <div class="metatrenner">
+                        &nbsp;</div>
+                    <div class="metabutton">
+                        <asp:HyperLink ID="lnkKontakt" NavigateUrl="/AutohausPortal/Info/KontaktLogin.aspx" runat="server">Kontakt</asp:HyperLink></div>
+                    <div class="metatrenner">
+                        &nbsp;</div>
+                    <div class="metabutton">
+                        <asp:HyperLink ID="lnkImpressum" NavigateUrl="/AutohausPortal/Info/ImpressumLogin.aspx"
+                            runat="server">Impressum</asp:HyperLink></div>
+                    <div class="metarechts">
+                        &nbsp;</div>
+				</div>
+				<!--metanavigation-->
+                 <!--breadcrump-->
+            <div id="breadcrump">
+                <div id="backlink" class="backlink" runat="server">
+                    <asp:HyperLink ID="lnkBack" runat="server" NavigateUrl="/AutohausPortal/Start/Login.aspx">&lt;&lt; Zurück </asp:HyperLink>
+                </div>                
+            </div>
+            <!--breadcrump-->
+			</div>
+			<!--head-->
+
+        <div id="contentlogin">
+        <asp:ContentPlaceHolder   ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+        </div>
+         <div class="trenner">&nbsp;</div>
+     </div>
+        <asp:ContentPlaceHolder   ID="ContentPlaceHolderfooter" runat="server">
+          <div class="trenner20">&nbsp;</div>
+            <div id="footer" style="margin-top: 0px;">
+                    <div class="footcontent">
+                        <div class="footcontentl">
+                            <a href="#top">Nach oben</a>
+                        </div>
+	                    <div class="footcontentr"> <asp:Label ID="lblCopyright" runat="server" Text=""/></div>
+                   </div>
+             </div>
+        </asp:ContentPlaceHolder>
+
+    </form>
+
+ </body>        
+</html> 

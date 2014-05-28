@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+@Html.Partial("Partial/LayoutPage/HtmlTag")
+    <head>
+        <title>@ViewBag.Title</title>
+        
+        @Html.Partial("Partial/LayoutPage/Styles")
+        @Html.Partial("Partial/LayoutPage/ScriptsPreload")
+
+    </head>
+    <body class="@ViewBag.BodyCssClass">
+        <img class="loading hide" src="~/assets/img/bg-white.png" width="1" height="1" alt="">   <!-- we don't need the big loading image in this layout page...  -->    
+
+        <script type="text/javascript">
+            _controlGroupValidationType = "default";
+            @RenderSection("LayoutScript", false);
+        </script>
+
+        @Html.Partial("Partial/LayoutPage/Scripts")
+        <script src="~/assets/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+    
+        @RenderBody()
+
+        <script type="text/javascript">
+
+            function FormPrepareLayoutPrivate() {
+                //alert('FormPrepareLayoutPrivate()');
+            }
+
+            function FormPrepareAjaxLayoutPrivate() {
+                //alert('FormPrepareAjaxLayoutPrivate()');
+            }
+        
+        </script>
+    </body>
+</html>

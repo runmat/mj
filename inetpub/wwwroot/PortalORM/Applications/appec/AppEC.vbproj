@@ -1,0 +1,683 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>AppEC</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>AppEC</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppEC.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppEC.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="eWorld.UI">
+      <Name>eWorld.UI</Name>
+      <HintPath>..\..\GAC\eWorld.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\SapORM\services\bin\Debug\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="CKG" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.HtmlControls" />
+    <Import Include="System.Web.UI.WebControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change01_2.aspx.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change02.aspx.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change02_2.aspx.vb">
+      <DependentUpon>Change02_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change05.aspx.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change05_0.aspx.vb">
+      <DependentUpon>Change05_0.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change05_2.aspx.vb">
+      <DependentUpon>Change05_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06.aspx.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06_2.aspx.vb">
+      <DependentUpon>Change06_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07.aspx.designer.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change07.aspx.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07_2.aspx.designer.vb">
+      <DependentUpon>Change07_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change07_2.aspx.vb">
+      <DependentUpon>Change07_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change08.aspx.vb">
+      <DependentUpon>Change08.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change08_2.aspx.vb">
+      <DependentUpon>Change08_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09.aspx.designer.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09.aspx.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09_2.aspx.designer.vb">
+      <DependentUpon>Change09_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09_2.aspx.vb">
+      <DependentUpon>Change09_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change10.aspx.designer.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change10.aspx.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change10_2.aspx.designer.vb">
+      <DependentUpon>Change10_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change10_2.aspx.vb">
+      <DependentUpon>Change10_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change11.aspx.designer.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change11.aspx.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report200.aspx.designer.vb">
+      <DependentUpon>Report200.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report200.aspx.vb">
+      <DependentUpon>Report200.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report27.aspx.vb">
+      <DependentUpon>Report27.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report26.aspx.vb">
+      <DependentUpon>Report26.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report01.aspx.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report02.aspx.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report03.aspx.vb">
+      <DependentUpon>Report03.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report04.aspx.vb">
+      <DependentUpon>Report04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report07.aspx.vb">
+      <DependentUpon>Report07.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report08.aspx.vb">
+      <DependentUpon>Report08.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report09.aspx.vb">
+      <DependentUpon>Report09.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report10.aspx.vb">
+      <DependentUpon>Report10.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report10_2.aspx.vb">
+      <DependentUpon>Report10_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report11.aspx.vb">
+      <DependentUpon>Report11.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report12.aspx.vb">
+      <DependentUpon>Report12.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report12_2.aspx.vb">
+      <DependentUpon>Report12_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report13.aspx.vb">
+      <DependentUpon>Report13.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report13_2.aspx.vb">
+      <DependentUpon>Report13_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report14.aspx.vb">
+      <DependentUpon>Report14.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report15.aspx.vb">
+      <DependentUpon>Report15.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report15_2.aspx.vb">
+      <DependentUpon>Report15_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report15_3.aspx.vb">
+      <DependentUpon>Report15_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report16.aspx.vb">
+      <DependentUpon>Report16.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report17.aspx.vb">
+      <DependentUpon>Report17.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report18.aspx.vb">
+      <DependentUpon>Report18.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report19.aspx.vb">
+      <DependentUpon>Report19.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report20.aspx.vb">
+      <DependentUpon>Report20.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report21.aspx.vb">
+      <DependentUpon>Report21.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report22.aspx.vb">
+      <DependentUpon>Report22.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report23.aspx.designer.vb">
+      <DependentUpon>Report23.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report23.aspx.vb">
+      <DependentUpon>Report23.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report24.aspx.designer.vb">
+      <DependentUpon>Report24.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report24.aspx.vb">
+      <DependentUpon>Report24.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report25.aspx.designer.vb">
+      <DependentUpon>Report25.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report25.aspx.vb">
+      <DependentUpon>Report25.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Lib\change_01.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\change_06.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ecModelID.vb" />
+    <Compile Include="Lib\ec_01.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_02.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_03.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_04.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_05.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_06.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_07.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_08.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_09.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_10.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_11.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_12.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_13.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_14.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_15.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_16.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_17.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_18.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_19.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_20.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_200.vb" />
+    <Compile Include="Lib\ec_21.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\ec_22.vb" />
+    <Compile Include="Lib\ec_26.vb" />
+    <Compile Include="Lib\ec_27.vb" />
+    <Compile Include="Lib\Monatsreport.vb" />
+    <Compile Include="Lib\Unfallmeldung.vb" />
+    <Content Include="Forms\Change01.aspx" />
+    <Content Include="Forms\Change01_2.aspx" />
+    <Content Include="Forms\Change02.aspx" />
+    <Content Include="Forms\Change02_2.aspx" />
+    <Content Include="Forms\Change05.aspx" />
+    <Content Include="Forms\Change05_0.aspx" />
+    <Content Include="Forms\Change05_2.aspx" />
+    <Content Include="Forms\Change06.aspx" />
+    <Content Include="Forms\Change06_2.aspx" />
+    <Content Include="Forms\Change07.aspx" />
+    <Content Include="Forms\Change07_2.aspx" />
+    <Content Include="Forms\Change08.aspx" />
+    <Content Include="Forms\Change08_2.aspx" />
+    <Content Include="Forms\Change09.aspx" />
+    <Content Include="Forms\Change09_2.aspx" />
+    <Content Include="Forms\Change10.aspx" />
+    <Content Include="Forms\Change10_2.aspx" />
+    <Content Include="Forms\Change11.aspx" />
+    <Content Include="Forms\Info01.htm" />
+    <Content Include="Forms\Info02.htm" />
+    <Content Include="Forms\Report200.aspx" />
+    <Content Include="Forms\Report27.aspx" />
+    <Content Include="Forms\Report26.aspx" />
+    <Content Include="Forms\Report01.aspx" />
+    <Content Include="Forms\Report02.aspx" />
+    <Content Include="Forms\Report03.aspx" />
+    <Content Include="Forms\Report04.aspx" />
+    <Content Include="Forms\Report07.aspx" />
+    <Content Include="Forms\Report08.aspx" />
+    <Content Include="Forms\Report09.aspx" />
+    <Content Include="Forms\Report10.aspx" />
+    <Content Include="Forms\Report10_2.aspx" />
+    <Content Include="Forms\Report11.aspx" />
+    <Content Include="Forms\Report12.aspx" />
+    <Content Include="Forms\Report12_2.aspx" />
+    <Content Include="Forms\Report13.aspx" />
+    <Content Include="Forms\Report13_2.aspx" />
+    <Content Include="Forms\Report14.aspx" />
+    <Content Include="Forms\Report15.aspx" />
+    <Content Include="Forms\Report15_2.aspx" />
+    <Content Include="Forms\Report15_3.aspx" />
+    <Content Include="Forms\Report16.aspx" />
+    <Content Include="Forms\Report17.aspx" />
+    <Content Include="Forms\Report18.aspx" />
+    <Content Include="Forms\Report19.aspx" />
+    <Content Include="Forms\Report20.aspx" />
+    <Content Include="Forms\Report21.aspx" />
+    <Content Include="Forms\Report22.aspx" />
+    <Content Include="Forms\Report23.aspx" />
+    <Content Include="Forms\Report24.aspx" />
+    <Content Include="Forms\Report25.aspx" />
+    <Content Include="Forms\scroll.htc" />
+    <EmbeddedResource Include="Forms\Change01.aspx.resx">
+      <DependentUpon>Change01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change01_2.aspx.resx">
+      <DependentUpon>Change01_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change02.aspx.resx">
+      <DependentUpon>Change02.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change02_2.aspx.resx">
+      <DependentUpon>Change02_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change05.aspx.resx">
+      <DependentUpon>Change05.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change05_0.aspx.resx">
+      <DependentUpon>Change05_0.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change05_2.aspx.resx">
+      <DependentUpon>Change05_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change06.aspx.resx">
+      <DependentUpon>Change06.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change06_2.aspx.resx">
+      <DependentUpon>Change06_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change08.aspx.resx">
+      <DependentUpon>Change08.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change08_2.aspx.resx">
+      <DependentUpon>Change08_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report27.aspx.resx">
+      <DependentUpon>Report27.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report26.aspx.resx">
+      <DependentUpon>Report26.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report01.aspx.resx">
+      <DependentUpon>Report01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report02.aspx.resx">
+      <DependentUpon>Report02.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report03.aspx.resx">
+      <DependentUpon>Report03.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report04.aspx.resx">
+      <DependentUpon>Report04.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report07.aspx.resx">
+      <DependentUpon>Report07.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report08.aspx.resx">
+      <DependentUpon>Report08.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report09.aspx.resx">
+      <DependentUpon>Report09.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report10.aspx.resx">
+      <DependentUpon>Report10.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report10_2.aspx.resx">
+      <DependentUpon>Report10_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report11.aspx.resx">
+      <DependentUpon>Report11.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report12.aspx.resx">
+      <DependentUpon>Report12.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report12_2.aspx.resx">
+      <DependentUpon>Report12_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report13.aspx.resx">
+      <DependentUpon>Report13.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report13_2.aspx.resx">
+      <DependentUpon>Report13_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report14.aspx.resx">
+      <DependentUpon>Report14.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report15.aspx.resx">
+      <DependentUpon>Report15.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report15_2.aspx.resx">
+      <DependentUpon>Report15_2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report15_3.aspx.resx">
+      <DependentUpon>Report15_3.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report16.aspx.resx">
+      <DependentUpon>Report16.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report17.aspx.resx">
+      <DependentUpon>Report17.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report18.aspx.resx">
+      <DependentUpon>Report18.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report19.aspx.resx">
+      <DependentUpon>Report19.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report20.aspx.resx">
+      <DependentUpon>Report20.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report21.aspx.resx">
+      <DependentUpon>Report21.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\BaseORM\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Portal.vbproj">
+      <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
+      <Name>Portal</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1869</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Portal/Applications/AppEC</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

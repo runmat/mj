@@ -1,0 +1,287 @@
+﻿/* --- Matzi */
+
+html {
+overflow: -moz-scrollbars-vertical; 
+overflow-y: scroll;
+}
+
+table {
+    padding: 0px;
+    margin: 0px;
+}
+
+.successHint 
+{
+    color: green;
+    background-color: ivory;
+    padding: 5px;
+    border: 1px solid green;
+    margin-left: 10px;
+}
+
+.header {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.dataFormHeader {
+    font-weight: bold;
+    padding-top: 20px;
+}
+
+.dataFormLabel {
+    padding-left: 20px;
+    width: 170px;
+}
+
+.grayHintSmall {
+    color: gray;
+    font-size: .9em;
+}
+
+.grayHintSmallSmall {
+    color: gray;
+    font-size: .70em;
+}
+
+.warnHintSmall {
+    color: darkred;
+    font-size: .9em;
+}
+
+.warnHint {
+    color: darkred;
+}
+
+.errorHintSmall {
+    color: red;
+    font-size: .9em;
+}
+
+.required {
+    color: red;
+}
+
+/* Matzi: bug-fix arrows (for ugly t-numerictextbox arrows) */
+.t-numerictextbox .t-icon{ margin-left: -16px;width: 16px;}
+
+/* t-link  bug-fix font-size */
+.t-header .t-link {
+    font-weight: normal;
+    font-size: 0.8em;
+}
+.t-item .t-link {
+    font-size: 1.0em;
+}
+
+.textboxRight {
+    position: relative;
+}
+.textboxRight .t-formatted-value {
+    left: auto;
+    right: 25px;
+}
+
+
+.SaldoBgRed { background-color: #ffe0e0; }
+.SaldoBgYellow { background-color: #ffffe0; }
+.SaldoBgGreen { background-color: #e0ffe0; }
+
+button.command {
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    font-size: 1.0em;
+    padding: 0px;
+    margin: 3px;
+    width: 16px;
+    height: 16px;
+}
+button.command.add 
+{
+    background: url("../Images/Commands/add.png") no-repeat;   
+}
+button.command.delete 
+{
+    background: url("../Images/Commands/delete.png") no-repeat;   
+}
+button.command.save 
+{
+    background: url("../Images/Commands/save.png") no-repeat;   
+}
+
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input[type="text"].input-validation-error {
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+#waitHint {
+    position: absolute;
+    top: 250px;
+    z-index: 9999;
+    width: 100%;
+}
+
+.invisible {
+    visibility: hidden;
+} 
+
+
+
+
+
+/* 19.07.2013 general overrides (Matthias Jenzen) */
+
+.SForm select {
+    line-height: 20px;
+    height: 25px;
+    width: 120px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm input[type="text"] {
+    line-height: 20px;
+    height: 20px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    padding-left: 8px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm label {
+    margin: 0;
+}
+
+/* Template Controls (Matthias Jenzen) */
+
+.SControlGroupInner
+{
+    display: inline;
+}
+.SLabel
+{
+    line-height: 18px!important;
+    height: 18px!important;
+}
+.SControl {
+    margin-left: 0;
+}
+.SLabel
+{
+    display: inline-block;
+}
+.SDisplayName
+{
+    margin-right: 5px;
+}
+.SDateRangePicker 
+{
+    display: block;
+    margin-left: 27px;
+    
+}
+
+/*  Simple Form Controls (Matthias Jenzen) */
+/*    "SForm" <=> default template form */
+.SForm input,label,select {
+    font-size: 12px!important;
+}
+.SForm .SControlGroupOuter .SLabel {
+    width: 120px;
+}
+
+.SForm .SControlGroupOuter {
+    margin-top: 5px;
+   
+}
+.SForm .SControlGroupInner {
+    
+}
+.SForm .SLabel {
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickForm .SControlGroupOuter {
+    margin-top: 10px;
+}
+.SQuickForm .SControlGroupOuter .SLabel.SLabelCheckBox {
+    display: none;
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls nebeneinander (inline), 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickInlineForm .SControlGroupOuter {
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+
+/*    "SLabelAlignedForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - Labels mit gemeinsamer Labelbreite, standard = 120px, 
+        - Labeltexte rechtsbündig 
+*/
+.SLabelAlignedForm .SControlGroupOuter 
+{
+    margin-bottom: 15px;
+}
+.SLabelAlignedForm .SControlGroupOuter .SLabel 
+{
+    width: 120px!important;
+    text-align: right;
+}
+.SLabelAlignedLeft .SControlGroupOuter .SLabel 
+{
+    text-align: left;
+}
+
+/*    "SLabelAlignedFormXX" <=> 
+        - Labels mit gemeinsamer Labelbreite XXpx, 
+*/
+.SLabelAlignedForm60 .SControlGroupOuter .SLabel 
+{
+    width: 60px!important;
+}
+.SLabelAlignedForm200 .SControlGroupOuter .SLabel 
+{
+    width: 200px!important;
+}
+
+.bold {
+    font-weight: bold;
+}

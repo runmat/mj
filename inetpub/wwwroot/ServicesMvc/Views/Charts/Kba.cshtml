@@ -1,0 +1,120 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel 
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">KBA <small>Map</small></h3>
+
+@Html.IeWarning(8)
+
+<div id="divCharts">
+    @Model.GroupKgsItems.Count    
+</div>
+
+<div>header</div>
+
+<table>
+    <tr>
+        <td>
+            <svg id="svg" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 815" preserveAspectRatio="xMidYMid meet" />
+        </td>
+        <td>
+            <div id="kreis-hovered"></div>
+            <svg id="svg-kreis" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 815" preserveAspectRatio="xMidYMid meet" />
+        </td>
+    </tr>
+</table>
+
+<div>footer</div>
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    var kgsStat = @Html.Raw(Json.Encode(Model.GroupKgsStats));
+
+    $(function () {
+        var s = Snap("#svg");
+        Snap.load("/ServicesMvc/Images/maps/deutschland.svg", function (f) {
+
+            var kreisHovered = $("#kreis-hovered");
+            var g = f.select("g");
+            var paths = g.selectAll("path");
+
+            var countMax = parseInt(kgsStat.CountMax, 10);
+
+            // test...
+            countMax /= 10;
+            
+            paths.forEach(function (elem, i) {
+            
+                var kreisName = $(elem.node).attr("data-id");
+                var kgsID = $(elem.node).attr("data-kgs");
+
+                var countThisKgs = parseInt(kgsStat.CountPerKgs[kgsID], 10);
+                var byteBasedCount = parseInt((255.0 * countThisKgs / countMax), 10);
+                if (byteBasedCount > 255) byteBasedCount = 255;
+                
+                var color = "#" + byteBasedCount.toString(16) + "0000";
+                elem.attr("fill", color);
+
+                elem.hover(
+                    function () {
+                        //console.log($(elem.node).attr("data-id"));
+
+                        // hover background
+                        //var fillPrev = elem.attr("fill");
+                        //$(elem.node).attr("fill-prev", fillPrev);
+
+                        // hover opacity
+                        elem.attr("fill-opacity", "0.5");
+                        kreisHovered.html(kreisName);
+
+                        // unhover stroke
+                        //$(elem.node).attr("stroke", "#ff0000");
+                        //$(elem.node).attr("stroke-width", 2);
+                    },
+                    function () {
+                        // unhover background
+                        //elem.attr("fill", $(elem.node).attr("fill-prev"));
+
+                        // unhover opacity
+                        elem.attr("fill-opacity", "");
+                        kreisHovered.html("");
+
+                        // unhover stroke
+                        //$(elem.node).attr("stroke", "");
+                        //$(elem.node).attr("stroke-width", 0);
+                    }
+                );
+            elem.click(function () {
+                    var sKreis = Snap("#svg-kreis");
+                    var svgKreis = elem.clone();
+                    svgKreis.attr("fill-opacity", "");
+                    var bbox = svgKreis.getBBox();
+                    console.log(bbox);
+                    var boxX = bbox.x;
+                    var boxY = bbox.y;
+                    if (kreisName == "Hamburg") {
+                        boxX += 80; boxY += 20;
+                    }
+                    if (kreisName == "Pinneberg") {
+                        boxX += 100; boxY += 25;
+                    }
+                    sKreis.attr("viewBox", (boxX * 1) + " " + (boxY * 1) + " 75 103");
+                    sKreis.clear();
+                    sKreis.append(svgKreis);
+                    //console.log("matze");
+                });
+            });
+
+            s.append(g);
+        });
+    });
+    
+</script>

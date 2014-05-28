@@ -1,0 +1,12 @@
+﻿@{ 
+    var userCultureToSwitch = SessionHelper.GetSessionValue("UserCulture", "de-DE").NotNullOrEmpty() == "de-DE" ? "EN" : "DE";
+    var userCultureFlag1Class = "EN-disabled";
+    var userCultureFlag2Class = "DE";
+    if (userCultureToSwitch != "DE")
+    {
+        userCultureFlag1Class = "DE-disabled";
+        userCultureFlag2Class = "EN";
+    }
+}
+
+<a href="javascript:UserSwitchCulture()"><i class="@ViewBag.HeaderIconCssClass"></i> <span class="user-culture-flag @userCultureFlag1Class"></span><span class="user-culture-flag @userCultureFlag2Class"></span></a>

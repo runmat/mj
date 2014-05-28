@@ -1,0 +1,171 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel 
+
+<script type="text/javascript">
+
+    var colorScaleRed = ['rgb(255,245,235)', 'rgb(254,230,206)', 'rgb(253,208,162)', 'rgb(253,174,107)', 'rgb(253,141,60)', 'rgb(241,105,19)', 'rgb(217,72,1)', 'rgb(166,54,3)', 'rgb(127,39,4)'];
+    var colorScaleGreen = ['rgb(247,252,245)', 'rgb(229,245,224)', 'rgb(199,233,192)', 'rgb(161,217,155)', 'rgb(116,196,118)', 'rgb(65,171,93)', 'rgb(35,139,69)', 'rgb(0,109,44)', 'rgb(0,68,27)'];
+    var colorScaleBlue = ['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)'];
+    var colorThresholds = [10, 20, 50, 100, 200, 500, 1000, 5000, 9999999];
+
+    chartManager.AddChart(
+        new Chart(
+            '@Model.ChartID',
+            '@Model.ChartGroup',
+            {
+                preventShowDetailsData: true
+            },
+            function (chart) {  // FormPreparePrivate
+
+                KgsMapKmFilterFormInit(chart);
+            },
+            function (chart) {  // FormPreparePrivateAjax
+
+                KgsMapKmFilterFormInit(chart);
+            },
+            null,  // getTooltipHtml
+            function (chart, chartResults) {  // ShowChartResults
+
+                var chartPlaceHolder = chart.GetPlaceHolder();
+
+                var htmlParam = @Html.Raw(Json.Encode(Model.ChartsSqlDataDescriptor.Template.HtmlParameter));
+                //console.log(htmlParam);
+                var colorScale = eval('colorScale' + htmlParam.ColorScheme);
+
+                var colorThresholdsCustom = colorThresholds;
+                if (typeof (htmlParam.LegendColorThresholds) !== 'undefined') {
+                    colorThresholdsCustom = htmlParam.LegendColorThresholds.split(',');
+                }
+
+                // var groupChartItems = chartResults.GroupChartItems;
+                // var groupChartJahrItems = chartResults.GroupChartJahrItems;
+                // var groupChartKey1Items = chartResults.GroupChartKey1Items;
+                var additionalItemLists = chartResults.AdditionalChartItemLists;
+
+                var groupOverKgs = additionalItemLists[0];
+
+                var svgID = 'svg_' + chart.GetPlaceHolderID();
+                var svg = '<svg id="' + svgID + '" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640 850" preserveAspectRatio="xMidYMid meet" />';
+                chartPlaceHolder.html(svg);
+
+                var svgMousePosX = -1, svgMousePosY = -1;
+
+                var s = Snap("#" + svgID);
+                Snap.load("/ServicesMvc/Images/maps/deutschland.svg", function (f) {
+                    var g = f.select("g");
+                    var paths = g.selectAll("path");
+
+                    var kgsPrevID = null;
+
+                    paths.forEach(function (elem, i) {
+                        var kreisName = $(elem.node).attr("data-id");
+                        var kgsID = $(elem.node).attr("data-kgs");
+
+                        var thisKgs = $.grep(groupOverKgs, function (item) { return item.Key1 == kgsID; });
+                        var countThisKgs = (thisKgs.length == 0 ? 0 : parseInt(thisKgs[0].IWert1, 10));
+
+                        var color;
+                        if (countThisKgs == 0) {
+                            color = "#EEEEEE";
+                            $(elem.node).attr("stroke", "#DDDDDD");
+                            $(elem.node).attr("stroke-width", 1);
+                            $(elem.node).attr("cursor", "default");
+                        } else {
+                            var colorIndex = 0;
+                            for (var c = colorThresholdsCustom.length - 1; c >= 0; c--)
+                                if (countThisKgs < colorThresholdsCustom[c])
+                                    colorIndex = c;
+
+                            color = colorScale[colorIndex];
+                            $(elem.node).attr("stroke", "#999999");
+                            $(elem.node).attr("stroke-width", 1);
+                        }
+                        elem.attr("fill", color);
+
+                        elem.hover(
+                            function () {
+                                // hover opacity
+                                elem.attr("fill-opacity", "0.5");
+                                //kreisHovered.html(kreisName);
+
+                                if (kgsPrevID != kgsID) {
+                                    kgsPrevID = kgsID;
+
+                                    var tooltipHtml = kreisName + ": <strong>" + countThisKgs.formatNumber(0) + " " + htmlParam.ItemsName + "</strong>";
+
+                                    $("#tooltip").remove();
+                                    ChartShowTooltip(svgMousePosX, svgMousePosY, tooltipHtml);
+                                }
+
+                            },
+                            function () {
+                                // unhover opacity
+                                elem.attr("fill-opacity", "");
+                                //kreisHovered.html("");
+
+                                $("#tooltip").remove();
+                                kgsPrevID = null;
+                            }
+                        );
+
+                        elem.click(function (e) {
+                            if (countThisKgs == 0) {
+                                $(elem).addClass("cursor-default");
+                                return;
+                            }
+                            $(elem).removeClass("cursor-default");
+                            RequestShowChartDetailsData(chart.chartID, kgsPrevID);
+                        });
+                    });
+
+                    s.append(g);
+
+                    chartPlaceHolder.mousemove(function (e) {
+                        svgMousePosX = e.pageX; // + this.offsetLeft;  // offset not needed beacuse chartPlaceHolder position css style is "relative" 
+                        svgMousePosY = e.pageY; // + this.offsetTop;
+                    });
+
+                    // Chart Header bzw. Untertitel
+                    //chartPlaceHolder.append("<div>test</div>");
+                    ShowColorLegend(chartPlaceHolder, 75, 30, 50, 20, colorScale, colorThresholdsCustom, '');
+                    //alert(parseInt(chartPlaceHolder.css('height')));
+                    var titleTop = parseInt(chartPlaceHolder.css('height')) - 23;
+                    ShowMapTitle(chartPlaceHolder, htmlParam.Title, 0, titleTop);
+                });
+            }
+        )
+    );
+
+    function ShowMapTitle(container, titleText, x, y) {
+        var title = $('<div/>').addClass('map-title').css('left', x + 'px').css('top', y + 'px').text(titleText);
+        container.append(title);
+    }
+
+    function ShowColorLegend(container, x, y, itemWidth, itemHeight, legendColors, colorThresholds, labelMeasure) {
+        var legend = $('<div/>').addClass('color-legend').css('left', x + 'px').css('top', y + 'px');
+        //legend.text('Legende:');
+        for (var i = 0; i < legendColors.length; i++) {
+            var color = legendColors[i];
+            var labelText;
+            if (i < legendColors.length - 1)
+                labelText = '< <strong>' + colorThresholds[i] + '</strong> ' + labelMeasure;
+            else
+                labelText = '>= <strong>' + colorThresholds[i-1] + '</strong> ' + labelMeasure;
+            var colorItem = $('<div/>').addClass('color-item').css('background-color', color).css('width', itemWidth + 'px').css('height', itemHeight + 'px').html(labelText);
+
+            var rgb = ColorToRGB(color);
+            var colorBrightness = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) / 1000);
+            colorItem.css('color', colorBrightness > 125 ? 'black' : 'white');
+
+            legend.append(colorItem);
+        }
+        container.append(legend);
+    }
+
+    function KgsMapKmFilterFormInit(chart) {
+
+        var checkBoxes = chart.GetFilterForm().find(".chart-filter-key1-items input[type=checkbox]");
+
+        CheckBoxesEnforceSingleSelection(checkBoxes, checkBoxes[1]);
+    }
+
+</script>

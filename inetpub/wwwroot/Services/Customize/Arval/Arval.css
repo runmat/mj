@@ -1,0 +1,103 @@
+﻿.dadLogo2
+{
+    background-image: url(arval_logo.gif);
+}
+
+div#header ul#navigation li
+{
+    background-color: #9bd4be;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #9bd4be;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #9bd4be;
+}
+
+div#content div#query
+{
+    background-color: #9bd4be;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #9bd4be;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #9bd4be;
+}
+div#content div#innerContentRight div#data table tbody tr td
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	}
+.Menutitle
+{
+    background-color: #9bd4be;
+}
+A.Tablebutton:hover
+{
+    color: #9bd4be;
+}
+
+A.TablebuttonLarge:hover
+{
+    color: #9bd4be;
+}
+
+td.MainmenuItemAlternate:hover
+{
+    background-color: #9bd4be;
+}
+
+.divWait
+{
+    border: thin solid #9bd4be;
+}
+
+.lblKontaktFirma
+{
+    color: #9bd4be;
+}
+
+.ImpressumHead
+{
+    background-color: #9bd4be;
+}
+
+.NaviImg
+{
+    background-image: url(../../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+.NeutralCalendar table * {
+ 
+ padding-right:0px !important;
+padding-bottom:0px !important;
+padding-left:0px !important;
+padding-top:0px !important;
+text-align:center !important;
+ 
+ }
+ 
+ .NeutralCalendar table {
+ 
+  border-left-style:none !important;
+  border-right-style:none !important;
+  border-bottom-style:none !important;
+  border-top-style:none !important;
+
+ }
+   
+
+

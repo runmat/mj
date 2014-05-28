@@ -1,0 +1,72 @@
+﻿@{
+    var busyArrowsCount = ViewBag.ArrowCount;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // register handler for "on ajax view load complete"
+        //ajaxViewLoadedEvent.addHandler(BusyArrowsOnAjaxViewLoaded);
+
+        // call explicitely here once on "whole document load"
+        BusyArrowsOnAjaxViewLoaded();
+    });
+
+    var busyArrowsCount = '@busyArrowsCount';
+    var busyArrowsOld = 0;
+    var busyArrowsCurrent = 1;
+    var busyArrowsGlobalCurrent = 1;
+
+    function BusyArrowsOnAjaxViewLoaded() {
+
+        $("#busyArrows").animate({ 'opacity': '1' }, 200, 'linear');  //'swing'  'easeOutBounce'
+        //$("#busyArrows").css('opacity', '1');
+
+        busyArrowsOld = 0;
+        busyArrowsCurrent = 1;
+        for (var i = 1; i <= busyArrowsCount; i++) {
+            $("#busyArrowOverlap_" + i).css('opacity', '0');
+        }
+        //return;
+        animateBusyArrowOverlap();
+    }
+
+    function animateBusyArrowOverlap() {
+        if (busyArrowsOld > 0)
+            $("#busyArrowOverlap_" + busyArrowsOld).delay(300).animate({ 'opacity': '0' }, 150, 'linear');
+        $("#busyArrowOverlap_" + busyArrowsCurrent).delay(300).animate({ 'opacity': '1' }, 550, 'linear',
+            function () {
+                busyArrowsOld = busyArrowsCurrent;
+                busyArrowsCurrent++;
+                if (busyArrowsCurrent > busyArrowsCount)
+                    busyArrowsCurrent = 1;
+
+                busyArrowsGlobalCurrent++;
+                if (busyArrowsGlobalCurrent < 60)
+                    animateBusyArrowOverlap();
+            });
+    }
+    
+    function BusyArrowsStop() {
+        busyArrowsGlobalCurrent = 999999;
+    }
+</script>
+
+<div id="busyArrows">
+    
+    @if (busyArrowsCount > 0)
+    {
+        for (var i = 1; i <= busyArrowsCount; i++)
+        {
+            var cssClass = "busyArrowNormal";
+            if (i == 3)
+            {
+                cssClass = "busyArrowHover";
+            }
+
+            <div id="busyArrow_@i" class="busyArrowNormal"></div>
+            <div id="busyArrowOverlap_@i" class="busyArrowHover busyArrowOverlap"></div>
+        }
+    }
+    
+</div>

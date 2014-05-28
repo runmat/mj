@@ -1,0 +1,24 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model CocEntity
+
+
+<div class="portlet">
+    
+    <div class="SForm SLabelAlignedForm SLabelAlignedForm60 SLabelAlignedLeft alert alert-success margin-bottom-15">
+        <label class="checkbox">
+            <i class="icon-check"></i><span class="padding-left-5"><strong>Vielen Dank</strong>, wir haben Ihren Auftrag mit folgenden Daten erhalten:</span>
+        </label>
+        
+        <form action="#" class="form-horizontal margin-left-30 margin-top-15">
+            @Html.FormTextBlockFor(m => m.VIN)
+            @Html.FormTextBlockFor(m => m.COC_0_2_TYP)
+            @Html.FormTextBlockFor(m => m.COC_0_2_VAR)
+            @Html.FormTextBlockFor(m => m.COC_0_2_VERS)
+        </form>
+    </div>  
+
+    <div class="form-actions margin-bottom-25">
+        <button onclick="location.reload()" class="btn blue"><i class="icon-arrow-right"></i> Neuer Auftrag</button>
+    </div>
+
+</div>

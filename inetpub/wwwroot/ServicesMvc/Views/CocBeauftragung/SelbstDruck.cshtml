@@ -1,0 +1,100 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+@{ var vorlage = Model.Mode == CocBeauftragungMode.VersandDuplikat ? "D" : "O"; }
+
+<h4>Selbst Druck für Ihre Auswahl: @Model.SelectedCocAuftraegeAsString</h4> 
+
+<style type="text/css">
+    
+    .selbst-druck-wrapper {
+        margin-bottom: 20px;
+        display: block;
+    }
+    .selbst-druck-item {
+        float: left;
+        display: inline-block;
+        margin: 10px;
+        padding-bottom: 20px;
+        height: 65px;
+    }
+    .selbst-druck-button {
+        margin-bottom: 12px;
+        display: block;
+    }
+    .selbst-druck-alert {
+        display: block;
+    }
+    
+</style>
+
+
+<div class="selbst-druck-wrapper">
+    @foreach (var cocEntity in Model.SelectedCocAuftraege)
+    {
+        <div class="selbst-druck-item">
+        
+            <a id="PdfDownload_@cocEntity.VORG_NR" href="SelbstDruckGetPdf?vnr=@cocEntity.VORG_NR&vorlage=@vorlage" onclick="return SelbstDruckPollAuftragsDatum('@cocEntity.VORG_NR', '@vorlage')" class="btn blue selbst-druck-button tooltips" data-original-title="FIN @cocEntity.VIN als PDF Datei downloaden!" data-placement="top"><i class="icon-download-alt margin-right-5"></i> PDF für FIN <strong>@cocEntity.VIN</strong></a>
+            
+            <div class="selbst-druck-alert">
+                @Html.SpanAlert("AuftragsDatum_" + cocEntity.VORG_NR)
+                <br/>
+                @Html.SpanAlert("Warning_" + cocEntity.VORG_NR)
+            </div>
+    
+        </div>
+    }
+</div>
+
+
+
+<script type="text/javascript">
+
+    setTimeout("FormWizard.ButtonNextShow(false); FormWizard.ButtonPrevShow(false); FormWizard.ButtonRestartShow(true); ", 1);
+    
+    function AuftragBereitsGedruckt(vnr) {
+        return $("#PdfDownload_" + vnr).attr("disabled") === "disabled";
+    }
+
+    function SelbstDruckPollAuftragsDatum(vnr, vorlage, suppressMultiPrintWarning) {
+
+        if (AuftragBereitsGedruckt(vnr)) {
+            if (suppressMultiPrintWarning != true)
+                SpanAlertWarning("Warning_" + vnr, "Download bereits erfolgt!", 2000);
+            
+            return false;
+        }
+
+        LoadingShow();
+
+        setTimeout(function () {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "SelbstDruckPollAuftragsDatum",
+                    data: { vnr: vnr, vorlage: vorlage },
+                    loadingShow: true,
+                    success: function (result) {
+                        //alert(result.auftragsDatum);
+                        if (result.auftragsDatum == "") {
+                            SelbstDruckPollAuftragsDatum(result.vnr, result.vorlage);
+                            return true;
+                        }
+
+                        LoadingHide();
+                        SpanAlertSuccess("AuftragsDatum_" + result.vnr, "Auftragseingang: " + result.auftragsDatum, 9999999);
+                        $("#PdfDownload_" + result.vnr).attr("disabled", "disabled");
+                        return true;
+                    },
+                    error: function (jqXhr, exception) {
+                        alert(jqXhr.responseText);
+                    }
+                });
+
+                SelbstDruckPollAuftragsDatum(vnr, vorlage, true);
+            }, 500);
+
+        return true;
+    }
+
+</script>

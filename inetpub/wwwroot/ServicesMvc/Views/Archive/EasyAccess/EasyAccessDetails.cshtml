@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Archive.Models
+@model EasyAccessDetail
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right hide" onclick="CloseEasyAccessDetails();"><i class="icon-arrow-left"></i>&nbsp;Zurück</button>
+
+<div class="form-horizontal">
+    
+    @Html.FormTextBlockFor(m => m.DocId, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Laenge, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Erstelldatum, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Aenderungsdatum, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Titel, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.AnzFelderGesamt, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.AnzFelderText, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.AnzFelderBild, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.AnzFelderBlob, new { @class = "m-wrap" })
+   
+</div>  
+

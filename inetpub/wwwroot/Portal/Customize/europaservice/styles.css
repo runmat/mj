@@ -1,0 +1,928 @@
+BODY
+{
+    font-weight: normal;
+    font-size: 12px;
+    word-spacing: normal;
+    text-transform: none;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    letter-spacing: normal;
+    background-color: #ffffff;
+}
+
+HR
+{
+    color: #000000;
+}
+
+TH, TD
+{
+    font-size: 12px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+A:link
+{
+    color: #000000;
+}
+
+A:visited
+{
+    color: #000000;
+}
+
+A:hover
+{
+    color: #CC0066;
+}
+
+A:active
+{
+    color: #007254;
+}
+
+
+.HeaderLinks
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 13px;
+    padding-bottom: 5px;
+    color: #00926D;
+    padding-top: 5px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.HeaderLinks A:link
+{
+    color: #00926D;
+    text-decoration: none;
+}
+
+.HeaderLinks A:visited
+{
+    color: #00926D;
+    text-decoration: none;
+}
+
+.HeaderLinks A:hover
+{
+    color: #CC0066;
+    text-decoration: none;
+}
+
+.HeaderLinks A:active
+{
+    color: #00926D;
+    text-decoration: none;
+}
+
+.GridTableHead
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    color: #ffffff;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #00926D;
+}
+
+.GridTableHead A:link
+{
+    color: #ffffff;
+}
+
+.GridTableHead A:visited
+{
+    color: #ffffff;
+}
+
+.GridTableAlternate
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.GridTableItem
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #ffffff;
+}
+
+.StandardButton
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 120px;
+    cursor: hand;
+       font-family: Arial, Verdana, Helvetica, sans-serif;
+    height: 22px;
+    background-color: #00926D;
+    text-align: center;
+     color:White;
+    text-decoration: none;
+    border-bottom-style: none;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: White;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: White;
+    display: table-cell;
+}
+
+A.StandardButton
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    width: 120px;
+    cursor: hand;
+  
+    padding-top: 5px;
+    color:White;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: White;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: White;
+}
+
+A.StandardButton:visited
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    width: 120px;
+     color:White;
+    cursor: hand;
+  
+    padding-top: 5px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: White;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: White;
+}
+
+A.StandardButton:hover
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    width: 120px;
+    cursor: hand;
+    color: white;
+    padding-top: 5px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #CC0066;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: White;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: White;
+}
+
+A.StandardButton:active
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    width: 120px;
+    cursor: hand;
+    color: #000000;
+    padding-top: 5px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: White;
+    border-right-style: solid;
+    border-right-width: thin;
+    border-right-color: White;
+}
+
+.StandardButtonTable
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 150px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    height: 15px;
+    background-color: #00926D;
+      text-align: left;
+    text-decoration: none;
+    border-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: Black;
+    padding: 1px,1px,1px,1px;
+}
+
+A.StandardButtonTable
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 150px;
+    cursor: hand;
+    color: #000000;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+      text-align: left;
+    text-decoration: none;
+    border-width: 1px;
+  border-color:#00926D;
+  border-style:solid;
+       padding: 1px,1px,1px,1px;
+}
+
+A.StandardButtonTable:visited
+{
+     font-weight: bold;
+    font-size: 12px;
+    width: 150px;
+    cursor: hand;
+    color: #000000;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+     text-align: left;
+    text-decoration: none;
+    border-width: 1px;
+  border-color:#00926D;
+  border-style:solid;
+       padding: 1px,1px,1px,1px;
+}
+
+A.StandardButtonTable:hover
+{
+
+
+  font-weight: bold;
+    font-size: 12px;
+      width: 150px;
+    cursor: hand;
+    color: #CC0066;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+       text-align: left;
+    text-decoration: none;
+    border-width: 1px;
+     border-color:#CC0066;
+ /* border-color:#00926D;*/
+  
+  
+  border-style:solid;
+       padding: 1px,1px,1px,1px;
+      
+  
+}
+
+A.StandardButtonTable:active
+{
+   font-weight: bold;
+    font-size: 12px;
+     width: 150px;
+    cursor: hand;
+    color: #CC0066;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+     text-align: left;
+    text-decoration: none;
+    border-width: 1px;
+     border-color:#CC0066;
+ /* border-color:#00926D;*/
+  border-style:solid;
+       padding: 1px,1px,1px,1px;
+}
+
+.StandardButtonSmall
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 75px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    height: 15px;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+.StandardButtonStorno
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 75px;
+    cursor: hand;
+    color: #FF0000;
+    border-top-style: none;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    height: 15px;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonStorno
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #FF0000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonStorno:visited
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #FF0000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonStorno:hover
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #ffffff;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #FF0000;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonStorno:active
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #FF0000;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonSmall
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonSmall:visited
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonSmall:hover
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #ffffff;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #CC0066;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+A.StandardButtonSmall:active
+{
+    padding-right: 9px;
+    padding-left: 9px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    width: 75px;
+    cursor: hand;
+    color: #000000;
+    border-top-style: none;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    border-right-style: none;
+    border-left-style: none;
+    background-color: #00926D;
+    text-align: center;
+    text-decoration: none;
+    border-bottom-style: none;
+}
+
+.StandardTableHead
+{
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffffff;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #00926D;
+}
+
+.ABEDaten
+{
+    background-color: #EEEEEE;
+    font-weight: bold;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    color: #000000;
+}
+
+.StandardTableAlternate
+{
+    font-weight: bold;
+    font-size: 12px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.StandardTableAlternateDescription
+{
+    font-size: 12px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.MainmenuItemAlternate
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+    height: 28px;
+}
+
+.MainmenuItem
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    height: 28px;
+}
+
+.MainmenuItemCommentAlternate
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 12px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.MainmenuItemComment
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-size: 12px;
+    font-weight: normal;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+.TextMainHeader
+{
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
+.TextHeader
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    font-weight: bold;
+    font-size: 14px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    width: 120px;
+}
+
+.TextExtraLarge
+{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.TextSmallHeader
+{
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.TextLarge
+{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.TextXLarge
+{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.TextLargeDescription
+{
+    font-size: 12px;
+}
+
+.TextNormal
+{
+    font-size: 12px;
+}
+
+.TextError
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    padding-bottom: 5px;
+    color: #ff0000;
+    padding-top: 5px;
+}
+
+.InfoBoxFlat
+{
+    background-color: #f5f5f5;
+    border-style: solid;
+    border-color: DarkGray;
+    border-width: 1px;
+}
+
+.PageNavigation
+{
+    padding-right: 4px;
+    padding-left: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 4px;
+    color: #000000;
+    padding-top: 4px;
+    background-image: url(/Portal/Images/PageNavBack.jpg);
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-bottom-width: thin;
+    border-top-width: thin;
+    border-top-color: #C3C3C3;
+    border-bottom-color: #C3C3C3;
+}
+
+.PageNavigation A:link
+{
+    color: #000000;
+}
+
+.PageNavigation A:visited
+{
+    color: #000000;
+}
+
+.LabelExtraLarge
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.PagerStyle
+{
+    font-size: 14px;
+    background-color: #ffffff;
+    text-align: left;
+}
+
+.TaskTitle A:link
+{
+    color: #ffffff;
+}
+
+.TaskTitle A:visited
+{
+    color: #ffffff;
+}
+
+.TaskTitle
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    color: #ffffff;
+    padding-top: 5px;
+    background-color: #007254;
+}
+
+.InputRight
+{
+    text-align: right;
+}
+
+.GridTableHeadSub
+{
+    font-weight: bold;
+    font-size: 12px;
+    color: #000000;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #c8c8c8;
+}
+.TableSearch
+{
+    background: #FFFFFF;
+    border-bottom-width: thin;
+    border-top-width: thin;
+    border-left-width: thin;
+    border-right-width: thin;
+    border-bottom-color: #777777;
+    border-top-color: #777777;
+    border-left-color: #777777;
+    border-right-color: #777777;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+}
+
+.GridTableHighlight
+{
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    background-color: #007254;
+}
+
+.GridTableEdit
+{
+  font-weight:bold;
+   
+}
+
+
+.TextBoxNormal
+{
+    width: 150px;
+    height: 21px;
+}
+
+.TextBoxLarge
+{
+    width: 200px;
+    height: 21px;
+}
+
+.TextBoxShort
+{
+    width: 60px;
+    height: 21px;
+}
+
+.DropDownNormal
+{
+ width: 150px;
+}
+
+.TextBoxXLarge
+{
+    width: 300px;
+    height: 21px;
+}
+
+.DropDownXLarge
+{
+    width: 300px;
+    height: 21px;
+}
+
+
+.DropDownLarge
+{
+ width: 200px;
+}
+
+.BeschriftungsSpalte
+{
+font-weight:bold;
+text-align:right;
+}
+
+.TaskTitle1 A:link
+{
+   color: #ffffff;
+}
+
+.TaskTitle1 A:visited
+{
+     color: #ffffff;
+}
+
+.TaskTitle1
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    color: #ffffff;
+    padding-top: 5px;
+    background-color: #E5E5E5;
+}
+
+.TaskTitle2 A:link
+{
+     color: #ffffff;
+     }
+
+.TaskTitle2 A:visited
+{
+     color: #ffffff;
+}
+
+.TaskTitle2
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    color: #ffffff;
+    padding-top: 5px;
+    background-color: #CCCCCC;
+}
+
+.TaskTitle3 A:link
+{
+    color: #ffffff;
+}
+
+.TaskTitle3 A:visited
+{
+     color: #ffffff;
+}
+
+.TaskTitle3
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 5px;
+    color: #ffffff;
+    padding-top: 5px;
+    background-color: #B2B2B2;
+}
+
+
+
+
+.tableLogin {
+	background-color: #bababa;
+	background-image: url(/Portal/Images/backgroundImage.gif);
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	margin-top: 2px;
+}

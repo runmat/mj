@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://sphinx.dat.de/services/VehicleSelection" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="VehicleSelection" targetNamespace="http://sphinx.dat.de/services/VehicleSelection" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://www.dat.de:80/FinanceLine/services/VehicleSelection?xsd=1" namespace="http://www.dat.de/vxs" />
+    </xsd:schema>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://www.dat.de:80/FinanceLine/services/VehicleSelection?xsd=2" namespace="http://sphinx.dat.de/services/VehicleSelection" />
+    </xsd:schema>
+  </types>
+  <message name="getVersion">
+    <part name="parameters" element="tns:getVersion" />
+  </message>
+  <message name="getVersionResponse">
+    <part name="parameters" element="tns:getVersionResponse" />
+  </message>
+  <message name="getVehicleTypes">
+    <part name="parameters" element="tns:getVehicleTypes" />
+  </message>
+  <message name="getVehicleTypesResponse">
+    <part name="parameters" element="tns:getVehicleTypesResponse" />
+  </message>
+  <message name="getManufacturers">
+    <part name="parameters" element="tns:getManufacturers" />
+  </message>
+  <message name="getManufacturersResponse">
+    <part name="parameters" element="tns:getManufacturersResponse" />
+  </message>
+  <message name="getBaseModels">
+    <part name="parameters" element="tns:getBaseModels" />
+  </message>
+  <message name="getBaseModelsResponse">
+    <part name="parameters" element="tns:getBaseModelsResponse" />
+  </message>
+  <message name="getSubModels">
+    <part name="parameters" element="tns:getSubModels" />
+  </message>
+  <message name="getSubModelsResponse">
+    <part name="parameters" element="tns:getSubModelsResponse" />
+  </message>
+  <message name="getClassificationGroups">
+    <part name="parameters" element="tns:getClassificationGroups" />
+  </message>
+  <message name="getClassificationGroupsResponse">
+    <part name="parameters" element="tns:getClassificationGroupsResponse" />
+  </message>
+  <message name="getEngineOptions">
+    <part name="parameters" element="tns:getEngineOptions" />
+  </message>
+  <message name="getEngineOptionsResponse">
+    <part name="parameters" element="tns:getEngineOptionsResponse" />
+  </message>
+  <message name="getCarBodyOptions">
+    <part name="parameters" element="tns:getCarBodyOptions" />
+  </message>
+  <message name="getCarBodyOptionsResponse">
+    <part name="parameters" element="tns:getCarBodyOptionsResponse" />
+  </message>
+  <message name="getConstructionOptions">
+    <part name="parameters" element="tns:getConstructionOptions" />
+  </message>
+  <message name="getConstructionOptionsResponse">
+    <part name="parameters" element="tns:getConstructionOptionsResponse" />
+  </message>
+  <message name="getDriversCabOptions">
+    <part name="parameters" element="tns:getDriversCabOptions" />
+  </message>
+  <message name="getDriversCabOptionsResponse">
+    <part name="parameters" element="tns:getDriversCabOptionsResponse" />
+  </message>
+  <message name="getEquipmentLineOptions">
+    <part name="parameters" element="tns:getEquipmentLineOptions" />
+  </message>
+  <message name="getEquipmentLineOptionsResponse">
+    <part name="parameters" element="tns:getEquipmentLineOptionsResponse" />
+  </message>
+  <message name="getGearingOptions">
+    <part name="parameters" element="tns:getGearingOptions" />
+  </message>
+  <message name="getGearingOptionsResponse">
+    <part name="parameters" element="tns:getGearingOptionsResponse" />
+  </message>
+  <message name="getGrossVehicleWeightOptions">
+    <part name="parameters" element="tns:getGrossVehicleWeightOptions" />
+  </message>
+  <message name="getGrossVehicleWeightOptionsResponse">
+    <part name="parameters" element="tns:getGrossVehicleWeightOptionsResponse" />
+  </message>
+  <message name="getNumberOfAxleOptions">
+    <part name="parameters" element="tns:getNumberOfAxleOptions" />
+  </message>
+  <message name="getNumberOfAxleOptionsResponse">
+    <part name="parameters" element="tns:getNumberOfAxleOptionsResponse" />
+  </message>
+  <message name="getSuspensionOptions">
+    <part name="parameters" element="tns:getSuspensionOptions" />
+  </message>
+  <message name="getSuspensionOptionsResponse">
+    <part name="parameters" element="tns:getSuspensionOptionsResponse" />
+  </message>
+  <message name="getTypeOfDriveOptions">
+    <part name="parameters" element="tns:getTypeOfDriveOptions" />
+  </message>
+  <message name="getTypeOfDriveOptionsResponse">
+    <part name="parameters" element="tns:getTypeOfDriveOptionsResponse" />
+  </message>
+  <message name="getWheelBaseOptions">
+    <part name="parameters" element="tns:getWheelBaseOptions" />
+  </message>
+  <message name="getWheelBaseOptionsResponse">
+    <part name="parameters" element="tns:getWheelBaseOptionsResponse" />
+  </message>
+  <message name="getOptionsbyClassification">
+    <part name="parameters" element="tns:getOptionsbyClassification" />
+  </message>
+  <message name="getOptionsbyClassificationResponse">
+    <part name="parameters" element="tns:getOptionsbyClassificationResponse" />
+  </message>
+  <message name="compileDatECode">
+    <part name="parameters" element="tns:compileDatECode" />
+  </message>
+  <message name="compileDatECodeResponse">
+    <part name="parameters" element="tns:compileDatECodeResponse" />
+  </message>
+  <message name="getPriceFocusCases">
+    <part name="parameters" element="tns:getPriceFocusCases" />
+  </message>
+  <message name="getPriceFocusCasesResponse">
+    <part name="parameters" element="tns:getPriceFocusCasesResponse" />
+  </message>
+  <message name="getConstructionPeriods">
+    <part name="parameters" element="tns:getConstructionPeriods" />
+  </message>
+  <message name="getConstructionPeriodsResponse">
+    <part name="parameters" element="tns:getConstructionPeriodsResponse" />
+  </message>
+  <message name="getPriceFocusConstructionYears">
+    <part name="parameters" element="tns:getPriceFocusConstructionYears" />
+  </message>
+  <message name="getPriceFocusConstructionYearsResponse">
+    <part name="parameters" element="tns:getPriceFocusConstructionYearsResponse" />
+  </message>
+  <message name="getVehicleData">
+    <part name="parameters" element="tns:getVehicleData" />
+  </message>
+  <message name="getVehicleDataResponse">
+    <part name="parameters" element="tns:getVehicleDataResponse" />
+  </message>
+  <message name="getSubModelsByTextSearch">
+    <part name="parameters" element="tns:getSubModelsByTextSearch" />
+  </message>
+  <message name="getSubModelsByTextSearchResponse">
+    <part name="parameters" element="tns:getSubModelsByTextSearchResponse" />
+  </message>
+  <portType name="VehicleSelection">
+    <operation name="getVersion">
+      <input wsam:Action="getVersion" message="tns:getVersion" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getVersionResponse" message="tns:getVersionResponse" />
+    </operation>
+    <operation name="getVehicleTypes">
+      <input wsam:Action="getVehicleTypes" message="tns:getVehicleTypes" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getVehicleTypesResponse" message="tns:getVehicleTypesResponse" />
+    </operation>
+    <operation name="getManufacturers">
+      <input wsam:Action="getManufacturers" message="tns:getManufacturers" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getManufacturersResponse" message="tns:getManufacturersResponse" />
+    </operation>
+    <operation name="getBaseModels">
+      <input wsam:Action="getBaseModels" message="tns:getBaseModels" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getBaseModelsResponse" message="tns:getBaseModelsResponse" />
+    </operation>
+    <operation name="getSubModels">
+      <input wsam:Action="getSubModels" message="tns:getSubModels" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getSubModelsResponse" message="tns:getSubModelsResponse" />
+    </operation>
+    <operation name="getClassificationGroups">
+      <input wsam:Action="getClassificationGroups" message="tns:getClassificationGroups" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getClassificationGroupsResponse" message="tns:getClassificationGroupsResponse" />
+    </operation>
+    <operation name="getEngineOptions">
+      <input wsam:Action="getEngineOptions" message="tns:getEngineOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getEngineOptionsResponse" message="tns:getEngineOptionsResponse" />
+    </operation>
+    <operation name="getCarBodyOptions">
+      <input wsam:Action="getCarBodyOptions" message="tns:getCarBodyOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getCarBodyOptionsResponse" message="tns:getCarBodyOptionsResponse" />
+    </operation>
+    <operation name="getConstructionOptions">
+      <input wsam:Action="getConstructionOptions" message="tns:getConstructionOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getConstructionOptionsResponse" message="tns:getConstructionOptionsResponse" />
+    </operation>
+    <operation name="getDriversCabOptions">
+      <input wsam:Action="getDriversCabOptions" message="tns:getDriversCabOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getDriversCabOptionsResponse" message="tns:getDriversCabOptionsResponse" />
+    </operation>
+    <operation name="getEquipmentLineOptions">
+      <input wsam:Action="getEquipmentLineOptions" message="tns:getEquipmentLineOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getEquipmentLineOptionsResponse" message="tns:getEquipmentLineOptionsResponse" />
+    </operation>
+    <operation name="getGearingOptions">
+      <input wsam:Action="getGearingOptions" message="tns:getGearingOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getGearingOptionsResponse" message="tns:getGearingOptionsResponse" />
+    </operation>
+    <operation name="getGrossVehicleWeightOptions">
+      <input wsam:Action="getGrossVehicleWeightOptions" message="tns:getGrossVehicleWeightOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getGrossVehicleWeightOptionsResponse" message="tns:getGrossVehicleWeightOptionsResponse" />
+    </operation>
+    <operation name="getNumberOfAxleOptions">
+      <input wsam:Action="getNumberOfAxleOptions" message="tns:getNumberOfAxleOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getNumberOfAxleOptionsResponse" message="tns:getNumberOfAxleOptionsResponse" />
+    </operation>
+    <operation name="getSuspensionOptions">
+      <input wsam:Action="getSuspensionOptions" message="tns:getSuspensionOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getSuspensionOptionsResponse" message="tns:getSuspensionOptionsResponse" />
+    </operation>
+    <operation name="getTypeOfDriveOptions">
+      <input wsam:Action="getTypeOfDriveOptions" message="tns:getTypeOfDriveOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getTypeOfDriveOptionsResponse" message="tns:getTypeOfDriveOptionsResponse" />
+    </operation>
+    <operation name="getWheelBaseOptions">
+      <input wsam:Action="getWheelBaseOptions" message="tns:getWheelBaseOptions" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getWheelBaseOptionsResponse" message="tns:getWheelBaseOptionsResponse" />
+    </operation>
+    <operation name="getOptionsbyClassification">
+      <input wsam:Action="getOptionsbyClassification" message="tns:getOptionsbyClassification" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getOptionsbyClassificationResponse" message="tns:getOptionsbyClassificationResponse" />
+    </operation>
+    <operation name="compileDatECode">
+      <input wsam:Action="compileDatECode" message="tns:compileDatECode" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/compileDatECodeResponse" message="tns:compileDatECodeResponse" />
+    </operation>
+    <operation name="getPriceFocusCases">
+      <input wsam:Action="getPriceFocusCases" message="tns:getPriceFocusCases" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getPriceFocusCasesResponse" message="tns:getPriceFocusCasesResponse" />
+    </operation>
+    <operation name="getConstructionPeriods">
+      <input wsam:Action="getConstructionPeriods" message="tns:getConstructionPeriods" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getConstructionPeriodsResponse" message="tns:getConstructionPeriodsResponse" />
+    </operation>
+    <operation name="getPriceFocusConstructionYears">
+      <input wsam:Action="getPriceFocusConstructionYears" message="tns:getPriceFocusConstructionYears" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getPriceFocusConstructionYearsResponse" message="tns:getPriceFocusConstructionYearsResponse" />
+    </operation>
+    <operation name="getVehicleData">
+      <input wsam:Action="getVehicleData" message="tns:getVehicleData" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getVehicleDataResponse" message="tns:getVehicleDataResponse" />
+    </operation>
+    <operation name="getSubModelsByTextSearch">
+      <input wsam:Action="getSubModelsByTextSearch" message="tns:getSubModelsByTextSearch" />
+      <output wsam:Action="http://sphinx.dat.de/services/VehicleSelection/VehicleSelection/getSubModelsByTextSearchResponse" message="tns:getSubModelsByTextSearchResponse" />
+    </operation>
+  </portType>
+  <binding name="VehicleSelectionPortBinding" type="tns:VehicleSelection">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="getVersion">
+      <soap:operation soapAction="getVersion" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getVehicleTypes">
+      <soap:operation soapAction="getVehicleTypes" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getManufacturers">
+      <soap:operation soapAction="getManufacturers" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getBaseModels">
+      <soap:operation soapAction="getBaseModels" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getSubModels">
+      <soap:operation soapAction="getSubModels" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getClassificationGroups">
+      <soap:operation soapAction="getClassificationGroups" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getEngineOptions">
+      <soap:operation soapAction="getEngineOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getCarBodyOptions">
+      <soap:operation soapAction="getCarBodyOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getConstructionOptions">
+      <soap:operation soapAction="getConstructionOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getDriversCabOptions">
+      <soap:operation soapAction="getDriversCabOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getEquipmentLineOptions">
+      <soap:operation soapAction="getEquipmentLineOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getGearingOptions">
+      <soap:operation soapAction="getGearingOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getGrossVehicleWeightOptions">
+      <soap:operation soapAction="getGrossVehicleWeightOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getNumberOfAxleOptions">
+      <soap:operation soapAction="getNumberOfAxleOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getSuspensionOptions">
+      <soap:operation soapAction="getSuspensionOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getTypeOfDriveOptions">
+      <soap:operation soapAction="getTypeOfDriveOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getWheelBaseOptions">
+      <soap:operation soapAction="getWheelBaseOptions" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getOptionsbyClassification">
+      <soap:operation soapAction="getOptionsbyClassification" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="compileDatECode">
+      <soap:operation soapAction="compileDatECode" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPriceFocusCases">
+      <soap:operation soapAction="getPriceFocusCases" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getConstructionPeriods">
+      <soap:operation soapAction="getConstructionPeriods" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPriceFocusConstructionYears">
+      <soap:operation soapAction="getPriceFocusConstructionYears" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getVehicleData">
+      <soap:operation soapAction="getVehicleData" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getSubModelsByTextSearch">
+      <soap:operation soapAction="getSubModelsByTextSearch" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="VehicleSelection">
+    <port name="VehicleSelectionPort" binding="tns:VehicleSelectionPortBinding">
+      <soap:address location="http://www.dat.de:80/FinanceLine/services/VehicleSelection" />
+    </port>
+  </service>
+</definitions>

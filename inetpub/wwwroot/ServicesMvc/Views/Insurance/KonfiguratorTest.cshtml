@@ -1,0 +1,32 @@
+﻿@model CkgDomainLogic.Insurance.ViewModels.VersEventsViewModel
+
+@Html.Partial("Common/StylesScripts")
+@Html.Partial("Konfigurator/Common")
+
+<h3 class="page-title" id="headerTitle">TEST <small>Versicherungs-Events</small></h3>
+
+<ul class="breadcrumbs event-breadcrumbs">
+	<li><a href="">Events</a></li>
+	<li class="hide"><a href="" class="current">Selected Event</a></li>
+	<li class="hide"><a href="">Selected Ort</a></li>
+	<li class="hide"><a href="">Selected Box</a></li>
+	<li class="hide"><a href="">Selected Blocker Termin</a></li>
+</ul>	
+
+@Html.IeWarning(8)
+
+@Html.SpanAlert("Message")
+
+<div class="portlet">
+
+    <div id="VersEventDetails"></div>
+
+    <div id="VersEventOrtDetails"></div>
+
+    <div id="VersEventOrtBoxDetails">
+        @Html.Partial("Konfigurator/VersEventOrtBoxDetailsForm", Model.BoxCurrent)
+    </div>
+
+    <div id="BoxBlockerTerminDetails"></div>
+
+</div>

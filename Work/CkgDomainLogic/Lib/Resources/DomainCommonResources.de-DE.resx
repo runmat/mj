@@ -1,0 +1,1036 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Admin" xml:space="preserve">
+    <value>Administration</value>
+    <comment>AppType</comment>
+  </data>
+  <data name="AdressenPflege" xml:space="preserve">
+    <value>Adressenverwaltung</value>
+  </data>
+  <data name="AtDAD" xml:space="preserve">
+    <value>beim DAD</value>
+  </data>
+  <data name="CaptchaRefreshHint" xml:space="preserve">
+    <value>Grafik mit Zeichen erneuern</value>
+  </data>
+  <data name="CaptchaResponseInvalid" xml:space="preserve">
+    <value>Die eingegebenen Zeichen entsprechen nicht denen in der Grafik</value>
+  </data>
+  <data name="CaptchaTextToValidate" xml:space="preserve">
+    <value>Zeichen wie in der Grafik zu lesen</value>
+  </data>
+  <data name="CarOwner" xml:space="preserve">
+    <value>Halter</value>
+  </data>
+  <data name="CarOwnerName" xml:space="preserve">
+    <value>Haltername</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Datenerfassung</value>
+    <comment>AppType</comment>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Ort</value>
+  </data>
+  <data name="ClarificationCase" xml:space="preserve">
+    <value>Klärfall</value>
+  </data>
+  <data name="ClarificationCases" xml:space="preserve">
+    <value>Klärfälle</value>
+  </data>
+  <data name="Coc_Beauftragung" xml:space="preserve">
+    <value>Coc Beauftragung</value>
+  </data>
+  <data name="Coc_Erfassung" xml:space="preserve">
+    <value>Coc Erfassung</value>
+  </data>
+  <data name="Coc_Typenverwaltung" xml:space="preserve">
+    <value>Coc Typenverwaltung</value>
+  </data>
+  <data name="CodeManufacturer" xml:space="preserve">
+    <value>Hersteller Code</value>
+  </data>
+  <data name="CodeTypeVersion" xml:space="preserve">
+    <value>Typ / Version Code</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="ColumnOverallFilter" xml:space="preserve">
+    <value>Filter über alle Spalten</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Bemerkung</value>
+  </data>
+  <data name="ContractNo" xml:space="preserve">
+    <value>Vertragsnummer</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="CountryCode" xml:space="preserve">
+    <value>Länder-Code</value>
+  </data>
+  <data name="CreatedOn" xml:space="preserve">
+    <value>Erstellt am</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Erstelldatum</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Kunde</value>
+  </data>
+  <data name="CustomerID" xml:space="preserve">
+    <value>Kunden-ID</value>
+  </data>
+  <data name="CustomerNo" xml:space="preserve">
+    <value>Kundennummer</value>
+  </data>
+  <data name="CustomerOther" xml:space="preserve">
+    <value>Spezielle Großkunden</value>
+  </data>
+  <data name="CustomerPG" xml:space="preserve">
+    <value>P &amp; G</value>
+  </data>
+  <data name="DataWithErrorsOccurred" xml:space="preserve">
+    <value>Es sind Datensätze mit Fehlern vorhanden!</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="DateFrom" xml:space="preserve">
+    <value>Datum von</value>
+  </data>
+  <data name="DateFromInvalid" xml:space="preserve">
+    <value>Das Von-Datum hat ein falsche Format</value>
+  </data>
+  <data name="DateFromTo" xml:space="preserve">
+    <value>Datum von bis</value>
+  </data>
+  <data name="DateOfDeregistrationReceipt" xml:space="preserve">
+    <value>Abmeldeeingang</value>
+  </data>
+  <data name="DateOfReceipt" xml:space="preserve">
+    <value>Eingangsdatum</value>
+  </data>
+  <data name="DateOfRegistrationReceipt" xml:space="preserve">
+    <value>Briefeingang</value>
+  </data>
+  <data name="DateRange" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+  <data name="DateRangeInvalid" xml:space="preserve">
+    <value>Der gewählte Zeitraum ist ungültig!</value>
+  </data>
+  <data name="DateTo" xml:space="preserve">
+    <value>Datum bis</value>
+  </data>
+  <data name="DateToInvalid" xml:space="preserve">
+    <value>Das Bis-Datum hat ein falsche Format</value>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>Händler</value>
+  </data>
+  <data name="DealerCity" xml:space="preserve">
+    <value>Händler Ort</value>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>Lieferdatum</value>
+  </data>
+  <data name="DeRegistrationDate" xml:space="preserve">
+    <value>Abmeldedatum</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EmailSentError" xml:space="preserve">
+    <value>Aufgrund eines technischen Fehlers konnte die E-Mail nicht versendet werden.</value>
+  </data>
+  <data name="EquipmentNo" xml:space="preserve">
+    <value>Equipmentnummer</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="FileUploadLegalFileTypesWarning" xml:space="preserve">
+    <value>Es können nur Dateien im Format jpg, jpeg, gif, doc, docx, xls, xlsx und pdf hochgeladen werden.</value>
+  </data>
+  <data name="GermanPlzMustHave5Digits" xml:space="preserve">
+    <value>Für deutsche Adressen sind 5 stellige Postleitzahlen erforderlich</value>
+  </data>
+  <data name="Helpdesk" xml:space="preserve">
+    <value>Helpdesk</value>
+    <comment>AppType</comment>
+  </data>
+  <data name="HouseNo" xml:space="preserve">
+    <value>Haus Nr.</value>
+  </data>
+  <data name="Imprint" xml:space="preserve">
+    <value>Impressum</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="LeasingContractNo" xml:space="preserve">
+    <value>Leasingvertragsnummer</value>
+  </data>
+  <data name="LicenseNo" xml:space="preserve">
+    <value>Kennzeichen</value>
+  </data>
+  <data name="Licensing" xml:space="preserve">
+    <value>Zulassung</value>
+  </data>
+  <data name="ListItemsWithErrorsOnly" xml:space="preserve">
+    <value>Nur Einträge mit Fehlern listen</value>
+  </data>
+  <data name="LoginDisabledDueToMaintenance" xml:space="preserve">
+    <value>Aufgrund von Wartungsarbeiten ist der Login aktuell gesperrt</value>
+  </data>
+  <data name="LoginDisabledGenerally" xml:space="preserve">
+    <value>Allgemeine Loginsperre!</value>
+  </data>
+  <data name="LoginInProcess" xml:space="preserve">
+    <value>Login in Bearbeitung ...</value>
+  </data>
+  <data name="LoginPasswordResetEmailBody" xml:space="preserve">
+    <value>Guten Tag {0}, &lt;br/&gt;&lt;br/&gt;bitte nutzen Sie diesen Link zum Zurücksetzen Ihres Kennworts:</value>
+  </data>
+  <data name="LoginPasswordResetEmailFooter" xml:space="preserve">
+    <value>Mit freundlichen Grüßen,&lt;br/&gt;{0}</value>
+  </data>
+  <data name="LoginPasswordResetEmailSubject" xml:space="preserve">
+    <value>{0} - Ihr Link zum Zurücksetzen Ihres Kennworts</value>
+  </data>
+  <data name="LoginPasswordResetLinkExpirationHint" xml:space="preserve">
+    <value>Bitte beachten Sie: Dieser Link ist nur gültig bis {0}</value>
+  </data>
+  <data name="LoginToYourAccount" xml:space="preserve">
+    <value>Bitte loggen Sie sich ein</value>
+  </data>
+  <data name="LoginToYourAccountLinkHintEnd" xml:space="preserve">
+    <value>hier</value>
+  </data>
+  <data name="LoginToYourAccountLinkHintStart" xml:space="preserve">
+    <value>Um sich einzuloggen klicken Sie</value>
+  </data>
+  <data name="LoginUserDisabled" xml:space="preserve">
+    <value>Dieser Benutzer wurde deaktiviert</value>
+  </data>
+  <data name="LoginUserDoesNotExist" xml:space="preserve">
+    <value>Dieser Benutzer ist unserem System nicht bekannt</value>
+  </data>
+  <data name="LoginUserNotApproved" xml:space="preserve">
+    <value>Dieser Benutzer ist noch nicht freigeschaltet</value>
+  </data>
+  <data name="LoginUserOrPasswordWrong" xml:space="preserve">
+    <value>Der User Name oder das Kennwort ist nicht korrekt</value>
+  </data>
+  <data name="MaintenanceSeeAllNotifications" xml:space="preserve">
+    <value>Alle Mitteilungen im Detail</value>
+  </data>
+  <data name="MaintenanceYouHaveCountNotifications" xml:space="preserve">
+    <value>Wir haben {0} Mitteilung(en) für Sie</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Nachrichten</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="Name1" xml:space="preserve">
+    <value>Name 1</value>
+  </data>
+  <data name="Name2" xml:space="preserve">
+    <value>Name 2</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Hinweis</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Mitteilungen</value>
+  </data>
+  <data name="OnlyCountry" xml:space="preserve">
+    <value>Nur Land</value>
+  </data>
+  <data name="OnlyItemsInDeliveryDateRange" xml:space="preserve">
+    <value>Nur Aufträge mit bestimmten Auslieferungsdatum</value>
+  </data>
+  <data name="OnlyItemsWithValidOrderDate" xml:space="preserve">
+    <value>Nur Aufträge mit gesetztem Auftragsdatum</value>
+  </data>
+  <data name="OrderID" xml:space="preserve">
+    <value>Auftrags-Nr.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Kennwort</value>
+  </data>
+  <data name="PasswordAgain" xml:space="preserve">
+    <value>Kennwort Wiederholung</value>
+  </data>
+  <data name="PasswordChange" xml:space="preserve">
+    <value>Kennwort ändern</value>
+  </data>
+  <data name="PasswordChangeHint" xml:space="preserve">
+    <value>Bitte ändern Sie Ihr Kennwort</value>
+  </data>
+  <data name="PasswordChangeSuccessfulHint" xml:space="preserve">
+    <value>Sie haben Ihr Kennwort erfolgreich geändert!</value>
+  </data>
+  <data name="PasswordConfirmationDoesNotMatch" xml:space="preserve">
+    <value>Die Kennwortbestätigung stimmt nicht überein</value>
+  </data>
+  <data name="PasswordCurrent" xml:space="preserve">
+    <value>Aktuelles Kennwort</value>
+  </data>
+  <data name="PasswordCurrentEmpty" xml:space="preserve">
+    <value>Bitte geben Sie Ihr aktuelles Kennwort ein</value>
+  </data>
+  <data name="PasswordCurrentInvalid" xml:space="preserve">
+    <value>Ihr aktuelles Kennwort ist nicht korrekt</value>
+  </data>
+  <data name="PasswordForgottenQuestion" xml:space="preserve">
+    <value>Kennwort vergessen?</value>
+  </data>
+  <data name="PasswordMinCapitalChars" xml:space="preserve">
+    <value>Das Kennwort muss mindestens {0} GROSS-Buchstaben beinhalten</value>
+  </data>
+  <data name="PasswordMinHistoryEntries" xml:space="preserve">
+    <value>Das Kennwort darf nicht in letzten {0} Kennwortänderungen enthalten sein</value>
+  </data>
+  <data name="PasswordMinLength" xml:space="preserve">
+    <value>Das Kennwort muss mindestens {0} Zeichen lang sein</value>
+  </data>
+  <data name="PasswordMinNumericChars" xml:space="preserve">
+    <value>Das Kennwort muss mindestens {0} Ziffern beinhalten</value>
+  </data>
+  <data name="PasswordMinSpecialChars" xml:space="preserve">
+    <value>Das Kennwort muss mindestens {0} Sonderzeichen beinhalten</value>
+  </data>
+  <data name="PasswordNew" xml:space="preserve">
+    <value>Neues Kennwort</value>
+  </data>
+  <data name="PasswordReset" xml:space="preserve">
+    <value>Kennwort zurücksetzen</value>
+  </data>
+  <data name="PasswordResetLinkEmailWasSent" xml:space="preserve">
+    <value>Eine E-Mail mit einem Kennwort Reset Link wurde an Sie gesendet!</value>
+  </data>
+  <data name="PasswordResetLinkHintEnd" xml:space="preserve">
+    <value>hier</value>
+  </data>
+  <data name="PasswordResetLinkHintStart" xml:space="preserve">
+    <value>Um Ihr Kennwort zurückzusetzen, klicken Sie</value>
+  </data>
+  <data name="PasswordResetLinkInvalid" xml:space="preserve">
+    <value>Dieser Link ist ungültig oder abgelaufen.</value>
+  </data>
+  <data name="PasswordResetProvideUsername" xml:space="preserve">
+    <value>Bitte geben Sie Ihren User Namen an, wir schicken Ihnen dann umgehend eine Mail mit einem Link zum Zurücksetzen Ihres Kennworts</value>
+  </data>
+  <data name="PasswordShouldNotBeEmpty" xml:space="preserve">
+    <value>Das Kennwort darf nicht leer sein</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="PleaseCheckYourInputs" xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre Eingaben.</value>
+  </data>
+  <data name="PleaseProvidePassword" xml:space="preserve">
+    <value>Bitte geben Sie Ihr Passwort ein</value>
+  </data>
+  <data name="PleaseProvideUserName" xml:space="preserve">
+    <value>Bitte geben Sie Ihren User Namen ein</value>
+  </data>
+  <data name="PostCode" xml:space="preserve">
+    <value>PLZ</value>
+  </data>
+  <data name="PrintCoC" xml:space="preserve">
+    <value>CoC drucken</value>
+  </data>
+  <data name="PrintOptions" xml:space="preserve">
+    <value>Druckoptionen</value>
+  </data>
+  <data name="PrintZBII" xml:space="preserve">
+    <value>ZBII drucken</value>
+  </data>
+  <data name="ProvideAtLeastPrintZBIIorCoc" xml:space="preserve">
+    <value>Bitte wählen Sie mindestens eine Druckoption, CoC oder ZBII</value>
+  </data>
+  <data name="ReceivedOn" xml:space="preserve">
+    <value>Eingang am</value>
+  </data>
+  <data name="Recognition" xml:space="preserve">
+    <value>Kennung</value>
+  </data>
+  <data name="RegistrationDate" xml:space="preserve">
+    <value>Zulassungsdatum</value>
+  </data>
+  <data name="RegistrationNo" xml:space="preserve">
+    <value>Briefnummer</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Berichte</value>
+    <comment>AppType</comment>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="SequenceOfServices" xml:space="preserve">
+    <value>Folgedienstleistungen</value>
+  </data>
+  <data name="Shipping" xml:space="preserve">
+    <value>Versand</value>
+  </data>
+  <data name="ShippingAddress" xml:space="preserve">
+    <value>Versandadresse</value>
+  </data>
+  <data name="ShippingOptions" xml:space="preserve">
+    <value>Versand Optionen</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Straße</value>
+  </data>
+  <data name="UserID" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="UserInvalidEmail" xml:space="preserve">
+    <value>Für diesen Benutzer ist keine gültige E-Mail Adresse hinterlegt</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="VIN" xml:space="preserve">
+    <value>FIN</value>
+  </data>
+  <data name="VinInvalid" xml:space="preserve">
+    <value>Dies ist keine gültige VIN</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
+  <data name="WelcomeAtPortalDadEnd" xml:space="preserve">
+    <value>in Ihrem Kundenportal</value>
+  </data>
+  <data name="WelcomeAtPortalDadStart" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
+  <data name="YourContactPersons" xml:space="preserve">
+    <value>Ihre Ansprechpartner</value>
+  </data>
+  <data name="ZB1CopyAvailable" xml:space="preserve">
+    <value>ZB1-Kopie vorhanden</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>Auswahl</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ZB1Copy" xml:space="preserve">
+    <value>ZB1-Kopie</value>
+  </data>
+  <data name="PasswordMaxLoginFailures" xml:space="preserve">
+    <value>Die maximale Anzahl Ihrer Kennwortfehleingaben wurde erreicht</value>
+  </data>
+  <data name="NoDataFound" xml:space="preserve">
+    <value>Keine Daten gefunden</value>
+  </data>
+  <data name="LeasingContractNoNotNumerical" xml:space="preserve">
+    <value>Leasingvertragsnummer nicht nummerisch</value>
+  </data>
+  <data name="NoDataSelected" xml:space="preserve">
+    <value>Keine Daten selektiert</value>
+  </data>
+  <data name="NoDataChanged" xml:space="preserve">
+    <value>Keine Änderungen vorhanden</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="Correction" xml:space="preserve">
+    <value>Korrektur</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Absenden</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="Approval" xml:space="preserve">
+    <value>Freigabe</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ArchiveType" xml:space="preserve">
+    <value>Archivtyp</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archiv</value>
+  </data>
+  <data name="Archives" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="ArchiveTypes" xml:space="preserve">
+    <value>Archivtypen</value>
+  </data>
+  <data name="NoArchiveSelected" xml:space="preserve">
+    <value>Kein Archiv ausgewählt!</value>
+  </data>
+  <data name="AvailableArchives" xml:space="preserve">
+    <value>Verfügbare Archive</value>
+  </data>
+  <data name="ChassisNo" xml:space="preserve">
+    <value>Fahrgestell-Nr.</value>
+  </data>
+  <data name="ChassisNo10" xml:space="preserve">
+    <value>Fg.-Nr. (10-stellig)</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Zielort</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Standort</value>
+  </data>
+  <data name="Factory" xml:space="preserve">
+    <value>Betrieb</value>
+  </data>
+  <data name="CancellationDate" xml:space="preserve">
+    <value>Abmeldedatum</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Gültigkeitsdatum bis</value>
+  </data>
+  <data name="CancellationStatus" xml:space="preserve">
+    <value>Abmeld.status</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Abteilung</value>
+  </data>
+  <data name="OnlyItemsToClarify" xml:space="preserve">
+    <value>Nur Klärfälle</value>
+  </data>
+  <data name="DossierNo" xml:space="preserve">
+    <value>Vorgang Nr.</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Auftragsdatum</value>
+  </data>
+  <data name="RecordingDate" xml:space="preserve">
+    <value>Erfassung</value>
+  </data>
+  <data name="RecordingUser" xml:space="preserve">
+    <value>Erfassung User</value>
+  </data>
+  <data name="ToDos" xml:space="preserve">
+    <value>Geplante Aktionen</value>
+  </data>
+  <data name="CostCenter" xml:space="preserve">
+    <value>Kostenstelle</value>
+  </data>
+  <data name="DepartmentHead" xml:space="preserve">
+    <value>Abteilungsleiter</value>
+  </data>
+  <data name="DepartmentHeadChristName" xml:space="preserve">
+    <value>Abt.leiter, Vorname</value>
+  </data>
+  <data name="DepartmentHeadLastName" xml:space="preserve">
+    <value>Abt.leit., Nachname</value>
+  </data>
+  <data name="Authority" xml:space="preserve">
+    <value>Behörde</value>
+  </data>
+  <data name="AuthorityDate" xml:space="preserve">
+    <value>Datum Behörde</value>
+  </data>
+  <data name="AuthorityFileNumber" xml:space="preserve">
+    <value>Aktenzeichen</value>
+  </data>
+  <data name="AuthorityPostcode" xml:space="preserve">
+    <value>Behörde PLZ</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
+  <data name="VehiclesAll" xml:space="preserve">
+    <value>Alle </value>
+  </data>
+  <data name="VehiclesLicenseStatus" xml:space="preserve">
+    <value>Zulassungsstatus</value>
+  </data>
+  <data name="VehiclesOnlyLicensed" xml:space="preserve">
+    <value>Nur zugelassene</value>
+  </data>
+  <data name="VehiclesOnlyUnlicensed" xml:space="preserve">
+    <value>Nur unzugelassene</value>
+  </data>
+  <data name="VehiclesOnlyUnregistrated" xml:space="preserve">
+    <value>Nur abgemeld. Fzg.</value>
+  </data>
+  <data name="DropdownDefaultOptionAll" xml:space="preserve">
+    <value>(alle)</value>
+  </data>
+  <data name="DropdownDefaultOptionPleaseChoose" xml:space="preserve">
+    <value>(bitte wählen)</value>
+  </data>
+  <data name="ChangeDate" xml:space="preserve">
+    <value>Änderungsdatum</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Länge</value>
+  </data>
+  <data name="NumberOfFieldsBinary" xml:space="preserve">
+    <value>Anzahl Binärfelder</value>
+  </data>
+  <data name="NumberOfFieldsPicture" xml:space="preserve">
+    <value>Anzahl Bildfelder</value>
+  </data>
+  <data name="NumberOfFieldsText" xml:space="preserve">
+    <value>Anzahl Textfelder</value>
+  </data>
+  <data name="NumberOfFieldsTotal" xml:space="preserve">
+    <value>Anzahl Felder gesamt</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="LengthInBytes" xml:space="preserve">
+    <value>Länge in Bytes</value>
+  </data>
+  <data name="DetailInformations" xml:space="preserve">
+    <value>Detailinformationen</value>
+  </data>
+  <data name="PleaseProvideVehicleStatusInfo" xml:space="preserve">
+    <value>Bitte geben Sie mindestens einen Fahrzeugstatus an</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>Überschrift</value>
+  </data>
+  <data name="LabelPosition" xml:space="preserve">
+    <value>Label Position</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Abmeldung</value>
+  </data>
+  <data name="CancellationOrder" xml:space="preserve">
+    <value>Abmeldeauftrag</value>
+  </data>
+  <data name="VIN10" xml:space="preserve">
+    <value>FIN (10-stellig)</value>
+  </data>
+  <data name="RegistrationType" xml:space="preserve">
+    <value>Zulassungsart</value>
+  </data>
+  <data name="RegistrationArea" xml:space="preserve">
+    <value>Zulassungskreis</value>
+  </data>
+  <data name="RegistrationAreaInvalid" xml:space="preserve">
+    <value>Dies ist kein gültiger Zulassungskreis</value>
+  </data>
+  <data name="ReservationName" xml:space="preserve">
+    <value>Res. Name</value>
+  </data>
+  <data name="ReservationNo" xml:space="preserve">
+    <value>Res. Nr.</value>
+  </data>
+  <data name="EvbNumber" xml:space="preserve">
+    <value>EVB Nummer</value>
+  </data>
+  <data name="InsuranceCompany" xml:space="preserve">
+    <value>Vers.gesellschaft</value>
+  </data>
+  <data name="FactoryNo" xml:space="preserve">
+    <value>Betriebsnummer</value>
+  </data>
+  <data name="FactoryNoShort" xml:space="preserve">
+    <value>Betriebsnr.</value>
+  </data>
+  <data name="VIN17" xml:space="preserve">
+    <value>FIN (17-stellig)</value>
+  </data>
+  <data name="Holder" xml:space="preserve">
+    <value>Halter</value>
+  </data>
+  <data name="DeliveryZB1andSigns" xml:space="preserve">
+    <value>Versand Schein + Schilder</value>
+  </data>
+  <data name="InsuranceRecipient" xml:space="preserve">
+    <value>Versicherungsnehmer</value>
+  </data>
+  <data name="InvoiceRecipient" xml:space="preserve">
+    <value>Rechnungsempfänger</value>
+  </data>
+  <data name="Regulator" xml:space="preserve">
+    <value>Regulierer</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Dateiname</value>
+  </data>
+  <data name="FileSize" xml:space="preserve">
+    <value>Dateigröße</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Dateityp</value>
+  </data>
+  <data name="LastEdited" xml:space="preserve">
+    <value>Zuletzt geändert</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Größe</value>
+  </data>
+  <data name="Uploaded" xml:space="preserve">
+    <value>Hochgeladen</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="DocumentAlreadyExistsUserAction" xml:space="preserve">
+    <value>Das Dokument ist bereits vorhanden. Wie möchten Sie fortfahren?</value>
+  </data>
+  <data name="DocumentCannotCreateFolder" xml:space="preserve">
+    <value>Dokumentenverzeichnis konnte nicht angelegt werden. Bitte wenden Sie sich an Ihren System-Administrator!</value>
+  </data>
+  <data name="DocumentCannotCreateFolderDetail" xml:space="preserve">
+    <value>Verzeichnis {0} könnte nicht erstellt werden.  Bitte stellen Sie sicher, dass der Web Prozess über hinreichende Berechtigungen verfügt.</value>
+  </data>
+  <data name="DocumentCreate" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="DocumentDelete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="DocumentDoYouReallyWantToDelete" xml:space="preserve">
+    <value>Wollen Sie das Dokument wirklich löschen?</value>
+  </data>
+  <data name="DocumentEdit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="DocumentAlreadyExists" xml:space="preserve">
+    <value>Dokument ist bereits vorhanden</value>
+  </data>
+  <data name="DocumentGroups" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="DocumentId" xml:space="preserve">
+    <value>Dokument-ID</value>
+  </data>
+  <data name="DocumentName" xml:space="preserve">
+    <value>Dokument</value>
+  </data>
+  <data name="DocumentOverwrite" xml:space="preserve">
+    <value>Überschreiben</value>
+  </data>
+  <data name="DocumentType" xml:space="preserve">
+    <value>Dokumentart</value>
+  </data>
+  <data name="DocumentTypeCannotBeDeleted" xml:space="preserve">
+    <value>Dokumentart ist in Verwendung und kann nicht gelöscht werden.</value>
+  </data>
+  <data name="DocumentTypeDoYouReallyWantToDelete" xml:space="preserve">
+    <value>Wollen Sie die Dokumentart wirklich löschen?</value>
+  </data>
+  <data name="DocumentTypeNew" xml:space="preserve">
+    <value>Neue Dokumentart</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Dokumente</value>
+  </data>
+  <data name="DocumentTypes" xml:space="preserve">
+    <value>Dokumentarten</value>
+  </data>
+  <data name="DeliveryZB2andCoc" xml:space="preserve">
+    <value>Versand ZB2 + CoC</value>
+  </data>
+  <data name="DocumentAddNewDocumentType" xml:space="preserve">
+    <value>Neue Dokumentart hinzufügen</value>
+  </data>
+  <data name="DocumentUploadDocument" xml:space="preserve">
+    <value>Dokument hochladen</value>
+  </data>
+  <data name="DocumentUploadDocumentMulti" xml:space="preserve">
+    <value>Dokument(e) hochladen</value>
+  </data>
+  <data name="UserGroups" xml:space="preserve">
+    <value>Benutzergruppen</value>
+  </data>
+  <data name="Checked" xml:space="preserve">
+    <value>Geprüft</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Klassifizierung</value>
+  </data>
+  <data name="ContractNoShort" xml:space="preserve">
+    <value>Vertragsnr.</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Erstellt</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>Bearbeitet</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Bemerkung</value>
+  </data>
+  <data name="ZB2" xml:space="preserve">
+    <value>ZBII</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="RequestByEMail" xml:space="preserve">
+    <value>Anfrage per EMail</value>
+  </data>
+  <data name="YourContactRequestWasSuccessfullySent" xml:space="preserve">
+    <value>Ihre Kontaktanfrage wurde erfolgreich versendet.</value>
+  </data>
+  <data name="RegistrationOptions" xml:space="preserve">
+    <value>Zulassungs-Optionen</value>
+  </data>
+  <data name="InsuranceData" xml:space="preserve">
+    <value>Versicherungsdaten</value>
+  </data>
+  <data name="RequestSign" xml:space="preserve">
+    <value>Wunschkennzeichen</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Dienstleistungen</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Kunden</value>
+  </data>
+  <data name="ChargeTax" xml:space="preserve">
+    <value>Steuer abrechnen</value>
+  </data>
+  <data name="CustomerManager" xml:space="preserve">
+    <value>Kundenbetreuer</value>
+  </data>
+  <data name="DateOfFirstWriting" xml:space="preserve">
+    <value>Datum Erstanschreiben</value>
+  </data>
+  <data name="DAT_Receiptdoc" xml:space="preserve">
+    <value>DAT_Annahmedok</value>
+  </data>
+  <data name="DayOfDelivery" xml:space="preserve">
+    <value>Liefertermin</value>
+  </data>
+  <data name="Email2" xml:space="preserve">
+    <value>Email 2</value>
+  </data>
+  <data name="EVB" xml:space="preserve">
+    <value>EVB</value>
+  </data>
+  <data name="Manufacturer" xml:space="preserve">
+    <value>Hersteller</value>
+  </data>
+  <data name="Name3" xml:space="preserve">
+    <value>Name 3</value>
+  </data>
+  <data name="OrderType" xml:space="preserve">
+    <value>Bestellart</value>
+  </data>
+  <data name="PreferredDate" xml:space="preserve">
+    <value>Wunschdatum</value>
+  </data>
+  <data name="ReceiptOfAuthorization" xml:space="preserve">
+    <value>Eingang Vollmacht</value>
+  </data>
+  <data name="ReceiptOfBusinessRegistration" xml:space="preserve">
+    <value>Eingang Gewerbeanmeldung</value>
+  </data>
+  <data name="ReceiptOfCommercialRegister" xml:space="preserve">
+    <value>Eingang Handelsregister</value>
+  </data>
+  <data name="ReceiptOfDirectDebitMandate" xml:space="preserve">
+    <value>Eingang Einzugsermächtigung</value>
+  </data>
+  <data name="ReceiptOfIdCard" xml:space="preserve">
+    <value>Eingang Personalausweis</value>
+  </data>
+  <data name="ReceiptOfInsuranceCertificate" xml:space="preserve">
+    <value>Eingang Sicherungsschein</value>
+  </data>
+  <data name="RegistrationBy" xml:space="preserve">
+    <value>Zulassung durch</value>
+  </data>
+  <data name="RegistrationFor" xml:space="preserve">
+    <value>Zulassung auf</value>
+  </data>
+  <data name="Reminder1" xml:space="preserve">
+    <value>Mahnung 1</value>
+  </data>
+  <data name="Reminder2" xml:space="preserve">
+    <value>Mahnung 2</value>
+  </data>
+  <data name="Reminder3" xml:space="preserve">
+    <value>Mahnung 3</value>
+  </data>
+  <data name="VehicleType" xml:space="preserve">
+    <value>Fahrzeugtyp</value>
+  </data>
+  <data name="AtLeastOneSearchCriterionRequired" xml:space="preserve">
+    <value>Mindestens ein Suchkriterium erforderlich!</value>
+  </data>
+  <data name="MissingMails" xml:space="preserve">
+    <value>Fehlende Mails</value>
+  </data>
+  <data name="MissingReceiptLetter" xml:space="preserve">
+    <value>Fehlendes Annahmeschreiben</value>
+  </data>
+  <data name="SearchAsVerb" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="BackToSearch" xml:space="preserve">
+    <value>Zurück zur Suche</value>
+  </data>
+  <data name="DocumentsComplete" xml:space="preserve">
+    <value>Unterlagen vollständig</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>oder</value>
+  </data>
+  <data name="LicenseNoShort" xml:space="preserve">
+    <value>Kennz.</value>
+  </data>
+  <data name="ReservationNameShort" xml:space="preserve">
+    <value>Res. Name</value>
+  </data>
+  <data name="ReservationNoShort" xml:space="preserve">
+    <value>Res. Nr.</value>
+  </data>
+  <data name="_blank" xml:space="preserve">
+    <value> </value>
+  </data>
+</root>

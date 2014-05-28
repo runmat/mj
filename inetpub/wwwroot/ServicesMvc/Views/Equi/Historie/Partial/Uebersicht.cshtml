@@ -1,0 +1,30 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorie
+
+<form action="#" class="form-horizontal">
+    
+    <h4 class="form-section">Fahrzeugdaten</h4>
+
+    @Html.FormTextBlockFor(m => m.Hersteller, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Fahrzeugmodell, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.HerstellerSchluessel, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.TypSchluessel, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.VarianteVersion, new { @class = "m-wrap" })
+
+
+    <h4 class="form-section">Briefdaten</h4>
+
+    @Html.FormTextBlockFor(m => m.Briefnummer, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Referenz1, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.Erstzulassungsdatum, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Abmeldedatum, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.Halter, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Standort, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.CocVorhanden, new { @class = "m-wrap" })
+
+</form>

@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model VersEventOrt
+
+<div id="VersEventOrtDetailsDiv" class="portlet transparent">
+    @using (Ajax.BeginForm("VersEventOrtDetailsFormSave", "Insurance", null,
+                           new MvcAjaxOptions("VersEventOrtDetailsDiv") { OnComplete = "VersEventOrtDetailsFormPreparePrivateAjax();" }, new { id = "VersEventOrtForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.VersEventID)
+
+        @Html.HiddenFor(m => m.LoeschDatum)
+        @Html.HiddenFor(m => m.LoeschUser)
+        
+        
+        @Html.FormTemplateControl("", @<text><i id="VersEventOrtDetailsIcon"></i> Ort bearbeiten</text>, new { @class = "m-wrap" })
+
+                
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBoxFor(m => m.OrtName, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.OrtName2, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.HausNr, new { @class = "m-wrap xsmall", col = "right" })
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall", col = "left" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.Land, VersEventOrt.Laender.ToSelectList(), new { @class = "m-wrap" })
+
+        @Html.FormTextBoxFor(m => m.StartZeitMoFr, new { @class = "m-wrap xsmall timepicker", col = "left" })
+        @Html.FormTextBoxFor(m => m.EndZeitMoFr, new { @class = "m-wrap xsmall timepicker", col = "right" })
+    
+        @Html.FormTextBoxFor(m => m.StartZeitSa, new { @class = "m-wrap xsmall timepicker", col = "left" })
+        @Html.FormTextBoxFor(m => m.EndZeitSa, new { @class = "m-wrap xsmall timepicker", col = "right" })
+
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
+            BreadcrumbsShow(2, true, $("#VersEventOrtForm input[name='OrtName']"));
+
+            $(".timepicker").clockface({format: 'HH:mm'});
+
+            $("#VersEventOrtDetailsDiv").animate({opacity: 1}, _modelStateValid ? _proxyEditDetailsFadeDuration : 10);
+        </script>
+    }
+
+    <form action="#" class="form-horizontal" onsubmit="return false;">
+        @Html.FormTemplateControl("Boxen", @<text>@Html.Partial("Konfigurator/VersEventOrtBoxenGrid")</text>, new { @class = "m-wrap" })
+
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="button" onclick="$('#VersEventOrtForm').submit();" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" onclick="VersEventOrtCloseDetails();" class="btn">Abbrechen</button>
+        </div>
+    </form>
+</div>
+

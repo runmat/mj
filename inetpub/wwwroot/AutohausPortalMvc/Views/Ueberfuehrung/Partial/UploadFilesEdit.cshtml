@@ -1,0 +1,107 @@
+﻿@model  CkgDomainLogic.Ueberfuehrung.Models.UploadFiles
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("UploadFilesEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "UploadFilesEdit_FormPreparePrivateAjax();" }, new { enctype = "multipart/form-data" }))
+    {
+        @Html.PartialFor(m => m, "Partial/UploadFilesEditOneFile")
+    }
+}
+
+
+<script type="text/javascript">
+
+    function UploadFilesEdit_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+
+        FormInitValidatedFormStylesOneForm(@formID);
+
+        eval(_onSubFormSubmitSuccessFunction);
+        _onSubFormSubmitSuccessFunction = '';
+
+        UploadFilesShowRemoveButtons();
+    }
+
+    function UploadFilesShowRemoveButtons() {
+        for (var i = 0; i < 9999 ; i++) {
+            var removeButton = $("#removeButton_" + i);
+            if (!removeButton.attr('id'))
+                return;
+                    
+            var friendlyUiName = $("#friendlyUploadFileName_" + i);
+            if (friendlyUiName.html().trim() != '')
+                removeButton.show();
+        }
+    }
+
+    function UploadStart(e) {
+                
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+                
+        if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
+            alert('Bitte laden Sie nur PDF-Dateien hoch.');
+            return false;
+        }
+
+        FormShowValidationError(@formID, 'Bitte warten Sie bis der Upload abgeschlossen ist.', '');
+
+        return true;
+    }
+
+    function GetArrayIndex(uploadObject) {
+        var upload = uploadObject.data('tUpload');
+        var uploadName = $(upload).attr('name');
+        return uploadName.substr(uploadName.length - 1);
+    }
+
+    function GetHiddenArrayId(uploadObject, arrayName) {
+        return '#' + arrayName + '_' + GetArrayIndex(uploadObject) + '_';
+    }
+
+    function UploadFinished(e) {
+
+        FormForceHideValidationError(@formID);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();      // alle Uploads leeren: //$(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        var fileName = e.response.uploadFileName;
+        //var serverFileName = e.response.uploadServerFileName;
+
+        // update hidden ID for proper form submit values:
+        $(GetHiddenArrayId($(this), 'UploadFileNameArray')).val(fileName);
+        //$(GetHiddenArrayId($(this), 'UploadServerFileNameArray')).val(serverFileName);
+                    
+        // show fileName to UI:
+        var index = GetArrayIndex($(this));
+        $("#friendlyUploadFileName_" + index).html(fileName);
+        $("#removeButton_" + index).show();
+    }
+            
+    function UploadFileRemove(index) {
+        var upload = $('#attachments_' + index);
+
+        $(GetHiddenArrayId(upload, 'UploadFileNameArray')).val('');
+        //$(GetHiddenArrayId(upload, 'UploadServerFileNameArray')).val('');
+
+        // show fileName to UI:
+        $("#friendlyUploadFileName_" + index).html('');
+        $("#removeButton_" + index).hide();
+    }
+
+    function UploadError(e) {
+
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+    }
+        
+</script>

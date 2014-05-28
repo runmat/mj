@@ -1,0 +1,184 @@
+﻿
+<div class="portlet box light-grey tabbable">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-filter"></i>Suchfilter:</div>
+    </div>
+    <div class="portlet-body">
+        <div class="tabbable portlet-tabs hide">
+            <ul class="nav nav-tabs">
+                <li><a href="#tab_1_2" data-toggle="tab">Instant Filter</a></li>
+                <li><a href="#tab_1_1" data-toggle="tab">Dropdown (kaskadierend)</a></li>
+                <li class="active"><a href="#tab_1_3" data-toggle="tab">Autocomplete (kaskadierend)</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="tab_1_1">
+                    <div class="form-one-line" id="searchFormCascaded">
+                        <div class="control-group no-margin">
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Typ</label>
+                                <select onchange="GridCocRefreshCascadedFilter(this)" id="searchCascaded_COC_0_2_TYP" class="m-wrap small no-margin"></select>
+                            </div>
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Variante</label>
+                                <select onchange="GridCocRefreshCascadedFilter(this)" id="searchCascaded_COC_0_2_VAR" class="m-wrap small no-margin"></select>
+                            </div>
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Version</label>
+                                <select onchange="GridCocRefreshCascadedFilter(this)" id="searchCascaded_COC_0_2_VERS" class="m-wrap small no-margin"></select>
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+                <div class="tab-pane" id="tab_1_2">
+                    <div class="form-one-line" id="searchFormInstant">
+                        <div class="control-group no-margin">
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Typ</label>
+                                <input onkeyup="GridCocRefreshInstantFilter()" id="searchInstant_COC_0_2_TYP" type="text" class="m-wrap small no-margin"></input>
+                            </div>
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Variante</label>
+                                <input onkeyup="GridCocRefreshInstantFilter()" id="searchInstant_COC_0_2_VAR" type="text" class="m-wrap small no-margin"></input>
+                            </div>
+                            <div class="no-break-container padding-left-15">
+                                <label class="filterLabel control-label">Version</label>
+                                <input onkeyup="GridCocRefreshInstantFilter()" id="searchInstant_COC_0_2_VERS" type="text" class="m-wrap small no-margin"></input>
+                            </div>
+                            <div class="padding-left-40 no-break-container float-right">
+                                <span class="label label-important">Hinweis!</span> 
+                                <span class="label">Dieser Filter ist bei langsamer Internetverbindung u. U. träge ...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <div class="tab-pane active" id="tab_1_3">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-one-line padding-top-10">
+            @Html.Partial("Typenverwaltung/CocTypenFilter")
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function FormPrepareAllFilter() {
+
+        GridCocRefreshCascadedFilter();
+
+        //GridCocInitAutocompleteFilter();
+
+        CocInitAutocompleteFilter();
+
+        $('#searchAutocomplete_COC_0_2_TYP').focus();
+        $("ul.nav-tabs a").click(function () {
+            ResetAllFilters();
+            return true;
+        });
+
+        GridLoadingHide();
+        setTimeout('GridLoadingHide()', 1000);
+    }
+
+
+    //
+    // <Instant Filter>
+    //
+
+    function GridCocRefreshInstantFilter() {
+        var filter = '';
+        $("#searchFormInstant input[id^='searchInstant_']").each(function () {
+            filter += (filter == '' ? '' : '~and~') + GetGridCocInstantFilterOneColumn($(this));
+        });
+
+        var grid = GetGrid();
+        grid.filter(filter);
+        LoadingHide();
+    }
+
+    function GetGridCocInstantFilterOneColumn(tbFilter) {
+        var searchColumn = tbFilter.attr('id').substring(14, 99);
+        return searchColumn + "~substringof~'" + tbFilter.val() + "'";
+    }
+
+    //
+    // </Instant Filter> 
+    //
+
+
+
+    //
+    // <Cascaded Filter>
+    //
+    
+    var _gridCocRefreshCascadedFilterInside = false;
+    var _collectionChanged = false;
+
+    function GridCocRefreshCascadedFilter(dropdown) {
+
+        if (_gridCocRefreshCascadedFilterInside)
+            return;
+        _gridCocRefreshCascadedFilterInside = true;
+        if (_collectionChanged) {
+            $("#searchCascaded_COC_0_2_VAR").val('@Model.NullSelectionString');
+            $("#searchCascaded_COC_0_2_VERS").val('@Model.NullSelectionString');
+            _collectionChanged = false;
+        }
+        var level = 0;
+        if (dropdown != null) {
+            var searchColumn = $(dropdown).attr('id').substring(15, 99);
+            if (searchColumn == 'COC_0_2_TYP') level = 1;
+            if (searchColumn == 'COC_0_2_VAR') level = 2;
+            if (searchColumn == 'COC_0_2_VERS') level = 3;
+        }
+        $.ajax(
+        {
+            type: "POST",
+            url: "RefreshCascadedFilter",
+            data: {
+                level: level,
+                searchCascadedTyp: $('#searchCascaded_COC_0_2_TYP').val(),
+                searchCascadedVar: $('#searchCascaded_COC_0_2_VAR').val(),
+                searchCascadedVers: $('#searchCascaded_COC_0_2_VERS').val()
+            },
+            success: function (result) {
+                GridCocSetCascadedFilter(result, level);
+                _gridCocRefreshCascadedFilterInside = false;
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function GridCocSetCascadedFilter(result, level) {
+
+        if (level < 1)
+            PopulateCascadedDropdown($('#searchCascaded_COC_0_2_TYP'), result.searchCascadedTypGroups);
+        if (level < 2)
+            PopulateCascadedDropdown($('#searchCascaded_COC_0_2_VAR'), result.searchCascadedVarGroups);
+        if (level < 3)
+            PopulateCascadedDropdown($('#searchCascaded_COC_0_2_VERS'), result.searchCascadedVersGroups);
+
+        TryGridRefresh();
+    }
+
+    function PopulateCascadedDropdown(dropdown, items) {
+        var oldSelectedValue = dropdown.val();
+        dropdown.empty();
+        $.each(items, function (index, val) {
+            dropdown.append($("<option />").val(val).text(val));
+            if (oldSelectedValue === val)
+                dropdown.val(val);
+        });
+    }
+
+    //
+    // </Cascaded Filter>
+    //
+
+</script>

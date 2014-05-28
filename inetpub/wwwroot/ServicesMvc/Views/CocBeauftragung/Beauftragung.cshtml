@@ -1,0 +1,16 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+<h3 class="page-title">@Model.Title  <small>@Model.TitleSmall</small></h3>
+
+<div class="portlet app-view beauftragung">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.PartialOrFormErrorHint(Model.FirstStepPartialViewName, Model.FirstStepErrorHint)
+    </div>
+</div>
+
+@Html.Partial("Partial/Common")
+
+

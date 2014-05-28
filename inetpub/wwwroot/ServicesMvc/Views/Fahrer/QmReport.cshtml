@@ -1,0 +1,36 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">QM <small>Report</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/QmReport/Filter", Model.QmSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divResults"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowQmReportResults(result) {
+        SearchFormHide();
+        $("#divResults").html(result);
+
+        $(".t-grid-pager").addClass("hide");
+        $("#divResults").slideDown();
+    }
+
+</script>

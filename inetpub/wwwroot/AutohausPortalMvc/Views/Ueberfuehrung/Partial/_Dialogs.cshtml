@@ -1,0 +1,33 @@
+﻿
+@(Html.Telerik().Window()
+    .Name("Adressen")
+    .Visible(false)
+    .Title("Fahrt Adressen")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Content(@<text><div id="InnerAdressen"></div></text>))
+
+
+@(Html.Telerik().Window()
+    .Name("RouteInfo")
+    .Width(950)
+    .Height(590)
+    .Visible(false)
+    .Title("Routen Information")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Content(@<text><div id="InnerRouteInfo"></div></text>))
+
+
+@(Html.Telerik().Window()
+    .Name("GeoLocationInfo")
+    .Width(550)
+    .Height(590)
+    .Visible(false)
+    .Title("Karte für Adresse")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Content(@<text><div id="InnerGeoLocationInfo"></div></text>))

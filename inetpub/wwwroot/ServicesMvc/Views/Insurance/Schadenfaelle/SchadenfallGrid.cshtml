@@ -1,0 +1,47 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@{
+    var gridName = "SchadenfallGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID" class="">
+    @(Html.Telerik()
+          .Grid<Schadenfall>()
+          .Name(gridName)
+
+          .XAjaxDataBinding("SchadenfaelleAjaxBinding", "Insurance")
+          .Columns(columns =>
+              {
+                  columns.XBound(c => c.ID).Title("").Filterable(false).Sortable(false)
+                      .ClientTemplate(
+                            //"<button onclick='VorgangSelect(\"<#= data.ID #>\");' class='btn mini blue tooltips' data-original-title='" + Localize.OccurrenceSelect + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+                            //+ "&nbsp;" +
+                            "<button onclick='VorgangEdit(\"<#= data.ID #>\");' class='btn mini black tooltips debug' data-original-title='" + Localize.OccurrenceEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                            //+ "&nbsp;" +
+                            //"<button onclick='VorgangDelete(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.OccurrenceDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                      )
+                      .HeaderTemplate(
+                            //"<button onclick='VorgangSelectCancel();' class='btn mini red tooltips' data-original-title='" + Localize.Cancel + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></button>"
+                            //+ "&nbsp;" +
+                            "<button onclick='VorgangCreate();' class='btn mini black tooltips' data-original-title='" + Localize.OccurrenceCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+
+                      ); 
+                    columns.XBound(c => c.EventName);
+                    columns.XBound(c => c.VersicherungName);
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate(
+                            "<a href='#' class='link tooltips' data-original-title='" + Localize.Insurance_Schadenakte + "' data-placement='right' onclick='return ShowSchadenakteAjax(\"<#= data.ID #>\");'><u><#= data.Kennzeichen #></u></a>"
+                        );
+                    columns.XBound(c => c.Vorname);
+                    columns.XBound(c => c.Nachname);
+                    columns.XBound(c => c.Referenznummer);
+                    columns.XBound(c => c.AnlageDatumAsString);
+              })
+          .XAutoColumnConfiguration()
+          .ClientEvents(events => events.XAutoClientEvents(gridName))
+          .XPageSize(10)
+          .XSort(sortOrder => sortOrder.Add(c => c.AnlageDatum).Descending())
+          .XToolBar("Insurance")
+    )
+</div>
+
+

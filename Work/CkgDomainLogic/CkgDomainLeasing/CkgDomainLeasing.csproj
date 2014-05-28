@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CkgDomainLeasing</RootNamespace>
+    <AssemblyName>CkgDomainLeasing</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentTools">
+      <HintPath>..\..\..\inetpub\wwwroot\ServicesMvc\PortalMvcTools\bin\Debug\DocumentTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\..\..\inetpub\wwwroot\ServicesMvc\PortalMvcTools\bin\Debug\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\Abmeldung\LeasingController.cs" />
+    <Compile Include="Controllers\Cargate\LeasingController.cs" />
+    <Compile Include="Controllers\Klaerfaelle\LeasingController.cs" />
+    <Compile Include="Controllers\LeasingController.cs" />
+    <Compile Include="Controllers\Sicherungsscheine\LeasingController.cs" />
+    <Compile Include="Controllers\UnzugelFzge\LeasingController.cs" />
+    <Compile Include="Controllers\ZB1Kopien\LeasingController.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingCargateCsvUploadDataService.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingZB1KopienDataService.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingUnzugelFzgDataService.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingAbmeldungDataService.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingKlaerfaelleDataService.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingSicherungsscheineDataService.cs" />
+    <Compile Include="Leasing\Models\DataModels\Abmeldedaten.cs" />
+    <Compile Include="Leasing\Models\DataModels\Klaerfall.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Leasing\Models\DataModels\Sicherungsschein.cs" />
+    <Compile Include="Leasing\Models\DataModels\LeasingCargateDisplayModel.cs" />
+    <Compile Include="Leasing\Models\DataModels\UnzugelFzg.cs" />
+    <Compile Include="Leasing\Models\DataModels\ZB1Kopie.cs" />
+    <Compile Include="Leasing\Models\AppModelMappings.cs" />
+    <Compile Include="Leasing\Models\UIModels\KlaerfallSuchparameter.cs" />
+    <Compile Include="Leasing\Models\UIModels\KlaerfallSucheArtFehlendeDaten.cs" />
+    <Compile Include="Leasing\Models\UIModels\ZB1KopieSucheKunde.cs" />
+    <Compile Include="Leasing\Models\UIModels\ZB1KopieSuchparameter.cs" />
+    <Compile Include="Leasing\Services\LeasingSicherungsscheineDataServiceSAP.cs" />
+    <Compile Include="Leasing\Services\LeasingCargateCsvUploadDataServiceSap.cs" />
+    <Compile Include="Leasing\Services\LeasingKlaerfaelleDataServiceSAP.cs" />
+    <Compile Include="Leasing\Services\LeasingAbmeldungDataServiceSAP.cs" />
+    <Compile Include="Leasing\Services\LeasingUnzugelFzgDataServiceSAP.cs" />
+    <Compile Include="Leasing\Services\LeasingZB1KopienDataServiceSAP.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingSicherungsscheineViewModel.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingCargateCsvUploadViewModel.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingKlaerfaelleViewModel.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingAbmeldungViewModel.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingBriefeOhneLVNrViewModel.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingZB1KopienViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\MvcTools\MvcTools.csproj">
+      <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
+      <Name>MvcTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\CkgDomainLogic.csproj">
+      <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
+      <Name>CkgDomainLogic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Leasing\Models\DataModels\LeasingCargateCsvUploadModel.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

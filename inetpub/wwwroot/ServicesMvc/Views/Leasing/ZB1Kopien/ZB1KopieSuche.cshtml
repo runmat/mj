@@ -1,0 +1,40 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@model ZB1KopieSuchparameter
+
+<div id="divZB1KopieSuche">
+    @using (Ajax.BeginForm("LoadZB1Kopien", "Leasing", null,
+        new MvcAjaxOptions("divZB1KopieSuche") { OnComplete = "ShowZB1Kopien();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            @Html.FormDatePickerFor(m => m.DatumVon, new { @class = "m-wrap" })
+            @Html.FormDatePickerFor(m => m.DatumBis, new { @class = "m-wrap" })
+            @Html.FormRadioButtonListFor(m => m.Kunde, Model.Kundenauswahl.ToSelectList("ID", "Bezeichnung"))
+            @Html.FormCheckBoxFor(m => m.Klaerfaelle)
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowZB1Kopien() {
+        $.ajax({
+            type: "POST",
+            url: "ShowZB1Kopien",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowZB1KopieSearchResult(result);
+                }
+                FormPreparePrivateAjax();
+            }
+        });
+    }
+
+</script>

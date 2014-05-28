@@ -1,0 +1,2235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfAdresse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>1</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>AH ABRA</Firma>
+    <Name2>Herr Schönberg</Name2>
+    <Strasse>Bevenroder Str. 10</Strasse>
+    <PLZ>38108</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>05312372423</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>1</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>2</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ATN Autoterminal Neuss GmbH &amp;</Firma>
+    <Name2>Wolfgang Andrée</Name2>
+    <Strasse>Floßhafenstrasse 30</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131-977-411</Telefon>
+    <Fax />
+    <Carport>ATN Neuss</Carport>
+    <SelectedID>2</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>3</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Audi Zentrum Wolfsburg GmbH</Firma>
+    <Name2>Alfred Scheffler</Name2>
+    <Strasse>Heinrich-Nordhoff-Straße 129</Strasse>
+    <PLZ>38440</PLZ>
+    <Ort>Wolfsburg</Ort>
+    <Land>DE</Land>
+    <Telefon>05361-2041349</Telefon>
+    <Fax>05361-2041525</Fax>
+    <Carport />
+    <SelectedID>3</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>4</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>DWC</Firma>
+    <Name2>Herr Leipnitz</Name2>
+    <Strasse>Schmalbachstr. 7</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>05312124773</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>4</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>5</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Kerstin Scherer</Name2>
+    <Strasse>Breitenbachstr. 10</Strasse>
+    <PLZ>13509</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030/57799930</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>5</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>6</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Kerstin Scherer</Name2>
+    <Strasse>Breitenbachstr. 10</Strasse>
+    <PLZ>13509</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030/57799930</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>6</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>7</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Ingo Sternberg</Name2>
+    <Strasse>Borsteler Chaussee 49</Strasse>
+    <PLZ>22453</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040/51488990</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>7</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>8</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Frank Masepohl</Name2>
+    <Strasse>Tannenbergstr. 139</Strasse>
+    <PLZ>73230</PLZ>
+    <Ort>Kirchheim unter Teck</Ort>
+    <Land>DE</Land>
+    <Telefon>07021/ 941190</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>8</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>9</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Pascale Erba</Name2>
+    <Strasse>Hoechster Str. 98</Strasse>
+    <PLZ>65835</PLZ>
+    <Ort>Liederbach</Ort>
+    <Land>DE</Land>
+    <Telefon>069/30097090</Telefon>
+    <Fax />
+    <Carport>Liederbach</Carport>
+    <SelectedID>9</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>10</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Michael Fritze</Name2>
+    <Strasse>Landsberger Str. 408</Strasse>
+    <PLZ>81241</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon>089/ 82000420</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>10</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>11</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Manuel Bison</Name2>
+    <Strasse>Hellersbergstr. 10 b</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131/132150</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>11</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>12</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>MAHAG</Firma>
+    <Name2 />
+    <Strasse>Schleibingerstraße 12-16</Strasse>
+    <PLZ>81669</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>12</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>13</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto</Firma>
+    <Name2>Frau Schierz Kerstin</Name2>
+    <Strasse>Lindberghstr. 8</Strasse>
+    <PLZ>29693</PLZ>
+    <Ort>Hodenhagen</Ort>
+    <Land>DE</Land>
+    <Telefon>05164988122</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>13</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>14</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Berlin</Firma>
+    <Name2>Marina Polakowsky</Name2>
+    <Strasse>Arkenberger Damm 1</Strasse>
+    <PLZ>13127</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030 474 982 828</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>14</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>15</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Bielefeld</Firma>
+    <Name2>Fr. Nadja Stumpf</Name2>
+    <Strasse>Fuggerstr. 11</Strasse>
+    <PLZ>33689</PLZ>
+    <Ort>Bielefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>05205 9986 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>15</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>16</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Gerstetten</Firma>
+    <Name2>Frau Wagner</Name2>
+    <Strasse>Rudolf-Schels-Str. 6</Strasse>
+    <PLZ>89547</PLZ>
+    <Ort>Gerstetten-Dettingen</Ort>
+    <Land>DE</Land>
+    <Telefon>0732 4958 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>16</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>17</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Kitzingen</Firma>
+    <Name2>Frau Wüffert</Name2>
+    <Strasse>Am Dreistock 14</Strasse>
+    <PLZ>97318</PLZ>
+    <Ort>Kitzingen</Ort>
+    <Land>DE</Land>
+    <Telefon>09321 388 3120</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>17</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>18</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Krefeld</Firma>
+    <Name2>Frau Haas</Name2>
+    <Strasse>Nirostastr. 15</Strasse>
+    <PLZ>47807</PLZ>
+    <Ort>Krefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>02151 7047 132</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>18</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>19</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Maxhütte</Firma>
+    <Name2>Frau Schmalzl</Name2>
+    <Strasse>Industriepark Ponholz 1</Strasse>
+    <PLZ>93142</PLZ>
+    <Ort>Maxhütte-Haidhof</Ort>
+    <Land>DE</Land>
+    <Telefon>09471 320-940</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>19</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>20</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Thiendorf</Firma>
+    <Name2>Fr. Bräuer Silke</Name2>
+    <Strasse>Am Fiebig 15</Strasse>
+    <PLZ>01561</PLZ>
+    <Ort>Thiendorf</Ort>
+    <Land>DE</Land>
+    <Telefon>035248 222 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>20</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>21</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Richard Stein GmbH &amp; Co. KG</Firma>
+    <Name2 />
+    <Strasse>Kölner Str. 47</Strasse>
+    <PLZ>51503</PLZ>
+    <Ort>Rösrath</Ort>
+    <Land>DE</Land>
+    <Telefon>+49(0)2205/9212-11</Telefon>
+    <Fax>+49(0)2205/9212-20</Fax>
+    <Carport />
+    <SelectedID>21</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>22</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Nord-BTR Logistik</Firma>
+    <Name2>Hr.Diekhaus</Name2>
+    <Strasse>Dickeler Straße 42</Strasse>
+    <PLZ>49453</PLZ>
+    <Ort>Rehden</Ort>
+    <Land>DE</Land>
+    <Telefon>05446994636</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>22</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>23</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Ost-Mosolf</Firma>
+    <Name2>Fr. Nallaweg</Name2>
+    <Strasse>Gewerbegebiet Etzin</Strasse>
+    <PLZ>14669</PLZ>
+    <Ort>Ketzin</Ort>
+    <Land>DE</Land>
+    <Telefon>033233-88-422</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>23</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>24</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Autokontor</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Lehmgrube 1</Strasse>
+    <PLZ>89290</PLZ>
+    <Ort>Buch</Ort>
+    <Land>DE</Land>
+    <Telefon>08282995014</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>24</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>25</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Mosolf</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Daimlerstr.22 /Dieselstr.3-23</Strasse>
+    <PLZ>60314</PLZ>
+    <Ort>Frankfurt/Main</Ort>
+    <Land>DE</Land>
+    <Telefon>069-420997-10</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>25</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>26</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz West-Helf</Firma>
+    <Name2>Herr Küper</Name2>
+    <Strasse>Stauderstraße 193-197</Strasse>
+    <PLZ>45327</PLZ>
+    <Ort>Essen</Ort>
+    <Land>DE</Land>
+    <Telefon>0201-3649017</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>26</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>27</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Volkswagen Leasing GmbH</Firma>
+    <Name2>Team Langzeitmiete</Name2>
+    <Strasse>Gifhorner Str. 28</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>0531-2124114</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>27</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>28</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>VW Werk Salzgitter</Firma>
+    <Name2>Tiefladerplatz  -  Herr Heuer</Name2>
+    <Strasse>Industriestraße Nord</Strasse>
+    <PLZ>38239</PLZ>
+    <Ort>Salzgitter</Ort>
+    <Land>DE</Land>
+    <Telefon>05341233540</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>28</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>29</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Willy Tiedtke</Firma>
+    <Name2>Herr Schulz</Name2>
+    <Strasse>Friedrich-Ebert-Damm 118</Strasse>
+    <PLZ>22047</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040-9406-34</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>29</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>30</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Zalando GmbH</Firma>
+    <Name2 />
+    <Strasse>Sonnenburger Str. 73</Strasse>
+    <PLZ>10437</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>Zalando GmbH</Carport>
+    <SelectedID>30</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>31</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ZWECKVERBAND ABFALLWIRTSCHAFT</Firma>
+    <Name2>REG. HANNOVER</Name2>
+    <Strasse>Karl-Wichert-Allee 60c</Strasse>
+    <PLZ>30625</PLZ>
+    <Ort>Hannover</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>31</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>32</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>AH ABRA</Firma>
+    <Name2>Herr Schönberg</Name2>
+    <Strasse>Bevenroder Str. 10</Strasse>
+    <PLZ>38108</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>05312372423</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>32</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>33</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ATN Autoterminal Neuss GmbH &amp;</Firma>
+    <Name2>Wolfgang Andrée</Name2>
+    <Strasse>Floßhafenstrasse 30</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131-977-411</Telefon>
+    <Fax />
+    <Carport>ATN Neuss</Carport>
+    <SelectedID>33</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>34</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Audi Zentrum Wolfsburg GmbH</Firma>
+    <Name2>Alfred Scheffler</Name2>
+    <Strasse>Heinrich-Nordhoff-Straße 129</Strasse>
+    <PLZ>38440</PLZ>
+    <Ort>Wolfsburg</Ort>
+    <Land>DE</Land>
+    <Telefon>05361-2041349</Telefon>
+    <Fax>05361-2041525</Fax>
+    <Carport />
+    <SelectedID>34</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>35</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>DWC</Firma>
+    <Name2>Herr Leipnitz</Name2>
+    <Strasse>Schmalbachstr. 7</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>05312124773</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>35</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>36</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Kerstin Scherer</Name2>
+    <Strasse>Breitenbachstr. 10</Strasse>
+    <PLZ>13509</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030/57799930</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>36</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>37</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Ingo Sternberg</Name2>
+    <Strasse>Borsteler Chaussee 49</Strasse>
+    <PLZ>22453</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040/51488990</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>37</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>38</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Frank Masepohl</Name2>
+    <Strasse>Tannenbergstr. 139</Strasse>
+    <PLZ>73230</PLZ>
+    <Ort>Kirchheim unter Teck</Ort>
+    <Land>DE</Land>
+    <Telefon>07021/ 941190</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>38</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>39</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Pascale Erba</Name2>
+    <Strasse>Hoechster Str. 98</Strasse>
+    <PLZ>65835</PLZ>
+    <Ort>Liederbach</Ort>
+    <Land>DE</Land>
+    <Telefon>069/30097090</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>39</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>40</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Michael Fritze</Name2>
+    <Strasse>Landsberger Str. 408</Strasse>
+    <PLZ>81241</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon>089/ 82000420</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>40</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>41</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Manuel Bison</Name2>
+    <Strasse>Hellersbergstr. 10 b</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131/132150</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>41</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>42</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>MAHAG</Firma>
+    <Name2 />
+    <Strasse>Schleibingerstraße 12-16</Strasse>
+    <PLZ>81669</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>42</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>43</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto</Firma>
+    <Name2>Frau Schierz Kerstin</Name2>
+    <Strasse>Lindberghstr. 8</Strasse>
+    <PLZ>29693</PLZ>
+    <Ort>Hodenhagen</Ort>
+    <Land>DE</Land>
+    <Telefon>05164988122</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>43</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>44</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Berlin</Firma>
+    <Name2>Marina Polakowsky</Name2>
+    <Strasse>Arkenberger Damm 1</Strasse>
+    <PLZ>13127</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030 474 982 828</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>44</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>45</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Bielefeld</Firma>
+    <Name2>Fr. Nadja Stumpf</Name2>
+    <Strasse>Fuggerstr. 11</Strasse>
+    <PLZ>33689</PLZ>
+    <Ort>Bielefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>05205 9986 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>45</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>46</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Gerstetten</Firma>
+    <Name2>Frau Wagner</Name2>
+    <Strasse>Rudolf-Schels-Str. 6</Strasse>
+    <PLZ>89547</PLZ>
+    <Ort>Gerstetten-Dettingen</Ort>
+    <Land>DE</Land>
+    <Telefon>0732 4958 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>46</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>47</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Kitzingen</Firma>
+    <Name2>Frau Wüffert</Name2>
+    <Strasse>Am Dreistock 14</Strasse>
+    <PLZ>97318</PLZ>
+    <Ort>Kitzingen</Ort>
+    <Land>DE</Land>
+    <Telefon>09321 388 3120</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>47</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>48</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>NETTO KREFELD</Firma>
+    <Name2>Frau Haas</Name2>
+    <Strasse>Nirostastr. 15</Strasse>
+    <PLZ>47807</PLZ>
+    <Ort>Krefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>02151 7047 132</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>48</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>49</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Maxhütte</Firma>
+    <Name2>Frau Schmalzl</Name2>
+    <Strasse>Industriepark Ponholz 1</Strasse>
+    <PLZ>93142</PLZ>
+    <Ort>Maxhütte-Haidhof</Ort>
+    <Land>DE</Land>
+    <Telefon>09471 320-940</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>49</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>50</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Thiendorf</Firma>
+    <Name2>Fr. Bräuer Silke</Name2>
+    <Strasse>Am Fiebig 15</Strasse>
+    <PLZ>01561</PLZ>
+    <Ort>Thiendorf</Ort>
+    <Land>DE</Land>
+    <Telefon>035248 222 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>50</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>51</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Richard Stein GmbH &amp; Co. KG</Firma>
+    <Name2 />
+    <Strasse>Kölner Str. 47</Strasse>
+    <PLZ>51503</PLZ>
+    <Ort>Rösrath</Ort>
+    <Land>DE</Land>
+    <Telefon>+49(0)2205/9212-11</Telefon>
+    <Fax>+49(0)2205/9212-20</Fax>
+    <Carport />
+    <SelectedID>51</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>52</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Nord-BTR Logistik</Firma>
+    <Name2>Hr.Diekhaus</Name2>
+    <Strasse>Dickeler Straße 42</Strasse>
+    <PLZ>49453</PLZ>
+    <Ort>Rehden</Ort>
+    <Land>DE</Land>
+    <Telefon>05446994636</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>52</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>53</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Ost-Mosolf</Firma>
+    <Name2>Fr. Nallaweg</Name2>
+    <Strasse>Gewerbegebiet Etzin</Strasse>
+    <PLZ>14669</PLZ>
+    <Ort>Ketzin</Ort>
+    <Land>DE</Land>
+    <Telefon>033233-88-422</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>53</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>54</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Autokontor</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Lehmgrube 1</Strasse>
+    <PLZ>89290</PLZ>
+    <Ort>Buch</Ort>
+    <Land>DE</Land>
+    <Telefon>08282995014</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>54</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>55</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Mosolf</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Daimlerstr.22 /Dieselstr.3-23</Strasse>
+    <PLZ>60314</PLZ>
+    <Ort>Frankfurt/Main</Ort>
+    <Land>DE</Land>
+    <Telefon>069-420997-10</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>55</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>56</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz West-Helf</Firma>
+    <Name2>Herr Küper</Name2>
+    <Strasse>Stauderstraße 193-197</Strasse>
+    <PLZ>45327</PLZ>
+    <Ort>Essen</Ort>
+    <Land>DE</Land>
+    <Telefon>0201-3649017</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>56</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>57</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Volkswagen Leasing GmbH</Firma>
+    <Name2>Team Langzeitmiete</Name2>
+    <Strasse>Gifhorner Str. 28</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>0531-2124114</Telefon>
+    <Fax />
+    <Carport>Team Langzeitmiete</Carport>
+    <SelectedID>57</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>58</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>VW Werk Salzgitter</Firma>
+    <Name2>Tiefladerplatz  -  Herr Heuer</Name2>
+    <Strasse>Industriestraße Nord</Strasse>
+    <PLZ>38239</PLZ>
+    <Ort>Salzgitter</Ort>
+    <Land>DE</Land>
+    <Telefon>05341233540</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>58</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>59</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Willy Tiedtke</Firma>
+    <Name2>Herr Schulz</Name2>
+    <Strasse>Friedrich-Ebert-Damm 118</Strasse>
+    <PLZ>22047</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040-9406-34</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>59</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>60</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Zalando GmbH</Firma>
+    <Name2 />
+    <Strasse>Sonnenburger Str. 73</Strasse>
+    <PLZ>10437</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>Zalando GmbH</Carport>
+    <SelectedID>60</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>61</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ZWECKVERBAND ABFALLWIRTSCHAFT</Firma>
+    <Name2>REG. HANNOVER</Name2>
+    <Strasse>Karl-Wichert-Allee 60c</Strasse>
+    <PLZ>30625</PLZ>
+    <Ort>Hannover</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>61</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>62</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ATN Autoterminal Neuss GmbH &amp;</Firma>
+    <Name2>Wolfgang Andrée</Name2>
+    <Strasse>Floßhafenstrasse 30</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131-977-411</Telefon>
+    <Fax />
+    <Carport>ATN Neuss</Carport>
+    <SelectedID>62</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>63</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Audi Zentrum Wolfsburg GmbH</Firma>
+    <Name2>Alfred Scheffler</Name2>
+    <Strasse>Heinrich-Nordhoff-Straße 129</Strasse>
+    <PLZ>38440</PLZ>
+    <Ort>Wolfsburg</Ort>
+    <Land>DE</Land>
+    <Telefon>05361-2041349</Telefon>
+    <Fax>05361-204 1525</Fax>
+    <Carport />
+    <SelectedID>63</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>64</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>DWC</Firma>
+    <Name2>Herr Leipnitz</Name2>
+    <Strasse>Schmalbachstr. 7</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>05312124773</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>64</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>65</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Kerstin Scherer</Name2>
+    <Strasse>Breitenbachstr. 10</Strasse>
+    <PLZ>13509</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030/57799930</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>65</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>66</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Ingo Sternberg</Name2>
+    <Strasse>Borsteler Chaussee 49</Strasse>
+    <PLZ>22453</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040/51488990</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>66</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>67</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Frank Masepohl</Name2>
+    <Strasse>Tannenbergstr. 139</Strasse>
+    <PLZ>73230</PLZ>
+    <Ort>Kirchheim unter Teck</Ort>
+    <Land>DE</Land>
+    <Telefon>07021/ 941190</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>67</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>68</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Pascale Erba</Name2>
+    <Strasse>Hoechster Str. 98</Strasse>
+    <PLZ>65835</PLZ>
+    <Ort>Liederbach</Ort>
+    <Land>DE</Land>
+    <Telefon>069/30097090</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>68</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>69</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Michael Fritze</Name2>
+    <Strasse>Landsberger Str. 408</Strasse>
+    <PLZ>81241</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon>089/ 82000420</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>69</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>70</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>LEAN Autovermietung GmbH</Firma>
+    <Name2>Manuel Bison</Name2>
+    <Strasse>Hellersbergstr. 10 b</Strasse>
+    <PLZ>41460</PLZ>
+    <Ort>Neuss</Ort>
+    <Land>DE</Land>
+    <Telefon>02131/132150</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>70</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>71</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>MAHAG</Firma>
+    <Name2 />
+    <Strasse>Schleibingerstraße 12-16</Strasse>
+    <PLZ>81669</PLZ>
+    <Ort>München</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>71</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>72</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto</Firma>
+    <Name2>Frau Schierz Kerstin</Name2>
+    <Strasse>Lindberghstr. 8</Strasse>
+    <PLZ>29693</PLZ>
+    <Ort>Hodenhagen</Ort>
+    <Land>DE</Land>
+    <Telefon>05164988122</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>72</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>73</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Berlin</Firma>
+    <Name2>Marina Polakowsky</Name2>
+    <Strasse>Arkenberger Damm 1</Strasse>
+    <PLZ>13127</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon>030 474 982 828</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>73</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>74</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Bielefeld</Firma>
+    <Name2>Fr. Nadja Stumpf</Name2>
+    <Strasse>Fuggerstr. 11</Strasse>
+    <PLZ>33689</PLZ>
+    <Ort>Bielefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>05205 9986 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>74</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>75</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Gerstetten</Firma>
+    <Name2>Frau Wagner</Name2>
+    <Strasse>Rudolf-Schels-Str. 6</Strasse>
+    <PLZ>89547</PLZ>
+    <Ort>Gerstetten-Dettingen</Ort>
+    <Land>DE</Land>
+    <Telefon>0732 4958 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>75</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>76</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Kitzingen</Firma>
+    <Name2>Frau Wüffert</Name2>
+    <Strasse>Am Dreistock 14</Strasse>
+    <PLZ>97318</PLZ>
+    <Ort>Kitzingen</Ort>
+    <Land>DE</Land>
+    <Telefon>09321 388 3120</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>76</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>77</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Krefeld</Firma>
+    <Name2>Frau Haas</Name2>
+    <Strasse>Nirostastr. 15</Strasse>
+    <PLZ>47807</PLZ>
+    <Ort>Krefeld</Ort>
+    <Land>DE</Land>
+    <Telefon>02151 7047 132</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>77</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>78</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Maxhütte</Firma>
+    <Name2>Frau Schmalzl</Name2>
+    <Strasse>Industriepark Ponholz 1</Strasse>
+    <PLZ>93142</PLZ>
+    <Ort>Maxhütte-Haidhof</Ort>
+    <Land>DE</Land>
+    <Telefon>09471 320-940</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>78</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>79</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Netto Thiendorf</Firma>
+    <Name2>Fr. Bräuer Silke</Name2>
+    <Strasse>Am Fiebig 15</Strasse>
+    <PLZ>01561</PLZ>
+    <Ort>Thiendorf</Ort>
+    <Land>DE</Land>
+    <Telefon>035248 222 100</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>79</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>80</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Richard Stein GmbH &amp; Co. KG</Firma>
+    <Name2 />
+    <Strasse>Kölner Str. 47</Strasse>
+    <PLZ>51503</PLZ>
+    <Ort>Rösrath</Ort>
+    <Land>DE</Land>
+    <Telefon>+49(0)2205/9212-11</Telefon>
+    <Fax>+49(0)2205/9212-20</Fax>
+    <Carport />
+    <SelectedID>80</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>81</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Nord-BTR Logistik</Firma>
+    <Name2>Hr.Diekhaus</Name2>
+    <Strasse>Dickeler Straße 42</Strasse>
+    <PLZ>49453</PLZ>
+    <Ort>Rehden</Ort>
+    <Land>DE</Land>
+    <Telefon>05446994636</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>81</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>82</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Ost-Mosolf</Firma>
+    <Name2>Fr. Nallaweg</Name2>
+    <Strasse>Gewerbegebiet Etzin</Strasse>
+    <PLZ>14669</PLZ>
+    <Ort>Ketzin</Ort>
+    <Land>DE</Land>
+    <Telefon>033233-88-422</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>82</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>83</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Autokontor</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Lehmgrube 1</Strasse>
+    <PLZ>89290</PLZ>
+    <Ort>Buch</Ort>
+    <Land>DE</Land>
+    <Telefon>08282995014</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>83</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>84</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz Süd-Mosolf</Firma>
+    <Name2>Fr. Müller</Name2>
+    <Strasse>Daimlerstr.22 /Dieselstr.3-23</Strasse>
+    <PLZ>60314</PLZ>
+    <Ort>Frankfurt/Main</Ort>
+    <Land>DE</Land>
+    <Telefon>069-420997-10</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>84</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>85</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Stellplatz West-Helf</Firma>
+    <Name2>Herr Küper</Name2>
+    <Strasse>Stauderstraße 193-197</Strasse>
+    <PLZ>45327</PLZ>
+    <Ort>Essen</Ort>
+    <Land>DE</Land>
+    <Telefon>0201-3649017</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>85</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>86</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Volkswagen Leasing GmbH</Firma>
+    <Name2>Team Langzeitmiete</Name2>
+    <Strasse>Gifhorner Str. 28</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon>0531-2124114</Telefon>
+    <Fax />
+    <Carport>Team Langzeitmiete</Carport>
+    <SelectedID>86</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>87</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>VW Werk Salzgitter</Firma>
+    <Name2>Tiefladerplatz  -  Herr Heuer</Name2>
+    <Strasse>Industriestraße Nord</Strasse>
+    <PLZ>38239</PLZ>
+    <Ort>Salzgitter</Ort>
+    <Land>DE</Land>
+    <Telefon>05341233540</Telefon>
+    <Fax />
+    <Carport />
+    <SelectedID>87</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>88</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Willy Tiedtke</Firma>
+    <Name2 />
+    <Strasse>Friedrich-Ebert-Damm 118</Strasse>
+    <PLZ>22047</PLZ>
+    <Ort>Hamburg</Ort>
+    <Land>DE</Land>
+    <Telefon>040-9406-34</Telefon>
+    <Fax />
+    <Carport>Herr Schulz</Carport>
+    <SelectedID>88</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>89</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Zalando GmbH</Firma>
+    <Name2 />
+    <Strasse>Sonnenburger Str. 73</Strasse>
+    <PLZ>10437</PLZ>
+    <Ort>Berlin</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>Zalando GmbH</Carport>
+    <SelectedID>89</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>90</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>ZWECKVERBAND ABFALLWIRTSCHAFT</Firma>
+    <Name2>REG. HANNOVER</Name2>
+    <Strasse>Karl-Wichert-Allee 60c</Strasse>
+    <PLZ>30625</PLZ>
+    <Ort>Hannover</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport />
+    <SelectedID>90</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>RÜCKHOLUNG</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>91</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Vehicle Trading International</Firma>
+    <Name2>GmbH (VTI)</Name2>
+    <Strasse>Schmalbachstraße 7</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>VTI Vehicle Trading International GmbH</Carport>
+    <SelectedID>91</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>HALTER</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>92</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>Volkswagen Leasing GmbH</Firma>
+    <Name2>Brieffach G-VI / Langzeitmiete</Name2>
+    <Strasse>Gifhorner Str. 28</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>Halter VW Langzeitmiete</Carport>
+    <SelectedID>92</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>HALTER</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+  <Adresse>
+    <UiIndex>0</UiIndex>
+    <IsMandatory>false</IsMandatory>
+    <RequestClearModel>false</RequestClearModel>
+    <RequiredButModelOptionalPropertiesWithNullValues />
+    <ID>93</ID>
+    <KundenNr>0010000649</KundenNr>
+    <Firma>VW Leasing GmbH</Firma>
+    <Name2>Vermietmodelle</Name2>
+    <Strasse>Gifhorner Straße 28</Strasse>
+    <PLZ>38112</PLZ>
+    <Ort>Braunschweig</Ort>
+    <Land>DE</Land>
+    <Telefon />
+    <Fax />
+    <Carport>VW Leasing GmbH</Carport>
+    <SelectedID>93</SelectedID>
+    <Datum xsi:nil="true" />
+    <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+    <FilteredRechnungsAdressen />
+    <Typ>FahrtAdresse</Typ>
+    <SubTyp>HALTER</SubTyp>
+    <Mandant>010</Mandant>
+  </Adresse>
+</ArrayOfAdresse>

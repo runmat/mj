@@ -1,0 +1,178 @@
+﻿<script type="text/javascript">
+
+    //
+    // "Step" dependent scripts
+    //
+
+
+    function FormPreparePrivate() {
+        initOpenforms();
+        FormPrepare(false);
+
+        PrepareOpenFormsEvent();
+        //PrepareAjaxViewLoadedEvent();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormInitStyles();
+
+        FormInitValidatedFormStyles();
+    }
+   
+  
+    //
+    // Step 2
+    //
+
+    function TryShowGeoLocationInfo(uiIndex) {
+        _onSubFormSubmitSuccessFunction = 'ShowGeoLocationInfo(' + uiIndex + ')';
+
+        var form = GetClosestAjaxForm(uiIndex);
+        form.find("#RequestGeoMapInfo").val(true);
+        form.submit();
+    }
+
+    function TryShowRouteInfo(uiIndex) {
+        _onSubFormSubmitSuccessFunction = 'ShowRouteInfo(' + uiIndex + ')';
+
+        var form = GetClosestAjaxForm(uiIndex);
+        form.find("#RequestGeoMapInfo").val(true);
+        form.submit();
+    }
+
+    function AdressenAutocompleteTextboxOnChange(e) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "Ueberfuehrung/AdressenAutocompleteTextboxOnChange",
+                data: { uiIndex: lastformid, textboxValue: e.value },
+                success: function (result) {
+                    if (result.status) {
+                        //alert(result.foundAddressID);
+                        ClosestFormTrySubmit(result.uiIndex);
+                    }
+                }
+            });
+    }
+
+    function ShowGeoLocationInfo(uiIndex) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "Ueberfuehrung/ShowGeoLocationInfo",
+                data: { uiIndex: uiIndex },
+                success: function (result) {
+                    var detailWindow = $("#GeoLocationInfo").data("tWindow");
+                    $("#InnerGeoLocationInfo").html(result);
+                    detailWindow.center().open();
+                    eval('googleGeocoderShowAddress()');
+                }
+            });
+    }
+
+    function ShowRouteInfo(uiIndex) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "Ueberfuehrung/ShowRouteInfo",
+                data: { uiIndex: uiIndex },
+                success: function (result) {
+                    var detailWindow = $("#RouteInfo").data("tWindow");
+                    $("#InnerRouteInfo").html(result);
+                    detailWindow.center().open();
+                    eval('googleDirectionsCalcRoute()');
+                }
+            });
+    }
+    
+    function ShowGridAdressen(id, fahrtAdressIndex) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Ueberfuehrung/ShowGridAdressen",
+            data: { id: id, fahrtAdressIndex: fahrtAdressIndex },
+            success: function (result) {
+                var detailWindow = $("#Adressen").data("tWindow");
+                $("#InnerAdressen").html(result);
+                detailWindow.center().open();
+            }
+        });
+    }
+
+    function PickAddress(id, fahrtAdressIndex) {
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+        $.ajax(
+        {
+            type: "POST",
+            url: "Ueberfuehrung/PickAddress",
+            data: { id: id, fahrtAdressIndex: fahrtAdressIndex },
+            success: function (result) {
+                ClosestFormTrySubmit(result.fahrtAdressIndex);
+            }
+        });
+    }
+
+
+
+    //
+    // Routing Controls for maps and routes
+    //
+
+    function showRoutingControlRow(formId, initial) {
+
+        // ITA 7187 vom 08.04.2014, Deaktivierung der Google Maps API
+        return;
+
+        var routingRow = $('#AddressRoutingControlRow_' + formId);
+        var marginLeft;
+        if (initial)
+            routingRow.slideUp('10').delay(500);
+        if (checkRoutingAddressCompleteness()) {
+            marginLeft = '110';
+            if (routingRow.css('margin-left') == marginLeft + 'px')
+                return;
+            routingRow.delay(200).slideDown(300);
+            routingRow
+                        .delay(100)
+                        .animate({ 'opacity': '1', 'marginLeft': marginLeft }, 700, 'easeOutBounce');
+
+            //routingRow.animate({ 'backgroundColor' : '#A6E1E9' }, 500).animate({ 'backgroundColor' : '#eeefef' }, 300);
+        } else {
+            marginLeft = '-150';
+            if (routingRow.css('margin-left') == marginLeft + 'px')
+                return;
+            routingRow
+                        .delay(300)
+                        .animate({ 'marginLeft': marginLeft, 'opacity': '0' }, 300, 'swing');
+            routingRow.delay(200).slideUp(200);
+        }
+    }
+
+    var _routingAddressProperties = new Array("Strasse", "PLZ", "Ort");
+
+    function addRoutingAddressLostFocusHandlers(formId) {
+        for (var i = 0; i < _routingAddressProperties.length; i++) {
+            var tb = $('#' + _routingAddressProperties[i]);
+            tb.keyup(function () {
+                showRoutingControlRow(formId, false);
+            });
+        }
+    }
+
+    function checkRoutingAddressCompleteness() {
+        for (var i = 0; i < _routingAddressProperties.length; i++) {
+            var propertyValue = $('#' + _routingAddressProperties[i]).val();
+            if (propertyValue === '') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+</script>
+
+
+

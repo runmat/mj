@@ -1,0 +1,92 @@
+<PUBLIC:ATTACH event="ondocumentready" handler="hdlDR" />
+<SCRIPT language="JScript">
+function hdlDR()
+{
+   if(this.rows.length>1)
+   {
+		// Elemente erstellen
+		var showPager = false;
+		var StartWert = 0;
+		if(this.rows[0].cells.length == 1)
+		{
+			var tablePager = this.cloneNode(false);
+			showPager = true;
+			StartWert = 1;
+		}
+		var tableHeader = this.cloneNode(false);
+		var tableBody  = this.cloneNode(false);
+		var divCntr   = document.createElement("DIV");
+		// aktuelle Spaltenbreite merken
+		var tdWidths = new Array();
+		for (var i = 0; i < this.rows[StartWert].cells.length; i++)
+		{
+			tdWidths[i] = this.rows[StartWert].cells[i].offsetWidth;
+		}
+		if(showPager == true)
+		{
+			// Pager Anhaengen
+			var tbdyPager = document.createElement("TBODY");
+			tablePager.appendChild(tbdyPager);
+			tbdyPager.appendChild(this.rows[0].cloneNode(true));
+		}
+		// Header Anhaengen
+		var tbdyHeader = document.createElement("TBODY");
+		tableHeader.appendChild(tbdyHeader);
+	    var hRow = this.rows[StartWert].cloneNode(true);
+		tbdyHeader.appendChild(hRow);
+		//tbdyHeader.appendChild(this.rows[1].cloneNode(true));
+		// Body Reihen anhaengen
+		var tbdyBody = document.createElement("TBODY");
+		tableBody.appendChild(tbdyBody);
+		for (var i = StartWert+1; i < this.rows.length; i++)
+		{
+			var oRow = this.rows[i].cloneNode(true);
+			tbdyBody.appendChild(oRow);
+		}
+		// scrollbar visible | hidden | scroll | auto
+		divCntr.style.overflow = "auto";
+		if (this.bodyHeight) divCntr.style.height = this.bodyHeight;
+		divCntr.appendChild(tableBody);
+		// alte Spalten entfernen
+		for (var i = this.rows.length; i > 0; i--)
+		{
+			this.rows[i-1].removeNode(true);
+		}
+		if(showPager == true)
+		{
+			var tr0 = this.insertRow();
+			var td0 = tr0.insertCell();
+		}
+		var tr1 = this.insertRow();
+		var td1 = tr1.insertCell();
+		var tr2 = this.insertRow();
+		var td2 = tr2.insertCell();
+		//Ueberschrift Zelle Laden & Hintergund angleichen
+		if(showPager == true)
+		{
+			td0.appendChild(tablePager);
+		}
+		td1.appendChild(tableHeader);
+		td1.className=this.headerCSS;
+		td2.appendChild(divCntr);
+		// Spaltenbreite setzen 
+		for (var i = 0; i < tdWidths.length - 1; i++)
+		{
+			tableHeader.rows[0].cells[i].width = tdWidths[i];   
+			tableBody.rows[0].cells[i].width   = tdWidths[i];
+		}
+		tableHeader.style.fontSize    = "100%";
+		tableHeader.width             = "100%";
+		tableHeader.style.tableLayout = "fixed";
+		tableHeader.className         = this.headerCSS ? this.headerCSS : "";
+		tableHeader.border = 0;
+		tableBody.style.fontSize      = "100%";
+		tableBody.width               = "100%";
+		tableBody.style.tableLayout   = "fixed";
+		tableBody.className           = this.bodyCSS ? this.bodyCSS : "";
+		tableBody.border = 0;
+		this.cellSpacing = 0;
+		this.cellPadding = 0;
+   }
+}
+</SCRIPT> 

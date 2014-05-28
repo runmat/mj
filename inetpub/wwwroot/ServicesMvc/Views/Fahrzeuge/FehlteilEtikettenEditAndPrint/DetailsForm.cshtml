@@ -1,0 +1,44 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.FehlteilEtikett
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName">
+    @using (Ajax.BeginForm("DetailsFormSave", "Fahrzeuge", null, new MvcAjaxOptions { OnComplete = "ItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "FehlteilEtikettAjaxForm" }))
+    {
+        @Html.HiddenFor(m => m.VIN)
+        @Html.HiddenFor(m => m.PrintMode)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBlockFor(m => m.VIN, new { @class = "m-wrap medium" })
+        
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium", col = "left" })
+        @Html.Partial("FehlteilEtikettenEditAndPrint/LabelSelector")
+
+
+        for (var i = 1; i <= 10; i++)
+        {
+            @Html.FormTextBox("Header" + i, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBox("Content" + i, new { @class = "m-wrap medium", col = "right" })
+        }
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <a id="PrintInvoke" class="btn blue white-font" onclick="SaveAndPrintFehlteilEtikett()" href="GetEtikettAsPdf?vin=@Model.VIN"><i class="icon-print"></i> Drucken</a>
+            <button type="button" class="btn" onclick="CloseItemDetails();">Abbrechen</button>
+            <span id="hintCocTypenFilter" class="alert alert-success margin-left-25 hide"><i class="icon-ok"></i> <span></span></span>
+        </div>
+    
+        <script type="text/javascript">
+            _modelIsValid = @((Model != null && Model.IsValid).ToString().ToLower());
+            var _printMode = @((Model != null && Model.PrintMode).ToString().ToLower());
+
+            if (_modelIsValid) {
+                ShowSaveSuccess();
+                
+                if (_printMode) {
+                    $("#PrintMode").val(false);
+                }
+            }
+            
+        </script>
+    }
+</div>

@@ -1,0 +1,29 @@
+﻿@model CkgDomainLogic.General.Database.Models.Contact 
+
+<h4>@Model.Name1  @Model.Name2 </h4>
+
+
+@if (Model.Mail.IsNotNullOrEmpty())
+{
+    <br />
+    @Html.DisplayNameFor(m => m.Mail)<span>:</span> @Model.Mail.ToEmailWithoutAtSymbol()
+}
+
+@if (Model.Telefon.IsNotNullOrEmpty())
+{
+    <br />
+    @Html.DisplayNameFor(m => m.Telefon)<span>:</span> @Model.Telefon
+}
+
+@if (Model.Mobile.IsNotNullOrEmpty())
+{
+    <br />
+    @Html.DisplayNameFor(m => m.Mobile)<span>:</span> @Model.Mobile
+}
+
+
+@if (Model.Fax.IsNotNullOrEmpty())
+{
+    <br />
+    @Html.DisplayNameFor(m => m.Fax)<span>:</span> @Model.Fax
+}

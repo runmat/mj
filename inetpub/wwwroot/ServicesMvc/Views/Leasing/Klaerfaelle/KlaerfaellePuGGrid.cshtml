@@ -1,0 +1,45 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@{ var gridName = "GridKlaerfaellePuG"; }
+
+@(Html.Telerik()
+    .Grid<Klaerfall>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("KlaerfaelleAjaxBinding", "Leasing")
+    .Columns(columns =>
+        {
+            columns.Bound(c => c.Leasingvertragsnummer);
+            columns.Bound(c => c.Erstanschreiben).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.Mahnung1).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.Mahnung2).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.Mahnung3).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EingangVollmacht).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EingangHandelsregister).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EingangGewerbeanmeldung).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EingangPersonalausweis).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EingangEinzugsermaechtigung).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.EVB);
+            columns.Bound(c => c.EingangSicherungsschein).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.Bemerkung);
+            columns.Bound(c => c.Kundenname);
+            columns.Bound(c => c.Kundennummer);
+            columns.Bound(c => c.Name1);
+            columns.Bound(c => c.Name2);
+            columns.Bound(c => c.Name3);
+            columns.Bound(c => c.Email);
+            columns.Bound(c => c.Email2);
+            columns.Bound(c => c.Liefertermin).Format("{0:dd.MM.yyyy}");
+            columns.Bound(c => c.Kundenbetreuer);
+        }
+    )
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Leasingvertragsnummer).Ascending())
+    .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportKlaerfaelleFilteredExcel", "Leasing");
+            commands.FilteredDataCommand("ExportKlaerfaelleFilteredPDF", "Leasing");
+        }
+    )
+)

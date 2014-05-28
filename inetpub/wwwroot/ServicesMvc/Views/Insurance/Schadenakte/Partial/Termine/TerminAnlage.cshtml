@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model TerminSchadenfall 
+
+<div class="margin-left-10">
+
+    <h5 class="no-margin">
+        <button onclick="TerminSchadenfallClose(1);" class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
+        <i class="icon-calendar margin-left-10 margin-right-10"></i><span>Neuer Termin, Schadenfall "@Model.Event.EventName - @Model.Schadenfall.Kennzeichen"</span>
+    </h5>
+    
+    <div class="portlet margin-top-20">
+        <form action="#" class="form-horizontal">
+        
+            @Html.FormRadioButtonListFor(m => m.BoxArtGewuenscht, VersEventOrtBox.BoxArten.ToSelectList(), new { @class = "m-wrap" })
+
+            @Html.FormDropDownListFor(m => m.VersOrtID, Model.GetValidOrte().ToSelectList(), new { @class = "m-wrap" })
+
+            <div class="form-actions">
+                <button type="button" class="btn green margin-right-5" onclick="TerminSchadenfallCreateFinish()"><i class="icon-ok"></i> Weiter</button>
+                <button type="button" class="btn margin-right-5" onclick="TerminSchadenfallClose(1);">Abbrechen</button>
+            </div>
+        </form>
+    </div>
+
+</div>

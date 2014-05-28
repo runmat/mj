@@ -1,0 +1,24 @@
+﻿@model System.Web.Mvc.HandleErrorInfo 
+
+<style type="text/css">
+    #errorMessage {
+        color: red;
+        font-weight: normal;
+        padding-top: 20px;
+    }
+</style>
+
+<h2>Fehler</h2>
+<br />
+<div>
+    Wir bitten um Entschuldigung, etwas ist schief gelaufen ...    
+</div>
+<div id="errorMessage">
+    @{
+        var message = string.Concat("Folgender Server-Fehler ist aufgetreten:<br /> ", Model.Exception.Message, "<br /><br />", Model.Exception.InnerException == null ? "" : Model.Exception.InnerException.Message);
+     }
+    
+    <br/>
+    @Html.Raw(message)
+</div>
+

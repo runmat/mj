@@ -1,0 +1,90 @@
+﻿@model ServicesMvc.ViewModels.TestViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<style type="text/css">
+    body {
+         background-color: white!important; 
+         margin-left: 5px!important;
+    }
+ 
+    .form-horizontal .form-actions {
+        padding-left: 70px;
+    }
+    .datepicker-inline 
+    {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .ui-datepicker td { width: 4%!important; }
+    @@media (max-width: 499px) {
+        .ui-datepicker { width: 340px; height: 350px; }
+        .ui-datepicker td a, .ui-datepicker .ui-state-default { height: 27px; }
+    }
+    @@media (min-width: 500px) {
+        .ui-datepicker { width: 520px; height: 460px; }
+        .ui-datepicker td a, .ui-datepicker .ui-state-default { height: 45px; }
+    }
+
+    .ui-datepicker td.ui-datepicker-week-col {
+        color: transparent!important;
+    }
+    .ui-datepicker td a.ui-state-week {
+        color: blue;
+        text-align: center;
+        font-weight: normal;
+        background: #f6f6ff;
+        border: 1px solid #a6a6ff;
+    }
+
+    .ui-datepicker td {
+        border: 4px solid transparent!important;
+        vertical-align: top;
+        padding: 4px!important
+    }
+    td.date-selected  { padding: 0!important; }
+
+    td.date-selected a { border: 4px solid transparent!important; }
+
+    td.date-verfuegbar a { border-color: green!important; }
+    td.date-nichtverfuegbar a { border-color: darkred!important; }
+    td.date-krank a { border-color: red!important; }
+    td.date-urlaub a { border-color: orange!important; }
+
+    a.fahrer-anzahl-bg-1 { background: url(../images/fahrer/1.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-2 { background: url(../images/fahrer/2.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-3 { background: url(../images/fahrer/3.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-4 { background: url(../images/fahrer/4.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-5 { background: url(../images/fahrer/5.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-6 { background: url(../images/fahrer/6.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-7 { background: url(../images/fahrer/7.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-8 { background: url(../images/fahrer/8.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-9 { background: url(../images/fahrer/9.png) 50% 50% no-repeat !important; }
+    a.fahrer-anzahl-bg-10 { background: url(../images/fahrer/10.png) 50% 50% no-repeat !important; }
+    a.tiny { width: 1px; height: 1px; }
+</style>
+
+<h3 class="page-title">Datepicker  <small>Inline Test</small></h3>
+
+@* this is necessary for background-image pre-loading ;-) *@
+@for (var i = 1; i <= 10; i++) { <a href="#" class="fahrer-anzahl-bg-@i tiny"> </a> }
+
+@Html.IeWarning(8)
+
+@Html.Partial("Partial/TestFormDatePicker", Model.FilterModel2)
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>
+

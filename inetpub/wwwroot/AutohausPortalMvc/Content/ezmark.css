@@ -1,0 +1,52 @@
+﻿/* ezMark jQuery Plugin */
+
+.globalcheckbox .ez-hide,
+.formselects .ez-hide {
+opacity: 0;
+filter:alpha(opacity=0);
+margin: 4px 0 0 4px;
+}
+
+.ez-hide,
+.listecheckbox .ez-hide	{
+opacity: 0;
+filter:alpha(opacity=0);
+margin-top:4px;
+margin-left:4px;
+}
+
+.ez-checkbox {
+background: transparent url('../images/checkbox-kroschke.gif') 0 0px no-repeat;
+float:left;
+width:20px;
+height:20px;
+margin-top: 10px;
+}
+
+ .tableCheckbox .ez-checkbox {
+    margin-top: -2px;
+    display: inline;
+    margin-right: 6px;
+ }
+
+.ez-radio {
+margin: 8px 0px 0px 0px;
+background: transparent url('../images/radio-kroschke.gif') 0 0px no-repeat;
+float:left;
+width:20px;
+height:20px;
+}
+
+.ez-checked {
+background-position: 0 -20px;
+}
+
+.ez-selected {
+background-position: 0 -20px;
+}
+
+.ez-checkbox, .ez-radio	{
+zoom: 1;
+*display:inline;
+_height:20px;
+}

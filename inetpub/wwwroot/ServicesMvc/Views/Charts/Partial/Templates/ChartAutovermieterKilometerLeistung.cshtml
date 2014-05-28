@@ -1,0 +1,142 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel  
+
+<script type="text/javascript">
+
+    chartManager.AddChart(
+        new Chart(
+            '@Model.ChartID',
+            '@Model.ChartGroup',
+            {},
+            function (chart) {  // FormPreparePrivate
+
+                AvKmFilterFormInit(chart);
+            },
+            function (chart) {  // FormPreparePrivateAjax
+
+                AvKmFilterFormInit(chart);
+            },
+            function (chart, item) {  // getTooltipHtml
+
+                var x = item.datapoint[0], y = item.datapoint[1];
+                return ChartGetXaxisLabel(item) + ": " + "<strong>" + y.formatNumber(0) + " Km </strong> in " + ChartGetXaxisSubLabel(item) + "";
+            },
+            function (chart, chartResults) {  // ShowChartResults
+
+                var groupChartItems = chartResults.GroupChartItems;
+                var groupChartJahrItems = chartResults.GroupChartJahrItems;
+                var groupChartKey1Items = chartResults.GroupChartKey1Items;
+
+                var ticks = new Array();
+                for (var i = 0; i < groupChartKey1Items.length; i++) {
+                    ticks.push([groupChartJahrItems.length / 2 - 0.5 + i * (groupChartJahrItems.length + 1), groupChartKey1Items[i]]);
+                }
+                var dataset = new Array();
+                for (i = 0; i < groupChartJahrItems.length; i++) {
+                    var dataThisYear = new Array();
+                    for (var j = 0; j < groupChartKey1Items.length; j++) {
+                        var jahrItems = $.grep(groupChartItems, function (item) {
+                            return item.Jahr == groupChartJahrItems[i] && item.Key1 == groupChartKey1Items[j];
+                        });
+                        var wert1 = jahrItems && jahrItems.length == 1 ? jahrItems[0].LWert1 : 0;
+                        var index = i + j * (groupChartJahrItems.length + 1);
+                        dataThisYear.push([index, wert1]);
+                    }
+
+                    dataset.push({
+                        label: groupChartJahrItems[i].toString(),
+                        data: dataThisYear,
+                        color: ChartGetJahrColor(groupChartJahrItems[i])
+                    });
+                }
+
+
+                var options = {
+                    series: {
+                        bars: {
+                            show: true,
+                            lineWidth: 1,
+                            align: "center"
+                        }
+                    },
+                    bars: {
+                        align: "center"
+                    },
+                    xaxis: {
+                        axisLabel: "Durchschnittliche Kilometerlaufleistung/Fzg. je AV in " + jahrItems[0].Jahr,
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        axisLabelPadding: 10,
+                        ticks: ticks,
+                        autoscaleMargin: 0.04
+                    },
+                    yaxis: {
+                        axisLabel: "AV, Kilometerlaufleistung",
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        axisLabelPadding: 20,
+                        autoscaleMargin: 0.1,
+                        tickFormatter: function (v, axis) {
+                            return v.formatNumber(0);
+                        }
+                    },
+                    legend: {
+                        show: false
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        borderWidth: 1,
+                        backgroundColor: { colors: ["#ffffff", "#eeeeee"] }
+                    },
+                    hooks: {
+                        draw: draw
+                    }
+                };
+
+                function draw(plot, canvascontext) {
+                    var ctx = canvascontext;
+                    var xaxis = plot.getAxes().xaxis;
+
+                    //console.log(xaxis);
+                    //console.log();
+
+                    // 24.000 Km-Grenze lt. Vertrag
+                    var kmLimit = 24000.0;
+                    var labelText = "24.000 Km-Grenze lt. Vertrag";
+
+                    var kmLimitPixel = plot.p2c({ x: 0, y: kmLimit });
+
+                    var x1 = plot.pointOffset({ x: xaxis.min, y: 0 }).left;
+                    var x2 = plot.pointOffset({ x: xaxis.max, y: 0 }).left;
+                    var y = kmLimitPixel.top;
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = "blue";
+                    ctx.lineWidth = "2";
+                    ctx.moveTo(x1, y);
+                    ctx.lineTo(x2, y);
+                    ctx.stroke();
+
+                    var textWidth = ctx.measureText(labelText).width;
+                    ctx.fillText(labelText, x2 - textWidth - 5, y + 10);
+                }
+
+                var chartPlaceHolder = chart.GetPlaceHolder();
+                chartPlaceHolder.html('');
+                $.plot(chartPlaceHolder, dataset, options);
+                chartPlaceHolder.UseTooltip();
+            }
+        )
+    );
+
+    function AvKmFilterFormInit(chart) {
+
+        //chart.GetFilterForm().find(".chart-filter-jahr-items").css('visibility', 'hidden');
+
+        var jahrCheckBoxes = chart.GetFilterForm().find(".chart-filter-jahr-items input[type=checkbox]");
+        CheckBoxesEnforceSingleSelection(jahrCheckBoxes, jahrCheckBoxes[jahrCheckBoxes.length - 2]);
+    }
+
+ </script>

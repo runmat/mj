@@ -1,0 +1,67 @@
+﻿.startmenu_top {
+background-image:url(../images/startmenu_top_ie.jpg);
+}
+
+.startmenu_bottom {
+background-image:url(../images/startmenu_bottom.gif);
+}
+
+.startmenu_contentlayer {
+clear:both;
+width:324px;
+background-image:url(../images/startmenu_bg_lang.gif);
+}
+
+#startmenu .startmenu_content a {
+background-image:url(../images/kreispfeil.gif);
+}
+
+#contentstart .teaserstart .teaser ul li a {
+background-image:url(../images/kreispfeil.gif);
+}
+
+#contentstart .contentlinks {
+margin:36px 0 0 20px;
+}
+
+#contentstart .contentlinks .teaser a {
+background-image:url(../images/kreispfeil.gif);
+}
+
+#contentstart .contentrechts a {
+background-image:url(../images/kreispfeil.gif);
+}
+
+#contentstart .contentlinks .teaser .link {
+margin-left:-60px;
+padding-left:0;
+}
+
+#contentstart .contentrechts .teaser .link {
+margin-left:-162px;
+padding-left:0;
+}
+
+.formulare .formulardaten input.formtext {
+background-image:url(../images/bg_formfelder.gif);
+}
+
+.formulare .formulardaten .formfeld_end {
+background-image:url(../images/bg_formfelder_end.gif);
+}
+
+.formselects {
+line-height:0;
+}
+
+.formulare .formlayer_plus {
+display:block;
+}
+
+.formulare .formulardaten .helpbutton .helplayer {
+background-image: url(../images/bg_hilfe_ie.gif);
+}
+
+.ieinline {
+	display: inline;
+}

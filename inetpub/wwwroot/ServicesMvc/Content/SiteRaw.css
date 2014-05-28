@@ -1,0 +1,297 @@
+﻿body,.control-label,.checkbox,input.m-wrap,textarea.m-wrap,select.m-wrap {
+    font-size: 12px!important;
+    background-color: white!important;
+}
+
+body { 
+  font-size: 12px!important;
+  background-color:white !important;
+}
+
+textarea.m-wrap {
+    height: auto !Important;
+}
+.m-wrap {
+    margin-top: 4px;
+    line-height: 11px!important;
+    height: 11px!important;
+}
+td .m-wrap {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.input-append .add-on, .input-prepend .add-on {
+    height: 15px;
+    line-height: 15px;
+    cursor: pointer;
+}
+
+i {
+    font-size: 14px!important;
+}
+
+input.m-wrap,select.m-wrap {
+    padding: 2px;
+}
+input.m-wrap {
+    height: 11px!important;
+}
+select.m-wrap {
+    height: 26px!important;
+}
+span.m-wrap {
+    height: 20px !important;
+    line-height: 20px !important;
+}
+
+
+label, input, button, select, textarea {
+    font-size: 12px !important;
+}
+
+.form-actions {
+    padding: 10px;
+    margin-bottom: 0;
+}
+.form-actions .btn {
+    margin-right: 5px;
+}
+
+.form-horizontal .control-group {
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
+.form-horizontal .control-label {
+    float: left;
+    padding-top: 3px;
+    text-align: left;
+}
+.form-horizontal .controls {
+    margin-left: 160px;
+}    
+.form-horizontal .form-actions {
+    padding-left: 180px!important;
+}    
+.form-horizontal input.m-wrap {
+    margin-top: 0px;
+}
+
+
+.input-validation-error.checkbox,
+.input-validation-error.radio,
+.input-validation-error input,
+.input-validation-error span,
+.input-validation-error label,
+.input-validation-error .control-label,
+.input-validation-error .help-block,
+.input-validation-error .help-inline {
+    color: #b94a48!important;
+}
+.help-inline {
+    margin-top: 0;
+}
+    
+.input-validation-error input {
+    border-color: #b94a48;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.form-one-line .control-label {
+    float: left;
+    padding-top: 5px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+.requiredField 
+{
+    width: 12px;
+    display: inline-block;
+    padding-right: 10px;
+}
+.requiredFieldMarker {
+    color: #b94a48;
+    font-size: 1.1em;
+}
+.required-fields-summary {
+    display: inline-block;
+    padding-left: 15px;
+}
+
+
+/* 19.07.2013 general overrides (Matthias Jenzen) */
+
+.SForm select {
+    line-height: 20px;
+    height: 25px;
+    width: 120px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm input[type="text"] {
+    line-height: 20px;
+    height: 20px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    padding-left: 8px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm label {
+    margin: 0;
+}
+
+/* Template Controls (Matthias Jenzen) */
+
+.SControlGroupInner
+{
+    display: inline;
+}
+.SLabel
+{
+    line-height: 18px!important;
+    height: 18px!important;
+}
+.SControl {
+    margin-left: 0;
+}
+.SLabel
+{
+    display: inline-block;
+}
+.SDisplayName
+{
+    margin-right: 5px;
+}
+.SDateRangePicker 
+{
+    display: block;
+    margin-left: 27px;
+    
+}
+
+/*  Simple Form Controls (Matthias Jenzen) */
+/*    "SForm" <=> default template form */
+.SForm input,label,select {
+    font-size: 12px!important;
+}
+.SForm .SControlGroupOuter .SControlGroupInner .SLabel {
+}
+
+.SForm .SControlGroupOuter {
+    
+}
+.SForm .SControlGroupInner {
+    
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickForm .SControlGroupOuter {
+    margin-top: 10px;
+}
+.SQuickForm .SControlGroupOuter .SLabel.SLabelCheckBox {
+    display: none;
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls nebeneinander (inline), 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickInlineForm .SControlGroupOuter {
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+
+/*    "SLabelAlignedForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - Labels mit gemeinsamer Labelbreite, standard = 120px, 
+        - Labeltexte rechtsbündig 
+*/
+.SLabelAlignedForm .SControlGroupOuter 
+{
+    margin-bottom: 15px;
+}
+.SLabelAlignedForm .SControlGroupOuter .SLabel 
+{
+    width: 120px!important;
+    text-align: right;
+}
+.SLabelAlignedLeft .SControlGroupOuter .SLabel 
+{
+    text-align: left;
+}
+
+/*    "SLabelAlignedFormXX" <=> 
+        - Labels mit gemeinsamer Labelbreite XXpx, 
+*/
+.SLabelAlignedForm60 .SControlGroupOuter .SLabel 
+{
+    width: 60px!important;
+}
+.SLabelAlignedForm200 .SControlGroupOuter .SLabel 
+{
+    width: 200px!important;
+}
+
+.language-settings {
+    position: absolute;
+    top: -15px;
+    right: 40px;
+    padding: 20px;
+    cursor: pointer;
+}
+
+/* MCarl: am 08.01.2014 deaktiviert wg. schräger Tabdarstellung im Infocenter */
+/*.nav-tabs > li > a, .nav-pills > li > a {
+    padding-right: 0!important;
+    margin-right: 0!important;
+}*/
+
+.input-prepend .add-on, .input-append .add-on 
+{
+    margin-top: 0px;
+    height: 18px!important;
+    padding-top: 1px;
+    cursor: pointer;
+}
+
+.grid-toolbar {
+    height: 30px;
+}
+.grid-toolbar .dataTables_length{
+    float: left;
+}
+.grid-toolbar .dataTables_filter{
+    float: right;
+}
+.grid-toolbar select, .grid-toolbar input {
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+}
+.grid-toolbar select 
+{
+    width: 70px;
+}
+.grid-toolbar input {
+    width: 180px;
+}
+.grid-toolbar label {
+    margin: 0!important;
+}
+.dataTables_length label {
+    padding-top: 3px;
+}

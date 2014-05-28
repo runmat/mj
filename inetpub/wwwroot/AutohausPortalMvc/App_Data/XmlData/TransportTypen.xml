@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTransportTyp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TransportTyp>
+    <ID>1</ID>
+    <Name>Auslieferung Fzg.1 (Hinfahrt)</Name>
+  </TransportTyp>
+  <TransportTyp>
+    <ID>2</ID>
+    <Name>Überführung Fzg.1 (Hinfahrt)</Name>
+  </TransportTyp>
+  <TransportTyp>
+    <ID>3</ID>
+    <Name>Rückholung Fzg.2 (Rückfahrt)</Name>
+  </TransportTyp>
+  <TransportTyp>
+    <ID>4</ID>
+    <Name>Zusatzfahrt Fahrzeug 1</Name>
+  </TransportTyp>
+  <TransportTyp>
+    <ID>5</ID>
+    <Name>Zusatzfahrt Fahrzeug 2</Name>
+  </TransportTyp>
+</ArrayOfTransportTyp>

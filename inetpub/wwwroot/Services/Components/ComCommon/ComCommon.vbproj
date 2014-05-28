@@ -1,0 +1,958 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D91F05F-6756-4BB0-8AE7-E730641607F9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CKG.Components.ComCommon</RootNamespace>
+    <AssemblyName>CKG.Components.ComCommon</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <WarningLevel>1</WarningLevel>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <WarningLevel>1</WarningLevel>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf, Version=3.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words, Version=4.2.2.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Work\CKG\EasyAccess\bin\CKG.EasyAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="DHLWebService">
+      <HintPath>..\..\GAC\DHLWebService.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Upload_Validator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Upload_Validator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Beauftragung\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Beauftragung\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Beauftragung\Change02s.aspx.designer.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Beauftragung\Change02s.aspx.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Beauftragung\lib\Beauftragung.vb" />
+    <Compile Include="Beauftragung\Report01s.aspx.designer.vb">
+      <DependentUpon>Report01s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Beauftragung\Report01s.aspx.vb">
+      <DependentUpon>Report01s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Beauftragung\Report01s_2.aspx.designer.vb">
+      <DependentUpon>Report01s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Beauftragung\Report01s_2.aspx.vb">
+      <DependentUpon>Report01s_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Beauftragung\Report55s.aspx.designer.vb">
+      <DependentUpon>Report55s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Beauftragung\Report55s.aspx.vb">
+      <DependentUpon>Report55s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change01s.aspx.designer.vb">
+      <DependentUpon>Change01s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change01s.aspx.vb">
+      <DependentUpon>Change01s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change01s_2.aspx.designer.vb">
+      <DependentUpon>Change01s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change01s_2.aspx.vb">
+      <DependentUpon>Change01s_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change01s_3.aspx.designer.vb">
+      <DependentUpon>Change01s_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change01s_3.aspx.vb">
+      <DependentUpon>Change01s_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change01s_4.aspx.designer.vb">
+      <DependentUpon>Change01s_4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change01s_4.aspx.vb">
+      <DependentUpon>Change01s_4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change01s_5.aspx.designer.vb">
+      <DependentUpon>Change01s_5.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change01s_5.aspx.vb">
+      <DependentUpon>Change01s_5.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02.aspx.designer.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02.aspx.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Change03s.aspx.designer.vb">
+      <DependentUpon>Change03s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change03s.aspx.vb">
+      <DependentUpon>Change03s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Change04s.aspx.designer.vb">
+      <DependentUpon>Change04s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change04s.aspx.vb">
+      <DependentUpon>Change04s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Change05s.aspx.designer.vb">
+      <DependentUpon>Change05s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change05s.aspx.vb">
+      <DependentUpon>Change05s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="CommonService.asmx.vb">
+      <DependentUpon>CommonService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DAT\lib\DATBankenlinieConnector.vb" />
+    <Compile Include="DAT\Report02.aspx.designer.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DAT\Report02.aspx.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DAT\lib\DatConnector.vb" />
+    <Compile Include="DAT\lib\DatCredentials.vb" />
+    <Compile Include="DAT\lib\DatException.vb" />
+    <Compile Include="DAT\lib\MinimalEvaluate.vb" />
+    <Compile Include="DAT\lib\SDOnlineService.vb" />
+    <Compile Include="DAT\lib\SDOSelectVehicleExt.vb" />
+    <Compile Include="DAT\Report01.aspx.designer.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DAT\Report01.aspx.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DHLWebservice\DHLRetourenLabel.aspx.designer.vb">
+      <DependentUpon>DHLRetourenLabel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DHLWebservice\DHLRetourenLabel.aspx.vb">
+      <DependentUpon>DHLRetourenLabel.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\InfoCenterData.vb" />
+    <Compile Include="Kernel\FehlAbmeldeUnterl.vb" />
+    <Compile Include="Kernel\FehlendeCoC.vb" />
+    <Compile Include="Kernel\Report_200s.vb" />
+    <Compile Include="Leasing\Change101.aspx.designer.vb">
+      <DependentUpon>Change101.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change101.aspx.vb">
+      <DependentUpon>Change101.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change101Aut.aspx.designer.vb">
+      <DependentUpon>Change101Aut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change101Aut.aspx.vb">
+      <DependentUpon>Change101Aut.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report016s.aspx.designer.vb">
+      <DependentUpon>Report016s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report016s.aspx.vb">
+      <DependentUpon>Report016s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report015s.aspx.designer.vb">
+      <DependentUpon>Report015s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report015s.aspx.vb">
+      <DependentUpon>Report015s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change02s.aspx.designer.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change02s.aspx.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change02s_1.aspx.designer.vb">
+      <DependentUpon>Change02s_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change02s_1.aspx.vb">
+      <DependentUpon>Change02s_1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change03.aspx.designer.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change03.aspx.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change04.aspx.designer.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change04.aspx.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change100.aspx.designer.vb">
+      <DependentUpon>Change100.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change100.aspx.vb">
+      <DependentUpon>Change100.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change100Aut.aspx.designer.vb">
+      <DependentUpon>Change100Aut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change100Aut.aspx.vb">
+      <DependentUpon>Change100Aut.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change99.aspx.designer.vb">
+      <DependentUpon>Change99.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change99.aspx.vb">
+      <DependentUpon>Change99.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change99Aut.aspx.designer.vb">
+      <DependentUpon>Change99Aut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change99Aut.aspx.vb">
+      <DependentUpon>Change99Aut.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change05.aspx.designer.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change05.aspx.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change06.aspx.designer.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change06.aspx.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Change07.aspx.designer.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Change07.aspx.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\lib\Auswertung.vb" />
+    <Compile Include="Leasing\lib\Bestand.vb" />
+    <Compile Include="Leasing\lib\Briefversand.vb" />
+    <Compile Include="Leasing\lib\CarportBeauftragung.vb" />
+    <Compile Include="Leasing\lib\CarportErfassung.vb" />
+    <Compile Include="Leasing\lib\ExcelImporter.vb" />
+    <Compile Include="Leasing\lib\nichtDurchfuerbareZul.vb" />
+    <Compile Include="Leasing\lib\Rückmeldung.vb" />
+    <Compile Include="Leasing\Report01s.aspx.designer.vb">
+      <DependentUpon>Report01s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Report01s.aspx.vb">
+      <DependentUpon>Report01s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Report01s_02.aspx.designer.vb">
+      <DependentUpon>Report01s_02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Report01s_02.aspx.vb">
+      <DependentUpon>Report01s_02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Report01s_03.aspx.designer.vb">
+      <DependentUpon>Report01s_03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Report01s_03.aspx.vb">
+      <DependentUpon>Report01s_03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Report02s.aspx.designer.vb">
+      <DependentUpon>Report02s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Report02s.aspx.vb">
+      <DependentUpon>Report02s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Leasing\Report03s.aspx.designer.vb">
+      <DependentUpon>Report03s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leasing\Report03s.aspx.vb">
+      <DependentUpon>Report03s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\Adressaenderung.vb" />
+    <Compile Include="lib\Adresspflege.vb" />
+    <Compile Include="lib\EinAusgang.vb" />
+    <Compile Include="lib\Express.vb" />
+    <Compile Include="lib\Klaerfaelle.vb" />
+    <Compile Include="lib\Mahnstufe3.vb" />
+    <Compile Include="Treuhand\Change101s.aspx.designer.vb">
+      <DependentUpon>Change101s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change101s.aspx.vb">
+      <DependentUpon>Change101s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change101s_3.aspx.designer.vb">
+      <DependentUpon>Change101s_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change101s_3.aspx.vb">
+      <DependentUpon>Change101s_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change101s_2.aspx.designer.vb">
+      <DependentUpon>Change101s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change101s_2.aspx.vb">
+      <DependentUpon>Change101s_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change102s.aspx.designer.vb">
+      <DependentUpon>Change102s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change102s.aspx.vb">
+      <DependentUpon>Change102s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change102s_2.aspx.designer.vb">
+      <DependentUpon>Change102s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change102s_2.aspx.vb">
+      <DependentUpon>Change102s_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change102s_3.aspx.designer.vb">
+      <DependentUpon>Change102s_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change102s_3.aspx.vb">
+      <DependentUpon>Change102s_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\lib\SperrPruefung.vb" />
+    <Compile Include="lib\UserGroupApp.vb" />
+    <Compile Include="lib\Versand1.vb" />
+    <Compile Include="lib\Versand2.vb" />
+    <Compile Include="lib\ZugelasseneFahrz.vb" />
+    <Compile Include="Logistik\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Change01_2.aspx.designer.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Change01_2.aspx.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Change01_3.aspx.designer.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Change01_3.aspx.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Change01_4.aspx.designer.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Change01_4.aspx.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Change02s.aspx.designer.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Change02s.aspx.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\lib\Historie_Log.vb" />
+    <Compile Include="Logistik\lib\Logistik1.vb" />
+    <Compile Include="Logistik\lib\LogUeberf.vb" />
+    <Compile Include="Logistik\lib\Transfer.vb" />
+    <Compile Include="Logistik\lib\TransferBase.vb" />
+    <Compile Include="Logistik\Report01.aspx.designer.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Report01.aspx.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Report01_02.aspx.designer.vb">
+      <DependentUpon>Report01_02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Report01_02.aspx.vb">
+      <DependentUpon>Report01_02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Report02.aspx.designer.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Report02.aspx.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Report02_1.aspx.designer.vb">
+      <DependentUpon>Report02_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Report02_1.aspx.vb">
+      <DependentUpon>Report02_1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Logistik\Report03.aspx.designer.vb">
+      <DependentUpon>Report03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logistik\Report03.aspx.vb">
+      <DependentUpon>Report03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Report014s.aspx.designer.vb">
+      <DependentUpon>Report014s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report014s.aspx.vb">
+      <DependentUpon>Report014s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report014_1s.aspx.designer.vb">
+      <DependentUpon>Report014_1s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report014_1s.aspx.vb">
+      <DependentUpon>Report014_1s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report05s.aspx.designer.vb">
+      <DependentUpon>Report05s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report05s.aspx.vb">
+      <DependentUpon>Report05s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report06s.aspx.designer.vb">
+      <DependentUpon>Report06s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report06s.aspx.vb">
+      <DependentUpon>Report06s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report13s.aspx.designer.vb">
+      <DependentUpon>Report13s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report13s.aspx.vb">
+      <DependentUpon>Report13s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report18s.aspx.designer.vb">
+      <DependentUpon>Report18s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report18s.aspx.vb">
+      <DependentUpon>Report18s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report20.aspx.designer.vb">
+      <DependentUpon>Report20.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report20.aspx.vb">
+      <DependentUpon>Report20.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report200s.aspx.designer.vb">
+      <DependentUpon>Report200s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report200s.aspx.vb">
+      <DependentUpon>Report200s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report28s.aspx.designer.vb">
+      <DependentUpon>Report28s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report28s.aspx.vb">
+      <DependentUpon>Report28s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Report29s.aspx.designer.vb">
+      <DependentUpon>Report29s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report29s.aspx.vb">
+      <DependentUpon>Report29s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report30s.aspx.designer.vb">
+      <DependentUpon>Report30s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report30s.aspx.vb">
+      <DependentUpon>Report30s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change01s.aspx.designer.vb">
+      <DependentUpon>Change01s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change01s.aspx.vb">
+      <DependentUpon>Change01s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change03s.aspx.designer.vb">
+      <DependentUpon>Change03s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change03s.aspx.vb">
+      <DependentUpon>Change03s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change03sAut.aspx.designer.vb">
+      <DependentUpon>Change03sAut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change03sAut.aspx.vb">
+      <DependentUpon>Change03sAut.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change100sAut.aspx.designer.vb">
+      <DependentUpon>Change100sAut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change100sAut.aspx.vb">
+      <DependentUpon>Change100sAut.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change100s_2.aspx.designer.vb">
+      <DependentUpon>Change100s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change100s_2.aspx.vb">
+      <DependentUpon>Change100s_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change100s.aspx.designer.vb">
+      <DependentUpon>Change100s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change100s.aspx.vb">
+      <DependentUpon>Change100s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Change48s.aspx.designer.vb">
+      <DependentUpon>Change48s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Change48s.aspx.vb">
+      <DependentUpon>Change48s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\lib\Block.vb" />
+    <Compile Include="Treuhand\lib\Treuhandbestand.vb" />
+    <Compile Include="Treuhand\lib\SperreFreigabe.vb" />
+    <Compile Include="Treuhand\lib\Treuhandsperre.vb" />
+    <Compile Include="Treuhand\Report03s.aspx.designer.vb">
+      <DependentUpon>Report03s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Report03s.aspx.vb">
+      <DependentUpon>Report03s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Report100s.aspx.designer.vb">
+      <DependentUpon>Report100s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Report100s.aspx.vb">
+      <DependentUpon>Report100s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Report100s_2.aspx.designer.vb">
+      <DependentUpon>Report100s_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Report100s_2.aspx.vb">
+      <DependentUpon>Report100s_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Treuhand\Report101s.aspx.designer.vb">
+      <DependentUpon>Report101s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Treuhand\Report101s.aspx.vb">
+      <DependentUpon>Report101s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\lib\Report_99s.vb" />
+    <Compile Include="Zulassung\Report30_2s.aspx.designer.vb">
+      <DependentUpon>Report30_2s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Report30_2s.aspx.vb">
+      <DependentUpon>Report30_2s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Change01_2.aspx.designer.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Change01_2.aspx.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Change01_3.aspx.designer.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Change01_3.aspx.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Change01_4.aspx.designer.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Change01_4.aspx.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Change01_5.aspx.designer.vb">
+      <DependentUpon>Change01_5.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Change01_5.aspx.vb">
+      <DependentUpon>Change01_5.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Helpdesk2s.aspx.designer.vb">
+      <DependentUpon>Helpdesk2s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Helpdesk2s.aspx.vb">
+      <DependentUpon>Helpdesk2s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\lib\ZLD_Suche.vb" />
+    <Compile Include="Zulassung\lib\Zulassung1.vb" />
+    <Compile Include="Zulassung\Report30s.aspx.designer.vb">
+      <DependentUpon>Report30s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Report30s.aspx.vb">
+      <DependentUpon>Report30s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Report99s.aspx.designer.vb">
+      <DependentUpon>Report99s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Report99s.aspx.vb">
+      <DependentUpon>Report99s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zulassung\Report99_2s.aspx.designer.vb">
+      <DependentUpon>Report99_2s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zulassung\Report99_2s.aspx.vb">
+      <DependentUpon>Report99_2s.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DHLWebservice\Documents\Details.doc" />
+    <None Include="DHLWebservice\Documents\VersandSchluessel.doc" />
+    <None Include="DHLWebservice\Documents\VersandZB2.doc" />
+    <None Include="DHLWebservice\Documents\Zulassungsantrag.doc" />
+    <None Include="DHLWebservice\Documents\Zulassungsantrag2.doc" />
+    <None Include="Leasing\Documents\351825\Prozessablauf_VWLeasing.pdf" />
+    <None Include="Leasing\Documents\Bestellung.doc" />
+    <None Include="Logistik\Dokumente\UebersichtUeberfuehrung.doc" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Beauftragung\Change01.aspx" />
+    <Content Include="Beauftragung\Change02s.aspx" />
+    <Content Include="Beauftragung\Report01s.aspx" />
+    <Content Include="Beauftragung\Report01s_2.aspx" />
+    <Content Include="Beauftragung\Report55s.aspx" />
+    <Content Include="Change01s.aspx" />
+    <Content Include="Change01s_2.aspx" />
+    <Content Include="Change01s_3.aspx" />
+    <Content Include="Change01s_4.aspx" />
+    <Content Include="Change01s_5.aspx" />
+    <Content Include="Change02.aspx" />
+    <Content Include="Change03s.aspx" />
+    <Content Include="Change04s.aspx" />
+    <Content Include="Change05s.aspx" />
+    <Content Include="CommonService.asmx" />
+    <Content Include="DAT\Report02.aspx" />
+    <Content Include="DAT\Report01.aspx" />
+    <Content Include="DHLWebservice\DHLRetourenLabel.aspx" />
+    <Content Include="Leasing\Change101.aspx" />
+    <Content Include="Leasing\Change101Aut.aspx" />
+    <Content Include="Report016s.aspx" />
+    <Content Include="Report015s.aspx" />
+    <Content Include="Leasing\Change02s.aspx" />
+    <Content Include="Leasing\Change02s_1.aspx" />
+    <Content Include="Leasing\Change03.aspx" />
+    <Content Include="Leasing\Change04.aspx" />
+    <Content Include="Leasing\Change100.aspx" />
+    <Content Include="Leasing\Change100Aut.aspx" />
+    <Content Include="Leasing\Change99.aspx" />
+    <Content Include="Leasing\Change99Aut.aspx" />
+    <Content Include="Leasing\Info01.htm" />
+    <Content Include="Leasing\Info02.htm" />
+    <Content Include="Leasing\Change05.aspx" />
+    <Content Include="Leasing\Change06.aspx" />
+    <Content Include="Leasing\Change07.aspx" />
+    <Content Include="Leasing\Report01s.aspx" />
+    <Content Include="Leasing\Report01s_02.aspx" />
+    <Content Include="Leasing\Report01s_03.aspx" />
+    <Content Include="Leasing\Report02s.aspx" />
+    <Content Include="Leasing\Report03s.aspx" />
+    <Content Include="Logistik\Change01.aspx" />
+    <Content Include="Logistik\Change01_2.aspx" />
+    <Content Include="Logistik\Change01_3.aspx" />
+    <Content Include="Logistik\Change01_4.aspx" />
+    <Content Include="Logistik\Change02s.aspx" />
+    <Content Include="Logistik\Report01.aspx" />
+    <Content Include="Logistik\Report01_02.aspx" />
+    <Content Include="Logistik\Report02.aspx" />
+    <Content Include="Logistik\Report02_1.aspx" />
+    <Content Include="Logistik\Report03.aspx" />
+    <Content Include="Report014s.aspx" />
+    <Content Include="Report014_1s.aspx" />
+    <Content Include="Report05s.aspx" />
+    <Content Include="Report06s.aspx" />
+    <Content Include="Report13s.aspx" />
+    <Content Include="Report18s.aspx" />
+    <Content Include="Report20.aspx" />
+    <Content Include="Report200s.aspx" />
+    <Content Include="Report28s.aspx" />
+    <Content Include="Report29s.aspx" />
+    <Content Include="Report30s.aspx" />
+    <Content Include="Treuhand\Change01s.aspx" />
+    <Content Include="Treuhand\Change03s.aspx" />
+    <Content Include="Treuhand\Change03sAut.aspx" />
+    <Content Include="Treuhand\Change100sAut.aspx" />
+    <Content Include="Treuhand\Change100s_2.aspx" />
+    <Content Include="Treuhand\Change100s.aspx" />
+    <Content Include="Treuhand\Change48s.aspx" />
+    <Content Include="Treuhand\info01.htm" />
+    <Content Include="Treuhand\Change101s.aspx" />
+    <Content Include="Treuhand\Change101s_3.aspx" />
+    <Content Include="Treuhand\Change101s_2.aspx" />
+    <Content Include="Treuhand\Change102s.aspx" />
+    <Content Include="Treuhand\Change102s_2.aspx" />
+    <Content Include="Treuhand\Change102s_3.aspx" />
+    <Content Include="Treuhand\info02.htm" />
+    <Content Include="Treuhand\Report03s.aspx" />
+    <Content Include="Treuhand\Report100s.aspx" />
+    <Content Include="Treuhand\Report100s_2.aspx" />
+    <Content Include="Treuhand\Report101s.aspx" />
+    <Content Include="Zulassung\Report30_2s.aspx" />
+    <Content Include="Zulassung\Change01.aspx" />
+    <Content Include="Zulassung\Change01_2.aspx" />
+    <Content Include="Zulassung\Change01_3.aspx" />
+    <Content Include="Zulassung\Change01_4.aspx" />
+    <Content Include="Zulassung\Change01_5.aspx" />
+    <Content Include="Helpdesk2s.aspx" />
+    <Content Include="Zulassung\Report30s.aspx" />
+    <Content Include="Zulassung\Report99s.aspx" />
+    <Content Include="Zulassung\Report99_2s.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Beauftragung\My Project\" />
+    <Folder Include="Beauftragung\obj\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services.vbproj">
+      <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{F377F0B3-D869-42B1-A2B5-DBC7BF3DE613}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="DAT_BankenLinie_Connector\DAT_BankenLinie_Connector\DAT_BankenLinie_Connector.csproj">
+      <Project>{695BD928-0E33-498F-B2B5-FC7C010E748F}</Project>
+      <Name>DAT_BankenLinie_Connector</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1309</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Services/Components/ComCommon</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

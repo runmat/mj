@@ -1,0 +1,34 @@
+﻿@using GeneralTools.Models
+@model System.Web.Mvc.ModelStateDictionary
+
+@if(!Model.IsValid)
+{
+    <div class="validation-summary-errors">
+        <ul>
+            @foreach (var modelError in Model.SelectMany(keyValuePair => keyValuePair.Value.Errors))
+            {
+                if (modelError.Exception == null)
+                {
+                    <li>@modelError.ErrorMessage</li>
+                }
+                else
+                {
+                    if (modelError.Exception.Message.IsNotNullOrEmpty())
+                    {
+                        if (ViewBag.ResponsiveErrorUrlFunction != null && ViewBag.ResponsiveErrorUrlFunction(modelError.Exception) != null)
+                        {
+                            <li>
+                                <a href="@ViewBag.ResponsiveErrorUrlFunction(modelError.Exception)">@modelError.Exception.Message &nbsp;&nbsp; &rarr;</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>@modelError.Exception.Message</li>
+                        }
+                    }
+                }
+            }
+        </ul>
+    </div>
+}
+ 

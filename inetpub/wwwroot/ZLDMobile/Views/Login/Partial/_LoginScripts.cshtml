@@ -1,0 +1,14 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+        // wenn möglich, Feld "Username" mit letztem aktiven Usernamen vorbelegen
+        var zldmob = LoadFromLocalStorage("ZLDMobile");
+        if ($("#UserName").val().length == 0 && zldmob != null && zldmob.LastUser != null && zldmob.LastUser.length > 0) {
+            $("#UserName").val(zldmob.LastUser);
+            $("#Password").focus();
+        } else {
+            $("#UserName").focus();
+        }
+    });
+     
+ </script>

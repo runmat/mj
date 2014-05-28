@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model Schadenfall
+
+<form action="#" class="form-horizontal">
+    
+    <h4 class="form-section hide">@Localize.Insurance_Schadenakte</h4>
+
+    @Html.FormTextBlockFor(m => m.EventName, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.VersicherungName, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Email, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.TelefonNr, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.SelbstbeteiligungsHoehe, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Referenznummer, new { @class = "m-wrap", col = "left" })
+    @Html.FormCheckBoxFor(m => m.Sammelbesichtigung, new { @class = "m-wrap", col = "right", @disabled = "disabled" })
+
+</form>

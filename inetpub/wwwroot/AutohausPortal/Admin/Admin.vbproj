@@ -1,0 +1,1096 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Admin</RootNamespace>
+    <AssemblyName>Admin</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>Admin.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>Admin.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells">
+      <HintPath>GAC\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf">
+      <HintPath>GAC\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>GAC\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
+      <HintPath>GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abrufgruende.aspx.designer.vb">
+      <DependentUpon>Abrufgruende.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Abrufgruende.aspx.vb">
+      <DependentUpon>Abrufgruende.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdministrationMenu.aspx.designer.vb">
+      <DependentUpon>AdministrationMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrationMenu.aspx.vb">
+      <DependentUpon>AdministrationMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AktuellesPflege.aspx.designer.vb">
+      <DependentUpon>AktuellesPflege.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AktuellesPflege.aspx.vb">
+      <DependentUpon>AktuellesPflege.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppManagement.aspx.designer.vb">
+      <DependentUpon>AppManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AppManagement.aspx.vb">
+      <DependentUpon>AppManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArchivManagement.aspx.designer.vb">
+      <DependentUpon>ArchivManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ArchivManagement.aspx.vb">
+      <DependentUpon>ArchivManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AutorisierungenLoeschen.aspx.designer.vb">
+      <DependentUpon>AutorisierungenLoeschen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutorisierungenLoeschen.aspx.vb">
+      <DependentUpon>AutorisierungenLoeschen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AutUserUpload.aspx.designer.vb">
+      <DependentUpon>AutUserUpload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutUserUpload.aspx.vb">
+      <DependentUpon>AutUserUpload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BapiOverView.aspx.designer.vb">
+      <DependentUpon>BapiOverView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BapiOverView.aspx.vb">
+      <DependentUpon>BapiOverView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ColumnTranslation.aspx.designer.vb">
+      <DependentUpon>ColumnTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ColumnTranslation.aspx.vb">
+      <DependentUpon>ColumnTranslation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.vb">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.aspx.vb">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerManagement.aspx.designer.vb">
+      <DependentUpon>CustomerManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerManagement.aspx.vb">
+      <DependentUpon>CustomerManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FieldTranslation.aspx.designer.vb">
+      <DependentUpon>FieldTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FieldTranslation.aspx.vb">
+      <DependentUpon>FieldTranslation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForbiddenUserNameManagement.aspx.designer.vb">
+      <DependentUpon>ForbiddenUserNameManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForbiddenUserNameManagement.aspx.vb">
+      <DependentUpon>ForbiddenUserNameManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Groupmanagement.aspx.designer.vb">
+      <DependentUpon>Groupmanagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Groupmanagement.aspx.vb">
+      <DependentUpon>Groupmanagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="jve_LogMessage2.aspx.designer.vb">
+      <DependentUpon>jve_LogMessage2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="jve_LogMessage2.aspx.vb">
+      <DependentUpon>jve_LogMessage2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="jve_ZugriffsHistorie.aspx.designer.vb">
+      <DependentUpon>jve_ZugriffsHistorie.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="jve_ZugriffsHistorie.aspx.vb">
+      <DependentUpon>jve_ZugriffsHistorie.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\AbrufgruendeDT.Designer.vb">
+      <DependentUpon>AbrufgruendeDT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AbrufgruendeDT.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\AccountingAreaList.Designer.vb">
+      <DependentUpon>AccountingAreaList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AccountingAreaList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\AppAssignments.vb" />
+    <Compile Include="Kernel\Application.vb" />
+    <Compile Include="Kernel\AppTypeList.Designer.vb">
+      <DependentUpon>AppTypeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AppTypeList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Archiv.vb" />
+    <Compile Include="Kernel\ArchivAssignments.vb" />
+    <Compile Include="Kernel\ColumnTranslation.vb" />
+    <Compile Include="Kernel\ColumnTranslationList.Designer.vb">
+      <DependentUpon>ColumnTranslationList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\ColumnTranslationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\CustomerList.Designer.vb">
+      <DependentUpon>CustomerList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\CustomerList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\DBProxys.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\EmployeeAssignments.vb" />
+    <Compile Include="Kernel\FieldTranslation.vb" />
+    <Compile Include="Kernel\FieldTranslationList.Designer.vb">
+      <DependentUpon>FieldTranslationList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\FieldTranslationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserName.vb" />
+    <Compile Include="Kernel\ForbiddenUserNameAllList.Designer.vb">
+      <DependentUpon>ForbiddenUserNameAllList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserNameAllList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserNameList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\GroupList.Designer.vb">
+      <DependentUpon>GroupList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\GroupList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HierarchyList.Designer.vb">
+      <DependentUpon>HierarchyList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\HierarchyList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryCustomerList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryGroupList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryOrganizationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryUserList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\LanguageList.Designer.vb">
+      <DependentUpon>LanguageList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\LanguageList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\UpdateDBProxys.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\UserList.Designer.vb">
+      <DependentUpon>UserList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\UserList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InfocenterAdmin.aspx.designer.vb">
+      <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InfocenterAdmin.aspx.vb">
+      <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DownloadFile.aspx.designer.vb">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DownloadFile.aspx.vb">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\Aktuelles.vb" />
+    <Compile Include="lib\BapiOverViewClass.vb" />
+    <Compile Include="lib\Crypt.vb" />
+    <Compile Include="lib\Mails.vb" />
+    <Compile Include="lib\PeisAdministrationClass.vb" />
+    <Compile Include="lib\ShowBapisClass.vb" />
+    <Compile Include="LogBapi2Report.aspx.designer.vb">
+      <DependentUpon>LogBapi2Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogBapi2Report.aspx.vb">
+      <DependentUpon>LogBapi2Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogMessage.aspx.designer.vb">
+      <DependentUpon>LogMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogMessage.aspx.vb">
+      <DependentUpon>LogMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogSchwellwert.aspx.designer.vb">
+      <DependentUpon>LogSchwellwert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogSchwellwert.aspx.vb">
+      <DependentUpon>LogSchwellwert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogViewer.aspx.designer.vb">
+      <DependentUpon>LogViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogViewer.aspx.vb">
+      <DependentUpon>LogViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MailPflegeUebersicht.aspx.designer.vb">
+      <DependentUpon>MailPflegeUebersicht.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MailPflegeUebersicht.aspx.vb">
+      <DependentUpon>MailPflegeUebersicht.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Admin.Master.designer.vb">
+      <DependentUpon>Admin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Admin.Master.vb">
+      <DependentUpon>Admin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Menue\ServicesMenue.ascx.designer.vb">
+      <DependentUpon>ServicesMenue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Menue\ServicesMenue.ascx.vb">
+      <DependentUpon>ServicesMenue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OrganizationManagement.aspx.designer.vb">
+      <DependentUpon>OrganizationManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationManagement.aspx.vb">
+      <DependentUpon>OrganizationManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\GridNavigation.ascx.designer.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\GridNavigation.ascx.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PeisAdministration.aspx.designer.vb">
+      <DependentUpon>PeisAdministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PeisAdministration.aspx.vb">
+      <DependentUpon>PeisAdministration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Performance.aspx.designer.vb">
+      <DependentUpon>Performance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Performance.aspx.vb">
+      <DependentUpon>Performance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Performance2.aspx.designer.vb">
+      <DependentUpon>Performance2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Performance2.aspx.vb">
+      <DependentUpon>Performance2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SAPMonitoring.aspx.designer.vb">
+      <DependentUpon>SAPMonitoring.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SAPMonitoring.aspx.vb">
+      <DependentUpon>SAPMonitoring.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShowBapis.aspx.designer.vb">
+      <DependentUpon>ShowBapis.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShowBapis.aspx.vb">
+      <DependentUpon>ShowBapis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sidebar\menue.ascx.designer.vb">
+      <DependentUpon>menue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Sidebar\menue.ascx.vb">
+      <DependentUpon>menue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StatusMonitor.aspx.designer.vb">
+      <DependentUpon>StatusMonitor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StatusMonitor.aspx.vb">
+      <DependentUpon>StatusMonitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\AppData.ascx.vb">
+      <DependentUpon>AppData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\BAPIData.ascx.vb">
+      <DependentUpon>BAPIData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\SAPData.ascx.vb">
+      <DependentUpon>SAPData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Translation_Start.aspx.designer.vb">
+      <DependentUpon>Translation_Start.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Translation_Start.aspx.vb">
+      <DependentUpon>Translation_Start.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserHistory.aspx.designer.vb">
+      <DependentUpon>UserHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserHistory.aspx.vb">
+      <DependentUpon>UserHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserManagement.aspx.designer.vb">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement.aspx.vb">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserUnlock.aspx.designer.vb">
+      <DependentUpon>UserUnlock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserUnlock.aspx.vb">
+      <DependentUpon>UserUnlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\AppData.ascx.resx">
+      <DependentUpon>AppData.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\BAPIData.ascx.resx">
+      <DependentUpon>BAPIData.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SAPData.ascx.resx">
+      <DependentUpon>SAPData.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdministrationMenu.aspx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="GAC\AjaxControlToolkit.dll" />
+    <Content Include="GAC\Aspose.Cells.dll" />
+    <Content Include="GAC\Aspose.Pdf.dll" />
+    <Content Include="GAC\Aspose.Words.dll" />
+    <Content Include="GAC\BusyBoxDotNet.dll" />
+    <Content Include="GAC\DBauer.Web.UI.WebControls.HierarGrid.dll" />
+    <Content Include="Images\%40_10.jpg" />
+    <Content Include="Images\addfromleft.png" />
+    <Content Include="Images\Admin.png" />
+    <Content Include="Images\Anwendungen.png" />
+    <Content Include="Images\AnwendungenHover.png" />
+    <Content Include="Images\Application.png" />
+    <Content Include="Images\Application_Hover.png" />
+    <Content Include="Images\AppType.gif" />
+    <Content Include="Images\AppTypeAdminHover.gif" />
+    <Content Include="Images\AppTypeAdminNormal.gif" />
+    <Content Include="Images\AppTypeChangeHover.gif" />
+    <Content Include="Images\AppTypeChangeNormal.gif" />
+    <Content Include="Images\AppTypeHelpNormal.gif" />
+    <Content Include="Images\AppTypeReportsHover.gif" />
+    <Content Include="Images\AppTypeReportsNormal.gif" />
+    <Content Include="Images\Archive.png" />
+    <Content Include="Images\Armaturenbrett.jpg" />
+    <Content Include="Images\arrow.gif" />
+    <Content Include="Images\arrowgrey.gif" />
+    <Content Include="Images\Ausrufezeichen.gif" />
+    <Content Include="Images\Ausrufezeichen01_10.jpg" />
+    <Content Include="Images\Ausrufezeichen02_10.jpg" />
+    <Content Include="Images\Ausrufezeichen03_10.jpg" />
+    <Content Include="Images\back.jpg" />
+    <Content Include="Images\backgroundImage.gif" />
+    <Content Include="Images\Benutzer.gif" />
+    <Content Include="Images\Benutzer.jpg" />
+    <Content Include="Images\Benutzer.png" />
+    <Content Include="Images\bg_main_startseite.jpg" />
+    <Content Include="Images\BigKroschkeBridge.jpg" />
+    <Content Include="Images\BigKroschkeBridge1.jpg" />
+    <Content Include="Images\blank.gif" />
+    <Content Include="Images\Blatt_08.jpg" />
+    <Content Include="Images\BLB.jpg" />
+    <Content Include="Images\Buch_08.jpg" />
+    <Content Include="Images\Bueroklammer_01.jpg" />
+    <Content Include="Images\button.jpg" />
+    <Content Include="Images\buttonLarge.jpg" />
+    <Content Include="Images\buttonMiddle.jpg" />
+    <Content Include="Images\buttonSmall.jpg" />
+    <Content Include="Images\buttonXLarge.jpg" />
+    <Content Include="Images\buttonXXLarge.jpg" />
+    <Content Include="Images\calendar.jpg" />
+    <Content Include="Images\calendar_red.jpg" />
+    <Content Include="Images\CD01_05.jpg" />
+    <Content Include="Images\CD02_05.jpg" />
+    <Content Include="Images\ChangePasswd_Blue.jpg" />
+    <Content Include="Images\CKG_Start.Lightpng.png" />
+    <Content Include="Images\CKG_Start.png" />
+    <Content Include="Images\Confirm_mini.gif" />
+    <Content Include="Images\continue.jpg" />
+    <Content Include="Images\customer11.png" />
+    <Content Include="Images\dadlogo.jpg" />
+    <Content Include="Images\del.png" />
+    <Content Include="Images\Delete01.jpg" />
+    <Content Include="Images\Delete01_06.jpg" />
+    <Content Include="Images\Delete02_06.jpg" />
+    <Content Include="Images\delgrey.png" />
+    <Content Include="Images\DHL-logo.gif" />
+    <Content Include="Images\Diagramm01_07.jpg" />
+    <Content Include="Images\Diagramm01_08.jpg" />
+    <Content Include="Images\Diagramm02_07.jpg" />
+    <Content Include="Images\Diagramm02_08.jpg" />
+    <Content Include="Images\Diagramm03_07.jpg" />
+    <Content Include="Images\Diagramm03_08.jpg" />
+    <Content Include="Images\Diagramm04_07.jpg" />
+    <Content Include="Images\Diagramm04_08.jpg" />
+    <Content Include="Images\Diagramm05_07.jpg" />
+    <Content Include="Images\Diagramm05_08.jpg" />
+    <Content Include="Images\Diagramm06_07.jpg" />
+    <Content Include="Images\Diagramm06_08.jpg" />
+    <Content Include="Images\Dienstleistung.jpg" />
+    <Content Include="Images\DienstleistungActive.jpg" />
+    <Content Include="Images\Diskette_06.jpg" />
+    <Content Include="Images\Dokumente01_09.jpg" />
+    <Content Include="Images\Dokumente03_09.jpg" />
+    <Content Include="Images\Dokumente_02_09.jpg" />
+    <Content Include="Images\Dollar01_08.jpg" />
+    <Content Include="Images\Dollar02_08.jpg" />
+    <Content Include="Images\dotNet.jpeg" />
+    <Content Include="Images\down.gif" />
+    <Content Include="Images\Drucker01_08.jpg" />
+    <Content Include="Images\Drucker02_08.jpg" />
+    <Content Include="Images\Drucker03_08.jpg" />
+    <Content Include="Images\Drucker04_08.jpg" />
+    <Content Include="Images\Edit.gif" />
+    <Content Include="Images\EditTableHS.png" />
+    <Content Include="Images\Edit_01.gif" />
+    <Content Include="Images\Edit_01.jpg" />
+    <Content Include="Images\Edit_02.jpg" />
+    <Content Include="Images\empty.gif" />
+    <Content Include="Images\Fahrzeugdaten.jpg" />
+    <Content Include="Images\FahrzeugdatenActive.jpg" />
+    <Content Include="Images\Federspitze.jpg" />
+    <Content Include="Images\Fenster_max.jpg" />
+    <Content Include="Images\Filter.gif" />
+    <Content Include="Images\Flamme.jpg" />
+    <Content Include="Images\Formular.gif" />
+    <Content Include="Images\Fotos.jpg" />
+    <Content Include="Images\fragezeichen.gif" />
+    <Content Include="Images\Fragezeichen02_10.jpg" />
+    <Content Include="Images\Fragezeichen03_10.jpg" />
+    <Content Include="Images\Fragezeichen_10.jpg" />
+    <Content Include="Images\GanzVor02_09.jpg" />
+    <Content Include="Images\GanzVor_09.jpg" />
+    <Content Include="Images\GanzZurueck02_09.jpg" />
+    <Content Include="Images\GanzZurueck_09.jpg" />
+    <Content Include="Images\Gear.png" />
+    <Content Include="Images\Gif_Logo.gif" />
+    <Content Include="Images\groups.png" />
+    <Content Include="Images\groups_hover.png" />
+    <Content Include="Images\Grunddaten.jpg" />
+    <Content Include="Images\GrunddatenActive.jpg" />
+    <Content Include="Images\Gruppen.png" />
+    <Content Include="Images\haken_gruen.gif" />
+    <Content Include="Images\haken_gruen24x24.gif" />
+    <Content Include="Images\header.jpg" />
+    <Content Include="Images\header2.jpg" />
+    <Content Include="Images\headerBig.png" />
+    <Content Include="Images\header_wuert.jpg" />
+    <Content Include="Images\Herz01_09.jpg" />
+    <Content Include="Images\Herz02_09.jpg" />
+    <Content Include="Images\Herz03_09.jpg" />
+    <Content Include="Images\HistButton.png" />
+    <Content Include="Images\HistButton2.png" />
+    <Content Include="Images\HistButtonBeforActive.png" />
+    <Content Include="Images\HistButtonLast.png" />
+    <Content Include="Images\HistButtonLastActive.png" />
+    <Content Include="Images\HistButtonMiddleActive.png" />
+    <Content Include="Images\HochRunter01_06.jpg" />
+    <Content Include="Images\HochRunter02_06.jpg" />
+    <Content Include="Images\Home01_06.jpg" />
+    <Content Include="Images\Home02_06.jpg" />
+    <Content Include="Images\iconPDF.gif" />
+    <Content Include="Images\iconWORD.gif" />
+    <Content Include="Images\iconXLS.gif" />
+    <Content Include="Images\Icon_01.jpg" />
+    <Content Include="Images\icon_nein.gif" />
+    <Content Include="Images\Icon_Zeile_03.jpg" />
+    <Content Include="Images\iepngfix.htc" />
+    <Content Include="Images\indicator.gif" />
+    <Content Include="Images\info.gif" />
+    <Content Include="Images\info.jpg" />
+    <Content Include="Images\Info01_06.jpg" />
+    <Content Include="Images\Info01_10.jpg" />
+    <Content Include="Images\Info02_06.jpg" />
+    <Content Include="Images\InfoAuto.gif" />
+    <Content Include="Images\jpg-file.png" />
+    <Content Include="Images\Kalender01_07.jpg" />
+    <Content Include="Images\Kalender02_07.jpg" />
+    <Content Include="Images\Kopie von Pfeil_abwaerts_01.jpg" />
+    <Content Include="Images\Kopie von Pfeil_aufwaerts_01.jpg" />
+    <Content Include="Images\Kopie von Pfeil_hoch_03.jpg" />
+    <Content Include="Images\Kopie von Pfeil_hoch_04.jpg" />
+    <Content Include="Images\Kopie von Pfeil_hoch_05.jpg" />
+    <Content Include="Images\Kreislauf_01.jpg" />
+    <Content Include="Images\kroschke.gif" />
+    <Content Include="Images\Kroschke.jpg" />
+    <Content Include="Images\Kroschke2.jpg" />
+    <Content Include="Images\kroschkeBridge - Kopie.jpg" />
+    <Content Include="Images\kroschkeBridge.jpg" />
+    <Content Include="Images\kroschkeBridge1.jpg" />
+    <Content Include="Images\kroschkeTrans.jpg" />
+    <Content Include="Images\Kunden.png" />
+    <Content Include="Images\Lautstaerke_09.jpg" />
+    <Content Include="Images\Lautstaerke_10.jpg" />
+    <Content Include="Images\Lesezeichen_08.jpg" />
+    <Content Include="Images\lock.gif" />
+    <Content Include="Images\Locked.gif" />
+    <Content Include="Images\Locked01_06.jpg" />
+    <Content Include="Images\Locked02_06.jpg" />
+    <Content Include="Images\lockwhite.gif" />
+    <Content Include="Images\lockwhite.jpg" />
+    <Content Include="Images\login.jpg" />
+    <Content Include="Images\loginHeader.jpg" />
+    <Content Include="Images\loginHeader_blue.jpg" />
+    <Content Include="Images\Logistik\arrowdown.png" />
+    <Content Include="Images\Logistik\arrowup.png" />
+    <Content Include="Images\Logistik\BackDetails - Kopie.png" />
+    <Content Include="Images\Logistik\BackDetails.png" />
+    <Content Include="Images\Logistik\Delete.jpg" />
+    <Content Include="Images\Logistik\delete.png" />
+    <Content Include="Images\Logistik\edit.png" />
+    <Content Include="Images\Logistik\loesch.gif" />
+    <Content Include="Images\Logistik\plusgreen.png" />
+    <Content Include="Images\Logistik\save.png" />
+    <Content Include="Images\Logistik\savegreen.png" />
+    <Content Include="Images\Logistik\StandardBlueDL.png" />
+    <Content Include="Images\Logistik\StandardBlueTour.png" />
+    <Content Include="Images\Logistik\StandardGreyDL.png" />
+    <Content Include="Images\Logistik\StandardGreyTour.png" />
+    <Content Include="Images\Logistik\StandardReadyDL.png" />
+    <Content Include="Images\Logistik\StandardReadyTour.png" />
+    <Content Include="Images\logoDAD.jpg" />
+    <Content Include="Images\logoDADTrans.jpg" />
+    <Content Include="Images\logoGenerali.jpg" />
+    <Content Include="Images\logoGenerali2.jpg" />
+    <Content Include="Images\LogoKroschke.jpg" />
+    <Content Include="Images\Lupe_+.jpg" />
+    <Content Include="Images\Lupe_-.jpg" />
+    <Content Include="Images\Lupe_01.gif" />
+    <Content Include="Images\Lupe_01.jpg" />
+    <Content Include="Images\Lupe_16x16.gif" />
+    <Content Include="Images\Mail02_06.jpg" />
+    <Content Include="Images\Mail_06.jpg" />
+    <Content Include="Images\MannFrau_08.jpg" />
+    <Content Include="Images\minus.gif" />
+    <Content Include="Images\Minus.jpg" />
+    <Content Include="Images\Minus1.gif" />
+    <Content Include="Images\minus19.gif" />
+    <Content Include="Images\Muell_08.jpg" />
+    <Content Include="Images\navDateneingabe.gif" />
+    <Content Include="Images\navDisplayArrowLeft.gif" />
+    <Content Include="Images\navDisplayArrowRight.gif" />
+    <Content Include="Images\navi.gif" />
+    <Content Include="Images\Navi.png" />
+    <Content Include="Images\navi_grey.gif" />
+    <Content Include="Images\navi_grey2.gif" />
+    <Content Include="Images\navi_orange.gif" />
+    <Content Include="Images\navLogout.gif" />
+    <Content Include="Images\navMenuepunkt1.gif" />
+    <Content Include="Images\navMenuepunkt2.gif" />
+    <Content Include="Images\navReports.gif" />
+    <Content Include="Images\Notenschluessel_06.jpg" />
+    <Content Include="Images\Note_01.jpg" />
+    <Content Include="Images\Note_02.jpg" />
+    <Content Include="Images\nPALogo.jpg" />
+    <Content Include="Images\nPALogoSmall.gif" />
+    <Content Include="Images\ok02_10.jpg" />
+    <Content Include="Images\ok_10.jpg" />
+    <Content Include="Images\onebit_06.png" />
+    <Content Include="Images\onebit_07.png" />
+    <Content Include="Images\onebit_10.png" />
+    <Content Include="Images\onebit_23.png" />
+    <Content Include="Images\Open01_09.jpg" />
+    <Content Include="Images\Open02__09.jpg" />
+    <Content Include="Images\Ordner.jpg" />
+    <Content Include="Images\Ordner01_10.jpg" />
+    <Content Include="Images\Ordner02_10.jpg" />
+    <Content Include="Images\Ordner03_10.jpg" />
+    <Content Include="Images\Ordner04_10.jpg" />
+    <Content Include="Images\Ordner_+.jpg" />
+    <Content Include="Images\Ordner_+_04.jpg" />
+    <Content Include="Images\Ordner_-_04.jpg" />
+    <Content Include="Images\Ordner_04_01.jpg" />
+    <Content Include="Images\Ordner_04_02.jpg" />
+    <Content Include="Images\Ordner_Benutzer.jpg" />
+    <Content Include="Images\Ordner_Benutzer_04.jpg" />
+    <Content Include="Images\Ordner_Delete.jpg" />
+    <Content Include="Images\Ordner_Diagramme.jpg" />
+    <Content Include="Images\Ordner_Erledigt.jpg" />
+    <Content Include="Images\Ordner_Favoriten.jpg" />
+    <Content Include="Images\Ordner_Favoriten2.jpg" />
+    <Content Include="Images\Ordner_Home.jpg" />
+    <Content Include="Images\Ordner_keinZugang.jpg" />
+    <Content Include="Images\Ordner_Logged.jpg" />
+    <Content Include="Images\Ordner_Mails.jpg" />
+    <Content Include="Images\Ordner_oeffnen.jpg" />
+    <Content Include="Images\Ordner_offen_+_04.jpg" />
+    <Content Include="Images\Ordner_offen_-_04.jpg" />
+    <Content Include="Images\Ordner_offen_04.jpg" />
+    <Content Include="Images\Ordner_Papierkorb.jpg" />
+    <Content Include="Images\Ordner_recycle.jpg" />
+    <Content Include="Images\Ordner_schliessen.jpg" />
+    <Content Include="Images\Ordner_Sound.jpg" />
+    <Content Include="Images\Ordner_Warning.jpg" />
+    <Content Include="Images\Ordner_Werkzeuge.jpg" />
+    <Content Include="Images\overflow.png" />
+    <Content Include="Images\overflowleftright.png" />
+    <Content Include="Images\overflowleftrightslow.png" />
+    <Content Include="Images\overflowNavigation.png" />
+    <Content Include="Images\overflowNavigationShadow.png" />
+    <Content Include="Images\overflowThead.png" />
+    <Content Include="Images\overflowThead2.png" />
+    <Content Include="Images\overflowupdown.png" />
+    <Content Include="Images\overflowUpsideDown.png" />
+    <Content Include="Images\Papierkorb_01.gif" />
+    <Content Include="Images\Papierkorb_01.jpg" />
+    <Content Include="Images\Papierkorb_02.jpg" />
+    <Content Include="Images\Papierkorb_04.jpg" />
+    <Content Include="Images\Papierkorb_05.jpg" />
+    <Content Include="Images\Papierkorb_Delete_06.jpg" />
+    <Content Include="Images\Pause_09.jpg" />
+    <Content Include="Images\pdf-logo.png" />
+    <Content Include="Images\pdf.gif" />
+    <Content Include="Images\Pfeil01_07.jpg" />
+    <Content Include="Images\Pfeil03_07.jpg" />
+    <Content Include="Images\Pfeil202_07.jpg" />
+    <Content Include="Images\Pfeile01_05.jpg" />
+    <Content Include="Images\Pfeile02_05.jpg" />
+    <Content Include="Images\Pfeile03_05.jpg" />
+    <Content Include="Images\Pfeile_Kreislauf_01.jpg" />
+    <Content Include="Images\Pfeile_Kreislauf_02.jpg" />
+    <Content Include="Images\PfeilzZurueck_03.jpg" />
+    <Content Include="Images\Pfeil_Ablegen_01.jpg" />
+    <Content Include="Images\Pfeil_Ablegen_02.jpg" />
+    <Content Include="Images\Pfeil_abwaerts_01.jpg" />
+    <Content Include="Images\Pfeil_aufwaerts_01.jpg" />
+    <Content Include="Images\Pfeil_hoch_03.jpg" />
+    <Content Include="Images\Pfeil_hoch_04.jpg" />
+    <Content Include="Images\Pfeil_hoch_05.jpg" />
+    <Content Include="Images\Pfeil_nachLinks.jpg" />
+    <Content Include="Images\Pfeil_nachrechts.jpg" />
+    <Content Include="Images\Pfeil_nachRechts2.jpg" />
+    <Content Include="Images\Pfeil_nachUnten04.jpg" />
+    <Content Include="Images\Pfeil_oben_02.jpg" />
+    <Content Include="Images\Pfeil_runter_03.jpg" />
+    <Content Include="Images\Pfeil_runter_04.jpg" />
+    <Content Include="Images\Pfeil_unten_02.jpg" />
+    <Content Include="Images\Pfeil_vor01_09.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_02.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_03.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_04.jpg" />
+    <Content Include="Images\Pfeil_vor_01.gif" />
+    <Content Include="Images\Pfeil_vor_01.jpg" />
+    <Content Include="Images\Pfeil_zurueck01_09.jpg" />
+    <Content Include="Images\Pfeil_zurueck_01.jpg" />
+    <Content Include="Images\Pfeil_zurueck_02.jpg" />
+    <Content Include="Images\Pfeil_zurueck_03.jpg" />
+    <Content Include="Images\PixelPfeil_hoch_05.jpg" />
+    <Content Include="Images\PixelPfeil_runter_05.jpg" />
+    <Content Include="Images\PixelPfeil_vor_05.jpg" />
+    <Content Include="Images\PixelPfeil_zurueck_05.jpg" />
+    <Content Include="Images\Placeholder.png" />
+    <Content Include="Images\plane_16.png" />
+    <Content Include="Images\plane_32.png" />
+    <Content Include="Images\Plus.gif" />
+    <Content Include="Images\Plus.jpg" />
+    <Content Include="Images\Plus1.gif" />
+    <Content Include="Images\Plus19.gif" />
+    <Content Include="Images\Power01_10.jpg" />
+    <Content Include="Images\Power02_10.jpg" />
+    <Content Include="Images\queryArrow.gif" />
+    <Content Include="Images\RecycleBin.png" />
+    <Content Include="Images\Refresh.jpg" />
+    <Content Include="Images\Rein01_04.jpg" />
+    <Content Include="Images\Rein02_04.jpg" />
+    <Content Include="Images\Rein03_04.jpg" />
+    <Content Include="Images\Rein04_04.jpg" />
+    <Content Include="Images\Rein05_04.jpg" />
+    <Content Include="Images\remove.png" />
+    <Content Include="Images\Sanduhr01_07.jpg" />
+    <Content Include="Images\Sanduhr02_07.jpg" />
+    <Content Include="Images\Sanduhr03_07.jpg" />
+    <Content Include="Images\SAPLogo.gif" />
+    <Content Include="Images\Save.gif" />
+    <Content Include="Images\Schere01_05.jpg" />
+    <Content Include="Images\Schere02_05.jpg" />
+    <Content Include="Images\Schluessel01_05.jpg" />
+    <Content Include="Images\Schluessel02_05.jpg" />
+    <Content Include="Images\showAddress.jpg" />
+    <Content Include="Images\Sound_08.jpg" />
+    <Content Include="Images\Sprechblase01_09.jpg" />
+    <Content Include="Images\Sprechblase_Blog.jpg" />
+    <Content Include="Images\Sprechblase_Chat.jpg" />
+    <Content Include="Images\Star01_06.jpg" />
+    <Content Include="Images\Star02_06.jpg" />
+    <Content Include="Images\Stern_10.jpg" />
+    <Content Include="Images\Stop_09.jpg" />
+    <Content Include="Images\SzenenKlappe_05.jpg" />
+    <Content Include="Images\Tab.gif" />
+    <Content Include="Images\Telefon01_07.jpg" />
+    <Content Include="Images\Telefon02_07.jpg" />
+    <Content Include="Images\Text_04.jpg" />
+    <Content Include="Images\thumb.jpg" />
+    <Content Include="Images\Tool.gif" />
+    <Content Include="Images\Tool.jpg" />
+    <Content Include="Images\Tools01_08.jpg" />
+    <Content Include="Images\Tools02_08.jpg" />
+    <Content Include="Images\top.gif" />
+    <Content Include="Images\Unfilter.gif" />
+    <Content Include="Images\UnicreditLeasing.jpg" />
+    <Content Include="Images\Unlock.gif" />
+    <Content Include="Images\Unlock_06.jpg" />
+    <Content Include="Images\up.gif" />
+    <Content Include="Images\user.png" />
+    <Content Include="Images\User01_06.jpg" />
+    <Content Include="Images\User02_06.jpg" />
+    <Content Include="Images\user_Hover.png" />
+    <Content Include="Images\Versand\headopen.png" />
+    <Content Include="Images\Versand\headopenoverflow.png" />
+    <Content Include="Images\Versand\headSucheopen.png" />
+    <Content Include="Images\Versand\minusred.png" />
+    <Content Include="Images\Versand\overflowbackwhite.png" />
+    <Content Include="Images\Versand\plusgreen.png" />
+    <Content Include="Images\Versand\search.png" />
+    <Content Include="Images\Versand\StandardBlueAdresse.png" />
+    <Content Include="Images\Versand\StandardBlueOptionen.png" />
+    <Content Include="Images\Versand\StandardBlueOverview.png" />
+    <Content Include="Images\Versand\StandardBlueStift.png" />
+    <Content Include="Images\Versand\StandardGreyAdresse.png" />
+    <Content Include="Images\Versand\StandardGreyOptionen.png" />
+    <Content Include="Images\Versand\StandardGreyOverview.png" />
+    <Content Include="Images\Versand\StandardGreyStift.png" />
+    <Content Include="Images\Versand\StandardGreyTool.png" />
+    <Content Include="Images\Versand\StandardReadyAdresse.png" />
+    <Content Include="Images\Versand\StandardReadyOptionen.png" />
+    <Content Include="Images\Versand\StandardReadyOverview.png" />
+    <Content Include="Images\Versand\StandardReadyStift.png" />
+    <Content Include="Images\Versand\StandardReadyTool.png" />
+    <Content Include="Images\Versand\StandardRedAdresse.png" />
+    <Content Include="Images\Versand\StandardRedOtionen.png" />
+    <Content Include="Images\Versand\StandardRedOverview.png" />
+    <Content Include="Images\Versand\StandardRedStift.png" />
+    <Content Include="Images\Versand\StandardRedTool.png" />
+    <Content Include="Images\Versand\Stephead.png" />
+    <Content Include="Images\Versand\Stepheadopen.png" />
+    <Content Include="Images\Versand\Stepheadoverflow.png" />
+    <Content Include="Images\Versand\Suche.png" />
+    <Content Include="Images\Versand\Suche2.png" />
+    <Content Include="Images\Versand\Uploadoverflow.png" />
+    <Content Include="Images\Verwaltung.png" />
+    <Content Include="Images\vkb_logo.jpg" />
+    <Content Include="Images\Wappen01_10.jpg" />
+    <Content Include="Images\Wappen02_10.jpg" />
+    <Content Include="Images\Wappen03_10.jpg" />
+    <Content Include="Images\Warenkorb01_07.jpg" />
+    <Content Include="Images\Warenkorb02_07.jpg" />
+    <Content Include="Images\Warenkorb03_07.jpg" />
+    <Content Include="Images\Warenkorb04_07.jpg" />
+    <Content Include="Images\Warning.jpg" />
+    <Content Include="Images\Welt_01.jpg" />
+    <Content Include="Images\Welt_02.jpg" />
+    <Content Include="Images\Welt_03.jpg" />
+    <Content Include="Images\Welt_04.jpg" />
+    <Content Include="Images\Word_Logo.jpg" />
+    <Content Include="Images\Zahnrad.jpg" />
+    <Content Include="Images\Zahnraeder_01.jpg" />
+    <Content Include="Images\ZulPDF.gif" />
+    <Content Include="InfocenterAdmin.aspx" />
+    <Content Include="DownloadFile.aspx" />
+    <Content Include="MasterPage\Admin.Master" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="obj\Debug\" />
+    <Folder Include="obj\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Abrufgruende.aspx" />
+    <Content Include="AktuellesPflege.aspx" />
+    <Content Include="AppManagement.aspx" />
+    <Content Include="ArchivManagement.aspx" />
+    <Content Include="AutorisierungenLoeschen.aspx" />
+    <Content Include="AutUserUpload.aspx" />
+    <Content Include="BapiOverView.aspx" />
+    <Content Include="ColumnTranslation.aspx" />
+    <Content Include="CustomerManagement.aspx" />
+    <Content Include="FieldTranslation.aspx" />
+    <Content Include="ForbiddenUserNameManagement.aspx" />
+    <Content Include="Groupmanagement.aspx" />
+    <Content Include="jve_LogMessage2.aspx" />
+    <Content Include="jve_ZugriffsHistorie.aspx" />
+    <Content Include="LogBapi2Report.aspx" />
+    <Content Include="LogMessage.aspx" />
+    <Content Include="LogSchwellwert.aspx" />
+    <Content Include="LogViewer.aspx" />
+    <Content Include="MailPflegeUebersicht.aspx" />
+    <Content Include="Menue\ServicesMenue.ascx" />
+    <Content Include="OrganizationManagement.aspx" />
+    <Content Include="PageElements\GridNavigation.ascx" />
+    <Content Include="PeisAdministration.aspx" />
+    <Content Include="Performance.aspx" />
+    <Content Include="Performance2.aspx" />
+    <Content Include="SAPMonitoring.aspx" />
+    <Content Include="scroll.htc" />
+    <Content Include="ShowBapis.aspx" />
+    <Content Include="Sidebar\menue.ascx" />
+    <Content Include="Sidebar\Menue.js" />
+    <Content Include="StatusMonitor.aspx" />
+    <Content Include="Styles\dad.css" />
+    <Content Include="Styles\dadIE6.css" />
+    <Content Include="Styles\default.css" />
+    <Content Include="Styles\defaultAH.css" />
+    <Content Include="Styles\defaultIE6.css" />
+    <Content Include="Styles\default_Big.css" />
+    <Content Include="Styles\default_BigIE6.css" />
+    <Content Include="Styles\js\images\arrows-ffffff.png" />
+    <Content Include="Styles\js\images\shadow.png" />
+    <Content Include="Styles\js\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Styles\js\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Styles\js\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Styles\js\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Styles\js\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Styles\js\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Styles\js\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Styles\js\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Styles\js\images\ui-icons_222222_256x240.png" />
+    <Content Include="Styles\js\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Styles\js\images\ui-icons_454545_256x240.png" />
+    <Content Include="Styles\js\images\ui-icons_888888_256x240.png" />
+    <Content Include="Styles\js\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Styles\js\jquery-ui-1.8.16.custom.css" />
+    <Content Include="Styles\js\jquery-ui.css" />
+    <Content Include="Styles\js\jquery.ui.all.css" />
+    <Content Include="Styles\js\jquery.ui.base.css" />
+    <Content Include="Styles\js\jquery.ui.core.css" />
+    <Content Include="Styles\js\jquery.ui.theme.css" />
+    <Content Include="Styles\js\superfish.css" />
+    <Content Include="Styles\Menu.MetroKroschke.css" />
+    <Content Include="Templates\AppData.ascx" />
+    <Content Include="Templates\BAPIData.ascx" />
+    <Content Include="Templates\SAPData.ascx" />
+    <Content Include="Translation_Start.aspx" />
+    <Content Include="UserHistory.aspx" />
+    <Content Include="UserManagement.aspx" />
+    <Content Include="UserUnlock.aspx" />
+    <Content Include="_UpgradeReport_Files\UpgradeReport.css" />
+    <Content Include="_UpgradeReport_Files\UpgradeReport.xslt" />
+    <Content Include="_UpgradeReport_Files\UpgradeReport_Minus.gif" />
+    <Content Include="_UpgradeReport_Files\UpgradeReport_Plus.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Work\ZLDBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56258</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/AutohausPortal/Admin</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

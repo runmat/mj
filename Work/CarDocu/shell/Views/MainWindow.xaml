@@ -1,0 +1,335 @@
+﻿<fl:RibbonWindow x:Class="CarDocu.MainWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
+                xmlns:docuGroup="clr-namespace:CarDocu.UserControls.DocuGroup"
+                xmlns:adminGroup="clr-namespace:CarDocu.UserControls.AdminGroup"
+                 xmlns:backstage="clr-namespace:CarDocu.UserControls.Backstage"
+                 xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
+                Height="900" Width="1280">
+    <StackPanel>
+
+        <fl:Ribbon x:Name="Ribbon" SelectedTabChanged="RibbonSelectedTabChanged">
+            <!--Contextual Tab Groups-->
+            <fl:Ribbon.ContextualGroups>
+                <fl:RibbonContextualTabGroup Header="Dokumente" Visibility="Visible" x:Name="DocuGroup" Background="DarkGreen" BorderBrush="DarkGreen" />
+                <fl:RibbonContextualTabGroup Header="Administration" Visibility="Collapsed" x:Name="AdminGroup" Background="Blue" BorderBrush="Blue"  />
+            </fl:Ribbon.ContextualGroups>
+            
+            <!--Contextual Tabs-->
+
+            <fl:RibbonTabItem DataContext="{Binding NewDocuViewModel}" Header="Neuer Scan" Group="{Binding ElementName=DocuGroup}"  x:Name="NewDocuTab">
+                <fl:RibbonGroupBox Header="1. Dokumenten Art wählen" Margin="0,0,0,0" IsLauncherVisible="True" LauncherClick="RibbonGroupBoxLauncherClick" LauncherToolTip="Auswahlbereich maximieren bzw. minimieren">
+                    <StackPanel>
+                        <docuGroup:ucScanDocuRibbonSectionDocuArt Opacity="{Binding DocuArtSelectionSmallOpacity}" />
+                    </StackPanel>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="2. ID eingeben" Margin="0,0,0,0">
+                    <StackPanel>
+                        <docuGroup:ucScanDocuRibbonSectionFIN />
+                    </StackPanel>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="3. Scannen                            " Margin="0,0,0,0">
+                    <fl:Button Command="{Binding ScanDocumentStartScanCommand}" LargeIcon="{StaticResource image/32x32/scan_new}" 
+                               Header="Scan starten">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Startet einen neuen Scan-Vorgang."
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+
+                    <fl:Button Command="{Binding ScanDocumentStartScanBatchCommand}" LargeIcon="{StaticResource image/32x32/scan_new_batch}" 
+                               Header="Stapel Scan starten">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Startet einen neuen Stapel Scan Vorgang."
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+
+                    <docuGroup:ucTemplateInsertRibbonSplitButton />
+
+                    <fl:Button Command="{Binding ScanDocumentSaveCommand}" LargeIcon="{StaticResource image/32x32/scan_archive}" 
+                               Header="Im Archiv ablegen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Legt das neue Scan-Dokument im Archiv ab."
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+
+                    <docuGroup:ucPdfFolderRibbonButton />
+                    
+                    <docuGroup:ucPdfRibbonSplitButton />
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox MinWidth="1000" />
+            </fl:RibbonTabItem>
+
+            <fl:RibbonTabItem DataContext="{Binding AllDocusViewModel}" Header="Archiv" Group="{Binding ElementName=DocuGroup}" x:Name="AllDocusTab">
+                <fl:RibbonGroupBox Header="Dokumente / Vorlagen" Margin="0,0,0,0">
+                    <fl:Button Command="{Binding ScanDocuLoadCommand}" LargeIcon="{StaticResource image/32x32/scan_open}" 
+                               Header="Öffnen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Öffnet das markierte Dokument zur Ansicht bzw. zum Bearbeiten"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding ScanDocuNewCommand}" LargeIcon="{StaticResource image/32x32/scan_new}" 
+                               Header="Neu">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Neues Dokument bzw. neue Vorlage erstellen."
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding ScanDocuDeleteCommand}" LargeIcon="{StaticResource image/32x32/scan_delete}" 
+                               Header="Löschen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Löscht das markierte Dokument endgültig!"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="Dokumente" Margin="0,0,0,0">
+                    <docuGroup:ucPdfFolderRibbonButton />
+                    
+                    <fl:Button Command="{Binding ZipToArchiveCommand}" LargeIcon="{StaticResource image/32x32/zip_archive}" 
+                               Header="Archivieren">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+
+            <fl:RibbonTabItem DataContext="{Binding StoredDocuViewModel}" Header="Scan bearbeiten" Group="{Binding ElementName=DocuGroup}" x:Name="StoredDocuTab">
+                <fl:RibbonGroupBox Header="Dokumenten-Art pflegen" Margin="0,0,0,0" IsLauncherVisible="True" LauncherClick="RibbonGroupBoxLauncherClick" LauncherToolTip="Auswahlbereich maximieren bzw. minimieren">
+                    <StackPanel>
+                        <docuGroup:ucScanDocuRibbonSectionDocuArt Opacity="{Binding DocuArtSelectionSmallOpacity}" />
+                    </StackPanel>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="ID pflegen" Margin="0,0,0,0">
+                    <StackPanel>
+                        <docuGroup:ucScanDocuRibbonSectionFIN />
+                    </StackPanel>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="Scannen                            " Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding ScanAppendAvailable, Converter={StaticResource BooleanVisibilityConverter}}">
+                        <fl:Button Command="{Binding ScanDocumentStartScanCommand}" LargeIcon="{StaticResource image/32x32/scan_new}" 
+                                   Header="Scan anfügen">
+                            <fl:Button.ToolTip>
+                                <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                              Text="Fügt einen Scan an dieses Dokument an."
+                                    />
+                            </fl:Button.ToolTip>
+                        </fl:Button>
+                    </StackPanel>
+
+                    <docuGroup:ucPdfFolderRibbonButton />
+                    
+                    <StackPanel Visibility="{Binding ScanAppendAvailable, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                        <docuGroup:ucPdfRibbonSplitButton />
+                    </StackPanel>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+
+            <fl:RibbonTabItem DataContext="{Binding AdminViewModel.DomainUsersEditViewModel}" Header="Benutzer" ToolTip="Benutzerverwaltung"
+                              Group="{Binding ElementName=AdminGroup}" x:Name="AdminUserManagementTab">
+                <fl:RibbonGroupBox Header="Benutzer">
+                    <fl:Button Command="{Binding SaveCommand}" LargeIcon="{StaticResource image/32x32/users_save}"
+                               Header="Speichern">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Speichert die Einstellungen für alle Benutzer"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding AddCommand}" LargeIcon="{StaticResource image/32x32/user_add}" 
+                               Header="Neu">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Legt einen neuen Benutzer an"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding DeleteCommand}" LargeIcon="{StaticResource image/32x32/user_delete}" 
+                               Header="Löschen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Löscht den aktuell markierten Benutzer"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+
+            <fl:RibbonTabItem DataContext="{Binding AdminViewModel.AppSettingsEditViewModel}" Header="Domain Einstellungen" ToolTip="Einstellungen zu dieser Domain pflegen, z. B. Konfigurationsablage Pfad, Domain-Name" 
+                              Group="{Binding ElementName=AdminGroup}" x:Name="AppSettingsManagementTab">
+                <fl:RibbonGroupBox Header="Domain Einstellungen">
+                    <fl:Button Command="{Binding SaveCommand}" LargeIcon="{StaticResource image/32x32/domainsettings_save}" 
+                               Header="Einstellungen speichern" Margin="10,0,10,0">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Speichert die Domain-Verbindung für diese Anwendung"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding SetPathCommand}" LargeIcon="{StaticResource image/32x32/domainsettings_folder}" 
+                               Header="Konfigurationsablage-Pfad setzen" Margin="10,0,10,0">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Pfad zur Konfigurationsablage für diese Domain per Dateidialog suchen"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="Sonstige Einstellungen">
+                    <fl:Button Command="{Binding OpenScanSettingsCommand}" LargeIcon="{StaticResource image/32x32/scan_settings}" 
+                               Header="Scanner Einstellungen" Margin="20,0,20,0">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Öffnet die Scanner Einstellungen für bestimmte Feinjustierungen (Duplex-Empfindlichkeit, etc)"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+
+            <fl:RibbonTabItem DataContext="{Binding AdminViewModel.DocTypesEditViewModel}" Header="Dokumenten-Arten" ToolTip="Domain Einstellungen pflegen, z. B. Verwaltung Dokumentenarten" 
+                              Group="{Binding ElementName=AdminGroup}" x:Name="AdminDocTypeManagementTab">
+                <fl:RibbonGroupBox Header="Dokumenten-Arten">
+                    <fl:Button Command="{Binding SaveCommand}" LargeIcon="{StaticResource image/32x32/note_save}" 
+                               Header="Speichern">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Speichert die Einstellungen für alle Dokumententypen"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding AddCommand}" LargeIcon="{StaticResource image/32x32/note_add}" 
+                               Header="Neu">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Legt einen neuen Dokumententyp an"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding DeleteCommand}" LargeIcon="{StaticResource image/32x32/note_delete}" 
+                               Header="Löschen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Löscht den aktuell markierten Dokumententyp"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+                <fl:RibbonGroupBox Header="Import / Export">
+                    <fl:Button Command="{Binding GlobalSettingsImportCommand}" LargeIcon="{StaticResource image/32x32/settings_import}" 
+                               Header="Doku-Arten importieren" Margin="10,0,10,0">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Importiert die Dokumentenarten in den Konfigurationsablage Speicherort"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding GlobalSettingsExportCommand}" LargeIcon="{StaticResource image/32x32/settings_export}" 
+                               Header="Doku-Arten exportieren" Margin="10,0,10,0">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Exportiert die Dokumentenarten z. B. auf einen USB-Stick"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+
+
+            <fl:RibbonTabItem DataContext="{Binding AdminViewModel.DomainLocationsEditViewModel}" Header="Standorte" ToolTip="Standorte der Domain pflegen" 
+                              Group="{Binding ElementName=AdminGroup}" x:Name="AdminDomainLocationsManagementTab">
+                <fl:RibbonGroupBox Header="Standorte">
+                    <fl:Button Command="{Binding SaveCommand}" LargeIcon="{StaticResource image/32x32/location_save}" 
+                               Header="Speichern">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Speichert die Einstellungen für alle Standorte"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding AddCommand}" LargeIcon="{StaticResource image/32x32/location_new}" 
+                               Header="Neu">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Legt einen neuen Standort an"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding DeleteCommand}" LargeIcon="{StaticResource image/32x32/location_delete}" 
+                               Header="Löschen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Löscht den aktuell markierten Standort"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                </fl:RibbonGroupBox>
+            </fl:RibbonTabItem>
+            
+            
+            <!--Backstage-->
+            <fl:Ribbon.Menu>
+                <fl:Backstage Header=" CarDocu        " IsOpen="False" Background="DarkRed">
+                    <fl:BackstageTabControl DataContext="{Binding BackstageViewModel}">
+                        <fl:BackstageTabItem Header="Info">
+                            <ContentPresenter Content="{StaticResource image/logo_transparent}" />
+                        </fl:BackstageTabItem>
+                        <fl:BackstageTabItem Header="Einstellungen">
+                            <backstage:ucUIHints />
+                        </fl:BackstageTabItem>
+                        <fl:Button Command="{Binding AppExitCommand}" Icon="{StaticResource image/16x16/exit}" 
+                               Header="Beenden">
+                            <fl:Button.ToolTip>
+                                <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Beendet die Anwendung!"
+                                />
+                            </fl:Button.ToolTip>
+                        </fl:Button>
+                    </fl:BackstageTabControl>
+                </fl:Backstage>
+            </fl:Ribbon.Menu>
+        </fl:Ribbon>
+
+        <!--Document area-->
+        <Grid Margin="0">
+            <Grid Margin="30,30,0,0">
+                <Grid DataContext="{Binding NewDocuViewModel}" Visibility="{Binding ElementName=NewDocuTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <docuGroup:ucScanDocu />
+                </Grid>
+                <Grid DataContext="{Binding StoredDocuViewModel}" Visibility="{Binding ElementName=StoredDocuTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <docuGroup:ucScanDocu />
+                </Grid>
+                <Grid DataContext="{Binding AllDocusViewModel}" Visibility="{Binding ElementName=AllDocusTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <docuGroup:ucAllScanDocus />
+                </Grid>
+
+                <Grid DataContext="{Binding AdminViewModel}" Margin="0">
+                    <adminGroup:ucDomainUsers DataContext="{Binding DomainUsersEditViewModel}" Visibility="{Binding ElementName=AdminUserManagementTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}" />
+                    <adminGroup:ucDocTypes DataContext="{Binding DocTypesEditViewModel}" Visibility="{Binding ElementName=AdminDocTypeManagementTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}"  />
+                    <adminGroup:ucDomainLocations DataContext="{Binding DomainLocationsEditViewModel}" Visibility="{Binding ElementName=AdminDomainLocationsManagementTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}"  />
+                    <ScrollViewer  Visibility="{Binding ElementName=AppSettingsManagementTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}" Margin="0,0,20,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding Parent.NewDocuViewModel.SelectedScanImageHeight}">
+                        <adminGroup:ucAppSettings DataContext="{Binding AppSettingsEditViewModel}"  />
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+
+            <allGroups:ucStatusBar Visibility="{Binding ElementName=NewDocuTab, Path=IsSelected, Converter={StaticResource BooleanVisibilityConverter}}" />
+
+            <DocumentViewer Style="{StaticResource XpsDocumentViewerAnimated}" Document="{Binding XpsDocument}" Margin="0,-100,0,0" />
+        </Grid>
+
+    </StackPanel>
+</fl:RibbonWindow>

@@ -1,0 +1,51 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model TerminSchadenfall
+
+<div id="BoxBlockerTerminDetailsDiv" class="portlet">
+    @using (Ajax.BeginForm("BoxBlockerTerminDetailsFormSave", "Insurance", null,
+                           new MvcAjaxOptions("BoxBlockerTerminDetailsDiv") { OnComplete = "BoxBlockerTerminDetailsFormPreparePrivateAjax();" }, new { id = "BoxBlockerTerminForm", @class = "form-horizontal" }))
+    {
+        @Html.Hidden("Name", "Blocker Termin bearbeiten")
+        
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.VersOrtID)
+        @Html.HiddenFor(m => m.VersSchadenfallID)
+        @Html.HiddenFor(m => m.Datum)
+        
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+        @Html.HiddenFor(m => m.LoeschDatum)
+        @Html.HiddenFor(m => m.LoeschUser)
+                
+        @Html.FormTemplateControl("", @<text><i id="BoxBlockerTerminDetailsIcon"></i> Blocker Termin bearbeiten</text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBoxFor(m => m.VersBoxID, new { @class = "m-wrap xsmall" })
+
+        @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap" })
+
+        @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" })
+        @Html.FormTextBoxFor(m => m.ZeitBis, new { @class = "m-wrap xsmall timepicker" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" onclick="BoxBlockerTerminCloseDetails();" class="btn">Abbrechen</button>
+        </div>
+
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            BreadcrumbsShow(4, true, $("#BoxBlockerTerminForm input[name='Name']"));
+
+            $(".timepicker").clockface({ format: 'HH:mm' });
+        </script>
+    }
+</div>
+

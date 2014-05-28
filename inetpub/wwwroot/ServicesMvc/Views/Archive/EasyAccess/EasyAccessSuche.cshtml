@@ -1,0 +1,58 @@
+﻿@using CkgDomainLogic.Archive.Models
+@model EasyAccessSuchparameter
+
+<div id="divEasyAccessSuche">
+    @using (Ajax.BeginForm("LoadDocuments", "Archive", null,
+        new MvcAjaxOptions("divEasyAccessSuche") { OnComplete = "ShowDocuments();" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            @Html.FormValidationSummary()
+            
+            @Html.FormRadioButtonListFor(m => m.Archivtyp, Model.ArchiveTypes.ToSelectList())
+            
+            <div class="control-group">
+
+                @Html.FormLabelFor(m => m.ArchivesOfType)
+
+                <div class="controls">
+                    @Html.EditorFor(m => Model.ArchivesOfType)
+                </div>
+            </div>
+            
+            <div class="space10"></div>
+
+            <div class="control-group">
+                @Html.EditorFor(m => m.SearchFields)
+            </div>
+            
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowDocuments() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDocuments",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowEasyAccessSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>

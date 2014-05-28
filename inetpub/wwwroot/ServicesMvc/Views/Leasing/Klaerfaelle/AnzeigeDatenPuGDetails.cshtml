@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@model Klaerfall
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right" onclick="CloseAnzeigeDatenPuGDetails();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+
+<div class="form-horizontal label-width-200">
+    
+    @Html.FormTextBlockFor(m => m.Leasingvertragsnummer, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Status, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Zulassungsdatum, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Kundenbetreuer, new { @class = "m-wrap" })
+    
+    <hr/>
+    
+    @Html.FormTextBlockFor(m => m.Name1, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Name2, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Name3, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Strasse, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Plz, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Ort, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Email, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Email2, new { @class = "m-wrap" })
+    
+    <hr/>
+    
+    @Html.FormTextBlockFor(m => m.Erstanschreiben, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Mahnung1, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Mahnung2, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Mahnung3, new { @class = "m-wrap" })
+    
+    <hr/>
+
+    @Html.FormTextBlockFor(m => m.EingangVollmacht, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.EingangHandelsregister, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.EingangGewerbeanmeldung, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.EingangEinzugsermaechtigung, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.EVB, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.EingangSicherungsschein, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.UnterlagenKomplett, new { @class = "m-wrap" })
+    
+    <hr/>
+
+    @Html.FormTextBlockFor(m => m.Hersteller, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Fahrzeugtyp, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.SteuerAbrechnen, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.ZulassungAuf, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.ZulassungDurch, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Bestellart, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Wunschdatum, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.DruckdatumAnschreiben, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.Liefertermin, new { @class = "m-wrap" })
+   
+</div>

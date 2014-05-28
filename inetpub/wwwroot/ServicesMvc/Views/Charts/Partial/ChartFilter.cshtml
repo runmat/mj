@@ -1,0 +1,41 @@
+﻿@model CkgDomainLogic.Charts.Models.ChartDataSelector
+
+@{ var divID = "chart-filter-div-" + Model.ChartID; }
+
+<div class="div-chart-filter" id="@divID">
+    @using (Ajax.BeginForm("ChartFilter", "Charts", null,
+        new MvcAjaxOptions(divID) { OnComplete = "ChartShow('" + Model.ChartID + "');" }, new { id = "chart-filter-form-" + Model.ChartID, @class = "no-loading-indicator no-margin" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.HiddenFor(m => m.ChartID)
+
+            <div class="chart-filter-items chart-filter-jahr-items">
+                @for (var i = 0; i < Model.JahrItems.Length; i++)
+                {
+                    <span class="no-break-container">
+                        <label class="chart-label">@Html.CheckBoxFor(m => m.JahrBools[i], new {@class = "m-wrap"})@Model.JahrItems[i]</label>
+                    </span>
+                }
+            </div>
+
+            <div class="chart-filter-items chart-filter-key1-items">
+                @for (var i = 0; i < Model.Key1Items.Length; i++)
+                {
+                    <span class="no-break-container">
+                        <label class="chart-label">@Html.CheckBoxFor(m => m.Key1Bools[i], new { @class = "m-wrap" })@Model.Key1Items[i]</label>
+                    </span>
+                }
+            </div>
+
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+

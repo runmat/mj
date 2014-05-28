@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.DomainCommon.ViewModels
+@model DokumentViewModel
+
+<h3 class="page-title" id="headerTitle">Infocenter 
+    @if (Model.IsAdministrator)
+    {
+        <small>Admin</small>
+    }
+</h3>
+
+@if (Model.IsAdministrator)
+{
+    <div class="tabbable tabbable-custom margin-top-15">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab_1_1" data-toggle="tab">@Localize.Documents</a></li>
+            <li><a href="#tab_1_2" data-toggle="tab">@Localize.DocumentTypes</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane overflow-x-auto active" id="tab_1_1">
+                @Html.Partial("DocumentIndex", @Model)
+            </div>
+            <div class="tab-pane overflow-x-auto" id="tab_1_2">
+                @Html.Partial("DocumentTypeIndex", @Model)
+            </div>                        
+        </div>
+    </div>
+}
+else
+{
+    @Html.Partial("DocumentIndex", @Model)
+}
+
+
+@if (HttpContext.Current.Request.UrlReferrer != null && HttpContext.Current.Request.UrlReferrer.ToString().ToLower().Contains("/fahrer"))
+{
+    <script type="text/javascript">
+        RedirectHomePageToFahrerWebHomePage();
+    </script>
+}
+
+
+<script type="text/javascript" >
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("DokumentGrid");
+        GridAllColumnFilterApplyToGrid("DocumentTypeGrid");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>

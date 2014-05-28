@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.Feinstaub.Models
+@using CkgDomainLogic.Feinstaub.ViewModels
+@model AutohausFeinstaubReportViewModel 
+
+@{ var gridName = "GridVergabeInfos"; }
+
+<h2 class="lonelyHeader">Feinstaubplakettenstatistik</h2>
+
+@(Html.Telerik()
+    .Grid<FeinstaubVergabeInfo>()
+    .Name(gridName)
+    .XAjaxDataBinding("VergabeInfosAjaxBinding", "Feinstaub")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kennzeichen).Width(200);
+        columns.XBound(c => c.Erfassungsdatum).Width(200);
+        columns.XBound(c => c.Plakettenart).Width(200);
+        columns.XBound(c => c.Erfasser).Width(330);
+    })
+    .Reorderable(r => r.Columns(true)).Resizable(r => r.Columns(true))
+    .Pageable(paging => paging.PageSize(10))
+    .Filterable(filtering => filtering.Enabled(true))
+    .ClientEvents(events => events.OnDataBound("GridVergabeInfos_OnDataBound").FilteredDataOnColumnReorder())
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Erfassungsdatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.Custom().Text("Zurück zur Suche").Url("javascript:CloseFeinstaubSearchResult()").HtmlAttributes(new { @class = "" });
+        commands.FilteredDataCommand("ExportVergabeInfosExcel", "Feinstaub", "Excel Export").HtmlAttributes(new { @class = "" });
+        commands.FilteredDataCommand("ExportVergabeInfosPDF", "Feinstaub", "PDF Export").HtmlAttributes(new { @class = "" });
+    })
+)

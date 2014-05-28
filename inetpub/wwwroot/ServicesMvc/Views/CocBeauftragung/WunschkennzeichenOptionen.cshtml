@@ -1,0 +1,100 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+<h4>Wunschkennzeichen für Ihre Auswahl: @Model.SelectedCocAuftraegeAsString</h4> 
+
+<style type="text/css">
+
+    .wunschkennzeichen 
+    {
+        float: left;
+        display: table-cell;
+        padding-top: 30px;
+        margin-bottom: 30px;
+        margin-left: 10px;
+        padding-left: 60px;
+        background: white url(../images/wunschkennzeichen.png) 001px no-repeat !important;
+        min-width: 500px;
+        min-height: 120px;
+    }
+
+    .wunschkennzeichen-required-field-summary 
+    {
+        float: left;
+        display: block;
+        width: 100%;
+    }
+
+    #AjaxFormWunschkennzeichen .control-group {
+        margin-bottom: 5px;
+    }
+    #AjaxFormWunschkennzeichen .textblock {
+        border: 1px solid white!important;
+        font-weight: bold;
+    }
+    #AjaxFormWunschkennzeichen .help-inline {
+        margin-top: 0!important;
+    }
+    #AjaxFormWunschkennzeichen .wk-label.zulassungskreis {
+        font-weight: bold;
+        font-size: 1.1em;
+        width: 56px;
+        text-align: right;
+        margin-left: 0px;
+    }
+    #AjaxFormWunschkennzeichen .wk-label {
+        margin-top: 7px;
+        margin-left: 26px;
+        margin-right: 3px;
+        display: inline-block;
+    }
+    #AjaxFormWunschkennzeichen .wk-textbox {
+        margin-top: -3px;
+        display: inline-block;
+    }
+    #AjaxFormWunschkennzeichen .wk-textbox.input-validation-error {
+        border-color: #b94a48;
+        color: #df0000;
+        font-weight: bold;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+    #AjaxFormWunschkennzeichen .wk-textbox.kennzeichen {
+        width: 60px;
+    }
+    #AjaxFormWunschkennzeichen .wk-textbox.res-no {
+        width: 80px;
+    }
+    #AjaxFormWunschkennzeichen .wk-textbox.res-name {
+        width: 175px;
+    }
+    
+    #AjaxFormWunschkennzeichen .vin {
+        width: 145px!important;
+    }
+
+</style>
+
+@*@Html.Partial("WunschkennzeichenForm", @Model.Wunschkennzeichen.WunschkennzeichenList.ToArray())*@
+
+@(Html.Telerik()
+    .Grid<VinWunschkennzeichen>()
+    .Name("GridVinWunschkennzeichen")
+    .Columns(columns =>
+        {
+            columns.Command(commands => commands.Edit().ButtonType(GridButtonType.Image));
+            columns.Bound(c => c.VIN).ReadOnly(true);
+            columns.Bound(c => c.Kennzeichen1).Width(60);
+            columns.Bound(c => c.Kennzeichen2).Width(60);
+            columns.Bound(c => c.Kennzeichen3).Width(60);
+
+            columns.Bound(c => c.OderSeparator).Width(40).ReadOnly(true);
+
+            columns.Bound(c => c.KennzeichenReserviert).Width(60);
+            columns.Bound(c => c.ReservierungNr).Width(80);
+            columns.Bound(c => c.ReservierungName).Width(140);
+        })
+    .DataKeys(keys => keys.Add(c => c.VIN))
+    .DataBinding(dataBinding => dataBinding.Ajax().Select("VinWunschkennzeichenAjaxSelect", "CocBeauftragung").Update("VinWunschkennzeichenAjaxUpdate", "CocBeauftragung"))
+    .ClientEvents(events => events.OnRowDataBound("WunschkennzeichenGridRowOnDataBound").OnEdit("WunschkennzeichenGridRowOnEdit"))
+)

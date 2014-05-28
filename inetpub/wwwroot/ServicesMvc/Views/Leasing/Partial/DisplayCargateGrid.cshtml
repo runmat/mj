@@ -1,0 +1,51 @@
+﻿@using CkgDomainLeasing.Leasing.Models.DataModels
+@(Html.Telerik()
+              .Grid<LeasingCargateDisplayModel>()
+      .Name("GridCargateAnzeige")
+      .DataBinding(dataBinding => dataBinding.Ajax().Select("DisplayCargateAjaxBinding", "Leasing"))
+      .XAjaxDataBinding("DisplayCargateAjaxBinding", "Leasing")
+      .ClientEvents(events => events.XAutoClientEvents("GridCargateAnzeige"))
+      .XToolBar("Leasing")
+      .Columns(columns =>
+      {
+          columns.XBound(c => c.VORGANGS_ID);
+          columns.XBound(c => c.VERTRAGSNR_HLA);
+          columns.XBound(c => c.CHASSIS_NUM);
+          columns.XBound(c => c.STANDORT);
+          columns.XBound(c => c.RUECKGAB_OPTION);
+          columns.XBound(c => c.ERDAT);
+          columns.XBound(c => c.BEST_ABH_TERMIN);
+          columns.XBound(c => c.IUG_DAT);
+          columns.XBound(c => c.PROT_EING_O);
+          columns.XBound(c => c.FE_BLG);
+          columns.XBound(c => c.DAT_GUTA_BEAUFTRAGT);
+          columns.XBound(c => c.PROT_EING_D);
+          columns.XBound(c => c.ABMELDEDATUM);
+          columns.XBound(c => c.FB_GUTA);
+          columns.XBound(c => c.DAT_GUTA_ERHALT);
+          columns.XBound(c => c.VERW_ZULETZT_AKTUALISIERT);
+          columns.XBound(c => c.DAT_INSERAT);
+          columns.XBound(c => c.EING_AUFBER_AUFTR);
+          columns.XBound(c => c.AUFBER_FERTIG);
+          columns.XBound(c => c.FZG_BEREIT_BLG_SGS);
+          columns.XBound(c => c.SERVICE_LEVEL_2_3);
+          columns.XBound(c => c.SERVICE_LEVEL_5_7);
+          columns.XBound(c => c.SERVICE_LEVEL_7_14);
+          columns.XBound(c => c.SERVICE_LEVEL_8_16);
+          columns.XBound(c => c.SERVICE_LEVEL_2_7);
+          columns.XBound(c => c.SERVICE_LEVEL_19_21);
+      })
+      
+            .Groupable(g => g.Enabled(true))
+            .Filterable(g => g.Enabled(true))
+            .Sortable(g => g.Enabled(true))
+            .Reorderable(r => r.Columns(true))
+            .Resizable(r => r.Columns(true))
+            .ColumnContextMenu()
+            .Pageable(paging => paging.PageSize(10))
+            .ToolBar(commands =>
+            {
+                commands.FilteredDataCommand("ExportCsvUploadFilteredExcel", "Leasing");
+                commands.FilteredDataCommand("ExportCsvUploadFilteredPdf", "Leasing");
+            })
+      )

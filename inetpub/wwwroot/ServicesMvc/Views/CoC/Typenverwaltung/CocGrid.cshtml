@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.CoC.Models
+
+@(Html.Telerik()
+      .Grid<CocEntity>()
+      .Name("GridCocItems")
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("CocItemsAjaxBinding", "CoC"))
+          .Columns(columns =>
+          {
+              columns.Bound("").Width(145).Filterable(false).Sortable(false)
+                  .ClientTemplate(
+                    "<button onclick='CocTypEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Datensatz bearbeiten' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                  + "&nbsp;"
+                  + "<button onclick='CocTypDuplicate(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Datensatz duplizieren' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                  + "&nbsp;"
+                  + "<button onclick='CocTypRemove(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Datensatz löschen' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                  );
+              columns.Bound(c => c.COC_0_2_TYP).Width(200);
+              columns.Bound(c => c.COC_0_2_VAR).Width(200);
+              columns.Bound(c => c.COC_0_2_VERS).Width(200);
+              columns.Bound(c => c.ERDAT).Format("{0:dd.MM.yy}").Width(80);
+          })
+        .Reorderable(r => r.Columns(false)).Resizable(r => r.Columns(false))
+        .Pageable(paging => paging.PageSize(10))
+        .Filterable(filtering => filtering.Enabled(true))
+            .Sortable(s => s.Enabled(true))
+                .ClientEvents(events => events.OnDataBound("GridCocItems_OnDataBound").FilteredDataOnColumnReorder())
+        .ToolBar(commands =>
+        {
+            commands.Custom().Url("javascript:CocTypNew()").HtmlAttributes(new { @class = "btn mini gray tooltips a_btn_mini new", data_original_title = "Neuen Datensatz einfügen", data_placement = "right" });
+            commands.FilteredDataCommand("ExportFilteredExcel", "CoC").HtmlAttributes(new { @class = "btn mini gray tooltips a_btn_mini excel", data_original_title = "Excel Export", data_placement = "right" });
+            commands.FilteredDataCommand("ExportFilteredPDF", "CoC").HtmlAttributes(new { @class = "btn mini gray tooltips a_btn_mini pdf", data_original_title = "PDF Export", data_placement = "right" });
+        })
+)
+
+

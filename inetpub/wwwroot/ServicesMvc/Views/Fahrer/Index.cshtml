@@ -1,0 +1,45 @@
+﻿@using GeneralTools.Resources
+@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Fahrer <small>Web-Portal</small></h3>
+
+<br/>
+<h4>Willkommen im DAD Fahrer Web-Portal, @Model.LogonContext.User.FirstName @Model.LogonContext.User.LastName!</h4>
+<br/>
+
+<div class="fahrer-main-menuitem">
+    <a href="~/Fahrer/Meldung" class="btn purple tooltips">
+        <i class="icon-bell margin-right-10"></i>
+        @Localize.TranslateResourceKey(LocalizeConstants.FahrerWeb_Meldung)
+    </a>
+</div>
+
+<div class="fahrer-main-menuitem">
+    <a href="~/Fahrer/Auftraege" class="btn blue tooltips">
+        <i class="icon-reorder margin-right-10"></i>
+        @Localize.TranslateResourceKey(LocalizeConstants.FahrerWeb_Auftraege)
+    </a>
+</div>
+
+<div class="fahrer-main-menuitem">
+    <a href="~/Fahrer/FotoUpload" class="btn green tooltips">
+        <i class="icon-picture margin-right-10"></i>
+        @Localize.TranslateResourceKey(LocalizeConstants.FahrerWeb_FotoUpload)
+    </a>
+</div>
+
+<div class="fahrer-main-menuitem">
+    <a href="~/Fahrer/QmReport" class="btn black tooltips">
+        <i class="icon-bar-chart margin-right-10"></i>
+        @Localize.TranslateResourceKey(LocalizeConstants.FahrerWeb_QmReport)
+    </a>
+</div>
+
+<div class="fahrer-main-menuitem">
+    <a href="~/document/documentsforcurrentcustomer" class="btn black super-black tooltips">
+        <i class="icon-info-sign margin-right-10"></i>
+        @Localize.TranslateResourceKey(LocalizeConstants.DocumentsForCurrentCustomer)
+    </a>
+</div>

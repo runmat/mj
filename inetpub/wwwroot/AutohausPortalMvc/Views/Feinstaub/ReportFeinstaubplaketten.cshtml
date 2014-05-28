@@ -1,0 +1,100 @@
+﻿@using CkgDomainLogic.Feinstaub.ViewModels
+@model AutohausFeinstaubReportViewModel
+
+<div id="divFeinstaubSuche">
+    @using (Html.FormOuterLayer())
+    {
+        using (Html.FormInnerLayer(1, "Feinstaubplakettenstatistik", "", "formopener searchHeader"))
+        {
+            @Html.Partial("Partial/Suche", Model.DataService.Suchparameter)
+        }
+    }
+</div>
+
+<div id="divFeinstaubGrid">
+    @Html.Partial("Partial/TelerikGridDummy")
+</div>
+
+@Html.Partial("Partial/_ScriptsGeneral")
+@Html.FilteredDataTelerikScriptsAndStyles()
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        initOpenformsRaw(1);
+    }
+
+    function FormPreparePrivateAjax() {
+        FormInitStyles();
+    }
+
+    function GetGrid() {
+        return $("#GridVergabeInfos").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridVergabeInfosItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function GridVergabeInfos_OnDataBound() {
+        FilteredData_Grid_OnDataBound($(this));
+    }
+
+    function ShowFeinstaubSearchResult(result) {
+        $("#divFeinstaubSuche").slideUp();
+        $("#divFeinstaubGrid").slideDown();
+        $("#divFeinstaubGrid").html(result);
+    }
+
+    function CloseFeinstaubSearchResult() {
+        $("#divFeinstaubGrid").slideUp(function () { $("#divFeinstaubSuche").delay(200).slideDown(); window.scrollTo(0, 0); });
+        FormPreparePrivateAjax();
+    }
+
+    function TryGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+
+</script>
+
+<style type="text/css">
+    
+    #divFeinstaubGrid {
+        margin-left: 20px;
+    }
+    #divFeinstaubGrid .t-toolbar,#divFeinstaubGrid .t-grid-toolbar
+    {
+        display: inline-block;
+        background-color: transparent!important;
+        border: 0;
+        margin-bottom: 3px;
+    }
+    #divFeinstaubGrid h2.floatingHeader {
+        float: left;
+        margin-top: 12px;
+    }
+    #divFeinstaubGrid h2.lonelyHeader {
+        float: none;
+        display: inline-block;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #GridVergabeInfos tr {
+        cursor: pointer;
+    }
+    #GridVergabeInfos td {
+        white-space: nowrap;
+    }
+    #GridVergabeInfos tr:hover {
+        background-color: ivory;
+    }
+    
+</style>

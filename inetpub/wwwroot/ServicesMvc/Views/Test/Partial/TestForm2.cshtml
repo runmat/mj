@@ -1,0 +1,41 @@
+﻿@model ServicesMvc.Models.TestFilterModel2
+
+<div id="divTestForm2" class="">
+    @using (Ajax.BeginForm("TestFormSave", "Test", null, new MvcAjaxOptions("divTestForm2") { OnComplete = "TestForm2PrepareComplete();" }, htmlAttributes: new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm2" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap medium", data_bind = "value: Vorname4" })
+
+        @Html.FormTextBoxFor(m => m.Vorname3, new { @class = "m-wrap medium", data_bind = "value: Vorname3" })
+
+        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap medium", data_bind = "value: Nachname4" })
+        
+        @Html.FormTextBoxFor(m => m.Nachname3, new { @class = "m-wrap medium", data_bind = "value: Nachname3" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">Abbrechen</button>
+        </div>
+    
+        <script type="text/javascript">
+
+            var model2 = @Html.Raw(Json.Encode(Model));
+            ko.applyBindings(model2, $("#divTestForm2")[0]);
+            //alert(model2);
+
+
+            //var x = eval('new ' + model.LieferDatum2.slice(1, -1));
+            //alert(x.toString('dd.MM.yyyy'));
+
+
+            function TestForm2PrepareComplete(){
+                FormPreparePrivateAjax();
+            }
+        </script>
+    }
+</div>

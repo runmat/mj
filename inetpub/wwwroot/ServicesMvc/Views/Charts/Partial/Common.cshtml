@@ -1,0 +1,448 @@
+﻿
+<!-- Charts -->
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.js"></script>
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.stack.js"></script>
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.symbol.js"></script>
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.axislabels.js"></script>
+
+<!-- Maps -->
+<script type="text/javascript" src="~/Scripts/snap.svg.js"></script>
+
+
+<!-- Charts -->
+<style type="text/css">
+
+    .chart-container 
+    {
+        width: 700px;
+        margin-left: 10px;
+        margin-right: 20px;
+        margin-bottom: 15px;
+        display: inline;
+        float: left;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    
+    .chart-label {
+        display: inline;
+        margin-right: 7px;
+        font-size: 0.85em;
+    }
+    
+    .div-chart-filter {
+        margin-left: 70px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .chart-filter-items {
+        margin-top: 10px;
+    }
+    
+    .chart-filter-hint 
+    {
+        margin-left: 3px;
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+    
+    .chart {
+        width: 700px;
+        height: 250px;
+        position: relative;  /* => this is important to center our busyIndicator appropriately  */ 
+    }
+    .chart-map {
+        height: 590px!important;
+    }
+    .chart-details-data {
+        margin-top: 15px;
+        padding: 10px;
+    }
+    
+</style>
+
+<!-- Maps -->
+<style type="text/css">
+    #divCharts {
+        font-weight: bold;
+        color: red;
+    }
+    
+    .map-bundesland {
+        background-color: red;
+    }
+    .map-container {
+    }
+
+    #kreise {
+        cursor: pointer;
+    }
+
+    #svg {
+        width: 650px;
+        height: 679px;
+    }
+    .map-title {
+        position: absolute;
+        font-size: 0.9em;
+        width: 650px;
+        text-align: center;
+    }
+
+    #kreis-hovered {
+        font-weight: bold;
+        height: 30px;
+    }
+    #svg-kreis {
+        width: 500px;
+        height: 350px;
+        display: block;
+    }
+
+    td {
+        vertical-align: top;
+    }    
+</style>
+
+
+<script type="text/javascript">
+
+    function ChartManager() {
+        var chartManager = this;
+
+        chartManager.AddChart = AddChart;
+        chartManager.GetChart = GetChart;
+
+        chartManager.charts = new Array();
+
+        function AddChart(chart) {
+            this.charts.push(chart);
+        }
+
+        function GetChart(chartID) {
+            return $.grep(this.charts, function (e) { return e.chartID == chartID; })[0];
+        }
+    }
+
+    function Chart(chartID, chartGroup, options, formPreparePrivate, formPreparePrivateAjax, getTooltipHtml, showChart, preventShowDetailsData) {
+
+        var chart = this;
+
+        chart.chartID = chartID;
+        chart.chartGroup = chartGroup;
+        chart.formPreparePrivate = formPreparePrivate;
+        chart.formPreparePrivateAjax = formPreparePrivateAjax;
+        chart.getTooltipHtml = getTooltipHtml;
+        chart.showChart = showChart;
+        
+        chart.GetPlaceHolderID = function () {
+            return "chart-" + chart.chartID;
+        };
+        chart.GetPlaceHolder = function () {
+            return $("#" + chart.GetPlaceHolderID());
+        };
+
+        chart.GetContainerID = function () {
+            return "chart-container-" + chart.chartID;
+        };
+        chart.GetContainer = function () {
+            return $("#" + chart.GetContainerID());
+        };
+
+        chart.GetFilterFormID = function () {
+            return "chart-filter-form-" + chart.chartID;
+        };
+        chart.GetFilterForm = function () {
+            return $("#" + chart.GetFilterFormID());
+        };
+
+        chart.BindFilterCheckboxes = function () {
+            var checkBoxes = chart.GetFilterForm().find(" input[type=checkbox]");
+            checkBoxes.on("change", function () {
+                $(this).closest("form").submit();
+            });
+        };
+
+        chart.GetPlaceHolder().data("chart", chart);
+        //console.log(options.preventShowDetailsData);
+        if (typeof (options.preventShowDetailsData) === 'undefined' && !options.preventShowDetailsData)
+            chart.GetPlaceHolder().ShowDetailsData();
+    }
+
+
+    var chartManager = new ChartManager();
+
+
+    function FormPreparePrivate() {
+
+        PrepareChartsForActiveTab();
+
+        MetronicSidebarEnforceClosed();
+
+        // TEST
+        //TestShowChartDetailsData();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function PrepareChartsForActiveTab() {
+
+        var activeChartGroup = $(".tabbable li.active").text();
+        //alert("*" + activeChartGroup + "*");
+
+        $.each(chartManager.charts, function (index, chart) {
+
+            if (activeChartGroup != chart.chartGroup)
+                return;
+
+            if (chart.GetPlaceHolder().html() != '')
+                return;
+
+            chart.formPreparePrivate(chart);
+            showBusy(chart.GetPlaceHolderID(), 20, -35);
+            chart.GetFilterForm().submit();
+        });
+
+        return true;
+    }
+
+    function ChartShow(chartID) {
+
+        var chart = chartManager.GetChart(chartID);
+        var chartPlaceHolderID = chart.GetPlaceHolderID();
+        var chartPlaceHolder = chart.GetPlaceHolder();
+
+        FormPreparePrivateAjax();
+        chart.formPreparePrivateAjax(chart);
+        chart.BindFilterCheckboxes();
+
+        if (!_modelStateValid) {
+            chartPlaceHolder.slideUp(300);
+            return;
+        }
+
+        chartPlaceHolder.fadeTo("fast", 0.8, function () {
+            showBusy(chartPlaceHolderID, 20, -35);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "ChartShow",
+            data: { chartID: chartID },
+            loadingShow: false,
+            success: function (result) {
+
+                if (_modelStateValid) {
+                    chartPlaceHolder.slideDown(300, null, function () {
+                        chart.showChart(chart, result);
+                        chartPlaceHolder.fadeTo("fast", 1.0, function () {
+                            hideBusy(chartPlaceHolderID);
+                        });
+                    });
+                }
+            }
+        });
+    }
+
+    var chartJahrColors = [
+        "#0000FF",
+        "#DD3333",
+        "#DD66DD",
+        "#999900",
+        "#33DD33",
+        "#666666",
+        "#333333",
+        "#000000"
+    ];
+
+    function ColorToRGB(color) {
+        return color.substring(4, color.length - 1).replace(/ /g, '').split(',');
+    }
+
+    function ColorLightenDarken(col, amt) {
+        var usePound = false;
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
+        var num = parseInt(col, 16);
+        var r = (num >> 16) + amt;
+        if (r > 255) {
+            r = 255;
+        } else if (r < 0) {
+            r = 0;
+        }
+        var b = ((num >> 8) & 0x00FF) + amt;
+        if (b > 255) {
+            b = 255;
+        } else if (b < 0) {
+            b = 0;
+        }
+        var g = (num & 0x0000FF) + amt;
+        if (g > 255) {
+            g = 255;
+        } else if (g < 0) {
+            g = 0;
+        }
+        return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+    }
+
+    function ChartGetJahrColor(jahr) {
+        var yearToday = 1900 + new Date().getYear();
+        if (jahr > yearToday) jahr = yearToday;
+        if (jahr < yearToday - 7) jahr = yearToday - 7;
+        var jahrIndex = yearToday - jahr;
+        var match = $.grep(chartJahrColors, function (elem, index) { return index == jahrIndex; });
+        if (match == null || match.length == 0)
+            return "#FF3333";
+
+        return match[0];
+    }
+    
+    //
+    // Chart Tooltips
+    //
+
+    $.fn.UseTooltip = function () {
+        var previousPoint = null;
+
+        $(this).bind("plothover", function (event, pos, item) {
+            if (item) {
+                $("html,body").css("cursor", "pointer");
+                
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+
+                    var x = item.datapoint[0], y = item.datapoint[1];
+
+                    var xAxisLabel = ChartGetXaxisLabel(item);
+                    var tooltipHtml = xAxisLabel + ": " + "<strong>" + y + "</strong>";
+
+                    var chart = $(this).data("chart");
+                    if (chart != null && chart.getTooltipHtml != null)
+                        tooltipHtml = chart.getTooltipHtml(chart, item, xAxisLabel);
+
+                    ChartShowTooltip(item.pageX, item.pageY, tooltipHtml);
+                }
+            }
+            else {
+                $("html,body").css("cursor", "default");
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+    };
+
+    function ChartGetXaxisLabel(item) {
+        if (typeof(item.series) == 'undefined')
+            return null;
+        return item.series.xaxis.ticks[item.dataIndex].label;
+    }
+
+    function ChartGetXaxisSubLabel(item) {
+        if (typeof (item.series) == 'undefined')
+            return null;
+        return item.series.label;
+    }
+    
+    function ChartShowTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y,
+            left: x + 25,
+            border: '1px solid #4572FF',
+            padding: '2px',
+            size: '10',
+            'background-color': '#fff',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(350);
+    }
+
+
+    // Details Data
+
+
+    $.fn.ShowDetailsData = function () {
+        $(this).bind("plotclick", function (e,pos,item) {
+            var chart = $(this).data("chart");
+            RequestShowChartDetailsData(chart.chartID, item);
+        });
+    };
+
+    function CloseChartDetailsData() {
+        $("#chart-details-data").slideUp(300, function () {
+            $("#chart-container-wrapper").slideDown(300, function () {
+                //alert(_scrollTopSaved);
+                $("html, body").animate({ scrollTop: _scrollTopSaved }, 350, 'swing');
+            });
+        });
+    }
+
+    var _scrollTopSaved = -1;
+
+    function RequestShowChartDetailsData    (chartID, item) {
+
+        var group = ChartGetXaxisLabel(item) || item;
+        var subGroup = ChartGetXaxisSubLabel(item);
+        //console.log(chartID, group, subGroup);
+
+        $.ajax({
+            type: "POST",
+            url: "ChartShowDetailsData",
+            data: { chartID: chartID, group: group, subGroup: subGroup },
+            loadingShow: true,
+            success: function (result) {
+
+                _scrollTopSaved = $("html").scrollTop();
+                if (_scrollTopSaved.toString() == '0')
+                    _scrollTopSaved = $("body").scrollTop();
+                
+                //alert(_scrollTopSaved);
+                $("#chart-details-data").html('');
+
+                $("html, body").animate({ scrollTop: 0 }, 250, 'swing', function () {
+                    $("#chart-container-wrapper").slideUp(300, function () {
+                        $("#chart-details-data").slideDown(300, function () {
+                            $("#chart-details-data").html(result);
+                            // move our grid filter form into grid's toolbar:
+                            GridAllColumnFilterApplyToGrid("GridChartDetailsData");
+                            $(".t-grid-filter").css('visibility', 'hidden');
+                        });
+                    });
+                });
+            }
+        });
+    }
+
+    function TestShowChartDetailsData(result) {
+        if (typeof (result) !== 'undefined')
+            $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridChartDetailsData");
+
+        if (typeof (result) !== 'undefined')
+            $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridChartDetailsData() {
+        FilteredData_Grid_OnDataBound($(this));
+        //jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridChartDetailsData() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridChartDetailsData() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+</script>

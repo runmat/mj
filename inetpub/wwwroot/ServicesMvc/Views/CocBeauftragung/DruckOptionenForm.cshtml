@@ -1,0 +1,69 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model DruckOptionen
+
+<div id="DivDruckOptionen" class="margin-top-20">
+    @using (Ajax.BeginForm("DruckOptionenForm", "CocBeauftragung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivDruckOptionen", OnComplete = "AjaxFormDruckOptionenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormDruckOptionen" }))
+    {
+        @Html.HiddenFor(m => m.BeauftragungMode)
+        
+        @Html.FormValidationSummary()
+
+        if (Model.DruckZBIIverfuegbar)
+        {
+            @Html.FormCheckBoxListFor(m => m.Druck, m => m.DruckCoc, m => m.DruckZBII)
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.DruckCoc)
+            @Html.HiddenFor(m => m.DruckZBII)
+        }
+
+        if (Model.FolgeDienstleistungenVerfuegbar)
+        {
+            @Html.FormRadioButtonListFor(m => m.FolgeDienstleistungen, DruckOptionen.FolgeDienstleistungsOptionen)
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.FolgeDienstleistungen)
+        }
+
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            setTimeout('try { CheckEigenDruckVerfuegbarkeit(); } catch (e) {}', 100);
+            //DocumentReadyBind(CheckEigenDruckVerfuegbarkeit);
+            
+            $("#DruckZBII").click(function() {
+                CheckEigenDruckVerfuegbarkeit();
+            });
+
+            function CheckEigenDruckVerfuegbarkeit() {
+                if ($("#DruckZBII").is(":checked")) {
+                    $(":radio[value=versand]").uniformRadioCheck();
+                    $(":radio[value=eigendruck]").uniformRadioDisable();
+                    return;
+                }
+                $(":radio[value=eigendruck]").uniformRadioEnable();
+
+                FolgeDienstleistungenPrepareFormWizard();
+            }
+
+
+            //
+            // do some radion button dependent Form Wizard adaptations:
+            $(":radio[value=versand]").click(function() { FolgeDienstleistungenPrepareFormWizard(); });
+            $(":radio[value=eigendruck]").click(function() { FolgeDienstleistungenPrepareFormWizard(); });
+            
+            function FolgeDienstleistungenPrepareFormWizard() {
+                if ($(":radio[value=eigendruck]").is(":checked"))
+                    FormWizard.RenameNextStepAndHideLastSteps("Fertig!");
+                if ($(":radio[value=versand]").is(":checked"))
+                    FormWizard.RestoreAllSteps();
+            }
+
+        </script>
+    }
+</div>

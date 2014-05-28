@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZLDMobile", "ZLDMobile.csproj", "{AF91E529-CA22-4983-984A-6BC338BDCCD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTools", "..\..\..\Work\Tools\MvcTools\MvcTools.csproj", "{EE073662-9DA7-4B2C-8877-893A044EB157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainLogic", "..\..\..\Work\CkgDomainLogic\Lib\CkgDomainLogic.csproj", "{D8B336B9-0D12-4AA8-B6D2-536425C228E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkMobileMvcTools", "CkMobileMvcTools\CkMobileMvcTools.csproj", "{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainCommon", "..\..\..\Work\CkgDomainLogic\CkgDomainCommon\CkgDomainCommon.csproj", "{116FCA66-F690-41B3-86F5-B8BF7BBA2949}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
+		SccProjectName1 = ../Work/Tools/GeneralTools
+		SccLocalPath1 = ..\\..\\..\\Work\\Tools\\GeneralTools
+		SccProjectUniqueName2 = ..\\..\\..\\Work\\Tools\\MvcTools\\MvcTools.csproj
+		SccProjectName2 = ../Work/Tools/MvcTools
+		SccLocalPath2 = ..\\..\\..\\Work\\Tools\\MvcTools
+		SccProjectUniqueName3 = ..\\..\\..\\Work\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
+		SccProjectName3 = ../Work/CkgDomainLogic/Lib
+		SccLocalPath3 = ..\\..\\..\\Work\\CkgDomainLogic\\Lib
+		SccProjectUniqueName4 = CkMobileMvcTools\\CkMobileMvcTools.csproj
+		SccProjectName4 = CkMobileMvcTools
+		SccLocalPath4 = CkMobileMvcTools
+		SccProjectUniqueName5 = ZLDMobile.csproj
+		SccLocalPath5 = .
+		SccProjectUniqueName6 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainCommon\\CkgDomainCommon.csproj
+		SccProjectName6 = ../Work/CkgDomainLogic/CkgDomainCommon
+		SccLocalPath6 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainCommon
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF91E529-CA22-4983-984A-6BC338BDCCD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE073662-9DA7-4B2C-8877-893A044EB157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF2FBFC-E24B-46D7-89BB-584FB1F64B20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116FCA66-F690-41B3-86F5-B8BF7BBA2949}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

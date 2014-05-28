@@ -1,0 +1,111 @@
+﻿@model LoginModel 
+
+<div id="DivLogin">
+    @using (Ajax.BeginForm("LoginForm", "Login", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivLogin", OnComplete = "AjaxFormLoginComplete();" }, 
+                           new { @class = "no-loading-indicator form-vertical login-form", id = "AjaxFormLogin" }))
+    {
+        @Html.HiddenFor(m => m.ModePasswordReset)
+        @Html.HiddenFor(m => m.ModeCaptchaReset)
+
+        if (!Model.ModePasswordReset)
+        {
+             <div id="loginDiv">
+                 <h3 class="form-title">@Localize.LoginToYourAccount</h3>
+
+                 @if (Model.IsValid)
+                 {
+                     <div class="alert alert-info">
+                         @Html.Win8Loader() @Localize.LoginInProcess 
+                     </div>
+                 }
+                 else
+                 {
+                     @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-user")
+
+                     @Html.FormPlaceholderTextBoxFor(m => m.Password, new { @class = "m-wrap placeholder-no-fix", type = "password" }, "icon-lock")
+
+                     <div class="form-actions">
+                         <button type="submit" class="btn blue pull-right">
+                             Login <i class="m-icon-swapright m-icon-white"></i>
+                         </button>            
+                     </div>
+
+                     <div class="forget-password">
+                         <h4>@Localize.PasswordForgottenQuestion</h4>
+                         <p>@Localize.PasswordResetLinkHintStart <a href="javascript:RequestSwitchMode(true);" id="forget-password">@Localize.PasswordResetLinkHintEnd</a></p>
+                     </div>
+                 }
+             </div>
+        }
+
+        if (Model.ModePasswordReset)
+        {
+            <div id="passworResetDiv">
+                <h3 class="form-title">@Localize.PasswordReset</h3>
+
+                @if (Model.IsValid)
+                {
+                     <div class="alert alert-success">
+                         <i class="icon-envelope margin-right-5"></i>
+                         @Localize.PasswordResetLinkEmailWasSent
+                     </div>
+                }
+                else
+                {
+                    @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-envelope")
+
+                    <div class="captcha-wrapper">
+                        <img src="~/Shared/Captcha?id=@Guid.NewGuid()" alt="captcha" class="captcha-image" />
+                        <span onclick="return ResetCaptcha();" class="btn blue mini">
+                            <i class="halflings-icon refresh white"></i>
+                        </span>
+                    </div>
+                    
+                    @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new { @class = "m-wrap placeholder-no-fix" }, "icon-picture")
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn blue pull-right">
+                            @Localize.PasswordReset <i class="m-icon-swapright m-icon-white"></i>
+                        </button>            
+                    </div>
+                }
+
+                <div class="forget-password margin-top-10">
+                    <p>@Localize.LoginToYourAccountLinkHintStart <a href="javascript:RequestSwitchMode(false);" id="forget-password">@Localize.LoginToYourAccountLinkHintEnd</a></p>
+                </div>
+            </div>
+        }
+
+        <script type="text/javascript">
+
+            _modePasswordReset = @Model.ModePasswordReset.ToString().ToLower();
+            _modeCaptchaReset = @Model.ModeCaptchaReset.ToString().ToLower();
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+
+            if (!_modeCaptchaReset)
+                AutoFocusDelayed('UserName');
+            $("#ModeCaptchaReset").val(false);
+
+            if (_modelIsValid) {
+                if (!_modePasswordReset && !_modeCaptchaReset) {
+                    var redirectUrl = unescape('@Model.RedirectUrl');
+                    redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
+                    //alert(redirectUrl);
+                    location.replace(redirectUrl);
+                }
+            }
+
+            function RequestSwitchMode(modeResetPassword) {
+                $("#ModePasswordReset").val(modeResetPassword);
+                $("#AjaxFormLogin").submit();
+            }
+            
+            function ResetCaptcha() {
+                $("#ModeCaptchaReset").val(true);
+                $("#AjaxFormLogin").submit();
+                return false;
+            }
+        </script>
+    }
+</div>

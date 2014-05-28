@@ -1,0 +1,30 @@
+﻿@model  CkgDomainLogic.Ueberfuehrung.Models.Summary
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("SummaryEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "SummaryEdit_FormPreparePrivateAjax();" }, new { enctype = "multipart/form-data" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @Html.HiddenFor(m => m.SummaryItemsAsString)
+
+        foreach (var summaryItem in Model.SummaryItems)
+        {
+            @Html.Partial("Partial/SummaryItem", summaryItem)
+        }
+    }
+}
+
+
+<script type="text/javascript">
+
+    function SummaryEdit_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+
+        eval(_onSubFormSubmitSuccessFunction);
+        _onSubFormSubmitSuccessFunction = '';
+    }
+        
+</script>

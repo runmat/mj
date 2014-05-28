@@ -1,0 +1,7 @@
+﻿@model CkgDomainLogic.Archive.Models.EasyAccessArchive
+
+<label class="checkbox no-break-container float-left">
+    @Html.HiddenFor(m => Model.Name)
+    @Html.CheckBoxFor(m => Model.Selected, new { @class = "m-wrap small" })
+    <span class="help-inline right">@Model.Name</span>
+</label>

@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4AEABF8-F62C-44FC-B32F-A8EA417CF8C6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarDocu</RootNamespace>
+    <AssemblyName>CarDocu</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cardocu.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fluent">
+      <HintPath>..\..\Tools\Ribbon\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="zxing">
+      <HintPath>..\..\GAC\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation">
+      <HintPath>..\..\GAC\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="UserControls\AdminGroup\ucDomainLocations.xaml.cs">
+      <DependentUpon>ucDomainLocations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AllGroups\ucCardocuStatusmessage.xaml.cs">
+      <DependentUpon>ucCardocuStatusmessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AllGroups\ucCardocuThreadInfo.xaml.cs">
+      <DependentUpon>ucCardocuThreadInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AllGroups\ucDomainLocation.xaml.cs">
+      <DependentUpon>ucDomainLocation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AllGroups\ucStatusBar.xaml.cs">
+      <DependentUpon>ucStatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Backstage\ucUIHints.xaml.cs">
+      <DependentUpon>ucUIHints.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\Primitives\ucTemplateInsertRibbonSplitButton.xaml.cs">
+      <DependentUpon>ucTemplateInsertRibbonSplitButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\Primitives\ucPdfFolderRibbonButton.xaml.cs">
+      <DependentUpon>ucPdfFolderRibbonButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AllGroups\ucDomainLocationSelection.xaml.cs">
+      <DependentUpon>ucDomainLocationSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ListEditing\DomainLocationsEditViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\UserLogonViewModel.cs" />
+    <Compile Include="Views\AppSettingsInitial.xaml.cs">
+      <DependentUpon>AppSettingsInitial.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\TwainService.cs" />
+    <Compile Include="Services\WpfWindowMessageHook.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="UserControls\AdminGroup\ucAppSettings.xaml.cs">
+      <DependentUpon>ucAppSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AdminGroup\ucDocTypes.xaml.cs">
+      <DependentUpon>ucDocTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AdminGroup\ucDomainUsers.xaml.cs">
+      <DependentUpon>ucDomainUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\RibbonSection\ucScanDocuRibbonSectionFIN.xaml.cs">
+      <DependentUpon>ucScanDocuRibbonSectionFIN.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\ucAllScanDocus.xaml.cs">
+      <DependentUpon>ucAllScanDocus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\Primitives\ucPdfRibbonSplitButton.xaml.cs">
+      <DependentUpon>ucPdfRibbonSplitButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\ucScanDocu.xaml.cs">
+      <DependentUpon>ucScanDocu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocuGroup\RibbonSection\ucScanDocuRibbonSectionDocuArt.xaml.cs">
+      <DependentUpon>ucScanDocuRibbonSectionDocuArt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ChildViewModels\AdminViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\AllDocusViewModel.cs" />
+    <Compile Include="ViewModels\BackstageViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\AppSettingsInitialViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\DocuViewModel.cs" />
+    <Compile Include="ViewModels\ListEditing\DomainUsersEditViewModel.cs" />
+    <Compile Include="ViewModels\ListEditing\DocTypesEditViewModel.cs" />
+    <Compile Include="ViewModels\ListEditing\IMainViewModelChild.cs" />
+    <Compile Include="ViewModels\ChildViewModels\AppSettingsEditViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\DocumentTypeViewModel.cs" />
+    <Page Include="UserControls\AdminGroup\ucDomainLocations.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\AllGroups\ucCardocuStatusmessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AllGroups\ucCardocuThreadInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AllGroups\ucDomainLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AllGroups\ucStatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Backstage\ucUIHints.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DocuGroup\Primitives\ucTemplateInsertRibbonSplitButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DocuGroup\Primitives\ucPdfFolderRibbonButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AllGroups\ucDomainLocationSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppSettingsInitial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserLogon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\UserLogon.xaml.cs">
+      <DependentUpon>UserLogon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resources\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\LocalStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\AdminGroup\ucAppSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AdminGroup\ucDocTypes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AdminGroup\ucDomainUsers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DocuGroup\RibbonSection\ucScanDocuRibbonSectionFIN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\DocuGroup\ucAllScanDocus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DocuGroup\Primitives\ucPdfRibbonSplitButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DocuGroup\ucScanDocu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DocuGroup\RibbonSection\ucScanDocuRibbonSectionDocuArt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\TwainDotNet\TwainDotNet.csproj">
+      <Project>{857B8891-2932-484D-A9A8-D38B47108CF0}</Project>
+      <Name>TwainDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WpfTools4\WpfTools4.csproj">
+      <Project>{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}</Project>
+      <Name>WpfTools4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\CarDocuLib.csproj">
+      <Project>{F00F3D72-1675-4FDA-A14C-58AC7320FF95}</Project>
+      <Name>CarDocuLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\paperclip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="cardocu.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_archive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\domainsettings_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\domainsettings_folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_closed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\pdf_folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\settings_export.png" />
+    <Resource Include="Images\32x32\settings_import.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo_cardocu.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\location_delete.png" />
+    <Resource Include="Images\32x32\location_new.png" />
+    <Resource Include="Images\32x32\location_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\location.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\paperclip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\48x48\paperclip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\48x48\note.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\note.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\note.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\zip_archive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\compress.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\email_sendout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\page_copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\error.png" />
+    <Resource Include="Images\16x16\exclamation.png" />
+    <Resource Include="Images\16x16\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\scan_new_batch.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

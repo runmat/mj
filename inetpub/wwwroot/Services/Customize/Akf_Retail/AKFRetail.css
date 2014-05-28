@@ -1,0 +1,71 @@
+﻿.dadLogo2
+{
+    background-image: url(akf_Retail_logo.gif);
+}
+
+div#header ul#navigation li
+{
+    background-color: #99cccc;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #99cccc;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #99cccc;
+}
+
+div#content div#query
+{
+    background-color: #99cccc;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #99cccc;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #99cccc;
+}
+.Menutitle
+{
+    background-color: #99cccc;
+}
+A.Tablebutton:hover
+{
+    color: #99cccc;
+}
+
+td.MainmenuItemAlternate:hover
+{
+    background-color: #99cccc;
+}
+
+.divWait
+{
+    border: thin solid #99cccc;
+}
+
+.lblKontaktFirma
+{
+    color: #99cccc;
+}
+
+.ImpressumHead
+{
+    background-color: #99cccc;
+}
+
+.NaviImg
+{
+    background-image: url(../../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+

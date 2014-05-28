@@ -1,0 +1,30 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@{
+    var gridName = "VersEventGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID" class="VersEventSubGrid">
+    @(Html.Telerik()
+          .Grid<VersEvent>()
+          .Name(gridName)
+
+          .XAjaxDataBinding("VersEventAjaxBinding", "Insurance")
+          .Columns(columns =>
+              {
+                  columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                      .HeaderTemplate(
+                            "<button onclick='EventOrtSelectCancel();' class='btn mini red tooltips' data-original-title='" + Localize.Cancel + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></button>"
+                      );
+                  columns.XBoundAllExcept(c => c.ID, c => c.AnlageDatum, c => c.AnlageUser, c => c.OrtsNamen);
+              })
+
+          .XAutoColumnConfiguration()
+          .ClientEvents(events => events.XAutoClientEvents(gridName))
+          .XPageSize(10)
+          .XSort(sortOrder => sortOrder.Add(c => c.StartDatum).Descending())
+          .XToolBar("Insurance")
+    )
+</div>
+
+

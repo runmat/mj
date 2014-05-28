@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChartsSqlDataDescriptorTemplate>
+
+  <Group>
+    Kennzeichen VK
+  </Group>
+
+  <HtmlTemplateName>
+    MapGermanyDoubleHeight.cshtml
+  </HtmlTemplateName>
+
+  <HtmlParameterXml>
+    <Title>Kennzeichen Verteilung</Title>
+    <ColorScheme>Blue</ColorScheme>
+    <ItemsName>Kennzeichen</ItemsName>
+    <LegendColorThresholds>10, 50, 100, 150, 200, 300, 500, 1000, 9999999</LegendColorThresholds>
+  </HtmlParameterXml>
+
+  <SqlTableOrViewName>
+    KennzeichenStandorte
+  </SqlTableOrViewName>
+
+  <GroupSqlStatement>
+
+    select
+    VkJahr Jahr,
+    VkMMM Key1,
+    count(*) IWert1
+    from {0}
+    {1}
+
+    group by VkJahr, VkMM, VkMMM, VkMonat
+    order by VkMM
+
+  </GroupSqlStatement>
+
+  <DetailsSqlStatement>
+
+    select
+    KGS,
+    KgsName,
+    convert(varchar(10), VkDatum, 4) VkDatum,
+    Kennzeichen,
+    KdNr,
+    Beleg,
+    VkBur,
+    PLZ,
+    Strasse,
+    Ort
+    from {0}
+    {1}
+    order by VkDatum
+
+  </DetailsSqlStatement>
+
+  <FilterInitial>
+
+    (VkJahr >= 2013)
+
+  </FilterInitial>
+
+  <FilterSelector>
+
+    VkMMM in ({0}) and VkJahr in ({1})
+
+  </FilterSelector>
+
+  <FilterSelectorDetails>
+
+    KGS in ({0})
+
+  </FilterSelectorDetails>
+
+  <AdditionalSqlStatements>
+
+    <string>
+      select
+      KGS Key1,
+      count(*) IWert1
+      from {0}
+      {1}
+      group by KGS
+      order by KGS
+    </string>
+
+  </AdditionalSqlStatements>
+
+</ChartsSqlDataDescriptorTemplate>

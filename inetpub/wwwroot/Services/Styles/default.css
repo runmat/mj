@@ -1,0 +1,4370 @@
+body
+{
+    background-color: #bababa;
+    background-image: url(../Images/backgroundImage.gif);
+    background-position: 0px 0px;
+    background-repeat: repeat-x;
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+img
+{
+    border-style: none;
+    border-color: inherit;
+    border-width: 0;
+}
+
+* html div#header ul
+{
+    margin-top: 49px;
+}
+* html div#header table
+{
+    margin-top: 51px;
+}
+* html div#content div#innerContent div div.innerContentHeading
+{
+    margin-right: 15px;
+    width: 90%;
+}
+* html div#content div#innerContent div#login
+{
+    margin-right: 0px;
+}
+* html div#content div#innerContentLeft
+{
+    width: 18%;
+}
+
+.bold
+{
+    font-weight: bold;
+}
+
+div#website
+{
+    margin: 0px auto;
+    top: 0px;
+    width: 1000px;
+}
+div#websitefoot
+{
+    margin: 0px auto;
+    top: 0px;
+    width: 1000px;
+}
+div#sidebar
+{
+    float: left;
+    margin-top: 39px;
+    position: absolute;
+    text-align: center;
+    z-index: 2;
+}
+
+div#sidebar div#info
+{
+    border-style: solid solid solid none;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    width: 450px;
+    font-size: 12px;
+    background-color: #ffffff;
+    padding: 5px;
+    margin-left: 26px;
+    display: none;
+    height: 535px;
+}
+
+div#sidebar div#btnCloseParent
+{
+    float: right;
+    -ms-filter: alpha(opacity=0);
+    font-family: Verdana;
+    font-size: 10px;
+    color: #666666;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div#sidebar div#flyout
+{
+    border-style: solid solid solid none;
+    border-width: 1px;
+    border-color: #D0D0D0;
+    display: none;
+    overflow: hidden;
+    z-index: 2;
+    background-color: #FFFFFF;
+    width: 1px;
+}
+
+
+
+div#testsidebar
+{
+    float: left;
+    margin-top: 200px;
+    position: absolute;
+    text-align: center;
+    width: 30px;
+    z-index: 2;
+    top: 2px;
+    left: 10px;
+    margin-left: 45px;
+}
+div#sidebar img#navDisplayArrow
+{
+    cursor: pointer;
+}
+
+div#site
+{
+    border-left: 1px solid #bbbbbb;
+    float: left;
+    margin-left: 25px;
+    z-index: 1;
+    border-right: 1px solid #bbbbbb;
+}
+
+div#header
+{
+    background-image: url(../Images/header.jpg);
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    height: 125px;
+    width: 947px;
+    margin-left: 25px;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+div#header img.dadLogo
+{
+    background-position: 19px;
+    background-repeat: no-repeat;
+    padding-right: 19px;
+    padding-left: 736px;
+}
+
+
+div#header ul
+{
+    float: left;
+    list-style-type: none;
+    margin-top: 35px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    padding-left: 19px;
+}
+
+div#header ul li
+{
+    float: left;
+    height: 18px;
+    padding-top: 4px;
+    padding-right: 14px;
+    padding-left: 14px;
+}
+
+div#header ul#navigation
+{
+    background-image: url(../Images/overflowNavigationShadow.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    padding-right: 18px;
+}
+
+div#header ul#navigation li
+{
+    background-image: url(../Images/overflowNavigation.png);
+    background-position: top left;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    background-color: #576B96;
+}
+
+
+div#header ul#navigation li.active
+{
+    background-color: #ffffff;
+    background-image: none;
+    border-top: 1px solid #bbbbbb;
+    border-left: 1px solid #bbbbbb;
+    color: #576B96;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #576B96;
+}
+
+div#header ul#navigation li a
+{
+    color: #ffffff;
+    font-weight: bold;
+}
+
+div#header ul#userinfo
+{
+    float: right;
+    padding-right: 19px;
+}
+
+div#header ul#userinfo li
+{
+    color: #ffffff;
+    padding-right: 0px;
+}
+
+div#header ul#userinfo li.logout
+{
+    padding-top: 0px;
+}
+
+div#content
+{
+    background-color: #ffffff;
+    float: left;
+    width: 945px;
+}
+
+div#content div#navigationSubmenu
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 19px;
+}
+
+div#content div#navigationSubmenu a
+{
+    color: #595959;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #576B96;
+}
+
+div#content div#innerContentRight div#TableQuery div#statistics
+{
+    color: #595959;
+    background-color: #dfdfdf;
+    margin-top: 40px;
+    margin-bottom: 5px;
+}
+
+div#content div#innerContentRight div#TableQuery div#statistics table
+{
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+div#content div#innerContentRight div#TableQuery div#statistics table tr.heading
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentRight div#TableQuery div#statistics table tr td
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 2px;
+    padding-right: 35px;
+    padding-bottom: 4px;
+}
+
+div#content div#innerContentRight div#TableQuery div#statistics table tr td h3
+{
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+div#content div#innerContent
+{
+    margin-top: 0px;
+    padding-right: 19px;
+    margin-left: 19px;
+}
+
+div#content div#innerContentLeft
+{
+    float: left;
+    margin-right: 2%;
+    width: 15%;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+erContentHeading h2
+{
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+div#content div#paginationQuery div#queryImage
+{
+    float: right;
+}
+div#content div#paginationQuery div#queryImage input
+{
+    margin-top: 0px;
+}
+div#content div#innerContentLeft ul
+{
+    list-style-type: none;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    padding-left: 0px;
+}
+
+div#content div#innerContentLeft ul li
+{
+    background-color: #dfdfdf;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #595959;
+    height: 22px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+div#content div#innerContentLeft ul li
+{
+    background-color: #dfdfdf;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #595959;
+    height: 22px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+div#content div#innerContentLeft ul li.active
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentLeft ul li:hover
+{
+    background-color: #2B4C91;
+}
+
+div#content div#innerContentLeft ul li.top
+{
+    background-color: #bebebe;
+    color: #000000;
+}
+
+div#content div#innerContentRight
+{
+    float: left;
+}
+
+
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    font-weight: bold;
+    float: left;
+    height: 22px;
+    line-height: 22px;
+    width: 100%;
+    white-space: nowrap;
+    background-color: #576b96;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading h1
+{
+    float: left;
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 15px;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading div
+{
+    float: right;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading div a
+{
+    color: #ffffff;
+    display: block;
+    float: left;
+    font-weight: normal;
+    padding-top: 0px;
+    padding-left: 3px;
+    padding-right: 17px;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading div a img
+{
+    float: left;
+    padding-top: 3px;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading div a span
+{
+    /* 	display: block; 	float: left; 	font-weight: normal; 	padding-top: 0px; 	padding-left: 3px; 	padding-right: 17px;*/
+}
+
+
+div#content div#innerContentLeft2
+{
+    float: right;
+    width: 36%;
+    border-style: none solid solid solid;
+    border-width: 1px;
+    border-color: #DFDFDF;
+    height: 285px;
+    margin-top: 25px;
+    margin-right: 15px;
+    margin-bottom: 25px;
+}
+
+
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    font-weight: bold;
+    float: right;
+    height: 22px;
+    line-height: 22px;
+    width: 100%;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading h1
+{
+    float: left;
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 15px;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading div
+{
+    float: right;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading div a
+{
+    color: #ffffff;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading div a img
+{
+    float: left;
+    padding-top: 3px;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading div a span
+{
+    display: block;
+    float: left;
+    font-weight: normal;
+    padding-top: 0px;
+    padding-left: 3px;
+    padding-right: 17px;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeft2Callback
+{
+    float: left;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeft2Callback table tr td
+{
+    padding-left: 15px;
+    padding-top: 25px;
+    vertical-align: baseline;
+    height: 22px;
+    font-size: 10px;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeft2Callback td.innerCallback
+{
+    padding-left: 0px;
+    padding-top: 5px;
+    vertical-align: top;
+}
+
+div#content div#query
+{
+    background-image: url(../Images/overflow.png);
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+div#content div#query h2
+{
+    font-size: 10px;
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+div#content div#innerContentRight div#pagination
+{
+    background-color: #dfdfdf;
+    float: left;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination table
+{
+    color: #4c4c4c;
+    padding-left: 15px;
+    padding-right: 17px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination tr td.login
+{
+    padding-top: 5px;
+    height: auto;
+}
+
+div#content div#innerContentRight div#pagination td
+{
+    height: 22px;
+    vertical-align: middle;
+    padding-bottom: 0px;
+}
+
+div#content div#innerContentRight div#pagination td.active
+{
+    font-weight: bold;
+}
+
+
+div#content div#innerContentRight div#pagination td.pagination
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    width: 33%;
+    padding-bottom: 0px;
+}
+
+div#content div#innerContentRight div#pagination td.Title
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    width: 35%;
+    font-weight: bold;
+    padding-bottom: 0px;
+    color: #576b96;
+    font-size: 12px;
+}
+
+div#content div#innerContentRight div#pagination td.paginationText
+{
+    padding-right: 14px;
+    text-align: right;
+    padding-top: 0px;
+}
+
+div#content div#innerContentRight div#pagination td.paginationForm
+{
+    margin: 0px;
+    padding: 0px;
+    width: 45px;
+}
+
+
+div#content div#innerContentRight div#pagination td.paginationForm form select
+{
+    width: 40px;
+}
+
+div#content div#innerContentRight div#pagination a
+{
+    margin-right: 2px;
+    color: #4c4c4c;
+}
+
+div#content div#innerContentRight div#pagination a.active
+{
+    font-weight: bold;
+    text-decoration: underline;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+
+div#content div#innerContentRight div#paginationQuery
+{
+    background-color: #dfdfdf;
+    float: left;
+    width: 100%;
+}
+div#content div#innerContentRight div#paginationQuery table
+{
+    color: #4c4c4c;
+    padding-left: 15px;
+    padding-right: 17px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#paginationQuery td
+{
+    height: 22px;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#paginationQuery td.active
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentRight div#paginationQuery td.pagination
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    width: 75%;
+}
+
+div#content div#innerContentRight form#showAddress
+{
+    display: inline;
+}
+
+
+div#content div#innerContentRight div#data
+{
+    float: left;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-face-color: #dfdfdf;
+    scrollbar-shadow-color: #9B9B9B;
+    scrollbar-highlight-color: #9B9B9B;
+    scrollbar-3dlight-color: #dfdfdf;
+    scrollbar-darkshadow-color: #dfdfdf;
+    scrollbar-track-color: #9B9B9B;
+    scrollbar-arrow-color: #9B9B9B;
+}
+
+div#content div#innerContentRight div#data table
+{
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse: separate !important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position: center top;
+    margin-bottom: 10px;
+}
+
+* + html div#content div#innerContentRight div#data table
+{
+    /* IE7 only */
+    margin-bottom: 20px;
+}
+
+div#content div#innerContentRight div#pagination div.GridInfoName
+{
+    color: #7f7f7f;
+    font-size: 12px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+div#content div#innerContentRight div#datainfo
+{
+}
+
+div#content div#innerContentRight div#datainfo table
+{
+    background-position: 50% top;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 12px;
+    color: #333333;
+}
+
+div#content div#innerContentRight div#datainfo table tr td
+{
+    padding-left: 15px;
+    padding-top: 10px;
+    vertical-align: baseline;
+    height: 22px;
+    font-size: 10px;
+}
+
+
+
+div#content div#innerContentRight div#dataVerwaltung
+{
+    float: left;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#dataVerwaltung table
+{
+    background-position: top;
+    width: 100%;
+    border-left: solid 1px #dfdfdf;
+    border-right: solid 1px #dfdfdf;
+    font-size: 12px;
+    color: #333333;
+}
+
+div#content div#innerContentRight div#dataVerwaltung table td
+{
+    padding-top: 15px;
+    padding-left: 15px;
+}
+div#content div#innerContentRight div#dataVerwaltung table tfoot
+{
+    background-color: #dfdfdf;
+}
+
+
+div#content div#innerContentRight div#TableQuery
+{
+    float: left;
+    width: 100%;
+}
+
+
+div#content div#innerContentRight div#TableQuery table
+{
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    color: #595959;
+    width: 100%;
+    display: block;
+    border-left: 1px solid #DFDFDF;
+    border-right: 1px solid #DFDFDF;
+}
+div#content div#innerContentRight div#TableQuery table td td
+{
+    width: 200px;
+}
+div#content div#innerContentRight div#TableQuery table table
+{
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+div#content div#innerContentRight div#TableQuery .TableQuery
+{
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    color: #333333;
+}
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td
+{
+    padding-top: 10px;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery table.rbList td
+{
+    padding-top: 0px;
+}
+
+div#content div#innerContentRight div#TableQuery table .active
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentRight div#TableQuery table .firstLeft
+{
+    padding-left: 15px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+div#content div#innerContentRight div#TableQuery table .secondLeft
+{
+    padding-left: 65px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+
+div#content div#innerContentRight div#TableQuery table tbody tr td input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div#TableQuery table tbody tr td span input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td.rightPadding
+{
+    padding-right: 15px;
+}
+
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td input, select
+{
+    border: 1px solid #bfbfbf;
+}
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td label
+{
+    margin: 5px;
+}
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td span input
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div#TableQuery .ajax__calendar_container TABLE
+{
+    font-size: 10px;
+}
+div#content div#innerContentRight div#TableQuery .ajax__calendar_container table tbody tr td
+{
+    padding: 0px 0px 0px 0px;
+}
+
+div#content div#innerContentRight div#data table .firstLeft
+{
+    padding-right: 5px;
+    padding-left: 15px;
+    white-space: nowrap;
+}
+
+div#content div#innerContentRight div#data table .secondLeft
+{
+    padding-right: 1px;
+    white-space: nowrap;
+    width: 116px;
+    vertical-align: middle;
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+div#content div#innerContentRight div#data table .active
+{
+    font-weight: bold;
+    width: 10%;
+}
+
+div#content div#innerContentRight div#data table thead
+{
+    background-image: url(/services/imgages/overflowThead.png);
+    background-color: #9b9b9b;
+}
+
+div#content div#innerContentRight div#data table thead tr th
+{
+    color: #ffffff;
+    line-height: 14px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#data table thead tr th.showAddress
+{
+    padding-top: 3px;
+    padding-right: 17px;
+}
+
+div#content div#innerContentRight div#data table tfoot
+{
+    background-color: #dfdfdf;
+    height: 25px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.one
+{
+    background-color: #ffffff;
+}
+
+div#content div#innerContentRight div#data table tbody tr.two
+{
+    background-color: #dee1e0;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td
+{
+    padding-top: 10px;
+    vertical-align: baseline;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td input, select
+{
+    border: 1px solid #bfbfbf;
+    width: 200px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td span input, select
+{
+    width: 20px;
+    border: none;
+    margin: 0px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td ul
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td ul li.radio
+{
+    display: inline;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td ul li.radioText
+{
+    display: inline;
+    margin-right: 10px;
+    vertical-align: text-top;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td.paddingBottom
+{
+    padding-bottom: 25px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td.versandart
+{
+    padding-top: 20px;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td.rightPadding
+{
+    padding-right: 15px;
+}
+
+div#content div#innerContentRight div#data table tbody tr td
+{
+    color: #595959;
+}
+
+div#content div#innerContentRight div#data table tbody tr td input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div#data table tbody tr td span input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div#data table tbody tr td input.floatLeft
+{
+    float: left;
+}
+
+div#content div#innerContentRight div#data table tbody tr td.input
+{
+    padding-right: 0px;
+    width: 128px;
+}
+
+div#content div#innerContentRight div#data table tbody tr td.input input
+{
+    margin-right: 0px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+div#content div#innerContentRight div#data table tbody tr td ul.shipping
+{
+    list-style-type: none;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 20px;
+}
+
+div#content div#innerContentRight div#data table tbody tr td a
+{
+    color: #2B4C91;
+    text-decoration: underline;
+}
+div#content div#innerContentRight div#data table tbody tr td a:hover
+{
+    color: #000000;
+    text-decoration: underline;
+}
+div#content div#innerContentRight div#data table tbody tr td a.Tablebutton
+{
+    color: #2B4C91;
+    text-decoration: none;
+}
+div#content div#innerContentRight div#data table tbody tr td a.Tablebutton:hover
+{
+    color: #000000;
+    text-decoration: none;
+}
+
+div#content div#innerContentRight div#dataFooter
+{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 31px;
+}
+
+
+
+div#content div#innerContent div#dataFooter
+{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 31px;
+}
+
+div#footer
+{
+    background-color: #efefef;
+    clear: both;
+    color: #595959;
+    float: left;
+    height: 24px;
+    padding-top: 12px;
+    padding-left: 19px;
+    width: 926px;
+}
+
+div#footer div a
+{
+    color: #595959;
+}
+
+div#footer div.leftAlign
+{
+    float: left;
+}
+
+div#footer div.rightAlign
+{
+    float: right;
+    margin-right: 36px;
+}
+
+div#footfoot
+{
+    border-left: 1px solid #bbbbbb;
+    float: left;
+    margin-left: 25px;
+    z-index: 1;
+    border-right: 1px solid #bbbbbb;
+}
+
+div#content div#innerContent div#login
+{
+    color: #4c4c4c;
+    float: left;
+    margin-right: 19px;
+    width: 100%;
+}
+
+div#content div#innerContent div#innerContentRight div#login table
+{
+    border-left: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    width: 100%;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tfoot
+{
+    background-color: #dfdfdf;
+    height: 25px;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td
+{
+    padding-top: 3px;
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.paddingTop
+{
+    padding-top: 15px;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.input
+{
+    padding-right: 0px;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.input input, select
+{
+    border: 1px solid #bfbfbf;
+    width: 200px;
+    z-index: 0;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.lock
+{
+    padding-left: 5px;
+    width: 700px;
+}
+
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.login
+{
+    text-align: right;
+    padding-top: 10px;
+    padding-right: 0px;
+    padding-bottom: 30px;
+}
+div#content div#innerContent div#innerContentRight div#login table tbody tr td.help
+{
+    padding-top: 5px;
+}
+
+
+.showAddress
+{
+    padding-top: 3px;
+    padding-right: 17px;
+    text-align: right;
+}
+
+.Tablehead
+{
+    background-image: url(../Images/overflowUpsideDown.png);
+    background-color: #9b9b9b;
+    height: 30px;
+    color: #FFFFFF;
+    margin-left: 15px;
+}
+
+
+.GridTableHead
+{
+    background-image: url(../Images/overflowThead.png);
+    background-color: #9b9b9b;
+    height: 23px;
+    color: #FFFFFF;
+}
+
+.GridTableHead td
+{
+    padding-right: 5px;
+    padding-left: 15px;
+}
+
+.GridTableHead th
+{
+    padding-right: 5px;
+    padding-left: 15px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.GridTableHead A:link
+{
+    color: #ffffff;
+    float: left;
+    white-space: nowrap;
+}
+
+.GridTableAlternate
+{
+    background-color: #DEE1E0;
+}
+
+.GridTableAlternate td
+{
+    padding-right: 5px !important;
+    padding-left: 15px !important;
+    height: 28px;
+}
+
+
+
+.PagerStyle
+{
+    padding-left: 10px;
+    margin-left: 10px;
+    background-color: #dfdfdf;
+}
+
+.PagerStyle A
+{
+}
+
+.TextError
+{
+    font-weight: bold;
+    font-size: 10px;
+    color: #BC2B2B;
+}
+
+.ErrorLabel
+{
+    font-weight: bold;
+    font-size: 10px;
+    color: #BC2B2B;
+    
+    background-color: #ffffa6;
+    margin-top: 35px;
+    margin-left: 8px;
+    margin-right: 8px;
+    
+    padding: 7px;
+    
+    border: 1px solid #f3f3f3;
+}
+
+.dvHead
+{
+    height: 62px;
+}
+
+.Tablebutton
+{
+    padding-top: 4px;
+    margin-left: 4px;
+    background-image: url(../Images/button.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+    width: 78px;
+    height: 16px;
+}
+A.Tablebutton
+{
+    padding-top: 4px;
+    background-image: url(../Images/button.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.Tablebutton:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/button.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #576B96;
+}
+A.Tablebutton:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/button.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.Tablebutton:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/button.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+
+A.TablebuttonLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonLarge:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #576B96;
+}
+A.TablebuttonLarge:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonLarge:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.TablebuttonLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonLarge.jpg);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.TablebuttonMiddle
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonMiddle.jpg);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    text-align: left;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonMiddle
+{
+    padding-top: 4px;
+    background-image: url(../images/buttonMiddle.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonMiddle:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonMiddle.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonMiddle:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonMiddle.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonMiddle:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonMiddle.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXLarge:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXLarge:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXLarge:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.TablebuttonXLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.TablebuttonXXLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXLarge.jpg);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXXLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXXLarge:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXXLarge:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXXLarge:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.TablebuttonXXXLarge
+{
+    padding-top: 4px;
+    margin-left: 4px;
+    background-image: url(../Images/buttonXXXLarge.jpg);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXXXLarge
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+A.TablebuttonXXXLarge:hover
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXXXLarge:visited
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+A.TablebuttonXXXLarge:active
+{
+    padding-top: 4px;
+    background-image: url(../Images/buttonXXXLarge.jpg);
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.Textlarge
+{
+    padding-top: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+}
+
+
+.LoginTextbox
+{
+    height: 16px;
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+}
+
+.Menutitle
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    line-height: 22px;
+    padding-left: 15px;
+}
+.MainmenuItemComment
+{
+    background-color: #dfdfdf;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #ffffff;
+    height: 10px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+
+.MainmenuItemAlternate
+{
+    background-color: #dfdfdf;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #ffffff;
+    height: 20px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+.MainmenuItemAlternate:hover
+{
+    background-color: #BC4B4B;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #ffffff;
+    height: 20px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+td.MainmenuItemAlternate
+{
+    background-color: #dfdfdf;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #ffffff;
+    height: 10px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+td.MainmenuItemAlternate:hover
+{
+    background-color: #85A5E5;
+    background-image: url(../Images/overflowUpsideDown.png);
+    color: #ffffff;
+    height: 10px;
+    line-height: 22px;
+    padding-left: 15px;
+}
+
+.MainmenuLink
+{
+    color: #333333;
+    width: 100%;
+    padding-right: 15px;
+}
+A.MainmenuLink
+{
+    color: #333333;
+    width: 100%;
+}
+
+
+
+/*
+WICHTIG !!! 
+Das Kundenlogo, DAD Logo und die Styles werden zur Laufzeit 
+in der 'ComCommon.vb' Klasse gesetzt (Trigger ist die Methode GetUser)*/
+
+/* Die Größe die das Kundenlogo haben darf
+(setzt die Größe für das Tag <TD> )*/
+.ImgKndLogo
+{
+    width:220px;
+    height:68px;
+}
+
+
+/* Bereich für die Kunden-Logos 
+Kundenlogo Links und DAD Logo Rechts*/
+.logoTable
+{
+    vertical-align:top; 
+    border-bottom-style:none;
+    border-width:0px;   
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 20px;
+    padding-left: 20px;
+    width: 100%;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+/*Aktuelle DAD Logo wird ausgeblendet und dynamisch
+durch ein neues ersetzt*/
+.dadLogoIfIsKndLogo
+{
+    display: none;
+}
+
+/*
+Ursprüngliches DadLogo-Style wenn kein Kundenlogo zugeordnet
+werden kann */
+.dadLogo2
+{
+    background-position: 19px;
+    background-repeat: no-repeat;
+    padding-right: 19px;
+    /*CHC ITA 5968 padding-left: 736px;*/
+    height: 68px;
+}
+
+.ContactPanel
+{
+    height: 55px;
+    width: 210px;
+    background-repeat: no-repeat;
+}
+
+.tableInfo
+{
+    background-position: right top;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-color: #dfdfdf;
+    border-width: 1px;
+}
+
+.TextBoxNormal
+{
+    border: 1px solid #bfbfbf;
+    width: 200px;
+}
+
+.TextBoxLarge
+{
+    width: 250px;
+    border: 1px solid #bfbfbf;
+}
+
+.TextBoxShort
+{
+    width: 60px;
+    border: 1px solid #bfbfbf;
+}
+
+.TextBoxXLarge
+{
+    width: 300px;
+    border: 1px solid #bfbfbf;
+}
+
+.DropDownNormal
+{
+    width: 200px;
+    font-size: 12px;
+    border: 1px solid #bfbfbf;
+}
+
+
+.DropDownXLarge
+{
+    width: 300px;
+    font-size: 12px;
+    border: 1px solid #bfbfbf;
+}
+
+
+.DropDownLarge
+{
+    width: 250px;
+    font-size: 12px;
+    border: 1px solid #bfbfbf;
+}
+
+.ExcelSpan
+{
+    padding-right: 17px;
+    font-weight: normal;
+    padding-top: 0;
+    padding-left: 3px;
+}
+
+.ExcelDiv
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    font-weight: bold;
+    float: left;
+    height: 22px;
+    line-height: 22px;
+    width: 100%;
+    background-color: #576B96;
+    float: right;
+}
+
+.ExcelDiv img
+{
+    vertical-align: middle;
+}
+
+.BoundField
+{
+    padding-right: 5px;
+    padding-left: 15px;
+}
+.BoundFieldnoPadLeft
+{
+    padding-right: 10px;
+}
+
+.ItemStyle td
+{
+    padding-right: 5px !important;
+    padding-left: 15px !important;
+    height: 28px;
+}
+
+
+.GridView
+{
+    border: solid 1px #dfdfdf;
+    table-layout: fixed;
+}
+
+
+
+.lblKontaktFirma
+{
+    font-size: 11px;
+    font-weight: bold;
+    color: #2B4C91;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.ImpressumHead
+{
+    background-image: url(../Images/overflow.png);
+    color: #ffffff;
+    float: left;
+    height: 22px;
+    width: 100%;
+    line-height: 22px;
+    background-color: #576B96;
+}
+
+div.ImpressumHead h1
+{
+    padding-left: 15px;
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.NaviImg
+{
+    background-image: url(../Images/navi.gif);
+}
+
+
+div#content div#innerContentRight div#kopfdaten
+{
+    margin-top: 22px;
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    color: #595959;
+    background-color: #dfdfdf;
+}
+div#content div#innerContentRight div#kopfdaten table
+{
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+}
+
+div#content div#innerContentRight div#kopfdaten table td#tdKontingent
+{
+    padding-left: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    vertical-align: top;
+    padding-right: 15px;
+}
+div#content div#innerContentRight div#kopfdaten table tr.heading
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentRight div#kopfdaten table.Kontingente
+{
+    padding-left: 15px;
+    margin-top: 0px;
+    padding-bottom: 5px;
+    padding-top: 0px;
+}
+
+div#content div#innerContentRight div#kopfdaten table tr td
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 4px;
+    vertical-align: top;
+}
+
+div#content div#innerContentRight div#kopfdaten table tr td h3
+{
+    font-size: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+.divProgress
+{
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 3;
+    filter: alpha(opacity:70);
+    -ms-opacity: 0.7;
+    -moz-opacity: 0.7;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.divWait
+{
+    border: thin solid #dfdfdf;
+    margin-top: 25%;
+    margin-left: 35%;
+    z-index: 3;
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 300px;
+    height: 85px;
+    text-align: center;
+}
+
+.radioAsp
+{
+    border: medium none;
+    margin: 0;
+    width: auto;
+    float: left;
+}
+
+.InputTextbox
+{
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    width: 265px;
+}
+
+.GridBorderBottom
+{
+    border-bottom: solid 1px #DFDFDF;
+}
+
+.LinksVerwaltung
+{
+    padding-top: 4px;
+    color: #595959;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.NeutralCalendar table *
+{
+    padding: 0px;
+    text-align: center !important;
+}
+
+.NeutralCalendar table
+{
+    border-left-style: none !important;
+    border-right-style: none !important;
+    border-bottom-style: none !important;
+    border-top-style: none !important;
+}
+
+div#content div#innerContentRight div#dataQueryFooter
+{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 31px;
+}
+
+.responsiblePicture
+{
+    padding-top: 10px;
+    padding-left: 15px;
+    float: left;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    color: #595959;
+}
+
+.responsibleTextName
+{
+    padding: 10px 75px 10px 20px;
+    float: left;
+    font-family: Verdana, sans-serif;
+    color: #595959;
+    font-weight: bold;
+}
+.responsibleTextName .responsibleDepartment
+{
+    font-weight: normal;
+    padding-bottom: 10px;
+    color: #595959;
+}
+
+.responsibleTextName .responsibleText
+{
+    font-weight: normal;
+    padding-bottom: 3px;
+    color: #595959;
+}
+
+.responsibleTextName .responsibleText a
+{
+    color: #595959;
+}
+
+
+.DivKontakt
+{
+    float: left;
+    width: 560px;
+    border: solid 1px #DFDFDF;
+    border-top-style: none;
+    height: 285px;
+    margin-bottom: 25px;
+}
+.pnl1ndAddress
+{
+    float: left;
+}
+
+.pnl1ndAddress table
+{
+    float: left;
+    font-size: 10px;
+    height: 22px;
+    padding-left: 15px;
+    margin-top: 25px;
+    vertical-align: baseline;
+}
+.pnl1ndAddress table tr td
+{
+    padding-top: 5px;
+}
+.pnl1ndAddress table tr td a
+{
+    color: #000000;
+}
+.pnl2ndAddress
+{
+}
+.pnl2ndAddress table
+{
+    float: right;
+    font-size: 10px;
+    height: 22px;
+    padding-left: 15px;
+    margin-top: 25px;
+    vertical-align: baseline;
+    width: 45%;
+}
+
+.pnl2ndAddress table tr td
+{
+    padding-top: 5px;
+}
+
+.pnl2ndAddress table tr td a
+{
+    color: #000000;
+}
+
+.divGreet
+{
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-right: 19px;
+    float: right;
+}
+.divGreet span
+{
+    color: #595959;
+}
+
+.divBapiOverView
+{
+    padding-bottom: 5px;
+    padding-right: 19px;
+    padding-top: 19px;
+    float: left;
+    width: 100%;
+    color: #595959;
+}
+
+.divBapiOverView table tr td
+{
+    padding-left: 15px;
+}
+
+.divBapiOverView table tr td a
+{
+    color: #595959;
+}
+
+div#content div#innerContentRight div#pagination2
+{
+    background-color: #dfdfdf;
+    float: left;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination2 table
+{
+    color: #4c4c4c;
+    padding-left: 15px;
+    padding-right: 17px;
+    width: 100%;
+}
+div#content div#innerContentRight div#pagination2 table.TableGrid
+{
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination2 table.TableGrid table
+{
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination2 td
+{
+    height: 22px;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#pagination2 td.active
+{
+    font-weight: bold;
+}
+
+
+div#content div#innerContentRight div#pagination2 td.pagination
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    width: 75%;
+}
+
+div#content div#innerContentRight div#pagination2 td.paginationText
+{
+    padding-right: 14px;
+    text-align: right;
+}
+
+div#content div#innerContentRight div#pagination2 td.paginationForm
+{
+    margin: 0px;
+    padding: 0px;
+    width: 45px;
+}
+
+
+div#content div#innerContentRight div#pagination2 td.paginationForm form select
+{
+    width: 40px;
+}
+
+div#content div#innerContentRight div#pagination2 a
+{
+    margin-right: 2px;
+    color: #4c4c4c;
+}
+
+div#content div#innerContentRight div#pagination2 a.active
+{
+    font-weight: bold;
+    text-decoration: underline;
+    margin-right: 2px;
+}
+
+
+div#content div#innerContentRight div#pagination3
+{
+    background-color: #dfdfdf;
+    float: left;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination3 table
+{
+    color: #4c4c4c;
+    padding-left: 15px;
+    padding-right: 17px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination3 table.TableGrid
+{
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination3 table.TableGrid table
+{
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div#pagination3 td
+{
+    height: 22px;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div#pagination3 td.active
+{
+    font-weight: bold;
+}
+
+
+div#content div#innerContentRight div#pagination3 td.pagination
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    width: 75%;
+}
+
+div#content div#innerContentRight div#pagination3 td.paginationText
+{
+    padding-right: 14px;
+    text-align: right;
+}
+
+div#content div#innerContentRight div#pagination3 td.paginationForm
+{
+    margin: 0px;
+    padding: 0px;
+    width: 45px;
+}
+
+
+div#content div#innerContentRight div#pagination3 td.paginationForm form select
+{
+    width: 40px;
+}
+
+div#content div#innerContentRight div#pagination3 a
+{
+    margin-right: 2px;
+    color: #4c4c4c;
+}
+
+div#content div#innerContentRight div#pagination3 a.active
+{
+    font-weight: bold;
+    text-decoration: underline;
+    margin-right: 2px;
+}
+
+
+div#sidebar div#NavBar
+{
+    width: 21px;
+    position: static;
+    margin-top: 15px;
+}
+
+.tip
+{
+    cursor: auto;
+}
+
+a.tip, a.tip:link, a.tip:visited, a.tip:active
+{
+    color: #616161;
+    text-decoration: none;
+    position: relative;
+}
+a.tip:hover
+{
+    background: transparent;
+    z-index: 100;
+}
+
+a.tip span
+{
+    display: none;
+    text-decoration: none;
+}
+
+a.tip:hover span
+{
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 265px;
+    z-index: 100;
+    color: #2f2f2f;
+    font-family: Helvetica, Geneva, Arial, SunSans-Regular, sans-serif;
+    padding: 2px 10px;
+    background-color: WhiteSmoke;
+    text-align: left;
+    border-color: #595959;
+    border-style: solid;
+    word-wrap: normal;
+    border-width: 1px 1px;
+}
+
+a.tip div
+{
+    border: solid 1px #595959;
+    border-bottom: 0.5px;
+    width: 100px;
+    padding-left: 15px;
+}
+a.tip div#Last
+{
+    border-bottom: solid 1px WhiteSmoke;
+    border-right: solid 1px WhiteSmoke;
+    border-left: solid 1px WhiteSmoke;
+    border-top: solid 1px #595959;
+}
+a.tip div#LastSecond
+{
+    border-bottom: solid 1px WhiteSmoke;
+    border-right: solid 1px WhiteSmoke;
+    border-left: solid 1px WhiteSmoke;
+    border-top: solid 1px #595959;
+}
+div#content div#innerContentRight div#adminInput
+{
+    float: left;
+    width: 100%;
+}
+
+
+div#content div#innerContentRight div#adminInput table
+{
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    color: #595959;
+    width: 100%;
+    border-left: 1px solid #DFDFDF;
+    border-right: 1px solid #DFDFDF;
+    padding-bottom: 15px;
+}
+
+
+div#content div#innerContentRight div#adminInput .TableQuery
+{
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    color: #333333;
+}
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td
+{
+    padding-top: 10px;
+    padding-bottom: 0px;
+    width: 0%;
+}
+
+div#content div#innerContentRight div#adminInput table .active
+{
+    font-weight: bold;
+}
+
+div#content div#innerContentRight div#adminInput table .active a
+{
+    color: #595959;
+    text-decoration: underline;
+    font-weight: lighter;
+    height: 16px;
+}
+
+div#content div#innerContentRight div#adminInput table .active span
+{
+    font-weight: normal;
+}
+
+div#content div#innerContentRight div#adminInput table .firstLeft
+{
+    padding-left: 15px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td span input
+{
+    border: none;
+    width: auto;
+}
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td.rightPadding
+{
+    padding-right: 15px;
+}
+
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td input, select
+{
+    border: 1px solid #bfbfbf;
+    }
+
+div#content div#innerContentRight div#ListInfo
+{
+    width: 22%;
+}
+div#content div#innerContentRight div#ListInfo input, div#ListInfo select
+{
+    border: 1px solid #bfbfbf;
+    color: #595959;
+    font-family: Verdana, Sans-Serif;
+}
+div#VorschauHead
+{
+    background-repeat: repeat-x;
+    height: 22px;
+    width: 100%;
+    color: #FFFFFF;
+    float: left;
+    margin: 4px 0px 4px 0px;
+    vertical-align: middle;
+}
+div#VorschauHead h1
+{
+    background-color: #576B96;
+    background-image: url(../images/overflow.png);
+    padding-left: 10px;
+    white-space: nowrap;
+    font-size: 10px;
+    line-height: 22px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.DivHistTabContainer
+{
+    margin-top: 10px;
+    background-color: #dfdfdf;
+    height: 33px;
+    width: 100%;
+    border: solid 1px #dfdfdf;
+}
+
+
+.HistTabContainer
+{
+    list-style-type: none;
+    float: left;
+    margin-left: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+
+
+.HistbuttonFirst
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #4C4C4C;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButton.png);
+}
+
+.HistbuttonFirst:hover
+{
+    color: #576B96;
+}
+
+.Histbutton
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButton2.png);
+}
+
+.Histbutton:hover
+{
+    color: #576B96;
+}
+
+.HistButtonBeforActive
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButtonBeforActive.png);
+}
+.HistButtonBeforActive:hover
+{
+    color: #576B96;
+}
+
+
+.HistButtonLast
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButtonLast.png);
+}
+.HistButtonLast:hover
+{
+    color: #576B96;
+}
+
+
+.HistButtonLastActive
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #4C4C4C;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButtonLastActive.png);
+}
+.HistButtonLastActive:hover
+{
+    color: #576B96;
+}
+
+.HistButtonMiddleActive
+{
+    float: left;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    text-align: center;
+    height: 20px;
+    width: 122px;
+    color: #4C4C4C;
+    cursor: pointer;
+    font-weight: bold;
+    background-image: url(../Images/HistButtonMiddleActive.png);
+}
+
+.HistButtonMiddleActive:hover
+{
+    color: #576B96;
+}
+.HistTabPanel
+{
+    border-left: solid 1px #dfdfdf;
+    border-right: solid 1px #dfdfdf;
+    float: left;
+    width: 100%;
+}
+.HistTabPanel table tr td
+{
+    border-bottom: solid 1px #dfdfdf;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    height: 20px;
+    color: #4c4c4c;
+}
+.HistTabPanel table tr td.First
+{
+    font-weight: bold;
+}
+
+.DivVersandTabContainer
+{
+    background-color: #ffffff;
+    width: 100%;
+}
+.DivVersandTabContainer a
+{
+    padding-right: 1px;
+    float: left;
+    background-repeat: no-repeat;
+    height: 32px;
+}
+
+.VersandButtonStamm
+{
+    background-image: url(../Images/Versand/StandardBlueStift.png);
+    width: 150px;
+}
+.VersandButtonAdresse
+{
+    background-image: url(../Images/Versand/StandardBlueAdresse.png);
+    width: 120px;
+}
+.VersandButtonOptionen
+{
+    background-image: url(../Images/Versand/StandardBlueOptionen.png);
+    width: 160px;
+}
+.VersandButtonOverview
+{
+    background-image: url(../Images/Versand/StandardBlueOverview.png);
+    float: left;
+    width: 140px;
+}
+
+.VersandButtonStammEnabled
+{
+    background-image: url(../Images/Versand/StandardGreyStift.png);
+    width: 150px;
+}
+.VersandButtonAdresseEnabled
+{
+    background-image: url(../Images/Versand/StandardGreyAdresse.png);
+    width: 120px;
+}
+.VersandButtonOptionenEnabled
+{
+    background-image: url(../Images/Versand/StandardGreyOptionen.png);
+    width: 160px;
+}
+.VersandButtonOverviewEnabled
+{
+    background-image: url(../Images/Versand/StandardGreyOverview.png);
+    width: 140px;
+}
+
+.VersandButtonStammReady
+{
+    background-image: url(../Images/Versand/StandardReadyStift.png);
+    width: 150px;
+}
+.VersandButtonAdresseReady
+{
+    background-image: url(../Images/Versand/StandardReadyAdresse.png);
+    width: 120px;
+}
+.VersandButtonOptionenReady
+{
+    background-image: url(../Images/Versand/StandardReadyOptionen.png);
+    width: 160px;
+}
+.VersandButtonOverviewReady
+{
+    background-image: url(../Images/Versand/StandardReadyOverview.png);
+    width: 140px;
+}
+
+
+.VersandTabPanel
+{
+    border: solid 1px #576B96;
+    float: left;
+    width: 100%;
+    background-color: #ECEBEC;
+}
+.VersandTabPanel table tr td
+{
+    padding-left: 15px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    height: 20px;
+    color: #7F7F7F;
+}
+.VersandTabPanel table
+{
+}
+.VersandTabPanel table tr td.First
+{
+    font-weight: bold;
+}
+
+.VersandTabPanel table tr td.PanelHead
+{
+    padding-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #576B96;
+}
+.VersandTabPanel div.PanelHeadSuche
+{
+    padding-left: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    background-image: url(../Images/Versand/Suche2.png);
+    vertical-align: bottom;
+}
+.VersandTabPanel div.PanelHeadSuche input
+{
+    padding-right: 20px;
+    vertical-align: top;
+}
+
+.VersandTabPanel table tr td.PanelHeadSteps
+{
+    padding-left: 5px;
+    width: 10px;
+}
+.VersandTabPanel table tr td.PanelHeadSteps div.StepActive
+{
+    background-color: #576B96;
+    width: 9px;
+    height: 12px;
+}
+.VersandTabPanel table tr td.PanelHeadSteps div.Steps
+{
+    background-color: #CCDCFF;
+    width: 9px;
+    height: 12px;
+}
+.VersandTabPanel table tr td.ListService
+{
+    padding-left: 0px;
+    font-weight: bold;
+}
+
+.VersandTabPanel table tr td.ListService table tr td
+{
+    padding-left: 0px;
+    background-color: #576B96;
+    color: White;
+    width: 250px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.LogistikButtonTour
+{
+    background-image: url(../Images/Logistik/StandardBlueTour.png);
+    width: 120px;
+}
+.LogistikButtonDL
+{
+    background-image: url(../Images/Logistik/StandardBlueDL.png);
+    width: 180px;
+}
+.LogistikButtonTourDisabled
+{
+    background-image: url(../Images/Logistik/StandardGreyTour.png);
+    width: 120px;
+}
+.LogistikButtonDL_Disabled
+{
+    background-image: url(../Images/Logistik/StandardGreyDL.png);
+    width: 180px;
+}
+
+.LogistikButtonTourReady
+{
+    background-image: url(../Images/Logistik/StandardReadyTour.png);
+    width: 120px;
+}
+.LogistikButtonDL_Ready
+{
+    background-image: url(../Images/Logistik/StandardReadyDL.png);
+    width: 180px;
+}
+
+.ZulassungButtonFahrzeugReady
+{
+    background-image: url(../Images/Zulassung/fahrzeugauswahl_ready.png);
+    width: 168px;
+}
+.ZulassungButtonFahrzeugEnabled
+{
+    background-image: url(../Images/Zulassung/fahrzeugauswahl_active.png);
+    width: 168px;
+}
+.ZulassungButtonFahrzeugDisabled
+{
+    background-image: url(../Images/Zulassung/fahrzeugauswahl_inactive.png);
+    width: 168px;
+}
+
+.ZulassungButtonDienstleistungenReady
+{
+    background-image: url(../Images/Zulassung/dienstleistungen_ready.png);
+    width: 160px;
+}
+.ZulassungButtonDienstleistungenEnabled
+{
+    background-image: url(../Images/Zulassung/dienstleistungen_active.png);
+    width: 160px;
+}
+.ZulassungButtonDienstleistungenDisabled
+{
+    background-image: url(../Images/Zulassung/dienstleistungen_inactive.png);
+    width: 160px;
+}
+
+.ZulassungButtonStammdatenReady
+{
+    background-image: url(../Images/Zulassung/stammdaten_ready.png);
+    width: 131px;
+}
+.ZulassungButtonStammdatenEnabled
+{
+    background-image: url(../Images/Zulassung/stammdaten_active.png);
+    width: 131px;
+}
+.ZulassungButtonStammdatenDisabled
+{
+    background-image: url(../Images/Zulassung/stammdaten_inactive.png);
+    width: 131px;
+}
+
+.ZulassungButtonUebersichtReady
+{
+    background-image: url(../Images/Zulassung/uebersicht_ready.png);
+    width: 114px;
+}
+.ZulassungButtonUebersichtEnabled
+{
+    background-image: url(../Images/Zulassung/uebersicht_active.png);
+    width: 114px;
+}
+.ZulassungButtonUebersichtDisabled
+{
+    background-image: url(../Images/Zulassung/uebersicht_inactive.png);
+    width: 114px;
+}
+
+.ZulassungButtonVersandReady
+{
+    background-image: url(../Images/Zulassung/versand_ready.png);
+    width: 144px;
+}
+.ZulassungButtonVersandEnabled
+{
+    background-image: url(../Images/Zulassung/versand_active.png);
+    width: 144px;
+}
+.ZulassungButtonVersandDisabled
+{
+    background-image: url(../Images/Zulassung/versand_inactive.png);
+    width: 144px;
+}
+.ZulassungDokumentencenterEnabled
+{
+    background-image: url(../Images/Zulassung/dokumente_active.png);
+    width: 180px;
+}
+
+div#content .divPopupBack
+{
+    width: 945px;
+    height: 75%;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 3;
+    filter: alpha(opacity:70);
+    -ms-opacity: 0.7;
+    -moz-opacity: 0.7;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333333;
+}
+
+div#content .divPopupDetail
+{
+    border: thin solid #dfdfdf;
+    top: 100px;
+    margin-left: 235px;
+    z-index: 3;
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 420px;
+    height: auto;
+    text-align: center;
+    color: #576B96;
+}
+
+div#content .divPopupDetail table.PopupDetailTable
+{
+    border: 1px solid #808080;
+    background-color: #e5e5e5;
+    width: 100%;
+}
+
+div#content .divPopupDetail table.PopupDetailTable tr td
+{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+div#content .divPopupDetail table.PopupDetailTable tr td h3
+{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div#content .divPopupDetail table.ListGruendeTable
+{
+}
+
+div#content .divPopupDetail table.ListGruendeTable tr td
+{
+    background-color: #576B96;
+    color: White;
+}
+div#content div#innerContentRight div#VersandOverviewData
+{
+    float: left;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-face-color: #dfdfdf;
+    scrollbar-shadow-color: #9B9B9B;
+    scrollbar-highlight-color: #9B9B9B;
+    scrollbar-3dlight-color: #dfdfdf;
+    scrollbar-darkshadow-color: #dfdfdf;
+    scrollbar-track-color: #9B9B9B;
+    scrollbar-arrow-color: #9B9B9B;
+}
+
+div#content div#innerContentRight div#VersandOverviewData table
+{
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse: separate !important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position: center top;
+    margin-bottom: 10px;
+}
+
+* + html div#content div#innerContentRight div#VersandOverviewData table
+{
+    /* IE7 only */
+    margin-bottom: 20px;
+}
+
+.StandardHeadDetail
+{
+    background-image: url(../Images/Versand/Stepheadoverflow.png);
+    background-repeat: no-repeat;
+    background-color: #576B96;
+    height: 28px;
+    width: 100%;
+}
+.StandardHeadDetailFlag
+{
+    margin-left: 15px;
+    background-image: url(../Images/Versand/headopenoverflow.png);
+    background-repeat: no-repeat;
+    background-color: #576B96;
+    height: 8px;
+    width: 16px;
+}
+
+.StandardHeadDetailFlag2
+{
+    margin-left: 15px;
+    background-image: url(../Images/Versand/headopenoverflow2.png);
+    background-repeat: no-repeat;
+    background-color: #576B96;
+    height: 8px;
+    width: 16px;
+}
+
+.VersandAdressLabels
+{
+    color: #576B96;
+    font-size: 12px;
+}
+
+.DivPanelSteps
+{
+    float: right;
+    color: #7F7F7F;
+    font-weight: bold;
+    padding-top: 10px;
+}
+.DivPanelSteps table tr td.PanelHeadSteps
+{
+    padding-left: 5px;
+    width: 10px;
+}
+.DivPanelSteps table tr td.PanelHeadSteps div.StepActive
+{
+    background-color: #576B96;
+    width: 9px;
+    height: 12px;
+}
+.DivPanelSteps table tr td.PanelHeadSteps div.Steps
+{
+    background-color: #CCDCFF;
+    width: 9px;
+    height: 12px;
+}
+
+div#content div#innerContentRight div.dataGrid
+{
+    float: left;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-face-color: #dfdfdf;
+    scrollbar-shadow-color: #9B9B9B;
+    scrollbar-highlight-color: #9B9B9B;
+    scrollbar-3dlight-color: #dfdfdf;
+    scrollbar-darkshadow-color: #dfdfdf;
+    scrollbar-track-color: #9B9B9B;
+    scrollbar-arrow-color: #9B9B9B;
+}
+
+div#content div#innerContentRight div.dataGrid table
+{
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse: separate !important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position: center top;
+    margin-bottom: 10px;
+}
+
+div#content div#innerContentRight div.paginationGrid
+{
+    background-color: #dfdfdf;
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+
+div#content div#innerContentRight div.paginationGrid table
+{
+    color: #4c4c4c;
+    padding-left: 15px;
+    padding-right: 17px;
+    width: 100%;
+}
+
+div#content div#innerContentRight div.paginationGrid td
+{
+    height: 22px;
+    vertical-align: middle;
+    padding-bottom: 0px;
+}
+
+div#content div#innerContentRight div.paginationGrid td.active
+{
+    font-weight: bold;
+}
+
+
+div#content div#innerContentRight div.paginationGrid td.pagination
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    width: 33%;
+    padding-bottom: 0px;
+}
+
+div#content div#innerContentRight div.paginationGrid td.Title
+{
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    width: 35%;
+    font-weight: bold;
+    padding-bottom: 0px;
+    color: #576b96;
+    font-size: 12px;
+}
+
+div#content div#innerContentRight div.paginationGrid td.paginationText
+{
+    padding-right: 14px;
+    text-align: right;
+    padding-top: 0px;
+}
+
+div#content div#innerContentRight div.paginationGrid td.paginationForm
+{
+    margin: 0px;
+    padding: 0px;
+    width: 45px;
+}
+
+
+div#content div#innerContentRight div.paginationGrid td.paginationForm form select
+{
+    width: 40px;
+}
+
+div#content div#innerContentRight div.paginationGrid a
+{
+    margin-right: 2px;
+    color: #4c4c4c;
+}
+
+div#content div#innerContentRight div.paginationGrid a.active
+{
+    font-weight: bold;
+    text-decoration: underline;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div#content div#innerContentRight div.dataQueryFooter
+{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 31px;
+}
+
+.rbList td
+{
+    padding: 0px 0px 0px 0px;
+}
+
+.Watermarked
+{
+    color: Silver;
+}
+.ItemStyle td.TablePadding
+{
+    padding-left: 5px;
+    padding-right: 8px;
+}
+
+.GridTableAlternate td.TablePadding
+{
+    padding-left: 5px;
+    padding-right: 8px;
+}
+.GridTableHead th.TablePadding
+{
+    padding-left: 5px;
+    padding-right: 8px;
+}
+
+table tbody tr.formquery td
+{
+    padding-top: 10px;
+    vertical-align: middle;
+}
+
+table tbody tr.formquery table.rbList td
+{
+    padding-top: 0px;
+}
+
+table .active
+{
+    font-weight: bold;
+}
+
+table .firstLeft
+{
+    padding-left: 15px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+table .secondLeft
+{
+    padding-left: 65px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+.InputSolid
+{
+    border: solid 1px #dfdfdf;
+}
+
+
+.blueButton
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    background-color: #576b96;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #48597a;
+    display: inline-block;
+    color: #ffffff !important;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 14px;
+    text-decoration: none;
+}
+
+.blueButton:hover
+{
+    background-color: #6a7ea6;
+}
+.blueButton:active
+{
+    -moz-box-shadow: inset -1px -1px 0px 0px #637FB7;
+    -webkit-box-shadow: inset -1px -1px 0px 0px #637FB7;
+    box-shadow: inset -1px -1px 0px 0px #637FB7;
+    position: relative;
+    top: 1px;
+}
+
+.blueButton.search
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    font-size: 12px;
+    padding: 2px 10px;
+    background: #576b96 url(../Images/Zulassung/searchIcon.png) no-repeat 5px 3px;
+    padding: 3px 10px 2px 22px;
+    filter: none;
+    vertical-align: top;
+}
+
+.blueButton.search:hover
+{
+    background: #6a7ea6 url(../Images/Zulassung/searchIcon.png) no-repeat 5px 3px;
+}
+
+.blueButton.delete
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    font-size: 12px;
+    background: #576b96 url(../Images/Zulassung/deleteIcon.png) no-repeat 1px 1px;
+    width: 11px;
+    height: 11px;
+    padding: 2px 2px 2px 2px;
+    filter: none;
+    vertical-align: top;
+}
+
+.blueButton.delete:hover
+{
+    background-color: #6a7ea6;
+}
+
+.blueButton.up
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    font-size: 12px;
+    background: #576b96 url(../Images/Zulassung/arrowup.png) no-repeat 1px 1px;
+    width: 11px;
+    height: 11px;
+    padding: 2px 2px 2px 2px;
+    filter: none;
+    vertical-align: top;
+}
+
+.blueButton.up:hover
+{
+    background-color: #6a7ea6;
+}
+
+.blueButton.down
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    font-size: 12px;
+    background: #576b96 url(../Images/Zulassung/arrowdown.png) no-repeat 1px 1px;
+    width: 11px;
+    height: 11px;
+    padding: 2px 2px 2px 2px;
+    filter: none;
+    vertical-align: top;
+}
+
+.blueButton.down:hover
+{
+    background-color: #6a7ea6;
+}
+
+.blueButton.edit
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    box-shadow: inset 1px 1px 0px 0px #95a6c7;
+    font-size: 12px;
+    background: #576b96 url(../Images/Zulassung/editIcon.png) no-repeat 1px 1px;
+    width: 11px;
+    height: 11px;
+    padding: 2px 2px 2px 2px;
+    filter: none;
+    vertical-align: top;
+}
+
+.blueButton.edit:hover
+{
+    background-color: #6a7ea6;
+}
+
+.StandardHeadDetail.black
+{
+    background-color: #555555;
+}
+
+.greyButton
+{
+    -moz-box-shadow: inset 1px 1px 0px 0px #dbdbdb;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #dbdbdb;
+    box-shadow: inset 1px 1px 0px 0px #dbdbdb;
+    background-color: #999999;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #949294;
+    display: inline-block;
+    color: #ffffff !important;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px 2px 10px;
+    vertical-align: top;
+    text-decoration: none;
+}
+
+.greyButton:hover
+{
+    background-color: #b0b0b0;
+}
+
+.greyButton:active
+{
+    -moz-box-shadow: inset -1px -1px 0px 0px #dbdbdb;
+    -webkit-box-shadow: inset -1px -1px 0px 0px #dbdbdb;
+    box-shadow: inset -1px -1px 0px 0px #dbdbdb;
+    position: relative;
+    top: 1px;
+}
+
+.greyButton.small
+{
+    padding: 1px 4px;
+    font-size: 10px;
+}
+
+.greyButton.search
+{
+    background: #999999 url(../Images/Zulassung/searchIcon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.search:hover
+{
+    background: #b0b0b0 url(../Images/Zulassung/searchIcon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.save
+{
+    background: #999999 url(../Images/Zulassung/saveIcon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.cancel:hover
+{
+    background: #b0b0b0 url(../Images/Zulassung/cancel_Icon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.cancel
+{
+    background: #999999 url(../Images/Zulassung/cancel_Icon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.save:hover
+{
+    background: #b0b0b0 url(../Images/Zulassung/saveIcon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.fillin
+{
+    background: #999999 url(../Images/Zulassung/check_Icon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.greyButton.fillin:hover
+{
+    background: #b0b0b0 url(../Images/Zulassung/check_Icon.png) no-repeat 5px 3px;
+    padding-left: 22px;
+    filter: none;
+}
+
+.rightAlignedNav
+{
+    clear: both;
+}
+
+.rightAlignedNav.separator
+{
+    margin-top: 10px;
+    height: 45px;
+    width: auto;
+    border-top: 1px solid #576B96;
+}
+
+.rightAlignedNav a
+{
+    margin: 10px;
+    float: right;
+}
+
+.rightAlignedNav strong
+{
+    padding-left: 2px;
+}
+
+.rightAlignedNav input
+{
+    margin: 2px;
+}
+
+.rightAlignedNav img
+{
+    vertical-align: middle;
+}
+
+.rightAlignedNav div
+{
+    border: 1px solid #AAA;
+    float: left;
+    font-size: 10px;
+    margin: 2px;
+    padding: 5px 10px 5px 0;
+}
+
+.errorLabel
+{
+    margin-left: 10px;
+    color: #ff0000;
+}
+
+input.long, select.long, textarea.long
+{
+    width: 260px;
+}
+
+input.middle, select.middle, textarea.middle
+{
+    width: 182px;
+}
+
+input.short, select.short, textarea.short
+{
+    width: 68px;
+}
+
+.VersandTabPanel table.SmallListTable td
+{
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+}
+
+
+div.popUpWindow
+{
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #fff;
+    padding: 15px;
+    text-align: left;
+    -moz-box-shadow: 5px 5px 5px #555555;
+    -webkit-box-shadow: 5px 5px 5px #555555;
+    box-shadow: 5px 5px 5px #555555;
+}
+
+div.popUpWindow div.header
+{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    text-shadow: 1px 1px 0px #5c5c5c;
+    margin: -15px -15px 5px -15px;
+    padding: 5px 10px;
+    background-color: #335393;
+    text-align: left;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #95a5c2), color-stop(1, #576b96) );
+    background: -moz-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    background: -ms-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    background: -o-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#95a5c2', endColorstr='#576b96');
+    border: 1px solid #fff;
+}
+
+
+
+.VersandTabPanel table.SearchResultTable, .new_layout table.GridView
+{
+    width: 580px;
+    text-align: left;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.VersandTabPanel table.SearchResultTable th, .new_layout table.GridView th
+{
+    font-weight: bold;
+    padding: 4px;
+    background: #b9c9fe;
+    border-top: 4px solid #aabcfe;
+    border-bottom: 1px solid #fff;
+    border-left-width: 0;
+    border-right-width: 0;
+    color: #039;
+}
+
+.new_layout table.GridView th a
+{
+    color: #039;
+    font-weight: bold;
+}
+
+.VersandTabPanel table.SearchResultTable td, .new_layout table.GridView td
+{
+    padding: 4px;
+    background: #e8edff;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid transparent;
+    border-left-width: 0;
+    border-right-width: 0;
+}
+
+.new_layout table.GridView td span
+{
+    color: #669;
+}
+
+.VersandTabPanel table.SearchResultTable tr:hover td, .new_layout table.GridView tr:hover td
+{
+    background: #d0dafd;
+    color: #339;
+}
+
+.VersandTabPanel table.review > tbody > tr > td
+{
+    font-size: 11px;
+    padding: 2px 4px;
+    margin: 0;
+    vertical-align: top;
+    min-height: 13px;
+}
+
+.VersandTabPanel table.review tr td.header
+{
+    font-weight: bold;
+    width: 90px;
+}
+
+.new_layout table.GridView tr.EditItemStyle td
+{
+    background: #d0dafd;
+    color: #339;
+}
+
+.new_layout input[type='text'], .new_layout input[type='password'], .new_layout input[type='file'], .new_layout textarea
+{
+    border: 1px solid #AFAFAF;
+    padding: 2px;
+}
+
+.new_layout select
+{
+    border: 1px solid #AFAFAF;
+}
+
+.new_layout select.long
+{
+    width: 264px;
+}
+
+.new_layout div#innerContentRight
+{
+    margin-bottom: 20px;
+}
+
+.new_layout #Container, .new_layout .toggle_container
+{
+    margin: 10px;
+    width: 875px;
+}
+
+.new_layout .toggle_container .rightAlignedNav a
+{
+    margin: 5px 10px 0 10px;
+}
+
+.new_layout .StandardHeadDetail
+{
+    margin-top: 4px;
+    background-image: none;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #95a5c2), color-stop(1, #576b96) );
+    background: -moz-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    background: -ms-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    background: -o-linear-gradient( center top, #95a5c2 5%, #576b96 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#95a5c2', endColorstr='#576b96');
+    background-color: #576b96;
+    text-shadow: -1px -1px 0px #5c5c5c;
+    -moz-box-shadow: 0 1px 2px #898989;
+    -webkit-box-shadow: 0 1px 2px #898989;
+    box-shadow: 0 1px 2px #898989;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.new_layout .StandardHeadDetail div
+{
+    padding-top: 6px;
+    color: White;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.new_layout .StandardHeadDetail img
+{
+    vertical-align: middle;
+    margin: -2px 2px 0 0;
+}
+
+.new_layout .StandardHeadDetail:active
+{
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #576b96), color-stop(1, #95a5c2) );
+    background: -moz-linear-gradient( center top, #576b96 5%, #95a5c2 100% );
+    background: -ms-linear-gradient( center top, #576b96 5%, #95a5c2 100% );
+    background: -o-linear-gradient( center top, #576b96 5%, #95a5c2 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#576b96', endColorstr='#95a5c2');
+    background-color: #95a5c2;
+}
+
+.new_layout .StandardHeadDetail:hover
+{
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.25, #95a5c2), color-stop(1, #576b96) );
+    background: -moz-linear-gradient( center top, #95a5c2 25%, #576b96 100% );
+    background: -ms-linear-gradient( center top, #95a5c2 25%, #576b96 100% );
+    background: -o-linear-gradient( center top, #95a5c2 25%, #576b96 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#95a5c2', endColorstr='#576b96');
+}
+
+.new_layout .StandardHeadDetail.selected
+{
+}
+
+.new_layout .StandardHeadDetail.black
+{
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8b8b8), color-stop(1, #707070) );
+    background: -moz-linear-gradient( center top, #b8b8b8 5%, #707070 100% );
+    background: -ms-linear-gradient( center top, #b8b8b8 5%, #707070 100% );
+    background: -o-linear-gradient( center top, #b8b8b8 5%, #707070 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8b8b8', endColorstr='#707070');
+    background-color: #707070;
+}
+
+.new_layout .StandardHeadDetail.black:active
+{
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #707070), color-stop(1, #b8b8b8) );
+    background: -moz-linear-gradient( center top, #707070 5%, #b8b8b8 100% );
+    background: -ms-linear-gradient( center top, #707070 5%, #b8b8b8 100% );
+    background: -o-linear-gradient( center top, #707070 5%, #b8b8b8 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#707070', endColorstr='#b8b8b8');
+    background-color: #b8b8b8;
+}
+
+.new_layout .StandardHeadDetail.black:hover
+{
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.25, #b8b8b8), color-stop(1, #707070) );
+    background: -moz-linear-gradient( center top, #b8b8b8 25%, #707070 100% );
+    background: -ms-linear-gradient( center top, #b8b8b8 25%, #707070 100% );
+    background: -o-linear-gradient( center top, #b8b8b8 25%, #707070 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8b8b8', endColorstr='#707070');
+}
+
+
+.new_layout .ValidationSummary
+{
+    border: 2px solid #fff;
+    color: #fff !important;
+    margin: 0 15px 0 0;
+    padding: 2px 5px 2px 30px;
+    background: #c00 url(../Images/Zulassung/error_icon.png) no-repeat 8px 25%;
+    display: block;
+    max-height: 42px;
+    overflow: hidden;
+    float: right;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    -moz-box-shadow: 1px 1px 4px #898989;
+    -webkit-box-shadow: 1px 1px 4px #898989;
+    box-shadow: 1px 1px 4px #898989;
+    font-weight: bold;
+}
+
+.new_layout .ValidationSummary ul
+{
+    margin: 0 0 0 15px;
+    padding: 0;
+    list-style: disc;
+}
+
+.new_layout .ValidationSummary li
+{
+    padding: 0;
+    margin: 0;
+    line-height: 14px;
+    color: #fff !important;
+}
+
+.new_layout .paginationText
+{
+    display: none;
+}
+
+.new_layout .paginationForm
+{
+    display: none;
+}
+
+.new_layout #pagination
+{
+    margin-top: -10px;
+}
+
+.new_layout div#content div#innerContentRight div#pagination table
+{
+    padding: 0;
+}
+
+.new_layout div#content div#innerContentRight div#pagination table td
+{
+    padding: 0;
+}
+
+.new_layout div#content div#innerContentRight div#pagination
+{
+    background-color: inherit;
+    float: right;
+}
+
+.new_layout div#content div#innerContentRight div#pagination table
+{
+    background-color: inherit;
+}
+
+table.InputTable tr td, .new_layout .toggle_container table.InputTable tr td
+{
+    padding: 4px;
+    vertical-align: baseline;
+}
+
+ul.multiselect
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    min-height: 20px;
+    width: 208px;
+    height: 220px;
+    overflow: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+    border-bottom: 1px solid #AABCFE;
+}
+
+ul.multiselect li
+{
+    margin: 0 0 -1px 0;
+    padding: 3px;
+    border: 1px solid #fff;
+    background: #e8edff;
+    color: #669;
+    cursor: pointer;
+}
+
+ul.multiselect li:hover
+{
+    background: #d0dafd;
+    color: #339;
+}
+
+
+.new_layout .infolabel
+{
+    border: 1px solid #f9f2ba;
+    background: #FCFBDC;
+    float: left;
+    margin-top: -5px;
+    padding: 2px;
+}
+
+.new_layout .infopanel
+{
+    border: 1px solid #f9f2ba;
+    background: #FCFBDC;
+    width: 295px;
+    float: right;
+    -moz-box-shadow: 2px 2px 4px #898989;
+    -webkit-box-shadow: 2px 2px 4px #898989;
+    box-shadow: 2px 2px 4px #898989;
+    margin-right: 0px;
+}
+
+.new_layout .infopanel > label:first-child
+{
+    background: url("../Images/Zulassung/icon_tooltip.gif") no-repeat scroll 3px center #f9f2ba;
+    display: block;
+    font-size: 13px;
+    height: 17px;
+    margin: 0;
+    padding-left: 20px;
+    vertical-align: middle;
+}
+
+.AspInfoLabel
+{
+    background: url("../Images/Zulassung/icon_tooltip.gif") no-repeat scroll 3px center #f9f2ba;
+    display: block;
+    font-size: 13px;
+    height: 18px;
+    margin: 0;
+    padding-left: 20px;
+    vertical-align: middle;
+}
+.new_layout .infopanel #price
+{
+    font-size: 14px;
+    height: auto;
+    text-align: right;
+    width: 98%;
+    display: block;
+    font-weight: bold;
+}
+
+.new_layout .infopanel > div
+{
+    margin: 2px;
+    display: block;
+    margin: 4px;
+}
+
+.new_layout .VersandTabPanel
+{
+    border-top: 8px solid #576B96;
+    border-left: none;
+    border-bottom: 2px solid #576B96;
+    border-right: none;
+}
+
+.mahnstufe0
+{
+    display: none;
+}
+
+.mahntitel, .mahnstufe1, .mahnstufe2, .mahnstufe3
+{
+    margin-left: 70px;
+}
+
+.mahnstufe1, .mahnstufe2, .mahnstufe3
+{
+    display: inline-block;
+    width: 94px;
+    height: 12px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    margin-bottom: -2px;
+}
+
+.mahnstufe1
+{
+    background-image: url('/Services/Images/mahnstufe1.png');
+}
+
+.mahnstufe2
+{
+    background-image: url('/Services/Images/mahnstufe2.png');
+}
+
+.mahnstufe3
+{
+    background-image: url('/Services/Images/mahnstufe3.png');
+}
+dl
+{
+    padding: 0.5em;
+}
+
+dt
+{
+    float: left;
+    clear: left;
+    width: 80px;
+    text-align: right;
+    font-weight: bold;
+}
+
+dt:after
+{
+    content: ":";
+}
+dd
+{
+    margin-left: 90px;
+    padding-bottom: 0.5em;
+}
+
+/** Telerik Grid **/
+.RadGrid_Default, .RadGrid_Default .rgMasterTable, .RadGrid_Default .rgDetailTable, .RadGrid_Default .rgGroupPanel table, .RadGrid_Default .rgCommandRow table, .RadGrid_Default .rgEditForm table, .RadGrid_Default .rgPager table, .GridToolTip_Default
+{
+    font-family: Verdana, sans-serif !important;
+    font-size: 10px !important;
+}
+
+.RadGrid_Default
+{
+    /*background-image: url("../Images/RadGridBodyBgrnd.png") !important;*/
+    background-repeat: repeat-x;
+}
+
+
+.RadGrid_Default .rgHeader
+{
+    font-weight: bold !important;
+    background-position: 0 0 !important;
+    background-image: url("../Images/overflowThead.png") !important;
+    background-color: rgb(155, 155, 155) !important;
+    padding-bottom: 2px !important;
+    padding-top: 3px !important;
+    white-space: nowrap !important;
+}
+
+.RadGrid_Default .rgHeader a
+{
+    color: #2b4c91 !important;
+    text-decoration: underline !important;
+}
+
+.RadGrid_Default th.rgSorted
+{
+    background-color: rgb(155, 155, 165) !important;
+}
+
+.RadGrid_Default .rgCommandRow
+{
+    color: #fff !important;
+    background-color: rgb(223, 223, 223) !important;
+}
+
+.RadGrid_Default .rgCommandRow a
+{
+    color: #fff !important;
+}
+
+.RadGrid_Default .rgCommandCell
+{
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+    background-repeat: repeat-x;
+}
+
+.RadGrid_Default .rgCommandTable
+{
+    background-image: url("../Images/RadGridheader.png") !important;
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+}
+
+.RadGrid_Default .rgCommandTable td
+{
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.RadGrid_Default .rgAltRow
+{
+    background-color: rgb(222, 225, 224) !important;
+}
+
+.RadGrid_Default .rgRow, .RadGrid_Default .rgAltRow
+{
+    line-height: 22px !important;
+}
+
+.RadGrid_Default .rgActiveRow, .RadGrid_Default .rgHoveredRow
+{
+    background-image: none !importand;
+}
+
+.RadGrid_Default .rgSaveLayout, .RadGrid_Default .rgResetLayout
+{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 0 none;
+    cursor: pointer;
+    font-size: 1px;
+    height: 18px;
+    line-height: 16px;
+    width: 18px;
+    margin: 0 6px 0 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+.RadGrid_Default .rgSaveLayout
+{
+    background-image: url("/Services/Images/Diskette_06s.png");
+}
+
+.RadGrid_Default .rgResetLayout
+{
+    background-image: url("/Services/Images/Papierkorb_01s.png");
+}
+
+.rgDataDiv
+{
+    border:solid 1px #dfdfdf;
+}
+
+div#content div#innerContentRight div.data
+{
+    float: left;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-face-color: #dfdfdf;
+    scrollbar-shadow-color: #9B9B9B;
+    scrollbar-highlight-color: #9B9B9B;
+    scrollbar-3dlight-color: #dfdfdf;
+    scrollbar-darkshadow-color: #dfdfdf;
+    scrollbar-track-color: #9B9B9B;
+    scrollbar-arrow-color: #9B9B9B;
+}
+div#content div#innerContentRight div.data table
+{
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse: separate !important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position: center top;
+    margin-bottom: 10px;
+}
+
+* + html div#content div#innerContentRight div.data table
+{
+    /* IE7 only */
+    margin-bottom: 20px;
+}
+
+div#content div#innerContentRight div.data table .firstLeft
+{
+    padding-right: 5px;
+    padding-left: 15px;
+    white-space: nowrap;
+}
+
+div#content div#innerContentRight div.data table .secondLeft
+{
+    padding-right: 1px;
+    white-space: nowrap;
+    width: 116px;
+    vertical-align: middle;
+    border-bottom-color: #dfdfdf;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+div#content div#innerContentRight div.data table .active
+{
+    font-weight: bold;
+    width: 10%;
+}
+
+div#content div#innerContentRight div.data table thead
+{
+    background-image: url(/services/images/overflowThead.png);
+    background-color: #9b9b9b;
+}
+
+div#content div#innerContentRight div.data table thead tr th
+{
+    color: #ffffff;
+    line-height: 14px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div.data table thead tr th.showAddress
+{
+    padding-top: 3px;
+    padding-right: 17px;
+}
+
+div#content div#innerContentRight div.data table tfoot
+{
+    background-color: #dfdfdf;
+    height: 25px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.one
+{
+    background-color: #ffffff;
+}
+
+div#content div#innerContentRight div.data table tbody tr.two
+{
+    background-color: #dee1e0;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td
+{
+    padding-top: 10px;
+    vertical-align: baseline;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td input, select
+{
+    border: 1px solid #bfbfbf;
+    width: 200px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td span input, select
+{
+    width: auto;
+    margin: 0px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td ul
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td ul li.radio
+{
+    display: inline;
+    vertical-align: middle;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td ul li.radioText
+{
+    display: inline;
+    margin-right: 10px;
+    vertical-align: text-top;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td.paddingBottom
+{
+    padding-bottom: 25px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td.versandart
+{
+    padding-top: 20px;
+}
+
+div#content div#innerContentRight div.data table tbody tr.form td.rightPadding
+{
+    padding-right: 15px;
+}
+
+div#content div#innerContentRight div.data table tbody tr td
+{
+    color: #595959;
+}
+
+div#content div#innerContentRight div.data table tbody tr td input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div.data table tbody tr td span input.radio
+{
+    border: none;
+    margin: 0px;
+    width: auto;
+}
+
+div#content div#innerContentRight div.data table tbody tr td input.floatLeft
+{
+    float: left;
+}
+
+div#content div#innerContentRight div.data table tbody tr td.input
+{
+    padding-right: 0px;
+    width: 128px;
+}
+
+div#content div#innerContentRight div.data table tbody tr td.input input
+{
+    margin-right: 0px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+div#content div#innerContentRight div.data table tbody tr td ul.shipping
+{
+    list-style-type: none;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 20px;
+}
+
+div#content div#innerContentRight div.data table tbody tr td a
+{
+    color: #2B4C91;
+    text-decoration: underline;
+}
+div#content div#innerContentRight div.data table tbody tr td a:hover
+{
+    color: #000000;
+    text-decoration: underline;
+}
+div#content div#innerContentRight div.data table tbody tr td a.Tablebutton
+{
+    color: #2B4C91;
+    text-decoration: none;
+}
+div#content div#innerContentRight div.data table tbody tr td a.Tablebutton:hover
+{
+    color: #000000;
+    text-decoration: none;
+}
+
+div#header div div
+{
+    min-height: 68px;
+}
+div#header div
+{
+    min-height: 68px;
+}
+
+.TextUpperCase {
+    text-transform: uppercase;
+}
+
+.TabButton 
+{
+    font-family: Arial;
+    font-size: 11px;
+    text-align: center;
+    color: #000000;
+    line-height: 22px;
+    background-image: url(../Images/TabButton.png);
+}
+.TabButtonActive
+{
+    font-family: Arial;
+    font-size: 11px;
+    text-align: center;
+    color: #000000;
+    line-height: 22px;
+    background-image: url(../Images/TabButtonActive.png);
+}
+
+.RadGridImageButton {
+    width: 20px !Important;
+    height: 20px !Important;
+}

@@ -1,0 +1,10 @@
+﻿@Html.Partial("Common/StylesScripts")
+@Html.Partial("Termine/Common")
+
+<h3 class="page-title" id="headerTitle">Termine <small>aller Versicherungs-Events</small></h3>
+
+@Html.SpanAlert("Message")
+
+<div class="portlet">
+    @Html.Partial("Termine/AlleTermineGrid")
+</div>

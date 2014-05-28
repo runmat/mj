@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.General.Models.DataModels
+@model DocumentErstellenBearbeiten
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
+    @using (Ajax.BeginForm("Edit", "Document", null, new MvcAjaxOptions { OnComplete = "EditDocumentComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes, new { @class = "m-wrap" })
+
+        @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("Value", "Text"), new { @class = "m-wrap chosen" })
+
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseDocumentDetails();">@Localize.Cancel</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+
+            function EditDocumentComplete() {
+                CloseDocumentDetails();
+                FormPreparePrivateAjax();
+            }
+        </script>
+    }
+</div>
+
+

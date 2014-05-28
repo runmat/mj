@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@model HistoryAuftrag
+
+<div>
+    <h2 class="floatingHeader">Auftragsdetails</h2>
+    <input class="button" type="button" value="Zurück zur Liste" onclick="HistoryAuftragDetailsHide();">
+</div>
+
+<br/><br/><br/>
+<div id="detailsBody">
+    
+    <div class="left SForm">
+        @Html.SimpleFormTextBlockFor(m => m.AuftragsNr)
+        @Html.SimpleFormTextBlockFor(m => m.AuftragsDatum)
+        @Html.SimpleFormTextBlockFor(m => m.AbgabeDatum, true)
+        @Html.SimpleFormTextBlockFor(m => m.UeberfuehrungsDatum)
+        @Html.SimpleFormTextBlockFor(m => m.Kundenberater, true)
+        @Html.SimpleFormTextBlockFor(m => m.Referenz)
+        @Html.SimpleFormTextBlockFor(m => m.Ansprechpartner, true)
+        @Html.SimpleFormTextBlockFor(m => m.Telefon)
+        @Html.SimpleFormTextBlockFor(m => m.Email)
+    </div>
+
+    <div class="right SForm">
+        @Html.SimpleFormTextBlockFor(m => m.Kennzeichen)
+        @Html.SimpleFormTextBlockFor(m => m.FahrgestellNr)
+        @Html.SimpleFormTextBlockFor(m => m.Typ)
+        @Html.SimpleFormTextBlockFor(m => m.Fahrt)
+        @Html.SimpleFormTextBlockFor(m => m.FahrtVonOrt)
+        @Html.SimpleFormTextBlockFor(m => m.FahrtNachOrt)
+        @Html.SimpleFormTextBlockFor(m => m.GefahreneKilometer)
+        @Html.SimpleFormTextBlockFor(m => m.KlaerFall, true)
+    </div>
+
+</div>

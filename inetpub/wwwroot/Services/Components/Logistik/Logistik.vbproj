@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{7A0F9030-5024-42CE-8077-C4E6BEB19F62}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CKG.Components.Logistik</RootNamespace>
+    <AssemblyName>CKG.Components.Logistik</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Change02s.aspx" />
+    <Content Include="Change02sUserControls\CWSAbholadresse.ascx" />
+    <Content Include="Change02sUserControls\CWSDLZieladresseKfz1.ascx" />
+    <Content Include="Change02sUserControls\CWSDLZieladresseKfz2.ascx" />
+    <Content Include="Change02sUserControls\CWSDLZusatzfahrtenKfz1.ascx" />
+    <Content Include="Change02sUserControls\CWSDLZusatzfahrtenKfz2.ascx" />
+    <Content Include="Change02sUserControls\CWSHalter.ascx" />
+    <Content Include="Change02sUserControls\CWSKfz1.ascx" />
+    <Content Include="Change02sUserControls\CWSKfz2.ascx" />
+    <Content Include="Change02sUserControls\CWSRechnungsadresse.ascx" />
+    <Content Include="Change02sUserControls\CWSRechnungszahler.ascx" />
+    <Content Include="Change02sUserControls\CWSZieladresseKfz1.ascx" />
+    <Content Include="Change02sUserControls\CWSZieladresseKfz2.ascx" />
+    <Content Include="Change02sUserControls\CWSZusatzfahrtenKfz1.ascx" />
+    <Content Include="Change02sUserControls\CWSZusatzfahrtenKfz2.ascx" />
+    <Content Include="Change02sUserControls\KfzStammdaten.ascx" />
+    <Content Include="Change02sUserControls\CWSHalteradresse.ascx" />
+    <Content Include="Change02sUserControls\PartnerAddress.ascx" />
+    <Content Include="Change02sUserControls\ProtocolUpload.ascx" />
+    <Content Include="Change02sUserControls\Services.ascx" />
+    <Content Include="Change02sUserControls\TransportAddress.ascx" />
+    <Content Include="Change02sUserControls\WSDienstleistungen.ascx" />
+    <Content Include="Change02sUserControls\WSFahrten.ascx" />
+    <Content Include="Change02sUserControls\WSStammdaten.ascx" />
+    <Content Include="Change02sUserControls\WSÜbersicht.ascx" />
+    <Content Include="Change02sUserControls\ZusatzDienstleistungen.ascx" />
+    <Content Include="Change02sUserControls\Zusatzfahrten.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Change02s.aspx.designer.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02s.aspx.vb">
+      <DependentUpon>Change02s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\AddressSearch.vb" />
+    <Compile Include="Change02sUserControls\CWSAbholadresse.ascx.designer.vb">
+      <DependentUpon>CWSAbholadresse.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSAbholadresse.ascx.vb">
+      <DependentUpon>CWSAbholadresse.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZieladresseKfz1.ascx.designer.vb">
+      <DependentUpon>CWSDLZieladresseKfz1.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZieladresseKfz1.ascx.vb">
+      <DependentUpon>CWSDLZieladresseKfz1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZieladresseKfz2.ascx.designer.vb">
+      <DependentUpon>CWSDLZieladresseKfz2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZieladresseKfz2.ascx.vb">
+      <DependentUpon>CWSDLZieladresseKfz2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZusatzfahrtenKfz1.ascx.designer.vb">
+      <DependentUpon>CWSDLZusatzfahrtenKfz1.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZusatzfahrtenKfz1.ascx.vb">
+      <DependentUpon>CWSDLZusatzfahrtenKfz1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZusatzfahrtenKfz2.ascx.designer.vb">
+      <DependentUpon>CWSDLZusatzfahrtenKfz2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSDLZusatzfahrtenKfz2.ascx.vb">
+      <DependentUpon>CWSDLZusatzfahrtenKfz2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSHalter.ascx.designer.vb">
+      <DependentUpon>CWSHalter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSHalter.ascx.vb">
+      <DependentUpon>CWSHalter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSKfz1.ascx.designer.vb">
+      <DependentUpon>CWSKfz1.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSKfz1.ascx.vb">
+      <DependentUpon>CWSKfz1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSKfz2.ascx.designer.vb">
+      <DependentUpon>CWSKfz2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSKfz2.ascx.vb">
+      <DependentUpon>CWSKfz2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSRechnungsadresse.ascx.designer.vb">
+      <DependentUpon>CWSRechnungsadresse.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSRechnungsadresse.ascx.vb">
+      <DependentUpon>CWSRechnungsadresse.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSRechnungszahler.ascx.designer.vb">
+      <DependentUpon>CWSRechnungszahler.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSRechnungszahler.ascx.vb">
+      <DependentUpon>CWSRechnungszahler.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZieladresseKfz1.ascx.designer.vb">
+      <DependentUpon>CWSZieladresseKfz1.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZieladresseKfz1.ascx.vb">
+      <DependentUpon>CWSZieladresseKfz1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZieladresseKfz2.ascx.designer.vb">
+      <DependentUpon>CWSZieladresseKfz2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZieladresseKfz2.ascx.vb">
+      <DependentUpon>CWSZieladresseKfz2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZusatzfahrtenKfz1.ascx.designer.vb">
+      <DependentUpon>CWSZusatzfahrtenKfz1.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZusatzfahrtenKfz1.ascx.vb">
+      <DependentUpon>CWSZusatzfahrtenKfz1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZusatzfahrtenKfz2.ascx.designer.vb">
+      <DependentUpon>CWSZusatzfahrtenKfz2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSZusatzfahrtenKfz2.ascx.vb">
+      <DependentUpon>CWSZusatzfahrtenKfz2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\KfzStammdaten.ascx.designer.vb">
+      <DependentUpon>KfzStammdaten.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\KfzStammdaten.ascx.vb">
+      <DependentUpon>KfzStammdaten.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSHalteradresse.ascx.designer.vb">
+      <DependentUpon>CWSHalteradresse.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\CWSHalteradresse.ascx.vb">
+      <DependentUpon>CWSHalteradresse.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\PartnerAddress.ascx.designer.vb">
+      <DependentUpon>PartnerAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\PartnerAddress.ascx.vb">
+      <DependentUpon>PartnerAddress.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\ProtocolUpload.ascx.designer.vb">
+      <DependentUpon>ProtocolUpload.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\ProtocolUpload.ascx.vb">
+      <DependentUpon>ProtocolUpload.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\Services.ascx.designer.vb">
+      <DependentUpon>Services.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\Services.ascx.vb">
+      <DependentUpon>Services.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\TransportAddress.ascx.designer.vb">
+      <DependentUpon>TransportAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\TransportAddress.ascx.vb">
+      <DependentUpon>TransportAddress.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSDienstleistungen.ascx.designer.vb">
+      <DependentUpon>WSDienstleistungen.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSDienstleistungen.ascx.vb">
+      <DependentUpon>WSDienstleistungen.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSFahrten.ascx.designer.vb">
+      <DependentUpon>WSFahrten.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSFahrten.ascx.vb">
+      <DependentUpon>WSFahrten.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSStammdaten.ascx.designer.vb">
+      <DependentUpon>WSStammdaten.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSStammdaten.ascx.vb">
+      <DependentUpon>WSStammdaten.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSÜbersicht.ascx.designer.vb">
+      <DependentUpon>WSÜbersicht.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\WSÜbersicht.ascx.vb">
+      <DependentUpon>WSÜbersicht.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\ZusatzDienstleistungen.ascx.designer.vb">
+      <DependentUpon>ZusatzDienstleistungen.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\ZusatzDienstleistungen.ascx.vb">
+      <DependentUpon>ZusatzDienstleistungen.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Change02sUserControls\Zusatzfahrten.ascx.designer.vb">
+      <DependentUpon>Zusatzfahrten.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Change02sUserControls\Zusatzfahrten.ascx.vb">
+      <DependentUpon>Zusatzfahrten.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\Adresse.vb" />
+    <Compile Include="lib\CWSKfzBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\CWSRechnungBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\Dienstleistung.vb" />
+    <Compile Include="lib\Fahrt.vb" />
+    <Compile Include="lib\Fahrzeug.vb" />
+    <Compile Include="lib\ICollapsibleWizardStep.vb" />
+    <Compile Include="lib\ITransferPage.vb" />
+    <Compile Include="lib\IWizardStep.vb" />
+    <Compile Include="lib\Protokoll.vb" />
+    <Compile Include="lib\Transfer.vb" />
+    <Compile Include="lib\TransferBase.vb" />
+    <Compile Include="lib\TransferDal.vb" />
+    <Compile Include="lib\TranslatedUserControl.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\WSBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services.vbproj">
+      <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{F377F0B3-D869-42B1-A2B5-DBC7BF3DE613}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dokumente\TempDoc\" />
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dokumente\UebersichtUeberfuehrung.doc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62500</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Services/Components/Logistik</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F377F0B3-D869-42B1-A2B5-DBC7BF3DE613}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CKG.Components.Controls</RootNamespace>
+    <AssemblyName>CKG.Components.Controls</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Nonshipping>true</Nonshipping>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressSearch\AddressSearch.cs" />
+    <Compile Include="BaseControls\PagerGridView.cs" />
+    <Compile Include="BaseControls\ReportPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CollapsibleWizardControl.cs" />
+    <Compile Include="CollapsibleWizardStep.cs" />
+    <Compile Include="CollapsibleWizardStepCollection.cs" />
+    <Compile Include="CollapsibleWizardStepContainer.cs" />
+    <Compile Include="ColorAnimationExtender.cs" />
+    <Compile Include="ColorAnimationTarget.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DocumentList\DocumentList.cs" />
+    <Compile Include="DocumentList\DocumentListLayout.cs" />
+    <Compile Include="DocumentList\DocumentListDataItem.cs" />
+    <Compile Include="DocumentList\DocumentListGroup.cs" />
+    <Compile Include="DocumentList\DocumentListItemCommandEventArgs.cs" />
+    <Compile Include="DocumentList\DocumentListLayoutEventArgs.cs" />
+    <Compile Include="DocumentList\IDocumentGroup.cs" />
+    <Compile Include="EitherOrValidator.cs" />
+    <Compile Include="EmptyContainer.cs" />
+    <Compile Include="FlowDirection.cs" />
+    <Compile Include="ModalOverlay.cs" />
+    <Compile Include="ModalOverlayTrigger.cs" />
+    <Compile Include="MultiselectBox.cs" />
+    <Compile Include="OverlayContainer.cs" />
+    <Compile Include="ProgressIndicator.cs" />
+    <Compile Include="ProgressItem.cs" />
+    <Compile Include="WizardControl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WizardStepInfoContainer.cs" />
+    <Compile Include="WizardStep.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="JavaScript\jquery.center.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="JavaScript\jquery.color.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services.vbproj">
+      <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorie
+
+@(Html.Telerik()
+    .Grid<EquiMeldungsdaten>()
+    .Name("GridEquiMeldungsdatenItems")
+    //.DataBinding(dataBinding => dataBinding.Ajax().Select("EquiMeldungsdatenItemsAjaxBinding", "Equi"))
+    .BindTo(Model.Meldungsdaten)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kurztext);
+        columns.XBound(c => c.Durchfuehrungsdatum);
+        columns.XBound(c => c.Versandadresse);
+        columns.XBound(c => c.Erfassungsdatum);
+        columns.XBound(c => c.Versandart);
+        columns.XBound(c => c.BeauftragtDurch);
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .Pageable(p => p.PageSize(20))
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(true))
+        .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)
+
+

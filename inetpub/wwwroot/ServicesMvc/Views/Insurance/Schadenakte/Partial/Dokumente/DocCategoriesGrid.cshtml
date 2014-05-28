@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.General.Database.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model SchadenakteDocsViewModel
+@{ 
+    var gridName = "DocCategoriesGrid";
+}
+   
+<div class="VersEventSubGrid">
+    @(Html.Telerik()
+        .Grid<CustomerDocumentCategory>()
+        .Name(gridName)
+        .XGroup(gridName)
+        .XAjaxDataBinding("DocCategoriesAjaxBinding", "Insurance")
+        .Columns(columns =>
+        {
+            columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                    "<button onclick='DocCategoryEdit(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                    + "&nbsp;"
+                    + "<button onclick='DocCategoryRemove(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.Delete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                )
+                .HeaderTemplate(
+                    "<button onclick='CloseDocCategoriesGrid();' class='btn mini red tooltips' data-original-title='" + Localize.Back + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></button>"
+                    + "&nbsp;" +
+                    "<button onclick='DocCategoryCreate();' class='btn mini black tooltips' data-original-title='" + Localize.AddNewCategory + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                )
+            ;
+
+            columns.XBound(c => c.CategoryName);
+            columns.XBound(c => c.DisplayOrder);
+        })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DisplayOrder).Ascending())
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportDocCategoriesFilteredExcel", "Insurance");
+            commands.FilteredDataCommand("ExportDocCategoriesFilteredPDF", "Insurance");
+        })
+    )
+</div>

@@ -1,0 +1,372 @@
+﻿@model MvcTools.Models.FormWizardModel 
+
+<style type="text/css">
+    
+    .step .formWizardStepDesc {
+        font-size: 14px!important;
+    }
+    .active .step .formWizardStepDesc {
+        font-weight: bold;
+    }
+    
+	.form-wizard .step .formWizardStepDesc {
+	    display: inline-block;
+	}
+
+    .row-fluid .formWizardStepSpanGeneral {
+        display: block;
+    }
+    
+    
+    .row-fluid .formWizardStepSpan7 {
+      width: 12.44680851063829%;
+      *width: 12.39361702127659%;
+    }
+    .row-fluid .formWizardStepSpan6 {
+      width: 16.93617021276595%;
+      *width: 16.88297872340425%;
+    }
+    .row-fluid .formWizardStepSpan5 {
+      width: 19.404255319148934%;
+      *width: 19.351063829787233%;
+    }
+    .row-fluid .formWizardStepSpan4 {
+      width: 23.404255319148934%;
+      *width: 23.351063829787233%;
+    }
+    .row-fluid .formWizardStepSpan3 {
+      width: 32.914893617021278%;
+      *width: 32.861702127659576%;
+    }
+    .row-fluid .formWizardStepSpan2 {
+      width: 48.93617021276595%;
+      *width: 48.88297872340425%;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var FormWizard = function () {
+
+        return {
+            //
+            // <PUBLICS>
+            //
+
+            //main function to initiate the module
+            Init: function (onInit) {
+
+                if (!jQuery().bootstrapWizard)
+                    return;
+
+                FormWizard.onInitPrivate = onInit;
+
+                this.formWizardInitTabs();
+
+                // default form wizard
+                $('#formWizard').bootstrapWizard({
+                    'nextSelector': '.button-next',
+                    'previousSelector': '.button-prev',
+                    onTabClick: function (tab, navigation, index) {
+                        //alert('on tab click disabled');
+                        return false;
+                    },
+                    onNext: function (tab, navigation, index) {
+
+                        var current = index + 1;
+                        var total = navigation.find('li').length;
+
+                        FormWizard.formWizardNavButtonsShowHide(current, total);
+
+                        var buttonType = 'next';
+                        //alert(FormWizard.buttonOnClickPrivate[buttonType]);
+                        if (FormWizard.buttonOnClickPrivate[buttonType] != null)
+                            if (!FormWizard.buttonOnClickPrivate[buttonType](current, total)) {
+                                FormWizard.formWizardNavButtonsShowHide(current - 1, total);
+                                return false;
+                            }
+
+                        // set wizard title
+                        $('.step-title', $('#formWizard')).text('Schritt ' + (index + 1) + ' / ' + total);
+                        // set done steps
+                        jQuery('li', $('#formWizard')).removeClass("done");
+                        var liList = navigation.find('li');
+                        for (var i = 0; i < index; i++) {
+                            jQuery(liList[i]).addClass("done");
+                        }
+
+                        return true;
+                    },
+                    onPrevious: function (tab, navigation, index) {
+
+                        var current = index + 1;
+                        var total = navigation.find('li').length;
+
+                        FormWizard.formWizardNavButtonsShowHide(current, total);
+
+                        var buttonType = 'prev';
+                        if (FormWizard.buttonOnClickPrivate[buttonType] != null)
+                            if (!FormWizard.buttonOnClickPrivate[buttonType](current, total)) {
+                                FormWizard.formWizardNavButtonsShowHide(current + 1, total);
+                                return false;
+                            }
+
+                        // set wizard title
+                        $('.step-title', $('#formWizard')).text('Schritt ' + (index + 1) + ' / ' + total);
+                        // set done steps
+                        jQuery('li', $('#formWizard')).removeClass("done");
+                        var liList = navigation.find('li');
+                        for (var i = 0; i < index; i++) {
+                            jQuery(liList[i]).addClass("done");
+                        }
+
+                        return true;
+                    },
+                    onTabShow: function (tab, navigation, index) {
+                        var current = index + 1;
+                        var total = navigation.find('li').length;
+
+                        var $percent = (current / total) * 100;
+                        $('#formWizard').find('.bar').css({
+                            width: $percent + '%'
+                        });
+                    }
+                });
+
+                if (FormWizard.onInitPrivate != null)
+                    FormWizard.onInitPrivate();
+
+                //$('#formWizard').find('.form-actions').hide();
+                $('#formWizard').find('.button-prev').hide();
+
+                $('#formWizard .button-submit').click(function () {
+                    var buttonType = 'submit';
+                    if (FormWizard.buttonOnClickPrivate[buttonType] != null)
+                        if (!FormWizard.buttonOnClickPrivate[buttonType]())
+                            return false;
+                    return true;
+                }).hide();
+
+                $('#formWizard .button-restart').click(function () {
+                    var buttonType = 'restart';
+                    if (FormWizard.buttonOnClickPrivate[buttonType] != null)
+                        if (!FormWizard.buttonOnClickPrivate[buttonType]())
+                            return false;
+                    return true;
+                }).hide();
+
+                $('#formWizard').removeClass("hide");
+            },
+
+            ActionsShow: function (show) {
+                var actions = $('#formWizard').find('.form-actions');
+                if (actions != null)
+                    if (show) actions.show(); else actions.hide();
+            },
+
+            ActionsDisable: function () {
+                FormWizard.actionsDisabled = true;
+                FormWizard.ActionsShow(false);
+            },
+
+            SetTabHtml: function (tabNumber, html) {
+                $('#formWizardPrivateTab' + tabNumber).html(html);
+            },
+
+
+            ButtonNextShow: function (show) {
+                this.buttonShow('next', show);
+            },
+
+            ButtonPrevShow: function (show) {
+                this.buttonShow('prev', show);
+            },
+
+            ButtonSubmitShow: function (show) {
+                this.buttonShow('submit', show);
+            },
+
+            ButtonRestartShow: function (show) {
+                this.buttonShow('restart', show);
+            },
+
+
+            ButtonNextInvoke: function () {
+                this.buttonInvoke('next');
+            },
+
+            ButtonPrevInvoke: function () {
+                this.buttonInvoke('prev');
+            },
+
+            ButtonSubmitInvoke: function () {
+                this.buttonInvoke('submit');
+            },
+
+            ButtonRestartInvoke: function () {
+                this.buttonInvoke('restart');
+            },
+
+
+            OnNext: function (func) {
+                this.setButtonOnClick('next', func);
+            },
+
+            OnPrev: function (func) {
+                this.setButtonOnClick('prev', func);
+            },
+
+            OnSubmit: function (func) {
+                this.setButtonOnClick('submit', func);
+            },
+
+            OnRestart: function (func) {
+                this.setButtonOnClick('restart', func);
+            },
+
+            //
+            // </PUBLICS>
+            //
+
+
+            //
+            // <privates>
+            //
+
+            onInitPrivate: null,
+
+            actionsDisabled: false,
+
+            buttonShow: function (buttonType, show) {
+                var button = $('#formWizard').find('.button-' + buttonType);
+                if (button != null)
+                    if (show) button.show(); else button.hide();
+            },
+
+            buttonInvoke: function (buttonType) {
+                var button = $('#formWizard').find('.button-' + buttonType);
+                if (button != null)
+                    button.trigger("click");
+            },
+
+            buttonOnClickPrivate: new Array(),
+
+            setButtonOnClick: function (buttonType, func) {
+                var button = $('#formWizard').find('.button-' + buttonType);
+                if (button != null)
+                    this.buttonOnClickPrivate[buttonType] = func;
+            },
+
+            formWizardInitTabs: function () {
+                for (var i = 1; i <= 25; i++) {
+
+                    var srcDiv = document.getElementById('formWizardTab' + i);
+                    var dstDiv = document.getElementById('formWizardPrivateTab' + i);
+
+                    if (srcDiv != null && dstDiv != null) {
+                        var o = srcDiv.parentNode.removeChild(srcDiv);
+                        $(o).removeClass('hide');
+                        dstDiv.appendChild(o);
+                    }
+                }
+            },
+
+            formWizardNavButtonsShowHide: function (current, total) {
+
+                if (FormWizard.actionsDisabled)
+                    return;
+
+                $('#formWizard').find('.form-actions').show();
+
+                if (current == 1) {
+                    //$('#formWizard').find('.form-actions').hide();
+                    $('#formWizard').find('.button-prev').hide();
+                } else
+                    if (current == total) {
+                        $('#formWizard').find('.button-prev').hide();
+                        $('#formWizard').find('.button-next').hide();
+                        $('#formWizard').find('.button-submit').hide();
+                        $('#formWizard').find('.button-restart').show();
+                    } else
+                        if (current == total - 1) {
+                            $('#formWizard').find('.button-prev').show();
+                            $('#formWizard').find('.button-next').hide();
+                            $('#formWizard').find('.button-submit').show();
+                            $('#formWizard').find('.button-restart').hide();
+                        } else {
+                            $('#formWizard').find('.button-prev').show();
+                            $('#formWizard').find('.button-next').show();
+                            $('#formWizard').find('.button-submit').hide();
+                            $('#formWizard').find('.button-restart').hide();
+                        }
+            }
+
+            //
+            // </privates>
+            //
+        };
+
+    } ();
+
+</script>
+
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="grey hide" id="formWizard">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="@Model.HeaderIconCssClass"></i> @Model.Header - <span class="step-title">Schritt 1 / @Model.StepCount</span>
+                </div>
+                <div class="tools hidden-phone">
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form action="#" class="form-horizontal">
+                    <div class="form-wizard">
+                        <div class="navbar steps">
+                            <div class="navbar-inner">
+                                <ul class="row-fluid">
+                                    @for (var i = 0; i < Model.StepCount; i++)
+                                    {
+                                        <li class="@Model.GetStepSpanCssClass()">
+                                            <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
+                                                <span class="number">@Model.GetStepNo(i)</span>
+                                                <span class="formWizardStepDesc"><i class="icon-ok"></i> @Model.GetStepTitle(i)</span>   
+                                            </a>
+                                        </li>
+                                     }
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="bar" class="progress progress-success progress-striped">
+                            <div class="bar"></div>
+                        </div>
+
+                        <div class="tab-content">
+                            @for (var i = 0; i < Model.StepCount; i++)
+                            {
+                                <div class="@Model.GetStepTabCssClass(i)" id="@Model.GetTabID(i)"></div>
+                            }
+                        </div>
+
+                        <div class="form-actions clearfix">
+                            <a href="javascript:;" class="btn button-prev">
+                                <i class="m-icon-swapleft"></i> Zurück 
+                            </a>
+                            <a href="javascript:;" class="btn green button-next">
+                                Weiter <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn green button-submit">
+                                Absenden <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn green button-restart">
+                                Neuen Vorgang beginnen <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

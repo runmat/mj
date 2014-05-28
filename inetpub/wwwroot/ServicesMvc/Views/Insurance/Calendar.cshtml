@@ -1,0 +1,13 @@
+﻿@using CkgDomainLogic.Insurance.ViewModels
+@model VersEventsViewModel 
+
+@Html.Partial("Konfigurator/CommonCalendar")
+
+<h3 class="page-title" id="headerTitle">Events <small> Versicherungsschäden</small></h3>
+
+@Html.IeWarning(8)
+
+@Html.SpanAlert("Message")
+
+
+<div id="calendar"></div>

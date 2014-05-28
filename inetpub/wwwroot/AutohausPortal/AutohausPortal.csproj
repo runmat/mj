@@ -1,0 +1,702 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{211F90F6-D4F1-4809-A42C-4A4DD5E79501}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutohausPortal</RootNamespace>
+    <AssemblyName>AutohausPortal</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\AutohausPortal.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="BarcodeLib, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\work\GAC\Telerik.Web.UI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="WebTools35">
+      <HintPath>..\..\..\work\GAC\WebTools35.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\BankdatenAdresse.ascx" />
+    <Content Include="Controls\BemerkungenNotizen.ascx" />
+    <Content Include="Controls\Startmenue.ascx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Downloads\support.exe" />
+    <Content Include="forms\72hZulassung.aspx" />
+    <Content Include="forms\Abmeldung.aspx" />
+    <Content Include="forms\AbmeldungAHZul.aspx" />
+    <Content Include="forms\Auftraege.aspx" />
+    <Content Include="forms\Dokumentenanforderung.aspx" />
+    <Content Include="forms\Dokumentenanforderung_2.aspx" />
+    <Content Include="forms\Dokumentenanforderung_3.aspx" />
+    <Content Include="forms\Firmeneigene.aspx" />
+    <Content Include="forms\Formulare.aspx" />
+    <Content Include="forms\Gebrauchtzulassung.aspx" />
+    <Content Include="forms\Kennzeichenbestellung.aspx" />
+    <Content Include="forms\DownloadFile.aspx" />
+    <Content Include="forms\Infocenter.aspx" />
+    <Content Include="forms\PrintDialogKundenformular.aspx" />
+    <Content Include="forms\Kurzzeitzulassung.aspx" />
+    <Content Include="forms\Neuzulassung.aspx" />
+    <Content Include="forms\PrintDialog.aspx" />
+    <Content Include="forms\Printpdf.aspx" />
+    <Content Include="forms\Sonstiges.aspx" />
+    <Content Include="forms\Umkennzeichnung.aspx" />
+    <Content Include="forms\Zollzulassung.aspx" />
+    <Content Include="forms\Zulassungsstatistik.aspx" />
+    <Content Include="forms\Zulassungsstatistik_02.aspx" />
+    <Content Include="GAC\BarcodeLib.dll" />
+    <Content Include="GAC\itextsharp.dll" />
+    <Content Include="GAC\SmartSoft.PdfLibrary.dll" />
+    <Content Include="Global.asax" />
+    <Content Include="html\subnavi1.html" />
+    <Content Include="html\subnavi2.html" />
+    <Content Include="html\subnavi3.html" />
+    <Content Include="Images\bg_contentnavi_startseite.gif" />
+    <Content Include="Images\bg_content_startseite.gif" />
+    <Content Include="Images\bg_content_startseite_bottom.gif" />
+    <Content Include="Images\bg_dropdown.gif" />
+    <Content Include="Images\bg_dynbutton.gif" />
+    <Content Include="Images\bg_footer.gif" />
+    <Content Include="Images\bg_footer.png" />
+    <Content Include="Images\bg_formbuttons.gif" />
+    <Content Include="Images\bg_formfelder.gif" />
+    <Content Include="Images\bg_formfelder.png" />
+    <Content Include="Images\bg_formfelder_dyn.gif" />
+    <Content Include="Images\bg_formfelder_end.gif" />
+    <Content Include="Images\bg_formfelder_end.png" />
+    <Content Include="Images\bg_formfelder_end_error.gif" />
+    <Content Include="Images\bg_formfelder_end_on.gif" />
+    <Content Include="Images\bg_formfelder_end_on.png" />
+    <Content Include="Images\bg_formfelder_end_on_dyn.gif" />
+    <Content Include="Images\bg_formfelder_end_wide.gif" />
+    <Content Include="Images\bg_formfelder_end_wide.png" />
+    <Content Include="Images\bg_formfelder_end_wide_error.gif" />
+    <Content Include="Images\bg_formfelder_end_wide_on.gif" />
+    <Content Include="Images\bg_formfelder_end_wide_on.png" />
+    <Content Include="Images\bg_formfelder_error.gif" />
+    <Content Include="Images\bg_formfelder_on.gif" />
+    <Content Include="Images\bg_formfelder_on.png" />
+    <Content Include="Images\bg_formfelder_on_dyn.gif" />
+    <Content Include="Images\bg_formlayer_plus.gif" />
+    <Content Include="Images\bg_formlayer_plus_bot.gif" />
+    <Content Include="Images\bg_formlayer_plus_top.gif" />
+    <Content Include="Images\bg_hilfe.png" />
+    <Content Include="Images\bg_hilfe_ie.gif" />
+    <Content Include="Images\bg_listen_head.gif" />
+    <Content Include="Images\bg_listen_head_links.gif" />
+    <Content Include="Images\bg_listen_head_rechts.gif" />
+    <Content Include="Images\bg_listen_radhead_rechts.gif" />
+    <Content Include="Images\bg_metanavi.gif" />
+    <Content Include="Images\bg_metanavi_links.gif" />
+    <Content Include="Images\bg_metanavi_rechts.gif" />
+    <Content Include="Images\bg_metanavi_trenner.gif" />
+    <Content Include="Images\bg_page.jpg" />
+    <Content Include="Images\bg_page_start.jpg" />
+    <Content Include="Images\bg_select.gif" />
+    <Content Include="Images\bg_select_error.gif" />
+    <Content Include="Images\bg_submitbuttons.gif" />
+    <Content Include="Images\bg_teaser_content.gif" />
+    <Content Include="Images\bg_teaser_start.gif" />
+    <Content Include="Images\bild_ansprechpartner.jpg" />
+    <Content Include="Images\bild_teaser_gewinnspiel.jpg" />
+    <Content Include="Images\bild_teaser_kennzeichenrahmen.jpg" />
+    <Content Include="Images\bild_teaser_kundenkarten.jpg" />
+    <Content Include="Images\breadcrump_trenner.gif" />
+    <Content Include="Images\button_help.gif" />
+    <Content Include="Images\button_help_on.gif" />
+    <Content Include="Images\checkbox-green.png" />
+    <Content Include="Images\checkbox-kroschke.gif" />
+    <Content Include="Images\checkbox-red.png" />
+    <Content Include="Images\deleteicon.gif" />
+    <Content Include="Images\dropdown290.gif" />
+    <Content Include="Images\dropdown393.gif" />
+    <Content Include="Images\dropdown393_open.gif" />
+    <Content Include="Images\dropdown404.gif" />
+    <Content Include="Images\dropdown_pfeil.gif" />
+    <Content Include="Images\dummy_contentnavi_startseite.jpg" />
+    <Content Include="Images\editicon.gif" />
+    <Content Include="Images\edit_no.gif" />
+    <Content Include="Images\empty.gif" />
+    <Content Include="Images\formularpfeil_opener.gif" />
+    <Content Include="Images\fotos.jpg" />
+    <Content Include="Images\Grid\contextMenu.gif" />
+    <Content Include="Images\Grid\export.gif" />
+    <Content Include="Images\iconPDF.gif" />
+    <Content Include="Images\iconXLS.gif" />
+    <Content Include="Images\icon_datepicker.gif" />
+    <Content Include="Images\indicator.gif" />
+    <Content Include="Images\bg_teaser_content_large.gif" />
+    <Content Include="Images\kreispfeil.gif" />
+    <Content Include="Images\kreispfeil.png" />
+    <Content Include="Images\kreis_head.gif" />
+    <Content Include="Images\kroschke-logo.gif" />
+    <Content Include="Images\Loginbox_bg.gif" />
+    <Content Include="Images\Loginbox_bg_bottom.gif" />
+    <Content Include="Images\Loginbox_bg_top.gif" />
+    <Content Include="Images\loginpfeil.gif" />
+    <Content Include="Images\logoPDF.png" />
+    <Content Include="Images\pfeil_footer.gif" />
+    <Content Include="Images\portal_bg_head.jpg" />
+    <Content Include="Images\portal_bg_head_content.jpg" />
+    <Content Include="Images\portal_bg_head_login.jpg" />
+    <Content Include="Images\Radgrid_opener.gif" />
+    <Content Include="Images\radio-black.png" />
+    <Content Include="Images\radio-kroschke.gif" />
+    <Content Include="Images\rcbSprite.png" />
+    <Content Include="Images\reserve\startmenu_top.jpg" />
+    <Content Include="Images\reserve\startmenu_top_ie.jpg" />
+    <Content Include="Images\reserve\startmenu_top_ie_start.jpg" />
+    <Content Include="Images\reserve\startmenu_top_start.jpg" />
+    <Content Include="Images\select_pfeil.gif" />
+    <Content Include="Images\select_pfeil_error.gif" />
+    <Content Include="Images\startbutton.gif" />
+    <Content Include="Images\startbutton.jpg" />
+    <Content Include="Images\startbutton_test.gif" />
+    <Content Include="Images\startmenu_bg_lang.gif" />
+    <Content Include="Images\startmenu_bg_lang.png" />
+    <Content Include="Images\startmenu_bottom.gif" />
+    <Content Include="Images\startmenu_bottom.png" />
+    <Content Include="Images\startmenu_top.jpg" />
+    <Content Include="Images\startmenu_top_ie.jpg" />
+    <Content Include="Images\startmenu_top_ie_start.jpg" />
+    <Content Include="Images\startmenu_top_start.jpg" />
+    <Content Include="Images\subnavi_button_bg.gif" />
+    <Content Include="Images\subnavi_button_left.gif" />
+    <Content Include="Images\subnavi_button_right.gif" />
+    <Content Include="Images\subnavi_button_right_last.gif" />
+    <Content Include="Images\TeamviewerLogoSmall.png" />
+    <Content Include="Images\teaser_auftraege.jpg" />
+    <Content Include="Images\teaser_autohaus.jpg" />
+    <Content Include="Images\teaser_tools.jpg" />
+    <Content Include="Images\teaser_zulassungen.jpg" />
+    <Content Include="Images\transp.gif" />
+    <Content Include="Images\trennlinie_horiziontal.gif" />
+    <Content Include="Images\trennlinie_vertikal.gif" />
+    <Content Include="Images\TVRahmenSmall.png" />
+    <Content Include="Log.aspx" />
+    <Content Include="Start\LogonMessage.aspx" />
+    <Content Include="Styles\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Styles\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Styles\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Styles\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Styles\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Styles\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Styles\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Styles\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Styles\images\ui-icons_222222_256x240.png" />
+    <Content Include="Styles\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Styles\images\ui-icons_454545_256x240.png" />
+    <Content Include="Styles\images\ui-icons_888888_256x240.png" />
+    <Content Include="Styles\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Images\Word_Logo.jpg" />
+    <Content Include="Info\Error.aspx" />
+    <Content Include="Info\Impressum.aspx" />
+    <Content Include="Info\Kontakt.aspx" />
+    <Content Include="Info\ImpressumLogin.aspx" />
+    <Content Include="Info\KontaktLogin.aspx" />
+    <Content Include="Scripts\ezmark.js" />
+    <Content Include="Scripts\Helper.js" />
+    <Content Include="Scripts\jquery-1.6.2.min.js" />
+    <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
+    <Content Include="Scripts\jquery.ezmark.js" />
+    <Content Include="Scripts\jquery.selectBox.js" />
+    <Content Include="Scripts\jquery.ui.datepicker-de.js" />
+    <Content Include="Scripts\jquery.ui.datepicker.js" />
+    <Content Include="Scripts\kroschkeportal.js" />
+    <Content Include="Scripts\PasswordStrength.js" />
+    <Content Include="Start\Bounce.aspx" />
+    <Content Include="Start\ChangePassword.aspx" />
+    <Content Include="Start\FirstLogin.aspx" />
+    <Content Include="Start\Login.aspx" />
+    <Content Include="Start\Logout.aspx" />
+    <Content Include="Start\Selection.aspx" />
+    <Content Include="Styles\ezmark.css" />
+    <Content Include="Styles\ie6styles.css" />
+    <Content Include="Styles\ie7styles.css" />
+    <Content Include="Styles\iestyles.css" />
+    <Content Include="Styles\jquery-ui.css" />
+    <Content Include="Styles\jquery.selectBox.css" />
+    <Content Include="Styles\KroschkePortal.css" />
+    <Content Include="Styles\print.css" />
+    <Content Include="Styles\RadGrid.css" />
+    <Content Include="Styles\reserve\kroschkeportal.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\BankdatenAdresse.ascx.cs">
+      <DependentUpon>BankdatenAdresse.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BankdatenAdresse.ascx.designer.cs">
+      <DependentUpon>BankdatenAdresse.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BemerkungenNotizen.ascx.cs">
+      <DependentUpon>BemerkungenNotizen.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BemerkungenNotizen.ascx.designer.cs">
+      <DependentUpon>BemerkungenNotizen.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Startmenue.ascx.cs">
+      <DependentUpon>Startmenue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Startmenue.ascx.designer.cs">
+      <DependentUpon>Startmenue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\72hZulassung.aspx.cs">
+      <DependentUpon>72hZulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\72hZulassung.aspx.designer.cs">
+      <DependentUpon>72hZulassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Abmeldung.aspx.cs">
+      <DependentUpon>Abmeldung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Abmeldung.aspx.designer.cs">
+      <DependentUpon>Abmeldung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AbmeldungAHZul.aspx.cs">
+      <DependentUpon>AbmeldungAHZul.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\AbmeldungAHZul.aspx.designer.cs">
+      <DependentUpon>AbmeldungAHZul.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Auftraege.aspx.cs">
+      <DependentUpon>Auftraege.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Auftraege.aspx.designer.cs">
+      <DependentUpon>Auftraege.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung.aspx.cs">
+      <DependentUpon>Dokumentenanforderung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung.aspx.designer.cs">
+      <DependentUpon>Dokumentenanforderung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung_2.aspx.cs">
+      <DependentUpon>Dokumentenanforderung_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung_2.aspx.designer.cs">
+      <DependentUpon>Dokumentenanforderung_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung_3.aspx.cs">
+      <DependentUpon>Dokumentenanforderung_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Dokumentenanforderung_3.aspx.designer.cs">
+      <DependentUpon>Dokumentenanforderung_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Firmeneigene.aspx.cs">
+      <DependentUpon>Firmeneigene.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Firmeneigene.aspx.designer.cs">
+      <DependentUpon>Firmeneigene.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Formulare.aspx.cs">
+      <DependentUpon>Formulare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Formulare.aspx.designer.cs">
+      <DependentUpon>Formulare.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Gebrauchtzulassung.aspx.cs">
+      <DependentUpon>Gebrauchtzulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Gebrauchtzulassung.aspx.designer.cs">
+      <DependentUpon>Gebrauchtzulassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Kennzeichenbestellung.aspx.cs">
+      <DependentUpon>Kennzeichenbestellung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Kennzeichenbestellung.aspx.designer.cs">
+      <DependentUpon>Kennzeichenbestellung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DownloadFile.aspx.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\DownloadFile.aspx.designer.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Infocenter.aspx.cs">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Infocenter.aspx.designer.cs">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\PrintDialogKundenformular.aspx.cs">
+      <DependentUpon>PrintDialogKundenformular.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\PrintDialogKundenformular.aspx.designer.cs">
+      <DependentUpon>PrintDialogKundenformular.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Kurzzeitzulassung.aspx.cs">
+      <DependentUpon>Kurzzeitzulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Kurzzeitzulassung.aspx.designer.cs">
+      <DependentUpon>Kurzzeitzulassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Neuzulassung.aspx.cs">
+      <DependentUpon>Neuzulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Neuzulassung.aspx.designer.cs">
+      <DependentUpon>Neuzulassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\PrintDialog.aspx.cs">
+      <DependentUpon>PrintDialog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\PrintDialog.aspx.designer.cs">
+      <DependentUpon>PrintDialog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Printpdf.aspx.cs">
+      <DependentUpon>Printpdf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Printpdf.aspx.designer.cs">
+      <DependentUpon>Printpdf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Sonstiges.aspx.cs">
+      <DependentUpon>Sonstiges.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Sonstiges.aspx.designer.cs">
+      <DependentUpon>Sonstiges.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Umkennzeichnung.aspx.cs">
+      <DependentUpon>Umkennzeichnung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Umkennzeichnung.aspx.designer.cs">
+      <DependentUpon>Umkennzeichnung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Zollzulassung.aspx.cs">
+      <DependentUpon>Zollzulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Zollzulassung.aspx.designer.cs">
+      <DependentUpon>Zollzulassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Zulassungsstatistik.aspx.cs">
+      <DependentUpon>Zulassungsstatistik.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Zulassungsstatistik.aspx.designer.cs">
+      <DependentUpon>Zulassungsstatistik.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Zulassungsstatistik_02.aspx.cs">
+      <DependentUpon>Zulassungsstatistik_02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Zulassungsstatistik_02.aspx.designer.cs">
+      <DependentUpon>Zulassungsstatistik_02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Info\Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\Impressum.aspx.cs">
+      <DependentUpon>Impressum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\Impressum.aspx.designer.cs">
+      <DependentUpon>Impressum.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\Kontakt.aspx.cs">
+      <DependentUpon>Kontakt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\Kontakt.aspx.designer.cs">
+      <DependentUpon>Kontakt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\ImpressumLogin.aspx.cs">
+      <DependentUpon>ImpressumLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\ImpressumLogin.aspx.designer.cs">
+      <DependentUpon>ImpressumLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\KontaktLogin.aspx.cs">
+      <DependentUpon>KontaktLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\KontaktLogin.aspx.designer.cs">
+      <DependentUpon>KontaktLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="lib\AHErfassung.cs" />
+    <Compile Include="lib\dboZLDAutohaus.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dboZLDAutohaus.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="lib\LongStringToSap.cs" />
+    <Compile Include="lib\Mvc.cs" />
+    <Compile Include="lib\Report99.cs" />
+    <Compile Include="lib\ResponseHelper.cs" />
+    <Compile Include="lib\ZLDCommon.cs" />
+    <Compile Include="lib\ZLDSuche.cs" />
+    <Compile Include="Log.aspx.cs">
+      <DependentUpon>Log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Log.aspx.designer.cs">
+      <DependentUpon>Log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Form.Master.cs">
+      <DependentUpon>Form.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Form.Master.designer.cs">
+      <DependentUpon>Form.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\FormBig.Master.cs">
+      <DependentUpon>FormBig.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\FormBig.Master.designer.cs">
+      <DependentUpon>FormBig.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Login.Master.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Login.Master.designer.cs">
+      <DependentUpon>Login.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Selection.Master.cs">
+      <DependentUpon>Selection.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Selection.Master.designer.cs">
+      <DependentUpon>Selection.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Start\Bounce.aspx.cs">
+      <DependentUpon>Bounce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Bounce.aspx.designer.cs">
+      <DependentUpon>Bounce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\FirstLogin.aspx.cs">
+      <DependentUpon>FirstLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\FirstLogin.aspx.designer.cs">
+      <DependentUpon>FirstLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\LogonMessage.aspx.cs">
+      <DependentUpon>LogonMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\LogonMessage.aspx.designer.cs">
+      <DependentUpon>LogonMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Selection.aspx.cs">
+      <DependentUpon>Selection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Selection.aspx.designer.cs">
+      <DependentUpon>Selection.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MasterPage\Login.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MasterPage\Selection.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MasterPage\Form.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Docs\Lastschrift\Baden-Wuerttemberg.pdf" />
+    <None Include="Docs\Lastschrift\Bayern.pdf" />
+    <None Include="Docs\Lastschrift\Berlin.pdf" />
+    <None Include="Docs\Lastschrift\Brandenburg.pdf" />
+    <None Include="Docs\Lastschrift\Bremen.pdf" />
+    <None Include="Docs\Lastschrift\Hamburg.pdf" />
+    <None Include="Docs\Lastschrift\Hessen.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern1.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern2.pdf" />
+    <None Include="Docs\Lastschrift\Niedersachsen.pdf" />
+    <None Include="Docs\Lastschrift\Nordrhein-Westfalen.pdf" />
+    <None Include="Docs\Lastschrift\Rheinland-Pfalz.pdf" />
+    <None Include="Docs\Lastschrift\Saarland.pdf" />
+    <None Include="Docs\Lastschrift\Sachsen.pdf" />
+    <None Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
+    <None Include="Docs\Lastschrift\Thueringen.pdf" />
+    <None Include="Docs\Portal\AGB_Kroschke.pdf" />
+    <None Include="Docs\Portal\AGB_Ueberfuehrungen.pdf" />
+    <None Include="Docs\Portal\AGB_Zulassungen.pdf" />
+    <None Include="Docs\Portal\Datenschutz.pdf" />
+    <None Include="Docs\Portal\EinkaufsbedingungenCKG.pdf" />
+    <None Include="Documents\Vorlage_Auftragsstatistik.xls" />
+    <None Include="Dokumentation\AutohausPortal\Autohausportal.chm" />
+    <None Include="Dokumentation\AutohausPortal\DokuAH.doc" />
+    <None Include="Images\checkbox-red.psd" />
+    <None Include="lib\dboZLDAutohaus.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>dboZLDAutohaus.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="MasterPage\FormBig.Master" />
+    <Content Include="NLog.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\dboZLDAutohaus.dbml.layout">
+      <DependentUpon>dboZLDAutohaus.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\ZLDBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61408</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/AutohausPortal</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <UserProperties BuildVersion_StartDate="2012/9/4" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_ConfigurationName="Release" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChartsSqlDataDescriptorTemplate>
+
+  <Group>
+    Feinstaub-Plaketten VK
+  </Group>
+
+  <SqlTableOrViewName>
+    FspStandorte
+  </SqlTableOrViewName>
+
+  <HtmlTemplateName>
+    MapGermanyDoubleHeight.cshtml
+  </HtmlTemplateName>
+
+  <HtmlParameterXml>
+    <Title>Feinstaub-Plaketten Verteilung</Title>
+    <ColorScheme>Red</ColorScheme>
+    <ItemsName>Feinstaub-Plaketten</ItemsName>
+    <LegendColorThresholds>5, 10, 25, 50, 75, 100, 125, 150, 9999999</LegendColorThresholds>
+  </HtmlParameterXml>
+
+  <GroupSqlStatement>
+
+    select
+    VkJahr Jahr,
+    VkMMM Key1,
+    count(*) IWert1
+    from {0}
+    {1}
+
+    group by VkJahr, VkMM, VkMMM, VkMonat
+    order by VkMM
+
+  </GroupSqlStatement>
+
+  <DetailsSqlStatement>
+
+    select
+    KGS,
+    KgsName,
+    convert(varchar(10), VkDatum, 4) VkDatum,
+    Kennzeichen,
+    KdNr,
+    Beleg,
+    VkBur,
+    PLZ,
+    Strasse,
+    Ort
+    from {0}
+    {1}
+    order by VkDatum
+
+  </DetailsSqlStatement>
+
+  <FilterInitial>
+
+    (VkJahr >= 2013)
+
+  </FilterInitial>
+
+  <FilterSelector>
+
+    VkMMM in ({0}) and VkJahr in ({1})
+
+  </FilterSelector>
+
+  <FilterSelectorDetails>
+
+    KGS in ({0})
+
+  </FilterSelectorDetails>
+
+  <AdditionalSqlStatements>
+
+    <string>
+      select
+      KGS Key1,
+      count(*) IWert1
+      from {0}
+      {1}
+      group by KGS
+      order by KGS
+    </string>
+
+  </AdditionalSqlStatements>
+
+</ChartsSqlDataDescriptorTemplate>

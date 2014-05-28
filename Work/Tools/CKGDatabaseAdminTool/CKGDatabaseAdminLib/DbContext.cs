@@ -1,0 +1,268 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
+using CKGDatabaseAdminLib.Models.DbModels;
+
+namespace CKGDatabaseAdminLib
+{
+    public class DatabaseContext : DbContext
+    {
+        public int? CurrentAppId { get; set; }
+
+        public string CurrentAppURL { get; set; }
+
+        public DatabaseContext(string connectionString) : base(connectionString) { }
+
+        public DbSet<LoginUserMessage> LoginUserMessages { get; set; }
+
+        public DbSet<ApplicationInfo> Applications { get; set; }
+
+        public ObservableCollection<ApplicationInfo> ApplicationsInMenuOnly
+        {
+            get
+            {
+                var liste = from a in Applications
+                            where a.AppInMenu
+                            select a;
+
+                return new ObservableCollection<ApplicationInfo>(liste);
+            }
+        }
+
+        public DbSet<BapiTable> Bapis { get; set; }
+
+        public ObservableCollection<BapiTable> BapisSorted
+        {
+            get
+            {
+                var liste = from b in Bapis
+                            orderby b.BAPI
+                            select b;
+
+                return new ObservableCollection<BapiTable>(liste);
+            }       
+        }
+
+        public DbSqlQuery<BapiTable> GetBapisForApplication()
+        {
+            var query = "SELECT b.* FROM BAPI b, ApplicationBapi a WHERE a.BapiId = b.ID";
+            if (CurrentAppId.HasValue)
+            {
+                query += " AND a.ApplicationId = " + CurrentAppId.Value.ToString();
+            }
+            query += " ORDER BY b.BAPI";
+            return Bapis.SqlQuery(query);
+        }
+
+        public void SaveBapiForApplication(int bapiId)
+        {
+            if (CurrentAppId.HasValue)
+            {
+                Database.ExecuteSqlCommand("INSERT INTO ApplicationBapi (ApplicationID, BapiID) VALUES ({0}, {1})", CurrentAppId.Value, bapiId);
+            }    
+        }
+
+        public void RemoveBapiForApplication(int bapiId)
+        {
+            if (CurrentAppId.HasValue)
+            {
+                Database.ExecuteSqlCommand("DELETE FROM ApplicationBapi WHERE ApplicationID = {0} AND BapiID = {1}", CurrentAppId.Value, bapiId);
+            }
+        }
+
+        public DbSet<Bapi2Report4CsvExport> Bapi2Report4CsvExportItemsRaw { get; set; }
+
+        public Dictionary<string, Bapi2Report4CsvExport> GetBapi2Report4CsvExportAggregatedItems()
+        {
+            Dictionary<string, Bapi2Report4CsvExport> liste = new Dictionary<string, Bapi2Report4CsvExport>();
+
+            var items = Bapi2Report4CsvExportItemsRaw.ToList();
+
+            foreach (var item in items)
+            {
+                var strKey = item.KUNNR + "-" + item.Customername + "-" + item.AppFriendlyName;
+                if (!liste.ContainsKey(strKey))
+                {
+                    var bapiString = "";
+                    var bapiList = Bapi2Report4CsvExportItemsRaw.Where(x => (x.KUNNR + "-" + x.Customername + "-" + x.AppFriendlyName) == strKey).ToList();
+                    bapiList.ForEach(x => bapiString += x.BAPI + "|");
+                    bapiString = bapiString.TrimEnd('|');
+                    liste.Add(strKey, new Bapi2Report4CsvExport
+                        {
+                            RowID = item.RowID,
+                            KUNNR = item.KUNNR,
+                            Customername = item.Customername,
+                            AppFriendlyName = item.AppFriendlyName,
+                            AppName = item.AppName,
+                            AppURL = item.AppURL,
+                            BAPI = bapiString
+                        });
+                }
+            }
+
+            return liste;
+        }
+
+        public List<ApplicationInfo> GetChildApplicationsForApplication()
+        {
+            List<ApplicationInfo> liste = new List<ApplicationInfo>();
+            if (CurrentAppId.HasValue)
+            {
+                liste = (
+                    from a in Applications
+                    where a.AppParent == CurrentAppId
+                    select a
+                ).ToList();
+            }
+            return liste;
+        }
+
+        public DbSet<ApplicationField> ApplicationFields { get; set; }
+
+        public List<ApplicationField> GetApplicationFieldsForApplication()
+        {
+            List<ApplicationField> liste = new List<ApplicationField>();
+            if (!String.IsNullOrEmpty(CurrentAppURL))
+            {
+                liste = (
+                    from f in ApplicationFields
+                    where f.CustomerID == 1 && f.AppURL.ToUpper() == CurrentAppURL.ToUpper()
+                    select f
+                ).ToList();
+            }   
+            return liste;
+        }
+
+        public List<ApplicationField> GetApplicationFieldsForApplication(string appUrl)
+        {
+            List<ApplicationField> liste = new List<ApplicationField>();
+            if (!String.IsNullOrEmpty(appUrl))
+            {
+                liste = (
+                    from f in ApplicationFields
+                    where f.CustomerID == 1 && f.AppURL.ToUpper() == appUrl.ToUpper()
+                    select f
+                ).ToList();
+            }
+            return liste;
+        }
+
+        public DbSet<ColumnTranslation> ColumnTranslations { get; set; }
+
+        public List<ColumnTranslation> GetColumnTranslationsForApplication()
+        {
+            List<ColumnTranslation> liste = new List<ColumnTranslation>();
+            if (CurrentAppId.HasValue)
+            {
+                liste = (
+                    from t in ColumnTranslations
+                    where t.AppID == CurrentAppId.Value
+                    select t
+                ).ToList();
+            }
+            return liste;
+        }
+
+        public List<ColumnTranslation> GetColumnTranslationsForApplication(int? appId)
+        {
+            List<ColumnTranslation> liste = new List<ColumnTranslation>();
+            if (appId.HasValue)
+            {
+                liste = (
+                    from t in ColumnTranslations
+                    where t.AppID == appId.Value
+                    select t
+                ).ToList();
+            }
+            return liste;
+        }
+
+        public void ClearApplicationFieldsForApplication(string appUrl)
+        {
+            if (!String.IsNullOrEmpty(appUrl))
+            {
+                Database.ExecuteSqlCommand("DELETE FROM ApplicationField WHERE UPPER(AppURL) = {0}", appUrl.ToUpper());
+            }
+        }
+
+        public void CopyApplicationFields(IEnumerable<ApplicationField> fields)
+        {
+            foreach (var item in fields)
+            {
+                var newItem = ApplicationFields.Create();
+                newItem.AppURL = item.AppURL;
+                newItem.Content = item.Content;
+                newItem.CustomerID = item.CustomerID;
+                newItem.FieldName = item.FieldName;
+                newItem.FieldType = item.FieldType;
+                newItem.LanguageID = item.LanguageID;
+                newItem.ToolTip = item.ToolTip;
+                newItem.Visibility = item.Visibility;
+                ApplicationFields.Add(newItem);
+            }
+            SaveChanges();
+        }
+
+        public void CopyApplication(ApplicationInfo appToCopy, IEnumerable<ApplicationField> fields, IEnumerable<ColumnTranslation> cols, bool appIsChild)
+        {
+            var newApp = Applications.Create();
+            newApp.AppComment = appToCopy.AppComment;
+            newApp.AppFriendlyName = appToCopy.AppFriendlyName;
+            newApp.AppInMenu = appToCopy.AppInMenu;
+            newApp.AppName = appToCopy.AppName;
+            newApp.AppParent = appToCopy.AppParent;
+            newApp.AppRank = appToCopy.AppRank;
+            newApp.AppType = appToCopy.AppType;
+            newApp.AppURL = appToCopy.AppURL;
+            Applications.Add(newApp);
+
+            SaveChanges();
+
+            if (!appIsChild)
+            {
+                CurrentAppId = newApp.AppID;
+                CurrentAppURL = newApp.AppURL;
+            }
+
+            if (fields != null)
+            {
+                ClearApplicationFieldsForApplication(newApp.AppURL);
+                CopyApplicationFields(fields);
+            }
+
+            if (cols != null)
+            {
+                foreach (var item in cols)
+                {
+                    var newItem = ColumnTranslations.Create();
+                    newItem.ABEDaten = item.ABEDaten;
+                    newItem.Alignment = item.Alignment;
+                    newItem.AppID = newApp.AppID;
+                    newItem.DisplayOrder = item.DisplayOrder;
+                    newItem.IstDatum = item.IstDatum;
+                    newItem.IstZeit = item.IstZeit;
+                    newItem.NewName = item.NewName;
+                    newItem.NullenEntfernen = item.NullenEntfernen;
+                    newItem.OrgName = item.OrgName;
+                    newItem.TextBereinigen = item.TextBereinigen;
+                    ColumnTranslations.Add(newItem);
+                }
+            }
+            
+            SaveChanges();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            Database.SetInitializer<DatabaseContext>(null);
+
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); 
+        }
+    }
+}

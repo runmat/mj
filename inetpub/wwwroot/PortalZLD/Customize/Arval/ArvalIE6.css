@@ -1,0 +1,110 @@
+﻿div, thead, li, ul, a { behavior: url(/Services/Images/iepngfix.htc) } /* IE PNG-Fix */
+ /* IE6-Hacks */
+
+* html div#header ul { margin-top: 43px }
+* html div#header table { margin-top: 51px }
+* html div#content div#innerContent div div.innerContentHeading { margin-right: 15px; width: 90% }
+* html div#content div#innerContent div#login { margin-right: 0px }
+* html div#content div#innerContentLeft { width: 18%; }
+
+* html .dadLogo2
+{
+    background-image: url(arval_logo.gif);
+}
+
+* html div#header ul#navigation li
+{
+    background-color: #9bd4be;
+}
+
+* html div#header ul#navigation li.active a
+{
+    color: #9bd4be;
+}
+
+* html div#content div#navigationSubmenu a.active
+{
+    color: #9bd4be;
+}
+
+* html div#content div#query
+{
+    background-color: #9bd4be;
+}
+
+* html div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #9bd4be;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #9bd4be;
+}
+* html .Menutitle
+{
+    background-color: #9bd4be;
+}
+* html A.Tablebutton:hover
+{
+    color: #9bd4be;
+}
+
+* html A.TablebuttonLarge:hover
+{
+    color: #9bd4be;
+}
+
+* html td.MainmenuItemAlternate:hover
+{
+    background-color: #9bd4be;
+}
+
+* html .divWait
+{
+    border: thin solid #9bd4be;
+}
+
+* html .lblKontaktFirma
+{
+    color: #9bd4be;
+}
+
+* html .ImpressumHead
+{
+    background-color: #9bd4be;
+}
+
+* html .NaviImg
+{
+    background-image: url(../../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+* html .NeutralCalendar table * {
+ 
+ padding-right:0px !important;
+padding-bottom:0px !important;
+padding-left:0px !important;
+padding-top:0px !important;
+text-align:center !important;
+ 
+ }
+ 
+ * html .NeutralCalendar table {
+ 
+  border-left-style:none !important;
+  border-right-style:none !important;
+  border-bottom-style:none !important;
+  border-top-style:none !important;
+
+ }
+   
+
+
+
+
+
+
+

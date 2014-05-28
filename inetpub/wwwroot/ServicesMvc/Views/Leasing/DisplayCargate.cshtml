@@ -1,0 +1,48 @@
+﻿@model CkgDomainLogic.Leasing.ViewModels.LeasingCargateCsvUploadViewModel
+
+<h3 class="page-title">CarGate Anzeige <small></small></h3>
+
+<div class="SForm SQuickForm margin-left-10">
+    <form id="filterForm" action="#" class="form-horizontal">
+        
+    </form>
+</div>
+
+@Html.Partial("Partial/DisplayCargateGrid")
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCargateAnzeige");
+
+
+    };
+
+    function GetGrid() {
+        return $("#GridCargateAnzeige").data("tGrid");
+    }
+
+    function GridRefresh() {
+        //GetGrid().ajaxRequest();
+        GetGrid().pageTo(1);
+    }
+
+    function OnDataBound_GridCargateAnzeige() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+        // move our grid filter form into grid's toolbar:
+//        GridAllColumnFilterApplyToGrid("GridCargateAnzeige");
+    }
+
+    function OnColumnShowHide_GridCargateAnzeige() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCargateAnzeige() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

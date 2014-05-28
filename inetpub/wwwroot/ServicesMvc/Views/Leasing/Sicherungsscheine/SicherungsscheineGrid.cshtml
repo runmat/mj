@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@using CkgDomainLogic.Leasing.ViewModels
+@model LeasingSicherungsscheineViewModel 
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridSicherungsscheine"; }
+
+@(Html.Telerik()
+    .Grid<Sicherungsschein>()
+    .Name(gridName)
+    .XGroup("GridSicherungsscheine")
+    .XAjaxDataBinding("SicherungsscheineAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Konzernnummer);
+        columns.Bound(c => c.Kundenreferenz);
+        columns.Bound(c => c.Fahrgestellnummer);
+        columns.Bound(c => c.Zulassungsdatum);
+        columns.Bound(c => c.Standort);
+        columns.Bound(c => c.Kennzeichen); 
+        columns.Bound(c => c.LN_Name);
+        columns.Bound(c => c.LN_Strasse);
+        columns.Bound(c => c.LN_Plz);
+        columns.Bound(c => c.LN_Ort);
+        columns.Bound(c => c.Mahnstufe);
+        columns.Bound(c => c.Klaerfalltext);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Vertragsnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportSicherungsscheineFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportSicherungsscheineFilteredPDF", "Leasing");
+    })
+)
+

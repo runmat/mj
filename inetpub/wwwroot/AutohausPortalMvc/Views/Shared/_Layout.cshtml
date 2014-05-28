@@ -1,0 +1,98 @@
+@using AutohausPortalMvc
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kroschke Autohaus-Portal</title>
+
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <meta name="author" content="Christoph Kroschke GmbH" />
+        <meta content="Christoph Kroschke GmbH" name="Copyright" />
+    
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.Kroschke.css").Combined(true).Compress(true)))
+        @Html.Partial("Partial/LayoutPage/Styles")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/jqueryui")
+
+        @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/site")
+
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript" src="@MvcApplication.GoogleMapsScriptUrl"></script>
+    </head>
+
+    <body id="top" class="start">
+        @Html.Partial("Partial/TelerikGridDummy")
+        
+        <p id="waitHint" class="invisible" align="center">
+            <img src="/AutohausPortalMvc/Images/ajax-loading.gif" />
+        </p>
+
+        <div id="maincontainer">
+            <div id="head" class="breadcrump">
+                <div class="logo">
+                    <img height="51" width="382" alt="Kroschke" src="@Url.Content("~/images/kroschke-logo.gif")" />
+                </div>
+
+                <!--metanavigation-->
+                @Html.Partial("Partial/Menus/TopMenu")
+                <!--/metanavigation-->
+                
+                <!--startmenu-->
+                @Html.Partial("Partial/Menus/StartButtonMenu")
+                <!--/startmenu-->
+
+                <!--breadcrump-->
+                <div id="breadcrump">
+                    <div id="backlink" class="backlink" style="display: none;">
+                        <a href="@HttpContext.Current.Request.UrlReferrer">&lt;&lt; Zurück </a>
+                    </div>
+                    <div class="headline">
+                        @ViewBag.AppName
+                    </div>
+                </div>
+                <!--/breadcrump-->
+
+                <!--warenkorb-->
+                <div id="warenkorb" style="visibility: hidden;">
+                    <h4>
+                        <a id="lnkToAuftrag" href="#">Gespeicherte Aufträge</a>
+                    </h4>
+                    <div class="menge">
+                        <a id="lnkMenge" href="#"></a>
+                    </div>
+                </div>
+                <!--/warenkorb-->
+            </div>
+
+            <div id="contentstart">
+                @RenderBody()
+            </div>
+
+            @Html.FormNewLine()
+        </div>
+    
+        @Html.EmptyDiv("trenner20")
+        <div id="footer" style="margin-top: 0;">
+            <div class="footcontent">
+                <div class="footcontentl">
+                    <a href="#top">Nach oben</a>
+                </div>
+                <div class="footcontentr">
+                    
+                    @MvcApplication.Instance.AppSettings.AppCopyRight
+                    
+                    @*                  
+                    <button onclick="LoadViewModel('');">Neuer Auftrag</button>
+                    <button onclick="LoadViewModel('vmUeberfuehrung_01');">Testdaten laden</button>
+                    <button style="display: none" onclick="TestRaiseError();">(Test-Fehler...)</button>
+                    <button style="display: none" onclick="TestRaiseErrorAsPost();">(Test-Fehler (post)...)</button>
+                    *@
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

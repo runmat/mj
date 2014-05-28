@@ -1,0 +1,27 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+@Html.Partial("Partial/Common")
+
+
+<h3 class="page-title">Fahrer <small>Verfügbarkeit</small></h3>
+
+@* this is necessary for background-image pre-loading ;-) *@
+@for (var i = 1; i <= 10; i++) { <a href="#" class="fahrer-anzahl-bg-@i tiny"> </a> }
+
+@Html.IeWarning(8)
+
+
+@Html.Partial("Partial/Meldung/FahrerMeldungForm", Model.FahrerBelegung)
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>
+

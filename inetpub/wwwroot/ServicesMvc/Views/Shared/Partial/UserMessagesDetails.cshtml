@@ -1,0 +1,22 @@
+﻿@model MaintenanceResult
+
+<h5>@string.Format(@Localize.MaintenanceYouHaveCountNotifications, Model.AvailableMessages.Count):</h5>
+
+@if (Model.MessagesAvailable)
+{
+    foreach (var maintenanceMessage in Model.AvailableMessages.Where(m => !m.LogonDisabled))
+    {
+        <div class="alert alert-block fade in">
+            <button type="button" class="close hide" data-dismiss="alert"></button>
+            
+            <h4 class="alert-heading"><i class="icon-bell"></i> @maintenanceMessage.Title.ToHtml()</h4>
+            
+            @if (maintenanceMessage.Message.IsNotNullOrEmpty())
+            {
+                <p class="margin-top-10">
+                    @maintenanceMessage.Message.ToHtml()
+                </p>
+            }
+        </div>
+    }
+}

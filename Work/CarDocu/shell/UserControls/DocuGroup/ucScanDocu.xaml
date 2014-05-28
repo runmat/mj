@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="CarDocu.UserControls.DocuGroup.ucScanDocu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:CarDocu.UserControls.DocuGroup" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+
+        <Border BorderThickness="0,0,0,1" BorderBrush="#005000" CornerRadius="0" 
+                Background="{StaticResource brRibbonBackground}"
+                Visibility="{Binding DocuArtSelectionBigVisible, Converter={StaticResource BooleanVisibilityConverter}}" Margin="-28,-7,0,0" Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Dokumenten Art wählen:" HorizontalAlignment="Left" FontSize="12" Foreground="#404040" />
+                    <CheckBox Style="{StaticResource HyperLinkCheckBoxImage}" ToolTip="Diese Auswahlbox schließen" IsChecked="{Binding DocuArtSelectionBigVisible}" Content="{StaticResource image/10x10/close}" HorizontalAlignment="Right" Margin="20,0,0,0" />
+                </StackPanel>
+                <uc:ucScanDocuRibbonSectionDocuArt BigSelectionMode="True"  />
+            </StackPanel>
+        </Border>
+
+        <Grid Margin="0,15,10,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding SelectedScanImageHeight}">
+                <StackPanel Margin="0">
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="{Binding Title}" Style="{StaticResource lbHeaderBig}"  Margin="0,0,0,0" />
+                        <TextBlock Text="TEST-MODUS" Foreground="Red" FontSize="20" FontWeight="Bold" Visibility="{Binding IsTestMode, Converter={StaticResource BooleanVisibilityConverter}}" Margin="20,0,0,0" />
+                    </StackPanel>
+
+                    <ItemsControl ItemsSource="{Binding ScanDocumentTypes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,5,0,5">
+                                    <Expander IsExpanded="True">
+                                        <Expander.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <StackPanel Opacity="1" Margin="0,0,10,0">
+                                                    <ContentPresenter Content="{StaticResource image/32x32/scan}" Width="32" Height="32" Visibility="{Binding IsExpanded, Converter={StaticResource BooleanVisibilityConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}}" />
+                                                    <ContentPresenter Content="{StaticResource image/32x32/scan_closed}" Width="32" Height="32"  Visibility="{Binding IsExpanded, Converter={StaticResource BooleanVisibilityInverseConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}}" />
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding DocumentTypeName}" FontWeight="Bold" HorizontalAlignment="Left" />
+                                                <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedScanImageEditable, Converter={StaticResource BooleanVisibilityConverter}}">
+                                                    <ToolBar Height="22" Margin="30,0,0,0">
+                                                        <TextBlock Text="Aktionen für die markierte Seite:" Margin="5,0,5,0" />
+                                                        <Button Command="{Binding ScanPageMoveLeftCommand}" Content="{StaticResource image/10x10/left}" ToolTip="Seite um 1 Position nach  LINKS  bzw. nach  OBEN  verschieben"  />
+                                                        <Button Command="{Binding ScanPageMoveRightCommand}" Content="{StaticResource image/10x10/right}" ToolTip="Seite um 1 Position nach  RECHTS  bzw. nach  UNTEN  verschieben"  />
+                                                        <Separator />
+                                                        <Button Command="{Binding ScanPageDeleteCommand}" Content="{StaticResource image/10x10/delete}" ToolTip="Seite aus dem Dokument entfernen"  />
+                                                        <Separator />
+                                                        <Button Command="{Binding ScanPageRotateCommand}" Content="{StaticResource image/10x10/rotate_180}" ToolTip="Seite vertikal drehen (um 180 Grad)"  />
+                                                    </ToolBar>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Expander.Header>
+                                        <ListBox ItemsSource="{Binding ScanImages}" SelectedItem="{Binding SelectedScanImage}" Height="180" Style="{StaticResource ListBoxHorizontal}" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="25,5,0,5">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <Image Margin="5" Stretch="UniformToFill" Width="100" Height="140"  Source="{Binding ImageSource}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Expander>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0" Height="{Binding SelectedScanImageHeight}" Width="{Binding SelectedScanImageWidth}" Margin="10,0,0,0">
+                <Image Stretch="UniformToFill" Source="{Binding ScanImageSource}" />
+            </Border>
+        </Grid>
+    </StackPanel>
+</UserControl>

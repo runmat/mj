@@ -1,0 +1,1766 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.dat.de/vxs" targetNamespace="http://www.dat.de/vxs" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AdditionalCostsPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPosition" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualAmount" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPrice" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PartNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="RequiredByProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IsSpecific" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" ref="tns:IncludedPositions" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AdditionalData">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="partner" type="xs:string" />
+        <xs:element name="foreignBrand" type="xs:boolean" />
+        <xs:element ref="tns:CalculationWages" />
+        <xs:element ref="tns:MetaPositions" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AdditionalVehicle">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="tns:Vehicle" />
+        <xs:element minOccurs="0" ref="tns:Images" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBody" type="xs:anyType" />
+        <xs:element minOccurs="0" ref="tns:VAT" />
+        <xs:element minOccurs="0" form="qualified" name="Management" type="xs:anyType" />
+        <xs:element minOccurs="0" ref="tns:TradingData" />
+        <xs:element minOccurs="0" ref="tns:Valuation" />
+        <xs:element minOccurs="0" ref="tns:RepairCalculation" />
+        <xs:element minOccurs="0" ref="tns:RepairOrder" />
+        <xs:element minOccurs="0" ref="tns:SparePartPositions" />
+        <xs:element minOccurs="0" ref="tns:MaintenanceIntervals" />
+        <xs:element minOccurs="0" ref="tns:Comments" />
+        <xs:element minOccurs="0" ref="tns:Attachments" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AdditionalVehicles">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:AdditionalVehicle" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Attachment">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="AttachmentType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Source" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="suffix" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="version" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="filename" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="filenameShort" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="offset" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" name="length" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" name="description" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="b64Data" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Attachments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Attachment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Axle">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="AxleNo" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TireType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TireOriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TireSpeedIndex" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TireSize" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TireManufacturer" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PrintLoadCapacityIdx" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="TireOriginalTreadDepth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TireLoadCapacityIndex" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TireLoadCapacityIndex2" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthLeftOuterPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthLeftInnerPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthRightInnerPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthRightOuterPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthLeftOuterMm" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthLeftInnerMm" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthRightInnerMm" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TreadDepthRightOuterMm" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ManualEntry" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RetreadedLeftOuter" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RetreadedLeftInner" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RetreadedRightInner" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RetreadedRightOuter" type="tns:fieldBoolean" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CalculationWage">
+    <xs:complexType>
+      <xs:sequence />
+      <xs:attribute name="type" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:decimal" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CalculationWages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:CalculationWage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Capacity">
+    <xs:complexType>
+      <xs:sequence />
+      <xs:attribute name="type" type="xs:int" />
+      <xs:attribute name="desc" type="xs:string" />
+      <xs:attribute name="min" type="xs:decimal" />
+      <xs:attribute name="max" type="xs:decimal" />
+      <xs:attribute name="unit" type="xs:string" />
+      <xs:attribute name="condition" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClientContactAddresses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="ClientContactAddress" type="tns:address" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Comment">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="CommentType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Text" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="comment1" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="comment2" type="tns:fieldString" />
+        <xs:element minOccurs="0" name="kz" type="tns:fieldInteger" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Comments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Comment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Compare">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="MandatorId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="International" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="NameMandatory" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ConfigurationHidden" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="BaseType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="IncludeVat" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PriceType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="RasterType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="MilageType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Tracking" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="FlatEquipmentValueFlag" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="FlatEquipmentValueType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="FlatEquipmentValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CountryCode" type="tns:fieldString" />
+        <xs:element form="qualified" name="CompareFlatEquipments">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:CompareFlatEquipment" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element form="qualified" name="CompareParameters">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:CompareParameter" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CompareFlatEquipment">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="OriginalPricePercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DecreaseType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Value" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CompareParameter">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Type" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Position" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Milage" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Age" type="tns:fieldInteger" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Condition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="OwnerCorrectionPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOwnerCorrectionPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OwnerCorrectionAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OwnerCorrectionAmountGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionCorrectionFactorPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatConditionCorrectionFactorPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionCorrectionAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionCorrectionAmountGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="NumberOfOwners" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="AccidentDamage" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="IncreaseInValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="IncreaseInValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatIncreaseInValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DecreaseInValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DecreaseInValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatDecreaseInValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TiresMountedValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TiresMountedValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatTiresMountedValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TiresUnmountedValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TiresUnmountedValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatTiresUnmountedValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="RepairCosts" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="RepairCostsGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatRepairCosts" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionSubTotal1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionSubTotal1Gross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionSubTotal2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionSubTotal2Gross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionDataAvailable" type="tns:fieldBoolean" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeductiblePartsPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PartNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CorrPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotalCorrected" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeductiblePartsPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:DeductiblePartsPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DiscountPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="BaseValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CorrectionPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CorrectionValue" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DiscountPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:DiscountPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Dossier">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Name" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="UUID" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ExternalId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="IdSD2" type="tns:fieldString12" />
+        <xs:element minOccurs="0" form="qualified" name="IdSDo" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IdSD3Local" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DossierId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IdSD3Network" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IdExtern" type="tns:fieldString40" />
+        <xs:element form="qualified" name="Country" type="tns:fieldString3" />
+        <xs:element form="qualified" name="Language" type="tns:fieldString5" />
+        <xs:element minOccurs="0" form="qualified" name="DataVersion" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Currency" type="tns:fieldString3" />
+        <xs:element minOccurs="0" form="qualified" name="DatCustomerId" type="tns:fieldString10" />
+        <xs:element minOccurs="0" form="qualified" name="MerchandId" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DossierType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CreateDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="CreateUser" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ChangeDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="ChangeUser" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CDYear" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="CDMonth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatCustomerAddress" type="tns:address" />
+        <xs:element minOccurs="0" ref="tns:Vehicle" />
+        <xs:element minOccurs="0" ref="tns:Images" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBody" type="xs:anyType" />
+        <xs:element minOccurs="0" ref="tns:VAT" />
+        <xs:element minOccurs="0" form="qualified" name="Management" type="xs:anyType" />
+        <xs:element minOccurs="0" ref="tns:TradingData" />
+        <xs:element minOccurs="0" ref="tns:Valuation" />
+        <xs:element minOccurs="0" ref="tns:Compare" />
+        <xs:element minOccurs="0" ref="tns:RepairCalculation" />
+        <xs:element minOccurs="0" ref="tns:RepairOrder" />
+        <xs:element minOccurs="0" ref="tns:SparePartPositions" />
+        <xs:element minOccurs="0" ref="tns:MaintenanceIntervals" />
+        <xs:element minOccurs="0" ref="tns:Comments" />
+        <xs:element minOccurs="0" ref="tns:Attachments" />
+        <xs:element minOccurs="0" ref="tns:AdditionalVehicles" />
+      </xs:all>
+      <xs:attribute name="overwrite" type="xs:boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Dossiers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Dossier" />
+      </xs:sequence>
+      <xs:attribute name="source" type="xs:string" />
+      <xs:attribute name="type" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Engine">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="EngingeType" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="CatalyticConverterType" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="GearType" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="FuelMethod" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DatFuelMethod" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="EnginePowerKw" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatEnginePowerKw" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="EnginePowerHp" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatEnginePowerHp" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Cylinders" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatCylinders" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Capacity" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatCapacity" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PollutionClass" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Consumption" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumptionInTown" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumptionOutOfTown" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Co2Emission" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Equipment">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="ColorType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Color" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ColorVariant" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CushionType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CushionTypeName" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CushionColorType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CushionColor" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalEquipmentValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalEquipmentValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalEquipmentValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalEquipmentValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentValueType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="SpecialEditionPackageId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="SpecialEditionPackageName" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="SeriesEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="DeselectedSeriesEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="SpecialModelEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="SpecialEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="FreeSpecialEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="AdditionalEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="FlatRateEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="DenialCaseEquipment" type="tns:equipSequence" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EquipmentPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="InstallDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="AgeInMonths" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatAgeInMonths" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Deselected" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerEquipmentId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValuationControlType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LongDescription" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="FootnoteType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="FootnotePerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatFootnotePerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DecreaseType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DatDecreaseType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatResidualValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatResidualValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ResidualValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ResidualValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Amount" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentGroup" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ManualEntry" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualAgeEntry" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentClass" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeFrom" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentOrigin" type="tns:fieldCharacter" />
+        <xs:element minOccurs="0" form="qualified" name="SeriesEquipmentMissing" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PackageEquipmentId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="GearBoxType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="NrOfGears" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ContainedEquipmentPositions">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:EquipmentPosition" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentIdReason" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentIdReason2" type="tns:fieldInteger" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FillingQuantities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:Fluid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Fluid">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:Capacity" />
+        <xs:element maxOccurs="unbounded" ref="tns:Recommendation" />
+      </xs:sequence>
+      <xs:attribute name="type" type="xs:int" />
+      <xs:attribute name="desc" type="xs:string" />
+      <xs:attribute name="code" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Forecast">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="ForecastType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PriceType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="IncludeVat" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="CurveType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DecreaseType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="StartType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValueType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="MileageType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ForecastItems">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:ForecastItem" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ForecastItem">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Row" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Months" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="MileagePerYear" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="MileageTotal" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Value" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValueGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Percentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PercentageNet" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PercentageGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Error" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Forecasts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Forecast" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Images">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DefaultImage" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="Image" type="tns:fieldBinary" />
+        <xs:element minOccurs="0" form="qualified" name="ForValuation" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ForRepairCalculation" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ForMarketplace" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ListLabelVariable" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ImageType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Origin" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LastModification" type="tns:fieldDateTime" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IncludedPosition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IncludedPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:IncludedPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Interval">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="type" type="xs:int" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LacquerConstant">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Price" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Parameter" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LacquerMaterialGroupSummary">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Name" type="xs:string" />
+        <xs:element minOccurs="0" form="qualified" name="Units" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PricePerUnit" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Price" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LacquerPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="LacquerPosition" type="tns:LacquerPosition" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="LacquerWithPrepressPosition" type="tns:LacquerPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Maintenance">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="LastServiceKilometer" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LastServiceDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="NextServiceKilometer" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="NextServiceDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="NextEmissionCheck" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="NextVehicleInspection" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="NextSecurityCheck" type="tns:fieldDate" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaintenanceInterval">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:MaintenancePositions" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaintenanceIntervals">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:MaintenanceInterval" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaintenancePosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Order" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="FootNote" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PositionType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="MaterialPositions" type="tns:MaterialPositions" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaintenancePositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:MaintenancePosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PartNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Amount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValuePerUnit" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPosition" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualAmount" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPrice" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PartNoValidForOrder" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PriceDerived" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="UsedPart" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LastUPE" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="Includes" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="AdditionalDesc" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="AmountDesc" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CorrPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotalCorrected" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="FootNote" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPriceRequired" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="IsRepairSet" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RepairSetProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RequiredByProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IsSpecific" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" ref="tns:IncludedPositions" />
+        <xs:element minOccurs="0" form="qualified" name="Extended" type="tns:fieldBoolean" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MetaPosition">
+    <xs:complexType>
+      <xs:sequence />
+      <xs:attribute name="key" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MetaPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:MetaPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Parameters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" form="qualified" name="ValueInfluencingFactors">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:ValueInfluencingFactor" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Prospects">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="Prospect" type="tns:address" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Recommendation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:Usage" />
+        <xs:element maxOccurs="unbounded" ref="tns:Interval" />
+        <xs:element maxOccurs="unbounded" form="qualified" name="Product" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegistrationData">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="KbaCode" type="tns:fieldString8" />
+        <xs:element minOccurs="0" form="qualified" name="KbaStructurePollution" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="KbaEngineType" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="LicenseNumber" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="OpponentLicenseNumber" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="LicenseNumberSale" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="RegistrationNumber" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="SuspensionDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="CNIT" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairCalculation">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="tns:Vehicle" />
+        <xs:element minOccurs="0" ref="tns:RepairWages" />
+        <xs:element minOccurs="0" ref="tns:RepairParameters" />
+        <xs:element minOccurs="0" ref="tns:RepairPositions" />
+        <xs:element minOccurs="0" form="qualified" name="CalcResultToUse" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CalcResultCommon" type="tns:calcResult" />
+        <xs:element minOccurs="0" form="qualified" name="CalcResultGlass" type="tns:calcResult" />
+        <xs:element minOccurs="0" form="qualified" name="CalcResultOptimized" type="tns:calcResult" />
+        <xs:element minOccurs="0" form="qualified" name="CalcResultMaintenance" type="tns:calcResult" />
+        <xs:element minOccurs="0" ref="tns:DiscountPositions" />
+        <xs:element minOccurs="0" form="qualified" name="CalculationSummary" type="tns:CalculationSummary" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" form="qualified" name="DamageDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="RepairCoverage" type="xs:string" />
+        <xs:element minOccurs="0" form="qualified" name="OrderNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="InvoiceNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="JobNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DamageNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PolicyNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Retention" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RetentionAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="BillingCategory" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceGroupId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ServiceProviderId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LossLocation" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DamageType" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="InspectionDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="DeclarationOfAssignment" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceCase" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="CreationDateTime" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" ref="tns:AdditionalData" />
+        <xs:element minOccurs="0" ref="tns:MetaPositions" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceAgency" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TypeOfInsurance" type="tns:fieldInteger" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairParameters">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="SeriesSpecific" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PhantomCalculation" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="PartsCorrection" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PartsDiscountPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PartsDiscountAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PartsDiscountPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PartsDiscountAmountForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumablesPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumablesPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ProcurementCosts" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ProcurementCostsMaterial" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ProcurementCostsBodyInWhite" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ProcurementCostsAlignmentBrackets" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PriceDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMethod" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerTypeId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerTypeLayers" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerDismountedPrelacquer" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerPlasticMounted" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWithoutDisassembly" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWithForcedDisassembly" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerReducedLeadTime" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWithRack" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerAdditionTwoColor" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerAdjustmentMixingUnit" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerAdjustmentExemplarySheets" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCompleteFlatrate" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWorkFlatrate" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialFlatrate" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SpecialLacquerAward" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialIndex" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialChargePerPoint" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerLeadTimeMetal" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerLeadTimePlastic" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerDisposalCosts" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCoveringPanes" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCoveringDismountedPlastic" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMattBlackWindowFrames" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWageDiscountAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWageDiscountPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWageDiscountAmountForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerWageDiscountPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialDiscountAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialDiscountPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialDiscountAmountForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerMaterialDiscountPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCompleteDiscountAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCompleteDiscountPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCompleteDiscountAmountForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCompleteDiscountPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TimeUnitsOfManufacturer" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RepairWageDiscountPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="RepairWageDiscountAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="RepairWageDiscountPercentageForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="RepairWageDiscountAmountForOpt" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LongWorkDescriptions" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="AllIncludedWork" type="tns:fieldBoolean" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionGroupId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionGroup" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PositionEntryType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="OptimizationHandling" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartDiscount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartAmount" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartUsed" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="SparePartSupplyDescription" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="WorkDifficultyLevel" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="WorkType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="WorkPositionNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="WorkTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerLevel" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerLevelId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerPercentage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerCountSpotRepair" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerScratchProofFinishTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PlasticDamageSpotsEasy" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PlasticDamageSpotsAverage" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PlasticDamageSpotsHard" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="OverhaulLocation" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DentsCount" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DentsOver20mmCount" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DentsSize" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DentsPartOrientation" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DentsFlatrate" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DentsCalculationMethod" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DentsWithFinishing" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DentsWithSetupTime" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DentsWithAddLightMetals" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DentsPrePressTime" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:RepairPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairProcess">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepairWages">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="WageUnitsPerHour" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Mechanic1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Mechanic2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Mechanic3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Mechanic4" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CarBody1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CarBody2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CarBody3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="CarBody4" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Electric1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Electric2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Electric3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Electric4" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Interior1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Interior2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Interior3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Interior4" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Lacquer" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LacquerFree" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Dents" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Comprehensive1" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Comprehensive2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Comprehensive3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Comprehensive4" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RiskPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPosition" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualAmount" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ManualPrice" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="RequiredByProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IsSpecific" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" ref="tns:IncludedPositions" />
+        <xs:element minOccurs="0" form="qualified" name="Extended" type="tns:fieldBoolean" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RiskPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:RiskPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RunningExpenses">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="LiabilityInsuranceTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="DatLiabilityInsuranceTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="PartialCascoTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="DatPartialCascoTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="ComprCascoTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="DatComprCascoTypeClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="TaxationDescription" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TaxPerYear" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatTaxPerYear" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="TaxPer100ccm" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatTaxPer100ccm" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SparePartPosition">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DATProcessIdName" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PartNumber" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PartNumberManufacturer" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="LastUPE" type="xs:decimal" />
+        <xs:element minOccurs="0" form="qualified" name="LastUPEDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="SecondtoLastUPE" type="xs:decimal" />
+        <xs:element minOccurs="0" form="qualified" name="SecondtoLastUPEDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="ThirdtoLastUPE" type="xs:decimal" />
+        <xs:element minOccurs="0" form="qualified" name="ThirdtoLastUPEDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="FourthtoLastUPE" type="xs:decimal" />
+        <xs:element minOccurs="0" form="qualified" name="FourthtoLastUPEDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentPositions" type="tns:equipSequence" />
+        <xs:element minOccurs="0" form="qualified" name="Orderable" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="WorkTimeMin" type="xs:decimal" />
+        <xs:element minOccurs="0" form="qualified" name="WorkTimeMax" type="xs:decimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SparePartPositions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:SparePartPosition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TechInfo">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" ref="tns:FillingQuantities" />
+        <xs:element minOccurs="0" form="qualified" name="StructureType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="StructureDescription" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="CabineStructureType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CabineStructureDescription" type="tns:fieldString1000" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBodyStructureType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBodyStructureDescription" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBodyStructureAndVersion" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CountOfAxles" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="CountOfDrivedAxles" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="WheelBase" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="WheelBase2" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="AxleLoadFront" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="AxleLoadMiddle" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="AxleLoadBack" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TonnageClass" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="Length" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Width" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Height" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RoofLoad" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TrailerLoadBraked" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TrailerLoadUnbraked" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleSeats" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleDoors" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="CountOfAirbags" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Acceleration" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SpeedMax" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PowerHp" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PowerKw" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Capacity" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Cylinder" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="CylinderArrangement" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="RotationsOnMaxPower" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="RotationsOnMaxTorque" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Torque" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="TankVolume" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumptionInTown" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConsumptionOutOfTown" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Consumption" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Co2Emission" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EmissionClass" type="tns:fieldString5" />
+        <xs:element minOccurs="0" form="qualified" name="Drive" type="tns:fieldString1000" />
+        <xs:element minOccurs="0" form="qualified" name="EngineCycle" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="FuelMethod" type="tns:fieldString1000" />
+        <xs:element minOccurs="0" form="qualified" name="FuelMethodType" type="tns:fieldString1000" />
+        <xs:element minOccurs="0" form="qualified" name="UnloadedWeight" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="PermissableTotalWeight" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatPermissableTotalWeight" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Payload" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LoadingLength" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatLoadingLength" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LoadingWidth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatLoadingWidth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LoadingHeight" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatLoadingHeight" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LoadingSpace" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatLoadingSpace" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LoadingSpaceMax" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatLoadingSpaceMax" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="UpperBodyMaterial" type="tns:fieldString30" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceTypeClassLiability" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceTypeClassCascoPartial" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="InsuranceTypeClassCascoComplete" type="tns:fieldString2" />
+        <xs:element minOccurs="0" form="qualified" name="DustBadge" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ProductGroupName" type="tns:fieldString1000" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Tires">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="TireRepairType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="TireValuationType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Axles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Axle" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TradingData">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="PurchasePriceNet" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PurchasePriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceNet" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceMarket" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceMinimum" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceReseller" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ExportReportState" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="OwnType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ClaimFormId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="EuVehicle" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="Location" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Owner" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="PrevOwner" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Reservation" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Insurance" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Insurant" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Driver" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Opponent" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Expert" type="tns:address" />
+        <xs:element minOccurs="0" form="qualified" name="Dealership" type="tns:address" />
+        <xs:element minOccurs="0" ref="tns:ClientContactAddresses" />
+        <xs:element minOccurs="0" ref="tns:Prospects" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Usage">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="type" type="xs:int" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VAT">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="VatType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="VatAtConstructionTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatVatAtConstructionTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="BaseVatAtConstructionTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatBaseVatAtConstructionTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="AddOnTaxAtConstructionTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="AddOnTaxApplication" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="PostTaxDifference" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="VatAtValuationTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatVatAtValuationTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="VatAtCalculationTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="VatAtSalesTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatVatAtSalesTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="VatAtPurchaseTime" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatVatAtPurchaseTime" type="tns:fieldDecimal" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINColor">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="ColorID" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Code" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINColors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:VINColor" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINContainer">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Container" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleTypeKey" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerKey" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleMainTypeKey" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleSubTypeKey" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleConstructionTime" type="tns:fieldInteger" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINContainers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:VINContainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINECode">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="Sign" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeMin" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTime" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeEdge" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeProd" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" ref="tns:VINContainers" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINECodes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:VINECode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINEquipment">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="AvNumberDat" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerCode" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ShortName" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINEquipments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tns:VINEquipment" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINResult">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="VinInterfaceVersion" type="tns:fieldString" />
+        <xs:element minOccurs="0" ref="tns:VINECodes" />
+        <xs:element minOccurs="0" ref="tns:VINEquipments" />
+        <xs:element minOccurs="0" ref="tns:VINColors" />
+        <xs:element minOccurs="0" ref="tns:VINVehicle" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINVehicle">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="tns:VINumber" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerCarCode" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerEngineCode" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerTransmissionCode" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VINumber">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="VinCode" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="OrderCode" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Manufacturer" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Valuation">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="OriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="BasePrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatBasePrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Mileage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ReferenceMileage" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="MileageCorr" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatMileageCorr" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="InitialRegistrationCorr" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatInitialRegistrationCorr" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DevaluationFactorPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatDevaluationFactorPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="BasePrice2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatBasePrice2" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentSign" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ManualEquipmentOrignalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentOriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentOriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="EquipmentPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatEquipmentPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ValuationCorrection" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatValuationCorrection" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="BasePrice3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatBasePrice3" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ConditionCorrectionPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatConditionCorrectionPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatSalesPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SalesPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatSalesPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="Margin" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatMargin" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="MarginGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatMarginGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PurchasePrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatPurchasePrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="PurchasePriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatPurchasePriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="LastValuationDataYear" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LastValuationDataMonth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LastValuationDataMonthSer" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="LastValuationDate" type="tns:fieldDateTime" />
+        <xs:element minOccurs="0" form="qualified" name="ExpertsSurveyDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="SurveyorUserId" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Currency" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DefaultPlatformPresent" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="SignMilageUnit" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Obsolete" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DisplayGross" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DisplayRounded" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="ResultInformation" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="DefaultTiresPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatDefaultTiresPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="SignDeterminatedDate" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="DeterminatedDate" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="ContractNo" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="ValuationType" type="tns:fieldString" />
+        <xs:element ref="tns:Condition" />
+        <xs:element ref="tns:Parameters" />
+        <xs:element ref="tns:Forecasts" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ValueInfluencingFactor">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="GroupKey" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Type" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="CalculationType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="Fixed" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="CostCalculationType" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="IntervalInMonths" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Name" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="AmountFixed" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="AmountPerc" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="AmountPercMinValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="AmountPercMaxValue" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="ModificationType" type="tns:fieldString" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Vehicle">
+    <xs:complexType>
+      <xs:all>
+        <xs:element minOccurs="0" form="qualified" name="VehicleIdentNumber" type="tns:fieldString17" />
+        <xs:element minOccurs="0" form="qualified" name="DatECode" type="tns:fieldString15" />
+        <xs:element minOccurs="0" form="qualified" name="Container" type="tns:fieldString5" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionYear" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="DatConstructionYear" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionMonth" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTime" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeFrom" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ConstructionTimeTo" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="InitialRegistration" type="tns:fieldDate" />
+        <xs:element minOccurs="0" form="qualified" name="MileageEstimated" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="MileageOdometer" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="ManufacturerName" type="tns:fieldString40" />
+        <xs:element minOccurs="0" form="qualified" name="DatManufacturerName" type="tns:fieldString40" />
+        <xs:element minOccurs="0" form="qualified" name="SalesDescription" type="tns:fieldString40" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleTypeName" type="tns:fieldString60" />
+        <xs:element minOccurs="0" form="qualified" name="BaseModelName" type="tns:fieldString60" />
+        <xs:element minOccurs="0" form="qualified" name="SubModelName" type="tns:fieldString60" />
+        <xs:element minOccurs="0" form="qualified" name="ContainerName" type="tns:fieldString" />
+        <xs:element minOccurs="0" form="qualified" name="VehicleType" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="Manufacturer" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="BaseModel" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="SubModel" type="tns:fieldInteger" />
+        <xs:element minOccurs="0" form="qualified" name="IdentificationSource" type="xs:string" />
+        <xs:element minOccurs="0" form="qualified" name="Country" type="xs:string" />
+        <xs:element minOccurs="0" form="qualified" name="VinActive" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="VinEquipmentChanged" type="tns:fieldBoolean" />
+        <xs:element minOccurs="0" form="qualified" name="VinChecksum" type="tns:fieldCharacter" />
+        <xs:element minOccurs="0" form="qualified" name="ReleaseIndicator" type="xs:string" />
+        <xs:element minOccurs="0" name="kbaNumbers" type="xs:string" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalPrice" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="OriginalPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" form="qualified" name="DatOriginalPriceGross" type="tns:fieldDecimal" />
+        <xs:element minOccurs="0" ref="tns:RegistrationData" />
+        <xs:element minOccurs="0" ref="tns:Engine" />
+        <xs:element minOccurs="0" ref="tns:Maintenance" />
+        <xs:element minOccurs="0" ref="tns:RunningExpenses" />
+        <xs:element minOccurs="0" ref="tns:TechInfo" />
+        <xs:element minOccurs="0" ref="tns:Equipment" />
+        <xs:element minOccurs="0" ref="tns:Tires" />
+        <xs:element minOccurs="0" form="qualified" name="DATECodeEquipment" type="tns:equipSequence" />
+        <xs:element minOccurs="0" ref="tns:VINResult" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="fieldString">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString12">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString40">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString3">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString5">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString10">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString17">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString15">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString60">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldCharacter">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString8">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString30">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString2">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString1000">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldString100">
+    <xs:simpleContent>
+      <xs:extension base="tns:fieldString" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldInteger">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldDecimal">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldDateTime">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="address">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="CompanyName" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="LastName" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="NameLong" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="FirstName" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Title" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Birthday" type="tns:fieldDate" />
+      <xs:element minOccurs="0" form="qualified" name="Birthplace" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Country" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="VatEntitled" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" form="qualified" name="TaxNumber" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="CustomerNumber" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="CustomerType" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="CustomerTypeShort" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Street" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="StreetNumber" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="StreetZipCode" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="StreetCity" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PoBox" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PoBoxZipCode" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PoBoxCity" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="EMail" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PhoneBusiness" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PhonePersonal" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="PhoneMobile" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Fax" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Bank" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="BIC" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="BLZ" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="AccountNo" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="IBAN" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="UsageFlag" type="tns:fieldString" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="fieldDate">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="fieldBoolean">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="equipSequence">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="tns:EquipmentPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fieldBinary">
+    <xs:simpleContent>
+      <xs:extension base="xs:base64Binary">
+        <xs:attribute name="nil" type="xs:boolean" />
+        <xs:attribute name="overwrite" type="xs:boolean" />
+        <xs:attribute name="origin" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="calcResult">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="MaterialPositions" type="tns:MaterialPositions" />
+      <xs:element minOccurs="0" form="qualified" name="MaterialPositionsMaintenance" type="tns:MaterialPositions" />
+      <xs:element minOccurs="0" form="qualified" name="AdditionalCostsPositions" type="tns:AdditionalCostsPositions" />
+      <xs:element minOccurs="0" form="qualified" name="AdditionalCostsPositionsMaintenance" type="tns:AdditionalCostsPositions" />
+      <xs:element minOccurs="0" ref="tns:RiskPositions" />
+      <xs:element minOccurs="0" form="qualified" name="LabourPositions" type="tns:LabourPositions" />
+      <xs:element minOccurs="0" form="qualified" name="LabourPositionsMaintenance" type="tns:LabourPositions" />
+      <xs:element minOccurs="0" ref="tns:LacquerPositions" />
+      <xs:element minOccurs="0" ref="tns:DiscountPositions" />
+      <xs:element minOccurs="0" ref="tns:DeductiblePartsPositions" />
+      <xs:element minOccurs="0" form="qualified" name="PriceDate" type="tns:fieldDate" />
+      <xs:element minOccurs="0" form="qualified" name="RepairCalculationSummary" type="tns:CalculationSummary" />
+      <xs:element minOccurs="0" form="qualified" name="MaterialProtocol" type="tns:repairProtocol" />
+      <xs:element minOccurs="0" form="qualified" name="LabourProtocol" type="tns:repairProtocol" />
+      <xs:element minOccurs="0" form="qualified" name="LacquerProtocol" type="tns:repairProtocol" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="MaterialPositions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:MaterialPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdditionalCostsPositions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:AdditionalCostsPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LabourPositions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="LabourPosition" type="tns:LabourPosition" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="DentPrepressPosition" type="tns:LabourPosition" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="DentDtCommPosition" type="tns:LabourPosition" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="DentDtCommSumPosition" type="tns:LabourPosition" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="DentBvatPosition" type="tns:LabourPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LabourPosition">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="LabourPosId" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="WageType" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="WageLevel" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="Duration" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ManualDuration" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ManualPosition" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" form="qualified" name="Includes" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="AdditionalDesc" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="AmountDesc" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="CorrPerc" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ValueTotalCorrected" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="Amount" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="RequiredByPosition" type="tns:calcPosReference" />
+      <xs:element minOccurs="0" ref="tns:IncludedPositions" />
+      <xs:element minOccurs="0" form="qualified" name="Extended" type="tns:fieldBoolean" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="calcPosReference">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="RepairType" type="tns:fieldString" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="LacquerPosition">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="DATProcessId" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="LabourPosId" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Description" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Level" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Duration" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ManualDuration" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" form="qualified" name="Material" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="MaterialPoints" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ValueTotal" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ManualPosition" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" form="qualified" name="Includes" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="AdditionalDesc" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="AmountDesc" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="CorrPerc" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ValueTotalCorrected" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="WageLevel1" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="WageLevel2" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="WageLevel3" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="WageLevel4" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="RequiredByProcessId" type="tns:fieldInteger" />
+      <xs:element minOccurs="0" form="qualified" name="IsSpecific" type="tns:fieldBoolean" />
+      <xs:element minOccurs="0" ref="tns:IncludedPositions" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="CalculationSummary">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="SparePartsCosts" type="tns:SparePartsCostsSummary" />
+      <xs:element minOccurs="0" form="qualified" name="AuxiliaryCosts" type="tns:AuxiliaryCostsSummary" />
+      <xs:element minOccurs="0" form="qualified" name="LabourCosts" type="tns:LabourCostsSummary" />
+      <xs:element minOccurs="0" form="qualified" name="LacquerCosts" type="tns:LacquerCostsSummary" />
+      <xs:element minOccurs="0" form="qualified" name="VATReplacementPart" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalNetCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalVAT" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalGrossCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalNetDiscount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalVATDiscount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalGrossDiscount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalNetDeductible" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalVATDeductible" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalGrossDeductible" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalNetCorrected" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalVATCorrected" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalGrossCorrected" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="RetentionTotalNet" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="RetentionTotalGross" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="DiffCommonToOptimizedAmount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="DiffCommonToOptimizedPerc" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="DiffToUpe" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="UpeInProcent" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="AmountCustomer" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="AmountInsurance" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumNet" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumGross" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumSparePartCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumSmallSparePartCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumOtherMaterialCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumMiscellaneousCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SumLabourCosts" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="SparePartsCostsSummary">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="AllSum" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ProcurementCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="ConsumablesSurcharge" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SurchargeDeduction" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="TotalSum" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="AuxiliaryCostsSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" form="qualified" name="TotalSum" type="tns:fieldDecimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LabourCostsSummary">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="Bodywork" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Electric" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Mechanic" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Dents" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="TotalSum" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="Discount" type="tns:Discount" />
+      <xs:element minOccurs="0" form="qualified" name="Wages" type="tns:DetailBlockSummaryWages" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="detailBlockSummary">
+    <xs:all>
+      <xs:element form="qualified" name="Type" type="xs:string" />
+      <xs:element minOccurs="0" form="qualified" name="Units" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="PricePerUnit" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="FlatPrice" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="Discount" type="tns:Discount" />
+      <xs:element minOccurs="0" form="qualified" name="Price" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Discount">
+    <xs:all>
+      <xs:element form="qualified" name="PriceBeforeDiscount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="DiscountPercentage" type="tns:fieldDecimal" />
+      <xs:element form="qualified" name="Discount" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="DetailBlockSummaryWages">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" form="qualified" name="Wages" type="tns:detailBlockSummary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LacquerCostsSummary">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="DiscountTotalFlat" type="tns:Discount" />
+      <xs:element minOccurs="0" form="qualified" name="TotalFlat" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="WageAndMaterial" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Wage" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="SpotRepairWage" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Material" type="tns:LacquerMaterialSummary" />
+      <xs:element minOccurs="0" form="qualified" name="TotalSum" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="LacquerMaterialSummary">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="FlatPercentage" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="FlatAmount" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="MaterialUnit" type="tns:fieldString" />
+      <xs:element minOccurs="0" form="qualified" name="Surface" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Overhauling" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="Replacement" type="tns:detailBlockSummary" />
+      <xs:element minOccurs="0" form="qualified" name="SpotRepairPrice" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="LacquerConstants" type="tns:LacquerConstantSequence" />
+      <xs:element minOccurs="0" form="qualified" name="MaterialGroups" type="tns:LacquerMaterialGroupSummarySequence" />
+      <xs:element minOccurs="0" form="qualified" name="DiscountMaterial" type="tns:Discount" />
+      <xs:element minOccurs="0" form="qualified" name="TotalSum" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="DisposalCosts" type="tns:fieldDecimal" />
+      <xs:element minOccurs="0" form="qualified" name="SpecialLacquerAward" type="tns:fieldDecimal" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="LacquerConstantSequence">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="tns:LacquerConstant" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LacquerMaterialGroupSummarySequence">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="tns:LacquerMaterialGroupSummary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairProtocol">
+    <xs:all>
+      <xs:element minOccurs="0" form="qualified" name="InvalidProcesses" type="tns:repairProcessList" />
+      <xs:element minOccurs="0" form="qualified" name="UnspecificProcesses" type="tns:repairProcessList" />
+      <xs:element minOccurs="0" form="qualified" name="PartOfCombinationProcesses" type="tns:repairProcessList" />
+      <xs:element minOccurs="0" form="qualified" name="PartOfOtherProcesses" type="tns:repairProcessList" />
+      <xs:element minOccurs="0" form="qualified" name="RemovedByCompositeProcesses" type="tns:repairProcessList" />
+      <xs:element minOccurs="0" form="qualified" name="MissingLacquerInformationProcesses" type="tns:repairProcessList" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="repairProcessList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:RepairProcess" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

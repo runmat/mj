@@ -1,0 +1,45 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+@using CkgDomainLogic.CoC.Models
+@{ var gridName = "GridFahrzeugAuswahl"; }
+
+<h4 class="margin-bottom-20">
+    @Model.FahrzeugAuswahlTitleHint: 
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@(Html.Telerik()
+        .Grid<CocEntity>()
+    .Name(gridName)
+
+    .XGroup("GridCocBeauftragungFahrzeugAuswahl")
+    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "CocBeauftragung")
+    .Columns(columns =>
+        {
+            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ID #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
+            //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
+
+            columns.XBound(c => c.VIN);
+            columns.XBound(c => c.AUFTR_NR_KD);
+            columns.XBound(c => c.COC_0_2_TYP);
+            columns.XBound(c => c.COC_0_2_VAR);
+            columns.XBound(c => c.COC_0_2_VERS);
+            columns.XBound(c => c.LAND);
+            columns.XBound(c => c.AUSLIEFER_DATUM);
+            columns.XBound(c => c.ERDAT);
+              
+            //columns.XBoundAll();
+        })
+
+    .XAutoColumnConfiguration()      
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AUSLIEFER_DATUM).Descending())
+
+    .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredExcel", "CocBeauftragung").HtmlAttributes(new { @class = "hide btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "CocBeauftragung").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+        })
+)

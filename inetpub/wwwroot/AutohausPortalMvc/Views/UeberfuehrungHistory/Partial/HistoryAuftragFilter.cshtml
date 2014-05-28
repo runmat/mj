@@ -1,0 +1,70 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@model HistoryAuftragFilter
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("HistoryAuftragFilterSubmit", "UeberfuehrungHistory", null,
+        new MvcAjaxOptions(formID) { OnComplete = "HistoryAuftragFilter_FormPreparePrivateAjax();" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @* @Html.HiddenFor(m => m.KundenNr) *@
+        @Html.HiddenFor(m => m.Referenz)
+        @Html.HiddenFor(m => m.KundenReferenz) 
+        @Html.HiddenFor(m => m.AlleOrganisationen)
+    
+    
+        @Html.FormDropDownListFor(m => m.SelectedAuftragGeber, HistoryAuftragFilter.AuftragGeberAdressen.ToSelectList(), labelCssClass: "FormLabelNormalW") 
+        @Html.FormNewLine()
+    
+        @Html.FormTextBoxFor(m => m.AuftragsNr, labelCssClass: "FormLabelNormalW", cssClass: "FormTextboxNormalSm") 
+        @Html.FormNewLine()
+
+        @Html.FormTextBoxFor(m => m.Referenz, labelCssClass: "FormLabelNormalW", cssClass: "FormTextboxNormalSm") 
+        @Html.FormNewLine()
+
+        @Html.FormDatePickerFor(m => m.ErfassungsDatumVon, labelCssClass: "FormLabelNormalW") 
+        @Html.FormDatePickerFor(m => m.ErfassungsDatumBis, labelCssClass: "FormLabelSmallS2") 
+        @Html.DateRangePickerLinks("ErfassungsDatum")
+
+        @Html.FormNewLine()
+            
+        @Html.FormDatePickerFor(m => m.UeberfuehrungsDatumVon, labelCssClass: "FormLabelNormalW") 
+        @Html.FormDatePickerFor(m => m.UeberfuehrungsDatumBis, labelCssClass: "FormLabelSmallS2") 
+        @Html.DateRangePickerLinks("UeberfuehrungsDatum")
+
+        @Html.FormNewLine()
+
+        @Html.FormRadioButtonFor(m => m.AuftragsArt, "A", "Alle Aufträge", labelCssClass: "FormLabelNormalW2") 
+        @Html.FormRadioButtonFor(m => m.AuftragsArt, "O", "Offene Aufträge", labelCssClass: null)
+        @Html.FormRadioButtonFor(m => m.AuftragsArt, "D", "Durchgeführte Aufträge", labelCssClass: null)
+        @Html.FormRadioButtonFor(m => m.AuftragsArt, "N", "Nur Klärfälle", labelCssClass: null)
+        @Html.FormNewLine()
+
+        @Html.FormDivLinie()
+
+        <div class="floatLeft">
+            <input type="submit" name="submitMode" value="Weiter" title="Weiter" tabindex="-1" class="submitbutton" />
+        </div>
+        
+    
+        @Html.FormNewLine()
+        <span class="hintcontainer margin-right-100 hide">Hinweis: Aufgrund mangelnder Daten werden hier vorübergehend nur Daten von Kunde #10000649 verwendet.</span>
+    }
+}
+
+<script type="text/javascript">
+    
+    function HistoryAuftragFilter_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+
+        @Html.Partial("Partial/ValidationErrorScripts")
+        
+        var success = @(Model.IsValidCustom ? "true" : "false");
+        if (success) {
+            HistoryAuftraegeRequestShow();
+        }
+    }
+</script>
+

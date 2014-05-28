@@ -1,0 +1,106 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Services.Master.vb"
+    Inherits="CKG.PortalZLD.Services" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register TagPrefix="uc1" TagName="menue" Src="/PortalZLD/Menue/ServicesMenue.ascx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+      <link href="/PortalZLD/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+      <link href="/PortalZLD/Styles/js/jquery-ui.css" rel="stylesheet" type="text/css"/>
+   <%--<link href="/Services/Customize/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+    --%>
+</head>
+<body id="top">
+    <form id="Form1" runat="server" enctype="multipart/form-data" >
+
+    <asp:ScriptManager ID="Scriptmanager1" runat="server" EnableScriptGlobalization="true"
+        EnableScriptLocalization="true" LoadScriptsBeforeUI="true" ScriptMode="Release">
+    </asp:ScriptManager>
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+        <ProgressTemplate>
+            <div class="divProgress">
+            </div>
+            <div class="divWait">
+                <table cellpadding="2" cellspacing="2">
+                    <tr>
+                        <td>
+                            <asp:Image ID="Image1" runat="server" ImageUrl="/PortalZLD/Images/indicator.gif" ImageAlign="Middle" /><br />
+                        </td>
+                        <td align="left">
+                            <asp:Label ID="Label1" runat="server" CssClass="WaitControl" Text="Bitte warten..."
+                                Font-Size="14px" Font-Bold="True"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="left">
+                            <asp:Label ID="Label2" runat="server" CssClass="WaitControl" Text="Ihr Vorgang wird bearbeitet. Dies kann einige Zeit in Anspruch nehmen."
+                                Font-Size="12px"></asp:Label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <div id="website">
+        <div id="header">
+            <div id="headerContent" runat="server">
+                <asp:Image ID="imgLogo" ImageUrl="/PortalZLD/Images/Kroschke.jpg" alt="Kroschke Logo" class="dadLogo2"
+                    runat="server" />
+                <div id="PlaceHeader" runat="Server" class="dvHead">
+                </div>
+                <ul id="navigation">
+                    <li runat="server" id="tdHauptmenue">
+                        <asp:HyperLink ID="lnkHauptmenue" runat="server" NavigateUrl="/PortalZLD/Start/Login.aspx">Startseite</asp:HyperLink></li>
+                    <li runat="server" id="tdChangePasword">
+                        <asp:HyperLink ID="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/PortalZLD/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></li>
+                    <%--<li id="tdLogout" runat="server">
+                        <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" NavigateUrl="/Services/Start/Logout.aspx">Abmelden</asp:HyperLink></li>--%>
+                    <li id="tdHandbuch" runat="server">
+                        <asp:HyperLink ID="lnkHandbuch" runat="server" Target="_blank">Handbuch</asp:HyperLink></li>
+                    <li id="tdContact" runat="server">
+                        <asp:HyperLink ID="lnkContact" NavigateUrl="/PortalZLD/Info/ContactPage.aspx" runat="server">Kontakt</asp:HyperLink></li>
+                    <li id="tdResponsible" runat="server">
+                        <asp:HyperLink ID="lnkResponsible" NavigateUrl="/PortalZLD/Info/ResponsiblePage.aspx"
+                            runat="server">Ansprechpartner</asp:HyperLink></li>
+                    <li id="tdImpressum" runat="server">
+                        <asp:HyperLink ID="lnkImpressum" NavigateUrl="/PortalZLD/Info/Impressum.aspx" runat="server">Impressum</asp:HyperLink></li>
+                </ul>
+                <ul id="userinfo">
+                    <li><span>
+                        <asp:Label ID="lblBenutzer" runat="server"></asp:Label></span> <span class="bold">
+                            <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
+                    <li class="logout">
+                        <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="/PortalZLD/Images/navLogout.gif"
+                            NavigateUrl="/PortalZLD/Start/Logout.aspx"></asp:HyperLink>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="innerContentLeft" runat="server">
+            <div id="sidebar">
+                <uc1:menue ID="Menue1" runat="server" />
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="websitefoot">
+        <div id="footfoot">
+            <div id="footer">
+                <div class="leftAlign">
+                   <asp:Label ID="lblCopyright" runat="server" Text="© year Christoph Kroschke GmbH"/>
+                </div>
+                <div class="rightAlign">
+                    <a href="#top">Top
+                        <img src="/PortalZLD/Images/top.gif" alt="nach oben" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

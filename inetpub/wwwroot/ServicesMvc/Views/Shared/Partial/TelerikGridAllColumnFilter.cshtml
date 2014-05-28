@@ -1,0 +1,78 @@
+﻿
+<div class="GridAllColumnFilter hide">
+    <div>
+        <div class="grid-toolbar">
+            <!-- Paging Size -->
+            <div class="dataTables_length">
+                <label>
+                    <select class="grid-page-sizer" size="1">
+                        <option value="5">5</option>
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                    </select> 
+                    <div class="grid-rows-per-page-label">
+                        <span class="smartphone-inline">@Localize.RowsToShowSmall</span>
+                        <span class="tablet-or-wider-inline">@Localize.RowsToShow</span>
+                    </div>
+                </label>
+            </div>
+            
+            <!-- Tools, export options, etc -->
+            <div class="outer-export-menu btn-group pull-right margin-left-15">
+				<button class="btn dropdown-toggle" data-toggle="dropdown">Export <i class="icon-angle-down"></i></button>
+				<ul class="dropdown-menu pull-right">
+				    <li><a class="outer-export-link-excel" href="#"><i class="menu-item excel-export">Excel</i></a></li>
+					<li><a class="outer-export-link-pdf" href="#"><i class="menu-item pdf-export">PDF</i></a></li>
+				</ul>
+			</div>
+
+            <!-- Overall Column Filter -->
+            <div class="dataTables_filter smartphone">
+                <label>@Localize.ColumnOverallFilterSmall: <input type="text" onkeyup="FilterGridAllColumns($(this));" class="grid-column-overall-filter"></label>
+            </div>
+            <div class="dataTables_filter tablet-or-wider">
+                <label>@Localize.ColumnOverallFilter: <input type="text" onkeyup="FilterGridAllColumns($(this));" class="grid-column-overall-filter"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    
+    function GridAllColumnFilterApplyToGrid(gridName, exportExcelAndPdfAvailable) {
+
+        var columnFilter = $(".GridAllColumnFilter");
+
+        $("#" + gridName + " > .t-grid-toolbar").append(columnFilter.html());
+        //columnFilter.html('');
+
+        // build grid export menu (excel + pdf)
+        if (typeof (exportExcelAndPdfAvailable) == 'undefined')
+            exportExcelAndPdfAvailable = true;
+        if (!exportExcelAndPdfAvailable)
+            $("#" + gridName + " .outer-export-menu").hide();
+
+        // build grid page sizer
+        $("#" + gridName + " .grid-page-sizer").change(function () {
+            var grid = $("#" + gridName).data("tGrid");
+            grid.pageSize = $(this).val();
+            grid.pageTo(1);
+        });
+    }
+
+    function TrySetOuterExportLink(grid, exportLink, href, exportType) {
+        if (href.toLowerCase().indexOf(exportType) == -1)
+            return;
+
+        var gridElement = $(grid.element);
+        var outerExportLink = gridElement.find('.outer-export-link-' + exportType);
+        if (outerExportLink != null) {
+            outerExportLink.attr('href', href);
+        }
+    }
+    
+</script>

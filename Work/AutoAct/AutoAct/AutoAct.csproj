@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{13DFDB92-0B59-4AD5-903F-70A66CC2ACD6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoAct</RootNamespace>
+    <AssemblyName>AutoAct</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DynSapProxyFactories">
+      <HintPath>..\..\GAC\DynSapProxyFactories.dll</HintPath>
+    </Reference>
+    <Reference Include="DynSapProxyObjectErp35">
+      <HintPath>..\..\GAC\DynSapProxyObjectErp35.dll</HintPath>
+    </Reference>
+    <Reference Include="ERPConnect35">
+      <HintPath>..\..\GAC\ERPConnect35.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralTools">
+      <HintPath>..\..\GAC\GeneralTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>packages\RestSharp.104.1\lib\net4-client\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SapORM.Models">
+      <HintPath>..\..\GAC\SapORM.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\GAC\SapORM.Services.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bapi\AutoActBapi.cs" />
+    <Compile Include="Bapi\Kunde.cs" />
+    <Compile Include="CommonAssemblyInfo.cs" />
+    <Compile Include="Entities\Attachment.cs" />
+    <Compile Include="Entities\AttachmentsResult.cs" />
+    <Compile Include="Entities\Auction.cs" />
+    <Compile Include="Entities\AutoComplete.cs" />
+    <Compile Include="Entities\ErrorRootObject.cs" />
+    <Compile Include="Entities\Error.cs" />
+    <Compile Include="Entities\AutoActMake.cs" />
+    <Compile Include="Entities\AutoActModel.cs" />
+    <Compile Include="Entities\AutoActModelsResult.cs" />
+    <Compile Include="Entities\VehiclesResult.cs" />
+    <Compile Include="Entities\PicturesResult.cs" />
+    <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\Picture.cs" />
+    <Compile Include="Entities\Resolution.cs" />
+    <Compile Include="Entities\SellerContact.cs" />
+    <Compile Include="Entities\Vehicle.cs" />
+    <Compile Include="Entities\VehiclePayLoad.cs" />
+    <Compile Include="Entities\AutoActMakesResult.cs" />
+    <Compile Include="Enums\AdFormat.cs" />
+    <Compile Include="Enums\AttachmentType.cs" />
+    <Compile Include="Enums\TypeOfCarFleet.cs" />
+    <Compile Include="Enums\VehicleCondition.cs" />
+    <Compile Include="Enums\VehicleLifetime.cs" />
+    <Compile Include="Enums\VehicleType.cs" />
+    <Compile Include="Interfaces\IAutoActRest.cs" />
+    <Compile Include="Interfaces\IAutoActBapi.cs" />
+    <Compile Include="Interfaces\IConsoleWrapper.cs" />
+    <Compile Include="Interfaces\IDokumentSteuerung.cs" />
+    <Compile Include="Interfaces\IFahrzeugSteuerung.cs" />
+    <Compile Include="Interfaces\IFileHelper.cs" />
+    <Compile Include="Interfaces\IHerstellerSteuerung.cs" />
+    <Compile Include="Interfaces\ISettingsReader.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ApplicationStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApplicationStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Rest\AutoActRest.cs" />
+    <Compile Include="Rest\CustomJsonConverter.cs" />
+    <Compile Include="Rest\DigestAuthenticator.cs" />
+    <Compile Include="Rest\Result.cs" />
+    <Compile Include="Steuerung\DokumentSteuerung.cs" />
+    <Compile Include="Steuerung\FahrzeugSteuerung.cs" />
+    <Compile Include="Steuerung\HerstellerSteuerung.cs" />
+    <Compile Include="Steuerung\KundeSteuerung.cs" />
+    <Compile Include="Steuerung\TestSteuerung.cs" />
+    <Compile Include="Utils\ConsoleWrapper.cs" />
+    <Compile Include="Utils\FileHelper.cs" />
+    <Compile Include="Utils\SettingsReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config" />
+    <Content Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="TestAttachment\Dokument1.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entities\Serializer und Namenskonvention.txt" />
+    <Content Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ApplicationStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ApplicationStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="AfterCompile" Condition="exists('app.$(Configuration).config')">
+    <!-- Generate transformed app config in the intermediate directory -->
+    <TransformXml Source="app.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="app.$(Configuration).config" />
+    <!-- Force build process to use the transformed configuration file from now on. -->
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="app.config" />
+      <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
+        <TargetPath>$(TargetFileName).config</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,35 @@
+﻿@model RefImplBibl.Models.EQUI
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>EQUI bearbeiten</title>
+    </head>
+    <body>
+        <div>
+            @using (Html.BeginForm()) {
+                
+                @Html.ValidationSummary()
+
+                <fieldset>
+                    <legend>EQUI</legend>
+                    
+                    @Html.LabelFor(model => model.EQUI_NR)<br/>
+                    @Html.TextBoxFor(model => model.EQUI_NR)<br/>
+                    @Html.LabelFor(model => model.NAME)<br/>
+                    @Html.TextBoxFor(model => model.NAME)<br/>
+                </fieldset>
+                
+                <p>
+                    <input type="submit" value="Bearbeiten" />
+                </p>
+                
+            }
+        </div>
+    </body>
+</html>

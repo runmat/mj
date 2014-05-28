@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="CarDocu.UserControls.Backstage.ucUIHints"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Margin="50">
+        <TextBlock Text="Hilfe Hinweise:" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,20" />
+
+        <DataGrid ItemsSource="{Binding UserUIHintEntities}" Style="{StaticResource GradientDataGrid}" MaxHeight="600">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="60" Header="Gelesen?">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsConfirmed, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Title}" IsReadOnly="True" Width="600" Header="Titel" />
+            </DataGrid.Columns>
+        </DataGrid>
+            
+    </StackPanel>
+</UserControl>

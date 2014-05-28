@@ -1,0 +1,48 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.FehlteilEtikettenViewModel 
+
+<h5>
+    <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>, bitte prüfen Sie jetzt noch den Inhalt:</span>
+</h5>
+
+<script type="text/javascript"> _formWizardForceHideSubmitButton = false; </script>
+@if (Model.UploadItemsErrorsOccurred)
+{
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = true; </script>
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsErrorsOccurred)</span>
+            <span class="margin-left-10"></span>
+            @Html.CheckBoxFor(m => m.UploadItemsShowErrorsOnly, new {onchange = "UploadItemsShowErrorsOnlyChanged($(this));"}) 
+            @Html.DisplayNameFor(m => m.UploadItemsShowErrorsOnly)
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+        .Grid<FehlteilEtikett>()
+        .Name("GridCsvUploadEntities")
+        .Columns(columns =>
+            {
+                columns.Command(commands => commands.Edit());
+                columns.Bound(c => c.ID).Visible(false);
+                columns.Bound(c => c.ValidationErrors).Visible(false);
+                columns.Bound(c => c.VIN).Width(160);
+                columns.Bound(c => c.Content1).Width(160).Title(Model.GetHeaderText(1)).Visible(Model.HeaderTextAvailable(1));
+                columns.Bound(c => c.Content2).Width(160).Title(Model.GetHeaderText(2)).Visible(Model.HeaderTextAvailable(2));
+                columns.Bound(c => c.Content3).Width(160).Title(Model.GetHeaderText(3)).Visible(Model.HeaderTextAvailable(3));
+                columns.Bound(c => c.Content4).Width(160).Title(Model.GetHeaderText(4)).Visible(Model.HeaderTextAvailable(4));
+                columns.Bound(c => c.Content5).Width(160).Title(Model.GetHeaderText(5)).Visible(Model.HeaderTextAvailable(5));
+                columns.Bound(c => c.Content6).Width(160).Title(Model.GetHeaderText(6)).Visible(Model.HeaderTextAvailable(6));
+                columns.Bound(c => c.Content7).Width(160).Title(Model.GetHeaderText(7)).Visible(Model.HeaderTextAvailable(7));
+                columns.Bound(c => c.Content8).Width(160).Title(Model.GetHeaderText(8)).Visible(Model.HeaderTextAvailable(8));
+                columns.Bound(c => c.Content9).Width(160).Title(Model.GetHeaderText(9)).Visible(Model.HeaderTextAvailable(9));
+                columns.Bound(c => c.Content10).Width(160).Title(Model.GetHeaderText(10)).Visible(Model.HeaderTextAvailable(10));
+            })
+        .DataKeys(keys => keys.Add(c => c.ID))
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("FehlteilEtikettenAjaxSelect", "Fahrzeuge").Update("FehlteilEtikettenAjaxUpdate", "Fahrzeuge"))
+        .ClientEvents(events => events.OnRowDataBound("GridRowOnDataBound").OnDataBound("GridOnDataBound"))
+)
+
+<div class="margin-top-10"></div>

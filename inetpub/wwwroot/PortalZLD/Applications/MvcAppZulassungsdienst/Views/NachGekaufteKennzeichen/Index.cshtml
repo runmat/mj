@@ -1,0 +1,99 @@
+﻿@using MvcAppZulassungsdienst.Models
+@model MvcAppZulassungsdienst.ViewModels.NachGekaufteKennzeichenViewModel 
+
+<style type="text/css">
+    .smallHeader .t-grid-header .t-header  
+    {
+        padding: 0; margin: 0; background-color: #efefef 
+    }
+</style>
+
+<div align="center">
+    <table><tr>
+    <td style="text-align: left">
+
+        @Html.Partial("_BusyHint")
+        
+        <div id="header" style="display:none;">
+            <strong>Übersicht erfasste Käufe </strong> für <span id="lieferant" style="font-weight: bold"> @Model.Lieferant </span> - <span class="smallHintLightHighlight" style="margin-left: 10px;">(Lieferantenwechsel über Auswahl-Box oben)</span>
+
+            <br/><br/>
+            Bisher erfasst: <span id="kopfCount" style="font-weight: bold"> - </span> Lieferscheine
+        </div>
+
+        <br /><br />
+
+        @(Html.Telerik().Grid<KennzeichenKopf>()
+           .Name("GridKennzeichen")
+            .Localizable("de-DE")
+           .HtmlAttributes(new { style = "width:800px;" })
+           .DataKeys(keys => keys.Add(c => c.Bstnr))
+           .DataBinding(dataBinding => dataBinding.Ajax()
+                                           .Select("KennzeichenKopfListAjaxSelect", "NachGekaufteKennzeichen"))
+           .Columns(columns =>
+                        {
+                            columns.Bound(c => c.LiefersNr).Width(200).Bold();
+                            columns.Bound(c => c.EeInd).Width(135).Format("{0:dd.MM.yyyy}").Align("center");
+                            columns.Bound(c => c.Bstnr);
+                        })
+           .Filterable()
+           .Pageable(p => p.PageSize(10))
+           .Sortable(sortOrder => sortOrder.OrderBy(s => s.Add(c => c.EeInd).Descending()))
+           //.ClientEvents(events => events.OnRowDataBound("kennzeichenKopf_onRowDataBound"))
+           .ClientEvents(events => events.OnComplete("kennzeichenKopf_onComplete"))
+           .DetailView(details => details.ClientTemplate(
+               Html.Telerik().Grid<KennzeichenPosition>()
+                   .Name("Positions_<#= Bstnr #>")
+                   .TableHtmlAttributes(new { style = "font-size:0.9em;", @class="smallHeader" })
+                   .Columns(columns =>
+                                {
+                                    columns.Bound(o => o.MakTx).Width(250);
+                                    columns.Bound(c => c.BeDat).Width(60).Format("{0:dd.MM.yyyy}").Align("center");
+                                    columns.Bound(o => o.Menge).Width(80).Align("right");
+                                    columns.Bound(o => o.Preis).Width(100).Format("{0:c}").Align("right");
+                                    columns.Bound(o => o.Ltext);
+                                })
+                   .DataBinding(dataBinding => dataBinding.Ajax()
+                                                   .Select("KennzeichenPosListAjaxSelect", "NachGekaufteKennzeichen", new { bstnr = "<#= Bstnr #>" }))
+                   .Footer(false)
+                   .ToHtmlString()
+                                      ))
+                               )
+                     </td>
+           </tr></table>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        //alert('ok');
+    });
+    
+    function expandFirstRow(grid, row) {
+        if (grid.$rows().index(row) == 0) {
+            grid.expandRow(row);
+        }
+    }
+
+    function kennzeichenKopf_onRowDataBound(e) {
+        var grid = $(this).data('tGrid');
+        expandFirstRow(grid, e.row);
+    }
+
+    function kennzeichenKopf_onComplete() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "@Url.Action("GetKopfData", "NachGekaufteKennzeichen")",
+                data: "",
+                success: function (result) {
+                    $("#kopfCount").html(result.kopfCount);
+                    $("#lieferant").html(result.lieferant);
+
+                    $("#busyHint").hide();
+                    $("#header").show();
+                }
+            });
+    }
+</script> 

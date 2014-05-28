@@ -1,0 +1,38 @@
+﻿@model CkgDomainLogic.General.Models.UiModel
+
+@{ var formID = Model.UiIndex; }
+
+var customErrorMessageHiddenControl = $('#CustomErrorMessage');
+var customErrorMessage = customErrorMessageHiddenControl.val();
+if (typeof customErrorMessage != 'undefined' && customErrorMessage !== '') {
+    
+    FormShowValidationError(@formID, customErrorMessage, '');
+    customErrorMessageHiddenControl.val('');
+    //eval(_onSubFormSubmitSuccessFunction);
+    
+}
+else {
+
+    var success = @(Model.IsValid ? "true" : "false");
+    if (success) {
+        FormHideValidationError(@formID);
+        eval(_onSubFormSubmitSuccessFunction);
+    } else {
+        var validationErrorMessage = '@Model.ValidationErrorMessage';
+        if (validationErrorMessage != '')
+            FormShowValidationError(@formID, '@Model.ValidationErrorMessage', '');
+    }
+
+}
+
+if (_validationErrorFirstDependencyProperty != '') 
+    FormShowValidationError(@formID, '@Model.ValidationErrorMessage', _validationErrorFirstDependencyProperty);
+
+_onSubFormSubmitSuccessFunction = '';
+
+var validationFormHeaderCheckStyleDisabled = @(Model.ValidationFormHeaderCheckStyleDisabled ? "true" : "false");
+if (!validationFormHeaderCheckStyleDisabled)
+{
+    FormInitValidatedFormStylesOneForm(@formID);
+}
+

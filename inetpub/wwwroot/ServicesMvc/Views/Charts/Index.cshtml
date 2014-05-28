@@ -1,0 +1,54 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.ChartsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Dashboard <small> Charts + Maps </small></h3>
+
+@Html.IeWarning(8)
+
+<div id="chart-container-wrapper">
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs">
+            @for (var g = 0; g < Model.ChartViewModelGroups.Count; g++)
+            {
+                var group = Model.ChartViewModelGroups[g];
+                var tabIndexName = "#tab_1_" + (g + 1);
+                var tabClassName = (g == 0 ? "active" : "");
+    
+                <li class="@tabClassName"><a href="@tabIndexName" onclick="return setTimeout('PrepareChartsForActiveTab()', 200)" data-toggle="tab">@group</a></li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            @for (var g = 0; g < Model.ChartViewModelGroups.Count; g++)
+            {
+                var group = Model.ChartViewModelGroups[g];
+                var tabIndexName = "#tab_1_" + (g + 1);
+                var tabClassName = (g == 0 ? "active" : "");
+    
+                <div class="tab-pane @tabClassName" id="@tabIndexName.Substring(1)">
+                
+                    @{ var chartViewModels = Model.GetChartViewModelsForGroup(group); }
+                    @for (var i = 0; i < chartViewModels.Count; i++)
+                    {
+                        //if (i > 1) { continue; }
+
+                        var chartViewModel = chartViewModels[i];
+
+                        <div class="chart-container" id="chart-container-@chartViewModel.ChartID">
+                            @Html.Partial("Partial/ChartFilter", chartViewModel.ChartDataSelector)
+
+                            <div class="chart @chartViewModel.CssClass.NotNullOrEmpty()" id="chart-@chartViewModel.ChartID"></div>
+                        </div>
+    
+                        @Html.Partial("Partial/Templates/" + chartViewModel.ChartsSqlDataDescriptor.TemplateName, chartViewModel)
+                    }
+
+                </div>               
+            }
+        </div>
+    </div>
+</div>
+
+
+<div id="chart-details-data" class="chart-details-data hide"></div>

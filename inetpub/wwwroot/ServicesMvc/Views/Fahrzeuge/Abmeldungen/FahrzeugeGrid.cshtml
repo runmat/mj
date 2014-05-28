@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridAbgemeldeteFahrzeuge";
+    var historieLink = "<a href='#' class='btn mini tooltips icn-only <#= data.HistorieCssClass #>' data-original-title='Historie' data-placement='right' onclick='return ShowAbgemeldeteFahrzeugeHistorieAjax(\"<#= data.FIN #>\");'><i class ='icon-chevron-right'></i></a>";
+}
+
+<a class="a_btn_mini new"></a>
+
+@(Html.Telerik()
+    .Grid<AbgemeldetesFahrzeug>()
+    .Name(gridName)
+
+    .XGroup("GridAbgemeldeteFahrzeuge")
+    .XAjaxDataBinding("AbgemeldeteFahrzeugeAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound("").ClientTemplate(historieLink);
+        columns.XBoundAll();
+        columns.XBound("").ClientTemplate(historieLink.Replace("data-placement='right'", "data-placement='left'"));
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Descending())
+    .XToolBar("Fahrzeuge")
+)
+

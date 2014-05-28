@@ -1,0 +1,85 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model EquiGrunddatenViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_ReportFahrzeugbestand <small></small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Bestand/EquiSuche", Model.Suchparameter)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divEquiGrid"></div>
+    <div id="divEquiHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        // test
+        //$("#GrunddatenEquisForm").submit();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowEquiSearchResult(result) {
+        SearchFormHide();
+        $("#divEquiGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        //alert(result.length);
+        GridAllColumnFilterApplyToGrid("GridGrunddatenEquiItems");
+
+        $("#divEquiGrid").slideDown();
+        $("#divEquiHistorie").html('');
+    }
+
+
+    function OnDataBound_GridGrunddatenEquiItems() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridGrunddatenEquiItems() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridGrunddatenEquiItems() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowEquiHistorieAjax(fin) {
+        LoadingShow();
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetEquiHistorie",
+            loadingShow: true,
+            data: { fahrgestellnummer: fin },
+            success: function (result) {
+                ShowEquiHistorie(result);
+            }
+        });
+    }
+
+    function ShowEquiHistorie(result) {
+        $("#divEquiHistorie").html(result);
+        $("#divEquiGrid").slideUp();
+        $("#divEquiHistorie").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+    }
+
+    function CloseEquiHistorie() {
+        $("#btnBackToResult").hide();
+        $("#divEquiHistorie").slideUp(function () { $("#divEquiGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divEquiGrid").slideDown();
+    }
+
+</script>

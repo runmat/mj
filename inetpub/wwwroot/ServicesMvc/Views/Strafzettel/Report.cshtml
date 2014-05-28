@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Strafzettel.ViewModels
+@model StrafzettelViewModel
+
+<h3 class="page-title" id="headerTitle">Strafzettel <small>Report</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/SucheStrafzettel", Model.StrafzettelSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowStrafzettelSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridStrafzettel");
+
+        $("#divGrid").slideDown();
+        $("#divHistorie").html('');
+    }
+
+    function OnDataBound_GridStrafzettel() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridStrafzettel() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridStrafzettel() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

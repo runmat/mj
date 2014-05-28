@@ -1,0 +1,412 @@
+﻿Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Portal", "Portal.vbproj", "{30A2EB24-1053-4213-A502-DC1534F4D73E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\CKG\base\base\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ComArchive", "Components\ComArchive\ComArchive.vbproj", "{BC3E5971-3617-4351-A49E-2A2291556838}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ComCommon", "Components\ComCommon\ComCommon.vbproj", "{BD42F6AE-51AA-4A13-BEDA-1E572CEACC4D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppAKF", "Applications\appakf\AppAKF.vbproj", "{8696D15B-1F09-4444-9B4B-C8416405888D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppANC", "Applications\appanc\AppANC.vbproj", "{FE8A32EE-7273-40FB-B6E9-6F7093CF9BD1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppARVAL", "Applications\apparval\AppARVAL.vbproj", "{77D3587E-DA0B-4B41-BC61-7243107DCC54}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppASL", "Applications\appasl\AppASL.vbproj", "{9A4D4C50-CBFD-4265-B4CD-F24FC097D550}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppCCU", "Applications\appccu\AppCCU.vbproj", "{3A8477FF-D9C1-4049-A2B2-E867C28759D1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppCSC", "Applications\appcsc\AppCSC.vbproj", "{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppDCB", "Applications\appdcb\AppDCB.vbproj", "{61A85BAB-F33E-41EA-8AFD-0D793717D755}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppDCL", "Applications\appdcl\AppDCL.vbproj", "{616A09B9-FF37-4D0F-B16D-28EF5BF90312}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppEC", "Applications\appec\AppEC.vbproj", "{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppECAN", "Applications\appecan\AppECAN.vbproj", "{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppFFD", "Applications\appffd\AppFFD.vbproj", "{941C0D68-2D8B-40AD-A61C-BF2867C818C4}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppFFE", "Applications\AppFFE\AppFFE.vbproj", "{7A73577F-0D6F-4036-B730-F830EEAF1493}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppFMS", "Applications\appfms\AppFMS.vbproj", "{4F501342-3CFF-47DA-8E90-97D3B0F4D2A6}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppHERTZ", "Applications\apphertz\AppHERTZ.vbproj", "{D5009125-7AE7-4967-A0F6-1C60AE1E7A81}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppING", "Applications\apping\AppING.vbproj", "{83456886-AE02-459F-92D9-27A400F1B979}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppKroschke", "Applications\AppKroschke\AppKroschke.vbproj", "{21F701DF-74E9-4384-9A3C-DED4A9A3B157}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppKruell", "Applications\AppKruell\AppKruell.vbproj", "{5FF7ACC4-5D8B-407C-B1D1-BF331AB434F3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppLeasePlan", "Applications\AppLeasePlan\AppLeasePlan.vbproj", "{41C7E223-50D3-4180-BF60-5D10987EC7D7}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppLeaseTrend", "Applications\AppLeaseTrend\AppLeaseTrend.vbproj", "{42838170-8F04-4E30-95E0-DEB7FA85855E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppPorsche", "Applications\AppPorsche\AppPorsche.vbproj", "{E134D2BA-F1BF-4B96-A1C6-83066AC7A49E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "appQM", "Applications\appqm\appQM.vbproj", "{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppRDZ", "Applications\apprdz\AppRDZ.vbproj", "{646EE418-44EE-49E2-99F0-E21A2BECD3E2}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppRenault", "Applications\AppRenault\AppRenault.vbproj", "{87F39EFF-D304-400C-8AC9-2ADB0E2925AD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppSIXT", "Applications\appsixt\AppSIXT.vbproj", "{B6189D83-CD0B-4BBD-A417-23CCEE29A329}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppSIXTL", "Applications\appsixtl\AppSIXTL.vbproj", "{068D1C01-E618-4076-891F-43E213E47E6D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppSTRAUB", "Applications\AppSTRAUB\AppSTRAUB.vbproj", "{7500873F-1CC4-4BE6-ABC5-67AF0C49DBB1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppUeberf", "Applications\AppUeberf\AppUeberf.vbproj", "{D0F123F6-350F-48E8-BD47-ACE69289402B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppVFS", "Applications\appvfs\AppVFS.vbproj", "{79E58D63-C308-40B9-B1BC-5FBFD80A7770}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppVW", "Applications\appvw\AppVW.vbproj", "{8243C653-E5EA-4420-9107-D28D6A25F345}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EasyAccess", "..\..\..\Work\CKG\EasyAccess\EasyAccess.vbproj", "{5DA38371-4A26-4228-9ED9-8AF45DD3C385}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppALD", "Applications\appald\AppALD.vbproj", "{AFE76655-DF3C-462B-95D9-18D26BA09746}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppALDA", "Applications\appalda\AppALDA.vbproj", "{4F5B9E34-853D-458D-A31D-A38CB18A0792}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 36
+		SccProjectUniqueName0 = Portal.vbproj
+		SccProjectName0 = \u0022$/CKAG/portal\u0022,\u0020FSGBAAAA
+		SccLocalPath0 = .
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName1 = ..\\..\\..\\Work\\CKG\\base\\base\\Base.vbproj
+		SccProjectName1 = \u0022$/CKAG/Base\u0022,\u0020PPGBAAAA
+		SccLocalPath1 = ..\\..\\..\\Work\\CKG\\base\\base
+		SccProvider1 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName2 = Components\\ComArchive\\ComArchive.vbproj
+		SccProjectName2 = \u0022$/CKAG/Components/ComArchive\u0022,\u0020MRHBAAAA
+		SccLocalPath2 = Components\\ComArchive
+		SccProvider2 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName3 = Components\\ComCommon\\ComCommon.vbproj
+		SccProjectName3 = \u0022$/CKAG/Components/ComCommon\u0022,\u0020ISHBAAAA
+		SccLocalPath3 = Components\\ComCommon
+		SccProvider3 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName4 = Applications\\appakf\\AppAKF.vbproj
+		SccProjectName4 = \u0022$/CKAG/Applications/appakf\u0022,\u0020YHIBAAAA
+		SccLocalPath4 = Applications\\appakf
+		SccProvider4 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName5 = Applications\\appanc\\AppANC.vbproj
+		SccProjectName5 = \u0022$/CKAG/Applications/appanc\u0022,\u0020TIIBAAAA
+		SccLocalPath5 = Applications\\appanc
+		SccProvider5 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName6 = Applications\\apparval\\AppARVAL.vbproj
+		SccProjectName6 = \u0022$/CKAG/Applications/apparval\u0022,\u0020BWIBAAAA
+		SccLocalPath6 = Applications\\apparval
+		SccProvider6 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName7 = Applications\\appasl\\AppASL.vbproj
+		SccProjectName7 = \u0022$/CKAG/Applications/appasl\u0022,\u0020SBJBAAAA
+		SccLocalPath7 = Applications\\appasl
+		SccProvider7 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName8 = Applications\\appccu\\AppCCU.vbproj
+		SccProjectName8 = \u0022$/CKAG/Applications/appccu\u0022,\u0020EDJBAAAA
+		SccLocalPath8 = Applications\\appccu
+		SccProvider8 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName9 = Applications\\appcsc\\AppCSC.vbproj
+		SccProjectName9 = \u0022$/CKAG/Applications/appcsc\u0022,\u0020UFJBAAAA
+		SccLocalPath9 = Applications\\appcsc
+		SccProvider9 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName10 = Applications\\appdcb\\AppDCB.vbproj
+		SccProjectName10 = \u0022$/CKAG/Applications/appdcb\u0022,\u0020PIJBAAAA
+		SccLocalPath10 = Applications\\appdcb
+		SccProvider10 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName11 = Applications\\appdcl\\AppDCL.vbproj
+		SccProjectName11 = \u0022$/CKAG/Applications/appdcl\u0022,\u0020QKJBAAAA
+		SccLocalPath11 = Applications\\appdcl
+		SccProvider11 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName12 = Applications\\appec\\AppEC.vbproj
+		SccProjectName12 = \u0022$/CKAG/Applications/appec\u0022,\u0020KKIBAAAA
+		SccLocalPath12 = Applications\\appec
+		SccProvider12 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName13 = Applications\\appecan\\AppECAN.vbproj
+		SccProjectName13 = \u0022$/CKAG/Applications/appecan\u0022,\u0020ANJBAAAA
+		SccLocalPath13 = Applications\\appecan
+		SccProvider13 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName14 = Applications\\appffd\\AppFFD.vbproj
+		SccProjectName14 = \u0022$/CKAG/Applications/appffd\u0022,\u0020SOJBAAAA
+		SccLocalPath14 = Applications\\appffd
+		SccProvider14 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName15 = Applications\\AppFFE\\AppFFE.vbproj
+		SccProjectName15 = \u0022$/CKAG/Applications/AppFFE\u0022,\u0020XTLBAAAA
+		SccLocalPath15 = Applications\\AppFFE
+		SccProvider15 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName16 = Applications\\appfms\\AppFMS.vbproj
+		SccProjectName16 = \u0022$/CKAG/Applications/appfms\u0022,\u0020SAKBAAAA
+		SccLocalPath16 = Applications\\appfms
+		SccProvider16 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName17 = Applications\\apphertz\\AppHERTZ.vbproj
+		SccProjectName17 = \u0022$/CKAG/Applications/apphertz\u0022,\u0020DDKBAAAA
+		SccLocalPath17 = Applications\\apphertz
+		SccProvider17 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName18 = Applications\\apping\\AppING.vbproj
+		SccProjectName18 = \u0022$/CKAG/Applications/apping\u0022,\u0020OFKBAAAA
+		SccLocalPath18 = Applications\\apping
+		SccProvider18 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName19 = Applications\\AppKroschke\\AppKroschke.vbproj
+		SccProjectName19 = \u0022$/CKAG/Applications/AppKroschke\u0022,\u0020LGKBAAAA
+		SccLocalPath19 = Applications\\AppKroschke
+		SccProvider19 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName20 = Applications\\AppKruell\\AppKruell.vbproj
+		SccProjectName20 = \u0022$/CKAG/Applications/AppKruell\u0022,\u0020FJKBAAAA
+		SccLocalPath20 = Applications\\AppKruell
+		SccProvider20 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName21 = Applications\\AppLeasePlan\\AppLeasePlan.vbproj
+		SccProjectName21 = \u0022$/CKAG/Applications/AppLeasePlan\u0022,\u0020LKKBAAAA
+		SccLocalPath21 = Applications\\AppLeasePlan
+		SccProvider21 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName22 = Applications\\AppLeaseTrend\\AppLeaseTrend.vbproj
+		SccProjectName22 = \u0022$/CKAG/Applications/AppLeaseTrend\u0022,\u0020SOKBAAAA
+		SccLocalPath22 = Applications\\AppLeaseTrend
+		SccProvider22 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName23 = Applications\\AppPorsche\\AppPorsche.vbproj
+		SccProjectName23 = \u0022$/CKAG/Applications/AppPorsche\u0022,\u0020ZQKBAAAA
+		SccLocalPath23 = Applications\\AppPorsche
+		SccProvider23 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName24 = Applications\\appqm\\appQM.vbproj
+		SccProjectName24 = \u0022$/CKAG/Applications/appqm\u0022,\u0020PTKBAAAA
+		SccLocalPath24 = Applications\\appqm
+		SccProvider24 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName25 = Applications\\apprdz\\AppRDZ.vbproj
+		SccProjectName25 = \u0022$/CKAG/Applications/apprdz\u0022,\u0020MUKBAAAA
+		SccLocalPath25 = Applications\\apprdz
+		SccProvider25 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName26 = Applications\\AppRenault\\AppRenault.vbproj
+		SccProjectName26 = \u0022$/CKAG/Applications/AppRenault\u0022,\u0020EVKBAAAA
+		SccLocalPath26 = Applications\\AppRenault
+		SccProvider26 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName27 = Applications\\appsixt\\AppSIXT.vbproj
+		SccProjectName27 = \u0022$/CKAG/Applications/appsixt\u0022,\u0020WVKBAAAA
+		SccLocalPath27 = Applications\\appsixt
+		SccProvider27 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName28 = Applications\\appsixtl\\AppSIXTL.vbproj
+		SccProjectName28 = \u0022$/CKAG/Applications/appsixtl\u0022,\u0020WCLBAAAA
+		SccLocalPath28 = Applications\\appsixtl
+		SccProvider28 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName29 = Applications\\AppSTRAUB\\AppSTRAUB.vbproj
+		SccProjectName29 = \u0022$/CKAG/Applications/AppSTRAUB\u0022,\u0020SGLBAAAA
+		SccLocalPath29 = Applications\\AppSTRAUB
+		SccProvider29 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName30 = Applications\\AppUeberf\\AppUeberf.vbproj
+		SccProjectName30 = \u0022$/CKAG/Applications/AppUeberf\u0022,\u0020WQIBAAAA
+		SccLocalPath30 = Applications\\AppUeberf
+		SccProvider30 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName31 = Applications\\appvfs\\AppVFS.vbproj
+		SccProjectName31 = \u0022$/CKAG/Applications/appvfs\u0022,\u0020QKLBAAAA
+		SccLocalPath31 = Applications\\appvfs
+		SccProvider31 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName32 = Applications\\appvw\\AppVW.vbproj
+		SccProjectName32 = \u0022$/CKAG/Applications/appvw\u0022,\u0020CNLBAAAA
+		SccLocalPath32 = Applications\\appvw
+		SccProvider32 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName33 = ..\\..\\..\\Work\\CKG\\EasyAccess\\EasyAccess.vbproj
+		SccProjectName33 = \u0022$/CKAG/EasyAccess\u0022,\u0020XQHBAAAA
+		SccLocalPath33 = ..\\..\\..\\Work\\CKG\\EasyAccess
+		SccProvider33 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName34 = Applications\\appald\\AppALD.vbproj
+		SccProjectName34 = \u0022$/CKAG/Applications/appald\u0022,\u0020NCMBAAAA
+		SccLocalPath34 = Applications\\appald
+		SccProvider34 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectUniqueName35 = Applications\\appalda\\AppALDA.vbproj
+		SccProjectName35 = \u0022$/CKAG/Applications/appalda\u0022,\u0020PGMBAAAA
+		SccLocalPath35 = Applications\\appalda
+		SccProvider35 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3E5971-3617-4351-A49E-2A2291556838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3E5971-3617-4351-A49E-2A2291556838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3E5971-3617-4351-A49E-2A2291556838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3E5971-3617-4351-A49E-2A2291556838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD42F6AE-51AA-4A13-BEDA-1E572CEACC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD42F6AE-51AA-4A13-BEDA-1E572CEACC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD42F6AE-51AA-4A13-BEDA-1E572CEACC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD42F6AE-51AA-4A13-BEDA-1E572CEACC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8696D15B-1F09-4444-9B4B-C8416405888D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8696D15B-1F09-4444-9B4B-C8416405888D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8696D15B-1F09-4444-9B4B-C8416405888D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8696D15B-1F09-4444-9B4B-C8416405888D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8A32EE-7273-40FB-B6E9-6F7093CF9BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8A32EE-7273-40FB-B6E9-6F7093CF9BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8A32EE-7273-40FB-B6E9-6F7093CF9BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8A32EE-7273-40FB-B6E9-6F7093CF9BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D3587E-DA0B-4B41-BC61-7243107DCC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D3587E-DA0B-4B41-BC61-7243107DCC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D3587E-DA0B-4B41-BC61-7243107DCC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D3587E-DA0B-4B41-BC61-7243107DCC54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A4D4C50-CBFD-4265-B4CD-F24FC097D550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4D4C50-CBFD-4265-B4CD-F24FC097D550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4D4C50-CBFD-4265-B4CD-F24FC097D550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4D4C50-CBFD-4265-B4CD-F24FC097D550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8477FF-D9C1-4049-A2B2-E867C28759D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8477FF-D9C1-4049-A2B2-E867C28759D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A8477FF-D9C1-4049-A2B2-E867C28759D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8477FF-D9C1-4049-A2B2-E867C28759D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A85BAB-F33E-41EA-8AFD-0D793717D755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A85BAB-F33E-41EA-8AFD-0D793717D755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A85BAB-F33E-41EA-8AFD-0D793717D755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A85BAB-F33E-41EA-8AFD-0D793717D755}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616A09B9-FF37-4D0F-B16D-28EF5BF90312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616A09B9-FF37-4D0F-B16D-28EF5BF90312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616A09B9-FF37-4D0F-B16D-28EF5BF90312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616A09B9-FF37-4D0F-B16D-28EF5BF90312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA2E145-5803-4BF2-BEC0-53FAA63989B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941C0D68-2D8B-40AD-A61C-BF2867C818C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941C0D68-2D8B-40AD-A61C-BF2867C818C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941C0D68-2D8B-40AD-A61C-BF2867C818C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941C0D68-2D8B-40AD-A61C-BF2867C818C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A73577F-0D6F-4036-B730-F830EEAF1493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A73577F-0D6F-4036-B730-F830EEAF1493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A73577F-0D6F-4036-B730-F830EEAF1493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A73577F-0D6F-4036-B730-F830EEAF1493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F501342-3CFF-47DA-8E90-97D3B0F4D2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F501342-3CFF-47DA-8E90-97D3B0F4D2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F501342-3CFF-47DA-8E90-97D3B0F4D2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F501342-3CFF-47DA-8E90-97D3B0F4D2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5009125-7AE7-4967-A0F6-1C60AE1E7A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5009125-7AE7-4967-A0F6-1C60AE1E7A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5009125-7AE7-4967-A0F6-1C60AE1E7A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5009125-7AE7-4967-A0F6-1C60AE1E7A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83456886-AE02-459F-92D9-27A400F1B979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83456886-AE02-459F-92D9-27A400F1B979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83456886-AE02-459F-92D9-27A400F1B979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83456886-AE02-459F-92D9-27A400F1B979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21F701DF-74E9-4384-9A3C-DED4A9A3B157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21F701DF-74E9-4384-9A3C-DED4A9A3B157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21F701DF-74E9-4384-9A3C-DED4A9A3B157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21F701DF-74E9-4384-9A3C-DED4A9A3B157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF7ACC4-5D8B-407C-B1D1-BF331AB434F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF7ACC4-5D8B-407C-B1D1-BF331AB434F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF7ACC4-5D8B-407C-B1D1-BF331AB434F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF7ACC4-5D8B-407C-B1D1-BF331AB434F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41C7E223-50D3-4180-BF60-5D10987EC7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41C7E223-50D3-4180-BF60-5D10987EC7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C7E223-50D3-4180-BF60-5D10987EC7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41C7E223-50D3-4180-BF60-5D10987EC7D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42838170-8F04-4E30-95E0-DEB7FA85855E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42838170-8F04-4E30-95E0-DEB7FA85855E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42838170-8F04-4E30-95E0-DEB7FA85855E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42838170-8F04-4E30-95E0-DEB7FA85855E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E134D2BA-F1BF-4B96-A1C6-83066AC7A49E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E134D2BA-F1BF-4B96-A1C6-83066AC7A49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E134D2BA-F1BF-4B96-A1C6-83066AC7A49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E134D2BA-F1BF-4B96-A1C6-83066AC7A49E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646EE418-44EE-49E2-99F0-E21A2BECD3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646EE418-44EE-49E2-99F0-E21A2BECD3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646EE418-44EE-49E2-99F0-E21A2BECD3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{646EE418-44EE-49E2-99F0-E21A2BECD3E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F39EFF-D304-400C-8AC9-2ADB0E2925AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F39EFF-D304-400C-8AC9-2ADB0E2925AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F39EFF-D304-400C-8AC9-2ADB0E2925AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F39EFF-D304-400C-8AC9-2ADB0E2925AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6189D83-CD0B-4BBD-A417-23CCEE29A329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6189D83-CD0B-4BBD-A417-23CCEE29A329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6189D83-CD0B-4BBD-A417-23CCEE29A329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6189D83-CD0B-4BBD-A417-23CCEE29A329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{068D1C01-E618-4076-891F-43E213E47E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068D1C01-E618-4076-891F-43E213E47E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068D1C01-E618-4076-891F-43E213E47E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068D1C01-E618-4076-891F-43E213E47E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7500873F-1CC4-4BE6-ABC5-67AF0C49DBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7500873F-1CC4-4BE6-ABC5-67AF0C49DBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7500873F-1CC4-4BE6-ABC5-67AF0C49DBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7500873F-1CC4-4BE6-ABC5-67AF0C49DBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0F123F6-350F-48E8-BD47-ACE69289402B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0F123F6-350F-48E8-BD47-ACE69289402B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0F123F6-350F-48E8-BD47-ACE69289402B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0F123F6-350F-48E8-BD47-ACE69289402B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E58D63-C308-40B9-B1BC-5FBFD80A7770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E58D63-C308-40B9-B1BC-5FBFD80A7770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E58D63-C308-40B9-B1BC-5FBFD80A7770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E58D63-C308-40B9-B1BC-5FBFD80A7770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8243C653-E5EA-4420-9107-D28D6A25F345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8243C653-E5EA-4420-9107-D28D6A25F345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8243C653-E5EA-4420-9107-D28D6A25F345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8243C653-E5EA-4420-9107-D28D6A25F345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DA38371-4A26-4228-9ED9-8AF45DD3C385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DA38371-4A26-4228-9ED9-8AF45DD3C385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DA38371-4A26-4228-9ED9-8AF45DD3C385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DA38371-4A26-4228-9ED9-8AF45DD3C385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE76655-DF3C-462B-95D9-18D26BA09746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE76655-DF3C-462B-95D9-18D26BA09746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE76655-DF3C-462B-95D9-18D26BA09746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE76655-DF3C-462B-95D9-18D26BA09746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F5B9E34-853D-458D-A31D-A38CB18A0792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F5B9E34-853D-458D-A31D-A38CB18A0792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F5B9E34-853D-458D-A31D-A38CB18A0792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F5B9E34-853D-458D-A31D-A38CB18A0792}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

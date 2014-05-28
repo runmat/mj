@@ -1,0 +1,76 @@
+﻿.dadLogo2
+{
+    background-image: url(kss_logo2.jpg);
+}
+
+div#header ul#navigation li
+{
+    background-color: #2B4C91;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #2B4C91;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #2B4C91;
+}
+
+div#content div#query
+{
+    background-color: #2B4C91;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #2B4C91;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #2B4C91;
+}
+.Menutitle
+{
+    background-color: #2B4C91;
+}
+A.Tablebutton:hover
+{
+    color: #2B4C91;
+}
+
+A.TablebuttonLarge:hover
+{
+    color: #2B4C91;
+}
+
+td.MainmenuItemAlternate:hover
+{
+    background-color: #2B4C91;
+}
+
+.divWait
+{
+    border: thin solid #2B4C91;
+}
+
+.lblKontaktFirma
+{
+    color: #2B4C91;
+}
+
+.ImpressumHead
+{
+    background-color: #2B4C91;
+}
+
+.NaviImg
+{
+    background-image: url(../../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+

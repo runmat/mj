@@ -1,0 +1,430 @@
+﻿<script type="text/javascript">
+
+    //
+    // General scripts
+    //
+    //
+    // Bug report, PLEASE NOTE: we had to fix a bug in "jquery.unobtrusive-ajax.js", function "asyncOnSuccess", for more details please refer to that file
+    //
+
+    var _validationErrorFreeze = false;
+    var _onSubFormSubmitSuccessFunction = '';
+    var _onStepChangeSuccessFunction = '';
+    var _validationErrorFirstDependencyProperty = '';
+    
+
+    function AjaxViewLoadedEvent() {
+        this.eventHandlers = new Array();
+    }
+    AjaxViewLoadedEvent.prototype.addHandler = function (eventHandler) {
+        this.eventHandlers.pop(eventHandler);
+        this.eventHandlers.push(eventHandler);
+    };
+    AjaxViewLoadedEvent.prototype.execute = function () {
+        for (var i = 0; i < this.eventHandlers.length; i++) {
+            if (!this.eventHandlers[i]())
+                return false;
+        }
+        return true;
+    };
+
+    var ajaxViewLoadedEvent = new AjaxViewLoadedEvent();
+
+
+    function TryMoveNextExplicitToStep() {
+
+        $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/TryResetNavigateToStepFromSummary",
+                 success: function () {
+                     TryMoveToStep(1);
+                 }
+             });
+    }
+
+    function TryMoveToStep(increment) {
+
+        //alert('X');
+        if (increment < 0) {
+            // we move backwards (==> cancel)
+            // 
+            // ==> so DO NOT save form content and let's move to the requested step directly right here:
+            MoveToStep(increment);
+            return;
+        }
+        
+        _onStepChangeSuccessFunction = 'MoveToStep(' + increment + ')';
+        if (!lastformid) {
+             // MJE, 14.03.2013: 
+             // there's no opened form available (lastformid == 0)
+             // ==> so DO NOT save form content and let's move to the requested step directly right here:
+            //MoveToStep(increment);
+            CurrentStepValidation();
+            return;
+         }
+
+         ClosestFormSubmitWithStepAction(lastformid, 'CurrentStepValidation()');
+     }
+
+     function MoveToStep(increment) {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/MoveToStep",
+                 data: { increment: increment },
+                 success: function (result) {
+                     LoadStepViewHtml(result);
+                 }
+             });
+     } 
+
+     function TryNavigateToStepFromSummary(step) {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/TryNavigateToStepFromSummary",
+                 data: { step: step },
+                 success: function () {
+                     TryNavigateToStep(step);
+                 }
+//                 error: function (xhr, status, error) {
+//                     //alert(xhr.responseText);
+//                 }
+             });
+     }
+
+     function TryNavigateToStep(step) {
+         _onStepChangeSuccessFunction = 'NavigateToStep(' + step + ')';
+         if (!lastformid) {
+             // MJE, 14.03.2013: 
+             // there's no opened form available (lastformid == 0)
+             // ==> so DO NOT save form content and let's move to the requested step directly right here:
+             //NavigateToStep(step);
+             CurrentStepValidation();
+             return;
+         }
+
+         ClosestFormSubmitWithStepAction(lastformid, 'CurrentStepValidation()');
+     }
+
+     function NavigateToStep(step) {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/NavigateToStep",
+                 data: { step: step },
+                 success: function (result) {
+                     LoadStepViewHtml(result);
+                 }
+             });
+     }
+
+     function LoadStepViewHtml(result) {
+         if (!result)
+             return;
+
+         $("#UeberfuehrungContent").html(result);
+         initOpenforms();
+         FormPreparePrivateAjax();
+         ajaxViewLoadedEvent.execute();
+     }
+     
+     function CurrentStepValidation() {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/CurrentStepValidation",
+                 data: { },
+                 success: function (result) {
+                     if (result.firstValidationErrorForm == null) {
+                         eval(_onStepChangeSuccessFunction);
+                         _onStepChangeSuccessFunction = '';
+                     } else {
+                         if (!lastformid || (lastformid != result.firstValidationErrorForm))
+                            openforms(result.firstValidationErrorForm);
+                         FormShowValidationError(result.firstValidationErrorForm, result.firstValidationErrorMessage, result.firstValidationDependencyErrorProperty);
+                     }
+                 }
+             });
+     }
+
+     function GetClosestAjaxForm(formId) {
+         return $('#ajaxFormContainer' + formId).children("form:first-child");
+     }
+     
+     function AjaxFormIsValid(ajaxForm) {
+         return (typeof ajaxForm.attr('data-ajax-update') != 'undefined');
+     }
+
+     function ClosestFormTrySubmit(formId) {
+         var closestAjaxForm = GetClosestAjaxForm(formId);
+         if (AjaxFormIsValid(closestAjaxForm)) {
+             closestAjaxForm.submit();
+         }
+     }
+
+     function ActivateIds(formId) {
+         for (var i = 1; i <= 99; i++) {
+             if (!ChangeIdsForForm(i, i == formId))
+                 break;
+         }
+         _validationErrorFreeze = true;
+         ClosestFormTrySubmit(formId);
+     }
+
+     function ClosestFormSubmitWithStepAction(formId, requestedStepAction) {
+         if (requestedStepAction)
+             _onSubFormSubmitSuccessFunction = requestedStepAction;
+
+         var closestAjaxForm = GetClosestAjaxForm(formId);
+         if (!AjaxFormIsValid(closestAjaxForm)) {
+             // MJE, 14.03.2013: 
+             // No submit necessary, because we don't have any forms on our partial step view
+             // so let's fire the "success action" right here:
+             eval(_onSubFormSubmitSuccessFunction);
+             _onSubFormSubmitSuccessFunction = '';
+             return;
+         }
+
+         if (closestAjaxForm) {
+             FormHideValidationError(formId);
+             //alert(formId);
+             closestAjaxForm.submit();
+         }
+     }
+
+     $(document).ready(function () {
+         FormPreparePrivate();
+     });
+
+     function FormInitValidatedFormStyles() {
+         for (var i = 1; i <= 99; i++) {
+             if (!FormInitValidatedFormStylesOneForm(i))
+                 break;
+         }
+     }
+
+     function FormInitValidatedFormStylesOneForm(fId) {
+         
+         var isActiveForm = (fId == currentOpenFormId);
+         
+         var form = $('#ajaxFormContainer' + fId);
+
+         if (!form.attr('id'))
+             return false;
+
+         var formlayertop = '#formlayer_top' + fId;
+         var formopener = '#formopener' + fId;
+         
+
+         if (isActiveForm) {
+             $(formlayertop).removeClass('validateOK');
+             $(formopener).css("backgroundPosition", "0px -34px");
+             return true;
+         }
+
+         
+         var isEmptyHidden = form.find("#IsEmpty" + fId);
+         if (typeof isEmptyHidden.val() == 'undefined')
+             isEmptyHidden = form.find("#IsEmpty");
+         
+         if (isEmptyHidden != null && typeof isEmptyHidden.val() != 'undefined') {
+             if (isEmptyHidden.val() == "False") {
+                 $(formlayertop).addClass('validateOK');
+                 $(formopener).css("backgroundPosition", "0px -34px");
+             } else {
+                 $(formlayertop).removeClass('validateOK');
+                 $(formopener).css("backgroundPosition", "0px 0px");
+             }
+         }
+
+         return true;         
+     }
+     
+     function OnOpenForms(formId, onSuccessFunction) {
+         if (!formId)
+             return true;
+        
+         _onSubFormSubmitSuccessFunction = onSuccessFunction;
+         ClosestFormSubmitWithStepAction(formId, '');
+         return true;
+     }
+
+     function PrepareOpenFormsEvent() {
+         openFormsEvent.addHandler(OnOpenForms);
+     }
+
+     function FormShowValidationError(formId, validationErrorMessage, validationErrorFirstDependencyProperty) {
+
+         if (validationErrorMessage == '')
+             return;
+         
+         if (validationErrorFirstDependencyProperty != '') {
+             _validationErrorFirstDependencyProperty = validationErrorFirstDependencyProperty;
+             var ctl = $('#' + validationErrorFirstDependencyProperty);
+
+             //alert(ctl);
+             ctl.addClass('input-validation-error');
+             ctl.scrollIntoView();
+
+             FormInitValidationErrorStyles();
+         }
+
+         var validationDiv = $("#form_validation_error" + formId);
+         validationDiv.children().each(function () {
+             $(this).html(validationErrorMessage);
+             if (validationErrorMessage.length >= 130) {
+                 $(this).removeClass('errorcontainer_smallfont');
+                 $(this).addClass('errorcontainer_super_smallfont');
+             } else if (validationErrorMessage.length >= 48) {
+                 $(this).removeClass('errorcontainer_super_smallfont');
+                 $(this).addClass('errorcontainer_smallfont');
+             }
+             else {
+                 $(this).removeClass('errorcontainer_super_smallfont');
+                 $(this).removeClass('errorcontainer_smallfont');
+             }
+         });
+         validationDiv.fadeIn(500);
+     }
+
+     function FormHideValidationError(formId) {
+
+         if (_validationErrorFreeze) {
+             _validationErrorFreeze = false;
+             return;
+         }
+
+         var validationDiv = $("#form_validation_error" + formId);
+         validationDiv.fadeOut(1000);
+         _validationErrorFirstDependencyProperty = '';
+     }
+
+     function FormForceHideValidationError(formId) {
+         FormHideValidationError(formId);
+         FormHideValidationError(formId);
+     }
+
+     function ClearModelForm(formId) {
+
+         var form = GetClosestAjaxForm(formId);
+         if (!AjaxFormIsValid(form))
+             return;
+
+         form.find("#RequestClearModel").val(true);
+         form.submit();
+     }
+     
+     function LoadViewModel(xmlFileName) {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/ViewModelLoadOrClear",
+                 data: { xmlFileName: xmlFileName },
+                 success: function (result) {
+                     //location.reload();
+                     LoadStepViewHtml(result);
+                 },
+                 error: function (result) {
+                     //location.reload();
+                     alert(result);
+                 }
+             });
+     }
+
+     function TestRaiseError() {
+         location.replace('Ueberfuehrung/TestRaiseError');
+     }
+
+     function TestRaiseErrorAsPost() {
+         $.ajax(
+             {
+                 type: "POST",
+                 url: "Ueberfuehrung/TestRaiseErrorAsPost",
+                 data: {},
+                 success: function (result) {
+                     alert('Success: ' + result);
+                 },
+                 error: function (result) {
+                     alert('Error: ' + result);
+                 }
+             });
+     }
+
+     function DateRangePickerLinkClick(href, datePickerProperty) {
+         //alert(datePickerProperty + ' - ' + $(href).html());
+         var startProperty = $("#" + datePickerProperty + "Von");
+         var endProperty = $("#" + datePickerProperty + "Bis");
+         //alert(Date.today().add({ days: -7 }).toString("dd.MM.yyyy"));
+
+         var startVal = Date.today();
+         var endVal = Date.today();
+
+         if ($(href).html() == "Leeren") {
+             startProperty.val('');
+             endProperty.val('');
+             return false;
+         }
+
+         switch ($(href).html()) {
+             case "Heute":
+                 startVal = Date.today().add({ days: 0 });
+                 endVal = Date.today().add({ days: 0 });
+                 break;
+             case "Gestern":
+                 startVal = Date.today().add({ days: -1 });
+                 endVal = Date.today().add({ days: -1 });
+                 break;
+             case "Letzte 3 Tage":
+                 startVal = Date.today().add({ days: -3 });
+                 endVal = Date.today().add({ days: 0 });
+                 break;
+             case "Letzte 7 Tage":
+                 startVal = Date.today().add({ days: -7 });
+                 endVal = Date.today().add({ days: 0 });
+                 break;
+             case "Letzte 30 Tage":
+                 startVal = Date.today().add({ days: -30 });
+                 endVal = Date.today().add({ days: 0 });
+                 break;
+             case "Letzter Monat":
+                 startVal = Date.today().add({ months: -1 }).moveToFirstDayOfMonth();
+                 endVal = Date.today().add({ months: -1 }).moveToLastDayOfMonth();
+                 break;
+             case "Dieser Monat":
+                 startVal = Date.today().add({ months: 0 }).moveToFirstDayOfMonth();
+                 endVal = Date.today().add({ months: 0 }).moveToLastDayOfMonth();
+                 break;
+
+             default:
+         }
+
+         startProperty.val(startVal.toString("dd.MM.yyyy"));
+         endProperty.val(endVal.toString("dd.MM.yyyy"));
+
+         return false;
+     }
+
+     function SpanAlert(id, message, delay) {
+         if (delay == null)
+             delay = 2000;
+         var span = $("#" + id);
+         span.find("span").html(message);
+         span.fadeIn(300).delay(delay).fadeOut(300);
+     }
+
+     function SpanAlertWarning(id, message, delay) {
+         SpanAlert(id + "Warning", message, delay);
+     }
+
+     function SpanAlertSuccess(id, message, delay) {
+         SpanAlert(id + "Success", message, delay);
+     }
+
+     function SpanAlertError(id, message, delay) {
+         SpanAlert(id + "Error", message, delay);
+     }
+     
+ </script>
+

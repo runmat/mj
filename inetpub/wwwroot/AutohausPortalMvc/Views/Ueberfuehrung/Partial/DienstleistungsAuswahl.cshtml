@@ -1,0 +1,81 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@model DienstleistungsAuswahl
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("DienstleistungsAuswahlEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "DienstleistungsAuswahlEdit_FormPreparePrivateAjax();" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @Html.HiddenFor(m => m.FahrtIndex)
+        @Html.HiddenFor(m => m.FahrtTyp)
+
+        using (Html.BeginDiv("leftform"))
+        {
+            @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+            <div id="dropzone1">
+                <div class="dropheader">
+                    <div class="text"> Gewählte Dienstleistungen </div>
+                    @Html.FormAction(null, "drophelpbutton", "Diese Box beinhaltet Ihre ausgewählten Dienstleistungen. Via Drag & Drop können Sie auf Wunsch bestimmte Dienstleistungen entfernen, bzw. auf die Box rechts ziehen.")
+                </div>
+                <div class="droparea"> </div>
+                <div class="clear"> </div>
+            </div>
+        }
+
+        using (Html.BeginDiv("rightform"))
+        {
+            @Html.HiddenFor(m => m.NichtGewaehlteDienstleistungenString)
+            <div id="dropzone2">
+                <div class="dropheader">
+                    <div class="text"> Zusatzdienstleistungen </div>
+                    @Html.FormAction(null, "drophelpbutton", "Diese Box beinhaltet die für Sie verfügbaren Zusatzdienstleistungen. Via Drag & Drop können Sie auf Wunsch bestimmte Zusatzdienstleistungen zur Box links hinzufügen.")
+                </div>
+                <div class="droparea"> </div>
+                <div class="clear"> </div>
+            </div>
+        }
+        
+        @Html.FormNewLine()
+
+        <div class="dropItemsSumme">
+            <div class="dropItemsSummeText">
+                Gesamtpreis Ihrer gewählten Dienstleistungen:
+            </div>
+            <div id="dropItemsSummePreis"></div>
+        </div>    
+    
+        <div class="dropHidden">
+            @foreach (var dienstleistung in DienstleistungsAuswahl.AlleDienstleistungen)
+            {
+                <div id="dl_@dienstleistung.ID" class="dropitem ui-draggable">
+                    <div class="dropinner">
+                        <div class="dropinner2">
+                            <div class="takeItem"> </div>
+                            <div class="@dienstleistung.TextCssClass">@dienstleistung.CroppedName</div>
+                            <div class="deleteItem"> </div>
+                        </div>
+                        @if (dienstleistung.PreisAvailable)
+                        {
+                            <div class="preis">@dienstleistung.PreisString</div>
+                        }
+                        <input type="hidden" id="dl_preis_@dienstleistung.ID" value="@dienstleistung.Preis.GetValueOrDefault()" class="hiddenDropItemPreis" />
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+<script type="text/javascript">
+    function DienstleistungsAuswahlEdit_FormPreparePrivateAjax()
+    {
+        FormPreparePrivateAjax();
+                
+        @Html.Partial("Partial/ValidationErrorScripts")
+
+        dragDropValuesServerToClient('GewaehlteDienstleistungenString', 'NichtGewaehlteDienstleistungenString');
+    }
+</script>

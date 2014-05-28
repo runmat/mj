@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.General.Contracts
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+
+<div id="startbutton" style="background-position: 0 0;">
+    <img height="105" width="105" alt="Startmenu" src="@Url.Content("~/images/transp.gif")" />
+</div>
+<div id="startmenu" style="display: none;">
+    <div class="startmenu_top"> 
+        @if (logonContext != null)
+        {
+            <a href="@logonContext.FormatUserEncrytpedUrl("../Start/Selection.aspx")"><div id="lnkStart"></div></a>
+        }
+    </div>
+    <div class="startmenu_contentlayer">
+        <div class="startmenu_content" id="MenuContent" runat="server">
+            @if (logonContext != null)
+            {
+                foreach (var menuGroup in logonContext.GetMenuItemGroups())
+                {
+                    <h3>@menuGroup.AppTypeFriendlyName</h3>
+                    foreach (var menuItem in logonContext.GetMenuItems(menuGroup.AppType))
+                    {
+                        <a href="@logonContext.GetUserEncrytpedUrl(menuItem)">@menuItem.AppFriendlyName</a><br />
+                    }
+                    @Html.FormNewLine("menuGroupTrenner")
+                }
+            }
+        </div>
+    </div>
+    @Html.EmptyDiv("startmenu_bottom")
+</div>

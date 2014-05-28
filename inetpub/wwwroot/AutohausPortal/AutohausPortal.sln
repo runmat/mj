@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutohausPortal", "AutohausPortal.csproj", "{211F90F6-D4F1-4809-A42C-4A4DD5E79501}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Admin", "Admin\Admin.vbproj", "{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501} = {211F90F6-D4F1-4809-A42C-4A4DD5E79501}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ZLDBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Admin\\Admin.vbproj
+		SccProjectName1 = Admin
+		SccLocalPath1 = Admin
+		SccProjectUniqueName2 = AutohausPortal.csproj
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = ..\\..\\..\\Work\\ZLDBase\\Base.vbproj
+		SccProjectName3 = ../Work/ZLDBase
+		SccLocalPath3 = ..\\..\\..\\Work\\ZLDBase
+		SccProjectUniqueName4 = ..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
+		SccProjectName4 = ../Work/Tools/GeneralTools
+		SccLocalPath4 = ..\\..\\..\\Work\\Tools\\GeneralTools
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211F90F6-D4F1-4809-A42C-4A4DD5E79501}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89FCC911-BC94-45E0-A9C7-7A26DFA958C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

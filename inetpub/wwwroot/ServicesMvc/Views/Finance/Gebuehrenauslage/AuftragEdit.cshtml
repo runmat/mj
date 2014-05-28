@@ -1,0 +1,40 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model Auftrag
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
+    @using (Ajax.BeginForm("EditAuftrag", "Finance", null, new MvcAjaxOptions { OnComplete = "EditAuftragComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.Auftragsnummer)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBlockFor(m => m.Rechnungseingangsdatum, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.Vertragsart, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.Kontonummer, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.CIN, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.PAID, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.Kreditnehmer, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.DatumTempVersand, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.KreditorAusBestellung, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.GrundDerAuslage, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.Wert, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.Gebuehren, new { @class = "m-wrap" })
+        @Html.FormTextBoxFor(m => m.BemerkungZeile1, new { @class = "m-wrap" })
+        @Html.FormTextBoxFor(m => m.BemerkungZeile2, new { @class = "m-wrap" })
+        @Html.FormCheckBoxFor(m => m.Erledigt, new { @class = "m-wrap" })
+        
+        @*@Html.FormRequiredFieldsSummary()*@
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseAuftragEdit();">@Localize.Cancel</button>
+        </div>
+    
+        <script type="text/javascript">
+            function EditAuftragComplete() {
+                CloseAuftragEdit();
+                FormPreparePrivateAjax();
+            }
+        </script>
+    }
+</div>

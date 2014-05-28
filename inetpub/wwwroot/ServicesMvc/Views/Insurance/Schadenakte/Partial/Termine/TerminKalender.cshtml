@@ -1,0 +1,81 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model TerminSchadenfall 
+
+<div class="margin-left-10">
+
+    <h5 class="no-margin">
+        <button onclick="TerminSchadenfallClose(2);" class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
+        <i class="icon-calendar margin-left-10 margin-right-10"></i><span>Neuer <strong>@Model.BoxArtGewuenschtAsText</strong> Termin, Schadenfall "@Model.Event.EventName - @Model.Schadenfall.Kennzeichen", Ort <strong>@Model.OrtAsText</strong></span>
+    </h5>
+    
+    <script type="text/javascript">
+        _calendarBoxArt = '@Model.GetCachedBoxArt()';
+
+        _ortZeitStartMoFr = '@Model.Ort.StartZeitMoFr';
+        _ortZeitEndMoFr = '@Model.Ort.EndZeitMoFr';
+        _ortZeitStartSa = '@Model.Ort.StartZeitSa';
+        _ortZeitEndSa = '@Model.Ort.EndZeitSa';
+    </script>
+    
+    @if (Model.GetCachedBoxArt() == "GU")
+    {
+        <div class="calendar-container" id="calendar"></div>
+    }
+    
+    <div id="calendarReMode">
+        @if (Model.GetCachedBoxArt() == "RE")
+        {
+            var boxen = Model.GetValidBoxen();
+            <div class="all-calendar-headers">
+                <span id="calendarReModeCurrentDay"></span>
+                
+                <button onclick="CalendarsReModeDateScroll(-1);" id="calendarDateScrollPrev" class="btn mini blue">
+                    <i class="halflings-icon white chevron-left"></i>
+                    <i class="icon-calendar"></i>
+                </button>
+                <button onclick="CalendarsReModeDateScroll(1);" id="calendarDateScrollNext" class="btn mini blue">
+                    <i class="icon-calendar"></i>
+                    <i class="halflings-icon white chevron-right"></i>
+                </button>
+                <button onclick="CalendarsReModeDateScroll(0);" id="calendarDateScrollToday" class="btn mini blue">
+                    <i class="icon-calendar"></i>
+                </button>
+
+                <span class="margin-left-10">&nbsp;</span>                
+
+                <span id="calendarBoxScrollToolBar">
+                    <button onclick="CalendarsReModeBoxScroll(-1);" id="calendarBoxScrollPrev" class="btn mini green">
+                        <i class="halflings-icon white chevron-left"></i>
+                        <i class="icon-inbox bigger"></i>
+                    </button>
+                    <button onclick="CalendarsReModeBoxScroll(1);" id="calendarBoxScrollNext" class="btn mini green">
+                        <i class="icon-inbox bigger"></i>
+                        <i class="halflings-icon white chevron-right"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="all-calendar-headers">
+                @for (var i = 0; i < boxen.Count; i++)
+                {
+                    var box = boxen[i];
+
+                    <div class="calendar-box calendar-header-box">
+                        <div class="calendar-header">@box.BoxName</div>
+                    </div>
+                }
+            </div>
+        
+            <div class="all-calendar-containers">
+                @for (var i = 0; i < boxen.Count; i++)
+                {
+                    var box = boxen[i];
+
+                    <div class="calendar-box calendar-container-box">
+                        <div class="calendar-container" id="calendar_@box.ID" data-index="@i" data-id="@box.ID"></div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    
+</div>

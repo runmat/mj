@@ -1,0 +1,73 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model VorgangBewertung
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
+    @using (Ajax.BeginForm("SaveBewertung", "Finance", null, new MvcAjaxOptions { OnComplete = "EditVorgangComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        <div class="form-horizontal">
+            @Html.FormValidationSummary()
+        
+            @Html.FormRadioButtonListFor(m => m.Erfassungstyp, Model.AuswahlErfassungsart.ToSelectList("Typ", "Bezeichnung"))
+        
+            @Html.HiddenFor(m => m.Kontonummer)
+            @Html.HiddenFor(m => m.CIN)
+            @Html.HiddenFor(m => m.PAID)
+        
+            @Html.FormTextBlockFor(m => m.Kontonummer, new { @class = "m-wrap" })
+            @Html.FormTextBlockFor(m => m.CIN, new { @class = "m-wrap" })
+            @Html.FormTextBlockFor(m => m.PAID, new { @class = "m-wrap" })
+
+            <div id="divEinkaufswerte" style='@(Model.Erfassungstyp == Erfassungsart.Gutachterwert ? "" : "display: none")'>
+                @Html.FormTextBoxFor(m => m.HaendlerBruttoEkWert, new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.HaendlerNettoEkWert, new { @class = "m-wrap" })
+            </div>
+        
+            <div id="divVerkaufswerte" style='@(Model.Erfassungstyp == Erfassungsart.Vermarktungserloese ? "" : "display: none")'>
+                @Html.FormTextBoxFor(m => m.HaendlerBruttoVkWert, new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.HaendlerNettoVkWert, new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.Kosten, new { @class = "m-wrap" })
+            </div>
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+                <button type="button" class="btn" onclick="CloseVorgangEdit();">@Localize.Cancel</button>
+            </div> 
+        </div>
+            
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+    function EditVorgangComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+            SpanAlertSuccess("spanAlertBewertung", successMessage, 1800);
+            CloseVorgangEdit();
+        }
+    }
+
+    $(function () {
+        $('input[name=Erfassungstyp]').change(function () {
+            ApplyErfassungstyp();
+        });
+    });
+
+    function ApplyErfassungstyp() {
+        var wert = $('input[name=Erfassungstyp]:checked').val();
+
+        if (wert == "Gutachterwert") {
+            $('#divVerkaufswerte').hide();
+            $('#divEinkaufswerte').show();
+        } else {
+            $('#divEinkaufswerte').hide();
+            $('#divVerkaufswerte').show();
+        }
+    }
+</script>

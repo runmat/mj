@@ -1,0 +1,84 @@
+﻿@using MvcTools.Models
+@model FormDateRangePickerModel 
+
+<div class="SControlGroupOuter">
+    
+    <div class="SLabel SLabelCheckBox"><span class="SDisplayName"></span></div>
+
+    <label class="SControlGroupInner">
+        @Html.Partial("Partial/FormControls/SimpleForm/CheckBoxInner")
+    </label>
+    
+    <div id="wrapper-date-range-@Model.UseDateRangeProperty" class="SDateRangePicker hide">
+        <div class="SLabel"><span class="SDisplayName"></span></div>
+        <span  id="rangePicker-date-range-@Model.UseDateRangeProperty" class="btn">
+            &nbsp;<i class="icon-calendar"></i>
+            &nbsp;<span class=""></span> 
+            &nbsp;<b class="caret"></b>&nbsp;
+        </span>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function FormDateRangePickerPrepare_@Model.UseDateRangeProperty (onUseDateRangeChangeFunction, onDateRangeChangeFunction) {
+
+        var modelProperty = '@Model.UseDateRangeProperty';
+        var wrapperId = '#wrapper-date-range-' + modelProperty;
+        var rangePickerId = '#rangePicker-date-range-' + modelProperty;
+
+        if (!jQuery().daterangepicker) {
+            return;
+        }
+
+        var formDateRangeStart = '@Model.DateRangeStart.GetValueOrDefault().ToString("dd.MM.yy")';
+        var formDateRangeEnd = '@Model.DateRangeEnd.GetValueOrDefault().ToString("dd.MM.yy")';
+
+        $('#' + modelProperty).change(function () {
+            onUseDateRangeChangeFunction($(this), formDateRangeStart, formDateRangeEnd);
+            $(wrapperId).toggleClass('hide', !$(this).is(':checked'));
+        });
+
+        $(rangePickerId).daterangepicker({
+            ranges: {
+                'Heute': ['today', 'today'],
+                'Gestern': ['yesterday', 'yesterday'],
+                'Letzte 7 Tage': [Date.today().add({ days: -7 }), 'today'],
+                'Letzte 30 Tage': [Date.today().add({ days: -30 }), 'today'],
+                'Dieser Monat': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
+                'Nächster Monat': [Date.today().add({ months: 1 }).moveToFirstDayOfMonth(), Date.today().add({ months: 1 }).moveToLastDayOfMonth()],
+                'Letzter Monat': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })]
+            },
+            opens: 'right',
+            format: 'dd.MM.yyyy',
+            separator: ' - ',
+            startDate: formDateRangeStart,
+            endDate: formDateRangeEnd,
+            minDate: '01.01.2012',
+            maxDate: '31.12.2029',
+            locale: {
+                applyLabel: 'Übernehmen',
+                fromLabel: 'Von',
+                toLabel: 'Bis',
+                customRangeLabel: 'Beliebiger Datumsbereich',
+                daysOfWeek: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+                monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+                firstDay: 1
+            },
+            showWeekNumbers: true,
+            buttonClasses: ['green']
+        },
+
+        function (start, end) {
+            $(rangePickerId + ' span').html(start.toString('dd.MM.yy') + ' - ' + end.toString('dd.MM.yy'));
+            //alert(start);
+            formDateRangeStart = start.toString('dd.MM.yy');
+            formDateRangeEnd = end.toString('dd.MM.yy');
+            onDateRangeChangeFunction(formDateRangeStart, formDateRangeEnd);
+        });
+
+        $(rangePickerId + ' span').html(formDateRangeStart + ' - ' + formDateRangeEnd);
+    }
+
+</script>

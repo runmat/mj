@@ -1,0 +1,56 @@
+﻿<div class="control-group">
+    <label class="control-label">CSV Datei hochladen:</label>
+    <div class="controls">
+                
+        @(Html.Telerik().Upload()
+              .Name("fileUpload")
+              .Multiple(false)
+              .Localizable("de-DE")
+              .Async(async => async
+                                  .Save("CsvUploadStart", "Leasing")
+                                  .SaveField("uploadFiles")
+                                  .AutoUpload(true))
+              .Multiple(false)
+              .ShowFileList(false)
+              .ClientEvents(events => events
+                                          .OnUpload("UploadStart")
+                                          .OnSuccess("UploadFinished")
+                                          .OnError("UploadError")
+              )
+              )
+
+    </div>
+</div>
+
+@(Html.Telerik().Window()
+     .Name("CsvTemplateHint")
+    .Visible(false)
+    .Title(@Localize.HLA_CsvUpload)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(500)
+    .Height(400)
+    .Content(@<text><div id="CsvTemplateHintDetail"></div></text>))
+
+<a href="#" onclick="return AjaxCsvTemplateShow()" class="btn white tooltips margin-right-10 margin-top-20" data-original-title="@Localize.HLA_CsvSaveFileHintVisibleTitle" data-placement="top">@Localize.HLA_CsvSaveFileHintVisibleTitleShort <i class="icon-chevron-right"></i></a>
+
+<script type="text/javascript">
+    
+    function AjaxCsvTemplateShow() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "CsvTemplate",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#CsvTemplateHint").data("tWindow");
+                    $("#CsvTemplateHintDetail").html(result);
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+</script>

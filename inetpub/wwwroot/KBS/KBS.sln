@@ -1,0 +1,78 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "KBS", "KBS.vbproj", "{6BA5C315-C345-40F7-A4BE-329C61E7E75C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRegistration", "..\..\..\Work\CKG\TimeRegistration\TimeRegistration\TimeRegistration.csproj", "{D92A9F89-3848-4136-8FF6-39E8EA641BA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapExecutor", "..\..\..\Work\CKG\SapExecutor\SapExecutor.csproj", "{C209B8CE-195A-4C9D-9397-C3B63BE585F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PM_Common_Functions", "D:\++Projekte\PM_Common_Functions\PM_Common_Functions\PM_Common_Functions.csproj", "{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccProjectName0 = .
+		SccAuxPath0 = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = KBS.vbproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\..\\..\\Work\\CKG\\TimeRegistration\\TimeRegistration\\TimeRegistration.csproj
+		SccProjectName2 = ../../CKG/TimeRegistration/TimeRegistration
+		SccLocalPath2 = ..\\..\\..\\Work\\CKG\\TimeRegistration\\TimeRegistration
+		SccProjectUniqueName3 = D:\\++Projekte\\PM_Common_Functions\\PM_Common_Functions\\PM_Common_Functions.csproj
+		SccProjectName3 = ../../CK\u0020Projektmanagementtool/PM_Common_Functions/PM_COMMON_FUNCTIONS
+		SccLocalPath3 = D:\\++Projekte\\PM_Common_Functions\\PM_Common_Functions
+		SccProjectUniqueName4 = ..\\..\\..\\Work\\CKG\\SapExecutor\\SapExecutor.csproj
+		SccProjectName4 = SapExecutor
+		SccLocalPath4 = ..\\..\\..\\Work\\CKG\\SapExecutor
+		SccProjectUniqueName5 = ..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
+		SccProjectName5 = ../../Work/Tools/GeneralTools
+		SccLocalPath5 = ..\\..\\..\\Work\\Tools\\GeneralTools
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA5C315-C345-40F7-A4BE-329C61E7E75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D92A9F89-3848-4136-8FF6-39E8EA641BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C209B8CE-195A-4C9D-9397-C3B63BE585F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+@Html.Partial("Partial/LayoutPage/HtmlTag")
+    <head>
+        <title>DAD</title>
+
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.Simple.css").Combined(true).Compress(true)))
+        
+        @Html.Partial("Partial/LayoutPage/Styles")
+        @Html.Partial("Partial/LayoutPage/ScriptsPreload")
+
+        <link href="~/content/SiteAllLayouts.css" rel="stylesheet" type="text/css" />
+        <link href="~/content/SiteRaw.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body class="full-width-page">
+        @Html.Partial("Partial/TelerikGridDummy")
+
+        <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
+
+        <div class="page-content no-min-height">
+            <div class="container-fluid body-container">
+                @RenderBody()
+            </div>
+        </div>
+    
+        <script type="text/javascript">
+            _controlGroupValidationType = "default";
+            @RenderSection("LayoutScript", false);
+        </script>
+
+        @Html.Partial("Partial/LayoutPage/Scripts")
+    
+        <script type="text/javascript">
+
+            function FormPrepareLayoutPrivate() {
+                //alert('FormPrepareLayoutPrivate()');
+            }
+
+            function FormPrepareAjaxLayoutPrivate() {
+                //alert('FormPrepareAjaxLayoutPrivate()');
+            }
+        
+        </script>
+    </body>
+</html>

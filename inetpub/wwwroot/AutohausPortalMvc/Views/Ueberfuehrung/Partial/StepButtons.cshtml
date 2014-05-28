@@ -1,0 +1,15 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungViewModel
+
+<div class="formbuttons">
+    <div class="mainheader">@((bool)ViewData["showHeader"] ? @Model.StepBarHeader : "")</div>
+
+    <input class="submitbutton" type="button" value="@Model.StepNextButtonText" onclick="TryMoveToStep(1);">
+    @if (Model.StepExplicitNextButtonVisible)
+    {
+        <input class="submitbutton" type="button" value="@Model.StepExplicitNextButtonText" onclick="TryMoveNextExplicitToStep();">
+    }
+    <input class="button" type="button" value="@Model.StepPrevButtonText" onclick="TryMoveToStep(-1);">
+
+    <div class="clear"></div>
+</div>
+

@@ -1,0 +1,793 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6BA5C315-C345-40F7-A4BE-329C61E7E75C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>KBS</RootNamespace>
+    <AssemblyName>KBS</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>%24/Migration/CKAG2/KBS</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>http://vms047:8080/tfs/defaultcollection</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>KBS.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>KBS.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
+    <Reference Include="Aspose.Pdf, Version=3.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
+    <Reference Include="Aspose.Words, Version=4.2.2.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
+    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GAC\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Forms\Bestellung_Platinen.aspx" />
+    <Content Include="Forms\Change09_KBS.aspx" />
+    <Content Include="Forms\DownloadFile.aspx" />
+    <Content Include="Forms\Filialziele.aspx" />
+    <Content Include="Forms\Filialbuch.aspx" />
+    <Content Include="Forms\Feinstaubplakette.aspx" />
+    <Content Include="Forms\InfocenterNeuAdmin.aspx" />
+    <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\KVPBewertung.aspx" />
+    <Content Include="Forms\KVPSelection.aspx" />
+    <Content Include="Forms\KVPErfassung.aspx" />
+    <Content Include="Forms\Verpraegungsliste.aspx" />
+    <Content Include="Forms\MitarbeiterPostfach.htm" />
+    <Content Include="Forms\Report99.aspx" />
+    <Content Include="Forms\Report99_2.aspx" />
+    <Content Include="Forms\Versicherungsstatistik.aspx" />
+    <Content Include="GAC\ERPConnect35.dll" />
+    <Content Include="GAC\TimeRegistration.dll" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\arrow_refresh.png" />
+    <Content Include="Images\bin_closed.png" />
+    <Content Include="Images\bullet_green.png" />
+    <Content Include="Images\bullet_red.png" />
+    <Content Include="Images\bullet_yellow.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\DaumenHoch.png" />
+    <Content Include="Images\DaumenRunter.png" />
+    <Content Include="Images\delete01.jpg" />
+    <Content Include="Images\email.png" />
+    <Content Include="Images\email_go.png" />
+    <Content Include="Images\eye.png" />
+    <Content Include="Images\Filter.gif" />
+    <Content Include="Images\Gelber Kreis.png" />
+    <Content Include="Images\Gruener Kreis.png" />
+    <Content Include="Images\help.png" />
+    <Content Include="Images\information.png" />
+    <Content Include="Images\jpg-file.png" />
+    <Content Include="Images\JQuery\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Images\JQuery\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Images\JQuery\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Images\JQuery\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Images\JQuery\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Images\JQuery\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Images\JQuery\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Images\JQuery\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Images\JQuery\ui-icons_222222_256x240.png" />
+    <Content Include="Images\JQuery\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Images\JQuery\ui-icons_454545_256x240.png" />
+    <Content Include="Images\JQuery\ui-icons_888888_256x240.png" />
+    <Content Include="Images\JQuery\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Images\lock.png" />
+    <Content Include="Images\new.png" />
+    <Content Include="Images\Papierkorb_01.gif" />
+    <Content Include="Images\Pfeil_Ablegen_02.jpg" />
+    <Content Include="Images\Pfeil_nachrechts.jpg" />
+    <Content Include="Images\redwarn.jpg" />
+    <Content Include="Images\Roter Kreis.png" />
+    <Content Include="Images\Gruener Smiley.png" />
+    <Content Include="Images\lupe_01.gif" />
+    <Content Include="Images\queryArrow.gif" />
+    <Content Include="Images\Star02_06.jpg" />
+    <Content Include="Images\TabBig1.png" />
+    <Content Include="Images\TabBig2.png" />
+    <Content Include="Images\TabBig2Dark.png" />
+    <Content Include="Images\TabBig3.png" />
+    <Content Include="Images\TabSelectedLeft2.png" />
+    <Content Include="Images\TabUnselectedLeft.png" />
+    <Content Include="Images\TabUnselectedLeft2.png" />
+    <Content Include="Images\Unfilter.gif" />
+    <Content Include="Java\jquery-1.8.3.min.js" />
+    <Content Include="Java\jquery-ui-1.9.2.custom.min.js" />
+    <Content Include="Java\jquery.ui.datepicker-de.min.js" />
+    <Content Include="Java\jquery.ui.dialog.min.js" />
+    <Content Include="Login.aspx" />
+    <Content Include="controls\KBSMenue.ascx" />
+    <Content Include="Selection.aspx" />
+    <Content Include="Styles\jquery-ui-1.9.2.custom.min.css" />
+    <Content Include="Styles\jquery-ui.css" />
+    <Content Include="Styles\jquery.ui.datepicker.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Zeiterfassung\PDFZeitnachweise.aspx" />
+    <Content Include="Zeiterfassung\PrintZeitübersicht.aspx" />
+    <Content Include="Zeiterfassung\Zeiterfassung.aspx" />
+    <Content Include="Zeiterfassung\ÜbersichtZeiten.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="controls\GridNavigation.ascx.designer.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controls\GridNavigation.ascx.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DocumentGeneration\AbstractDocumentFactory.vb" />
+    <Compile Include="DocumentGeneration\DataTableMailMergeSource.vb" />
+    <Compile Include="DocumentGeneration\ExcelDocumentFactory.vb" />
+    <Compile Include="DocumentGeneration\WordDocumentFactory.vb" />
+    <Compile Include="Forms\AdminTool.aspx.designer.vb">
+      <DependentUpon>AdminTool.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AdminTool.aspx.vb">
+      <DependentUpon>AdminTool.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\AdminToolDetail.aspx.designer.vb">
+      <DependentUpon>AdminToolDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AdminToolDetail.aspx.vb">
+      <DependentUpon>AdminToolDetail.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Bestellung_Platinen.aspx.designer.vb">
+      <DependentUpon>Bestellung_Platinen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Bestellung_Platinen.aspx.vb">
+      <DependentUpon>Bestellung_Platinen.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change02.aspx.designer.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change02.aspx.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change02_1.aspx.designer.vb">
+      <DependentUpon>Change02_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change02_1.aspx.vb">
+      <DependentUpon>Change02_1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change03.aspx.designer.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change03.aspx.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change04.aspx.designer.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change04.aspx.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change05.aspx.designer.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change05.aspx.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06.aspx.designer.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change06.aspx.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07.aspx.designer.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change07.aspx.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change08.aspx.designer.vb">
+      <DependentUpon>Change08.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change08.aspx.vb">
+      <DependentUpon>Change08.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09.aspx.designer.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09.aspx.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09_1.aspx.designer.vb">
+      <DependentUpon>Change09_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09_1.aspx.vb">
+      <DependentUpon>Change09_1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09_2.aspx.designer.vb">
+      <DependentUpon>Change09_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09_2.aspx.vb">
+      <DependentUpon>Change09_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09_3.aspx.designer.vb">
+      <DependentUpon>Change09_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09_3.aspx.vb">
+      <DependentUpon>Change09_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change09_KBS.aspx.designer.vb">
+      <DependentUpon>Change09_KBS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change09_KBS.aspx.vb">
+      <DependentUpon>Change09_KBS.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change10.aspx.designer.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change10.aspx.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change11.aspx.designer.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change11.aspx.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change12.aspx.designer.vb">
+      <DependentUpon>Change12.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change12.aspx.vb">
+      <DependentUpon>Change12.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\DownloadFile.aspx.designer.vb">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DownloadFile.aspx.vb">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Filialziele.aspx.designer.vb">
+      <DependentUpon>Filialziele.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Filialziele.aspx.vb">
+      <DependentUpon>Filialziele.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Infocenter.aspx.designer.vb">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Infocenter.aspx.vb">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Infocenter_print.aspx.designer.vb">
+      <DependentUpon>Infocenter_print.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Infocenter_print.aspx.vb">
+      <DependentUpon>Infocenter_print.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Filialbuch.aspx.designer.vb">
+      <DependentUpon>Filialbuch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Filialbuch.aspx.vb">
+      <DependentUpon>Filialbuch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Feinstaubplakette.aspx.designer.vb">
+      <DependentUpon>Feinstaubplakette.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Feinstaubplakette.aspx.vb">
+      <DependentUpon>Feinstaubplakette.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\InfocenterNeuAdmin.aspx.designer.vb">
+      <DependentUpon>InfocenterNeuAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InfocenterNeuAdmin.aspx.vb">
+      <DependentUpon>InfocenterNeuAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\InfocenterNeu.aspx.designer.vb">
+      <DependentUpon>InfocenterNeu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InfocenterNeu.aspx.vb">
+      <DependentUpon>InfocenterNeu.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\KVPBewertung.aspx.designer.vb">
+      <DependentUpon>KVPBewertung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KVPBewertung.aspx.vb">
+      <DependentUpon>KVPBewertung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\KVPSelection.aspx.designer.vb">
+      <DependentUpon>KVPSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KVPSelection.aspx.vb">
+      <DependentUpon>KVPSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\KVPErfassung.aspx.designer.vb">
+      <DependentUpon>KVPErfassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KVPErfassung.aspx.vb">
+      <DependentUpon>KVPErfassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Verpraegungsliste.aspx.designer.vb">
+      <DependentUpon>Verpraegungsliste.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Verpraegungsliste.aspx.vb">
+      <DependentUpon>Verpraegungsliste.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Printpdf.aspx.designer.vb">
+      <DependentUpon>Printpdf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Printpdf.aspx.vb">
+      <DependentUpon>Printpdf.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\PrintPDF2.aspx.designer.vb">
+      <DependentUpon>PrintPDF2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PrintPDF2.aspx.vb">
+      <DependentUpon>PrintPDF2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report01.aspx.designer.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report01.aspx.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report01_2.aspx.designer.vb">
+      <DependentUpon>Report01_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report01_2.aspx.vb">
+      <DependentUpon>Report01_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report99.aspx.designer.vb">
+      <DependentUpon>Report99.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report99.aspx.vb">
+      <DependentUpon>Report99.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report99_2.aspx.designer.vb">
+      <DependentUpon>Report99_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report99_2.aspx.vb">
+      <DependentUpon>Report99_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Versicherungsstatistik.aspx.designer.vb">
+      <DependentUpon>Versicherungsstatistik.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Versicherungsstatistik.aspx.vb">
+      <DependentUpon>Versicherungsstatistik.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\Bestellung.vb" />
+    <Compile Include="Lib\Einzahlungsbelege.vb" />
+    <Compile Include="Lib\ErrorHandlingClass.vb" />
+    <Compile Include="Lib\Filialbuch\Ausgang.vb" />
+    <Compile Include="Lib\Filialbuch\Eingang.vb" />
+    <Compile Include="Lib\Filialbuch\FilialbuchClass.vb" />
+    <Compile Include="Lib\Filialbuch\FilialbuchEntry.vb" />
+    <Compile Include="Lib\Filialbuch\Protokoll.vb" />
+    <Compile Include="Lib\Filialvergleich.vb" />
+    <Compile Include="Lib\InfoCenterData.vb" />
+    <Compile Include="Lib\Inventur.vb" />
+    <Compile Include="Lib\Kasse.vb" />
+    <Compile Include="Lib\KBS_BASE.vb" />
+    <Compile Include="Lib\ComCommon.vb" />
+    <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\KVP.vb" />
+    <Compile Include="Lib\Logging.vb" />
+    <Compile Include="Lib\LongStringToSap.vb" />
+    <Compile Include="Lib\offBestellungen.vb" />
+    <Compile Include="Lib\Platinen.vb" />
+    <Compile Include="Lib\Retoure.vb" />
+    <Compile Include="Lib\Umlagerung.vb" />
+    <Compile Include="Lib\Versicherungen.vb" />
+    <Compile Include="Lib\VersicherungsStatistiken.vb" />
+    <Compile Include="Lib\Wareneingangspruefung.vb" />
+    <Compile Include="Lib\Zentrallager.vb" />
+    <Compile Include="Login.aspx.designer.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="controls\KBSMenue.ascx.designer.vb">
+      <DependentUpon>KBSMenue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controls\KBSMenue.ascx.vb">
+      <DependentUpon>KBSMenue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Selection.aspx.designer.vb">
+      <DependentUpon>Selection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Selection.aspx.vb">
+      <DependentUpon>Selection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="KBS.Master.designer.vb">
+      <DependentUpon>KBS.Master</DependentUpon>
+    </Compile>
+    <Compile Include="KBS.Master.vb">
+      <DependentUpon>KBS.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Zeiterfassung\PDFZeitnachweise.aspx.designer.vb">
+      <DependentUpon>PDFZeitnachweise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zeiterfassung\PDFZeitnachweise.aspx.vb">
+      <DependentUpon>PDFZeitnachweise.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zeiterfassung\PrintZeitübersicht.aspx.designer.vb">
+      <DependentUpon>PrintZeitübersicht.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zeiterfassung\PrintZeitübersicht.aspx.vb">
+      <DependentUpon>PrintZeitübersicht.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zeiterfassung\Zeiterfassung.aspx.designer.vb">
+      <DependentUpon>Zeiterfassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zeiterfassung\Zeiterfassung.aspx.vb">
+      <DependentUpon>Zeiterfassung.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Zeiterfassung\ÜbersichtZeiten.aspx.designer.vb">
+      <DependentUpon>ÜbersichtZeiten.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zeiterfassung\ÜbersichtZeiten.aspx.vb">
+      <DependentUpon>ÜbersichtZeiten.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DocumentGeneration\Aspose.Total.lic" />
+    <None Include="bin\Aspose.Total.lic" />
+    <None Include="Docs\Lastschrift\Baden-Wuerttemberg.pdf" />
+    <None Include="Docs\Lastschrift\Bayern.pdf" />
+    <None Include="Docs\Lastschrift\Berlin.pdf" />
+    <None Include="Docs\Lastschrift\Brandenburg.pdf" />
+    <None Include="Docs\Lastschrift\Bremen.pdf" />
+    <None Include="Docs\Lastschrift\Hamburg.pdf" />
+    <None Include="Docs\Lastschrift\Hessen.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern1.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern2.pdf" />
+    <None Include="Docs\Lastschrift\Niedersachsen.pdf" />
+    <None Include="Docs\Lastschrift\Nordrhein-Westfalen.pdf" />
+    <None Include="Docs\Lastschrift\Rheinland-Pfalz.pdf" />
+    <None Include="Docs\Lastschrift\Saarland.pdf" />
+    <None Include="Docs\Lastschrift\Sachsen.pdf" />
+    <None Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
+    <None Include="Docs\Lastschrift\Thueringen.pdf" />
+    <None Include="Vorlagen\BestellungOhneKZGroesse.doc" />
+    <None Include="Docs\Einzugsermächtigung_SEPA.pdf" />
+    <None Include="Vorlagen\Zeitübersicht.doc" />
+    <None Include="Inventur.cd" />
+    <None Include="Vorlagen\Bestellung.doc" />
+    <None Include="Docs\Einzugsermächtigung.pdf" />
+    <None Include="Docs\Einzugsermächtigung_nicht_Kroschke.pdf" />
+    <None Include="Vorlagen\Inventur.doc" />
+    <None Include="Vorlagen\InventurKonsi.doc" />
+    <None Include="Vorlagen\InventurLagerware.doc" />
+    <None Include="Vorlagen\Retoureschein.doc" />
+    <None Include="Vorlagen\RetourescheinADM.doc" />
+    <None Include="Vorlagen\Wechselgeld.doc" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="controls\GridNavigation.ascx" />
+    <Content Include="Forms\AdminTool.aspx" />
+    <Content Include="Forms\AdminToolDetail.aspx" />
+    <Content Include="Forms\Change01.aspx" />
+    <Content Include="Forms\Change02.aspx" />
+    <Content Include="Forms\Change02_1.aspx" />
+    <Content Include="Forms\Change03.aspx" />
+    <Content Include="Forms\Change04.aspx" />
+    <Content Include="Forms\Change05.aspx" />
+    <Content Include="Forms\Change06.aspx" />
+    <Content Include="Forms\Change07.aspx" />
+    <Content Include="Forms\Change08.aspx" />
+    <Content Include="Forms\Change09.aspx" />
+    <Content Include="Forms\Change09_1.aspx" />
+    <Content Include="Forms\Change09_2.aspx" />
+    <Content Include="Forms\Change09_3.aspx" />
+    <Content Include="Forms\Change10.aspx" />
+    <Content Include="Forms\Change11.aspx" />
+    <Content Include="Forms\Change12.aspx" />
+    <Content Include="Forms\Infocenter.aspx" />
+    <Content Include="Forms\Infocenter_print.aspx" />
+    <Content Include="Forms\Printpdf.aspx" />
+    <Content Include="Forms\PrintPDF2.aspx" />
+    <Content Include="Forms\Report01.aspx" />
+    <Content Include="Forms\Report01_2.aspx" />
+    <Content Include="GAC\AjaxControlToolkit.dll" />
+    <Content Include="GAC\Aspose.Cells.dll" />
+    <Content Include="GAC\Aspose.Pdf.dll" />
+    <Content Include="GAC\Aspose.Words.dll" />
+    <Content Include="GAC\itextsharp.dll" />
+    <Content Include="GAC\SmartSoft.PdfLibrary.dll" />
+    <Content Include="Images\backgroundImage.gif" />
+    <Content Include="Images\button.jpg" />
+    <Content Include="Images\buttonLarge.jpg" />
+    <Content Include="Images\buttonMiddle.jpg" />
+    <Content Include="Images\buttonXLarge.jpg" />
+    <Content Include="Images\buttonXXLarge.jpg" />
+    <Content Include="Images\Delete01_06.jpg" />
+    <Content Include="Images\edit_01.gif" />
+    <Content Include="Images\Fotos.jpg" />
+    <Content Include="Images\haken_gruen.gif" />
+    <Content Include="Images\header.jpg" />
+    <Content Include="Images\headerCK2.jpg" />
+    <Content Include="Images\headerKBS.jpg" />
+    <Content Include="Images\headerKBS2.jpg" />
+    <Content Include="Images\iconPDF.gif" />
+    <Content Include="Images\iconWORD.gif" />
+    <Content Include="Images\iconXLS.gif" />
+    <Content Include="Images\iepngfix.htc" />
+    <Content Include="Images\indicator.gif" />
+    <Content Include="Images\minus.gif" />
+    <Content Include="Images\Minus.jpg" />
+    <Content Include="Images\navi_grey.gif" />
+    <Content Include="Images\overflow.png" />
+    <Content Include="Images\overflowleftright.png" />
+    <Content Include="Images\overflowleftrightslow.png" />
+    <Content Include="Images\overflowNavigation.png" />
+    <Content Include="Images\overflowNavigationShadow.png" />
+    <Content Include="Images\overflowThead.png" />
+    <Content Include="Images\overflowThead2.png" />
+    <Content Include="Images\overflowupdown.png" />
+    <Content Include="Images\overflowUpsideDown.png" />
+    <Content Include="Images\Pfeil_Ablegen_01.jpg" />
+    <Content Include="Images\Plus.gif" />
+    <Content Include="Images\Plus.jpg" />
+    <Content Include="Images\RecycleBin.png" />
+    <Content Include="Images\Tab.gif" />
+    <Content Include="Images\Tab2.gif" />
+    <Content Include="Images\Tab_active.gif" />
+    <Content Include="Images\Tab_hover.gif" />
+    <Content Include="Images\top.gif" />
+    <Content Include="Java\JScript.js" />
+    <Content Include="KBS.Master" />
+    <Content Include="Styles\KBS.css" />
+    <Content Include="Styles\KBSIE6.css" />
+    <Content Include="Styles\default.css" />
+    <Content Include="Styles\defaultIE6.css" />
+    <Content Include="Styles\KBS_Logo.JPG" />
+    <Content Include="Styles\KBS_Logo2.jpg" />
+    <Content Include="Styles\KSS_logo.JPG" />
+    <Content Include="Styles\KSS_logo2.jpg" />
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Documents\Inventur\" />
+    <Folder Include="Documents\Retoure\" />
+    <Folder Include="Documents\Umlagerung\" />
+    <Folder Include="Documents\Verpraegungsliste\" />
+    <Folder Include="Documents\Wechselgeld\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Work\CKG\TimeRegistration\TimeRegistration\TimeRegistration.csproj">
+      <Project>{D92A9F89-3848-4136-8FF6-39E8EA641BA3}</Project>
+      <Name>TimeRegistration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\++Projekte\PM_Common_Functions\PM_Common_Functions\PM_Common_Functions.csproj">
+      <Project>{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}</Project>
+      <Name>PM_Common_Functions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CKG\SapExecutor\SapExecutor.csproj">
+      <Project>{C209B8CE-195A-4C9D-9397-C3B63BE585F6}</Project>
+      <Name>SapExecutor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63468</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/KBS</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,39 @@
+﻿@model  CkgDomainLogic.Ueberfuehrung.Models.UploadFiles
+
+@Html.Partial("Partial/UiModelHiddensFor")
+@Html.HiddenFor(m => m.UploadGroupNames)
+@Html.HiddenFor(m => m.FahrtIndex)
+
+<table class="FormUploadTable">
+@for (var i = 0; i < Model.UploadGroupNameArray.Length; i++)
+{
+    <tr>
+        <td>
+            @Html.FormLabel(Model.UploadGroupNameArray[i], "FormLabelSmall")
+        </td>
+        <td>
+            @Html.FormTextBlockFor(m => m.UploadFileNameArray[i], cssClass : "TextBlock", labelCssClass: null, id : "friendlyUploadFileName_" + i)
+            @Html.FormAction("UploadFileRemove(" + i + ");", "removebutton", "Diese Datei entfernen!", "removeButton_" + i, hidden: true)
+        </td>
+        <td>
+            @(Html.Telerik().Upload()
+               .Name("attachments_" + i)
+               .Multiple(false)
+               .Localizable("de-DE")
+               .Async(async => async
+                                   .Save("UploadFilesSave", "Ueberfuehrung")
+                                   .SaveField("attachments")
+                                   //.Remove("UploadFilesRemove", "Ueberfuehrung")
+                                   .AutoUpload(true))
+               .Multiple(false)
+               .ClientEvents(events => events
+                                           .OnUpload("UploadStart")
+                                           .OnSuccess("UploadFinished")
+                                           .OnError("UploadError")
+               //.OnComplete("UploadComplete")
+               ).HtmlAttributes(new {@class = "FormFileUpload"})
+              )
+        </td>
+    </tr>
+}
+</table>

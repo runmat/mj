@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "appQM", "appQM.vbproj", "{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Portal", "..\..\Portal.vbproj", "{30A2EB24-1053-4213-A502-DC1534F4D73E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\..\..\Work\BtBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtBaseMvc", "..\..\..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj", "{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\Portal.vbproj
+		SccProjectName1 = ../../portal
+		SccLocalPath1 = ..\\..
+		SccProjectUniqueName2 = appQM.vbproj
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\BtBase\\Base.vbproj
+		SccProjectName3 = ../../../Work/BtBase
+		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\BtBase
+		SccProjectUniqueName4 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc\\BtBaseMvc.csproj
+		SccProjectName4 = ../../../Work/BtBase/BtBaseMvc/BtBaseMvc
+		SccLocalPath4 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A23884D4-4F16-4C8F-AD98-C2EC1DDCF4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A2EB24-1053-4213-A502-DC1534F4D73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

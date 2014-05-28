@@ -1,0 +1,177 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.FehlteilEtikettenViewModel 
+
+<h3 class="page-title">Fehlteiletiketten <small>CSV Upload</small></h3>
+
+<div class="portlet app-view">
+
+    @Html.FormWizard("icon-arrow-up", "", new[] { "CSV Datei hochladen", "Daten überprüfen", "Fertig!" })
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("FehlteilEtikettenCsvUpload/FileUpload")
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var _formWizardForceHideSubmitButton = false;
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        FormWizardInitPrivate();
+    }
+    
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(false);
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+            if (step == 2 && _formWizardForceHideSubmitButton)
+                FormWizard.ButtonSubmitShow(false);
+            return true;
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            if (step == 1)
+                FormWizard.ActionsShow(false);
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            SubmitUpload();
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            location.reload();
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $(".t-status").hide();
+    }
+
+    function UploadStart(e) {
+
+        // clear only the UI of our Upload Control:
+        //$(this).children(".t-upload-files").remove();
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+                
+        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
+            alert('@Localize.FileUploadLegalFileTypesWarning');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();      
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(false);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+    }
+
+    function ShowGrid() {
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadShowGrid",
+            data: { showErrorsOnly: false },
+            loadingShow: false,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+            }
+        });
+    }
+
+    var _gridValidationErrorsAvailable = false;
+
+    function GridOnDataBound(e) {
+        //alert(_gridValidationErrorsAvailable);
+        FormWizard.ButtonSubmitShow(!_gridValidationErrorsAvailable);
+        _gridValidationErrorsAvailable = false;
+    }
+
+    function GridRowOnDataBound(e) {
+
+        var grid = $("#GridCsvUploadEntities").data('tGrid');
+
+        if (parseInt(e.dataItem["ID"], 10) % 2 == 0) {
+            $(e.row).addClass((e.dataItem["ValidationErrors"] !== '') ? "grid-rowError" : "grid-rowOk");
+        } else {
+            $(e.row).addClass((e.dataItem["ValidationErrors"] !== '') ? "grid-rowErrorAlt" : "grid-rowOkAlt");
+        }
+
+        if (e.dataItem["ValidationErrors"] !== '') {
+
+            _gridValidationErrorsAvailable = true;
+            //alert(e.dataItem["ValidationErrors"] + " - " + _gridValidationErrorsAvailable);
+
+            //$(e.row).css("background-color", "#f2dede");
+            for (var i = 0; i < grid.columns.length; i++) {
+                if (e.dataItem["ValidationErrors"].indexOf(grid.columns[i].member) != -1) {
+                    $(e.row.cells[i]).addClass("grid-cellError");
+                }
+            }
+        }
+    }
+
+    function FilterGrid(showErrorsOnly) {
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadShowGrid",
+            data: { showErrorsOnly: showErrorsOnly },
+            loadingShow: true,
+            success: function (result) {
+                FormWizard.SetTabHtml(2, result);
+                FormPreparePrivateAjax();
+            }
+        });
+    }
+    
+    function UploadItemsShowErrorsOnlyChanged(cb) {
+        FilterGrid(cb.is(':checked'));
+    }
+
+    function SubmitUpload() {
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadSubmit",
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(3, result);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+            }
+        });
+    }
+
+</script>

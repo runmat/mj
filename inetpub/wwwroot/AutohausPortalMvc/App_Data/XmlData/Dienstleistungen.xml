@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfDienstleistung xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000005</DienstleistungsID>
+    <Name>Fahrzeugaußenwäsche</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000007</DienstleistungsID>
+    <Name>Tanken (1/4 Füllung)</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>650</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000008</DienstleistungsID>
+    <Name>Rote Kennzeichen</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>700</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000009</DienstleistungsID>
+    <Name>Vorholung Fahrzeug</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>750</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000011</DienstleistungsID>
+    <Name>Reifenwechsel</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>800</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000010</DienstleistungsID>
+    <Name>Winterreifen Handling</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>850</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000012</DienstleistungsID>
+    <Name>Fremdachstransport (bundesweit)</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>900</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000014</DienstleistungsID>
+    <Name>Innenreinigung</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000015</DienstleistungsID>
+    <Name>Übergabe Boardbuch</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>950</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000016</DienstleistungsID>
+    <Name>Übergabe Leasingausweis</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>1000</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000017</DienstleistungsID>
+    <Name>Fleet Monitor / Einholung e-Mail Adr.</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000019</DienstleistungsID>
+    <Name>Expressauslieferung</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>1050</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000020</DienstleistungsID>
+    <Name>Samstagsauslieferung oder Abholung</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>1100</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000021</DienstleistungsID>
+    <Name>Führerscheinkontrolle Fahrzeugführer</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000018</DienstleistungsID>
+    <Name>Erstellen Fotos Standard (5)</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>1150</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000024</DienstleistungsID>
+    <Name>Erstellen Fotos (8 Stück)</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000025</DienstleistungsID>
+    <Name>Mietvertrag abzeichnen lassen</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis>1200</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000013</DienstleistungsID>
+    <Name>Protokoll sofort per FAX / E-Mail</Name>
+    <TransportTyp>1</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000005</DienstleistungsID>
+    <Name>Fahrzeugaußenwäsche</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1250</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000007</DienstleistungsID>
+    <Name>Tanken (1/4 Füllung)</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1300</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000008</DienstleistungsID>
+    <Name>Rote Kennzeichen</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1350</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000009</DienstleistungsID>
+    <Name>Vorholung Fahrzeug</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1400</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000011</DienstleistungsID>
+    <Name>Reifenwechsel</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1450</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000010</DienstleistungsID>
+    <Name>Winterreifen Handling</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1500</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000012</DienstleistungsID>
+    <Name>Fremdachstransport (bundesweit)</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1550</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000014</DienstleistungsID>
+    <Name>Innenreinigung</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1600</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000015</DienstleistungsID>
+    <Name>Übergabe Boardbuch</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1650</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000016</DienstleistungsID>
+    <Name>Übergabe Leasingausweis</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1700</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000017</DienstleistungsID>
+    <Name>Fleet Monitor / Einholung e-Mail Adr.</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000019</DienstleistungsID>
+    <Name>Expressauslieferung</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1750</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000020</DienstleistungsID>
+    <Name>Samstagsauslieferung oder Abholung</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1800</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000021</DienstleistungsID>
+    <Name>Führerscheinkontrolle Fahrzeugführer</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000018</DienstleistungsID>
+    <Name>Erstellen Fotos Standard (5)</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1850</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000024</DienstleistungsID>
+    <Name>Erstellen Fotos (8 Stück)</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000025</DienstleistungsID>
+    <Name>Mietvertrag abzeichnen lassen</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis>1900</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000013</DienstleistungsID>
+    <Name>Protokoll sofort per FAX / E-Mail</Name>
+    <TransportTyp>2</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000005</DienstleistungsID>
+    <Name>Fahrzeugaußenwäsche</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>1950</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000007</DienstleistungsID>
+    <Name>Tanken (1/4 Füllung)</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2000</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000008</DienstleistungsID>
+    <Name>Rote Kennzeichen</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2050</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000009</DienstleistungsID>
+    <Name>Vorholung Fahrzeug</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2100</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000011</DienstleistungsID>
+    <Name>Reifenwechsel</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2150</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000010</DienstleistungsID>
+    <Name>Winterreifen Handling</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2200</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000012</DienstleistungsID>
+    <Name>Fremdachstransport (bundesweit)</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2250</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000013</DienstleistungsID>
+    <Name>Protokoll sofort per FAX / E-Mail</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2300</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000014</DienstleistungsID>
+    <Name>Innenreinigung</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2350</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000017</DienstleistungsID>
+    <Name>Fleet Monitor / Einholung e-Mail Adr.</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000018</DienstleistungsID>
+    <Name>Erstellen Fotos Standard (5)</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis xsi:nil="true" />
+    <SapFlagVwAG>X</SapFlagVwAG>
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000019</DienstleistungsID>
+    <Name>Expressauslieferung</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2400</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000020</DienstleistungsID>
+    <Name>Samstagsauslieferung oder Abholung</Name>
+    <TransportTyp>3</TransportTyp>
+    <Preis>2450</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000005</DienstleistungsID>
+    <Name>Fahrzeugaußenwäsche</Name>
+    <TransportTyp>4</TransportTyp>
+    <Preis>2500</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000007</DienstleistungsID>
+    <Name>Tanken (1/4 Füllung)</Name>
+    <TransportTyp>4</TransportTyp>
+    <Preis>2550</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000019</DienstleistungsID>
+    <Name>Expressauslieferung</Name>
+    <TransportTyp>4</TransportTyp>
+    <Preis>2600</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000014</DienstleistungsID>
+    <Name>Innenreinigung</Name>
+    <TransportTyp>4</TransportTyp>
+    <Preis>2650</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000005</DienstleistungsID>
+    <Name>Fahrzeugaußenwäsche</Name>
+    <TransportTyp>5</TransportTyp>
+    <Preis>2700</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000007</DienstleistungsID>
+    <Name>Tanken (1/4 Füllung)</Name>
+    <TransportTyp>5</TransportTyp>
+    <Preis>2750</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000019</DienstleistungsID>
+    <Name>Expressauslieferung</Name>
+    <TransportTyp>5</TransportTyp>
+    <Preis>2800</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+  <Dienstleistung>
+    <DienstleistungsID>000000000003000014</DienstleistungsID>
+    <Name>Innenreinigung</Name>
+    <TransportTyp>5</TransportTyp>
+    <Preis>2850</Preis>
+    <SapFlagVwAG />
+  </Dienstleistung>
+</ArrayOfDienstleistung>

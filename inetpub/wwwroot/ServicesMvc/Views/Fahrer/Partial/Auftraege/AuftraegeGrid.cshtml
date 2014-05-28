@@ -1,0 +1,20 @@
+﻿@using CkgDomainLogic.Fahrer.Models
+@{
+    var gridName = "GridAuftraege";
+}
+
+@(Html.Telerik()
+    .Grid<FahrerAuftrag>()
+    .Name(gridName)
+    .XGroup("GridAuftraegeModel")
+
+    .XAjaxDataBinding("FahrerAuftraegeAjaxBinding", "Fahrer")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.WunschLieferDatum).Ascending())
+    .XToolBar("Fahrer")
+    .Groupable(g => g.Enabled(false))
+)
+

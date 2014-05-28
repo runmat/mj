@@ -1,0 +1,148 @@
+﻿@using CkgDomainLogic.CoC.Models
+@using CkgDomainLogic.CoC.Services
+@model CocEntity
+
+@using (Html.BeginDiv(id: MvcAjaxOptions.AjaxFormContainerName))
+{
+    using (Ajax.BeginForm("CocDetailsFormSave", "CoC", null, new MvcAjaxOptions { OnComplete = "CocDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal form-bordered form-row-stripped", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.IsCocOrder)
+        @Html.HiddenFor(m => m.KUNNR)
+        @Html.HiddenFor(m => m.VORG_NR)
+        @Html.HiddenFor(m => m.AUFTRAG_DAT)
+        @Html.HiddenFor(m => m.ERDAT)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+
+        @Html.HiddenFor(m => m.DuplicateVinOccured)
+        @Html.HiddenFor(m => m.DuplicateVinIgnoreOnSaving)
+
+        <div class="form-actions no-margin">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="CloseCocItemDetails();">Abbrechen</button>
+            
+            @if (Model.IsCocOrder)
+            {
+                <span class="margin-left-15 label label-info">
+                    @Html.SimpleFormCheckBoxInlineFor(m => m.CocOrderHideCocTypenProperties, new { onclick = "OnCocOrderHideCocTypenPropertiesChanged();" }, "")
+                </span>
+            }
+        </div>
+
+        @Html.FormValidationSummaryResponsive(CocTypenLayoutService.GetResponsiveValidationErrorUrl)
+
+            if (Model.CocOrderHideCocTypenProperties)
+            {
+            <ul class="breadcrumb">
+                <li>
+                    Typ Kombination: 
+                </li>
+                <li>
+                    <strong>@Model.COC_0_2_TYP</strong>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <strong>@Model.COC_0_2_VAR</strong>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <strong>@Model.COC_0_2_VERS</strong>
+                </li>
+            </ul>
+            }
+
+            foreach (var group in CocTypenLayoutService.Groups)
+            {
+            <div class="control-group @Model.GetControlGroupCssClass(group)" id="@group.GroupNameAsID">
+
+                <label class="control-label"><span class="sbig sbold">@group.GroupFriendlyName</span><span class="sbold">@group.GroupLabel</span></label>
+                <div class="controls">
+                
+                    @foreach (var prop in group.AllPropertiesOfThisGroup)
+                    {
+                        if (prop.IsBoolean)
+                        {
+                            <label class="checkbox no-break-container">
+                                <span class="help-inline left">@prop.Label</span>
+                                @if (Model.IsReadonly(group))
+                                {
+                                    @Html.Hidden(prop.Name)
+                                }
+                                @Html.CheckBox(@prop.Name, new { }.DisabledIf(Model.IsReadonly(group)))
+                                @prop.Measure
+                            </label>
+                        }
+                        else if (prop.SelectOptionsAvailable)
+                        {
+                            <span class="help-inline left"></span>
+                            foreach (var selectListOption in prop.SelectOptions.ToSelectList())
+                            {
+                                <label class="checkbox no-break-container">
+                                    @if (Model.IsReadonly(group))
+                                    {
+                                        @Html.Hidden(prop.Name)
+                                    }
+                                    @Html.RadioButton(prop.Name, selectListOption.Value, new { }.DisabledIf(Model.IsReadonly(group)))
+                                    @selectListOption.Text
+                                    @prop.Measure
+                                </label>
+                            }
+                        }
+                        else
+                        {
+                            <div class="no-break-container">
+                                <span class="help-inline left">@prop.Label</span>
+                                <span class="@prop.WrapperCssClass">
+                                    @if (prop.MultiLine)
+                                    {
+                                        @Html.TextArea(@prop.Name, null, new { @class = "m-wrap xxlarge", maxlength = prop.MaxLength, rows = prop.MultiLineRows }
+                                            .ReadonlyIf(Model.IsReadonly(group)))
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox(@prop.Name, null, prop.Format, new { @class = "m-wrap small", maxlength = prop.MaxLength }
+                                            .ReadonlyIf(Model.IsReadonly(group)))
+                                        if (@prop.IsDateTime)
+                                        {
+                                            <span class="add-on"><i class="icon-calendar"></i></span>
+                                        }
+                                    }
+                                </span>
+                                <span class="help-inline">@prop.Measure</span>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+            }
+
+        @Html.FormValidationSummaryResponsive(CocTypenLayoutService.GetResponsiveValidationErrorUrl)
+
+        <div class="form-actions no-margin">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="CloseCocItemDetails();">Abbrechen</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+            _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+            _modelIsCocOrder = @Model.IsCocOrder.ToString().ToLower();
+
+            _modelDuplicateVinOccured = @Model.DuplicateVinOccured.ToString().ToLower();
+            _modelDuplicateVinIgnoreOnSaving = @Model.DuplicateVinIgnoreOnSaving.ToString().ToLower();
+
+            $("#VIN").css("text-transform", "uppercase");
+            
+            function OnCocOrderHideCocTypenPropertiesChanged() {
+                //alert(cb.is(":checked"));
+                $("#NoSaveButUiRefreshOnly").val(true);
+                $("#ajaxForm").submit();
+            }
+        </script>
+    }
+}
+
+
+

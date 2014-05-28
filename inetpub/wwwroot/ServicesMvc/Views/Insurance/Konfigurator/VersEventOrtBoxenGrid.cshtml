@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@{
+    var gridName = "VersEventOrtBoxGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID" class="VersEventSubGrid">
+    @(Html.Telerik()
+        .Grid<VersEventOrtBox>()
+        .Name(gridName)
+
+        .XAjaxDataBinding("VersEventOrtBoxAjaxBinding", "Insurance")
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                           "<button onclick='TryVersEventOrtBoxEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.VersEventLocationBoxEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                           + "&nbsp;"
+                           + "<button onclick='VersEventOrtBoxDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventLocationBoxDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                    )
+                    .HeaderTemplate(
+                        "<button onclick='TryVersEventOrtBoxCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventLocationBoxAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                    );
+                //columns.XBoundAllExcept(c => c.ID);
+                columns.XBound(c => c.BoxNr);
+                columns.XBound(c => c.BoxName);
+                columns.XBound(c => c.BoxArtAsText);
+                columns.XBound(c => c.VersicherungID);
+                columns.XBound(c => c.VersicherungName);
+                columns.XBound(c => c.TechnikerName);
+                columns.XBound(c => c.TaktungMinuten);
+            })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.BoxNr).Ascending())
+        .XToolBar("Insurance")
+    )
+</div>

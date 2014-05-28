@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="CarDocu.UserControls.DocuGroup.ucAllScanDocus"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+            <TextBlock Text="Modus:" Margin="0,0,25,0" Style="{StaticResource lbHeaderBig}" Visibility="Collapsed" />
+            <RadioButton IsChecked="{Binding ModeScanItems}" GroupName="ListMode" Margin="0,0,30,0" ToolTip="Listet alle bisher erfassten Scan-Dokumente">
+                <RadioButton.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter Content="{StaticResource image/16x16/note}" Margin="5,0,0,0" />
+                            <TextBlock Text="Scan Dokumente" Margin="5,0,0,0" Style="{StaticResource lbHeaderBig}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </RadioButton.ContentTemplate>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding ModeTemplateItems}" GroupName="ListMode" Margin="0,0,30,0" ToolTip="Listet alle verfügbaren Vorlagen">
+                <RadioButton.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter Content="{StaticResource image/16x16/paperclip}" Margin="5,0,0,0" />
+                            <TextBlock Text="Vorlagen" Margin="5,0,0,0" Style="{StaticResource lbHeaderBig}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </RadioButton.ContentTemplate>
+            </RadioButton>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+            <ContentPresenter Content="{StaticResource image/48x48/note}" Visibility="{Binding ModeScanItems, Converter={StaticResource BooleanVisibilityConverter}}"  />
+            <ContentPresenter Content="{StaticResource image/48x48/paperclip}" Visibility="{Binding ModeTemplateItems, Converter={StaticResource BooleanVisibilityConverter}}" />
+            <TextBlock Text="{Binding Header}" Style="{StaticResource lbHeaderBig}" VerticalAlignment="Center" Margin="20,0,0,0" />
+        </StackPanel>
+
+        <StackPanel Visibility="{Binding ItemsAvailable, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+            <TextBlock Foreground="Gray" Text="Bisher keine Dokumente erfasst." />
+        </StackPanel>
+
+        <StackPanel Visibility="{Binding ItemsAvailable, Converter={StaticResource BooleanVisibilityConverter}}">
+            <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Style="{StaticResource GradientDataGrid}" MaxHeight="600">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="E-Mail" Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Visibility="{Binding }">
+                                    <Button Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/32x16/email_sendout}"
+                                            ToolTip="Dieses Dokument jetzt erneut als PDF per E-Mail versenden!" Command="{Binding EmailSendoutAgainCommand}" Margin="5,0,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="ID" Binding="{Binding FinNumber}" Width="200" />
+                    <DataGridTemplateColumn Visibility="Collapsed" Header="Seiten" Width="45">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ScanImagesCount, StringFormat={}{0}}" HorizontalAlignment="Right" Margin="0,0,10,0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Erstellt am" Binding="{Binding CreateDate, StringFormat='dd.MM.yyyy HH:mm'}" Width="120" />
+                    <DataGridTextColumn Header="von" Binding="{Binding CreateUser}" Width="180" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

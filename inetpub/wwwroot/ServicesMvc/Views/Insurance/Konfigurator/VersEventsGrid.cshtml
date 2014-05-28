@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@{
+    var gridName = "VersEventGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID">
+    @(Html.Telerik()
+          .Grid<VersEvent>()
+          .Name(gridName)
+
+          .XAjaxDataBinding("VersEventAjaxBinding", "Insurance")
+          .Columns(columns =>
+              {
+                  columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                         .ClientTemplate(
+                             "<button onclick='VersEventEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.VersEventEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                             + "&nbsp;" +
+                             "<button onclick='VersEventDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                      )
+                         .HeaderTemplate(
+                             "<button onclick='VersEventCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                      );
+                  //columns.XBoundAllExcept(c => c.ID, c => c.Orte, c => c.EventOrteTemplateHtml);
+                  columns.XBound(c => c.ID);
+                  columns.XBound(c => c.EventName);
+                  columns.XBound(c => c.Region);
+                  columns.XBound(c => c.Kategorie);
+                  columns.XBound(c => c.FahrzeugVolumen);
+                  columns.XBound(c => c.StartDatum);
+              })
+          .XAutoColumnConfiguration()
+          .ClientEvents(events => events.XAutoClientEvents(gridName))
+          .XPageSize(10)
+          .XSort(sortOrder => sortOrder.Add(c => c.StartDatum).Descending())
+          .XToolBar("Insurance")
+    )
+</div>
+

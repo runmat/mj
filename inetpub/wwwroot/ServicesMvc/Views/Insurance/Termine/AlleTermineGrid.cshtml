@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Insurance.Models
+
+@{
+    var gridName = "AlleTermineGrid";
+    var divID = gridName + "Div";
+}
+
+<h5 class="hide">Alle Termine</h5>
+
+
+<div id="@divID" class="">
+    @(Html.Telerik()
+        .Grid<TerminSchadenfall>()
+        .Name(gridName)
+
+        .XAjaxDataBinding("AlleTermineAjaxBinding", "Insurance")
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.EventAsText);
+                columns.XBound(c => c.OrtAsText);
+                columns.XBound(c => c.BoxAsText);
+                columns.XBound(c => c.VersicherungName);
+                columns.XBound(c => c.SchadenfallKennzeichen);
+                columns.XBound(c => c.SchadenfallVorname);
+                columns.XBound(c => c.SchadenfallNachname);
+                columns.XBound(c => c.Datum);
+                columns.XBound(c => c.ZeitVon);
+                columns.XBound(c => c.ZeitBis);
+                columns.XBound(c => c.Bemerkung);
+                columns.XBound(c => c.AnlageDatum);
+                columns.XBound(c => c.AnlageUser);
+            })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DatumZeitVon).Descending())
+        .XToolBar("Insurance")
+    )
+</div>

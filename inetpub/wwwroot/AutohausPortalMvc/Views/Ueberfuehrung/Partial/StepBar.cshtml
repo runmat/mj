@@ -1,0 +1,29 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungViewModel
+
+<div id="@Model.StepBarID" class="stepbar">
+    <div class="step1">
+        <div class="inner">
+            @Model.GetStepBarHeaderForStep(1)
+        </div>
+    </div>
+    <div class="step2">
+        <div class="inner">
+            @Model.GetStepBarHeaderForStep(2)
+        </div>
+    </div>
+    <div class="step3">
+        <div class="inner">
+            @Model.GetStepBarHeaderForStep(3)
+        </div>
+    </div>
+    <div class="step4">
+        <div class="stepending">
+            <div class="inner">
+                @Model.GetStepBarHeaderForStep(4)
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+@Html.Partial("Partial/SubStepBar", Model.StepModel)

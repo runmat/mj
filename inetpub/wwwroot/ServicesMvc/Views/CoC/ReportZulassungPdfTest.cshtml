@@ -1,0 +1,114 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model CkgDomainLogic.CoC.ViewModels.CocReportsViewModel 
+
+<h3 class="page-title">Zulassungsstatus Fahrzeuge <small></small></h3>
+
+<div class="SForm SQuickForm margin-left-10">
+    <form id="filterForm" action="#" class="form-horizontal">
+        
+        @Html.SimpleFormCheckBoxFor(m => m.FilterNurAuftragsDatumGesetzt, new { onchange = "FilterNurAuftragsDatumGesetztChanged($(this));" }, iconCssClass: "")
+    
+        @Html.SimpleFormDateRangePickerFor(m => m.FilterNurAusliefDatumRange, Model.FilterAusliefDatumStart, Model.FilterAusliefDatumEnd, iconCssClass: "")
+        
+        @Html.SimpleFormDropDownListFor(m => m.FilterLand, Model.LaenderList, new { onchange = "FilterNurLandChanged($(this));" }, iconCssClass: "")
+    </form>
+</div>
+
+@(Html.Telerik()
+      .Grid<CocEntity>()
+      .Name("GridZulassungsAuftraege")
+      .DataBinding(dataBinding => dataBinding.Ajax().Select("ReportZulassungAjaxBinding", "CoC"))
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.ID).Title("").Filterable(false).Sortable(false).Visible(false);
+          columns.Bound(c => c.AUSLIEFER_DATUM).Format("{0:dd.MM.yy}");
+          columns.Bound(c => c.AUFTR_NR_KD);
+          columns.Bound(c => c.VIN);
+          columns.Bound(c => c.Hersteller);
+          columns.Bound(c => c.CodeTypeVersion);
+          columns.Bound(c => c.Color);
+          columns.Bound(c => c.ERDAT).Format("{0:dd.MM.yy}");
+          columns.Bound(c => c.AUFTRAG_DAT).Format("{0:dd.MM.yy}");
+          columns.Bound(c => c.LAND);
+          columns.Bound(c => c.VORG_NR).ClientTemplate("<a target='_blank' class='btn mini gray tooltips pdf a_btn_mini t-button' data-original-title='PDF Export' data-placement='right' href='/ServicesMvc/CoC/GetCocAsPdf?ag=<#= KUNNR #>&vorgangsnummer=<#= VORG_NR #>&vorlage=p' ></a>").Title("Preview");
+      })
+      
+            .Groupable(g => g.Enabled(true))
+            .Reorderable(r => r.Columns(true))
+            .Resizable(r => r.Columns(true))
+            .ColumnContextMenu()
+            
+      .Pageable(paging => paging.PageSize(10))
+      .Sortable(s => s.Enabled(true).OrderBy(sortOrder => sortOrder.Add(c => c.AUSLIEFER_DATUM).Descending()))
+          .ClientEvents(events => events.OnDataBound("GridCocItems_OnDataBound").OnColumnReorder("GridCocItems_OnColumnReorder"))
+      .ToolBar(commands =>
+      {
+          commands.FilteredDataCommand("ReportZulassungExportFilteredExcel", "CoC").HtmlAttributes(new { @class = "btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+          commands.FilteredDataCommand("ReportZulassungExportFilteredPDF", "CoC").HtmlAttributes(new { @class = "btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+      }))
+
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+        FormDateRangePickerPrepare_FilterNurAusliefDatumRange(
+            function (cb, start, end) {
+                FilterNurAusliefDatumRangeChanged(cb, start, end);
+            },
+            function (start, end) {
+                FilterGrid(null, null, start, end, null);
+            }
+        );
+
+    };
+
+    function GetGrid() {
+        return $("#GridZulassungsAuftraege").data("tGrid");
+    }
+
+    function GridRefresh() {
+        //GetGrid().ajaxRequest();
+        GetGrid().pageTo(1);
+    }
+
+    function GridCocItems_OnDataBound() {
+        FilteredData_Grid_OnDataBound($(this));
+        LoadingHide();
+    }
+
+    function GridCocItems_OnColumnReorder() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FilterNurAuftragsDatumGesetztChanged(cb) {
+        FilterGrid(cb.is(':checked'), null, null, null, null);
+    }
+
+    function FilterNurLandChanged(dropDown) {
+        FilterGrid(null, null, null, null, dropDown.val());
+    }
+
+    function FilterNurAusliefDatumRangeChanged(cb, start, end) {
+        FilterGrid(null, cb.is(':checked'), start, end, null);
+    }
+
+    function FilterGrid(nurAuftragsDatumGesetzt, nurAusliefDatumRange, ausliefDatumStart, ausliefDatumEnd, nurLand) {
+        $.ajax({
+            type: "POST",
+            url: "ReportZulassungFilterGrid",
+            data: {
+                nurAuftragsDatumGesetzt: nurAuftragsDatumGesetzt,
+                nurAusliefDatumRange: nurAusliefDatumRange,
+                ausliefDatumStart: ausliefDatumStart, 
+                ausliefDatumEnd: ausliefDatumEnd,
+                nurLand: nurLand
+            },
+            success: function (result) {
+                GridRefresh();
+            }
+        });
+    }
+
+</script>

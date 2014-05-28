@@ -1,0 +1,21 @@
+﻿@using PortalMvcTools.Web
+@model PortalMvcTools.Models.FormInnerLayerModel
+
+<div class="formlayer"> 
+    <div id="@Model.FormLayerTopID" class="formlayer_top" onclick="tryOpenforms(@Model.ID);">
+        @Html.ImgTransparent(width:1, height:1)
+        <div id="@Model.FormOpenerID" class="@Model.FormOpenerCssClass">
+            @Html.ImgTransparent()
+        </div>
+        <h2 @Html.Raw(Model.HeaderCssClass)>@Model.Header</h2>
+        <div id="@Model.FormValidationErrorDivID" class="errorcontainer" style="display: none;"><div class="inner"></div></div>
+    </div>
+    <div class="formlayer_plus" id="@Model.FormID">
+        <!--formularbereich1-->
+        <div class="formularbereich">
+        
+            @Html.EmptyDiv("formlayer_plus_top")
+
+            <div class="formlayer_plus_content">
+            
+                <div class="formulardaten">

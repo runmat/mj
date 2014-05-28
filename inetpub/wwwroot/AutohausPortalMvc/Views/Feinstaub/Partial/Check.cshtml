@@ -1,0 +1,63 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@using CkgDomainLogic.Feinstaub.Models
+@model FeinstaubCheckUI
+
+@{ var formID = 1; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+     using (Ajax.BeginForm("CheckFeinstaubVergabe", "Feinstaub", null,
+                           new MvcAjaxOptions(formID) { OnComplete = "CheckFeinstaubVergabeComplete();" }))
+     {
+         @Html.ValidationSummary()
+
+         @Html.FormTextBoxFor(m => m.Fahrzeugklasse, cssClass: "FormTextboxSmall", labelCssClass: "FormLabelNormalW", additionalHtmlAttributes: new Dictionary<string, object>() { { "maxlength", 4 } })
+         @Html.FormTextBlockFor(m => m.FahrzeugklasseHint, cssClass: "FormTextBlockUltraWide", labelCssClass: null)
+         @Html.FormNewLine()
+
+         @Html.FormTextBoxFor(m => m.CodeAufbau, cssClass: "FormTextboxSmall", labelCssClass: "FormLabelNormalW", additionalHtmlAttributes: new Dictionary<string, object>() { { "maxlength", 4 } })
+         @Html.FormTextBlockFor(m => m.CodeAufbauHint, cssClass: "FormTextBlockUltraWide", labelCssClass: null)
+         @Html.FormNewLine()
+
+         @Html.FormDropDownListFor(m => m.Kraftstoffcode, (ViewBag.Kraftstoffcodes as List<Domaenenfestwert>).ToSelectList("Wert", "BeschreibungMitWert"), cssClass: "FormDropdownMedium", labelCssClass: "FormLabelNormalW")
+         @Html.FormTextBlockFor(m => m.KraftstoffcodeHint, cssClass: "FormTextBlockUltraWide top10", labelCssClass: null)    
+         @Html.FormNewLine()
+
+         @Html.FormTextBoxFor(m => m.Emissionsschluesselnummer, cssClass: "FormTextboxSmall", labelCssClass: "FormLabelNormalW", additionalHtmlAttributes: new Dictionary<string, object>() { { "maxlength", 2 } })
+         @Html.FormTextBlockFor(m => m.EmissionsschluesselnummerHint, cssClass: "FormTextBlockUltraWide", labelCssClass: null) 
+         @Html.FormNewLine()
+
+         @Html.FormTextBoxFor(m => m.KennzeichenTeil1, cssClass: "FormTextboxSmallS", labelCssClass: "FormLabelNormalW", additionalHtmlAttributes: new Dictionary<string, object>() { { "maxlength", 3 } })
+         @Html.FormLabel("-", cssClass: "top10")
+         @Html.FormTextBoxFor(m => m.KennzeichenTeil2, cssClass: "FormTextboxSmallW", labelCssClass: null, additionalHtmlAttributes: new Dictionary<string, object>() { { "maxlength", 6 } })
+         @Html.FormNewLine()
+
+         @Html.FormDivLinie()
+
+         <div class="floatLeft">
+             <input type="submit" value="Plakettenart ermitteln" class="submitbuttonLarge" />
+         </div>
+
+         <script type="text/javascript">
+             _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+         </script>
+     }
+}
+
+<script type="text/javascript">
+
+    function CheckFeinstaubVergabeComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            $.ajax({
+                type: "POST",
+                url: "ShowFeinstaubVergabe",
+                success: function (result) {
+                    ShowFeinstaubVergabe(result);
+                }
+            });
+        }
+    }
+
+</script>

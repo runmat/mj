@@ -1,0 +1,26 @@
+﻿@using MvcTools.Models
+@model FormHintModel
+
+<div class="alert @Model.CssClass">
+    @if (Model.Title.IsNotNullOrEmpty())
+    {
+        <span class="label label-important margin-right-5">
+            <img src="~/Images/icons/icon-bell-white.png" /><span> @Model.TitleAsHtml </span> 
+        </span>
+    }
+    @Model.BodyAsHtml
+</div>
+
+@if (Model.HintMode == FormHintModel.Mode.Error)
+{
+    <script type="text/javascript"> var _formErrorHint = true;  </script>    
+}
+
+@if (Model.HintMode == FormHintModel.Mode.Success)
+{
+    <script type="text/javascript"> var _formSuccessHint = true;  </script>    
+}
+
+@if (Model.HintMode == FormHintModel.Mode.Info)
+{    <script type="text/javascript"> var _formInfoHint = true;  </script>    
+}

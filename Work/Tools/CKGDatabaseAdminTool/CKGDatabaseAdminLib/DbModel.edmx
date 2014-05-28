@@ -1,0 +1,913 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CKGDatabaseAdminLib.DbEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="CKGDatabaseAdminLibDbEntitiesStoreContainer">
+          <EntitySet Name="Application" EntityType="CKGDatabaseAdminLib.DbEntities.Store.Application" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ApplicationField" EntityType="CKGDatabaseAdminLib.DbEntities.Store.ApplicationField" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ApplicationType" EntityType="CKGDatabaseAdminLib.DbEntities.Store.ApplicationType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="BapiToReport" EntityType="CKGDatabaseAdminLib.DbEntities.Store.BapiToReport" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Customer" EntityType="CKGDatabaseAdminLib.DbEntities.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomerRights" EntityType="CKGDatabaseAdminLib.DbEntities.Store.CustomerRights" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Language" EntityType="CKGDatabaseAdminLib.DbEntities.Store.Language" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LoginUserMessage" EntityType="CKGDatabaseAdminLib.DbEntities.Store.LoginUserMessage" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="WebGroup" EntityType="CKGDatabaseAdminLib.DbEntities.Store.WebGroup" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="WebUser" EntityType="CKGDatabaseAdminLib.DbEntities.Store.WebUser" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_ApplicationField_Customer" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_ApplicationField_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="ApplicationField" EntitySet="ApplicationField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationField_Customer2" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_ApplicationField_Customer2">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Customer1" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationField_Language" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_ApplicationField_Language">
+            <End Role="Language" EntitySet="Language" />
+            <End Role="ApplicationField" EntitySet="ApplicationField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Customer" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_Customer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Customer1" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerRights_Application" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_CustomerRights_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="CustomerRights" EntitySet="CustomerRights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerRights_Customer" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_CustomerRights_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerRights" EntitySet="CustomerRights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebGroup_Customer" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_WebGroup_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="WebGroup" EntitySet="WebGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUser_Customer" Association="CKGDatabaseAdminLib.DbEntities.Store.FK_WebUser_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="WebUser" EntitySet="WebUser" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AppName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AppFriendlyName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AppType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AppURL" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="AppInMenu" Type="bit" Nullable="false" />
+          <Property Name="AppComment" Type="varchar" MaxLength="150" />
+          <Property Name="AppParent" Type="int" Nullable="false" />
+          <Property Name="AppRank" Type="int" Nullable="false" />
+          <Property Name="AuthorizationLevel" Type="int" Nullable="false" />
+          <Property Name="BatchAuthorization" Type="bit" Nullable="false" />
+          <Property Name="LogDuration" Type="bit" Nullable="false" />
+          <Property Name="AppSchwellwert" Type="int" />
+          <Property Name="MaxLevel" Type="int" />
+          <Property Name="MaxLevelsPerGroup" Type="int" />
+          <Property Name="AppTechType" Type="varchar" MaxLength="20" />
+          <Property Name="AppDescription" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="ApplicationField">
+          <Key>
+            <PropertyRef Name="ApplicationFieldID" />
+          </Key>
+          <Property Name="AppURL" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="ApplicationFieldID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FieldType" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="FieldName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="LanguageID" Type="int" Nullable="false" />
+          <Property Name="Visibility" Type="bit" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="150" />
+          <Property Name="ToolTip" Type="varchar" MaxLength="150" />
+          <Property Name="GroupID" Type="int" />
+        </EntityType>
+        <EntityType Name="ApplicationType">
+          <Key>
+            <PropertyRef Name="AppType" />
+          </Key>
+          <Property Name="AppType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="DisplayName" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="ButtonPath" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="BapiToReport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="bigint" />
+          <Property Name="Kunnr" Type="varchar" MaxLength="10" />
+          <Property Name="Kundenbezeichnung" Type="varchar" MaxLength="50" />
+          <Property Name="AppID" Type="bigint" />
+          <Property Name="Freundlicher_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Technischer_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Pfad" Type="varchar" MaxLength="150" />
+          <Property Name="BAPI" Type="varchar" MaxLength="50" />
+          <Property Name="LastUse" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Customername" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="KUNNR" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="ReadDealer" Type="bit" Nullable="false" />
+          <Property Name="CName" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="CAddress" Type="varchar" Nullable="false" MaxLength="400" />
+          <Property Name="CMailDisplay" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CMail" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="CWebDisplay" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CWeb" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="Master" Type="bit" Nullable="false" />
+          <Property Name="NewPwdAfterNDays" Type="int" Nullable="false" />
+          <Property Name="LockedAfterNLogins" Type="int" Nullable="false" />
+          <Property Name="PwdNNumeric" Type="int" Nullable="false" />
+          <Property Name="PwdLength" Type="int" Nullable="false" />
+          <Property Name="PwdNCapitalLetters" Type="int" Nullable="false" />
+          <Property Name="PwdNSpecialCharacter" Type="int" Nullable="false" />
+          <Property Name="PwdHistoryNEntries" Type="int" Nullable="false" />
+          <Property Name="LogoPath" Type="varchar" MaxLength="150" />
+          <Property Name="CssPath" Type="varchar" MaxLength="150" />
+          <Property Name="AllowMultipleLogin" Type="bit" Nullable="false" />
+          <Property Name="DocuPath" Type="varchar" MaxLength="150" />
+          <Property Name="MaxUser" Type="int" Nullable="false" />
+          <Property Name="ShowOrganization" Type="bit" Nullable="false" />
+          <Property Name="OrgAdminRestrictToCustomerGroup" Type="bit" Nullable="false" />
+          <Property Name="LogoPath2" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="PwdDontSendEmail" Type="bit" Nullable="false" />
+          <Property Name="NameInputOptional" Type="bit" Nullable="false" />
+          <Property Name="Distrikte" Type="bit" />
+          <Property Name="ForcePasswordQuestion" Type="bit" Nullable="false" />
+          <Property Name="IpRestriction" Type="bit" Nullable="false" />
+          <Property Name="IpStandardUser" Type="varchar" MaxLength="50" />
+          <Property Name="AccountingArea" Type="int" />
+          <Property Name="SelfAdministration" Type="int" />
+          <Property Name="SelfAdministrationInfo" Type="varchar" MaxLength="200" />
+          <Property Name="Locked" Type="bit" />
+          <Property Name="KundePostfach" Type="char" MaxLength="100" />
+          <Property Name="KundeHotline" Type="char" MaxLength="100" />
+          <Property Name="KundeFax" Type="char" MaxLength="100" />
+          <Property Name="DaysUntilLock" Type="int" />
+          <Property Name="DaysUntilDelete" Type="int" />
+          <Property Name="TVShow" Type="bit" />
+          <Property Name="UserDontSendEmail" Type="bit" />
+          <Property Name="LoginLinkID" Type="int" />
+          <Property Name="HeaderBackgroundPath" Type="varchar" MaxLength="260" />
+          <Property Name="AllowUrlRemoteLogin" Type="bit" />
+          <Property Name="SelfAdministrationContact" Type="varchar" MaxLength="400" />
+          <Property Name="PortalType" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="CustomerRights">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="AppID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BrowserLanguage" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="LanguageDiscription" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LoginUserMessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="ShowMessageFrom" Type="datetime" />
+          <Property Name="ShowMessageTo" Type="datetime" />
+          <Property Name="LockLoginFrom" Type="datetime" />
+          <Property Name="LockLoginTo" Type="datetime" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="LockForProd" Type="bit" Nullable="false" />
+          <Property Name="LockForTest" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebGroup">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="DocuPath" Type="varchar" MaxLength="150" />
+          <Property Name="Authorizationright" Type="int" Nullable="false" />
+          <Property Name="IsCustomerGroup" Type="bit" Nullable="false" />
+          <Property Name="StartMethod" Type="varchar" MaxLength="100" />
+          <Property Name="Message" Type="nvarchar" MaxLength="1500" />
+          <Property Name="MaxReadMessageCount" Type="int" Nullable="false" />
+          <Property Name="TVShow" Type="bit" />
+          <Property Name="IsServiceGroup" Type="bit" />
+        </EntityType>
+        <EntityType Name="WebUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerAdmin" Type="bit" Nullable="false" />
+          <Property Name="TestUser" Type="bit" Nullable="false" />
+          <Property Name="LastPwdChange" Type="datetime" Nullable="false" />
+          <Property Name="PwdNeverExpires" Type="bit" Nullable="false" />
+          <Property Name="FailedLogins" Type="int" Nullable="false" />
+          <Property Name="AccountIsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="Reference" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="LoggedOn" Type="bit" Nullable="false" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="ReadMessageCount" Type="int" Nullable="false" />
+          <Property Name="UserHistoryID" Type="int" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="MasterCreate" Type="bit" Nullable="false" />
+          <Property Name="Approved" Type="bit" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Title" Type="varchar" MaxLength="10" />
+          <Property Name="Store" Type="varchar" MaxLength="50" />
+          <Property Name="Matrix" Type="bit" />
+          <Property Name="SessionID" Type="varchar" MaxLength="30" />
+          <Property Name="FirstLevelAdmin" Type="bit" Nullable="false" />
+          <Property Name="LastChangedBy" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ValidFrom" Type="datetime" />
+          <Property Name="HeaderBackgroundPath" Type="varchar" MaxLength="50" />
+          <Property Name="UrlRemoteLoginKey" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK_ApplicationField_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="ApplicationField" Type="CKGDatabaseAdminLib.DbEntities.Store.ApplicationField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="ApplicationField">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationField_Customer2">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="Customer1" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Customer1">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationField_Language">
+          <End Role="Language" Type="CKGDatabaseAdminLib.DbEntities.Store.Language" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationField" Type="CKGDatabaseAdminLib.DbEntities.Store.ApplicationField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Language">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="ApplicationField">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="Customer1" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Customer1">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerRights_Application">
+          <End Role="Application" Type="CKGDatabaseAdminLib.DbEntities.Store.Application" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CustomerRights" Type="CKGDatabaseAdminLib.DbEntities.Store.CustomerRights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="AppID" />
+            </Principal>
+            <Dependent Role="CustomerRights">
+              <PropertyRef Name="AppID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerRights_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="CustomerRights" Type="CKGDatabaseAdminLib.DbEntities.Store.CustomerRights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CustomerRights">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebGroup_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="WebGroup" Type="CKGDatabaseAdminLib.DbEntities.Store.WebGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="WebGroup">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUser_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Store.Customer" Multiplicity="1" />
+          <End Role="WebUser" Type="CKGDatabaseAdminLib.DbEntities.Store.WebUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="WebUser">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CKGDatabaseAdminLib.DbEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Application" EntityType="CKGDatabaseAdminLib.DbEntities.Application" />
+          <EntitySet Name="ApplicationField" EntityType="CKGDatabaseAdminLib.DbEntities.ApplicationField" />
+          <EntitySet Name="ApplicationType" EntityType="CKGDatabaseAdminLib.DbEntities.ApplicationType" />
+          <EntitySet Name="BapiToReport" EntityType="CKGDatabaseAdminLib.DbEntities.BapiToReport" />
+          <EntitySet Name="Customer" EntityType="CKGDatabaseAdminLib.DbEntities.Customer" />
+          <EntitySet Name="Language" EntityType="CKGDatabaseAdminLib.DbEntities.Language" />
+          <EntitySet Name="LoginUserMessage" EntityType="CKGDatabaseAdminLib.DbEntities.LoginUserMessage" />
+          <EntitySet Name="WebGroup" EntityType="CKGDatabaseAdminLib.DbEntities.WebGroup" />
+          <EntitySet Name="WebUser" EntityType="CKGDatabaseAdminLib.DbEntities.WebUser" />
+          <AssociationSet Name="FK_ApplicationField_Customer" Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="ApplicationField" EntitySet="ApplicationField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationField_Language" Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Language">
+            <End Role="Language" EntitySet="Language" />
+            <End Role="ApplicationField" EntitySet="ApplicationField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationField_Customer2" Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer2">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Customer1" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Customer" Association="CKGDatabaseAdminLib.DbEntities.FK_Customer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Customer1" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebGroup_Customer" Association="CKGDatabaseAdminLib.DbEntities.FK_WebGroup_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="WebGroup" EntitySet="WebGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUser_Customer" Association="CKGDatabaseAdminLib.DbEntities.FK_WebUser_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="WebUser" EntitySet="WebUser" />
+          </AssociationSet>
+          <AssociationSet Name="CustomerRights" Association="CKGDatabaseAdminLib.DbEntities.CustomerRights">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="AppID" />
+          </Key>
+          <Property Name="AppID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AppFriendlyName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AppType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AppURL" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="AppInMenu" Type="Boolean" Nullable="false" />
+          <Property Name="AppComment" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="AppParent" Type="Int32" Nullable="false" />
+          <Property Name="AppRank" Type="Int32" Nullable="false" />
+          <Property Name="AuthorizationLevel" Type="Int32" Nullable="false" />
+          <Property Name="BatchAuthorization" Type="Boolean" Nullable="false" />
+          <Property Name="LogDuration" Type="Boolean" Nullable="false" />
+          <Property Name="AppSchwellwert" Type="Int32" />
+          <Property Name="MaxLevel" Type="Int32" />
+          <Property Name="MaxLevelsPerGroup" Type="Int32" />
+          <Property Name="AppTechType" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="AppDescription" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Customer" Relationship="CKGDatabaseAdminLib.DbEntities.CustomerRights" FromRole="Application" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="ApplicationField">
+          <Key>
+            <PropertyRef Name="ApplicationFieldID" />
+          </Key>
+          <Property Name="AppURL" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="ApplicationFieldID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldType" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="LanguageID" Type="Int32" Nullable="false" />
+          <Property Name="Visibility" Type="Boolean" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="ToolTip" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="GroupID" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer" FromRole="ApplicationField" ToRole="Customer" />
+          <NavigationProperty Name="Language" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Language" FromRole="ApplicationField" ToRole="Language" />
+        </EntityType>
+        <EntityType Name="ApplicationType">
+          <Key>
+            <PropertyRef Name="AppType" />
+          </Key>
+          <Property Name="AppType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="ButtonPath" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="BapiToReport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int64" />
+          <Property Name="Kunnr" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Kundenbezeichnung" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AppID" Type="Int64" />
+          <Property Name="Freundlicher_Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Technischer_Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Pfad" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="BAPI" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LastUse" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Customername" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="ReadDealer" Type="Boolean" Nullable="false" />
+          <Property Name="CName" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="CAddress" Type="String" Nullable="false" MaxLength="400" Unicode="false" FixedLength="false" />
+          <Property Name="CMailDisplay" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CMail" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="CWebDisplay" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CWeb" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Master" Type="Boolean" Nullable="false" />
+          <Property Name="NewPwdAfterNDays" Type="Int32" Nullable="false" />
+          <Property Name="LockedAfterNLogins" Type="Int32" Nullable="false" />
+          <Property Name="PwdNNumeric" Type="Int32" Nullable="false" />
+          <Property Name="PwdLength" Type="Int32" Nullable="false" />
+          <Property Name="PwdNCapitalLetters" Type="Int32" Nullable="false" />
+          <Property Name="PwdNSpecialCharacter" Type="Int32" Nullable="false" />
+          <Property Name="PwdHistoryNEntries" Type="Int32" Nullable="false" />
+          <Property Name="LogoPath" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="CssPath" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="AllowMultipleLogin" Type="Boolean" Nullable="false" />
+          <Property Name="DocuPath" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="MaxUser" Type="Int32" Nullable="false" />
+          <Property Name="ShowOrganization" Type="Boolean" Nullable="false" />
+          <Property Name="OrgAdminRestrictToCustomerGroup" Type="Boolean" Nullable="false" />
+          <Property Name="LogoPath2" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="PwdDontSendEmail" Type="Boolean" Nullable="false" />
+          <Property Name="NameInputOptional" Type="Boolean" Nullable="false" />
+          <Property Name="Distrikte" Type="Boolean" />
+          <Property Name="ForcePasswordQuestion" Type="Boolean" Nullable="false" />
+          <Property Name="IpRestriction" Type="Boolean" Nullable="false" />
+          <Property Name="IpStandardUser" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AccountingArea" Type="Int32" />
+          <Property Name="SelfAdministration" Type="Int32" />
+          <Property Name="SelfAdministrationInfo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Locked" Type="Boolean" />
+          <Property Name="KundePostfach" Type="String" MaxLength="100" Unicode="false" FixedLength="true" />
+          <Property Name="KundeHotline" Type="String" MaxLength="100" Unicode="false" FixedLength="true" />
+          <Property Name="KundeFax" Type="String" MaxLength="100" Unicode="false" FixedLength="true" />
+          <Property Name="DaysUntilLock" Type="Int32" />
+          <Property Name="DaysUntilDelete" Type="Int32" />
+          <Property Name="TVShow" Type="Boolean" />
+          <Property Name="UserDontSendEmail" Type="Boolean" />
+          <Property Name="LoginLinkID" Type="Int32" />
+          <Property Name="HeaderBackgroundPath" Type="String" MaxLength="260" Unicode="false" FixedLength="false" />
+          <Property Name="AllowUrlRemoteLogin" Type="Boolean" />
+          <Property Name="SelfAdministrationContact" Type="String" MaxLength="400" Unicode="false" FixedLength="false" />
+          <Property Name="PortalType" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="ApplicationField" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer" FromRole="Customer" ToRole="ApplicationField" />
+          <NavigationProperty Name="Customer1" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer2" FromRole="Customer" ToRole="Customer1" />
+          <NavigationProperty Name="Customer2" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer2" FromRole="Customer1" ToRole="Customer" />
+          <NavigationProperty Name="Customer11" Relationship="CKGDatabaseAdminLib.DbEntities.FK_Customer_Customer" FromRole="Customer" ToRole="Customer1" />
+          <NavigationProperty Name="Customer3" Relationship="CKGDatabaseAdminLib.DbEntities.FK_Customer_Customer" FromRole="Customer1" ToRole="Customer" />
+          <NavigationProperty Name="WebGroup" Relationship="CKGDatabaseAdminLib.DbEntities.FK_WebGroup_Customer" FromRole="Customer" ToRole="WebGroup" />
+          <NavigationProperty Name="WebUser" Relationship="CKGDatabaseAdminLib.DbEntities.FK_WebUser_Customer" FromRole="Customer" ToRole="WebUser" />
+          <NavigationProperty Name="Application" Relationship="CKGDatabaseAdminLib.DbEntities.CustomerRights" FromRole="Customer" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageID" />
+          </Key>
+          <Property Name="LanguageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrowserLanguage" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="LanguageDiscription" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ApplicationField" Relationship="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Language" FromRole="Language" ToRole="ApplicationField" />
+        </EntityType>
+        <EntityType Name="LoginUserMessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" />
+          <Property Name="ShowMessageFrom" Type="DateTime" />
+          <Property Name="ShowMessageTo" Type="DateTime" />
+          <Property Name="LockLoginFrom" Type="DateTime" />
+          <Property Name="LockLoginTo" Type="DateTime" />
+          <Property Name="Message" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LockForProd" Type="Boolean" Nullable="false" />
+          <Property Name="LockForTest" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebGroup">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="DocuPath" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Authorizationright" Type="Int32" Nullable="false" />
+          <Property Name="IsCustomerGroup" Type="Boolean" Nullable="false" />
+          <Property Name="StartMethod" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Message" Type="String" MaxLength="1500" Unicode="true" FixedLength="false" />
+          <Property Name="MaxReadMessageCount" Type="Int32" Nullable="false" />
+          <Property Name="TVShow" Type="Boolean" />
+          <Property Name="IsServiceGroup" Type="Boolean" />
+          <NavigationProperty Name="Customer" Relationship="CKGDatabaseAdminLib.DbEntities.FK_WebGroup_Customer" FromRole="WebGroup" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="WebUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="TestUser" Type="Boolean" Nullable="false" />
+          <Property Name="LastPwdChange" Type="DateTime" Nullable="false" />
+          <Property Name="PwdNeverExpires" Type="Boolean" Nullable="false" />
+          <Property Name="FailedLogins" Type="Int32" Nullable="false" />
+          <Property Name="AccountIsLockedOut" Type="Boolean" Nullable="false" />
+          <Property Name="Reference" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LoggedOn" Type="Boolean" Nullable="false" />
+          <Property Name="LastLogin" Type="DateTime" />
+          <Property Name="ReadMessageCount" Type="Int32" Nullable="false" />
+          <Property Name="UserHistoryID" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <Property Name="MasterCreate" Type="Boolean" Nullable="false" />
+          <Property Name="Approved" Type="Boolean" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Store" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Matrix" Type="Boolean" />
+          <Property Name="SessionID" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="FirstLevelAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="LastChangedBy" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ValidFrom" Type="DateTime" />
+          <Property Name="HeaderBackgroundPath" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UrlRemoteLoginKey" Type="String" MaxLength="250" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Customer" Relationship="CKGDatabaseAdminLib.DbEntities.FK_WebUser_Customer" FromRole="WebUser" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_ApplicationField_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="1" />
+          <End Role="ApplicationField" Type="CKGDatabaseAdminLib.DbEntities.ApplicationField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="ApplicationField">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationField_Language">
+          <End Role="Language" Type="CKGDatabaseAdminLib.DbEntities.Language" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationField" Type="CKGDatabaseAdminLib.DbEntities.ApplicationField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Language">
+              <PropertyRef Name="LanguageID" />
+            </Principal>
+            <Dependent Role="ApplicationField">
+              <PropertyRef Name="LanguageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationField_Customer2">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="1" />
+          <End Role="Customer1" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Customer1">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="1" />
+          <End Role="Customer1" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Customer1">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebGroup_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="1" />
+          <End Role="WebGroup" Type="CKGDatabaseAdminLib.DbEntities.WebGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="WebGroup">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUser_Customer">
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="1" />
+          <End Role="WebUser" Type="CKGDatabaseAdminLib.DbEntities.WebUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="WebUser">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CustomerRights">
+          <End Role="Application" Type="CKGDatabaseAdminLib.DbEntities.Application" Multiplicity="*" />
+          <End Role="Customer" Type="CKGDatabaseAdminLib.DbEntities.Customer" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CKGDatabaseAdminLibDbEntitiesStoreContainer" CdmEntityContainer="DbEntities">
+          <EntitySetMapping Name="Application"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.Application"><MappingFragment StoreEntitySet="Application">
+            <ScalarProperty Name="AppID" ColumnName="AppID" />
+            <ScalarProperty Name="AppName" ColumnName="AppName" />
+            <ScalarProperty Name="AppFriendlyName" ColumnName="AppFriendlyName" />
+            <ScalarProperty Name="AppType" ColumnName="AppType" />
+            <ScalarProperty Name="AppURL" ColumnName="AppURL" />
+            <ScalarProperty Name="AppInMenu" ColumnName="AppInMenu" />
+            <ScalarProperty Name="AppComment" ColumnName="AppComment" />
+            <ScalarProperty Name="AppParent" ColumnName="AppParent" />
+            <ScalarProperty Name="AppRank" ColumnName="AppRank" />
+            <ScalarProperty Name="AuthorizationLevel" ColumnName="AuthorizationLevel" />
+            <ScalarProperty Name="BatchAuthorization" ColumnName="BatchAuthorization" />
+            <ScalarProperty Name="LogDuration" ColumnName="LogDuration" />
+            <ScalarProperty Name="AppSchwellwert" ColumnName="AppSchwellwert" />
+            <ScalarProperty Name="MaxLevel" ColumnName="MaxLevel" />
+            <ScalarProperty Name="MaxLevelsPerGroup" ColumnName="MaxLevelsPerGroup" />
+            <ScalarProperty Name="AppTechType" ColumnName="AppTechType" />
+            <ScalarProperty Name="AppDescription" ColumnName="AppDescription" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ApplicationField"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.ApplicationField"><MappingFragment StoreEntitySet="ApplicationField">
+            <ScalarProperty Name="AppURL" ColumnName="AppURL" />
+            <ScalarProperty Name="ApplicationFieldID" ColumnName="ApplicationFieldID" />
+            <ScalarProperty Name="FieldType" ColumnName="FieldType" />
+            <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+            <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+            <ScalarProperty Name="Content" ColumnName="Content" />
+            <ScalarProperty Name="ToolTip" ColumnName="ToolTip" />
+            <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ApplicationType"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.ApplicationType"><MappingFragment StoreEntitySet="ApplicationType">
+            <ScalarProperty Name="AppType" ColumnName="AppType" />
+            <ScalarProperty Name="Rank" ColumnName="Rank" />
+            <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+            <ScalarProperty Name="ButtonPath" ColumnName="ButtonPath" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="BapiToReport"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.BapiToReport"><MappingFragment StoreEntitySet="BapiToReport">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="Kunnr" ColumnName="Kunnr" />
+            <ScalarProperty Name="Kundenbezeichnung" ColumnName="Kundenbezeichnung" />
+            <ScalarProperty Name="AppID" ColumnName="AppID" />
+            <ScalarProperty Name="Freundlicher_Name" ColumnName="Freundlicher_Name" />
+            <ScalarProperty Name="Technischer_Name" ColumnName="Technischer_Name" />
+            <ScalarProperty Name="Pfad" ColumnName="Pfad" />
+            <ScalarProperty Name="BAPI" ColumnName="BAPI" />
+            <ScalarProperty Name="LastUse" ColumnName="LastUse" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Customer"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.Customer"><MappingFragment StoreEntitySet="Customer">
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="Customername" ColumnName="Customername" />
+            <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+            <ScalarProperty Name="ReadDealer" ColumnName="ReadDealer" />
+            <ScalarProperty Name="CName" ColumnName="CName" />
+            <ScalarProperty Name="CAddress" ColumnName="CAddress" />
+            <ScalarProperty Name="CMailDisplay" ColumnName="CMailDisplay" />
+            <ScalarProperty Name="CMail" ColumnName="CMail" />
+            <ScalarProperty Name="CWebDisplay" ColumnName="CWebDisplay" />
+            <ScalarProperty Name="CWeb" ColumnName="CWeb" />
+            <ScalarProperty Name="Master" ColumnName="Master" />
+            <ScalarProperty Name="NewPwdAfterNDays" ColumnName="NewPwdAfterNDays" />
+            <ScalarProperty Name="LockedAfterNLogins" ColumnName="LockedAfterNLogins" />
+            <ScalarProperty Name="PwdNNumeric" ColumnName="PwdNNumeric" />
+            <ScalarProperty Name="PwdLength" ColumnName="PwdLength" />
+            <ScalarProperty Name="PwdNCapitalLetters" ColumnName="PwdNCapitalLetters" />
+            <ScalarProperty Name="PwdNSpecialCharacter" ColumnName="PwdNSpecialCharacter" />
+            <ScalarProperty Name="PwdHistoryNEntries" ColumnName="PwdHistoryNEntries" />
+            <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+            <ScalarProperty Name="CssPath" ColumnName="CssPath" />
+            <ScalarProperty Name="AllowMultipleLogin" ColumnName="AllowMultipleLogin" />
+            <ScalarProperty Name="DocuPath" ColumnName="DocuPath" />
+            <ScalarProperty Name="MaxUser" ColumnName="MaxUser" />
+            <ScalarProperty Name="ShowOrganization" ColumnName="ShowOrganization" />
+            <ScalarProperty Name="OrgAdminRestrictToCustomerGroup" ColumnName="OrgAdminRestrictToCustomerGroup" />
+            <ScalarProperty Name="LogoPath2" ColumnName="LogoPath2" />
+            <ScalarProperty Name="PwdDontSendEmail" ColumnName="PwdDontSendEmail" />
+            <ScalarProperty Name="NameInputOptional" ColumnName="NameInputOptional" />
+            <ScalarProperty Name="Distrikte" ColumnName="Distrikte" />
+            <ScalarProperty Name="ForcePasswordQuestion" ColumnName="ForcePasswordQuestion" />
+            <ScalarProperty Name="IpRestriction" ColumnName="IpRestriction" />
+            <ScalarProperty Name="IpStandardUser" ColumnName="IpStandardUser" />
+            <ScalarProperty Name="AccountingArea" ColumnName="AccountingArea" />
+            <ScalarProperty Name="SelfAdministration" ColumnName="SelfAdministration" />
+            <ScalarProperty Name="SelfAdministrationInfo" ColumnName="SelfAdministrationInfo" />
+            <ScalarProperty Name="Locked" ColumnName="Locked" />
+            <ScalarProperty Name="KundePostfach" ColumnName="KundePostfach" />
+            <ScalarProperty Name="KundeHotline" ColumnName="KundeHotline" />
+            <ScalarProperty Name="KundeFax" ColumnName="KundeFax" />
+            <ScalarProperty Name="DaysUntilLock" ColumnName="DaysUntilLock" />
+            <ScalarProperty Name="DaysUntilDelete" ColumnName="DaysUntilDelete" />
+            <ScalarProperty Name="TVShow" ColumnName="TVShow" />
+            <ScalarProperty Name="UserDontSendEmail" ColumnName="UserDontSendEmail" />
+            <ScalarProperty Name="LoginLinkID" ColumnName="LoginLinkID" />
+            <ScalarProperty Name="HeaderBackgroundPath" ColumnName="HeaderBackgroundPath" />
+            <ScalarProperty Name="AllowUrlRemoteLogin" ColumnName="AllowUrlRemoteLogin" />
+            <ScalarProperty Name="SelfAdministrationContact" ColumnName="SelfAdministrationContact" />
+            <ScalarProperty Name="PortalType" ColumnName="PortalType" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Language"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.Language"><MappingFragment StoreEntitySet="Language">
+            <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+            <ScalarProperty Name="BrowserLanguage" ColumnName="BrowserLanguage" />
+            <ScalarProperty Name="LanguageDiscription" ColumnName="LanguageDiscription" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="LoginUserMessage"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.LoginUserMessage"><MappingFragment StoreEntitySet="LoginUserMessage">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Created" ColumnName="Created" />
+            <ScalarProperty Name="ShowMessageFrom" ColumnName="ShowMessageFrom" />
+            <ScalarProperty Name="ShowMessageTo" ColumnName="ShowMessageTo" />
+            <ScalarProperty Name="LockLoginFrom" ColumnName="LockLoginFrom" />
+            <ScalarProperty Name="LockLoginTo" ColumnName="LockLoginTo" />
+            <ScalarProperty Name="Message" ColumnName="Message" />
+            <ScalarProperty Name="Title" ColumnName="Title" />
+            <ScalarProperty Name="LockForProd" ColumnName="LockForProd" />
+            <ScalarProperty Name="LockForTest" ColumnName="LockForTest" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="WebGroup"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.WebGroup"><MappingFragment StoreEntitySet="WebGroup">
+            <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+            <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="DocuPath" ColumnName="DocuPath" />
+            <ScalarProperty Name="Authorizationright" ColumnName="Authorizationright" />
+            <ScalarProperty Name="IsCustomerGroup" ColumnName="IsCustomerGroup" />
+            <ScalarProperty Name="StartMethod" ColumnName="StartMethod" />
+            <ScalarProperty Name="Message" ColumnName="Message" />
+            <ScalarProperty Name="MaxReadMessageCount" ColumnName="MaxReadMessageCount" />
+            <ScalarProperty Name="TVShow" ColumnName="TVShow" />
+            <ScalarProperty Name="IsServiceGroup" ColumnName="IsServiceGroup" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="WebUser"><EntityTypeMapping TypeName="CKGDatabaseAdminLib.DbEntities.WebUser"><MappingFragment StoreEntitySet="WebUser">
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="Username" ColumnName="Username" />
+            <ScalarProperty Name="Password" ColumnName="Password" />
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="CustomerAdmin" ColumnName="CustomerAdmin" />
+            <ScalarProperty Name="TestUser" ColumnName="TestUser" />
+            <ScalarProperty Name="LastPwdChange" ColumnName="LastPwdChange" />
+            <ScalarProperty Name="PwdNeverExpires" ColumnName="PwdNeverExpires" />
+            <ScalarProperty Name="FailedLogins" ColumnName="FailedLogins" />
+            <ScalarProperty Name="AccountIsLockedOut" ColumnName="AccountIsLockedOut" />
+            <ScalarProperty Name="Reference" ColumnName="Reference" />
+            <ScalarProperty Name="LoggedOn" ColumnName="LoggedOn" />
+            <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+            <ScalarProperty Name="ReadMessageCount" ColumnName="ReadMessageCount" />
+            <ScalarProperty Name="UserHistoryID" ColumnName="UserHistoryID" />
+            <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+            <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+            <ScalarProperty Name="MasterCreate" ColumnName="MasterCreate" />
+            <ScalarProperty Name="Approved" ColumnName="Approved" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+            <ScalarProperty Name="Title" ColumnName="Title" />
+            <ScalarProperty Name="Store" ColumnName="Store" />
+            <ScalarProperty Name="Matrix" ColumnName="Matrix" />
+            <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+            <ScalarProperty Name="FirstLevelAdmin" ColumnName="FirstLevelAdmin" />
+            <ScalarProperty Name="LastChangedBy" ColumnName="LastChangedBy" />
+            <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+            <ScalarProperty Name="HeaderBackgroundPath" ColumnName="HeaderBackgroundPath" />
+            <ScalarProperty Name="UrlRemoteLoginKey" ColumnName="UrlRemoteLoginKey" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="CustomerRights" TypeName="CKGDatabaseAdminLib.DbEntities.CustomerRights" StoreEntitySet="CustomerRights">
+            <EndProperty Name="Application">
+              <ScalarProperty Name="AppID" ColumnName="AppID" />
+            </EndProperty>
+            <EndProperty Name="Customer">
+              <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="DbModel" ZoomLevel="53">
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.Application" Width="1.5" PointX="0.75" PointY="6.875" Height="4.480205078125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.ApplicationField" Width="1.5" PointX="8.25" PointY="7.5" Height="3.3263964843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.ApplicationType" Width="1.5" PointX="5.75" PointY="0.75" Height="1.7879850260416665" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.BapiToReport" Width="1.5" PointX="8.75" PointY="0.75" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.Customer" Width="1.5" PointX="3" PointY="3.25" Height="11.787659505208335" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.Language" Width="1.5" PointX="6" PointY="4.25" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.LoginUserMessage" Width="1.5" PointX="10.75" PointY="0.75" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.WebGroup" Width="1.5" PointX="5.25" PointY="7.75" Height="3.3263964843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="CKGDatabaseAdminLib.DbEntities.WebUser" Width="1.5" PointX="5.25" PointY="11.75" Height="6.980123697916671" IsExpanded="true" />
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="7.59375" />
+          <ConnectorPoint PointX="8.25" PointY="7.59375" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Language" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.15625" PointY="6.0379850260416674" />
+          <ConnectorPoint PointX="7.15625" PointY="7.5624974999999992" />
+          <ConnectorPoint PointX="8.25" PointY="7.5624974999999992" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_ApplicationField_Customer2" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.5319230769230767" PointY="15.037659505208335" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="15.287659505208335" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="15.287659505208335" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="15.037659505208335" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_Customer_Customer" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.5319230769230767" PointY="3.25" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="3" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="3" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="3.25" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_WebGroup_Customer" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="9.4131982421875" />
+          <ConnectorPoint PointX="5.25" PointY="9.4131982421875" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.FK_WebUser_Customer" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="13.393829752604168" />
+          <ConnectorPoint PointX="5.25" PointY="13.393829752604168" />
+        </AssociationConnector>
+        <AssociationConnector Association="CKGDatabaseAdminLib.DbEntities.CustomerRights" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="9.1151025390625" />
+          <ConnectorPoint PointX="3" PointY="9.1151025390625" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

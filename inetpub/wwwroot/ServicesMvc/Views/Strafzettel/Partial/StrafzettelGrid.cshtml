@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Strafzettel.Models
+@{
+    var gridName = "GridStrafzettel";
+}
+
+@(Html.Telerik()
+    .Grid<StrafzettelModel>()
+    .Name(gridName)
+
+    .XGroup("GridStrafzettelModel")
+    .XAjaxDataBinding("StrafzettelAjaxBinding", "Strafzettel")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.VertragsNr).Descending())
+    .XToolBar("Strafzettel")
+)
+

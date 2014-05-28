@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UeberfuehrungViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Steps>
+    <Step>
+      <GroupName>FAHRZEUGE</GroupName>
+      <SubSteps>
+        <SubStep>
+          <StepForms>
+            <UiModel xsi:type="Fahrzeug">
+              <UiIndex>1</UiIndex>
+              <GroupName>FAHRZEUGE</GroupName>
+              <SubGroupName>FAHRZEUG_1</SubGroupName>
+              <Header>Fahrzeug 1 (Hinfahrt)</Header>
+              <HeaderShort>Fahrzeug 1 (Hinfahrt)</HeaderShort>
+              <HeaderCssClass>step2header</HeaderCssClass>
+              <IsMandatory>true</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <FIN>FIN4711</FIN>
+              <KennzeichenOrt>OD</KennzeichenOrt>
+              <KennzeichenRest>CK 4712</KennzeichenRest>
+              <Typ>Audi A4</Typ>
+              <Referenznummer>R4713</Referenznummer>
+              <FahrzeugIndex>1</FahrzeugIndex>
+              <Fahrzeugwert>Z00</Fahrzeugwert>
+              <FahrzeugZugelassen>J</FahrzeugZugelassen>
+              <ZulassungsauftragAnDAD>N</ZulassungsauftragAnDAD>
+              <Bereifung>S</Bereifung>
+              <Fahrzeugklasse>PKW</Fahrzeugklasse>
+              <RequestLoadCarData>false</RequestLoadCarData>
+            </UiModel>
+            <UiModel xsi:type="Fahrzeug">
+              <UiIndex>2</UiIndex>
+              <GroupName>FAHRZEUGE</GroupName>
+              <SubGroupName>FAHRZEUG_2</SubGroupName>
+              <Header>Fahrzeug 2 (Rückfahrt)</Header>
+              <HeaderShort>Fahrzeug 2 (Rückfahrt)</HeaderShort>
+              <HeaderCssClass>step1header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <FahrzeugIndex>2</FahrzeugIndex>
+              <RequestLoadCarData>false</RequestLoadCarData>
+            </UiModel>
+            <UiModel xsi:type="Adresse">
+              <UiIndex>3</UiIndex>
+              <GroupName>FAHRZEUGE</GroupName>
+              <SubGroupName>RG</SubGroupName>
+              <Header>Rechnungszahler</Header>
+              <HeaderShort>Rechnungszahler</HeaderShort>
+              <HeaderCssClass>step3header</HeaderCssClass>
+              <IsMandatory>true</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ID>14</ID>
+              <KundenNr>0010048621</KundenNr>
+              <Firma>Autohaus Scherer GmbH &amp; Co. KG</Firma>
+              <Name2>Seat VW 23061</Name2>
+              <NickName>Scherer Seat NW/23061</NickName>
+              <Strasse>Kelberger Str. 67-69</Strasse>
+              <HausNr>67-69</HausNr>
+              <PLZ>56727</PLZ>
+              <Ort>Mayen</Ort>
+              <Land>DE</Land>
+              <Telefon />
+              <Fax />
+              <SelectedID>14</SelectedID>
+              <Datum xsi:nil="true" />
+              <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+              <Typ>RechnungsAdresse</Typ>
+              <TransportTyp />
+              <TransportTypAvailable>false</TransportTypAvailable>
+              <SubTyp>RG</SubTyp>
+              <RequestGeoMapInfo>false</RequestGeoMapInfo>
+            </UiModel>
+            <UiModel xsi:type="Adresse">
+              <UiIndex>4</UiIndex>
+              <GroupName>FAHRZEUGE</GroupName>
+              <SubGroupName>RE</SubGroupName>
+              <Header>Abweichende Rechnungsadresse</Header>
+              <HeaderShort>Abweich. Rechn.adresse</HeaderShort>
+              <HeaderCssClass>step4header</HeaderCssClass>
+              <IsMandatory>true</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ID>8</ID>
+              <KundenNr>0010048614</KundenNr>
+              <Firma>Autohaus Scherer GmbH &amp; Co.KG</Firma>
+              <Name2>Skoda NW 22071</Name2>
+              <NickName>Scherer SkodaNW/22071</NickName>
+              <Strasse>Kelberger Str. 67-69</Strasse>
+              <HausNr>67-69</HausNr>
+              <PLZ>56727</PLZ>
+              <Ort>Mayen</Ort>
+              <Land>DE</Land>
+              <Telefon />
+              <Fax />
+              <SelectedID>8</SelectedID>
+              <Datum xsi:nil="true" />
+              <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+              <Typ>RechnungsAdresse</Typ>
+              <TransportTyp />
+              <TransportTypAvailable>false</TransportTypAvailable>
+              <SubTyp>RE</SubTyp>
+              <RequestGeoMapInfo>false</RequestGeoMapInfo>
+            </UiModel>
+          </StepForms>
+        </SubStep>
+      </SubSteps>
+    </Step>
+    <Step>
+      <GroupName>FAHRTEN</GroupName>
+      <SubSteps>
+        <SubStep>
+          <StepForms>
+            <UiModel xsi:type="Adresse">
+              <UiIndex>1</UiIndex>
+              <GroupName>FAHRZEUG_1</GroupName>
+              <SubGroupName>START</SubGroupName>
+              <Header>Abholadresse</Header>
+              <HeaderShort>Abholadresse</HeaderShort>
+              <HeaderCssClass>step4header</HeaderCssClass>
+              <IsMandatory>true</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ID>0</ID>
+              <Firma>walter gmbh</Firma>
+              <Strasse>klaus groth str. 3</Strasse>
+              <PLZ>22926</PLZ>
+              <Ort>ahrensburg</Ort>
+              <Land>DE</Land>
+              <Ansprechpartner>test</Ansprechpartner>
+              <Telefon>test</Telefon>
+              <SelectedID>0</SelectedID>
+              <Datum xsi:nil="true" />
+              <UhrzeitwunschAvailable>true</UhrzeitwunschAvailable>
+              <Typ>FahrtAdresse</Typ>
+              <TransportTyp />
+              <TransportTypAvailable>false</TransportTypAvailable>
+              <SubTyp>ABHOLADRESSE</SubTyp>
+              <RequestGeoMapInfo>false</RequestGeoMapInfo>
+            </UiModel>
+            <UiModel xsi:type="Adresse">
+              <UiIndex>2</UiIndex>
+              <GroupName>FAHRZEUG_1</GroupName>
+              <SubGroupName>ZUSATZ</SubGroupName>
+              <Header>Zusatzfahrt Fahrzeug 1</Header>
+              <HeaderShort>Zusatzfahrt Fahrzeug 1</HeaderShort>
+              <HeaderCssClass>step2header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ID>0</ID>
+              <Land>DE</Land>
+              <SelectedID>0</SelectedID>
+              <Datum xsi:nil="true" />
+              <UhrzeitwunschAvailable>false</UhrzeitwunschAvailable>
+              <Typ>FahrtAdresse</Typ>
+              <TransportTyp>3</TransportTyp>
+              <TransportTypAvailable>true</TransportTypAvailable>
+              <SubTyp>AUSLIEFERUNG</SubTyp>
+              <RequestGeoMapInfo>false</RequestGeoMapInfo>
+            </UiModel>
+            <UiModel xsi:type="Adresse">
+              <UiIndex>3</UiIndex>
+              <GroupName>FAHRZEUG_1</GroupName>
+              <SubGroupName>ZIEL</SubGroupName>
+              <Header>Zieladresse Fahrzeug 1 (z.B. Hinfahrt)</Header>
+              <HeaderShort>Zieladresse Fahrzeug 1</HeaderShort>
+              <HeaderCssClass>step5header</HeaderCssClass>
+              <IsMandatory>true</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ID>0</ID>
+              <Firma>zabel ag</Firma>
+              <Strasse>isartor 3</Strasse>
+              <PLZ>80000</PLZ>
+              <Ort>münchen</Ort>
+              <Land>DE</Land>
+              <Ansprechpartner>test 2</Ansprechpartner>
+              <Telefon>test 2</Telefon>
+              <SelectedID>0</SelectedID>
+              <Datum xsi:nil="true" />
+              <UhrzeitwunschAvailable>true</UhrzeitwunschAvailable>
+              <Typ>FahrtAdresse</Typ>
+              <TransportTyp>1</TransportTyp>
+              <TransportTypAvailable>true</TransportTypAvailable>
+              <SubTyp>AUSLIEFERUNG</SubTyp>
+              <RequestGeoMapInfo>false</RequestGeoMapInfo>
+            </UiModel>
+          </StepForms>
+        </SubStep>
+      </SubSteps>
+    </Step>
+    <Step>
+      <GroupName>DIENSTLEISTUNGEN</GroupName>
+      <SubSteps>
+        <SubStep>
+          <Title>Fzg. 1, Hauptfahrt</Title>
+          <StepForms>
+            <UiModel xsi:type="DienstleistungsAuswahl">
+              <UiIndex>1</UiIndex>
+              <GroupName>DIENSTLEISTUNGEN</GroupName>
+              <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+              <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+              <HeaderCssClass>step6header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>true</IgnoreSummaryItem>
+              <FahrtIndex>1</FahrtIndex>
+              <FahrtTyp>1</FahrtTyp>
+              <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+              <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+            </UiModel>
+            <UiModel xsi:type="Bemerkungen">
+              <UiIndex>2</UiIndex>
+              <GroupName>BEMERKUNGEN</GroupName>
+              <Header>Fzg. 1, Hauptfahrt, Bemerkungen</Header>
+              <HeaderShort>Fzg. 1, Hauptfahrt, Ihre Bemerkungen</HeaderShort>
+              <HeaderCssClass>step7header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>true</IgnoreSummaryItem>
+              <Bemerkung>Please be careful!</Bemerkung>
+              <FahrtIndex>1</FahrtIndex>
+              <BemerkungAsKurzBemerkungen />
+            </UiModel>
+            <UiModel xsi:type="UploadFiles">
+              <UiIndex>3</UiIndex>
+              <GroupName>UPLOAD_FILES</GroupName>
+              <Header>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</Header>
+              <HeaderShort>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</HeaderShort>
+              <HeaderCssClass>step8header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+              <ParallelSummaryUiModels>
+                <UiModel xsi:type="DienstleistungsAuswahl">
+                  <UiIndex>1</UiIndex>
+                  <GroupName>DIENSTLEISTUNGEN</GroupName>
+                  <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+                  <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+                  <HeaderCssClass>step6header</HeaderCssClass>
+                  <IsMandatory>false</IsMandatory>
+                  <RequestClearModel>false</RequestClearModel>
+                  <IsValidCustom>false</IsValidCustom>
+                  <IgnoreSummaryItem>true</IgnoreSummaryItem>
+                  <FahrtIndex>1</FahrtIndex>
+                  <FahrtTyp>1</FahrtTyp>
+                  <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+                  <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+                </UiModel>
+              </ParallelSummaryUiModels>
+              <FahrtIndex>1</FahrtIndex>
+              <UploadFileNameArray>
+                <string xsi:nil="true" />
+                <string xsi:nil="true" />
+                <string xsi:nil="true" />
+              </UploadFileNameArray>
+              <UploadGroupNames>ALD,DAD-TRANSP,DAD-ÜBERGA</UploadGroupNames>
+              <UploadProtokolle />
+            </UiModel>
+          </StepForms>
+        </SubStep>
+      </SubSteps>
+    </Step>
+    <Step>
+      <GroupName>SUMMARY</GroupName>
+      <SubSteps>
+        <SubStep>
+          <StepForms>
+            <UiModel xsi:type="Summary">
+              <UiIndex>1</UiIndex>
+              <GroupName>SUMMARY</GroupName>
+              <Header>Ihr Auftrag in der Übersicht</Header>
+              <HeaderShort>Ihr Auftrag in der Übersicht</HeaderShort>
+              <HeaderCssClass>step5header</HeaderCssClass>
+              <IsMandatory>false</IsMandatory>
+              <RequestClearModel>false</RequestClearModel>
+              <IsValidCustom>false</IsValidCustom>
+              <IgnoreSummaryItem>false</IgnoreSummaryItem>
+            </UiModel>
+          </StepForms>
+        </SubStep>
+      </SubSteps>
+    </Step>
+  </Steps>
+  <Fahrten>
+    <Fahrt>
+      <TypName>Auslieferung Fzg.1 (Hinfahrt)</TypName>
+      <TypNr>1</TypNr>
+      <Title>Fzg. 1, Hauptfahrt</Title>
+      <FahrtIndex>1</FahrtIndex>
+      <Fahrzeug>
+        <UiIndex>1</UiIndex>
+        <GroupName>FAHRZEUGE</GroupName>
+        <SubGroupName>FAHRZEUG_1</SubGroupName>
+        <Header>Fahrzeug 1 (Hinfahrt)</Header>
+        <HeaderShort>Fahrzeug 1 (Hinfahrt)</HeaderShort>
+        <HeaderCssClass>step2header</HeaderCssClass>
+        <IsMandatory>true</IsMandatory>
+        <RequestClearModel>false</RequestClearModel>
+        <IsValidCustom>false</IsValidCustom>
+        <IgnoreSummaryItem>false</IgnoreSummaryItem>
+        <FIN>FIN4711</FIN>
+        <KennzeichenOrt>HH</KennzeichenOrt>
+        <KennzeichenRest>XJ 404</KennzeichenRest>
+        <Typ>Audi A4</Typ>
+        <Referenznummer>R4713</Referenznummer>
+        <FahrzeugIndex>1</FahrzeugIndex>
+        <Fahrzeugwert>Z00</Fahrzeugwert>
+        <FahrzeugZugelassen>J</FahrzeugZugelassen>
+        <ZulassungsauftragAnDAD>N</ZulassungsauftragAnDAD>
+        <Bereifung>S</Bereifung>
+        <Fahrzeugklasse>PKW</Fahrzeugklasse>
+        <RequestLoadCarData>false</RequestLoadCarData>
+      </Fahrzeug>
+      <StartAdresse>
+        <UiIndex>1</UiIndex>
+        <GroupName>FAHRZEUG_1</GroupName>
+        <SubGroupName>START</SubGroupName>
+        <Header>Abholadresse</Header>
+        <HeaderShort>Abholadresse</HeaderShort>
+        <HeaderCssClass>step4header</HeaderCssClass>
+        <IsMandatory>true</IsMandatory>
+        <RequestClearModel>false</RequestClearModel>
+        <IsValidCustom>false</IsValidCustom>
+        <IgnoreSummaryItem>false</IgnoreSummaryItem>
+        <ID>0</ID>
+        <Firma>walter gmbh</Firma>
+        <Strasse>klaus groth str. 3</Strasse>
+        <PLZ>22926</PLZ>
+        <Ort>ahrensburg</Ort>
+        <Land>DE</Land>
+        <Ansprechpartner>test</Ansprechpartner>
+        <Telefon>test</Telefon>
+        <SelectedID>0</SelectedID>
+        <Datum xsi:nil="true" />
+        <UhrzeitwunschAvailable>true</UhrzeitwunschAvailable>
+        <Typ>FahrtAdresse</Typ>
+        <TransportTyp />
+        <TransportTypAvailable>false</TransportTypAvailable>
+        <SubTyp>ABHOLADRESSE</SubTyp>
+        <RequestGeoMapInfo>false</RequestGeoMapInfo>
+      </StartAdresse>
+      <ZielAdresse>
+        <UiIndex>3</UiIndex>
+        <GroupName>FAHRZEUG_1</GroupName>
+        <SubGroupName>ZIEL</SubGroupName>
+        <Header>Zieladresse Fahrzeug 1 (z.B. Hinfahrt)</Header>
+        <HeaderShort>Zieladresse Fahrzeug 1</HeaderShort>
+        <HeaderCssClass>step5header</HeaderCssClass>
+        <IsMandatory>true</IsMandatory>
+        <RequestClearModel>false</RequestClearModel>
+        <IsValidCustom>false</IsValidCustom>
+        <IgnoreSummaryItem>false</IgnoreSummaryItem>
+        <ID>0</ID>
+        <Firma>zabel ag</Firma>
+        <Strasse>isartor 3</Strasse>
+        <PLZ>80000</PLZ>
+        <Ort>münchen</Ort>
+        <Land>DE</Land>
+        <Ansprechpartner>test 2</Ansprechpartner>
+        <Telefon>test 2</Telefon>
+        <SelectedID>0</SelectedID>
+        <Datum xsi:nil="true" />
+        <UhrzeitwunschAvailable>true</UhrzeitwunschAvailable>
+        <Typ>FahrtAdresse</Typ>
+        <TransportTyp>1</TransportTyp>
+        <TransportTypAvailable>true</TransportTypAvailable>
+        <SubTyp>AUSLIEFERUNG</SubTyp>
+        <RequestGeoMapInfo>false</RequestGeoMapInfo>
+      </ZielAdresse>
+      <AvailableDienstleistungen>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000005</DienstleistungsID>
+          <Name>Fahrzeugaußenwäsche</Name>
+          <FahrtIndex>1</FahrtIndex>
+          <TransportTyp>1</TransportTyp>
+          <Preis>650</Preis>
+          <MaterialNummer>2023</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000006</DienstleistungsID>
+          <Name>Fahrzeugaußenwäsche incl. Saugen</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>700</Preis>
+          <MaterialNummer>2807</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000007</DienstleistungsID>
+          <Name>Tanken (1/4 Füllung)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>750</Preis>
+          <MaterialNummer>1917</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000008</DienstleistungsID>
+          <Name>Rote Kennzeichen</Name>
+          <FahrtIndex>1</FahrtIndex>
+          <TransportTyp>1</TransportTyp>
+          <Preis>800</Preis>
+          <MaterialNummer>1290</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000009</DienstleistungsID>
+          <Name>Vorholung Fahrzeug</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>850</Preis>
+          <MaterialNummer>1912</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000011</DienstleistungsID>
+          <Name>Reifenwechsel</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>900</Preis>
+          <MaterialNummer>2803</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000010</DienstleistungsID>
+          <Name>Winterreifen Handling</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>950</Preis>
+          <MaterialNummer>2811</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000012</DienstleistungsID>
+          <Name>Fremdachstransport (bundesweit)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1000</Preis>
+          <MaterialNummer>2201</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000014</DienstleistungsID>
+          <Name>Innenreinigung</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1050</Preis>
+          <MaterialNummer>17330</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000015</DienstleistungsID>
+          <Name>Übergabe Boardbuch</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1100</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000016</DienstleistungsID>
+          <Name>Übergabe Leasingausweis</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1150</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000017</DienstleistungsID>
+          <Name>Fleet Monitor / Einholung e-Mail Adr.</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1200</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000019</DienstleistungsID>
+          <Name>Expressauslieferung</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1250</Preis>
+          <MaterialNummer>2130</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000020</DienstleistungsID>
+          <Name>Samstagsauslieferung oder Abholung</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1300</Preis>
+          <MaterialNummer>6241</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000021</DienstleistungsID>
+          <Name>Führerscheinkontrolle Fahrzeugführer</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1350</Preis>
+          <MaterialNummer>2808</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000018</DienstleistungsID>
+          <Name>Erstellen Fotos Standard (5)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1400</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000024</DienstleistungsID>
+          <Name>Erstellen Fotos (8 Stück)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1450</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000025</DienstleistungsID>
+          <Name>Mietvertrag abzeichnen lassen</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1500</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000013</DienstleistungsID>
+          <Name>Protokoll sofort per FAX / E-Mail</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1550</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000061</DienstleistungsID>
+          <Name>Elektrofahrzeug</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1600</Preis>
+          <MaterialNummer />
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000023</DienstleistungsID>
+          <Name>Tanken (voll)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1650</Preis>
+          <MaterialNummer>1917</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000030</DienstleistungsID>
+          <Name>Tanken (1/2 Füllung)</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1700</Preis>
+          <MaterialNummer>1917</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000090</DienstleistungsID>
+          <Name>Erweiterte Fahrzeugeinweisung</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1750</Preis>
+          <MaterialNummer>2921</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000091</DienstleistungsID>
+          <Name>Kennzeichen Montage</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1800</Preis>
+          <MaterialNummer>510</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000092</DienstleistungsID>
+          <Name>Kennzeichen Montage + Versand</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1850</Preis>
+          <MaterialNummer>2550</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000093</DienstleistungsID>
+          <Name>Vorführung Gutachten</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1900</Preis>
+          <MaterialNummer>2809</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000124</DienstleistungsID>
+          <Name>Fahrzeugübergabe Business</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>1950</Preis>
+          <MaterialNummer>2530</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+        <Dienstleistung>
+          <DienstleistungsID>000000000003000125</DienstleistungsID>
+          <Name>Fahrzeugübergabe Premium</Name>
+          <TransportTyp>1</TransportTyp>
+          <Preis>2000</Preis>
+          <MaterialNummer>2531</MaterialNummer>
+          <SapFlagVwAG />
+        </Dienstleistung>
+      </AvailableDienstleistungen>
+      <Step>
+        <GroupName>DIENSTLEISTUNGEN</GroupName>
+        <SubSteps>
+          <SubStep>
+            <Title>Fzg. 1, Hauptfahrt</Title>
+            <StepForms>
+              <UiModel xsi:type="DienstleistungsAuswahl">
+                <UiIndex>1</UiIndex>
+                <GroupName>DIENSTLEISTUNGEN</GroupName>
+                <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+                <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+                <HeaderCssClass>step6header</HeaderCssClass>
+                <IsMandatory>false</IsMandatory>
+                <RequestClearModel>false</RequestClearModel>
+                <IsValidCustom>false</IsValidCustom>
+                <IgnoreSummaryItem>true</IgnoreSummaryItem>
+                <FahrtIndex>1</FahrtIndex>
+                <FahrtTyp>1</FahrtTyp>
+                <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+                <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+              </UiModel>
+              <UiModel xsi:type="Bemerkungen">
+                <UiIndex>2</UiIndex>
+                <GroupName>BEMERKUNGEN</GroupName>
+                <Header>Fzg. 1, Hauptfahrt, Bemerkungen</Header>
+                <HeaderShort>Fzg. 1, Hauptfahrt, Ihre Bemerkungen</HeaderShort>
+                <HeaderCssClass>step7header</HeaderCssClass>
+                <IsMandatory>false</IsMandatory>
+                <RequestClearModel>false</RequestClearModel>
+                <IsValidCustom>false</IsValidCustom>
+                <IgnoreSummaryItem>true</IgnoreSummaryItem>
+                <Bemerkung>Please be careful!</Bemerkung>
+                <FahrtIndex>1</FahrtIndex>
+                <BemerkungAsKurzBemerkungen />
+              </UiModel>
+              <UiModel xsi:type="UploadFiles">
+                <UiIndex>3</UiIndex>
+                <GroupName>UPLOAD_FILES</GroupName>
+                <Header>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</Header>
+                <HeaderShort>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</HeaderShort>
+                <HeaderCssClass>step8header</HeaderCssClass>
+                <IsMandatory>false</IsMandatory>
+                <RequestClearModel>false</RequestClearModel>
+                <IsValidCustom>false</IsValidCustom>
+                <IgnoreSummaryItem>false</IgnoreSummaryItem>
+                <ParallelSummaryUiModels>
+                  <UiModel xsi:type="DienstleistungsAuswahl">
+                    <UiIndex>1</UiIndex>
+                    <GroupName>DIENSTLEISTUNGEN</GroupName>
+                    <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+                    <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+                    <HeaderCssClass>step6header</HeaderCssClass>
+                    <IsMandatory>false</IsMandatory>
+                    <RequestClearModel>false</RequestClearModel>
+                    <IsValidCustom>false</IsValidCustom>
+                    <IgnoreSummaryItem>true</IgnoreSummaryItem>
+                    <FahrtIndex>1</FahrtIndex>
+                    <FahrtTyp>1</FahrtTyp>
+                    <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+                    <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+                  </UiModel>
+                </ParallelSummaryUiModels>
+                <FahrtIndex>1</FahrtIndex>
+                <UploadFileNameArray>
+                  <string xsi:nil="true" />
+                  <string xsi:nil="true" />
+                  <string xsi:nil="true" />
+                </UploadFileNameArray>
+                <UploadGroupNames>ALD,DAD-TRANSP,DAD-ÜBERGA</UploadGroupNames>
+                <UploadProtokolle />
+              </UiModel>
+            </StepForms>
+          </SubStep>
+        </SubSteps>
+      </Step>
+      <DienstleistungsSubStep>
+        <Title>Fzg. 1, Hauptfahrt</Title>
+        <StepForms>
+          <UiModel xsi:type="DienstleistungsAuswahl">
+            <UiIndex>1</UiIndex>
+            <GroupName>DIENSTLEISTUNGEN</GroupName>
+            <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+            <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+            <HeaderCssClass>step6header</HeaderCssClass>
+            <IsMandatory>false</IsMandatory>
+            <RequestClearModel>false</RequestClearModel>
+            <IsValidCustom>false</IsValidCustom>
+            <IgnoreSummaryItem>true</IgnoreSummaryItem>
+            <FahrtIndex>1</FahrtIndex>
+            <FahrtTyp>1</FahrtTyp>
+            <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+            <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+          </UiModel>
+          <UiModel xsi:type="Bemerkungen">
+            <UiIndex>2</UiIndex>
+            <GroupName>BEMERKUNGEN</GroupName>
+            <Header>Fzg. 1, Hauptfahrt, Bemerkungen</Header>
+            <HeaderShort>Fzg. 1, Hauptfahrt, Ihre Bemerkungen</HeaderShort>
+            <HeaderCssClass>step7header</HeaderCssClass>
+            <IsMandatory>false</IsMandatory>
+            <RequestClearModel>false</RequestClearModel>
+            <IsValidCustom>false</IsValidCustom>
+            <IgnoreSummaryItem>true</IgnoreSummaryItem>
+            <Bemerkung>Please be careful!</Bemerkung>
+            <FahrtIndex>1</FahrtIndex>
+            <BemerkungAsKurzBemerkungen />
+          </UiModel>
+          <UiModel xsi:type="UploadFiles">
+            <UiIndex>3</UiIndex>
+            <GroupName>UPLOAD_FILES</GroupName>
+            <Header>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</Header>
+            <HeaderShort>Fzg. 1, Hauptfahrt, zusätzliche Dokumente</HeaderShort>
+            <HeaderCssClass>step8header</HeaderCssClass>
+            <IsMandatory>false</IsMandatory>
+            <RequestClearModel>false</RequestClearModel>
+            <IsValidCustom>false</IsValidCustom>
+            <IgnoreSummaryItem>false</IgnoreSummaryItem>
+            <ParallelSummaryUiModels>
+              <UiModel xsi:type="DienstleistungsAuswahl">
+                <UiIndex>1</UiIndex>
+                <GroupName>DIENSTLEISTUNGEN</GroupName>
+                <Header>Fzg. 1, Hauptfahrt, Leistungen</Header>
+                <HeaderShort>Fzg. 1, Hauptfahrt, Leistungen</HeaderShort>
+                <HeaderCssClass>step6header</HeaderCssClass>
+                <IsMandatory>false</IsMandatory>
+                <RequestClearModel>false</RequestClearModel>
+                <IsValidCustom>false</IsValidCustom>
+                <IgnoreSummaryItem>true</IgnoreSummaryItem>
+                <FahrtIndex>1</FahrtIndex>
+                <FahrtTyp>1</FahrtTyp>
+                <GewaehlteDienstleistungenString>000000000003000008_1,000000000003000005_1</GewaehlteDienstleistungenString>
+                <NichtGewaehlteDienstleistungenString>000000000003000006_1,000000000003000007_1,000000000003000009_1,000000000003000011_1,000000000003000010_1,000000000003000012_1,000000000003000014_1,000000000003000015_1,000000000003000016_1,000000000003000017_1,000000000003000019_1,000000000003000020_1,000000000003000021_1,000000000003000018_1,000000000003000024_1,000000000003000025_1,000000000003000013_1,000000000003000061_1,000000000003000023_1,000000000003000030_1,000000000003000090_1,000000000003000091_1,000000000003000092_1,000000000003000093_1,000000000003000124_1,000000000003000125_1</NichtGewaehlteDienstleistungenString>
+              </UiModel>
+            </ParallelSummaryUiModels>
+            <FahrtIndex>1</FahrtIndex>
+            <UploadFileNameArray>
+              <string xsi:nil="true" />
+              <string xsi:nil="true" />
+              <string xsi:nil="true" />
+            </UploadFileNameArray>
+            <UploadGroupNames>ALD,DAD-TRANSP,DAD-ÜBERGA</UploadGroupNames>
+            <UploadProtokolle />
+          </UiModel>
+        </StepForms>
+      </DienstleistungsSubStep>
+    </Fahrt>
+  </Fahrten>
+</UeberfuehrungViewModel>

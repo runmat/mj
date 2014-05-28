@@ -1,0 +1,38 @@
+﻿@model GeneralTools.Models.LogItem 
+
+@using (Html.BeginDiv(id: MvcAjaxOptions.AjaxFormContainerName))
+{
+    using (Ajax.BeginForm("SearchFilterForm", "CoC", null, new MvcAjaxOptions { OnSuccess = "", OnComplete = "SearchFilterFormPreparePrivateAjax();" },  htmlAttributes: new { @class = "form-horizontal" }))
+    {
+        @Html.FormRadioButtonListFor(m => m.ExceptionMessage, "option1; option2; option3")
+    
+        @Html.FormObsoleteCheckBoxFor("Tageszeit", m => m.TestMorgens)
+
+        @Html.FormCheckBoxListFor("Jahreszeit", m => m.TestFruehling, m => m.TestSommer, m => m.TestHerbst, m => m.TestWinter)
+
+        @Html.FormTextBoxFor(m => m.Message)
+
+        @Html.FormObsoleteDropDownListSmallFor(m => m.WebAppName, "Services; Autohaus; ZLD")
+        
+        @Html.FormObsoleteDropDownListFor(m => m.DomainAppName, "Überführung; Zulassungsbeauftragung; Infocenter; ")
+
+        @Html.FormDatePickerFor(m => m.TestGeburtsdatum)
+
+        @Html.FormDatePickerFor(m => m.TestEintrittsdatum)
+
+        <div class="form-actions">
+            <button type="submit" class="btn blue"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn">Abbrechen</button>
+        </div>
+
+    }
+}
+
+<script type="text/javascript">
+
+    function SearchFilterFormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>
+

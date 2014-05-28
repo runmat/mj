@@ -1,0 +1,168 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel  
+
+<script type="text/javascript">
+
+    chartManager.AddChart(
+        new Chart(
+            '@Model.ChartID',
+            '@Model.ChartGroup',
+            {},
+            function (chart) {  // FormPreparePrivate
+
+                AvKmProzentFilterFormInit(chart);
+            },
+            function (chart) {  // FormPreparePrivateAjax
+
+                AvKmProzentFilterFormInit(chart);
+            },
+            null,  // getTooltipHtml
+            function (chart, chartResults) {  // ShowChartResults
+
+                var groupChartItems = chartResults.GroupChartItems;
+                var groupChartJahrItems = chartResults.GroupChartJahrItems;
+                var groupChartKey1Items = chartResults.GroupChartKey1Items;
+
+                var ticks = new Array();
+                for (var i = 0; i < groupChartKey1Items.length; i++) {
+                    ticks.push([groupChartJahrItems.length / 2 - 0.5 + i * (groupChartJahrItems.length + 1), groupChartKey1Items[i]]);
+                }
+                var dataset = new Array();
+                for (i = 0; i < groupChartJahrItems.length; i++) {
+
+                    var dataThisYearUp = new Array();
+                    var dataThisYearDown = new Array();
+                    for (var j = 0; j < groupChartKey1Items.length; j++) {
+                        var jahrItems = $.grep(groupChartItems, function (item) {
+                            return item.Jahr == groupChartJahrItems[i] && item.Key1 == groupChartKey1Items[j];
+                        });
+
+                        var index = i + j * (groupChartJahrItems.length + 1);
+                        var wert1 = jahrItems && jahrItems.length == 1 ? jahrItems[0].FWert1 : 0;
+                        var wert2 = jahrItems && jahrItems.length == 1 ? jahrItems[0].FWert2 : 0;
+
+                        dataThisYearDown.push([index, wert1]);
+                        dataThisYearUp.push([index, wert2]);
+                    }
+
+                    var colorDown = ChartGetJahrColor(groupChartJahrItems[0]);
+                    var colorUp = ColorLightenDarken(colorDown, 50);
+                    //alert(colorUp);
+
+                    dataset.push({
+                        type: 'DOWN',
+                        stack: true,
+                        data: dataThisYearDown,
+                        color: colorDown
+                    });
+                    dataset.push({
+                        type: 'UP',
+                        stack: true,
+                        data: dataThisYearUp,
+                        color: colorUp
+                    });
+                }
+
+
+                var options = {
+                    series: {
+                        bars: {
+                            show: true,
+                            lineWidth: 1,
+                            align: "center"
+                        }
+                    },
+                    xaxis: {
+                        axisLabel: "Durchschnittliche Ausnutzung der Kilometerlaufleistung/Fzg. je AV in " + jahrItems[0].Jahr,
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        ticks: ticks,
+                        axisLabelPadding: 10,
+                        autoscaleMargin: 0.04
+                    },
+                    yaxis: {
+                        axisLabel: "AV, Ausnutzung KM",
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        axisLabelPadding: 20,
+                        autoscaleMargin: 0.1,
+                        tickFormatter: function (v, axis) {
+                            if (v > 100)
+                                return '';
+                            return v.formatNumber(0) + ' %';
+                        }
+                    },
+                    legend: {
+                        show: false
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        borderWidth: 1,
+                        backgroundColor: { colors: ["#ffffff", "#eeeeee"] }
+                    },
+                    hooks: {
+                        drawSeries: drawSeriesHook
+                    }
+                };
+
+                function drawSeriesHook(plot, canvascontext, series) {
+                    var ctx = canvascontext,
+                    labelText = '',
+                    points = series.datapoints.points,
+                    ps = series.datapoints.pointsize,
+                    yaxis = series.yaxis,
+                    textWidth, textHeight, textX, textY;
+
+                    ctx.font = '11px sans-serif';
+                    //console.log(ctx.font);
+
+                    var isDownSeries = ('DOWN' == series.type);
+
+                    ctx.lineWidth = 2; //series.bars.lineWidth;
+                    ctx.fillStyle = '#000'; // customize the text color here
+                    //alert(points[0] + ' - ' + points[1] + ' - ' + points[2]);
+                    for (i = 0; i < points.length; i += ps) {
+                        if (points[i] == null) continue;
+
+                        var x = points[i];
+
+                        var y;
+                        var yVal = series.data[x / 2][1];
+                        labelText = yVal.formatNumber(1) + '%';
+                        if (isDownSeries)
+                            y = yVal / 2;
+                        else {
+                            y = (100.0 - yVal) + yVal / 2.0;
+                            if (yVal < 4.0)
+                                y = 98;
+                        }
+
+                        textWidth = ctx.measureText(labelText).width; // measure how wide the label will be
+                        //textX = xaxis.p2c(points[i] + series.bars.barWidth / 2) - textWidth / 2;
+                        var xTranslated = plot.pointOffset({ x: x, y: 0 }).left;
+                        textX = xTranslated - textWidth / 2;
+
+                        textHeight = parseInt(ctx.font); // extract the font size from the context.font string
+                        textY = yaxis.p2c(y) + textHeight - 2;
+                        ctx.fillText(labelText, textX, textY); // draw the label
+                    }
+                }
+
+                var chartPlaceHolder = chart.GetPlaceHolder();
+                chartPlaceHolder.html('');
+                $.plot(chartPlaceHolder, dataset, options);
+                //chartPlaceHolder.UseTooltip();
+            }
+        )
+    );
+
+    function AvKmProzentFilterFormInit(chart) {
+        
+        var jahrCheckBoxes = chart.GetFilterForm().find(".chart-filter-jahr-items input[type=checkbox]");
+
+        CheckBoxesEnforceSingleSelection(jahrCheckBoxes, jahrCheckBoxes[jahrCheckBoxes.length - 2]);
+    }
+
+ </script>

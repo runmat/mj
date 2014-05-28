@@ -1,0 +1,63 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungViewModel
+
+
+<div class="submitReceipt" id="submitReceiptStarting">
+    
+    @Html.BusyArrows(14)
+
+    Bitte warten Sie einen Moment bis wir Ihren Auftrag verarbeitet haben.
+
+</div>
+
+<div class="submitReceipt" id="submitReceiptSuccess">
+    Ihr Auftrag wurde erfolgreich übermittelt, vielen Dank für Ihre Buchung!
+    <br /><br />
+    <a class="pdf" href="Ueberfuehrung/DownloadPdf">Ihr Auftrag als PDF Download</a>
+</div>
+
+<div class="submitReceipt" id="submitReceiptError">
+    Bei der Übermittlung Ihres Auftrages ist ein Fehler aufgetreten:
+    <br /><br />
+    <div id="ReceiptErrorMessages" class="warnHint"></div>
+</div>
+
+<div class="submitReceipt" id="submitReceiptRestart">
+    <input class="neuerAuftrag" type="button" value="NEUER AUFTRAG" onclick="StartNewOrder()">
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "Ueberfuehrung/StartSave",
+                success: function (result) {
+                    HideProcessings();
+                    //alert(result.receiptErrorMessages);
+                    $('#ReceiptErrorMessages').html(result.receiptErrorMessages);
+
+                    if (result.receiptErrorMessages == '') {
+                        $("#submitReceiptError").hide();
+                        $("#submitReceiptSuccess").show();
+                    } else {
+                        $("#submitReceiptError").show();
+                        $("#submitReceiptSuccess").hide();
+                    }
+                    $("#submitReceiptRestart").show();
+                }
+            });
+
+    });
+
+    function HideProcessings() {
+        BusyArrowsStop();
+        $("#submitReceiptStarting").hide();
+    }
+
+    function StartNewOrder() {
+        location.replace('Ueberfuehrung/StartNewOrder');
+    }
+
+</script>

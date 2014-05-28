@@ -1,0 +1,36 @@
+﻿@using CkgDomainLogic.General.Models.DataModels
+@model DocumentErstellenBearbeiten
+
+<div id="divDocumentProperties">
+    @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes, new { @class = "m-wrap" })
+
+    @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("Value", "Text"), new { @class = "m-wrap chosen" })
+
+    @Html.FormRequiredFieldsSummary()
+</div>
+
+<div class="space20"></div>
+
+<div id="divDocumentUpload">
+    @Html.Partial("Upload", Model)
+</div>
+
+<script type="text/javascript">
+    function SetDocumentProperties() {
+        // Gruppenzuordnung muss gesetzt sein, damit Upload fortgesetzt werden kann
+        if ($("#SelectedWebGroups").val() == null) {
+            return false;
+        }
+        
+        var docTypeId = $("#DocTypeID").val().toString();
+        var userGroups = $("#SelectedWebGroups").val().toString();
+
+        $.ajax({
+            type: "POST",
+            url: "SetDocumentProperties",
+            data: { docTypeId: docTypeId, userGroups: userGroups },
+        });
+        
+        return true;
+    }
+</script>

@@ -1,0 +1,13 @@
+﻿@model CkgDomainLogic.Insurance.Models.VersEvent 
+
+<div class="">
+    
+    @foreach (var ort in Model.Orte)
+    {
+        <a href="#" onclick="return EventOrtSelect(@Model.ID, @ort.ID);" class="btn green mini tooltips" data-original-title="@Localize.VersEventLocationSelect" data-placement="right">
+            <i class="icon-ok"></i> 
+            <span class="margin-left-5"> @ort.OrtName </span>
+        </a>
+    }
+
+</div>

@@ -1,0 +1,73 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocTypenViewModel
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("Partial/CocCommon")
+
+<h3 class="page-title">CoC Typenverwaltung <small></small></h3>
+
+<style type="text/css">
+    .SQuickInlineForm .SControlGroupOuter 
+    {
+        margin: 2px;
+        margin-bottom: 9px;
+    }
+    .form-one-line .control-label.filterLabel 
+    {
+        padding-top: 1px;
+    }
+</style>
+
+<div class="portlet">
+    <div id="divCocStart">
+    
+        @Html.Partial("Typenverwaltung/CocTypenFilterMutliple")
+
+        @Html.Partial("Typenverwaltung/CocGrid")
+
+    </div>
+</div>
+
+<div id="divCocItemDetails"></div>
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        FormPrepareAllFilter();
+    };
+    
+    function ResetAllFilters() {
+        $("#searchFormAutocomplete input[id^='searchAutocomplete_']").each(function () {
+            $(this).val('');
+        });
+        $("#searchFormInstant input[id^='searchInstant_']").each(function () {
+            $(this).val('');
+        });
+        $("#searchFormCascaded select[id^='searchCascaded_']").each(function () {
+            $(this).val('(alle)');
+        });
+
+        var level = 1;
+        $.ajax(
+        {
+            type: "POST",
+            url: "RefreshCascadedFilter",
+            data: {
+                level: level,
+                searchCascadedTyp: '',
+                searchCascadedVar: '',
+                searchCascadedVers: ''
+            },
+            success: function (result) {
+                GridCocSetCascadedFilter(result, level);
+                CocSetAutocompleteFilter(result, level, true);
+                GridCocRefreshInstantFilter();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+</script>

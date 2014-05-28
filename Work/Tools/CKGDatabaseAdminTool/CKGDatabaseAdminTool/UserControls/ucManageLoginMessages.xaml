@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucManageLoginMessages"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
+             xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
+             xmlns:dbModels="clr-namespace:CKGDatabaseAdminLib.Models.DbModels;assembly=CKGDatabaseAdminLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="311" d:DesignWidth="588">
+    <DockPanel Background="#EEEEEE">
+        
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Button Command="{Binding CommandAddNewLoginMessage}" Content="Neue LoginMessage erstellen" HorizontalAlignment="Left" Width="180px"/>
+        </Grid>
+
+        <ListBox Name="lbLoginMessages" ItemsSource="{Binding LoginMessages}" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type dbModels:LoginUserMessage}">
+                    <Grid>
+                        <Grid.Resources>
+                            <conv:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
+                            <conv:BooleanInverseConverter x:Key="BooleanInverseConverter" />
+                        </Grid.Resources>
+                        <uc:ucLoginMessageItemDisplayTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanInverseConverter}}"/>
+                        <uc:ucLoginMessageItemEditTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+    </DockPanel>
+</UserControl>

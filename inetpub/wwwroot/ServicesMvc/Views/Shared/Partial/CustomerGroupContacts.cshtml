@@ -1,0 +1,20 @@
+﻿@model CkgCommonViewModel
+
+<br/>
+<div class="row-fluid margin-top-20">
+    @foreach (var contact in Model.CustomerGroupContacts)
+    {
+        <div class="contact-blocks">
+            @if (Model.ContactImageUrlAvailable(contact))
+            {
+                <div class="pull-left contact-img">
+                    <img src="@Model.GetContactImageUrl(contact)" alt="" />  
+                </div>
+            } 
+                
+            <div class="contact-info">
+                @Html.Partial("Partial/CustomerGroupContactInfo", contact)
+            </div>
+        </div>    
+    }
+</div>

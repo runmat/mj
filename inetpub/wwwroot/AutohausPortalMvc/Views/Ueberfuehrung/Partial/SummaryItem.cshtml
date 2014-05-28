@@ -1,0 +1,33 @@
+﻿@model  CkgDomainLogic.Ueberfuehrung.Models.SummaryItem
+
+<div class="summaryBox">
+    <div class="inner">
+        <img class="summaryIcon" src="@Model.IconFileName" alt="">
+        
+        <div class="description">
+            <h2>@Model.Header</h2>
+            
+            <table class="tableDescription">
+                @foreach (var description in Model.Descriptions)
+                {
+                    <tr>
+                        <td class="left">
+                            <div>
+                                @description.TitleAsHtml
+                            </div>
+                        </td>
+                        <td class="right">
+                            <div>
+                                @description.BodyAsHtml
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>            
+
+            <div class="editBlock">
+                <input class="button gostep1" type="button" value="ändern" name="Abbrechen" onclick="TryNavigateToStepFromSummary(@Model.Step);">
+            </div>
+        </div>
+    </div>
+</div>

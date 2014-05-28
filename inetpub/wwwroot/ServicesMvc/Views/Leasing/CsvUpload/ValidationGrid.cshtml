@@ -1,0 +1,43 @@
+﻿@using CkgDomainLeasing.Leasing.Models.DataModels
+@model CkgDomainLogic.Leasing.ViewModels.LeasingCargateCsvUploadViewModel
+
+<h5>
+    <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>, bitte prüfen Sie jetzt noch den Inhalt:</span>
+</h5>
+
+<script type="text/javascript"> _formWizardForceHideSubmitButton = false; </script>
+@if (Model.UploadItemsErrorsOccurred)
+{
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = true; </script>
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsErrorsOccurred)</span>
+            <span class="margin-left-10"></span>
+            @Html.CheckBoxFor(m => m.UploadItemsShowErrorsOnly, new {onchange = "UploadItemsShowErrorsOnlyChanged($(this));"}) 
+            @Html.DisplayNameFor(m => m.UploadItemsShowErrorsOnly)
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+        .Grid<LeasingCargateCsvUploadModel>()
+        .Name("GridCsvUploadEntities")
+        .BindTo(Model.UploadItemsFiltered)
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.ValidationErrors).Visible(false);
+                columns.XBound(c => c.Fin).Width(160);
+                columns.XBound(c => c.Standort).Width(160);
+                columns.XBound(c => c.EingangFahrzeugBlg).Width(160);
+                columns.XBound(c => c.BereitstellungFahrzeugBlg).Width(160);
+                columns.XBound(c => c.FertigmeldungAufbereitungFahrzeugBlg).Width(160);
+            })
+            .CellAction(cell =>
+            {
+                if (cell.DataItem.MemberHasValidationError(cell.Column.Member))
+                    cell.HtmlAttributes["class"] = "grid-cellError";
+            })
+)
+
+<div class="margin-top-10"></div>

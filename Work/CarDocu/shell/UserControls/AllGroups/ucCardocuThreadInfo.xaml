@@ -1,0 +1,35 @@
+﻿<UserControl     x:Class="CarDocu.UserControls.AllGroups.ucCardocuThreadInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+            
+        <StackPanel Orientation="Horizontal" Margin="30,3,0,0">
+            <TextBlock Text="{Binding Name, StringFormat={}{0}:}" Margin="5,0,0,0" FontWeight="Bold" />
+
+            <TextBlock Text="Online:" Margin="15,0,0,0" />
+            <Image Source="{Binding IsOnlineIconSource}" Width="16" Height="16" ToolTip="{Binding OnlineToolTip}" Margin="5,0,0,0"  />
+
+            <TextBlock Text="Jobs:" Margin="15,0,0,0" />
+
+            <TextBlock Text="{Binding QueueItemCount}" Margin="7,0,0,0" FontWeight="Bold" />
+            <Image Source="{Binding IsBusyIconSource}" Width="32" Height="16" ToolTip="{Binding BusyToolTip}" Margin="5,0,0,0"  />
+
+            <StackPanel Width="16" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button Command="{Binding ActiveJobKillAndRemoveCommand}" Style="{StaticResource HyperLinkSmallImage}" 
+                    Visibility="{Binding IsBusy, Converter={StaticResource BooleanVisibilityConverter}}"
+                    Content="{StaticResource image/10x10/delete}" ToolTip="Aktuell aktiven Job stoppen und endgültig entfernen!" 
+                          HorizontalAlignment="Left" VerticalAlignment="Top" />
+            </StackPanel>
+
+            <Button Visibility="{Binding QueueItemCount, Converter={StaticResource IntegerVisibilityConverter}}" 
+                    Content="Alle Jobs löschen!" Command="{Binding AllJobsKillAndRemoveCommand}" Height="16" Width="100" FontSize="9" Foreground="Red" />
+            
+            <Separator BorderThickness="0,3,0,0" BorderBrush="Black" Margin="15,0,15,0" />
+        </StackPanel>
+        
+    </StackPanel>
+</UserControl>

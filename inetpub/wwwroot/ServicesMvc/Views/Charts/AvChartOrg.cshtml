@@ -1,0 +1,92 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.ChartsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.js"></script>
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.symbol.js"></script>
+<script type="text/javascript" src="~/assets/plugins/flot/jquery.flot.axislabels.js"></script>
+
+<h3 class="page-title" id="headerTitle">Charts<small></small></h3>
+
+@Html.IeWarning(8)
+
+
+<div id="placeholder" style="width:800px;height:400px;"></div>
+
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    var groupChartItems = @Html.Raw(Json.Encode(Model.GroupChartItems));
+
+    var data = [
+     {
+         label: "martin",
+         data: [[1317427200000-5000000*4, "96113"], 
+                  [1317513600000-5000000*4, "96357"], 
+                  [1317600000000-5000000*4, "55431"]]
+     },
+     {
+         label: "swarowsky",
+         data: [[1317427200000-5000000*0, "83479"], 
+                  [1317513600000-5000000*0, "96357"], 
+                  [1317600000000-5000000*0, "55431"]]
+     },
+      {
+         label: "britney",
+         data: [[1317427200000-5000000*-4, "83479"], 
+                  [1317513600000-5000000*-4, "96357"], 
+                  [1317600000000-5000000*-4, "55431"]]
+     }
+    ];
+ 
+    var options = 
+    {    
+        series: {
+            bars: {
+                show: true,
+                barWidth: 15000 * 1000,
+                align: 'center'
+            },
+        },
+        grid: {
+            hoverable: true,
+            clickable: true,
+            tickColor: "#eee",
+            borderWidth: 1
+        },
+        yaxes: {
+            min: 0
+        },
+        xaxis: {
+            mode: 'time',
+            timeformat: "%b %d",
+            minTickSize: [0, "month"],
+            tickSize: [1, "day"],
+            autoscaleMargin: .1
+        }
+    };
+ 
+     $(function() {
+         $.plot($('#placeholder'), data, options);
+         $('#placeholder').bind('plothover', function (event, pos, item) {
+            if (item) {
+                var x = item.datapoint[0].toFixed(2),
+                    y = item.datapoint[1].toFixed(2);
+                //alert(x + '-' + y);
+            }
+        });
+     });   
+    
+</script>

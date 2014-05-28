@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ad xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://services.mobile.de/schema/seller/seller-ad-1.1" xmlns:vehicle="http://services.mobile.de/schema/seller/vehicle-1.0" xmlns:site-specifics="http://services.mobile.de/schema/seller/site-specifics-1.0" xmlns:price="http://services.mobile.de/schema/seller/price-1.0" xsi:schemaLocation="http://services.mobile.de/schema/seller/seller-ad-1.1 http://services.mobile.de/schema/seller/seller-ad-1.1.xsd" >
+  <seller-inventory-key value="17301829" />
+  <description>Fahrzeug Beschreibung</description>
+  <vehicle:vehicle>
+    <vehicle:classification>
+      <vehicle:vehicle-class key="Car" />
+      <vehicle:category key="Limousine" />
+      <vehicle:make key="FORD" />
+      <vehicle:model key="Focus" />
+    </vehicle:classification>
+    <vehicle:model-description value="Fahrzeugbeschreibung" />
+    <vehicle:damage-and-unrepaired value="false" />
+    <vehicle:accident-damaged value="false" />
+    <vehicle:roadworthy value="true" />
+    <vehicle:specifics>
+      <vehicle:mileage value="142000"/>
+      <vehicle:axles value="2" />
+      <vehicle:airbag key="FRONT_AND_SIDE_AND_MORE_AIRBAGS" />
+    </vehicle:specifics>
+    <vehicle:site-specifics>
+      <site-specifics:first-registration value="2013-09" />
+      <site-specifics:kba hsn="8566" tsn="ABJ" />
+    </vehicle:site-specifics>
+  </vehicle:vehicle>
+  <price:price type="FIXED" currency="EUR">
+    <price:gross-prices>
+      <price:consumer-price-amount value="32000.00" />
+    </price:gross-prices>
+  </price:price>
+</ad>

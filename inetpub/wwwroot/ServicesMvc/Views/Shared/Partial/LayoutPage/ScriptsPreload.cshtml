@@ -1,0 +1,28 @@
+<script type="text/javascript">
+
+    function IsIE() {
+        return (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+    }
+
+    function AutoFocusDelayed(textboxID) {
+        // delay focus a bit more for IE because placeholder is invisible on focus 
+        setTimeout(function () { $('#' + textboxID).focus(); }, IsIE() ? 1000 : 300);  
+    }
+    
+    function DocumentReadyBind(fn) {
+
+        // Mozilla, Opera and webkit nightlies currently support this event
+        if (document.addEventListener) {
+
+            // A fallback to window.onload, that will always work
+            window.addEventListener("load", fn, false);
+
+            // If IE event model is used
+        } else if (document.attachEvent) {
+
+            // A fallback to window.onload, that will always work
+            window.attachEvent("onload", fn);
+        }
+    }
+    
+</script>

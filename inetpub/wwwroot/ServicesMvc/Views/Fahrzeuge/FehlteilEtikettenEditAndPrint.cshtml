@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model FehlteilEtikettenViewModel
+
+<h3 class="page-title">Fehlteiletiketten <small>Druck</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("FehlteilEtikettenEditAndPrint/Suche", Model.FehlteilEtikettSelektor)
+}
+
+@using (Html.FormSearchResults())
+{
+    <div id="divDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowFehlteilEtikettSearchResult(result) {
+        SearchFormHide();
+        $("#divDetails").html(result);
+        $("#divDetails").slideDown();
+    }
+
+    function ShowSaveSuccess() {
+        //alert('save ok!');
+        SpanAlert("hintCocTypenFilter", "Datensatz erfolgreich gespeichert!", 1800);
+    }
+    
+    function CloseItemDetails() {
+        SearchResultsHide();
+        SearchFormShow();
+    }
+
+    function SaveAndPrintFehlteilEtikett() {
+        $("#PrintMode").val(true);
+        $("#FehlteilEtikettAjaxForm").submit();
+    }
+
+    function ItemDetailsFormPreparePrivateAjax() {
+        try { labelSelectorInit(); } 
+        catch(e) { }
+    }
+
+</script>

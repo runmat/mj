@@ -1,0 +1,19 @@
+﻿Die Datenklassen (Namespace Entities) werden entweder aus SAP eingelesen oder für die Kommunikation mit mobile.de vewendet.  
+
+SAP Datenklassen
+AuctionableVehicle
+
+mobile.de Datenklassen
+Auction
+SellerContact
+Vehicle
+Klassen die für die Kommunikation mit mobile.de verwendet werden müssen die von AutoAct vorgegebenen Namen verwenden.  
+Die Namen der Properties werden nach der C# Namenskonvention bennant.  
+Kleingroß Anforderungen hinsichtlich der Serialisierung sollten durch Serializer-Einstellungen und Attribute erreicht werden.
+Manche werte sollen nur dann übertragen werden wenn ein Wert vorhanden ist.  Bei numerischen Werte ist es ratsam eine Nullable<T> zu verwenden. Der Serializer ignoriert Nullwerte und serializiert diese nicht.
+
+Enums
+Enums erhalten eine gesonderte Behandlung. AutoAct hat unterschiedliche Namenskonventionen für die Namen der Member.  ALL_UPPER wird verwendet und camelCase.
+Der Serializer muss also die Werte der Enum Eigenschaften so serializieren wie gefunden. Folgendes gemacht:
+- Enum Member so bennant wie in der AutoAct Docu
+- Regeln in Resharper erweitert so dass für Enums sowohl ALL_UPPER als auch camelCase angenommen werden.

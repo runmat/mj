@@ -1,0 +1,123 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.Models.Step 
+
+@{
+    var subStepCurrent = Model.CurrentSubStep;
+    var subStepCount = Model.SubStepMax;
+    var subStepClassOld = "";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // register handler for "on ajax view load complete"
+        ajaxViewLoadedEvent.addHandler(SubStepBarOnAjaxViewLoaded);
+
+        // call explicitely here once on "whole document load"
+        SubStepBarOnAjaxViewLoaded();
+    });
+
+    function SubStepBarOnAjaxViewLoaded() {
+
+        var subStepCount = '@subStepCount';
+        if (subStepCount == '1') {
+            //$("#substeps_outer").show();
+            return;
+        }
+
+        // ... if we have more than 1 substep:
+        //$("#substeps_outer").hide();
+
+        var subStepCurrent = '@subStepCurrent';
+        var marginLeft = '480';
+        var supsteps = $("#substeps");
+
+        if (subStepCurrent == '1') {
+            // ... first substep here: 
+            //     Let's animate to show UserName effectively that we have more substeps ...
+            supsteps
+                .delay(500)
+                .slideDown(300)
+                .delay(250)
+                .animate({ 'opacity': '1', 'marginLeft': marginLeft }, 300, 'swing');  //'swing'  'easeOutBounce'
+        }
+        else {
+            // ... from the second substep let's avoid annoying the UserName with to many animations ...
+            //     so let's simply show the substep bar directly here:
+            supsteps.show();
+            supsteps.css('opacity', '1');
+            supsteps.css('margin-left', marginLeft + 'px');
+        }
+    }
+</script>
+
+<!-- <div id="substeps_outer"></div> -->
+
+<div id="substeps">
+    
+    @if (subStepCount > 1)
+    {
+        <div id="substeps_inner">
+            @if (subStepCurrent == 1)
+            {
+                <div class="substep_start_active"></div>
+            }
+            else
+            {
+                <div class="substep_start_done"></div>
+            }
+    
+            @for (var i = 1; i <= subStepCount; i++)
+            {
+                var stepClass = "";
+                var stepColorClass = "substep_inner";
+                if (i < subStepCurrent)
+                {
+                    stepClass = "substep_mid_done";
+                }
+                if (i == subStepCurrent)
+                {
+                    stepClass = "substep_mid_active";
+                }
+                if (i > subStepCurrent)
+                {
+                    stepClass = "substep_mid_coming";
+                    stepColorClass += " substep_inner_dark_font";
+                }
+
+                if (i > 1)
+                {
+                    var separatorClass = "separator_active_coming";
+                    if (subStepClassOld.Contains("done") && stepClass.Contains("done"))
+                    {
+                        separatorClass = "separator_done_done";
+                    }
+                    if (subStepClassOld.Contains("done") && stepClass.Contains("active"))
+                    {
+                        separatorClass = "separator_done_active";
+                    }
+                    if (subStepClassOld.Contains("coming") && stepClass.Contains("coming"))
+                    {
+                        separatorClass = "separator_coming_coming";
+                    }
+
+                    // Pfeil-artige Separator
+                    <div class="@separatorClass"></div>
+                }
+
+                <div class="@stepClass substepcount_@subStepCount"><div class="@stepColorClass">@Model.SubSteps[i - 1].Title</div></div>
+
+                subStepClassOld = stepClass;
+            }
+
+            @if (subStepCurrent < subStepCount)
+            {
+                <div class="substep_end_coming"></div>
+            }
+            else
+            {
+                <div class="substep_end_active"></div>
+            }
+        </div>
+    }
+    
+</div>

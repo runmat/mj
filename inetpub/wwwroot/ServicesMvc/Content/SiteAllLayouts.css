@@ -1,0 +1,1098 @@
+﻿
+.page-sidebar
+{
+    background-color: #3d3d3d !important;
+    min-height: 1560px;
+}
+@media (max-width: 1079px) {
+    .page-sidebar
+    {
+        min-height: 0px;
+    }
+}
+.footer
+{
+    background-color: #3d3d3d !important;
+
+    bottom: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    margin-bottom: 0;
+}
+@media (max-height: 800px) {
+    .footer
+    {
+        font-size: 9px;
+        height: 15px;
+        padding: 2px 3px 0px 10px;
+    }
+}
+.footer a {
+    color: #b6b6b6!important;
+}
+
+.m-wrap.hasDatepicker {
+    width: 180px;
+}
+.m-wrap.xlarge {
+    width: 520px !important;
+}
+.m-wrap.xxlarge {
+    width: 720px !important;
+}
+@media (max-width: 600px) {
+    .m-wrap.xlarge {
+      width: 320px !important;
+    }
+    .m-wrap.xxlarge {
+      width: 520px !important;
+    }
+}
+@media (max-width: 400px) {
+    .m-wrap.xlarge {
+      width: 220px !important;
+    }
+    .m-wrap.xxlarge {
+      width: 420px !important;
+    }
+}
+
+
+
+textarea.m-wrap {
+    height: auto !Important;
+}
+
+.step {
+    cursor: default!important;
+}
+
+
+.icon-close 
+{
+    display: none;
+    margin-top: 10px;
+    width: 25px;
+    height: 25px;
+    float: right;
+    background:#3d3d3d url(../assets/img/icon-color-close.png) center no-repeat !important;
+    cursor: pointer;
+}
+
+.icon-close:hover {
+    background:#222 url(../assets/img/icon-color-close.png) center no-repeat !important;
+}
+
+.gray {
+    background-color: #aaa;
+}
+
+.padding-left-5 {
+    padding-left: 5px;
+}
+.padding-left-10 {
+    padding-left: 10px;
+}
+.padding-left-15 {
+    padding-left: 15px;
+}
+.padding-left-30 {
+    padding-left: 30px;
+}
+.padding-left-40 {
+    padding-left: 40px;
+}
+
+
+.padding-top-3 {
+    padding-top: 3px;
+}
+.padding-top-4 {
+    padding-top: 4px;
+}
+.padding-top-5 {
+    padding-top: 5px;
+}
+.padding-top-7 {
+    padding-top: 7px;
+}
+.padding-top-10 {
+    padding-top: 10px;
+}
+.padding-top-15 {
+    padding-top: 15px;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5px;
+}
+.padding-bottom-7 {
+    padding-bottom: 7px;
+}
+.padding-bottom-10 {
+    padding-bottom: 10px;
+}
+.padding-bottom-15 {
+    padding-bottom: 15px;
+}
+
+.margin-left-30 {
+    margin-left: 30px;
+}
+.margin-left-40 {
+    margin-left: 40px;
+}
+.margin-left-50 {
+    margin-left: 50px;
+}
+
+.margin-right-30 {
+    margin-right: 30px;
+}
+.margin-right-40 {
+    margin-right: 40px;
+}
+.margin-right-50 {
+    margin-right: 50px;
+}
+
+.no-top-margin {
+  margin-top: 0 !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.no-break-container {
+    display: inline-block;
+}
+
+/*
+.alert {
+    padding-bottom: 3px;
+}
+*/
+
+
+
+.caption .step-title {
+    margin-top: 2px!important;
+    display: inline-block;
+}
+
+/* Ergänzende Klasse zu form-actions (für obere Menüleiste auf den Seiten) */
+.PageTopMenu {
+    background-color: #ffffff;
+    border-top-style: none;
+    padding-left: 0;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.span4 a {
+    text-align: center!important;
+}
+
+
+.grid-cellError {
+    color:red; 
+    font-weight:bold;
+    padding-left: 28px!important;
+    background:url(../images/warning.png) 0 3px no-repeat !important;
+}
+.grid-rowOk {
+    font-weight:bold; color:#004400;background-color: #ddffdd;
+}
+.grid-rowOkAlt {
+    font-weight:bold; color:#004400;background-color: #d3f3d3;
+}
+.grid-rowError {
+    font-weight:bold; background-color: #ffeeee;
+}
+.grid-rowErrorAlt {
+    font-weight:bold; background-color: #f6e6e6;
+}
+
+
+
+
+
+
+
+.inline-block {
+    display: inline-block!important;
+}
+
+/* "form-horizontal"-Divs mit diesen Klassen versehen, um die Labelbreite auf bestimmte Werte festzulegen */
+
+.form-horizontal.form-non-bordered .controls > .radio, 
+.form-horizontal.form-non-bordered .controls > .checkbox {
+    margin-top: 7px!important;
+}
+.form-horizontal.form-bordered .controls > .radio, 
+.form-horizontal.form-bordered .controls > .checkbox {
+    margin-top: 5px!important;
+}
+
+.label-width-100 .control-label {
+    width: 100px !Important;
+}
+.label-width-100 .controls {
+    margin-left: 100px !Important;
+}
+.label-width-120 .control-label {
+    width: 120px !Important;
+}
+.label-width-120 .controls {
+    margin-left: 120px !Important;
+}
+.label-width-150 .control-label {
+    width: 150px !Important;
+}
+.label-width-150 .controls {
+    margin-left: 150px !Important;
+}
+.label-width-200 .control-label {
+    width: 200px !Important;
+}
+.label-width-200 .controls {
+    margin-left: 200px !Important;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.label-info {
+  background-color: #ffffdd;
+  color: black;
+}
+
+.app-view {
+    margin-top: 15px;
+}
+
+.icon-calendar {
+    vertical-align: middle;
+}
+
+.SDateRangePicker .icon-calendar {
+    vertical-align: top!important;
+}
+
+.form-wizard .step {
+    
+}
+.form-wizard .step span.number {
+  padding: 5px 9px 6px 9px !important;
+    vertical-align: middle;
+}
+
+.form-wizard .step span.formWizardStepDesc {
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+.form-wizard .steps {
+    padding: 0px;
+}
+.form-wizard .navbar {
+    margin-bottom: 0;
+}
+.form-wizard .navbar-inner {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+.form-wizard {
+    padding-top: 10px;
+}
+.progress {
+    height: 13px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
+.form-horizontal .form-actions {
+    margin-top: 0px;
+    border-top: 0;
+}
+
+
+.form-horizontal.formlabelwidth80 .control-label {
+    text-align: right;
+    width: 80px;
+}
+.form-horizontal.formlabelwidth80 .controls {
+    margin-left: 80px;
+}
+.form-horizontal.formlabelwidth80 .form-actions {
+    padding-left: 94px!important;
+}
+
+
+.form-horizontal.formlabelwidth100 .control-label {
+    text-align: right;
+    width: 100px;
+}
+.form-horizontal.formlabelwidth100 .controls {
+    margin-left: 100px;
+}
+.form-horizontal.formlabelwidth100 .form-actions {
+    padding-left: 114px!important;
+}
+
+
+.form-horizontal.formlabelwidth120 .control-label {
+    text-align: right;
+    width: 120px;
+}
+.form-horizontal.formlabelwidth120 .controls {
+    margin-left: 120px;
+}
+.form-horizontal.formlabelwidth120 .form-actions {
+    padding-left: 134px!important;
+}
+
+
+.form-horizontal.formlabelwidth150 .control-label {
+    text-align: right;
+    width: 150px;
+}
+.form-horizontal.formlabelwidth150 .controls {
+    margin-left: 150px;
+}
+.form-horizontal.formlabelwidth150 .form-actions {
+    padding-left: 164px!important;
+}
+
+
+.form-horizontal.formlabelwidth200 .control-label {
+    text-align: right;
+    width: 200px;
+}
+.form-horizontal.formlabelwidth200 .controls {
+    margin-left: 200px;
+}
+.form-horizontal.formlabelwidth200 .form-actions {
+    padding-left: 214px!important;
+}
+
+
+.form-horizontal.formlabelwidth240 .control-label {
+    text-align: right;
+    width: 240px;
+}
+.form-horizontal.formlabelwidth240 .controls {
+    margin-left: 240px;
+}
+.form-horizontal.formlabelwidth240 .form-actions {
+    padding-left: 254px!important;
+}
+
+
+.form-horizontal.formlabelwidth250 .control-label {
+    text-align: right;
+    width: 250px;
+}
+.form-horizontal.formlabelwidth250 .controls {
+    margin-left: 250px;
+}
+.form-horizontal.formlabelwidth250 .form-actions {
+    padding-left: 264px!important;
+}
+
+
+.form-horizontal.formlabelwidth260 .control-label {
+    text-align: right;
+    width: 260px;
+}
+.form-horizontal.formlabelwidth260 .controls {
+    margin-left: 260px;
+}
+.form-horizontal.formlabelwidth260 .form-actions {
+    padding-left: 274px!important;
+}
+
+.form-horizontal.formlabelwidth262 .control-label {
+    text-align: right;
+    width: 262px;
+}
+.form-horizontal.formlabelwidth262 .controls {
+    margin-left: 262px;
+}
+.form-horizontal.formlabelwidth262 .form-actions {
+    padding-left: 276px!important;
+}
+
+
+.form-horizontal.formlabelwidth300 .control-label {
+    text-align: right;
+    width: 300px;
+}
+.form-horizontal.formlabelwidth300 .controls {
+    margin-left: 300px;
+}
+.form-horizontal.formlabelwidth300 .form-actions {
+    padding-left: 314px!important;
+}
+
+.form-horizontal .FormDateRangePickerWrapper {
+    padding-top: 5px;
+}
+.form-horizontal .FormDateRangePickerCheckBox {
+    padding-top: 2px;
+}
+.form-horizontal .checker {
+    padding-top: 0;
+}
+
+
+.form-horizontal span.validation-message {
+    color: red;
+    margin-top: 4px;
+    margin-left: 5px;
+    display: inline-block;
+}
+.form-horizontal span.validation-message i {
+    padding-right: 3px;
+}
+
+.form-horizontal-multicolumns {
+    display: table-cell;
+}
+.form-horizontal-multicolumns.spacerleft {
+    padding-left: 162px;
+}
+
+
+
+
+.validation-summary-errors {
+    margin-top: 20px;
+}
+/*
+.validation-summary-errors {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid lightgray;
+    padding: 10px;
+    padding-bottom: 0px;
+    background-color: yellow;
+    color: #b94a48;
+    font-size: 1.1em;
+}
+.validation-summary-errors a {
+    color: #b94a48;
+}
+.validation-summary-errors a {
+    color: #b94a48;
+}
+.validation-summary-errors ul {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+.validation-summary-errors {
+    padding: 4px;
+}
+form .validation-summary-errors 
+{
+    margin-top: 0;
+}
+*/
+
+
+.alert ul {
+    margin: 0!important;
+    padding: 0!important; 
+}
+.alert ul li {
+    margin: 0!important;
+    padding: 0!important;
+    list-style: none;
+    font-weight: bold;
+}
+.alert.alert-error a {
+    color: #b94a48!important;
+}
+
+
+
+
+.message-icon-preceding {
+    margin-left: 5px;
+    display: inline-block;
+}
+
+
+/* <Telerik Grid> */
+
+.t-grid  {
+    border-width: 1px 1px 0 1px;
+    border-color: #fff;/*#e6e6e6;*/
+    
+}
+
+.t-grid-header {
+    background-color: white;
+}
+.t-grid-header th 
+{
+    background-color: white;
+}
+.t-grid-header .t-header {
+    background-color: white;
+}
+.t-toolbar{
+    background-color: white;
+}
+.t-grid-toolbar:first-child{
+    border-collapse:collapse!important;
+    border-color: #e6e6e6!important;
+    border-width: 0px 0px 0px 0px!important;
+    padding: 7px 7px 7px 7px!important;
+}
+.t-grid-pager {
+    background-color: white;
+    border-color: #fff!important; /*#e6e6e6!important;*/
+    border-width: 0px 0px 1px 0px!important;
+    padding: 7px 7px 7px 7px!important;
+}
+.t-grid-pager a {
+    color: black!important;
+}
+.t-status{
+    background-color: white!important;
+    border-color: #e6e6e6!important;
+    border-width: 0px 0px 0px 0px!important;
+}
+.t-grid td {
+    border-collapse:collapse!important;
+    border-color: #e6e6e6!important;
+    border-width: 0px 0px 0px 1px!important;
+    padding: 7px;
+    white-space: nowrap;
+}
+.t-grid td:first-child {
+    border-width: 0px 0px 0px 0px!important;
+}
+.t-grid th {
+    border-collapse:collapse!important;
+    border-color: #e6e6e6!important;
+    border-width: 0px 0px 0px 1px!important;
+    font-weight: bold!important;
+    padding: 7px 7px 7px 7px!important;
+}
+.t-grid th:first-child {
+    border-width: 0px 0px 0px 0px!important;
+}
+.t-state-hover {
+    background-color: #f6f6f6!important;
+    border-color: gray!important;
+}
+.t-filter-options input {
+    width: 134px!important;
+}
+.t-widget.t-grid 
+{
+}
+.t-widget.t-grid table
+{
+    width: 120px!important;
+    background-color: white;
+}
+.t-widget.t-grid .table-no-paging
+{
+    display: table;
+}
+
+/* <column header right click menu> */
+ul.t-group {
+    width: 800px;
+    background-color: white;
+    position: absolute!important;
+}
+ul.t-group li.t-item {
+    background-color: white;
+    float: left;
+}
+li.t-item .t-link input[type="checkbox"] {
+    margin-top: -1px!important;
+    margin-right: 5px!important;
+}
+/* </column header right click menu> */
+
+.t-grid-header .t-header .t-link {
+}
+
+.t-arrow-down {
+}
+
+.t-grid-filter {
+}
+
+div.t-window-content {
+}
+
+div.t-window {
+}
+
+
+.t-window-titlebar {
+}
+
+.t-window-titlebar .t-window-actions
+{
+}
+
+.t-grouping-header 
+{
+    padding-left: 15px;
+}
+
+.t-grid-selected {
+    background-color: #dff0d8!important;
+}
+.t-grid-selected-alt {
+    background-color: #d0f0c6!important;
+}
+.t-grid-multi-row-select {
+    cursor: pointer!important;
+    background-color: #fff;
+}
+
+.text-box.single-line {
+    width: 150px;
+}
+
+
+/* </Telerik Grid> */
+
+
+.beauftragung h4 {
+    margin-left: 10px;
+}
+
+
+/* <Summary> */
+.SummaryItems 
+{
+    padding-bottom: 20px;
+}
+
+.SummaryItem {
+    float: left;
+    margin-left: 25px;
+    margin-right: 25px;
+    display: inline-flexbox;
+    padding-bottom: 10px;
+    min-height: 150px;
+}
+.SummaryMainItem {
+    float: none;
+    background-color: #fffff6;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    min-height: 20px!important;
+    height: auto!important;
+}
+
+.SummaryItemTitle {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.SummaryItemBody {
+    margin-bottom: 0;
+    margin-left: 1px;
+}
+
+.SummaryAddressHint {
+    margin-top: 5px;
+    height: 30px;
+}
+/* </Summary> */
+
+
+/* <Loading> */
+.loading {
+    position: absolute;
+    left: 500px;
+    top: 300px;
+    z-index: 99999;
+}
+/* </Loading> */
+
+
+/* <Multi Selection> */
+.ms-selection .ms-list li {
+    /*color: #00a000!important;*/
+}
+.ms-list li {
+    background-color: #f9f9f9;
+}
+.ms-list li.ms-hover {
+    background-color: #fff!important;
+}
+.ms-list li i 
+{
+    color: #777;
+    margin-left: 5px;
+    float: right;
+}
+/* </Multi Selection> */
+
+
+.contact-blocks {
+    height: 170px;
+    float: left;
+    margin-bottom: 25px;
+    margin-right: 25px;
+}
+.contact-blocks .contact-img {
+    margin-right: 15px;
+    width: 100px;
+}
+.contact-blocks .contact-info {
+    width: 330px;
+}
+
+
+.app-owner-postfix {
+    margin-left: 5px;    
+}
+@media (max-width: 490px) {
+    .app-owner-postfix {
+        display: none;
+    }
+}
+
+
+.table-input-dummy {
+    border: 1px solid #ddd;
+    padding: 2px;
+    min-height: 10px;
+    margin-bottom: 0;
+}
+
+span.m-wrap {
+    display: block;
+    font-weight: bold;
+    padding-top: 2px;
+    min-height: 20px;
+    border: 0px solid #f0f0f0;
+}
+.checker.disabled {
+    display: block;
+    padding-top: 7px;
+}
+
+.portlet span.m-wrap {
+    margin-top: 1px;
+}
+
+.overflow-x-auto {
+  overflow-x:auto;
+}
+
+
+.t-grouping-header {
+    background-color: white;
+    border-color: white;
+    color: #d9d9d9;
+    padding-left: 8px;
+}
+
+
+i.menu-item {
+    display: inline-block;
+    width: 16px;
+    height: 17px;
+    padding-left: 25px;
+    font-style: normal;
+}
+i.excel-export 
+{
+    background: transparent url(../images/metronic/excel.png) 0 1px no-repeat !important;
+}
+i.pdf-export 
+{
+    background: transparent url(../images/metronic/pdf.png) 0 1px no-repeat !important;
+}
+
+
+.FormSearchResultsGrid {
+}
+.FormSearchResultsGrid.portlet.box.light-grey {
+    border-right: 0 solid transparent!important;
+}
+
+.FormSearchResults {
+}
+.FormSearchResults.portlet.box.light-grey {
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.form-actions a.btn.white-font {
+    color: white;
+}
+
+.one-pixel {
+    width: 1px!important;
+    height: 1px!important;
+}
+
+.t-upload-button, .t-upload-selected, .t-upload-files {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-width: 0;
+}
+
+.tooltips { }
+
+.white-space-no-wrap { white-space: nowrap; }
+
+
+@media (max-width: 450px) {
+ input.grid-column-overall-filter { width: 50px!important; }
+ .grid-rows-per-page-label { display: none; }
+}
+@media (min-width: 451px) {
+ input.grid-column-overall-filter { width: 80px!important; }
+ .grid-rows-per-page-label { display: inline; }
+}
+@media (min-width: 651px) {
+ input.grid-column-overall-filter { width: 150px!important; }
+}
+
+
+/* Smarthone device width */
+@media (max-width: 550px) 
+{
+    
+ .smartphone { display: table-cell; }
+ .smartphone-block { display: block; }
+ .smartphone-inline { display: inline; }
+ .smartphone-or-wider { display: table-cell; }
+ .smartphone-or-wider-block { display: block; }
+ .smartphone-or-wider-inline { display: inline; }
+ 
+ .tablet { display: none; }
+ .tablet-block { display: none; }
+ .tablet-inline { display: none; }
+ .tablet-or-wider { display: none; }
+ .tablet-or-wider-block { display: none; }
+ .tablet-or-wider-inline { display: none; }
+ 
+ .workstation { display: none; }
+ .workstation-block { display: none; }
+ .workstation-inline { display: none; }
+ .workstation-or-wider { display: none; }
+ .workstation-or-wider-block { display: none; }
+ .workstation-or-wider-inline { display: none; }
+
+ .t-grid th.smartphone, .t-grid td.smartphone { border-width: 0!important; }
+}    
+
+/* Tablet device width */
+@media (min-width: 551px) and (max-width: 1200px) 
+{
+    
+ .smartphone { display: none; }
+ .smartphone-block { display: none; }
+ .smartphone-inline { display: none; }
+ .smartphone-or-wider { display: table-cell; }
+ .smartphone-or-wider-block { display: block; }
+ .smartphone-or-wider-inline { display: inline; }
+ 
+ .tablet { display: table-cell; }
+ .tablet-block { display: block; }
+ .tablet-inline { display: inline; }
+ .tablet-or-wider { display: table-cell; }
+ .tablet-or-wider-block { display: block; }
+ .tablet-or-wider-inline { display: inline; }
+ 
+ .workstation { display: none; }
+ .workstation-block { display: none; }
+ .workstation-inline { display: none; }
+ .workstation-or-wider { display: none; }
+ .workstation-or-wider-block { display: none; }
+ .workstation-or-wider-inline { display: none; }
+
+}   
+    
+/* Workstation device width */
+@media (min-width: 1201px) {
+
+ .smartphone { display: none; }
+ .smartphone-block { display: none; }
+ .smartphone-inline { display: none; }
+ .smartphone-or-wider { display: table-cell; }
+ .smartphone-or-wider-block { display: block; }
+ .smartphone-or-wider-inline { display: inline; }
+ 
+ .tablet { display: none; }
+ .tablet-block { display: none; }
+ .tablet-inline { display: none; }
+ .tablet-or-wider { display: table-cell; }
+ .tablet-or-wider-block { display: block; }
+ .tablet-or-wider-inline { display: inline; }
+ 
+ .workstation { display: table-cell; }
+ .workstation-block { display: block; }
+ .workstation-inline { display: inline; }
+ .workstation-or-wider { display: table-cell; }
+ .workstation-or-wider-block { display: block; }
+ .workstation-or-wider-inline { display: inline; }
+
+}   
+    
+.t-grid .iconStatusIndicator {
+    height: 20px;
+    width: 2px;
+    float: left;
+    margin-right: 5px;
+}
+    
+.t-grid .iconStatusIndicator.success {
+    background-color: #66ee66;
+}
+
+.t-grid .iconStatusIndicator.info {  
+    background-color: #87ceeb;
+}
+
+.t-grid .iconStatusIndicator.important {  
+    background-color: #f02c71;
+}
+
+.t-grid .iconStatusIndicator.warning {  
+    background-color: #fdbb39;
+}
+
+.t-grid .iconStatusIndicator.danger {  
+    background-color: #e23e29;
+}
+
+
+.cursor-default {
+    cursor: default!important;
+}
+
+.color-legend {
+    position: absolute;
+    font-size: 0.8em;
+    border: 1px solid #e9e9e9;
+}
+.color-legend .color-item {
+    padding-right: 5px;
+    display: block;
+    text-align: right;
+}
+
+
+
+/* <Breadcrumbs> */
+	
+.breadcrumbs {
+    margin-left: 10px;
+	/* Clear floats */
+	overflow: hidden;
+	width: 100%;
+    /*height: 40px;*/
+}
+	
+.breadcrumbs li{
+	float: left;
+	margin: 0 .5em 0 1em;
+    list-style: none;
+    margin-bottom: 5px;
+}
+	
+.breadcrumbs a{
+	background: #ddd;
+	padding: .7em 1em;
+	float: left;
+	text-decoration: none;
+	color: #444;
+	text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+	position: relative;
+}
+	
+.breadcrumbs a:hover{
+	background: #f0f0f0;
+}
+	
+.breadcrumbs a::before{
+	content: "";
+	position: absolute;
+	top: 50%; 
+	margin-top: -1.5em;   
+	border-width: 1.5em 0 1.5em 1em;
+	border-style: solid;
+	border-color: #ddd #ddd #ddd transparent;
+	left: -1em;
+}
+	
+.breadcrumbs a:hover::before{
+	border-color: #f0f0f0 #f0f0f0 #f0f0f0 transparent;
+}
+	
+.breadcrumbs a::after{
+	content: "";
+	position: absolute;
+	top: 50%; 
+	margin-top: -1.5em;   
+	border-top: 1.5em solid transparent;
+	border-bottom: 1.5em solid transparent;
+	border-left: 1em solid #ddd;
+	right: -1em;
+}
+	
+.breadcrumbs a:hover::after{
+	border-left-color: #f0f0f0;
+}
+	
+.breadcrumbs .current,
+.breadcrumbs .current:hover{
+	font-weight: bold;
+	/*background: none;*/
+}
+	
+.breadcrumbs .current::after,
+.breadcrumbs .current::before{
+	/*content: normal;*/
+}
+
+/* </Breadcrumbs> */
+
+.timepicker {
+    text-align: center;   
+}
+
+.hidden {
+    visibility: hidden;
+}
+.transparent {
+    opacity: 0;
+}
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.form-header i {
+    display: inline-block;
+    font-size: 1.2em;
+    vertical-align: top;
+    padding-top: 5px;
+}
+.form-header span {
+    display: inline-block;
+    font-size: 1.2em;
+    margin-left: 10px;
+}

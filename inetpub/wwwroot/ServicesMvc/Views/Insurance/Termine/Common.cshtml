@@ -1,0 +1,28 @@
+﻿
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("AlleTermineGrid");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+
+    function OnDataBound_AlleTermineGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_AlleTermineGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_AlleTermineGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+</script>

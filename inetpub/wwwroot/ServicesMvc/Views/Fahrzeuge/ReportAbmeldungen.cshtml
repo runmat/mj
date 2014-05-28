@@ -1,0 +1,97 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model AbgemeldeteFahrzeugeViewModel
+
+<h3 class="page-title" id="headerTitle">Abgemeldete Fahrzeuge <small>und Klärfälle</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Abmeldungen/SucheFahrzeuge", Model.AbgemeldeteFahrzeugeSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        ShowHideStatusMultiSelect();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        ShowHideStatusMultiSelect();
+    }
+
+    function ShowHideStatusMultiSelect() {
+        var statusMultiSelectControlBlock = $("#FahrzeugStatusWerte").parent().parent();
+        var nurKlaerFaelle = $("#NurKlaerfaelle").is(":checked");
+        if (nurKlaerFaelle)
+            statusMultiSelectControlBlock.hide();
+        else
+            statusMultiSelectControlBlock.show();
+    }
+
+    function ShowAbgemeldeteFahrzeugeSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAbgemeldeteFahrzeuge");
+        //alert('1');
+        $("#divGrid").slideDown();
+        $("#divHistorie").html('');
+        //alert('2');
+    }
+
+
+    function OnDataBound_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowAbgemeldeteFahrzeugeHistorieAjax(fin) {
+        LoadingShow();
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetAbgemeldeteFahrzeugeHistorie",
+            loadingShow: true,
+            data: { fahrgestellnummer: fin },
+            success: function (result) {
+                ShowAbgemeldeteFahrzeugeHistorie(result);
+            }
+        });
+
+        return false;
+    }
+
+    function ShowAbgemeldeteFahrzeugeHistorie(result) {
+        //alert(result);
+        $("#divHistorie").html(result);
+        $("#divGrid").slideUp();
+        $("#divHistorie").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+    }
+
+    function CloseAbmeldeHistorie() {
+        $("#btnBackToResult").hide();
+        $("#divHistorie").slideUp(function () { $("#divGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divGrid").slideDown();
+    }
+
+</script>

@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@using CkgDomainLogic.Leasing.ViewModels
+@model LeasingAbmeldungViewModel 
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridAbzumeldendeFzg"; }
+
+@(Html.Telerik()
+    .Grid<Abmeldedaten>()
+    .Name(gridName)
+    .XGroup("GridAbzumeldendeFzg")
+    .DataKeys(d => d.Add(a => a.FahrgestellnummerShow).RouteKey("FahrgestellnummerShow"))
+    .XAjaxDataBinding("AbzumeldendeFzgAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Freigabe).ClientTemplate(
+                "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+            ).HeaderTemplate(
+                "<input type='checkbox' id='cbxCheckAll' />Freigabe"
+            ).Filterable(false).Groupable(false).Sortable(false);
+        columns.Bound(c => c.FreigabeShow).Hidden().ClientTemplate(
+                "<input type='checkbox' <# if (data.FreigabeShow) { #> checked <# } #> disabled />"
+            );
+        columns.Bound(c => c.KennzeichenShow);
+        columns.Bound(c => c.LeasingvertragsnummerShow);
+        columns.Bound(c => c.BriefnummerShow);
+        columns.Bound(c => c.FahrgestellnummerShow);
+        columns.Bound(c => c.AbmeldeeingangShow).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.StatusShow).Hidden();
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAbzumeldendeFzgFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportAbzumeldendeFzgFilteredPDF", "Leasing");
+    })
+)
+

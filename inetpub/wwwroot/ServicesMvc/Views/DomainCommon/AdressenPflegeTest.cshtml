@@ -1,0 +1,29 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model CkgDomainLogic.DomainCommon.ViewModels.AdressenPflegeViewModel 
+
+@section LayoutScript { _controlGroupValidationType = "default"; }
+
+@Html.Partial("AdressenPflege/AdresseCommon")
+
+<h3 class="page-title">Adressenverwaltung <small></small></h3>
+
+<div class="portlet">
+    <div id="divGridEditStart">
+    
+        @Html.Partial("AdressenPflege/AdressenDetailsForm", new Adresse{ PLZ = "22941", Land = "de" })
+
+    </div>
+</div>
+
+<div id="divGridItemDetails"></div>
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        //FormPrepareFilter();
+
+        //AddressEdit(@AppModelMappings.TmpID);
+    };
+
+</script>

@@ -1,0 +1,25 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungHistoryViewModel
+
+@Html.Partial("Partial/HistoryAuftragDetails", Model.HistoryAuftragCurrent)
+
+<div id="HistoryProtokolle">
+    @if (Model.PdfFilesAvailable)
+    {
+        <h3>Protokolle</h3>
+        <div>
+            <span class="hintcontainer hide">Hinweis: Für Protokolle und Fotos erscheint aktuell noch wegen mangelnder Daten stets dasselbe Beispiel</span>
+            <a class="pdf" href="UeberfuehrungHistory/HistoryDownloadPdfFiles">PDF Download</a>
+        </div>
+    }
+
+    @foreach (var tour in Model.ImageFileTours)
+    {
+        <h3>Fotos, Fahrt @tour</h3>
+        <div>
+            @foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
+            {
+                <img src="@thumbImageFile" alt="" onclick="ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile));" />
+            }
+        </div>
+    }
+</div>

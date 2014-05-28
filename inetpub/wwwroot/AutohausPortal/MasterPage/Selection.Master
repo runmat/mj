@@ -1,0 +1,129 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Selection.master.cs"
+    Inherits="AutohausPortal.MasterPage.Selection" %>
+<%@ Register TagPrefix="uc" TagName="Startmenue" Src="..\Controls\Startmenue.ascx" %>
+<%@ Import Namespace="CKG.Base.Kernel.Security" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head id="Head1" runat="server">
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="Christoph Kroschke GmbH" />
+    <meta content="Christoph Kroschke GmbH" name="Copyright" />
+    <link href="../Styles/kroschkeportal.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/ezmark.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/jquery.selectBox.css" type="text/css" rel="stylesheet" />
+    <link href="../Styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+		<!--[if lte IE 10]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/iestyles.css">
+		<![endif]--><!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie7styles.css">
+		<![endif]--><!--[if lte IE 6]>
+		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie6styles.css">
+		<![endif]-->
+</head>
+<!--Skriptdefinitionen nicht im head-Bereich, da sonst der Switch zum IE9-ContentMode nicht funktioniert-->
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-1.7.1.js"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery.selectBox.js"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-ui.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/ezmark.js?23052013"></script>
+<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/kroschkeportal.js?26052014"></script>
+<body id="top" class="start" onload="showstartteaser();">
+    <form id="Form1" runat="server" style="margin: 0">
+    <div id="maincontainer">
+        <div id="head" class="breadcrump">
+            <div class="logo">
+                <img height="51" width="382" alt="Kroschke" src="/AutohausPortal/images/kroschke-logo.gif" />
+            </div>
+            <div class="extapp">
+                <a runat="server" href="/AutohausPortal/Downloads/Support.exe">
+                    <img src="/AutohausPortal/images/TeamviewerLogoSmall.png" alt="Download TeamViewer" title="Download TeamViewer"/>
+                </a> 
+            </div>
+            <!--metanavigation-->
+            <div id="metanavigation">
+                <div class="metalinks">
+                    &nbsp;</div>
+                <div class="metabutton">
+                    <asp:HyperLink ID="lnkDatenschutz" Target="_blank" NavigateUrl="/AutohausPortal/Docs/Portal/Datenschutz.pdf"
+                        runat="server">Datenschutz</asp:HyperLink>
+                    </div>
+                <div class="metatrenner">
+                    &nbsp;</div>
+                <div class="metabutton">
+                    <asp:HyperLink ID="lnkKontakt" NavigateUrl="/AutohausPortal/Info/Kontakt.aspx"
+                        runat="server">Kontakt</asp:HyperLink></div>
+                <div class="metatrenner">
+                    &nbsp;</div>
+                <div class="metabutton">
+                    <asp:HyperLink ID="lnkImpressum" NavigateUrl="/AutohausPortal/Info/Impressum.aspx"
+                        runat="server">Impressum/ AGBs</asp:HyperLink></div>
+                <div class="metatrenner">
+                    &nbsp;</div>
+                <div class="metabutton">
+                    <asp:HyperLink ID="lnkChangePassword" runat="server" NavigateUrl="/AutohausPortal/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></div>
+                <div class="metatrenner">
+                    &nbsp;</div>
+                <div class="metabutton">
+                    <asp:HyperLink ID="lnkLogout" runat="server" NavigateUrl="/AutohausPortal/Start/Logout.aspx">Logout </asp:HyperLink>
+                </div>
+                <div class="metarechts">
+                    &nbsp;</div>
+            </div>
+            <!--metanavigation-->
+            <!--startmenu-->
+            <div id="startbutton" style="background-position: 0px 0px;">
+                <img height="105" width="105" alt="Startmenu" src="/AutohausPortal/images/transp.gif" />
+            </div>
+            <div id="startmenu" style="display: none;">
+                <div class="startmenu_top">
+                    <asp:HyperLink ID="lnkStart" NavigateUrl="/AutohausPortal/Start/Selection.aspx" ImageUrl="/AutohausPortal/images/transp.gif"
+                        Height="105" Width="105" runat="server" Text="Startmenu"></asp:HyperLink></div>
+                <div class="startmenu_contentlayer">
+                    <uc:Startmenue runat="server" />
+                </div>
+                <div class="startmenu_bottom">
+                    &nbsp;</div>
+            </div>
+            <!--startmenu-->
+            <!--breadcrump-->
+            <div id="breadcrump">
+                <div id="backlink" class="backlink" runat="server">
+                    <asp:HyperLink ID="lnkBack" runat="server" NavigateUrl="/AutohausPortal/Start/Selection.aspx">&lt;&lt; Zurück </asp:HyperLink>
+                </div>
+                <div class="headline">
+                    <asp:Label ID="lblHeadLine" runat="server"></asp:Label>
+                </div>
+            </div>
+            <!--breadcrump-->
+            <!--warenkorb-->
+            <div id="warenkorb">
+                <h4>
+                    <asp:HyperLink ID="lnkToAuftrag" runat="server" NavigateUrl="../forms/Auftraege.aspx">Gespeicherte Aufträge</asp:HyperLink></h4>
+                <div class="menge">
+                    <asp:HyperLink ID="lnkMenge" runat="server" NavigateUrl="../forms/Auftraege.aspx"> </asp:HyperLink></div>
+            </div>
+            <!--warenkorb-->
+        </div>
+    <div id="contentstart">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div class="trenner">
+        &nbsp;</div>
+    </div>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolderfooter" runat="server">
+        <div class="trenner20">
+            &nbsp;</div>
+        <div id="footer" style="margin-top: 0px;">
+            <div class="footcontent">
+                <div class="footcontentl">
+                    <a href="#top">Nach oben</a>
+                </div>
+                <div class="footcontentr">
+                    <asp:Label ID="lblCopyright" runat="server" Text="" /></div>
+            </div>
+        </div>
+    </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

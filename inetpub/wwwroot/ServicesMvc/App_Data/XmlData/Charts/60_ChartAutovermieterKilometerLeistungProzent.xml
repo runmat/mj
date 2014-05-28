@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChartsSqlDataDescriptorTemplate>
+
+  <Group>
+    Autovermieter
+  </Group>
+
+  <HtmlTemplateName>
+
+  </HtmlTemplateName>
+
+  <SqlTableOrViewName>
+    ZDAD_V_REM_DATEN_v
+  </SqlTableOrViewName>
+  
+  <GroupSqlStatement>
+
+    select
+    AvName Key1,
+    DATEPART(yy,AUSLDAT_DATE) Jahr ,
+    AVG(KMSTAND) LWert1,
+    24000 - AVG(KMSTAND) LWert2,
+    AVG(KMSTAND) / 24000.0 * 100.0 FWert1,
+    (24000 - AVG(KMSTAND))  / 24000.0 * 100.0 FWert2
+    from {0}
+    {1}
+    group by AvName, DATEPART(yy,AUSLDAT_DATE)
+    order by AvName, DATEPART(yy,AUSLDAT_DATE)
+
+  </GroupSqlStatement>
+  
+  <DetailsSqlStatement>
+
+    select
+    AvName Autovermieter,
+    MODELL Modell,
+    FAHRGNR FIN,
+    BRIEFNR ZBII,
+    KMSTAND,
+    DATEPART(yy,AUSLDAT_DATE) Jahr ,
+    DATEPART(MM,AUSLDAT_DATE) Monat ,
+    convert(varchar(10), AUSLDAT_DATE, 4) Datum
+    from {0}
+    {1}
+
+  </DetailsSqlStatement>
+
+  <FilterInitial>
+
+    (DATEPART(yy,AUSLDAT_DATE) >= 2009) and AvName NOT IN ('AV02', 'AV09')
+    and KUNNR = '0000322489'
+
+  </FilterInitial>
+
+  <FilterSelector>
+
+    AvName in ({0}) and DATEPART(yy,AUSLDAT_DATE) in ({1})
+
+  </FilterSelector>
+  
+  <FilterSelectorDetails>
+
+    AvName in ({0}) 
+
+  </FilterSelectorDetails>
+  
+</ChartsSqlDataDescriptorTemplate>

@@ -1,0 +1,148 @@
+﻿
+<div class="SForm SQuickInlineForm margin-left-10" id="searchFormAutocomplete">
+    <form id="filterForm" action="#" class="form-horizontal no-margin">
+
+        @Html.SimpleFormTextBox("searchAutocomplete_COC_0_2_TYP", new { @class = "m-wrap small" }, "", "Typ")
+        <span class="padding-left-10" />
+        @Html.SimpleFormTextBox("searchAutocomplete_COC_0_2_VAR", new { @class = "m-wrap small" }, "", "Variante")
+        <span class="padding-left-10" />
+        @Html.SimpleFormTextBox("searchAutocomplete_COC_0_2_VERS", new { @class = "m-wrap small" }, "", "Version")
+   
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    function FormPrepareFilter() {
+
+        CocInitAutocompleteFilter();
+
+        //$('#searchAutocomplete_COC_0_2_TYP').focus();
+        GridLoadingHide();
+    }
+
+
+    //
+    // <Autocomplete Filter>
+    //
+
+    var _CocRefreshAutocompleteFilterInside = false;
+    var _collectionChanged = false;
+
+    function CocInitAutocompleteFilter() {
+        $("#searchFormAutocomplete input[id^='searchAutocomplete_']").each(function () {
+            // only needed on entering an empty string in our autocomplete textbox
+            $(this).keyup(function (event) {
+                //alert('');
+                if ($(this).val() == "")
+                    CocRefreshAutocompleteFilter($(this), true);
+
+                return true;
+            });
+
+            $(this).bind('mousedown', function () {
+                $(this).autocomplete("search");
+            });
+        });
+
+
+        // TEST
+//        $("#searchAutocomplete_COC_0_2_TYP").val("A3");
+//        $("#searchAutocomplete_COC_0_2_VAR").val("Mini");
+//        $("#searchAutocomplete_COC_0_2_VERS").val("TDI");
+//        CheckPrepareNewCocOrder();
+
+        CocRefreshAutocompleteFilter();
+    }
+
+    function CocRefreshAutocompleteFilter(textbox, suppressAutocompleteOpening) {
+        
+        if (_CocRefreshAutocompleteFilterInside)
+            return;
+        _CocRefreshAutocompleteFilterInside = true;
+
+        if (_collectionChanged) {
+            $("#searchAutocomplete_COC_0_2_VAR").val('@Model.NullSelectionString');
+            $("#searchAutocomplete_COC_0_2_VERS").val('@Model.NullSelectionString');
+            _collectionChanged = false;
+        }
+        var level = 0;
+        if (textbox != null) {
+            //alert('textbox');
+            var searchColumn = textbox.attr('id').substring(19, 99);
+            if (searchColumn == 'COC_0_2_TYP') level = 1;
+            if (searchColumn == 'COC_0_2_VAR') level = 2;
+            if (searchColumn == 'COC_0_2_VERS') level = 3;
+        }
+        $.ajax(
+        {
+            type: "POST",
+            url: "RefreshCascadedFilter",
+            data: {
+                level: level,
+                searchCascadedTyp: $('#searchAutocomplete_COC_0_2_TYP').val(),
+                searchCascadedVar: $('#searchAutocomplete_COC_0_2_VAR').val(),
+                searchCascadedVers: $('#searchAutocomplete_COC_0_2_VERS').val()
+            },
+            success: function (result) {
+                CocSetAutocompleteFilter(result, level, suppressAutocompleteOpening);
+                _CocRefreshAutocompleteFilterInside = false;
+                //if (textbox == null) setTimeout('$("#searchAutocomplete_COC_0_2_TYP").autocomplete("search")', 1000);
+            },
+            error: function (error) {
+                alert(error.status);
+            }
+        });
+    }
+
+    function CocSetAutocompleteFilter(result, level, suppressAutocompleteOpening) {
+
+        if (level < 1)
+            PopulateAutocompleteTextbox($('#searchAutocomplete_COC_0_2_TYP'), result.searchCascadedTypGroups);
+        if (level < 2)
+            PopulateAutocompleteTextbox($('#searchAutocomplete_COC_0_2_VAR'), result.searchCascadedVarGroups);
+        if (level < 3)
+            PopulateAutocompleteTextbox($('#searchAutocomplete_COC_0_2_VERS'), result.searchCascadedVersGroups);
+
+        if (suppressAutocompleteOpening == null || !suppressAutocompleteOpening) {
+            if (level == 1)
+                $('#searchAutocomplete_COC_0_2_VAR').autocomplete("search");
+            if (level == 2)
+                $('#searchAutocomplete_COC_0_2_VERS').autocomplete("search");
+        }
+        
+        TryGridPageTo1();
+    }
+
+    function PopulateAutocompleteTextbox(textbox, items) {
+        var oldSelectedValue = textbox.val();
+        textbox.val('');
+        textbox.autocomplete({
+            minLength: 0,
+            source: items,
+            select: function (event, ui) {
+                if ($(this).attr('id') == $('#searchAutocomplete_COC_0_2_TYP').attr('id'))
+                    $('#searchAutocomplete_COC_0_2_VAR').focus();
+                else if ($(this).attr('id') == $('#searchAutocomplete_COC_0_2_VAR').attr('id'))
+                    $('#searchAutocomplete_COC_0_2_VERS').focus();
+                else
+                    $(this).blur();
+
+                //alert(ui.item.value);
+                textbox.val(ui.item.value);
+                CocRefreshAutocompleteFilter(textbox);
+            }
+        });
+        $.each(items, function (index, val) {
+            if (oldSelectedValue === val)
+                textbox.val(val);
+        });
+    }
+
+    //
+    // </Autocomplete Filter>
+    //
+
+
+</script>

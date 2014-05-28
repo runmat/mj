@@ -1,0 +1,89 @@
+﻿div#header ul#navigation li
+{
+    background-color: #C0C0C0;  
+}
+
+div#header ul#navigation li.active
+{
+    background-color: #FFFFFF;  
+}
+
+div#header ul#navigation li a 
+{
+    color: #5F5F5F;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #C0C0C0;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #C0C0C0;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #C0C0C0;
+    color: #5F5F5F;
+}
+
+.Tablehead
+{
+    background-image: url(../../Images/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+
+td.MainmenuItemAlternate:hover
+{
+    background-color: #C0C0C0;
+}
+
+.divWait
+{
+    border: thin solid #C0C0C0;
+}
+
+.lblKontaktFirma
+{
+    color: #C0C0C0;
+}
+
+div.ImpressumHead
+{
+    background-color: #C0C0C0;
+}
+
+.ExcelDiv {
+    background-color:#C0C0C0;   
+    color:#5F5F5F;
+}
+
+div#content div#innerContentRight div#data table tbody tr td a:hover {
+    color: #C0C0C0;
+}
+    
+a.Tablebutton:hover
+{
+    color: #C0C0C0;
+}
+
+.responsibleTextName
+{
+	color:    #C0C0C0;
+}
+
+.responsibleTextName .responsibleText a:hover
+{
+    color:    #C0C0C0;
+}
+    
+.menuehead 
+{
+	color:#C0C0C0;
+	text-align:left;
+}

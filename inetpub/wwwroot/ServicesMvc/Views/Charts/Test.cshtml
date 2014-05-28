@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel 
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Dynamic Grid <small>Test</small></h3>
+
+@Html.IeWarning(8)
+
+@{ var gridName = "GridChartDetailsData"; }
+
+@(Html.Telerik()
+    .Grid<object>()
+    .Name(gridName)
+
+    .XGroup("GridChartDetailsDataModel")
+    .XAjaxDataBinding("DetailsDataAjaxBinding", "Charts")
+    .Columns(columns => columns.XBoundAll(Model.DetailsDataCurrentType))
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XToolBar("Charts")
+)

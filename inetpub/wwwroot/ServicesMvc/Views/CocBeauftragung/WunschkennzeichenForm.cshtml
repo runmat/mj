@@ -1,0 +1,43 @@
+﻿@model VinWunschkennzeichen[]
+
+<div id="DivWunschkennzeichenOptionen" class="margin-top-20">
+    @using (Ajax.BeginForm("WunschkennzeichenForm", "CocBeauftragung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivWunschkennzeichenOptionen", OnComplete = "AjaxFormWunschkennzeichenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormWunschkennzeichen" }))
+    {
+        @Html.FormValidationSummary(false)
+
+        for (var i = 0; i < Model.Count(); i++)
+        {
+            <div class="wunschkennzeichen">
+                @Html.HiddenFor(m => m[i].ZulassungsKreis)
+                
+                <span class="wk-label">@Html.DisplayNameFor(m => m[i].VIN)</span>
+                @Html.TextBoxFor(m => m[i].VIN, new { @class = "m-wrap small vin uppercase textblock", @readonly = "readonly" })
+                
+                <span class="wk-label">@Html.DisplayNameFor(m => m[i].Kennzeichen1)</span>
+                <span class="wk-label zulassungskreis">@Model[i].ZulassungsKreis -</span>
+                @Html.TextBoxFor(m => m[i].Kennzeichen1, new { @class = "wk-textbox kennzeichen uppercase" })
+                
+
+                <br/><br/>
+                <span class="wk-label">@Html.DisplayNameFor(m => m[i].ReservierungNr)</span>
+                @Html.TextBoxFor(m => m[i].ReservierungNr, new { @class = "wk-textbox  res-no" })
+
+                <span class="wk-label">@Html.DisplayNameFor(m => m[i].ReservierungName)</span>
+                @Html.TextBoxFor(m => m[i].ReservierungName, new { @class = "wk-textbox  res-name" })
+            </div>
+        }
+
+        <div class="wunschkennzeichen-required-field-summary">
+            @Html.FormRequiredFieldsSummary()
+        </div>
+        
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+        </script>
+    }
+</div>

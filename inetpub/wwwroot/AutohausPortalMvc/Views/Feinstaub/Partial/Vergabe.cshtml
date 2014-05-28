@@ -1,0 +1,50 @@
+﻿@using CkgDomainLogic.Feinstaub.Models
+@model FeinstaubVergabeUI
+
+@{ var formID = 2; }
+
+<h2 class="lonelyHeader">Feinstaubplaketten</h2>
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("SaveFeinstaubVergabe", "Feinstaub", null,
+                        new MvcAjaxOptions(formID) { OnComplete = "SaveFeinstaubVergabeComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        @Html.ValidationSummary()
+
+        @Html.HiddenFor(m => m.Plakettenart)
+        @Html.HiddenFor(m => m.Kennzeichen)
+        @Html.FormNewLine()
+
+        @Html.FormTextBlockFor(m => m.Meldung, cssClass: "Percent90Width", labelCssClass: null)   
+        @Html.FormNewLine()
+
+        @Html.FormDivLinie()
+
+        <div class="floatLeft">
+            <input type="button" value="Abbrechen" class="submitbutton" onclick=" CloseFeinstaubVergabe(); " />
+            @if (Model.VergabeMoeglich)
+            {
+                <input type="submit" value="Speichern" class="submitbutton" />
+            }
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+}
+
+<script type="text/javascript">
+
+    function SaveFeinstaubVergabeComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            var successMessage = 'Daten erfolgreich gespeichert';
+            SpanAlertSuccess("spanAlertFeinstaubVergabe", successMessage, 10000);
+            CloseFeinstaubVergabe();
+        }
+    }
+
+</script>

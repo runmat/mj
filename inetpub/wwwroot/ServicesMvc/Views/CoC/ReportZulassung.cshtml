@@ -1,0 +1,122 @@
+﻿@using CkgDomainLogic.CoC.Models
+@model CkgDomainLogic.CoC.ViewModels.CocReportsViewModel 
+@{ 
+    var gridName = "GridZulassungsAuftraege";
+}
+
+<h3 class="page-title">Zulassungsstatus Fahrzeuge <small></small></h3>
+
+<div class="SForm SQuickForm margin-left-10">
+    <form id="filterForm" action="#" class="form-horizontal">
+        
+        @Html.SimpleFormCheckBoxFor(m => m.FilterNurAuftragsDatumGesetzt, new { onchange = "FilterNurAuftragsDatumGesetztChanged($(this));" }, iconCssClass: "")
+    
+        @Html.SimpleFormDateRangePickerFor(m => m.FilterNurAusliefDatumRange, Model.FilterAusliefDatumStart, Model.FilterAusliefDatumEnd, iconCssClass: "")
+        
+        @Html.SimpleFormDropDownListFor(m => m.FilterLand, Model.LaenderList, new { onchange = "FilterNurLandChanged($(this));" }, iconCssClass: "")
+    </form>
+</div>
+
+@(Html.Telerik()
+      .Grid<CocEntity>()
+      .Name(gridName)
+      .XGroup("GridZulassungsAuftraege")
+      .XAjaxDataBinding("ReportZulassungAjaxBinding", "CoC")
+      .Columns(columns =>
+      {
+          columns.XBound(c => c.ID).Title("").Filterable(false).Sortable(false).Visible(false);
+          columns.XBound(c => c.AUSLIEFER_DATUM);
+          columns.XBound(c => c.AUFTR_NR_KD);
+          columns.XBound(c => c.VIN);
+          columns.XBound(c => c.Hersteller);
+          columns.XBound(c => c.CodeTypeVersion);
+          columns.XBound(c => c.Color);
+          columns.XBound(c => c.ERDAT);
+          columns.XBound(c => c.AUFTRAG_DAT);
+          columns.XBound(c => c.LAND);
+      })
+      
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.AUSLIEFER_DATUM).Descending())
+        .ToolBar(commands =>
+      {
+          commands.FilteredDataCommand("ReportZulassungExportFilteredExcel", "CoC");
+          commands.FilteredDataCommand("ReportZulassungExportFilteredPDF", "CoC");
+      }))
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+        GridAllColumnFilterApplyToGrid("GridZulassungsAuftraege");
+
+        FormDateRangePickerPrepare_FilterNurAusliefDatumRange(
+            function (cb, start, end) {
+                FilterNurAusliefDatumRangeChanged(cb, start, end);
+            },
+            function (start, end) {
+                FilterGrid(null, null, start, end, null);
+            }
+        );
+
+    };
+
+    function GetGrid() {
+        return $("#GridZulassungsAuftraege").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridZulassungsAuftraegeItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridZulassungsAuftraege() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridZulassungsAuftraege() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridZulassungsAuftraege() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FilterNurAuftragsDatumGesetztChanged(cb) {
+        FilterGrid(cb.is(':checked'), null, null, null, null);
+    }
+
+    function FilterNurLandChanged(dropDown) {
+        FilterGrid(null, null, null, null, dropDown.val());
+    }
+
+    function FilterNurAusliefDatumRangeChanged(cb, start, end) {
+        FilterGrid(null, cb.is(':checked'), start, end, null);
+    }
+
+    function FilterGrid(nurAuftragsDatumGesetzt, nurAusliefDatumRange, ausliefDatumStart, ausliefDatumEnd, nurLand) {
+        $.ajax({
+            type: "POST",
+            url: "ReportZulassungFilterGrid",
+            data: {
+                nurAuftragsDatumGesetzt: nurAuftragsDatumGesetzt,
+                nurAusliefDatumRange: nurAusliefDatumRange,
+                ausliefDatumStart: ausliefDatumStart, 
+                ausliefDatumEnd: ausliefDatumEnd,
+                nurLand: nurLand
+            },
+            success: function (result) {
+                GridRefresh();
+            }
+        });
+    }
+
+</script>

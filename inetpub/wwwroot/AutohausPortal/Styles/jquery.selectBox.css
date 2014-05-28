@@ -1,0 +1,144 @@
+/* Dropdown control */
+
+
+.selectBox-dropdown {
+position: relative;
+margin:6px 0 0 6px;
+text-decoration: none;
+text-align: left;
+outline: none;
+vertical-align: middle;
+cursor: default;
+height:27px;
+background-repeat: no-repeat;
+font: normal 12px/27px arial, helvetica, sans-serif;
+color:#7f7f7f;
+background-image: url(../images/bg_select.gif);
+}
+
+.error .selectBox-dropdown {
+	background-image: url(../images/bg_select_error.gif);
+} 
+
+.selectBox-dropdown:focus,
+.selectBox-dropdown:focus .selectBox-arrow {
+border-color: #666;
+}
+
+.selectBox-dropdown.selectBox-menuShowing {
+}
+
+.selectBox-dropdown .selectBox-label {
+padding: 0px 8px 0 10px;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.selectBox-dropdown .selectBox-arrow {
+position: absolute;
+top: 0;
+right: 0;
+width: 28px;
+height: 34px;
+background: url(../images/select_pfeil.gif) no-repeat;
+
+}
+
+.error .selectBox-dropdown .selectBox-arrow {
+	background: url(../images/select_pfeil_error.gif) no-repeat;
+} 
+
+
+
+/* Dropdown menu */
+.selectBox-dropdown-menu {
+position: absolute;
+z-index: 99999;
+max-height: 200px;
+min-height: 1em;
+background-image: url(../images/bg_dropdown.gif);
+background-repeat: repeat-x;
+background: #fcfcfc;
+overflow: auto;
+text-align: left;
+border: solid 1px #cecece;
+}
+
+
+/* Inline control */
+.selectBox-inline {
+min-width: 150px;
+outline: none;
+border: solid 1px #BBB;
+background: #FFF;
+display: inline-block;
+overflow: auto;
+}
+
+.selectBox-inline:focus {
+border-color: #666;
+}
+
+
+/* Options */
+
+.selectBox-options,
+.selectBox-options li,
+.selectBox-options li a {
+list-style: none;
+display: block;
+cursor: default;
+padding: 0;
+margin: 0;
+}
+
+.selectBox-options li a {
+line-height: 1.5;
+padding: 0 .5em;
+white-space: nowrap;
+overflow: hidden;
+background: 6px center no-repeat;
+}
+
+.selectBox-options li.selectBox-hover a {
+background-color: #EEE;
+}
+
+.selectBox-options li.selectBox-disabled a {
+color: #888;
+background-color: transparent;
+}
+
+.selectBox-options li.selectBox-selected a {
+background-color: #C8DEF4;
+}
+
+.selectBox-options .selectBox-optgroup {
+color: #666;
+background: #EEE;
+font-weight: bold;
+line-height: 1.5;
+padding: 0 .3em;
+white-space: nowrap;
+}
+
+
+/* Disabled state */
+.selectBox.selectBox-disabled {
+color: #888 !important;
+}
+
+.selectBox-dropdown.selectBox-disabled .selectBox-arrow {
+opacity: .5;
+filter: alpha(opacity=50);
+border-color: #666;
+}
+
+.selectBox-inline.selectBox-disabled {
+color: #888 !important;
+}
+
+.selectBox-inline.selectBox-disabled .selectBox-options a {
+background-color: transparent !important;
+}
+

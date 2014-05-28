@@ -1,0 +1,130 @@
+﻿
+<link href="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+
+<style type="text/css">
+
+
+</style>
+
+
+
+<script src="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
+
+<script type="text/javascript">
+
+    var Calendar = function () {
+
+        return {
+            //main function to initiate the module
+            init: function () {
+                Calendar.initCalendar();
+            },
+
+            initCalendar: function () {
+
+                if (!jQuery().fullCalendar) {
+                    return;
+                }
+
+                //$('#calendar').removeClass("mobile");
+
+                $('#calendar').fullCalendar('destroy'); // destroy the calendar
+                $('#calendar').fullCalendar({ //re-initialize the calendar
+
+                    header: { left: 'title', center: '', right: 'prev,next,today,agendaWeek' },
+                    defaultView: 'agendaWeek',
+                    editable: true,
+                    allDaySlot: false,
+
+                    disableDragging: true,
+                    disableResizing: true,
+                    contentHeight: 600,
+                    
+                    eventClick: function (calEvent, jsEvent, view) {
+                        //console.log(calEvent.start);
+                    },
+
+                    droppable: false, 
+
+                    titleFormat: {
+                        month: "MMMM yyyy",
+                        week: "d.[ MMMM][ yyyy]{ - d. MMMM yyyy}",
+                        day: "dddd, d.MMMM yyyy"
+                    },
+                    columnFormat: {
+                        month: "ddd",
+                        week: "ddd d.M.",
+                        day: "dddd d.M.yy"
+                    },
+                    axisFormat: 'HH:mm',
+                    timeFormat: {
+                        agenda: 'H:mm{ - h:mm}'
+                    },
+
+                    slotMinutes: 15,
+                    firstHour: 8,
+                    minTime: 6,
+                    maxTime: 22,
+
+                    isRTL: false,
+                    firstDay: 1,
+                    monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                    monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                    dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                    dayNamesShort: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                    buttonText: {
+                        prev: "&nbsp;&#9668;&nbsp;",
+                        next: "&nbsp;&#9658;&nbsp;",
+                        prevYear: "&nbsp;&lt;&lt;&nbsp;",
+                        nextYear: "&nbsp;&gt;&gt;&nbsp;",
+                        today: "heute",
+                        month: "Monat",
+                        week: "Woche",
+                        day: "Tag"
+                    },
+                    allDayText: ""
+
+                    , events: function (start, end, callback) {
+                        console.log(start.toString("dd.MM.yyyy") + " - " + end.toString("dd.MM.yyyy"));
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            url: 'TermineSchadenfaelleAjaxSelect',
+                            data: {
+                                startDate: start.toString("dd.MM.yyyy"),
+                                endDate: end.toString("dd.MM.yyyy")
+                            },
+                            success: function (result) {
+                                if (result == null) {
+                                    console.log(result);
+                                    return;
+                                }
+                                
+                                console.log(result.length);
+                                $.each(result, function (e, item) {
+                                    item.start = new Date(item.start);
+                                    item.end = new Date(item.end);
+                                });
+
+                                callback(result);
+                            }
+                        });
+                    }
+
+                });
+            }
+        };
+    } ();
+
+    function FormPreparePrivate() {
+
+        MetronicSidebarEnforceClosed();
+
+        Calendar.init();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>

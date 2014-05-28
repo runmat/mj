@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CkgDomainLogic</RootNamespace>
+    <AssemblyName>CkgDomainLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugQuick|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugQuick\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\GAC\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\SapORM.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\..\packages\TelerikMvcExtensions\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
+    <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
+    <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
+    <Compile Include="General\Controllers\CkgDomainController.cs" />
+    <Compile Include="General\Controllers\LoginController.cs" />
+    <Compile Include="General\Models\AppModelMappings.cs" />
+    <Compile Include="General\Models\Attributes\KennzeichenAttribute.cs" />
+    <Compile Include="General\Models\Attributes\ZulassungsKreisAttribute.cs" />
+    <Compile Include="General\Models\Attributes\VIN.cs" />
+    <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
+    <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
+    <Compile Include="General\Models\DataModels\ZulassungsDienstleistung.cs" />
+    <Compile Include="General\Models\DataModels\VinWunschkennzeichen.cs" />
+    <Compile Include="General\Models\DataModels\ZulassungsOption.cs" />
+    <Compile Include="General\Models\DataModels\VersandOption.cs" />
+    <Compile Include="General\Models\DynamicXml.cs" />
+    <Compile Include="General\Models\Login\ChangePasswordModel.cs" />
+    <Compile Include="General\Models\Login\LoginModel.cs" />
+    <Compile Include="General\Services\Database\Models\CustomerDocument.cs" />
+    <Compile Include="General\Services\Database\Models\CustomerDocumentCategory.cs" />
+    <Compile Include="General\Services\Database\Models\Dokument.cs" />
+    <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
+    <Compile Include="General\Services\Database\Models\DocumentType.cs" />
+    <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
+    <Compile Include="General\Services\Database\Models\Organization.cs" />
+    <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />
+    <Compile Include="General\Services\Database\Models\LoginMessage.cs" />
+    <Compile Include="General\Services\Database\Models\TranslatedResource.cs" />
+    <Compile Include="General\Services\Database\Models\WebUserPwdHistory.cs" />
+    <Compile Include="General\Services\CkgGeneralDataServiceTest.cs" />
+    <Compile Include="General\Services\CkgGeneralDataService.cs" />
+    <Compile Include="General\Services\DbContextExtensions.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
+    <Compile Include="General\Services\SearchExtensions40.cs" />
+    <Compile Include="General\ViewModels\CkgBaseViewModel.cs" />
+    <Compile Include="General\ViewModels\CkgCommonViewModel.cs" />
+    <Compile Include="General\ViewModels\LoginViewModel.cs" />
+    <Compile Include="General\Services\Database\Models\ColumnTranslationsMvc.cs" />
+    <Compile Include="General\Services\Database\Models\AddressPostcodeCityMapping.cs" />
+    <Compile Include="General\Services\Database\Models\WebUserSessionContext.cs" />
+    <Compile Include="General\Services\Localization\AutoGenerated\Localize.cs" />
+    <Compile Include="General\Services\Localization\Localize.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextDataServiceDadServices.cs" />
+    <Compile Include="General\Contracts\IApplicationUserMenuProvider.cs" />
+    <Compile Include="General\Contracts\ILogonContextDataService.cs" />
+    <Compile Include="General\Contracts\IApplicationUserMenuItem.cs" />
+    <Compile Include="General\Contracts\ILogonContextDataServiceZLDMobile.cs" />
+    <Compile Include="General\Services\CkgDomainRules.cs" />
+    <Compile Include="General\Services\Database\Models\Customer.cs" />
+    <Compile Include="General\Services\Database\Models\UserGroup.cs" />
+    <Compile Include="General\Services\Database\Models\User.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextDataServiceSqlDatabaseZLDMobile.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextDataServiceBase.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextDataServiceAutohaus.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextTest.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextTestZLDMobile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\DomainCommonResources.de-DE.Designer.cs">
+      <DependentUpon>DomainCommonResources.de-DE.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\DomainCommonResources.Designer.cs">
+      <DependentUpon>DomainCommonResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Services\CkgDomainAppSettings.cs" />
+    <Compile Include="Services\Extensions\GridExtensions.cs" />
+    <Compile Include="Ueberfuehrung\Contracts\IUeberfuehrungDataService.cs" />
+    <Compile Include="Ueberfuehrung\Models\AppModelMappings.cs" />
+    <Compile Include="Ueberfuehrung\Models\CompositeModels\RoutingInfo.cs" />
+    <Compile Include="Ueberfuehrung\Models\CompositeModels\Fahrt.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftrag.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftragFilter.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\KurzBemerkung.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\WebUploadProtokoll.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\DienstleistungsAuswahl.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Adresse.cs" />
+    <Compile Include="General\Models\UiModel.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\Dienstleistung.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Fahrzeug.cs" />
+    <Compile Include="General\Models\DataModels\Land.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\TransportTyp.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Bemerkungen.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\KclGruppe.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\SubStep.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Step.cs" />
+    <Compile Include="Ueberfuehrung\Models\TrivialModels\SummaryItem.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Summary.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\UploadFiles.cs" />
+    <Compile Include="General\Services\Database\DomainDbContext.cs" />
+    <Compile Include="General\Services\Database\Models\ApplicationType.cs" />
+    <Compile Include="General\Services\Database\Models\ApplicationUser.cs" />
+    <Compile Include="Ueberfuehrung\Contracts\ICkgGeneralDataService.cs" />
+    <Compile Include="General\Services\CkgGeneralDataServiceSAP.cs" />
+    <Compile Include="Ueberfuehrung\Services\ReceiptCreationService.cs" />
+    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceTest.cs" />
+    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceSAP.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungHistoryViewModel.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelData.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelUI.cs" />
+    <Compile Include="UnitTests\SAP\GeneralTests.cs" />
+    <Compile Include="UnitTests\SAP\UeberfuehrungTests.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Contracts\IZulMobileErfassungDataService.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\AppModelMappings.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\AppModels\Stammdatencontainer.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Amt.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Dienstleistung.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\AmtVorgaenge.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Anwendung.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\VorgangStatus.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Vorgang.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\VorgangPosition.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\AppModels\Datencontainer.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\AppModels\VorgangTransaktionsErgebnis.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\UiModels\Anmeldeinformationen.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\UiModels\Passwortaenderung.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceSAP.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceTest.cs" />
+    <Compile Include="Zulassung\MobileErfassung\ViewModels\ZulMobileErfassungViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung_org.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\MvcTools\MvcTools.csproj">
+      <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
+      <Name>MvcTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools35\WebTools35.csproj">
+      <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
+      <Name>WebTools35</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DomainCommonResources.de-DE.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DomainCommonResources.de-DE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DomainCommonResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DomainCommonResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)..\CkgImportLocalizationResourcesFromDb\CkgImportLocalizationResourcesFromDb\bin\debug\CkgImportLocalizationResourcesFromDb.exe</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucLoginMessageTooltip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+
+    <Grid Background="#EEEEEE">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="Background" Value="#F5F5F5"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="26px"/>
+            <RowDefinition Height="26px"/>
+            <RowDefinition Height="26px"/>
+            <RowDefinition Height="26px"/>
+            <RowDefinition Height="26px"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Formatierungen</Label>
+        
+        <Label Grid.Row="1" Grid.Column="0">Text farbig:</Label>
+        <TextBlock Grid.Row="1" Grid.Column="1">{c=&quot;#FF0000&quot;}Text...{/c}</TextBlock>
+
+        <Label Grid.Row="2" Grid.Column="0">Text fett:</Label>
+        <TextBlock Grid.Row="2" Grid.Column="1">{b}Text...{/b}</TextBlock>
+        
+        <Label Grid.Row="3" Grid.Column="0">Text kursiv:</Label>
+        <TextBlock Grid.Row="3" Grid.Column="1">{i}Text...{/i}</TextBlock>
+
+        <Label Grid.Row="4" Grid.Column="0">Hyperlink:</Label>
+        <TextBlock Grid.Row="4" Grid.Column="1">{h}Text...{/h}</TextBlock>
+
+        <Label Grid.Row="5" Grid.Column="0">Zeilenumbruch:</Label>
+        <TextBlock Grid.Row="5" Grid.Column="1">{br/}</TextBlock>
+
+    </Grid>
+    
+</UserControl>

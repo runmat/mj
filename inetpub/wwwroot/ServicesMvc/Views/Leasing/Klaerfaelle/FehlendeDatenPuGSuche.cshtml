@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@model KlaerfallSuchparameter
+
+<div id="divFehlendeDatenPuGSuche">
+    @using (Ajax.BeginForm("LoadFehlendeDatenPuG", "Leasing", null,
+        new MvcAjaxOptions("divFehlendeDatenPuGSuche") { OnComplete = "ShowFehlendeDatenPuG();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            
+            @Html.FormRadioButtonListFor(m => m.AuswahlFehlendeDaten, Model.AuswahlArtFehlendeDaten.ToSelectList("ID", "Bezeichnung"))
+
+            <div class="form-actions margin-top-10">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowFehlendeDatenPuG() {
+        $.ajax({
+            type: "POST",
+            url: "ShowFehlendeDatenPuG",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowFehlendeDatenPuGSearchResult(result);
+                }
+                FormPreparePrivateAjax();
+            }
+        });
+    }
+
+</script>

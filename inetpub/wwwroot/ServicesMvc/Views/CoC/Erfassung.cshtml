@@ -1,0 +1,92 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocTypenViewModel
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("Partial/CocCommon")
+
+<h3 class="page-title">COC Erfassung <small></small></h3>
+
+<div class="portlet app-view">
+    
+    @Html.FormWizard("icon-edit", "", new[] { "Typ Kombination suchen", "Auftragsdaten erfassen", "Fertig!" })
+
+    <div id="divCocStart">
+    
+        <div class="padding-bottom-15">
+            @Html.Partial("Typenverwaltung/CocTypenFilter")
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn green margin-left-25" onclick="CheckPrepareNewCocOrder()"><i class="icon-arrow-right"></i> Weiter</button>
+            <span id="hintCocTypenFilter" class="label label-important margin-left-20 hide"><i class="icon-bell"></i> <span></span></span>
+        </div>
+    </div>
+
+    <div id="divCocItemDetails"></div>
+</div>
+
+
+@(Html.Telerik().Window()
+    .Name("DuplicateVin")
+    .Visible(false)
+    .Title("Datensatz bereits vorhanden")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(600)
+    .Height(110)
+    .Content(@<text><div id="InnerDuplicateVin"></div></text>))
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        
+        FormPrepareFilter();
+
+        FormWizardInitPrivate();
+    }
+    
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsDisable();
+        });
+    }
+
+    function CheckPrepareNewCocOrder() {
+        if ($("#searchAutocomplete_COC_0_2_TYP").val() == "" || $("#searchAutocomplete_COC_0_2_VAR").val() == "" || $("#searchAutocomplete_COC_0_2_VERS").val() == "") {
+            SpanAlert("hintCocTypenFilter", "Bitte wählen zuerst eine Kombination aus 'Typ / Variante / Version'", 4000);
+            return;
+        }
+        
+        NewCocOrder();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function NewCocOrder() {
+        $.ajax({
+            type: "POST",
+            url: "NewCocOrder",
+            data: {
+                typ: $("#searchAutocomplete_COC_0_2_TYP").val(),
+                variante: $("#searchAutocomplete_COC_0_2_VAR").val(),
+                version: $("#searchAutocomplete_COC_0_2_VERS").val()
+            },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                //FormWizard.SetTabHtml(2, result);
+                FormWizard.ButtonNextInvoke();
+                ShowCocItemDetails(result, false);
+            }
+        });
+    }
+
+</script>

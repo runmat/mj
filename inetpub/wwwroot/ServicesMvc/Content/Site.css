@@ -1,0 +1,237 @@
+﻿
+body { 
+  background-color:white !important;
+}
+
+.input-validation-error.checkbox,
+.input-validation-error.radio,
+.input-validation-error input,
+.input-validation-error span,
+.input-validation-error label,
+.input-validation-error .control-label,
+.input-validation-error .help-block,
+.input-validation-error .help-inline {
+    color: #b94a48!important;
+}
+.help-inline {
+}
+.control-group.error .help-inline {
+    display: block;
+}
+    
+.input-validation-error input {
+    border-color: #b94a48;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+
+.requiredField 
+{
+    width: 12px;
+    display: inline-block;
+    padding-right: 0;
+}
+.requiredFieldMarker {
+    color: #b94a48;
+    font-size: 1.1em;
+}
+.required-fields-summary {
+    display: inline-block;
+    padding-left: 15px;
+}
+
+
+/* 19.07.2013 general overrides (Matthias Jenzen) */
+
+.SForm select {
+    line-height: 20px;
+    height: 25px;
+    width: 120px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm input[type="text"] {
+    line-height: 20px;
+    height: 20px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    padding-left: 8px;
+    margin-top: -2px;
+    margin-left: 2px;
+}
+.SForm label {
+    margin: 0;
+}
+
+/* Template Controls (Matthias Jenzen) */
+
+.SControlGroupInner
+{
+    display: inline;
+}
+.SLabel
+{
+    line-height: 28px!important;
+    height: 28px!important;
+}
+.SControl {
+    margin-left: 0;
+}
+.SLabel
+{
+    display: inline-block;
+}
+.SDisplayName
+{
+    margin-right: 5px;
+}
+.SDateRangePicker 
+{
+    display: block;
+    margin-left: 27px;
+    
+}
+
+/*  Simple Form Controls (Matthias Jenzen) */
+/*    "SForm" <=> default template form */
+.SForm input,label,select {
+}
+.SForm .SControlGroupOuter .SControlGroupInner .SLabel {
+}
+
+.SForm .SControlGroupOuter {
+    
+}
+.SForm .SControlGroupInner {
+    
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickForm .SControlGroupOuter {
+    margin-top: 10px;
+}
+.SQuickForm .SControlGroupOuter .SLabel.SLabelCheckBox {
+    display: none;
+}
+
+/*    "QuickForm" <=> 
+        - template form für Controls nebeneinander (inline), 
+        - Labels links von den Controls, 
+        - eng anliegend keine gemeinsame Labelbreite */
+.SQuickInlineForm .SControlGroupOuter {
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+
+/*    "SLabelAlignedForm" <=> 
+        - template form für Controls untereinander, 
+        - Labels links von den Controls, 
+        - Labels mit gemeinsamer Labelbreite, standard = 120px, 
+        - Labeltexte rechtsbündig 
+*/
+.SLabelAlignedForm .SControlGroupOuter 
+{
+    margin-bottom: 15px;
+}
+.SLabelAlignedForm .SControlGroupOuter .SLabel 
+{
+    width: 120px!important;
+    text-align: right;
+}
+.SLabelAlignedLeft .SControlGroupOuter .SLabel 
+{
+    text-align: left;
+}
+
+/*    "SLabelAlignedFormXX" <=> 
+        - Labels mit gemeinsamer Labelbreite XXpx, 
+*/
+.SLabelAlignedForm60 .SControlGroupOuter .SLabel 
+{
+    width: 60px!important;
+}
+.SLabelAlignedForm200 .SControlGroupOuter .SLabel 
+{
+    width: 200px!important;
+}
+
+
+@media (min-width: 865px) and (max-width: 899px) {
+    .container-fluid {
+        padding-right: 5px;
+    }
+}
+@media (min-width: 1075px) and (max-width: 1100px) {
+    .container-fluid {
+        padding-right: 2px;
+    }
+}
+
+.controls .checker {
+    margin-top: 1px;
+}
+
+
+.grid-toolbar {
+    height: 30px;
+}
+.grid-toolbar .dataTables_length{
+    float: left;
+}
+.grid-toolbar .dataTables_filter{
+    float: right;
+}
+.grid-toolbar select, .grid-toolbar input {
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+}
+.grid-toolbar select 
+{
+    width: 70px;
+}
+.grid-toolbar input {
+    width: 180px;
+}
+.grid-toolbar label {
+    margin: 0!important;
+}
+.dataTables_length label {
+    padding-top: 3px;
+}
+
+.controls {
+    line-height: 28px;
+}
+
+.page-sidebar.in {
+    margin-top: 0!important;
+}
+.header .navbar-inner .container-fluid.gray {
+    background-color: black;
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
+.page-sidebar .sidebar-search input  {
+    background-color: #3d3d3d!important;
+}
+
+
+.icon-calendar {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 2px;
+}
+
+.controls > .radio, .controls > .checkbox {
+    margin-top: 5px!important;    
+}

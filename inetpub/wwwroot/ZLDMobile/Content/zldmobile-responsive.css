@@ -1,0 +1,112 @@
+
+/* Breakpoint to show as a standard table at given width or wider */
+@media ( min-width: 900px ) {
+	/* Fixes table rendering when switching between breakpoints in Safari <= 5. See https://github.com/jquery/jquery-mobile/issues/5380 */
+	.ui-table-reflow.table-vorgaenge-responsive {
+		display: table-row-group;
+	}
+	/* Show the table header rows */ 
+	.ui-table-reflow.table-vorgaenge-responsive td,
+	.ui-table-reflow.table-vorgaenge-responsive th,
+	.ui-table-reflow.table-vorgaenge-responsive tbody th,
+	.ui-table-reflow.table-vorgaenge-responsive tbody td,
+	.ui-table-reflow.table-vorgaenge-responsive thead td,
+	.ui-table-reflow.table-vorgaenge-responsive thead th {
+		display: table-cell;
+		margin: 0;
+	}
+	/* Hide the labels in each cell */ 
+	.ui-table-reflow.table-vorgaenge-responsive td .ui-table-cell-label,
+	.ui-table-reflow.table-vorgaenge-responsive th .ui-table-cell-label { 
+		display: none;
+	}
+}
+
+/* Hack to make IE9 and WP7.5 treat cells like block level elements, scoped to table-vorgaenge-responsive class */ 
+/* Applied in a max-width media query up to the table layout breakpoint so we don't need to negate this*/ 
+@media ( max-width: 900px ) {
+	.ui-table-reflow.table-vorgaenge-responsive td,
+	.ui-table-reflow.table-vorgaenge-responsive th {
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+	}
+}
+
+/* Breakpoint to show as a standard table at given width or wider */
+@media ( min-width: 825px ) {
+	/* Fixes table rendering when switching between breakpoints in Safari <= 5. See https://github.com/jquery/jquery-mobile/issues/5380 */
+	.ui-table-reflow.table-buttons-responsive {
+		display: table-row-group;
+	}
+	/* Show the table header rows */ 
+	.ui-table-reflow.table-buttons-responsive td,
+	.ui-table-reflow.table-buttons-responsive th,
+	.ui-table-reflow.table-buttons-responsive tbody th,
+	.ui-table-reflow.table-buttons-responsive tbody td,
+	.ui-table-reflow.table-buttons-responsive thead td,
+	.ui-table-reflow.table-buttons-responsive thead th {
+		display: table-cell;
+		margin: 0;
+	}
+	/* Hide the labels in each cell */ 
+	.ui-table-reflow.table-buttons-responsive td .ui-table-cell-label,
+	.ui-table-reflow.table-buttons-responsive th .ui-table-cell-label { 
+		display: none;
+	}
+}
+
+/* Hack to make IE9 and WP7.5 treat cells like block level elements, scoped to table-buttons-responsive class */ 
+/* Applied in a max-width media query up to the table layout breakpoint so we don't need to negate this*/ 
+@media ( max-width: 825px ) {
+	.ui-table-reflow.table-buttons-responsive td,
+	.ui-table-reflow.table-buttons-responsive th {
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+	}
+}
+
+/* Breakpoint to show as a standard table at given width or wider */
+@media ( min-width: 400px ) {
+	/* Fixes table rendering when switching between breakpoints in Safari <= 5. See https://github.com/jquery/jquery-mobile/issues/5380 */
+	.ui-table-reflow.table-positionen-responsive {
+		display: table-row-group;
+	}
+	/* Show the table header rows */ 
+	.ui-table-reflow.table-positionen-responsive td,
+	.ui-table-reflow.table-positionen-responsive th,
+	.ui-table-reflow.table-positionen-responsive tbody th,
+	.ui-table-reflow.table-positionen-responsive tbody td,
+	.ui-table-reflow.table-positionen-responsive thead td,
+	.ui-table-reflow.table-positionen-responsive thead th {
+		display: table-cell;
+		margin: 0;
+	}
+	/* Hide the labels in each cell */ 
+	.ui-table-reflow.table-positionen-responsive td .ui-table-cell-label,
+	.ui-table-reflow.table-positionen-responsive th .ui-table-cell-label { 
+		display: none;
+	}
+}
+
+/* Hack to make IE9 and WP7.5 treat cells like block level elements, scoped to table-positionen-responsive class */ 
+/* Applied in a max-width media query up to the table layout breakpoint so we don't need to negate this*/ 
+@media ( max-width: 400px ) {
+	.ui-table-reflow.table-positionen-responsive td,
+	.ui-table-reflow.table-positionen-responsive th {
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		float: left;
+		clear: left;
+	}
+}
+

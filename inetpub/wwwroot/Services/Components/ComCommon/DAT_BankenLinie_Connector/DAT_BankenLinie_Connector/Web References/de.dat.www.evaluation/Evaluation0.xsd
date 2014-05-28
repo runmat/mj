@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://sphinx.dat.de/services/Evaluation" xmlns:ns1="http://www.dat.de/vxs" targetNamespace="http://sphinx.dat.de/services/Evaluation" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://www.dat.de:80/FinanceLine/services/Evaluation?xsd=1" namespace="http://www.dat.de/vxs" />
+  <xs:element name="BaseSelectionRequest" type="tns:basicSelectionRequest" />
+  <xs:element name="ConstructionPeriodSelectionRequest" type="tns:constructionPeriodSelectionRequest" />
+  <xs:element name="PriceFocusSelectionRequest" type="tns:priceFocusSelectionRequest" />
+  <xs:element name="YearMonthsForCountryRequest" type="tns:yearMonthsForCountryRequest" />
+  <xs:element name="abstractSelectionRequest" type="tns:abstractSelectionRequest" />
+  <xs:element name="getDataCountriesForNewVehicleForecast" type="tns:getDataCountriesForNewVehicleForecast" />
+  <xs:element name="getDataCountriesForNewVehicleForecastResponse" type="tns:getDataCountriesForNewVehicleForecastResponse" />
+  <xs:element name="getDataCountriesForUsedVehicleForecast" type="tns:getDataCountriesForUsedVehicleForecast" />
+  <xs:element name="getDataCountriesForUsedVehicleForecastResponse" type="tns:getDataCountriesForUsedVehicleForecastResponse" />
+  <xs:element name="getDataCountriesForVehicleEvaluation" type="tns:getDataCountriesForVehicleEvaluation" />
+  <xs:element name="getDataCountriesForVehicleEvaluationResponse" type="tns:getDataCountriesForVehicleEvaluationResponse" />
+  <xs:element name="getDataCountriesForVehicleTargetDateEvaluationHistory" type="tns:getDataCountriesForVehicleTargetDateEvaluationHistory" />
+  <xs:element name="getDataCountriesForVehicleTargetDateEvaluationHistoryResponse" type="tns:getDataCountriesForVehicleTargetDateEvaluationHistoryResponse" />
+  <xs:element name="getNewVehicleForecast" type="tns:getNewVehicleForecast" />
+  <xs:element name="getNewVehicleForecastResponse" type="tns:getNewVehicleForecastResponse" />
+  <xs:element name="getUsedVehicleForecast" type="tns:getUsedVehicleForecast" />
+  <xs:element name="getUsedVehicleForecastResponse" type="tns:getUsedVehicleForecastResponse" />
+  <xs:element name="getVehicleApproximateValue" type="tns:getVehicleApproximateValue" />
+  <xs:element name="getVehicleApproximateValueResponse" type="tns:getVehicleApproximateValueResponse" />
+  <xs:element name="getVehicleEvaluation" type="tns:getVehicleEvaluation" />
+  <xs:element name="getVehicleEvaluationResponse" type="tns:getVehicleEvaluationResponse" />
+  <xs:element name="getVehicleTargetDateEvaluationHistory" type="tns:getVehicleTargetDateEvaluationHistory" />
+  <xs:element name="getVehicleTargetDateEvaluationHistoryResponse" type="tns:getVehicleTargetDateEvaluationHistoryResponse" />
+  <xs:element name="getYearMonthsForVehicleTargetDateEvaluationHistory" type="tns:getYearMonthsForVehicleTargetDateEvaluationHistory" />
+  <xs:element name="getYearMonthsForVehicleTargetDateEvaluationHistoryResponse" type="tns:getYearMonthsForVehicleTargetDateEvaluationHistoryResponse" />
+  <xs:element name="vehicleSelectionRequest" type="tns:vehicleSelectionRequest" />
+  <xs:complexType name="getVehicleTargetDateEvaluationHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:vehicleHistoricalEvaluationRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="vehicleHistoricalEvaluationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:vehicleEvaluationRequest">
+        <xs:sequence>
+          <xs:element name="evaluationDate" type="xs:anySimpleType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="vehicleEvaluationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractEvaluationRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="condition" nillable="true" type="tns:condition" />
+          <xs:element name="mileage" type="xs:long" />
+          <xs:element name="registrationDate" type="xs:anySimpleType" />
+          <xs:element minOccurs="0" name="vatType" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="abstractEvaluationRequest" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:vehicleSelectionRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="coverage" type="xs:string" />
+          <xs:element minOccurs="0" name="equipment" type="tns:equipment" />
+          <xs:element name="save" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="vehicleSelectionRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:constructionPeriodSelectionRequest">
+        <xs:sequence>
+          <xs:element name="constructionTime" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="constructionPeriodSelectionRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:priceFocusSelectionRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="container" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="priceFocusSelectionRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:basicSelectionRequest">
+        <xs:sequence>
+          <xs:element name="datECode" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="basicSelectionRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractSelectionRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="constructionTimeFrom" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="constructionTimeTo" nillable="true" type="xs:int" />
+          <xs:element name="restriction" type="tns:releaseRestriction" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="abstractSelectionRequest">
+    <xs:sequence>
+      <xs:element name="locale" type="tns:locale" />
+      <xs:element name="sessionID" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="condition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="accidentDamage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="correctionFactorPercent" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="decreaseInValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="increaseInValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="numberOfOwners" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ownerCorrectionPercent" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="repairCosts" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="tiresMountedValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="tiresUnmountedValue" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="equipment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="equipmentPosition" type="tns:equipmentPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="equipmentPosition">
+    <xs:sequence>
+      <xs:element name="datEquipmentId" type="xs:int" />
+      <xs:element minOccurs="0" name="devaluationType" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="locale">
+    <xs:sequence />
+    <xs:attribute name="country" type="xs:string" use="required" />
+    <xs:attribute name="datCountryIndicator" type="xs:string" use="required" />
+    <xs:attribute name="language" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="getVehicleTargetDateEvaluationHistoryResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VXS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:Dossier" />
+          </xs:sequence>
+          <xs:attribute name="source" type="xs:string" />
+          <xs:attribute name="type" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForVehicleTargetDateEvaluationHistory">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForVehicleTargetDateEvaluationHistoryResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dataCountry" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getYearMonthsForVehicleTargetDateEvaluationHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:yearMonthsForCountryRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="yearMonthsForCountryRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractSelectionRequest">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="getYearMonthsForVehicleTargetDateEvaluationHistoryResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="yearMonth" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getVehicleEvaluation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:vehicleEvaluationRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getVehicleEvaluationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VXS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:Dossier" />
+          </xs:sequence>
+          <xs:attribute name="source" type="xs:string" />
+          <xs:attribute name="type" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForUsedVehicleForecast">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForUsedVehicleForecastResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dataCountry" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUsedVehicleForecast">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:usedVehicleForecastRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="usedVehicleForecastRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:newVehicleForecastRequest">
+        <xs:sequence>
+          <xs:element name="mileage" type="xs:long" />
+          <xs:element name="registrationDate" type="xs:anySimpleType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="newVehicleForecastRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractEvaluationRequest">
+        <xs:sequence>
+          <xs:element name="curveType" type="xs:string" />
+          <xs:element name="decreaseType" type="xs:string" />
+          <xs:element name="forecastItems" type="tns:forecastItems" />
+          <xs:element name="includeVat" type="xs:string" />
+          <xs:element minOccurs="0" name="mileageType" nillable="true" type="xs:string" />
+          <xs:element name="priceType" type="xs:string" />
+          <xs:element name="valueType" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="forecastItems">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="forecastItem" nillable="true" type="tns:forecastItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="forecastItem">
+    <xs:sequence>
+      <xs:element name="ageInMonth" type="xs:int" />
+      <xs:element minOccurs="0" name="mileagePerYear" nillable="true" type="xs:long" />
+      <xs:element minOccurs="0" name="mileageTotal" nillable="true" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getUsedVehicleForecastResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VXS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:Dossier" />
+          </xs:sequence>
+          <xs:attribute name="source" type="xs:string" />
+          <xs:attribute name="type" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForNewVehicleForecast">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForNewVehicleForecastResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dataCountry" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForVehicleEvaluation">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="getDataCountriesForVehicleEvaluationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="dataCountry" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getVehicleApproximateValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:vehicleApproximateValueRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="vehicleApproximateValueRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:vehicleSelectionRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vin" type="xs:string" />
+          <xs:element minOccurs="0" name="kba" type="xs:string" />
+          <xs:element minOccurs="0" name="model" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DATEquipmentId" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" name="identificationOrder" type="xs:string" />
+          <xs:element minOccurs="0" name="exFactoryPrice" type="xs:double" />
+          <xs:element name="approximationSign" type="xs:string" />
+          <xs:element name="registrationDate" type="xs:anySimpleType" />
+          <xs:element name="mileage" type="xs:long" />
+          <xs:element minOccurs="0" name="manualEquipmentExFactoryPrice" type="xs:int" />
+          <xs:element minOccurs="0" name="manualEquipmentDevaluations" type="tns:manualEquipmentDevaluations" />
+          <xs:element minOccurs="0" name="coverage" type="xs:string" />
+          <xs:element minOccurs="0" name="vatType" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="manualEquipmentDevaluations">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="manualEquipmentDevaluation" type="tns:manualEquipmentDevaluation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="manualEquipmentDevaluation">
+    <xs:sequence>
+      <xs:element name="devaluationType" type="xs:string" />
+      <xs:element name="percent" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getVehicleApproximateValueResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VXS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:Dossier" />
+          </xs:sequence>
+          <xs:attribute name="source" type="xs:string" />
+          <xs:attribute name="type" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getNewVehicleForecast">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="request" type="tns:newVehicleForecastRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getNewVehicleForecastResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="VXS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:Dossier" />
+          </xs:sequence>
+          <xs:attribute name="source" type="xs:string" />
+          <xs:attribute name="type" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="releaseRestriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL" />
+      <xs:enumeration value="REPAIR" />
+      <xs:enumeration value="APPRAISAL" />
+      <xs:enumeration value="APPRAISALNEW" />
+      <xs:enumeration value="APPRAISALSHORT" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,9 @@
+﻿<div class="hide">
+    <!-- Workaround for Telerik Grid on Ajax Partial View Loading -->
+    @{
+        try { Html.Telerik().Grid<string>().Name("TelerikTestGrid").Render(); } catch {}
+    }
+</div>
+
+@Html.FilteredDataTelerikScriptsAndStyles()
+@Html.Partial("Partial/TelerikGridAllColumnFilter")

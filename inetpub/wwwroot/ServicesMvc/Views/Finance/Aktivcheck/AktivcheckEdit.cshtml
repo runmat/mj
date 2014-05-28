@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model AktivcheckEdit
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
+    @using (Ajax.BeginForm("EditAktivcheck", "Finance", null, new MvcAjaxOptions { OnComplete = "EditAktivcheckComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.AktivcheckItem.VorgangsID)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.Fahrgestellnummer, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.ZB2, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.Vertragsnummer, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.Erstelldatum, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.Pruefdatum, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.AktivcheckItem.Kollision, new { @class = "m-wrap" })
+        @Html.FormDropDownListFor(m => m.AktivcheckItem.Klassifizierung, Model.AuswahlKlassifizierung.ToSelectList("Wert", "Beschreibung"), new { @class = "m-wrap" })
+        @Html.FormCheckBoxFor(m => m.AktivcheckItem.Kontaktanfrage, new { @class = "m-wrap", @disabled = "disabled" })
+        @Html.FormTextAreaFor(m => m.AktivcheckItem.Bemerkung, new { @class = "m-wrap" }, null, 40, 3)
+        
+        @*@Html.FormRequiredFieldsSummary()*@
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseAktivcheckEdit();">@Localize.Cancel</button>
+        </div>
+    
+        <script type="text/javascript">
+            function EditAktivcheckComplete() {
+                CloseAktivcheckEdit();
+                FormPreparePrivateAjax();
+            }
+        </script>
+    }
+</div>

@@ -1,0 +1,150 @@
+﻿
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/clockface/css/clockface.css" />
+
+<style type="text/css">
+
+</style>
+
+
+<script type="text/javascript" src="~/assets/plugins/clockface/js/clockface.js"></script>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+        MetronicSidebarEnforceClosed();
+        GridAllColumnFilterApplyToGrid("SchadenfallGrid");
+
+        //setTimeout("TestEventEdit()", 200);
+        BreadcrumbsMoveFirst("Aktueller Termin");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function TerminDetailsFormPreparePrivate() {
+        FormPrepareAjax();
+    }
+
+    function TerminDetailsFormPreparePrivateAjax() {
+        TerminDetailsFormPreparePrivate();
+    }
+
+
+    //
+    // <Termin / Vorgang>
+    //
+    
+    function SchadenfallGridSelect() {
+
+        $.ajax({
+            type: "POST",
+            url: "SchadenfallGridSelect",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                BreadcrumbsMovePrev();
+                SchadenfallGridShowFromTermin(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+        return false;
+    }
+
+    function SchadenfallGridShowFromTermin(result) {
+        $("#TerminDetailsDiv").slideUp(200, function () {
+            $("#SchadenfallGridWrapper").html(result);
+            $("#SchadenfallGridWrapper").slideDown(200);
+            GridAllColumnFilterApplyToGrid("SchadenfallGrid");
+            FormPrepareAjax();
+            BreadcrumbsMoveNext("Vorgang wählen");
+        });
+    }
+
+    function VorgangSelectCancel() {
+        $("#SchadenfallGridWrapper").slideUp(200, function () {
+            $("#TerminDetailsDiv").slideDown(200);
+        });
+        BreadcrumbsMovePrev();
+        setTimeout('FormPrepareAjax()', 300);
+    }
+    
+    //
+    // </Termin / Vorgang>
+    //
+
+
+    //
+    // <Termin / Event Orte>
+    //
+    
+    function EventOrtGridSelect() {
+    
+        $.ajax({
+            type: "POST",
+            url: "EventOrtGridSelect",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                EventOrtGridShowFromTermin(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+        return false;
+    }
+
+    function EventOrtGridShowFromTermin(result) {
+        $("#TerminDetailsDiv").slideUp(200, function () {
+            $("#EventGridWrapper").html(result);
+            $("#EventGridWrapper").slideDown(200);
+            GridAllColumnFilterApplyToGrid("VersEventGrid");
+            FormPrepareAjax();
+            BreadcrumbsMoveNext("Event-Ort wählen");
+        });
+    }
+
+    function EventOrtSelectCancel() {
+        $("#EventGridWrapper").slideUp(200, function () {
+            $("#TerminDetailsDiv").slideDown(200);
+        });
+        BreadcrumbsMovePrev();
+        setTimeout('FormPrepareAjax()', 300);
+    }
+
+    function EventOrtSelect(eventID, ortID) {
+        $("#EventGridWrapper").slideUp(200, function () {
+            try {
+                $("#TerminDetailsDiv").slideDown(200);
+                //alert($("#VersOrtID").val() + " - " + id);
+                $("#VersEventID").val(eventID);
+                $("#VersOrtID").val(ortID);
+                $("#VersOrtID").closest("form").submit();
+                BreadcrumbsMovePrev();
+            } catch (e) { }
+        });
+        return false;
+    }
+    
+    function OnDataBound_VersEventGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_VersEventGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersEventGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }    
+    //
+    // </Termin / Event Orte>
+    //
+    
+</script>

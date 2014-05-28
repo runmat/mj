@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceAktivcheckViewModel 
+
+@{ var gridName = "GridAktivcheckTreffer"; }
+
+@(Html.Telerik()
+    .Grid<AktivcheckTreffer>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("AktivcheckTrefferAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.VorgangsID).Width(145).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='AktivcheckEdit(\"<#= data.VorgangsID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                + "&nbsp;"
+                + "<button onclick='AktivcheckEmail(\"<#= data.VorgangsID #>\");' class='btn mini gray tooltips aktivcheckEmailButton' data-original-title='" + Localize.RequestByEMail + "' data-placement='right'><i class='halflings-icon white envelope'></i></button>"
+            )
+        ;
+
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.ZB2);
+        columns.XBound(c => c.Vertragsnummer);
+        columns.XBound(c => c.Erstelldatum);
+        columns.XBound(c => c.Pruefdatum);
+        columns.XBound(c => c.Kollision);
+        columns.XBound(c => c.Klassifizierungstext).ClientTemplate(
+                "<div class='iconStatusIndicator'></div><#= data.Klassifizierungstext #>" 
+            )
+        ;
+        columns.XBound(c => c.Kontaktanfrage);
+        columns.XBound(c => c.Bemerkung).HtmlAttributes(new { style = "min-width: 250px; white-space: normal" });
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Erstelldatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAktivcheckTrefferFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportAktivcheckTrefferFilteredPDF", "Finance");
+    })
+)

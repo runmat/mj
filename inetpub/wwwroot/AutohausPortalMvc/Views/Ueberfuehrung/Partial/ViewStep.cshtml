@@ -1,0 +1,27 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungViewModel
+
+
+@Html.StepBar()
+
+
+@Html.StepButtons(showHeader: true)
+
+
+@foreach (var subModel in Model.StepForms)
+{
+    using (Html.FormOuterLayer())
+    {
+        @Html.DivLinie()
+        using (Html.FormInnerLayer(subModel.UiIndex, header: subModel.Header, headerCssClass: subModel.HeaderCssClass))
+        {
+            @Html.Partial(subModel.ViewName, subModel)
+        }
+    }
+}
+@using (Html.FormOuterLayer())
+{
+    @Html.DivLinie()
+}
+
+
+@Html.StepButtons(showHeader: false)

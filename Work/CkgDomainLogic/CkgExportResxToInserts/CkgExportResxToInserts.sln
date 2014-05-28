@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgExportResxToInserts", "CkgExportResxToInserts\CkgExportResxToInserts.csproj", "{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CkgExportResxToInserts\\CkgExportResxToInserts.csproj
+		SccProjectName1 = CkgExportResxToInserts
+		SccLocalPath1 = CkgExportResxToInserts
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		DebugQuick|Mixed Platforms = DebugQuick|Mixed Platforms
+		DebugQuick|x86 = DebugQuick|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Debug|x86.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Debug|x86.Build.0 = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.DebugQuick|Any CPU.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.DebugQuick|Mixed Platforms.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.DebugQuick|Mixed Platforms.Build.0 = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.DebugQuick|x86.ActiveCfg = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.DebugQuick|x86.Build.0 = Debug|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Release|Any CPU.ActiveCfg = Release|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Release|x86.ActiveCfg = Release|x86
+		{ACD7150E-A1F9-42EF-BE96-D7B42D400D2A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

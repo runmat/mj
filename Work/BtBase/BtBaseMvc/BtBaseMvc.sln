@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtBaseMvc", "BtBaseMvc\BtBaseMvc.csproj", "{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = ..\\Base.vbproj
+		SccProjectName0 = ../
+		SccLocalPath0 = ..
+		SccProjectUniqueName1 = ..\\..\\Tools\\GeneralTools\\GeneralTools.csproj
+		SccProjectName1 = ../../Tools/GeneralTools
+		SccLocalPath1 = ..\\..\\Tools\\GeneralTools
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = BtBaseMvc\\BtBaseMvc.csproj
+		SccProjectName3 = BtBaseMvc
+		SccLocalPath3 = BtBaseMvc
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

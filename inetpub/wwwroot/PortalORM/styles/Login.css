@@ -1,0 +1,12 @@
+﻿body {
+    background-color: #bababa;
+    background-position: 0px 0px;
+    background-repeat: repeat-x;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+div#StandardLogin td.bold  {padding-bottom:4px;padding-right:2px;}
+div#StandardLogin td.input  {padding-bottom:4px;}
+div#StandardLogin input.LoginTextbox {width:200px;height:20px;border:1px solid #c0c0c0;}

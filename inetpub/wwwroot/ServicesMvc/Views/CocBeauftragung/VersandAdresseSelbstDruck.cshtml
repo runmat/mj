@@ -1,0 +1,10 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+@if(Model.DruckOptionen.FolgeDienstleistungen == "versand")
+{
+    @Html.Partial("VersandAdresse", @Model)
+}
+@if (Model.DruckOptionen.FolgeDienstleistungen == "eigendruck")
+{
+    @Html.Partial("SelbstDruck", @Model)
+}

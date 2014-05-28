@@ -1,0 +1,137 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model Schadenfall
+
+<div id="SchadenfallDetailsDiv" class="portlet">
+    @using (Ajax.BeginForm("SchadenfallDetailsFormSave", "Insurance", null,
+                           new MvcAjaxOptions("SchadenfallDetailsDiv") { OnComplete = "VorgangDetailsFormPreparePrivateAjax();" }, new { id = "SchadenfallForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.InsertModeTmp)
+        
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+                
+
+        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">Vorgang bearbeiten</span></text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+
+                
+        @Html.FormDropDownListFor(m => m.EventID, (ViewBag.AuswahlEvents as SelectList), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.VersicherungID, (ViewBag.AuswahlVersicherungen as SelectList), new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onkeypress = "return CleanUpKennzeichen();" })
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap", col = "right", @onkeypress = "return CleanUpEMail();" })
+        
+        @Html.FormTextBoxFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap", col = "left", @onkeypress = "return CleanUpTelefonnummer();" })
+        @Html.FormTextBoxFor(m => m.SelbstbeteiligungsHoehe, new { @class = "m-wrap", col = "right", @onkeypress = "return NumbersOnlyInt();" })
+        
+        @Html.FormTextBoxFor(m => m.Referenznummer, new { @class = "m-wrap", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Sammelbesichtigung, new { @class = "m-wrap", col = "right" })
+        
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green margin-right-5" onclick="_directNavigateToTermine = false"><i class="icon-ok"></i> Speichern</button>
+            <button type="submit" class="btn blue margin-right-5" onclick="_directNavigateToTermine = true"><i class="icon-ok"></i> Speichern + Termineingabe</button>
+            <button type="button" class="btn margin-right-5" onclick="VorgangCloseDetails();">Abbrechen</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+
+            $("#Bemerkung").attr("rows", 2);
+            
+            function NumbersOnlyInt(e) {
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode : evt.which;
+        
+                // 0-9
+                if (key >= 48 && key <= 57) {
+                    return true;
+                }
+        
+                // alle anderen Zeichen nicht zulassen
+                return false;
+            }
+
+            function CleanUpKennzeichen(e) {
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode    : evt.which;
+        
+                // 0-9
+                if (key >= 48 && key <= 57) {
+                    return true;
+                }
+                // A-Z
+                if (key >= 65 && key <= 90) {
+                    return true;
+                }
+                // a-z
+                if (key >= 97 && key <= 122) {
+                    return true;
+                }
+                // ä,ö,ü,Ä,Ö,Ü,-
+                if (key == 132 || key == 148 || key == 129 || key == 142 || key == 153 || key == 154 || key == 45) {
+                    return true;
+                }
+        
+                // alle anderen Zeichen nicht zulassen
+                return false;
+            }
+
+            function CleanUpEMail(e) {
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+                // 0-9
+                if (key >= 48 && key <= 57) {
+                    return true;
+                }
+                // A-Z
+                if (key >= 65 && key <= 90) {
+                    return true;
+                }
+                // a-z
+                if (key >= 97 && key <= 122) {
+                    return true;
+                }
+                // .,_,%,+,-,at
+                if (key == 46 || key == 95 || key == 37 || key == 43 || key == 45 || key == 64) {
+                    return true;
+                }
+        
+                // alle anderen Zeichen nicht zulassen
+                return false;
+            }
+
+            function CleanUpTelefonnummer(e) {
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+                // 0-9
+                if (key >= 48 && key <= 57) {
+                    return true;
+                }
+                // +,-,/,(,)
+                if (key == 43 || key == 45 || key == 47 || key == 40 || key == 41) {
+                    return true;
+                }
+        
+                // alle anderen Zeichen nicht zulassen
+                return false;
+            }
+        </script>
+    }
+</div>
+

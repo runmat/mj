@@ -1,0 +1,65 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model AbgemeldeteFahrzeugeSelektor
+
+<div id="divAbgemeldeteFahrzeugeSuche">
+    @using (Ajax.BeginForm("LoadAbgmeldeteFahrzeuge", "Fahrzeuge", null,
+        new MvcAjaxOptions("divAbgemeldeteFahrzeugeSuche") { OnComplete = "ShowAbgmeldeteFahrzeuge();" }, new { id = "KlaerfaelleForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+
+            @Html.FormCheckBoxFor(m => m.NurKlaerfaelle, new { onchange = "ShowHideStatusMultiSelect()" })
+            @Html.FormMultiSelectListFor(m => m.FahrzeugStatusWerte, Model.AlleFahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap chosen" })
+
+            @Html.FormDateRangePickerFor(m => m.AbmeldeDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.GueltigkeitsEndeDatum, new { col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.Zielort, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap", col = "right" })
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowAbgmeldeteFahrzeuge() {
+        
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowAbgmeldeteFahrzeuge",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowAbgemeldeteFahrzeugeSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+                InitDateRangePicker();
+            }
+        });
+    }
+
+</script>

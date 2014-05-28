@@ -1,0 +1,153 @@
+div#header img.dadLogo {
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 19px;
+	padding-left: 736px;
+}
+
+div#header ul#navigation li {
+	background-color: #910100;
+}
+
+div#header ul#navigation li.active a {
+	color: #910100;
+}
+
+div#content div#navigationSubmenu a.active { 
+	color: #910100;
+}
+
+div#content div#query {
+	background-color: #910100;
+}
+
+div#content div#innerContent div div.innerContentHeading {
+	background-color: #910100;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading {
+	background-color: #910100;
+}
+
+.Menutitle{	
+	background-color: #910100;
+}
+
+A.MainmenuLink:hover {
+	color: #ffffff;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #910100;
+}
+
+div#content div#query
+{
+    background-color: #910100;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #910100;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #910100;
+}
+
+div#content div#innerContentRight div#data table td a {
+    color:#910100;
+    text-decoration: underline;
+    
+}
+div#content div#innerContentRight div#data table th a {
+    color:#FFFFFF;
+    text-decoration: none;
+}
+.Menutitle
+{
+    background-color: #910100;
+}
+A.Tablebutton:hover
+{
+    color: #910100;
+}
+.Tablehead
+{
+    background-image: url(../Images/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+td.MainmenuItemAlternate:hover
+{
+    background-color: #910100;
+}
+
+.divWait
+{
+    border: thin solid #910100;
+}
+
+.lblKontaktFirma
+{
+    color: #910100;
+}
+
+.ImpressumHead
+{
+    background-color: #910100;
+}
+
+.NaviImg
+{
+    background-image: url(../Images/navi.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
+.TablebuttonXLarge 
+{
+    padding-top: 4px;
+	background-image: url(../Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+.ExcelDiv {
+    background-color:#910100;
+}
+
+.LinksVerwaltung:hover {
+	color: #910100;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading {
+background-color:#910100;
+}
+
+.formqueryHeader {
+	vertical-align: baseline;
+	background-image:url(../Images/overflowThead.png);
+    background-color:#9B9B9B;
+    color:#FFFFFF;
+    float:left;
+    font-weight:bold;
+    height:22px;
+    line-height:22px;
+    white-space:nowrap;
+    white-space:nowrap;
+    width:100%;
+}
+.formqueryHeader span{
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}

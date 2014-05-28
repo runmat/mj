@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model EquiHistorieViewModel
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right hide" onclick="CloseEquiHistorie();"><i class="icon-arrow-left"></i>&nbsp;Zurück</button>
+
+<h5><i class="icon-road"></i>Fahrzeug '@Model.Fahrgestellnummer'</h5>
+<div class="tabbable tabbable-custom margin-top-15">
+    <ul class="nav nav-tabs">
+        @*Anzeigereihenfolge umgedreht*@
+        <li class="active"><a href="#tab_1_3" data-toggle="tab">Übersicht</a></li>
+        <li><a href="#tab_1_2" data-toggle="tab">Änderungen</a></li>
+        <li><a href="#tab_1_1" data-toggle="tab">Lebenslauf</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane overflow-x-auto" id="tab_1_1">
+            @Html.Partial("Historie/Partial/MeldungsdatenGrid", @Model.EquipmentHistorie)
+        </div>               
+        <div class="tab-pane" id="tab_1_2">
+            @Html.Partial("Historie/Partial/Aenderungsdaten", @Model.EquipmentHistorie)
+        </div>               
+        <div class="tab-pane active" id="tab_1_3">
+            @Html.Partial("Historie/Partial/Uebersicht", @Model.EquipmentHistorie)  
+        </div>
+    </div>
+</div>

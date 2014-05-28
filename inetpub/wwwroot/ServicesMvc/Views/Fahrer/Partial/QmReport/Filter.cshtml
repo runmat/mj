@@ -1,0 +1,52 @@
+﻿@model CkgDomainLogic.Fahrer.Models.QmSelektor
+
+<div id="divQmReportSuche">
+    @using (Ajax.BeginForm("QmReportSearch", "Fahrer", null,
+        new MvcAjaxOptions("divQmReportSuche") { OnComplete = "QmReportShow();" }, new { id = "QmReportSuchForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormDateRangePickerFor(m => m.DatumsBereich)
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function QmReportShow() {
+        
+        FormPreparePrivateAjax();
+
+        SearchResultsTryHide();
+        if (!_modelStateValid)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "QmReportShow",
+            loadingShow: true,
+            success: function (result) {
+
+                if (_modelStateValid) {
+                    ShowQmReportResults(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

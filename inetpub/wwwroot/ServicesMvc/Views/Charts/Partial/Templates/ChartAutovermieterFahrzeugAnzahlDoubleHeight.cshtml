@@ -1,0 +1,134 @@
+﻿@model CkgDomainLogic.Charts.ViewModels.SingleChartViewModel  
+
+<script type="text/javascript">
+
+    chartManager.AddChart(
+        new Chart(
+            '@Model.ChartID',
+            '@Model.ChartGroup',
+            {},
+            function (chart) {  // FormPreparePrivate
+            },
+            function (chart) {  // FormPreparePrivateAjax
+            },
+            function (chart, item) {  // getTooltipHtml
+
+                var x = item.datapoint[0], y = item.datapoint[1];
+                return ChartGetXaxisLabel(item) + ": " + "<strong>" + y.formatNumber(0) + " Stück </strong> in " + ChartGetXaxisSubLabel(item) + "";
+            },
+            function (chart, chartResults) {  // ShowChartResults
+
+                var groupChartItems = chartResults.GroupChartItems;
+                var groupChartJahrItems = chartResults.GroupChartJahrItems;
+                var groupChartKey1Items = chartResults.GroupChartKey1Items;
+
+
+                //    Example "ticks":
+                //    var ticks = [[1, "London"], [5, "New York"], [9, "New Delhi"], [13, "Taipei"]];
+
+                //    Example "data":
+                //    var data = 
+                //    [
+                //        [
+                //            [0, 11000],
+                //            [4, 15000],
+                //            [8, 25000],
+                //            [12, 24000]
+                //        ],
+                //        [
+                //            [1, 11000],
+                //            [5, 15000],
+                //            [9, 65000],
+                //            [13, 24000]
+                //        ],    
+                //        [
+                //            [2, 11000],
+                //            [6, 15000],
+                //            [10, 25000],
+                //            [14, 24000]
+                //        ]
+                //    ];
+
+                //    Example "dataset":
+                //    var dataset = [
+                //        { label: "2011", data: data[0], color: "#14BB52" },
+                //        { label: "2012", data: data[1], color: "#5482FF" },
+                //        { label: "2013", data: data[2], color: "#CC5482" }
+                //    ];
+
+                var ticks = new Array();
+                for (var i = 0; i < groupChartKey1Items.length; i++) {
+                    ticks.push([groupChartJahrItems.length / 2 - 0.5 + i * (groupChartJahrItems.length + 1), groupChartKey1Items[i]]);
+                }
+                var dataset = new Array();
+                for (i = 0; i < groupChartJahrItems.length; i++) {
+                    var dataThisYear = new Array();
+                    for (var j = 0; j < groupChartKey1Items.length; j++) {
+                        var jahrItems = $.grep(groupChartItems, function(item) {
+                            return item.Jahr == groupChartJahrItems[i] && item.Key1 == groupChartKey1Items[j];
+                        });
+                        var wert1 = jahrItems && jahrItems.length == 1 ? jahrItems[0].IWert1 : 0;
+                        var index = i + j * (groupChartJahrItems.length + 1);
+                        dataThisYear.push([index, wert1]);
+                    }
+
+                    dataset.push({
+                        label: groupChartJahrItems[i].toString(),
+                        data: dataThisYear,
+                        color: ChartGetJahrColor(groupChartJahrItems[i])
+                    });
+                }
+
+
+                var options = {
+                    series: {
+                        bars: {
+                            show: true,
+                            lineWidth: 1
+                        }
+                    },
+                    bars: {
+                        align: "center",
+                        barWidth: 0.5
+                    },
+                    xaxis: {
+                        axisLabel: "Gesamtvolumen Autovermieter Direktgeschäft ab " + groupChartItems[0].Jahr,
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        axisLabelPadding: 10,
+                        ticks: ticks,
+                        autoscaleMargin: 0.04
+                    },
+                    yaxis: {
+                        axisLabel: "AV, Direktgeschäft",
+                        axisLabelUseCanvas: true,
+                        axisLabelFontSizePixels: 12,
+                        axisLabelFontFamily: 'Open Sans, sans-serif',
+                        axisLabelPadding: 20,
+                        autoscaleMargin: 0.1,
+                        tickFormatter: function(v, axis) {
+                            return v.formatNumber(0);
+                        }
+                    },
+                    legend: {
+                        noColumns: 0,
+                        labelBoxBorderColor: "#000000",
+                        position: "nw"
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        borderWidth: 1,
+                        backgroundColor: { colors: ["#ffffff", "#eeeeee"] }
+                    }
+                };
+
+                var chartPlaceHolder = chart.GetPlaceHolder();
+                chartPlaceHolder.html('');
+                $.plot(chartPlaceHolder, dataset, options);
+                chartPlaceHolder.UseTooltip();
+            }
+        )
+    );
+ </script>

@@ -1,0 +1,90 @@
+﻿
+<style type="text/css">
+
+    .stack-context {
+        max-height: 30px;
+        overflow-y: auto;
+        overflow-x: visible;
+    } 
+    .stack-frame 
+    {
+        font-size: 0.85em;
+        font-family: Courier;
+        margin: 2px;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    .stack-frame .number {
+        float: left;
+        width: 20px;
+        text-align: right;
+        font-weight: bold;
+        display: inline-block;
+        color: #a6a6a6;
+        display: inline;
+    }
+    .stack-frame .content 
+    {
+        float: left;
+        margin-left: 25px;
+        width: 90%;
+        display: inline;
+    }
+
+
+    .duration-level-very-quick {
+        color:#004400; background-color: #ddffdd;
+    }
+    .duration-level-quick {
+        color:#004400; background-color: #d6f0d6;
+    }
+    .duration-level-normal {
+        color:black; background-color: #e6e6e6;
+    }
+    .duration-level-long {
+        color:#darkred; background-color: #ffeeee;
+    }
+    .duration-level-very-long {
+        color:#darkred; background-color: #ff9999;
+    }
+    .duration-level-unacceptable {
+        font-weight: bold; color:yellow; background-color: red;
+    }
+
+ 
+</style>
+
+
+<script type="text/javascript">
+    
+    function ShowStackContext(a) {
+        var stackContextHtml = a.parent().find("div.hide").html();
+
+        var confirmationDialog = $("#StackContext").data("tWindow");
+        $("#InnerStackContext").html(stackContextHtml);
+        confirmationDialog.center().open();
+
+        setTimeout(function () {
+            $("#StackContext").on("click", function () {
+                confirmationDialog.close();
+                $("#StackContext").of("click");
+            });
+        }, 1000);
+
+        return false;
+    }
+
+</script>
+
+
+
+@(Html.Telerik().Window()
+    .Name("StackContext")
+    .Visible(false)
+    .Title("Stack Aufrufliste")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(true)
+    .Width(800)
+    .Height(600)
+    .Content(@<text><div id="InnerStackContext"></div></text>))

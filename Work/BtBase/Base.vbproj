@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>CKG.Base</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>CKG.Base</RootNamespace>
+    <StartupObject>CKG.Base.%28Keine%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\inetpub\wwwroot\Portal\bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\inetpub\wwwroot\Portal\bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\GAC\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Pdf">
+      <HintPath>..\GAC\Aspose.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\GAC\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="BarcodeLib">
+      <HintPath>..\GAC\BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ERPConnect35, Version=4.0.0.11, Culture=neutral, PublicKeyToken=737201975e95eeee, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SapORM\services\bin\Debug\ERPConnect35.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralTools, Version=1.0.5051.24439, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\GeneralTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.SAPClient, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="CKG" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\ABE2FZG.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\ABEDaten.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\BankBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\BankBaseCredit.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DatenimportBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\Halter.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\HelpProcedures.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\LongStringsFromSap.vb" />
+    <Compile Include="Business\PDIListe.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\ReportBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\Search.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\SM_Mahnungen.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\StartMethodBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\TempMahn.vb" />
+    <Compile Include="Business\Versicherer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\ZulassungsVorbelegung.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\ApplicationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\ArchivList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\EmployeeList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\HalterList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\OrganizationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\VersichererList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Admin\ZulassungsVorbelegungList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Common\Alert.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\Common\Common.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Common\DataTableHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Common\DynSapProxy.vb" />
+    <Compile Include="Kernel\Common\DynSapProxyErp.vb" />
+    <Compile Include="Kernel\Common\DynSapProxyObj.vb" />
+    <Compile Include="Kernel\Common\DynSapProxyObjErp.vb" />
+    <Compile Include="Kernel\Common\GetMailTexte.vb" />
+    <Compile Include="Kernel\Common\ISapError.vb" />
+    <Compile Include="Kernel\Common\PageHelper.vb" />
+    <Compile Include="Kernel\Common\PEIS.vb" />
+    <Compile Include="Kernel\Common\Sap.vb" />
+    <Compile Include="Kernel\Common\SapError.vb" />
+    <Compile Include="Kernel\Common\Search.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\DocumentGeneration\AbstractDocumentFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\DocumentGeneration\DataTableMailMergeSource.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\DocumentGeneration\ExcelDocumentFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\DocumentGeneration\WordDocumentFactory.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Excel\ExcelExport.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Excel\ExcelFile.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Logging\LogWebAccess.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\Logging\Trace.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\App.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\CaptchaImage.vb" />
+    <Compile Include="Kernel\Security\Contact.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\CryptNew.vb" />
+    <Compile Include="Kernel\Security\Crypto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\Customer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\Group.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\Groups.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\HistoryUser.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\Organization.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Kernel\Security\User.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Kernel\Admin\ApplicationList.resx">
+      <DependentUpon>ApplicationList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\ArchivList.resx">
+      <DependentUpon>ArchivList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\EmployeeList.resx">
+      <DependentUpon>EmployeeList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\HalterList.resx">
+      <DependentUpon>HalterList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\OrganizationList.resx">
+      <DependentUpon>OrganizationList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\VersichererList.resx">
+      <DependentUpon>VersichererList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\Admin\ZulassungsVorbelegungList.resx">
+      <DependentUpon>ZulassungsVorbelegungList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kernel\DocumentGeneration\Aspose.Total.lic" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

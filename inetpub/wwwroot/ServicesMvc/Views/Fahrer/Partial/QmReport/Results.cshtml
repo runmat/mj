@@ -1,0 +1,49 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+<style type="text/css">
+    .t-grid td, .t-grid-header .t-header { text-align: right!important; }
+    .t-grid-header .t-header .t-link { padding-right: 6px!important; }
+    .t-grid tr { font-weight: normal!important; }
+</style>
+
+
+<h4>
+    <span class="margin-right-10 margin-top-20">QM-Übersicht </span> 
+    <span class="margin-right-15 bold">
+        @Model.QmSelektor.DatumsBereich.StartDate.GetValueOrDefault().ToString("d") - @Model.QmSelektor.DatumsBereich.EndDate.GetValueOrDefault().ToString("d")
+    </span>
+    
+    <span class="white-space-no-wrap"> @Html.DisplayNameFor(m => m.QmFahrerRankingCount) 
+        <span class="bold margin-left-5"> @Model.QmFahrerRankingCount </span>
+    </span>
+</h4>
+
+<div class="grid-qm-fahrer margin-top-20">
+    @(Html.Telerik()
+            .Grid(Model.QmFahrerList)
+            .Name("GridQmFahrer")
+            .XGroup("GridQmFahrerModel")
+            .Columns(columns => columns.XBoundAll())
+            .RowAction(row =>
+                {
+                    if (row.DataItem.RowIsHighlighted)
+                    {
+                        if (row.DataItem.MengeFehler < row.DataItem.MengeVorjahr.GetValueOrDefault())
+                            row.HtmlAttributes["class"] = ((row.Index%2 == 0) ? "grid-rowOk" : "grid-rowOkAlt");
+                        else
+                            row.HtmlAttributes["class"] = ((row.Index%2 == 0) ? "grid-rowError" : "grid-rowErrorAlt");
+                    }
+                }))
+</div>
+
+
+<h4 class="margin-top-30">
+    <span>Fleet Monitor Auswertung</span> 
+</h4>
+
+<div class="grid-qm-fleet-monitor margin-top-5">
+    @(Html.Telerik()
+            .Grid(Model.QmFleetMonitorList)
+            .Name("GridFleetMonitor")
+            .Columns(columns => columns.XBoundAll()))
+</div>

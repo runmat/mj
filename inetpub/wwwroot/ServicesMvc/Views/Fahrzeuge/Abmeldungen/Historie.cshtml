@@ -1,0 +1,21 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model AbgemeldeteFahrzeugeViewModel
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right" onclick="CloseAbmeldeHistorie();"><i class="icon-arrow-left"></i>&nbsp;Zurück</button>
+<br/><br/><br/>
+
+@(Html.Telerik()
+    .Grid<AbmeldeHistorie>()
+    .Name("GridAbmeldeHistorien")
+    .BindTo(Model.AbmeldeHistorien)
+    .Columns(columns => columns.XBoundAll())
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .Pageable(p => p.PageSize(20))
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(true))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)
+
+

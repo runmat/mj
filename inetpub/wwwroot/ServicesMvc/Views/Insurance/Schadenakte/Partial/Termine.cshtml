@@ -1,0 +1,48 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model Schadenfall
+
+@{
+    var gridName = "TerminSchadenfallGrid";
+    var divID = gridName + "Div";
+}
+
+<h5 class="hide">Termine für @Model.EventName - @Model.Kennzeichen</h5>
+
+
+<div id="@divID" class="">
+    @(Html.Telerik()
+        .Grid<TerminSchadenfall>()
+        .Name(gridName)
+
+        .XAjaxDataBinding("TerminSchadenfallAjaxBinding", "Insurance")
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.ID).Title("").Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                           //"<button onclick='TerminSchadenfallEdit(\"<#= data.ID #>\");' class='btn mini black tooltips debug' data-original-title='" + Localize.AppointmentChange + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                           //+ "&nbsp;"
+                           "<a class='btn mini black tooltips a_btn_mini' data-original-title='Teminbestätigung' data-placement='right' href='mailto:" + Model.Email + "?subject=" + Localize.AppointmentConfirmation + "&body=<#= data.MailtextTerminbestaetigung #>' ><i class='halflings-icon white envelope'></i></a>"
+                           + "&nbsp;"
+                           + "<button onclick='TerminSchadenfallDelete(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.AppointmentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                    )
+                    .HeaderTemplate(
+                        "<button onclick='TerminSchadenfallCreate();' class='btn mini black tooltips debug' data-original-title='" + Localize.AppointmentCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                    );
+                //columns.XBoundAllExcept(c => c.ID);
+                columns.XBound(c => c.OrtAsText);
+                columns.XBound(c => c.BoxAsText);
+                columns.XBound(c => c.BoxArtAsText);
+                columns.XBound(c => c.Datum);
+                columns.XBound(c => c.ZeitVon);
+                columns.XBound(c => c.ZeitBis);
+                columns.XBound(c => c.DauerMinuten);
+                columns.XBound(c => c.Bemerkung);
+                columns.XBound(c => c.AnlageUser);
+            })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DatumZeitVon).Ascending())
+        .XToolBar("Insurance")
+    )
+</div>

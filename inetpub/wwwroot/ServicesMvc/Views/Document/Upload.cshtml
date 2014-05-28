@@ -1,0 +1,98 @@
+﻿@using CkgDomainLogic.General.Models.DataModels
+@model DocumentErstellenBearbeiten
+
+@Html.FormLabel(Localize.DocumentUploadDocumentMulti, "SummaryItemTitle float-left margin-right-10 margin-top-10")
+
+@(Html.Telerik()
+    .Upload()
+    .Name("UploadDocument")
+    .Multiple(true)
+    .Localizable("de-DE")
+    .Async(async => async
+            .Save("UploadDocuments", "Document")
+            .SaveField("uploadFiles")
+            .AutoUpload(false) // Dies ist der Initial Wert, notwendig weil in bestimmten Fällen der Anwender eine Auswahl treffen muss
+    )
+    .ShowFileList(true)
+    .ClientEvents(events => events
+        .OnSelect("onFileSelect")
+        .OnUpload("UploadStart")
+        .OnComplete("UploadFinished")
+        .OnError("UploadError")
+    )
+)
+      
+<script type="text/javascript" >
+    
+    // - Dateitypen zulässig?
+    function onFileSelect(e) {
+        // Selektierte Dokumentart und Usergruppenzuordnung an Server übermitteln
+        if (SetDocumentProperties() == false) {
+            alert('@Localize.FileUploadMissingGroupAssignmentWarning.ToJavascriptString()');
+            e.preventDefault();
+            return false;
+        }
+
+        e.files.forEach(function(file) {
+            var fileName = file.name;
+            var parts = fileName.split('.');
+            var extention = parts[parts.length - 1];
+
+            // Nur bestimmte Dateitypen sind zugelassen
+            if (!isLegalExtention(extention)) {
+                alert('@Localize.FileUploadLegalFileTypesWarning.ToJavascriptString()');
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+
+    function UploadStart(e) {
+
+        // Selektierte Dokumentart und Usergruppenzuordnung an Server übermitteln
+        if (SetDocumentProperties() == false) {
+            alert('@Localize.FileUploadMissingGroupAssignmentWarning.ToJavascriptString()');
+            e.preventDefault();
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function isLegalExtention(ext) {
+        switch (ext.toLowerCase()) {
+        case 'pdf':
+        case 'doc':
+        case 'docx':
+        case 'xls':
+        case 'xlsx':
+        case 'txt':
+        case 'csv':
+        case 'jpg':
+        case 'jpeg': 
+        case 'gif':
+        case 'png':
+
+            return true;
+        }
+        return false;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        // AutoUpload immer am Ende auf false setzen.  So habe ich die Chance dem Anwender notfalls zu fragen was mit einem dokument passieren soll
+        $('#UploadDocument').data('tUpload').async.autoUpload = false;
+        CloseDocumentDetails();
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        LoadingHide();
+        alert('Fehler: @Localize.DocumentCannotCreateFolder');
+    }
+</script>     

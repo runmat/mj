@@ -1,0 +1,335 @@
+﻿* html .dadLogo2 
+{
+    background-image: url(../../../Images/logoGenerali2.jpg);
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 25px;
+	padding-left: 735px;
+	width:192px;
+	height:68px;
+}
+
+
+
+div, thead, li, ul, a { behavior: url(/Services/Images/iepngfix.htc) } /* IE PNG-Fix */
+ /* IE6-Hacks */
+
+* html div#header ul { margin-top: 43px }
+* html div#header table { margin-top: 51px }
+* html div#content div#innerContent div div.innerContentHeading { margin-right: 15px; width: 90% }
+* html div#content div#innerContent div#login { margin-right: 0px }
+* html div#content div#innerContentLeft { width: 18%; }
+
+* html div#sidebar {
+	margin-top: 5px;
+}
+
+
+* html div#header {
+	height: 125px;
+	margin-left: 26px;
+		}
+
+
+
+* html div#header ul li {
+	float: left;
+	height: 18px;
+	padding-top: 5px;
+	padding-right: 14px;
+	padding-left: 14px;
+}
+
+* html div#header ul#navigation li {
+	background-color: #910100;
+}
+
+* html div#header ul#navigation li.active a {  
+	color: #910100;
+}
+
+* html div#content div#navigationSubmenu a.active {
+	color: #910100;
+}
+
+ * html div#content div#query {
+	background-color: #910100;
+}
+
+div#content div#innerContent div div.innerContentHeading {
+	background-color: #910100;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading {
+	background-color: #910100;
+    	background-image: url(../../../Images/overflow.png);
+
+    
+}
+
+* html div#footer {
+	background-color: #efefef;
+	clear: both;
+	color: #595959;
+	float: left;
+	height: 24px;
+	padding-top: 12px;
+	padding-left: 13px;
+	width: 932px;
+}
+* html .Menutitle{	
+	background-color: #910100;
+}
+
+ A.MainmenuLink:hover {
+	color: #910100;
+	width: 100%;
+}
+
+
+* html .Busybutton 
+{
+    padding-top: 2px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+* html .BusybuttonLarge 
+{
+    padding-top: 2px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+
+
+* html .Tablebutton 
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+* html A.Tablebutton
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:hover
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #910100;
+
+}
+* html A.Tablebutton:visited
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:active
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+
+
+* html div#content div#innerContentRight div#TableQuery table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+    color:#595959;
+	width: 100%; 
+	display: block; 
+	border-left:1px solid #DFDFDF;
+    border-right:1px solid #DFDFDF;
+	
+}
+
+* html  div#innerContentRight div#data table tbody tr td span
+{   
+    float:left;
+
+    }
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td {
+	padding-top: 10px;
+	vertical-align: baseline;
+}
+
+* html  div#content div#innerContentRight div#TableQuery table .active {
+    font-weight:bold;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .firstLeft {
+	padding-left:15px;
+	padding-right:5px;
+	white-space:nowrap;
+}
+
+div#content div#innerContentRight div#TableQuery table tbody tr.formquery td input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td.rightPadding { padding-right: 15px }
+
+* html  div#content div#innerContentRight div#TableQuery table tfoot {
+	background-color: #dfdfdf;
+	height: 25px;
+}
+
+* html .InputTextbox
+{   
+    font-family: Verdana, sans-serif;
+    font-size:12px;
+    width: 265px;
+    }
+    
+    
+* html .TablebuttonLarge 
+{
+    padding-top: 4px;
+	background-image: url(../../../Images/buttonLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+
+
+    
+ * html  .HeadDiv
+{
+
+	border-left-color:#dfdfdf;
+	border-left-width:1px;
+	border-left-style:solid;
+	border-right-color:#dfdfdf;
+	border-right-width:1px;
+	border-right-style:solid;
+	color: #333333;
+
+	
+    }
+    
+    
+* html .Tablehead {
+	background-image: url(../../../Images/headerBig.png);
+	height:30px;
+	background-repeat:repeat-x;
+	text-align:left;
+	margin-left:15px;
+	
+}
+
+* html .menuehead 
+{
+    background-image: url(../../../Images/overflowUpsideDown.png);
+	background-color: #333333;
+	height:30px;
+	color:#FFFFFF;
+	text-align:left;
+	height:22px;
+	
+     }
+
+* html .menuehead th{padding-left:15px}
+
+    
+* html .radioAsp
+{
+border:medium none;
+margin:0;
+width:auto;
+float:left;
+
+    }
+
+* html .divProgress
+{
+    width: 100%;
+    height: 100%;
+    background-color:#ffffff;
+    position: absolute;
+    z-index:0;
+    filter:alpha(opacity=50); -moz-opacity:0.7; opacity:0.7; 
+   	vertical-align:middle;
+	text-align: center;
+	font-size:12px;
+	font-weight:bold; 
+	color: #333333;
+    
+    }
+    
+ * html   .divWait
+{
+    border: thin solid #910100;
+     
+    }
+* html .WaitControl
+{
+    padding-top:2px;
+    
+    }
+    
+* html  .lblKontaktFirma
+ { 
+     color:#910100;
+     }
+     
+ * html .ImpressumHead {
+	background-color: #910100;
+    background-image: url(../../../Images/overflow.png);
+    width:100%;
+    
+
+}
+* html .ExcelDiv
+{
+
+	background-color: #910100;
+
+    }    

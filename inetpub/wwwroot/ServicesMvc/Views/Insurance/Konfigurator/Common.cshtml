@@ -1,0 +1,677 @@
+﻿
+<script type="text/javascript">
+
+    var _proxyEditDetailsAction = '';
+    var _fadeDurationNormal = 500;
+    var _fadeDurationMax = 3000;
+    var _proxyEditDetailsFadeDuration = _fadeDurationNormal;
+    var _breadCrumbsBackLinksDisabled = false;
+
+    function FormPreparePrivate() {
+
+        //MetronicSidebarEnforceClosed();
+        GridAllColumnFilterApplyToGrid("VersEventGrid");
+        BreadcrumbsPrepare();
+
+        //setTimeout("TestEventEdit()", 1200);
+        Test();
+    }
+    
+    function Test() {
+        VersEventOrtBoxDetailsFormPreparePrivate();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    function ProxyEditDetailsDataCall() {
+        _proxyEditDetailsFadeDuration = _fadeDurationNormal;
+        if (_proxyEditDetailsAction == '')
+            return false;
+        
+        var p = _proxyEditDetailsAction;
+        _proxyEditDetailsAction = '';
+        
+        eval(p);
+        
+        return true;
+    }
+
+    function TestEventEdit() {
+        $($("#VersEventGrid button.debug")[0]).trigger("click");
+        setTimeout("TestEventOrtEdit()", 1200);
+    }
+
+    function TestEventOrtEdit() {
+        $($("#VersEventOrtGrid button.debug")[0]).trigger("click");
+        setTimeout("TestEventOrtBoxEdit()", 1200);
+    }
+
+    function TestEventOrtBoxEdit() {
+        $($("#VersEventOrtBoxGrid button.debug")[0]).trigger("click");
+    }
+    
+    function BreadcrumbsPrepare() {
+        $(".event-breadcrumbs li").each(function (index, elem) {
+            var li = $(elem);
+            var a = li.find("a");
+            a.attr("href", "javascript:void(0)");
+        });
+    }
+    
+//    function KnockoutApplyBindings(model) {
+//        var containerName = "VersEventsContainer";
+//        
+//        // reset bindings
+//        var element = $('#' + containerName)[0];
+//        ko.cleanNode(element);
+
+//        // apply bindings
+//        ko.applyBindingsAsObservable(model, containerName);
+//    }
+    
+    function GetIconCssClassFromLevel(level) {
+        switch (level) {
+            case 1:
+                return "icon-star";
+            case 2:
+                return "icon-map-marker";
+            case 3:
+                return "icon-inbox";
+        }
+        return "";
+    }
+
+    function BreadcrumbGetInputText(breadcrumbText) {
+        if (breadcrumbText == null || breadcrumbText == '')
+            breadcrumbText = "&nbsp;";
+        
+        return breadcrumbText;
+    }
+    
+    function BreadcrumbsShow(level, show, breadcrumbSource) {
+        var liPrev;
+        $(".event-breadcrumbs li").each(function (index, elem) {
+            var li = $(elem);
+            var a = li.find("a");
+
+            if (index == 0) {
+                liPrev = li;
+                return;
+            }
+
+            var activeIndex = level - 1;
+            if (show)
+                activeIndex++;
+
+            var breadcrumbSpanID = "breadcrumbSpan" + level;
+
+            if (index != activeIndex) {
+                a.removeClass("current");
+                //$("#" + breadcrumbSpanID).attr("data-bind", null);
+            } else {
+                if (show && breadcrumbSource != null) {
+                    var breadcrumbSpan = $("<span/>").attr("id", breadcrumbSpanID).html(BreadcrumbGetInputText(breadcrumbSource.val())); 
+                    a.html($("<span/>").html($("<i/>").addClass(GetIconCssClassFromLevel(level))).append(breadcrumbSpan));
+
+                    breadcrumbSource.on("keyup", function () {
+                        $("#" + breadcrumbSpanID).html(BreadcrumbGetInputText($(this).val()));
+                    });
+                }
+                if (liPrev != null)
+                    liPrev.find("a").attr("href", "javascript:ChainingCloseDetails(" + activeIndex + ")");
+                a.addClass("current");
+            }
+
+            if (index > activeIndex)
+                li.addClass("hide");
+            else
+                li.removeClass("hide");
+
+            liPrev = li;
+        });
+    }
+    
+    function ChainingCloseDetails(index) {
+
+        if (_breadCrumbsBackLinksDisabled)
+            return;
+
+        switch (index) {
+
+            case 1:
+                $("#VersEventOrtBoxDetails").hide();
+                $("#VersEventOrtDetails").hide();
+                VersEventCloseDetails();
+                break;
+
+            case 2:
+                $("#VersEventOrtBoxDetails").hide();
+                VersEventOrtCloseDetails();
+                break;
+
+            case 3:
+                VersEventOrtBoxCloseDetails();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    //
+    // <VersEvent>
+    //
+    
+    function VersEventCreate() {
+        //LoadingShow();
+        _proxyEditDetailsFadeDuration = _fadeDurationNormal;
+        $.ajax({
+            type: "POST",
+            url: "VersEventCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                VersEventEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+    
+    function VersEventEdit(id) {
+        //LoadingShow();
+        _proxyEditDetailsFadeDuration = _fadeDurationNormal;
+        $.ajax({
+            type: "POST",
+            url: "VersEventEdit",
+            data: { id : id },
+            loadingShow: true,
+            success: function (result) {
+                VersEventEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventDelete(id) {
+        if (!confirm('Dieses Event wirklich löschen?'))
+            return;
+        
+        $.ajax({
+            type: "POST",
+            url: "VersEventDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "Das Event wurde erfolgreich gelöscht!", 1800);
+                //$("#VersEventGrid").data("tGrid").ajaxRequest();
+                FilterGrid("VersEventGrid");
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventEditDetails(result) {
+        $("#VersEventDetails").html(result);
+        VersEventDetailsFormPreparePrivate();
+        $("#VersEventGridDiv").slideUp();
+        $("#VersEventDetails").slideDown();
+        FormPrepareAjax();
+    }
+
+    function VersEventCloseDetails() {
+        $("#VersEventDetails").slideUp(function () {
+            $("#VersEventGridDiv").delay(200).show();
+            window.scrollTo(0, 0);
+
+            //$("#VersEventGrid").data("tGrid").ajaxRequest();
+            FilterGrid("VersEventGrid");
+
+            BreadcrumbsShow(1, false, null);
+            FormPrepareAjax();
+        });
+    }
+
+    function VersEventDetailsFormPreparePrivate() {
+        FormPrepareAjax();
+        GridAllColumnFilterApplyToGrid("VersEventOrtGrid");
+        LoadingHide();
+        $("#VersEventDetailsIcon").addClass(GetIconCssClassFromLevel(1)).addClass("vers-event-header-icon");
+    }
+
+    function VersEventDetailsFormPreparePrivateAjax() {
+        VersEventDetailsFormPreparePrivate();
+
+        if (_modelStateValid && !ProxyEditDetailsDataCall())
+            VersEventCloseDetails();
+
+        //if (!_modelIsInsertMode)
+        //    $("#Kennung").attr('readonly', 'readonly');
+    }
+
+    function OnDataBound_VersEventGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_VersEventGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersEventGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    //
+    // </VersEvent>
+    //
+
+
+
+    //
+    // <VersEventOrt>
+    //
+
+    function TryVersEventOrtCreate() {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'VersEventOrtCreate()';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        $("#VersEventForm").submit();
+    }
+
+    function VersEventOrtCreate() {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                VersEventOrtEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function TryVersEventOrtEdit(id) {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'VersEventOrtEdit(' + id + ')';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        $("#VersEventForm").submit();
+    }
+
+    function VersEventOrtEdit(id) {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtEdit",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                VersEventOrtEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventOrtDelete(id) {
+        if (!confirm('Diesen Ort für dieses Event wirklich löschen?'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "Der Ort für dieses Event wurde erfolgreich gelöscht!", 1800);
+                //$("#VersEventOrtGrid").data("tGrid").ajaxRequest();
+                FilterGrid("VersEventOrtGrid");
+
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventOrtEditDetails(result) {
+        $("#VersEventOrtDetails").html(result);
+        VersEventOrtDetailsFormPreparePrivate();
+        //$("#VersEventOrtGridDiv").slideUp();
+        $("#VersEventDetails").slideUp();
+        $("#VersEventOrtDetails").slideDown();
+        FormPrepareAjax();
+    }
+
+    function VersEventOrtCloseDetails() {
+        $("#VersEventOrtDetails").slideUp(function () {
+            $("#VersEventDetails").delay(200).show();
+            window.scrollTo(0, 0);
+
+            //$("#VersEventOrtGrid").data("tGrid").ajaxRequest();
+            FilterGrid("VersEventOrtGrid");
+
+            BreadcrumbsShow(2, false, null);
+            FormPrepareAjax();
+        });
+    }
+
+    function VersEventOrtDetailsFormPreparePrivate() {
+        FormPrepareAjax();
+        GridAllColumnFilterApplyToGrid("VersEventOrtBoxGrid");
+        LoadingHide();
+        $("#VersEventOrtDetailsIcon").addClass(GetIconCssClassFromLevel(2)).addClass("vers-event-header-icon");
+    }
+
+    function VersEventOrtDetailsFormPreparePrivateAjax() {
+
+        VersEventOrtDetailsFormPreparePrivate();
+
+        if (_modelStateValid && !ProxyEditDetailsDataCall())
+            VersEventOrtCloseDetails();
+    }
+
+    function OnDataBound_VersEventOrtGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_VersEventOrtGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersEventOrtGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    //
+    // </VersEventOrt>
+    //
+
+
+
+    //
+    // <VersEventOrtBox>
+    //
+
+    function TryVersEventOrtBoxCreate() {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'VersEventOrtBoxCreate()';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        $("#VersEventOrtForm").submit();
+    }
+    
+    function VersEventOrtBoxCreate() {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtBoxCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                VersEventOrtBoxEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function TryVersEventOrtBoxEdit(id) {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'VersEventOrtBoxEdit(' + id + ')';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        $("#VersEventOrtForm").submit();
+    }
+
+    function VersEventOrtBoxEdit(id) {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtBoxEdit",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                VersEventOrtBoxEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventOrtBoxDelete(id) {
+        if (!confirm('Diese Box für diesen Event.Ort wirklich löschen?'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "VersEventOrtBoxDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "Die Box für diesen Event-Ort wurde erfolgreich gelöscht!", 1800);
+                //$("#VersEventOrtBoxGrid").data("tGrid").ajaxRequest();
+                FilterGrid("VersEventOrtBoxGrid");
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function VersEventOrtBoxEditDetails(result) {
+        $("#VersEventOrtBoxDetails").html(result);
+        VersEventOrtBoxDetailsFormPreparePrivate();
+        $("#VersEventOrtDetails").slideUp();
+        $("#VersEventOrtBoxDetails").slideDown();
+        FormPrepareAjax();
+    }
+
+    function VersEventOrtBoxCloseDetails() {
+        $("#VersEventOrtBoxDetails").slideUp(function () {
+            $("#VersEventOrtDetails").delay(200).show();
+            window.scrollTo(0, 0);
+
+            //$("#VersEventOrtBoxGrid").data("tGrid").ajaxRequest();
+            FilterGrid("VersEventOrtBoxGrid");
+
+            BreadcrumbsShow(3, false, null);
+            FormPrepareAjax();
+        });
+    }
+
+    function VersEventOrtBoxDetailsFormPreparePrivate() {
+        FormPrepareAjax();
+        GridAllColumnFilterApplyToGrid("BoxBlockerTermineGrid");
+        LoadingHide();
+        $("#VersEventOrtBoxDetailsIcon").addClass(GetIconCssClassFromLevel(3)).addClass("vers-event-header-icon");
+    }
+    
+    function VersEventOrtBoxDetailsFormPreparePrivateAjax() {
+
+        VersEventOrtBoxDetailsFormPreparePrivate();
+
+        if (_modelStateValid && !ProxyEditDetailsDataCall())
+            VersEventOrtBoxCloseDetails();
+    }
+
+    function OnDataBound_VersEventOrtBoxGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_VersEventOrtBoxGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersEventOrtBoxGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function VersEventOrtBox_BoxArtRadios_Bind() {
+        $("input[name=BoxArt]").on("click", function () {
+            VersEventOrtBox_BoxArtRadios_Process($(this).val());
+        });
+    }
+
+    function VersEventOrtBox_BoxArtRadios_Process(val) {
+        if (val == 'GU') {
+            $("#WrapperVersicherungID").removeClass("hide");
+            $("#WrapperTechnikerName").addClass("hide");
+        }
+        if (val == 'RE') {
+            $("#WrapperVersicherungID").addClass("hide");
+            $("#WrapperTechnikerName").removeClass("hide");
+        }
+    }
+
+    //
+    // </VersEventOrtBox>
+    //
+
+
+    //
+    // <BoxBlockerTermin>
+    //
+
+    function TryBoxBlockerTerminCreate() {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'BoxBlockerTerminCreate()';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        $("#VersEventOrtBoxForm").submit();
+    }
+
+    function BoxBlockerTerminCreate() {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "BoxBlockerTerminCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                BoxBlockerTerminEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function TryBoxBlockerTerminEdit(id) {
+        //LoadingShow();
+        _proxyEditDetailsAction = 'BoxBlockerTerminEdit(' + id + ')';
+        _proxyEditDetailsFadeDuration = _fadeDurationMax;
+        //console.log(_proxyEditDetailsAction);
+        $("#VersEventOrtBoxForm").submit();
+    }
+
+    function BoxBlockerTerminEdit(id) {
+        //LoadingShow();
+        $.ajax({
+            type: "POST",
+            url: "BoxBlockerTerminEdit",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                //console.log(result);
+                BoxBlockerTerminEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function BoxBlockerTerminDelete(id) {
+        if (!confirm('Diese Box für diesen Event.Ort wirklich löschen?'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "BoxBlockerTerminDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "Die Box für diesen Event-Ort wurde erfolgreich gelöscht!", 1800);
+                //$("#BoxBlockerTermineGrid").data("tGrid").ajaxRequest();
+                FilterGrid("BoxBlockerTermineGrid");
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function BoxBlockerTerminEditDetails(result) {
+        _breadCrumbsBackLinksDisabled = true;
+        $("#BoxBlockerTerminDetails").html(result);
+        BoxBlockerTerminDetailsFormPreparePrivate();
+        $("#VersEventOrtBoxDetails").slideUp();
+        $("#BoxBlockerTerminDetails").slideDown();
+        FormPrepareAjax();
+    }
+
+    function BoxBlockerTerminCloseDetails() {
+        _breadCrumbsBackLinksDisabled = false;
+        $("#BoxBlockerTerminDetails").slideUp(function () {
+            $("#VersEventOrtBoxDetails").delay(200).show();
+            window.scrollTo(0, 0);
+
+            FilterGrid("BoxBlockerTermineGrid");
+
+            BreadcrumbsShow(4, false, null);
+            FormPrepareAjax();
+        });
+    }
+
+    function BoxBlockerTerminDetailsFormPreparePrivate() {
+        FormPrepareAjax();
+        LoadingHide();
+        $("#BoxBlockerTerminDetailsIcon").addClass(GetIconCssClassFromLevel(3)).addClass("vers-event-header-icon");
+    }
+
+    function BoxBlockerTerminDetailsFormPreparePrivateAjax() {
+
+        BoxBlockerTerminDetailsFormPreparePrivate();
+
+        if (_modelStateValid)
+            BoxBlockerTerminCloseDetails();
+    }
+
+    function OnDataBound_BoxBlockerTermineGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_BoxBlockerTermineGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_BoxBlockerTermineGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    //
+    // </BoxBlockerTermin>
+    //
+
+
+</script>

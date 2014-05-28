@@ -1,0 +1,103 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@model Adresse
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("AdressenEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "AdressenEdit_FormPreparePrivateAjax();" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @Html.HiddenFor(m => m.Mandant)
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.UhrzeitwunschAvailable)
+        @Html.HiddenFor(m => m.TransportTypAvailable)
+        @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.SubTyp)
+        @Html.HiddenFor(m => m.RequestGeoMapInfo)
+
+        using (Html.BeginDiv("leftform"))
+        {
+            if (Model.TransportTypAvailable)
+            {
+                @Html.FormDropDownListFor(m => m.TransportTyp, Model.ValideTransportTypen.ToSelectList())
+                @Html.FormNewLine()
+            }
+             
+            @Html.FormAutoCompleteFor(m => m.Firma, "AdressenAutocompleteAjaxBinding", "Ueberfuehrung", new { uiIndex = formID }, clientEventOnChange: "AdressenAutocompleteTextboxOnChange", cssClass: "FormTextboxNormal FormTextboxNoUppercase")
+            @Html.FormAction("ShowGridAdressen(" + Model.ID + "," + formID + ");", "searchbutton", "Adressen auswählen")
+ 
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.Strasse, cssClass: "FormTextboxNormal FormTextboxNoUppercase") 
+
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.PLZ, cssClass: "FormTextboxSmall") 
+            @Html.FormTextBoxFor(m => m.Ort, cssClass: "FormTextboxNormalS FormTextboxNoUppercase", labelCssClass: null) 
+
+            @Html.FormNewLine()
+            @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList()) 
+    
+            using (Html.BeginDiv("AddressRoutingControlRow", id: "AddressRoutingControlRow_" + formID))
+            {
+                @Html.FormAction("TryShowGeoLocationInfo(" + formID + ");", "geolocationbutton", "Karte anzeigen für Adresse")
+                if (Model.ShowRouteInfo)
+                {
+                    @Html.FormAction("TryShowRouteInfo(" + formID + ");", "routebutton", "Route berechnen / anzeigen")
+                }
+            }
+        }
+
+        using (Html.BeginDiv("rightform"))
+        {
+            @Html.FormTextBoxFor(m => m.Ansprechpartner, "FormTextboxNormal FormTextboxNoUppercase") 
+
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.Telefon) 
+        
+            @Html.FormNewLine()
+            @Html.FormTextBoxFor(m => m.Email, "FormTextboxNormal FormTextboxNoUppercase") 
+        
+            @Html.FormNewLine()
+            @Html.FormDatePickerFor(m => m.Datum) 
+            @Html.FormMandatoriesHint()
+
+            if (Model.UhrzeitwunschAvailable)
+            {
+                @Html.FormNewLine()
+                @Html.FormDropDownListSmallFor(m => m.Uhrzeitwunsch, Model.UhrzeitwunschOptions) 
+                @Html.FormClear(formID, marginLeft: 100)
+            }
+            else
+            {
+                @Html.FormNewLine("top17")
+                @Html.FormClear(formID, marginLeft: 7)
+            }
+        }
+        
+        @Html.FormNewLine()
+    }
+}
+
+<script type="text/javascript">
+    
+    function AdressenEdit_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+
+        @Html.Partial("Partial/ValidationErrorScripts")
+
+        showRoutingControlRow(@formID, true);
+        addRoutingAddressLostFocusHandlers(@formID);
+    }
+</script>
+
+
+
+<!--
+    // Form explizit speichern (nicht mehr benötigtm da die Form beim Zufalten oder Auffaltren eines anderen Blocks gespeichert wird.)
+    <span style="display: none;margin-right: 20px;">
+        <button type="submit" name="submitMode" value="save" title="Speichern" tabindex="-1">Speichern</button>
+        <button type="submit" name="submitMode" value="cancel" title="Abbrechen" tabindex="-1">Abbrechen</button>
+    </span>
+-->

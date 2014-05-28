@@ -1,0 +1,891 @@
+BODY
+{
+	font-weight: normal;
+	font-size: 12px;
+	word-spacing: normal;
+	text-transform: none;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	letter-spacing: normal;
+	background-color: #ffffff;
+}
+
+HR
+{
+	color: #000099;
+}
+
+TH, TD
+{
+	font-size: 12px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+A:link
+{
+	color: #000000;
+}	
+		
+A:visited
+{
+	color: #000000;
+}	
+		
+A:hover
+{
+	color: #0066cc;
+}
+
+A:active
+{
+	color: #0066cc;
+}	
+		
+
+.HeaderLinks
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-size: 13px;
+	padding-bottom: 5px;
+	color: #a9a9a9;
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	text-decoration: none;
+}
+
+.HeaderLinks A:link
+{
+	color: #a9a9a9;
+}
+
+.HeaderLinks A:visited
+{
+	
+	color: #a9a9a9;
+}
+
+.HeaderLinks A:hover
+{
+	color: #0066cc;
+}
+
+.HeaderLinks A:active
+{
+	color: #a9a9a9;
+}
+
+.GridTableHead
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #ffffff;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #0066cc;
+}
+
+.TableHeadStyle
+{
+	font-size: 14px;
+	color: #ffffff;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #0066cc;
+}
+
+.GridTableHead A:link
+{
+	color: #ffffff;
+}
+
+.GridTableHead A:visited
+{
+	color: #ffffff;
+}
+
+.GridTableAlternate
+{
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #f5f5f5;
+}
+	
+.StandardButton
+{
+	border-top: white thin solid;
+	font-weight: bold;
+	font-size: 12px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	display: table-cell;
+	
+	height: 22px;
+	background-color: #000000;
+	text-align:left;
+	text-decoration: none;	
+		
+	border-bottom-style: none;
+}
+	
+A.StandardButtonCenter
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #83C6E7;
+	text-align: center;
+	text-decoration: none;
+		
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+
+}
+
+A.StandardButtonCenter:hover
+/*Wenn Mauszeiger drüber ist*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #FFFF00;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #0066cc;
+	text-align: center;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+
+}
+
+A.StandardButtonCenter:active
+/*Wenn geklickt*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+
+}
+
+A.StandardButton
+/*Normale Darstellung*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #83C6E7;
+	text-align: left;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+	
+}
+
+A.StandardButton:visited
+/*Bereist besucht*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #83C6E7;
+	text-align: left;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+	 
+}
+
+A.StandardButton:hover
+/*Wenn Mauszeiger drüber ist*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #FFFF00;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #0066cc;
+	text-align: left;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+
+}
+
+A.StandardButton:active
+/*Bei Klick*/
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	
+	padding-top: 5px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	
+	background-color: #83C6E7;
+	text-align: left;
+	text-decoration: none;
+	
+	border-bottom-style: none;
+	border-top-style:solid;
+	border-top-width:thin;
+	border-top-color:White;	 
+	
+}
+
+.StandardButtonTable
+{
+	font-weight: bold;
+	font-size: 12px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	height: 15px;
+	background-color: #83C6E7;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonTable
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #83C6E7;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonTable:visited
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #83C6E7;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonTable:hover
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 100px;
+	cursor: hand;
+	color: #FFFF00;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #0066cc;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonTable:active
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 100px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+.StandardButtonSmall
+{
+	font-weight: bold;
+	font-size: 12px;
+	width: 75px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	height: 15px;
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonSmall
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 75px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonSmall:visited
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 75px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonSmall:hover
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 75px;
+	cursor: hand;
+	color: #ffffff;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #0066cc;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+A.StandardButtonSmall:active
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	width: 75px;
+	cursor: hand;
+	color: #000000;
+	border-top-style: none;
+	padding-top: 3px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #FFFF00;
+	text-align: center;
+	text-decoration: none;
+	border-bottom-style: none;
+}
+
+.StandardTableHead
+{
+	font-weight: bold;
+	font-size: 14px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #f5f5f5;
+}
+
+.StandardTableButtonFrame
+{	
+	background-color: #83C6E7;
+}
+
+.StandardTableAlternate
+{
+	font-weight: bold;
+	font-size: 12px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #f5f5f5;
+}
+
+.MainmenuItemAlternate
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 14px;
+	padding-bottom: 9px;
+	padding-top: 9px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #f5f5f5;
+	height: 30px;
+}
+
+.MainmenuItem
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 9px;
+	padding-top: 9px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	height: 30px;
+}
+
+.MainmenuItemCommentAlternate
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-size: 12px;
+	padding-bottom: 9px;
+	padding-top: 9px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #f5f5f5;
+}
+
+.MainmenuItemComment
+{
+	padding-right: 9px;
+	padding-left: 9px;
+	font-size: 12px;
+	font-weight: normal;
+	padding-bottom: 9px;
+	padding-top: 9px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+.TextMainHeader
+{
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+}
+
+.TextHeader
+{
+	padding-right: 3px;
+	padding-left: 3px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 3px;
+	padding-top: 3px;	
+	/*background-color:#FFFFFF;*/
+	width:120px;
+	/*color:#000000;*/
+}
+
+.TextExtraLarge 
+{
+	font-weight: bold;
+    FONT-SIZE: 14px;
+}
+
+.TextSmallHeader {
+    FONT-SIZE: 12px;
+    text-decoration: underline;
+}
+
+.TextLarge
+{
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.TextNormal
+{
+	font-size: 12px;
+}
+
+.TextDisabled
+{
+	text-align:right;
+	background-color:#D2F0F9;	
+	border-style:solid ; 
+	border-color:#CCCCCC
+	
+}
+.TextHighlight
+{	
+	background-color:LightSkyBlue;		
+}
+.TextError
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 14px;
+	padding-bottom: 5px;
+	color: red;
+	padding-top: 5px;
+}
+
+.InfoBoxFlat
+{
+	background-color: #f5f5f5;
+	border-style: solid ;
+	border-color: DarkGray ;
+	border-width: 1px;
+}
+
+.PageNavigation
+{
+	/*padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	color: #ffffff;
+	padding-top: 5px;
+	background-color: #003399;*/
+	padding-right: 4px;
+	padding-left: 4px;
+	font-weight: bold;
+	font-size: 12px;	
+	padding-bottom: 4px;
+	color: #000000;
+	padding-top: 4px;
+	
+	background-image:url(/Portal/Images/PageNavBack.jpg);
+	border-bottom-style:solid; 
+	border-top-style:solid;
+	border-bottom-width:thin;
+	border-top-width:thin;	
+	border-top-color:#C3C3C3;
+	border-bottom-color:#C3C3C3;
+}
+
+.PageNavigation A:link
+{
+	color: #ffffff;
+}
+
+.PageNavigation A:visited
+{
+	color: #ffffff;
+}
+
+.LabelExtraLarge
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 14px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+.LabelLarge
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 11px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+.PagerStyle
+{
+	font-size: 14px;
+	background-color: #ffffff;
+	text-align: left;
+}
+
+.TaskTitle A:link
+{
+	color: #ffffff;
+}
+
+.TaskTitle A:visited
+{
+	color: #ffffff;
+}
+
+.TaskTitle
+{
+	padding-right: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+	color: #ffffff;
+	padding-top: 5px;
+	background-color: #0066cc;
+}
+
+.TableFrame
+{
+	border-bottom-style:solid;
+	border-top-style:solid;
+	border-left-style:solid;
+	border-right-style:solid;
+	border-left-color:LightSkyBlue;
+	border-right-color:LightSkyBlue;
+	border-top-color:LightSkyBlue;
+	border-bottom-color:LightSkyBlue;
+	border-left-width:thin;
+	border-right-width:thin;
+	border-top-width:thin;
+	border-bottom-width:thin;
+	
+}
+
+.TableFrameHighlight
+{
+	border-bottom-style:solid;
+	border-top-style:solid;
+	border-left-style:solid;
+	border-right-style:solid;
+	border-left-color:LightSkyBlue;
+	border-right-color:LightSkyBlue;
+	border-top-color:LightSkyBlue;
+	border-bottom-color:LightSkyBlue;
+	border-left-width:thin;
+	border-right-width:thin;
+	border-top-width:thin;
+	border-bottom-width:thin;
+	background-color:#E3E3E3;
+	
+}
+
+.InputRight
+{
+	text-align: right;
+}
+
+.Background_01
+{	
+	color:#FF0000;		
+	font-weight: bold;
+	background-color: #DDDDDD;
+}
+
+.BackgroundBarcode
+{	
+	color:#000000;		
+	font-weight: bold;
+	background-color: #FFFF00;
+}
+
+.GridTableHeadSub
+{
+	font-weight: bold;
+	font-size: 12px;
+	color: #000000;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #cccccc;
+}
+
+.TableBannerCell
+{
+	background: #CCCCCC;
+	font-family:Arial;
+	font-size:x-small;
+	color:#000000;
+	text-align:center;
+}
+
+.TableHeaderCell
+{
+	background: #DDDDDD;
+	font-family:Arial;
+	font-size:x-small;
+	color:#000000;
+	text-align:center;
+}
+
+.TableBannerInnerCell
+{
+	background: #EEEEEE;
+	font-family:Arial;
+	font-size:x-small;
+	color:#000000;
+	text-align:center;
+}
+
+.TableLegende
+{
+	background: #EEEEEE;
+	font-family:Arial;
+	font-size:x-small;
+	color:#000000;
+	text-align:left;
+}
+
+.GridTableHighlight
+{
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	background-color: #696969;
+}
+.TextboxNormal
+{
+	width:200px;
+	/*background-color:Navy;*/
+	}
+.TextboxShort
+	{
+		width:80px;
+		/*background-color:Yellow;*/
+	}
+.TextboxMultiline
+	{
+		width:200px;
+		height:80px;
+		/*background-color:Green;*/
+	}
+.TextboxMultilineLarge
+	{
+		width:800px;
+		height:80px;
+		/*background-color:Red;*/
+	}
+	.dropDownListeNormal
+	{
+		width:200px;
+	}
+	.listBoxNormal
+	{
+		width:200px;
+	}
+	.ImageButtonNormal
+	{
+		width:20px;
+		height:20px;
+	}
+	.bezeichnungsLabel
+	{
+		font-weight:bold;
+	}
+	
+	.tableLogin {
+	background-color: #bababa;
+	background-image: url(/Portal/Images/backgroundImage.gif);
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	margin-top: 2px;
+}

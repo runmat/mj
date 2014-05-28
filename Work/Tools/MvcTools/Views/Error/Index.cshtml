@@ -1,0 +1,40 @@
+﻿@using System.Web.Mvc.Html
+@model Models.ErrorModel
+
+<style type="text/css">
+    #errorMessage {
+        color: red;
+        font-weight: normal;
+        padding-top: 20px;
+    }
+</style>
+
+<h2>Fehler</h2>
+<br />
+<div>
+    Wir bitten um Entschuldigung, etwas ist schief gelaufen ...    
+</div>
+<div id="errorMessage">
+    @{
+        string message = null;
+        switch (Model.HttpStatusCode)
+        {
+            case 404:
+                message = "Die angeforderte Seite wurde nicht gefunden."; 
+                break;
+            case 500:
+                message = string.Concat("Folgender Server-Fehler ist aufgetreten:<br /> ", Model.Exception.Message, "<br /><br />", Model.Exception.InnerException == null ? "" : Model.Exception.InnerException.Message);
+                break;
+        }
+    }
+    
+    <br/>
+    @Html.Raw(message)
+</div>
+
+
+@if (!string.IsNullOrEmpty(Model.OriginControllerName))
+{
+    <br/><br/>
+    <div style="font-size: 1.2em;">@Html.ActionLink("Zurück zur Anwendung ...", "Index", Model.OriginControllerName)</div>
+}

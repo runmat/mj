@@ -1,0 +1,11 @@
+﻿@using GeneralTools.Models
+@model MvcTools.Models.FormControlModel 
+
+
+<span class="SControl">@Model.ControlHtml</span><span class="SDisplayName">@Model.DisplayNameHtml</span>
+    
+@if (@Model.IconCssClass.IsNotNullOrEmpty())
+{
+    <span class="SIcon"><i class="@Model.IconCssClass"></i></span>
+}
+    

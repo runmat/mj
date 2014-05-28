@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model SchadenakteDocsViewModel
+@{ 
+    var gridName = "SchadenakteDocsGrid";
+}
+   
+<button onclick='ShowDocCategories();' class='btn'>@Localize.Categories ...</button>
+
+@(Html.Telerik()
+    .Grid<SchadenakteDocument>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("SchadenakteDocsAjaxBinding", "Insurance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                .ClientTemplate(
+                "<button onclick='SchadenakteDocEdit(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.DocumentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                + "&nbsp;"
+                + "<button onclick='SchadenakteDocRemove(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+            )
+            .HeaderTemplate(
+                "<button onclick='SchadenakteDocCreate();' class='btn mini black tooltips' data-original-title='" + Localize.DocumentUploadDocument + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+            )
+        ;
+
+        columns.XBound(c => c.Category);
+        columns.XBound(c => c.FileName);
+        columns.XBound(c => c.FileType);
+        columns.XBound(c => c.Dienstleister);
+        columns.XBound(c => c.Uploaded);
+        columns.XBound(c => c.ID).ClientTemplate("<a target='_blank' class='btn mini black tooltips a_btn_mini' data-original-title='" + Localize.Download + "' data-placement='right' href='Get/<#= data.ID #>' ><i class='halflings-icon white file'></i></a>").Title(Localize.Download);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Category).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportSchadenakteDocsFilteredExcel", "Insurance");
+        commands.FilteredDataCommand("ExportSchadenakteDocsFilteredPDF", "Insurance");
+    })
+)

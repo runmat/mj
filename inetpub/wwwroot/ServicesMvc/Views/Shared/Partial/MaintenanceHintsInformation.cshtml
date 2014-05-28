@@ -1,0 +1,17 @@
+﻿@model MaintenanceResult
+
+@if (Model.MessagesAvailable && !Model.LogonDisabled)
+{
+    <div class="alert">
+        @foreach (var maintenanceMessage in Model.AvailableMessages.Where(m => !m.LogonDisabled))
+        {
+            <div class="maintenance-hint">
+                @if (maintenanceMessage.Title.IsNotNullOrEmpty())
+                {
+                    <strong>@maintenanceMessage.Title.ToHtml()</strong><br/>
+                }
+                @maintenanceMessage.Message.ToHtml()
+            </div>
+        }
+    </div>
+}

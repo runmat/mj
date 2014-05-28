@@ -1,0 +1,34 @@
+<root>
+
+    <tools name="MainToolbar">
+        <tool name="Cut" />
+        <tool name="Copy" shortcut="CTRL+C"/>
+        <tool name="Paste" shortcut="CTRL+V"/>
+        <tool separator="true"/>
+        <tool name="Undo" shortcut="CTRL+Z"/>
+        <tool name="Redo" shortcut="CTRL+Y"/>
+    </tools>
+
+    <tools>
+		<tool name="Bold"/>
+		<tool name="Italic"/>
+		<tool name="Underline"/>
+        <tool name="StrikeThrough" />
+		<tool separator="true"/>
+        <tool name="JustifyLeft" />
+        <tool name="JustifyCenter" />
+        <tool name="JustifyRight" />
+        <tool name="JustifyFull" />
+        <tool name="JustifyNone" />
+        <tool separator="true"/>
+        <tool name="LinkManager" shortcut="CTRL+K"/>
+        <tool name="Unlink" shortcut="CTRL+SHIFT+K"/>
+	</tools>
+    <tools>
+        <tool name="RealFontSize" shortcut="CTRL+SHIFT+P"/>
+    </tools>
+    <tools>
+        <tool name="ForeColor"/>
+        <tool name="FormatStripper"/>
+    </tools>
+</root>

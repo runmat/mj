@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@{ var gridName = "GridZB1Kopien"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini hide" onclick="CloseZB1KopieSearchResult();"><i class="icon-arrow-left"></i>&nbsp;zurück zur Suche</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<ZB1Kopie>()
+    .Name(gridName)
+    .XGroup("GridZB1Kopien")
+    .XAjaxDataBinding("ZB1KopienAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Erstelldatum).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Vertragsnummer);
+        columns.Bound(c => c.Kennzeichen);
+        columns.Bound(c => c.Fahrgestellnummer);
+        columns.Bound(c => c.Zulassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Haltername);
+        columns.Bound(c => c.ZB1KopieVorhandenText);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportZB1KopienFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportZB1KopienFilteredPDF", "Leasing");
+    })
+)
+

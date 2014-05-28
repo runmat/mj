@@ -1,0 +1,31 @@
+﻿@model CkgDomainLogic.Ueberfuehrung.ViewModels.UeberfuehrungHistoryViewModel
+
+@Html.Partial("Partial/Styles")
+
+<div id="HistoryAuftraegeWrapper">
+    <div id="HistoryAuftraegeFilter">
+        @using (Html.FormOuterLayer())
+        {
+            using (Html.FormInnerLayer(1, "Ihre Überführungsaufträge", "", "formopener searchHeader"))
+            {
+                @Html.Partial("Partial/HistoryAuftragFilter", Model.HistoryAuftragFilter)
+            }
+        }
+    </div>
+
+    <div id="HistoryAuftraegeGrid">
+        @Html.Partial("Partial/TelerikGridDummy")
+    </div>
+
+    <div id="HistoryAuftragDetails">
+    </div>
+</div>
+
+@Html.Partial("Partial/_ScriptsGeneral")
+@Html.Partial("Partial/_Scripts")
+@Html.Partial("Partial/_Dialogs")
+
+@Html.FilteredDataTelerikScriptsAndStyles()
+
+
+

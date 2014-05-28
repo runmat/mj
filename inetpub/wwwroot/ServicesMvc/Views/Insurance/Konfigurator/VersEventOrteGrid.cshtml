@@ -1,0 +1,38 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@{
+    var gridName = "VersEventOrtGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID" class="VersEventSubGrid">
+    @(Html.Telerik()
+        .Grid<VersEventOrt>()
+        .Name(gridName)
+
+        .XAjaxDataBinding("VersEventOrtAjaxBinding", "Insurance")
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                           "<button onclick='TryVersEventOrtEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.VersEventLocationEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                           + "&nbsp;"
+                           + "<button onclick='VersEventOrtDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventLocationDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                    )
+                    .HeaderTemplate(
+                        "<button onclick='TryVersEventOrtCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.VersEventLocationAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                    );
+                //columns.XBoundAllExcept(c => c.ID);
+                columns.XBound(c => c.OrtName);
+                columns.XBound(c => c.OrtName2);
+                columns.XBound(c => c.StrasseHausNr);
+                columns.XBound(c => c.PLZ);
+                columns.XBound(c => c.Ort);
+                columns.XBound(c => c.Land);
+            })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.OrtName).Ascending())
+        .XToolBar("Insurance")
+    )
+</div>

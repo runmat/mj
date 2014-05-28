@@ -1,0 +1,566 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E3915D2-28B4-43C5-8A49-CEA235C03483}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>AppF2</RootNamespace>
+    <AssemblyName>AppF2</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppF2.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppF2.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="forms\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change01_2.aspx.designer.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01_2.aspx.vb">
+      <DependentUpon>Change01_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change01_3.aspx.designer.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01_3.aspx.vb">
+      <DependentUpon>Change01_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change01_4.aspx.designer.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01_4.aspx.vb">
+      <DependentUpon>Change01_4.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change01_5.aspx.designer.vb">
+      <DependentUpon>Change01_5.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01_5.aspx.vb">
+      <DependentUpon>Change01_5.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change02.aspx.designer.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change02.aspx.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change03.aspx.designer.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change03.aspx.vb">
+      <DependentUpon>Change03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change03_2.aspx.designer.vb">
+      <DependentUpon>Change03_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change03_2.aspx.vb">
+      <DependentUpon>Change03_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change04.aspx.designer.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change04.aspx.vb">
+      <DependentUpon>Change04.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change04_2.aspx.designer.vb">
+      <DependentUpon>Change04_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change04_2.aspx.vb">
+      <DependentUpon>Change04_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change04_3.aspx.designer.vb">
+      <DependentUpon>Change04_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change04_3.aspx.vb">
+      <DependentUpon>Change04_3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change04_4.aspx.designer.vb">
+      <DependentUpon>Change04_4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change04_4.aspx.vb">
+      <DependentUpon>Change04_4.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change04_5.aspx.designer.vb">
+      <DependentUpon>Change04_5.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change04_5.aspx.vb">
+      <DependentUpon>Change04_5.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change05.aspx.designer.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change05.aspx.vb">
+      <DependentUpon>Change05.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change05_2.aspx.designer.vb">
+      <DependentUpon>Change05_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change05_2.aspx.vb">
+      <DependentUpon>Change05_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change06.aspx.designer.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change06.aspx.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change06_2.aspx.designer.vb">
+      <DependentUpon>Change06_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change06_2.aspx.vb">
+      <DependentUpon>Change06_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change07.aspx.designer.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change07.aspx.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change07_2.aspx.designer.vb">
+      <DependentUpon>Change07_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change07_2.aspx.vb">
+      <DependentUpon>Change07_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change08.aspx.designer.vb">
+      <DependentUpon>Change08.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change08.aspx.vb">
+      <DependentUpon>Change08.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change09.aspx.designer.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change09.aspx.vb">
+      <DependentUpon>Change09.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change10.aspx.designer.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change10.aspx.vb">
+      <DependentUpon>Change10.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change11.aspx.designer.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change11.aspx.vb">
+      <DependentUpon>Change11.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change11_1.aspx.designer.vb">
+      <DependentUpon>Change11_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change11_1.aspx.vb">
+      <DependentUpon>Change11_1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change11_2.aspx.designer.vb">
+      <DependentUpon>Change11_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change11_2.aspx.vb">
+      <DependentUpon>Change11_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change12.aspx.designer.vb">
+      <DependentUpon>Change12.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change12.aspx.vb">
+      <DependentUpon>Change12.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report01.aspx.designer.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report01.aspx.vb">
+      <DependentUpon>Report01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report03.aspx.designer.vb">
+      <DependentUpon>Report03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report03.aspx.vb">
+      <DependentUpon>Report03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report02.aspx.designer.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report02.aspx.vb">
+      <DependentUpon>Report02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report02_2.aspx.designer.vb">
+      <DependentUpon>Report02_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report02_2.aspx.vb">
+      <DependentUpon>Report02_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report04.aspx.designer.vb">
+      <DependentUpon>Report04.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report04.aspx.vb">
+      <DependentUpon>Report04.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report05.aspx.designer.vb">
+      <DependentUpon>Report05.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report05.aspx.vb">
+      <DependentUpon>Report05.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report06.aspx.designer.vb">
+      <DependentUpon>Report06.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report06.aspx.vb">
+      <DependentUpon>Report06.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report07_2.aspx.designer.vb">
+      <DependentUpon>Report07_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report07_2.aspx.vb">
+      <DependentUpon>Report07_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report08.aspx.designer.vb">
+      <DependentUpon>Report08.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report08.aspx.vb">
+      <DependentUpon>Report08.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report09.aspx.designer.vb">
+      <DependentUpon>Report09.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report09.aspx.vb">
+      <DependentUpon>Report09.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report10.aspx.designer.vb">
+      <DependentUpon>Report10.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report10.aspx.vb">
+      <DependentUpon>Report10.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report11.aspx.designer.vb">
+      <DependentUpon>Report11.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report11.aspx.vb">
+      <DependentUpon>Report11.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report12.aspx.designer.vb">
+      <DependentUpon>Report12.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report12.aspx.vb">
+      <DependentUpon>Report12.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report13.aspx.designer.vb">
+      <DependentUpon>Report13.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report13.aspx.vb">
+      <DependentUpon>Report13.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report14.aspx.designer.vb">
+      <DependentUpon>Report14.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report14.aspx.vb">
+      <DependentUpon>Report14.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report15.aspx.designer.vb">
+      <DependentUpon>Report15.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report15.aspx.vb">
+      <DependentUpon>Report15.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report16.aspx.designer.vb">
+      <DependentUpon>Report16.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report16.aspx.vb">
+      <DependentUpon>Report16.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report17.aspx.designer.vb">
+      <DependentUpon>Report17.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report17.aspx.vb">
+      <DependentUpon>Report17.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="lib\Abmeldungen.vb" />
+    <Compile Include="lib\Abrufgruende.vb" />
+    <Compile Include="lib\AbweichAbrufgrund.vb" />
+    <Compile Include="lib\Adressen.vb" />
+    <Compile Include="lib\AppF2BankBaseCredit.vb" />
+    <Compile Include="lib\AppF2_05.vb" />
+    <Compile Include="lib\Briefanforderung.vb" />
+    <Compile Include="lib\CurrentPageHelper.vb" />
+    <Compile Include="lib\DatenOhneZB2.vb" />
+    <Compile Include="lib\DealerSearch.vb" />
+    <Compile Include="lib\Freigabe.vb" />
+    <Compile Include="lib\Haendler.vb" />
+    <Compile Include="lib\Haendlerbestand.vb" />
+    <Compile Include="lib\Historie.vb" />
+    <Compile Include="lib\Laender.vb" />
+    <Compile Include="lib\ListeKontingente.vb" />
+    <Compile Include="lib\Mahnstufe.vb" />
+    <Compile Include="lib\Mahnungen.vb" />
+    <Compile Include="lib\OffeneAnforderungen.vb" />
+    <Compile Include="lib\OffeneAnforderungenGMAC.vb" />
+    <Compile Include="lib\Search.vb" />
+    <Compile Include="lib\TempZuEndg.vb" />
+    <Compile Include="lib\TraceWrapper.vb" />
+    <Compile Include="lib\UnangeforderteEquipments.vb" />
+    <Compile Include="lib\VersandJeAbrufgrund.vb" />
+    <Compile Include="lib\Versandwege.vb" />
+    <Compile Include="lib\VersendeteZB2.vb" />
+    <Compile Include="lib\Vertragsbestand.vb" />
+    <Compile Include="lib\Vertragsdaten.vb" />
+    <Compile Include="lib\ZB2OhneDaten.vb" />
+    <Compile Include="lib\ZBIIEingang.vb" />
+    <Compile Include="lib\Zulassungstellen.vb" />
+    <Compile Include="MasterPage\AppMaster.Master.designer.vb">
+      <DependentUpon>AppMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\AppMaster.Master.vb">
+      <DependentUpon>AppMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\Application1.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="forms\Report07.aspx.designer.vb">
+      <DependentUpon>Report07.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report07.aspx.vb">
+      <DependentUpon>Report07.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="forms\Change09.aspx" />
+    <Content Include="forms\Change10.aspx" />
+    <Content Include="forms\Change11.aspx" />
+    <Content Include="forms\Change11_1.aspx" />
+    <Content Include="forms\Change11_2.aspx" />
+    <Content Include="forms\Change12.aspx" />
+    <Content Include="forms\Report10.aspx" />
+    <Content Include="forms\Report11.aspx" />
+    <Content Include="forms\Report12.aspx" />
+    <Content Include="forms\Report13.aspx" />
+    <Content Include="forms\Report14.aspx" />
+    <Content Include="forms\Report15.aspx" />
+    <Content Include="forms\Report16.aspx" />
+    <Content Include="forms\Report17.aspx" />
+    <Content Include="MasterPage\AppMaster.Master" />
+    <None Include="docu\Endkundenzulassung.doc" />
+    <None Include="docu\FahrzeughistoriePrint.doc" />
+    <None Include="docu\Haendlerzulassung.doc" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application1.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services.vbproj">
+      <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="forms\Change01.aspx" />
+    <Content Include="forms\Change01_2.aspx" />
+    <Content Include="forms\Change01_3.aspx" />
+    <Content Include="forms\Change01_4.aspx" />
+    <Content Include="forms\Change01_5.aspx" />
+    <Content Include="forms\Change02.aspx" />
+    <Content Include="forms\Change03.aspx" />
+    <Content Include="forms\Change03_2.aspx" />
+    <Content Include="forms\Change04.aspx" />
+    <Content Include="forms\Change04_2.aspx" />
+    <Content Include="forms\Change04_3.aspx" />
+    <Content Include="forms\Change04_4.aspx" />
+    <Content Include="forms\Change04_5.aspx" />
+    <Content Include="forms\Change05.aspx" />
+    <Content Include="forms\Change05_2.aspx" />
+    <Content Include="forms\Change06.aspx" />
+    <Content Include="forms\Change06_2.aspx" />
+    <Content Include="forms\Change07.aspx" />
+    <Content Include="forms\Change07_2.aspx" />
+    <Content Include="forms\Change08.aspx" />
+    <Content Include="forms\Report01.aspx" />
+    <Content Include="forms\Report03.aspx" />
+    <Content Include="forms\Report02.aspx" />
+    <Content Include="forms\Report02_2.aspx" />
+    <Content Include="forms\Report04.aspx" />
+    <Content Include="forms\Report05.aspx" />
+    <Content Include="forms\Report06.aspx" />
+    <Content Include="forms\Report07.aspx" />
+    <Content Include="forms\Report07_2.aspx" />
+    <Content Include="forms\Report08.aspx" />
+    <Content Include="forms\Report09.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2442</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Services/Applications/AppF2</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

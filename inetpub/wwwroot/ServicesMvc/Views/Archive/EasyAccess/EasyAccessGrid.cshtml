@@ -1,0 +1,43 @@
+﻿@using System.Data
+@model DataTable
+@{ 
+    var gridName = "GridEasyAccess";
+    string[] hiddenCols = { "DOC_LOCATION", "DOC_ARCHIVE", "DOC_ID", "DOC_VERSION", "BILDER", "LINK" };
+}
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini hide" onclick="CloseEasyAccessSearchResult();"><i class="icon-arrow-left"></i>&nbsp;zurück zur Suche</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<DataRow>()
+    .Name(gridName)
+    .XGroup("GridEasyAccess")
+    .XAjaxDataBinding("DocumentsAjaxBinding", "Archive")
+    .Columns(columns =>
+    {
+        columns.Bound("DOC_ID").ClientTemplate(
+            "<a target='_blank' class='btn mini gray pdf a_btn_mini' " +
+            "data-original-title='Dokument anzeigen (PDF)' data-placement='right' href='/ServicesMvc/Archive/DocumentView?docId=<#= DOC_ID #>' ></a>" +
+            "<button onclick='ViewDocumentDetails(\"<#= DOC_ID #>\");' class='btn mini gray margin-left-5' " +
+            "data-original-title='Zusatzinformationen' data-placement='right'><i class='halflings-icon info-sign'></i></button>"
+        ).Title("").Sortable(false).Filterable(false);
+        for (int i = 0; i < Model.Columns.Count; i++)
+        {
+            if (!hiddenCols.Contains(Model.Columns[i].ColumnName.ToUpper()))
+            {
+                columns.Bound(Model.Columns[i].ColumnName);
+            }
+        }
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add("DOC_ID").Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDocumentsFilteredExcel", "Archive").HtmlAttributes(new { @class = "btn mini gray tooltips excel a_btn_mini hide", data_original_title = "Excel Export", data_placement = "right" });
+        commands.FilteredDataCommand("ExportDocumentsFilteredPDF", "Archive").HtmlAttributes(new { @class = "btn mini gray tooltips pdf a_btn_mini hide", data_original_title = "PDF Export", data_placement = "right" });
+    })
+)
+

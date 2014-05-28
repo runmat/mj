@@ -1,0 +1,36 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model List<SchadenfallStatus>
+
+@{
+    var groupSize = 3;
+    var groups = Model.Count /groupSize;
+    var index = 0;
+}
+
+@for (var i = 0; i < groups; i++)
+{
+    <div class="status-group">
+        @for (var j = 0; j < groupSize; j++)
+        {
+            var status = Model[index];
+
+            <div class="status-item @status.IsChecked.ToString().ToLower()" onclick="SchadenfallStatusUpdate(@status.StatusArtID)">
+                
+                @if (status.IsChecked)
+                {
+                    <i class="icon-check"></i>
+                    @status.Bezeichnung                 
+                    <span class="status-ok-item"><i class="icon-user tooltips" data-original-title="User @status.User, @status.Datum.GetValueOrDefault().ToString("dd.MM.yy")" data-placement="right"></i></span> 
+                }
+                else
+                {
+                    <i class="icon-check-empty"></i>
+                    @status.Bezeichnung                 
+                }
+                
+            </div>
+        
+            index++;
+        }
+    </div>
+}

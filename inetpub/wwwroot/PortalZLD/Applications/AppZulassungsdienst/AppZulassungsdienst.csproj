@@ -1,0 +1,652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A69DD0AA-A9FF-409A-8ABC-CC7DDCECC7A9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AppZulassungsdienst</RootNamespace>
+    <AssemblyName>AppZulassungsdienst</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\AppZulassungsdienst.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
+      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSoft.PdfLibrary">
+      <HintPath>..\..\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.cs">
+      <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.designer.cs">
+      <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AHVersandChange.aspx.cs">
+      <DependentUpon>AHVersandChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\AHVersandChange.aspx.designer.cs">
+      <DependentUpon>AHVersandChange.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AHVersandChange_2.aspx.cs">
+      <DependentUpon>AHVersandChange_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\AHVersandChange_2.aspx.designer.cs">
+      <DependentUpon>AHVersandChange_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AHVersandListe.aspx.cs">
+      <DependentUpon>AHVersandListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\AHVersandListe.aspx.designer.cs">
+      <DependentUpon>AHVersandListe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Barabhebung.aspx.cs">
+      <DependentUpon>Barabhebung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Barabhebung.aspx.designer.cs">
+      <DependentUpon>Barabhebung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change01ZLD.aspx.cs">
+      <DependentUpon>Change01ZLD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change01ZLD.aspx.designer.cs">
+      <DependentUpon>Change01ZLD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change99ZLD.aspx.cs">
+      <DependentUpon>Change99ZLD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change99ZLD.aspx.designer.cs">
+      <DependentUpon>Change99ZLD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeSelectVersand.aspx.cs">
+      <DependentUpon>ChangeSelectVersand.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeSelectVersand.aspx.designer.cs">
+      <DependentUpon>ChangeSelectVersand.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeStatusVersand.aspx.cs">
+      <DependentUpon>ChangeStatusVersand.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeStatusVersand.aspx.designer.cs">
+      <DependentUpon>ChangeStatusVersand.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeStatusVersandList.aspx.cs">
+      <DependentUpon>ChangeStatusVersandList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeStatusVersandList.aspx.designer.cs">
+      <DependentUpon>ChangeStatusVersandList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDKomListe.aspx.cs">
+      <DependentUpon>ChangeZLDKomListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDKomListe.aspx.designer.cs">
+      <DependentUpon>ChangeZLDKomListe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDKomplett.aspx.cs">
+      <DependentUpon>ChangeZLDKomplett.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDKomplett.aspx.designer.cs">
+      <DependentUpon>ChangeZLDKomplett.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDListe.aspx.cs">
+      <DependentUpon>ChangeZLDListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDListe.aspx.designer.cs">
+      <DependentUpon>ChangeZLDListe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNach.aspx.cs">
+      <DependentUpon>ChangeZLDNach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNach.aspx.designer.cs">
+      <DependentUpon>ChangeZLDNach.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachListe.aspx.cs">
+      <DependentUpon>ChangeZLDNachListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachListe.aspx.designer.cs">
+      <DependentUpon>ChangeZLDNachListe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachVersand.aspx.cs">
+      <DependentUpon>ChangeZLDNachVersand.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachVersand.aspx.designer.cs">
+      <DependentUpon>ChangeZLDNachVersand.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachVersandListe.aspx.cs">
+      <DependentUpon>ChangeZLDNachVersandListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDNachVersandListe.aspx.designer.cs">
+      <DependentUpon>ChangeZLDNachVersandListe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDSelect.aspx.cs">
+      <DependentUpon>ChangeZLDSelect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDSelect.aspx.designer.cs">
+      <DependentUpon>ChangeZLDSelect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDVorVersand.aspx.cs">
+      <DependentUpon>ChangeZLDVorVersand.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDVorVersand.aspx.designer.cs">
+      <DependentUpon>ChangeZLDVorVersand.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ChangeZLDVorVersand_2.aspx.cs">
+      <DependentUpon>ChangeZLDVorVersand_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ChangeZLDVorVersand_2.aspx.designer.cs">
+      <DependentUpon>ChangeZLDVorVersand_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DownloadFile.aspx.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\DownloadFile.aspx.designer.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\KassenabrechnungNeu.aspx.cs">
+      <DependentUpon>KassenabrechnungNeu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\KassenabrechnungNeu.aspx.designer.cs">
+      <DependentUpon>KassenabrechnungNeu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Disposition.aspx.cs">
+      <DependentUpon>Disposition.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Disposition.aspx.designer.cs">
+      <DependentUpon>Disposition.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Infocenter.aspx.cs">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Infocenter.aspx.designer.cs">
+      <DependentUpon>Infocenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\InfocenterAdmin.aspx.cs">
+      <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
+      <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\KVPBewertung.aspx.cs">
+      <DependentUpon>KVPBewertung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\KVPBewertung.aspx.designer.cs">
+      <DependentUpon>KVPBewertung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\KVPErfassung.aspx.cs">
+      <DependentUpon>KVPErfassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\KVPErfassung.aspx.designer.cs">
+      <DependentUpon>KVPErfassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Kundengruppe.aspx.cs">
+      <DependentUpon>Kundengruppe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Kundengruppe.aspx.designer.cs">
+      <DependentUpon>Kundengruppe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Logbuch.aspx.cs">
+      <DependentUpon>Logbuch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Logbuch.aspx.designer.cs">
+      <DependentUpon>Logbuch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NachGekaufteKennzeichen.aspx.cs">
+      <DependentUpon>NachGekaufteKennzeichen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\NachGekaufteKennzeichen.aspx.designer.cs">
+      <DependentUpon>NachGekaufteKennzeichen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Neukundenanlage.aspx.cs">
+      <DependentUpon>Neukundenanlage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Neukundenanlage.aspx.designer.cs">
+      <DependentUpon>Neukundenanlage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Nickname.aspx.cs">
+      <DependentUpon>Nickname.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Nickname.aspx.designer.cs">
+      <DependentUpon>Nickname.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Preisanlage_2.aspx.cs">
+      <DependentUpon>Preisanlage_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Preisanlage_2.aspx.designer.cs">
+      <DependentUpon>Preisanlage_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Preisanlage_3.aspx.cs">
+      <DependentUpon>Preisanlage_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Preisanlage_3.aspx.designer.cs">
+      <DependentUpon>Preisanlage_3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\PrintPDF.aspx.cs">
+      <DependentUpon>PrintPDF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\PrintPDF.aspx.designer.cs">
+      <DependentUpon>PrintPDF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report30ZLD.aspx.cs">
+      <DependentUpon>Report30ZLD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report30ZLD.aspx.designer.cs">
+      <DependentUpon>Report30ZLD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report30ZLD_2.aspx.cs">
+      <DependentUpon>Report30ZLD_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report30ZLD_2.aspx.designer.cs">
+      <DependentUpon>Report30ZLD_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report99ZLD.aspx.cs">
+      <DependentUpon>Report99ZLD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report99ZLD.aspx.designer.cs">
+      <DependentUpon>Report99ZLD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Report99ZLD_2.aspx.cs">
+      <DependentUpon>Report99ZLD_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Report99ZLD_2.aspx.designer.cs">
+      <DependentUpon>Report99ZLD_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportAuswertung.aspx.cs">
+      <DependentUpon>ReportAuswertung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportAuswertung.aspx.designer.cs">
+      <DependentUpon>ReportAuswertung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportAuswertung_2.aspx.cs">
+      <DependentUpon>ReportAuswertung_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportAuswertung_2.aspx.designer.cs">
+      <DependentUpon>ReportAuswertung_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportLieferschein.aspx.cs">
+      <DependentUpon>ReportLieferschein.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportLieferschein.aspx.designer.cs">
+      <DependentUpon>ReportLieferschein.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportPraegeliste.aspx.cs">
+      <DependentUpon>ReportPraegeliste.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportPraegeliste.aspx.designer.cs">
+      <DependentUpon>ReportPraegeliste.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportTagList.aspx.cs">
+      <DependentUpon>ReportTagList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportTagList.aspx.designer.cs">
+      <DependentUpon>ReportTagList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\ReportTagList_2.aspx.cs">
+      <DependentUpon>ReportTagList_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\ReportTagList_2.aspx.designer.cs">
+      <DependentUpon>ReportTagList_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AHVersandSelect.aspx.cs">
+      <DependentUpon>AHVersandSelect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\AHVersandSelect.aspx.designer.cs">
+      <DependentUpon>AHVersandSelect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Touren.aspx.cs">
+      <DependentUpon>Touren.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Touren.aspx.designer.cs">
+      <DependentUpon>Touren.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Umlagerung.aspx.cs">
+      <DependentUpon>Umlagerung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Umlagerung.aspx.designer.cs">
+      <DependentUpon>Umlagerung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Wareneingang.aspx.cs">
+      <DependentUpon>Wareneingang.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Wareneingang.aspx.designer.cs">
+      <DependentUpon>Wareneingang.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\WareneingangDetails.aspx.cs">
+      <DependentUpon>WareneingangDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\WareneingangDetails.aspx.designer.cs">
+      <DependentUpon>WareneingangDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="lib\clsWareneingang.cs" />
+    <Compile Include="lib\ErrorHandlingClass.cs" />
+    <Compile Include="lib\Kassenabrechnung.cs" />
+    <Compile Include="lib\KomplettZLD.cs" />
+    <Compile Include="lib\Barabhebung.cs" />
+    <Compile Include="lib\clsDisposition.cs" />
+    <Compile Include="lib\Listen.cs" />
+    <Compile Include="lib\Logbuch\Ausgang.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lib\Logbuch\Eingang.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lib\Logbuch\LogbuchClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lib\Logbuch\LogbuchEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lib\Logbuch\Protokoll.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lib\LongStringToSap.cs" />
+    <Compile Include="lib\NacherfassungGekaufteKennzeichen.cs" />
+    <Compile Include="lib\NacherfZLD.cs" />
+    <Compile Include="lib\Neukunde.cs" />
+    <Compile Include="lib\Report99.cs" />
+    <Compile Include="lib\ResponseHelper.cs" />
+    <Compile Include="lib\Umlagerung.cs" />
+    <Compile Include="lib\VoerfZLD.cs" />
+    <Compile Include="lib\VorVersand.cs" />
+    <Compile Include="lib\ZLDCommon.cs" />
+    <Compile Include="lib\ZLDTableClasses.cs">
+      <DependentUpon>ZLDTableClasses.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="lib\ZLDTableClasses.designer.cs">
+      <DependentUpon>ZLDTableClasses.dbml</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="lib\ZLD_Suche.cs" />
+    <Compile Include="MasterPage\AH.Master.cs">
+      <DependentUpon>AH.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\AH.Master.designer.cs">
+      <DependentUpon>AH.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\App.Master.cs">
+      <DependentUpon>App.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\App.Master.designer.cs">
+      <DependentUpon>App.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Big.Master.cs">
+      <DependentUpon>Big.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Big.Master.designer.cs">
+      <DependentUpon>Big.Master</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Preisanlage.aspx.cs">
+      <DependentUpon>Preisanlage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Preisanlage.aspx.designer.cs">
+      <DependentUpon>Preisanlage.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\DialogErfassungDLBezeichnung.ascx" />
+    <Content Include="forms\AHVersandChange.aspx" />
+    <Content Include="forms\AHVersandChange_2.aspx" />
+    <Content Include="forms\AHVersandListe.aspx" />
+    <Content Include="forms\Change01ZLD.aspx" />
+    <Content Include="forms\ChangeZLDListe.aspx" />
+    <Content Include="forms\ChangeZLDNach.aspx" />
+    <Content Include="forms\ChangeZLDNachListe.aspx" />
+    <Content Include="forms\ChangeZLDSelect.aspx" />
+    <Content Include="forms\DownloadFile.aspx" />
+    <Content Include="forms\KassenabrechnungNeu.aspx" />
+    <Content Include="forms\Disposition.aspx" />
+    <Content Include="forms\Infocenter.aspx" />
+    <Content Include="forms\InfocenterAdmin.aspx" />
+    <Content Include="forms\KVPBewertung.aspx" />
+    <Content Include="forms\KVPErfassung.aspx" />
+    <Content Include="forms\Kundengruppe.aspx" />
+    <Content Include="forms\Logbuch.aspx" />
+    <Content Include="forms\NachGekaufteKennzeichen.aspx" />
+    <Content Include="forms\Nickname.aspx" />
+    <Content Include="forms\Report30ZLD.aspx" />
+    <Content Include="forms\Report30ZLD_2.aspx" />
+    <Content Include="forms\Report99ZLD.aspx" />
+    <Content Include="forms\Report99ZLD_2.aspx" />
+    <Content Include="forms\AHVersandSelect.aspx" />
+    <Content Include="forms\Touren.aspx" />
+    <Content Include="JavaScript\GridViewHelper.js" />
+    <Content Include="MasterPage\App.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Documents\Bestellung.doc" />
+    <None Include="Documents\Einzugsermächtigung.pdf" />
+    <None Include="Documents\Einzugsermächtigung_SEPA.pdf" />
+    <None Include="Documents\Lieferschein.doc" />
+    <None Include="Documents\Mappe1.xlt" />
+    <None Include="Documents\Praegeliste.doc" />
+    <None Include="Documents\Tagesliste.doc" />
+    <None Include="Documents\Tagesliste_10104265.doc" />
+    <None Include="Documents\Vorlage_Auswertung.xls" />
+    <None Include="Documents\ZulassungAbwAdresse.doc" />
+    <None Include="Documents\ZulassungDez.doc" />
+    <None Include="lib\ZLDTableClasses.dbml">
+      <SubType>Designer</SubType>
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>ZLDTableClasses.designer.cs</LastGenOutput>
+    </None>
+    <None Include="lib\ZLDTableClasses.dbml.layout">
+      <DependentUpon>ZLDTableClasses.dbml</DependentUpon>
+    </None>
+    <Content Include="forms\Barabhebung.aspx" />
+    <Content Include="forms\Change99ZLD.aspx" />
+    <Content Include="forms\ChangeSelectVersand.aspx" />
+    <Content Include="forms\ChangeStatusVersand.aspx" />
+    <Content Include="forms\ChangeStatusVersandList.aspx" />
+    <Content Include="forms\ChangeZLDKomListe.aspx" />
+    <Content Include="forms\ChangeZLDKomplett.aspx" />
+    <Content Include="forms\ChangeZLDNachVersand.aspx" />
+    <Content Include="forms\ChangeZLDNachVersandListe.aspx" />
+    <Content Include="forms\ChangeZLDVorVersand.aspx" />
+    <Content Include="forms\ChangeZLDVorVersand_2.aspx" />
+    <Content Include="forms\Neukundenanlage.aspx" />
+    <Content Include="forms\Preisanlage_2.aspx" />
+    <Content Include="forms\Preisanlage_3.aspx" />
+    <Content Include="forms\PrintPDF.aspx" />
+    <Content Include="forms\ReportAuswertung.aspx" />
+    <Content Include="forms\ReportAuswertung_2.aspx" />
+    <Content Include="forms\ReportLieferschein.aspx" />
+    <Content Include="forms\ReportPraegeliste.aspx" />
+    <Content Include="forms\ReportTagList.aspx" />
+    <Content Include="forms\ReportTagList_2.aspx" />
+    <Content Include="forms\Umlagerung.aspx" />
+    <Content Include="forms\Wareneingang.aspx" />
+    <Content Include="forms\WareneingangDetails.aspx" />
+    <Content Include="JavaScript\Helper.js" />
+    <Content Include="MasterPage\Big.Master" />
+    <Content Include="forms\Preisanlage.aspx" />
+    <Content Include="MasterPage\AH.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\ZLDBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PortalZLD.vbproj">
+      <Project>{49BD134E-5A86-442F-8AF4-81BD9F04251D}</Project>
+      <Name>PortalZLD</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49697</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/PortalZLD/Applications/AppZulassungsdienst</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

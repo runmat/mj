@@ -1,0 +1,204 @@
+﻿.dadLogo2 {
+	padding-left: 670px;
+	height:62px;
+} 
+div#header ul#navigation li
+{
+    background-color: #2265BE;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #2265BE;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #2265BE;
+}
+
+div#content div#query
+{
+    background-color: #2265BE;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #2265BE;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #2265BE;
+}
+.Menutitle
+{
+    background-color: #2265BE;
+}
+A.Tablebutton:hover
+{
+    color: #2265BE;
+}
+.Tablehead
+{
+    background-image: url(/PortalZLDImages/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+td.MainmenuItemAlternate:hover
+{
+    background-color: #2265BE;
+}
+
+.divWait
+{
+    border: thin solid #2265BE;
+}
+
+.lblKontaktFirma
+{
+    color: #2265BE;
+}
+
+.ImpressumHead
+{
+    background-color: #2265BE;
+}
+
+.NaviImg
+{
+    background-image: url(/PortalZLD/Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
+.ExcelDiv {
+    background-color:#2265BE;
+}
+
+A.TablebuttonLarge:hover
+{
+    color: #2265BE;
+}
+div#content div#innerContentRight div#adminInput {
+	float: left;
+	width: 100%;
+}
+
+
+div#content div#innerContentRight div#adminInput table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+    color:#595959;
+	width: 100%; 
+	border-left:1px solid #DFDFDF;
+    border-right:1px solid #DFDFDF;
+	padding-bottom:15px;
+}
+
+
+div#content div#innerContentRight div#adminInput .TableQuery {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	color: #333333;
+		
+}
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td {
+	padding-top: 10px;
+	padding-bottom:0px;
+}
+
+div#content div#innerContentRight div#adminInput table .active {
+    font-weight:bold;
+}
+
+div#content div#innerContentRight div#adminInput table .active  a 
+{
+    color:#595959;
+    text-decoration:underline;
+    font-weight:lighter;
+    }
+
+div#content div#innerContentRight div#adminInput table .active span {
+    font-weight:normal;
+}
+
+div#content div#innerContentRight div#adminInput table .firstLeft {
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}
+
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td span input {
+	border: none;
+	width: auto;
+}
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td.rightPadding { padding-right: 15px }
+
+
+div#content div#innerContentRight div#adminInput table tbody tr.formquery td input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+}
+
+div#content div#innerContentRight div#dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+.ExcelDiv a {
+	padding-right: 19px;
+}
+
+.dataFooter {
+    margin-bottom:31px;
+    margin-top:10px;
+}
+.TablebuttonXLarge 
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+div#header ul {	margin-top: 16px;}
+
+.formqueryHeader {
+	vertical-align: baseline;
+	background-image:url(/PortalZLD/Images/overflowThead.png);
+    background-color:#9B9B9B;
+    color:#FFFFFF;
+    float:left;
+    font-weight:bold;
+    height:22px;
+    line-height:22px;
+    white-space:nowrap;
+    white-space:nowrap;
+    width:100%;
+}
+.formqueryHeader span{
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}
+
+.RBList{
+    border: none;
+}
+.RBList input, radio{
+   width: 3px;
+}

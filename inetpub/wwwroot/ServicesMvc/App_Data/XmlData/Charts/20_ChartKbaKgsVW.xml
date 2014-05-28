@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChartsSqlDataDescriptorTemplate>
+
+  <Group>
+    KBA Zulassungen
+  </Group>
+
+  <HtmlTemplateName>
+    
+  </HtmlTemplateName>
+  
+  <SqlTableOrViewName>
+    KbaPlzKgs
+  </SqlTableOrViewName>
+  
+  <GroupSqlStatement>
+
+    select
+    ModellNameKurz Key1,
+    (Jahr * 100 + Monat) Jahr,
+    SUM(FahrzeugAnzahl) IWert1
+    from {0}
+    {1}
+    group by ModellNameKurz, (Jahr * 100 + Monat)
+    order by ModellNameKurz, (Jahr * 100 + Monat)
+
+  </GroupSqlStatement>
+  
+  <DetailsSqlStatement>
+
+    select
+    KGS,
+    KgsName,
+    (Jahr * 100 + Monat) Monat,
+    FabrikatName Fabrikat,
+    ModellNameKurz Modell,
+    SUM(FahrzeugAnzahl) FahrzeugAnzahl,
+    PLZ,
+    PlzOrte
+    from {0}
+    {1}
+    group by KGS, KgsName, PLZ, (Jahr * 100 + Monat), ModellNameKurz, FabrikatName, PlzOrte
+    order by KgsName, PLZ, (Jahr * 100 + Monat), ModellNameKurz, FabrikatName
+
+  </DetailsSqlStatement>
+
+  <FilterInitial>
+
+    FabrikatName in ('VW') and ModellNameKurz IN ('UP', 'PASSAT', 'TIGUAN', 'TOUAREG', 'BEETLE', 'GOLF')
+
+  </FilterInitial>
+
+  <FilterSelector>
+
+    ModellNameKurz in ({0}) and (Jahr * 100 + Monat) in ({1})
+
+  </FilterSelector>
+
+  <FilterSelectorDetails>
+
+    ModellNameKurz in ({0}) and (Jahr * 100 + Monat) in ({1})
+
+  </FilterSelectorDetails>
+
+</ChartsSqlDataDescriptorTemplate>

@@ -1,0 +1,10 @@
+﻿@{
+    var spanIdError = (string)@ViewBag.SpanID + "Error";
+    var spanIdSuccess = (string)@ViewBag.SpanID + "Success";
+    var spanIdWarning = (string)@ViewBag.SpanID + "Warning";
+    var additionalCssClass = (string)@ViewBag.AdditionalCssClass;
+}
+
+<div id="@spanIdError" class="alert alert-error hide @additionalCssClass"><i class="icon-bell"></i> <span></span></div>
+<div id="@spanIdWarning" class="alert warning hide @additionalCssClass"><i class="icon-bell"></i> <span></span></div>
+<div id="@spanIdSuccess" class="alert alert-success hide @additionalCssClass"><i class="icon-ok"></i> <span></span></div>

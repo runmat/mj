@@ -1,0 +1,45 @@
+@using ZLDMobile
+
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <title>ZLD Mobile</title>
+        <meta name="author" content="Christoph Kroschke GmbH" />
+        <meta name="viewport" content="width=device-width" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        @Styles.Render("~/Content/mobileCss", "~/Content/css", "~/Content/zldmobile")
+        @*----- Include-Reihenfolge beachten! -----*@
+        @Scripts.Render("~/bundles/modernizr", "~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqminit", "~/bundles/jquerymobile", "~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/zldmobile")
+        @RenderSection("scripts", required: false)
+        @Html.Partial("JQueryHelper")
+        @Html.Partial("JQueryMobileHelper")
+    </head>
+    <body>
+        <div data-role="page" data-theme="a">
+            <div data-role="header">
+                @if (IsSectionDefined("Header")) {
+                    @RenderSection("Header")
+                } else {
+                    <h1>ZLD Mobile</h1>
+                    <div>
+                        @Html.Partial("Partial/_OnlineStatusPartial")
+                        <input type="button" data-inline="true" data-mini="true" data-icon="home" onclick="location.href='@Url.Action("Selection", "Home")'" value="zurück zum Hauptmenü" />
+                        @Html.Partial("Partial/_OptionsMenuPartial")
+                        @Html.Partial("Partial/_LoginPartial")
+                    </div>
+                }
+            </div>
+            <div data-role="content">
+                @RenderBody()
+            </div>
+            <div data-role="footer" class="RightAlignedText">
+                @Html.Partial("Partial/_ImpressumPartial")
+                @MvcApplication.AppSettings.AppCopyRight&nbsp;
+            </div>
+        </div>
+    </body>
+    @Html.Partial("Partial/_LayoutScripts")
+</html>

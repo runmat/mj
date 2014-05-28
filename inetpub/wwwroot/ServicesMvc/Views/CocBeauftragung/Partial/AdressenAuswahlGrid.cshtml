@@ -1,0 +1,37 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@using GeneralTools.Resources
+@{
+    var addressType = (string)@ViewBag.AdressType;
+    var gridName = addressType + "AdressenAuswahlGrid";
+}
+
+<h5 class="margin-bottom-25 bold">@addressType.ToLowerFirstUpper().Replace("ae", "ä") auswählen: </h5> 
+
+@(Html.Telerik()
+    .Grid<Adresse>()
+    .Name(gridName)
+    .XGroup(addressType + "AdressenGridAuswahl")
+    .XAjaxDataBinding(addressType + "AdressenAjaxBinding", "CocBeauftragung")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.ID).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+            "<button onclick='GridAdresseOnSelect(\"<#= data.ID #>\", \"" + addressType + "AdresseAjaxForm\", \"" + addressType + "\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>"
+            );
+        columns.Bound(c => c.Name1);
+        columns.Bound(c => c.Name2);
+        columns.Bound(c => c.StrasseHausNr);
+        columns.Bound(c => c.PLZ);
+        columns.Bound(c => c.Ort);
+        columns.Bound(c => c.Land);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnComplete("OnComplete_AdressenAuswahlGrid"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Name1).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand(addressType + "AdressenAuswahlExportFilteredExcel", "CocBeauftragung").HtmlAttributes(new { @class = "hide" });
+        commands.FilteredDataCommand(addressType + "AdressenAuswahlExportFilteredPDF", "CocBeauftragung").HtmlAttributes(new { @class = "hide" });
+    })
+)

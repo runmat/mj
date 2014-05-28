@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="CarDocu.UserControls.AdminGroup.ucAppSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:AdminGroup="clr-namespace:CarDocu.UserControls.AdminGroup" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+
+        <StackPanel Visibility="{Binding UserHintForArchives, Converter={StaticResource NotNullVisibilityInverseConverter}}" Margin="0,0,0,50">
+            <TextBlock Text="Ablage für die Domain-Konfiguration" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,15" />
+            <StackPanel DataContext="{Binding AppSettings}" Margin="30,0,0,0">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Domain, Konfigurationsablage-Pfad:" />
+                    <Button Grid.Row="0" Grid.Column="1" Command="{Binding DataContext.SetPathCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type AdminGroup:ucAppSettings}}}"  
+                            Content="..." ToolTip="Pfad zur Konfigurationsablage für diese Domain setzen" Width="25" Height="25" HorizontalAlignment="Right" Margin="0,0,10,0" />
+                    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DomainPath, UpdateSourceTrigger=PropertyChanged}" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Stretch" />
+
+                    <TextBlock Text="Domain, Name / Bezeichnung:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                    <TextBox Text="{Binding DomainName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Foreground="Blue" FontWeight="Bold" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Visibility="{Binding Archives, Converter={StaticResource NotNullVisibilityConverter}}" Margin="0,0,0,15" >
+            <StackPanel Visibility="{Binding UserHintForArchives, Converter={StaticResource NotNullVisibilityConverter}}" Margin="0,0,0,10">
+                <TextBlock Text="{Binding UserHintForArchives}" Foreground="Red" FontWeight="Bold" FontSize="14"  />
+            </StackPanel>
+            <TextBlock Text="Archiv-Ablage" Style="{StaticResource lbHeaderBig}" />
+            <TextBlock Margin="30,5,0,5" Visibility="{Binding CurrentUserIsMaster, Converter={StaticResource BooleanVisibilityConverter}}" Background="LightYellow" Foreground="Red" FontSize="9pt" Text="Interne Entwickler Info: Bevor hier weitere Domain-Pfade bereitgestellt werden, bitte erst das 'ToDo' aus dem Quellcode 'ScanDocument.cs' fixen!" />
+            <StackPanel Margin="30,0,0,0">
+                <ItemsControl ItemsSource="{Binding Archives}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="35" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                    <Image Source="{Binding IconSource}" Width="16" Height="16" ToolTip="{Binding ID}" Margin="0,0,5,0"  />
+                                    <TextBlock Text="{Binding Name}" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding ID}" Margin="0,0,5,0" Visibility="Collapsed" />
+                                </StackPanel>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Command="{Binding DataContext.SetPathCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type AdminGroup:ucAppSettings}}}"  
+                                        CommandParameter="{Binding ID}"
+                                    Content="..." ToolTip="Pfad zur Konfigurationsablage für diese Domain setzen" Width="25" Height="25" HorizontalAlignment="Right" Margin="0,0,10,0" />
+                                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Stretch" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <StackPanel DataContext="{Binding SmtpSettings}">
+                <TextBlock Text="E-Mail Einstellungen für Mail-Versand" Style="{StaticResource lbHeaderBig}" Margin="0,60,0,15" />
+                <StackPanel Margin="115,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="115" />
+                            <ColumnDefinition Width="250" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="SMTP Server:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="SMTP Port:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="SSL aktiviert:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <CheckBox IsChecked="{Binding EnableSsl, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                        <TextBlock Text="SMTP Username:" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="Passwort:" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="Absender E-Mail Adresse:" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding From, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" />
+
+                        <TextBlock Text="E-Mail Limit (MB):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding AttachmentMaxSizeMB, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="(Grenze in Megabytes bis zu der Anhänge in einer E-Mail zusammengefasst werden)" Foreground="Gray" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,0" />
+
+                        <TextBlock Text="E-Mail Betreff:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding EmailSubjectText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="Bitte die Parameter mit den geschwungenen Klammern nicht(!) entfernen!" Foreground="Gray" FontWeight="Bold" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                        <TextBlock Text="E-Mail Nachricht:" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding EmailBodyText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4"  HorizontalAlignment="Stretch" />
+                        <TextBlock Text="E-Mail Empfänger:" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding EmailRecipient, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" />
+                        <CheckBox IsChecked="{Binding EmailSendAlsoToUser, UpdateSourceTrigger=PropertyChanged}" Content="E-Mail zusätzlich an aktuellen User schicken" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel DataContext="{Binding SapSettings}">
+                <TextBlock Text="SAP Einstellungen" Style="{StaticResource lbHeaderBig}" Margin="0,35,0,15" />
+                <StackPanel Margin="30,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="SAP Kunden-Nr dieser Domain:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding KundenNr, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="70" />
+
+                        <TextBlock Text="SAP Web-Service URL:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding WebServiceUrl, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="450" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel DataContext="{Binding ScanSettings}">
+                <TextBlock Text="Scan Einstellungen" Style="{StaticResource lbHeaderBig}" Margin="0,35,0,15" />
+                <StackPanel Margin="30,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Visibility="Collapsed" Text="Auflösung (DPI):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Visibility="Collapsed" Text="{Binding DPI, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="35" />
+
+                        <TextBlock Visibility="Collapsed" Text="Farbe / Graustufe:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <CheckBox Visibility="Collapsed" Content="Farbe" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UseColor, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
+
+                        <TextBlock Text="Scanner:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <Button Grid.Row="2" Grid.Column="1" Command="{Binding DataContext.OpenScanSettingsCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type AdminGroup:ucAppSettings}}}" HorizontalAlignment="Left" Width="250">
+                            <StackPanel Orientation="Horizontal">
+                                <ContentPresenter Content="{StaticResource image/32x32/scan_settings}" />
+                                <TextBlock Text="Scanner-Einstellungen öffnen" VerticalAlignment="Center" Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

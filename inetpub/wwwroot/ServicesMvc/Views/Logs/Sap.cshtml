@@ -1,0 +1,81 @@
+﻿@using CkgDomainLogic.Logs.Models
+@model CkgDomainLogic.Logs.ViewModels.LogsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<style type="text/css">
+</style>
+
+<h3 class="page-title" id="headerTitle">Logs <small>Sap</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Sap/SucheSapLogItems", Model.SapLogItemSelector)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+    <div class="portlet">
+        <div class="portlet-title" >Legende</div>
+        <div class="portlet-body" >
+            <table>
+                @foreach (var preset in SapBapiDuration.LegendPresets)
+                {
+                    <tr>
+                        <td width="30px" class="@preset.LevelCssClass"  ></td>
+                        <td>@preset.LevelAsString  @preset.ThresholdUpFromSecondsAsString </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div> 
+
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsSap");
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowSapLogItemsSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsSap");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridLogsSap() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridLogsSap() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridLogsSap() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+
+    function OnRowDataBound_GridLogsSap(e) {
+        var cssClass = e.dataItem["DauerCssClass"];
+
+        $(e.row).addClass(cssClass);
+    }
+    
+</script>

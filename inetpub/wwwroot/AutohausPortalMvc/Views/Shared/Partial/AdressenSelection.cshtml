@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@using GeneralTools.Models
+@model GridItemsModel<Adresse>
+
+<div class="dialog-address-picker">
+    @(Html.Telerik()
+            .Grid<Adresse>()
+            .Name("GridAdresse")
+            .Columns(columns =>
+                    {
+                        columns.Bound(c => c.ID).Title("").ClientTemplate("<a class='t-button t-grid-EditItem' href='javascript:PickAddress(<#= data.ID #>, " + @Model.FormID + ");'>Wählen</a>");
+                        columns.Bound(c => c.Firma).Width(280);
+                        columns.Bound(c => c.Strasse).Width(250);
+                        columns.Bound(c => c.PLZ).Width(50);
+                        columns.Bound(c => c.Ort).Width(200);
+                    
+                    }).Reorderable(r => r.Columns(true)).Resizable(r => r.Columns(true))
+            .DataBinding(dataBinding => dataBinding.Ajax().Select(@Model.AjaxSelectAction, @Model.ControllerName))
+            .Pageable(paging => paging.PageSize(10))
+            .Sortable(sortOrder => sortOrder.OrderBy(s => s.Add(c => c.Ort).Ascending()))
+            .Filterable(filtering => filtering.Enabled(true))
+    )
+</div>

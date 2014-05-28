@@ -1,0 +1,12 @@
+﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
+
+@if (Model != null)
+{
+    <ul class="nav pull-right">
+    
+        @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
+
+        @Html.Partial("Partial/UserMenuUserInfoDropdown")
+
+    </ul>
+}

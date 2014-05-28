@@ -1,0 +1,62 @@
+﻿@using CkgDomainLogic.Leasing.ViewModels
+@model LeasingKlaerfaelleViewModel
+
+<h3 class="page-title" id="headerTitle">Fehlende Daten P&amp;G <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("Klaerfaelle/FehlendeDatenPuGSuche", Model.DataService.Suchparameter)
+
+<div id="divFehlendeDatenPuGGrid"></div>
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridFehlendeDatenPuG").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridFehlendeDatenPuGItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridFehlendeDatenPuG() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridFehlendeDatenPuG() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFehlendeDatenPuG() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowFehlendeDatenPuGSearchResult(result) {
+        $("#divFehlendeDatenPuGGrid").html(result);
+        $("#divFehlendeDatenPuGSuche").slideUp();
+        $("#divFehlendeDatenPuGGrid").slideDown();
+
+        GridAllColumnFilterApplyToGrid("GridFehlendeDatenPuG");
+    }
+
+    function CloseFehlendeDatenPuGSearchResult() {
+        $("#divFehlendeDatenPuGGrid").slideUp(function () { $("#divFehlendeDatenPuGSuche").delay(200).slideDown(); window.scrollTo(0, 0); });
+        FormPreparePrivateAjax();
+    }
+
+</script>

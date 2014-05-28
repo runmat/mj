@@ -1,0 +1,231 @@
+﻿body {
+    color:#dfdfdf
+}
+div#header {
+    background-image: url(../../Images/header_volvo.jpg);
+}
+
+.dadLogo2
+{
+    background-image: url(logo_caro.gif);
+}
+
+div#header ul#navigation li
+{
+    background-color: #7C8088;
+    
+}
+
+div#header ul#navigation li.active a
+{
+    color: #7C8088;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #7C8088;
+}
+
+div#header ul#navigation li a {
+    color: #dfdfdf;
+
+}
+
+div#content div#query
+{
+    background-color: #7C8088;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #7C8088;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #7C8088;
+    color:#dfdfdf;
+}
+.Menutitle
+{
+    background-color: #7C8088;
+}
+
+.Tablehead
+{
+    background-image: url(../../Images/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+td.MainmenuItemAlternate:hover
+{
+    background-color: #7C8088;
+}
+
+.divWait
+{
+    border: thin solid #7C8088;
+}
+.divProgress
+{
+    width: 100%;
+    height: 100%;
+    background-color:#ffffff;
+    position: absolute;
+    z-index:0;
+    filter:alpha(opacity=50); -moz-opacity:0.7; opacity:0.7; 
+   	vertical-align:middle;
+	text-align: center;
+	font-size:12px;
+	font-weight:bold; 
+	color: #333333;
+    
+    }
+   
+.WaitControl
+{
+    padding-top:2px;
+    color: #333333;
+    
+    }
+.lblKontaktFirma
+{
+    color: #7C8088;
+}
+
+.ImpressumHead
+{
+    background-color: #7C8088;
+}
+
+.NaviImg
+{
+    background-image: url(../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
+.ExcelDiv {
+    background-color:#7C8088;   
+    color:#dfdfdf;
+}
+
+
+.ExcelSpan a {
+    color:#dfdfdf;
+}
+
+A.TablebuttonLarge:hover
+{
+    color: #dfdfdf;
+}
+
+.GridTableHead th
+{
+	color:#dfdfdf;
+
+    }
+
+div#content div#innerContentRight div#data table tbody tr td a {
+    color: #dfdfdf;
+
+}
+div#content div#innerContentRight div#data table tbody tr td a:hover {
+    color: #7C8088;
+}
+    
+.formqueryHeader {
+	vertical-align: baseline;
+	background-image:url(../../Images/overflowThead.png);
+    background-color:#9B9B9B;
+    color:#FFFFFF;
+    float:left;
+    font-weight:bold;
+    height:22px;
+    line-height:22px;
+    white-space:nowrap;
+    white-space:nowrap;
+    width:100%;
+}
+
+.TablebuttonXLarge 
+{
+    padding-top: 4px;
+	background-image: url(../../Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+a.Tablebutton:hover
+{
+    color: #7C8088;
+}
+.modalBackground {
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+}
+
+.responsibleTextName
+{
+	color:    #7C8088;
+}
+.responsibleTextName .responsibleText a:hover
+{
+      color:    #7C8088;
+    }
+    
+.menuehead 
+{
+	color:#7C8088;
+	text-align:left;
+
+     }
+
+.menuehead th{padding-left:15px}
+
+div#content div#innerContentRight div#innerContentRightHeading div a {
+    color:#dfdfdf;
+}
+
+.ZulDateDiv {
+    background-color:#ffffff;
+    padding-bottom: 15px;
+}
+
+div#content div#innerContentRight div#pagination .ZulDateDiv span
+{
+    padding-left:15px;
+    }
+
+div#content div#innerContentRight div#pagination .ZulDateDiv table
+{
+    border:1px solid #DFDFDF;
+    color:#595959;
+    display:block;
+    width:100%;
+    padding-top: 2px;
+    padding-left:0px;
+    padding-right:0px;
+    }
+    
+    
+div#content div#innerContentRight div#datainfo 
+{
+    float:left;
+    width:100%;
+    }
+    
+    
+div#content div#innerContentRight div#paginationQuery div#PlaceHolderDiv
+{
+    background-color:#ffffff;
+    padding-top:15px;
+    }    

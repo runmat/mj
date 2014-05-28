@@ -1,0 +1,23 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+<div class="margin-top-15">
+   
+   @if (Model.UploadedImageFiles.None())
+   {
+       <div class="alert"><i class='icon icon-bell'></i> Sie haben für den aktuell gewählten Auftrag bisher keine Fotos hochgeladen.</div>
+   }
+   else
+   {
+       foreach (var imageFileName in Model.UploadedImageFiles)
+       {
+           <div class="preview-image">
+               <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
+                   <img src="@Model.GetThumbnailImageUrl(imageFileName)" alt="" />
+               </a>
+               
+               <button class="btn red mini delete-button" onclick="DeleteUploadedImage($(this), '@imageFileName')"><i class="icon-remove"></i></button>
+           </div>
+       }
+   }
+
+</div>

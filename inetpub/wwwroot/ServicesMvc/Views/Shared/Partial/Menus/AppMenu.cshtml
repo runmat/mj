@@ -1,0 +1,68 @@
+﻿@using CkgDomainLogic.General.Contracts
+@using ServicesMvc
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+<script type="text/javascript">
+    function LogPageVisit(a, appId) {
+        
+        var href = $(a).attr("href");
+        var url = '/ServicesMvc/DomainCommon/LogPageVisit?appID=' + appId;
+        $.get(url).always(function () {
+            window.location.href = href;
+        });
+
+        return true;
+    }
+</script>
+
+<li class="@MvcApplication.GetActiveMenuItemCssClass("/ServicesMvc/")">
+    <a href="~/">
+        <i class="icon-home"></i> 
+        <span class="title">Home</span>
+        <span class="selected"></span>
+    </a>
+</li>
+
+@if (logonContext != null)
+{
+    foreach (var menuGroup in logonContext.GetMenuItemGroups())
+    {
+        <li class="@MvcApplication.GetActiveMenuGroupCssClass(menuGroup.AppType)">
+            <a href="javascript:;">
+                @switch (menuGroup.AppType)
+                {
+                    case "Change":
+                        <i class="icon-edit"></i>
+                        break;
+                    case "Report":
+                        <i class="icon-th"></i>
+                        break;
+                    default:
+                        <i class="icon-cogs"></i>
+                        break;
+                }
+
+                <span class="title">@logonContext.TranslateMenuAppType(menuGroup)</span>
+					
+                <span class="arrow "></span>
+            </a>
+		    <ul class="sub-menu">
+                @foreach (var menuItem in logonContext.GetMenuItems(menuGroup.AppType))
+                {
+		        <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
+		            <a onclick="return LogPageVisit(this, @menuItem.AppID);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
+                </li>
+                }
+		    </ul>
+		</li>
+    }
+
+    <li class="@MvcApplication.GetActiveMenuItemCssClass("/DomainCommon/Kontakt")">
+        <a href="~/DomainCommon/Kontakt">
+            <i class="icon-user"></i> 
+            <span class="title">@Localize.YourContactPersons</span>
+            <span class="selected"></span>
+        </a>
+    </li>
+}

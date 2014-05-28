@@ -1,0 +1,91 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+@Html.Partial("Partial/Common")
+
+<style type="text/css">
+    .form-horizontal .control-label { display: none; }
+    .form-horizontal .controls { margin-left: 0!important; }
+</style>
+
+<h3 class="page-title">Fahrer <small>Aufträge</small></h3>
+
+@Html.IeWarning(8)
+
+<form action="#" class="form-horizontal">
+    @Html.FormRadioButtonListFor(m => m.FahrerAuftragsStatusFilter, Model.FahrerAuftragsStatusTypen)
+    
+    @Html.SpanAlert("InfoMessage")
+</form>
+
+@Html.Partial("Partial/Auftraege/AuftraegeGrid")
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAuftraege");
+
+        InitRadioButtons();
+    }
+
+    function InitRadioButtons() {
+        $("div.radio > span input").on("click", function () {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "SaveFahrerAuftragsStatusFilter",
+                data: { status: $(this).val() },
+                loadingShow: true,
+                success: function (result) {
+                    $("#GridAuftraege").data("tGrid").pageTo(1);
+                },
+                error: function (jqXhr) {
+                }
+            });
+        });
+    }
+
+    function SetFahrerAuftragsStatus(auftragsNr, status) {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "SetFahrerAuftragsStatus",
+            data: { auftragsNr :  auftragsNr , status: status },
+            loadingShow: true,
+            success: function (result) {
+                var successMessage = "Sie haben Auftrag #" + auftragsNr + " erfolgreich " + (status == "OK" ? "angenommen!" : "abgelehnt!");
+                $("#GridAuftraege").data("tGrid").pageTo(1);
+                if (result.message == "")
+                    SpanAlertSuccess("InfoMessage", successMessage, 2000);
+                else
+                    SpanAlertError("InfoMessage", result.message, 5000);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+
+        return false;
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function OnDataBound_GridAuftraege() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAuftraege() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAuftraege() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
+

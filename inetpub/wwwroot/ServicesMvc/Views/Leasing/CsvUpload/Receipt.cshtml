@@ -1,0 +1,20 @@
+﻿@model CkgDomainLogic.Leasing.ViewModels.LeasingCargateCsvUploadViewModel
+
+@if (Model.UploadItemsSuccessfullyStored)
+{
+    <div class="alert alert-success">
+        <label class="checkbox">
+            <i class="icon-check"></i><span class="padding-left-5"><strong>Vielen Dank</strong>, wir haben Ihre Daten erhalten!</span>
+        </label>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"> <i class="icon-bell"></i><span class="padding-left-5">Beim Verarbeiten Ihrer Datei ist ein Fehler aufgetreten!</span></span>
+        </label>
+    </div>
+}
+
+<div class="margin-top-10"></div>

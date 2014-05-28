@@ -1,0 +1,116 @@
+﻿@using Telerik.Web.Mvc.UI
+
+
+@(Html.Telerik().Window()
+        .Name("EditableContent_Window")
+        .Visible(false)
+        .Title("Inhalt bearbeiten")
+        .Modal(true)
+        .Width(1000)
+        .Height(660)
+        .Content("<div id=\"editablecontent-details\">(leer)</div>")
+)
+
+
+<script type="text/javascript">
+
+    function SaveEditableContentText(id) {
+
+        var editor = $("#EditableContent_Editor").data("tEditor");
+
+        // save editor text to directly to UI (div)
+        var editorHtml = editor.value();
+        $("#editableContentText_" + id).html(editorHtml);
+        
+        $.ajax(
+            {
+                type: "POST",
+                url: "/EditableContent/SaveEditableContentText",
+                data: { key: id, text: editorHtml },
+                success: function (result) {
+                    var editorWindow = $("#EditableContent_Window").data("tWindow");
+                    editorWindow.close();
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+    }
+
+    function CancelEditableContentText() {
+        var editorWindow = $("#EditableContent_Window").data("tWindow");
+        editorWindow.close();
+    }
+
+    function ShowEditableContentEditor(id) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/EditableContent/ShowEditableContentEditor",
+                data: { key: id },
+                success: function (result) {
+                    var editorWindow = $("#EditableContent_Window").data("tWindow");
+                    $("#editablecontent-details").html(result);
+                    editorWindow.center().open();
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+    }
+</script>
+
+
+
+<!-- ------- -->
+<!-- ToolTip -->
+<!-- ------- -->
+
+<style type="text/css">
+    span.show-tooltip-text { display: none; position: absolute; font-size: 0.9em; background-color: ivory; background-repeat: repeat-x; padding: 6px; padding-left: 12px; padding-right: 12px;  }
+</style>
+
+<script type="text/javascript">
+
+    // ToolTip Code
+
+    ShowTooltip = function(e) {
+        var text = $(this).next('.show-tooltip-text');
+        if (text.attr('class') != 'show-tooltip-text')
+            return false;
+
+        text.fadeIn()
+            .css('top', e.pageY)
+            .css('left', e.pageX + 10);
+
+        return false;
+    };
+
+    HideTooltip = function(e) {
+        var text = $(this).next('.show-tooltip-text');
+        if (text.attr('class') != 'show-tooltip-text')
+            return false;
+
+        text.fadeOut();
+        return false;
+    };
+
+    SetupTooltips = function () {
+        $('.show-tooltip')
+            .each(function() {
+//                $(this)
+//                    .after($('<span/>')
+//                            .attr('class', 'show-tooltip-text')
+//                            .html($(this).attr('title')))
+//                    .attr('title', '');
+            })
+            .hover(ShowTooltip, HideTooltip);
+    };
+
+    $(document).ready(function () {
+        SetupTooltips();
+    });
+
+</script>
+
+

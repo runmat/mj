@@ -1,0 +1,9 @@
+﻿@using Telerik.Web.Mvc.UI
+@model MvcTools.Models.ContentEntity 
+
+
+@Html.Telerik().Editor().Name("EditableContent_Editor").Tools(tools => tools.ViewHTML()).Value(@Model.Text).HtmlAttributes(new { style = "height:600px;" } )
+<p>
+    <button type="submit" class="t-button t-state-default" onclick="SaveEditableContentText('@Model.ID')">Speichern</button>
+    <button type="submit" class="t-button t-state-default" onclick="CancelEditableContentText()">Abbrechen</button>
+</p>

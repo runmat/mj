@@ -1,0 +1,259 @@
+﻿<style type="text/css">
+    .span0 {
+        width: 20px;
+    }
+
+    span.left {
+        width: 50px;
+        text-align: right;
+    }
+    span.sbig {
+        font-size: 0.85em;
+    }
+    span.sbold {
+        font-size: 0.85em;
+        font-weight: bold;
+        vertical-align: top;
+        margin-left: 10px;
+    }
+    
+    .form-horizontal.form-bordered.form-row-stripped .control-group:nth-child(odd).cocOrderHighlighted {
+      background-color: #fcfcdd;
+    }
+    .form-horizontal.form-bordered.form-row-stripped .control-group:nth-child(even).cocOrderHighlighted {
+      background-color: #fcfce9;
+    }
+    
+    .help-inline {
+        margin-top: 5px;
+    }
+    
+    .page-sidebar {
+        min-height: 3300px;
+    }
+</style>
+
+<div id="closeDetails" onclick="CloseCocItemDetails();" class="icon-close"></div>
+
+
+<script type="text/javascript">
+
+    function GetGrid() {
+        return $("#GridCocItems").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        //setTimeout('$("#GridCocItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+        
+        LoadingHide();
+    }
+
+    function TryGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+    
+    function TryGridPageTo1() {
+        // Refresh grid and goto grid page 1
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().pageTo(1);
+        }
+    }
+
+    function GridCocItems_OnDataBound() {
+        FilteredData_Grid_OnDataBound($(this));
+
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+
+    function CocTypEdit(id) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "EditCocTyp",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                ShowCocItemDetails(result);
+            }
+        });
+    }
+
+    function CocTypDuplicate(id) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "DuplicateCocTyp",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                _collectionChanged = true;
+                ShowCocItemDetails(result);
+            }
+        });
+    }
+
+    function CocTypNew() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "NewCocTyp",
+            loadingShow: true,
+            success: function (result) {
+                _collectionChanged = true;
+                ShowCocItemDetails(result);
+            }
+        });
+    }
+
+    function CocTypRemove(id) {
+        if (!confirm('Diesen Datensatz wirklich löschen?'))
+            return;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteCocTyp",
+            data: { id: id },
+            loadingShow: true,
+            success: function () {
+                TryGridRefresh();
+            }
+        });
+    }
+
+    function ShowCocItemDetails(result, showCloseButton) {
+        $("#divCocItemDetails").html(result);
+        CocDetailsFormPreparePrivateAjax();
+        $("#divCocStart").slideUp();
+        $("#divCocItemDetails").slideDown();
+
+        if (showCloseButton == null) showCloseButton = true;
+        if (showCloseButton)
+            $("#closeDetails").show();
+    }
+
+    function CloseCocItemDetailsInner() {
+        $("#closeDetails").hide();
+        $("#divCocItemDetails").slideUp(function() {
+            $("#divCocStart").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function CloseCocItemDetails() {
+        if (typeof (FormWizard) !== 'undefined')
+            FormWizard.ButtonPrevInvoke();
+
+        CloseCocItemDetailsInner();
+        
+        CocRefreshAutocompleteFilter();
+        TryGridRefresh();
+    }
+
+    var _modelIsValid = false;
+    var _modelIsInsertMode = false;
+    var _modelIsCocOrder = false;
+
+    function CocDetailsFormPreparePrivateAjax() {
+        //alert('x');
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        if (!_modelIsInsertMode) {
+            //alert('no insert');
+            $("#COC_0_2_TYP").attr("readonly", "readonly");
+            $("#COC_0_2_VAR").attr("readonly", "readonly");
+            $("#COC_0_2_VERS").attr("readonly", "readonly");
+        }
+        
+        // submit section
+        if (!_modelIsCocOrder) {
+            if (_modelIsValid)
+                CloseCocItemDetails();
+
+            return;
+        }
+        
+        if (!_modelIsValid && _modelDuplicateVinOccured) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "NewCocOrderDuplicateVinShowDialog",
+                    loadingShow: false,
+                    success: function(result) {
+                        var confirmationDialog = $("#DuplicateVin").data("tWindow");
+                        $("#InnerDuplicateVin").html(result);
+                        confirmationDialog.center().open();
+                    }
+                });
+            return;
+        }
+
+        if (_modelIsValid) {
+            $.ajax(
+            {
+                type: "POST",
+                url: "CocOrderNewShowSummary",
+                loadingShow: true,
+                success: function(result) {
+                    if (typeof(FormWizard) !== 'undefined')
+                        FormWizard.ButtonNextInvoke();
+                    $("#divCocStart").html(result);
+                    CloseCocItemDetailsInner();
+                }
+            });
+        }
+    }
+    
+    function DuplicateVinDialogClose() {
+        var confirmationDialog = $("#DuplicateVin").data("tWindow");
+        confirmationDialog.close();
+    }
+    
+    function DuplicateVinDialogConfirmIgnoreOnSaving() {
+        $.ajax(
+                {
+                    type: "POST",
+                    url: "NewCocOrderDuplicateVinConfirmIgnoreOnSaving",
+                    loadingShow: false,
+                    success: function (result) {
+                        DuplicateVinDialogClose();
+                        $("#DuplicateVinIgnoreOnSaving").val(true);
+                        $("#ajaxForm").submit();
+                    }
+                });
+    }
+
+    function CocItemsLoad() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Load",
+            loadingShow: true,
+            success: function (result) {
+                TryGridRefresh();
+            }
+        });
+    }
+
+    function ScrollToY(id) {
+        $('#' + id).scrollIntoView({ ofsetY: -30, duration: '1500' });
+    }
+
+    function Test() {
+        var grid = GetGrid();
+        var columnsFiltered = $.grep(grid.columns, function (column) {
+            return (column.title != "");
+        });
+        alert(columnsFiltered.length);
+    }
+
+</script>

@@ -1,0 +1,175 @@
+.dadLogo2 {
+	padding-left: 670px;
+	height:62px;
+} 
+
+div#header ul {	margin-top: 16px;}
+
+div#header ul.subul {	margin-top: 0px;width:100%;}
+
+
+div#header ul#navigation li
+{
+    background-color: #2265BE;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #2265BE;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #2265BE;
+}
+
+div#content div#query
+{
+    background-color: #2265BE;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #2265BE;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #2265BE;
+}
+
+div#content div#innerContentRight div#data table td a {
+    color:#FFFFFF;
+    text-decoration: underline;
+    
+}
+div#content div#innerContentRight div#data table th a {
+    color:#FFFFFF;
+    text-decoration: none;
+}
+
+div#content div#innerContentRight div#data table tbody tr td a  {
+    color:#FFFFFF;
+    text-decoration: none;
+}
+
+.Menutitle
+{
+    background-color: #2265BE;
+}
+A.Tablebutton:hover
+{
+    color: #2265BE;
+}
+.Tablehead
+{
+    background-image: url(/PortalZLD//Images/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+td.MainmenuItemAlternate:hover
+{
+    background-color: #2265BE;
+}
+
+.divWait
+{
+    border: thin solid #2265BE;
+}
+
+.lblKontaktFirma
+{
+    color: #2265BE;
+}
+
+.ImpressumHead
+{
+    background-color: #2265BE;
+}
+
+.NaviImg
+{
+    background-image: url(/PortalZLD//Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
+
+
+.ExcelDiv {
+    background-color:#2265BE;
+}
+
+.LinksVerwaltung:hover {
+	color: #2265BE;
+}
+
+.TablebuttonSmall:hover {
+	color: #2265BE;
+}
+
+.TableLinks a
+{
+	color: #2265BE;
+}
+
+.ExcelSpan A
+{
+    color:#ffffff;
+}
+.ExcelSheetGreen
+{
+    background-color:#e5ffe6;
+    border-bottom:#dfdfdf 1px solid;
+    border-left:#dfdfdf 1px solid;
+    border-right:#dfdfdf 1px solid;
+    border-top:#dfdfdf 1px solid;
+}
+
+.ExcelSheetGreen input
+{
+    background-color:#e5ffe6;
+    border-bottom-width:0px;
+    border-left-width:0px;
+    border-right-width:0px;
+    border-top-width:0px;
+    font-size:9pt;
+    color:#595959;
+}
+div#header #navigation ul li.SubOne {
+	float: left;
+	height: 24px;
+	padding: 0px;
+    width:350px;
+    background-color: #E6E6E6;
+    background-image:url("/PortalZLD/Styles/js/images/ui-bg_glass_75_e6e6e6_1x400.png") ;
+    border-top: solid 1px #d3d3d3;
+    border-left: solid 1px #d3d3d3;
+    border-right: solid 1px #d3d3d3;
+}
+
+div#header #navigation ul li.SubOne a {
+    color:#555555;    
+    font-weight: normal;
+    font-size: 12px;
+}
+div#header #navigation ul li.SubOne a:hover {
+    color: #212121;
+}
+div#header ul li.SubOne span 
+{
+	padding: 5px;
+}
+div#header ul li.current {
+	float: left;
+    height: 22px;
+	padding: 0px;
+}
+
+div#header #navigation ul li.SubOne:hover { 
+    border: 1px solid #999999; 
+    background: #dadada url(/PortalZLD/Styles/js/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+     }

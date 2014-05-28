@@ -1,0 +1,37 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+
+    <h2 class="lonelyHeader">Ihre Überführungsaufträge</h2>
+
+    @(Html.Telerik()
+          .Grid<HistoryAuftrag>()
+          .Name("GridHistoryAuftraege")
+          .DataBinding(dataBinding => dataBinding.Ajax().Select("HistoryAuftraegeAjaxBinding", "UeberfuehrungHistory"))
+          .Columns(columns =>
+              {
+                  //columns.Bound(c => c.AuftragsDatum).Title("").ClientTemplate("<a class='t-button t-grid-EditItem' href='javascript:HistoryAuftragDetailsRequestShow(\"<#= data.AuftragsNr#>\", \"<#= data.Fahrt#>\");'>Details</a>");
+                  columns.Bound(c => c.AuftragsNr);
+                  columns.Bound(c => c.AuftragsDatum);
+                  columns.Bound(c => c.Fahrt);
+                  columns.Bound(c => c.Kennzeichen);
+                  columns.Bound(c => c.Typ);
+                  columns.Bound(c => c.UeberfuehrungsDatum);
+                  columns.Bound(c => c.AbgabeDatum);
+                  columns.Bound(c => c.FahrtVonOrt);
+                  columns.Bound(c => c.FahrtNachOrt);
+                  columns.Bound(c => c.GefahreneKilometer);
+                  columns.Bound(c => c.Klaerfall);
+                  //columns.Bound(c => c.AuftragsDatum).Title("").ClientTemplate("<a class='t-button t-grid-EditItem' href='javascript:HistoryAuftragDetailsRequestShow(\"<#= data.AuftragsNr#>\", \"<#= data.Fahrt#>\");'>Details</a>");
+              })
+          .Reorderable(r => r.Columns(true)).Resizable(r => r.Columns(true))
+          .Pageable(paging => paging.PageSize(10))
+          .Sortable(sortOrder => sortOrder.OrderBy(s => s.Add(c => c.AuftragsDatum).Descending()))
+          .Filterable(filtering => filtering.Enabled(true))
+          .ClientEvents(events => events.OnDataBound("GridCocItems_OnDataBound").FilteredDataOnColumnReorder())
+          .ToolBar(commands =>
+              {
+                  commands.Custom().Text("Zurück zur Suche").Url("javascript:HistoryAuftraegeHide()").HtmlAttributes(new { @class = "" });
+                  commands.FilteredDataCommand("ExportFilteredExcel", "ueberfuehrunghistory", "Excel Export").HtmlAttributes(new { @class = ""  });
+                  commands.FilteredDataCommand("ExportFilteredPDF", "ueberfuehrunghistory", "PDF Export").HtmlAttributes(new { @class = "" });
+              }
+          )
+    )

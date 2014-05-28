@@ -1,0 +1,21 @@
+﻿@using CkgDomainLogic.General.Contracts
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+
+@if (logonContext != null) 
+{
+    <div id="metanavigation">
+        @Html.DivMetaLinks()
+        <div class="metabutton"><a href="#">Handbuch</a></div>
+        @Html.DivMetaTrenner()
+        <div class="metabutton"><a href="@logonContext.FormatUserEncrytpedUrl("../Info/Kontakt.aspx")">Kontakt</a></div>
+        @Html.DivMetaTrenner()
+        <div class="metabutton"><a href="@logonContext.FormatUserEncrytpedUrl("../Info/Impressum.aspx")">Impressum</a></div>
+        @Html.DivMetaTrenner()
+        <div class="metabutton"><a href="@logonContext.FormatUserEncrytpedUrl("../Start/ChangePassword.aspx")">Passwort ändern</a></div>
+        @Html.DivMetaTrenner()
+        <div class="metabutton"><a href="@logonContext.FormatUrl("../Start/Logout.aspx")">Logout</a></div>
+        @Html.DivMetaRechts()
+    </div>
+}

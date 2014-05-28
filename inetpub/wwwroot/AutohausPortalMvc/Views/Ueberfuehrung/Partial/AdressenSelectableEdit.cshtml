@@ -1,0 +1,82 @@
+﻿@using CkgDomainLogic.Ueberfuehrung.Models
+@model Adresse
+
+@{ var formID = Model.UiIndex; }
+
+@using (Html.BeginDiv("formbereich", id: MvcAjaxOptions.AjaxFormContainerName + formID))
+{
+    using (Ajax.BeginForm("AdressenSelectableEdit", "Ueberfuehrung", null,
+        new MvcAjaxOptions(formID) { OnComplete = "AdressenSelectableEdit_FormPreparePrivateAjax();" }))
+    {
+        @Html.Partial("Partial/UiModelHiddensFor")
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.ReAdresseOpticalCheck)
+
+        using (Html.BeginDiv("leftform"))
+        {
+            @Html.FormDropDownListFor(m => m.SelectedID, Model.FilteredRechnungsAdressen.ToSelectList()) 
+
+            @Html.FormNewLine()
+            @Html.FormTextBlockFor(m => m.Firma) 
+
+            @Html.FormNewLine()
+            @Html.FormTextBlockFor(m => m.Strasse) 
+
+            @Html.FormNewLine()
+            @Html.FormTextBlockFor(m => m.PLZ, cssClass: "FormTextblockSmall") 
+            @Html.FormTextBlockFor(m => m.Ort, labelCssClass: null) 
+        }
+
+        using (Html.BeginDiv("rightform"))
+        {
+            @Html.FormTextBlockFor(m => m.Ansprechpartner) 
+
+            @Html.FormNewLine()
+            @Html.FormTextBlockFor(m => m.Telefon) 
+        }
+        
+        @Html.FormNewLine()
+    }
+}
+
+
+
+<script type="text/javascript">
+    function AdressenSelectableEdit_FormPreparePrivateAjax() {
+        FormPreparePrivateAjax();
+        
+        @Html.Partial("Partial/ValidationErrorScripts")
+        
+        BindDropDownList();
+
+        Process_ReAdresseOpticalCheck(@formID);
+    }
+            
+    function BindDropDownList() {
+        $("#SelectedID").bind('valueChange', function(e) {
+            //var tDropDown = $("#SelectedID").data("tDropDownList");
+            //alert(tDropDown.value());
+            var form = GetClosestAjaxForm(@formID);
+            form.submit();
+        });
+    }
+    
+    function Process_ReAdresseOpticalCheck(formId) {
+        
+        var form = GetClosestAjaxForm(formId);
+        var opticalCheckRequest = form.find("#ReAdresseOpticalCheck");
+
+        if (opticalCheckRequest.val() == 'true') {
+            $('#formlayer_top4').addClass('validateOK');
+            $('#formopener4').css("backgroundPosition", "0px -34px");
+        }
+        
+        if (opticalCheckRequest.val() == 'false') {
+            $('#formlayer_top4').removeClass('validateOK');
+            $('#formopener4').css("backgroundPosition", "0px 0px");
+        }
+
+        opticalCheckRequest.val('');
+    }
+</script>

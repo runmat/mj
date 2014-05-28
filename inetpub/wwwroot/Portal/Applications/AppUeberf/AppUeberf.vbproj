@@ -1,0 +1,656 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0F123F6-350F-48E8-BD47-ACE69289402B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>AppUeberf</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>AppUeberf</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseIISExpress>false</UseIISExpress>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppUeberf.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>AppUeberf.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
+      <Name>DBauer.Web.UI.WebControls.HierarGrid</Name>
+      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="eWorld.UI">
+      <Name>eWorld.UI</Name>
+      <HintPath>..\..\GAC\eWorld.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="CKG" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.HtmlControls" />
+    <Import Include="System.Web.UI.WebControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\AddressSearchInputControl.ascx.vb">
+      <DependentUpon>AddressSearchInputControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ProgressControl.ascx.vb">
+      <DependentUpon>ProgressControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\UeberfDADMenu.ascx.designer.vb">
+      <DependentUpon>UeberfDADMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UeberfDADMenu.ascx.vb">
+      <DependentUpon>UeberfDADMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataSets\AddressDataSet.vb">
+      <SubType>code</SubType>
+    </Compile>
+    <Compile Include="Exceptions\MandatoryDataMissingException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\Change02.aspx.designer.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change02.aspx.vb">
+      <DependentUpon>Change02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeStdText.aspx.vb">
+      <DependentUpon>ChangeStdText.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberf01.aspx.vb">
+      <DependentUpon>Ueberf01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberf02.aspx.vb">
+      <DependentUpon>Ueberf02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberf03.aspx.vb">
+      <DependentUpon>Ueberf03.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberf04.aspx.vb">
+      <DependentUpon>Ueberf04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADAdresse.aspx.designer.vb">
+      <DependentUpon>UeberfDADAdresse.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADAdresse.aspx.vb">
+      <DependentUpon>UeberfDADAdresse.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADAus.aspx.designer.vb">
+      <DependentUpon>UeberfDADAus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADAus.aspx.vb">
+      <DependentUpon>UeberfDADAus.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADEinRueck.aspx.designer.vb">
+      <DependentUpon>UeberfDADEinRueck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADEinRueck.aspx.vb">
+      <DependentUpon>UeberfDADEinRueck.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADSave.aspx.designer.vb">
+      <DependentUpon>UeberfDADSave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADSave.aspx.vb">
+      <DependentUpon>UeberfDADSave.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADStart.aspx.designer.vb">
+      <DependentUpon>UeberfDADStart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADStart.aspx.vb">
+      <DependentUpon>UeberfDADStart.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADVss.aspx.designer.vb">
+      <DependentUpon>UeberfDADVss.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADVss.aspx.vb">
+      <DependentUpon>UeberfDADVss.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfDADZul.aspx.designer.vb">
+      <DependentUpon>UeberfDADZul.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UeberfDADZul.aspx.vb">
+      <DependentUpon>UeberfDADZul.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_00.aspx.vb">
+      <DependentUpon>Ueberfg_00.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_00_NL.aspx.designer.vb">
+      <DependentUpon>Ueberfg_00_NL.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_00_NL.aspx.vb">
+      <DependentUpon>Ueberfg_00_NL.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_01.aspx.vb">
+      <DependentUpon>Ueberfg_01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_02.aspx.vb">
+      <DependentUpon>Ueberfg_02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_03.aspx.vb">
+      <DependentUpon>Ueberfg_03.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_04.aspx.vb">
+      <DependentUpon>Ueberfg_04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_05.aspx.vb">
+      <DependentUpon>Ueberfg_05.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_Off01.aspx.vb">
+      <DependentUpon>Ueberfg_Off01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_Print.aspx.vb">
+      <DependentUpon>Ueberfg_Print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Ueberfg_ZulStart.aspx.vb">
+      <DependentUpon>Ueberfg_ZulStart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfPrint.aspx.vb">
+      <DependentUpon>UeberfPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UeberfZulStart.aspx.vb">
+      <DependentUpon>UeberfZulStart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadEdit01.aspx.designer.vb">
+      <DependentUpon>UploadEdit01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadEdit01.aspx.vb">
+      <DependentUpon>UploadEdit01.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadEdit02.aspx.designer.vb">
+      <DependentUpon>UploadEdit02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadEdit02.aspx.vb">
+      <DependentUpon>UploadEdit02.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadEdit03.aspx.designer.vb">
+      <DependentUpon>UploadEdit03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadEdit03.aspx.vb">
+      <DependentUpon>UploadEdit03.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadEdit03_2.aspx.designer.vb">
+      <DependentUpon>UploadEdit03_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadEdit03_2.aspx.vb">
+      <DependentUpon>UploadEdit03_2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadEdit04.aspx.designer.vb">
+      <DependentUpon>UploadEdit04.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadEdit04.aspx.vb">
+      <DependentUpon>UploadEdit04.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadUeberf.aspx.designer.vb">
+      <DependentUpon>UploadUeberf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadUeberf.aspx.vb">
+      <DependentUpon>UploadUeberf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zul01.aspx.vb">
+      <DependentUpon>Zul01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ZulBest01.aspx.vb">
+      <DependentUpon>ZulBest01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulg_01.aspx.vb">
+      <DependentUpon>Zulg_01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulg_Best01.aspx.vb">
+      <DependentUpon>Zulg_Best01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulg_Print.aspx.vb">
+      <DependentUpon>Zulg_Print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulg_UebBest.aspx.vb">
+      <DependentUpon>Zulg_UebBest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulg_UebPrint.aspx.vb">
+      <DependentUpon>Zulg_UebPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ZulPrint.aspx.vb">
+      <DependentUpon>ZulPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ZulUebBest.aspx.vb">
+      <DependentUpon>ZulUebBest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ZulUebPrint.aspx.vb">
+      <DependentUpon>ZulUebPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\_Report04.aspx.vb">
+      <DependentUpon>_Report04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\_Report041.aspx.vb">
+      <DependentUpon>_Report041.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Helper\ControlHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\Delegates.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\FormattingHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\AdressenDataAccess.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Report_99.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\RuecknahmeQuittung.vb" />
+    <Compile Include="Lib\UeberfDAD.vb" />
+    <Compile Include="Lib\UeberfDADTables.vb" />
+    <Compile Include="Lib\UeberfgStandard_01.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Ueberfuehrung.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Ueberf_01.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Controls\AddressSearchInputControl.ascx" />
+    <Content Include="Controls\CustomDialog.js" />
+    <Content Include="Controls\ProgressControl.ascx" />
+    <Content Include="Controls\UeberfDADMenu.ascx" />
+    <Content Include="DataSets\AddressDataSet.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Forms\Change02.aspx" />
+    <Content Include="Forms\ChangeStdText.aspx" />
+    <Content Include="Forms\Ueberf01.aspx" />
+    <Content Include="Forms\Ueberf02.aspx" />
+    <Content Include="Forms\Ueberf03.aspx" />
+    <Content Include="Forms\Ueberf04.aspx" />
+    <Content Include="Forms\UeberfDADAdresse.aspx" />
+    <Content Include="Forms\UeberfDADAus.aspx" />
+    <Content Include="Forms\UeberfDADEinRueck.aspx" />
+    <Content Include="Forms\UeberfDADSave.aspx" />
+    <Content Include="Forms\UeberfDADStart.aspx" />
+    <Content Include="Forms\UeberfDADVss.aspx" />
+    <Content Include="Forms\UeberfDADZul.aspx" />
+    <Content Include="Forms\Ueberfg_00.aspx" />
+    <Content Include="Forms\Ueberfg_00_NL.aspx" />
+    <Content Include="Forms\Ueberfg_01.aspx" />
+    <Content Include="Forms\Ueberfg_02.aspx" />
+    <Content Include="Forms\Ueberfg_03.aspx" />
+    <Content Include="Forms\Ueberfg_04.aspx" />
+    <Content Include="Forms\Ueberfg_05.aspx" />
+    <Content Include="Forms\Ueberfg_Off01.aspx" />
+    <Content Include="Forms\Ueberfg_Print.aspx" />
+    <Content Include="Forms\Ueberfg_ZulStart.aspx" />
+    <Content Include="Forms\UeberfPrint.aspx" />
+    <Content Include="Forms\UeberfZulStart.aspx" />
+    <Content Include="Forms\UploadEdit01.aspx" />
+    <Content Include="Forms\UploadEdit02.aspx" />
+    <Content Include="Forms\UploadEdit03.aspx" />
+    <Content Include="Forms\UploadEdit03_2.aspx" />
+    <Content Include="Forms\UploadEdit04.aspx" />
+    <Content Include="Forms\UploadUeberf.aspx" />
+    <Content Include="Forms\Zul01.aspx" />
+    <Content Include="Forms\ZulBest01.aspx" />
+    <Content Include="Forms\Zulg_01.aspx" />
+    <Content Include="Forms\Zulg_Best01.aspx" />
+    <Content Include="Forms\Zulg_Print.aspx" />
+    <Content Include="Forms\Zulg_UebBest.aspx" />
+    <Content Include="Forms\Zulg_UebPrint.aspx" />
+    <Content Include="Forms\ZulPrint.aspx" />
+    <Content Include="Forms\ZulUebBest.aspx" />
+    <Content Include="Forms\ZulUebPrint.aspx" />
+    <Content Include="Forms\_Report04.aspx" />
+    <Content Include="Forms\_Report041.aspx" />
+    <Content Include="Forms\RedirectFleet.htm" />
+    <EmbeddedResource Include="Controls\AddressSearchInputControl.ascx.resx">
+      <DependentUpon>AddressSearchInputControl.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProgressControl.ascx.resx">
+      <DependentUpon>ProgressControl.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeStdText.aspx.resx">
+      <DependentUpon>ChangeStdText.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberf01.aspx.resx">
+      <DependentUpon>Ueberf01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberf02.aspx.resx">
+      <DependentUpon>Ueberf02.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberf03.aspx.resx">
+      <DependentUpon>Ueberf03.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberf04.aspx.resx">
+      <DependentUpon>Ueberf04.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_00.aspx.resx">
+      <DependentUpon>Ueberfg_00.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_01.aspx.resx">
+      <DependentUpon>Ueberfg_01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_02.aspx.resx">
+      <DependentUpon>Ueberfg_02.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_03.aspx.resx">
+      <DependentUpon>Ueberfg_03.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_04.aspx.resx">
+      <DependentUpon>Ueberfg_04.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_05.aspx.resx">
+      <DependentUpon>Ueberfg_05.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_Off01.aspx.resx">
+      <DependentUpon>Ueberfg_Off01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_Print.aspx.resx">
+      <DependentUpon>Ueberfg_Print.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ueberfg_ZulStart.aspx.resx">
+      <DependentUpon>Ueberfg_ZulStart.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UeberfPrint.aspx.resx">
+      <DependentUpon>UeberfPrint.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UeberfZulStart.aspx.resx">
+      <DependentUpon>UeberfZulStart.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zul01.aspx.resx">
+      <DependentUpon>Zul01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZulBest01.aspx.resx">
+      <DependentUpon>ZulBest01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zulg_01.aspx.resx">
+      <DependentUpon>Zulg_01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zulg_Best01.aspx.resx">
+      <DependentUpon>Zulg_Best01.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zulg_Print.aspx.resx">
+      <DependentUpon>Zulg_Print.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zulg_UebBest.aspx.resx">
+      <DependentUpon>Zulg_UebBest.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Zulg_UebPrint.aspx.resx">
+      <DependentUpon>Zulg_UebPrint.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZulPrint.aspx.resx">
+      <DependentUpon>ZulPrint.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZulUebBest.aspx.resx">
+      <DependentUpon>ZulUebBest.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZulUebPrint.aspx.resx">
+      <DependentUpon>ZulUebPrint.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\_Report04.aspx.resx">
+      <DependentUpon>_Report04.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\_Report041.aspx.resx">
+      <DependentUpon>_Report041.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="DataSets\AddressDataSet.xsc">
+      <DependentUpon>AddressDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\AddressDataSet.xss">
+      <DependentUpon>AddressDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DataSets\AddressDataSet.xsx">
+      <DependentUpon>AddressDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Documents\DADAnschluss.doc" />
+    <None Include="Documents\DADAuslieferung.doc" />
+    <None Include="Documents\DADAuslieferungAnschluss.doc" />
+    <None Include="Documents\DADGesamtauftrag.doc" />
+    <None Include="Documents\DADZulassung.doc" />
+    <None Include="Documents\DADZulassungAuslieferung.doc" />
+    <None Include="Documents\Zulassung.doc" />
+    <None Include="Documents\ZulassungStandard.doc" />
+    <None Include="Documents\ZulassungUndÜberführungLeasing.doc" />
+    <None Include="Documents\ZulassungUndÜberführungStandard.doc" />
+    <None Include="Documents\Überführung.doc" />
+    <None Include="Documents\ÜberführungLeasing.doc" />
+    <None Include="Documents\ÜberführungStandard.doc" />
+    <None Include="Documents\ÜberführungStandardPortal.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\BtBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\CKG\EasyAccess\EasyAccess.vbproj">
+      <Project>{5DA38371-4A26-4228-9ED9-8AF45DD3C385}</Project>
+      <Name>EasyAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Portal.vbproj">
+      <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
+      <Name>Portal</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1886</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:/Portal/Applications/AppUeberf</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel
+@using CkgDomainLogic.Logs.Models
+@{
+    var gridName = "GridLogsSap";
+}
+
+@(Html.Telerik()
+    .Grid<SapLogItem>()
+    .Name(gridName)
+    .XGroup("GridLogsSapModel")
+
+    .XAjaxDataBinding("LogsSapAjaxBinding", "Logs")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridLogsSap"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Datum).Descending())
+    .XToolBar("Logs")
+    .Groupable(g => g.Enabled(false))
+)
+

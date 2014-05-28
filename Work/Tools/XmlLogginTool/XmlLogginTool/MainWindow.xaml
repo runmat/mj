@@ -1,0 +1,26 @@
+﻿<Window x:Class="XmlLoggingTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="289*" />
+            <RowDefinition Height="28" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="368*" />
+            <ColumnDefinition Width="135" />
+        </Grid.ColumnDefinitions>
+        <Button Content="XML File öffnen" Height="23" Margin="15,34,12,0" Name="btnOpenXML" VerticalAlignment="Top" Grid.Column="1" Click="btnOpenXML_Click" />
+        <TextBox Height="23" Margin="12,35,12,0" Name="txtPath" VerticalAlignment="Top" TextChanged="txtPath_TextChanged" />
+        <Label Content="Pfad" Height="28" HorizontalAlignment="Left" Margin="12,7,0,0" Name="label1" VerticalAlignment="Top" Width="344" />
+        <TextBox Height="23" Margin="12,92,12,0" Name="txtEntryName" VerticalAlignment="Top" />
+        <Label Content="Eintragname" Height="28" HorizontalAlignment="Left" Margin="12,64,0,0" Name="label2" VerticalAlignment="Top" Width="344" />
+        <TextBox Height="23" Margin="12,149,12,0" Name="txtEntryText" VerticalAlignment="Top" />
+        <Label Content="Eintragtext" Height="28" HorizontalAlignment="Left" Margin="12,121,0,0" Name="label3" VerticalAlignment="Top" Width="344" />
+        <Button Content="NewXMLEntry()" Height="23" Margin="15,149,12,0" Name="btnXMLEntry" VerticalAlignment="Top" Grid.Column="1" Click="btnXMLEntry_Click" />
+        <Label Content="" Grid.Row="1" Height="28" Name="lblError" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+        <Button Content="ReadXML()" Height="23" Margin="15,91,12,0" Name="btnReadXML" VerticalAlignment="Top" Grid.Column="1" Click="btnReadXML_Click" />
+        <Button Content="SaveTempXML" Height="23" Margin="15,121,12,0" Name="btnSaveTemp" VerticalAlignment="Top" Grid.Column="1" Click="btnSaveTemp_Click" />
+    </Grid>
+</Window>

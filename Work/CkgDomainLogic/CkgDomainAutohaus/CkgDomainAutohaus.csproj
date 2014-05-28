@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CkgDomainAutohaus</RootNamespace>
+    <AssemblyName>CkgDomainAutohaus</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Models">
+      <HintPath>..\..\GAC\SapORM.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\..\packages\TelerikMvcExtensions\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Models\DataModels\Kundenstammdaten.cs" />
+    <Compile Include="Common\Models\DataModels\Materialstammdaten.cs" />
+    <Compile Include="Controllers\FeinstaubController.cs" />
+    <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
+    <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
+    <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
+    <Compile Include="Common\Models\AppModelMappings.cs" />
+    <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubReportDataService.cs" />
+    <Compile Include="Feinstaub\Models\AppModelMappings.cs" />
+    <Compile Include="Feinstaub\Models\DataModels\FeinstaubVergabe.cs" />
+    <Compile Include="Feinstaub\Models\DataModels\FeinstaubCheck.cs" />
+    <Compile Include="Feinstaub\Models\DataModels\FeinstaubVergabeInfo.cs" />
+    <Compile Include="Feinstaub\Models\UIModels\FeinstaubCheckUI.cs" />
+    <Compile Include="Feinstaub\Models\UIModels\FeinstaubSuchparameter.cs" />
+    <Compile Include="Feinstaub\Models\UIModels\FeinstaubVergabeUI.cs" />
+    <Compile Include="Feinstaub\Services\AutohausFeinstaubVergabeDataServiceSAP.cs" />
+    <Compile Include="Feinstaub\Services\AutohausFeinstaubReportDataServiceSAP.cs" />
+    <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubVergabeViewModel.cs" />
+    <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubReportViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\MvcTools\MvcTools.csproj">
+      <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
+      <Name>MvcTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CkgDomainCommon\CkgDomainCommon.csproj">
+      <Project>{116FCA66-F690-41B3-86F5-B8BF7BBA2949}</Project>
+      <Name>CkgDomainCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\CkgDomainLogic.csproj">
+      <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
+      <Name>CkgDomainLogic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

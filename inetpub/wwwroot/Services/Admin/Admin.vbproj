@@ -1,0 +1,662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E8DB9247-7356-4A45-B3D0-7B8E324C497C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Admin</RootNamespace>
+    <AssemblyName>Admin</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>Admin.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>Admin.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>..\..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abrufgruende.aspx.designer.vb">
+      <DependentUpon>Abrufgruende.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Abrufgruende.aspx.vb">
+      <DependentUpon>Abrufgruende.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Adapter\DropDownListAdapter.vb" />
+    <Compile Include="AdministrationMenu.aspx.designer.vb">
+      <DependentUpon>AdministrationMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdministrationMenu.aspx.vb">
+      <DependentUpon>AdministrationMenu.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="AktuellePflegeUebersicht.aspx.designer.vb">
+      <DependentUpon>AktuellePflegeUebersicht.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AktuellePflegeUebersicht.aspx.vb">
+      <DependentUpon>AktuellePflegeUebersicht.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="AktuellesPflege.aspx.designer.vb">
+      <DependentUpon>AktuellesPflege.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AktuellesPflege.aspx.vb">
+      <DependentUpon>AktuellesPflege.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="ArchivManagement.aspx.designer.vb">
+      <DependentUpon>ArchivManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ArchivManagement.aspx.vb">
+      <DependentUpon>ArchivManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="AutorisierungenLoeschen.aspx.designer.vb">
+      <DependentUpon>AutorisierungenLoeschen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutorisierungenLoeschen.aspx.vb">
+      <DependentUpon>AutorisierungenLoeschen.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="AutUserUpload.aspx.designer.vb">
+      <DependentUpon>AutUserUpload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutUserUpload.aspx.vb">
+      <DependentUpon>AutUserUpload.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="BapiOverView.aspx.designer.vb">
+      <DependentUpon>BapiOverView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BapiOverView.aspx.vb">
+      <DependentUpon>BapiOverView.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.vb">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.aspx.vb">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="CustomerManagement.aspx.designer.vb">
+      <DependentUpon>CustomerManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerManagement.aspx.vb">
+      <DependentUpon>CustomerManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="EFA_IPVerwaltung.aspx.designer.vb">
+      <DependentUpon>EFA_IPVerwaltung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EFA_IPVerwaltung.aspx.vb">
+      <DependentUpon>EFA_IPVerwaltung.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="jve_ZugriffsHistorie.aspx.designer.vb">
+      <DependentUpon>jve_ZugriffsHistorie.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="jve_ZugriffsHistorie.aspx.vb">
+      <DependentUpon>jve_ZugriffsHistorie.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryCustomerList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryGroupList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryOrganizationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HistoryUserList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\GivvenUserNameAllList.Designer.vb">
+      <DependentUpon>GivvenUserNameAllList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\GivvenUserNameAllList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\GivvenGroupAllList.Designer.vb">
+      <DependentUpon>GivvenGroupAllList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\GivvenGroupAllList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\AppTechTypeList.Designer.vb">
+      <DependentUpon>AppTechTypeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AppTechTypeList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JahresArchivManagement.aspx.designer.vb">
+      <DependentUpon>JahresArchivManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JahresArchivManagement.aspx.vb">
+      <DependentUpon>JahresArchivManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lib\ShowBapisClass.vb" />
+    <Compile Include="Bapi2Report.aspx.designer.vb">
+      <DependentUpon>Bapi2Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Bapi2Report.aspx.vb">
+      <DependentUpon>Bapi2Report.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="RightsOverview.aspx.designer.vb">
+      <DependentUpon>RightsOverview.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RightsOverview.aspx.vb">
+      <DependentUpon>RightsOverview.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="lib\Aktuelles.vb" />
+    <Compile Include="lib\BapiOverViewClass.vb" />
+    <Compile Include="lib\Crypt.vb" />
+    <Compile Include="lib\Mails.vb" />
+    <Compile Include="lib\PeisAdministrationClass.vb" />
+    <Compile Include="LogSchwellwert.aspx.designer.vb">
+      <DependentUpon>LogSchwellwert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogSchwellwert.aspx.vb">
+      <DependentUpon>LogSchwellwert.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="LogViewer.aspx.designer.vb">
+      <DependentUpon>LogViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogViewer.aspx.vb">
+      <DependentUpon>LogViewer.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="MailPflegeUebersicht.aspx.designer.vb">
+      <DependentUpon>MailPflegeUebersicht.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MailPflegeUebersicht.aspx.vb">
+      <DependentUpon>MailPflegeUebersicht.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="PeisAdministration.aspx.designer.vb">
+      <DependentUpon>PeisAdministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PeisAdministration.aspx.vb">
+      <DependentUpon>PeisAdministration.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Performance.aspx.designer.vb">
+      <DependentUpon>Performance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Performance.aspx.vb">
+      <DependentUpon>Performance.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Performance2.aspx.designer.vb">
+      <DependentUpon>Performance2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Performance2.aspx.vb">
+      <DependentUpon>Performance2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="SAPMonitoring.aspx.designer.vb">
+      <DependentUpon>SAPMonitoring.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SAPMonitoring.aspx.vb">
+      <DependentUpon>SAPMonitoring.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="ShowBapis.aspx.designer.vb">
+      <DependentUpon>ShowBapis.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShowBapis.aspx.vb">
+      <DependentUpon>ShowBapis.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="SingleUserHistory.aspx.designer.vb">
+      <DependentUpon>SingleUserHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SingleUserHistory.aspx.vb">
+      <DependentUpon>SingleUserHistory.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="StatusMonitor.aspx.designer.vb">
+      <DependentUpon>StatusMonitor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StatusMonitor.aspx.vb">
+      <DependentUpon>StatusMonitor.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Templates\AppData.ascx.vb">
+      <DependentUpon>AppData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\BAPIData.ascx.vb">
+      <DependentUpon>BAPIData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\SAPData.ascx.vb">
+      <DependentUpon>SAPData.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Translation_Start.aspx.designer.vb">
+      <DependentUpon>Translation_Start.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Translation_Start.aspx.vb">
+      <DependentUpon>Translation_Start.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="ForbiddenUserNameManagement.aspx.designer.vb">
+      <DependentUpon>ForbiddenUserNameManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForbiddenUserNameManagement.aspx.vb">
+      <DependentUpon>ForbiddenUserNameManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Groupmanagement.aspx.designer.vb">
+      <DependentUpon>Groupmanagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Groupmanagement.aspx.vb">
+      <DependentUpon>Groupmanagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="jve_LogMessage2.aspx.designer.vb">
+      <DependentUpon>jve_LogMessage2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="jve_LogMessage2.aspx.vb">
+      <DependentUpon>jve_LogMessage2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\AbrufgruendeDT.Designer.vb">
+      <DependentUpon>AbrufgruendeDT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AbrufgruendeDT.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\AppAssignments.vb" />
+    <Compile Include="AppManagement.aspx.designer.vb">
+      <DependentUpon>AppManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AppManagement.aspx.vb">
+      <DependentUpon>AppManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\Archiv.vb" />
+    <Compile Include="Kernel\ArchivAssignments.vb" />
+    <Compile Include="ColumnTranslation.aspx.designer.vb">
+      <DependentUpon>ColumnTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ColumnTranslation.aspx.vb">
+      <DependentUpon>ColumnTranslation.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="FieldTranslation.aspx.designer.vb">
+      <DependentUpon>FieldTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FieldTranslation.aspx.vb">
+      <DependentUpon>FieldTranslation.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\AccountingAreaList.Designer.vb">
+      <DependentUpon>AccountingAreaList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AccountingAreaList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\Application.vb" />
+    <Compile Include="Kernel\AppTypeList.Designer.vb">
+      <DependentUpon>AppTypeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AppTypeList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\DBProxys.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\EmployeeAssignments.vb" />
+    <Compile Include="Kernel\ColumnTranslation.vb">
+    </Compile>
+    <Compile Include="Kernel\ColumnTranslationList.Designer.vb">
+      <DependentUpon>ColumnTranslationList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\ColumnTranslationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\CustomerList.Designer.vb">
+      <DependentUpon>CustomerList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\CustomerList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\FieldTranslation.vb">
+    </Compile>
+    <Compile Include="Kernel\FieldTranslationList.Designer.vb">
+      <DependentUpon>FieldTranslationList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\FieldTranslationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserName.vb" />
+    <Compile Include="Kernel\ForbiddenUserNameAllList.Designer.vb">
+      <DependentUpon>ForbiddenUserNameAllList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserNameAllList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\ForbiddenUserNameList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\GroupList.Designer.vb">
+      <DependentUpon>GroupList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\GroupList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\HierarchyList.Designer.vb">
+      <DependentUpon>HierarchyList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\HierarchyList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\LanguageList.Designer.vb">
+      <DependentUpon>LanguageList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\LanguageList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\UpdateDBProxys.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\UserList.Designer.vb">
+      <DependentUpon>UserList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\UserList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LogBapi2Report.aspx.designer.vb">
+      <DependentUpon>LogBapi2Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogBapi2Report.aspx.vb">
+      <DependentUpon>LogBapi2Report.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="LogMessage.aspx.designer.vb">
+      <DependentUpon>LogMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogMessage.aspx.vb">
+      <DependentUpon>LogMessage.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Admin.Master.designer.vb">
+      <DependentUpon>Admin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Admin.Master.vb">
+      <DependentUpon>Admin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OrganizationManagement.aspx.designer.vb">
+      <DependentUpon>OrganizationManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationManagement.aspx.vb">
+      <DependentUpon>OrganizationManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Sidebar\menue.ascx.designer.vb">
+      <DependentUpon>menue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Sidebar\menue.ascx.vb">
+      <DependentUpon>menue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserHistory.aspx.designer.vb">
+      <DependentUpon>UserHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserHistory.aspx.vb">
+      <DependentUpon>UserHistory.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="UserManagement.aspx.designer.vb">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement.aspx.vb">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="UserUnlock.aspx.designer.vb">
+      <DependentUpon>UserUnlock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserUnlock.aspx.vb">
+      <DependentUpon>UserUnlock.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\AppData.ascx.resx">
+      <DependentUpon>AppData.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\BAPIData.ascx.resx">
+      <DependentUpon>BAPIData.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SAPData.ascx.resx">
+      <DependentUpon>SAPData.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Abrufgruende.aspx" />
+    <Content Include="AdministrationMenu.aspx" />
+    <Content Include="AktuellePflegeUebersicht.aspx" />
+    <Content Include="AktuellesPflege.aspx" />
+    <Content Include="AppManagement.aspx" />
+    <Content Include="ArchivManagement.aspx" />
+    <Content Include="AutorisierungenLoeschen.aspx" />
+    <Content Include="AutUserUpload.aspx" />
+    <Content Include="BapiOverView.aspx" />
+    <Content Include="ColumnTranslation.aspx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="CustomerManagement.aspx" />
+    <Content Include="EFA_IPVerwaltung.aspx" />
+    <Content Include="FieldTranslation.aspx" />
+    <Content Include="jve_ZugriffsHistorie.aspx" />
+    <Content Include="Bapi2Report.aspx" />
+    <Content Include="JahresArchivManagement.aspx" />
+    <Content Include="RightsOverview.aspx" />
+    <Content Include="LogSchwellwert.aspx" />
+    <Content Include="LogViewer.aspx" />
+    <Content Include="MailPflegeUebersicht.aspx" />
+    <Content Include="PeisAdministration.aspx" />
+    <Content Include="Performance.aspx" />
+    <Content Include="Performance2.aspx" />
+    <Content Include="SAPMonitoring.aspx" />
+    <Content Include="ShowBapis.aspx" />
+    <Content Include="SingleUserHistory.aspx" />
+    <Content Include="StatusMonitor.aspx" />
+    <Content Include="Templates\AppData.ascx" />
+    <Content Include="Templates\BAPIData.ascx" />
+    <Content Include="Templates\RadEditTools.xml" />
+    <Content Include="Templates\RadEditToolsLimited.xml" />
+    <Content Include="Templates\SAPData.ascx" />
+    <Content Include="Translation_Start.aspx" />
+    <Content Include="ForbiddenUserNameManagement.aspx" />
+    <Content Include="Groupmanagement.aspx" />
+    <Content Include="jve_LogMessage2.aspx" />
+    <Content Include="LogBapi2Report.aspx" />
+    <Content Include="LogMessage.aspx" />
+    <Content Include="MasterPage\Admin.Master" />
+    <Content Include="OrganizationManagement.aspx" />
+    <Content Include="scroll.htc" />
+    <Content Include="Sidebar\menue.ascx" />
+    <Content Include="Sidebar\Menue.js" />
+    <Content Include="UserHistory.aspx" />
+    <Content Include="UserManagement.aspx" />
+    <Content Include="UserUnlock.aspx" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.vbproj">
+      <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4465</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Services/Admin</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

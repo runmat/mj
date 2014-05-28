@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@using CkgDomainLogic.Leasing.ViewModels
+@model LeasingBriefeOhneLVNrViewModel 
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUnzugelFzg"; }
+
+@(Html.Telerik()
+    .Grid<UnzugelFzg>()
+    .Name(gridName)
+    .XGroup("GridUnzugelFzg")
+    .Editable(editing => editing.Mode(GridEditMode.InCell))
+    .DataKeys(d => d.Add(a => a.EquipmentnummerShow).RouteKey("EquipmentnummerShow"))
+    .XAjaxDataBindingWithUpdate("UnzugelFzgAjaxBinding", "UnzugelFzgAjaxSaveChanges", "Leasing")
+    .Columns(columns =>
+    {
+        //columns.Bound(c => c.EquipmentnummerShow);
+        columns.Bound(c => c.BriefeingangShow).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.FahrgestellnummerShow);
+        columns.Bound(c => c.HaendlernameShow);
+        columns.Bound(c => c.HaendlerortShow);
+        columns.Bound(c => c.Leasingvertragsnummer).ClientTemplate(
+            "<label class='table-input-dummy'><#= data.Leasingvertragsnummer #></label>"
+        );
+        columns.Bound(c => c.LeasingvertragsnummerShow).Hidden();
+        columns.Bound(c => c.StatusShow).Hidden();
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Equipmentnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUnzugelFzgFilteredExcel", "Leasing").HtmlAttributes(new { @class = "btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+        commands.FilteredDataCommand("ExportUnzugelFzgFilteredPDF", "Leasing").HtmlAttributes(new { @class = "btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+    })
+)
+

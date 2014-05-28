@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Zulassung.MobileErfassung.Models
+@model CkgDomainLogic.Zulassung.MobileErfassung.ViewModels.ZulMobileErfassungViewModel
+
+@section Header {
+    <h1>ZLD Mobile</h1>
+    <div>
+        @Html.Partial("_LoginPartial")
+    </div>
+}
+
+<ul id="lstMenueEintraege" data-role="listview" data-inset="true">
+    <li data-role="list-divider" class="CenterAlignedText">Hauptmenü</li>
+    @foreach (Anwendung app in Model.Anwendungen)
+    {
+        <li>@Html.ActionLink(app.AppBezeichnung, app.AppAction, app.AppController)</li>
+    }
+</ul>
+
+@Html.Partial("Partial/_SelectionScripts")

@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceBewertungViewModel 
+
+@{ var gridName = "GridVorgaenge"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseVorgaengeSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<VorgangInfo>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("VorgaengeAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kontonummer).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<button onclick='VorgangEdit(\"<#= data.Kontonummer #>\", \"<#= data.CIN #>\", \"<#= data.PAID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Evaluate + "' data-placement='right'><i class='halflings-icon white euro'></i></button>"
+            )
+        ;
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kontonummer))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVorgaengeFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVorgaengeFilteredPDF", "Finance");
+    })
+)

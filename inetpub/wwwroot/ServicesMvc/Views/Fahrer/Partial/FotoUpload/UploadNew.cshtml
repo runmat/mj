@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+<div class="margin-top-15">
+    
+    <!-- The fileinput-button span is used to style the file input field as button -->
+    <span class="btn btn-success fileinput-button btn green">
+        <span class="btn-fixed-width">Fotos hinzufügen...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files" multiple>
+    </span>
+    <button id="upload-all" class="btn blue hide"><span class="btn-fixed-width">Fotos hochladen!</span></button>
+    <br />
+    <br />
+    <!-- The global progress bar -->
+    <div id="progress" class="progress progress-success progress-striped hide">
+        <div class="bar"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
+
+</div>

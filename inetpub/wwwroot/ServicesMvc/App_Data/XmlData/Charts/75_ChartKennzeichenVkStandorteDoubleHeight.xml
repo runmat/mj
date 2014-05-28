@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChartsSqlDataDescriptorTemplate>
+
+  <Group>
+    Kennzeichen VK
+  </Group>
+
+  <HtmlTemplateName>
+    
+  </HtmlTemplateName>
+  
+  <SqlTableOrViewName>
+    KennzeichenStandorte
+  </SqlTableOrViewName>
+
+  <GroupSqlStatement>
+
+    select
+    VkJahr Jahr,
+    VkMMM Key1,
+    count(*) IWert1
+    from {0}
+    {1}
+
+    group by VkJahr, VkMMM, VkMM, VkMonat
+    order by VkMM
+
+  </GroupSqlStatement>
+
+  <DetailsSqlStatement>
+
+    select
+    KGS,
+    KgsName,
+    convert(varchar(10), VkDatum, 4) VkDatum,
+    Kennzeichen,
+    KdNr,
+    Beleg,
+    VkBur,
+    PLZ,
+    Strasse,
+    Ort
+    from {0}
+    {1}
+    order by VkDatum
+
+  </DetailsSqlStatement>
+
+  <FilterInitial>
+
+    (VkJahr >= 2013)
+
+  </FilterInitial>
+
+  <FilterSelector>
+
+    VkMMM in ({0}) and VkJahr in ({1})
+
+  </FilterSelector>
+
+  <FilterSelectorDetails>
+
+    VkMMM in ({0}) and VkJahr in ({1})
+
+  </FilterSelectorDetails>
+
+  <AdditionalSqlStatements>
+
+  </AdditionalSqlStatements>
+
+</ChartsSqlDataDescriptorTemplate>

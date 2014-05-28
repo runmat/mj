@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DAT_BankenLinie_Connector.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DAT_BankenLinie_Connector_de_dat_www_VehicleSelection" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.dat.de:80/FinanceLine/services/VehicleSelection</Value>
+    </Setting>
+    <Setting Name="DAT_BankenLinie_Connector_de_dat_www_evaluation_Evaluation" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.dat.de:80/FinanceLine/services/Evaluation</Value>
+    </Setting>
+    <Setting Name="DAT_BankenLinie_Connector_de_dat_www_authentication_Authentication" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.dat.de:80/FinanceLine/services/Authentication</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

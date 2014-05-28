@@ -1,0 +1,128 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.FehlteilEtikett
+@{
+    var browser = Request.Browser;
+    var browserCompatibilityMode = @browser.Browser == "IE" && browser.MajorVersion <= 8;
+}
+
+@if (browserCompatibilityMode)
+{
+    <script language="javascript">
+        function labelDropdownChange(dropdown) {
+            $.ajax({
+                type: "POST",
+                url: "LabelPositionSave",
+                data: { labelPos: $(dropdown).val() },
+                loadingShow: false
+            });
+        }
+    </script>
+    
+    @Html.FormDropDownListFor(m => m.LayoutPosition, "1;2;3;4;5;6;7;8;9".ToSelectList(), new { @class = "m-wrap small", col = "right", onclick = "labelDropdownChange(this)" })
+}
+else
+{
+    <style type="text/css">
+
+        .label-selector-wrapper {
+            width: 85px;
+            height: 115px;
+            border: 1px solid gray;
+            background-color: #f3f3f3;
+            float: left;
+            margin-top: -40px;
+        }
+
+        .label-selector-item {
+            border: 1px dotted lightgray;
+            float: left;
+            display: inline-block;
+            margin: 1px;
+            width: 24px;
+            height: 34px;
+            background-color: white;
+            cursor: pointer;
+        }
+        .label-selector-item.selected {
+            background-color: #dff0d8!important;
+            cursor: default;
+        }
+
+        .label-selector-item i {
+            display: none;
+        }
+        .label-selector-item.selected i {
+            display: inline-block;
+            float: left;
+            font-size: 1.5em!important;
+            color: #468847!important;
+            padding-top: 4px;
+            padding-left: 2px;
+        }
+
+        #LayoutPosition {
+            width: 15px;
+            margin-left: 350px;
+        }
+
+    </style>
+
+    <script language="javascript">
+
+        var spanSelectedID = "labelSelector_1";
+
+        function labelSelectorChange(posToSelect) {
+            var spanToSelectID = "labelSelector_" + posToSelect;
+            if (spanSelectedID == spanToSelectID)
+                return;
+
+            for (var i = 1; i <= 9; i++) {
+                var spanID = "labelSelector_" + i;
+                if (spanID == spanToSelectID) {
+
+                    $("#" + spanSelectedID).removeClass('selected');
+                    $("#" + spanToSelectID).addClass('selected');
+                    $("#LayoutPosition").val(posToSelect);
+
+                    spanSelectedID = spanToSelectID;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "LabelPositionSave",
+                        data: { labelPos: posToSelect },
+                        loadingShow: false
+                    });
+                }
+            }
+        }
+
+        function labelSelectorInit() {
+            labelSelectorChange($("#LayoutPosition").val());
+        }
+
+    </script>
+
+    <div class="span6">
+        <div class="control-group">
+    
+            <label class="control-label">Label-Position <span class="requiredField">&nbsp;</span></label>
+
+            <div class="controls">
+        
+                <div class="label-selector-wrapper">
+                    @for (var i = 1; i <= 9; i++)
+                    {
+                        var isSelected = (i == 1);
+                        var cssClass = (isSelected ? "selected" : "");
+                        <span id="labelSelector_@i" class="label-selector-item @cssClass" onclick="labelSelectorChange(@i) ">
+                            <i class="icon-ok"></i>
+                        </span>
+                    }
+                </div>
+        
+                @Html.HiddenFor(m => m.LayoutPosition)
+
+            </div>
+
+        </div>
+    </div>
+}

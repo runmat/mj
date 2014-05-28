@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model Adresse
+
+<div id="DivAdresse" class="margin-top-20">
+    @using (Ajax.BeginForm("AdresseForm", "CocBeauftragung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAdresse", OnComplete = "AdresseAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AdresseAjaxForm" }))
+    {
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.Kennung)
+        @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.TmpSelectionKey)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+        @Html.HiddenFor(m => m.Land)
+
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="AjaxFormAdresseClose();">Abbrechen</button>
+        </div>
+
+        <script type="text/javascript">
+            _adresseAjaxFormAddressType = '@Model.Typ';
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

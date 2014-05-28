@@ -1,0 +1,58 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model TerminSchadenfall
+
+<div id="TerminSchadenfallEditDiv" class="portlet">
+    @using (Ajax.BeginForm("TerminSchadenfallEditFormSave", "Insurance", null,
+                           new MvcAjaxOptions("TerminSchadenfallEditDiv") { OnComplete = "TerminSchadenfallEditFormPreparePrivateAjax();" }, new { id = "TerminSchadenfallEditForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.VersOrtID)
+        @Html.HiddenFor(m => m.VersSchadenfallID)
+
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+        @Html.HiddenFor(m => m.LoeschDatum)
+        @Html.HiddenFor(m => m.LoeschUser)
+
+        @Html.FormTemplateControl("", @<text><div class="form-header"><i class="icon-calendar"></i> <span>Termin Details</span></div></text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+
+        @Html.HiddenFor(m => m.Datum)
+        @Html.FormTextBlockFor(m => m.Datum, new { @class = "m-wrap" })
+        if (Model.GetCachedBoxArt() == "GU")
+        {
+            @Html.HiddenFor(m => m.ZeitVon)
+            @Html.HiddenFor(m => m.ZeitBis)
+            @Html.FormTextBlockFor(m => m.ZeitVon, new { @class = "m-wrap" })
+            @Html.FormTextBlockFor(m => m.ZeitBis, new { @class = "m-wrap" })
+        }
+        if (Model.GetCachedBoxArt() == "RE")
+        {
+            @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" })
+            @Html.FormTextBoxFor(m => m.ZeitBis, new { @class = "m-wrap xsmall timepicker" })
+        }
+
+        <div id="WrapperVersBoxID">
+            @Html.FormDropDownListFor(m => m.VersBoxID, Model.GetValidBoxenForThisTermin().ToSelectList(), new { @class = "m-wrap" })
+        </div>
+
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="TerminSchadenfallEditDetailsClose(true, false);">Abbrechen</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
+            $(".timepicker").clockface({ format: 'HH:mm' });
+        </script>
+    }
+</div>
+

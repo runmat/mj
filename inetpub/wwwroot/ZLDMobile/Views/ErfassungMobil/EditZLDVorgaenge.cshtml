@@ -1,0 +1,166 @@
+﻿@using CkgDomainLogic.Zulassung.MobileErfassung.Models
+@model CkgDomainLogic.Zulassung.MobileErfassung.ViewModels.ZulMobileErfassungViewModel
+
+@{
+    ViewBag.Title = "Aktuelle Vorgänge";
+}
+
+<label id="lblError" class="MessageLabel"></label>
+
+<div id="divKreisauswahl">
+    <ul id="lstZulassungskreis" data-role="listview" data-inset="true">
+    </ul>
+    <div class="VerticalSpacer10">&nbsp;</div>
+    <div> 
+        <input id="btnRefresh" type="button" data-mini="false" value="Neue Vorgänge laden" />
+    </div>
+</div>
+
+<div id="divVorgangsliste" class="NotDisplayed">
+    <div class="VerticalSpacer10">&nbsp;</div>
+    <a id="lnkSelAmt" href="#"></a>    
+    <div class="VerticalSpacer10">&nbsp;</div>
+    <input type="search" name="suche" id="txtSuche" value="" placeholder="Suchen..." />
+    <div class="VerticalSpacer5">&nbsp;</div>
+
+    <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
+        <colgroup>
+            <col class="TableColumn80"/>
+            <col />
+            <col class="TableColumn150"/>
+            <col class="TableColumn110"/>
+            <col class="TableColumn140"/>
+            <col class="TableColumn215"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>      
+                <th class="TableGridCell">Referenz</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Kennzeichen"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
+            </tr>  
+        </thead>  
+        <tbody>
+        </tbody>
+    </table>
+    
+    <table class="table-buttons-responsive table-stroke" data-role="table" data-mode="reflow">
+        <thead hidden="hidden">
+            <tr>
+                <th colspan="6"></th>
+            </tr>
+        </thead>  
+        <tbody>
+            <tr>
+                <td class="ButtonGridCell"><input id="btnSave" type="button" value="Speichern"/></td>
+                <td class="ButtonGridCell"><input id="btnAlleDurchgefuehrt" type="button" value="alle OK"/></td>
+                <td class="ButtonGridCell"><input id="btnAlleEC" type="button" value="alle EC"/></td>
+                <td class="ButtonGridCell"><input id="btnAlleBar" type="button" value="alle Bar"/></td>
+                <td class="ButtonGridCell"><input id="btnAlleRE" type="button" value="alle RE"/></td>
+                <td class="ButtonGridCell"><input id="btnSend" type="button" value="Absenden"/></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div id="popupEditVorgang" class="ui-content PopupWindow" data-role="popup">
+    <a class="ui-btn-right IconButtonDeleteBig" href="#" data-role="button" data-iconpos="notext" data-icon="delete" data-rel="back" >Schließen</a>
+    <div class="PopupTitle">
+        <b>
+            <label for="lblPopupID">ID:&nbsp;</label>
+            <label id="lblPopupID"></label>&nbsp;&minus;&nbsp;<label id="lblPopupReferenz1"></label>
+        </b>
+    </div>
+    <table width="100%">
+        <colgroup>
+            <col class="TableColumn90"/>
+            <col class="TableColumn110"/>
+            <col class="TableColumnAuto"/>
+        </colgroup>
+        <thead> 
+        </thead>  
+        <tbody>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["Kunde"]
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtKunde" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["Amt"]
+                </td>
+                <td colspan="2">
+                    <select id="ddlAmt" name="ddlAmt">
+                        @if (Model.ZLDMobileData.Stammdaten.Aemter.Count > 0)
+                        {
+                            foreach (Amt a in Model.ZLDMobileData.Stammdaten.Aemter)
+                            {
+                                <option value="@a.KurzBez">@a.AmtBez</option>
+                            }
+                        }
+                        else
+                        {
+                            <option></option>
+                        }       
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["ZulDatTextEdit"]
+                </td>
+                <td>
+                    <div id="divZulDat">
+                        <input type="text" id="txtZulDat" maxlength="10"/>
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["Bemerkung"]
+                </td>
+                <td colspan="2">
+                    <textarea id="txtBemerkung" maxlength="40"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td colspan="2">
+                    <input type="checkbox" id="chkNachbearbeiten" name="chkNachbearbeiten" data-mini="true"/>
+                    <label for="chkNachbearbeiten">@Model.PropertyDisplayNames["Nachbearbeiten"]</label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="tblPopupPositionen" class="table-positionen-responsive table-stroke" data-role="table" data-mode="reflow">
+        <colgroup>
+            <col class="TableColumn80"/>
+            <col class="TableColumnAuto"/>
+            <col class="TableColumn110"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["PosNr"]</th>      
+                <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["DienstleistungBez"]</th>      
+                <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["Gebuehr"]</th>
+            </tr>  
+        </thead>  
+        <tbody>
+        </tbody>
+    </table>
+    <div>
+        <input id="btnPopupAddPos" type="button" value="Dienstleistung ergänzen" /> 
+        <input id="btnPopupApply" type="button" value="Übernehmen" /> 
+    </div>
+</div>
+
+@Html.Partial("Partial/_EditZLDVorgaengeScripts")

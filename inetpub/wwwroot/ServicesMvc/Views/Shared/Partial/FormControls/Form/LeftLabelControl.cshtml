@@ -1,0 +1,48 @@
+﻿@using MvcTools.Models
+@model FormControlModel 
+
+
+@if (Model.ColumnMode != Form2ColumnMode.None)
+{
+    if (Model.ColumnMode == Form2ColumnMode.Left)
+    {
+        @Html.Raw("<div class=\"row-fluid\">")
+    }
+    @Html.Raw("<div class=\"span6\">")
+}
+
+<div class="control-group">
+    
+    <label class="control-label">@Model.DisplayNameHtml @Model.RequiredIndicatorHtml</label>
+
+    <div class="controls">
+        
+        @if (@Model.PreControlHtml != null)
+        {
+            @Model.PreControlHtml
+        }
+           
+        @Model.ControlHtml
+        
+        @if (@Model.ValidationMessageHtml != null)
+        {
+            @Model.ValidationMessageHtml
+        }
+        
+        @if (@Model.PostControlHtml != null)
+        {
+            @Model.PostControlHtml
+        }
+
+    </div>
+
+</div>
+
+@if (Model.ColumnMode != Form2ColumnMode.None)
+{
+    @Html.Raw("</div>")
+    if (Model.ColumnMode == Form2ColumnMode.Right)
+    {
+        @Html.Raw("</div>")
+    }
+}

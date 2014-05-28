@@ -1,0 +1,67 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model VersEventTermin 
+
+<div id="TerminDetailsDiv" class="portlet">
+    @using (Ajax.BeginForm("TerminDetailsFormSave", "Insurance", null,
+                           new MvcAjaxOptions("TerminDetailsDiv") { OnComplete = "TerminDetailsFormPreparePrivateAjax();" }, new { id = "TerminForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+        
+        @Html.HiddenFor(m => m.LoeschDatum)
+        @Html.HiddenFor(m => m.LoeschUser)
+
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+                
+        @Html.HiddenFor(m => m.DauerMinuten)
+        @Html.HiddenFor(m => m.VorgangID)
+        @Html.HiddenFor(m => m.VersBoxID)
+        @Html.HiddenFor(m => m.VersEventID)
+        @Html.HiddenFor(m => m.VersOrtID)
+
+        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">Termin bearbeiten</span></text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+
+        @Html.FormTemplateControl(Localize.VersEventLocation,
+                                  @<text>
+                                       <div class="label-bolder">@Model.EventAndOrtAsText</div>
+                                       <button onclick="return EventOrtGridSelect()" class="btn mini @Model.EventOrtSelectCssClass">
+                                           <i class="icon-map-marker"></i>
+                                           @Model.EventOrtSelectLabel 
+                                           <i class="icon-chevron-right"></i>
+                                       </button>
+                                   </text>, new { @class = "m-wrap", col = "left" })
+
+        @Html.FormTemplateControl(Localize.Occurrence,
+                                  @<text>
+                                       <div class="label-bolder">@Model.Vorgang.VorgangAsText</div>
+                                       <button onclick="return SchadenfallGridSelect()" class="btn mini @Model.VorgangSelectCssClass">
+                                           <i class="icon-user"></i>
+                                           @Model.VorgangSelectLabel
+                                           <i class="icon-chevron-right"></i>
+                                       </button>
+                                   </text>, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
+
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap", col = "right" })
+        
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="button" class="btn" onclick="TerminCloseDetails();">Abbrechen</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            $("#Bemerkung").attr("rows", 2);
+        </script>
+    }
+</div>
+

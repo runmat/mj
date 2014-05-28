@@ -1,0 +1,119 @@
+.RadGrid_Default, .RadGrid_Default .rgMasterTable, .RadGrid_Default .rgDetailTable, .RadGrid_Default .rgGroupPanel table, .RadGrid_Default .rgCommandRow table, .RadGrid_Default .rgEditForm table, .RadGrid_Default .rgPager table, .GridToolTip_Default
+{
+    font-family: Verdana, sans-serif !important;
+    font-size: 10px !important;
+}
+
+.RadGrid_Default
+{
+    /*background-image: url("../Images/RadGridBodyBgrnd.png") !important;*/
+    background-repeat: repeat-x;
+}
+
+
+.RadGrid_Default .rgHeader
+{
+    font-weight: bold !important;
+    background-position: 0 0 !important;
+    background-image: url("../Images/overflowThead.png") !important;
+    background-color: rgb(155, 155, 155) !important;
+    padding-bottom: 2px !important;
+    padding-top: 3px !important;
+    white-space: nowrap !important;
+}
+
+.RadGrid_Default .rgHeader a
+{
+    color: #2b4c91 !important;
+    text-decoration: underline !important;
+}
+
+.RadGrid_Default th.rgSorted
+{
+    background-color: rgb(155, 155, 165) !important;
+}
+
+.RadGrid_Default .rgCommandRow
+{
+    color: #fff !important;
+    background-color: rgb(223, 223, 223) !important;
+}
+
+.RadGrid_Default .rgCommandRow a
+{
+    color: #fff !important;
+}
+
+.RadGrid_Default .rgCommandCell
+{
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+    background-repeat: repeat-x;
+}
+
+.RadGrid_Default .rgCommandTable
+{
+    background-image: url("../Images/RadGridheader.png") !important;
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+}
+
+.RadGrid_Default .rgCommandTable td
+{
+    border-bottom-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+    border-top-width: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.RadGrid_Default .rgAltRow
+{
+    background-color: rgb(222, 225, 224) !important;
+}
+
+.RadGrid_Default .rgRow, .RadGrid_Default .rgAltRow
+{
+    line-height: 22px !important;
+}
+
+.RadGrid_Default .rgActiveRow, .RadGrid_Default .rgHoveredRow
+{
+    background-image: none !importand;
+}
+
+.RadGrid_Default .rgSaveLayout, .RadGrid_Default .rgResetLayout
+{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 0 none;
+    cursor: pointer;
+    font-size: 1px;
+    height: 18px;
+    line-height: 16px;
+    width: 18px;
+    margin: 0 6px 0 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+.RadGrid_Default .rgSaveLayout
+{
+    background-image: url("/Services/Images/Diskette_06s.png");
+}
+
+.RadGrid_Default .rgResetLayout
+{
+    background-image: url("/Services/Images/Papierkorb_01s.png");
+}
+
+.rgDataDiv
+{
+    border:solid 1px #dfdfdf;
+}

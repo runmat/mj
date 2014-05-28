@@ -1,0 +1,43 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model SchadenverwaltungViewModel 
+
+@{ var gridName = "GridSchadenfaelle"; }
+
+@(Html.Telerik()
+    .Grid<Schadenfall>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("SchadenfaelleAjaxBinding", "Insurance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='SchadenfallEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                + "&nbsp;"
+                + "<button onclick='SchadenfallDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Delete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+            )
+            .HeaderTemplate(
+                "<button onclick='SchadenfallCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.Create + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+            )
+        ;
+
+        columns.XBound(c => c.EventName);
+        columns.XBound(c => c.Versicherung);
+        columns.XBound(c => c.Kennzeichen).ClientTemplate(
+                "<a href='#' class='link tooltips' data-original-title='" + Localize.Insurance_Schadenakte + "' data-placement='right' onclick='ShowSchadenakteAjax(\"<#= data.ID #>\");'><u><#= data.Kennzeichen #></u></a>"
+            );
+        columns.XBound(c => c.Vorname);
+        columns.XBound(c => c.Nachname);
+        columns.XBound(c => c.Referenznummer);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ID).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportSchadenfaelleFilteredExcel", "Insurance");
+        commands.FilteredDataCommand("ExportSchadenfaelleFilteredPDF", "Insurance");
+    })
+)

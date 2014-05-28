@@ -1,0 +1,43 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+<h3 class="page-title">Grid <small>Spalten-Test</small></h3>
+
+<div class="portlet app-view beauftragung">
+    
+    <div class="form-horizontal label-width-150 margin-left-10">
+        @Html.FormRadioButtonListFor(m => m.UserLogonLevelAsString, "Admin; Customer; Group; User".ToSelectList())
+    </div>
+
+    @Html.Partial("Partial/TestAdressenAuswahlGrid")
+</div>
+
+@Html.Partial("Partial/Common")
+
+
+<script type="text/javascript">
+
+    function GridTestPreparePrivate() {
+
+        GridAllColumnFilterApplyToGrid("GridVersandAdressenAuswahl");
+
+        GridColumnTranslationInit("GridVersandAdressenAuswahl");
+
+        $("input[name=UserLogonLevelAsString]").click(function () {
+            //alert($(this).attr('value'));
+
+            $.ajax(
+            {
+                type: "POST",
+                url: "LogonContextSwitchLogonLevel",
+                data: { level: $(this).attr('value') },
+                loadingShow: false,
+                success: function (result) {
+                    //alert(result.message);
+                    //$("#GridVersandAdressenAuswahl").data("tGrid").ajaxRequest();
+                    location.reload();
+                }
+            });
+        });
+    }
+
+</script>
