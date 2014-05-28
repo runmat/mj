@@ -1,0 +1,102 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Kantine.master.cs" Inherits="Kantine.Kantine"%>
+
+<%--<%@ Register Namespace="Kantine.Controls" TagPrefix="KCN" Assembly="Kantine"%>--%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+<title>Kantine</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link href="Styles/Kantine.css" media="screen, projection" type="text/css"
+        rel="stylesheet" />    
+</head>
+<body class="Body">
+    <form id="form2" runat="server">
+    <center><div id="website">
+        <asp:ScriptManager ID="Scriptmanager1" runat="server" EnableScriptGlobalization="true"
+            EnableScriptLocalization="true">            
+        </asp:ScriptManager>
+        
+            <table style="background-color: white;" cellpadding="0" cellspacing="0" border="0"
+                width="947px">
+                <tr>
+                    <td>
+                        <div id="headerLogo">                                
+                            <asp:Image ID="imgLogo" ImageUrl="Images/kroschke.jpg" alt="DAD Logo" class="dadLogo2"
+                                runat="server" />
+                            <div id="PlaceHeader" runat="Server" height="50px">
+                            </div>
+                            <ul id="navigation" style="vertical-align: bottom;">
+                                <li runat="server" id="LiVerkauf" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkVerkauf" runat="server" NavigateUrl="./MainPage.aspx">Verkauf</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiBenutzer" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkBenutzer" runat="server" NavigateUrl="./Benutzer.aspx">Benutzer</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiArtikel" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkArtikel" runat="server" NavigateUrl="./Artikel.aspx">Artikel</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiWarengruppe" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkWarengruppe" runat="server" NavigateUrl="./Warengruppe.aspx">Warengruppen</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiKontoNachm" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkKontoNachm" runat="server" NavigateUrl="./KontoauszugNachmittag.aspx">Kontoauszug NM</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiVerkaufsuebersicht" style="background-color: #576B96" visible="false">
+                                    <asp:HyperLink ID="lnkVerkaufsuebersicht" runat="server" NavigateUrl="./Verkaufsuebersicht.aspx">Verkaufsübersicht</asp:HyperLink>
+                                </li>
+                                <li runat="server" id="LiNachmittagsmodus" style="background-color: #576B96" visible="false">
+                                    <asp:LinkButton ID="lbtnNachmittag" runat="server" BackColor="Transparent" BorderStyle="None"
+                                         OnClick="lbtnNachmittag_Click">Nachmittagsmodus</asp:LinkButton> 
+                           <%--   CssClass="NaviButton" --%>                                                                            
+                                </li>
+                            </ul>
+                            <ul id="userinfo">
+                                <li>
+                                    <asp:Label ID="lblBenutzer" runat="server" Text="Benutzer: "></asp:Label>
+                                    <span>
+                                        <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
+                                <li class="logout">
+                                    <asp:Button ID="btnLogout" runat="server" Visible="true" CssClass="Button"
+                                       Text="Logout" OnClick="btnLogout_Click" style="margin:0px 0px 0px 0px;"/>                                  
+                                </li>
+                            </ul>
+                        </div>
+                        <asp:ContentPlaceHolder ID="Headline" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-left: solid 1px #999999; border-right: solid 1px #999999; border-top: solid 1px #999999;">
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-left: solid 1px #999999; border-right: solid 1px #999999;">
+                        <asp:ContentPlaceHolder ID="Main" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-left: solid 1px #999999; border-right: solid 1px #999999; border-bottom: solid 1px #999999;">
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="Footer">
+                            <div class="leftAlign">
+                                Kassensystem Vers.: 1.1
+                            </div>
+                            <div class="rightAlign">
+                                <a href="#top" style="text-decoration: none;">Top
+                                    <img src="Images/top.gif" alt="nach oben" style="border-width: 0;" /></a></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>        
+    </div></center>
+    </form>
+</body>
+</html>
