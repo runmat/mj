@@ -188,3 +188,31 @@ FakesAssemblies/
 
 # GAC in Work mitnehmen
 !Work/GAC/*
+# Ausser der folgenden assemblies
+Work/GAC/DynSapProxyFactories.dll
+Work/GAC/DynSapProxyFactories.pdb
+Work/GAC/DynSapProxyObjectErp35.dll
+Work/GAC/DynSapProxyObjectErp35.pdb
+Work/GAC/GeneralTools.dll
+Work/GAC/GeneralTools.pdb
+Work/GAC/LogMaintenanceLib.dll
+Work/GAC/QuickEasy.dll
+Work/GAC/WebTools35.dll
+Work/GAC/WebTools35.pdb
+Work/GAC/WebTools.dll
+Work/GAC/WebTools.pdb
+Work/GAC/SAPProxy_Base.dll
+Work/GAC/SAPProxy_ComCommon.dll
+Work/GAC/SAPProxy_Kroschke.dll
+Work/GAC/SAPORM.Contracts.dll
+Work/GAC/SAPORM.Contracts.pdb
+Work/GAC/SAPORM.Models.dll
+Work/GAC/SAPORM.Models.pdb
+Work/GAC/SAPORM.Services.dll
+Work/GAC/de-DE/GeneralTools.resources.dll
+Work/GAC/SAPORM.Services.pdb
+Work/SapORM/DynSapProxy/GAC/DynSapProxyFactories.dll
+Work/SapORM/DynSapProxy/GAC/DynSapProxyObjectErp35.dll
+Work/SapORM/DynSapProxy/GAC/GeneralTools.dll
+Work/SapORM/DynSapProxy/GAC/SAPORM.Contracts.dll
+Work/SapORM/DynSapProxy/GAC/de-DE/GeneralTools.resources.dll
