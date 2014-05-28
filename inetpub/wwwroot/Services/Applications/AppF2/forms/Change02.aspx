@@ -193,7 +193,7 @@
                                 <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" TargetControlID="btnFake"
                                     PopupControlID="mb" BackgroundCssClass="modalBackground" DropShadow="false" CancelControlID="btnCancel">
                                 </ajaxToolkit:ModalPopupExtender>
-                                <asp:Panel ID="mb" runat="server" BackColor="White" Width="650"
+                                <asp:Panel ID="mb" runat="server" BackColor="White" Width="1150"
                                     Style="display: none; border:  solid 2px #000000" >
                                    <%-- Style="display: none"--%>
                                     <div style="padding-left: 10px; padding-top: 15px; margin-bottom: 10px;">

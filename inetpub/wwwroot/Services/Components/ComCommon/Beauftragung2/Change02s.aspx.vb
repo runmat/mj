@@ -175,17 +175,18 @@ Namespace Beauftragung2
                 'ggf. Daten vom Autohaus-Vorgang übernehmen
                 If mBeauftragung.Autohausvorgang Then
                     RestoreAutohausVorgang()
-                ElseIf mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue Then
-                    'Wenn Dienstleistung unverändert, ggf. Halterdaten merken/wiederherstellen
+                ElseIf mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue Then
+                    'Wenn Dienstleistung und Amt unverändert, ggf. Halterdaten merken/wiederherstellen
                     If mBeauftragung.HalterNeeded = "JM" OrElse mBeauftragung.HalterNeeded = "M" OrElse mBeauftragung.HalterNeeded = "M1" OrElse mBeauftragung.HalterNeeded = "M2" Then
                         RestoreHalterdaten()
                     End If
                 Else
-                    'Bei geänderter Dienstleistung keine Halterdaten merken/wiederherstellen
+                    'Bei geänderter Dienstleistung bzw. Amt keine Halterdaten merken/wiederherstellen
                     ResetBeauftragungHalterdaten()
                 End If
 
                 mBeauftragung.MaterialnummerAlt = mBeauftragung.Materialnummer
+                mBeauftragung.StVANrAlt = mBeauftragung.StVANr
             Else
                 lblDienstleisungInfo.Text = "Keine gültige Dienstleistung gewählt!"
             End If

@@ -64,7 +64,7 @@
         var fileName = e.files[0].name;
                 
         if (fileName.toLowerCase().indexOf('.csv') <= 0) {
-            alert('@Localize.FileUploadLegalFileTypesWarning');
+            alert('Bitte nur CSV-Dateien hochladen!');
             return false;
         }
 

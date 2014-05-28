@@ -140,14 +140,8 @@ namespace CkgDomainLogic.Insurance.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (EventID < 0)
-            {
-                yield return new ValidationResult(Localize.EventInvalid, new[] { "EventID" });
-            }
-            if (string.IsNullOrEmpty(Kennzeichen))
-            {
-                yield return new ValidationResult(Localize.AllRequiredInputFieldsMustBeFilled, new[] { "Kennzeichen" });
-            }
+            if (ID > 0 && EventID < 0)
+                yield return new ValidationResult(Localize.EventInvalid, new[] {"EventID"});
         }
     }
 }

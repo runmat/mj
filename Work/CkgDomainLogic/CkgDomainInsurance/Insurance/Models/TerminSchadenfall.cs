@@ -13,7 +13,7 @@ using MvcTools.Web;
 namespace CkgDomainLogic.Insurance.Models
 {
     [Table("VersEventSchadenfallOrtBoxTermin")]
-    public class TerminSchadenfall : Store
+    public class TerminSchadenfall : Store, IValidatableObject
     {
         [Key]
         public int ID { get; set; }
@@ -59,6 +59,9 @@ namespace CkgDomainLogic.Insurance.Models
 
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateTime Datum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DateTo)]
+        public DateTime? DatumTmpBlockerSerieBis { get; set; }
 
         [NotMapped]
         [GridHidden]
@@ -147,13 +150,7 @@ namespace CkgDomainLogic.Insurance.Models
         [NotMapped]
         public Schadenfall Schadenfall
         {
-            get
-            {
-                return GetViewModel != null 
-                           ? (GetViewModel().Schadenfaelle.FirstOrDefault(v => v.ID == VersSchadenfallID)
-                                ?? new Schadenfall() )
-                           : null;
-            }
+            get { return GetViewModel().Schadenfaelle.FirstOrDefault(v => v.ID == VersSchadenfallID) ?? new Schadenfall(); }
         }
 
         [GridHidden]
@@ -177,21 +174,6 @@ namespace CkgDomainLogic.Insurance.Models
             get { return Ort.Boxen.FirstOrDefault(box => box.ID == VersBoxID) ?? new VersEventOrtBox(); }
         }
 
-        [GridHidden]
-        [NotMapped]
-        public string EventOrtSelectCssClass { get { return VersOrtID == 0 ? "blue" : "black"; } }
-
-        [GridHidden]
-        [NotMapped]
-        public string EventOrtSelectLabel { get { return string.Format("{0} {1}", "Event-Ort", (VersOrtID == 0 ? "wählen" : "ändern")); } }
-
-        [GridHidden]
-        [NotMapped]
-        public string VorgangSelectCssClass { get { return VersSchadenfallID == 0 ? "blue" : "black"; } }
-
-        [GridHidden]
-        [NotMapped]
-        public string VorgangSelectLabel { get { return string.Format("{0} {1}", "Vorgang", (VersSchadenfallID == 0 ? "wählen" : "ändern")); } }
 
         [GridHidden]
         [NotMapped]
@@ -302,6 +284,21 @@ namespace CkgDomainLogic.Insurance.Models
             BoxArtGewuenscht = globalBox.BoxArt;
 
             return BoxArtGewuenscht;
-        } 
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Datum.DayOfWeek == DayOfWeek.Sunday)
+                yield return new ValidationResult(Localize.AppointmentsOnSundayNotAvailable, new[] { "Datum" });
+
+            if (DatumTmpBlockerSerieBis != null)
+            {
+                if (DatumTmpBlockerSerieBis.GetValueOrDefault() <= Datum)
+                    yield return new ValidationResult(Localize.DateToMustBeBeforeDateFrom, new[] { "DatumTmpBlockerSerieBis" });
+                
+                if (DatumTmpBlockerSerieBis.GetValueOrDefault().DayOfWeek == DayOfWeek.Sunday)
+                    yield return new ValidationResult(Localize.AppointmentsOnSundayNotAvailable, new[] { "DatumTmpBlockerSerieBis" });
+            }
+        }
     }
 }

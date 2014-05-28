@@ -8,9 +8,9 @@
         @Html.Hidden("Name", "Blocker Termin bearbeiten")
         
         @Html.HiddenFor(m => m.ID)
-        @Html.HiddenFor(m => m.VersOrtID)
         @Html.HiddenFor(m => m.VersSchadenfallID)
-        @Html.HiddenFor(m => m.Datum)
+        @Html.HiddenFor(m => m.VersOrtID)
+        @Html.HiddenFor(m => m.VersBoxID)
         
         @Html.HiddenFor(m => m.AnlageDatum)
         @Html.HiddenFor(m => m.AnlageUser)
@@ -19,14 +19,27 @@
                 
         @Html.FormTemplateControl("", @<text><i id="BoxBlockerTerminDetailsIcon"></i> Blocker Termin bearbeiten</text>, new { @class = "m-wrap" })
         
-        
         @Html.FormValidationSummary()
-        
-        @Html.FormTextBoxFor(m => m.VersBoxID, new { @class = "m-wrap xsmall" })
+
+                
+        @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small" })
+
+        if (TerminSchadenfall.GetViewModel().InsertMode) { @Html.FormDatePickerFor(m => m.DatumTmpBlockerSerieBis, new { @class = "m-wrap small" }) }
+        else { @Html.HiddenFor(m => m.DatumTmpBlockerSerieBis) }
 
         @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap" })
 
-        @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" })
+        @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" }, 
+                             postControlHtml: 
+                                 @<text>
+                                      <span class="margin-left-10">
+                                        <button onclick="return SetTimeControls('12:00', '13:00');" class="btn mini blue"><i class="icon-time"></i> 12:00-13:00</button>
+                                        <button onclick="return SetTimeControls('12:00', '14:00');" class="btn mini blue"><i class="icon-time"></i> 12:00-14:00</button>
+                                        <button onclick="return SetTimeControls('12:30', '13:00');" class="btn mini blue"><i class="icon-time"></i> 12:30-13:00</button>
+                                        <button onclick="return SetTimeControls('12:30', '13:30');" class="btn mini blue"><i class="icon-time"></i> 12:30-13:30</button>
+                                        <button onclick="return SetTimeControls('13:00', '14:00');" class="btn mini blue"><i class="icon-time"></i> 13:00-14:00</button>
+                                      </span>
+                                  </text>)
         @Html.FormTextBoxFor(m => m.ZeitBis, new { @class = "m-wrap xsmall timepicker" })
 
         
@@ -45,6 +58,13 @@
             BreadcrumbsShow(4, true, $("#BoxBlockerTerminForm input[name='Name']"));
 
             $(".timepicker").clockface({ format: 'HH:mm' });
+            
+
+            function SetTimeControls(startTime, endTime) {
+                $("#ZeitVon").val(startTime);
+                $("#ZeitBis").val(endTime);
+                return false;
+            }
         </script>
     }
 </div>

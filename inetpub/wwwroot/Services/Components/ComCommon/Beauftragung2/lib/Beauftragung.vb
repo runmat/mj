@@ -30,6 +30,7 @@ Namespace Beauftragung2
 
         Private mKunnr As String
         Private mStVANr As String
+        Private mStVANrAlt As String
         Private mMaterialnummer As String
         Private mMaterialnummerAlt As String
         Private mGrosskunde As String
@@ -658,6 +659,15 @@ Namespace Beauftragung2
             End Get
             Set(ByVal value As String)
                 mMaterialnummerAlt = value
+            End Set
+        End Property
+
+        Public Property StVANrAlt() As String
+            Get
+                Return mStVANrAlt
+            End Get
+            Set(ByVal value As String)
+                mStVANrAlt = value
             End Set
         End Property
 

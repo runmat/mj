@@ -403,7 +403,7 @@ namespace ServicesMvc.Controllers
                 TerminCopyProperties(EventsViewModel.TerminCurrent, terminOldData);
                 TerminCopyProperties(termin, EventsViewModel.TerminCurrent);
 
-                EventsViewModel.TerminCurrentSave(ModelState.AddModelError, termine);
+                EventsViewModel.TerminCurrentSave(ModelState, termine);
 
                 if (!ModelState.IsValid)
                     TerminCopyProperties(terminOldData, EventsViewModel.TerminCurrent);
@@ -419,6 +419,7 @@ namespace ServicesMvc.Controllers
             dst.VersOrtID = src.VersOrtID;
             dst.VersBoxID = src.VersBoxID;
             dst.Datum = src.Datum;
+            dst.DatumTmpBlockerSerieBis = src.DatumTmpBlockerSerieBis;
             dst.ZeitVon = src.ZeitVon;
             dst.ZeitBis = src.ZeitBis;
             dst.Bemerkung = src.Bemerkung;

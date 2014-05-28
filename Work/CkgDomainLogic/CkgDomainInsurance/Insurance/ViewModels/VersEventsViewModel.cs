@@ -318,7 +318,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<TerminSchadenfall> BoxBlockerTermine
         {
-            get { return PropertyCacheGet(() => DataService.TermineGet(null, BoxCurrent == null ? -1 : BoxCurrent.ID)); }
+            get { return PropertyCacheGet(() => DataService.TermineGet(null, BoxCurrent == null ? -1 : BoxCurrent.ID).Where(t => t.IsBlockerDummyTermin).ToList()); }
         }
 
         [XmlIgnore]
@@ -491,14 +491,50 @@ namespace CkgDomainLogic.Insurance.ViewModels
             termin.ZeitBis = string.Format("{0:00}:{1:00}", endTimeHours, endTimeMinutes);
         }
 
-        public TerminSchadenfall TerminCurrentSave(Action<string, string> addModelError, List<TerminSchadenfall> termine)
+        public TerminSchadenfall TerminCurrentSave(ModelStateDictionary modelState, List<TerminSchadenfall> termine)
         {
             var termin = TerminCurrent;
-            
-            if (InsertMode)
-                return TerminAdd(termin, addModelError, termine);
 
-            return TerminSave(termin, addModelError);
+            if (InsertMode)
+            {
+                // Serien Termine nur bei InsertMode zulassen:
+                if (termin.DatumTmpBlockerSerieBis != null)
+                    return TerminSerieAdd(termin, modelState, termine);
+
+                return TerminAdd(termin, modelState.AddModelError, termine);
+            }
+
+            return TerminSave(termin, modelState.AddModelError);
+        }
+
+        private TerminSchadenfall TerminSerieAdd(TerminSchadenfall termin, ModelStateDictionary modelState, List<TerminSchadenfall> termine)
+        {
+            var serienTermine = new List<TerminSchadenfall>();
+            var serienDatum = termin.Datum;
+            while (serienDatum <= termin.DatumTmpBlockerSerieBis)
+            {
+                var serienTermin = ModelMapping.Copy(termin, (src, dst) =>
+                {
+                    dst.Datum = serienDatum;
+                    dst.DatumTmpBlockerSerieBis = null;
+                });
+
+                serienTermin.Validate(modelState.AddModelError);
+                serienTermine.Add(serienTermin);
+
+                serienDatum = serienDatum.AddDays(1);
+                if (serienDatum.DayOfWeek == DayOfWeek.Saturday)
+                    serienDatum = serienDatum.AddDays(2);
+                if (serienDatum.DayOfWeek == DayOfWeek.Sunday)
+                    serienDatum = serienDatum.AddDays(1);
+            }
+
+            if (modelState.IsValid)
+                // Ok, keine Validierungsfehler für jeden einzelnen Serientermin vorhanden
+                // ==> erst jetzt alle Serientermine dem Datenspeicher zum "Insert" übergeben:
+                serienTermine.ForEach(t => TerminAdd(t, modelState.AddModelError, termine));
+
+            return termin;
         }
 
         #endregion
