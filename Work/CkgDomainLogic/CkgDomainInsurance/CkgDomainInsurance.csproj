@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,18 +61,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Bestandsdaten\InsuranceController.cs" />
+    <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\SchadenVerwaltung\InsuranceController.cs" />
     <Compile Include="Controllers\Schadenakte\InsuranceController.cs" />
     <Compile Include="Controllers\EventVerwaltung\InsuranceController.cs" />
+    <Compile Include="Controllers\UploadBestandsdaten\InsuranceController.cs" />
+    <Compile Include="Insurance\Contracts\IUploadBestandsdatenDataService.cs" />
     <Compile Include="Insurance\Contracts\ISchadenakteDataService.cs" />
+    <Compile Include="Insurance\Contracts\IBestandsdatenDataService.cs" />
+    <Compile Include="Insurance\Models\DataModels\BestandsdatenModel.cs" />
+    <Compile Include="Insurance\Models\DataModels\UploadBestandsdatenModel.cs" />
     <Compile Include="Insurance\Models\DataModels\SchadenakteDocumentCategory.cs" />
     <Compile Include="Insurance\Models\DataModels\Schadenakte.cs" />
     <Compile Include="Insurance\Models\DataModels\SchadenakteDocument.cs" />
+    <Compile Include="Insurance\Models\SchadenfallStatusAlle.cs" />
     <Compile Include="Insurance\Models\Schadenfall.cs" />
     <Compile Include="Insurance\Models\SchadenfallStatus.cs" />
     <Compile Include="Insurance\Models\SchadenfallStatusArt.cs" />
     <Compile Include="Insurance\Models\TerminEntity.cs" />
-    <Compile Include="Insurance\Models\VorgangTerminSelector.cs" />
+    <Compile Include="Insurance\Services\BestandsdatenDataServiceSap.cs" />
+    <Compile Include="Insurance\Services\SchadenakteDataServiceSAP.cs" />
+    <Compile Include="Insurance\Services\UploadBestandsdatenDataServiceSap.cs" />
+    <Compile Include="Insurance\ViewModels\BestandsdatenViewModel.cs" />
+    <Compile Include="Insurance\ViewModels\UploadBestandsdatenViewModel.cs" />
     <Compile Include="Insurance\ViewModels\SchadenakteViewModel.cs" />
     <Compile Include="Insurance\ViewModels\SchadenakteDocsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,7 +93,6 @@
     <Compile Include="Insurance\Models\VersEvent.cs" />
     <Compile Include="Insurance\Models\VersEventOrt.cs" />
     <Compile Include="Insurance\Models\VersEventOrtBox.cs" />
-    <Compile Include="Insurance\Models\VersEventOrtBoxVorgang.cs" />
     <Compile Include="Insurance\Models\TerminSchadenfall.cs" />
     <Compile Include="Insurance\Services\VersEventsDataServiceSQL.cs" />
     <Compile Include="Insurance\Services\Database\VersEventsSqlDbContext.cs" />

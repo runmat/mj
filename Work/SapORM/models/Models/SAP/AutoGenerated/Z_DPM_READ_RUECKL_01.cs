@@ -201,6 +201,8 @@ namespace SapORM.Models
 
 			public string VORGANGS_ID { get; set; }
 
+			public string GUTA_ERSTELL_1 { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -232,6 +234,7 @@ namespace SapORM.Models
 					FE_BLG = (string.IsNullOrEmpty(row["FE_BLG"].ToString())) ? null : (DateTime?)row["FE_BLG"],
 					FB_GUTA = (string.IsNullOrEmpty(row["FB_GUTA"].ToString())) ? null : (DateTime?)row["FB_GUTA"],
 					VORGANGS_ID = (string)row["VORGANGS_ID"],
+					GUTA_ERSTELL_1 = (string)row["GUTA_ERSTELL_1"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

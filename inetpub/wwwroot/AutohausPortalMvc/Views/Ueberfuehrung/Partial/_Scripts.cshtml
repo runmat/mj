@@ -11,6 +11,8 @@
 
         PrepareOpenFormsEvent();
         //PrepareAjaxViewLoadedEvent();
+
+        InitUeberfuehrungEvents();
     }
 
     function FormPreparePrivateAjax() {
@@ -19,10 +21,18 @@
         FormInitValidatedFormStyles();
     }
    
-  
+
     //
     // Step 2
     //
+
+    function SetZusatzfahrtenDisplay(cbx) {
+        if (cbx.checked) {
+            $(".Zusatzfahrt").removeClass("hide");
+        } else {
+            $(".Zusatzfahrt").addClass("hide");
+        }
+    }
 
     function TryShowGeoLocationInfo(uiIndex) {
         _onSubFormSubmitSuccessFunction = 'ShowGeoLocationInfo(' + uiIndex + ')';
@@ -113,8 +123,6 @@
             }
         });
     }
-
-
 
     //
     // Routing Controls for maps and routes

@@ -1,4 +1,6 @@
-﻿namespace PortalMvcTools.Models
+﻿using System;
+
+namespace PortalMvcTools.Models
 {
     public class FormInnerLayerModel
     {
@@ -6,6 +8,7 @@
 
         public string Header { get; set; }
 
+        private string _formLayerAdditionalCssClass;
         private string _headerCssClass;
         private string _formOpenerCssClass = "formopener";
 
@@ -27,6 +30,12 @@
         {
             get { return _formOpenerCssClass; }
             set { _formOpenerCssClass = value; }
+        }
+
+        public string FormLayerAdditionalCssClass
+        {
+            get { return (String.IsNullOrEmpty(_formLayerAdditionalCssClass) ? "" : _formLayerAdditionalCssClass); }
+            set { _formLayerAdditionalCssClass = value; }
         }
     }
 }

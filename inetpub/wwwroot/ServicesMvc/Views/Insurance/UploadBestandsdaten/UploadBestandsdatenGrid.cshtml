@@ -1,0 +1,103 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model UploadBestandsdatenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadBestandsdaten"; }
+
+@if (Model.SubmitMode)
+{
+    <h5>
+        <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>:</span>
+    </h5>
+    <script type="text/javascript">        _formWizardForceHideSubmitButton = false; </script>
+}
+else
+{
+    <h5>
+        <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>, bitte prüfen Sie jetzt noch den Inhalt:</span>
+    </h5>
+    <script type="text/javascript">        _formWizardForceHideSubmitButton = true; </script>
+}
+
+@if (Model.UploadItemsUploadErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsUploadErrorsOccurred)</span>
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+    .Grid<UploadBestandsdatenModel>()
+    .Name(gridName)
+    .XGroup("GridUploadBestandsdaten")
+    .Editable(editing => editing.Mode(GridEditMode.InCell).Enabled(!Model.SubmitMode))
+    .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+    .XAjaxDataBindingWithUpdate("UploadBestandsdatenAjaxBinding", "UploadBestandsdatenAjaxSaveChanges", "Insurance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzNr).Visible(false);
+        columns.XBound(c => c.ValidationStatus).Visible(!Model.SubmitMode).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.Anrede);
+        columns.XBound(c => c.Name1);
+        columns.XBound(c => c.Name2);
+        columns.XBound(c => c.Name3);
+        columns.XBound(c => c.Titel);
+        columns.XBound(c => c.Land);
+        columns.XBound(c => c.PLZ);
+        columns.XBound(c => c.Ort);
+        columns.XBound(c => c.Strasse);
+        columns.XBound(c => c.Geburtsdatum);
+        columns.XBound(c => c.Staatsangehoerigkeit1);
+        columns.XBound(c => c.Staatsangehoerigkeit2);
+        columns.XBound(c => c.Geschlecht);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.Bankleitzahl);
+        columns.XBound(c => c.Kreditinstitut);
+        columns.XBound(c => c.Land2);
+        columns.XBound(c => c.AbwKontoinhaber);
+        columns.XBound(c => c.Kommunikationstyp1);
+        columns.XBound(c => c.Kommunikationsnummer1);
+        columns.XBound(c => c.Kommunikationstyp2);
+        columns.XBound(c => c.Kommunikationsnummer2);
+        columns.XBound(c => c.VuNummer);
+        columns.XBound(c => c.VersicherungsscheinNr);
+        columns.XBound(c => c.Vermittler);
+        columns.XBound(c => c.Arbeitsgruppe);
+        columns.XBound(c => c.Vertragsbeginn);
+        columns.XBound(c => c.Vertragsende);
+        columns.XBound(c => c.Vertragsstatus);
+        columns.XBound(c => c.Bedingungen);
+        columns.XBound(c => c.Produkttyp);
+        columns.XBound(c => c.Deckungsart);
+        columns.XBound(c => c.AnzahlRisiken);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.VIN);
+        columns.XBound(c => c.Erstzulassung);
+        columns.XBound(c => c.Mehrfahrzeugklausel);
+        columns.XBound(c => c.Wagniskennziffer);
+        columns.XBound(c => c.Geltungsbereich);
+        columns.XBound(c => c.Krankenversicherung);
+        columns.XBound(c => c.EuroVertrag);
+        columns.XBound(c => c.SelbstbeteiligungVKinWE);
+        columns.XBound(c => c.Waehrungsschluessel1);
+        columns.XBound(c => c.SelbstbeteiligungTKinWE);
+        columns.XBound(c => c.Waehrungsschluessel2);
+        columns.XBound(c => c.Kasko);
+        columns.XBound(c => c.Getriebe);
+        columns.XBound(c => c.WerkstattName);
+        columns.XBound(c => c.WerkstattPLZ);
+        columns.XBound(c => c.WerkstattOrt);
+        columns.XBound(c => c.WerkstattStrasse);
+        columns.XBound(c => c.WerkstattOeffnungszeiten);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+)
+

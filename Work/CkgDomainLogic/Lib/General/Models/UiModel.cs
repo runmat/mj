@@ -33,6 +33,8 @@ namespace CkgDomainLogic.General.Models
 
         public string HeaderCssClass { get; set; }
 
+        public string FormLayerAdditionalCssClass { get; set; }
+
         [XmlIgnore]
         public virtual string ViewName { get { return ""; } }
 

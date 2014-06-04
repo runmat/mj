@@ -110,35 +110,42 @@ namespace MvcTools
             if (parentXmlAppSettings == null) return;
             var appSettings = parentXmlAppSettings.ChildNodes.OfType<XmlNode>().ToList();
 
-            if (appSettings.Count == 1)
+            try
             {
-                // genau 1 Eintrag in den AppSettings 
-                // ==> Achtung "Verschlüsselung": 
-                //      Wir gehen davon aus, dass die AppSettings zu genau einem Eintrag verschlüsselt sind:
-                //      ==> Wir meiden die verschlüsselte Web.Config und verwenden stattdessen unsere eigene Config "App_Data\AppSettings.config"
-                var fileName = Path.Combine(parentWebConfigFolder, "App_Data", "AppSettings.config");
-                if (File.Exists(fileName))
+                if (appSettings.Count == 1)
                 {
-                    var xmlDict = XmlService.XmlDeserializeFromFile<XmlDictionary<string,string>>(fileName);
-                    xmlDict.ToList().ForEach(xmlEntry =>
-                        {
-                            var key = CryptoMd5.Decrypt(xmlEntry.Key);
-                            var val = CryptoMd5.Decrypt(xmlEntry.Value);
-                            if (ConfigurationManager.AppSettings[key] == null)
-                                ConfigurationManager.AppSettings.Set(key, val);
-                        });
-                }
-            }
-            else
-                appSettings.ForEach(s =>
+                    // genau 1 Eintrag in den AppSettings 
+                    // ==> Achtung "Verschlüsselung": 
+                    //      Wir gehen davon aus, dass die AppSettings zu genau einem Eintrag verschlüsselt sind:
+                    //      ==> Wir meiden die verschlüsselte Web.Config und verwenden stattdessen unsere eigene Config "App_Data\AppSettings.config"
+                    var fileName = Path.Combine(parentWebConfigFolder, "App_Data", "AppSettings.config");
+                    if (File.Exists(fileName))
                     {
-                        if (s.Attributes == null || s.Attributes["key"] == null )
-                            return;
-                        
-                        var key = s.Attributes["key"].InnerText;
-                        if (ConfigurationManager.AppSettings[key] == null)
-                            ConfigurationManager.AppSettings.Set(key, s.Attributes["value"].InnerText);
-                    });
+                        var xmlDict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(fileName);
+                        xmlDict.ToList().ForEach(xmlEntry =>
+                            {
+                                var key = CryptoMd5.Decrypt(xmlEntry.Key);
+                                var val = CryptoMd5.Decrypt(xmlEntry.Value);
+                                if (ConfigurationManager.AppSettings[key] == null)
+                                    ConfigurationManager.AppSettings.Set(key, val);
+                            });
+                    }
+                }
+                else
+                    appSettings.ForEach(s =>
+                        {
+                            if (s.Attributes == null || s.Attributes["key"] == null)
+                                return;
+
+                            var key = s.Attributes["key"].InnerText;
+                            if (ConfigurationManager.AppSettings[key] == null)
+                                ConfigurationManager.AppSettings.Set(key, s.Attributes["value"].InnerText);
+                        });
+            }
+            catch
+            {
+                // empty catch ist ok here, weil wir nicht deterministischen Fehler abfangen wollen ("Key already exists...")
+            }
         }
     }
 }

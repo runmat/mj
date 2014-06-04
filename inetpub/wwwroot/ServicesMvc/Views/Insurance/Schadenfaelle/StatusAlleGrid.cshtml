@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model VersEventsViewModel
+
+@{
+    var gridName = "SchadenStatusAlleGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID">
+    @(Html.Telerik()
+        .Grid<SchadenfallStatusAlle>()
+        .Name(gridName)
+
+        .XAjaxDataBinding("SchadenfallStatusAlleAjaxBinding", "Insurance")
+        .Columns(columns =>
+            {
+                columns.XBound(c => c.VersSchadenfallID);
+                columns.XBound(c => c.EventName);
+                columns.XBound(c => c.Kennzeichen);
+                columns.XBound(c => c.VersicherungName);
+                columns.XBound(c => c.Referenznummer);
+
+                for (var i = 1; i <= 30; i++)
+                {
+                    columns.XBound(string.Format("Status{0}", i)).Title(Model.SchadenfallStatusAlleGetHeaderText(i)).Visible(Model.SchadenfallStatusAlleIsStatusVisible(i));
+                }
+            })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Sort).Ascending())
+        .XToolBar("Insurance")
+    )
+</div>

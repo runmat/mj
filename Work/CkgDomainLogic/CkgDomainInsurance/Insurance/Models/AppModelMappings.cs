@@ -331,6 +331,132 @@ namespace CkgDomainLogic.Insurance.Models
             }
         }
 
+        /// <summary>
+        /// Bestandsdaten
+        /// </summary>
+        static public ModelMapping<Z_DPM_ASSIST_READ_BESTAND_01.GT_OUT, BestandsdatenModel> Z_DPM_ASSIST_READ_BESTAND_01_GT_OUT_To_BestandsdatenModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ASSIST_READ_BESTAND_01.GT_OUT, BestandsdatenModel>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Eingangsdatum = source.EINGANG;
+                        destination.Name1 = source.NAME1;
+                        destination.Strasse = source.STREET;
+                        destination.PLZ = source.PSTLZ;
+                        destination.Ort = source.ORT;
+                        destination.VuNummer = source.VUNUMMER;
+                        destination.VersicherungsscheinNr = source.VERSNUMMER;
+                        destination.Vertragsbeginn = source.VERTRAGSBEGINN;
+                        destination.Vertragsende = source.VERTRAGSABLAUF;
+                        destination.Vertragsstatus = source.VERTRAGSSTATUS;
+                        destination.Bedingungen = source.BEDINGUNGEN;
+                        destination.Produkttyp = source.PRODUKTTYP;
+                        destination.AnzahlRisiken = source.ANZ_RISIKEN;
+                        destination.Kennzeichen = source.KENNZEICHEN;
+                        destination.Hersteller = source.HERSTNAME;
+                        destination.VIN = source.FIN;
+                        destination.Erstzulassung = source.ERSTZULDAT;
+                        destination.Mehrfahrzeugklausel = source.MEHRFZKLAUSEL;
+                        destination.Wagniskennziffer = source.WAGNISZIFFER;
+                        destination.Geltungsbereich = source.GELTUNGSBEREICH;
+                        destination.Krankenversicherung = source.KVVERSICHERUNG;
+                        destination.EuroVertrag = source.EURO_VTRG;
+                        destination.WerkstattName = source.WKS_NAME;
+                        destination.WerkstattStrasse = source.WKS_STRASSE;
+                        destination.WerkstattPLZ = source.WKS_PLZ;
+                        destination.WerkstattOrt = source.WKS_ORT;
+                        destination.WerkstattOeffnungszeiten = source.WKS_ZEIT;
+                    }
+                ));
+            }
+        }
+
+        /// <summary>
+        /// Upload Bestandsdaten
+        /// </summary>
+        static public ModelMapping<Z_DPM_ASSIST_IMP_BESTAND_01.GT_IN, UploadBestandsdatenModel> Z_DPM_ASSIST_IMP_BESTAND_01_GT_IN_From_UploadBestandsdatenModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ASSIST_IMP_BESTAND_01.GT_IN, UploadBestandsdatenModel>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                        {
+                            destination.LFDNR = source.DatensatzNr.ToString().PadLeft(3, '0');
+                            destination.ANRED = source.Anrede;
+                            destination.NAME1 = source.Name1;
+                            destination.NAME2 = source.Name2;
+                            destination.NAME3 = source.Name3;
+                            destination.TITEL = source.Titel;
+                            destination.LANDT = source.Land;
+                            destination.PSTLZ = source.PLZ;
+                            destination.ORT = source.Ort;
+                            destination.STREET = source.Strasse;
+                            if (source.Geburtsdatum.ToNullableDateTime() != null)
+                            {
+                                destination.GEBURTSDATUM = source.Geburtsdatum.ToNullableDateTime();
+                            }
+                            destination.STAATSANGE1 = source.Staatsangehoerigkeit1;
+                            destination.STAATSANGE2 = source.Staatsangehoerigkeit2;
+                            destination.GESCHLECHT = source.Geschlecht;
+                            destination.KONTONUMMER = source.Kontonummer;
+                            destination.BLZ = source.Bankleitzahl;
+                            destination.INSTITUTSNAME = source.Kreditinstitut;
+                            destination.LAND2 = source.Land2;
+                            destination.ABWKONTOINHABER = source.AbwKontoinhaber;
+                            destination.KOMMTYP1 = source.Kommunikationstyp1;
+                            destination.KOMMSNO1 = source.Kommunikationsnummer1;
+                            destination.KOMMTYP2 = source.Kommunikationstyp2;
+                            destination.KOMMSNO2 = source.Kommunikationsnummer2;
+                            destination.VUNUMMER = source.VuNummer;
+                            destination.VERSNUMMER = source.VersicherungsscheinNr;
+                            destination.VERMITTLER = source.Vermittler;
+                            destination.ABGRP = source.Arbeitsgruppe;
+                            if (source.Vertragsbeginn.ToNullableDateTime() != null)
+                            {
+                                destination.VERTRAGSBEGINN = source.Vertragsbeginn.ToNullableDateTime();
+                            }
+                            if (source.Vertragsende.ToNullableDateTime() != null)
+                            {
+                                destination.VERTRAGSABLAUF = source.Vertragsende.ToNullableDateTime();
+                            }
+                            destination.VERTRAGSSTATUS = source.Vertragsstatus;
+                            destination.BEDINGUNGEN = source.Bedingungen;
+                            destination.PRODUKTTYP = source.Produkttyp;
+                            destination.DECKUNGSART = source.Deckungsart;
+                            destination.ANZ_RISIKEN = source.AnzahlRisiken;
+                            destination.KENNZEICHEN = source.Kennzeichen;
+                            destination.HERSTNAME = source.Hersteller;
+                            destination.FIN = source.VIN;
+                            destination.MEHRFZKLAUSEL = source.Mehrfahrzeugklausel;
+                            if (source.Erstzulassung.ToNullableDateTime() != null)
+                            {
+                                destination.ERSTZULDAT = source.Erstzulassung.ToNullableDateTime();
+                            }
+                            destination.WAGNISZIFFER = source.Wagniskennziffer;
+                            destination.GELTUNGSBEREICH = source.Geltungsbereich;
+                            destination.KVVERSICHERUNG = source.Krankenversicherung;
+                            destination.EURO_VTRG = source.EuroVertrag;
+                            destination.SBT_VK = source.SelbstbeteiligungVKinWE;
+                            destination.WAERS1 = source.Waehrungsschluessel1;
+                            destination.SBT_TK = source.SelbstbeteiligungTKinWE;
+                            destination.WAERS2 = source.Waehrungsschluessel2;
+                            destination.KASKO = source.Kasko;
+                            destination.GETRIEBE = source.Getriebe;
+                            destination.WKS_NAME = source.WerkstattName;
+                            destination.WKS_PLZ = source.WerkstattPLZ;
+                            destination.WKS_ORT = source.WerkstattOrt;
+                            destination.WKS_STRASSE = source.WerkstattStrasse;
+                            destination.WKS_ZEIT = source.WerkstattOeffnungszeiten;
+                        }
+                ));
+            }
+        }
+
         #region intern
 
         public static string HhMmToSap(string s)

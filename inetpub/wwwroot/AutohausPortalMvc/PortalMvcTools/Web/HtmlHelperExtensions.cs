@@ -184,9 +184,13 @@ namespace PortalMvcTools.Web
                                         outerDiv.End());
         }
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, string cssClass = "FormCheckbox", string labelCssClass = "FormLabelNormal")
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, 
+                                                                    Expression<Func<TModel, bool>> expression, 
+                                                                    string cssClass = "FormCheckbox", 
+                                                                    string labelCssClass = "FormLabelNormal",
+                                                                    IDictionary<string, object> additionalHtmlAttributes = null)
         {
-            var checkBoxFor = html.CheckBoxFor(expression);
+            var checkBoxFor = html.CheckBoxFor(expression, additionalHtmlAttributes);
             var labelFor = html.LabelFor(expression);
 
             var outerDiv = new MvcTag(null, "div", cssClass: "formselects " + cssClass);
@@ -491,9 +495,9 @@ namespace PortalMvcTools.Web
             return html.Wrapper("FormOuterLayer");
         }
 
-        public static MvcWrapper FormInnerLayer(this HtmlHelper html, int id, string header, string headerCssClass = null, string formOpenerCssClass = null)
+        public static MvcWrapper FormInnerLayer(this HtmlHelper html, int id, string header, string headerCssClass = null, string formOpenerCssClass = null, string formLayerAdditionalCssClass = null)
         {
-            var model = new FormInnerLayerModel { ID = id, Header = header, HeaderCssClass = headerCssClass, FormOpenerCssClass = formOpenerCssClass};
+            var model = new FormInnerLayerModel { ID = id, Header = header, HeaderCssClass = headerCssClass, FormOpenerCssClass = formOpenerCssClass, FormLayerAdditionalCssClass = formLayerAdditionalCssClass };
             return html.Wrapper("FormInnerLayer", model);
         }
 

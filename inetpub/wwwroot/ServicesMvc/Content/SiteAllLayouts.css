@@ -847,6 +847,10 @@ i.pdf-export
     height: 1px!important;
 }
 
+.t-upload-button {
+    width: 90px;
+}
+
 .t-upload-button, .t-upload-selected, .t-upload-files {
     padding-top: 7px;
     padding-bottom: 7px;
@@ -1095,4 +1099,11 @@ i.pdf-export
     display: inline-block;
     font-size: 1.2em;
     margin-left: 10px;
+}
+
+.fontBold {
+    font-weight: bold;
+}
+.fontItalic {
+    font-style: italic;
 }

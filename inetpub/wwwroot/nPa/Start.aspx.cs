@@ -27,7 +27,7 @@ namespace nPa
 
         protected void NpaInit()
         {
-            String strPath = @"F:\inetpub\wwwroot\nPa\eIDConfig.xml";
+            String strPath = @"C:\inetpub\wwwroot\nPa\eIDConfig.xml";
 
             org.fokus.npa.connector.eIDConnector.getInstance().Init(strPath);
 

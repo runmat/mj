@@ -361,6 +361,10 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
         [XmlIgnore]
         public int Step2EmptyAddressPrevCount { get; set; }
 
+        [XmlIgnore]
+        [LocalizedDisplay("Zusatzfahrten anzeigen")]
+        public bool ShowZusatzfahrten { get; set; }
+
         void StepFormsCollectionPrepareStep(int stepNew = -1) //, int stepOld = -1)
         {
             //var stepMovingForward = (stepNew > stepOld);
@@ -483,6 +487,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
                                           SubGroupName = "ZUSATZ",
                                           Header = "Zusatzfahrt Fahrzeug 1",
                                           HeaderCssClass = string.Format("step{0}header", 2),
+                                          FormLayerAdditionalCssClass = "Zusatzfahrt hide",
                                       };
                         thisStepFormsCollection.Add(uiModel);
 
@@ -530,6 +535,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
                                           SubGroupName = "ZUSATZ",
                                           Header = "Zusatzfahrt Fahrzeug 2",
                                           HeaderCssClass = string.Format("step{0}header", 2),
+                                          FormLayerAdditionalCssClass = "Zusatzfahrt hide",
                                       };
                         thisStepFormsCollection.Add(uiModel);
 

@@ -1,25 +1,13 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
+﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
+Imports GeneralTools.Services
 
 Partial Public Class Change01
-    Inherits System.Web.UI.Page
+    Inherits Page
     Private m_User As Security.User
     Private m_App As Security.App
 
-    Private versandart As String
-    Private upload As Boolean
     Private objSuche As CarRent01
-    Private rowID_PDI As String
-    Private rowID_MOD As String
-    Private infoArray As Array
-    Private highlightID As String
-    Private Const strTaskZulassen As String = "Zulassen"
-    Private Const strTaskSperren As String = "Sperren"
-    Private Const strTaskEntsperren As String = "Entsperren"
-    Private Const strTaskVerschieben As String = "Verschieben"
-
-    Private strFahrgestellnummer As String
 
     Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
 
@@ -31,9 +19,7 @@ Partial Public Class Change01
         Beides = 3
     End Enum
 
-
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User, True)
         GetAppIDFromQueryString(Me)
@@ -48,7 +34,6 @@ Partial Public Class Change01
                 objSuche = CType(Session("objSuche"), CarRent01)
             End If
             If Not IsPostBack Then
-                'Initialload()
                 InitialSelection()
                 If (Not Request.QueryString("Back") Is Nothing) AndAlso (Request.QueryString("Back").Length > 0) Then
                     loadNew()
@@ -60,6 +45,7 @@ Partial Public Class Change01
             btnConfirm.Enabled = False
         End Try
     End Sub
+
     Private Sub Initialload()
         Dim strStatusPDI As String = ""
         Dim strStatusMod As String = ""
@@ -90,6 +76,7 @@ Partial Public Class Change01
 
         End If
     End Sub
+
     Private Sub loadNew()
         Dim strStatusPDI As String = ""
         Dim strStatusMod As String = ""
@@ -191,7 +178,7 @@ Partial Public Class Change01
 
         Dim GetData As New CarRent01(m_User, m_App, Session("AppID").ToString, Session.SessionID, "")
 
-        GetData.getZulassungsarten(Session("AppID").ToString, Session.SessionID, Me.Page)
+        GetData.getZulassungsarten(Session("AppID").ToString, Session.SessionID, Page)
 
         Select Case GetData.ZulArt
             Case Zulassungsart.UngueltigeAuswahl
@@ -210,26 +197,15 @@ Partial Public Class Change01
 
     End Sub
 
-
-    Private Sub PostbackLoad()
-        'fillTable()
-    End Sub
-
     Private Sub fillTable(Optional ByVal Index As Integer = 0)
 
         Dim txtMenge As TextBox
         Dim row As DataRow
-        Dim anzahl As Integer = 0
+        Dim anzahl As Integer
         Dim cbxAuswahl As CheckBox
         Dim txtGridDatum As TextBox
 
         objSuche = CType(Session("objSuche"), CarRent01)
-
-
-        Dim lblRowID As Label
-
-        lblRowID = gvFahrzeuge.Rows(Index).Cells(0).FindControl("lblRowId")
-        row = objSuche.Result.Select("RowID='" & lblRowID.Text & "'")(0)       'Tabellenzeile holen
 
         'Menge holen
         txtMenge = CType(gvFahrzeuge.Rows(Index).FindControl("txtMenge"), TextBox)
@@ -361,17 +337,16 @@ Partial Public Class Change01
             'lblModelle.Text = vwMOD.Count
         End If
     End Sub
+
     Private Sub fillCAR(ByVal strPDI As String, ByVal strHandelsname As String)
-        Dim tmpDataView As New DataView()
         objSuche = CType(Session("objSuche"), CarRent01)
 
-        tmpDataView = objSuche.Result.DefaultView
+        Dim tmpDataView As DataView = objSuche.Result.DefaultView
         tmpDataView.RowFilter = "DADPDI='" & strPDI & "' AND ZZHANDELSNAME ='" & strHandelsname & "'"
 
         FillGrid(0, tmpDataView)
 
     End Sub
-
 
     Private Sub FillGrid(ByVal intPageIndex As Int32, ByVal tmpDataView As DataView, Optional ByVal strSort As String = "")
 
@@ -432,6 +407,7 @@ Partial Public Class Change01
             lblError.Text = objSuche.Message
         End If
     End Sub
+
     Private Sub fillVersicherer(Optional ByVal strSetIndex As String = "")
         Dim vwVersicherer As DataView
         Dim item As ListItem
@@ -467,7 +443,7 @@ Partial Public Class Change01
         End If
     End Sub
 
-    Private Sub fillKreise(Optional ByVal strSetIndex As String = "")
+    Private Sub fillKreise()
         Dim vwKreise As DataView
         objSuche = CType(Session("objSuche"), CarRent01)
 
@@ -483,7 +459,6 @@ Partial Public Class Change01
             End With
         End If
     End Sub
-
 
     Private Sub setBezeichnung()
         Dim rowSelectedPDI As DataRow
@@ -509,25 +484,25 @@ Partial Public Class Change01
             lblError.Text = "Fehler bei der Ermittlung der PDI-Bezeichnung."
         End Try
     End Sub
+
     Private Sub gvFahrzeuge_PageIndexChanged(ByVal pageindex As Int32) Handles GridNavigation1.PagerChanged
         gvFahrzeuge.EditIndex = -1
-        Dim tmpDataView As New DataView()
         objSuche = CType(Session("objSuche"), CarRent01)
 
-        tmpDataView = objSuche.Result.DefaultView
+        Dim tmpDataView As DataView = objSuche.Result.DefaultView
         tmpDataView.RowFilter = "DADPDI='" & lstPDI.SelectedItem.Value & "' AND ZZHANDELSNAME ='" & lstMOD.SelectedItem.Value & "'"
         FillGrid(pageindex, tmpDataView)
     End Sub
 
     Private Sub GridNavigation1_ddlPageSizeChanged() Handles GridNavigation1.PageSizeChanged
-        Dim tmpDataView As New DataView()
         objSuche = CType(Session("objSuche"), CarRent01)
 
-        tmpDataView = objSuche.Result.DefaultView
+        Dim tmpDataView As DataView = objSuche.Result.DefaultView
         tmpDataView.RowFilter = "DADPDI='" & lstPDI.SelectedItem.Value & "' AND ZZHANDELSNAME ='" & lstMOD.SelectedItem.Value & "'"
         FillGrid(gvFahrzeuge.PageIndex, tmpDataView)
     End Sub
-    Private Sub gvFahrzeuge_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvFahrzeuge.RowCommand
+
+    Private Sub gvFahrzeuge_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvFahrzeuge.RowCommand
         If e.CommandName = "Copy" Then
             Dim index As Integer = CType(e.CommandArgument, Integer)
             fillTable(index)
@@ -535,18 +510,16 @@ Partial Public Class Change01
 
     End Sub
 
-    Private Sub gvFahrzeuge_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvFahrzeuge.RowCreated
+    Private Sub gvFahrzeuge_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles gvFahrzeuge.RowCreated
         If e.Row.RowType = DataControlRowType.DataRow Then
             Dim addImgButton As ImageButton = CType(e.Row.Cells(0).Controls(0).FindControl("ImageButton1"), ImageButton)
             addImgButton.CommandArgument = e.Row.RowIndex.ToString()
         End If
     End Sub
 
-    Private Sub gvFahrzeuge_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvFahrzeuge.RowDataBound
-        Dim txtMenge As TextBox
+    Private Sub gvFahrzeuge_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles gvFahrzeuge.RowDataBound
         Dim cbxAuswahl As CheckBox
         Dim row As DataRow
-        Dim btnKopieren As Button
         Dim calControl As TextBox
         Dim lblRowID As Label
 
@@ -561,14 +534,10 @@ Partial Public Class Change01
                 cbxAuswahl.Checked = CBool(row("SelectedEinzel"))
             End If
 
-            'Kopieren (Dropdownlist)
-            txtMenge = CType(e.Row.FindControl("txtMenge"), TextBox)
-            btnKopieren = CType(e.Row.FindControl("btnKopieren"), Button)
-
         End If
 
-
     End Sub
+
     Private Function checkInput(ByRef intAnzahl As Integer) As Boolean
         Dim datCheck As Date
         Dim strDate As String
@@ -576,7 +545,6 @@ Partial Public Class Change01
         Dim intErrors As Integer
         Dim strStatus As String
         Dim row As DataRow
-        Dim anzahl As Integer = 0
         Dim cbxAuswahl As CheckBox
         Dim txtGridDatum As TextBox
 
@@ -623,8 +591,6 @@ Partial Public Class Change01
             If CBool(row("SelectedEinzel")) = True Then 'Zeile ausgewählt?
                 intAnzahl += 1
 
-                '############ Zulassen ##################################################################
-                'If (objSuche.Task = strTaskZulassen) Then
                 '*** Zulassungsdatum überprüfen --------------------------
                 strDate = CStr(row("SelectedDate"))
 
@@ -638,14 +604,15 @@ Partial Public Class Change01
 
                 If blnCheck Then
                     '...Datum < Tagesdatum?
-                    If CDate(strDate) < Date.Today Then
+                    If datCheck < Date.Today Then
                         blnCheck = False
                         strStatus = "Zulassungsdatum darf nicht in der Vergangenheit liegen"
                     End If
                 End If
+
                 If blnCheck Then
-                    '...Datum < Tagesdatum?
-                    If CDate(strDate) = Date.Today Then
+                    '...Datum = Tagesdatum?
+                    If datCheck = Date.Today Then
                         blnCheck = False
                         strStatus = "Zulassungsdatum darf nicht auf den heutigen Tag fallen"
                     End If
@@ -653,21 +620,28 @@ Partial Public Class Change01
 
                 If blnCheck Then
                     '...Wochenende ?
-                    If (CDate(strDate).DayOfWeek = DayOfWeek.Saturday) Or (CDate(strDate).DayOfWeek = DayOfWeek.Sunday) Then
+                    If (datCheck.DayOfWeek = DayOfWeek.Saturday) Or (datCheck.DayOfWeek = DayOfWeek.Sunday) Then
                         blnCheck = False
                         strStatus = "Zulassungsdatum ungültig (Wochenende)."
                     End If
                 End If
 
                 If blnCheck Then
-                    'row("Versicherer") = "0000000127"
+                    '...Feiertag ?
+                    Dim feiertagsListe As New DeutscheFeiertageEinesJahres(datCheck.Year)
+                    If feiertagsListe.Feiertage.Any(Function(tag) tag.Datum.Date = datCheck.Date) Then
+                        blnCheck = False
+                        strStatus = "Zulassungsdatum ungültig (Feiertag)."
+                    End If
+                End If
+
+                If blnCheck Then
                     If ddlVersicherer.SelectedIndex = -1 Then
                         blnCheck = False
                         strStatus = "Bitte wählen Sie eine Versicherer aus."
                     Else
                         row("Versicherer") = ddlVersicherer.SelectedItem.Value
                     End If
-
                 End If
 
                 If Not blnCheck Then
@@ -685,7 +659,6 @@ Partial Public Class Change01
             lblError.Text = "Keine Fahrzeuge zum Zulassen ausgewählt."
         End If
 
-
         Session("objSuche") = objSuche
 
         Return (intErrors = 0)
@@ -693,11 +666,9 @@ Partial Public Class Change01
     End Function
 
     Private Sub fillCARErrors()
-        Dim tmpDataView As New DataView()
-
         objSuche = CType(Session("objSuche"), CarRent01)
 
-        tmpDataView = objSuche.Result.DefaultView
+        Dim tmpDataView As DataView = objSuche.Result.DefaultView
         tmpDataView.RowFilter = "Status<>'" & String.Empty & "'"
 
         FillGrid(0, tmpDataView)
@@ -713,15 +684,14 @@ Partial Public Class Change01
         fillTable()
     End Sub
 
-    Protected Sub ImageButton1_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+    Protected Sub ImageButton1_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs)
         fillTable()
     End Sub
 
-    Private Sub gvFahrzeuge_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvFahrzeuge.Sorting
-        Dim tmpDataView As New DataView()
+    Private Sub gvFahrzeuge_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles gvFahrzeuge.Sorting
         objSuche = CType(Session("objSuche"), CarRent01)
 
-        tmpDataView = objSuche.Result.DefaultView
+        Dim tmpDataView As DataView = objSuche.Result.DefaultView
         tmpDataView.RowFilter = "DADPDI='" & lstPDI.SelectedItem.Value & "' AND ZZHANDELSNAME ='" & lstMOD.SelectedItem.Value & "'"
 
         FillGrid(gvFahrzeuge.PageIndex, tmpDataView, e.SortExpression)
@@ -732,13 +702,17 @@ Partial Public Class Change01
         If Not Session("objSuche") Is Nothing Then
             objSuche = CType(Session("objSuche"), CarRent01)
         End If
+        If objSuche Is Nothing Then
+            Exit Sub
+        End If
+
         If rblAuswahl.Visible = True Then
 
             If rblAuswahl.SelectedValue = "" Then
 
                 lblDezError.Text = "Bitte wählen Sie eine Zulassungsart aus."
                 Exit Sub
-                
+
             End If
         End If
 
@@ -771,7 +745,7 @@ Partial Public Class Change01
         fillTable()
     End Sub
 
-    Private Sub lbBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbBack.Click
+    Private Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
         Response.Redirect("/Services/(S(" & Session.SessionID & "))/Start/Selection.aspx?AppID=" & Session("AppID").ToString, False)
     End Sub
 
@@ -823,4 +797,5 @@ Partial Public Class Change01
 
 
     End Sub
+
 End Class

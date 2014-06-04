@@ -7,12 +7,24 @@
 @Html.StepButtons(showHeader: true)
 
 
+@if (Model.Step == 2)
+{
+    <style type="text/css">
+        .ez-checkbox {
+            margin-top: 0;
+        }
+    </style>
+    
+    @Html.FormCheckBoxFor(m => m.ShowZusatzfahrten, labelCssClass: null, additionalHtmlAttributes: new Dictionary<string, object>() { { "onclick", "SetZusatzfahrtenDisplay(this)" } })
+    <div class="trenner10"></div>
+}
+
 @foreach (var subModel in Model.StepForms)
 {
     using (Html.FormOuterLayer())
     {
         @Html.DivLinie()
-        using (Html.FormInnerLayer(subModel.UiIndex, header: subModel.Header, headerCssClass: subModel.HeaderCssClass))
+        using (Html.FormInnerLayer(subModel.UiIndex, header: subModel.Header, headerCssClass: subModel.HeaderCssClass, formLayerAdditionalCssClass: subModel.FormLayerAdditionalCssClass))
         {
             @Html.Partial(subModel.ViewName, subModel)
         }

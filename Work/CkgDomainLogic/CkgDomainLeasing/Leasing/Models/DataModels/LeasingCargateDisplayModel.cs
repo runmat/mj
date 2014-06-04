@@ -2,7 +2,7 @@
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
-namespace CkgDomainLeasing.Leasing.Models.DataModels
+namespace CkgDomainLogic.Leasing.Models
 {
     public class LeasingCargateDisplayModel
     {
@@ -161,5 +161,11 @@ namespace CkgDomainLeasing.Leasing.Models.DataModels
         /// </summary>
         [LocalizedDisplay(LocalizeConstants._SERVICE_LEVEL_19_21)]
         public string SERVICE_LEVEL_19_21 { get; set; }
+
+        /// <summary>
+        /// Gutachten erstellen
+        /// </summary>
+        [LocalizedDisplay(LocalizeConstants._GUTA_ERSTELL_1)]
+        public string GUTA_ERSTELL_1 { get; set; }
     }
 }

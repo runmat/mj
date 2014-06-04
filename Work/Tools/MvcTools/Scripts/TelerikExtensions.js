@@ -41,11 +41,16 @@ function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
 }
 
 function PersistColumns(jsonColumnsString, persistInDb) {
+    
+    var url = "LogonContextPersistColumns";
+    if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
+        url = document.URL + "/" + url;
+    
     try {
         $.ajax(
             {
                 type: "POST",
-                url: "LogonContextPersistColumns",
+                url: url,
                 data: { jsonColumns: jsonColumnsString, persistInDb: persistInDb },
                 loadingShow: false,
                 success: function(result) {

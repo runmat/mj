@@ -2,8 +2,6 @@
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
-using CkgDomainLeasing.Leasing.Contracts;
-using CkgDomainLeasing.Leasing.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Services;
 using CkgDomainLogic.Charts.Contracts;
@@ -114,12 +112,15 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<LeasingSicherungsscheineDataService>().As<ILeasingSicherungsscheineDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceBewertungDataServiceSAP>().As<IFinanceBewertungDataService>().InstancePerHttpRequest();
             builder.RegisterType<CustomerDocumentDataService>().As<ICustomerDocumentDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadBestandsdatenDataServiceSap>().As<IUploadBestandsdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<BestandsdatenDataServiceSap>().As<IBestandsdatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
             builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();
             builder.RegisterType<LogsDataServiceSql>().As<ILogsDataService>().InstancePerHttpRequest();
             builder.RegisterType<ChartsDataServiceSql>().As<IChartsDataService>().InstancePerHttpRequest();
-            
+
+            builder.RegisterType<SchadenakteDataServiceSAP>().As<ISchadenakteDataService>().InstancePerHttpRequest();
             if (System.Configuration.ConfigurationManager.AppSettings["CsiVersEventsDataServiceSql"].NotNullOrEmpty().ToLower() == "true")
                 builder.RegisterType<VersEventsDataServiceSQL>().As<IVersEventsDataService>().InstancePerHttpRequest();
             else

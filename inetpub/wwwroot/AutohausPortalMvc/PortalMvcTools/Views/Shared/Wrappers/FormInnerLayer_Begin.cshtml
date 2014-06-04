@@ -1,7 +1,7 @@
 ﻿@using PortalMvcTools.Web
 @model PortalMvcTools.Models.FormInnerLayerModel
 
-<div class="formlayer"> 
+<div class="formlayer @Model.FormLayerAdditionalCssClass"> 
     <div id="@Model.FormLayerTopID" class="formlayer_top" onclick="tryOpenforms(@Model.ID);">
         @Html.ImgTransparent(width:1, height:1)
         <div id="@Model.FormOpenerID" class="@Model.FormOpenerCssClass">

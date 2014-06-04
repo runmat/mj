@@ -21,16 +21,21 @@
         
         @Html.FormValidationSummary()
 
+        
+        @Html.FormTextBlockFor(m => m.VersOrtID, new { @class = "m-wrap small", col = "left" })
+        @Html.FormTextBlockFor(m => m.VersBoxID, new { @class = "m-wrap small", col = "right" })
                 
         @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small" })
 
-        if (TerminSchadenfall.GetViewModel().InsertMode) { @Html.FormDatePickerFor(m => m.DatumTmpBlockerSerieBis, new { @class = "m-wrap small" }) }
-        else { @Html.HiddenFor(m => m.DatumTmpBlockerSerieBis) }
+        if (TerminSchadenfall.GetViewModel().InsertMode)
+        { @Html.FormDatePickerFor(m => m.DatumTmpBlockerSerieBis, new { @class = "m-wrap small" }) }
+        else
+        { @Html.HiddenFor(m => m.DatumTmpBlockerSerieBis) }
 
         @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap" })
 
-        @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" }, 
-                             postControlHtml: 
+        @Html.FormTextBoxFor(m => m.ZeitVon, new { @class = "m-wrap xsmall timepicker" },
+                             postControlHtml:
                                  @<text>
                                       <span class="margin-left-10">
                                         <button onclick="return SetTimeControls('12:00', '13:00');" class="btn mini blue"><i class="icon-time"></i> 12:00-13:00</button>

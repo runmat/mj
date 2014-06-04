@@ -2134,6 +2134,9 @@
     <Content Include="Scripts\spin.js" />
     <Content Include="Views\CocBeauftragung\FreieZulassungsOptionen.cshtml" />
     <Content Include="Views\CocBeauftragung\FreieZulassungsOptionenForm.cshtml" />
+    <Content Include="Views\Insurance\UploadBestandsdaten\Receipt.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Shared\Partial\SpanAlert.cshtml" />
     <Content Include="Views\CocBeauftragung\Partial\SummaryAddressSelectionLink.cshtml" />
     <Content Include="Views\Document\CreateDocument.cshtml" />
@@ -2165,6 +2168,9 @@
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Test\ImageUploadPlus.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
+    <None Include="Documents\Templates\UploadBestandsdaten.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Test\DatePicker.cshtml" />
@@ -2254,6 +2260,14 @@
     <Content Include="Views\Insurance\KonfiguratorTest.cshtml" />
     <Content Include="Views\Insurance\Konfigurator\BoxBlockerTermineGrid.cshtml" />
     <Content Include="Views\Insurance\Konfigurator\BoxBlockerTerminDetailsForm.cshtml" />
+    <Content Include="Views\Insurance\UploadBestandsdaten.cshtml" />
+    <Content Include="Views\Insurance\UploadBestandsdaten\FileUpload.cshtml" />
+    <Content Include="Views\Insurance\UploadBestandsdaten\UploadBestandsdatenGrid.cshtml" />
+    <Content Include="Views\Insurance\UploadBestandsdaten\UploadSaveBestandsdatenGrid.cshtml" />
+    <Content Include="Views\Insurance\SchadenStatusAlle.cshtml" />
+    <Content Include="Views\Insurance\Schadenfaelle\StatusAlleGrid.cshtml" />
+    <Content Include="Views\Insurance\ReportBestandsdaten.cshtml" />
+    <Content Include="Views\Insurance\Bestandsdaten\BestandsdatenGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

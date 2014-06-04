@@ -15,7 +15,7 @@ namespace RentMovieSampleApp
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            String strPath = @"F:\inetpub\wwwroot\nPa\eIDConfig.xml";
+            String strPath = @"C:\inetpub\wwwroot\nPa\eIDConfig.xml";
 
             //this.ge
             org.fokus.npa.connector.eIDConnector.getInstance().Init(strPath);

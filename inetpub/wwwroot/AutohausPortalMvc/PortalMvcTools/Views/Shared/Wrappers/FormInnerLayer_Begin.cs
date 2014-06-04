@@ -62,7 +62,7 @@ namespace PortalMvcTools.Views.Shared.Wrappers
         {
 
 
-WriteLiteral("\r\n<div class=\"formlayer\"> \r\n    <div id=\"");
+WriteLiteral("\r\n<div class=\"formlayer " + Model.FormLayerAdditionalCssClass + "\"> \r\n    <div id=\"");
 
 
         Write(Model.FormLayerTopID);

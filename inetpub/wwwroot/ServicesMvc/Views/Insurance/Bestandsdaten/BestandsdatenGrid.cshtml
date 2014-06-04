@@ -1,0 +1,54 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model BestandsdatenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridBestandsdaten"; }
+
+@(Html.Telerik()
+    .Grid<BestandsdatenModel>()
+    .Name(gridName)
+    .XGroup("GridBestandsdaten")
+    .XAjaxDataBinding("BestandsdatenAjaxBinding", "Insurance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Eingangsdatum);
+        columns.XBound(c => c.Name1);
+        columns.XBound(c => c.Strasse);
+        columns.XBound(c => c.PLZ);
+        columns.XBound(c => c.Ort);
+        columns.XBound(c => c.VuNummer);
+        columns.XBound(c => c.VersicherungsscheinNr);
+        columns.XBound(c => c.Vertragsbeginn);
+        columns.XBound(c => c.Vertragsende);
+        columns.XBound(c => c.Vertragsstatus);
+        columns.XBound(c => c.Bedingungen);
+        columns.XBound(c => c.Produkttyp);
+        columns.XBound(c => c.AnzahlRisiken);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.VIN);
+        columns.XBound(c => c.Erstzulassung);
+        columns.XBound(c => c.Mehrfahrzeugklausel);
+        columns.XBound(c => c.Wagniskennziffer);
+        columns.XBound(c => c.Geltungsbereich);
+        columns.XBound(c => c.Krankenversicherung);
+        columns.XBound(c => c.EuroVertrag);
+        columns.XBound(c => c.WerkstattName);
+        columns.XBound(c => c.WerkstattPLZ);
+        columns.XBound(c => c.WerkstattOrt);
+        columns.XBound(c => c.WerkstattStrasse);
+        columns.XBound(c => c.WerkstattOeffnungszeiten);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.VersicherungsscheinNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportBestandsdatenFilteredExcel", "Insurance");
+        commands.FilteredDataCommand("ExportBestandsdatenFilteredPDF", "Insurance");
+    })
+)
+

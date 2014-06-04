@@ -1,4 +1,4 @@
-﻿@using CkgDomainLeasing.Leasing.Models.DataModels
+﻿@using CkgDomainLogic.Leasing.Models
 @(Html.Telerik()
               .Grid<LeasingCargateDisplayModel>()
       .Name("GridCargateAnzeige")
@@ -18,6 +18,7 @@
           columns.XBound(c => c.IUG_DAT);
           columns.XBound(c => c.PROT_EING_O);
           columns.XBound(c => c.FE_BLG);
+          columns.XBound(c => c.GUTA_ERSTELL_1);
           columns.XBound(c => c.DAT_GUTA_BEAUFTRAGT);
           columns.XBound(c => c.PROT_EING_D);
           columns.XBound(c => c.ABMELDEDATUM);
