@@ -9,6 +9,7 @@ using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Models.DataModels;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
@@ -71,6 +72,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<DokumentRight> DocumentRights { get { return _domainDbContext.DokumentRights.ToList(); } }
 
         public List<Land> Laender { get; private set; }
+        public List<SelectItem> Versicherungen { get; private set; }
         public List<VersandOption> VersandOptionen { get; private set; }
         public List<ZulassungsOption> ZulassungsOptionen { get; private set; }
         public List<ZulassungsDienstleistung> ZulassungsDienstleistungen { get; private set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Insurance.ViewModels;
 using GeneralTools.Models;
@@ -110,10 +111,12 @@ namespace CkgDomainLogic.Insurance.Models
         //static public List<SelectItem> Versicherungen { get; set; }
         
         [NotMapped]
+        [ScriptIgnore]
         public static Func<VersEventsViewModel> GetViewModel { get; set; }
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public VersEvent Event
         {
             get

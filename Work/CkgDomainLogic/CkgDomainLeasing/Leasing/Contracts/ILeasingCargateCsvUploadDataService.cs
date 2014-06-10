@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLeasing.Leasing.Models.DataModels;
-using SapORM.Models;
+using CkgDomainLogic.Leasing.Models;
 
-namespace CkgDomainLeasing.Leasing.Contracts
+namespace CkgDomainLogic.Leasing.Contracts
 {
     public interface ILeasingCargateCsvUploadDataService
     {

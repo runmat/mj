@@ -6,6 +6,7 @@ using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.DomainCommon.Services
@@ -44,6 +45,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         #region unused Iterface-Members
 
         public List<Land> Laender { get; private set; }
+        public List<SelectItem> Versicherungen { get; private set; }
         public List<VersandOption> VersandOptionen { get; private set; }
         public List<ZulassungsOption> ZulassungsOptionen { get; private set; }
         public List<ZulassungsDienstleistung> ZulassungsDienstleistungen { get; private set; }

@@ -3,6 +3,7 @@ using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
@@ -41,7 +42,10 @@ namespace CkgDomainLogic.General.Services
                             .OrderBy(w => w.Name).ToList();
             }
         }
-                                                                                                        // ReSharper disable ConvertClosureToMethodGroup
+
+        public List<SelectItem> Versicherungen { get; private set; }
+
+        // ReSharper disable ConvertClosureToMethodGroup
         public List<VersandOption> VersandOptionen
         {
             get

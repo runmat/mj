@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.General.Contracts
 {
     public interface ICkgGeneralDataService
     {
         List<Land> Laender { get; }
+
+        List<SelectItem> Versicherungen { get; }
 
         List<VersandOption> VersandOptionen { get; }
 

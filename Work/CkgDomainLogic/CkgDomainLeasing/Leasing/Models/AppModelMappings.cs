@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CkgDomainLeasing.Leasing.Models.DataModels;
+using CkgDomainLogic.Leasing.Models;
 using GeneralTools.Models;
 using SapORM.Models;
 

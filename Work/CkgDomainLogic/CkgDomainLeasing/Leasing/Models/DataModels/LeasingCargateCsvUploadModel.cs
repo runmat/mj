@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 
-namespace CkgDomainLeasing.Leasing.Models.DataModels
+namespace CkgDomainLogic.Leasing.Models
 {
 	public class LeasingCargateCsvUploadModel
 	{

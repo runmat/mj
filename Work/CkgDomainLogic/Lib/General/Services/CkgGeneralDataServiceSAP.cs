@@ -50,6 +50,20 @@ namespace CkgDomainLogic.General.Services
         }
 
 
+        public List<SelectItem> Versicherungen
+        {
+            get
+            {
+                return PropertyCacheGet(() =>
+                    Z_M_PARTNER_AUS_KNVP_LESEN.AUSGABE.GetExportListWithInitExecute(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr())
+                        .Where(p => p.PARVW == "ZV")
+                            .Select(p => new SelectItem(p.KUNNR, p.NAME1))
+                                .Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose) })
+                                    .OrderBy(w => w.Text).ToList());
+            }
+        }
+
+
         public List<FahrzeugStatus> FahrzeugStatusWerte
         {
             get
@@ -183,6 +197,11 @@ namespace CkgDomainLogic.General.Services
                 });
 
             return zulassungsKreis;
+        }
+
+        static protected string FormatSapErrorMessage(string sapError)
+        {
+            return string.Format("Es ist ein Fehler aufgetreten, SAP-Fehler Meldung: {0}", sapError);
         }
     }
 }

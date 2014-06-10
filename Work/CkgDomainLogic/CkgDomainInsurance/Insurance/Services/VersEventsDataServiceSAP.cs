@@ -19,172 +19,16 @@ namespace CkgDomainLogic.Insurance.Services
         {
         }
 
-        public List<SelectItem> Versicherungen
-        {
-            get
-            {
-                return PropertyCacheGet(() =>
-                    Z_M_PARTNER_AUS_KNVP_LESEN.AUSGABE.GetExportListWithInitExecute(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr())
-                        .Where(p => p.PARVW == "ZV")
-                            .Select(p => new SelectItem(p.KUNNR, p.NAME1))
-                                .Concat(new List<SelectItem> { new SelectItem ("", Localize.DropdownDefaultOptionPleaseChoose) })
-                                    .OrderBy(w => w.Text).ToList());
-            }
-        }
-
-
-        #region Schadenfälle
-
-        public List<Schadenfall> SchadenfaelleGet()
-        {
-            var sapList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetExportListWithInitExecute(SAP,
-                        "I_KUNNR_AG, I_AKTION",
-                        LogonContext.KundenNr.ToSapKunnr(),
-                        "R");
-
-            return AppModelMappings.Z_DPM_TAB_ZEVENT_SCHADEN_01_GT_SCHADEN_To_Schadenfall.Copy(sapList).Where(item => item.LoeschDatum == null).ToList();
-        }
-
-        public Schadenfall SchadenfallAdd(Schadenfall item, Action<string, string> addModelError)
-        {
-            var sapList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetImportListWithInit(SAP,
-                "I_KUNNR_AG, I_AKTION",
-                LogonContext.KundenNr.ToSapKunnr(),
-                "I");
-
-            sapList.Add(AppModelMappings.Z_DPM_TAB_ZEVENT_SCHADEN_01_GT_SCHADEN_To_Schadenfall.CopyBack(item));
-
-            SAP.ApplyImport(sapList);
-            SAP.Execute();
-
-            var exportList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetExportList(SAP);
-            var savedSapItem = exportList.FirstOrDefault();
-            if (savedSapItem != null && savedSapItem.ERROR.IsNotNullOrEmpty())
-                addModelError("", FormatSapErrorMessage(savedSapItem.ERROR));
-
-            return AppModelMappings.Z_DPM_TAB_ZEVENT_SCHADEN_01_GT_SCHADEN_To_Schadenfall.Copy(savedSapItem);
-        }
-
-        public bool SchadenfallDelete(int id)
-        {
-            var sapList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetExportListWithInitExecute(SAP,
-                        "I_KUNNR_AG, I_AKTION, I_EVENT_SCHADEN",
-                        LogonContext.KundenNr.ToSapKunnr(),
-                        "R",
-                        id.ToString().PadLeft0(10)
-                        );
-            var sapItem = sapList.FirstOrDefault();
-            if (sapItem == null)
-                return false;
-
-            var item = AppModelMappings.Z_DPM_TAB_ZEVENT_SCHADEN_01_GT_SCHADEN_To_Schadenfall.Copy(sapItem);
-            item.LoeschDatum = DateTime.Now;
-            item.LoeschUser = LogonContext.UserName;
-
-            SchadenfallSave(item, null);
-
-            return true;
-        }
-
-        public Schadenfall SchadenfallSave(Schadenfall item, Action<string, string> addModelError)
-        {
-            var sapList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetImportListWithInit(SAP,
-                "I_KUNNR_AG, I_AKTION, I_EVENT_SCHADEN",
-                LogonContext.KundenNr.ToSapKunnr(),
-                "U",
-                item.ID.ToString().PadLeft0(10));
-
-            sapList.Add(AppModelMappings.Z_DPM_TAB_ZEVENT_SCHADEN_01_GT_SCHADEN_To_Schadenfall.CopyBack(item));
-
-            SAP.ApplyImport(sapList);
-            SAP.Execute();
-
-            var exportList = Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN.GetExportList(SAP);
-            var savedSapItem = exportList.FirstOrDefault();
-            if (savedSapItem != null && savedSapItem.ERROR.IsNotNullOrEmpty())
-                addModelError("", FormatSapErrorMessage(savedSapItem.ERROR));
-
-            return item;
-        }
-
-        #endregion
-
-
-        #region Schadenfall Status Arten
-
-        public List<SchadenfallStatusArt> SchadenfallStatusArtenGet(string languageKey)
-        {
-            var sapList = Z_DPM_EVENT_READ_SCHAD_STAT_01.GT_STATART.GetExportListWithInitExecute(SAP,
-                        "I_KUNNR_AG, I_SCHADEN, I_SPRAS, I_PROZESSNR",
-                        LogonContext.KundenNr.ToSapKunnr(),
-                        9999999999.ToString(),
-                        languageKey,
-                        null
-                        );
-
-            return AppModelMappings.Z_DPM_EVENT_READ_SCHAD_STAT_01_GT_STATART_To_SchadenfallStatusArt.Copy(sapList).OrderBy(item => item.Sort).ToList();
-        }
-
-        #endregion
-
-
-        #region Schadenfall Status (Werte)
-
-        public List<SchadenfallStatus> SchadenfallStatusWerteGet(string languageKey, int? schadenfallID = null)
-        {
-            var sapList = Z_DPM_EVENT_READ_SCHAD_STAT_01.GT_STATUS.GetExportListWithInitExecute(SAP,
-                        "I_KUNNR_AG, I_SCHADEN, I_SPRAS, I_PROZESSNR",
-                        LogonContext.KundenNr.ToSapKunnr(),
-                        schadenfallID == null ? null : schadenfallID.GetValueOrDefault().ToString().PadLeft0(10),
-                        languageKey,
-                        null
-                        );
-
-            return AppModelMappings.Z_DPM_EVENT_READ_SCHAD_STAT_01_GT_STATUS_To_SchadenfallStatus.Copy(sapList).OrderBy(item => item.Sort).ToList();
-        }
-
-        public bool SchadenfallStatusWertSave(SchadenfallStatus schadenfallStatus, Action<string, string> addModelError)
-        {
-            var sapList = Z_DPM_EVENT_SET_SCHAD_STAT_01.GT_STATUS.GetImportListWithInit(SAP,
-                "I_KUNNR_AG",
-                LogonContext.KundenNr.ToSapKunnr());
-
-            sapList.Add(AppModelMappings.Z_DPM_EVENT_SET_SCHAD_STAT_01_GT_STATUS_To_SchadenfallStatus.CopyBack(schadenfallStatus));
-
-            SAP.ApplyImport(sapList);
-            SAP.Execute();
-
-            var exportList = Z_DPM_EVENT_SET_SCHAD_STAT_01.GT_STATUS.GetExportList(SAP);
-            var savedSapItem = exportList.FirstOrDefault();
-            if (savedSapItem != null && savedSapItem.ERROR.IsNotNullOrEmpty())
-            {
-                addModelError("", FormatSapErrorMessage(savedSapItem.ERROR));
-                return false;
-            }
-
-            // ToDo: Remove this test:
-            //if (savedSapItem != null && savedSapItem.STATUSART.ToInt() == 8)
-            //{
-            //    addModelError("", FormatSapErrorMessage("Bitte nicht Status Art '8' updaten !"));
-            //    return false;
-            //}
-
-            return true;
-        }
-
-        #endregion
-
-
         #region Termine
 
-        public List<TerminSchadenfall> TermineGet(Schadenfall schadenfall = null, int boxID = -1)
+        public List<TerminSchadenfall> TermineGet(Schadenfall schadenfall = null, int boxID = 0)
         {
             var sapList = Z_DPM_TAB_ZEVENT_TERMIN_01.GT_TERMIN.GetExportListWithInitExecute(SAP,
                         "I_KUNNR_AG, I_AKTION, I_EVENT_SCHADEN, I_EVENT_ORT_BOX",
                         LogonContext.KundenNr.ToSapKunnr(),
                         "R",
                         schadenfall == null ? null : schadenfall.ID.ToString(),
-                        boxID == -1 ? null : boxID.ToString()
+                        boxID == 0 ? null : boxID.ToString()
                         );
 
             return AppModelMappings.Z_DPM_TAB_ZEVENT_TERMIN_01_GT_TERMIN_To_TerminSchadenfall.Copy(sapList).Where(item => item.LoeschDatum == null).ToList();
@@ -468,10 +312,5 @@ namespace CkgDomainLogic.Insurance.Services
         }
 
         #endregion
-
-        static string FormatSapErrorMessage(string sapError)
-        {
-            return string.Format("Es ist ein Fehler aufgetreten, SAP-Fehler Meldung: {0}", sapError);
-        }
     }
 }

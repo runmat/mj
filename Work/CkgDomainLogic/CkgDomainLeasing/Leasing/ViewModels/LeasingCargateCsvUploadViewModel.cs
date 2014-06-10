@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Serialization;
-using CkgDomainLeasing.Leasing.Contracts;
-using CkgDomainLeasing.Leasing.Models.DataModels;
+using CkgDomainLogic.Leasing.Contracts;
+using CkgDomainLogic.Leasing.Models;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
-using SapORM.Models;
 
 namespace CkgDomainLogic.Leasing.ViewModels
 {

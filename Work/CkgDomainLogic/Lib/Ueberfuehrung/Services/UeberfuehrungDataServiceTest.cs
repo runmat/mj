@@ -6,6 +6,7 @@ using CkgDomainLogic.General.Models;
 using CkgDomainLogic.Ueberfuehrung.Contracts;
 using CkgDomainLogic.Ueberfuehrung.Models;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
 
@@ -36,6 +37,8 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
                                                                               }));
             }
         }
+
+        public List<SelectItem> Versicherungen { get; private set; }
 
 
         private List<VersandOption> _versandOptionen;

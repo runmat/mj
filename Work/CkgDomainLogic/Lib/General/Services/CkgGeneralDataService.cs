@@ -2,6 +2,7 @@
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
@@ -26,6 +27,7 @@ namespace CkgDomainLogic.General.Services
         #region General data + Business logic
 
         public List<Land> Laender { get { return null; } }
+        public List<SelectItem> Versicherungen { get; private set; }
 
         public List<VersandOption> VersandOptionen { get { return null; } }
         public List<ZulassungsOption> ZulassungsOptionen { get; private set; }

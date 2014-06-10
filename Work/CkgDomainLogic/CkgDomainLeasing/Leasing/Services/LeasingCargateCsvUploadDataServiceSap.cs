@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using CkgDomainLeasing.Leasing.Contracts;
-using CkgDomainLeasing.Leasing.Models.DataModels;
 using CkgDomainLogic.General.Services;
+using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Models;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 
-namespace CkgDomainLeasing.Leasing.Services
+namespace CkgDomainLogic.Leasing.Services
 {
     public class LeasingCargateCsvUploadDataServiceSAP : CkgGeneralDataServiceSAP, ILeasingCargateCsvUploadDataService
     {

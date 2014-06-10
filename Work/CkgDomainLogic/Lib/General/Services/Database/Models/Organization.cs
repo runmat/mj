@@ -14,5 +14,7 @@ namespace CkgDomainLogic.General.Database.Models
         public int CustomerID { get; set; }
 
         public string OrganizationReference { get; set; }
+
+        public bool AllOrganizations { get; set; }
     }
 }

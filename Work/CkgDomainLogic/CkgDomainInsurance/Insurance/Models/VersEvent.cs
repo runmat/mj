@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Script.Serialization;
 using CkgDomainLogic.Insurance.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -80,9 +81,10 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public List<VersEventOrt> Orte
         {
-            get { return PropertyCacheGet(() => (GetViewModel == null ? new List<VersEventOrt>() : GetViewModel().DataService.VersEventOrteGet(this))); }
+            get { return PropertyCacheGet(() => (GetViewModel == null ? new List<VersEventOrt>() : GetViewModel().EventsDataService.VersEventOrteGet(this))); }
         }
 
 
