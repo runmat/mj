@@ -120,6 +120,11 @@
         padding-left: 3px;
     }
     
+    .icon-width {
+        width: 10px!important;
+        display: inline-block;
+    }
+    
 </style>
 
 
@@ -127,26 +132,38 @@
 
     var _modelStateValid = false;
     var _directNavigateToTermine = false;
+    var _breadCrumbInitial = "Schadenfälle";
+    var _mode = "schadenfaelle";
+    var _schadenfallIsValid = true;
     
     function FormPreparePrivate() {
         MetronicSidebarEnforceClosed();
 
-        GridAllColumnFilterApplyToGrid("SchadenfallGrid");
+        if (_mode == "schadenfaelle")
+            GridAllColumnFilterApplyToGrid("SchadenfallGrid");
 
-        BreadcrumbsMoveFirst("Schadenfälle");
+        if (_mode == "terminuebersicht")
+            TerminUebersichtInit();
 
-        //Test();
+        BreadcrumbsMoveFirst(_breadCrumbInitial);
+
+        Test();
     }
 
     function Test() {
         ShowSchadenakteAjax("17", true);
         setTimeout(function () {
-            //$($("#TerminSchadenfallGrid button.debug")[0]).trigger("click");
-            TerminSchadenfallCreate();
+//            TerminSchadenfallCreate();
+//            setTimeout(function () {
+//                $(":radio[value=RE]").uniformRadioCheck();
+//                $($("button.green")[0]).trigger("click");
+//            }, 300);
+
             setTimeout(function () {
-                $(":radio[value=RE]").uniformRadioCheck();
-                $($("button.green")[0]).trigger("click");
+                $($(".schadenakte-status")[0]).trigger("click");
             }, 300);
+
+
         }, 1500);
     }
 
@@ -177,6 +194,37 @@
         });
     }
 
+    function SchadenfallStatusGridOnRowDataBound(e) {
+        GridFormatButtons();
+    }
+
+    function SchadenfallStatusGridOnEdit(e) {
+        GridFormatButtons();
+    }
+
+    function SchadenfallStatusGridOnCommand(e) {
+        //console.log(e);
+//        if (e.name == "edit") {
+//            //console.log(e);
+//            var grid = $("#SchadenfallStatusGrid").data('tGrid');
+//            var index = -1;
+//            for (var i = 0; i < grid.columns.length; i++) {
+//                if (grid.columns[i].member == "Datum")
+//                    index = i;
+//            }
+//            if (index != -1)
+//                $(e.row.cells[index]).text("03/06/2014");
+//        }
+    }
+
+    function GridFormatButtons() {
+        $("#SchadenfallStatusGrid").find(".t-grid-edit").html("<i class='halflings-icon pencil grid-edit-button tooltips' data-original-title='@Localize.Edit' data-placement='right''></i>");
+        $("#SchadenfallStatusGrid").find(".tooltips").tooltip();
+        $("#SchadenfallStatusGrid").find(".t-grid-edit").addClass("grid-button");
+
+        $("#SchadenfallStatusGrid").find(".t-grid-update").addClass("grid-button");
+        $("#SchadenfallStatusGrid").find(".t-grid-cancel").addClass("grid-button");
+    }
     
     //
     // </Schadenfall Status Werte>
@@ -592,7 +640,7 @@
             }
         });
     }
-
+    
     function TerminSchadenfallKalenderDetails(result) {
         var divToHide = ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == "" 
                             ? $("#divSchadenakte") 
@@ -604,8 +652,6 @@
             CalendarPreparePrivate();
         });
         BreadcrumbsMoveNext("Kalender");
-
-        //FormPrepareAjax();
     }
 
     var _calendarBoxArt = 'GU';
@@ -857,12 +903,18 @@
                     contentHeight: 600,
 
                     eventClick: function (calEvent, jsEvent, view) {
+                        if (!_schadenfallIsValid)
+                            return;
+
                         if (_calendarBoxArt == 'GU' && calEvent.spaceAvailable) {
                             //console.log("create appointment");
                             TerminSchadenfallKalenderEditElement(calEvent);
                         }
                     },
                     dayClick: function (date, allDay, jsEvent, view) {
+                        if (!_schadenfallIsValid)
+                            return;
+                        
                         if (_calendarBoxArt == 'RE') {
 
                             if (view.start.getDay() == 0) {
@@ -1055,5 +1107,85 @@
     //
 
 
+    //
+    // <Terminübersicht Event-Ort alle Boxen>
+    //
+
+    function TerminUebersichtInit() {
+        $("#TmpVersEventCurrentID").on("change", function () {
+            $.ajax({
+                type: "POST",
+                url: "TerminUebersichtGetOrte",
+                data: { eventID: $(this).val() },
+                loadingShow: false,
+                success: function (result) {
+                    var orteDropdown = $("#TmpVersEventOrtCurrentID");
+                    orteDropdown.empty();
+                    if (typeof (result) !== 'undefined' && result != null && result.length > 0) {
+                        $(result).each(function () {
+                            $("<option />", {
+                                val: this.val,
+                                text: this.text
+                            }).appendTo(orteDropdown);
+                        });
+                    }
+
+                    BtnTerminUebersichtRequestShowShowHide();
+                },
+                error: function (jqXhr) {
+                    SpanAlertAjaxError("Message", jqXhr);
+                }
+            });
+        });
+
+        $("#TmpVersEventOrtCurrentID").on("change", function() {
+            BtnTerminUebersichtRequestShowShowHide();
+        });
+    }
+
+    function BtnTerminUebersichtRequestShowShowHide() {
+        //console.log($("#TmpVersEventOrtCurrentID").val());
+        if ($("#TmpVersEventOrtCurrentID").val() !== '' && $("#TmpVersEventOrtCurrentID").val() != null)
+            $("#btnTerminUebersichtRequestShow").removeClass('hide');
+        else
+            $("#btnTerminUebersichtRequestShow").addClass('hide');
+    }
+
+    function TerminUebersichtRequestShow() {
+        $.ajax({
+            type: "POST",
+            url: "TerminUebersichtRequestShow",
+            data: { eventID: $("#TmpVersEventCurrentID").val(), ortID: $("#TmpVersEventOrtCurrentID").val() },
+            loadingShow: true,
+            success: function (result) {
+                //console.log(result);
+                TerminUebersichtKalenderShow(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });        
+    }
+
+    function TerminUebersichtKalenderShow(result) {
+        $("#TerminUebersichtKalender").html(result);
+
+        $("#TermineOrtBoxen").slideUp(200, function () {
+            $("#TerminUebersichtKalender").slideDown(200);
+            CalendarPreparePrivate();
+        });
+        BreadcrumbsMoveNext("Boxen Termine");
+    }
+
+    function TerminUebersichtKalenderClose() {
+        $("#TerminUebersichtKalender").slideUp(200, function () {
+            $("#TermineOrtBoxen").slideDown(200);
+        });
+        BreadcrumbsMovePrev();
+    }
+
+    //
+    // </Terminübersicht Event-Ort alle Boxen>
+    //
 
 </script>

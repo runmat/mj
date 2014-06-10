@@ -183,8 +183,11 @@ Public Class ServiceData
             Return VehErrors
 
         Catch
-
-            EventLog.WriteEntry("SixtServiceLeas", "WMInsertFreisetzung_Zul: " & Err.Description, EventLogEntryType.Warning)
+            Try
+                EventLog.WriteEntry("SixtServiceLeas", "WMInsertFreisetzung_Zul: " & Err.Description, EventLogEntryType.Warning)
+            Catch
+                'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+            End Try
             Return VehErrors
         End Try
 
@@ -348,8 +351,11 @@ Public Class ServiceData
             Return VehErrors
 
         Catch
-
-            EventLog.WriteEntry("SixtServiceLeas", "WMInsertFreisetzung_SonstDL: " & Err.Description, EventLogEntryType.Warning)
+            Try
+                EventLog.WriteEntry("SixtServiceLeas", "WMInsertFreisetzung_SonstDL: " & Err.Description, EventLogEntryType.Warning)
+            Catch
+                'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+            End Try
             Return VehErrors
         End Try
 
@@ -579,12 +585,15 @@ Public Class ServiceData
     End Function
 
     Private Sub InitializeComponent()
-        Me.EventLog1 = New System.Diagnostics.EventLog
-        CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).BeginInit()
-      
-        Me.EventLog1.Log = "Application"
-        CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).EndInit()
+        Try
+            Me.EventLog1 = New System.Diagnostics.EventLog
+            CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).BeginInit()
 
+            Me.EventLog1.Log = "Application"
+            CType(Me.EventLog1, System.ComponentModel.ISupportInitialize).EndInit()
+        Catch
+            'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+        End Try
     End Sub
     Private Function CheckLogin(ByVal User As String, ByVal Password As String) As Boolean
 
@@ -695,11 +704,14 @@ Public Class ServiceData
             strXml = SetData.WMGetFreisetzungStatus()
 
         Catch ex As Exception
-            'Error in das Eventlog schreiben
-            EventLog.WriteEntry("SixtServiceLeas", "WMGetFreisetzung_Status: " & Err.Description, EventLogEntryType.Warning)
+            Try
+                'Error in das Eventlog schreiben
+                EventLog.WriteEntry("SixtServiceLeas", "WMGetFreisetzung_Status: " & Err.Description, EventLogEntryType.Warning)
+            Catch
+                'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+            End Try
 
             Throw ex
-            Return strXml = String.Empty
         End Try
 
         Return strXml

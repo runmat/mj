@@ -71,7 +71,11 @@ Public Class RequestLoggingModule
                     End Using
                 End SyncLock
             Catch ex As Exception
-                EventLog.WriteEntry("SixtServiceLeas", ex.Message, EventLogEntryType.Error)
+                Try
+                    EventLog.WriteEntry("SixtServiceLeas", ex.Message, EventLogEntryType.Warning)
+                Catch
+                    'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+                End Try
             End Try
         End If
     End Sub

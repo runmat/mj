@@ -24,18 +24,11 @@ Public Class Global_asax
         Dim LastError As Exception = Server.GetLastError()
         Dim ErrMessage As String = LastError.ToString()
 
-        Dim LogName As String = "SixtServiceLeas"
-        Dim Message As String = "Url " & Request.Path & " Warning: " & ErrMessage
-
-        ' Create Event Log if It Doesn't Exist
-        If EventLog.SourceExists(LogName) Then
-
-            Dim Log As New EventLog()
-            Log.Source = LogName
-            Log.WriteEntry(Message, EventLogEntryType.Warning)
-
-        End If
-
+        Try
+            EventLog.WriteEntry("SixtServiceLeas", "Url " & Request.Path & " Warning: " & ErrMessage, EventLogEntryType.Warning)
+        Catch
+            'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+        End Try
 
     End Sub
 

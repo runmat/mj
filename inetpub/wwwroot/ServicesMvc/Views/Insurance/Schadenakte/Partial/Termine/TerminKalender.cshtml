@@ -2,11 +2,21 @@
 @model TerminSchadenfall 
 
 <div class="margin-left-10">
-
-    <h5 class="no-margin">
-        <button onclick="TerminSchadenfallClose(2);" class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
-        <i class="icon-calendar margin-left-10 margin-right-10"></i><span>Neuer <strong>@Model.BoxArtGewuenschtAsText</strong> Termin, Schadenfall "@Model.Event.EventName - @Model.Schadenfall.Kennzeichen", Ort <strong>@Model.OrtAsText</strong></span>
-    </h5>
+    
+    @if (Model.SchadenfallIsValid)
+    {
+        <h5 class="no-margin">
+            <button onclick="TerminSchadenfallClose(2); " class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
+            <i class="icon-calendar margin-left-10 margin-right-10"></i><span>Neuer <strong>@Model.BoxArtGewuenschtAsText</strong> Termin, Schadenfall "@Model.Event.EventName - @Model.Schadenfall.Kennzeichen", Ort <strong>@Model.OrtAsText</strong></span>
+        </h5>
+    }
+    else
+    {
+        <h5 class="no-margin">
+            <button onclick="TerminUebersichtKalenderClose(); " class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
+            <i class="icon-calendar margin-left-10 margin-right-10"></i><span>Boxen Terminübersicht, Event <strong>@Model.Event.EventName</strong>, Ort <strong>@Model.OrtAsText</strong></span>
+        </h5>
+    }
     
     <script type="text/javascript">
         _calendarBoxArt = '@Model.GetCachedBoxArt()';
@@ -15,6 +25,8 @@
         _ortZeitEndMoFr = '@Model.Ort.EndZeitMoFr';
         _ortZeitStartSa = '@Model.Ort.StartZeitSa';
         _ortZeitEndSa = '@Model.Ort.EndZeitSa';
+
+        _schadenfallIsValid = @Model.SchadenfallIsValid.ToString().ToLower();
     </script>
     
     @if (Model.GetCachedBoxArt() == "GU")
