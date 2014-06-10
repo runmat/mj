@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -219,25 +220,35 @@ namespace CkgDomainLogic.Insurance.ViewModels
         //    return errorList;
         //}
 
-        public void SchadenfallStatusWertSave(int itemID)
+        public void SchadenfallStatusWertSave(int itemID, DateTime? saveDate)
         {
             var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
             if (item == null)
                 return;
 
-            SchadenfallStatusWertUpdate(item);
+            item.Datum = saveDate.GetValueOrDefault();
+
+            SchadenfallStatusWertSave(item);
         }
 
-        public void SchadenfallStatusWertUpdate(SchadenfallStatus itemToUpdate)
+        static bool SchadenfallStatusResetPermission { get { return ConfigurationManager.AppSettings["SchadenfallStatusResetPermission"].NotNullOrEmpty().ToLower() == "true"; } }
+
+        public void SchadenfallStatusWertSave(SchadenfallStatus itemToUpdate)
         {
             if (itemToUpdate.Datum == null)
             {
-                itemToUpdate.User = null;
+                if (!SchadenfallStatusResetPermission)
+                    throw new Exception("Keine ausreichende Berechtigung für Status-Reset!");
+
                 itemToUpdate.Kommentar = null;
+                itemToUpdate.User = null;
+                itemToUpdate.Zeit = null;
             }
             else
             {
                 itemToUpdate.User = LogonContext.UserName;
+                if (itemToUpdate.Zeit.IsNullOrEmpty())
+                    itemToUpdate.Zeit = DateTime.Now.ToString("HH:mm");
             }
 
             var errorList = new List<string>();
@@ -574,7 +585,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             if (TerminCurrent.GetCachedBoxArt() == "GU")
                 // Status "GA Termin vergeben" in Schadenakte speichern
-                SchadenfallStatusWertSave(GutachtenTerminStatusID);
+                SchadenfallStatusWertSave(GutachtenTerminStatusID, DateTime.Now);
             
             DataMarkForRefreshTermine();
 

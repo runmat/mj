@@ -13,10 +13,15 @@
             columns.Bound(c => c.User).ReadOnly(true);
 
             columns.Bound(c => c.DatumAsText);
+            columns.Bound(c => c.Zeit);
             columns.Bound(c => c.Kommentar).Width(250);
         })
     .DataKeys(keys => keys.Add(c => c.StatusArtID))
     .DataBinding(dataBinding => dataBinding.Ajax().Select("SchadenfallStatusAjaxSelect", "Insurance").Update("SchadenfallStatusAjaxUpdate", "Insurance"))
-        .ClientEvents(events => events.OnRowDataBound("SchadenfallStatusGridOnRowDataBound").OnEdit("SchadenfallStatusGridOnEdit").OnCommand("SchadenfallStatusGridOnCommand"))
+        .ClientEvents(events => events.OnRowDataBound("SchadenfallStatusGridOnRowDataBound")
+                                      .OnEdit("SchadenfallStatusGridOnEdit")
+                                      .OnCommand("SchadenfallStatusGridOnCommand")
+                                      .OnError("SchadenfallStatusGridOnError")
+    )
 )
 

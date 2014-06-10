@@ -84,19 +84,11 @@ namespace ServicesMvc.Controllers
         
         #region Schadenfall Status (Werte)
 
-        //[HttpPost]
-        //public ActionResult SchadenfallStatusUpdate(int statusID)
-        //{
-        //    if (statusID != -1)
-        //    {
-        //        var errorList = EventsViewModel.SchadenfallStatusWertSave(statusID);
-
-        //        if (errorList.Any())
-        //            throw new Exception(string.Join(", ", errorList));
-        //    }
-
-        //    return PartialView("Schadenakte/Partial/Status/StatusListe", EventsViewModel.SchadenfallCurrentStatusWerteWithNulls);
-        //}
+        [HttpPost]
+        public ActionResult SchadenfallStatusUpdate()
+        {
+            return PartialView("Schadenakte/Partial/Status/StatusListe", EventsViewModel.SchadenfallCurrentStatusWerteWithNulls);
+        }
 
         [GridAction]
         public ActionResult SchadenfallStatusAjaxSelect()
@@ -113,7 +105,7 @@ namespace ServicesMvc.Controllers
             if (TryUpdateModel(itemCloned))
             {
                 ModelMapping.Copy(itemCloned, itemToUpdate); 
-                EventsViewModel.SchadenfallStatusWertUpdate(itemToUpdate);
+                EventsViewModel.SchadenfallStatusWertSave(itemToUpdate);
             }
 
             return View(new GridModel(EventsViewModel.SchadenfallCurrentStatusWerteWithNulls));
