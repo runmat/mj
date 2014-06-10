@@ -1,5 +1,6 @@
 ﻿Public Class VehicleRegistrationEndgVers
 
+    Public Mandant As String
     Public Akt_Kennzeichen As String
     Public FahrzeugIdent As String
     Public Referenznummer As String

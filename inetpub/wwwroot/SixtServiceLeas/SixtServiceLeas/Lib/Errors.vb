@@ -7,7 +7,7 @@
 
     Default Public Overridable ReadOnly Property Item(ByVal index As Integer) As _Error
         Get
-            Return CType(Me.List(index), _Error)
+            Return CType(List(index), _Error)
         End Get
     End Property
 End Class

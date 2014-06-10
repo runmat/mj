@@ -100,6 +100,7 @@
     <Compile Include="Log\Services\DatabaseLogTarget.cs" />
     <Compile Include="Log\Services\ElmahDatabaseTarget.cs" />
     <Compile Include="Log\Services\ElmahLogger.cs" />
+    <Compile Include="Log\Services\WebServiceTrafficLogger.cs" />
     <Compile Include="Log\Services\PageVisitLogger.cs" />
     <Compile Include="Log\Services\SapLogger.cs">
       <SubType>Code</SubType>

@@ -50,6 +50,18 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Work\GAC\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Work\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -98,7 +110,9 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="ServiceData.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.vb">
@@ -160,26 +174,17 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
-      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
-      <Name>SapORM.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Work\SapORM\DynSapProxy\ProxyFactory\DynSapProxyErp35SqlCacheFactory\DynSapProxyFactories.csproj">
-      <Project>{4DFE7E75-BE11-4166-8DE5-16A0677515F4}</Project>
-      <Name>DynSapProxyFactories</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Work\SapORM\DynSapProxy\ProxyObject\DynSapProxyObjectErp35\DynSapProxyObjectErp35.csproj">
-      <Project>{FD5710DE-3532-4F4A-AF62-4EF97F11A4E9}</Project>
-      <Name>DynSapProxyObjectErp35</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Work\SapORM\services\SapORM.Services.csproj">
-      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
-      <Name>SapORM.Services</Name>
+    <ProjectReference Include="..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

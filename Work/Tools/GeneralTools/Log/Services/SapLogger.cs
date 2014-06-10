@@ -90,11 +90,11 @@ namespace GeneralTools.Log.Services
                     // try to obtain "appID, userID, customerID, kunnr, portalType"
                     // => .. from Request QueryString
                     var cp = HttpContext.Current.Request["cp"];
-                    if (cp.IsNullOrEmpty() && HttpContext.Current.Session["cp"] != null)
+                    if (String.IsNullOrEmpty(cp) && HttpContext.Current.Session != null && HttpContext.Current.Session["cp"] != null)
                         // => .. or from Session
                         cp = HttpContext.Current.Session["cp"].ToString();
 
-                    if (cp.IsNotNullOrEmpty())
+                    if (!String.IsNullOrEmpty(cp))
                     {
                         var userContextParams = cp.Split('_');
                         if (userContextParams.Length >= 5)

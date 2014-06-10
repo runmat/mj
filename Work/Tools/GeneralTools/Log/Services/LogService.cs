@@ -222,6 +222,12 @@ namespace GeneralTools.Services
             logger.Log(appID, userID, customerID, kunnr, portalType, clientIp);
         }
 
+        public void LogWebServiceTraffic(string typ, string daten, string destinationSqlTable = "WebServiceTraffic")
+        {
+            var logger = new WebServiceTrafficLogger();
+            logger.Log(typ, daten, destinationSqlTable);
+        }
+
         static void TrySessionSetUserData(int appID, int userID, int customerID, int kunnr, int portalType)
         {
             TrySessionSetIntValue("LastAppID", appID);

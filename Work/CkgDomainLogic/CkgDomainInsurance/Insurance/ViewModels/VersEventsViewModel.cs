@@ -171,45 +171,81 @@ namespace CkgDomainLogic.Insurance.ViewModels
         {
             return SchadenfallStatusArten
                                 .OrderBy(art => art.Sort).ThenBy(art => art.ArtID)
-                                    .Select(art => AlleSchadenfallStatusWerte
-                                        .FirstOrDefault(status => status.VersSchadenfallID == schadenfallID && status.StatusArtID == art.ArtID)
-                                                   ?? new SchadenfallStatus
-                                                       {
-                                                           VersSchadenfallID = schadenfallID,
-                                                           StatusArtID = art.ArtID,
-                                                           Bezeichnung = art.Bezeichnung,
-                                                           Sort = art.Sort,
-                                                       }).ToList();
+                                    .Select(art =>
+                                        {
+                                            var item = AlleSchadenfallStatusWerte
+                                                           .FirstOrDefault(
+                                                               status =>
+                                                               status.VersSchadenfallID == schadenfallID &&
+                                                               status.StatusArtID == art.ArtID)
+                                                       ?? new SchadenfallStatus
+                                                           {
+                                                               VersSchadenfallID = schadenfallID,
+                                                               StatusArtID = art.ArtID,
+                                                               Sort = art.Sort,
+                                                           };
+                                            item.Bezeichnung = art.Bezeichnung;
+                                            return item;
+                                        }).ToList();
         }
 
-        public List<string> SchadenfallStatusWertSave(int itemID, bool toggleDisabled = false)
-        {
-            var errorList = new List<string>();
+        //public List<string> SchadenfallStatusWertSave(int itemID, bool toggleDisabled = false)
+        //{
+        //    var errorList = new List<string>();
 
+        //    var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
+        //    if (item == null)
+        //        return errorList;
+
+        //    if (toggleDisabled && item.User.IsNotNullOrEmpty())
+        //        return errorList;
+
+        //    if (item.User.IsNullOrEmpty())
+        //    {
+        //        item.User = LogonContext.UserName;
+        //        item.Datum = DateTime.Now;
+        //        item.Zeit = DateTime.Now.ToString("HH:mm");
+        //    }
+        //    else
+        //    {
+        //        item.User = null;
+        //        item.Datum = null;
+        //        item.Zeit = null;
+        //    }
+
+        //    SchadenDataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
+        //    DataMarkForRefreshSchadenfallStatusWerte();
+
+        //    return errorList;
+        //}
+
+        public void SchadenfallStatusWertSave(int itemID)
+        {
             var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
             if (item == null)
-                return errorList;
+                return;
 
-            if (toggleDisabled && item.User.IsNotNullOrEmpty())
-                return errorList;
+            SchadenfallStatusWertUpdate(item);
+        }
 
-            if (item.User.IsNullOrEmpty())
+        public void SchadenfallStatusWertUpdate(SchadenfallStatus itemToUpdate)
+        {
+            if (itemToUpdate.Datum == null)
             {
-                item.User = LogonContext.UserName;
-                item.Datum = DateTime.Now;
-                item.Zeit = DateTime.Now.ToString("HH:mm");
+                itemToUpdate.User = null;
+                itemToUpdate.Kommentar = null;
             }
             else
             {
-                item.User = null;
-                item.Datum = null;
-                item.Zeit = null;
+                itemToUpdate.User = LogonContext.UserName;
             }
 
-            SchadenDataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
-            DataMarkForRefreshSchadenfallStatusWerte();
+            var errorList = new List<string>();
+            SchadenDataService.SchadenfallStatusWertSave(itemToUpdate, (key, error) => errorList.Add(error));
+            if (errorList.Any())
+                throw new Exception(string.Join(", ", errorList));
 
-            return errorList;
+            DataMarkForRefreshSchadenfallStatusWerte();
         }
 
         public string SchadenfallStatusAlleGetHeaderText(int index)
@@ -538,7 +574,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             if (TerminCurrent.GetCachedBoxArt() == "GU")
                 // Status "GA Termin vergeben" in Schadenakte speichern
-                SchadenfallStatusWertSave(GutachtenTerminStatusID, true);
+                SchadenfallStatusWertSave(GutachtenTerminStatusID);
             
             DataMarkForRefreshTermine();
 

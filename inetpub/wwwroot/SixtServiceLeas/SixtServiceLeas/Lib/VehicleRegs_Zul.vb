@@ -7,7 +7,7 @@
 
     Default Public Overridable ReadOnly Property Item(ByVal index As Integer) As VehicleRegistrationZul
         Get
-            Return CType(Me.List(index), VehicleRegistrationZul)
+            Return CType(List(index), VehicleRegistrationZul)
         End Get
     End Property
 

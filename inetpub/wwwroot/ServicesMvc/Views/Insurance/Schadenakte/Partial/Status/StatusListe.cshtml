@@ -2,55 +2,21 @@
 @model List<SchadenfallStatus>
 
 @(Html.Telerik()
-        .Grid<SchadenfallStatus>()
-        .Name("SchadenfallStatusGrid")
-        .Columns(columns =>
-            {
-                columns.Command(commands => commands.Edit().ButtonType(GridButtonType.Image));
-
-                columns.Bound(c => c.StatusArtID).Visible(false);
-                columns.Bound(c => c.Bezeichnung).ReadOnly(true);
-                columns.Bound(c => c.User).ReadOnly(true);
-
-                columns.Bound(c => c.DatumAsText);
-                columns.Bound(c => c.Kommentar).Width(60);
-            })
-        .DataKeys(keys => keys.Add(c => c.StatusArtID))
-        .DataBinding(dataBinding => dataBinding.Ajax().Select("SchadenfallStatusAjaxSelect", "Insurance").Update("SchadenfallStatusAjaxUpdate", "Insurance"))
-            .ClientEvents(events => events.OnRowDataBound("SchadenfallStatusGridOnRowDataBound").OnEdit("SchadenfallStatusGridOnEdit").OnCommand("SchadenfallStatusGridOnCommand"))
-        )
-
-
-@{
-    var groupSize = 3;
-    var groups = Model.Count /groupSize;
-    var index = 0;
-}
-
-@for (var i = 0; i < -1; i++)
-{
-    <div class="status-group">
-        @for (var j = 0; j < groupSize; j++)
+    .Grid<SchadenfallStatus>()
+    .Name("SchadenfallStatusGrid")
+    .Columns(columns =>
         {
-            var status = Model[index];
+            columns.Command(commands => commands.Edit().ButtonType(GridButtonType.Image));
 
-            <div class="status-item @status.IsChecked.ToString().ToLower()" onclick="SchadenfallStatusUpdate(@status.StatusArtID)">
-                
-                @if (status.IsChecked)
-                {
-                    <i class="icon-check"></i>
-                    @status.Bezeichnung                 
-                    <span class="status-ok-item"><i class="icon-user tooltips" data-original-title="User @status.User, @status.Datum.GetValueOrDefault().ToString("dd.MM.yy")" data-placement="right"></i></span> 
-                }
-                else
-                {
-                    <i class="icon-check-empty"></i>
-                    @status.Bezeichnung                 
-                }
-                
-            </div>
-        
-            index++;
-        }
-    </div>
-}
+            columns.Bound(c => c.StatusArtID).Visible(false);
+            columns.Bound(c => c.Bezeichnung).ReadOnly(true);
+            columns.Bound(c => c.User).ReadOnly(true);
+
+            columns.Bound(c => c.DatumAsText);
+            columns.Bound(c => c.Kommentar).Width(250);
+        })
+    .DataKeys(keys => keys.Add(c => c.StatusArtID))
+    .DataBinding(dataBinding => dataBinding.Ajax().Select("SchadenfallStatusAjaxSelect", "Insurance").Update("SchadenfallStatusAjaxUpdate", "Insurance"))
+        .ClientEvents(events => events.OnRowDataBound("SchadenfallStatusGridOnRowDataBound").OnEdit("SchadenfallStatusGridOnEdit").OnCommand("SchadenfallStatusGridOnCommand"))
+)
+

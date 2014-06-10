@@ -30,6 +30,8 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
+			public string LFDNR { get; set; }
+
 			public string ANRED { get; set; }
 
 			public string NAME1 { get; set; }
@@ -140,6 +142,7 @@ namespace SapORM.Models
 			{
 				var o = new GT_IN
 				{
+					LFDNR = (string)row["LFDNR"],
 					ANRED = (string)row["ANRED"],
 					NAME1 = (string)row["NAME1"],
 					NAME2 = (string)row["NAME2"],
@@ -300,6 +303,8 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
+			public string LFDNR { get; set; }
+
 			public string ANRED { get; set; }
 
 			public string NAME1 { get; set; }
@@ -410,6 +415,7 @@ namespace SapORM.Models
 			{
 				var o = new GT_ERR
 				{
+					LFDNR = (string)row["LFDNR"],
 					ANRED = (string)row["ANRED"],
 					NAME1 = (string)row["NAME1"],
 					NAME2 = (string)row["NAME2"],

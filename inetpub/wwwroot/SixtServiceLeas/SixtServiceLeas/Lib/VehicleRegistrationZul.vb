@@ -1,5 +1,6 @@
 ﻿Public Class VehicleRegistrationZul
 
+    Public Mandant As String
     Public Auftragsgrund As String
     Public Aenderungskennzeichen As String
     Public FahrzeugIdent As String

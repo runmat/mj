@@ -18,17 +18,9 @@ Public Class S
         End Get
     End Property
 
-    Private Shared _sapDataServiceFactory As ISapDataServiceFactory
-
     Public Shared ReadOnly Property SapDataServiceFactory() As ISapDataServiceFactory
         Get
-            If (_sapDataServiceFactory Is Nothing) Then
-
-                _sapDataServiceFactory = New SapDataServiceFromConfigNoCacheFactory() 'New SapDataServiceDefaultFactory()
-
-            End If
-
-            Return _sapDataServiceFactory
+            Return New SapDataServiceFromConfigNoCacheFactory()
         End Get
     End Property
 

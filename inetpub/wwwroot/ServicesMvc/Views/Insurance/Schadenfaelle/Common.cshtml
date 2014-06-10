@@ -203,18 +203,12 @@
     }
 
     function SchadenfallStatusGridOnCommand(e) {
-        //console.log(e);
-//        if (e.name == "edit") {
-//            //console.log(e);
-//            var grid = $("#SchadenfallStatusGrid").data('tGrid');
-//            var index = -1;
-//            for (var i = 0; i < grid.columns.length; i++) {
-//                if (grid.columns[i].member == "Datum")
-//                    index = i;
-//            }
-//            if (index != -1)
-//                $(e.row.cells[index]).text("03/06/2014");
-//        }
+        if (e.name == "edit") {
+            setTimeout(function () {
+                $("#DatumAsText").datepicker();
+                $("#DatumAsText").css("width", "70");
+            }, 10);
+        }
     }
 
     function GridFormatButtons() {

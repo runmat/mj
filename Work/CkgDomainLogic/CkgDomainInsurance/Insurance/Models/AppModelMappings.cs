@@ -281,7 +281,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Datum = s.DATUM;
                         d.Zeit = HhMmFromSap(s.UZEIT);
                         d.User = s.BENUTZER;
-                        d.Bezeichnung = s.TEXT;
+                        d.Kommentar = s.TEXT;
                     }
                 ));
             }
@@ -303,7 +303,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.DATUM = s.Datum;
                         d.UZEIT = HhMmToSap(s.Zeit);
                         d.BENUTZER = s.User;
-                        d.TEXT = s.Bezeichnung;
+                        d.TEXT = s.Kommentar;
                     }          
                 ));
             }

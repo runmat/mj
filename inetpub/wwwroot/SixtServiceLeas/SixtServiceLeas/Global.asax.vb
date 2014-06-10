@@ -1,7 +1,6 @@
-﻿Imports System.Web.SessionState
-
+﻿
 Public Class Global_asax
-    Inherits System.Web.HttpApplication
+    Inherits HttpApplication
 
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Wird beim Starten der Anwendung ausgelöst
@@ -22,10 +21,12 @@ Public Class Global_asax
     Sub Application_Error(ByVal sender As Object, ByVal e As EventArgs)
         ' Wird ausgelöst, wenn ein Fehler auftritt.
         Dim LastError As Exception = Server.GetLastError()
-        Dim ErrMessage As String = LastError.ToString()
+
+        Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+        logService.LogElmahError(LastError, Nothing)
 
         Try
-            EventLog.WriteEntry("SixtServiceLeas", "Url " & Request.Path & " Warning: " & ErrMessage, EventLogEntryType.Warning)
+            EventLog.WriteEntry("SixtServiceLeas", "Url " & Request.Path & " Warning: " & LastError.ToString(), EventLogEntryType.Warning)
         Catch
             'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
         End Try
