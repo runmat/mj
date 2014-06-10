@@ -273,16 +273,15 @@
                         <div class="formlayer_plus_content">
                             <asp:Repeater ID="Repeater1" runat="server">
                                 <ItemTemplate>
-                                   
                                     <div class="formbereich" style="margin-right: 5px;">
-                                        <%# DataBinder.Eval(Container.DataItem, "titleText") %>
+                                        <b><%# Eval("Created").ToString() + " - " + Eval("Title")%></b>
                                     </div>
 									<div class="formbereich" style="margin-right: 10px;">
-                                      <%# DataBinder.Eval(Container.DataItem, "messageText") %>
+                                        <%# Eval("Message")%>
 									</div>
-                                                <div class="trenner">
-                                                    &nbsp;
-                                                </div>  
+                                    <div class="trenner">
+                                        &nbsp;
+                                    </div>  
                                 </ItemTemplate>
                             </asp:Repeater>
                         </div>

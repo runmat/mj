@@ -4,27 +4,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <body>
 
-        <br/><br/><br/>
+        <br/>
 
         <h3><strong>@Model.Header</strong></h3>
         
-        <br/><br/>
+        <br/>
 
         <table>
             @foreach (var item in Model.Items)
             {
                 <tr>
-                    <td valign="top">
-                        <br/>
-                        @item.TitleAsHtml
-                        <br/><br/>
-                    </td>
-    
-                    <td valign="top">
-                        <br/>
-                        @item.BodyAsHtml
-                        <br/><br/>
-                    </td>
+                    <td valign="top"><small>@item.TitleAsHtml</small></td>
+                    <td valign="top"><small>@item.BodyAsHtml</small></td>
+                </tr>        
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>        
             }
         </table>

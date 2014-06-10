@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using CKGDatabaseAdminLib.Contracts;
 using CkgDomainLogic.General.Services;
@@ -13,14 +12,14 @@ namespace CKGDatabaseAdminLib.Services
 
         private DatabaseContext _dataContext;
 
-        public Bapi2Report4CsvExportDataServiceSql()
+        public Bapi2Report4CsvExportDataServiceSql(string connectionString)
         {
-            InitDataContext();
+            InitDataContext(connectionString);
         }
 
-        private void InitDataContext()
+        private void InitDataContext(string connectionString)
         {
-            _dataContext = new DatabaseContext(ConfigurationManager.AppSettings["Connectionstring"]);
+            _dataContext = new DatabaseContext(connectionString);
 
             _dataContext.Bapi2Report4CsvExportItemsRaw.Load();
         }

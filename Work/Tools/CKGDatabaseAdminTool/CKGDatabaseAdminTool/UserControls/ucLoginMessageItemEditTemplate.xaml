@@ -32,24 +32,24 @@
             <RowDefinition Height="28px"/>
             <RowDefinition Height="28px"/>
             <RowDefinition Height="28px"/>
-            <RowDefinition Height="28px"/>
+            <RowDefinition Height="80px"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60px"/>
+            <ColumnDefinition Width="70px"/>
             <ColumnDefinition Width="150px"/>
-            <ColumnDefinition Width="80px"/>
+            <ColumnDefinition Width="75px"/>
             <ColumnDefinition Width="150px"/>
-            <ColumnDefinition Width="80px"/>
+            <ColumnDefinition Width="75px"/>
             <ColumnDefinition Width="150px"/>
             <ColumnDefinition Width="80px"/>
             <ColumnDefinition Width="25px"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200px"/>
             <ColumnDefinition Width="25px"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="1" Grid.Column="0">ID:</Label>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ID}"/>
-        <Label Grid.Row="2" Grid.Column="0">Erstellt:</Label>
+        <Label Grid.Row="2" Grid.Column="0">Geändert:</Label>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Created, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
         
         <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">Meldung anzeigen</Label>
@@ -68,8 +68,8 @@
         <Label Grid.Row="2" Grid.Column="6">Test-User:</Label>
         <CheckBox Grid.Row="2" Grid.Column="7" IsChecked="{Binding LockForTest}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         
-        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center">Titel</Label>
-        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Title}" MaxLength="50"/>
+        <Label Grid.Row="3" Grid.Column="0">Titel:</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Title}" MaxLength="50" />
         <Image Grid.Row="3" Grid.Column="9" Width="18px" Source="/CKGDatabaseAdminTool;component/Images/fragezeichen_normal.png">
             <Image.ToolTip>
                 <uc:ucLoginMessageTooltip/>
@@ -77,19 +77,19 @@
         </Image>
  
         <Label Grid.Row="4" Grid.Column="0">Meldung:</Label>
-        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Message}" MaxLength="500"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Message}" MaxLength="500" TextWrapping="Wrap" />
         <Image Grid.Row="4" Grid.Column="9" Width="18px" Source="/CKGDatabaseAdminTool;component/Images/fragezeichen_normal.png">
             <Image.ToolTip>
                 <uc:ucLoginMessageTooltip/>
             </Image.ToolTip>
         </Image>
         
-        <Button Grid.Row="0" Grid.Column="10" ToolTip="Speichern" Command="{Binding DataContext.CommandSaveLoginMessages, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
+        <Button Grid.Row="0" Grid.Column="9" ToolTip="Speichern" Command="{Binding DataContext.CommandSaveLoginMessages, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
             <Grid Margin="1">
                 <Image Source="/CKGDatabaseAdminTool;component/Images/Diskette_06s.png" />
             </Grid>
         </Button>
-        <Button Grid.Row="1" Grid.Column="10" ToolTip="Verwerfen" Command="{Binding DataContext.CommandCancelEditLoginMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
+        <Button Grid.Row="1" Grid.Column="9" ToolTip="Verwerfen" Command="{Binding DataContext.CommandCancelEditLoginMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
             <Grid Margin="1">
                 <Image Source="/CKGDatabaseAdminTool;component/Images/Papierkorb_01s.png" />
             </Grid>

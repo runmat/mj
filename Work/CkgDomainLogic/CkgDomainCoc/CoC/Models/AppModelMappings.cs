@@ -192,7 +192,7 @@ namespace CkgDomainLogic.CoC.Models
 
                         destination.ZBII_J = source.ZBII_J;
                         destination.ZBII_K = source.ZBII_K;
-                        destination.ZBII_KBA_MELD = (source.ZBII_KBA_MELD.HasValue ? source.ZBII_KBA_MELD.Value.ToShortDateString() : "");
+                        destination.ZBII_KBA_MELD = source.ZBII_KBA_MELD;
                         destination.ZBII_R = source.ZBII_R;
 
                         destination.ZUL_AUSLAND = source.ZUL_AUSLAND;
@@ -216,7 +216,8 @@ namespace CkgDomainLogic.CoC.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UPD_COC_01.GT_DAT, CocEntity>(
                     new Dictionary<string, string>()
-                    , (destination, source) =>
+                    , null
+                    , (source, destination) =>
                     {
                         destination.KUNNR_AG = source.KUNNR;
                         destination.COC_ERF_DAT = source.ERDAT;

@@ -67,10 +67,13 @@
     <Compile Include="Controllers\Schadenakte\InsuranceController.cs" />
     <Compile Include="Controllers\EventVerwaltung\InsuranceController.cs" />
     <Compile Include="Controllers\UploadBestandsdaten\InsuranceController.cs" />
+    <Compile Include="Controllers\Vertragsverlaengerung\InsuranceController.cs" />
     <Compile Include="Insurance\Contracts\IUploadBestandsdatenDataService.cs" />
     <Compile Include="Insurance\Contracts\ISchadenakteDataService.cs" />
     <Compile Include="Insurance\Contracts\IBestandsdatenDataService.cs" />
+    <Compile Include="Insurance\Contracts\IVertragsverlaengerungDataService.cs" />
     <Compile Include="Insurance\Models\DataModels\BestandsdatenModel.cs" />
+    <Compile Include="Insurance\Models\DataModels\VertragsverlaengerungModel.cs" />
     <Compile Include="Insurance\Models\DataModels\UploadBestandsdatenModel.cs" />
     <Compile Include="Insurance\Models\DataModels\SchadenakteDocumentCategory.cs" />
     <Compile Include="Insurance\Models\DataModels\Schadenakte.cs" />
@@ -81,9 +84,11 @@
     <Compile Include="Insurance\Models\SchadenfallStatusArt.cs" />
     <Compile Include="Insurance\Models\TerminEntity.cs" />
     <Compile Include="Insurance\Services\BestandsdatenDataServiceSap.cs" />
+    <Compile Include="Insurance\Services\VertragsverlaengerungDataServiceSap.cs" />
     <Compile Include="Insurance\Services\SchadenakteDataServiceSAP.cs" />
     <Compile Include="Insurance\Services\UploadBestandsdatenDataServiceSap.cs" />
     <Compile Include="Insurance\ViewModels\BestandsdatenViewModel.cs" />
+    <Compile Include="Insurance\ViewModels\VertragsverlaengerungViewModel.cs" />
     <Compile Include="Insurance\ViewModels\UploadBestandsdatenViewModel.cs" />
     <Compile Include="Insurance\ViewModels\SchadenakteViewModel.cs" />
     <Compile Include="Insurance\ViewModels\SchadenakteDocsViewModel.cs" />

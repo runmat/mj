@@ -114,6 +114,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<CustomerDocumentDataService>().As<ICustomerDocumentDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadBestandsdatenDataServiceSap>().As<IUploadBestandsdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<BestandsdatenDataServiceSap>().As<IBestandsdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<VertragsverlaengerungDataServiceSap>().As<IVertragsverlaengerungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
             builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();

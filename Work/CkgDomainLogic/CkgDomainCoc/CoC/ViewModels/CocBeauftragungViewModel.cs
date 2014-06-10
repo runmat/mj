@@ -880,9 +880,9 @@ namespace CkgDomainLogic.CoC.ViewModels
         // ReguliererAdresse
         //
         [XmlIgnore]
-        public Adresse ReguliererAdresse            // default = AuftraggeberAdresse
+        public Adresse ReguliererAdresse            // default = default aus SAP, sonst AuftraggeberAdresse
         {
-            get { return PropertyCacheGet(() => CopyAdresse(AuftraggeberAdresse, "Regulierer")); }
+            get { return PropertyCacheGet(() => (ReguliererAdressenFiltered.Any(a => a.IsDefaultPartner) ? ReguliererAdressenFiltered.First(a => a.IsDefaultPartner) : CopyAdresse(AuftraggeberAdresse, "Regulierer"))); }
             set { PropertyCacheSet(value); }
         }
         [XmlIgnore]
@@ -900,9 +900,9 @@ namespace CkgDomainLogic.CoC.ViewModels
         // RechnungsEmpfaengerAdresse
         //
         [XmlIgnore]
-        public Adresse RechnungsEmpfaengerAdresse            // default = AuftraggeberAdresse
+        public Adresse RechnungsEmpfaengerAdresse            // default = default aus SAP, sonst AuftraggeberAdresse
         {
-            get { return PropertyCacheGet(() => CopyAdresse(AuftraggeberAdresse, "RechnungsEmpfaenger")); }
+            get { return PropertyCacheGet(() => (RechnungsEmpfaengerAdressenFiltered.Any(a => a.IsDefaultPartner) ? RechnungsEmpfaengerAdressenFiltered.First(a => a.IsDefaultPartner) : CopyAdresse(AuftraggeberAdresse, "RechnungsEmpfaenger"))); }
             set { PropertyCacheSet(value); }
         }
         [XmlIgnore]

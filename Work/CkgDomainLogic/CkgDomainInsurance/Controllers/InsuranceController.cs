@@ -16,7 +16,7 @@ namespace ServicesMvc.Controllers
 
         public InsuranceController(IAppSettings appSettings, ILogonContextDataService logonContext,
             ICustomerDocumentDataService customerDocumentDataService, IVersEventsDataService versEventsDataService, ISchadenakteDataService schadenakteDataService, 
-            IUploadBestandsdatenDataService uploadBestandsdatenDataService, IBestandsdatenDataService bestandsdatenDataService)
+            IUploadBestandsdatenDataService uploadBestandsdatenDataService, IBestandsdatenDataService bestandsdatenDataService, IVertragsverlaengerungDataService vertragsverlaengerungDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EventsViewModel, appSettings, logonContext, versEventsDataService, schadenakteDataService);
@@ -31,6 +31,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(UploadBestandsdatenViewModel, appSettings, logonContext, uploadBestandsdatenDataService);
 
             InitViewModel(BestandsdatenViewModel, appSettings, logonContext, bestandsdatenDataService);
+
+            InitViewModel(VertragsverlaengerungViewModel, appSettings, logonContext, vertragsverlaengerungDataService);
         }
 
     }

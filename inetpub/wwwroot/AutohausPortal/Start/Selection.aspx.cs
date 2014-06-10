@@ -47,14 +47,7 @@ namespace AutohausPortal.Start
                 }
             }
             m_User = Common.GetUser(this);
-            try 
-            {	        
-	            Alert.alert(ref litAlert, m_User.Customer.CustomerId);
-            }
-            catch (Exception)
-            {
-                Response.Redirect(ConfigurationManager.AppSettings["Exit"]);         
-            }
+
             try 
 	        {
                 if (m_User.FailedLogins > 0)

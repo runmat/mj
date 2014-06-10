@@ -1,9 +1,11 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable ConvertClosureToMethodGroup
+// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -14,6 +16,7 @@ using CkgDomainLogic.Insurance.Models;
 using CkgDomainLogic.Insurance.Models;
 using GeneralTools.Models;
 using System.IO;
+using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
 
@@ -27,11 +30,15 @@ namespace CkgDomainLogic.Insurance.ViewModels
         private const int GutachtenTerminStatusID = 2;
 
         [XmlIgnore]
-        public IVersEventsDataService DataService { get { return CacheGet<IVersEventsDataService>(); } }
+        public IVersEventsDataService EventsDataService { get { return CacheGet<IVersEventsDataService>(); } }
+
+        [XmlIgnore]
+        public ISchadenakteDataService SchadenDataService { get { return CacheGet<ISchadenakteDataService>(); } }
+
 
         public List<SelectItem> Versicherungen
         {
-            get { return PropertyCacheGet(() => DataService.Versicherungen); }
+            get { return PropertyCacheGet(() => EventsDataService.Versicherungen); }
         }
 
         public Func<IEnumerable> FilteredObjectsCurrent
@@ -57,6 +64,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
             VersEventOrtBoxenLoad();
 
             BoxCurrent = VersEventOrtBoxGet(19);
+            DataMarkForRefreshTermine();
         }
 
         public void DataMarkForRefresh()
@@ -67,6 +75,9 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             DataMarkForRefreshSchadenfaelle();
             DataMarkForRefreshTermine();
+
+            DataMarkForRefreshSchadenfallStatusWerte();
+            DataMarkForRefreshSchadenfallStatusAlle();
         }
 
         void DataMarkForRefreshEvents()
@@ -105,17 +116,33 @@ namespace CkgDomainLogic.Insurance.ViewModels
             PropertyCacheClear(this, m => m.Termine);
             PropertyCacheClear(this, m => m.TermineFiltered);
 
+            DataMarkForRefreshBlockerTermine();
+        }
+
+        public void DataMarkForRefreshBlockerTermine()
+        {
             PropertyCacheClear(this, m => m.BoxBlockerTermine);
             PropertyCacheClear(this, m => m.BoxBlockerTermineFiltered);
         }
 
+        public void DataMarkForRefreshSchadenfallStatusWerte()
+        {
+            PropertyCacheClear(this, m => m.AlleSchadenfallStatusWerte);
+            PropertyCacheClear(this, m => m.SchadenfallCurrentStatusWerteWithNulls);
+        }
+
+        public void DataMarkForRefreshSchadenfallStatusAlle()
+        {
+            PropertyCacheClear(this, m => m.SchadenStatusAlle);
+            PropertyCacheClear(this, m => m.SchadenStatusAlleFiltered);
+        }
 
         #region Schadenfall Status Arten
 
         [XmlIgnore]
         public List<SchadenfallStatusArt> SchadenfallStatusArten
         {
-            get { return PropertyCacheGet(() => DataService.SchadenfallStatusArtenGet(LanguageKey)); }
+            get { return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusArtenGet(LanguageKey)); }
         }
 
         #endregion
@@ -126,40 +153,40 @@ namespace CkgDomainLogic.Insurance.ViewModels
         int? SchadenfallCurrentID { get { return SchadenfallCurrent == null ? null : (int?)SchadenfallCurrent.ID; } }
 
         [XmlIgnore]
-        public List<SchadenfallStatus> SchadenfallStatusWerte
+        public List<SchadenfallStatus> AlleSchadenfallStatusWerte
         {
-            get { return PropertyCacheGet(() => DataService.SchadenfallStatusWerteGet(LanguageKey, SchadenfallCurrentID)); }
+            get
+            {
+                return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusWerteGet(LanguageKey));
+            }
         }
 
         [XmlIgnore]
-        public List<SchadenfallStatus> SchadenfallStatusWerteWithNulls
+        public List<SchadenfallStatus> SchadenfallCurrentStatusWerteWithNulls
         {
-            get 
-            { 
-                return PropertyCacheGet(() => DataService.SchadenfallStatusArtenGet(LanguageKey)
-                                                         .OrderBy(art => art.Sort)
-                                                         .Select(art =>
-                                                             {
-                                                                 var existingStatus = SchadenfallStatusWerte.FirstOrDefault(status => status.StatusArtID == art.ArtID);
-                                                                 if (existingStatus == null)
-                                                                     return new SchadenfallStatus
-                                                                         {
-                                                                             VersSchadenfallID = SchadenfallCurrentID.GetValueOrDefault(),
-                                                                             StatusArtID = art.ArtID,
-                                                                             Bezeichnung = art.Bezeichnung,
-                                                                             Sort = art.Sort,
-                                                                         };
+            get { return PropertyCacheGet(() => GetSchadenfallStatusWerteWithNulls(SchadenfallCurrentID.GetValueOrDefault())); }
+        }
 
-                                                                 return existingStatus;
-                                                             }).ToList()); 
-            }
+        public List<SchadenfallStatus> GetSchadenfallStatusWerteWithNulls(int schadenfallID)
+        {
+            return SchadenfallStatusArten
+                                .OrderBy(art => art.Sort).ThenBy(art => art.ArtID)
+                                    .Select(art => AlleSchadenfallStatusWerte
+                                        .FirstOrDefault(status => status.VersSchadenfallID == schadenfallID && status.StatusArtID == art.ArtID)
+                                                   ?? new SchadenfallStatus
+                                                       {
+                                                           VersSchadenfallID = schadenfallID,
+                                                           StatusArtID = art.ArtID,
+                                                           Bezeichnung = art.Bezeichnung,
+                                                           Sort = art.Sort,
+                                                       }).ToList();
         }
 
         public List<string> SchadenfallStatusWertSave(int itemID, bool toggleDisabled = false)
         {
             var errorList = new List<string>();
 
-            var item = SchadenfallStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
+            var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
             if (item == null)
                 return errorList;
 
@@ -179,11 +206,79 @@ namespace CkgDomainLogic.Insurance.ViewModels
                 item.Zeit = null;
             }
 
-            DataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
-            PropertyCacheClear(this, m => m.SchadenfallStatusWerte);
-            PropertyCacheClear(this, m => m.SchadenfallStatusWerteWithNulls);
+            SchadenDataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
+            DataMarkForRefreshSchadenfallStatusWerte();
 
             return errorList;
+        }
+
+        public string SchadenfallStatusAlleGetHeaderText(int index)
+        {
+            var zeroBasedIndex = index - 1;
+            var statusArtArray = SchadenfallStatusArten.OrderBy(art => art.Sort).ThenBy(art => art.ArtID).ToArray();
+            return (zeroBasedIndex >= statusArtArray.Length ? "" : statusArtArray[zeroBasedIndex].Bezeichnung);
+        }
+
+        public bool SchadenfallStatusAlleIsStatusVisible(int index)
+        {
+            return SchadenfallStatusAlleGetHeaderText(index).IsNotNullOrEmpty();
+        }
+
+        [XmlIgnore]
+        public List<SchadenfallStatusAlle> SchadenStatusAlle
+        {
+            get { return PropertyCacheGet(() => GetSchadenStatusAlle()); }
+        }
+
+        [XmlIgnore]
+        public List<SchadenfallStatusAlle> SchadenStatusAlleFiltered
+        {
+            get
+            {
+                FilteredObjectsCurrent = () => SchadenStatusAlleFiltered;
+                return PropertyCacheGet(() => SchadenStatusAlle);
+            }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void AlleSchadenStatusFilter(string filterValue, string filterProperties)
+        {
+            SchadenStatusAlleFiltered = SchadenStatusAlle.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        List<SchadenfallStatusAlle> GetSchadenStatusAlle()
+        {
+            var statusAlleProperties = typeof(SchadenfallStatusAlle).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            return Schadenfaelle
+                    .Where(schadenfall => ( LogonContext.Organization == null || 
+                                            LogonContext.Organization.AllOrganizations || 
+                                            LogonContext.Organization.OrganizationReference.IsNullOrEmpty()) ||
+                                            LogonContext.Organization.OrganizationReference.ToSapKunnr() == schadenfall.VersicherungID.ToSapKunnr() )
+                        .Select(schadenfall =>
+                        {
+                            var statusAlle = new SchadenfallStatusAlle
+                                {
+                                    VersSchadenfallID = schadenfall.ID,
+                                    EventName = schadenfall.EventName,
+                                    Kennzeichen = schadenfall.Kennzeichen,
+                                    VersicherungName = schadenfall.VersicherungName,
+                                    Referenznummer = schadenfall.Referenznummer,
+                                };
+
+                            var thisStatusWerteWithNulls = GetSchadenfallStatusWerteWithNulls(schadenfall.ID)
+                                .Where(statusWerte => statusWerte.VersSchadenfallID == schadenfall.ID)
+                                    .OrderBy(art => art.Sort).ThenBy(art => art.StatusArtID).ToArray();
+
+                            for (var i = 0; i < thisStatusWerteWithNulls.Length; i++)
+                            {
+                                var contentProperty = statusAlleProperties.FirstOrDefault(p => p.Name == string.Format("Status{0}", (i+1)));
+                                if (contentProperty == null)
+                                    continue;
+                                contentProperty.SetValue(statusAlle, thisStatusWerteWithNulls[i].Datum, null);
+                            }
+
+                            return statusAlle;
+                        }).ToList();
         }
 
         #endregion
@@ -194,7 +289,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<Schadenfall> Schadenfaelle
         {
-            get { return PropertyCacheGet(() => DataService.SchadenfaelleGet()); }
+            get { return PropertyCacheGet(() => SchadenDataService.SchadenfaelleGet()); }
         }
 
         [XmlIgnore]
@@ -236,7 +331,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public Schadenfall SchadenfallAdd(Schadenfall newItem, Action<string, string> addModelError)
         {
-            newItem = DataService.SchadenfallAdd(newItem, addModelError);
+            newItem = SchadenDataService.SchadenfallAdd(newItem, addModelError);
             Schadenfaelle.Add(newItem);
             DataMarkForRefreshSchadenfaelle();
             return newItem;
@@ -245,7 +340,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void SchadenfallDelete(int id)
         {
             Schadenfaelle.Remove(SchadenfallGet(id));
-            DataService.SchadenfallDelete(id);
+            SchadenDataService.SchadenfallDelete(id);
 
             DataMarkForRefreshSchadenfaelle();
         }
@@ -255,7 +350,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
             if (InsertMode)
                 return SchadenfallAdd(item, addModelError);
 
-            var savedItem = DataService.SchadenfallSave(item, addModelError);
+            var savedItem = SchadenDataService.SchadenfallSave(item, addModelError);
             DataMarkForRefreshSchadenfaelle();
             return savedItem;
         }
@@ -275,8 +370,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void LoadSchadenfall(int schadenfallID)
         {
             SchadenfallCurrent = Schadenfaelle.FirstOrDefault(fall => fall.ID == schadenfallID);
-            PropertyCacheClear(this, m => m.SchadenfallStatusWerte);
-            PropertyCacheClear(this, m => m.SchadenfallStatusWerteWithNulls);
+            DataMarkForRefreshSchadenfallStatusWerte();
 
             DataMarkForRefreshTermine();
         }
@@ -289,7 +383,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<TerminSchadenfall> AlleTermine
         {
-            get { return PropertyCacheGet(() => DataService.TermineGet()); }
+            get { return PropertyCacheGet(() => EventsDataService.TermineGet()); }
         }
 
         [XmlIgnore]
@@ -318,7 +412,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<TerminSchadenfall> BoxBlockerTermine
         {
-            get { return PropertyCacheGet(() => DataService.TermineGet(null, BoxCurrent == null ? -1 : BoxCurrent.ID).Where(t => t.IsBlockerDummyTermin).ToList()); }
+            get { return PropertyCacheGet(() => EventsDataService.TermineGet(null, BoxCurrent == null ? 0 : BoxCurrent.ID).Where(t => t.IsBlockerDummyTermin).ToList()); }
         }
 
         [XmlIgnore]
@@ -359,7 +453,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void BoxBlockerTerminDelete(int id)
         {
             BoxBlockerTermine.Remove(TerminGet(id));
-            DataService.TerminDelete(id);
+            EventsDataService.TerminDelete(id);
 
             DataMarkForRefreshTermine();
         }
@@ -393,7 +487,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public List<TerminSchadenfall> GetTermineEinerBoxAllerSchadenFaelle(int versBoxID)
         {
-            return DataService.TermineGet(null, versBoxID);
+            return EventsDataService.TermineGet(null, versBoxID);
         }
 
 
@@ -412,7 +506,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public TerminSchadenfall TerminCreate()
         {
-            return TerminCreate(-1, SchadenfallCurrent == null ? -1 : SchadenfallCurrent.ID);
+            return TerminCreate(0, SchadenfallCurrent == null ? 0 : SchadenfallCurrent.ID);
         }
 
         public TerminSchadenfall TerminCreate(int versBoxID, int schadenfallID)
@@ -438,7 +532,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
             if (!newTermin.Validate(addModelError))
                 return newTermin;
 
-            newTermin = DataService.TerminAdd(newTermin, addModelError);
+            newTermin = EventsDataService.TerminAdd(newTermin, addModelError);
             termine.Add(newTermin);
             TerminCurrent = newTermin;
 
@@ -456,7 +550,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
             if (!termin.Validate(addModelError))
                 return termin;
 
-            var savedTermin = DataService.TerminSave(termin, addModelError);
+            var savedTermin = EventsDataService.TerminSave(termin, addModelError);
 
             var cachedItem = AlleTermine.FirstOrDefault(i => i.ID == termin.ID);
             if (cachedItem != null)
@@ -472,7 +566,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void TerminDelete(int id)
         {
             Termine.Remove(TerminGet(id));
-            DataService.TerminDelete(id);
+            EventsDataService.TerminDelete(id);
 
             DataMarkForRefreshTermine();
         }
@@ -540,6 +634,22 @@ namespace CkgDomainLogic.Insurance.ViewModels
         #endregion
 
 
+        #region Termin Übersicht
+
+        public void TerminCurrentPrepareForTerminUebersicht(int eventID, int ortID)
+        {
+            var termin = new TerminSchadenfall
+                {
+                    BoxArtGewuenscht = "RE",
+                    VersOrtID = ortID
+                };
+
+            TerminCurrent = termin;
+        }
+
+        #endregion
+
+
         #region VersEvent
 
         [XmlIgnore]
@@ -562,10 +672,13 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public VersEvent VersEventCurrent { get; private set; }
 
+        [LocalizedDisplay(LocalizeConstants.EventName)]
+        public int TmpVersEventCurrentID { get; set; }
+
 
         public void VersEventsLoad()
         {
-            VersEvents = DataService.VersEventsGet();
+            VersEvents = EventsDataService.VersEventsGet();
             DataMarkForRefresh();
         }
 
@@ -604,7 +717,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public VersEvent VersEventAdd(VersEvent newVersEvent, Action<string, string> addModelError)
         {
-            newVersEvent = DataService.VersEventAdd(newVersEvent, addModelError);
+            newVersEvent = EventsDataService.VersEventAdd(newVersEvent, addModelError);
             VersEvents.Add(newVersEvent);
             
             VersEventCurrent = newVersEvent;
@@ -616,14 +729,14 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void VersEventDelete(int id)
         {
             VersEvents.Remove(VersEventGet(id));
-            DataService.VersEventDelete(id);
+            EventsDataService.VersEventDelete(id);
 
             //DataMarkForRefresh();
         }
 
         public VersEvent VersEventSave(VersEvent item, Action<string, string> addModelError)
         {
-            var savedVersEvent = DataService.VersEventSave(item, addModelError);
+            var savedVersEvent = EventsDataService.VersEventSave(item, addModelError);
             var cachedItem = VersEvents.FirstOrDefault(i => i.ID == item.ID);
             if (cachedItem != null)
                 ModelMapping.Copy(savedVersEvent, cachedItem);
@@ -646,7 +759,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<VersEventOrt> VersEventOrteAlle
         {
-            get { return PropertyCacheGet(() => DataService.VersEventOrteGet()); }
+            get { return PropertyCacheGet(() => EventsDataService.VersEventOrteGet()); }
         }
 
         [XmlIgnore]
@@ -668,10 +781,13 @@ namespace CkgDomainLogic.Insurance.ViewModels
         }
 
         public VersEventOrt VersEventOrtCurrent { get; private set; }
+        
+        [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
+        public int TmpVersEventOrtCurrentID { get; set; }
 
         public void VersEventOrteLoad()
         {
-            VersEventOrt.Laender = DataService.Laender;
+            VersEventOrt.Laender = EventsDataService.Laender;
 
             VersEventOrte = VersEventOrteAlle.Where(o => o.VersEventID == VersEventCurrent.ID).ToList();
             DataMarkForRefreshOrte();
@@ -709,7 +825,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public VersEventOrt VersEventOrtAdd(VersEventOrt newVersEventOrt, Action<string, string> addModelError)
         {
-            newVersEventOrt = DataService.VersEventOrtAdd(newVersEventOrt, addModelError);
+            newVersEventOrt = EventsDataService.VersEventOrtAdd(newVersEventOrt, addModelError);
             VersEventOrte.Add(newVersEventOrt);
             
             VersEventOrtCurrent = newVersEventOrt;
@@ -721,14 +837,14 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void VersEventOrtDelete(int id)
         {
             VersEventOrte.Remove(VersEventOrtGet(id));
-            DataService.VersEventOrtDelete(id);
+            EventsDataService.VersEventOrtDelete(id);
 
             //DataMarkForRefresh();
         }
 
         public VersEventOrt VersEventOrtSave(VersEventOrt item, Action<string, string> addModelError)
         {
-            var savedVersEventOrt = DataService.VersEventOrtSave(item, addModelError);
+            var savedVersEventOrt = EventsDataService.VersEventOrtSave(item, addModelError);
             var cachedItem = VersEventOrte.FirstOrDefault(i => i.ID == item.ID);
             if (cachedItem != null)
                 ModelMapping.Copy(savedVersEventOrt, cachedItem);
@@ -769,9 +885,9 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public void VersEventOrtBoxenLoad()
         {
-            VersEventOrtBox.Versicherungen = DataService.Versicherungen;
+            VersEventOrtBox.Versicherungen = EventsDataService.Versicherungen;
 
-            VersEventOrtBoxen = DataService.VersEventOrtBoxenGet(VersEventOrtCurrent);
+            VersEventOrtBoxen = EventsDataService.VersEventOrtBoxenGet(VersEventOrtCurrent);
             DataMarkForRefreshOrtBoxen();
         }
 
@@ -782,7 +898,11 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public VersEventOrtBox VersEventOrtBoxGet(int id)
         {
-            return VersEventOrtBoxen.FirstOrDefault(c => c.ID == id);
+            var item = VersEventOrtBoxen.FirstOrDefault(c => c.ID == id);
+            BoxCurrent = item;
+            DataMarkForRefreshBlockerTermine();
+
+            return item;
         }
 
         public VersEventOrtBox VersEventOrtBoxCreate()
@@ -797,25 +917,32 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public VersEventOrtBox VersEventOrtBoxAdd(VersEventOrtBox newVersEventOrtBox, Action<string, string> addModelError)
         {
-            newVersEventOrtBox = DataService.VersEventOrtBoxAdd(newVersEventOrtBox, addModelError);
+            newVersEventOrtBox = EventsDataService.VersEventOrtBoxAdd(newVersEventOrtBox, addModelError);
             VersEventOrtBoxen.Add(newVersEventOrtBox);
+            
+            BoxCurrent = newVersEventOrtBox;
+            DataMarkForRefreshBlockerTermine();
+
             return newVersEventOrtBox;
         }
 
         public void VersEventOrtBoxDelete(int id)
         {
             VersEventOrtBoxen.Remove(VersEventOrtBoxGet(id));
-            DataService.VersEventOrtBoxDelete(id);
+            EventsDataService.VersEventOrtBoxDelete(id);
 
             //DataMarkForRefresh();
         }
 
         public VersEventOrtBox VersEventOrtBoxSave(VersEventOrtBox item, Action<string, string> addModelError)
         {
-            var savedVersEventOrtBox = DataService.VersEventOrtBoxSave(item, addModelError);
+            var savedVersEventOrtBox = EventsDataService.VersEventOrtBoxSave(item, addModelError);
             var cachedItem = VersEventOrtBoxen.FirstOrDefault(i => i.ID == item.ID);
             if (cachedItem != null)
                 ModelMapping.Copy(savedVersEventOrtBox, cachedItem);
+
+            BoxCurrent = savedVersEventOrtBox;
+            DataMarkForRefreshBlockerTermine();
 
             //DataMarkForRefresh();
             return savedVersEventOrtBox;
@@ -852,7 +979,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
                     return;
                 }
 
-                var insuranceName = DataService.Versicherungen.First(v => v.Key == model.VersicherungID).Text;
+                var insuranceName = EventsDataService.Versicherungen.First(v => v.Key == model.VersicherungID).Text;
                 var otherBoxWithSeparateMinuteRaster = VersEventOrtBoxen
                     .FirstOrDefault(box =>
                         box.VersOrtID == model.VersOrtID &&

@@ -68,7 +68,7 @@ namespace SapORM.Models
 
 			public string ZBII_DRUCK_ZEIT { get; set; }
 
-			public string ZBII_KBA_MELD { get; set; }
+			public DateTime? ZBII_KBA_MELD { get; set; }
 
 			public string VERSAND { get; set; }
 
@@ -331,7 +331,7 @@ namespace SapORM.Models
 					ZBII_DRUCK = (string)row["ZBII_DRUCK"],
 					ZBII_DRUCK_DATUM = (string.IsNullOrEmpty(row["ZBII_DRUCK_DATUM"].ToString())) ? null : (DateTime?)row["ZBII_DRUCK_DATUM"],
 					ZBII_DRUCK_ZEIT = (string)row["ZBII_DRUCK_ZEIT"],
-					ZBII_KBA_MELD = (string)row["ZBII_KBA_MELD"],
+					ZBII_KBA_MELD = (string.IsNullOrEmpty(row["ZBII_KBA_MELD"].ToString())) ? null : (DateTime?)row["ZBII_KBA_MELD"],
 					VERSAND = (string)row["VERSAND"],
 					ZUL_DEZ = (string)row["ZUL_DEZ"],
 					ZUL_AUSLAND = (string)row["ZUL_AUSLAND"],

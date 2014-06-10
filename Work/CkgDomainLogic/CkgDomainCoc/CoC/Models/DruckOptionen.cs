@@ -72,7 +72,7 @@ namespace CkgDomainLogic.CoC.Models
                 s += string.Format("{0}", Localize.PrintZBII);
             
             if (DruckCoc)
-                s += string.Format("<br/>{0}", Localize.PrintCoC);
+                s += string.Format("{0}{1}", (s.IsNullOrEmpty() ? "" : "<br/>"), Localize.PrintCoC);
             
             return s;
         }

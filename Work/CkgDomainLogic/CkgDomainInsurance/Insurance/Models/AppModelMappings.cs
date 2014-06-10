@@ -457,6 +457,49 @@ namespace CkgDomainLogic.Insurance.Models
             }
         }
 
+        /// <summary>
+        /// Daten für Vertragsverlängerung
+        /// </summary>
+        static public ModelMapping<Z_DPM_ASSIST_READ_VTRAGVERL_01.GT_OUT, VertragsverlaengerungModel> Z_DPM_ASSIST_READ_VTRAGVERL_01_GT_OUT_To_VertragsverlaengerungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ASSIST_READ_VTRAGVERL_01.GT_OUT, VertragsverlaengerungModel>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.ID = source.ID;
+                        destination.VIN = source.FIN;
+                        destination.Kennzeichen = source.KENNZEICHEN;
+                        destination.Hersteller = source.HERSTNAME;
+                        destination.Bedingungen = source.BEDINGUNGEN;
+                        destination.Produkttyp = source.PRODUKTBEZ;
+                        destination.Vertragsbeginn = source.VERTRAGSBEGINN;
+                        destination.Vertragsende = source.VERTRAGSABLAUF;
+                    }
+                ));
+            }
+        }
+
+        /// <summary>
+        /// Daten für Vertragsverlängerung
+        /// </summary>
+        static public ModelMapping<Z_DPM_ASSIST_CHG_VTRAGVERL_01.GT_IN, VertragsverlaengerungModel> Z_DPM_ASSIST_CHG_VTRAGVERL_01_GT_IN_From_VertragsverlaengerungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ASSIST_CHG_VTRAGVERL_01.GT_IN, VertragsverlaengerungModel>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.ID = source.ID;
+                        destination.VERTRAGSABLAUF = source.Vertragsende;
+                    }
+                ));
+            }
+        }
+
         #region intern
 
         public static string HhMmToSap(string s)

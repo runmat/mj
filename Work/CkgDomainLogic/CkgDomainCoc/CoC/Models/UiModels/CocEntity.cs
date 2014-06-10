@@ -433,7 +433,7 @@ namespace CkgDomainLogic.CoC.Models
         public string ZBII_DRUCK_ZEIT { get; set; }
 
         [ModelMappingCompareIgnore]
-        public string ZBII_KBA_MELD { get; set; }
+        public DateTime? ZBII_KBA_MELD { get; set; }
         
         [ModelMappingCompareIgnore]
         public string VERSAND { get; set; }

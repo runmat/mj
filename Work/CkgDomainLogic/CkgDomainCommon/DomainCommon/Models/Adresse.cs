@@ -5,7 +5,6 @@ using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
@@ -97,6 +96,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public string TmpSelectionKey { get; set; }
 
+        [ModelMappingCompareIgnore]
+        [GridHidden]
+        public bool IsDefaultPartner { get; set; }
 
         public Adresse SetInsertMode(bool insertMode)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Insurance.ViewModels;
 using GeneralTools.Models;
@@ -107,6 +108,8 @@ namespace CkgDomainLogic.Insurance.Models
             get { return string.Format("{0}, {1} {2}", Schadenfall.Kennzeichen, Schadenfall.Vorname, Schadenfall.Nachname); }
         }
 
+        public bool SchadenfallIsValid { get { return Schadenfall.ID > 0; } }
+
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [NotMapped]
         public string SchadenfallKennzeichen { get { return Schadenfall.Kennzeichen; } }
@@ -143,11 +146,13 @@ namespace CkgDomainLogic.Insurance.Models
 
         [NotMapped]
         [GridHidden]
+        [ScriptIgnore]
         public static Func<VersEventsViewModel> GetViewModel { get; set; }
 
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public Schadenfall Schadenfall
         {
             get { return GetViewModel().Schadenfaelle.FirstOrDefault(v => v.ID == VersSchadenfallID) ?? new Schadenfall(); }
@@ -155,6 +160,7 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public VersEvent Event
         {
             get { return (!IsBlockerDummyTermin ? Schadenfall.Event : GetViewModel().VersEventCurrent) ?? new VersEvent(); }
@@ -162,6 +168,7 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public VersEventOrt Ort
         {
             get { return Event.Orte.FirstOrDefault(ort => ort.ID == VersOrtID) ?? new VersEventOrt(); }
@@ -169,6 +176,7 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public VersEventOrtBox Box
         {
             get { return Ort.Boxen.FirstOrDefault(box => box.ID == VersBoxID) ?? new VersEventOrtBox(); }
@@ -177,6 +185,7 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public string MailtextTerminbestaetigung
         {
             get
@@ -202,7 +211,7 @@ namespace CkgDomainLogic.Insurance.Models
             if (viewModel == null)
                 return false;
 
-            var dataStoreRealTimeItems = viewModel.DataService.TermineGet(null, VersBoxID);
+            var dataStoreRealTimeItems = viewModel.EventsDataService.TermineGet(null, VersBoxID);
 
             if (!viewModel.InsertMode)
                 // skip current appointment while comparing with the list of stored appointments
@@ -215,13 +224,20 @@ namespace CkgDomainLogic.Insurance.Models
                         (DatumZeitVon < realTimeItem.DatumZeitBis));
             if (existingRealTimeItemOverlapping != null)
             {
-                addModelError("", string.Format("{0} '{1}', {2}: {3:dd.MM.yyyy HH:mm}-{4:HH:mm}",
-                                        Localize.VersEventAppointmentCreateIntersection,
-                                        existingRealTimeItemOverlapping.Schadenfall.Kennzeichen,
-                                        Localize.DateFromTo,
-                                        existingRealTimeItemOverlapping.DatumZeitVon,
-                                        existingRealTimeItemOverlapping.DatumZeitBis
-                                        ));
+                if (existingRealTimeItemOverlapping.IsBlockerDummyTermin)
+                    addModelError("", string.Format("{0} {1:dd.MM.yyyy HH:mm}-{2:HH:mm}",
+                                            Localize.VersEventAppointmentCreateBlockerIntersection,
+                                            existingRealTimeItemOverlapping.DatumZeitVon,
+                                            existingRealTimeItemOverlapping.DatumZeitBis
+                                            ));
+                else
+                    addModelError("", string.Format("{0} '{1}', {2}: {3:dd.MM.yyyy HH:mm}-{4:HH:mm}",
+                                            Localize.VersEventAppointmentCreateIntersection,
+                                            existingRealTimeItemOverlapping.Schadenfall.Kennzeichen,
+                                            Localize.Time,
+                                            existingRealTimeItemOverlapping.DatumZeitVon,
+                                            existingRealTimeItemOverlapping.DatumZeitBis
+                                            ));
                 return false;
             }
 
@@ -262,7 +278,10 @@ namespace CkgDomainLogic.Insurance.Models
 
         public List<VersEventOrtBox> GetValidBoxen()
         {
-            return Ort.GetValidBoxen(GetCachedBoxArt(), Schadenfall).ToList();
+            if (SchadenfallIsValid)
+                return Ort.GetValidBoxen(GetCachedBoxArt(), Schadenfall).ToList();
+
+            return Ort.GetValidBoxen().ToList();
         }
 
         public List<TerminSchadenfall> GetTermineForValidBoxen()

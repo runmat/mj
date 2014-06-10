@@ -113,10 +113,12 @@ namespace AutohausPortal.Start
 
 
         }
+
         public String BouncePage(System.Web.UI.Page Form)
         {
             return "/" +  ConfigurationManager.AppSettings["ApplicationKey"].ToString() + "/Start/Bounce.aspx?ReturnURL=" + System.Web.HttpUtility.UrlEncode(Form.Request.RawUrl);
         }
+
         private Boolean CheckUniqueSessionID()
         {
             DataTable table;
@@ -146,6 +148,7 @@ namespace AutohausPortal.Start
             }
             return blnReturn;
         }
+
         private Int32 CheckRestrictedIP()
         {
         
@@ -179,92 +182,106 @@ namespace AutohausPortal.Start
             }
             return intReturn;
         }
+
         private void displayMessages()
         {
-           //Nachrichten generieren  
-
-            DataTable table;
-            
-            SqlCommand command = new SqlCommand();
-
-            DateTime datTime;
-            DateTime.TryParse("01.01.1900 " + DateTime.Now.ToShortTimeString(), out datTime);   
-        
-                command.CommandText = "SELECT id,(convert(varchar,creationDate,104) + ' ' + convert(varchar,creationdate,108) + ' - ' + titleText) as titleText,messageText,enableLogin,onlyTEST,onlyPROD FROM LoginMessage" +
-            " WHERE" +
-            " datediff(minute,getdate(),convert(varchar,activeDateFrom,104)+' '+convert(varchar,activeTimeFrom,108)) <=0" +
-            " and" +
-            " datediff(minute,getdate(),convert(varchar,activeDateTo,104)+' '+convert(varchar,activeTimeTo,108)) >=0" +
-            " and active <> 0 and messagecolor = 0" +
-            " ORDER BY id DESC";
-                        
-            command.Parameters.AddWithValue("@now", DateTime.Now);
-            command.Parameters.AddWithValue("@time", datTime);
-
             try 
-	        {	        
-		        SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString());
-                command.Connection = conn;
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                
-                conn.Open();
-                table = new DataTable();
-                da.Fill(table);
-                conn.Close();
-                conn.Dispose();
-                da.Dispose();
+	        {
+                DataTable table = new DataTable();
+	            table.Columns.Add("Created", typeof(DateTime));
+                table.Columns.Add("Title", typeof(String));
+                table.Columns.Add("Message", typeof(String));
 
-                //Login erlaubt? 
+                DateTime jetzt = DateTime.Now;
+                String text;
+                String htext;
+
                 cbxLogin_TEST.Checked = true;
                 cbxLogin_PROD.Checked = true;
 
-                String text;
-                String htext;
-                foreach (DataRow row in table.Rows)
-	                {
-                        
-                        text = row["titleText"].ToString();    //--- Überschrift formatieren        
-                        text = text.Replace("{c=", "{font color=");
-                        text = text.Replace("{/c}", "{/font}");
-                        text = text.Replace("{", "<");
-                        text = text.Replace("}", ">");
-                        row["titleText"] = text;
-                        text = row["messageText"].ToString();   //--- Nachricht formatieren		  
-                        if (text.IndexOf("{h}") > 0) 
-                        { 
-                            htext = text.Substring(text.IndexOf("{h}") + 3, text.IndexOf("{/h}") - text.IndexOf("{h}") - 3);
-                            text = text.Replace("{h}", "<a href=\"\"");
-                            text = text.Replace("{/h}", "\" target = \"_BLANK\">" + htext + "</a>");
-                    
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]))
+                {
+                    conn.Open();
+
+                    SqlCommand command = conn.CreateCommand();
+
+                    command.CommandText = "SELECT * FROM LoginUserMessage" +
+                                  " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND LockLoginTo)" +
+                                  " ORDER BY ID DESC";
+
+                    command.Parameters.AddWithValue("@jetzt", jetzt);
+
+                    using (SqlDataReader dr = command.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            // Nachricht anzeigen?
+                            if (dr["ShowMessageFrom"] != DBNull.Value && jetzt > (DateTime) dr["ShowMessageFrom"]
+                                && dr["ShowMessageTo"] != DBNull.Value && jetzt < (DateTime) dr["ShowMessageTo"])
+                            {
+                                DataRow newRow = table.NewRow();
+
+                                newRow["Created"] = (DateTime)dr["Created"];
+
+                                // Überschrift formatieren
+                                text = dr["Title"].ToString();
+                                text = text.Replace("{c=", "{font color=");
+                                text = text.Replace("{/c}", "{/font}");
+                                text = text.Replace("{", "<");
+                                text = text.Replace("}", ">");
+                                newRow["Title"] = text;
+
+                                // Nachricht formatieren
+                                text = dr["Message"].ToString();
+                                if (text.Contains("{h}"))
+                                {
+                                    htext = text.Substring(text.IndexOf("{h}") + 3, text.IndexOf("{/h}") - text.IndexOf("{h}") - 3);
+                                    text = text.Replace("{h}", "<a href=\"");
+                                    text = text.Replace("{/h}", "\" target = \"_BLANK\">" + htext + "</a>");
+                                }
+                                text = text.Replace("{c=", "{font color=");
+                                text = text.Replace("{/c}", "{/font}");
+                                text = text.Replace("{", "<");
+                                text = text.Replace("}", ">");
+                                newRow["Message"] = text;
+
+                                table.Rows.Add(newRow);
+                            }
+
+                            // Login sperren?
+                            if (dr["LockLoginFrom"] != DBNull.Value && jetzt > (DateTime)dr["LockLoginFrom"]
+                                && dr["LockLoginTo"] != DBNull.Value && jetzt < (DateTime)dr["LockLoginTo"])
+                            {
+                                if ((bool)dr["LockForTest"])
+                                {
+                                    cbxLogin_TEST.Checked = false;
+                                }
+                                if ((bool)dr["LockForProd"])
+                                {
+                                    cbxLogin_PROD.Checked = false;
+                                }
+                            }
                         }
-                        text = text.Replace("{c=", "{font color=");
-                        text = text.Replace("{/c}", "{/font}");
-                        text = text.Replace("{", "<");
-                        text = text.Replace("}", ">");
-                        row["messageText"] = text;
-                        table.AcceptChanges();
+                    }
 
-                        Boolean onlyTest = (Boolean)row["onlyTest"];
-                        Boolean onlyProd = (Boolean)row["onlyPROD"];
+                    conn.Close();
+                }
 
-
-                        cbxLogin_TEST.Checked = onlyTest;
-                        cbxLogin_PROD.Checked = onlyProd; 
-
-	                }
                 Repeater1.DataSource = table;
                 Repeater1.DataBind();
-                if (table != null && table.Rows.Count == 0) 
+
+                if (table.Rows.Count == 0) 
                 {
                     divRepeater.Visible = false;
                     divRepeater_bottom.Visible = divRepeater.Visible;
                 }
 	        }
-	        catch (Exception ex)
+	        catch (Exception)
 	        {
 
 	        }
         }
+
         private string GenerateRandomCode()
         {
             Random random = new Random();
@@ -283,6 +300,7 @@ namespace AutohausPortal.Start
             }
             return s;
         }
+
         private string GetDomainUser(String strDomainUser)
         {
             SqlConnection Connection = new SqlConnection();
@@ -311,6 +329,7 @@ namespace AutohausPortal.Start
             }
             return DomainUser;
         }
+
         private String GiveIpStandardUser(Int32 intCust )
     {
         //Ermittele IpStandardUser des Kunden
@@ -344,6 +363,7 @@ namespace AutohausPortal.Start
 
         return strReturn;
   } 
+
         public static bool IsNumeric(string Value)
         {
             try
@@ -666,15 +686,6 @@ namespace AutohausPortal.Start
             }
             else
             {
-                try
-                {
-                    CKG.Base.Kernel.Common.Alert.alert(ref litAlert, m_User.Customer.CustomerId);
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-
                 if( (!cbxLogin_TEST.Checked) && (!cbxLogin_PROD.Checked) )
                 {
                     //Weder CKE noch CKP - Login erlaubt (nur DAD-Admin)

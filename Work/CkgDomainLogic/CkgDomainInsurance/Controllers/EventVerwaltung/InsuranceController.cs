@@ -41,7 +41,23 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SchadenStatusAlle()
+        {
+            EventsViewModel.DataInit();
+
+            return View(EventsViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult Schadenverwaltung()
+        {
+            EventsViewModel.DataInit();
+
+            return View(EventsViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult TermineOrtBoxen()
         {
             EventsViewModel.DataInit();
 
@@ -79,7 +95,39 @@ namespace ServicesMvc.Controllers
                     throw new Exception(string.Join(", ", errorList));
             }
 
-            return PartialView("Schadenakte/Partial/Status/StatusListe", EventsViewModel.SchadenfallStatusWerteWithNulls);
+            return PartialView("Schadenakte/Partial/Status/StatusListe", EventsViewModel.SchadenfallCurrentStatusWerteWithNulls);
+        }
+
+        [GridAction]
+        public ActionResult SchadenfallStatusAjaxSelect()
+        {
+            return View(new GridModel(EventsViewModel.SchadenfallCurrentStatusWerteWithNulls));
+        }
+
+        [HttpPost]
+        [GridAction]
+        public ActionResult SchadenfallStatusAjaxUpdate(int id)
+        {
+            var itemToUpdate = EventsViewModel.SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(p => p.StatusArtID == id);
+            var itemCloned = ModelMapping.Copy(itemToUpdate);
+            if (TryUpdateModel(itemCloned))
+                ModelMapping.Copy(itemCloned, itemToUpdate);
+
+            return View(new GridModel(EventsViewModel.SchadenfallCurrentStatusWerteWithNulls));
+        }
+        
+        [GridAction]
+        public ActionResult SchadenfallStatusAlleAjaxBinding()
+        {
+            return View(new GridModel(EventsViewModel.SchadenStatusAlleFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterSchadenStatusAlleGrid(string filterValue, string filterColumns)
+        {
+            EventsViewModel.AlleSchadenStatusFilter(filterValue, filterColumns);
+
+            return new EmptyResult();
         }
 
         #endregion
@@ -104,7 +152,7 @@ namespace ServicesMvc.Controllers
         private void SchadenfaelleSetViewBagData()
         {
             ViewBag.AuswahlEvents = EventsViewModel.VersEvents.ToSelectList();
-            ViewBag.AuswahlVersicherungen = EventsViewModel.DataService.Versicherungen.ToSelectList();
+            ViewBag.AuswahlVersicherungen = EventsViewModel.EventsDataService.Versicherungen.ToSelectList();
         }
 
         [HttpPost]
@@ -320,7 +368,8 @@ namespace ServicesMvc.Controllers
                     {
                         key = t.VersBoxID.ToString(),
                         boxArt = boxArt,
-                        title = t.Schadenfall.Nachname,
+                        title = (t.IsBlockerDummyTermin ? "Blocker" : t.Schadenfall.Nachname),
+                        isBlocker = t.IsBlockerDummyTermin,
 
                         startDateString = t.Datum.ToJsonDateTimeString(),
                         start = t.Datum.ToJsonDateString(),
@@ -354,13 +403,19 @@ namespace ServicesMvc.Controllers
                 {
                     var timeThisDayEnd = timeThisDay.AddMinutes(zeitscheibeTaktungMinuten);
 
-                    var termineInThisTimeGrid = termineForValidBoxen.Where(t => t.DatumZeitVon == timeThisDay).ToList();
+                    var termineInThisTimeGrid = termineForValidBoxen.Where(t => t.DatumZeitVon == timeThisDay);
+                    var normalTermine = termineInThisTimeGrid.Where(t => !t.IsBlockerDummyTermin).ToList();
+                    var blockerTermine = termineInThisTimeGrid.Where(t => t.IsBlockerDummyTermin).ToList();
+
+                    var title = normalTermine.None() ? "" : string.Format("{0} Termin{1}", normalTermine.Count, normalTermine.Count == 1 ? "" : "e");
+                    if (blockerTermine.Any())
+                        title += (title.IsNotNullOrEmpty() ? ", " : "") + string.Format("{0} Blocker", blockerTermine.Count);
 
                     groupedTerminList.Add(new TerminEntity
                         {
                             key = timeThisDay.ToShortDateString(),
                             boxArt = boxArt,
-                            title = termineInThisTimeGrid.None() ? "" : string.Format("{0} Termin{1}", termineInThisTimeGrid.Count, termineInThisTimeGrid.Count == 1 ? "" : "e"),
+                            title = title,
 
                             startDateString = timeThisDay.ToJsonDateString(),
                             start = timeThisDay.ToJsonDateString(),
@@ -372,7 +427,7 @@ namespace ServicesMvc.Controllers
                             endTimeMinutes = timeThisDayEnd.Minute,
 
                             boxenTotal = boxen.Count,
-                            boxenOccupied = termineInThisTimeGrid.Count,
+                            boxenOccupied = termineInThisTimeGrid.Count(),
                         });
                 }
             }
@@ -423,6 +478,29 @@ namespace ServicesMvc.Controllers
             dst.ZeitVon = src.ZeitVon;
             dst.ZeitBis = src.ZeitBis;
             dst.Bemerkung = src.Bemerkung;
+        }
+
+        #endregion
+
+
+        #region Termin Übersicht
+
+        public ActionResult TerminUebersichtGetOrte(int eventID)
+        {
+            if (eventID == 0)
+                return new EmptyResult();
+
+            EventsViewModel.VersEventGet(eventID);
+
+            return Json(EventsViewModel.VersEventOrte.Select(ort => new { val = ort.ID, text = ort.OrtName }));
+        }
+
+        [HttpPost]
+        public ActionResult TerminUebersichtRequestShow(int eventID, int ortID)
+        {
+            EventsViewModel.TerminCurrentPrepareForTerminUebersicht(eventID, ortID);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminKalender", EventsViewModel.TerminCurrent);
         }
 
         #endregion

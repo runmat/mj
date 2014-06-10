@@ -263,6 +263,11 @@ namespace ServicesMvc.Controllers
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = "Übersicht.pdf" };
         }
 
+        public ActionResult SummaryAsHtml()
+        {
+            return View("Partial/SummaryPdf", ViewModel.CreateSummaryModel(true, GetAdressenSelectionLink));
+        }
+
         [HttpPost]
         public ActionResult Receipt()
         {

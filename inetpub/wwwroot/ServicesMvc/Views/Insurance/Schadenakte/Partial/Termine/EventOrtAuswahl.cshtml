@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.Insurance.ViewModels
+@model VersEventsViewModel
+
+<div class="margin-left-10">
+
+    <div class="portlet margin-top-20">
+        <form action="#" class="form-horizontal">
+        
+            @Html.FormDropDownListFor(m => m.TmpVersEventCurrentID, Localize.DefaultOptionConcat(Model.VersEvents), new { @class = "m-wrap" }, 
+                                      preControlHtml: @<text><i class="icon-star margin-right-10 icon-width"></i></text>)
+
+            @Html.FormDropDownListFor(m => m.TmpVersEventOrtCurrentID, "0,".ToSelectList(), new { @class = "m-wrap" }, 
+                                      preControlHtml: @<text><i class="icon-map-marker margin-right-10 icon-width"></i></text>)
+
+            <div class="form-actions">
+                <span class="margin-left-25"></span>
+                <button type="button" class="btn green margin-right-5 hide" onclick="TerminUebersichtRequestShow()" id="btnTerminUebersichtRequestShow"><i class="icon-ok"></i> Weiter</button>
+                <button type="button" class="btn margin-right-5" onclick="location.reload()">Abbrechen</button>
+            </div>
+        </form>
+    </div>
+
+</div>

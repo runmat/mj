@@ -1,13 +1,33 @@
 ﻿@using CkgDomainLogic.Insurance.Models
 @model List<SchadenfallStatus>
 
+@(Html.Telerik()
+        .Grid<SchadenfallStatus>()
+        .Name("SchadenfallStatusGrid")
+        .Columns(columns =>
+            {
+                columns.Command(commands => commands.Edit().ButtonType(GridButtonType.Image));
+
+                columns.Bound(c => c.StatusArtID).Visible(false);
+                columns.Bound(c => c.Bezeichnung).ReadOnly(true);
+                columns.Bound(c => c.User).ReadOnly(true);
+
+                columns.Bound(c => c.DatumAsText);
+                columns.Bound(c => c.Kommentar).Width(60);
+            })
+        .DataKeys(keys => keys.Add(c => c.StatusArtID))
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("SchadenfallStatusAjaxSelect", "Insurance").Update("SchadenfallStatusAjaxUpdate", "Insurance"))
+            .ClientEvents(events => events.OnRowDataBound("SchadenfallStatusGridOnRowDataBound").OnEdit("SchadenfallStatusGridOnEdit").OnCommand("SchadenfallStatusGridOnCommand"))
+        )
+
+
 @{
     var groupSize = 3;
     var groups = Model.Count /groupSize;
     var index = 0;
 }
 
-@for (var i = 0; i < groups; i++)
+@for (var i = 0; i < -1; i++)
 {
     <div class="status-group">
         @for (var j = 0; j < groupSize; j++)

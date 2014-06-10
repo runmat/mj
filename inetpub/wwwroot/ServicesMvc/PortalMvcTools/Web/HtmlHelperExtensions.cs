@@ -229,18 +229,23 @@ namespace PortalMvcTools.Web
         {
             var dict = controlHtmlAttributes.ToHtmlDictionary();
 
-            if (!dict.ContainsKey("data-bind"))
-                return dict;
+            try
+            {
 
-            object existingDataBindPropertyValue;
-            dict.TryGetValue("data-bind", out existingDataBindPropertyValue);
-            if (existingDataBindPropertyValue == null)
-                return dict;
+                if (!dict.ContainsKey("data-bind"))
+                    return dict;
 
-            var knockoutDataBindAttributeValue = GetKnockoutDataBindAttributeValue(propertyName, controlType);
-            var s = existingDataBindPropertyValue.ToString().Trim();
-            if (s.StartsWith("xauto"))
-                dict["data-bind"] = knockoutDataBindAttributeValue + s.Replace("xauto", "");
+                object existingDataBindPropertyValue;
+                dict.TryGetValue("data-bind", out existingDataBindPropertyValue);
+                if (existingDataBindPropertyValue == null)
+                    return dict;
+
+                var knockoutDataBindAttributeValue = GetKnockoutDataBindAttributeValue(propertyName, controlType);
+                var s = existingDataBindPropertyValue.ToString().Trim();
+                if (s.StartsWith("xauto"))
+                    dict["data-bind"] = knockoutDataBindAttributeValue + s.Replace("xauto", "");
+            }
+            catch{}
 
             return dict;
         }
@@ -412,18 +417,18 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
-        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
-            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes);
+            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml);
         }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<string> selectList,
-                                                                object controlHtmlAttributes = null)
+                                                                object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
-            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes);
+            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml);
         }
 
-        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null)
+        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "dropdown");
 
@@ -435,6 +440,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -89,24 +90,30 @@ namespace CkgDomainLogic.Insurance.Models
 
 
         [XmlIgnore]
+        [ScriptIgnore]
         static public List<Land> Laender { get; set; }
 
         [NotMapped]
+        [ScriptIgnore]
         public static Func<VersEventsViewModel> GetViewModel { get; set; }
 
         [GridHidden]
         [NotMapped]
+        [ScriptIgnore]
         public List<VersEventOrtBox> Boxen
         {
-            get { return PropertyCacheGet(() => (GetViewModel == null ? new List<VersEventOrtBox>() : GetViewModel().DataService.VersEventOrtBoxenGet(this))); }
+            get { return PropertyCacheGet(() => (GetViewModel == null ? new List<VersEventOrtBox>() : GetViewModel().EventsDataService.VersEventOrtBoxenGet(this))); }
         }
 
 
-        public IEnumerable<VersEventOrtBox> GetValidBoxen(string boxArt, Schadenfall schadenfall = null)
+        public IEnumerable<VersEventOrtBox> GetValidBoxen(string boxArt = null, Schadenfall schadenfall = null)
         {
-            var boxen = Boxen.OrderBy(box => box.BoxNr).Where(box => box.BoxArt == boxArt);
+            var boxen = Boxen.OrderBy(box => box.BoxNr).AsQueryable();
 
-            if (boxArt == "GU" && schadenfall != null)
+            if (boxArt.IsNotNullOrEmpty())
+                boxen = boxen.Where(box => box.BoxArt == boxArt);
+            
+            if (boxArt.NotNullOrEmpty() == "GU" && schadenfall != null)
                 boxen = boxen.Where(box => box.VersicherungID == schadenfall.VersicherungID);
 
             return boxen;

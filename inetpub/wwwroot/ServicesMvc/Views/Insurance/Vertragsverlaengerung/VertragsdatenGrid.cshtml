@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@using CkgDomainLogic.Insurance.ViewModels
+@model VertragsverlaengerungViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridVertragsdaten"; }
+
+@(Html.Telerik()
+    .Grid<VertragsverlaengerungModel>()
+    .Name(gridName)
+    .XGroup("GridVertragsdaten")
+    .XAjaxDataBinding("VertragsdatenAjaxBinding", "Insurance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Verlaengern).ClientTemplate(
+            "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+        ).Visible(Model.EditMode).Filterable(false).Groupable(false).Sortable(false);
+        columns.XBound(c => c.ID).Hidden();
+        columns.XBound(c => c.VIN);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.Bedingungen);
+        columns.XBound(c => c.Produkttyp);
+        columns.XBound(c => c.Vertragsbeginn);
+        columns.XBound(c => c.Vertragsende);
+        columns.XBound(c => c.Resttage).Hidden();
+        columns.XBound(c => c.Status).Visible(!Model.EditMode);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.VIN).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVertragsdatenFilteredExcel", "Insurance");
+        commands.FilteredDataCommand("ExportVertragsdatenFilteredPDF", "Insurance");
+    })
+)
+
+<div class="form-horizontal">
+    <div class="form-actions">
+        @if (Model.EditMode)
+        {
+            <button type="button" class="btn green" onclick="SaveVertragsverlaengerungen();">@Localize.RenewContract <i class="m-icon-swapright m-icon-white"></i></button>
+        }
+        else
+        {
+            <button type="button" class="btn green hide" onclick="SaveVertragsverlaengerungen();">@Localize.RenewContract <i class="m-icon-swapright m-icon-white"></i></button>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>
+

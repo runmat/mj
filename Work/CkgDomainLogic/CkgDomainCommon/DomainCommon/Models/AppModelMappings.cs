@@ -114,6 +114,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                         businessModel.Land = sapModel.DEFPA.NotNullOrEmpty().ToUpper() == "X" ? "DE" : "";
                                                         //if (businessModel.Land.IsNullOrEmpty())
                                                         //    businessModel.Land = "-";
+                                                        businessModel.IsDefaultPartner = sapModel.DEFPA.NotNullOrEmpty().ToUpper() == "X";
                                                     },
 
                                                  // Init CopyBack: (to SAP)

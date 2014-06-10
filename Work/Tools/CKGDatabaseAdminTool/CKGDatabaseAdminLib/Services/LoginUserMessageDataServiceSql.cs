@@ -59,6 +59,8 @@ namespace CKGDatabaseAdminLib.Services
 
         public void SaveItem(int id)
         {
+            var item = LoginMessages.First(l => l.ID == id);
+            item.Created = DateTime.Now;
             _dataContext.SaveChanges();
             SetEditMode(id, false);
         }

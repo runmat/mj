@@ -172,7 +172,11 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_EVENT_READ_SCHAD_STAT_01").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_DPM_EVENT_SET_SCHAD_STAT_01").WriteOrmForExportTableStructures();
 
+            //Assistance
             //new FunctionReflector("Z_DPM_ASSIST_IMP_BESTAND_01").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_DPM_ASSIST_READ_BESTAND_01").WriteOrmForExportTableStructures("I_KUNNR_AH", "0");
+            //new FunctionReflector("Z_DPM_ASSIST_READ_VTRAGVERL_01").WriteOrmForExportTableStructures("I_KUNNR_AH", "0");
+            //new FunctionReflector("Z_DPM_ASSIST_CHG_VTRAGVERL_01").WriteOrmForExportTableStructures("I_KUNNR_AH", "0");
 
             //Autohaus
             //new FunctionReflector("Z_ZLD_AH_KUNDE_MAT").WriteOrmForExportTableStructures("I_VKORG, I_VKBUR, I_GRUPPE", "1010", "4837", "ONLINE-4837");

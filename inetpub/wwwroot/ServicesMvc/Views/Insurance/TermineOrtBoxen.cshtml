@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Insurance.ViewModels
+@model VersEventsViewModel
+
+@Html.Partial("Common/StylesScripts")
+@Html.Partial("Schadenfaelle/Common")
+
+<h3 class="page-title" id="headerTitle">Terminübersicht Boxen <small>eines Event Ortes</small></h3>
+
+<ul class="breadcrumbs event-breadcrumbs">
+	<li><a href="">[Schadenfälle]</a></li>
+	<li class="hide"><a href="" class="current">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+</ul>	
+
+@Html.IeWarning(8)
+
+@Html.SpanAlert("Message")
+
+<div class="portlet">
+    <div id="TermineOrtBoxen">
+        @Html.Partial("Schadenakte/Partial/Termine/EventOrtAuswahl")
+    </div>
+    <div id="TerminUebersichtKalender"></div>
+</div>
+
+<link href="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<script src="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.js"></script>
+
+<script type="text/javascript">
+    _breadCrumbInitial = "Event + Ort wählen";
+    _mode = "terminuebersicht";
+</script>

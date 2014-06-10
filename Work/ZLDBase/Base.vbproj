@@ -221,9 +221,6 @@
     <Compile Include="Kernel\Admin\ZulassungsVorbelegungList.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Kernel\Common\Alert.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Kernel\Common\Common.vb">
       <SubType>Code</SubType>
     </Compile>

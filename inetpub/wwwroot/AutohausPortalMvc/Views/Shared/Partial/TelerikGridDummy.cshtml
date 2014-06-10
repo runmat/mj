@@ -1,4 +1,7 @@
 ﻿<div class="hide">
     <!-- Workaround for Telerik Grid on Ajax Partial View Loading -->
-    @(Html.Telerik().Grid<string>().Name("TelerikTestGrid"))
+    @{
+        try { Html.Telerik().Grid<string>().Name("TelerikTestGrid").Render(); }
+        catch { }
+    }
 </div>

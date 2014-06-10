@@ -154,7 +154,7 @@ Partial Public Class Login
                 Dim command As SqlClient.SqlCommand = conn.CreateCommand()
 
                 command.CommandText = "SELECT * FROM LoginUserMessage" & _
-                    " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND ShowMessageTo)" & _
+                    " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND LockLoginTo)" & _
                     " ORDER BY ID DESC"
 
                 command.Parameters.AddWithValue("@jetzt", jetzt)
