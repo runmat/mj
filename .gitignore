@@ -227,5 +227,20 @@ Work/SapORM/DynSapProxy/GAC/GeneralTools.dll
 Work/SapORM/DynSapProxy/GAC/SAPORM.Contracts.dll
 Work/SapORM/DynSapProxy/GAC/de-DE/GeneralTools.resources.dll
 
+# Neuer Personal Ausweis Zertifikate
 !inetpub/wwwroot/nPa/GAC/*.pfx
 !inetpub/wwwroot/nPa/GAC/*.cer
+
+# GAC von DynSapProxy und Ausnahmen
+!Work/SapORM/DynSapProxy/GAC/*
+Work/SapORM/DynSapProxy/GAC/DynSapProxyFactories.dll
+Work/SapORM/DynSapProxy/GAC/DynSapProxyFactories.pdb
+Work/SapORM/DynSapProxy/GAC/DynSapProxyObjectErp35.dll
+Work/SapORM/DynSapProxy/GAC/DynSapProxyObjectErp35.pdb
+Work/SapORM/DynSapProxy/GAC/GeneralTools.dll
+Work/SapORM/DynSapProxy/GAC/GeneralTools.pdb
+Work/SapORM/DynSapProxy/GAC/SapORM.Contracts.dll
+Work/SapORM/DynSapProxy/GAC/SapORM.Contracts.pdb
+
+
+
