@@ -1007,6 +1007,11 @@ Public Class Zul_Sperr_Entsperr
                     DatRow("EQUNR") = vwTemp(i)("EQUNR").ToString
                     DatRow("QMNUM") = vwTemp(i)("QMNUM").ToString
                     DatRow("ZULDAT") = Nothing
+                    If IsDate(vwTemp(i)("Datum_zur_Sperre").ToString()) Then
+                        DatRow("DAT_SPERRE") = DateTime.Parse(vwTemp(i)("Datum_zur_Sperre").ToString())
+                    Else
+                        DatRow("DAT_SPERRE") = DBNull.Value
+                    End If
 
                     DatRow("SPERRVERMERK") = vwTemp(i)("Sperrvermerk").ToString
                     DatRow("WEB_USER") = Left(m_objUser.UserName, 15)
@@ -1025,9 +1030,17 @@ Public Class Zul_Sperr_Entsperr
                 DatRow("EQUNR") = vwTemp(i)("EQUNR").ToString
                 DatRow("QMNUM") = vwTemp(i)("QMNUM").ToString
 
-                DatRow("ZULDAT") = vwTemp(i)("DatumErstzulassung")
+                If IsDate(vwTemp(i)("DatumErstzulassung").ToString()) Then
+                    DatRow("ZULDAT") = DateTime.Parse(vwTemp(i)("DatumErstzulassung").ToString())
+                Else
+                    DatRow("ZULDAT") = DBNull.Value
+                End If
 
-                DatRow("DAT_SPERRE") = vwTemp(i)("Datum_zur_Sperre")
+                If IsDate(vwTemp(i)("Datum_zur_Sperre").ToString()) Then
+                    DatRow("DAT_SPERRE") = DateTime.Parse(vwTemp(i)("Datum_zur_Sperre").ToString())
+                Else
+                    DatRow("DAT_SPERRE") = DBNull.Value
+                End If
 
                 DatRow("SPERRVERMERK") = vwTemp(i)("Sperrvermerk").ToString
                 DatRow("WEB_USER") = Left(m_objUser.UserName, 15)

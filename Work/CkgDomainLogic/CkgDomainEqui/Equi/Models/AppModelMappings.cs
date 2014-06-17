@@ -193,6 +193,74 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_M_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.TechnIdentnummer = s.TIDNR;
+                        d.AbcKennzeichen = s.ABCKZ;
+                        d.Raum = s.MSGRP;
+                        d.Standort = s.STORT;
+                        d.Versandgrund = s.ZZVGRUND;
+                        d.Eingangsdatum = s.DATAB;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Stilllegungsdatum = s.EXPIRY_DATE;
+                        d.Adresse = s.ADRNR;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Ort = s.CITY1;
+                        d.PLZ = s.POST_CODE1;
+                        d.Strasse = s.STREET;
+                        d.Hausnummer = s.HOUSE_NUM1;
+                        d.Pickdatum = s.PICKDAT;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.TechnIdentnummer = s.TIDNR;
+                        d.AbcKennzeichen = s.ABCKZ;
+                        d.Raum = s.MSGRP;
+                        d.Standort = s.STORT;
+                        d.Versandgrund = s.ZZVGRUND;
+                        d.Eingangsdatum = s.DATAB;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Stilllegungsdatum = s.EXPIRY_DATE;
+                        d.Adresse = s.ADRNR;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Ort = s.CITY1;
+                        d.PLZ = s.POST_CODE1;
+                        d.Strasse = s.STREET;
+                        d.Hausnummer = s.HOUSE_NUM1;
+                        d.Pickdatum = s.PICKDAT;
+                    }));
+            }
+        }
+
         #endregion
 
 

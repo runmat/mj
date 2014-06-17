@@ -36,5 +36,25 @@ namespace CkgDomainLogic.Logs.Services
 
             return sapLogItems.ToList();
         }
+
+        public List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector)
+        {
+            LogsConnectionString = webServiceTrafficLogItemSelector.LogsConnection;
+
+            var logsDbContext = CreateLogsDbContext();
+
+            var webserviceLogItems = logsDbContext.GetWebServiceTrafficLogItems(webServiceTrafficLogItemSelector);
+
+            return webserviceLogItems.ToList();
+        }
+
+        public List<WebServiceTrafficLogTable> GetWebServiceTrafficLogTables()
+        {
+            var logsDbContext = CreateLogsDbContext();
+
+            var logTables = logsDbContext.GetWebServiceTrafficLogTables();
+
+            return logTables.ToList();
+        }
     }
 }

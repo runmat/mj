@@ -12,6 +12,10 @@ namespace CkgDomainLogic.Logs.Contracts
 
         List<SapLogItem> GetSapLogItems(SapLogItemSelector sapLogItemSelector);
 
+        List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector);
+
+        List<WebServiceTrafficLogTable> GetWebServiceTrafficLogTables();
+
         List<MpApplicationTranslated> Applications { get; }
 
         List<MpCustomer> Customers { get; }

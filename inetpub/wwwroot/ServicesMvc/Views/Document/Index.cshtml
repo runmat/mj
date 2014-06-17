@@ -31,14 +31,6 @@ else
 }
 
 
-@if (HttpContext.Current.Request.UrlReferrer != null && HttpContext.Current.Request.UrlReferrer.ToString().ToLower().Contains("/fahrer"))
-{
-    <script type="text/javascript">
-        RedirectHomePageToFahrerWebHomePage();
-    </script>
-}
-
-
 <script type="text/javascript" >
 
     function FormPreparePrivate() {

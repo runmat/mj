@@ -1,0 +1,56 @@
+﻿@using CkgDomainLogic.Logs.Models
+@model WebServiceTrafficLogItemSelector
+
+<div id="divWebServiceTrafficLogItemsSuche">
+    @using (Ajax.BeginForm("LoadWebServiceTrafficLogItems", "Logs", null,
+        new MvcAjaxOptions("divWebServiceTrafficLogItemsSuche") { OnComplete = "ShowWebServiceTrafficLogItems();" }, new { id = "WebServiceTrafficLogItemsForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap" })
+            
+            @Html.FormDropDownListFor(m => m.SelectedLogTable, (ViewBag.AllLogTables as List<WebServiceTrafficLogTable>).ToSelectList("TABLE_NAME", "TABLE_COMMENT"), new { @class = "m-wrap" })
+
+            @Html.FormDropDownListFor(m => m.SelectedType, Model.AllTypes.ToSelectList(), new { @class = "m-wrap" })
+
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap" })
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowWebServiceTrafficLogItems() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowWebServiceTrafficLogItems",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowWebServiceTrafficLogItemsSearchResult(result);
+                }
+
+                LoadingHide();
+                //InitDateRangePicker();
+            }
+        });
+    }
+
+</script>

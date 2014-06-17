@@ -1,0 +1,84 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Logs <small>WebServices</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/WebServiceTraffic/SucheWebServiceTrafficLogItems", Model.WebServiceTrafficLogItemSelector)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsWebServiceTraffic");
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowWebServiceTrafficLogItemsSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsWebServiceTraffic");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridLogsWebServiceTraffic() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridLogsWebServiceTraffic() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridLogsWebServiceTraffic() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowWebServiceTrafficLogDetails(id) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "ShowWebServiceTrafficLogDetails",
+                data: { id : id },
+                loadingShow: true,
+                success: function (result) {
+                    var windowElement = $.telerik.window.create({
+                        title: "Details",
+                        html: result,
+                        contentUrl: "",
+                        actions: ["Maximize", "Close"],
+                        modal: true,
+                        width: 800,
+                        height: 600,
+                        resizable: true,
+                        draggable: true,
+                        scrollable: true,
+                        onClose: function () {
+                            $("#popupWindow").data('tWindow').destroy();
+                        }
+                    });
+                    windowElement.attr('id', 'popupWindow');
+                    var window = $(windowElement).data('tWindow');
+                    window.center().open();
+                }
+            });
+
+        return false;
+    }
+
+</script>

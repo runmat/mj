@@ -250,7 +250,7 @@ var App = function () {
         // handle the search query submit on enter press
         $('.sidebar-search input').keypress(function (e) {
             if (e.which == 13) {
-                window.location.href = "extra_search.html";
+                window.location.href = "/ServicesMvc/DomainCommon/Search";
                 return false; //<---- Add this line
             }
         });
@@ -261,10 +261,10 @@ var App = function () {
                 if ($('.sidebar-search').hasClass('open') == false) {
                     $('.sidebar-search').addClass("open");
                 } else {
-                    window.location.href = "extra_search.html";
+                    window.location.href = "/ServicesMvc/DomainCommon/Search";
                 }
             } else {
-                window.location.href = "extra_search.html";
+                window.location.href = "/ServicesMvc/DomainCommon/Search";
             }
             e.preventDefault();
         });
@@ -286,14 +286,14 @@ var App = function () {
 
         //handle hor menu search button click
         $('.header .hor-menu .search-form .btn').live('click', function (e) {
-            window.location.href = "extra_search.html";
+            window.location.href = "/ServicesMvc/DomainCommon/Search";
             e.preventDefault();
         });
 
         //handle hor menu search form on enter press
         $('.header .hor-menu .search-form input').live('keypress', function (e) {
             if (e.which == 13) {
-                window.location.href = "extra_search.html";
+                window.location.href = "/ServicesMvc/DomainCommon/Search";
                 return false;
             }
         });

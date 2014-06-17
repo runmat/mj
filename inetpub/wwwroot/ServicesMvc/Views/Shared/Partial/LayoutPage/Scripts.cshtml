@@ -566,13 +566,6 @@
         return message;
     }
 
-    function RedirectHomePageToFahrerWebHomePage() {
-        var homeLink = $("i.icon-home").closest("a");
-        //alert(homeLink.attr("href"));
-
-        homeLink.attr("href", homeLink.attr("href") + "Fahrer");
-    };
-
     Number.prototype.formatNumber = function (decPlaces, thouSeparator, decSeparator) {
         var n = this,
             decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,

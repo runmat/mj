@@ -93,7 +93,7 @@ namespace AutohausPortalMvc
             // SAP to Web Model mapping validation:
             // validate model mappings between our de-coupled SAP and Web Models
             //
-            new AppModelMappings().ValidateAndRaiseError();
+            //new AppModelMappings().ValidateAndRaiseError();
         }
 
         protected void Application_BeginRequest()

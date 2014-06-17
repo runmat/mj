@@ -410,6 +410,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents ddlPortalType As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''trMvcSelectionUrl-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trMvcSelectionUrl As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtMvcSelectionUrl-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtMvcSelectionUrl As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''trKundeSperr-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1191,6 +1209,24 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Apps As Global.AjaxControlToolkit.TabPanel
+
+    '''<summary>
+    '''txtFilterUnassignedApps-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtFilterUnassignedApps As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lbtFilterUnassignedApps-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbtFilterUnassignedApps As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''rgAppUnAssigned-Steuerelement

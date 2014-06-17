@@ -29,7 +29,7 @@
 
         FormWizard.OnNext(function (step, maxSteps) {
             if (step == 3) {
-                ApplyChangesAndCheckUpload();
+                CheckUpload();
                 return false;
             }
             return true;
@@ -152,6 +152,7 @@
                     return;
                 }
                 FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 FormWizard.ButtonNextInvoke();
                 SetButtonVisibility();
@@ -167,22 +168,11 @@
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
                 FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 SetButtonVisibility();
             }
         });
-    }
-
-    function ApplyChangesAndCheckUpload() {
-        LoadingShow();
-
-        var grid = $("#GridUploadBestandsdaten").data("tGrid");
-        if (grid.hasChanges) {
-            grid.submitChanges();
-        }
-        setTimeout(function () {
-            CheckUpload();
-        }, 1000);
     }
 
     function SubmitUpload() {
@@ -193,6 +183,7 @@
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
                 FormWizard.SetTabHtml(3, result);
+                window.scrollTo(0, 0);
                 GridAllColumnFilterApplyToGrid("GridUploadSaveBestandsdaten");
                 FormPreparePrivateAjax();
                 FormWizard.ButtonNextInvoke();
@@ -208,6 +199,7 @@
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
                 FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 SetButtonVisibility();
             }

@@ -185,6 +185,13 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_AH_FS_SAVE").WriteOrmForExportTableStructures("I_VKORG, I_VKBUR, I_KENNZ, I_KUNNR, I_PLAKART, I_WEB_USER, I_STANDORT", "1010", "4837", "A", "1", "1", "A", "A");
             //new FunctionReflector("Z_ZLD_AH_FS_STATISTIK").WriteOrmForExportTableStructures("I_VKORG, I_VKBUR, I_KUNNR, I_STANDORT", "1010", "4837", "1", "A");
 
+            //new FunctionReflector("Z_M_BRIEFBESTAND_001").WriteOrmForExportTableStructures("I_KUNNR", "0");
+            //new FunctionReflector("Z_DPM_BRIEFBESTAND_001").WriteOrmForExportTableStructures("I_KUNNR", "0");
+
+            //Versandsperre
+            //new FunctionReflector("Z_DPM_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG, I_VERKZ, I_WEB_USER", "10026883", "N", "CARLM");
+            //new FunctionReflector("Z_DPM_LIST_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG", "10026883");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();

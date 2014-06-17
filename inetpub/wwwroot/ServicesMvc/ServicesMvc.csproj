@@ -2272,6 +2272,12 @@
     <Content Include="Views\Insurance\Schadenakte\Partial\Termine\EventOrtAuswahl.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung\VertragsdatenGrid.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung.cshtml" />
+    <Content Include="Views\Logs\WebServiceTraffic.cshtml" />
+    <Content Include="Views\Logs\Partial\WebServiceTraffic\SucheWebServiceTrafficLogItems.cshtml" />
+    <Content Include="Views\Logs\Partial\WebServiceTraffic\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\WebServiceTraffic\Details.cshtml" />
+    <Content Include="Views\Equi\ReportBriefbestand.cshtml" />
+    <Content Include="Views\Equi\Briefbestand\FahrzeugbriefeGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

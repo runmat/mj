@@ -26,6 +26,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public int? AccountingArea { get; set; }
 
+        public string MvcSelectionUrl { get; set; }
+
 
         #region Password Settings
 

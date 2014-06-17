@@ -22,8 +22,6 @@ namespace AutohausPortalMvc.Controllers
 {
     public class UeberfuehrungController : CkgDomainController
     {
-        private readonly IUeberfuehrungDataService _ueberfuehrungDataService;
-
         protected override bool NeedsDefaultIndexActionInUrl { get { return false; } }
 
         public UeberfuehrungViewModel ViewModel
@@ -52,7 +50,6 @@ namespace AutohausPortalMvc.Controllers
 
         public UeberfuehrungController(IAppSettings appSettings, ILogonContextDataServiceAutohaus logonContext, IUeberfuehrungDataService ueberfuehrungDataService) : base(appSettings, logonContext)
         {
-            _ueberfuehrungDataService = ueberfuehrungDataService;
             InitViewModel(ViewModel, appSettings, logonContext, ueberfuehrungDataService);
         }
 
@@ -337,12 +334,12 @@ namespace AutohausPortalMvc.Controllers
             //    return Json(new { success = false, message = "Es gab ein Problem beim Speichern Ihrer Datei! Der Dateiname ist zu lang." }, "text/plain");
 
             // Model.SaveSubModelWithPreservingUiModel(model, model.UiIndex);
-
+            
             //
             // save file here:
             //
             string errorMessage;
-            if (!_ueberfuehrungDataService.SaveUploadFile(file, model.FahrtIndex, out fileName, out errorMessage))
+            if (!ViewModel.SaveUploadFile(file, model.FahrtIndex, out fileName, out errorMessage))
                 return Json(new { success = false, message = errorMessage }, "text/plain");
 
             return Json(new

@@ -26,7 +26,11 @@ namespace GeneralTools.Models
             }
 
             var mapping = mappingCreateFunction();
-            ModelMappingSingletons.Add(dictKey, mapping);
+            if (ModelMappingSingletons.ContainsKey(dictKey))
+                ModelMappingSingletons[dictKey] = mapping;
+            else
+                ModelMappingSingletons.Add(dictKey, mapping);
+
             return mapping;
         }
 

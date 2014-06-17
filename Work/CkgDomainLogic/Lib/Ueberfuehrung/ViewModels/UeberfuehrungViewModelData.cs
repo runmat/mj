@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
@@ -980,6 +981,11 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
             SaveStarted = false;
         }
 
+        public bool SaveUploadFile(HttpPostedFileBase file, string fahrtIndex, out string fileName,
+                                   out string errorMessage)
+        {
+            return DataService.SaveUploadFile(file, fahrtIndex, out fileName, out errorMessage);
+        }
 
         #region Test
 

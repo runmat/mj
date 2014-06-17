@@ -39,7 +39,16 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
+            if (LogonContext != null && LogonContext.Customer != null && LogonContext.Customer.MvcSelectionUrl.IsNotNullOrEmpty())
+                return RedirectPermanent(LogonContext.Customer.MvcSelectionUrl);
+
             return View(CkgCommonViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Search()
+        {
+            return RedirectToAction("Index");
         }
 
         public ActionResult LogPageVisit(string appID)

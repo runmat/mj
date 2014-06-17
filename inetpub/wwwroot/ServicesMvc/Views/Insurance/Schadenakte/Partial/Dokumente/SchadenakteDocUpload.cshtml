@@ -72,7 +72,7 @@
             // Nur bestimmte Dateitypen sind zugelassen
             if (!isLegalExtension(extension)) {
                 var message = '@Localize.CustomerDocumentUploadLegalFiletypeWarning.ToJavascriptString()';
-                SpanAlertWarning("spanAlertSchadenverwaltung", message, 3000);
+                SpanAlertWarning("Message", message, 3000);
                 e.preventDefault();
                 return false;
             }
@@ -102,6 +102,6 @@
         e.preventDefault();
         LoadingHide();
         var message = '@Localize.UploadErrorOccurred.ToJavascriptString()';
-        SpanAlertWarning("spanAlertSchadenverwaltung", message, 3000);
+        SpanAlertWarning("Message", message, 3000);
     }
 </script>     

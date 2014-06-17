@@ -24,6 +24,16 @@ namespace CkgDomainLogic.Logs.Services
             return Database.SqlQuery<SapLogItem>(sapLogItemSelector.GetSqlSelectStatement());
         }
 
+        public IEnumerable<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector)
+        {
+            return Database.SqlQuery<WebServiceTrafficLogItem>(webServiceTrafficLogItemSelector.GetSqlSelectStatement());
+        }
+
+        public IEnumerable<WebServiceTrafficLogTable> GetWebServiceTrafficLogTables()
+        {
+            return Database.SqlQuery<WebServiceTrafficLogTable>("SELECT DISTINCT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE TABLE_NAME LIKE 'WebServiceTraffic%' AND IFNULL(TABLE_COMMENT, '') <> ''");
+        }
+
 
         public LogsSqlDbContext(string connectionString) 
             : base(connectionString)

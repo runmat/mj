@@ -52,14 +52,14 @@
                 var success = data["Success"];
                 var message = data["Message"];
                 if (success == true) {
-                    SpanAlertSuccess("spanAlertSchadenverwaltung", message, 1800);
+                    SpanAlertSuccess("Message", message, 1800);
                     TrySchadenakteDocsGridRefresh();
                 } else {
-                    SpanAlertError("spanAlertSchadenverwaltung", message, 5000);
+                    SpanAlertError("Message", message, 5000);
                 }
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -74,7 +74,7 @@
                 ShowSchadenakteDocEdit(result);
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -89,7 +89,7 @@
                 ShowSchadenakteDocEdit(result);
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -160,14 +160,14 @@
                 var success = data["Success"];
                 var message = data["Message"];
                 if (success == true) {
-                    SpanAlertSuccess("spanAlertSchadenverwaltung", message, 1800);
+                    SpanAlertSuccess("Message", message, 1800);
                     TryDocCategoriesGridRefresh();
                 } else {
-                    SpanAlertError("spanAlertSchadenverwaltung", message, 5000);
+                    SpanAlertError("Message", message, 5000);
                 }
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -182,7 +182,7 @@
                 ShowDocCategoryEdit(result);
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -197,7 +197,7 @@
                 ShowDocCategoryEdit(result);
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }
@@ -212,7 +212,7 @@
                 ShowDocCategoriesGrid(result);
             },
             error: function (result) {
-                SpanAlertWarning("spanAlertSchadenverwaltung", result.data, 5000);
+                SpanAlertWarning("Message", result.data, 5000);
             }
         });
     }

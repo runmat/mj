@@ -185,7 +185,6 @@ namespace CkgDomainLogic.Insurance.Models
 
         [GridHidden]
         [NotMapped]
-        [ScriptIgnore]
         public string MailtextTerminbestaetigung
         {
             get
@@ -194,7 +193,10 @@ namespace CkgDomainLogic.Insurance.Models
                     Schadenfall.Vorname, Schadenfall.Nachname,
                     Datum.ToLongDateString(), ZeitVon, Ort.OrtName, Ort.OrtName2, Ort.StrasseHausNr, Ort.PLZ, Ort.Ort, Ort.Land, Box.BoxName, Box.BoxNr, Box.BoxArtAsText);
 
-                mailText = mailText.Replace("<br/>", "%0D%0A");
+                mailText = mailText.Replace("<br/>", "%0A");
+
+                if (mailText.Length > 400)
+                    mailText = mailText.Substring(0, 400);
 
                 return mailText;
             }      

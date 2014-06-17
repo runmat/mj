@@ -1,0 +1,33 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel
+@using CkgDomainLogic.Logs.Models
+@{
+    var gridName = "GridLogsWebServiceTraffic";
+}
+
+@(Html.Telerik()
+    .Grid<WebServiceTrafficLogItemUI>()
+    .Name(gridName)
+    .XGroup("GridLogsWebServiceTrafficModel")
+    .XAjaxDataBinding("LogsWebServiceTrafficAjaxBinding", "Logs")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Id).Width(100).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='ShowWebServiceTrafficLogDetails(\"<#= data.Id #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white search'></i></button>"
+            )
+        ;
+        columns.XBound(c => c.Time_Stamp).Format("{0:dd.MM.yyyy HH:mm:ss}");
+        columns.XBound(c => c.Type);
+        columns.XBound(c => c.AllXmlPreview);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Time_Stamp).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportWebServiceTrafficLogItemsFilteredExcel", "Logs");
+        commands.FilteredDataCommand("ExportWebServiceTrafficLogItemsFilteredPDF", "Logs");
+    })
+    .Groupable(g => g.Enabled(false))
+)

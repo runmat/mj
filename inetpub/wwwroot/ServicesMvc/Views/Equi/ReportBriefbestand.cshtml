@@ -1,0 +1,74 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model BriefbestandViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_ReportBriefbestand <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div id="divBriefbestandFilter" class="form-horizontal label-width-100">
+    @Html.FormCheckBoxListFor(Localize.Selection, m => m.SelektionsfilterLagerbestand, m => m.SelektionsfilterTempVersendete)
+</div>
+
+<div id="divFahrzeugbriefeGrid">
+    @Html.Partial("Briefbestand/FahrzeugbriefeGrid", Model)
+</div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingHintLargeDataAmount';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridFahrzeugbriefe");
+
+        $('#divBriefbestandFilter').on('change', ':checkbox', function (e) {
+            FilterBriefbestandData();
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridFahrzeugbriefe").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridFahrzeugbriefeItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridFahrzeugbriefe() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+    
+    function OnLoad_GridFahrzeugbriefe() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridFahrzeugbriefe() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugbriefe() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FilterBriefbestandData() {
+        $.ajax({
+            type: "POST",
+            url: "FilterBriefbestandData",
+            data: { SelektionsfilterLagerbestand: $("#SelektionsfilterLagerbestand").is(':checked'), SelektionsfilterTempVersendete: $("#SelektionsfilterTempVersendete").is(':checked') },
+            success: function (result) {
+                FormPreparePrivateAjax();
+                GridRefresh();
+            }
+        });
+    }
+
+</script>

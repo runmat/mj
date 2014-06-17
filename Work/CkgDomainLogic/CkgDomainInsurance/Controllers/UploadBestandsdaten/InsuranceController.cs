@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -66,11 +67,21 @@ namespace ServicesMvc.Controllers
         }
 
         [GridAction]
-        public ActionResult UploadBestandsdatenAjaxSaveChanges([Bind(Prefix = "inserted")]IEnumerable<UploadBestandsdatenModel> insertedFzg,
-            [Bind(Prefix = "updated")]IEnumerable<UploadBestandsdatenModel> updatedFzg,
-            [Bind(Prefix = "deleted")]IEnumerable<UploadBestandsdatenModel> deletedFzg)
+        public ActionResult UploadBestandsdatenAjaxUpdateItem(int DatensatzNr)
         {
-            UploadBestandsdatenViewModel.ApplyChangedData(updatedFzg);
+            var item = UploadBestandsdatenViewModel.GetDatensatzById(DatensatzNr);
+            if (TryUpdateModel(item))
+            {
+                UploadBestandsdatenViewModel.ApplyChangedData(item);
+            }
+
+            return View(new GridModel(UploadBestandsdatenViewModel.UploadItems));
+        }
+
+        [GridAction]
+        public ActionResult UploadBestandsdatenAjaxDeleteItem(int DatensatzNr)
+        {
+            UploadBestandsdatenViewModel.RemoveDatensatzById(DatensatzNr);
 
             return View(new GridModel(UploadBestandsdatenViewModel.UploadItems));
         }

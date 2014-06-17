@@ -475,13 +475,6 @@
       <DependentUpon>LogBapi2Report.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="LogMessage.aspx.designer.vb">
-      <DependentUpon>LogMessage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="LogMessage.aspx.vb">
-      <DependentUpon>LogMessage.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
-    </Compile>
     <Compile Include="MasterPage\Admin.Master.designer.vb">
       <DependentUpon>Admin.Master</DependentUpon>
     </Compile>
@@ -603,7 +596,6 @@
     <Content Include="Groupmanagement.aspx" />
     <Content Include="jve_LogMessage2.aspx" />
     <Content Include="LogBapi2Report.aspx" />
-    <Content Include="LogMessage.aspx" />
     <Content Include="MasterPage\Admin.Master" />
     <Content Include="OrganizationManagement.aspx" />
     <Content Include="scroll.htc" />

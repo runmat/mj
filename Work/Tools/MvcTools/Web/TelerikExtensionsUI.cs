@@ -155,6 +155,21 @@ namespace Telerik.Web.Mvc.UI
             return builder.DataBinding(dataBinding => dataBinding.Ajax().Select(selectActionName, controllerName).Update(updateActionName, controllerName));
         }
 
+        public static GridBuilder<T> XAjaxDataBindingWithUpdateAndDelete<T>(this GridBuilder<T> builder, string selectActionName, string updateActionName, string deleteActionName, string controllerName) where T : class
+        {
+            return builder.DataBinding(dataBinding => dataBinding.Ajax().Select(selectActionName, controllerName).Update(updateActionName, controllerName).Delete(deleteActionName, controllerName));
+        }
+
+        public static GridBuilder<T> XAjaxDataBindingWithUpdateAndInsert<T>(this GridBuilder<T> builder, string selectActionName, string updateActionName, string insertActionName, string controllerName) where T : class
+        {
+            return builder.DataBinding(dataBinding => dataBinding.Ajax().Select(selectActionName, controllerName).Update(updateActionName, controllerName).Insert(insertActionName, controllerName));
+        }
+
+        public static GridBuilder<T> XAjaxDataBindingWithUpdateAndInsertAndDelete<T>(this GridBuilder<T> builder, string selectActionName, string updateActionName, string insertActionName, string deleteActionName, string controllerName) where T : class
+        {
+            return builder.DataBinding(dataBinding => dataBinding.Ajax().Select(selectActionName, controllerName).Update(updateActionName, controllerName).Insert(insertActionName, controllerName).Delete(deleteActionName, controllerName));
+        }
+
         public static GridBuilder<T> XAutoColumnConfiguration<T>(this GridBuilder<T> builder) where T : class
         {
             return builder.Groupable(g => g.Enabled(true))

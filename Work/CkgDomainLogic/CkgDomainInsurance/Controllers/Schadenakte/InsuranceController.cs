@@ -129,7 +129,7 @@ namespace ServicesMvc.Controllers
         {
             FileInfo fileInfo = new FileInfo(uploadFile.FileName);
             string originalFilename = Path.GetFileNameWithoutExtension(uploadFile.FileName);
-            string extension = fileInfo.Extension.Replace(".", string.Empty);
+            string extension = fileInfo.Extension.Replace(".", string.Empty).ToLower();
 
             var doc = SchadenakteViewModel.DocsViewModel.GetNewSchadenakteDoc();
 
@@ -222,7 +222,7 @@ namespace ServicesMvc.Controllers
             FileInfo fileInfo = new FileInfo(filename);
             string extension = fileInfo.Extension;
 
-            switch (extension)
+            switch (extension.ToLower())
             {
                 case ".pdf":
                 case ".doc":

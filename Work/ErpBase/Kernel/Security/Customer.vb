@@ -48,6 +48,7 @@ Namespace Kernel.Security
         Private m_intLoginLinkID As Integer
         Private m_DcDatCredentials As DatCredentials
         Private m_PortalType As String
+        Private m_MvcSelectionUrl As String
 
 #End Region
 
@@ -110,7 +111,8 @@ Namespace Kernel.Security
                                Optional ByRef strSDPassword As String = "", _
                                Optional ByVal strSDUserLogin As String = "", _
                                Optional ByRef strSDSignatur As String = "", _
-                               Optional ByRef strSDSignatur2 As String = "")
+                               Optional ByRef strSDSignatur2 As String = "", _
+                               Optional ByRef strMvcSelectionUrl As String = "")
 
             m_intCustomerID = intCustomerID
             m_strCustomerName = strCustomerName
@@ -145,8 +147,9 @@ Namespace Kernel.Security
             m_blnTVShow = blnTVShow
             m_UrCustomerUsernameRules = New UsernameRules(blnUsernameDontSendEmail)
             m_intLoginLinkID = intLoginLinkID
-            m_PortalType = strPortalType
             m_DcDatCredentials = New DatCredentials(strSDCustomerNumber, strSDUserName, strSDPassword, strSDUserLogin, strSDSignatur, strSDSignatur2)
+            m_PortalType = strPortalType
+            m_MvcSelectionUrl = strMvcSelectionUrl
         End Sub
 
         Public Sub New(ByVal intCustomerID As Integer, ByVal _user As User)
@@ -496,6 +499,12 @@ Namespace Kernel.Security
             End Get
         End Property
 
+        Public ReadOnly Property MvcSelectionUrl As String
+            Get
+                Return m_MvcSelectionUrl
+            End Get
+        End Property
+
 #End Region
 
 #Region " Functions "
@@ -532,6 +541,11 @@ Namespace Kernel.Security
                         m_PortalType = dr("PortalType").ToString
                     Catch
                         m_PortalType = ""
+                    End Try
+                    Try
+                        m_MvcSelectionUrl = dr("MvcSelectionUrl").ToString
+                    Catch
+                        m_MvcSelectionUrl = ""
                     End Try
 
 
@@ -825,7 +839,8 @@ Namespace Kernel.Security
                                                "TVShow, " & _
                                                "UserDontSendEmail, " & _
                                                "LoginLinkID, " & _
-                                               "PortalType  )" & _
+                                               "PortalType, " & _
+                                               "MvcSelectionUrl)" & _
                           "VALUES(@Customername, " & _
                                  "@KUNNR, " & _
                                  "@ReadDealer, " & _
@@ -871,7 +886,8 @@ Namespace Kernel.Security
                                  "@TVShow, " & _
                                  "@UserDontSendEmail, " & _
                                  "@LoginLinkID, " & _
-                                 "@PortalType ); " & _
+                                 "@PortalType, " & _
+                                 "@MvcSelectionUrl); " & _
                           "SELECT SCOPE_IDENTITY()"
 
                 Dim strUpdate As String = "UPDATE Customer " & _
@@ -921,7 +937,8 @@ Namespace Kernel.Security
                                               "TVShow=@TVShow, " & _
                                               "UserDontSendEmail=@UserDontSendEmail, " & _
                                               "LoginLinkID=@LoginLinkID, " & _
-                                              "PortalType=@PortalType " & _
+                                              "PortalType=@PortalType, " & _
+                                              "MvcSelectionUrl=@MvcSelectionUrl " & _
                                           "WHERE CustomerID=@CustomerID"
 
                 Dim cmd As New SqlClient.SqlCommand()
@@ -1013,6 +1030,7 @@ Namespace Kernel.Security
                     .AddWithValue("@UserDontSendEmail", m_UrCustomerUsernameRules.DontSendEmail)
                     .AddWithValue("@LoginLinkID", m_intLoginLinkID)
                     .AddWithValue("@PortalType", m_PortalType)
+                    .AddWithValue("@MvcSelectionUrl", m_MvcSelectionUrl)
 
                 End With
 

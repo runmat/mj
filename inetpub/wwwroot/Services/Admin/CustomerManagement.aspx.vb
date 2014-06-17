@@ -171,6 +171,7 @@ Partial Public Class CustomerManagement
             chkTeamviewer.Checked = _Customer.ShowsTeamViewer
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
+            txtMvcSelectionUrl.Text = _Customer.MvcSelectionUrl
 
             'fillAccountingArea
             FillAccountingArea(intCustomerId)
@@ -329,7 +330,13 @@ Partial Public Class CustomerManagement
         If tblApps IsNot Nothing Then
             Dim dvAppUnassigned As New DataView(tblApps)
             dvAppUnassigned.Sort = "AppFriendlyName"
-            dvAppUnassigned.RowFilter = "Assigned <> 'X'"
+
+            Dim strFilter As String = ""
+            If Not String.IsNullOrEmpty(txtFilterUnassignedApps.Text) Then
+                strFilter = txtFilterUnassignedApps.Text.Trim().Trim("*"c)
+            End If
+            dvAppUnassigned.RowFilter = "Assigned <> 'X' AND (AppName LIKE '%" & strFilter & "%' OR AppFriendlyName LIKE '%" & strFilter & "%' OR AppURL LIKE '%" & strFilter & "%')"
+
             Return dvAppUnassigned
         End If
         Return Nothing
@@ -688,8 +695,13 @@ Partial Public Class CustomerManagement
         'Benutzer und Organisation
         txtUserLockTime.Enabled = Not blnLock
         txtUserLockTime.BackColor = Drawing.Color.FromName(strBackColor)
+
+        txtMvcSelectionUrl.Enabled = Not blnLock
+        txtMvcSelectionUrl.BackColor = Drawing.Color.FromName(strBackColor)
+
         txtUserDeleteTime.Enabled = Not blnLock
         txtUserDeleteTime.BackColor = Drawing.Color.FromName(strBackColor)
+
         rbKeine.Enabled = Not blnLock
         rbeing.Enabled = Not blnLock
         rbvollst.Enabled = Not blnLock
@@ -700,6 +712,7 @@ Partial Public Class CustomerManagement
 
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
+        txtMvcSelectionUrl.Enabled = Not blnLock
     End Sub
 
     Private Sub CustomerAdminMode()
@@ -1504,6 +1517,7 @@ Partial Public Class CustomerManagement
         ddlAccountingArea.SelectedIndex = 0
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
+        txtMvcSelectionUrl.Text = String.Empty
         chkKundenSperre.Checked = False
         chkTeamviewer.Checked = False
         txtCName.Text = String.Empty
@@ -1700,7 +1714,9 @@ Partial Public Class CustomerManagement
                                                 ddlPortalType.SelectedValue, _
                                                 strSDCustomerNumber:=txtSDCustomerNumber.Text, _
                                                 strSDUserName:=txtSDUserName.Text, _
-                                                strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, strSDSignatur:=txtSDSignatur.Text, strSDSignatur2:=txtSDSignatur2.Text) 'txtCAddress.Text, _
+                                                strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, _
+                                                strSDSignatur:=txtSDSignatur.Text, strSDSignatur2:=txtSDSignatur2.Text, _
+                                                strMvcSelectionUrl:=txtMvcSelectionUrl.Text)
             If (txtUserLockTime.Text.Trim() <> "") Then
                 If CInt(txtUserLockTime.Text) >= 5 Then
                     _customer.DaysUntilLock = CInt(txtUserLockTime.Text)
@@ -2168,6 +2184,10 @@ Partial Public Class CustomerManagement
             Dim item As Telerik.Web.UI.GridGroupHeaderItem = CType(e.Item, Telerik.Web.UI.GridGroupHeaderItem)
             item.DataCell.Text = "Technologie: " & item.DataCell.Text.Split(":"c)(1)
         End If
+    End Sub
+
+    Protected Sub lbtFilterUnassignedApps_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtFilterUnassignedApps.Click
+        rgAppUnAssigned.Rebind()
     End Sub
 
 #End Region

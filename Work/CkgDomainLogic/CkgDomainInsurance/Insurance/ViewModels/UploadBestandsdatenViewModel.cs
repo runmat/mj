@@ -167,19 +167,27 @@ namespace CkgDomainLogic.Insurance.ViewModels
             SubmitMode = false;
         }
 
-        public void ApplyChangedData(IEnumerable<UploadBestandsdatenModel> liste)
+        public UploadBestandsdatenModel GetDatensatzById(int id)
         {
-            if (liste != null)
+            return UploadItems.Find(u => u.DatensatzNr == id);
+        }
+
+        public void RemoveDatensatzById(int id)
+        {
+            var item = UploadItems.Find(u => u.DatensatzNr == id);
+            UploadItems.Remove(item);
+        }
+
+        public void ApplyChangedData(UploadBestandsdatenModel item)
+        {
+            if (item != null)
             {
-                foreach (UploadBestandsdatenModel fzg in liste)
+                for (int i = 0; i < UploadItems.Count; i++)
                 {
-                    for (int i = 0; i < UploadItems.Count; i++)
+                    if (UploadItems[i].DatensatzNr == item.DatensatzNr)
                     {
-                        if (UploadItems[i].DatensatzNr == fzg.DatensatzNr)
-                        {
-                            UploadItems[i] = fzg;
-                            break;
-                        }
+                        UploadItems[i] = item;
+                        break;
                     }
                 }
             }

@@ -23,7 +23,7 @@ namespace TestClient
             using (var channel = new ServiceDataSoapClient())
             {
                 var res = channel.WMGetFreisetzung_Status(this.username, this.password);
-                res = res.Substring(1);
+                //res = res.Substring(1);
                 var doc = new XmlDocument();
                 doc.LoadXml(res);
             }

@@ -485,10 +485,16 @@ Public Class SapInterface
                 Dim impRow As DataRow = impTable.Rows(i)
                 Dim expRow As DataRow = expTable.Rows(i)
 
-                For j As Integer = 0 To impRow.ItemArray.Length
+                For j As Integer = 0 To impTable.Columns.Count - 1
                     If Not String.IsNullOrEmpty(impRow.ItemArray(j).ToString()) AndAlso impRow.ItemArray(j) <> expRow.ItemArray(j) Then
+                        If impTable.Columns(j).DataType Is GetType(String) Then
+                            'mit führenden Nullen aufgefüllte und/oder getrimmte Felder berücksichtigen
+                            If impRow.ItemArray(j).ToString().TrimStart("0"c).Replace(" ", "") = expRow.ItemArray(j).ToString().TrimStart("0"c).Replace(" ", "") Then
+                                Continue For
+                            End If
+                        End If
                         blnError = True
-                        strMessage &= "Z_M_IMP_SERVICE_AUFTR_001: Exportdaten weichen von Importdaten ab (Import: " & impRow.ItemArray(j).ToString() & ", Export: " & expRow.ItemArray(j).ToString() & ")!" & vbNewLine
+                        strMessage &= "Z_M_IMP_SERVICE_AUFTR_001: Exportdaten weichen von Importdaten ab (" & impTable.Columns(j).ColumnName & ": Import= " & impRow.ItemArray(j).ToString() & ", Export= " & expRow.ItemArray(j).ToString() & ")!" & vbNewLine
                     End If
                 Next
             Next
@@ -552,11 +558,10 @@ Public Class SapInterface
     End Function
 
     Public Function WMGetFreisetzungStatus() As String
-        Dim strKUNNR As String = "0000300997"
         Dim strTest As String = ConfigurationManager.AppSettings("ISTEST")
 
         Try
-            S.AP.Init("Z_M_STATUS_SIXT_LS_001", "I_KUNNR, I_TEST", strKUNNR, strTest)
+            S.AP.Init("Z_M_STATUS_SIXT_LS_001", "I_KUNNR, I_TEST", "A", strTest)
 
             Return S.AP.GetExportParameterWithExecute("E_XML")
 

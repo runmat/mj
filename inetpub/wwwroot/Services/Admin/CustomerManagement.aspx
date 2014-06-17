@@ -262,6 +262,16 @@
                                                         </span>
                                                     </td>
                                                 </tr>
+                                                <tr class="formquery" id="trMvcSelectionUrl" runat="server">
+                                                    <td class="firstLeft active">
+                                                        Selection URL (nur MVC):
+                                                    </td>
+                                                    <td class="active">
+                                                        <span>
+                                                            <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                        </span>
+                                                    </td>
+                                                </tr>
                                                 <tr class="formquery" id="trKundeSperr" runat="server">
                                                     <td class="firstLeft active">
                                                         Kunde sperren:
@@ -997,55 +1007,58 @@
                                                 font-size: 10px; padding-bottom: 0" border="0">
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2">
-                                                        nicht zugewiesen
-                                                        <%--<p>--%>
-                                                            <div style="width: 100%; max-width: 892px; margin-top: 5px">        
-                                                                <telerik:RadGrid ID="rgAppUnAssigned" runat="server" AllowSorting="True" 
-                                                                    AutoGenerateColumns="False" GridLines="None" Culture="de-DE"   
-                                                                    OnNeedDataSource="rgAppUnAssigned_NeedDataSource" >
-                                                                    <ClientSettings>
-                                                                        <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="2" />
-                                                                    </ClientSettings>
-                                                                    <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
-                                                                        <SortExpressions>
-                                                                            <telerik:GridSortExpression FieldName="AppFriendlyName" SortOrder="Ascending" />
-                                                                        </SortExpressions>
-                                                                        <GroupByExpressions>
-                                                                            <telerik:GridGroupByExpression>
-                                                                                <SelectFields>
-                                                                                    <telerik:GridGroupByField FieldName="AppTechType"></telerik:GridGroupByField>
-                                                                                </SelectFields>
-                                                                                <GroupByFields>
-                                                                                    <telerik:GridGroupByField FieldName="AppTechType"></telerik:GridGroupByField>
-                                                                                </GroupByFields>
-                                                                            </telerik:GridGroupByExpression>
-                                                                        </GroupByExpressions>
-                                                                        <HeaderStyle ForeColor="White" />
-                                                                        <Columns>
-                                                                            <telerik:GridBoundColumn DataField="AppID" SortExpression="AppID" Visible="false" />
-                                                                            <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" Visible="false" />
-                                                                            <telerik:GridTemplateColumn Groupable="false" UniqueName="Auswahl" >
-                                                                                <HeaderStyle Width="25px" />
-                                                                                <ItemTemplate>
-                                                                                    <asp:CheckBox runat="server" ID="chkSelect" style="width: 16px; height: 16px" />
-                                                                                </ItemTemplate>
-                                                                            </telerik:GridTemplateColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppFriendlyName" SortExpression="AppFriendlyName" HeaderText="Name" >
-                                                                                <HeaderStyle Width="150px" />
-                                                                                <ItemStyle Wrap="false" />
-                                                                            </telerik:GridBoundColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppURL" SortExpression="AppURL" HeaderText="URL" >
-                                                                                <HeaderStyle Width="200px" />
-                                                                            </telerik:GridBoundColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppDescription" SortExpression="AppDescription" HeaderText="Beschreibung" >
-                                                                                <HeaderStyle Width="200px" />
-                                                                                <ItemStyle Wrap="false" />
-                                                                            </telerik:GridBoundColumn>
-                                                                        </Columns>
-                                                                    </MasterTableView>
-                                                                </telerik:RadGrid>
-                                                            </div>
-                                                        <%--</p>--%>
+                                                        <table style="border: none; padding-bottom: 0">
+                                                            <tr>
+                                                                <td style="width: 70%">
+                                                                    nicht zugewiesen
+                                                                </td>
+                                                                <td style="width: 20%">
+                                                                    <asp:TextBox runat="server" ID="txtFilterUnassignedApps" />
+                                                                </td>
+                                                                <td style="width: 10%">
+                                                                    <asp:LinkButton class="Tablebutton" ID="lbtFilterUnassignedApps" runat="server" Text="Suchen&amp;nbsp;&amp;#187; "
+                                                                        CssClass="Tablebutton" Height="16px" Width="78px"></asp:LinkButton>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div style="width: 100%; max-width: 892px; margin-top: 5px">        
+                                                            <telerik:RadGrid ID="rgAppUnAssigned" runat="server" AllowSorting="True" 
+                                                                AutoGenerateColumns="False" GridLines="None" Culture="de-DE"   
+                                                                OnNeedDataSource="rgAppUnAssigned_NeedDataSource" >
+                                                                <ClientSettings>
+                                                                    <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
+                                                                </ClientSettings>
+                                                                <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
+                                                                    <SortExpressions>
+                                                                        <telerik:GridSortExpression FieldName="AppFriendlyName" SortOrder="Ascending" />
+                                                                    </SortExpressions>
+                                                                    <HeaderStyle ForeColor="White" />
+                                                                    <Columns>
+                                                                        <telerik:GridBoundColumn DataField="AppID" SortExpression="AppID" Visible="false" />
+                                                                        <telerik:GridTemplateColumn Groupable="false" UniqueName="Auswahl" >
+                                                                            <HeaderStyle Width="25px" />
+                                                                            <ItemTemplate>
+                                                                                <asp:CheckBox runat="server" ID="chkSelect" style="width: 16px; height: 16px" />
+                                                                            </ItemTemplate>
+                                                                        </telerik:GridTemplateColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppFriendlyName" SortExpression="AppFriendlyName" HeaderText="Name" >
+                                                                            <HeaderStyle Width="150px" />
+                                                                            <ItemStyle Wrap="false" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppURL" SortExpression="AppURL" HeaderText="URL" >
+                                                                            <HeaderStyle Width="200px" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" HeaderText="Technologie" >
+                                                                            <HeaderStyle Width="75px" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppDescription" SortExpression="AppDescription" HeaderText="Beschreibung" >
+                                                                            <HeaderStyle Width="200px" />
+                                                                            <ItemStyle Wrap="false" />
+                                                                        </telerik:GridBoundColumn>
+                                                                    </Columns>
+                                                                </MasterTableView>
+                                                            </telerik:RadGrid>
+                                                        </div>
                                                     </td> 
                                                 </tr>
                                                 <tr class="formquery">
@@ -1061,53 +1074,43 @@
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2">
                                                         zugewiesen
-                                                        <%--<p>--%>
-                                                            <div style="width: 100%; max-width: 892px; margin-top: 5px">       
-                                                                <telerik:RadGrid ID="rgAppAssigned" runat="server" AllowSorting="True" 
-                                                                    AutoGenerateColumns="False" GridLines="None" Culture="de-DE" >
-                                                                    <ClientSettings>
-                                                                        <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="2" />
-                                                                    </ClientSettings>
-                                                                    <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
-                                                                        <SortExpressions>
-                                                                            <telerik:GridSortExpression FieldName="AppFriendlyName" SortOrder="Ascending" />
-                                                                        </SortExpressions>
-                                                                        <GroupByExpressions>
-                                                                            <telerik:GridGroupByExpression>
-                                                                                <SelectFields>
-                                                                                    <telerik:GridGroupByField FieldName="AppTechType"></telerik:GridGroupByField>
-                                                                                </SelectFields>
-                                                                                <GroupByFields>
-                                                                                    <telerik:GridGroupByField FieldName="AppTechType"></telerik:GridGroupByField>
-                                                                                </GroupByFields>
-                                                                            </telerik:GridGroupByExpression>
-                                                                        </GroupByExpressions>
-                                                                        <HeaderStyle ForeColor="White" />
-                                                                        <Columns>
-                                                                            <telerik:GridBoundColumn DataField="AppID" SortExpression="AppID" Visible="false" />
-                                                                            <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" Visible="false" />
-                                                                            <telerik:GridTemplateColumn Groupable="false" UniqueName="Auswahl" >
-                                                                                <HeaderStyle Width="25px" />
-                                                                                <ItemTemplate>
-                                                                                    <asp:CheckBox runat="server" ID="chkSelect" style="width: 16px; height: 16px" />
-                                                                                </ItemTemplate>
-                                                                            </telerik:GridTemplateColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppFriendlyName" SortExpression="AppFriendlyName" HeaderText="Name" >
-                                                                                <HeaderStyle Width="150px" />
-                                                                                <ItemStyle Wrap="false" />
-                                                                            </telerik:GridBoundColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppURL" SortExpression="AppURL" HeaderText="URL" >
-                                                                                <HeaderStyle Width="200px" />
-                                                                            </telerik:GridBoundColumn>
-                                                                            <telerik:GridBoundColumn DataField="AppDescription" SortExpression="AppDescription" HeaderText="Beschreibung" >
-                                                                                <HeaderStyle Width="200px" />
-                                                                                <ItemStyle Wrap="false" />
-                                                                            </telerik:GridBoundColumn>
-                                                                        </Columns>
-                                                                    </MasterTableView>
-                                                                </telerik:RadGrid>
-                                                            </div>
-                                                        <%--</p>--%>
+                                                        <div style="width: 100%; max-width: 892px; margin-top: 5px">       
+                                                            <telerik:RadGrid ID="rgAppAssigned" runat="server" AllowSorting="True" 
+                                                                AutoGenerateColumns="False" GridLines="None" Culture="de-DE" >
+                                                                <ClientSettings>
+                                                                    <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
+                                                                </ClientSettings>
+                                                                <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
+                                                                    <SortExpressions>
+                                                                        <telerik:GridSortExpression FieldName="AppFriendlyName" SortOrder="Ascending" />
+                                                                    </SortExpressions>
+                                                                    <HeaderStyle ForeColor="White" />
+                                                                    <Columns>
+                                                                        <telerik:GridBoundColumn DataField="AppID" SortExpression="AppID" Visible="false" />
+                                                                        <telerik:GridTemplateColumn Groupable="false" UniqueName="Auswahl" >
+                                                                            <HeaderStyle Width="25px" />
+                                                                            <ItemTemplate>
+                                                                                <asp:CheckBox runat="server" ID="chkSelect" style="width: 16px; height: 16px" />
+                                                                            </ItemTemplate>
+                                                                        </telerik:GridTemplateColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppFriendlyName" SortExpression="AppFriendlyName" HeaderText="Name" >
+                                                                            <HeaderStyle Width="150px" />
+                                                                            <ItemStyle Wrap="false" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppURL" SortExpression="AppURL" HeaderText="URL" >
+                                                                            <HeaderStyle Width="200px" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" HeaderText="Technologie" >
+                                                                            <HeaderStyle Width="75px" />
+                                                                        </telerik:GridBoundColumn>
+                                                                        <telerik:GridBoundColumn DataField="AppDescription" SortExpression="AppDescription" HeaderText="Beschreibung" >
+                                                                            <HeaderStyle Width="200px" />
+                                                                            <ItemStyle Wrap="false" />
+                                                                        </telerik:GridBoundColumn>
+                                                                    </Columns>
+                                                                </MasterTableView>
+                                                            </telerik:RadGrid>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </table>
