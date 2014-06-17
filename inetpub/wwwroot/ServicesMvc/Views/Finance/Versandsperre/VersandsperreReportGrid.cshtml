@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceVersandsperreReportViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridVersandsperreReport"; }
+
+@(Html.Telerik()
+    .Grid<VorgangVersandsperre>()
+    .Name(gridName)
+    .XGroup("GridVersandsperreReport")
+    .XAjaxDataBinding("VersandsperreReportAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Erstzulassung).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.PAID).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVorgaengeVersandsperreReportFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVorgaengeVersandsperreReportFilteredPDF", "Finance");
+    })
+)
+

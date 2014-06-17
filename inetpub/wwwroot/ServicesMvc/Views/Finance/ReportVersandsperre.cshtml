@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceVersandsperreReportViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Finance_ReportVersandsperre <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div id="divVersandsperreGrid">
+    @Html.Partial("Versandsperre/VersandsperreReportGrid", Model)
+</div>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridVersandsperreReport");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridVersandsperreReport").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridVersandsperreReportItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridVersandsperreReport() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridVersandsperreReport() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridVersandsperreReport() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function TryGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+
+</script>

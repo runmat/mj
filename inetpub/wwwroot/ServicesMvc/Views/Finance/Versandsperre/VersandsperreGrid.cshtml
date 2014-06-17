@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceVersandsperreViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridVersandsperre"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseVersandsperreSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<VorgangVersandsperre>()
+    .Name(gridName)
+    .XGroup("GridVersandsperre")
+    .XAjaxDataBinding("VersandsperreAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Selektiert).ClientTemplate(
+            "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+        ).Visible(Model.EditMode).Filterable(false).Groupable(false).Sortable(false);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Status).Visible(!Model.EditMode);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.PAID).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVorgaengeVersandsperreFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVorgaengeVersandsperreFilteredPDF", "Finance");
+    })
+)
+
+<div class="form-horizontal">
+    <div class="form-actions">
+        @if (Model.EditMode)
+        {
+            <button type="button" class="btn green" onclick="SaveVersandsperren();">@Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+        }
+        else
+        {
+            <button type="button" class="btn green hide" onclick="SaveVersandsperren();">@Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>
+
