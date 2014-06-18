@@ -186,6 +186,8 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
+# CKG Ignore Liste
+*.DotSettings
 # GAC mitnehmen
 !inetpub/wwwroot/nPa/GAC/*
 !inetpub/wwwroot/Services/GAC/*
@@ -205,6 +207,8 @@ Work/GAC/DynSapProxyObjectErp35.dll
 Work/GAC/DynSapProxyObjectErp35.pdb
 Work/GAC/GeneralTools.dll
 Work/GAC/GeneralTools.pdb
+Work/GAC/DocumentTools.dll
+Work/GAC/DocumentTools.pdb
 Work/GAC/LogMaintenanceLib.dll
 Work/GAC/QuickEasy.dll
 Work/GAC/WebTools35.dll
