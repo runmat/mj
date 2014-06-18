@@ -16,11 +16,6 @@
 		public const string _Abgemeldet = "_Abgemeldet";
 
 		/// <summary>
-		/// Abmeldung Fahrzeug (DAD)
-		/// </summary>
-		public const string _ABMELDEDATUM = "_ABMELDEDATUM";
-
-		/// <summary>
 		/// Ämter
 		/// </summary>
 		public const string _Aemter = "_Aemter";
@@ -59,11 +54,6 @@
 		/// Anzahl Vorgänge
 		/// </summary>
 		public const string _AnzahlVorgaenge = "_AnzahlVorgaenge";
-
-		/// <summary>
-		/// Fertigmeldung Aufbereitung (BLG an DAD)
-		/// </summary>
-		public const string _AUFBER_FERTIG = "_AUFBER_FERTIG";
 
 		/// <summary>
 		/// Auftrag
@@ -111,11 +101,6 @@
 		public const string _BereitstellungFahrzeugBlg = "_BereitstellungFahrzeugBlg";
 
 		/// <summary>
-		/// Vereinbarung RN-Termin (DAD mit LN)
-		/// </summary>
-		public const string _BEST_ABH_TERMIN = "_BEST_ABH_TERMIN";
-
-		/// <summary>
 		/// Betriebsnummern
 		/// </summary>
 		public const string _Betriebsnummern = "_Betriebsnummern";
@@ -151,21 +136,6 @@
 		public const string _Code = "_Code";
 
 		/// <summary>
-		/// Beauftragung GA (DAD an SGS)
-		/// </summary>
-		public const string _DAT_GUTA_BEAUFTRAGT = "_DAT_GUTA_BEAUFTRAGT";
-
-		/// <summary>
-		/// Bereitstellung GA (SGS an DAD)
-		/// </summary>
-		public const string _DAT_GUTA_ERHALT = "_DAT_GUTA_ERHALT";
-
-		/// <summary>
-		/// Bereitstellung FZG-Daten & Fotos (DAD an Online- Vermarktungsplattform)
-		/// </summary>
-		public const string _DAT_INSERAT = "_DAT_INSERAT";
-
-		/// <summary>
 		/// Detail-Bezeichnung
 		/// </summary>
 		public const string _DetailBezeichnung = "_DetailBezeichnung";
@@ -186,11 +156,6 @@
 		public const string _Durchgefuehrt = "_Durchgefuehrt";
 
 		/// <summary>
-		/// Beauftragung Aufbereitung (HLA an BLG)
-		/// </summary>
-		public const string _EING_AUFBER_AUFTR = "_EING_AUFBER_AUFTR";
-
-		/// <summary>
 		/// Eingang CoC
 		/// </summary>
 		public const string _EingangCoc = "_EingangCoc";
@@ -204,11 +169,6 @@
 		/// Eintrittsdatum
 		/// </summary>
 		public const string _Eintrittsdatum = "_Eintrittsdatum";
-
-		/// <summary>
-		/// Beauftragung RN (HLA an DAD)
-		/// </summary>
-		public const string _ERDAT = "_ERDAT";
 
 		/// <summary>
 		/// Erfassungsdatum
@@ -276,16 +236,6 @@
 		public const string _FahrzgeugTyp = "_FahrzgeugTyp";
 
 		/// <summary>
-		/// Bereitstellung Fahrzeug (BLG an SGS)
-		/// </summary>
-		public const string _FB_GUTA = "_FB_GUTA";
-
-		/// <summary>
-		/// ÜG Fahrzeug (DAD an BLG)
-		/// </summary>
-		public const string _FE_BLG = "_FE_BLG";
-
-		/// <summary>
 		/// Fehlgeschlagen
 		/// </summary>
 		public const string _Fehlgeschlagen = "_Fehlgeschlagen";
@@ -304,11 +254,6 @@
 		/// Fruehling
 		/// </summary>
 		public const string _Fruehling = "_Fruehling";
-
-		/// <summary>
-		/// Ausgang Platz
-		/// </summary>
-		public const string _FZG_BEREIT_BLG_SGS = "_FZG_BEREIT_BLG_SGS";
 
 		/// <summary>
 		/// Gebühr Amt
@@ -344,11 +289,6 @@
 		/// Gruppenname
 		/// </summary>
 		public const string _Gruppenname = "_Gruppenname";
-
-		/// <summary>
-		/// Gutachten erwünscht
-		/// </summary>
-		public const string _GUTA_ERSTELL_1 = "_GUTA_ERSTELL_1";
 
 		/// <summary>
 		/// Halter Hausnummer
@@ -394,16 +334,6 @@
 		/// Ihre Referenz
 		/// </summary>
 		public const string _IhreReferenz = "_IhreReferenz";
-
-		/// <summary>
-		/// RN Fahrzeug (DAD mit LN)
-		/// </summary>
-		public const string _IUG_DAT = "_IUG_DAT";
-
-		/// <summary>
-		/// ÜG Fahrzeug (DAD an BLG)
-		/// </summary>
-		public const string _IUN_DAT = "_IUN_DAT";
 
 		/// <summary>
 		/// Kategorie
@@ -516,16 +446,6 @@
 		public const string _Positionen = "_Positionen";
 
 		/// <summary>
-		/// Bereitstellung ÜG-Protokoll (DAD an BLG / HLA)
-		/// </summary>
-		public const string _PROT_EING_D = "_PROT_EING_D";
-
-		/// <summary>
-		/// Bereitstellung RN-Protokoll (DAD an BLG / HLA)
-		/// </summary>
-		public const string _PROT_EING_O = "_PROT_EING_O";
-
-		/// <summary>
 		/// Protokollart
 		/// </summary>
 		public const string _Protokollart = "_Protokollart";
@@ -539,41 +459,6 @@
 		/// Referenznummer
 		/// </summary>
 		public const string _Referenznummer = "_Referenznummer";
-
-		/// <summary>
-		/// Prozess HLAEasy/ HLALive
-		/// </summary>
-		public const string _RUECKGAB_OPTION = "_RUECKGAB_OPTION";
-
-		/// <summary>
-		/// Service Level 19-21
-		/// </summary>
-		public const string _SERVICE_LEVEL_19_21 = "_SERVICE_LEVEL_19_21";
-
-		/// <summary>
-		/// Service Level 2-3
-		/// </summary>
-		public const string _SERVICE_LEVEL_2_3 = "_SERVICE_LEVEL_2_3";
-
-		/// <summary>
-		/// Service Level 2-7
-		/// </summary>
-		public const string _SERVICE_LEVEL_2_7 = "_SERVICE_LEVEL_2_7";
-
-		/// <summary>
-		/// Service Level 5-7
-		/// </summary>
-		public const string _SERVICE_LEVEL_5_7 = "_SERVICE_LEVEL_5_7";
-
-		/// <summary>
-		/// Service Level 7-14
-		/// </summary>
-		public const string _SERVICE_LEVEL_7_14 = "_SERVICE_LEVEL_7_14";
-
-		/// <summary>
-		/// Service Level 8-16
-		/// </summary>
-		public const string _SERVICE_LEVEL_8_16 = "_SERVICE_LEVEL_8_16";
 
 		/// <summary>
 		/// Sommer
@@ -594,11 +479,6 @@
 		/// Standorte
 		/// </summary>
 		public const string _Standorte = "_Standorte";
-
-		/// <summary>
-		/// Standort Fahrzeugdokument
-		/// </summary>
-		public const string _StandortFahrzeugdokument = "_StandortFahrzeugdokument";
 
 		/// <summary>
 		/// Standort Hausnummer
@@ -706,16 +586,6 @@
 		public const string _Version = "_Version";
 
 		/// <summary>
-		/// HLA-Vertragsnr.
-		/// </summary>
-		public const string _VERTRAGSNR_HLA = "_VERTRAGSNR_HLA";
-
-		/// <summary>
-		/// VW-Entscheidung (HLA an DAD)
-		/// </summary>
-		public const string _VERW_ZULETZT_AKTUALISIERT = "_VERW_ZULETZT_AKTUALISIERT";
-
-		/// <summary>
 		/// VkBur
 		/// </summary>
 		public const string _VkBur = "_VkBur";
@@ -791,59 +661,14 @@
 		public const string _Zulassungsfaehig = "_Zulassungsfaehig";
 
 		/// <summary>
-		/// Annehmen
-		/// </summary>
-		public const string Accept = "Accept";
-
-		/// <summary>
-		/// Angenommene Aufträge
-		/// </summary>
-		public const string AcceptedOrders = "AcceptedOrders";
-
-		/// <summary>
-		/// Konto
-		/// </summary>
-		public const string Account = "Account";
-
-		/// <summary>
-		/// Kontonummer
-		/// </summary>
-		public const string AccountNo = "AccountNo";
-
-		/// <summary>
-		/// Erfassung Vermarktungserlöse
-		/// </summary>
-		public const string AcquisitionMarketingProceeds = "AcquisitionMarketingProceeds";
-
-		/// <summary>
-		/// Erfassung Gutachterwert
-		/// </summary>
-		public const string AcquisitionSurveyorValue = "AcquisitionSurveyorValue";
-
-		/// <summary>
-		/// Aktion
+		/// Action
 		/// </summary>
 		public const string Action = "Action";
-
-		/// <summary>
-		/// Neue Kategorie hinzufügen
-		/// </summary>
-		public const string AddNewCategory = "AddNewCategory";
-
-		/// <summary>
-		/// Adresse
-		/// </summary>
-		public const string Address = "Address";
 
 		/// <summary>
 		/// Administration
 		/// </summary>
 		public const string Admin = "Admin";
-
-		/// <summary>
-		/// Einweisung
-		/// </summary>
-		public const string Admission = "Admission";
 
 		/// <summary>
 		/// Adressenverwaltung
@@ -856,46 +681,6 @@
 		public const string Aktivcheck = "Aktivcheck";
 
 		/// <summary>
-		/// Alle erforderlichen Eingabefelder müssen gefüllt sein
-		/// </summary>
-		public const string AllRequiredInputFieldsMustBeFilled = "AllRequiredInputFieldsMustBeFilled";
-
-		/// <summary>
-		/// Alle Gebühren
-		/// </summary>
-		public const string AllTaxes = "AllTaxes";
-
-		/// <summary>
-		/// Menge
-		/// </summary>
-		public const string Amount = "Amount";
-
-		/// <summary>
-		/// Höhe der Gebühr
-		/// </summary>
-		public const string AmountOfTax = "AmountOfTax";
-
-		/// <summary>
-		/// Menge Vorjahr
-		/// </summary>
-		public const string AmountPreviousYear = "AmountPreviousYear";
-
-		/// <summary>
-		/// Kein Filter
-		/// </summary>
-		public const string Any = "Any";
-
-		/// <summary>
-		/// App
-		/// </summary>
-		public const string App = "App";
-
-		/// <summary>
-		/// Erscheinungsbild
-		/// </summary>
-		public const string Appearance = "Appearance";
-
-		/// <summary>
 		/// Anwendung
 		/// </summary>
 		public const string Application = "Application";
@@ -904,36 +689,6 @@
 		/// Übernehmen
 		/// </summary>
 		public const string Apply = "Apply";
-
-		/// <summary>
-		/// Termin
-		/// </summary>
-		public const string Appointment = "Appointment";
-
-		/// <summary>
-		/// Termin ändern
-		/// </summary>
-		public const string AppointmentChange = "AppointmentChange";
-
-		/// <summary>
-		/// Termin zur Hagelschadenbesichtigung
-		/// </summary>
-		public const string AppointmentConfirmation = "AppointmentConfirmation";
-
-		/// <summary>
-		/// Neuen Termin erstellen
-		/// </summary>
-		public const string AppointmentCreate = "AppointmentCreate";
-
-		/// <summary>
-		/// Termin löschen
-		/// </summary>
-		public const string AppointmentDelete = "AppointmentDelete";
-
-		/// <summary>
-		/// Terminanlage an Sonntagen ist nicht verfügbar!
-		/// </summary>
-		public const string AppointmentsOnSundayNotAvailable = "AppointmentsOnSundayNotAvailable";
 
 		/// <summary>
 		/// Freigabe
@@ -959,16 +714,6 @@
 		/// Archivtypen
 		/// </summary>
 		public const string ArchiveTypes = "ArchiveTypes";
-
-		/// <summary>
-		/// Bewertung
-		/// </summary>
-		public const string Assessment = "Assessment";
-
-		/// <summary>
-		/// Belegungs-Typ
-		/// </summary>
-		public const string AssignmentType = "AssignmentType";
 
 		/// <summary>
 		/// beim DAD
@@ -1016,64 +761,9 @@
 		public const string BackToSearch = "BackToSearch";
 
 		/// <summary>
-		/// Bankleitzahl
-		/// </summary>
-		public const string BankCode = "BankCode";
-
-		/// <summary>
-		/// Bapi Datum
-		/// </summary>
-		public const string BapiDate = "BapiDate";
-
-		/// <summary>
 		/// Abmeldung beauftragen
 		/// </summary>
 		public const string BeauftragungAbmeldung = "BeauftragungAbmeldung";
-
-		/// <summary>
-		/// Neuen Blocker Termin / Serie anlegen
-		/// </summary>
-		public const string BlockingAppointmentAdd = "BlockingAppointmentAdd";
-
-		/// <summary>
-		/// Blocker Termin löschen
-		/// </summary>
-		public const string BlockingAppointmentDelete = "BlockingAppointmentDelete";
-
-		/// <summary>
-		/// Blocker Termin bearbeiten
-		/// </summary>
-		public const string BlockingAppointmentEdit = "BlockingAppointmentEdit";
-
-		/// <summary>
-		/// Box
-		/// </summary>
-		public const string Box = "Box";
-
-		/// <summary>
-		/// Box Name
-		/// </summary>
-		public const string BoxName = "BoxName";
-
-		/// <summary>
-		/// Box Nr.
-		/// </summary>
-		public const string BoxNo = "BoxNo";
-
-		/// <summary>
-		/// Box Art
-		/// </summary>
-		public const string BoxType = "BoxType";
-
-		/// <summary>
-		/// Vermittler
-		/// </summary>
-		public const string Broker = "Broker";
-
-		/// <summary>
-		/// Browser
-		/// </summary>
-		public const string Browser = "Browser";
 
 		/// <summary>
 		/// Abbrechen
@@ -1116,16 +806,6 @@
 		public const string CaptchaTextToValidate = "CaptchaTextToValidate";
 
 		/// <summary>
-		/// Fahrzeughersteller
-		/// </summary>
-		public const string CarManufacturer = "CarManufacturer";
-
-		/// <summary>
-		/// Fahrzeugmodell
-		/// </summary>
-		public const string CarModel = "CarModel";
-
-		/// <summary>
 		/// Halter
 		/// </summary>
 		public const string CarOwner = "CarOwner";
@@ -1139,31 +819,6 @@
 		/// Carport
 		/// </summary>
 		public const string Carport = "Carport";
-
-		/// <summary>
-		/// Kategorie
-		/// </summary>
-		public const string Categorie = "Categorie";
-
-		/// <summary>
-		/// Kategorien
-		/// </summary>
-		public const string Categories = "Categories";
-
-		/// <summary>
-		/// Es existiert bereits eine Kategorie mit diesem Namen
-		/// </summary>
-		public const string CategoryWithSameNameAlreadyExists = "CategoryWithSameNameAlreadyExists";
-
-		/// <summary>
-		/// Versandgrund
-		/// </summary>
-		public const string CauseOfDispatch = "CauseOfDispatch";
-
-		/// <summary>
-		/// Grund der Auslage
-		/// </summary>
-		public const string CauseOfExpenditure = "CauseOfExpenditure";
 
 		/// <summary>
 		/// Datenerfassung
@@ -1191,59 +846,14 @@
 		public const string ChassisNo10 = "ChassisNo10";
 
 		/// <summary>
-		/// Daten prüfen
-		/// </summary>
-		public const string CheckData = "CheckData";
-
-		/// <summary>
-		/// Prüfdatum
-		/// </summary>
-		public const string Checkdate = "Checkdate";
-
-		/// <summary>
 		/// Geprüft
 		/// </summary>
 		public const string Checked = "Checked";
 
 		/// <summary>
-		/// Prüftext
-		/// </summary>
-		public const string CheckText = "CheckText";
-
-		/// <summary>
-		/// CIN
-		/// </summary>
-		public const string CIN = "CIN";
-
-		/// <summary>
-		/// Staatsangehörigkeit
-		/// </summary>
-		public const string Citizenship = "Citizenship";
-
-		/// <summary>
-		/// Staatsangehörigkeit2
-		/// </summary>
-		public const string Citizenship2 = "Citizenship2";
-
-		/// <summary>
 		/// Ort
 		/// </summary>
 		public const string City = "City";
-
-		/// <summary>
-		/// Ort, Ziel
-		/// </summary>
-		public const string CityDestination = "CityDestination";
-
-		/// <summary>
-		/// Ort, Rücktour
-		/// </summary>
-		public const string CityReturn = "CityReturn";
-
-		/// <summary>
-		/// Ort, Start
-		/// </summary>
-		public const string CityStart = "CityStart";
 
 		/// <summary>
 		/// Klärfall
@@ -1259,11 +869,6 @@
 		/// Klassifizierung
 		/// </summary>
 		public const string Classification = "Classification";
-
-		/// <summary>
-		/// Auftraggeber
-		/// </summary>
-		public const string Client = "Client";
 
 		/// <summary>
 		/// CoC
@@ -1326,16 +931,6 @@
 		public const string CodeTypeVersion = "CodeTypeVersion";
 
 		/// <summary>
-		/// Sammelbesichtigung
-		/// </summary>
-		public const string CollectiveInspection = "CollectiveInspection";
-
-		/// <summary>
-		/// Kollision
-		/// </summary>
-		public const string Collision = "Collision";
-
-		/// <summary>
 		/// Farbe
 		/// </summary>
 		public const string Color = "Color";
@@ -1346,49 +941,9 @@
 		public const string ColumnOverallFilter = "ColumnOverallFilter";
 
 		/// <summary>
-		/// Filter
-		/// </summary>
-		public const string ColumnOverallFilterSmall = "ColumnOverallFilterSmall";
-
-		/// <summary>
 		/// Bemerkung
 		/// </summary>
 		public const string Comment = "Comment";
-
-		/// <summary>
-		/// Bemerkung 2
-		/// </summary>
-		public const string Comment2 = "Comment2";
-
-		/// <summary>
-		/// Kommunikationsnummer 1
-		/// </summary>
-		public const string CommunicationNo1 = "CommunicationNo1";
-
-		/// <summary>
-		/// Kommunikationsnummer 2
-		/// </summary>
-		public const string CommunicationNo2 = "CommunicationNo2";
-
-		/// <summary>
-		/// Kommunikationsart 1
-		/// </summary>
-		public const string CommunicationType1 = "CommunicationType1";
-
-		/// <summary>
-		/// Kommunikationsart 2
-		/// </summary>
-		public const string CommunicationType2 = "CommunicationType2";
-
-		/// <summary>
-		/// Konzernnummer
-		/// </summary>
-		public const string CompanyNo = "CompanyNo";
-
-		/// <summary>
-		/// Bedingungen
-		/// </summary>
-		public const string Conditions = "Conditions";
 
 		/// <summary>
 		/// Ansprechpartner
@@ -1401,11 +956,6 @@
 		public const string ContactpersonRequired = "ContactpersonRequired";
 
 		/// <summary>
-		/// Kontaktanfrage
-		/// </summary>
-		public const string ContactRequest = "ContactRequest";
-
-		/// <summary>
 		/// Inhalt
 		/// </summary>
 		public const string Content = "Content";
@@ -1414,11 +964,6 @@
 		/// Weiter
 		/// </summary>
 		public const string Continue = "Continue";
-
-		/// <summary>
-		/// Vertragsende
-		/// </summary>
-		public const string ContractEnd = "ContractEnd";
 
 		/// <summary>
 		/// Vertragsnummer
@@ -1431,21 +976,6 @@
 		public const string ContractNoShort = "ContractNoShort";
 
 		/// <summary>
-		/// Vertragsbeginn
-		/// </summary>
-		public const string ContractStart = "ContractStart";
-
-		/// <summary>
-		/// Vertragsstatus
-		/// </summary>
-		public const string ContractStatus = "ContractStatus";
-
-		/// <summary>
-		/// Vertragsart
-		/// </summary>
-		public const string ContractType = "ContractType";
-
-		/// <summary>
 		/// Controller
 		/// </summary>
 		public const string Controller = "Controller";
@@ -1454,11 +984,6 @@
 		/// Korrektur
 		/// </summary>
 		public const string Correction = "Correction";
-
-		/// <summary>
-		/// Kosten
-		/// </summary>
-		public const string Cost = "Cost";
 
 		/// <summary>
 		/// Kostenstelle
@@ -1476,34 +1001,9 @@
 		public const string CountryCode = "CountryCode";
 
 		/// <summary>
-		/// Land 2
-		/// </summary>
-		public const string CountryCode2 = "CountryCode2";
-
-		/// <summary>
-		/// Anzahl bewertete Fahrten
-		/// </summary>
-		public const string CountVotedRides = "CountVotedRides";
-
-		/// <summary>
-		/// Deckungsart
-		/// </summary>
-		public const string CoverageType = "CoverageType";
-
-		/// <summary>
-		/// Erstellen
-		/// </summary>
-		public const string Create = "Create";
-
-		/// <summary>
 		/// Erstellt
 		/// </summary>
 		public const string Created = "Created";
-
-		/// <summary>
-		/// Anlagedatum
-		/// </summary>
-		public const string CreateDate = "CreateDate";
 
 		/// <summary>
 		/// Erstellt am
@@ -1511,54 +1011,14 @@
 		public const string CreatedOn = "CreatedOn";
 
 		/// <summary>
-		/// Anlage User
-		/// </summary>
-		public const string CreateUser = "CreateUser";
-
-		/// <summary>
 		/// Erstelldatum
 		/// </summary>
 		public const string CreationDate = "CreationDate";
 
 		/// <summary>
-		/// Kreditinstitut
-		/// </summary>
-		public const string CreditInstitution = "CreditInstitution";
-
-		/// <summary>
-		/// Kreditor aus Bestellung
-		/// </summary>
-		public const string CreditorFromOrder = "CreditorFromOrder";
-
-		/// <summary>
-		/// Kreditnehmer
-		/// </summary>
-		public const string CreditUser = "CreditUser";
-
-		/// <summary>
-		/// CSV-Upload
-		/// </summary>
-		public const string CsvUpload = "CsvUpload";
-
-		/// <summary>
-		/// Währungsschlüssel 1
-		/// </summary>
-		public const string CurrencyKey1 = "CurrencyKey1";
-
-		/// <summary>
-		/// Währungsschlüssel 2
-		/// </summary>
-		public const string CurrencyKey2 = "CurrencyKey2";
-
-		/// <summary>
 		/// Kunde
 		/// </summary>
 		public const string Customer = "Customer";
-
-		/// <summary>
-		/// Es können nur Dateien im Format pdf, doc, docx, xls, xlsx, txt, csv, jpg, jpeg, gif und png hochgeladen werden.
-		/// </summary>
-		public const string CustomerDocumentUploadLegalFiletypeWarning = "CustomerDocumentUploadLegalFiletypeWarning";
 
 		/// <summary>
 		/// Kunden-ID
@@ -1591,46 +1051,6 @@
 		public const string Customers = "Customers";
 
 		/// <summary>
-		/// Schaden
-		/// </summary>
-		public const string Damage = "Damage";
-
-		/// <summary>
-		/// Schadenfall
-		/// </summary>
-		public const string DamageCase = "DamageCase";
-
-		/// <summary>
-		/// Es existiert bereits ein Schadenfall zu den angegebenen Daten
-		/// </summary>
-		public const string DamageCaseAlreadyExists = "DamageCaseAlreadyExists";
-
-		/// <summary>
-		/// Wollen Sie diesen Schadenfall wirklich löschen?
-		/// </summary>
-		public const string DamageCaseDoYouReallyWantToDelete = "DamageCaseDoYouReallyWantToDelete";
-
-		/// <summary>
-		/// Schadenfall ungültig
-		/// </summary>
-		public const string DamageCaseInvalid = "DamageCaseInvalid";
-
-		/// <summary>
-		/// Schadenfälle
-		/// </summary>
-		public const string DamageCases = "DamageCases";
-
-		/// <summary>
-		/// Event
-		/// </summary>
-		public const string DamageEvent = "DamageEvent";
-
-		/// <summary>
-		/// Event ID
-		/// </summary>
-		public const string DamageEventID = "DamageEventID";
-
-		/// <summary>
 		/// DAT_Annahmedok
 		/// </summary>
 		public const string DAT_Receiptdoc = "DAT_Receiptdoc";
@@ -1661,39 +1081,14 @@
 		public const string DateFromTo = "DateFromTo";
 
 		/// <summary>
-		/// Datum ungültig
-		/// </summary>
-		public const string DateInvalid = "DateInvalid";
-
-		/// <summary>
-		/// Geburtsdatum
-		/// </summary>
-		public const string DateOfBirth = "DateOfBirth";
-
-		/// <summary>
-		/// Stilllegungsdatum
-		/// </summary>
-		public const string DateOfDeactivation = "DateOfDeactivation";
-
-		/// <summary>
 		/// Abmeldeeingang
 		/// </summary>
 		public const string DateOfDeregistrationReceipt = "DateOfDeregistrationReceipt";
 
 		/// <summary>
-		/// Versanddatum
-		/// </summary>
-		public const string DateOfDispatch = "DateOfDispatch";
-
-		/// <summary>
 		/// Datum Erstanschreiben
 		/// </summary>
 		public const string DateOfFirstWriting = "DateOfFirstWriting";
-
-		/// <summary>
-		/// Datum des Rechnungseingangs
-		/// </summary>
-		public const string DateOfInvoiceReceipt = "DateOfInvoiceReceipt";
 
 		/// <summary>
 		/// Eingangsdatum
@@ -1706,11 +1101,6 @@
 		public const string DateOfRegistrationReceipt = "DateOfRegistrationReceipt";
 
 		/// <summary>
-		/// Datum des temp. Versandes
-		/// </summary>
-		public const string DateOfTempDispatch = "DateOfTempDispatch";
-
-		/// <summary>
 		/// Zeitraum
 		/// </summary>
 		public const string DateRange = "DateRange";
@@ -1721,11 +1111,6 @@
 		public const string DateRangeInvalid = "DateRangeInvalid";
 
 		/// <summary>
-		/// Bitte geben Sie einen Zeitraum an
-		/// </summary>
-		public const string DateRangeMissing = "DateRangeMissing";
-
-		/// <summary>
 		/// Datum bis
 		/// </summary>
 		public const string DateTo = "DateTo";
@@ -1734,16 +1119,6 @@
 		/// Das Bis-Datum hat ein falsche Format
 		/// </summary>
 		public const string DateToInvalid = "DateToInvalid";
-
-		/// <summary>
-		/// Das "Datum Bis" muss vor dem "Datum Von" liegen
-		/// </summary>
-		public const string DateToMustBeBeforeDateFrom = "DateToMustBeBeforeDateFrom";
-
-		/// <summary>
-		/// Mehr als {0} Sekunden
-		/// </summary>
-		public const string DauerSAPAufruf = "DauerSAPAufruf";
 
 		/// <summary>
 		/// Liefertermin
@@ -1759,51 +1134,6 @@
 		/// Händler Ort
 		/// </summary>
 		public const string DealerCity = "DealerCity";
-
-		/// <summary>
-		/// Händlereinkaufspreis brutto
-		/// </summary>
-		public const string DealerPurchaseValueGross = "DealerPurchaseValueGross";
-
-		/// <summary>
-		/// Händlereinkaufspreis netto
-		/// </summary>
-		public const string DealerPurchaseValueNet = "DealerPurchaseValueNet";
-
-		/// <summary>
-		/// Händlerverkaufspreis brutto
-		/// </summary>
-		public const string DealerSaleValueGross = "DealerSaleValueGross";
-
-		/// <summary>
-		/// Händlerverkaufspreis netto
-		/// </summary>
-		public const string DealerSaleValueNet = "DealerSaleValueNet";
-
-		/// <summary>
-		/// Löschen
-		/// </summary>
-		public const string Delete = "Delete";
-
-		/// <summary>
-		/// Lösch Datum
-		/// </summary>
-		public const string DeleteDate = "DeleteDate";
-
-		/// <summary>
-		/// Löschen fehlgeschlagen
-		/// </summary>
-		public const string DeleteFailed = "DeleteFailed";
-
-		/// <summary>
-		/// Löschen erfolgreich
-		/// </summary>
-		public const string DeleteSuccessful = "DeleteSuccessful";
-
-		/// <summary>
-		/// Lösch User
-		/// </summary>
-		public const string DeleteUser = "DeleteUser";
 
 		/// <summary>
 		/// Lieferdatum
@@ -1846,12 +1176,7 @@
 		public const string DeRegistrationDate = "DeRegistrationDate";
 
 		/// <summary>
-		/// Bezeichnung
-		/// </summary>
-		public const string Description = "Description";
-
-		/// <summary>
-		/// Ziel
+		/// Zielort
 		/// </summary>
 		public const string Destination = "Destination";
 
@@ -1864,16 +1189,6 @@
 		/// Details
 		/// </summary>
 		public const string Details = "Details";
-
-		/// <summary>
-		/// Abweichender Kontoinhaber
-		/// </summary>
-		public const string DifferentAccountHolder = "DifferentAccountHolder";
-
-		/// <summary>
-		/// Versandsperre
-		/// </summary>
-		public const string DispatchLock = "DispatchLock";
 
 		/// <summary>
 		/// Neue Dokumentart hinzufügen
@@ -1924,11 +1239,6 @@
 		/// Bearbeiten
 		/// </summary>
 		public const string DocumentEdit = "DocumentEdit";
-
-		/// <summary>
-		/// Es existiert bereits ein Dokument zu dieser Kategorie
-		/// </summary>
-		public const string DocumentForCategoryAlreadyExists = "DocumentForCategoryAlreadyExists";
 
 		/// <summary>
 		/// Gruppenzuordnung erforderlich
@@ -2011,16 +1321,6 @@
 		public const string DocumentUploadDocumentMulti = "DocumentUploadDocumentMulti";
 
 		/// <summary>
-		/// Erledigt
-		/// </summary>
-		public const string Done = "Done";
-
-		/// <summary>
-		/// Fertig!
-		/// </summary>
-		public const string DoneStep = "DoneStep";
-
-		/// <summary>
 		/// Vorgang Nr.
 		/// </summary>
 		public const string DossierNo = "DossierNo";
@@ -2029,16 +1329,6 @@
 		/// Download
 		/// </summary>
 		public const string Download = "Download";
-
-		/// <summary>
-		/// Vorlage für CSV-Datei herunterladen
-		/// </summary>
-		public const string DownloadCsvFileTemplate = "DownloadCsvFileTemplate";
-
-		/// <summary>
-		/// Hier können Sie eine Vorlage für die CSV-Datei herunterladen
-		/// </summary>
-		public const string DownloadCsvFileTemplateTitle = "DownloadCsvFileTemplateTitle";
 
 		/// <summary>
 		/// (alle)
@@ -2051,24 +1341,9 @@
 		public const string DropdownDefaultOptionPleaseChoose = "DropdownDefaultOptionPleaseChoose";
 
 		/// <summary>
-		/// Mahnstufe
-		/// </summary>
-		public const string DunningLevel = "DunningLevel";
-
-		/// <summary>
-		/// Dauer
-		/// </summary>
-		public const string Duration = "Duration";
-
-		/// <summary>
 		/// Bearbeiten
 		/// </summary>
 		public const string Edit = "Edit";
-
-		/// <summary>
-		/// Kategorien bearbeiten
-		/// </summary>
-		public const string EditCategories = "EditCategories";
 
 		/// <summary>
 		/// Bearbeitet
@@ -2091,12 +1366,7 @@
 		public const string EmailSentError = "EmailSentError";
 
 		/// <summary>
-		/// Fahrzeugbriefbestand
-		/// </summary>
-		public const string Equi_ReportBriefbestand = "Equi_ReportBriefbestand";
-
-		/// <summary>
-		/// Fahrzeugdokumente
+		/// Report Fahrzeugbestand
 		/// </summary>
 		public const string Equi_ReportFahrzeugbestand = "Equi_ReportFahrzeugbestand";
 
@@ -2111,21 +1381,6 @@
 		public const string Error = "Error";
 
 		/// <summary>
-		/// Beim Speichern sind Fehler aufgetreten
-		/// </summary>
-		public const string ErrorsOccuredOnSaving = "ErrorsOccuredOnSaving";
-
-		/// <summary>
-		/// Eurovertrag
-		/// </summary>
-		public const string EuroContract = "EuroContract";
-
-		/// <summary>
-		/// Bewerten
-		/// </summary>
-		public const string Evaluate = "Evaluate";
-
-		/// <summary>
 		/// EVB
 		/// </summary>
 		public const string EVB = "EVB";
@@ -2134,36 +1389,6 @@
 		/// EVB Nummer
 		/// </summary>
 		public const string EvbNumber = "EvbNumber";
-
-		/// <summary>
-		/// Event Beschreibung
-		/// </summary>
-		public const string EventDescription = "EventDescription";
-
-		/// <summary>
-		/// Event ungültig
-		/// </summary>
-		public const string EventInvalid = "EventInvalid";
-
-		/// <summary>
-		/// Event Name
-		/// </summary>
-		public const string EventName = "EventName";
-
-		/// <summary>
-		/// Selbstbeteiligungs-Höhe
-		/// </summary>
-		public const string ExcessAmount = "ExcessAmount";
-
-		/// <summary>
-		/// Selbstbeteiligung TK in WE
-		/// </summary>
-		public const string ExcessTKinWE = "ExcessTKinWE";
-
-		/// <summary>
-		/// Selbstbeteiligung VK in WE
-		/// </summary>
-		public const string ExcessVKinWE = "ExcessVKinWE";
 
 		/// <summary>
 		/// Gültigkeitsdatum bis
@@ -2186,26 +1411,6 @@
 		public const string FactoryNoShort = "FactoryNoShort";
 
 		/// <summary>
-		/// Aufträge
-		/// </summary>
-		public const string FahrerWeb_Auftraege = "FahrerWeb_Auftraege";
-
-		/// <summary>
-		/// Foto Upload
-		/// </summary>
-		public const string FahrerWeb_FotoUpload = "FahrerWeb_FotoUpload";
-
-		/// <summary>
-		/// Meldung
-		/// </summary>
-		public const string FahrerWeb_Meldung = "FahrerWeb_Meldung";
-
-		/// <summary>
-		/// QM-Report
-		/// </summary>
-		public const string FahrerWeb_QmReport = "FahrerWeb_QmReport";
-
-		/// <summary>
 		/// Report Abmeldungen
 		/// </summary>
 		public const string Fahrzeug_ReportAbmeldungen = "Fahrzeug_ReportAbmeldungen";
@@ -2224,11 +1429,6 @@
 		/// Fehlteiletiketten Druck
 		/// </summary>
 		public const string FehlteilEtikettenDruck = "FehlteilEtikettenDruck";
-
-		/// <summary>
-		/// Geltungsbereich
-		/// </summary>
-		public const string FieldOfApplication = "FieldOfApplication";
 
 		/// <summary>
 		/// Dateiname
@@ -2261,44 +1461,9 @@
 		public const string FileUploadOnlyCsvLegal = "FileUploadOnlyCsvLegal";
 
 		/// <summary>
-		/// Filter
-		/// </summary>
-		public const string Filter = "Filter";
-
-		/// <summary>
-		/// Endgültiger Versand
-		/// </summary>
-		public const string FinalDispatch = "FinalDispatch";
-
-		/// <summary>
-		/// Anzeige gesperrter Verträge
-		/// </summary>
-		public const string Finance_ReportVersandsperre = "Finance_ReportVersandsperre";
-
-		/// <summary>
-		/// Versandsperre setzen/löschen
-		/// </summary>
-		public const string Finance_Versandsperre = "Finance_Versandsperre";
-
-		/// <summary>
-		/// Abgeschlossen
-		/// </summary>
-		public const string Finished = "Finished";
-
-		/// <summary>
 		/// Vorname
 		/// </summary>
 		public const string FirstName = "FirstName";
-
-		/// <summary>
-		/// Erstzulassung
-		/// </summary>
-		public const string FirstRegistration = "FirstRegistration";
-
-		/// <summary>
-		/// Anrede
-		/// </summary>
-		public const string FormOfAddress = "FormOfAddress";
 
 		/// <summary>
 		/// 
@@ -2314,16 +1479,6 @@
 		/// Erfassung fehlender Leasingvertragsnummern
 		/// </summary>
 		public const string FzgBriefeOhneLVNr = "FzgBriefeOhneLVNr";
-
-		/// <summary>
-		/// Getriebe
-		/// </summary>
-		public const string Gearbox = "Gearbox";
-
-		/// <summary>
-		/// Geschlecht
-		/// </summary>
-		public const string Gender = "Gender";
 
 		/// <summary>
 		/// Für deutsche Adressen sind 5 stellige Postleitzahlen erforderlich
@@ -2346,49 +1501,9 @@
 		public const string Header = "Header";
 
 		/// <summary>
-		/// Krankenversicherung
-		/// </summary>
-		public const string HealthInsurance = "HealthInsurance";
-
-		/// <summary>
 		/// Helpdesk
 		/// </summary>
 		public const string Helpdesk = "Helpdesk";
-
-		/// <summary>
-		/// HLA CarGate Anzeige
-		/// </summary>
-		public const string HLA_CargateAnzeige = "HLA_CargateAnzeige";
-
-		/// <summary>
-		/// Aufbau der CSV Datei – ohne Überschriften
-		/// </summary>
-		public const string HLA_CSVFileStructure = "HLA_CSVFileStructure";
-
-		/// <summary>
-		/// Spalte A Fahrgestellnummer, Spalte B Standort, Spalte C Eingang Fahrzeug, Spalte D Bereitstellung Fahrzeug, Spalte E Fertigmeldung Aufbereitung
-		/// </summary>
-		public const string HLA_CSVFileStructureTemplate = "HLA_CSVFileStructureTemplate";
-
-		/// <summary>
-		/// Bitte speichern als CSV Datei (Trennzeichen Semikolon)
-		/// </summary>
-		public const string HLA_CSVSaveFileHint = "HLA_CSVSaveFileHint";
-
-		/// <summary>
-		/// Hier können Sie eine Vorlage der CSV Datei sehen!
-		/// </summary>
-		public const string HLA_CsvSaveFileHintVisibleTitle = "HLA_CsvSaveFileHintVisibleTitle";
-
-		/// <summary>
-		/// CSV Vorlage Vorschau
-		/// </summary>
-		public const string HLA_CsvSaveFileHintVisibleTitleShort = "HLA_CsvSaveFileHintVisibleTitleShort";
-
-		/// <summary>
-		/// HLA CSV Upload
-		/// </summary>
-		public const string HLA_CsvUpload = "HLA_CsvUpload";
 
 		/// <summary>
 		/// Halter
@@ -2416,61 +1531,6 @@
 		public const string Imprint = "Imprint";
 
 		/// <summary>
-		/// Enthaltene Gebühren ZLS
-		/// </summary>
-		public const string IncludedTaxes = "IncludedTaxes";
-
-		/// <summary>
-		/// Versicherung
-		/// </summary>
-		public const string Insurance = "Insurance";
-
-		/// <summary>
-		/// Event Konfigurator
-		/// </summary>
-		public const string Insurance_EventKonfigurator = "Insurance_EventKonfigurator";
-
-		/// <summary>
-		/// Bestand
-		/// </summary>
-		public const string Insurance_ReportBestandsdaten = "Insurance_ReportBestandsdaten";
-
-		/// <summary>
-		/// Gesamtbestand
-		/// </summary>
-		public const string Insurance_ReportBestandsdatenGesamt = "Insurance_ReportBestandsdatenGesamt";
-
-		/// <summary>
-		/// Status über alle Schäden
-		/// </summary>
-		public const string Insurance_ReportSchadenstatus = "Insurance_ReportSchadenstatus";
-
-		/// <summary>
-		/// Schadenakte
-		/// </summary>
-		public const string Insurance_Schadenakte = "Insurance_Schadenakte";
-
-		/// <summary>
-		/// Schadenverwaltung
-		/// </summary>
-		public const string Insurance_Schadenverwaltung = "Insurance_Schadenverwaltung";
-
-		/// <summary>
-		/// Alle Termine
-		/// </summary>
-		public const string Insurance_Termine = "Insurance_Termine";
-
-		/// <summary>
-		/// Upload Bestandsdaten
-		/// </summary>
-		public const string Insurance_UploadBestandsdaten = "Insurance_UploadBestandsdaten";
-
-		/// <summary>
-		/// Vertragsverlängerung
-		/// </summary>
-		public const string Insurance_Vertragsverlaengerung = "Insurance_Vertragsverlaengerung";
-
-		/// <summary>
 		/// Vers.gesellschaft
 		/// </summary>
 		public const string InsuranceCompany = "InsuranceCompany";
@@ -2481,34 +1541,9 @@
 		public const string InsuranceData = "InsuranceData";
 
 		/// <summary>
-		/// Versicherung Nr.
-		/// </summary>
-		public const string InsuranceNo = "InsuranceNo";
-
-		/// <summary>
-		/// Versicherungsscheinnummer
-		/// </summary>
-		public const string InsurancePolicyNo = "InsurancePolicyNo";
-
-		/// <summary>
 		/// Versicherungsnehmer
 		/// </summary>
 		public const string InsuranceRecipient = "InsuranceRecipient";
-
-		/// <summary>
-		/// Bestandsdaten
-		/// </summary>
-		public const string InventoryData = "InventoryData";
-
-		/// <summary>
-		/// Rechnungseingang
-		/// </summary>
-		public const string InvoiceReceipt = "InvoiceReceipt";
-
-		/// <summary>
-		/// Rechnungseingangsdatum
-		/// </summary>
-		public const string InvoiceReceiptDate = "InvoiceReceiptDate";
 
 		/// <summary>
 		/// Rechnungsempfänger
@@ -2524,16 +1559,6 @@
 		/// Is shown
 		/// </summary>
 		public const string IsShown = "IsShown";
-
-		/// <summary>
-		/// Freundlichkeit
-		/// </summary>
-		public const string Kindness = "Kindness";
-
-		/// <summary>
-		/// KM
-		/// </summary>
-		public const string KM = "KM";
 
 		/// <summary>
 		/// Label Position
@@ -2581,11 +1606,6 @@
 		public const string LengthInBytes = "LengthInBytes";
 
 		/// <summary>
-		/// Leasingnehmer
-		/// </summary>
-		public const string Lessee = "Lessee";
-
-		/// <summary>
 		/// Kennzeichen
 		/// </summary>
 		public const string LicenseNo = "LicenseNo";
@@ -2616,19 +1636,9 @@
 		public const string ListItemsWithErrorsOnly = "ListItemsWithErrorsOnly";
 
 		/// <summary>
-		/// Dieser Report wird aufgrund der grossen Datenmenge einige Sekunden laufen… Wir bitten um Geduld.
-		/// </summary>
-		public const string LoadingHintLargeDataAmount = "LoadingHintLargeDataAmount";
-
-		/// <summary>
 		/// Standort
 		/// </summary>
 		public const string Location = "Location";
-
-		/// <summary>
-		/// Sperrtyp
-		/// </summary>
-		public const string LockType = "LockType";
 
 		/// <summary>
 		/// Aufgrund von Wartungsarbeiten ist der Login aktuell gesperrt
@@ -2706,11 +1716,6 @@
 		public const string LogMeldung = "LogMeldung";
 
 		/// <summary>
-		/// Lange
-		/// </summary>
-		public const string Long = "Long";
-
-		/// <summary>
 		/// Alle Mitteilungen im Detail
 		/// </summary>
 		public const string MaintenanceSeeAllNotifications = "MaintenanceSeeAllNotifications";
@@ -2746,16 +1751,6 @@
 		public const string Mobile = "Mobile";
 
 		/// <summary>
-		/// Modell
-		/// </summary>
-		public const string Model = "Model";
-
-		/// <summary>
-		/// Mehrfahrzeugklausel
-		/// </summary>
-		public const string MultiVehicleClause = "MultiVehicleClause";
-
-		/// <summary>
 		/// Name 1
 		/// </summary>
 		public const string Name1 = "Name1";
@@ -2769,21 +1764,6 @@
 		/// Name 3
 		/// </summary>
 		public const string Name3 = "Name3";
-
-		/// <summary>
-		/// Name der Zulassungsstelle
-		/// </summary>
-		public const string NameOfRegistrationOffice = "NameOfRegistrationOffice";
-
-		/// <summary>
-		/// Aufwand Netto
-		/// </summary>
-		public const string NetEffort = "NetEffort";
-
-		/// <summary>
-		/// Neue Aufträge
-		/// </summary>
-		public const string NewOrders = "NewOrders";
 
 		/// <summary>
 		/// Nickname
@@ -2811,11 +1791,6 @@
 		public const string NoDataSelected = "NoDataSelected";
 
 		/// <summary>
-		/// Normal
-		/// </summary>
-		public const string Normal = "Normal";
-
-		/// <summary>
 		/// Hinweis
 		/// </summary>
 		public const string Note = "Note";
@@ -2824,11 +1799,6 @@
 		/// Mitteilungen
 		/// </summary>
 		public const string Notifications = "Notifications";
-
-		/// <summary>
-		/// Anzahl Fahrer
-		/// </summary>
-		public const string NumberOfDrivers = "NumberOfDrivers";
 
 		/// <summary>
 		/// Anzahl Binärfelder
@@ -2851,49 +1821,9 @@
 		public const string NumberOfFieldsTotal = "NumberOfFieldsTotal";
 
 		/// <summary>
-		/// Anzahl Risiken
-		/// </summary>
-		public const string NumberOfRisks = "NumberOfRisks";
-
-		/// <summary>
-		/// Vorgang
-		/// </summary>
-		public const string Occurrence = "Occurrence";
-
-		/// <summary>
-		/// Neuen Vorgang erstellen
-		/// </summary>
-		public const string OccurrenceCreate = "OccurrenceCreate";
-
-		/// <summary>
-		/// Vorgang löschen
-		/// </summary>
-		public const string OccurrenceDelete = "OccurrenceDelete";
-
-		/// <summary>
-		/// Vorgang bearbeiten
-		/// </summary>
-		public const string OccurrenceEdit = "OccurrenceEdit";
-
-		/// <summary>
-		/// Vorgang wählen
-		/// </summary>
-		public const string OccurrenceSelect = "OccurrenceSelect";
-
-		/// <summary>
-		/// OK
-		/// </summary>
-		public const string OK = "OK";
-
-		/// <summary>
 		/// Nur Land
 		/// </summary>
 		public const string OnlyCountry = "OnlyCountry";
-
-		/// <summary>
-		/// Nur Dauer mindestens
-		/// </summary>
-		public const string OnlyDurationAtLeast = "OnlyDurationAtLeast";
 
 		/// <summary>
 		/// Nur Aufträge mit bestimmten Auslieferungsdatum
@@ -2921,11 +1851,6 @@
 		public const string Or = "Or";
 
 		/// <summary>
-		/// Auftrag
-		/// </summary>
-		public const string Order = "Order";
-
-		/// <summary>
 		/// Auftragsdatum
 		/// </summary>
 		public const string OrderDate = "OrderDate";
@@ -2939,21 +1864,6 @@
 		/// Bestellart
 		/// </summary>
 		public const string OrderType = "OrderType";
-
-		/// <summary>
-		/// Gesamteindruck
-		/// </summary>
-		public const string OverallImpression = "OverallImpression";
-
-		/// <summary>
-		/// Kasko
-		/// </summary>
-		public const string OwnDamage = "OwnDamage";
-
-		/// <summary>
-		/// PAID / Leistungs-ID
-		/// </summary>
-		public const string PAID = "PAID";
 
 		/// <summary>
 		/// Kennwort
@@ -3076,11 +1986,6 @@
 		public const string PasswordShouldNotBeEmpty = "PasswordShouldNotBeEmpty";
 
 		/// <summary>
-		/// PDF
-		/// </summary>
-		public const string PDF = "PDF";
-
-		/// <summary>
 		/// PDF Datei konnte nicht generiert werden
 		/// </summary>
 		public const string PdfFileCouldNotBeGenerated = "PdfFileCouldNotBeGenerated";
@@ -3089,16 +1994,6 @@
 		/// Telefon
 		/// </summary>
 		public const string Phone = "Phone";
-
-		/// <summary>
-		/// Telefonnummer
-		/// </summary>
-		public const string PhoneNo = "PhoneNo";
-
-		/// <summary>
-		/// Pickdatum
-		/// </summary>
-		public const string PickDate = "PickDate";
 
 		/// <summary>
 		/// Bitte überprüfen Sie Ihre Eingaben.
@@ -3131,54 +2026,14 @@
 		public const string PleaseProvideVehicleStatusInfo = "PleaseProvideVehicleStatusInfo";
 
 		/// <summary>
-		/// Portal
-		/// </summary>
-		public const string Portal = "Portal";
-
-		/// <summary>
 		/// PLZ
 		/// </summary>
 		public const string PostCode = "PostCode";
 
 		/// <summary>
-		/// PLZ, Ziel
-		/// </summary>
-		public const string PostcodeDestination = "PostcodeDestination";
-
-		/// <summary>
-		/// PLZ, Rücktour
-		/// </summary>
-		public const string PostcodeReturn = "PostcodeReturn";
-
-		/// <summary>
-		/// PLZ, Start
-		/// </summary>
-		public const string PostcodeStart = "PostcodeStart";
-
-		/// <summary>
 		/// Wunschdatum
 		/// </summary>
 		public const string PreferredDate = "PreferredDate";
-
-		/// <summary>
-		/// Wunschlieferdatum
-		/// </summary>
-		public const string PreferredDeliveryDate = "PreferredDeliveryDate";
-
-		/// <summary>
-		/// Wunschlieferdatum von
-		/// </summary>
-		public const string PreferredDeliveryDateFrom = "PreferredDeliveryDateFrom";
-
-		/// <summary>
-		/// Wunschlieferdatum bis
-		/// </summary>
-		public const string PreferredDeliveryDateTo = "PreferredDeliveryDateTo";
-
-		/// <summary>
-		/// Vorjahr
-		/// </summary>
-		public const string PreviousYear = "PreviousYear";
 
 		/// <summary>
 		/// Preis
@@ -3201,36 +2056,6 @@
 		public const string PrintZBII = "PrintZBII";
 
 		/// <summary>
-		/// Vorgangsdatum
-		/// </summary>
-		public const string ProcessDate = "ProcessDate";
-
-		/// <summary>
-		/// Vorgangsdatum von
-		/// </summary>
-		public const string ProcessDateFrom = "ProcessDateFrom";
-
-		/// <summary>
-		/// Vorgangsdatum bis
-		/// </summary>
-		public const string ProcessDateTo = "ProcessDateTo";
-
-		/// <summary>
-		/// Vorgangs-ID
-		/// </summary>
-		public const string ProcessID = "ProcessID";
-
-		/// <summary>
-		/// Produkttyp
-		/// </summary>
-		public const string ProductType = "ProductType";
-
-		/// <summary>
-		/// Professionalität
-		/// </summary>
-		public const string Professionalism = "Professionalism";
-
-		/// <summary>
 		/// Bitte geben Sie mindestens eine Option an
 		/// </summary>
 		public const string ProvideAtLeastOneOption = "ProvideAtLeastOneOption";
@@ -3239,16 +2064,6 @@
 		/// Bitte wählen Sie mindestens eine Druckoption, CoC oder ZBII
 		/// </summary>
 		public const string ProvideAtLeastPrintZBIIorCoc = "ProvideAtLeastPrintZBIIorCoc";
-
-		/// <summary>
-		/// Pünktlichkeit
-		/// </summary>
-		public const string Punctuality = "Punctuality";
-
-		/// <summary>
-		/// Schnell
-		/// </summary>
-		public const string Quick = "Quick";
 
 		/// <summary>
 		/// Eingang Vollmacht
@@ -3299,26 +2114,6 @@
 		/// Erfassung User
 		/// </summary>
 		public const string RecordingUser = "RecordingUser";
-
-		/// <summary>
-		/// Referenznummer
-		/// </summary>
-		public const string ReferenceNo = "ReferenceNo";
-
-		/// <summary>
-		/// Ablehnen
-		/// </summary>
-		public const string Refuse = "Refuse";
-
-		/// <summary>
-		/// Abgelehnte Aufträge
-		/// </summary>
-		public const string RefusedOrders = "RefusedOrders";
-
-		/// <summary>
-		/// Region
-		/// </summary>
-		public const string Region = "Region";
 
 		/// <summary>
 		/// Zulassungskreis
@@ -3386,11 +2181,6 @@
 		public const string Reminder3 = "Reminder3";
 
 		/// <summary>
-		/// Vertrag verlängern
-		/// </summary>
-		public const string RenewContract = "RenewContract";
-
-		/// <summary>
 		/// Berichte
 		/// </summary>
 		public const string Report = "Report";
@@ -3456,49 +2246,9 @@
 		public const string Resource = "Resource";
 
 		/// <summary>
-		/// Rückgabedatum
-		/// </summary>
-		public const string ReturnDate = "ReturnDate";
-
-		/// <summary>
-		/// Rücktour
-		/// </summary>
-		public const string ReturnTour = "ReturnTour";
-
-		/// <summary>
-		/// Wagniskennziffer
-		/// </summary>
-		public const string RiskIndex = "RiskIndex";
-
-		/// <summary>
-		/// Raum
-		/// </summary>
-		public const string Room = "Room";
-
-		/// <summary>
-		/// Datensätze
-		/// </summary>
-		public const string RowsToShow = "RowsToShow";
-
-		/// <summary>
-		/// Sätze
-		/// </summary>
-		public const string RowsToShowSmall = "RowsToShowSmall";
-
-		/// <summary>
 		/// Speichern
 		/// </summary>
 		public const string Save = "Save";
-
-		/// <summary>
-		/// Speichern fehlgeschlagen
-		/// </summary>
-		public const string SaveFailed = "SaveFailed";
-
-		/// <summary>
-		/// Speichern erfolgreich
-		/// </summary>
-		public const string SaveSuccessful = "SaveSuccessful";
 
 		/// <summary>
 		/// Suche
@@ -3531,19 +2281,9 @@
 		public const string SequenceOfServices = "SequenceOfServices";
 
 		/// <summary>
-		/// Server
-		/// </summary>
-		public const string Server = "Server";
-
-		/// <summary>
 		/// Dienstleistung
 		/// </summary>
 		public const string Service = "Service";
-
-		/// <summary>
-		/// Dienstleister
-		/// </summary>
-		public const string ServiceProvider = "ServiceProvider";
 
 		/// <summary>
 		/// Dienstleistungen
@@ -3566,29 +2306,9 @@
 		public const string ShippingOptions = "ShippingOptions";
 
 		/// <summary>
-		/// Kurztext
-		/// </summary>
-		public const string ShortText = "ShortText";
-
-		/// <summary>
-		/// Höchste Dauer pro Bapi/Kunde/Tag
-		/// </summary>
-		public const string ShowMaxDauerProBapiAndKunde = "ShowMaxDauerProBapiAndKunde";
-
-		/// <summary>
-		/// Standort
-		/// </summary>
-		public const string Site = "Site";
-
-		/// <summary>
 		/// Größe
 		/// </summary>
 		public const string Size = "Size";
-
-		/// <summary>
-		/// Stack Kontext
-		/// </summary>
-		public const string StackContext = "StackContext";
 
 		/// <summary>
 		/// Standard
@@ -3596,19 +2316,9 @@
 		public const string Standard = "Standard";
 
 		/// <summary>
-		/// Start
-		/// </summary>
-		public const string Start = "Start";
-
-		/// <summary>
 		/// Status
 		/// </summary>
 		public const string Status = "Status";
-
-		/// <summary>
-		/// Lagerbestand
-		/// </summary>
-		public const string Stock = "Stock";
 
 		/// <summary>
 		/// Strafzettel Report
@@ -3626,104 +2336,9 @@
 		public const string StreetRequired = "StreetRequired";
 
 		/// <summary>
-		/// Ein Systemfehler ist aufgetreten, Fehlermeldung:
-		/// </summary>
-		public const string SystemErrorOccurred = "SystemErrorOccurred";
-
-		/// <summary>
-		/// Gebühr
-		/// </summary>
-		public const string Tax = "Tax";
-
-		/// <summary>
-		/// Offene Gebühren
-		/// </summary>
-		public const string TaxesInProgress = "TaxesInProgress";
-
-		/// <summary>
-		/// Techniker
-		/// </summary>
-		public const string Technician = "Technician";
-
-		/// <summary>
 		/// Telefon*
 		/// </summary>
 		public const string TelefonRequired = "TelefonRequired";
-
-		/// <summary>
-		/// Temp. Versand
-		/// </summary>
-		public const string TempDispatch = "TempDispatch";
-
-		/// <summary>
-		/// Temporär versendete
-		/// </summary>
-		public const string TempDispatchedPlur = "TempDispatchedPlur";
-
-		/// <summary>
-		/// temp. versendet
-		/// </summary>
-		public const string TempDispatchedShort = "TempDispatchedShort";
-
-		/// <summary>
-		/// Temporär versendet
-		/// </summary>
-		public const string TempDispatchedSing = "TempDispatchedSing";
-
-		/// <summary>
-		/// Temporärer Versand
-		/// </summary>
-		public const string TemporaryDispatch = "TemporaryDispatch";
-
-		/// <summary>
-		/// Vielen Dank
-		/// </summary>
-		public const string ThankYou = "ThankYou";
-
-		/// <summary>
-		/// Zeit
-		/// </summary>
-		public const string Time = "Time";
-
-		/// <summary>
-		/// Bis
-		/// </summary>
-		public const string TimeEnd = "TimeEnd";
-
-		/// <summary>
-		/// Endzeit (Mo-Fr)
-		/// </summary>
-		public const string TimeEndMoFr = "TimeEndMoFr";
-
-		/// <summary>
-		/// Endzeit (Sa)
-		/// </summary>
-		public const string TimeEndSa = "TimeEndSa";
-
-		/// <summary>
-		/// Taktung
-		/// </summary>
-		public const string TimeGrid = "TimeGrid";
-
-		/// <summary>
-		/// Von
-		/// </summary>
-		public const string TimeStart = "TimeStart";
-
-		/// <summary>
-		/// Startzeit (Mo-Fr)
-		/// </summary>
-		public const string TimeStartMoFr = "TimeStartMoFr";
-
-		/// <summary>
-		/// Startzeit (Sa)
-		/// </summary>
-		public const string TimeStartSa = "TimeStartSa";
-
-		/// <summary>
-		/// Die Startzeit muss vor der Endzeit liegen
-		/// </summary>
-		public const string TimeStartShouldBeBeforeTimeEnd = "TimeStartShouldBeBeforeTimeEnd";
 
 		/// <summary>
 		/// Titel
@@ -3741,29 +2356,9 @@
 		public const string TransportType = "TransportType";
 
 		/// <summary>
-		/// Art
-		/// </summary>
-		public const string Type = "Type";
-
-		/// <summary>
-		/// Inakzeptabel
-		/// </summary>
-		public const string Unacceptable = "Unacceptable";
-
-		/// <summary>
-		/// CSV-Datei hochladen
-		/// </summary>
-		public const string UploadCsvFile = "UploadCsvFile";
-
-		/// <summary>
 		/// Hochgeladen
 		/// </summary>
 		public const string Uploaded = "Uploaded";
-
-		/// <summary>
-		/// Es ist ein Fehler beim Hochladen der Datei aufgetreten
-		/// </summary>
-		public const string UploadErrorOccurred = "UploadErrorOccurred";
 
 		/// <summary>
 		/// Benutzergruppen
@@ -3784,16 +2379,6 @@
 		/// User Name
 		/// </summary>
 		public const string UserName = "UserName";
-
-		/// <summary>
-		/// Eine gültige "User Referenz" ist nicht hinterlegt für Benutzer "{0}"
-		/// </summary>
-		public const string UserReferenceMissing = "UserReferenceMissing";
-
-		/// <summary>
-		/// Wert darf nicht negativ sein
-		/// </summary>
-		public const string ValueMustNotBeNegative = "ValueMustNotBeNegative";
 
 		/// <summary>
 		/// Alle 
@@ -3821,109 +2406,9 @@
 		public const string VehiclesOnlyUnregistrated = "VehiclesOnlyUnregistrated";
 
 		/// <summary>
-		/// nur Fahrzeuge ohne Erstzulassung
-		/// </summary>
-		public const string VehiclesOnlyWithoutFirstRegistration = "VehiclesOnlyWithoutFirstRegistration";
-
-		/// <summary>
-		/// Fahrzeugzustand
-		/// </summary>
-		public const string VehicleState = "VehicleState";
-
-		/// <summary>
 		/// Fahrzeugtyp
 		/// </summary>
 		public const string VehicleType = "VehicleType";
-
-		/// <summary>
-		/// Fahrzeug Volumen
-		/// </summary>
-		public const string VehicleVolume = "VehicleVolume";
-
-		/// <summary>
-		/// Neues Event hinzufügen
-		/// </summary>
-		public const string VersEventAdd = "VersEventAdd";
-
-		/// <summary>
-		/// Terminanlage nicht möglich wegen Überschneidung mit Blocker-Termin
-		/// </summary>
-		public const string VersEventAppointmentCreateBlockerIntersection = "VersEventAppointmentCreateBlockerIntersection";
-
-		/// <summary>
-		/// Terminanlage nicht möglich wegen Überschneidung mit Schadenfall
-		/// </summary>
-		public const string VersEventAppointmentCreateIntersection = "VersEventAppointmentCreateIntersection";
-
-		/// <summary>
-		/// Event löschen
-		/// </summary>
-		public const string VersEventDelete = "VersEventDelete";
-
-		/// <summary>
-		/// Event bearbeiten
-		/// </summary>
-		public const string VersEventEdit = "VersEventEdit";
-
-		/// <summary>
-		/// Event Ort
-		/// </summary>
-		public const string VersEventLocation = "VersEventLocation";
-
-		/// <summary>
-		/// Neuen Ort hinzufügen
-		/// </summary>
-		public const string VersEventLocationAdd = "VersEventLocationAdd";
-
-		/// <summary>
-		/// Neue Box hinzufügen
-		/// </summary>
-		public const string VersEventLocationBoxAdd = "VersEventLocationBoxAdd";
-
-		/// <summary>
-		/// Box löschen
-		/// </summary>
-		public const string VersEventLocationBoxDelete = "VersEventLocationBoxDelete";
-
-		/// <summary>
-		/// Box bearbeiten
-		/// </summary>
-		public const string VersEventLocationBoxEdit = "VersEventLocationBoxEdit";
-
-		/// <summary>
-		/// Ort löschen
-		/// </summary>
-		public const string VersEventLocationDelete = "VersEventLocationDelete";
-
-		/// <summary>
-		/// Ort bearbeiten
-		/// </summary>
-		public const string VersEventLocationEdit = "VersEventLocationEdit";
-
-		/// <summary>
-		/// Event Orte
-		/// </summary>
-		public const string VersEventLocations = "VersEventLocations";
-
-		/// <summary>
-		/// Event-Ort auswählen
-		/// </summary>
-		public const string VersEventLocationSelect = "VersEventLocationSelect";
-
-		/// <summary>
-		/// Sehr geehrte(r) {0} {1},<br/><br/>hiermit bestätigen wir Ihnen folgenden Termin:<br/><br/>{2} {3} Uhr<br/>Ort: {4} {5}, {6}, {7} {8}, {9}<br/>Box: {10} / {11}, {12}<br/><br/>Bitte mitbringen:<br/><br/>KFZ gewaschen<br/>Fahrzeug- und Führerschein<br/>Versicherungsnummer/-schein<br/><br/>Bei Terminänderungen: Tel. 07326 - 9645 575<br/><br/>Wir freuen uns auf Ihren Besuch!<br/>
-		/// </summary>
-		public const string VersEventMailAppointmentConfirmation = "VersEventMailAppointmentConfirmation";
-
-		/// <summary>
-		/// Sehr lange
-		/// </summary>
-		public const string VeryLong = "VeryLong";
-
-		/// <summary>
-		/// < 3 Sekunden
-		/// </summary>
-		public const string VeryQuick = "VeryQuick";
 
 		/// <summary>
 		/// Ansicht
@@ -3956,11 +2441,6 @@
 		public const string VINRequired = "VINRequired";
 
 		/// <summary>
-		/// VU-Nummer
-		/// </summary>
-		public const string VuNo = "VuNo";
-
-		/// <summary>
 		/// Webanwendung
 		/// </summary>
 		public const string WebApplication = "WebApplication";
@@ -3979,41 +2459,6 @@
 		/// Willkommen
 		/// </summary>
 		public const string WelcomeAtPortalDadStart = "WelcomeAtPortalDadStart";
-
-		/// <summary>
-		/// Wir haben Ihre Daten erhalten
-		/// </summary>
-		public const string WeReceivedYourData = "WeReceivedYourData";
-
-		/// <summary>
-		/// Arbeitsgruppe
-		/// </summary>
-		public const string WorkGroup = "WorkGroup";
-
-		/// <summary>
-		/// Werkstatt-Ort
-		/// </summary>
-		public const string WorkshopCity = "WorkshopCity";
-
-		/// <summary>
-		/// Werkstatt-Name
-		/// </summary>
-		public const string WorkshopName = "WorkshopName";
-
-		/// <summary>
-		/// Werkstatt-Öffnungszeiten
-		/// </summary>
-		public const string WorkshopOpeningHours = "WorkshopOpeningHours";
-
-		/// <summary>
-		/// Werkstatt-PLZ
-		/// </summary>
-		public const string WorkshopPostcode = "WorkshopPostcode";
-
-		/// <summary>
-		/// Werkstatt-Strasse
-		/// </summary>
-		public const string WorkshopStreet = "WorkshopStreet";
 
 		/// <summary>
 		/// Ihre Ansprechpartner
@@ -4039,11 +2484,6 @@
 		/// ZBII
 		/// </summary>
 		public const string ZB2 = "ZB2";
-
-		/// <summary>
-		/// ZBII Selbstdruck ist nicht verfügbar
-		/// </summary>
-		public const string ZB2SelfPrintForbidden = "ZB2SelfPrintForbidden";
 
 		/// <summary>
 		/// Zulassung Doku-Druck
