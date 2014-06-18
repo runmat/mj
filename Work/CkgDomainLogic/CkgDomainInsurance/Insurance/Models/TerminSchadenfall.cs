@@ -155,7 +155,7 @@ namespace CkgDomainLogic.Insurance.Models
         [ScriptIgnore]
         public Schadenfall Schadenfall
         {
-            get { return GetViewModel().Schadenfaelle.FirstOrDefault(v => v.ID == VersSchadenfallID) ?? new Schadenfall(); }
+            get { return PropertyCacheGet(() => GetViewModel().Schadenfaelle.FirstOrDefault(v => v.ID == VersSchadenfallID) ?? new Schadenfall()); }
         }
 
         [GridHidden]
@@ -163,7 +163,7 @@ namespace CkgDomainLogic.Insurance.Models
         [ScriptIgnore]
         public VersEvent Event
         {
-            get { return (!IsBlockerDummyTermin ? Schadenfall.Event : GetViewModel().VersEventCurrent) ?? new VersEvent(); }
+            get { return PropertyCacheGet(() => (!IsBlockerDummyTermin ? Schadenfall.Event : GetViewModel().VersEventCurrent) ?? new VersEvent()); }
         }
 
         [GridHidden]
@@ -171,7 +171,7 @@ namespace CkgDomainLogic.Insurance.Models
         [ScriptIgnore]
         public VersEventOrt Ort
         {
-            get { return Event.Orte.FirstOrDefault(ort => ort.ID == VersOrtID) ?? new VersEventOrt(); }
+            get { return PropertyCacheGet(() => Event.Orte.FirstOrDefault(ort => ort.ID == VersOrtID) ?? new VersEventOrt()); }
         }
 
         [GridHidden]
@@ -179,7 +179,7 @@ namespace CkgDomainLogic.Insurance.Models
         [ScriptIgnore]
         public VersEventOrtBox Box
         {
-            get { return Ort.Boxen.FirstOrDefault(box => box.ID == VersBoxID) ?? new VersEventOrtBox(); }
+            get { return PropertyCacheGet(() => Ort.Boxen.FirstOrDefault(box => box.ID == VersBoxID) ?? new VersEventOrtBox()); }
         }
 
 

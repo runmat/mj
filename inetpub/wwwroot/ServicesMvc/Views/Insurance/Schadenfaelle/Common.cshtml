@@ -147,11 +147,11 @@
 
         BreadcrumbsMoveFirst(_breadCrumbInitial);
 
-        //Test();
+        Test();
     }
 
     function Test() {
-        ShowSchadenakteAjax("17", true);
+        ShowSchadenakteAjax("17", false);
         setTimeout(function () {
 //            TerminSchadenfallCreate();
 //            setTimeout(function () {
@@ -208,6 +208,11 @@
                 $("#DatumAsText").datepicker();
                 $("#DatumAsText").css("width", "70");
                 $("#Zeit").css("width", "40");
+
+                if ($("#DatumAsText").val() == '') {
+                    $("#DatumAsText").val(new Date().toString("dd.MM.yyyy"));
+                    $("#Zeit").val(new Date().toString("HH:mm"));
+                }
             }, 10);
         }
     }

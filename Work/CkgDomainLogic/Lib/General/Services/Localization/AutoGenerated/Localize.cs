@@ -276,6 +276,16 @@
 		public static string _FahrzgeugTyp { get { return TranslateResourceKey("_FahrzgeugTyp"); }}
 
 		/// <summary>
+		/// Bereitstellung Fahrzeug (BLG an SGS)
+		/// </summary>
+		public static string _FB_GUTA { get { return TranslateResourceKey("_FB_GUTA"); }}
+
+		/// <summary>
+		/// ÜG Fahrzeug (DAD an BLG)
+		/// </summary>
+		public static string _FE_BLG { get { return TranslateResourceKey("_FE_BLG"); }}
+
+		/// <summary>
 		/// Fehlgeschlagen
 		/// </summary>
 		public static string _Fehlgeschlagen { get { return TranslateResourceKey("_Fehlgeschlagen"); }}
@@ -296,7 +306,7 @@
 		public static string _Fruehling { get { return TranslateResourceKey("_Fruehling"); }}
 
 		/// <summary>
-		/// Bereitstellung Fahrzeug (BLG an SGS)
+		/// Ausgang Platz
 		/// </summary>
 		public static string _FZG_BEREIT_BLG_SGS { get { return TranslateResourceKey("_FZG_BEREIT_BLG_SGS"); }}
 
@@ -334,6 +344,11 @@
 		/// Gruppenname
 		/// </summary>
 		public static string _Gruppenname { get { return TranslateResourceKey("_Gruppenname"); }}
+
+		/// <summary>
+		/// Gutachten erwünscht
+		/// </summary>
+		public static string _GUTA_ERSTELL_1 { get { return TranslateResourceKey("_GUTA_ERSTELL_1"); }}
 
 		/// <summary>
 		/// Halter Hausnummer
@@ -581,6 +596,11 @@
 		public static string _Standorte { get { return TranslateResourceKey("_Standorte"); }}
 
 		/// <summary>
+		/// Standort Fahrzeugdokument
+		/// </summary>
+		public static string _StandortFahrzeugdokument { get { return TranslateResourceKey("_StandortFahrzeugdokument"); }}
+
+		/// <summary>
 		/// Standort Hausnummer
 		/// </summary>
 		public static string _StandortHausnummer { get { return TranslateResourceKey("_StandortHausnummer"); }}
@@ -786,9 +806,34 @@
 		public static string Account { get { return TranslateResourceKey("Account"); }}
 
 		/// <summary>
+		/// Kontonummer
+		/// </summary>
+		public static string AccountNo { get { return TranslateResourceKey("AccountNo"); }}
+
+		/// <summary>
+		/// Erfassung Vermarktungserlöse
+		/// </summary>
+		public static string AcquisitionMarketingProceeds { get { return TranslateResourceKey("AcquisitionMarketingProceeds"); }}
+
+		/// <summary>
+		/// Erfassung Gutachterwert
+		/// </summary>
+		public static string AcquisitionSurveyorValue { get { return TranslateResourceKey("AcquisitionSurveyorValue"); }}
+
+		/// <summary>
 		/// Aktion
 		/// </summary>
 		public static string Action { get { return TranslateResourceKey("Action"); }}
+
+		/// <summary>
+		/// Neue Kategorie hinzufügen
+		/// </summary>
+		public static string AddNewCategory { get { return TranslateResourceKey("AddNewCategory"); }}
+
+		/// <summary>
+		/// Adresse
+		/// </summary>
+		public static string Address { get { return TranslateResourceKey("Address"); }}
 
 		/// <summary>
 		/// Administration
@@ -811,6 +856,11 @@
 		public static string Aktivcheck { get { return TranslateResourceKey("Aktivcheck"); }}
 
 		/// <summary>
+		/// Alle erforderlichen Eingabefelder müssen gefüllt sein
+		/// </summary>
+		public static string AllRequiredInputFieldsMustBeFilled { get { return TranslateResourceKey("AllRequiredInputFieldsMustBeFilled"); }}
+
+		/// <summary>
 		/// Alle Gebühren
 		/// </summary>
 		public static string AllTaxes { get { return TranslateResourceKey("AllTaxes"); }}
@@ -831,6 +881,16 @@
 		public static string AmountPreviousYear { get { return TranslateResourceKey("AmountPreviousYear"); }}
 
 		/// <summary>
+		/// Kein Filter
+		/// </summary>
+		public static string Any { get { return TranslateResourceKey("Any"); }}
+
+		/// <summary>
+		/// App
+		/// </summary>
+		public static string App { get { return TranslateResourceKey("App"); }}
+
+		/// <summary>
 		/// Erscheinungsbild
 		/// </summary>
 		public static string Appearance { get { return TranslateResourceKey("Appearance"); }}
@@ -844,6 +904,36 @@
 		/// Übernehmen
 		/// </summary>
 		public static string Apply { get { return TranslateResourceKey("Apply"); }}
+
+		/// <summary>
+		/// Termin
+		/// </summary>
+		public static string Appointment { get { return TranslateResourceKey("Appointment"); }}
+
+		/// <summary>
+		/// Termin ändern
+		/// </summary>
+		public static string AppointmentChange { get { return TranslateResourceKey("AppointmentChange"); }}
+
+		/// <summary>
+		/// Termin zur Hagelschadenbesichtigung
+		/// </summary>
+		public static string AppointmentConfirmation { get { return TranslateResourceKey("AppointmentConfirmation"); }}
+
+		/// <summary>
+		/// Neuen Termin erstellen
+		/// </summary>
+		public static string AppointmentCreate { get { return TranslateResourceKey("AppointmentCreate"); }}
+
+		/// <summary>
+		/// Termin löschen
+		/// </summary>
+		public static string AppointmentDelete { get { return TranslateResourceKey("AppointmentDelete"); }}
+
+		/// <summary>
+		/// Terminanlage an Sonntagen ist nicht verfügbar!
+		/// </summary>
+		public static string AppointmentsOnSundayNotAvailable { get { return TranslateResourceKey("AppointmentsOnSundayNotAvailable"); }}
 
 		/// <summary>
 		/// Freigabe
@@ -926,9 +1016,64 @@
 		public static string BackToSearch { get { return TranslateResourceKey("BackToSearch"); }}
 
 		/// <summary>
+		/// Bankleitzahl
+		/// </summary>
+		public static string BankCode { get { return TranslateResourceKey("BankCode"); }}
+
+		/// <summary>
+		/// Bapi Datum
+		/// </summary>
+		public static string BapiDate { get { return TranslateResourceKey("BapiDate"); }}
+
+		/// <summary>
 		/// Abmeldung beauftragen
 		/// </summary>
 		public static string BeauftragungAbmeldung { get { return TranslateResourceKey("BeauftragungAbmeldung"); }}
+
+		/// <summary>
+		/// Neuen Blocker Termin / Serie anlegen
+		/// </summary>
+		public static string BlockingAppointmentAdd { get { return TranslateResourceKey("BlockingAppointmentAdd"); }}
+
+		/// <summary>
+		/// Blocker Termin löschen
+		/// </summary>
+		public static string BlockingAppointmentDelete { get { return TranslateResourceKey("BlockingAppointmentDelete"); }}
+
+		/// <summary>
+		/// Blocker Termin bearbeiten
+		/// </summary>
+		public static string BlockingAppointmentEdit { get { return TranslateResourceKey("BlockingAppointmentEdit"); }}
+
+		/// <summary>
+		/// Box
+		/// </summary>
+		public static string Box { get { return TranslateResourceKey("Box"); }}
+
+		/// <summary>
+		/// Box Name
+		/// </summary>
+		public static string BoxName { get { return TranslateResourceKey("BoxName"); }}
+
+		/// <summary>
+		/// Box Nr.
+		/// </summary>
+		public static string BoxNo { get { return TranslateResourceKey("BoxNo"); }}
+
+		/// <summary>
+		/// Box Art
+		/// </summary>
+		public static string BoxType { get { return TranslateResourceKey("BoxType"); }}
+
+		/// <summary>
+		/// Vermittler
+		/// </summary>
+		public static string Broker { get { return TranslateResourceKey("Broker"); }}
+
+		/// <summary>
+		/// Browser
+		/// </summary>
+		public static string Browser { get { return TranslateResourceKey("Browser"); }}
 
 		/// <summary>
 		/// Abbrechen
@@ -971,6 +1116,16 @@
 		public static string CaptchaTextToValidate { get { return TranslateResourceKey("CaptchaTextToValidate"); }}
 
 		/// <summary>
+		/// Fahrzeughersteller
+		/// </summary>
+		public static string CarManufacturer { get { return TranslateResourceKey("CarManufacturer"); }}
+
+		/// <summary>
+		/// Fahrzeugmodell
+		/// </summary>
+		public static string CarModel { get { return TranslateResourceKey("CarModel"); }}
+
+		/// <summary>
 		/// Halter
 		/// </summary>
 		public static string CarOwner { get { return TranslateResourceKey("CarOwner"); }}
@@ -984,6 +1139,26 @@
 		/// Carport
 		/// </summary>
 		public static string Carport { get { return TranslateResourceKey("Carport"); }}
+
+		/// <summary>
+		/// Kategorie
+		/// </summary>
+		public static string Categorie { get { return TranslateResourceKey("Categorie"); }}
+
+		/// <summary>
+		/// Kategorien
+		/// </summary>
+		public static string Categories { get { return TranslateResourceKey("Categories"); }}
+
+		/// <summary>
+		/// Es existiert bereits eine Kategorie mit diesem Namen
+		/// </summary>
+		public static string CategoryWithSameNameAlreadyExists { get { return TranslateResourceKey("CategoryWithSameNameAlreadyExists"); }}
+
+		/// <summary>
+		/// Versandgrund
+		/// </summary>
+		public static string CauseOfDispatch { get { return TranslateResourceKey("CauseOfDispatch"); }}
 
 		/// <summary>
 		/// Grund der Auslage
@@ -1016,14 +1191,39 @@
 		public static string ChassisNo10 { get { return TranslateResourceKey("ChassisNo10"); }}
 
 		/// <summary>
+		/// Daten prüfen
+		/// </summary>
+		public static string CheckData { get { return TranslateResourceKey("CheckData"); }}
+
+		/// <summary>
+		/// Prüfdatum
+		/// </summary>
+		public static string Checkdate { get { return TranslateResourceKey("Checkdate"); }}
+
+		/// <summary>
 		/// Geprüft
 		/// </summary>
 		public static string Checked { get { return TranslateResourceKey("Checked"); }}
 
 		/// <summary>
+		/// Prüftext
+		/// </summary>
+		public static string CheckText { get { return TranslateResourceKey("CheckText"); }}
+
+		/// <summary>
 		/// CIN
 		/// </summary>
 		public static string CIN { get { return TranslateResourceKey("CIN"); }}
+
+		/// <summary>
+		/// Staatsangehörigkeit
+		/// </summary>
+		public static string Citizenship { get { return TranslateResourceKey("Citizenship"); }}
+
+		/// <summary>
+		/// Staatsangehörigkeit2
+		/// </summary>
+		public static string Citizenship2 { get { return TranslateResourceKey("Citizenship2"); }}
 
 		/// <summary>
 		/// Ort
@@ -1059,6 +1259,11 @@
 		/// Klassifizierung
 		/// </summary>
 		public static string Classification { get { return TranslateResourceKey("Classification"); }}
+
+		/// <summary>
+		/// Auftraggeber
+		/// </summary>
+		public static string Client { get { return TranslateResourceKey("Client"); }}
 
 		/// <summary>
 		/// CoC
@@ -1121,6 +1326,16 @@
 		public static string CodeTypeVersion { get { return TranslateResourceKey("CodeTypeVersion"); }}
 
 		/// <summary>
+		/// Sammelbesichtigung
+		/// </summary>
+		public static string CollectiveInspection { get { return TranslateResourceKey("CollectiveInspection"); }}
+
+		/// <summary>
+		/// Kollision
+		/// </summary>
+		public static string Collision { get { return TranslateResourceKey("Collision"); }}
+
+		/// <summary>
 		/// Farbe
 		/// </summary>
 		public static string Color { get { return TranslateResourceKey("Color"); }}
@@ -1146,6 +1361,36 @@
 		public static string Comment2 { get { return TranslateResourceKey("Comment2"); }}
 
 		/// <summary>
+		/// Kommunikationsnummer 1
+		/// </summary>
+		public static string CommunicationNo1 { get { return TranslateResourceKey("CommunicationNo1"); }}
+
+		/// <summary>
+		/// Kommunikationsnummer 2
+		/// </summary>
+		public static string CommunicationNo2 { get { return TranslateResourceKey("CommunicationNo2"); }}
+
+		/// <summary>
+		/// Kommunikationsart 1
+		/// </summary>
+		public static string CommunicationType1 { get { return TranslateResourceKey("CommunicationType1"); }}
+
+		/// <summary>
+		/// Kommunikationsart 2
+		/// </summary>
+		public static string CommunicationType2 { get { return TranslateResourceKey("CommunicationType2"); }}
+
+		/// <summary>
+		/// Konzernnummer
+		/// </summary>
+		public static string CompanyNo { get { return TranslateResourceKey("CompanyNo"); }}
+
+		/// <summary>
+		/// Bedingungen
+		/// </summary>
+		public static string Conditions { get { return TranslateResourceKey("Conditions"); }}
+
+		/// <summary>
 		/// Ansprechpartner
 		/// </summary>
 		public static string Contactperson { get { return TranslateResourceKey("Contactperson"); }}
@@ -1154,6 +1399,11 @@
 		/// Ansprechpartner*
 		/// </summary>
 		public static string ContactpersonRequired { get { return TranslateResourceKey("ContactpersonRequired"); }}
+
+		/// <summary>
+		/// Kontaktanfrage
+		/// </summary>
+		public static string ContactRequest { get { return TranslateResourceKey("ContactRequest"); }}
 
 		/// <summary>
 		/// Inhalt
@@ -1166,6 +1416,11 @@
 		public static string Continue { get { return TranslateResourceKey("Continue"); }}
 
 		/// <summary>
+		/// Vertragsende
+		/// </summary>
+		public static string ContractEnd { get { return TranslateResourceKey("ContractEnd"); }}
+
+		/// <summary>
 		/// Vertragsnummer
 		/// </summary>
 		public static string ContractNo { get { return TranslateResourceKey("ContractNo"); }}
@@ -1174,6 +1429,16 @@
 		/// Vertragsnr.
 		/// </summary>
 		public static string ContractNoShort { get { return TranslateResourceKey("ContractNoShort"); }}
+
+		/// <summary>
+		/// Vertragsbeginn
+		/// </summary>
+		public static string ContractStart { get { return TranslateResourceKey("ContractStart"); }}
+
+		/// <summary>
+		/// Vertragsstatus
+		/// </summary>
+		public static string ContractStatus { get { return TranslateResourceKey("ContractStatus"); }}
 
 		/// <summary>
 		/// Vertragsart
@@ -1191,6 +1456,11 @@
 		public static string Correction { get { return TranslateResourceKey("Correction"); }}
 
 		/// <summary>
+		/// Kosten
+		/// </summary>
+		public static string Cost { get { return TranslateResourceKey("Cost"); }}
+
+		/// <summary>
 		/// Kostenstelle
 		/// </summary>
 		public static string CostCenter { get { return TranslateResourceKey("CostCenter"); }}
@@ -1206,9 +1476,24 @@
 		public static string CountryCode { get { return TranslateResourceKey("CountryCode"); }}
 
 		/// <summary>
+		/// Land 2
+		/// </summary>
+		public static string CountryCode2 { get { return TranslateResourceKey("CountryCode2"); }}
+
+		/// <summary>
 		/// Anzahl bewertete Fahrten
 		/// </summary>
 		public static string CountVotedRides { get { return TranslateResourceKey("CountVotedRides"); }}
+
+		/// <summary>
+		/// Deckungsart
+		/// </summary>
+		public static string CoverageType { get { return TranslateResourceKey("CoverageType"); }}
+
+		/// <summary>
+		/// Erstellen
+		/// </summary>
+		public static string Create { get { return TranslateResourceKey("Create"); }}
 
 		/// <summary>
 		/// Erstellt
@@ -1216,9 +1501,19 @@
 		public static string Created { get { return TranslateResourceKey("Created"); }}
 
 		/// <summary>
+		/// Anlagedatum
+		/// </summary>
+		public static string CreateDate { get { return TranslateResourceKey("CreateDate"); }}
+
+		/// <summary>
 		/// Erstellt am
 		/// </summary>
 		public static string CreatedOn { get { return TranslateResourceKey("CreatedOn"); }}
+
+		/// <summary>
+		/// Anlage User
+		/// </summary>
+		public static string CreateUser { get { return TranslateResourceKey("CreateUser"); }}
 
 		/// <summary>
 		/// Erstelldatum
@@ -1241,9 +1536,29 @@
 		public static string CreditUser { get { return TranslateResourceKey("CreditUser"); }}
 
 		/// <summary>
+		/// CSV-Upload
+		/// </summary>
+		public static string CsvUpload { get { return TranslateResourceKey("CsvUpload"); }}
+
+		/// <summary>
+		/// Währungsschlüssel 1
+		/// </summary>
+		public static string CurrencyKey1 { get { return TranslateResourceKey("CurrencyKey1"); }}
+
+		/// <summary>
+		/// Währungsschlüssel 2
+		/// </summary>
+		public static string CurrencyKey2 { get { return TranslateResourceKey("CurrencyKey2"); }}
+
+		/// <summary>
 		/// Kunde
 		/// </summary>
 		public static string Customer { get { return TranslateResourceKey("Customer"); }}
+
+		/// <summary>
+		/// Es können nur Dateien im Format pdf, doc, docx, xls, xlsx, txt, csv, jpg, jpeg, gif und png hochgeladen werden.
+		/// </summary>
+		public static string CustomerDocumentUploadLegalFiletypeWarning { get { return TranslateResourceKey("CustomerDocumentUploadLegalFiletypeWarning"); }}
 
 		/// <summary>
 		/// Kunden-ID
@@ -1276,6 +1591,46 @@
 		public static string Customers { get { return TranslateResourceKey("Customers"); }}
 
 		/// <summary>
+		/// Schaden
+		/// </summary>
+		public static string Damage { get { return TranslateResourceKey("Damage"); }}
+
+		/// <summary>
+		/// Schadenfall
+		/// </summary>
+		public static string DamageCase { get { return TranslateResourceKey("DamageCase"); }}
+
+		/// <summary>
+		/// Es existiert bereits ein Schadenfall zu den angegebenen Daten
+		/// </summary>
+		public static string DamageCaseAlreadyExists { get { return TranslateResourceKey("DamageCaseAlreadyExists"); }}
+
+		/// <summary>
+		/// Wollen Sie diesen Schadenfall wirklich löschen?
+		/// </summary>
+		public static string DamageCaseDoYouReallyWantToDelete { get { return TranslateResourceKey("DamageCaseDoYouReallyWantToDelete"); }}
+
+		/// <summary>
+		/// Schadenfall ungültig
+		/// </summary>
+		public static string DamageCaseInvalid { get { return TranslateResourceKey("DamageCaseInvalid"); }}
+
+		/// <summary>
+		/// Schadenfälle
+		/// </summary>
+		public static string DamageCases { get { return TranslateResourceKey("DamageCases"); }}
+
+		/// <summary>
+		/// Event
+		/// </summary>
+		public static string DamageEvent { get { return TranslateResourceKey("DamageEvent"); }}
+
+		/// <summary>
+		/// Event ID
+		/// </summary>
+		public static string DamageEventID { get { return TranslateResourceKey("DamageEventID"); }}
+
+		/// <summary>
 		/// DAT_Annahmedok
 		/// </summary>
 		public static string DAT_Receiptdoc { get { return TranslateResourceKey("DAT_Receiptdoc"); }}
@@ -1306,9 +1661,29 @@
 		public static string DateFromTo { get { return TranslateResourceKey("DateFromTo"); }}
 
 		/// <summary>
+		/// Datum ungültig
+		/// </summary>
+		public static string DateInvalid { get { return TranslateResourceKey("DateInvalid"); }}
+
+		/// <summary>
+		/// Geburtsdatum
+		/// </summary>
+		public static string DateOfBirth { get { return TranslateResourceKey("DateOfBirth"); }}
+
+		/// <summary>
+		/// Stilllegungsdatum
+		/// </summary>
+		public static string DateOfDeactivation { get { return TranslateResourceKey("DateOfDeactivation"); }}
+
+		/// <summary>
 		/// Abmeldeeingang
 		/// </summary>
 		public static string DateOfDeregistrationReceipt { get { return TranslateResourceKey("DateOfDeregistrationReceipt"); }}
+
+		/// <summary>
+		/// Versanddatum
+		/// </summary>
+		public static string DateOfDispatch { get { return TranslateResourceKey("DateOfDispatch"); }}
 
 		/// <summary>
 		/// Datum Erstanschreiben
@@ -1361,6 +1736,16 @@
 		public static string DateToInvalid { get { return TranslateResourceKey("DateToInvalid"); }}
 
 		/// <summary>
+		/// Das "Datum Bis" muss vor dem "Datum Von" liegen
+		/// </summary>
+		public static string DateToMustBeBeforeDateFrom { get { return TranslateResourceKey("DateToMustBeBeforeDateFrom"); }}
+
+		/// <summary>
+		/// Mehr als {0} Sekunden
+		/// </summary>
+		public static string DauerSAPAufruf { get { return TranslateResourceKey("DauerSAPAufruf"); }}
+
+		/// <summary>
 		/// Liefertermin
 		/// </summary>
 		public static string DayOfDelivery { get { return TranslateResourceKey("DayOfDelivery"); }}
@@ -1374,6 +1759,51 @@
 		/// Händler Ort
 		/// </summary>
 		public static string DealerCity { get { return TranslateResourceKey("DealerCity"); }}
+
+		/// <summary>
+		/// Händlereinkaufspreis brutto
+		/// </summary>
+		public static string DealerPurchaseValueGross { get { return TranslateResourceKey("DealerPurchaseValueGross"); }}
+
+		/// <summary>
+		/// Händlereinkaufspreis netto
+		/// </summary>
+		public static string DealerPurchaseValueNet { get { return TranslateResourceKey("DealerPurchaseValueNet"); }}
+
+		/// <summary>
+		/// Händlerverkaufspreis brutto
+		/// </summary>
+		public static string DealerSaleValueGross { get { return TranslateResourceKey("DealerSaleValueGross"); }}
+
+		/// <summary>
+		/// Händlerverkaufspreis netto
+		/// </summary>
+		public static string DealerSaleValueNet { get { return TranslateResourceKey("DealerSaleValueNet"); }}
+
+		/// <summary>
+		/// Löschen
+		/// </summary>
+		public static string Delete { get { return TranslateResourceKey("Delete"); }}
+
+		/// <summary>
+		/// Lösch Datum
+		/// </summary>
+		public static string DeleteDate { get { return TranslateResourceKey("DeleteDate"); }}
+
+		/// <summary>
+		/// Löschen fehlgeschlagen
+		/// </summary>
+		public static string DeleteFailed { get { return TranslateResourceKey("DeleteFailed"); }}
+
+		/// <summary>
+		/// Löschen erfolgreich
+		/// </summary>
+		public static string DeleteSuccessful { get { return TranslateResourceKey("DeleteSuccessful"); }}
+
+		/// <summary>
+		/// Lösch User
+		/// </summary>
+		public static string DeleteUser { get { return TranslateResourceKey("DeleteUser"); }}
 
 		/// <summary>
 		/// Lieferdatum
@@ -1416,6 +1846,11 @@
 		public static string DeRegistrationDate { get { return TranslateResourceKey("DeRegistrationDate"); }}
 
 		/// <summary>
+		/// Bezeichnung
+		/// </summary>
+		public static string Description { get { return TranslateResourceKey("Description"); }}
+
+		/// <summary>
 		/// Ziel
 		/// </summary>
 		public static string Destination { get { return TranslateResourceKey("Destination"); }}
@@ -1429,6 +1864,16 @@
 		/// Details
 		/// </summary>
 		public static string Details { get { return TranslateResourceKey("Details"); }}
+
+		/// <summary>
+		/// Abweichender Kontoinhaber
+		/// </summary>
+		public static string DifferentAccountHolder { get { return TranslateResourceKey("DifferentAccountHolder"); }}
+
+		/// <summary>
+		/// Versandsperre
+		/// </summary>
+		public static string DispatchLock { get { return TranslateResourceKey("DispatchLock"); }}
 
 		/// <summary>
 		/// Neue Dokumentart hinzufügen
@@ -1479,6 +1924,11 @@
 		/// Bearbeiten
 		/// </summary>
 		public static string DocumentEdit { get { return TranslateResourceKey("DocumentEdit"); }}
+
+		/// <summary>
+		/// Es existiert bereits ein Dokument zu dieser Kategorie
+		/// </summary>
+		public static string DocumentForCategoryAlreadyExists { get { return TranslateResourceKey("DocumentForCategoryAlreadyExists"); }}
 
 		/// <summary>
 		/// Gruppenzuordnung erforderlich
@@ -1566,6 +2016,11 @@
 		public static string Done { get { return TranslateResourceKey("Done"); }}
 
 		/// <summary>
+		/// Fertig!
+		/// </summary>
+		public static string DoneStep { get { return TranslateResourceKey("DoneStep"); }}
+
+		/// <summary>
 		/// Vorgang Nr.
 		/// </summary>
 		public static string DossierNo { get { return TranslateResourceKey("DossierNo"); }}
@@ -1574,6 +2029,16 @@
 		/// Download
 		/// </summary>
 		public static string Download { get { return TranslateResourceKey("Download"); }}
+
+		/// <summary>
+		/// Vorlage für CSV-Datei herunterladen
+		/// </summary>
+		public static string DownloadCsvFileTemplate { get { return TranslateResourceKey("DownloadCsvFileTemplate"); }}
+
+		/// <summary>
+		/// Hier können Sie eine Vorlage für die CSV-Datei herunterladen
+		/// </summary>
+		public static string DownloadCsvFileTemplateTitle { get { return TranslateResourceKey("DownloadCsvFileTemplateTitle"); }}
 
 		/// <summary>
 		/// (alle)
@@ -1586,9 +2051,24 @@
 		public static string DropdownDefaultOptionPleaseChoose { get { return TranslateResourceKey("DropdownDefaultOptionPleaseChoose"); }}
 
 		/// <summary>
+		/// Mahnstufe
+		/// </summary>
+		public static string DunningLevel { get { return TranslateResourceKey("DunningLevel"); }}
+
+		/// <summary>
+		/// Dauer
+		/// </summary>
+		public static string Duration { get { return TranslateResourceKey("Duration"); }}
+
+		/// <summary>
 		/// Bearbeiten
 		/// </summary>
 		public static string Edit { get { return TranslateResourceKey("Edit"); }}
+
+		/// <summary>
+		/// Kategorien bearbeiten
+		/// </summary>
+		public static string EditCategories { get { return TranslateResourceKey("EditCategories"); }}
 
 		/// <summary>
 		/// Bearbeitet
@@ -1611,7 +2091,12 @@
 		public static string EmailSentError { get { return TranslateResourceKey("EmailSentError"); }}
 
 		/// <summary>
-		/// Report Fahrzeugbestand
+		/// Fahrzeugbriefbestand
+		/// </summary>
+		public static string Equi_ReportBriefbestand { get { return TranslateResourceKey("Equi_ReportBriefbestand"); }}
+
+		/// <summary>
+		/// Fahrzeugdokumente
 		/// </summary>
 		public static string Equi_ReportFahrzeugbestand { get { return TranslateResourceKey("Equi_ReportFahrzeugbestand"); }}
 
@@ -1626,6 +2111,21 @@
 		public static string Error { get { return TranslateResourceKey("Error"); }}
 
 		/// <summary>
+		/// Beim Speichern sind Fehler aufgetreten
+		/// </summary>
+		public static string ErrorsOccuredOnSaving { get { return TranslateResourceKey("ErrorsOccuredOnSaving"); }}
+
+		/// <summary>
+		/// Eurovertrag
+		/// </summary>
+		public static string EuroContract { get { return TranslateResourceKey("EuroContract"); }}
+
+		/// <summary>
+		/// Bewerten
+		/// </summary>
+		public static string Evaluate { get { return TranslateResourceKey("Evaluate"); }}
+
+		/// <summary>
 		/// EVB
 		/// </summary>
 		public static string EVB { get { return TranslateResourceKey("EVB"); }}
@@ -1634,6 +2134,36 @@
 		/// EVB Nummer
 		/// </summary>
 		public static string EvbNumber { get { return TranslateResourceKey("EvbNumber"); }}
+
+		/// <summary>
+		/// Event Beschreibung
+		/// </summary>
+		public static string EventDescription { get { return TranslateResourceKey("EventDescription"); }}
+
+		/// <summary>
+		/// Event ungültig
+		/// </summary>
+		public static string EventInvalid { get { return TranslateResourceKey("EventInvalid"); }}
+
+		/// <summary>
+		/// Event Name
+		/// </summary>
+		public static string EventName { get { return TranslateResourceKey("EventName"); }}
+
+		/// <summary>
+		/// Selbstbeteiligungs-Höhe
+		/// </summary>
+		public static string ExcessAmount { get { return TranslateResourceKey("ExcessAmount"); }}
+
+		/// <summary>
+		/// Selbstbeteiligung TK in WE
+		/// </summary>
+		public static string ExcessTKinWE { get { return TranslateResourceKey("ExcessTKinWE"); }}
+
+		/// <summary>
+		/// Selbstbeteiligung VK in WE
+		/// </summary>
+		public static string ExcessVKinWE { get { return TranslateResourceKey("ExcessVKinWE"); }}
 
 		/// <summary>
 		/// Gültigkeitsdatum bis
@@ -1656,14 +2186,24 @@
 		public static string FactoryNoShort { get { return TranslateResourceKey("FactoryNoShort"); }}
 
 		/// <summary>
-		/// Fahrer-Aufträge
+		/// Aufträge
 		/// </summary>
 		public static string FahrerWeb_Auftraege { get { return TranslateResourceKey("FahrerWeb_Auftraege"); }}
 
 		/// <summary>
-		/// Fahrer-Meldung
+		/// Foto Upload
+		/// </summary>
+		public static string FahrerWeb_FotoUpload { get { return TranslateResourceKey("FahrerWeb_FotoUpload"); }}
+
+		/// <summary>
+		/// Meldung
 		/// </summary>
 		public static string FahrerWeb_Meldung { get { return TranslateResourceKey("FahrerWeb_Meldung"); }}
+
+		/// <summary>
+		/// QM-Report
+		/// </summary>
+		public static string FahrerWeb_QmReport { get { return TranslateResourceKey("FahrerWeb_QmReport"); }}
 
 		/// <summary>
 		/// Report Abmeldungen
@@ -1684,6 +2224,11 @@
 		/// Fehlteiletiketten Druck
 		/// </summary>
 		public static string FehlteilEtikettenDruck { get { return TranslateResourceKey("FehlteilEtikettenDruck"); }}
+
+		/// <summary>
+		/// Geltungsbereich
+		/// </summary>
+		public static string FieldOfApplication { get { return TranslateResourceKey("FieldOfApplication"); }}
 
 		/// <summary>
 		/// Dateiname
@@ -1726,6 +2271,16 @@
 		public static string FinalDispatch { get { return TranslateResourceKey("FinalDispatch"); }}
 
 		/// <summary>
+		/// Anzeige gesperrter Verträge
+		/// </summary>
+		public static string Finance_ReportVersandsperre { get { return TranslateResourceKey("Finance_ReportVersandsperre"); }}
+
+		/// <summary>
+		/// Versandsperre setzen/löschen
+		/// </summary>
+		public static string Finance_Versandsperre { get { return TranslateResourceKey("Finance_Versandsperre"); }}
+
+		/// <summary>
 		/// Abgeschlossen
 		/// </summary>
 		public static string Finished { get { return TranslateResourceKey("Finished"); }}
@@ -1734,6 +2289,16 @@
 		/// Vorname
 		/// </summary>
 		public static string FirstName { get { return TranslateResourceKey("FirstName"); }}
+
+		/// <summary>
+		/// Erstzulassung
+		/// </summary>
+		public static string FirstRegistration { get { return TranslateResourceKey("FirstRegistration"); }}
+
+		/// <summary>
+		/// Anrede
+		/// </summary>
+		public static string FormOfAddress { get { return TranslateResourceKey("FormOfAddress"); }}
 
 		/// <summary>
 		/// 
@@ -1749,6 +2314,16 @@
 		/// Erfassung fehlender Leasingvertragsnummern
 		/// </summary>
 		public static string FzgBriefeOhneLVNr { get { return TranslateResourceKey("FzgBriefeOhneLVNr"); }}
+
+		/// <summary>
+		/// Getriebe
+		/// </summary>
+		public static string Gearbox { get { return TranslateResourceKey("Gearbox"); }}
+
+		/// <summary>
+		/// Geschlecht
+		/// </summary>
+		public static string Gender { get { return TranslateResourceKey("Gender"); }}
 
 		/// <summary>
 		/// Für deutsche Adressen sind 5 stellige Postleitzahlen erforderlich
@@ -1769,6 +2344,11 @@
 		/// Überschrift
 		/// </summary>
 		public static string Header { get { return TranslateResourceKey("Header"); }}
+
+		/// <summary>
+		/// Krankenversicherung
+		/// </summary>
+		public static string HealthInsurance { get { return TranslateResourceKey("HealthInsurance"); }}
 
 		/// <summary>
 		/// Helpdesk
@@ -1836,6 +2416,61 @@
 		public static string Imprint { get { return TranslateResourceKey("Imprint"); }}
 
 		/// <summary>
+		/// Enthaltene Gebühren ZLS
+		/// </summary>
+		public static string IncludedTaxes { get { return TranslateResourceKey("IncludedTaxes"); }}
+
+		/// <summary>
+		/// Versicherung
+		/// </summary>
+		public static string Insurance { get { return TranslateResourceKey("Insurance"); }}
+
+		/// <summary>
+		/// Event Konfigurator
+		/// </summary>
+		public static string Insurance_EventKonfigurator { get { return TranslateResourceKey("Insurance_EventKonfigurator"); }}
+
+		/// <summary>
+		/// Bestand
+		/// </summary>
+		public static string Insurance_ReportBestandsdaten { get { return TranslateResourceKey("Insurance_ReportBestandsdaten"); }}
+
+		/// <summary>
+		/// Gesamtbestand
+		/// </summary>
+		public static string Insurance_ReportBestandsdatenGesamt { get { return TranslateResourceKey("Insurance_ReportBestandsdatenGesamt"); }}
+
+		/// <summary>
+		/// Status über alle Schäden
+		/// </summary>
+		public static string Insurance_ReportSchadenstatus { get { return TranslateResourceKey("Insurance_ReportSchadenstatus"); }}
+
+		/// <summary>
+		/// Schadenakte
+		/// </summary>
+		public static string Insurance_Schadenakte { get { return TranslateResourceKey("Insurance_Schadenakte"); }}
+
+		/// <summary>
+		/// Schadenverwaltung
+		/// </summary>
+		public static string Insurance_Schadenverwaltung { get { return TranslateResourceKey("Insurance_Schadenverwaltung"); }}
+
+		/// <summary>
+		/// Alle Termine
+		/// </summary>
+		public static string Insurance_Termine { get { return TranslateResourceKey("Insurance_Termine"); }}
+
+		/// <summary>
+		/// Upload Bestandsdaten
+		/// </summary>
+		public static string Insurance_UploadBestandsdaten { get { return TranslateResourceKey("Insurance_UploadBestandsdaten"); }}
+
+		/// <summary>
+		/// Vertragsverlängerung
+		/// </summary>
+		public static string Insurance_Vertragsverlaengerung { get { return TranslateResourceKey("Insurance_Vertragsverlaengerung"); }}
+
+		/// <summary>
 		/// Vers.gesellschaft
 		/// </summary>
 		public static string InsuranceCompany { get { return TranslateResourceKey("InsuranceCompany"); }}
@@ -1846,9 +2481,24 @@
 		public static string InsuranceData { get { return TranslateResourceKey("InsuranceData"); }}
 
 		/// <summary>
+		/// Versicherung Nr.
+		/// </summary>
+		public static string InsuranceNo { get { return TranslateResourceKey("InsuranceNo"); }}
+
+		/// <summary>
+		/// Versicherungsscheinnummer
+		/// </summary>
+		public static string InsurancePolicyNo { get { return TranslateResourceKey("InsurancePolicyNo"); }}
+
+		/// <summary>
 		/// Versicherungsnehmer
 		/// </summary>
 		public static string InsuranceRecipient { get { return TranslateResourceKey("InsuranceRecipient"); }}
+
+		/// <summary>
+		/// Bestandsdaten
+		/// </summary>
+		public static string InventoryData { get { return TranslateResourceKey("InventoryData"); }}
 
 		/// <summary>
 		/// Rechnungseingang
@@ -1879,6 +2529,11 @@
 		/// Freundlichkeit
 		/// </summary>
 		public static string Kindness { get { return TranslateResourceKey("Kindness"); }}
+
+		/// <summary>
+		/// KM
+		/// </summary>
+		public static string KM { get { return TranslateResourceKey("KM"); }}
 
 		/// <summary>
 		/// Label Position
@@ -1926,6 +2581,11 @@
 		public static string LengthInBytes { get { return TranslateResourceKey("LengthInBytes"); }}
 
 		/// <summary>
+		/// Leasingnehmer
+		/// </summary>
+		public static string Lessee { get { return TranslateResourceKey("Lessee"); }}
+
+		/// <summary>
 		/// Kennzeichen
 		/// </summary>
 		public static string LicenseNo { get { return TranslateResourceKey("LicenseNo"); }}
@@ -1956,9 +2616,19 @@
 		public static string ListItemsWithErrorsOnly { get { return TranslateResourceKey("ListItemsWithErrorsOnly"); }}
 
 		/// <summary>
+		/// Dieser Report wird aufgrund der grossen Datenmenge einige Sekunden laufen… Wir bitten um Geduld.
+		/// </summary>
+		public static string LoadingHintLargeDataAmount { get { return TranslateResourceKey("LoadingHintLargeDataAmount"); }}
+
+		/// <summary>
 		/// Standort
 		/// </summary>
 		public static string Location { get { return TranslateResourceKey("Location"); }}
+
+		/// <summary>
+		/// Sperrtyp
+		/// </summary>
+		public static string LockType { get { return TranslateResourceKey("LockType"); }}
 
 		/// <summary>
 		/// Aufgrund von Wartungsarbeiten ist der Login aktuell gesperrt
@@ -2036,6 +2706,11 @@
 		public static string LogMeldung { get { return TranslateResourceKey("LogMeldung"); }}
 
 		/// <summary>
+		/// Lange
+		/// </summary>
+		public static string Long { get { return TranslateResourceKey("Long"); }}
+
+		/// <summary>
 		/// Alle Mitteilungen im Detail
 		/// </summary>
 		public static string MaintenanceSeeAllNotifications { get { return TranslateResourceKey("MaintenanceSeeAllNotifications"); }}
@@ -2071,6 +2746,16 @@
 		public static string Mobile { get { return TranslateResourceKey("Mobile"); }}
 
 		/// <summary>
+		/// Modell
+		/// </summary>
+		public static string Model { get { return TranslateResourceKey("Model"); }}
+
+		/// <summary>
+		/// Mehrfahrzeugklausel
+		/// </summary>
+		public static string MultiVehicleClause { get { return TranslateResourceKey("MultiVehicleClause"); }}
+
+		/// <summary>
 		/// Name 1
 		/// </summary>
 		public static string Name1 { get { return TranslateResourceKey("Name1"); }}
@@ -2089,6 +2774,11 @@
 		/// Name der Zulassungsstelle
 		/// </summary>
 		public static string NameOfRegistrationOffice { get { return TranslateResourceKey("NameOfRegistrationOffice"); }}
+
+		/// <summary>
+		/// Aufwand Netto
+		/// </summary>
+		public static string NetEffort { get { return TranslateResourceKey("NetEffort"); }}
 
 		/// <summary>
 		/// Neue Aufträge
@@ -2119,6 +2809,11 @@
 		/// Keine Daten selektiert
 		/// </summary>
 		public static string NoDataSelected { get { return TranslateResourceKey("NoDataSelected"); }}
+
+		/// <summary>
+		/// Normal
+		/// </summary>
+		public static string Normal { get { return TranslateResourceKey("Normal"); }}
 
 		/// <summary>
 		/// Hinweis
@@ -2156,9 +2851,49 @@
 		public static string NumberOfFieldsTotal { get { return TranslateResourceKey("NumberOfFieldsTotal"); }}
 
 		/// <summary>
+		/// Anzahl Risiken
+		/// </summary>
+		public static string NumberOfRisks { get { return TranslateResourceKey("NumberOfRisks"); }}
+
+		/// <summary>
+		/// Vorgang
+		/// </summary>
+		public static string Occurrence { get { return TranslateResourceKey("Occurrence"); }}
+
+		/// <summary>
+		/// Neuen Vorgang erstellen
+		/// </summary>
+		public static string OccurrenceCreate { get { return TranslateResourceKey("OccurrenceCreate"); }}
+
+		/// <summary>
+		/// Vorgang löschen
+		/// </summary>
+		public static string OccurrenceDelete { get { return TranslateResourceKey("OccurrenceDelete"); }}
+
+		/// <summary>
+		/// Vorgang bearbeiten
+		/// </summary>
+		public static string OccurrenceEdit { get { return TranslateResourceKey("OccurrenceEdit"); }}
+
+		/// <summary>
+		/// Vorgang wählen
+		/// </summary>
+		public static string OccurrenceSelect { get { return TranslateResourceKey("OccurrenceSelect"); }}
+
+		/// <summary>
+		/// OK
+		/// </summary>
+		public static string OK { get { return TranslateResourceKey("OK"); }}
+
+		/// <summary>
 		/// Nur Land
 		/// </summary>
 		public static string OnlyCountry { get { return TranslateResourceKey("OnlyCountry"); }}
+
+		/// <summary>
+		/// Nur Dauer mindestens
+		/// </summary>
+		public static string OnlyDurationAtLeast { get { return TranslateResourceKey("OnlyDurationAtLeast"); }}
 
 		/// <summary>
 		/// Nur Aufträge mit bestimmten Auslieferungsdatum
@@ -2211,7 +2946,12 @@
 		public static string OverallImpression { get { return TranslateResourceKey("OverallImpression"); }}
 
 		/// <summary>
-		/// PAID
+		/// Kasko
+		/// </summary>
+		public static string OwnDamage { get { return TranslateResourceKey("OwnDamage"); }}
+
+		/// <summary>
+		/// PAID / Leistungs-ID
 		/// </summary>
 		public static string PAID { get { return TranslateResourceKey("PAID"); }}
 
@@ -2351,6 +3091,16 @@
 		public static string Phone { get { return TranslateResourceKey("Phone"); }}
 
 		/// <summary>
+		/// Telefonnummer
+		/// </summary>
+		public static string PhoneNo { get { return TranslateResourceKey("PhoneNo"); }}
+
+		/// <summary>
+		/// Pickdatum
+		/// </summary>
+		public static string PickDate { get { return TranslateResourceKey("PickDate"); }}
+
+		/// <summary>
 		/// Bitte überprüfen Sie Ihre Eingaben.
 		/// </summary>
 		public static string PleaseCheckYourInputs { get { return TranslateResourceKey("PleaseCheckYourInputs"); }}
@@ -2379,6 +3129,11 @@
 		/// Bitte geben Sie mindestens einen Fahrzeugstatus an
 		/// </summary>
 		public static string PleaseProvideVehicleStatusInfo { get { return TranslateResourceKey("PleaseProvideVehicleStatusInfo"); }}
+
+		/// <summary>
+		/// Portal
+		/// </summary>
+		public static string Portal { get { return TranslateResourceKey("Portal"); }}
 
 		/// <summary>
 		/// PLZ
@@ -2461,6 +3216,16 @@
 		public static string ProcessDateTo { get { return TranslateResourceKey("ProcessDateTo"); }}
 
 		/// <summary>
+		/// Vorgangs-ID
+		/// </summary>
+		public static string ProcessID { get { return TranslateResourceKey("ProcessID"); }}
+
+		/// <summary>
+		/// Produkttyp
+		/// </summary>
+		public static string ProductType { get { return TranslateResourceKey("ProductType"); }}
+
+		/// <summary>
 		/// Professionalität
 		/// </summary>
 		public static string Professionalism { get { return TranslateResourceKey("Professionalism"); }}
@@ -2479,6 +3244,11 @@
 		/// Pünktlichkeit
 		/// </summary>
 		public static string Punctuality { get { return TranslateResourceKey("Punctuality"); }}
+
+		/// <summary>
+		/// Schnell
+		/// </summary>
+		public static string Quick { get { return TranslateResourceKey("Quick"); }}
 
 		/// <summary>
 		/// Eingang Vollmacht
@@ -2531,6 +3301,11 @@
 		public static string RecordingUser { get { return TranslateResourceKey("RecordingUser"); }}
 
 		/// <summary>
+		/// Referenznummer
+		/// </summary>
+		public static string ReferenceNo { get { return TranslateResourceKey("ReferenceNo"); }}
+
+		/// <summary>
 		/// Ablehnen
 		/// </summary>
 		public static string Refuse { get { return TranslateResourceKey("Refuse"); }}
@@ -2539,6 +3314,11 @@
 		/// Abgelehnte Aufträge
 		/// </summary>
 		public static string RefusedOrders { get { return TranslateResourceKey("RefusedOrders"); }}
+
+		/// <summary>
+		/// Region
+		/// </summary>
+		public static string Region { get { return TranslateResourceKey("Region"); }}
 
 		/// <summary>
 		/// Zulassungskreis
@@ -2606,6 +3386,11 @@
 		public static string Reminder3 { get { return TranslateResourceKey("Reminder3"); }}
 
 		/// <summary>
+		/// Vertrag verlängern
+		/// </summary>
+		public static string RenewContract { get { return TranslateResourceKey("RenewContract"); }}
+
+		/// <summary>
 		/// Berichte
 		/// </summary>
 		public static string Report { get { return TranslateResourceKey("Report"); }}
@@ -2671,9 +3456,24 @@
 		public static string Resource { get { return TranslateResourceKey("Resource"); }}
 
 		/// <summary>
+		/// Rückgabedatum
+		/// </summary>
+		public static string ReturnDate { get { return TranslateResourceKey("ReturnDate"); }}
+
+		/// <summary>
 		/// Rücktour
 		/// </summary>
 		public static string ReturnTour { get { return TranslateResourceKey("ReturnTour"); }}
+
+		/// <summary>
+		/// Wagniskennziffer
+		/// </summary>
+		public static string RiskIndex { get { return TranslateResourceKey("RiskIndex"); }}
+
+		/// <summary>
+		/// Raum
+		/// </summary>
+		public static string Room { get { return TranslateResourceKey("Room"); }}
 
 		/// <summary>
 		/// Datensätze
@@ -2689,6 +3489,16 @@
 		/// Speichern
 		/// </summary>
 		public static string Save { get { return TranslateResourceKey("Save"); }}
+
+		/// <summary>
+		/// Speichern fehlgeschlagen
+		/// </summary>
+		public static string SaveFailed { get { return TranslateResourceKey("SaveFailed"); }}
+
+		/// <summary>
+		/// Speichern erfolgreich
+		/// </summary>
+		public static string SaveSuccessful { get { return TranslateResourceKey("SaveSuccessful"); }}
 
 		/// <summary>
 		/// Suche
@@ -2721,9 +3531,19 @@
 		public static string SequenceOfServices { get { return TranslateResourceKey("SequenceOfServices"); }}
 
 		/// <summary>
+		/// Server
+		/// </summary>
+		public static string Server { get { return TranslateResourceKey("Server"); }}
+
+		/// <summary>
 		/// Dienstleistung
 		/// </summary>
 		public static string Service { get { return TranslateResourceKey("Service"); }}
+
+		/// <summary>
+		/// Dienstleister
+		/// </summary>
+		public static string ServiceProvider { get { return TranslateResourceKey("ServiceProvider"); }}
 
 		/// <summary>
 		/// Dienstleistungen
@@ -2751,9 +3571,24 @@
 		public static string ShortText { get { return TranslateResourceKey("ShortText"); }}
 
 		/// <summary>
+		/// Höchste Dauer pro Bapi/Kunde/Tag
+		/// </summary>
+		public static string ShowMaxDauerProBapiAndKunde { get { return TranslateResourceKey("ShowMaxDauerProBapiAndKunde"); }}
+
+		/// <summary>
+		/// Standort
+		/// </summary>
+		public static string Site { get { return TranslateResourceKey("Site"); }}
+
+		/// <summary>
 		/// Größe
 		/// </summary>
 		public static string Size { get { return TranslateResourceKey("Size"); }}
+
+		/// <summary>
+		/// Stack Kontext
+		/// </summary>
+		public static string StackContext { get { return TranslateResourceKey("StackContext"); }}
 
 		/// <summary>
 		/// Standard
@@ -2769,6 +3604,11 @@
 		/// Status
 		/// </summary>
 		public static string Status { get { return TranslateResourceKey("Status"); }}
+
+		/// <summary>
+		/// Lagerbestand
+		/// </summary>
+		public static string Stock { get { return TranslateResourceKey("Stock"); }}
 
 		/// <summary>
 		/// Strafzettel Report
@@ -2796,9 +3636,14 @@
 		public static string Tax { get { return TranslateResourceKey("Tax"); }}
 
 		/// <summary>
-		/// Gebühren in Bearbeitung
+		/// Offene Gebühren
 		/// </summary>
 		public static string TaxesInProgress { get { return TranslateResourceKey("TaxesInProgress"); }}
+
+		/// <summary>
+		/// Techniker
+		/// </summary>
+		public static string Technician { get { return TranslateResourceKey("Technician"); }}
 
 		/// <summary>
 		/// Telefon*
@@ -2811,9 +3656,74 @@
 		public static string TempDispatch { get { return TranslateResourceKey("TempDispatch"); }}
 
 		/// <summary>
+		/// Temporär versendete
+		/// </summary>
+		public static string TempDispatchedPlur { get { return TranslateResourceKey("TempDispatchedPlur"); }}
+
+		/// <summary>
+		/// temp. versendet
+		/// </summary>
+		public static string TempDispatchedShort { get { return TranslateResourceKey("TempDispatchedShort"); }}
+
+		/// <summary>
+		/// Temporär versendet
+		/// </summary>
+		public static string TempDispatchedSing { get { return TranslateResourceKey("TempDispatchedSing"); }}
+
+		/// <summary>
 		/// Temporärer Versand
 		/// </summary>
 		public static string TemporaryDispatch { get { return TranslateResourceKey("TemporaryDispatch"); }}
+
+		/// <summary>
+		/// Vielen Dank
+		/// </summary>
+		public static string ThankYou { get { return TranslateResourceKey("ThankYou"); }}
+
+		/// <summary>
+		/// Zeit
+		/// </summary>
+		public static string Time { get { return TranslateResourceKey("Time"); }}
+
+		/// <summary>
+		/// Bis
+		/// </summary>
+		public static string TimeEnd { get { return TranslateResourceKey("TimeEnd"); }}
+
+		/// <summary>
+		/// Endzeit (Mo-Fr)
+		/// </summary>
+		public static string TimeEndMoFr { get { return TranslateResourceKey("TimeEndMoFr"); }}
+
+		/// <summary>
+		/// Endzeit (Sa)
+		/// </summary>
+		public static string TimeEndSa { get { return TranslateResourceKey("TimeEndSa"); }}
+
+		/// <summary>
+		/// Taktung
+		/// </summary>
+		public static string TimeGrid { get { return TranslateResourceKey("TimeGrid"); }}
+
+		/// <summary>
+		/// Von
+		/// </summary>
+		public static string TimeStart { get { return TranslateResourceKey("TimeStart"); }}
+
+		/// <summary>
+		/// Startzeit (Mo-Fr)
+		/// </summary>
+		public static string TimeStartMoFr { get { return TranslateResourceKey("TimeStartMoFr"); }}
+
+		/// <summary>
+		/// Startzeit (Sa)
+		/// </summary>
+		public static string TimeStartSa { get { return TranslateResourceKey("TimeStartSa"); }}
+
+		/// <summary>
+		/// Die Startzeit muss vor der Endzeit liegen
+		/// </summary>
+		public static string TimeStartShouldBeBeforeTimeEnd { get { return TranslateResourceKey("TimeStartShouldBeBeforeTimeEnd"); }}
 
 		/// <summary>
 		/// Titel
@@ -2831,9 +3741,29 @@
 		public static string TransportType { get { return TranslateResourceKey("TransportType"); }}
 
 		/// <summary>
+		/// Art
+		/// </summary>
+		public static string Type { get { return TranslateResourceKey("Type"); }}
+
+		/// <summary>
+		/// Inakzeptabel
+		/// </summary>
+		public static string Unacceptable { get { return TranslateResourceKey("Unacceptable"); }}
+
+		/// <summary>
+		/// CSV-Datei hochladen
+		/// </summary>
+		public static string UploadCsvFile { get { return TranslateResourceKey("UploadCsvFile"); }}
+
+		/// <summary>
 		/// Hochgeladen
 		/// </summary>
 		public static string Uploaded { get { return TranslateResourceKey("Uploaded"); }}
+
+		/// <summary>
+		/// Es ist ein Fehler beim Hochladen der Datei aufgetreten
+		/// </summary>
+		public static string UploadErrorOccurred { get { return TranslateResourceKey("UploadErrorOccurred"); }}
 
 		/// <summary>
 		/// Benutzergruppen
@@ -2861,6 +3791,11 @@
 		public static string UserReferenceMissing { get { return TranslateResourceKey("UserReferenceMissing"); }}
 
 		/// <summary>
+		/// Wert darf nicht negativ sein
+		/// </summary>
+		public static string ValueMustNotBeNegative { get { return TranslateResourceKey("ValueMustNotBeNegative"); }}
+
+		/// <summary>
 		/// Alle 
 		/// </summary>
 		public static string VehiclesAll { get { return TranslateResourceKey("VehiclesAll"); }}
@@ -2886,6 +3821,11 @@
 		public static string VehiclesOnlyUnregistrated { get { return TranslateResourceKey("VehiclesOnlyUnregistrated"); }}
 
 		/// <summary>
+		/// nur Fahrzeuge ohne Erstzulassung
+		/// </summary>
+		public static string VehiclesOnlyWithoutFirstRegistration { get { return TranslateResourceKey("VehiclesOnlyWithoutFirstRegistration"); }}
+
+		/// <summary>
 		/// Fahrzeugzustand
 		/// </summary>
 		public static string VehicleState { get { return TranslateResourceKey("VehicleState"); }}
@@ -2894,6 +3834,96 @@
 		/// Fahrzeugtyp
 		/// </summary>
 		public static string VehicleType { get { return TranslateResourceKey("VehicleType"); }}
+
+		/// <summary>
+		/// Fahrzeug Volumen
+		/// </summary>
+		public static string VehicleVolume { get { return TranslateResourceKey("VehicleVolume"); }}
+
+		/// <summary>
+		/// Neues Event hinzufügen
+		/// </summary>
+		public static string VersEventAdd { get { return TranslateResourceKey("VersEventAdd"); }}
+
+		/// <summary>
+		/// Terminanlage nicht möglich wegen Überschneidung mit Blocker-Termin
+		/// </summary>
+		public static string VersEventAppointmentCreateBlockerIntersection { get { return TranslateResourceKey("VersEventAppointmentCreateBlockerIntersection"); }}
+
+		/// <summary>
+		/// Terminanlage nicht möglich wegen Überschneidung mit Schadenfall
+		/// </summary>
+		public static string VersEventAppointmentCreateIntersection { get { return TranslateResourceKey("VersEventAppointmentCreateIntersection"); }}
+
+		/// <summary>
+		/// Event löschen
+		/// </summary>
+		public static string VersEventDelete { get { return TranslateResourceKey("VersEventDelete"); }}
+
+		/// <summary>
+		/// Event bearbeiten
+		/// </summary>
+		public static string VersEventEdit { get { return TranslateResourceKey("VersEventEdit"); }}
+
+		/// <summary>
+		/// Event Ort
+		/// </summary>
+		public static string VersEventLocation { get { return TranslateResourceKey("VersEventLocation"); }}
+
+		/// <summary>
+		/// Neuen Ort hinzufügen
+		/// </summary>
+		public static string VersEventLocationAdd { get { return TranslateResourceKey("VersEventLocationAdd"); }}
+
+		/// <summary>
+		/// Neue Box hinzufügen
+		/// </summary>
+		public static string VersEventLocationBoxAdd { get { return TranslateResourceKey("VersEventLocationBoxAdd"); }}
+
+		/// <summary>
+		/// Box löschen
+		/// </summary>
+		public static string VersEventLocationBoxDelete { get { return TranslateResourceKey("VersEventLocationBoxDelete"); }}
+
+		/// <summary>
+		/// Box bearbeiten
+		/// </summary>
+		public static string VersEventLocationBoxEdit { get { return TranslateResourceKey("VersEventLocationBoxEdit"); }}
+
+		/// <summary>
+		/// Ort löschen
+		/// </summary>
+		public static string VersEventLocationDelete { get { return TranslateResourceKey("VersEventLocationDelete"); }}
+
+		/// <summary>
+		/// Ort bearbeiten
+		/// </summary>
+		public static string VersEventLocationEdit { get { return TranslateResourceKey("VersEventLocationEdit"); }}
+
+		/// <summary>
+		/// Event Orte
+		/// </summary>
+		public static string VersEventLocations { get { return TranslateResourceKey("VersEventLocations"); }}
+
+		/// <summary>
+		/// Event-Ort auswählen
+		/// </summary>
+		public static string VersEventLocationSelect { get { return TranslateResourceKey("VersEventLocationSelect"); }}
+
+		/// <summary>
+		/// Sehr geehrte(r) {0} {1},<br/><br/>hiermit bestätigen wir Ihnen folgenden Termin:<br/><br/>{2} {3} Uhr<br/>Ort: {4} {5}, {6}, {7} {8}, {9}<br/>Box: {10} / {11}, {12}<br/><br/>Bitte mitbringen:<br/><br/>KFZ gewaschen<br/>Fahrzeug- und Führerschein<br/>Versicherungsnummer/-schein<br/><br/>Bei Terminänderungen: Tel. 07326 - 9645 575<br/><br/>Wir freuen uns auf Ihren Besuch!<br/>
+		/// </summary>
+		public static string VersEventMailAppointmentConfirmation { get { return TranslateResourceKey("VersEventMailAppointmentConfirmation"); }}
+
+		/// <summary>
+		/// Sehr lange
+		/// </summary>
+		public static string VeryLong { get { return TranslateResourceKey("VeryLong"); }}
+
+		/// <summary>
+		/// < 3 Sekunden
+		/// </summary>
+		public static string VeryQuick { get { return TranslateResourceKey("VeryQuick"); }}
 
 		/// <summary>
 		/// Ansicht
@@ -2926,6 +3956,11 @@
 		public static string VINRequired { get { return TranslateResourceKey("VINRequired"); }}
 
 		/// <summary>
+		/// VU-Nummer
+		/// </summary>
+		public static string VuNo { get { return TranslateResourceKey("VuNo"); }}
+
+		/// <summary>
 		/// Webanwendung
 		/// </summary>
 		public static string WebApplication { get { return TranslateResourceKey("WebApplication"); }}
@@ -2944,6 +3979,41 @@
 		/// Willkommen
 		/// </summary>
 		public static string WelcomeAtPortalDadStart { get { return TranslateResourceKey("WelcomeAtPortalDadStart"); }}
+
+		/// <summary>
+		/// Wir haben Ihre Daten erhalten
+		/// </summary>
+		public static string WeReceivedYourData { get { return TranslateResourceKey("WeReceivedYourData"); }}
+
+		/// <summary>
+		/// Arbeitsgruppe
+		/// </summary>
+		public static string WorkGroup { get { return TranslateResourceKey("WorkGroup"); }}
+
+		/// <summary>
+		/// Werkstatt-Ort
+		/// </summary>
+		public static string WorkshopCity { get { return TranslateResourceKey("WorkshopCity"); }}
+
+		/// <summary>
+		/// Werkstatt-Name
+		/// </summary>
+		public static string WorkshopName { get { return TranslateResourceKey("WorkshopName"); }}
+
+		/// <summary>
+		/// Werkstatt-Öffnungszeiten
+		/// </summary>
+		public static string WorkshopOpeningHours { get { return TranslateResourceKey("WorkshopOpeningHours"); }}
+
+		/// <summary>
+		/// Werkstatt-PLZ
+		/// </summary>
+		public static string WorkshopPostcode { get { return TranslateResourceKey("WorkshopPostcode"); }}
+
+		/// <summary>
+		/// Werkstatt-Strasse
+		/// </summary>
+		public static string WorkshopStreet { get { return TranslateResourceKey("WorkshopStreet"); }}
 
 		/// <summary>
 		/// Ihre Ansprechpartner

@@ -48,7 +48,7 @@ namespace CkgDomainLogic.Equi.Services
 
         private IEnumerable<FahrzeugbriefBestand> LoadFahrzeugbriefeFromSap()
         {
-            var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithInitExecute(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithInitExecute(SAP, "I_KUNNR, I_BESTAND, I_TEMPVERS", LogonContext.KundenNr.ToSapKunnr(), "X", "X");
 
             return AppModelMappings.Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand.Copy(sapList);
         }

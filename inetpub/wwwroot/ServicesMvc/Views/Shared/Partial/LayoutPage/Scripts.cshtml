@@ -37,6 +37,7 @@
 <script src="~/assets/scripts/index.js" type="text/javascript"></script>        
 
 <script src="~/scripts/spin.js" type="text/javascript"></script>        
+<script src="~/scripts/jquery.typing.js" type="text/javascript"></script>        
 <script src="~/scripts/jquery.readableXML.js" type="text/javascript"></script>        
    
 
@@ -310,7 +311,19 @@
     // <Grid all column search>
 
     function FilterGrid(gridID) {
-        $("#" + gridID + " .grid-column-overall-filter").each(function () { FilterGridAllColumns($(this)); });
+        $("#" + gridID + " .grid-column-overall-filter").each(function() {
+             //FilterGridAllColumns($(this));
+
+            // provide apropriate keyboard typing delay before running server intensive operations            
+            $(this).typing({
+                start: function (event, $elem) {
+                },
+                stop: function (event, $elem) {
+                    FilterGridAllColumns($elem);
+                },
+                delay: 1000
+            });
+        });
     }
 
     function FilterGridAllColumns(tb) {
