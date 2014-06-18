@@ -190,11 +190,11 @@ Partial Public Class Login
             Return True
         Else
             '----------------------------------------------------------
-            Try
-                Base.Kernel.Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
-            Catch ex As Exception
-                Return False  'Response.Redirect("..\Start\Login.aspx")
-            End Try
+            'Try
+            '    Base.Kernel.Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
+            'Catch ex As Exception
+            '    Return False  'Response.Redirect("..\Start\Login.aspx")
+            'End Try
             '-----------------------------------------------------------
 
             If (Not cbxLogin_TEST.Checked) And (Not cbxLogin_PROD.Checked) Then

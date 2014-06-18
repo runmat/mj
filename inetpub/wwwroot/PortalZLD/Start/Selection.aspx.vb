@@ -139,11 +139,11 @@ Partial Public Class Selection
         m_User = GetUser(Me)
 
         '------------------------------------------------------------------------
-        Try
-            Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
-        Catch ex As Exception
-            Response.Redirect(ConfigurationManager.AppSettings("Exit"))
-        End Try
+        'Try
+        '    Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
+        'Catch ex As Exception
+        '    Response.Redirect(ConfigurationManager.AppSettings("Exit"))
+        'End Try
         '------------------------------------------------------------------------
 
         Try
