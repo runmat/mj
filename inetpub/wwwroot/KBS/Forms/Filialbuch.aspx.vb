@@ -9,7 +9,7 @@ Public Class Filialbuch
 
     Private Enum ViewStatus
         Bedienerkarte
-        LFB
+        Gebietsleiter
         FilialeProtokoll
         FilialeAufgaben
     End Enum
@@ -86,8 +86,8 @@ Public Class Filialbuch
                         Case FilialbuchClass.Rolle.Filiale
                             curView = ViewStatus.FilialeAufgaben
                             FillListAufgaben()
-                        Case FilialbuchClass.Rolle.LFB
-                            curView = ViewStatus.LFB
+                        Case FilialbuchClass.Rolle.Gebietsleiter
+                            curView = ViewStatus.Gebietsleiter
                             FillListProtokoll()
                         Case Else
                             curView = ViewStatus.Bedienerkarte
@@ -143,7 +143,7 @@ Public Class Filialbuch
         Else
             gvAufgabenFiliale.Visible = True
             gvAllFiliale.Visible = False
-            gvAllLFB.Visible = False
+            gvAllGL.Visible = False
 
             gvAufgabenFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden,
                                                                                 IFilialbuchEntry.EmpfängerStatus.Neu, IFilialbuchEntry.EmpfängerStatus.Ausblenden)
@@ -160,7 +160,7 @@ Public Class Filialbuch
         End If
 
         Select curView
-            Case ViewStatus.LFB
+            Case ViewStatus.Gebietsleiter
                 mObjFilialbuch.GetEinträge(mObjFilialbuch.UserLoggedIn, FilialbuchClass.StatusFilter.Alle, mObjKasse.Lagerort, CDate(txtDatumVon.Text), CDate(txtDatumBis.Text))
             Case Else
                 mObjFilialbuch.GetEinträge(mObjFilialbuch.UserLoggedIn, FilialbuchClass.StatusFilter.Alle, Nothing, CDate(txtDatumVon.Text), CDate(txtDatumBis.Text))
@@ -173,7 +173,7 @@ Public Class Filialbuch
                 Case ViewStatus.FilialeProtokoll
                     gvAufgabenFiliale.Visible = False
                     gvAllFiliale.Visible = True
-                    gvAllLFB.Visible = False
+                    gvAllGL.Visible = False
                     If ddlFilterFiliale.SelectedItem.Text = "Gelesen" OrElse
                         ddlFilterFiliale.SelectedItem.Text = "Beantwortet" OrElse
                         ddlFilterFiliale.SelectedItem.Text = "Erledigt" OrElse
@@ -189,10 +189,10 @@ Public Class Filialbuch
                         gvAllFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable()
                     End If
                     gvAllFiliale.DataBind()
-                Case ViewStatus.LFB
+                Case ViewStatus.Gebietsleiter
                     gvAufgabenFiliale.Visible = False
                     gvAllFiliale.Visible = False
-                    gvAllLFB.Visible = True
+                    gvAllGL.Visible = True
                     If ddlFilter.SelectedItem.Text = "Gelesen" OrElse
                         ddlFilter.SelectedItem.Text = "Beantwortet" OrElse
                         ddlFilter.SelectedItem.Text = "Erledigt" OrElse
@@ -200,14 +200,14 @@ Public Class Filialbuch
                         Dim sFilter = ddlFilter.SelectedValue.ToString().Trim("E"c)
                         Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden, CType(sFilter, IFilialbuchEntry.EmpfängerStatus), CType(sFilter, IFilialbuchEntry.EmpfängerStatus))
 
-                        gvAllLFB.DataSource = FilterClosed(dt)
+                        gvAllGL.DataSource = FilterClosed(dt)
                     ElseIf ddlFilter.SelectedValue <> "all" Then
                         Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus), IFilialbuchEntry.EmpfängerStatus.Ausblenden, IFilialbuchEntry.EmpfängerStatus.Ausblenden)
-                        gvAllLFB.DataSource = dt
+                        gvAllGL.DataSource = dt
                     Else
-                        gvAllLFB.DataSource = mObjFilialbuch.Protokoll.CreateTable()
+                        gvAllGL.DataSource = mObjFilialbuch.Protokoll.CreateTable()
                     End If
-                    gvAllLFB.DataBind()
+                    gvAllGL.DataBind()
             End Select
         End If
     End Sub
@@ -285,7 +285,7 @@ Public Class Filialbuch
         If curView = ViewStatus.FilialeAufgaben Or curView = ViewStatus.FilialeProtokoll Then
             curView = ViewStatus.FilialeProtokoll
         Else
-            curView = ViewStatus.LFB
+            curView = ViewStatus.Gebietsleiter
         End If
         ViewControl(curView)
         FillListProtokoll()
@@ -298,7 +298,7 @@ Public Class Filialbuch
     End Sub
 
     Protected Sub lbtnRefresh_Click(sender As Object, e As EventArgs) Handles lbtnRefresh.Click
-        ' # CurView bereits auf LFB oder Filiale gesetzt, daher keine Änderung nötig
+        ' # CurView bereits auf GL oder Filiale gesetzt, daher keine Änderung nötig
         FillListProtokoll()
     End Sub
 
@@ -317,7 +317,7 @@ Public Class Filialbuch
 
                 gvAufgabenFiliale.Visible = False
                 gvAllFiliale.Visible = False
-                gvAllLFB.Visible = False
+                gvAllGL.Visible = False
 
                 EditAufgabe2.Visible = False
 
@@ -338,7 +338,7 @@ Public Class Filialbuch
 
                 gvAufgabenFiliale.Visible = False
                 gvAllFiliale.Visible = True
-                gvAllLFB.Visible = False
+                gvAllGL.Visible = False
 
                 Timespan.Visible = True
                 ddlFilter.Visible = False
@@ -356,7 +356,7 @@ Public Class Filialbuch
 
                 gvAufgabenFiliale.Visible = True
                 gvAllFiliale.Visible = False
-                gvAllLFB.Visible = False
+                gvAllGL.Visible = False
 
                 Timespan.Visible = False
                 
@@ -365,7 +365,7 @@ Public Class Filialbuch
                 lbtFilialbesuch.Visible = False
                 lbtAdd.Text = "Anfrage"
 
-            Case ViewStatus.LFB
+            Case ViewStatus.Gebietsleiter
                 tblBedienerkarte.Visible = False
                 tblHeaderTabs.Visible = True
 
@@ -375,7 +375,7 @@ Public Class Filialbuch
 
                 gvAufgabenFiliale.Visible = False
                 gvAllFiliale.Visible = False
-                gvAllLFB.Visible = True
+                gvAllGL.Visible = True
 
                 Timespan.Visible = True
                 ddlFilter.Visible = True
@@ -552,7 +552,7 @@ Public Class Filialbuch
         gvAllFiliale.DataBind()
     End Sub
 
-    Private Sub gvAllLFB_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles gvAllLFB.RowCommand
+    Private Sub gvAllGL_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles gvAllGL.RowCommand
         Dim tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" & e.CommandArgument & "'")
         Select Case e.CommandName
             Case "ReadAufgabeText"
@@ -595,7 +595,7 @@ Public Class Filialbuch
                     NewDir = SortDirection.Ascending
                 End If
                 ViewState("SortDirection") = NewDir
-                gvAllLFB.Sort("I_DATETIME", NewDir)
+                gvAllGL.Sort("I_DATETIME", NewDir)
             Case "DatumAusgangSort"
                 Dim NewDir As SortDirection
                 If ViewState("SortDirection") = SortDirection.Ascending Then
@@ -604,7 +604,7 @@ Public Class Filialbuch
                     NewDir = SortDirection.Ascending
                 End If
                 ViewState("SortDirection") = NewDir
-                gvAllLFB.Sort("O_DATETIME", NewDir)
+                gvAllGL.Sort("O_DATETIME", NewDir)
             Case "SortVon"
                 Dim NewDir As SortDirection
                 If ViewState("SortDirection") = SortDirection.Ascending Then
@@ -613,7 +613,7 @@ Public Class Filialbuch
                     NewDir = SortDirection.Ascending
                 End If
                 ViewState("SortDirection") = NewDir
-                gvAllLFB.Sort("I_VON", NewDir)
+                gvAllGL.Sort("I_VON", NewDir)
             Case "SortAn"
                 Dim NewDir As SortDirection
                 If ViewState("SortDirection") = SortDirection.Ascending Then
@@ -622,11 +622,11 @@ Public Class Filialbuch
                     NewDir = SortDirection.Ascending
                 End If
                 ViewState("SortDirection") = NewDir
-                gvAllLFB.Sort("O_AN", NewDir)
+                gvAllGL.Sort("O_AN", NewDir)
         End Select
     End Sub
 
-    Private Sub gvAllLFB_Sorting(sender As Object, e As GridViewSortEventArgs) Handles gvAllLFB.Sorting
+    Private Sub gvAllGL_Sorting(sender As Object, e As GridViewSortEventArgs) Handles gvAllGL.Sorting
         Dim View As DataView = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView
         Dim sortparts As String() = e.SortExpression.Split(","c)
         Dim sortString As String = ""
@@ -644,8 +644,8 @@ Public Class Filialbuch
             End If
         Next
         View.Sort = sortString
-        gvAllLFB.DataSource = View
-        gvAllLFB.DataBind()
+        gvAllGL.DataSource = View
+        gvAllGL.DataBind()
     End Sub
 
 #End Region
@@ -786,7 +786,7 @@ Public Class Filialbuch
                         lblError.Text = "Es ist ein Fehler aufgetreten: " & mObjFilialbuch.Protokoll.Message
                     End If
                     FillListProtokoll()
-                ElseIf curView = ViewStatus.LFB Then
+                ElseIf curView = ViewStatus.Gebietsleiter Then
                     mObjFilialbuch.Protokoll.EintragBeantworten(lblRowIndex.Text, txtBetreff.Text, txtText.Text, strBedienernummer)
                     If mObjFilialbuch.Protokoll.Fehler Then
                         lblError.Text = "Es ist ein Fehler aufgetreten: " & mObjFilialbuch.Protokoll.Message

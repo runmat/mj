@@ -113,13 +113,13 @@ Partial Public Class Filialbuch
     Protected WithEvents lblKostenstelle As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblLFB-Steuerelement
+    '''lblGL-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lblLFB As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblGL As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''upGrid-Steuerelement
@@ -311,13 +311,13 @@ Partial Public Class Filialbuch
     Protected WithEvents gvAllFiliale As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
-    '''gvAllLFB-Steuerelement
+    '''gvAllGL-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents gvAllLFB As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvAllGL As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
     '''EditAufgabe2-Steuerelement

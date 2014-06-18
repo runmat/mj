@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,6 @@ using System.Web.Routing;
 using System.Xml;
 using BoC.Web.Mvc.PrecompiledViews;
 using GeneralTools.Services;
-using MvcTools.Web;
 using GeneralTools.Models;
 using WebTools.Services;
 
@@ -16,21 +16,7 @@ namespace MvcTools
 {
     public class MvcSettings
     {
-        public static bool CurrentUserIsEditor
-        {
-            get
-            {
-                var httpContext = HttpContext.Current;
-                if (httpContext == null) return false;
-
-                var httpApp = httpContext.ApplicationInstance;
-                if (httpApp == null) return false;
-                
-                if (!(httpApp is IWebEditorUserProvider)) return false;
-
-                return (httpApp as IWebEditorUserProvider).CurrentUserIsEditor;
-            }
-        }
+        private static readonly object LockObj = new Object();
 
         public static void RegisterRoutes(RouteCollection routes, params Assembly[] precompiledAssemblies)
         {
@@ -50,10 +36,14 @@ namespace MvcTools
             var appRootFolder = HttpContext.Current.Server.MapPath("~/");
             var parentWebConfigFolder = appRootFolder;
 
-            var rawUrlFolders = HttpContext.Current.Request.RawUrl.Split('/');
+            var pathRoot = HttpContext.Current.Server.MapPath("/");
+            var pathRootApp = HttpContext.Current.Server.MapPath("~/");
+            var pathRelApp = pathRootApp.Replace(pathRoot, "");
+            var rawUrlFolders = pathRelApp.Split('\\');
+
             var parentWebConfigExistsInFolder = false;
 
-            if (rawUrlFolders.Length > 1)
+            if (rawUrlFolders.Length > 0)
             {
                 //
                 // Variante 1: 
@@ -63,7 +53,7 @@ namespace MvcTools
                 //       Ziel:   c:\inetpub\wwwroot\[Services]
                 //
 
-                var appNameMvc = rawUrlFolders[1].ToLower();
+                var appNameMvc = rawUrlFolders[0].ToLower();
                 if (appNameMvc.IsNullOrEmpty() || !appNameMvc.EndsWith("mvc"))
                     return;
                 var appNameWebForms = appNameMvc.Replace("mvc", "");
@@ -126,8 +116,7 @@ namespace MvcTools
                             {
                                 var key = CryptoMd5.Decrypt(xmlEntry.Key);
                                 var val = CryptoMd5.Decrypt(xmlEntry.Value);
-                                if (ConfigurationManager.AppSettings[key] == null)
-                                    ConfigurationManager.AppSettings.Set(key, val);
+                                TryThreadSaveSetAppSettingsKey(key, val);
                             });
                     }
                 }
@@ -138,13 +127,24 @@ namespace MvcTools
                                 return;
 
                             var key = s.Attributes["key"].InnerText;
-                            if (ConfigurationManager.AppSettings[key] == null)
-                                ConfigurationManager.AppSettings.Set(key, s.Attributes["value"].InnerText);
+                            TryThreadSaveSetAppSettingsKey(key, s.Attributes["value"].InnerText);
                         });
             }
             catch
             {
                 // empty catch ist ok here, weil wir nicht deterministischen Fehler abfangen wollen ("Key already exists...")
+            }
+        }
+
+        private static void TryThreadSaveSetAppSettingsKey(string key, string value)
+        {
+            if (ConfigurationManager.AppSettings.Get(key) == null)
+            {
+                lock (LockObj)
+                {
+                    if (ConfigurationManager.AppSettings.Get(key) == null)
+                        ConfigurationManager.AppSettings.Set(key, value);
+                }
             }
         }
     }

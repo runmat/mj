@@ -9,12 +9,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using AutohausPortalMvc.App_Start;
 using AutohausPortalMvc.Services;
-using CkgDomainLogic.DomainCommon.Services;
-using CkgDomainLogic.General.Services;
-using CkgDomainLogic.Ueberfuehrung.Models;
 using GeneralTools.Contracts;
 using GeneralTools.Services;
-using MvcTools.Data;
 using MvcTools.Web;
 using PortalMvcTools.Services;
 using PortalMvcTools.Web;
@@ -72,18 +68,15 @@ namespace AutohausPortalMvc
 
             // Autofac / IoC Integration:
             IocConfig.RegisterIocContainer();
-        }
 
-        protected void Session_Start(object sender, EventArgs e)
-        {
             //
             // combine our appsettings in our web.config with a "parent" web.config (i. e. of a ASP.NET WebForms Application)
             //
             MvcTools.MvcSettings.MergeWebConfigAppSettings();
-            
-            // ToDo: Remove this codeline if AutoFac has been configured correctly:
-            Localize.TranslationFormatServiceExplicit = new TranslationFormatService(new SessionDataHelper());
+        }
 
+        protected void Session_Start(object sender, EventArgs e)
+        {
             //
             // Connecting our Logger to our SapDataService
             //

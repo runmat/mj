@@ -78,8 +78,8 @@
                                 <td style="text-align: right;" width="100%">
                                     KST.:
                                     <asp:Label ID="lblKostenstelle" runat="server"></asp:Label>
-                                    / LFB-Gebiet:
-                                    <asp:Label ID="lblLFB" runat="server"></asp:Label>
+                                    / GL-Gebiet:
+                                    <asp:Label ID="lblGL" runat="server"></asp:Label>
                                 </td>
                             </tr>
                         </table>
@@ -379,7 +379,7 @@
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
-                                    <asp:GridView ID="gvAllLFB" runat="server" AutoGenerateColumns="false" AllowPaging="false"
+                                    <asp:GridView ID="gvAllGL" runat="server" AutoGenerateColumns="false" AllowPaging="false"
                                         Width="100%" ShowFooter="False" GridLines="Vertical" Visible="true" Style="border-collapse: collapse ! important;">
                                         <PagerSettings Visible="false" />
                                         <HeaderStyle CssClass="GridTableHead"></HeaderStyle>

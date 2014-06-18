@@ -64,25 +64,35 @@
     <Compile Include="Controllers\Bewertung\FinanceController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\Gebuehrenauslage\FinanceController.cs" />
+    <Compile Include="Controllers\VersandsperreReport\FinanceController.cs" />
+    <Compile Include="Controllers\Versandsperre\FinanceController.cs" />
     <Compile Include="Finance\Contracts\IFinanceAktivcheckDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceGebuehrenauslageDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceBewertungDataService.cs" />
+    <Compile Include="Finance\Contracts\IFinanceVersandsperreDataService.cs" />
+    <Compile Include="Finance\Contracts\IFinanceVersandsperreReportDataService.cs" />
     <Compile Include="Finance\Models\AppModelMappings.cs" />
     <Compile Include="Finance\Models\DataModels\AktivcheckTreffer.cs" />
     <Compile Include="Finance\Models\DataModels\Auftrag.cs" />
+    <Compile Include="Finance\Models\DataModels\VorgangVersandsperre.cs" />
     <Compile Include="Finance\Models\DataModels\VorgangBewertung.cs" />
     <Compile Include="Finance\Models\DataModels\VorgangInfo.cs" />
     <Compile Include="Finance\Models\UIModels\AuftragSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\AuftragSucheSelektionsart.cs" />
     <Compile Include="Finance\Models\UIModels\AktivcheckEdit.cs" />
+    <Compile Include="Finance\Models\UIModels\VorgangVersandsperreSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\VorgangSucheErfassungsart.cs" />
     <Compile Include="Finance\Models\UIModels\VorgangSuchparameter.cs" />
     <Compile Include="Finance\Services\FinanceAktivcheckDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceGebuehrenauslageDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceBewertungDataServiceSAP.cs" />
+    <Compile Include="Finance\Services\FinanceVersandsperreDataServiceSAP.cs" />
+    <Compile Include="Finance\Services\FinanceVersandsperreReportDataServiceSAP.cs" />
     <Compile Include="Finance\ViewModels\FinanceAktivcheckViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceGebuehrenauslageViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceBewertungViewModel.cs" />
+    <Compile Include="Finance\ViewModels\FinanceVersandsperreViewModel.cs" />
+    <Compile Include="Finance\ViewModels\FinanceVersandsperreReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

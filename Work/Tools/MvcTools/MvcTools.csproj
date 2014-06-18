@@ -126,11 +126,6 @@
     <Compile Include="Models\EF\ContentEntity.cs" />
     <Compile Include="Data\DataTypes\DecimalExtensions.cs" />
     <Compile Include="Data\DataTypes\StringExtensions.cs" />
-    <Compile Include="Views\Shared\EditableHtmlControl.cs">
-      <DependentUpon>EditableHtmlControl.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Views\Shared\EditableContent_Once.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,11 +135,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EditableContent_Once_Editor.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Shared\EditableHelpHintControl.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableHelpHintControl.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Error\Index.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
@@ -203,10 +193,6 @@
     <EmbeddedResource Include="Images\excel.png" />
     <EmbeddedResource Include="Images\pdf.png" />
     <EmbeddedResource Include="Styles\TelerikExtensions.css" />
-    <Content Include="Views\Shared\EditableHelpHintControl.cshtml">
-      <Generator>MvcRazorClassGenerator</Generator>
-      <LastGenOutput>EditableHelpHintControl.cs</LastGenOutput>
-    </Content>
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -223,10 +209,6 @@
     <Content Include="Views\Shared\EditableContent_Once_Editor.cshtml">
       <Generator>MvcRazorClassGenerator</Generator>
       <LastGenOutput>EditableContent_Once_Editor.cs</LastGenOutput>
-    </Content>
-    <Content Include="Views\Shared\EditableHtmlControl.cshtml">
-      <Generator>MvcRazorClassGenerator</Generator>
-      <LastGenOutput>EditableHtmlControl.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Error\Index.cshtml">
       <Generator>MvcRazorClassGenerator</Generator>

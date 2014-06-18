@@ -15,12 +15,15 @@ namespace ServicesMvc.Controllers
         public override string DataContextKey { get { return GetDataContextKey<FinanceAktivcheckViewModel>(); } }
 
         public FinanceController(IAppSettings appSettings, ILogonContextDataService logonContext, IFinanceAktivcheckDataService aktivcheckDataService, 
-            IFinanceGebuehrenauslageDataService gebuehrenauslageDataService, IFinanceBewertungDataService bewertungDataService)
+            IFinanceGebuehrenauslageDataService gebuehrenauslageDataService, IFinanceBewertungDataService bewertungDataService, 
+            IFinanceVersandsperreDataService versandsperreDataService, IFinanceVersandsperreReportDataService versandsperreReportDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(AktivcheckViewModel, appSettings, logonContext, aktivcheckDataService);
             InitViewModel(GebuehrenauslageViewModel, appSettings, logonContext, gebuehrenauslageDataService);
             InitViewModel(BewertungViewModel, appSettings, logonContext, bewertungDataService);
+            InitViewModel(VersandsperreViewModel, appSettings, logonContext, versandsperreDataService);
+            InitViewModel(VersandsperreReportViewModel, appSettings, logonContext, versandsperreReportDataService);
         }
 
         public ActionResult Index(string un, string appID)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ClassName="SAPProxy_VW" TargetDirectory="C:\temp\SAPProxy_VW" Namespace="SAPProxy_VW" Type="JavaMetaDataProvider" ToolsDir="C:\Programme\SAP\SAP .NET Connector\" xmlns="http://tempuri.org/ProxyAppInput.xsd">
+  <Destination>
+    <Client>10</Client>
+    <AppServerHost>192.168.10.172</AppServerHost>
+    <Language />
+    <Username>web_rfc</Username>
+    <SystemNumber>0</SystemNumber>
+    <LogonGroup />
+    <MsgServerHost />
+    <SAPSystemName />
+    <Type>3</Type>
+    <DestinationName>CKQ</DestinationName>
+  </Destination>
+  <Modules Name="Z_M_FAHRZEUGBRIEFHISTORIE_VW" />
+  <Modules Name="Z_M_KLAERFAELLEVW" />
+  <Modules Name="Z_V_ZDAD_V_VWNUTZ_001" />
+  <Modules Name="Z_M_IMP_ZUL_HAEND_001" />
+  <Modules Name="Z_M_IMP_ZUL_HAEND_002" />
+  <Modules Name="Z_M_TAB_IMP_ZUL_002" />
+  <Modules Name="Z_M_EXP_FIN_001" />
+  <Modules Name="Z_M_IMP_FIN_001" />
+  <Modules Name="Z_DAD_WEB_MAHNUNGEN" />
+  <Modules Name="Z_DAD_WEB_RGPRUEFUNG" />
+</Settings>

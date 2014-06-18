@@ -19,7 +19,7 @@ Namespace DigitalesFilialbuch
 
         Public Enum Rolle
             Filiale
-            LFB
+            Gebietsleiter
         End Enum
 
         Public Enum Antwortart
@@ -96,8 +96,8 @@ Namespace DigitalesFilialbuch
             Select Case rl
                 Case Rolle.Filiale
                     Return "FIL"
-                Case Rolle.LFB
-                    Return "LFB"
+                Case Rolle.Gebietsleiter
+                    Return "GL"
                 Case Else
                     Return "FIL"
             End Select
@@ -113,8 +113,8 @@ Namespace DigitalesFilialbuch
             Select Case rl
                 Case "FIL"
                     Return Rolle.Filiale
-                Case "LFB"
-                    Return Rolle.LFB
+                Case "GL"
+                    Return Rolle.Gebietsleiter
                 Case Else
                     Return Rolle.Filiale
             End Select
@@ -467,8 +467,8 @@ Namespace DigitalesFilialbuch
                        ByVal rollepa As String, ByVal namepa As String, ByVal kostenstelle As String)
             Me.UsernameSAP = usernamesap
             Me.Bedienername = bedienername
-            If rolle.ToUpper().Trim = "LFB" Then
-                Me.Rolle = FilialbuchClass.Rolle.LFB
+            If rolle.ToUpper().Trim = "GL" Then
+                Me.Rolle = FilialbuchClass.Rolle.Gebietsleiter
             Else
                 Me.Rolle = FilialbuchClass.Rolle.Filiale
             End If

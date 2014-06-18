@@ -430,7 +430,17 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<TerminSchadenfall> AlleTermine
         {
-            get { return PropertyCacheGet(() => EventsDataService.TermineGet()); }
+            get { return PropertyCacheGet(() =>
+                {
+                    var list = EventsDataService.TermineGet();
+                    list.ForEach(termin =>
+                        {
+                            termin.EventAsTextTmp = (termin.VersSchadenfallID == 0 ? "" : termin.EventAsText);
+                            termin.OrtAsTextTmp = termin.OrtAsText;
+                            termin.BoxAsTextTmp = termin.BoxAsText;
+                        });
+                    return list;
+                }); }
         }
 
         [XmlIgnore]

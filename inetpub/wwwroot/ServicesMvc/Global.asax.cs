@@ -64,15 +64,15 @@ namespace ServicesMvc
 
             // Autofac / IoC Integration:
             IocConfig.RegisterIocContainer();
-        }
 
-        protected void Session_Start(object sender, EventArgs e)
-        {
             //
             // combine our appsettings in our web.config with a "parent" web.config (i. e. of a ASP.NET WebForms Application)
             //
             MvcTools.MvcSettings.MergeWebConfigAppSettings();
+        }
 
+        protected void Session_Start(object sender, EventArgs e)
+        {
             //
             // Connecting our Logger to our SapDataService
             //

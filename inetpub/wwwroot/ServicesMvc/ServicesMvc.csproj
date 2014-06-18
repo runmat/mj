@@ -2279,6 +2279,11 @@
     <Content Include="Views\Logs\Partial\WebServiceTraffic\Details.cshtml" />
     <Content Include="Views\Equi\ReportBriefbestand.cshtml" />
     <Content Include="Views\Equi\Briefbestand\FahrzeugbriefeGrid.cshtml" />
+    <Content Include="Views\Finance\Versandsperre.cshtml" />
+    <Content Include="Views\Finance\Versandsperre\VersandsperreGrid.cshtml" />
+    <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
+    <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
+    <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

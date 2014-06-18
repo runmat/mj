@@ -76,6 +76,25 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_LIST_ZZAKTSPERRE.GT_WEB, VorgangVersandsperre> Z_DPM_LIST_ZZAKTSPERRE_GT_WEB_To_VorgangVersandsperre
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_ZZAKTSPERRE.GT_WEB, VorgangVersandsperre>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                        {
+                            destination.PAID = source.LIZNR;
+                            destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                            destination.Kennzeichen = source.LICENSE_NUM;
+                            destination.Erstzulassung = source.REPLA_DATE;
+                            destination.Vertragsart = source.ZVERT_ART;
+                            destination.Kontonummer = source.KONTONR;
+                            destination.CIN = source.CIN;
+                        }));
+            }
+        }
+
         #endregion
 
 
@@ -139,6 +158,21 @@ namespace CkgDomainLogic.Finance.Models
                         { "HAENDL_VERK_WERT_BRU", "HaendlerBruttoVkWert" },
                         { "KOSTEN", "Kosten" },
                     }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_ZZAKTSPERRE.GT_WEB, VorgangVersandsperre> Z_DPM_ZZAKTSPERRE_GT_WEB_From_VorgangVersandsperre
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ZZAKTSPERRE.GT_WEB, VorgangVersandsperre>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                        {
+                            destination.EQUNR = source.Equipmentnummer;
+                            destination.LIZNR = source.PAID;
+                        }));
             }
         }
 

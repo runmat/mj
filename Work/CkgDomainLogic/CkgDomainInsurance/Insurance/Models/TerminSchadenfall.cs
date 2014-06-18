@@ -45,13 +45,41 @@ namespace CkgDomainLogic.Insurance.Models
         public string BoxArtGewuenschtAsText { get { return BoxArtGewuenscht.IsNullOrEmpty() ? "" : VersEventOrtBox.BoxArten.ToSelectList().First(art => art.Value == BoxArtGewuenscht).Text; } }
 
 
+        [LocalizedDisplay(LocalizeConstants.EventName)]
+        [NotMapped]
+        public string EventAsText
+        {
+            get
+            {
+                return (VersSchadenfallID == 0)
+                            ? Localize.DropdownDefaultOptionPleaseChoose
+                            : string.Format("{0}", Event.EventName);
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.EventName)]
+        [NotMapped]
+        public string EventAsTextTmp { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
         [NotMapped]
         public string OrtAsText { get { return Ort.OrtAsShortText; } }
 
+        [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
+        [NotMapped]
+        public string OrtAsTextTmp { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Box)]
         [NotMapped]
         public string BoxAsText { get { return Box.BoxName; } }
+
+        [LocalizedDisplay(LocalizeConstants.Box)]
+        [NotMapped]
+        public string BoxAsTextTmp { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Insurance)]
+        [NotMapped]
+        public string VersicherungName { get { return Schadenfall.VersicherungName; } }
 
         [LocalizedDisplay(LocalizeConstants.BoxType)]
         [NotMapped]
@@ -89,18 +117,6 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.EventName)]
-        [NotMapped]
-        public string EventAsText
-        {
-            get
-            {
-                return (VersSchadenfallID == 0)
-                            ? Localize.DropdownDefaultOptionPleaseChoose
-                            : string.Format("{0}", Event.EventName);
-            }
-        }
-
         [LocalizedDisplay(LocalizeConstants.DamageCase)]
         [NotMapped]
         public string SchadenfallAsText
@@ -121,10 +137,6 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.LastName)]
         [NotMapped]
         public string SchadenfallNachname { get { return Schadenfall.Nachname; } } 
-
-        [LocalizedDisplay(LocalizeConstants.Insurance)]
-        [NotMapped]
-        public string VersicherungName { get { return Schadenfall.VersicherungName; } }
 
 
         [LocalizedDisplay(LocalizeConstants.CreateDate)]

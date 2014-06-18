@@ -188,6 +188,7 @@ FakesAssemblies/
 
 # CKG Ignore Liste
 *.DotSettings
+*.tss
 # GAC mitnehmen
 !inetpub/wwwroot/nPa/GAC/*
 !inetpub/wwwroot/Services/GAC/*
