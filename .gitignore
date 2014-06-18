@@ -231,6 +231,13 @@ Work/SapORM/DynSapProxy/GAC/DynSapProxyObjectErp35.dll
 Work/SapORM/DynSapProxy/GAC/GeneralTools.dll
 Work/SapORM/DynSapProxy/GAC/SAPORM.Contracts.dll
 Work/SapORM/DynSapProxy/GAC/de-DE/GeneralTools.resources.dll
+Work/GAC/BtBaseMvc.dll
+Work/GAC/BtBaseMvc.pdb
+Work/GAC/CKG.Base.dll
+Work/GAC/CKG.Base.pdb
+Work/GAC/Microsoft.Adapters.SAP.SAPGInvoker.dll
+Work/GAC/Microsoft.Adapters.SAP.dll
+Work/GAC/Microsoft.Data.SAPClient.dll
 
 # Neuer Personal Ausweis Zertifikate
 !inetpub/wwwroot/nPa/GAC/*.pfx
