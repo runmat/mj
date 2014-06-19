@@ -64,10 +64,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="SapORM.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\SapORM.Models.dll</HintPath>
-    </Reference>
     <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\SapORM.Services.dll</HintPath>
@@ -224,6 +220,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
       <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
       <Name>DocumentTools</Name>
