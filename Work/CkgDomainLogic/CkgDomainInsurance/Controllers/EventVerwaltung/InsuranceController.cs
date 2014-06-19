@@ -61,7 +61,7 @@ namespace ServicesMvc.Controllers
         {
             EventsViewModel.DataInit();
 
-            //!!! this is a TEST BUG
+            !!! this is a TEST BUG
 
             return View(EventsViewModel);
         }
