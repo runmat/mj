@@ -2273,7 +2273,7 @@
     <Content Include="Views\Insurance\Schadenfaelle\StatusAlleGrid.cshtml" />
     <Content Include="Views\Insurance\ReportBestandsdaten.cshtml" />
     <Content Include="Views\Insurance\Bestandsdaten\BestandsdatenGrid.cshtml" />
-    <Content Include="Views\Insurance\TermineOrtBoxen.cshtml" />
+    <Content Include="Views\Insurance\TerminUebersicht.cshtml" />
     <Content Include="Views\Insurance\Schadenakte\Partial\Termine\EventOrtAuswahl.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung\VertragsdatenGrid.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung.cshtml" />
