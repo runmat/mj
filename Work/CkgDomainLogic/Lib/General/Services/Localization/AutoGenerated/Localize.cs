@@ -1051,6 +1051,11 @@
 		public static string Box { get { return TranslateResourceKey("Box"); }}
 
 		/// <summary>
+		/// Boxen Terminübersicht
+		/// </summary>
+		public static string BoxenTermin_Uebersicht { get { return TranslateResourceKey("BoxenTermin_Uebersicht"); }}
+
+		/// <summary>
 		/// Box Name
 		/// </summary>
 		public static string BoxName { get { return TranslateResourceKey("BoxName"); }}

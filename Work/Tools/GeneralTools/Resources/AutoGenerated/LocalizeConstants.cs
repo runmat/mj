@@ -1051,6 +1051,11 @@
 		public const string Box = "Box";
 
 		/// <summary>
+		/// Boxen Terminübersicht
+		/// </summary>
+		public const string BoxenTermin_Uebersicht = "BoxenTermin_Uebersicht";
+
+		/// <summary>
 		/// Box Name
 		/// </summary>
 		public const string BoxName = "BoxName";
