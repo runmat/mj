@@ -187,6 +187,7 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 # CKG Ignore Liste
+AppSettings.config
 *.DotSettings
 *.tss
 # GAC mitnehmen
