@@ -57,11 +57,9 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult TerminUebersicht()
+        public ActionResult BoxenTerminUebersicht()
         {
             EventsViewModel.DataInit();
-
-            //!!! this is a TEST 
 
             return View(EventsViewModel);
         }
