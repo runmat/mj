@@ -1001,6 +1001,16 @@
 		public static string AuthorityPostcode { get { return TranslateResourceKey("AuthorityPostcode"); }}
 
 		/// <summary>
+		/// Fahrzeugakte
+		/// </summary>
+		public static string Autohaus_Fahrzeugakte { get { return TranslateResourceKey("Autohaus_Fahrzeugakte"); }}
+
+		/// <summary>
+		/// Fahrzeugverwaltung
+		/// </summary>
+		public static string Autohaus_Fahrzeugverwaltung { get { return TranslateResourceKey("Autohaus_Fahrzeugverwaltung"); }}
+
+		/// <summary>
 		/// Verfügbare Archive
 		/// </summary>
 		public static string AvailableArchives { get { return TranslateResourceKey("AvailableArchives"); }}
@@ -2616,6 +2626,11 @@
 		public static string ListItemsWithErrorsOnly { get { return TranslateResourceKey("ListItemsWithErrorsOnly"); }}
 
 		/// <summary>
+		/// Lade Daten…
+		/// </summary>
+		public static string LoadingData { get { return TranslateResourceKey("LoadingData"); }}
+
+		/// <summary>
 		/// Dieser Report wird aufgrund der grossen Datenmenge einige Sekunden laufen… Wir bitten um Geduld.
 		/// </summary>
 		public static string LoadingHintLargeDataAmount { get { return TranslateResourceKey("LoadingHintLargeDataAmount"); }}
@@ -3686,6 +3701,11 @@
 		public static string TemporaryDispatch { get { return TranslateResourceKey("TemporaryDispatch"); }}
 
 		/// <summary>
+		/// Terminübersicht Boxen
+		/// </summary>
+		public static string TerminuebersichtBoxen { get { return TranslateResourceKey("TerminuebersichtBoxen"); }}
+
+		/// <summary>
 		/// Vielen Dank
 		/// </summary>
 		public static string ThankYou { get { return TranslateResourceKey("ThankYou"); }}
@@ -3804,6 +3824,46 @@
 		/// Wert darf nicht negativ sein
 		/// </summary>
 		public static string ValueMustNotBeNegative { get { return TranslateResourceKey("ValueMustNotBeNegative"); }}
+
+		/// <summary>
+		/// Fahrzeug
+		/// </summary>
+		public static string Vehicle { get { return TranslateResourceKey("Vehicle"); }}
+
+		/// <summary>
+		/// Neues Fahrzeug erstellen
+		/// </summary>
+		public static string VehicleCreate { get { return TranslateResourceKey("VehicleCreate"); }}
+
+		/// <summary>
+		/// Fahrzeug löschen
+		/// </summary>
+		public static string VehicleDelete { get { return TranslateResourceKey("VehicleDelete"); }}
+
+		/// <summary>
+		/// Wollen Sie dieses Fahrzeug wirklich löschen?
+		/// </summary>
+		public static string VehicleDoYouReallyWantToDelete { get { return TranslateResourceKey("VehicleDoYouReallyWantToDelete"); }}
+
+		/// <summary>
+		/// Fahrzeug bearbeiten
+		/// </summary>
+		public static string VehicleEdit { get { return TranslateResourceKey("VehicleEdit"); }}
+
+		/// <summary>
+		/// Fahrzeug ungültig
+		/// </summary>
+		public static string VehicleInvalid { get { return TranslateResourceKey("VehicleInvalid"); }}
+
+		/// <summary>
+		/// Fahrzeug zulassen
+		/// </summary>
+		public static string VehicleRegister { get { return TranslateResourceKey("VehicleRegister"); }}
+
+		/// <summary>
+		/// Fahrzeuge
+		/// </summary>
+		public static string Vehicles { get { return TranslateResourceKey("Vehicles"); }}
 
 		/// <summary>
 		/// Alle 

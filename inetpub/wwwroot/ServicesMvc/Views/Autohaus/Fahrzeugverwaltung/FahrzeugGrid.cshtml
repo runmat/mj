@@ -1,0 +1,51 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@{
+    var gridName = "FahrzeugGrid";
+    var divID = gridName + "Div";
+}
+
+<div id="@divID" class="">
+    @(Html.Telerik()
+          .Grid<Fahrzeug>()
+          .Name(gridName)
+
+          .XAjaxDataBinding("FahrzeugeAjaxBinding", "Autohaus")
+          .Columns(columns =>
+              {
+                  columns.XBound(c => c.ID).Title("").Filterable(false).Groupable(false).Sortable(false)
+                      .ClientTemplate(
+                            "<button onclick='FahrzeugRegister(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+                            + "&nbsp;" +
+                            "<button onclick='FahrzeugEdit(\"<#= data.ID #>\");' class='btn mini black tooltips debug' data-original-title='" + Localize.VehicleEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                            //+ "&nbsp;" +
+                            //"<button onclick='FahrzeugDelete(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                      )
+                      .HeaderTemplate(
+                            "<button onclick='FahrzeugCreate();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+
+                      ); 
+                    columns.XBound(c => c.ReferenzNr);
+                    columns.XBound(c => c.FzgHersteller);
+                    columns.XBound(c => c.FzgModell);
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate(
+                            "<a href='#' class='link tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right' onclick='return ShowFahrzeugakteAjax(\"<#= data.ID #>\");'><u><#= data.Kennzeichen #></u></a>"
+                        );
+                    columns.XBound(c => c.Vorname);
+                    columns.XBound(c => c.Nachname);
+                    columns.XBound(c => c.FahrgestellNr);
+                    columns.XBound(c => c.AnlageDatumAsString);
+                    columns.XBound(c => c.AnlageUser);
+              })
+          .XAutoColumnConfiguration()
+          .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_FahrzeugGrid"))
+          .XPageSize(10)
+          .XSort(sortOrder => sortOrder.Add(c => c.AnlageDatum).Descending())
+          .ToolBar(commands =>
+          {
+              commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Autohaus");
+              commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Autohaus");
+          })
+    )
+</div>
+
+

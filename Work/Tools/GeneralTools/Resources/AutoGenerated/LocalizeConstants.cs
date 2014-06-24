@@ -1001,6 +1001,16 @@
 		public const string AuthorityPostcode = "AuthorityPostcode";
 
 		/// <summary>
+		/// Fahrzeugakte
+		/// </summary>
+		public const string Autohaus_Fahrzeugakte = "Autohaus_Fahrzeugakte";
+
+		/// <summary>
+		/// Fahrzeugverwaltung
+		/// </summary>
+		public const string Autohaus_Fahrzeugverwaltung = "Autohaus_Fahrzeugverwaltung";
+
+		/// <summary>
 		/// Verfügbare Archive
 		/// </summary>
 		public const string AvailableArchives = "AvailableArchives";
@@ -2616,6 +2626,11 @@
 		public const string ListItemsWithErrorsOnly = "ListItemsWithErrorsOnly";
 
 		/// <summary>
+		/// Lade Daten…
+		/// </summary>
+		public const string LoadingData = "LoadingData";
+
+		/// <summary>
 		/// Dieser Report wird aufgrund der grossen Datenmenge einige Sekunden laufen… Wir bitten um Geduld.
 		/// </summary>
 		public const string LoadingHintLargeDataAmount = "LoadingHintLargeDataAmount";
@@ -3686,6 +3701,11 @@
 		public const string TemporaryDispatch = "TemporaryDispatch";
 
 		/// <summary>
+		/// Terminübersicht Boxen
+		/// </summary>
+		public const string TerminuebersichtBoxen = "TerminuebersichtBoxen";
+
+		/// <summary>
 		/// Vielen Dank
 		/// </summary>
 		public const string ThankYou = "ThankYou";
@@ -3804,6 +3824,46 @@
 		/// Wert darf nicht negativ sein
 		/// </summary>
 		public const string ValueMustNotBeNegative = "ValueMustNotBeNegative";
+
+		/// <summary>
+		/// Fahrzeug
+		/// </summary>
+		public const string Vehicle = "Vehicle";
+
+		/// <summary>
+		/// Neues Fahrzeug erstellen
+		/// </summary>
+		public const string VehicleCreate = "VehicleCreate";
+
+		/// <summary>
+		/// Fahrzeug löschen
+		/// </summary>
+		public const string VehicleDelete = "VehicleDelete";
+
+		/// <summary>
+		/// Wollen Sie dieses Fahrzeug wirklich löschen?
+		/// </summary>
+		public const string VehicleDoYouReallyWantToDelete = "VehicleDoYouReallyWantToDelete";
+
+		/// <summary>
+		/// Fahrzeug bearbeiten
+		/// </summary>
+		public const string VehicleEdit = "VehicleEdit";
+
+		/// <summary>
+		/// Fahrzeug ungültig
+		/// </summary>
+		public const string VehicleInvalid = "VehicleInvalid";
+
+		/// <summary>
+		/// Fahrzeug zulassen
+		/// </summary>
+		public const string VehicleRegister = "VehicleRegister";
+
+		/// <summary>
+		/// Fahrzeuge
+		/// </summary>
+		public const string Vehicles = "Vehicles";
 
 		/// <summary>
 		/// Alle 

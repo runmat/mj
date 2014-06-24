@@ -2288,6 +2288,19 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugDetailsForm.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocUpload.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoryEdit.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocCreate.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocEdit.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
+    <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
@@ -4625,6 +4638,10 @@
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainArchive\CkgDomainArchive.csproj">
       <Project>{F1C484BE-4B1D-465D-8761-E29DA430A53A}</Project>
       <Name>CkgDomainArchive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
+      <Project>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</Project>
+      <Name>CkgDomainAutohaus</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\work\CkgDomainLogic\CkgDomainCoc\CkgDomainCoc.csproj">
       <Project>{F01F55AC-5B2F-4877-B398-85FEE13E3EB5}</Project>

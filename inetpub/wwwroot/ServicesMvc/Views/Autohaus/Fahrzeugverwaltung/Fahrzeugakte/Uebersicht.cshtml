@@ -1,0 +1,22 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Fahrzeug
+
+<form action="#" class="form-horizontal">
+    
+    <h4 class="form-section hide">@Localize.Autohaus_Fahrzeugakte</h4>
+    
+    @Html.FormTextBlockFor(m => m.ReferenzNr, new { @class = "m-wrap" })        
+        
+    @Html.FormTextBlockFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.Email, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.TelefonNr, new { @class = "m-wrap", col = "right" })
+        
+    @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "right" })
+        
+    @Html.FormTextBlockFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+
+</form>

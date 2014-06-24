@@ -40,6 +40,14 @@ namespace ServicesMvc.Controllers
             return View("Beauftragung", ViewModel);
         }
 
+        public ActionResult ZulassungFreiPartial(string vin, string auftragsNr)
+        {
+            ViewModel.DataMarkForRefresh(vin, auftragsNr);
+            ViewModel.SetCocBeauftragungMode(CocBeauftragungMode.FreieZulassung);
+
+            return PartialView("Beauftragung", ViewModel);
+        }
+
 
         #region Freie Zulassungs-Optionen
 

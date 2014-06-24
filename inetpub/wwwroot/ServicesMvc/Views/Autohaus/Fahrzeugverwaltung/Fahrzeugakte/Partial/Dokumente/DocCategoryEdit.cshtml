@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.General.Database.Models
+@model CustomerDocumentCategory
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="portlet margin-top-10">
+    @using (Ajax.BeginForm("SaveDocCategory", "Autohaus", null, new MvcAjaxOptions { OnComplete = "EditDocCategoryComplete();" }, new { @class = "form-horizontal", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.CustomerID)
+        @Html.HiddenFor(m => m.ApplicationKey)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBoxFor(m => m.CategoryName, new { @class = "m-wrap" })
+
+        @Html.FormTextBoxFor(m => m.DisplayOrder, new { @class = "m-wrap" })
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseDocCategoryEdit();">@Localize.Cancel</button>
+        </div>
+    
+        <script type="text/javascript">
+            var _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+    function EditDocCategoryComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+            SpanAlertSuccess("Message", successMessage, 1800);
+            CloseDocCategoryEdit();
+        }
+    }
+</script>
+
+

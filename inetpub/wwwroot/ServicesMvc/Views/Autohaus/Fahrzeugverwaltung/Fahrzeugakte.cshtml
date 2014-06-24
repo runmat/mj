@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@model FahrzeugakteViewModel
+
+<div class="margin-left-10">
+    <h4 class="no-margin">
+        <button onclick="CloseFahrzeugakte();" class="btn mini red tooltips" data-original-title="@Localize.Back" data-placement="right"><i class="halflings-icon white chevron-left"></i></button>
+        <i class="icon-briefcase margin-left-10 margin-right-10"></i> <span>@Localize.Vehicle</span> <span id="idFahrzeugakte">"@Model.Fahrzeug.ReferenzNr - @Model.Fahrzeug.Kennzeichen"</span>
+    </h4>
+
+    <div class="tabbable tabbable-custom margin-top-20">
+        <ul class="nav nav-tabs">
+            @*Anzeigereihenfolge umgedreht*@
+            <li class="active"><a href="#tab_1_1" data-toggle="tab">@Localize.Autohaus_Fahrzeugakte</a></li>
+            <li><a href="#tab_1_2" data-toggle="tab">@Localize.Documents</a></li>
+        </ul>
+        <div class="tab-content">             
+            <div class="tab-pane overflow-x-auto" id="tab_1_2">
+                @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Dokumente", @Model.DocsViewModel)
+            </div>               
+            <div class="tab-pane active" id="tab_1_1">
+                @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Uebersicht", @Model.Fahrzeug)
+            </div>               
+        </div>
+    </div>
+</div>

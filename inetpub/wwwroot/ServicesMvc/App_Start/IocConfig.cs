@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.Autohaus.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Services;
 using CkgDomainLogic.Charts.Contracts;
@@ -57,6 +59,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterControllers(Assembly.Load("CkgDomainFinance"));
             builder.RegisterControllers(Assembly.Load("CkgDomainInsurance"));
             builder.RegisterControllers(Assembly.Load("CkgDomainFahrer"));
+            builder.RegisterControllers(Assembly.Load("CkgDomainAutohaus"));
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -129,6 +132,8 @@ namespace ServicesMvc.App_Start
                 builder.RegisterType<VersEventsDataServiceSQL>().As<IVersEventsDataService>().InstancePerHttpRequest();
             else
                 builder.RegisterType<VersEventsDataServiceSAP>().As<IVersEventsDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<FahrzeugverwaltungDataServiceSQL>().As<IFahrzeugverwaltungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
