@@ -60,9 +60,16 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <strong>Vorsitzender der Geschäftsführung:</strong>
+                                                    <br />
+                                                    Christian Bartelheimer
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <strong>Geschäftsführer:</strong>
                                                     <br />
-                                                    Matthias Gauglitz, Lars Häger, Philipp Kroschke, York Schmidt zur Nedden
+                                                    Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
                                                 </td>
                                             </tr>
                                             <tr>
@@ -141,9 +148,16 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <strong>Geschäftsführer: </strong>
-                                                    <br />
-                                                        Matthias Gauglitz, Lars Häger, Philipp Kroschke, York Schmidt zur Nedden
+                                                        <strong>Vorsitzender der Geschäftsführung:</strong>
+                                                        <br />
+                                                        Christian Bartelheimer
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Geschäftsführer:</strong>
+                                                        <br />
+                                                        Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
                                                     </td>
                                                 </tr>
                                                 <tr>
