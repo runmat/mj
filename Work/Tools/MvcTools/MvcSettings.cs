@@ -28,7 +28,7 @@ namespace MvcTools
             ApplicationPartRegistry.Register(typeof(MvcSettings).Assembly);
 
             if (precompiledAssemblies != null && precompiledAssemblies.Length > 0)
-                precompiledAssemblies.ToList().ForEach(ApplicationPartRegistry.Register); 
+                precompiledAssemblies.ToList().ForEach(ApplicationPartRegistry.Register);
         }
 
         public static void MergeWebConfigAppSettings()
@@ -38,7 +38,7 @@ namespace MvcTools
 
             var pathRoot = HttpContext.Current.Server.MapPath("/");
             var pathRootApp = HttpContext.Current.Server.MapPath("~/");
-            var pathRelApp = pathRootApp.Replace(pathRoot, "");
+            var pathRelApp = pathRootApp.ToLower().Replace(pathRoot.ToLower(), "");
             var rawUrlFolders = pathRelApp.Split('\\');
 
             var parentWebConfigExistsInFolder = false;
@@ -58,7 +58,7 @@ namespace MvcTools
                     return;
                 var appNameWebForms = appNameMvc.Replace("mvc", "");
 
-                
+
                 var count = 0;
                 do
                 {
@@ -66,7 +66,7 @@ namespace MvcTools
                     parentWebConfigExistsInFolder = (null != Directory.GetDirectories(parentWebConfigFolder).FirstOrDefault(f => f.ToLower().EndsWith(appNameWebForms)));
                     if (count++ > 20)
                         break;
-                        
+
                 } while (!parentWebConfigExistsInFolder);
 
                 if (parentWebConfigExistsInFolder)
@@ -113,22 +113,22 @@ namespace MvcTools
                     {
                         var xmlDict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(fileName);
                         xmlDict.ToList().ForEach(xmlEntry =>
-                            {
-                                var key = CryptoMd5.Decrypt(xmlEntry.Key);
-                                var val = CryptoMd5.Decrypt(xmlEntry.Value);
-                                TryThreadSaveSetAppSettingsKey(key, val);
-                            });
+                        {
+                            var key = CryptoMd5.Decrypt(xmlEntry.Key);
+                            var val = CryptoMd5.Decrypt(xmlEntry.Value);
+                            TryThreadSaveSetAppSettingsKey(key, val);
+                        });
                     }
                 }
                 else
                     appSettings.ForEach(s =>
-                        {
-                            if (s.Attributes == null || s.Attributes["key"] == null)
-                                return;
+                    {
+                        if (s.Attributes == null || s.Attributes["key"] == null)
+                            return;
 
-                            var key = s.Attributes["key"].InnerText;
-                            TryThreadSaveSetAppSettingsKey(key, s.Attributes["value"].InnerText);
-                        });
+                        var key = s.Attributes["key"].InnerText;
+                        TryThreadSaveSetAppSettingsKey(key, s.Attributes["value"].InnerText);
+                    });
             }
             catch
             {
