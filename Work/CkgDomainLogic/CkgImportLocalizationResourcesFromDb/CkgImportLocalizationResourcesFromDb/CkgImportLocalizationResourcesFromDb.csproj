@@ -46,9 +46,6 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\..\GAC\EntityFramework\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="GeneralTools">
-      <HintPath>..\..\..\GAC\GeneralTools.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -60,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainDbContext.cs" />
+    <Compile Include="ModelMapping.cs" />
     <Compile Include="TranslatedResourceCustom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
