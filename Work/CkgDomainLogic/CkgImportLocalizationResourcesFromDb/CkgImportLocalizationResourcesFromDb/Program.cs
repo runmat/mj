@@ -108,6 +108,10 @@ namespace CkgImportLocalizationResourcesFromDb
             if (File.Exists(outputFileName))
                 File.SetAttributes(outputFileName, FileAttributes.Normal);
 
+            var dirName = Path.GetDirectoryName(outputFileName);
+            if (dirName != null && !Directory.Exists(dirName))
+                Directory.CreateDirectory(dirName);
+            
             File.WriteAllText(outputFileName, sbConstants.ToString(), Encoding.UTF8);
         }
     }
