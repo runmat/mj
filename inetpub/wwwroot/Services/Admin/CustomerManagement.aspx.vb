@@ -29,6 +29,7 @@ Partial Public Class CustomerManagement
 
         RadAsyncUpload1.Attributes.Add("onClick", "alert('Das Logo sollte ca. 220 x 70 Pixel haben');")
 
+        m_User = GetUser(Me)
 
         HandleCheckBoxesAppIsMvcIsDefaultFavorite(sender)
 
@@ -43,7 +44,6 @@ Partial Public Class CustomerManagement
                                        "function onFileUploaded(sender, args) { " & _
                                        "document.getElementById('" & btnUpload.ClientID & "').click(); }", True)
 
-        m_User = GetUser(Me)
         lblHead.Text = "Kundenverwaltung"
         AdminAuth(Me, m_User, AdminLevel.Master)
         GridNavigation1.setGridElment(dgSearchResult)
@@ -2234,12 +2234,32 @@ Partial Public Class CustomerManagement
             Return
         End If
 
+        Dim customerID As String = ihCustomerID.Value
         Dim appID As String = checkBox.ToolTip
+
         If (appID Is Nothing Or appID = "") Then
             ' AppID nicht verfügbar => raus hier!
             Return
         End If
 
+        Dim sql As String
+        sql = " update vwCustomerAppAssigned " & _
+              " set AppIsMvcDefaultFavorite = " & IIf(checkBox.Checked, "1", "0") & " " & _
+              " where CustomerID = " & customerID & " and AppID = " & appID
+
+        Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+        Dim cmd As New SqlClient.SqlCommand
+        Try
+            cn.Open()
+            cmd.Connection = cn
+            cmd.CommandType = CommandType.Text
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw New Exception("Update des Datenbank-Flags 'Customer.AppIsMvcDefaultFavorite' fehlgeschlagen")
+        Finally
+            cn.Close()
+        End Try
     End Sub
 
 #End Region

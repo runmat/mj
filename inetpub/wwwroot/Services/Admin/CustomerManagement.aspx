@@ -1118,7 +1118,9 @@
                                                                         <telerik:GridTemplateColumn Groupable="false" UniqueName="MvcDefaultFavorite" SortExpression="AppIsMvcDefaultFavorite" HeaderText="MVC Favorit">
                                                                             <HeaderStyle Width="60px" />
                                                                             <ItemTemplate>
-                                                                                <asp:CheckBox runat="server" EnableViewState="True" AutoPostBack="True" style="width: 16px; height: 16px" Checked='<%# DataBinder.Eval(Container, "DataItem.AppIsMvcDefaultFavorite") %>' ToolTip='<%# DataBinder.Eval(Container, "DataItem.AppID").ToString() %>'  />
+                                                                                <asp:CheckBox runat="server" EnableViewState="True" AutoPostBack="True" style="width: 16px; height: 16px" 
+                                                                                        Checked='<%# DataBinder.Eval(Container, "DataItem.AppIsMvcDefaultFavorite") %>' 
+                                                                                        ToolTip='<%# DataBinder.Eval(Container, "DataItem.AppID").ToString() %>' />
                                                                             </ItemTemplate>
                                                                         </telerik:GridTemplateColumn>
                                                                     </Columns>
