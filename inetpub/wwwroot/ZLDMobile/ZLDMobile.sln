@@ -14,29 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainCommon", "..\..\..\Work\CkgDomainLogic\CkgDomainCommon\CkgDomainCommon.csproj", "{116FCA66-F690-41B3-86F5-B8BF7BBA2949}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName1 = ../Work/Tools/GeneralTools
-		SccLocalPath1 = ..\\..\\..\\Work\\Tools\\GeneralTools
-		SccProjectUniqueName2 = ..\\..\\..\\Work\\Tools\\MvcTools\\MvcTools.csproj
-		SccProjectName2 = ../Work/Tools/MvcTools
-		SccLocalPath2 = ..\\..\\..\\Work\\Tools\\MvcTools
-		SccProjectUniqueName3 = ..\\..\\..\\Work\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
-		SccProjectName3 = ../Work/CkgDomainLogic/Lib
-		SccLocalPath3 = ..\\..\\..\\Work\\CkgDomainLogic\\Lib
-		SccProjectUniqueName4 = CkMobileMvcTools\\CkMobileMvcTools.csproj
-		SccProjectName4 = CkMobileMvcTools
-		SccLocalPath4 = CkMobileMvcTools
-		SccProjectUniqueName5 = ZLDMobile.csproj
-		SccLocalPath5 = .
-		SccProjectUniqueName6 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainCommon\\CkgDomainCommon.csproj
-		SccProjectName6 = ../Work/CkgDomainLogic/CkgDomainCommon
-		SccLocalPath6 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainCommon
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DebugQuick|Any CPU = DebugQuick|Any CPU

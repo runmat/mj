@@ -12,10 +12,14 @@
     <RootNamespace>Kantine</RootNamespace>
     <AssemblyName>Kantine</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <SccProjectName>%24/Migration/Kantine</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>http://vms047:8080/tfs/defaultcollection</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -43,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -71,10 +75,10 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="Telerik.Web.UI">
-      <HintPath>..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Web.UI.Skins">
-      <HintPath>..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
