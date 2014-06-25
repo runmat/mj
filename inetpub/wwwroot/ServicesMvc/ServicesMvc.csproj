@@ -2273,7 +2273,7 @@
     <Content Include="Views\Insurance\Schadenfaelle\StatusAlleGrid.cshtml" />
     <Content Include="Views\Insurance\ReportBestandsdaten.cshtml" />
     <Content Include="Views\Insurance\Bestandsdaten\BestandsdatenGrid.cshtml" />
-    <Content Include="Views\Insurance\TermineOrtBoxen.cshtml" />
+    <Content Include="Views\Insurance\TerminUebersichtBoxen.cshtml" />
     <Content Include="Views\Insurance\Schadenakte\Partial\Termine\EventOrtAuswahl.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung\VertragsdatenGrid.cshtml" />
     <Content Include="Views\Insurance\Vertragsverlaengerung.cshtml" />
@@ -4586,8 +4586,6 @@
     <Content Include="Views\Shared\EditorTemplates\EasyAccessResultField.cshtml" />
     <Content Include="Views\Strafzettel\Partial\StrafzettelGrid.cshtml" />
     <Content Include="Views\Strafzettel\Partial\SucheStrafzettel.cshtml" />
-    <Content Include="Views\Strafzettel\Abmeldungen\StrafzettelGrid.cshtml" />
-    <Content Include="Views\Strafzettel\Abmeldungen\SucheStrafzettel.cshtml" />
     <Content Include="Views\Strafzettel\Report.cshtml" />
     <Content Include="Views\Shared\Wrappers\FormSearchResults_Begin.cshtml" />
     <Content Include="Views\Shared\Wrappers\FormSearchResults_End.cshtml" />

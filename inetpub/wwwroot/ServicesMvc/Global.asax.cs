@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using CkgDomainLogic.General.Contracts;
-using CkgDomainLogic.Services;
-using GeneralTools.Log.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Web;
@@ -160,7 +158,7 @@ namespace ServicesMvc
 
             var allMenuItems = LogonContext.GetMenuItems();
             var menuItemsOfThisGroup = allMenuItems.Where(item => item.AppType == appType);
-            if (menuItemsOfThisGroup.None() )
+            if (menuItemsOfThisGroup.None())
                 return false;
 
             var isActive = menuItemsOfThisGroup.Any(item => contextUrl.Contains(item.AppURL.ToLower()));
