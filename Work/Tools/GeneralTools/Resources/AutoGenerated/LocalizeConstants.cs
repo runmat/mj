@@ -1086,6 +1086,36 @@
 		public const string Browser = "Browser";
 
 		/// <summary>
+		/// Anrufdatum
+		/// </summary>
+		public const string CallDate = "CallDate";
+
+		/// <summary>
+		/// Anrufdauer
+		/// </summary>
+		public const string CallDuration = "CallDuration";
+
+		/// <summary>
+		/// Anrufername
+		/// </summary>
+		public const string CallerName = "CallerName";
+
+		/// <summary>
+		/// Anrufzeit von
+		/// </summary>
+		public const string CallTimeFrom = "CallTimeFrom";
+
+		/// <summary>
+		/// Anrufzeit bis
+		/// </summary>
+		public const string CallTimeTo = "CallTimeTo";
+
+		/// <summary>
+		/// Anrufart
+		/// </summary>
+		public const string CallType = "CallType";
+
+		/// <summary>
 		/// Abbrechen
 		/// </summary>
 		public const string Cancel = "Cancel";
@@ -1164,6 +1194,11 @@
 		/// Es existiert bereits eine Kategorie mit diesem Namen
 		/// </summary>
 		public const string CategoryWithSameNameAlreadyExists = "CategoryWithSameNameAlreadyExists";
+
+		/// <summary>
+		/// Anrufgrund
+		/// </summary>
+		public const string CauseOfCall = "CauseOfCall";
 
 		/// <summary>
 		/// Versandgrund
@@ -2286,6 +2321,11 @@
 		public const string Finance_ReportVersandsperre = "Finance_ReportVersandsperre";
 
 		/// <summary>
+		/// Telefonie
+		/// </summary>
+		public const string Finance_TelefonieReport = "Finance_TelefonieReport";
+
+		/// <summary>
 		/// Versandsperre setzen/löschen
 		/// </summary>
 		public const string Finance_Versandsperre = "Finance_Versandsperre";
@@ -2364,6 +2404,16 @@
 		/// Helpdesk
 		/// </summary>
 		public const string Helpdesk = "Helpdesk";
+
+		/// <summary>
+		/// Hinweis
+		/// </summary>
+		public const string Hint = "Hint";
+
+		/// <summary>
+		/// Wenn kein Zeitraum ausgewählt ist, werden automatisch die Daten des letzten Monats ausgegeben
+		/// </summary>
+		public const string HintIfNoDateRangeSelectedDefaultWillBeLastMonth = "HintIfNoDateRangeSelectedDefaultWillBeLastMonth";
 
 		/// <summary>
 		/// HLA CarGate Anzeige

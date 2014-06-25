@@ -2288,6 +2288,9 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenSuche.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

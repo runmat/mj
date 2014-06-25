@@ -1086,6 +1086,36 @@
 		public static string Browser { get { return TranslateResourceKey("Browser"); }}
 
 		/// <summary>
+		/// Anrufdatum
+		/// </summary>
+		public static string CallDate { get { return TranslateResourceKey("CallDate"); }}
+
+		/// <summary>
+		/// Anrufdauer
+		/// </summary>
+		public static string CallDuration { get { return TranslateResourceKey("CallDuration"); }}
+
+		/// <summary>
+		/// Anrufername
+		/// </summary>
+		public static string CallerName { get { return TranslateResourceKey("CallerName"); }}
+
+		/// <summary>
+		/// Anrufzeit von
+		/// </summary>
+		public static string CallTimeFrom { get { return TranslateResourceKey("CallTimeFrom"); }}
+
+		/// <summary>
+		/// Anrufzeit bis
+		/// </summary>
+		public static string CallTimeTo { get { return TranslateResourceKey("CallTimeTo"); }}
+
+		/// <summary>
+		/// Anrufart
+		/// </summary>
+		public static string CallType { get { return TranslateResourceKey("CallType"); }}
+
+		/// <summary>
 		/// Abbrechen
 		/// </summary>
 		public static string Cancel { get { return TranslateResourceKey("Cancel"); }}
@@ -1164,6 +1194,11 @@
 		/// Es existiert bereits eine Kategorie mit diesem Namen
 		/// </summary>
 		public static string CategoryWithSameNameAlreadyExists { get { return TranslateResourceKey("CategoryWithSameNameAlreadyExists"); }}
+
+		/// <summary>
+		/// Anrufgrund
+		/// </summary>
+		public static string CauseOfCall { get { return TranslateResourceKey("CauseOfCall"); }}
 
 		/// <summary>
 		/// Versandgrund
@@ -2286,6 +2321,11 @@
 		public static string Finance_ReportVersandsperre { get { return TranslateResourceKey("Finance_ReportVersandsperre"); }}
 
 		/// <summary>
+		/// Telefonie
+		/// </summary>
+		public static string Finance_TelefonieReport { get { return TranslateResourceKey("Finance_TelefonieReport"); }}
+
+		/// <summary>
 		/// Versandsperre setzen/löschen
 		/// </summary>
 		public static string Finance_Versandsperre { get { return TranslateResourceKey("Finance_Versandsperre"); }}
@@ -2364,6 +2404,16 @@
 		/// Helpdesk
 		/// </summary>
 		public static string Helpdesk { get { return TranslateResourceKey("Helpdesk"); }}
+
+		/// <summary>
+		/// Hinweis
+		/// </summary>
+		public static string Hint { get { return TranslateResourceKey("Hint"); }}
+
+		/// <summary>
+		/// Wenn kein Zeitraum ausgewählt ist, werden automatisch die Daten des letzten Monats ausgegeben
+		/// </summary>
+		public static string HintIfNoDateRangeSelectedDefaultWillBeLastMonth { get { return TranslateResourceKey("HintIfNoDateRangeSelectedDefaultWillBeLastMonth"); }}
 
 		/// <summary>
 		/// HLA CarGate Anzeige
