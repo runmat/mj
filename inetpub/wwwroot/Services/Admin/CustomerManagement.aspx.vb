@@ -30,6 +30,9 @@ Partial Public Class CustomerManagement
         RadAsyncUpload1.Attributes.Add("onClick", "alert('Das Logo sollte ca. 220 x 70 Pixel haben');")
 
 
+        HandleCheckBoxesAppIsMvcIsDefaultFavorite(sender)
+
+
         'LogoUploadList unten anzeigen 
         RadAsyncUpload1.UploadedFilesRendering = AsyncUpload.UploadedFilesRendering.BelowFileInput
 
@@ -375,6 +378,7 @@ Partial Public Class CustomerManagement
         tblApps.Columns.Add("AppTechType")
         tblApps.Columns.Add("AppDescription")
         tblApps.Columns.Add("Assigned")
+        tblApps.Columns.Add("AppIsMvcDefaultFavorite", Type.GetType("System.Boolean"))
     End Sub
 
     Private Sub FillApps(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
@@ -414,6 +418,7 @@ Partial Public Class CustomerManagement
             newRow("AppTechType") = row("AppTechType")
             newRow("AppDescription") = row("AppDescription")
             newRow("Assigned") = "X"
+            newRow("AppIsMvcDefaultFavorite") = row("AppIsMvcDefaultFavorite")
             tblApps.Rows.Add(newRow)
         Next
 
@@ -2203,6 +2208,38 @@ Partial Public Class CustomerManagement
 
     Protected Sub lbtFilterUnassignedApps_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtFilterUnassignedApps.Click
         rgAppUnAssigned.Rebind()
+    End Sub
+
+
+    Sub HandleCheckBoxesAppIsMvcIsDefaultFavorite(ByVal sender As Object)
+
+        If (Not IsPostBack) Then
+            Return
+        End If
+
+        Dim controlName As String = Request.Params("__EVENTTARGET")
+        If (controlName Is Nothing Or Not controlName.ToLower().Contains("rgappassigned")) Then
+            ' Parent dieses Controls ist nicht das Grid "rgAppAssigned" => raus hier!
+            Return
+        End If
+
+        Dim control As Control = Page.FindControl(controlName)
+        If (control Is Nothing) Then
+            Return
+        End If
+
+        Dim checkBox As CheckBox = TryCast(control, CheckBox)
+        If (checkBox Is Nothing) Then
+            ' dieses control ist keine CheckBox => raus hier!
+            Return
+        End If
+
+        Dim appID As String = checkBox.ToolTip
+        If (appID Is Nothing Or appID = "") Then
+            ' AppID nicht verfügbar => raus hier!
+            Return
+        End If
+
     End Sub
 
 #End Region

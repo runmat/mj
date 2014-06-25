@@ -1108,13 +1108,19 @@
                                                                         <telerik:GridBoundColumn DataField="AppURL" SortExpression="AppURL" HeaderText="URL" >
                                                                             <HeaderStyle Width="200px" />
                                                                         </telerik:GridBoundColumn>
-                                                                        <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" HeaderText="Technologie" >
-                                                                            <HeaderStyle Width="75px" />
+                                                                        <telerik:GridBoundColumn DataField="AppTechType" SortExpression="AppTechType" HeaderText="Techn." >
+                                                                            <HeaderStyle Width="60px" />
                                                                         </telerik:GridBoundColumn>
                                                                         <telerik:GridBoundColumn DataField="AppDescription" SortExpression="AppDescription" HeaderText="Beschreibung" >
-                                                                            <HeaderStyle Width="200px" />
+                                                                            <HeaderStyle Width="60px" />
                                                                             <ItemStyle Wrap="false" />
                                                                         </telerik:GridBoundColumn>
+                                                                        <telerik:GridTemplateColumn Groupable="false" UniqueName="MvcDefaultFavorite" SortExpression="AppIsMvcDefaultFavorite" HeaderText="MVC Favorit">
+                                                                            <HeaderStyle Width="60px" />
+                                                                            <ItemTemplate>
+                                                                                <asp:CheckBox runat="server" EnableViewState="True" AutoPostBack="True" style="width: 16px; height: 16px" Checked='<%# DataBinder.Eval(Container, "DataItem.AppIsMvcDefaultFavorite") %>' ToolTip='<%# DataBinder.Eval(Container, "DataItem.AppID").ToString() %>'  />
+                                                                            </ItemTemplate>
+                                                                        </telerik:GridTemplateColumn>
                                                                     </Columns>
                                                                 </MasterTableView>
                                                             </telerik:RadGrid>
