@@ -22,10 +22,11 @@
                 E-Mail: <a href="mailto:info@kroschke.de">info@kroschke.de</a>
             </p>
             <p>
-                Geschäftsführer: Matthias Gauglitz, Lars Häger, Philipp Kroschke, York Schmidt zur
-                Nedden<br />
+                Vorsitzender der Geschäftsführung: Christian Bartelheimer<br />
+                Geschäftsführer: Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden<br />
                 Registergericht: Amtsgericht Lübeck<br />
-                HRB 9417 HL</p>
+                HRB 9417 HL
+            </p>
             <p>
                 Versicherungsvermittlerregister (<a href="http://www.vermittlerregister.info/" target="_blank">www.vermittlerregister.info</a>):
                 Register- Nr. : D- HDD1- SNHVC-84</p>
