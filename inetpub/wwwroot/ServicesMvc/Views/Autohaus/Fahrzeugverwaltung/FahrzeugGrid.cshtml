@@ -8,21 +8,19 @@
     @(Html.Telerik()
           .Grid<Fahrzeug>()
           .Name(gridName)
-
           .XAjaxDataBinding("FahrzeugeAjaxBinding", "Autohaus")
           .Columns(columns =>
               {
                   columns.XBound(c => c.ID).Title("").Filterable(false).Groupable(false).Sortable(false)
                       .ClientTemplate(
-                            "<button onclick='FahrzeugRegister(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+                            "<a href='" + Url.Action("ZulassungFreiMitVorbelegung", "CocBeauftragung") + "?vin=<#= data.FahrgestellNr #>&auftragsNr=<#= data.ReferenzNr #>" + "' class='btn mini black tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white ok'></i></a>"
                             + "&nbsp;" +
-                            "<button onclick='FahrzeugEdit(\"<#= data.ID #>\");' class='btn mini black tooltips debug' data-original-title='" + Localize.VehicleEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                            "<button onclick='FahrzeugEdit(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.VehicleEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                             //+ "&nbsp;" +
                             //"<button onclick='FahrzeugDelete(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
                       )
                       .HeaderTemplate(
                             "<button onclick='FahrzeugCreate();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
-
                       ); 
                     columns.XBound(c => c.ReferenzNr);
                     columns.XBound(c => c.FzgHersteller);

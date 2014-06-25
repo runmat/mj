@@ -64,13 +64,6 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FahrzeugZulassen(int id)
-        {
-            var fzg = FahrzeugverwaltungViewModel.FahrzeugGet(id);
-            return RedirectToAction("ZulassungFreiPartial", "CocBeauftragung", new { vin = fzg.FahrgestellNr, auftragsNr = fzg.ReferenzNr });
-        }
-
-        [HttpPost]
         public ActionResult FahrzeugDetailsFormSave(Fahrzeug model)
         {
             // Avoid ModelState clearing on saving 
