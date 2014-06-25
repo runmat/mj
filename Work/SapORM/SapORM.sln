@@ -22,36 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.UnitTests", "UnitTests\SapORM.UnitTests\SapORM.UnitTests.csproj", "{C9F9FE09-1028-4F06-9398-669611398A18}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = contracts\\SapORM.Contracts.csproj
-		SccProjectName1 = contracts
-		SccLocalPath1 = contracts
-		SccProjectUniqueName2 = DynSapProxy\\ProxyObject\\DynSapProxyObjectErp35\\DynSapProxyObjectErp35.csproj
-		SccProjectName2 = DynSapProxy/ProxyObject/DynSapProxyObjectErp35
-		SccLocalPath2 = DynSapProxy\\ProxyObject\\DynSapProxyObjectErp35
-		SccProjectUniqueName3 = models\\SapORM.Models.csproj
-		SccProjectName3 = models
-		SccLocalPath3 = models
-		SccProjectUniqueName4 = services\\SapORM.Services.csproj
-		SccProjectName4 = services
-		SccLocalPath4 = services
-		SccProjectUniqueName5 = shell\\SapORM.TestShell.csproj
-		SccProjectName5 = shell
-		SccLocalPath5 = shell
-		SccProjectUniqueName6 = DynSapProxy\\ProxyFactory\\DynSapProxyCacheFactory\\DynSapProxyFactories.csproj
-		SccProjectName6 = DynSapProxy/ProxyFactory/DynSapProxyCacheFactory
-		SccLocalPath6 = DynSapProxy\\ProxyFactory\\DynSapProxyCacheFactory
-		SccProjectUniqueName7 = ..\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName7 = ../Tools/GeneralTools
-		SccLocalPath7 = ..\\Tools\\GeneralTools
-		SccProjectUniqueName8 = UnitTests\\SapORM.UnitTests\\SapORM.UnitTests.csproj
-		SccProjectName8 = UnitTests/SapORM.UnitTests
-		SccLocalPath8 = UnitTests\\SapORM.UnitTests
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
