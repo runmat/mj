@@ -167,8 +167,15 @@ namespace ServicesMvc
             return isActive;
         }
 
-        public static string GetActiveMenuItemCssClass(string appName)
+        public static string GetActiveMenuItemCssClass(string appName = null)
         {
+            if (appName.IsNullOrEmpty())
+            {
+                appName = "/ServicesMvc/";
+                if (LogonContext.Customer != null && LogonContext.Customer.MvcSelectionUrl.IsNotNullOrEmpty())
+                    appName += LogonContext.Customer.MvcSelectionUrl.Replace("~/","");
+            }
+
             return IsActiveMenuItem(appName) ? "active" : "";
         }
 
