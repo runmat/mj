@@ -81,6 +81,7 @@ Partial Public Class CustomerManagement
 
         FillLoginLinks()
         FillPortalTypes()
+        FillMvcSelectionTypes()
 
         If m_User.HighestAdminLevel = AdminLevel.Master Then
             'wenn SuperUser und übergeordnete Firma
@@ -172,6 +173,8 @@ Partial Public Class CustomerManagement
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
             txtMvcSelectionUrl.Text = _Customer.MvcSelectionUrl
+            'txtMvcSelectionType.Text = _Customer.MvcSelectionType
+            ddlMvcSelectionType.SelectedValue = _Customer.MvcSelectionType
 
             'fillAccountingArea
             FillAccountingArea(intCustomerId)
@@ -712,6 +715,8 @@ Partial Public Class CustomerManagement
 
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
+
+        ddlMvcSelectionType.Enabled = Not blnLock
         txtMvcSelectionUrl.Enabled = Not blnLock
     End Sub
 
@@ -1090,6 +1095,14 @@ Partial Public Class CustomerManagement
         For Each row As DataRow In TempTable.Rows
             ddlPortalType.Items.Add(New ListItem(row("PortalType").ToString()))
         Next
+
+    End Sub
+
+    Private Sub FillMvcSelectionTypes()
+
+        ddlMvcSelectionType.Items.Add(New ListItem(""))
+        ddlMvcSelectionType.Items.Add(New ListItem("Anwendungs-Favoriten", "Favorites"))
+        ddlMvcSelectionType.Items.Add(New ListItem("Selection URL", "Url"))
 
     End Sub
 
@@ -1518,6 +1531,7 @@ Partial Public Class CustomerManagement
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
         txtMvcSelectionUrl.Text = String.Empty
+        ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False
         chkTeamviewer.Checked = False
         txtCName.Text = String.Empty
@@ -1716,7 +1730,8 @@ Partial Public Class CustomerManagement
                                                 strSDUserName:=txtSDUserName.Text, _
                                                 strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, _
                                                 strSDSignatur:=txtSDSignatur.Text, strSDSignatur2:=txtSDSignatur2.Text, _
-                                                strMvcSelectionUrl:=txtMvcSelectionUrl.Text)
+                                                strMvcSelectionUrl:=txtMvcSelectionUrl.Text, _
+                                                strMvcSelectionType:=ddlMvcSelectionType.SelectedValue)
             If (txtUserLockTime.Text.Trim() <> "") Then
                 If CInt(txtUserLockTime.Text) >= 5 Then
                     _customer.DaysUntilLock = CInt(txtUserLockTime.Text)

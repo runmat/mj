@@ -264,12 +264,20 @@
                                                 </tr>
                                                 <tr class="formquery" id="trMvcSelectionUrl" runat="server">
                                                     <td class="firstLeft active">
-                                                        Selection URL (nur MVC):
+                                                        Selection Typ (nur MVC):
                                                     </td>
                                                     <td class="active">
                                                         <span>
-                                                            <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlMvcSelectionType" runat="server" />
                                                         </span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="formquery" id="tr2" runat="server">
+                                                    <td class="firstLeft active">
+                                                        Selection URL (nur MVC):
+                                                    </td>
+                                                    <td class="active">
+                                                        <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery" id="trKundeSperr" runat="server">

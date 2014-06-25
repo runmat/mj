@@ -419,6 +419,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents trMvcSelectionUrl As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
+    '''ddlMvcSelectionType-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlMvcSelectionType As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''tr2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents tr2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
     '''txtMvcSelectionUrl-Steuerelement
     '''</summary>
     '''<remarks>
