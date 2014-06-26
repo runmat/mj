@@ -26,7 +26,7 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.CallType)]
         public string Anrufart { get; set; }
 
-        public string Anrufarten { get { return ",alle;E,E;A,A"; } }
+        public string Anrufarten { get { return ",alle;E,Eingehend;A,Ausgehend"; } }
 
         [ModelMappingCompareIgnore]
         [GridHidden]

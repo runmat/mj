@@ -115,7 +115,7 @@ namespace CkgDomainLogic.Finance.Models
                             destination.AnrufzeitBis = source.UZEIT_BIS;
                             destination.Anrufername = source.NAME_ANRUFER;
                             destination.Anrufgrund = source.TEXT_ANRUFGRUND;
-                            destination.AnrufgrundDetail = source.FREITEXT_GRUND;
+                            destination.AnrufgrundBemerkung = source.FREITEXT_GRUND;
                         }));
             }
         }

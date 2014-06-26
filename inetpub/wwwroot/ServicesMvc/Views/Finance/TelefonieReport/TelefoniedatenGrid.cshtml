@@ -21,12 +21,13 @@
         columns.XBound(c => c.CIN);
         columns.XBound(c => c.PAID);
         columns.XBound(c => c.Anrufdatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.AnrufzeitVon);
-        columns.XBound(c => c.AnrufzeitBis);
+        columns.XBound(c => c.AnrufzeitVonFormatted);
+        columns.XBound(c => c.AnrufzeitBisFormatted);
         columns.XBound(c => c.Anrufdauer);
         columns.XBound(c => c.Telefonnummer);
         columns.XBound(c => c.Anrufername);
-        columns.XBound(c => c.AnrufgrundGesamt);
+        columns.XBound(c => c.Anrufgrund);
+        columns.XBound(c => c.AnrufgrundBemerkung);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridTelefoniedaten"))

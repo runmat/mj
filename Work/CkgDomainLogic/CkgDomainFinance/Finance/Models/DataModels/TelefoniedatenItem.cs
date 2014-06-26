@@ -34,6 +34,22 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.CallTimeFrom)]
         public string AnrufzeitVon { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CallTimeFrom)]
+        public string AnrufzeitVonFormatted 
+        { 
+            get
+            {
+                var tmpZeit = AnrufzeitVon;
+
+                if (!String.IsNullOrEmpty(tmpZeit) && tmpZeit.Length == 6)
+                {
+                    tmpZeit = tmpZeit.Substring(0, 2) + ":" + tmpZeit.Substring(2, 2) + ":" + tmpZeit.Substring(4, 2);
+                }
+
+                return tmpZeit;
+            }
+        }
+
         public DateTime? AnrufStart
         {
             get 
@@ -42,7 +58,7 @@ namespace CkgDomainLogic.Finance.Models
                 var tmpDat = Anrufdatum;
 
                 if (tmpDat.HasValue 
-                    && DateTime.TryParseExact(AnrufzeitVon, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out startZeit))
+                    && DateTime.TryParseExact(AnrufzeitVon, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out startZeit))
                 {
                     return tmpDat.Value.AddHours(startZeit.Hour).AddMinutes(startZeit.Minute);
                 }
@@ -53,6 +69,22 @@ namespace CkgDomainLogic.Finance.Models
 
         [LocalizedDisplay(LocalizeConstants.CallTimeTo)]
         public string AnrufzeitBis { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CallTimeTo)]
+        public string AnrufzeitBisFormatted
+        {
+            get
+            {
+                var tmpZeit = AnrufzeitBis;
+
+                if (!String.IsNullOrEmpty(tmpZeit) && tmpZeit.Length == 6)
+                {
+                    tmpZeit = tmpZeit.Substring(0, 2) + ":" + tmpZeit.Substring(2, 2) + ":" + tmpZeit.Substring(4, 2);
+                }
+
+                return tmpZeit;
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.CallDuration)]
         public string Anrufdauer
@@ -80,10 +112,7 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.CauseOfCall)]
         public string Anrufgrund { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CauseOfCall)]
-        public string AnrufgrundDetail { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CauseOfCall)]
-        public string AnrufgrundGesamt { get { return String.Format("{0} - {1}", Anrufgrund, AnrufgrundDetail); } }
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        public string AnrufgrundBemerkung { get; set; }
     }
 }
