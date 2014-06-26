@@ -12,26 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZLDBaseMvc", "..\..\..\..\..\Work\ZLDBaseMvc\ZLDBaseMvc.csproj", "{41662BCF-C75E-44B8-94ED-95BB62276155}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = AppZulassungsdienst.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\PortalZLD.vbproj
-		SccProjectName2 = ../../
-		SccLocalPath2 = ..\\..
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\ZLDBase\\Base.vbproj
-		SccProjectName3 = ../../../../Work/ZLDBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\ZLDBase
-		SccProjectUniqueName4 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName4 = ../../../../Work/Tools/GeneralTools
-		SccLocalPath4 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools
-		SccProjectUniqueName5 = ..\\..\\..\\..\\..\\Work\\ZLDBaseMvc\\ZLDBaseMvc.csproj
-		SccProjectName5 = ../../../../Work/ZLDBaseMvc
-		SccLocalPath5 = ..\\..\\..\\..\\..\\Work\\ZLDBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
