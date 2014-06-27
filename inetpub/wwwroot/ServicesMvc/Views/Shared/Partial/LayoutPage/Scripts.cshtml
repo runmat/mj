@@ -310,35 +310,29 @@
 
     // <Grid all column search>
 
-    var _inFilterGrid = false;
-
     function FilterGrid(gridID) {
         $("#" + gridID + " .grid-column-overall-filter").each(function() {
-             //FilterGridAllColumns($(this));
+             FilterGridAllColumns($(this));
+        });
+    }
 
-            // provide apropriate keyboard typing delay before running server intensive operations            
+    function FilterGridInit(gridID) {
+        $("#" + gridID + " .grid-column-overall-filter").each(function() {
+
+            // provide appropriate keyboard typing delay before running server intensive operations            
             $(this).typing({
                 start: function (event, $elem) {
                 },
                 stop: function (event, $elem) {
-                    _inFilterGrid = true;
+                    console.log("filter Grid '" + gridID + "'");
                     FilterGridAllColumns($elem);
                 },
-                delay: 900
+                delay: 300
             });
         });
     }
 
     function FilterGridAllColumns(tb) {
-
-        if (_inFilterGrid) {
-            setTimeout(function() {
-                FilterGridAllColumns(tb);
-            }, 1000);
-            return;
-        }
-
-        _inFilterGrid = false;
 
         var gridName = tb.parents(".t-widget").first().attr("id");
         LoadingHide();
@@ -356,7 +350,6 @@
                 LoadingHide();
                 setTimeout(function() {
                      grid.pageTo(1);
-                    _inFilterGrid = false;
                 }, 500);
             }
         });

@@ -202,7 +202,7 @@
     function VersEventDelete(id) {
         if (!confirm('Dieses Event wirklich löschen?'))
             return;
-        
+
         $.ajax({
             type: "POST",
             url: "VersEventDelete",
