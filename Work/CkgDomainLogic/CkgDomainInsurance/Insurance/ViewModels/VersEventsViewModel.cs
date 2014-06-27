@@ -112,7 +112,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public void DataMarkForRefreshTermine()
         {
             PropertyCacheClear(this, m => m.AlleTermine);
-            PropertyCacheClear(this, m => m.AlleTermineFiltered);
+            PropertyCacheClear(this, m => m.AlleSchadenfaelleTermineFiltered);
 
             PropertyCacheClear(this, m => m.Termine);
             PropertyCacheClear(this, m => m.TermineFiltered);
@@ -443,20 +443,27 @@ namespace CkgDomainLogic.Insurance.ViewModels
                 }); }
         }
 
+        #endregion 
+
+
+        #region AlleSchadenfaelleTermine
+
+        private List<TerminSchadenfall> AlleSchadenfaelleTermine { get { return AlleTermine.Where(t => !t.IsBlockerDummyTermin).ToList(); } }
+
         [XmlIgnore]
-        public List<TerminSchadenfall> AlleTermineFiltered
+        public List<TerminSchadenfall> AlleSchadenfaelleTermineFiltered
         {
             get
             {
-                FilteredObjectsCurrent = () => AlleTermineFiltered;
-                return PropertyCacheGet(() => AlleTermine);
+                FilteredObjectsCurrent = () => AlleSchadenfaelleTermineFiltered;
+                return PropertyCacheGet(() => AlleSchadenfaelleTermine.Where(t => !t.IsBlockerDummyTermin).ToList());
             }
             private set { PropertyCacheSet(value); }
         }
 
-        public void AlleTermineFilter(string filterValue, string filterProperties)
+        public void AlleSchadenfaelleTermineFilter(string filterValue, string filterProperties)
         {
-            AlleTermineFiltered = AlleTermine.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            AlleSchadenfaelleTermineFiltered = AlleSchadenfaelleTermine.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         #endregion
