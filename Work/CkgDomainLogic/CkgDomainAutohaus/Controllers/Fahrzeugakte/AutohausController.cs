@@ -30,6 +30,40 @@ namespace ServicesMvc.Controllers
             return PartialView("Fahrzeugverwaltung/Fahrzeugakte", FahrzeugakteViewModel);
         }
 
+        #region Zulassung
+
+        [GridAction]
+        public ActionResult BeauftragteZulassungenAjaxBinding()
+        {
+            return View(new GridModel(FahrzeugakteViewModel.BeauftragteZulassungenFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterBeauftragteZulassungenGrid(string filterValue, string filterColumns)
+        {
+            FahrzeugakteViewModel.DocsViewModel.FilterFahrzeugakteDocuments(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportBeauftragteZulassungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = FahrzeugakteViewModel.DocsViewModel.FahrzeugakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Dokumente", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportBeauftragteZulassungenFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = FahrzeugakteViewModel.DocsViewModel.FahrzeugakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Dokumente", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
         #region Dokumente
 
         [GridAction]
@@ -86,7 +120,7 @@ namespace ServicesMvc.Controllers
         {
             var doc = FahrzeugakteViewModel.DocsViewModel.GetNewFahrzeugakteDoc();
 
-            ViewBag.AuswahlKategorie = FahrzeugakteViewModel.DocsViewModel.GetCategoriesWithoutDocuments();
+            ViewBag.AuswahlKategorie = FahrzeugakteViewModel.DocsViewModel.Categories;
 
             return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/Dokumente/FahrzeugakteDocCreate", doc);
         }

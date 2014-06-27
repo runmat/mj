@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using System.Web.Routing;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Autohaus.ViewModels;
@@ -30,7 +29,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterFahrzeugGrid(string filterValue, string filterColumns)
+        public ActionResult FilterFahrzeugeGrid(string filterValue, string filterColumns)
         {
             FahrzeugverwaltungViewModel.FilterFahrzeuge(filterValue, filterColumns);
 
@@ -43,16 +42,7 @@ namespace ServicesMvc.Controllers
             FahrzeugverwaltungViewModel.InsertMode = true;
             ModelState.Clear();
 
-            return PartialView("Fahrzeugverwaltung/FahrzeugDetailsForm", FahrzeugverwaltungViewModel.FahrzeugCreate().SetInsertMode(FahrzeugverwaltungViewModel.InsertMode));
-        }
-
-        [HttpPost]
-        public ActionResult FahrzeugEdit(int id)
-        {
-            FahrzeugverwaltungViewModel.InsertMode = false;
-            ModelState.Clear();
-
-            return PartialView("Fahrzeugverwaltung/FahrzeugDetailsForm", FahrzeugverwaltungViewModel.FahrzeugGet(id).SetInsertMode(FahrzeugverwaltungViewModel.InsertMode));
+            return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/Uebersicht/FahrzeugDetails", FahrzeugverwaltungViewModel.FahrzeugCreate().SetInsertMode(FahrzeugverwaltungViewModel.InsertMode));
         }
 
         [HttpPost]
@@ -64,7 +54,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FahrzeugDetailsFormSave(Fahrzeug model)
+        public ActionResult FahrzeugDetailsSave(Fahrzeug model)
         {
             // Avoid ModelState clearing on saving 
             // => because automatic model validation (via data annotations) would be omitted !!!
@@ -74,9 +64,7 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
                 model = FahrzeugverwaltungViewModel.FahrzeugSave(model, ModelState.AddModelError);
 
-            model.InsertModeTmp = FahrzeugverwaltungViewModel.InsertMode;
-
-            return PartialView("Fahrzeugverwaltung/FahrzeugDetailsForm", model);
+            return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/Uebersicht/FahrzeugDetails", model);
         }
 
         #region Export

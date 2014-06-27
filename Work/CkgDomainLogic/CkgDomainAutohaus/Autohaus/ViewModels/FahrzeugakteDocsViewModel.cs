@@ -146,21 +146,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return outList;
         }
 
-        public List<CustomerDocumentCategory> GetCategoriesWithoutDocuments()
-        {
-            var liste = new List<CustomerDocumentCategory>();
-
-            foreach (var cat in Categories)
-            {
-                if (!FahrzeugakteDocuments.Exists(d => d.CategoryID == cat.ID))
-                {
-                    liste.Add(cat);
-                }
-            }
-
-            return liste;
-        }
-
         #region Filter
 
         [XmlIgnore]

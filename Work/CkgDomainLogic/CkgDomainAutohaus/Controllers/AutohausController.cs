@@ -16,12 +16,12 @@ namespace ServicesMvc.Controllers
         public override string DataContextKey { get { return GetDataContextKey<FahrzeugverwaltungViewModel>(); } }
 
         public AutohausController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugverwaltungDataService fahrzeugverwaltungDataService,
-            ICustomerDocumentDataService customerDocumentDataService)
+            IFahrzeugakteDataService fahrzeugakteDataService, ICustomerDocumentDataService customerDocumentDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(FahrzeugverwaltungViewModel, appSettings, logonContext, fahrzeugverwaltungDataService);
 
-            InitViewModel(FahrzeugakteViewModel, appSettings, logonContext);
+            InitViewModel(FahrzeugakteViewModel, appSettings, logonContext, fahrzeugakteDataService);
 
             if (FahrzeugakteViewModel.DocsViewModel == null)
                 FahrzeugakteViewModel.DocsViewModel = new FahrzeugakteDocsViewModel();

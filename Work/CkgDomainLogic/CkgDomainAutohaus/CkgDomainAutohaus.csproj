@@ -66,10 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autohaus\Contracts\IFahrzeugverwaltungDataService.cs" />
+    <Compile Include="Autohaus\Contracts\IFahrzeugakteDataService.cs" />
     <Compile Include="Autohaus\Models\DataModels\Fahrzeug.cs" />
     <Compile Include="Autohaus\Models\DataModels\FahrzeugakteDocument.cs" />
+    <Compile Include="Autohaus\Models\DataModels\BeauftragteZulassung.cs" />
     <Compile Include="Autohaus\Services\Database\AutohausSqlDbContext.cs" />
     <Compile Include="Autohaus\Services\FahrzeugverwaltungDataServiceSQL.cs" />
+    <Compile Include="Autohaus\Services\FahrzeugakteDataServiceSQL.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugverwaltungViewModel.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugakteViewModel.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugakteDocsViewModel.cs" />

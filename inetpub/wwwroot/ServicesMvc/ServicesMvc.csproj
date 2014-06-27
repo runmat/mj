@@ -2289,8 +2289,8 @@
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugDetailsForm.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugeGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
@@ -2301,6 +2301,8 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocEdit.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
     <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

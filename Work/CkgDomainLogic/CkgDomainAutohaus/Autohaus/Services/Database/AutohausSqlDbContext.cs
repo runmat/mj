@@ -11,6 +11,8 @@ namespace CkgDomainLogic.Autohaus.Services
     {
         public DbSet<Fahrzeug> Fahrzeuge { get; set; }
 
+        public DbSet<BeauftragteZulassung> BeauftragteZulassungen { get; set; }
+
         public AutohausSqlDbContext()
             : base(ConfigurationManager.AppSettings["Connectionstring"])
         {

@@ -134,6 +134,7 @@ namespace ServicesMvc.App_Start
                 builder.RegisterType<VersEventsDataServiceSAP>().As<IVersEventsDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<FahrzeugverwaltungDataServiceSQL>().As<IFahrzeugverwaltungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugakeDataServiceSQL>().As<IFahrzeugakteDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

@@ -59,10 +59,6 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
         public DateTime AnlageDatum { get; set; }
 
-        [NotMapped]
-        [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public string AnlageDatumAsString { get { return AnlageDatum.ToString("dd.MM.yyyy"); } }  // workaround, because of unknown javascript error on direct binding of "AnlageDatum"
-
         [LocalizedDisplay(LocalizeConstants.CreateUser)]
         public string AnlageUser { get; set; }
 
@@ -74,11 +70,11 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [ModelMappingCompareIgnore]
         [NotMapped]
-        public bool InsertModeTmp { get; set; }
+        public bool InsertMode { get; set; }
 
         public Fahrzeug SetInsertMode(bool insertMode)
         {
-            InsertModeTmp = insertMode;
+            InsertMode = insertMode;
             return this;
         }
     }

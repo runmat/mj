@@ -1,0 +1,221 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Fahrzeug
+
+<div id="FahrzeugDetailsDiv" class="portlet">
+    @using (Ajax.BeginForm("FahrzeugDetailsSave", "Autohaus", null,
+                           new MvcAjaxOptions("FahrzeugDetailsDiv") { OnComplete = "FahrzeugDetailsEditComplete();" }, new { id = "FahrzeugForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.InsertMode)
+        
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+                
+
+        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">@Localize.VehicleEdit</span></text>, new { @class = "m-wrap" })
+        
+        
+        @Html.FormValidationSummary()
+
+        
+        @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap" })        
+        
+        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap", col = "left", @onkeypress = "return CleanUpEMail();" })
+        @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap", col = "right", @onkeypress = "return CleanUpTelefonnummer();" })
+        
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onkeypress = "return CleanUpKennzeichen();" })
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right", @onkeypress = "return CleanUpFahrgestellnummer();" })
+        
+        @Html.FormTextBoxFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+        
+        if (Model.InsertMode)
+        {
+            <div class="form-actions">
+                <button type="submit" class="btn green margin-right-5"><i class="icon-ok"></i> @Localize.Save</button>
+                <button type="reset" class="btn margin-right-5" onclick="FahrzeugCreateClose();">@Localize.Cancel</button>
+            </div>
+        }
+        else
+        {
+            <div class="form-actions">
+                <button id="btnFahrzeugDetailsEdit" type="button" class="btn margin-right-5" onclick='FahrzeugDetailsEditMode();'>@Localize.Edit</button>
+                <button id="btnFahrzeugDetailsSave" type="submit" class="btn green margin-right-5 hide"><i class="icon-ok"></i> @Localize.Save</button>
+                <button id="btnFahrzeugDetailsCancel" type="reset" class="btn margin-right-5 hide">@Localize.Cancel</button>
+            </div>
+        }
+
+        <script type="text/javascript">
+            var _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+            var _modelIsInsertMode = '@Model.InsertMode.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function FahrzeugDetailsPreparePrivate() {
+        if (!_modelIsInsertMode) {
+            SetControlsReadonly(true);
+        }
+    }
+
+    function FahrzeugDetailsEditMode() {
+        $("#btnFahrzeugDetailsEdit").hide();
+        $("#btnFahrzeugDetailsSave").show();
+        $("#btnFahrzeugDetailsCancel").show();
+
+        SetControlsReadonly(false);
+    }
+
+    function SetControlsReadonly(wert) {
+        $("#ReferenzNr").attr("readonly", wert);
+        $("#Vorname").attr("readonly", wert);
+        $("#Nachname").attr("readonly", wert);
+        $("#Email").attr("readonly", wert);
+        $("#TelefonNr").attr("readonly", wert);
+        $("#Kennzeichen").attr("readonly", wert);
+        $("#FahrgestellNr").attr("readonly", wert);
+        $("#FzgHersteller").attr("readonly", wert);
+        $("#FzgModell").attr("readonly", wert);
+    }
+
+    function FahrzeugDetailsEditComplete() {
+        if (_modelStateValid) {
+            if (_modelIsInsertMode) {
+                FahrzeugCreateClose();
+            }
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+        }
+    }
+
+    function NumbersOnlyInt(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
+
+    function CleanUpFahrgestellnummer(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-H
+        if (key >= 65 && key <= 72) {
+            return true;
+        }
+        // J-N
+        if (key >= 74 && key <= 78) {
+            return true;
+        }
+        // P
+        if (key == 80) {
+            return true;
+        }
+        // R-Z
+        if (key >= 82 && key <= 90) {
+            return true;
+        }
+        // a-h
+        if (key >= 97 && key <= 104) {
+            return true;
+        }
+        // j-n
+        if (key >= 106 && key <= 110) {
+            return true;
+        }
+        // p
+        if (key == 112) {
+            return true;
+        }
+        // r-z
+        if (key >= 114 && key <= 122) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
+
+    function CleanUpKennzeichen(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-Z
+        if (key >= 65 && key <= 90) {
+            return true;
+        }
+        // a-z
+        if (key >= 97 && key <= 122) {
+            return true;
+        }
+        // ä,ö,ü,Ä,Ö,Ü,-
+        if (key == 132 || key == 148 || key == 129 || key == 142 || key == 153 || key == 154 || key == 45) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
+
+    function CleanUpEMail(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-Z
+        if (key >= 65 && key <= 90) {
+            return true;
+        }
+        // a-z
+        if (key >= 97 && key <= 122) {
+            return true;
+        }
+        // .,_,%,+,-,at
+        if (key == 46 || key == 95 || key == 37 || key == 43 || key == 45 || key == 64) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
+
+    function CleanUpTelefonnummer(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // +,-,/,(,)
+        if (key == 43 || key == 45 || key == 47 || key == 40 || key == 41) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
+
+</script>
