@@ -1,16 +1,6 @@
 ﻿@using CkgDomainLogic.Autohaus.ViewModels
 @model FahrzeugakteDocsViewModel
 
-<div id="divFahrzeugakteDocsGrid">
-    @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Partial/Dokumente/FahrzeugakteDocsGrid")
-</div>
-
-<div id="divFahrzeugakteDocEdit"></div>
-
-<div id="divDocCategoriesGrid" class="margin-right-30"></div>
-
-<div id="divDocCategoryEdit"></div>
-
 <script type="text/javascript" >
 
     // Dokumente
@@ -84,7 +74,7 @@
         $.ajax({
             type: "POST",
             url: "CreateFahrzeugakteDoc",
-            data: { },
+            data: {},
             loadingShow: true,
             success: function (result) {
                 ShowFahrzeugakteDocEdit(result);
@@ -267,3 +257,14 @@
     }
 
 </script>
+
+
+<div id="divFahrzeugakteDocsGrid">
+    @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Partial/Dokumente/FahrzeugakteDocsGrid")
+</div>
+
+<div id="divFahrzeugakteDocEdit"></div>
+
+<div id="divDocCategoriesGrid" class="margin-right-30"></div>
+
+<div id="divDocCategoryEdit"></div>

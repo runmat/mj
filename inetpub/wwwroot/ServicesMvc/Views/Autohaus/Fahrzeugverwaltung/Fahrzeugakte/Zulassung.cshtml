@@ -1,13 +1,6 @@
 ﻿@using CkgDomainLogic.Autohaus.ViewModels
 @model FahrzeugakteViewModel
 
-<div id="divBeauftragteZulassungenGrid">
-    @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Partial/Zulassung/BeauftragteZulassungenGrid", Model)
-</div>
-
-<div class="form-actions">
-    <button type="button" id="btnZulassen" class="btn margin-right-5" onclick='FahrzeugakteShowZulassung(@Model.Fahrzeug.ID);'>@Localize.VehicleRegister</button>
-</div>
 
 <script type="text/javascript" >
 
@@ -47,7 +40,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                
+
             },
             error: function (result) {
                 SpanAlertWarning("Message", result.data, 5000);
@@ -55,15 +48,15 @@
         });
     }
 
-//    function CloseFahrzeugakteDocEdit() {
-//        $("#divFahrzeugakteDocEdit").slideUp(function () {
-//            $("#divFahrzeugakteDocsGrid").delay(200).show();
-//            window.scrollTo(0, 0);
-//            BreadcrumbsMovePrev();
-//            TabsEnable(true);
-//        });
-//        TryGridRefresh();
-//    }
+    //    function CloseFahrzeugakteDocEdit() {
+    //        $("#divFahrzeugakteDocEdit").slideUp(function () {
+    //            $("#divFahrzeugakteDocsGrid").delay(200).show();
+    //            window.scrollTo(0, 0);
+    //            BreadcrumbsMovePrev();
+    //            TabsEnable(true);
+    //        });
+    //        TryGridRefresh();
+    //    }
 
     function TryBeauftragteZulassungenGridRefresh() {
         // Refresh grid only
@@ -73,3 +66,11 @@
     }
 
 </script>
+
+<div id="divBeauftragteZulassungenGrid">
+    @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Partial/Zulassung/BeauftragteZulassungenGrid", Model)
+</div>
+
+<div class="form-actions">
+    <button type="button" id="btnZulassen" class="btn margin-right-5" onclick='FahrzeugakteShowZulassung(@Model.Fahrzeug.ID);'>@Localize.VehicleRegister</button>
+</div>
