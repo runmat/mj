@@ -1,0 +1,28 @@
+﻿@using CkgDomainLogic.General.Contracts
+@{ var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext"); }
+
+<h4>Application Favorites</h4>
+
+
+@if (!logonContext.AppFavoritesEditMode)
+{
+    <a href="#" class="btn blue" onclick="return AppFavoritesEditStart();">
+        <i class="icon-edit margin-right-10"></i>
+        Favoriten bearbeiten
+    </a>
+}
+else
+{
+    <div><br/><br/>!!! EDIT MODE !!!!</div>     
+    
+    <a href="#" class="btn green" onclick="return AppFavoritesEditSave();">
+        <i class="icon-edit margin-right-10"></i>
+        Favoriten speichern
+    </a>
+    <a href="#" class="btn grey" onclick="return AppFavoritesEditCancel();">
+        <i class="icon-edit margin-right-10"></i>
+        Abbrechen
+    </a>
+}
+
+

@@ -72,6 +72,8 @@ namespace CkgDomainLogic.General.Services
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
+        public bool AppFavoritesEditMode { get; set; }
+
         public virtual List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return null; } }
 
         public MaintenanceResult MaintenanceInfo { get; private set; }

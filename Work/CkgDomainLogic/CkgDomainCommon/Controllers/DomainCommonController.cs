@@ -185,5 +185,12 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
+        public ActionResult AppFavoritesEditModeSwitch()
+        {
+            LogonContext.AppFavoritesEditMode = !LogonContext.AppFavoritesEditMode;
+
+            return new EmptyResult();
+        }
     }
 }
