@@ -186,6 +186,7 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+        [HttpPost]
         public ActionResult AppFavoritesEditModeSwitch()
         {
             LogonContext.AppFavoritesEditMode = !LogonContext.AppFavoritesEditMode;

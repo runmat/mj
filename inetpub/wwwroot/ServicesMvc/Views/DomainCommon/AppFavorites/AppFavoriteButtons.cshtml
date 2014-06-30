@@ -3,10 +3,30 @@
 
 <h4>Application Favorites</h4>
 
+<script type="text/javascript">
+
+    function AppFavoritesEditSwitch() {
+        $.ajax({
+            type: "POST",
+            url: "DomainCommon/AppFavoritesEditModeSwitch",
+            data: { },
+            loadingShow: false,
+            success: function (result) {
+                location.reload();
+            },
+            error: function (jqXhr) {
+            }
+        });
+
+        return false;
+    }
+    
+</script>
+
 
 @if (!logonContext.AppFavoritesEditMode)
 {
-    <a href="#" class="btn blue" onclick="return AppFavoritesEditStart();">
+    <a href="#" class="btn blue" onclick="return AppFavoritesEditSwitch();">
         <i class="icon-edit margin-right-10"></i>
         Favoriten bearbeiten
     </a>
@@ -15,13 +35,9 @@ else
 {
     <div><br/><br/>!!! EDIT MODE !!!!</div>     
     
-    <a href="#" class="btn green" onclick="return AppFavoritesEditSave();">
-        <i class="icon-edit margin-right-10"></i>
-        Favoriten speichern
-    </a>
-    <a href="#" class="btn grey" onclick="return AppFavoritesEditCancel();">
-        <i class="icon-edit margin-right-10"></i>
-        Abbrechen
+    <a href="#" class="btn green" onclick="return AppFavoritesEditSwitch();">
+        <i class="icon-ok margin-right-10"></i>
+        Favoriten bearbeiten beenden
     </a>
 }
 
