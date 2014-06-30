@@ -67,15 +67,5 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.DeleteUser)]
         public string LoeschUser { get; set; }
-
-        [ModelMappingCompareIgnore]
-        [NotMapped]
-        public bool InsertMode { get; set; }
-
-        public Fahrzeug SetInsertMode(bool insertMode)
-        {
-            InsertMode = insertMode;
-            return this;
-        }
     }
 }

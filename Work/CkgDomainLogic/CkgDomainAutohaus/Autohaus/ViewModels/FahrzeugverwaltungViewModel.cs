@@ -37,9 +37,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Fahrzeug FahrzeugGet(int id)
         {
-            var item = Fahrzeuge.FirstOrDefault(c => c.ID == id);
-
-            return item;
+            return Fahrzeuge.FirstOrDefault(c => c.ID == id);
         }
 
         public Fahrzeug FahrzeugCreate()
@@ -72,9 +70,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Fahrzeug FahrzeugSave(Fahrzeug item, Action<string, string> addModelError)
         {
-            if (InsertMode)
-                return FahrzeugAdd(item, addModelError);
-
             var savedItem = DataService.FahrzeugSave(item, addModelError);
             DataMarkForRefresh();
             return savedItem;

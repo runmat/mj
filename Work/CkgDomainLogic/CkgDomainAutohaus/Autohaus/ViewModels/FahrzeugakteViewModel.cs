@@ -14,6 +14,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Fahrzeug Fahrzeug { get; private set; }
 
+        [XmlIgnore]
         public List<BeauftragteZulassung> BeauftragteZulassungen { get; private set; }
 
         public FahrzeugakteDocsViewModel DocsViewModel { get; set; }

@@ -8,7 +8,7 @@
 @(Html.Telerik()
     .Grid<BeauftragteZulassung>()
     .Name(gridName)
-    .XGroup(gridName)
+    .XGroup("BeauftragteZulassungenGrid")
     .XAjaxDataBinding("BeauftragteZulassungenAjaxBinding", "Autohaus")
     .Columns(columns =>
     {

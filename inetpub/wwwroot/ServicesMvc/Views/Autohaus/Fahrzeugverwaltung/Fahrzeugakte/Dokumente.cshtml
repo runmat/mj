@@ -26,6 +26,7 @@
     function OnDataBound_FahrzeugakteDocsGrid() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+        FahrzeugakteDocsLoadingHide();
     }
 
     function OnColumnShowHide_FahrzeugakteDocsGrid() {

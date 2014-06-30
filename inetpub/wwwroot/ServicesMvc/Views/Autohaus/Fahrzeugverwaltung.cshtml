@@ -3,7 +3,7 @@
 <h3 class="page-title" id="headerTitle">@Localize.Autohaus_Fahrzeugverwaltung <small></small></h3>
 
 <ul class="breadcrumbs vehicle-breadcrumbs">
-	<li><a href="">[@Localize.Vehicles]</a></li>
+	<li><a href="">@Localize.Vehicles</a></li>
 	<li class="hide"><a href="" class="current">[..]</a></li>
 	<li class="hide"><a href="">[..]</a></li>
 	<li class="hide"><a href="">[..]</a></li>
@@ -30,11 +30,19 @@
 
     function FormPreparePrivate() {
         GridAllColumnFilterApplyToGrid("FahrzeugeGrid");
-        BreadcrumbsMoveFirst(_breadCrumbInitial);
+        BreadcrumbsPrepare();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+    }
+
+    function BreadcrumbsPrepare() {
+        $(".vehicle-breadcrumbs li").each(function (index, elem) {
+            var li = $(elem);
+            var a = li.find("a");
+            a.attr("href", "javascript:void(0)");
+        });
     }
 
     function FahrzeugCreateAjax() {
@@ -54,7 +62,6 @@
 
     function FahrzeugCreate(result) {
         $("#divFahrzeugCreate").html(result);
-        FahrzeugDetailsPreparePrivate();
         $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugCreate").slideDown(200); });
         BreadcrumbsMoveNext('@Localize.VehicleCreate');
     }
@@ -93,26 +100,6 @@
         });
     }
 
-    function FahrzeugEditAjax(id) {
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugEdit",
-            data: { id: id },
-            loadingShow: true,
-            success: function (result) {
-                FahrzeugEdit(result);
-            },
-            error: function (jqXhr) {
-                SpanAlertAjaxError("Message", jqXhr);
-            }
-        });
-    }
-
-    function FahrzeugEdit(result) {
-        $("#FahrzeugDetailsDiv").html(result);
-        FahrzeugDetailsPreparePrivate();
-    }
-
     function GetFahrzeugeGrid() {
         return $("#FahrzeugeGrid").data("tGrid");
     }
@@ -132,7 +119,7 @@
     function OnDataBound_FahrzeugeGrid() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
-        LoadingHide();
+        FahrzeugeLoadingHide();
     }
 
     function OnLoad_FahrzeugeGrid() {
@@ -155,12 +142,11 @@
 
     function ShowFahrzeugakte(result) {
         $("#divFahrzeugakte").html(result);
-        GridAllColumnFilterApplyToGrid("FahrzeugakteDocsGrid");
-        $("#FahrzeugeGridDiv").slideUp();
-        $("#divFahrzeugakte").slideDown();
+        GridAllColumnFilterApplyToGrid("FahrzeugakteDocsGrid"); 
+        $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugakte").slideDown(200); });
 
         FormPreparePrivateAjax();
-
+        
         BreadcrumbsMoveNext($("#idFahrzeugakte").text());
         BreadcrumbsMoveNext('@Localize.Autohaus_Fahrzeugakte');
         TabsEnable(true);

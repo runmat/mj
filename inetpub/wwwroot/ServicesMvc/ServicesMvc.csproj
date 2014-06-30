@@ -399,6 +399,7 @@
     <None Include="App_Data\XmlData\Charts\70_MapKennzeichenVkStandorteDoubleHeight.xml" />
     <None Include="App_Data\XmlData\Charts\75_ChartKennzeichenVkStandorteDoubleHeight.xml" />
     <None Include="App_Data\XmlData\Charts\85_ChartFspVkStandorteDoubleHeight.xml" />
+    <None Include="App_Data\XmlData\StepsAutohausZulassung.xml" />
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
@@ -2303,6 +2304,24 @@
     <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\Common.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryAddressSelectionLink.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryPdf.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Dienstleistungen.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\DienstleistungenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionen.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\HalterAdresse.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\HalterAdresseForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

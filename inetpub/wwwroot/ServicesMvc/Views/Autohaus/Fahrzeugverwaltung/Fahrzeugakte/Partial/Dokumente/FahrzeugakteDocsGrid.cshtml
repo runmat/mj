@@ -10,7 +10,7 @@
 @(Html.Telerik()
     .Grid<FahrzeugakteDocument>()
     .Name(gridName)
-    .XGroup(gridName)
+    .XGroup("FahrzeugakteDocsGrid")
     .XAjaxDataBinding("FahrzeugakteDocsAjaxBinding", "Autohaus")
     .Columns(columns =>
     {

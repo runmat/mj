@@ -32,6 +32,12 @@ namespace ServicesMvc.Controllers
 
         #region Zulassung
 
+        [HttpPost]
+        public ActionResult FahrzeugZulassen(int id)
+        {
+            return RedirectToAction("ZulassungFromId", new { id });
+        }
+
         [GridAction]
         public ActionResult BeauftragteZulassungenAjaxBinding()
         {

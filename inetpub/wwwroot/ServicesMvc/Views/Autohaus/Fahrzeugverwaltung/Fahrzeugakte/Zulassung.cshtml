@@ -6,7 +6,7 @@
 </div>
 
 <div class="form-actions">
-    <button type="button" id="btnZulassen" class="btn margin-right-5" onclick='FahrzeugakteShowZulassung(@Model.Fahrzeug.ID,@Model.Fahrzeug.FahrgestellNr,@Model.Fahrzeug.ReferenzNr);'>@Localize.VehicleRegister</button>
+    <button type="button" id="btnZulassen" class="btn margin-right-5" onclick='FahrzeugakteShowZulassung(@Model.Fahrzeug.ID);'>@Localize.VehicleRegister</button>
 </div>
 
 <script type="text/javascript" >
@@ -25,6 +25,7 @@
     function OnDataBound_BeauftragteZulassungenGrid() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+        BeauftragteZulassungenLoadingHide();
     }
 
     function OnLoad_BeauftragteZulassungenGrid() {
@@ -39,19 +40,19 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function FahrzeugakteShowZulassung(fahrzeugId, fahrgestellNr, referenzNr) {
-//        $.ajax({
-//            type: "POST",
-//            url: "CreateFahrzeugakteDoc",
-//            data: { },
-//            loadingShow: true,
-//            success: function (result) {
-//                ShowFahrzeugakteDocEdit(result);
-//            },
-//            error: function (result) {
-//                SpanAlertWarning("Message", result.data, 5000);
-//            }
-//        });
+    function FahrzeugakteShowZulassung(id) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugZulassen",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
     }
 
 //    function CloseFahrzeugakteDocEdit() {

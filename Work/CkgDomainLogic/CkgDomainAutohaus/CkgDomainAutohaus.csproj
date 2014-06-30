@@ -67,12 +67,20 @@
   <ItemGroup>
     <Compile Include="Autohaus\Contracts\IFahrzeugverwaltungDataService.cs" />
     <Compile Include="Autohaus\Contracts\IFahrzeugakteDataService.cs" />
+    <Compile Include="Autohaus\Contracts\IAutohausZulassungDataService.cs" />
     <Compile Include="Autohaus\Models\DataModels\Fahrzeug.cs" />
     <Compile Include="Autohaus\Models\DataModels\FahrzeugakteDocument.cs" />
     <Compile Include="Autohaus\Models\DataModels\BeauftragteZulassung.cs" />
+    <Compile Include="Autohaus\Models\FreieZulassung.cs" />
+    <Compile Include="Autohaus\Models\Versicherungsdaten.cs" />
+    <Compile Include="Autohaus\Models\WunschkennzeichenOptionen.cs" />
+    <Compile Include="Autohaus\Models\ZulassungsDienstleistungen.cs" />
+    <Compile Include="Autohaus\Models\ZulassungsOptionen.cs" />
     <Compile Include="Autohaus\Services\Database\AutohausSqlDbContext.cs" />
     <Compile Include="Autohaus\Services\FahrzeugverwaltungDataServiceSQL.cs" />
     <Compile Include="Autohaus\Services\FahrzeugakteDataServiceSQL.cs" />
+    <Compile Include="Autohaus\Services\AutohausZulassungDataServiceSAP.cs" />
+    <Compile Include="Autohaus\ViewModels\AutohausZulassungViewModel.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugverwaltungViewModel.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugakteViewModel.cs" />
     <Compile Include="Autohaus\ViewModels\FahrzeugakteDocsViewModel.cs" />
@@ -84,6 +92,7 @@
     <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
     <Compile Include="Controllers\AutohausController.cs" />
+    <Compile Include="Controllers\Zulassung\AutohausController.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
     <Compile Include="Common\Models\AppModelMappings.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubReportDataService.cs" />
@@ -113,6 +122,10 @@
     <ProjectReference Include="..\..\Tools\MvcTools\MvcTools.csproj">
       <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
       <Name>MvcTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\CkgDomainCommon\CkgDomainCommon.csproj">
       <Project>{116FCA66-F690-41B3-86F5-B8BF7BBA2949}</Project>

@@ -8,6 +8,7 @@
     @(Html.Telerik()
           .Grid<Fahrzeug>()
           .Name(gridName)
+          .XGroup("FahrzeugeGrid")
           .XAjaxDataBinding("FahrzeugeAjaxBinding", "Autohaus")
           .Columns(columns =>
               {

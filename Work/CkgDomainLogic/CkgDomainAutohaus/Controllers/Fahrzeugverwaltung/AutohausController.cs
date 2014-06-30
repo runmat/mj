@@ -39,10 +39,9 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FahrzeugCreate()
         {
-            FahrzeugverwaltungViewModel.InsertMode = true;
             ModelState.Clear();
 
-            return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/Uebersicht/FahrzeugDetails", FahrzeugverwaltungViewModel.FahrzeugCreate().SetInsertMode(FahrzeugverwaltungViewModel.InsertMode));
+            return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/FahrzeugCreate", FahrzeugverwaltungViewModel.FahrzeugCreate());
         }
 
         [HttpPost]
@@ -54,13 +53,17 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FahrzeugDetailsSave(Fahrzeug model)
+        public ActionResult FahrzeugCreateSave(Fahrzeug model)
         {
-            // Avoid ModelState clearing on saving 
-            // => because automatic model validation (via data annotations) would be omitted !!!
-            // ModelState.Clear();
-            ModelState.SetModelValue("ID", null);
+            if (ModelState.IsValid)
+                model = FahrzeugverwaltungViewModel.FahrzeugAdd(model, ModelState.AddModelError);
 
+            return PartialView("Fahrzeugverwaltung/Fahrzeugakte/Partial/FahrzeugCreate", model);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugEditSave(Fahrzeug model)
+        {
             if (ModelState.IsValid)
                 model = FahrzeugverwaltungViewModel.FahrzeugSave(model, ModelState.AddModelError);
 
