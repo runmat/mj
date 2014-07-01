@@ -23,6 +23,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             Fahrzeug = fahrzeug;
             BeauftragteZulassungen = DataService.BeauftragteZulassungenGet(fahrzeug.ID);
+            PropertyCacheClear(this, m => m.BeauftragteZulassungenFiltered);
             DocsViewModel.LoadFahrzeugakteDocs(fahrzeug.ID);
         }
 

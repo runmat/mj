@@ -59,7 +59,11 @@
         });
 
         FormWizard.OnRestart(function () {
-            AjaxZulassungFinished();
+            if ($("#FreieZulassungsOption.FahrzeugID").val() != "") {
+                location.href = '@Url.Action("Fahrzeugverwaltung","Autohaus")';
+            } else {
+                location.reload();
+            }
         });
     }
 
@@ -85,21 +89,6 @@
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
         });    
-    }
-
-    function AjaxZulassungFinished() {
-        $.ajax({
-            type: "POST",
-            url: "ZulassungFinished",
-            data: {},
-            loadingShow: true,
-            success: function (result) {
-
-            },
-            error: function (jqXhr) {
-                alert(jqXhr.responseText);
-            }
-        });
     }
 
     function AjaxFormZulassungsOptionenComplete() {

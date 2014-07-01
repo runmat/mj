@@ -183,6 +183,16 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+        #region Versicherungsdaten
+
+        [HttpPost]
+        public JsonResult VersicherungsAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ZulassungViewModel.VersicherungsAdressenAsAutoCompleteItems });
+        }
+
+        #endregion
+
         #region Summary + Receipt
 
         [HttpPost]
@@ -193,7 +203,7 @@ namespace ServicesMvc.Controllers
 
         public FileContentResult SummaryAsPdf()
         {
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ZulassungViewModel.CreateSummaryModel(true, GetAdressenSelectionLink));
+            var summaryHtml = this.RenderPartialViewToString("Zulassung/Partial/SummaryPdf", ZulassungViewModel.CreateSummaryModel(true, GetAdressenSelectionLink));
 
             var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
@@ -424,7 +434,7 @@ namespace ServicesMvc.Controllers
             var adressEditAvailable = ZulassungViewModel.SummaryAdressEditAvailable(addressType);
             var adressSelectionAvailable = ZulassungViewModel.SummaryAdressSelectionAvailable(addressType);
 
-            return this.RenderPartialViewToString("Partial/SummaryAddressSelectionLink", new dynamic[]
+            return this.RenderPartialViewToString("Zulassung/Partial/SummaryAddressSelectionLink", new dynamic[]
                 {
                     addressType, 
                     adressSelectionAvailable,
@@ -462,16 +472,5 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion     
-
-        [HttpPost]
-        public ActionResult ZulassungFinished()
-        {
-            if (ZulassungViewModel.FreieZulassungsOption.FahrzeugID > 0)
-            {
-                return RedirectToAction("Fahrzeugverwaltung");
-            }
-
-            return RedirectToAction("Zulassung");
-        }
     }
 }

@@ -2322,6 +2322,7 @@
     <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

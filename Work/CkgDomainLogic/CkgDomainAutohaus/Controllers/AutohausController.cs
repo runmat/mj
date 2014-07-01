@@ -28,7 +28,7 @@ namespace ServicesMvc.Controllers
                 FahrzeugakteViewModel.DocsViewModel = new FahrzeugakteDocsViewModel();
             InitViewModel(FahrzeugakteViewModel.DocsViewModel, appSettings, logonContext, customerDocumentDataService);
 
-            InitViewModel(ZulassungViewModel, appSettings, logonContext, fahrzeugverwaltungDataService, adressenDataService, autohausZulassungDataService);
+            InitViewModel(ZulassungViewModel, appSettings, logonContext, fahrzeugakteDataService, adressenDataService, autohausZulassungDataService);
         }
 
         public ActionResult Index()

@@ -59,10 +59,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public LogonLevel UserLogonLevel { get { return LogonContext.UserLogonLevel; } }
 
         [XmlIgnore]
-        public List<Land> LaenderList { get { return FahrzeugakteDataService.Laender; } }
+        public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
 
         [XmlIgnore]
-        public List<ZulassungsOption> ZulassungsOptionenList { get { return FahrzeugakteDataService.ZulassungsOptionen; } }
+        public List<ZulassungsOption> ZulassungsOptionenList { get { return ZulassungDataService.ZulassungsOptionen; } }
 
         [XmlIgnore]
         public string SaveErrorMessage { get; private set; }
@@ -293,7 +293,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return PropertyCacheGet(() =>
                 {
                     var dienstleistungen = new ZulassungsDienstleistungen();
-                    dienstleistungen.InitDienstleistungen(FahrzeugakteDataService.ZulassungsDienstleistungen);
+                    dienstleistungen.InitDienstleistungen(ZulassungDataService.ZulassungsDienstleistungen);
                     return dienstleistungen;
                 });
             }

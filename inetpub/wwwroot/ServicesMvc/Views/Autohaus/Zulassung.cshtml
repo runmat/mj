@@ -7,9 +7,11 @@
     @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
 
     <div id="formWizardTab1" class="hide">
-        @Html.Partial(Model.FirstStepPartialViewName)
+        @Html.Partial("Zulassung/" + Model.FirstStepPartialViewName)
     </div>
 </div>
+
+@Html.HiddenFor(m => m.FreieZulassungsOption.FahrzeugID)
 
 @Html.Partial("Zulassung/Partial/Common")
 

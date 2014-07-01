@@ -2,7 +2,7 @@
 @model Fahrzeug
 
 @using (Ajax.BeginForm("FahrzeugCreateSave", "Autohaus", null,
-                       new MvcAjaxOptions("divFahrzeugCreate") {OnComplete = "FahrzeugCreateComplete();"}, new {id = "FahrzeugCreateForm", @class = "form-horizontal"}))
+                       new MvcAjaxOptions {OnComplete = "FahrzeugCreateComplete();"}, new {id = "FahrzeugCreateForm", @class = "form-horizontal"}))
 {
     @Html.HiddenFor(m => m.ID)
     @Html.HiddenFor(m => m.KundenNr)
@@ -34,21 +34,10 @@
     
     <div class="form-actions">
         <button type="submit" class="btn green margin-right-5"><i class="icon-ok"></i> @Localize.Save</button>
-        <button type="reset" class="btn margin-right-5" onclick=" FahrzeugCreateClose(); ">@Localize.Cancel</button>
+        <button type="reset" class="btn margin-right-5" onclick="FahrzeugCreateClose();">@Localize.Cancel</button>
     </div>
 
     <script type="text/javascript">        
         var _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
     </script>
 }
-
-<script type="text/javascript">
-
-    function FahrzeugCreateComplete() {
-        if (_modelStateValid) {
-            FahrzeugCreateClose();
-            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
-        }
-    }
-
-</script>

@@ -1,6 +1,14 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @model Fahrzeug
 
+<style>
+    input[type="text"][readonly="readonly"]
+    {
+        border:0;
+        font-weight: bold;
+    }
+</style>
+
 <div id="FahrzeugDetailsDiv" class="portlet">
     @using (Ajax.BeginForm("FahrzeugEditSave", "Autohaus", null,
                            new MvcAjaxOptions("FahrzeugDetailsDiv") { OnComplete = "FahrzeugEditComplete();" }, new { id = "FahrzeugDetailsForm", @class = "form-horizontal" }))
@@ -18,25 +26,25 @@
         @Html.FormValidationSummary()
 
         
-        @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap" })        
+        @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap", @readonly = "readonly" })        
         
-        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
-        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right", @readonly = "readonly" })
 
-        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap", col = "left", @onkeypress = "return CleanUpEMail();" })
-        @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap", col = "right", @onkeypress = "return CleanUpTelefonnummer();" })
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap", col = "left", @onkeypress = "return CleanUpEMail();", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap", col = "right", @onkeypress = "return CleanUpTelefonnummer();", @readonly = "readonly" })
         
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onkeypress = "return CleanUpKennzeichen();" })
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right", @onkeypress = "return CleanUpFahrgestellnummer();" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onkeypress = "return CleanUpKennzeichen();", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right", @onkeypress = "return CleanUpFahrgestellnummer();", @readonly = "readonly" })
         
-        @Html.FormTextBoxFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left" })
-        @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.FzgHersteller, new { @class = "m-wrap", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap", col = "right", @readonly = "readonly" })
         
         
         <div class="form-actions">
-            <button id="btnFahrzeugDetailsEdit" type="button" class="btn margin-right-5" onclick='FahrzeugDetailsEditMode();'>@Localize.Edit</button>
+            <button id="btnFahrzeugDetailsEdit" type="button" class="btn margin-right-5" onclick='FahrzeugDetailsEditMode(true);'>@Localize.Edit</button>
             <button id="btnFahrzeugDetailsSave" type="submit" class="btn green margin-right-5 hide"><i class="icon-ok"></i> @Localize.Save</button>
-            <button id="btnFahrzeugDetailsCancel" type="reset" class="btn margin-right-5 hide">@Localize.Cancel</button>
+            <button id="btnFahrzeugDetailsCancel" type="reset" class="btn margin-right-5 hide" onclick='FahrzeugDetailsEditMode(false);'>@Localize.Cancel</button>
         </div>
 
         <script type="text/javascript">
@@ -45,36 +53,3 @@
     }
 </div>
 
-<script type="text/javascript">
-
-    function FahrzeugDetailsPreparePrivate() {
-        SetControlsReadonly(true);
-    }
-
-    function FahrzeugDetailsEditMode() {
-        $("#btnFahrzeugDetailsEdit").hide();
-        $("#btnFahrzeugDetailsSave").show();
-        $("#btnFahrzeugDetailsCancel").show();
-
-        SetControlsReadonly(false);
-    }
-
-    function SetControlsReadonly(wert) {
-        $("#ReferenzNr").attr("readonly", wert);
-        $("#Vorname").attr("readonly", wert);
-        $("#Nachname").attr("readonly", wert);
-        $("#Email").attr("readonly", wert);
-        $("#TelefonNr").attr("readonly", wert);
-        $("#Kennzeichen").attr("readonly", wert);
-        $("#FahrgestellNr").attr("readonly", wert);
-        $("#FzgHersteller").attr("readonly", wert);
-        $("#FzgModell").attr("readonly", wert);
-    }
-
-    function FahrzeugEditComplete() {
-        if (_modelStateValid) {
-            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
-        }
-    }
-
-</script>

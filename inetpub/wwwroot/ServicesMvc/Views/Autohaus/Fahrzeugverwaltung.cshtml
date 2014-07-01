@@ -45,61 +45,13 @@
         });
     }
 
-    function FahrzeugCreateAjax() {
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugCreate",
-            data: {},
-            loadingShow: true,
-            success: function (result) {
-                FahrzeugCreate(result);
-            },
-            error: function (jqXhr) {
-                SpanAlertAjaxError("Message", jqXhr);
-            }
-        });
+    var _tabsEnabled = true;
+
+    function TabsEnable(enable) {
+        _tabsEnabled = enable;
     }
 
-    function FahrzeugCreate(result) {
-        $("#divFahrzeugCreate").html(result);
-        $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugCreate").slideDown(200); });
-        BreadcrumbsMoveNext('@Localize.VehicleCreate');
-    }
-
-    function FahrzeugCreateClose() {
-        $("#divFahrzeugCreate").slideUp(200, function () {
-
-            $("#FahrzeugeGridDiv").delay(200).show();
-            window.scrollTo(0, 0);
-
-            FilterGrid("FahrzeugeGrid");
-
-            FormPrepareAjax();
-            BreadcrumbsMovePrev();
-        });
-        TryFahrzeugeGridRefresh();
-    }
-
-    function FahrzeugDeleteAjax(id) {
-        if (!confirm('@Localize.VehicleDoYouReallyWantToDelete.ToJavascriptString()'))
-            return;
-
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugDelete",
-            data: { id: id },
-            loadingShow: true,
-            success: function (result) {
-                SpanAlertSuccess("Message", '@Localize.DeleteSuccessful.ToJavascriptString()', 1800);
-                FilterGrid("FahrzeugeGrid");
-                TryFahrzeugeGridRefresh();
-            },
-            error: function (jqXhr) {
-                SpanAlertAjaxError("Message", jqXhr);
-            }
-        });
-    }
-
+    /// Fahrzeuge-Grid
     function GetFahrzeugeGrid() {
         return $("#FahrzeugeGrid").data("tGrid");
     }
@@ -134,12 +86,93 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    var _tabsEnabled = true;
-
-    function TabsEnable(enable) {
-        _tabsEnabled = enable;
+    /// Fahrzeug anlegen/löschen/bearbeiten
+    function FahrzeugCreateAjax() {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                FahrzeugCreate(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
     }
 
+    function FahrzeugCreate(result) {
+        $("#divFahrzeugCreate").html(result);
+        $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugCreate").slideDown(200); });
+        BreadcrumbsMoveNext('@Localize.VehicleCreate');
+    }
+
+    function FahrzeugCreateComplete() {
+        if (_modelStateValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+            FahrzeugCreateClose();
+        }
+    }
+
+    function FahrzeugCreateClose() {
+        $("#divFahrzeugCreate").slideUp(200, function () {
+            $("#FahrzeugeGridDiv").delay(200).show();
+            window.scrollTo(0, 0);
+            FormPrepareAjax();
+            BreadcrumbsMoveTo(1);
+            TryFahrzeugeGridRefresh();
+        });
+    }
+
+    function FahrzeugDeleteAjax(id) {
+        if (!confirm('@Localize.VehicleDoYouReallyWantToDelete.ToJavascriptString()'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", '@Localize.DeleteSuccessful.ToJavascriptString()', 1800);
+                TryFahrzeugeGridRefresh();
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function FahrzeugDetailsEditMode(editable) {
+        if (editable) {
+            $("#btnFahrzeugDetailsEdit").hide();
+            $("#btnFahrzeugDetailsSave").show();
+            $("#btnFahrzeugDetailsCancel").show();
+        } else {
+            $("#btnFahrzeugDetailsEdit").show();
+            $("#btnFahrzeugDetailsSave").hide();
+            $("#btnFahrzeugDetailsCancel").hide();
+        }
+
+        $("#ReferenzNr").attr("readonly", !editable);
+        $("#Vorname").attr("readonly", !editable);
+        $("#Nachname").attr("readonly", !editable);
+        $("#Email").attr("readonly", !editable);
+        $("#TelefonNr").attr("readonly", !editable);
+        $("#Kennzeichen").attr("readonly", !editable);
+        $("#FahrgestellNr").attr("readonly", !editable);
+        $("#FzgHersteller").attr("readonly", !editable);
+        $("#FzgModell").attr("readonly", !editable);
+    }
+
+    function FahrzeugEditComplete() {
+        if (_modelStateValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+        }
+    }
+
+    /// Fahrzeugakte
     function ShowFahrzeugakte(result) {
         $("#divFahrzeugakte").html(result);
         GridAllColumnFilterApplyToGrid("FahrzeugakteDocsGrid"); 
@@ -187,9 +220,10 @@
         $("#divFahrzeugakte").slideUp(function () {
             $("#FahrzeugeGridDiv").delay(200).show();
             window.scrollTo(0, 0);
+            FormPrepareAjax();
             BreadcrumbsMoveTo(1);
+            TryFahrzeugeGridRefresh();
         });
-        FilterGrid("FahrzeugeGrid");
     }
     
 </script>
