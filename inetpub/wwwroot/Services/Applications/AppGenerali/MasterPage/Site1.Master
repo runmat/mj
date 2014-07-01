@@ -1,0 +1,107 @@
+<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Site1.master.vb" Inherits="AppGenerali.Site1" %>
+<%@ Register Assembly="BusyBoxDotNet" Namespace="BusyBoxDotNet" TagPrefix="busyboxdotnet" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register TagPrefix="uc1" TagName="menue" Src="../Menu/MenueGenerali.ascx" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head id="Head1" runat="server">
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link href="../../../Styles/default.css" media="screen, projection" type="text/css"
+        rel="stylesheet" title="standard" />
+    <%--	<script type="text/javascript" src="default.js"></script>--%>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body id="top">
+    <form id="Form1" runat="server">
+    <div id="website">
+        <div id="header">
+            <div id="PlaceHeader" runat="Server" class="dvHead">
+            </div>
+            <asp:Image ID="imgLogo" ImageUrl="../../../Images/logoDAD.jpg" alt="DAD Logo" class="dadLogo2"
+                runat="server" />
+            <ul id="navigation">
+                <li runat="server" id="tdHauptmenue">
+                    <asp:HyperLink ID="lnkHauptmenue" runat="server" NavigateUrl="/Services/Start/Login.aspx">Startseite</asp:HyperLink></li>
+                <li runat="server" id="tdChangePasword">
+                    <asp:HyperLink ID="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/Services/Start/ChangePassword.aspx">Kennwort ändern</asp:HyperLink></li>
+                <li id="tdLogout" runat="server">
+                    <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" NavigateUrl="/Services/Start/Logout.aspx">Abmelden</asp:HyperLink></li>
+                <li id="tdHandbuch" runat="server">
+                    <asp:HyperLink ID="lnkHandbuch" runat="server" Target="_blank">Handbuch</asp:HyperLink></li>
+                <li id="tdContact" runat="server">
+                    <asp:HyperLink ID="lnkContact" NavigateUrl="/Services/Info/ContactPage.aspx" runat="server">Kontakt</asp:HyperLink></li>
+                <li id="tdResponsible" runat="server">
+                    <asp:HyperLink ID="lnkResponsible" NavigateUrl="/Services/Info/ResponsiblePage.aspx"
+                        runat="server">Verantwortliche</asp:HyperLink></li>
+                <li id="tdImpressum" runat="server">
+                    <asp:HyperLink ID="lnkImpressum" NavigateUrl="/Services/Info/Impressum.aspx" runat="server">Impressum</asp:HyperLink></li>
+            </ul>
+            <ul id="userinfo">
+                <li><span class="bold">
+                    <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
+                <li></li>
+            </ul>
+        </div>
+        <%--		<div id="sidebar">
+			<img src="../NewImages/navDisplayArrowRight.gif" id="navDisplayArrow" alt="Navigation auf- und zuklappen" onclick="toggleNavigation()" />
+			
+			<div id="sidebarLinks">
+				<a href=""><img src="../NewImages/navDateneingabe.gif" alt="Dateneingabe" /></a>
+				<a href=""><img src="../NewImages/navReports.gif" alt="Reports" /></a>
+				<a href=""><img src="../NewImages/navMenuepunkt2.gif" alt="Menüpunkt 2" /></a>
+				<a href=""><img src="../NewImages/navMenuepunkt1.gif" alt="Menüpunkt 1" /></a>
+			</div>
+		</div>--%>
+        <%--		<div id="innerContentLeft" runat="server" style="display:none">
+								
+					
+						<div runat="server" id="divAdminApps" class="innerContentHeading"><h2>Admistration</h2></div>
+						<ul>
+							<li runat="server" id="Admin1"><a href="" style="color: #dfdfdf">Fahrzeughistorie</a></li>
+						</ul>					
+					
+						<div runat="server" id="divChangeApps" class="innerContentHeading"><h2>Dateneingabe</h2></div>
+						<ul>
+							<li class="active">Menüpunkt 1</li>
+							<li>Menüpunkt 2</li>
+							<li>Menüpunkt 3</li>
+						</ul>
+						
+						<div id="divReportApps"  class="innerContentHeading" runat="server"><h2>Reports</h2></div>
+						<ul>
+							<li class="top">Blindtext Reports</li>
+							<li>Menüpunkt 1</li>
+							<li>Menüpunkt 2</li>
+							<li>Menüpunkt 3</li>
+							<li>Menüpunkt 4</li>
+						</ul>
+					</div>--%>
+        <div id="innerContentLeft" runat="server">
+            <div id="sidebar" style="margin-left: 3px">
+                <uc1:menue ID="menue" runat="server" />
+                <asp:ContentPlaceHolder ID="ContentPlaceHolderMenue" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="websitefoot">
+        <div id="site">
+            <div id="footer">
+                <div class="leftAlign">
+                    © 2001 &#8211; 2008 DAD Deutscher Auto Dienst GmbH / Christoph Kroschke AG
+                </div>
+                <div class="rightAlign">
+                    <a href="#top">Top
+                        <img src="../../../Images/top.gif" alt="nach oben" /></a></div>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
