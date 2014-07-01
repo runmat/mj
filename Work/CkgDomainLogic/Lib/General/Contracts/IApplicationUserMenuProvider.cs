@@ -9,5 +9,7 @@ namespace CkgDomainLogic.General.Contracts
         List<IApplicationUserMenuItem> GetMenuItems(string appType = null);
 
         bool AppFavoritesEditMode { get; set; }
+
+        bool AppFavoritesEditSwitchOneFavorite(int appID);
     }
 }

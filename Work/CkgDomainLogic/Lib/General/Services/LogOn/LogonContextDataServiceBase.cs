@@ -96,6 +96,10 @@ namespace CkgDomainLogic.General.Services
 
         public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
 
+        virtual public bool AppFavoritesEditSwitchOneFavorite(int appID)
+        {
+            return false;
+        }
 
         virtual public bool LogonUser(string userName)
         {

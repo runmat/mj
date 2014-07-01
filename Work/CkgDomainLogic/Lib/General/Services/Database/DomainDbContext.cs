@@ -206,6 +206,11 @@ namespace CkgDomainLogic.General.Database.Services
             }
         }
 
+        public void UserAppsRefresh()
+        {
+            _userApps = null;
+        }
+
         public bool TryLogin(string password)
         {
             if (String.IsNullOrEmpty(password))

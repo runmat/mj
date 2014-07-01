@@ -30,6 +30,22 @@
     
     function AppFavoritesEditSwitchOneFavorite(a, appID) {
         //console.log(appID);
+
+        $.ajax({
+            type: "POST",
+            url: "DomainCommon/AppFavoritesEditSwitchOneFavorite",
+            data: { appID: appID },
+            loadingShow: false,
+            success: function (result) {
+                if (result.isFavorite)
+                    $(a).addClass("app-favorite");
+                else
+                    $(a).removeClass("app-favorite");
+            },
+            error: function (jqXhr) {
+            }
+        });
+
         return false;
     }
 

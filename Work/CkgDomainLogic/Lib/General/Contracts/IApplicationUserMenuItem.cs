@@ -12,7 +12,7 @@
 
         int AppRank { get; set; }
 
-        bool AppIsNoMvcFavorite { get; set; }
+        bool AppIsMvcFavorite { get; set; }
 
         
         #region Menu Group
