@@ -22,6 +22,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool AppInMenu { get; set; }
 
+        public bool AppIsNoMvcFavorite { get; set; }
+
         
         #region Menu Group
 

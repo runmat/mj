@@ -3,13 +3,14 @@
 @{
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
 }
+
 <script type="text/javascript">
 
-    var _appFavoritesEditMode = @logonContext.AppFavoritesEditMode.ToString().ToLower() ;
+    var _appFavoritesEditMode = @(logonContext != null && logonContext.AppFavoritesEditMode).ToString().ToLower() ;
 
     function OnMenuItemClick(a, appId) {
         if (_appFavoritesEditMode)
-            return AppFavoritesEditSwitchOneFavorite(appId);
+            return AppFavoritesEditSwitchOneFavorite(a, appId);
 
         return LogPageVisit(a, appId);
     }
@@ -60,8 +61,9 @@
 		    <ul class="sub-menu">
                 @foreach (var menuItem in logonContext.GetMenuItems(menuGroup.AppType))
                 {
+                    var appFavoriteClassName = logonContext.AppFavoritesEditMode && menuItem.AppIsNoMvcFavorite ? "app-favorite" : "";
 		        <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
-		            <a onclick="return OnMenuItemClick(this, @menuItem.AppID);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
+		            <a class="@appFavoriteClassName" onclick="return OnMenuItemClick(this, @menuItem.AppID);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
                 </li>
                 }
 		    </ul>

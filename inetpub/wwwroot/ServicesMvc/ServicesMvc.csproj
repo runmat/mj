@@ -2289,6 +2289,9 @@
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
     <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtons.cshtml" />
+    <Content Include="Web.DebugQuick.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
