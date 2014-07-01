@@ -50,61 +50,45 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void UpdateDocument(FahrzeugakteDocument model, ModelStateDictionary state)
         {
-            var dublette = Documents.Find(d => d.CategoryID == model.CategoryID && d.ID != model.ID);
-            if (dublette != null)
+            var tempDoc = Documents.Find(d => d.ID == model.ID);
+
+            tempDoc.CategoryID = model.CategoryID;
+
+            var erg = DataService.SaveDocument(tempDoc);
+            if (erg == null)
             {
-                state.AddModelError("", Localize.DocumentForCategoryAlreadyExists);
+                state.AddModelError("", Localize.SaveFailed);
             }
-            else
-            {
-                var tempDoc = Documents.Find(d => d.ID == model.ID);
 
-                tempDoc.CategoryID = model.CategoryID;
-
-                var erg = DataService.SaveDocument(tempDoc);
-                if (erg == null)
-                {
-                    state.AddModelError("", Localize.SaveFailed);
-                }
-
-                RefreshDocuments();
-            }
+            RefreshDocuments();
         }
 
         public int CreateDocument(FahrzeugakteDocument model, ModelStateDictionary state)
         {
             var retInt = 0;
 
-            var dublette = Documents.Find(d => d.CategoryID == model.CategoryID);
-            if (dublette != null)
+            var tempDoc = new CustomerDocument
             {
-                state.AddModelError("", Localize.DocumentForCategoryAlreadyExists);
+                AdditionalData = model.AdditionalData,
+                ApplicationKey = model.ApplicationKey,
+                CategoryID = model.CategoryID,
+                CustomerID = model.CustomerID,
+                FileName = model.FileName,
+                FileType = model.FileType,
+                ID = model.ID,
+                ReferenceField = model.ReferenceField,
+                Uploaded = model.Uploaded
+            };
+            var erg = DataService.SaveDocument(tempDoc);
+            if (erg == null)
+            {
+                state.AddModelError("", Localize.SaveFailed);
             }
             else
             {
-                var tempDoc = new CustomerDocument
-                {
-                    AdditionalData = model.AdditionalData,
-                    ApplicationKey = model.ApplicationKey,
-                    CategoryID = model.CategoryID,
-                    CustomerID = model.CustomerID,
-                    FileName = model.FileName,
-                    FileType = model.FileType,
-                    ID = model.ID,
-                    ReferenceField = model.ReferenceField,
-                    Uploaded = model.Uploaded
-                };
-                var erg = DataService.SaveDocument(tempDoc);
-                if (erg == null)
-                {
-                    state.AddModelError("", Localize.SaveFailed);
-                }
-                else
-                {
-                    retInt = erg.ID;
-                }
-                RefreshDocuments();
+                retInt = erg.ID;
             }
+            RefreshDocuments();
 
             return retInt;
         }
