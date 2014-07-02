@@ -193,6 +193,7 @@ AppSettings.config
 Web.config
 *.DotSettings
 *.tss
+AppSettings.config
 # GAC mitnehmen
 !inetpub/wwwroot/nPa/GAC/*
 !inetpub/wwwroot/Services/GAC/*
