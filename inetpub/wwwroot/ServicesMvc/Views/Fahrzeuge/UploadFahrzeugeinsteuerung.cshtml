@@ -1,0 +1,154 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.UploadFahrzeugeinsteuerungViewModel 
+
+<h3 class="page-title">@Localize.Fahrzeuge_Fahrzeugeinsteuerung <small>@Localize.CsvUpload</small></h3>
+
+<div class="portlet app-view">
+    
+    @Html.FormWizard("icon-arrow-up", "", new[] { Localize.UploadCsvFile, Localize.Send, Localize.DoneStep })
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Fahrzeugeinsteuerung/FileUpload")
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var _formWizardForceHideSubmitButton = false;
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        FormWizardInitPrivate();
+    }
+
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(false);
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            if (step == 1) {
+                FormWizard.ActionsShow(false);
+            }
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            SubmitUpload();
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            location.reload();
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $(".t-status").hide();
+        //alert("private ajax...");
+    }
+
+    function OnDataBound_GridUploadFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnDataBound_GridUploadSaveFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+    
+    function OnColumnShowHide_GridUploadFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnShowHide_GridUploadSaveFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUploadFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnColumnReorder_GridUploadSaveFahrzeugeinsteuerung() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function UploadStart(e) {
+
+        // clear only the UI of our Upload Control:
+        //$(this).children(".t-upload-files").remove();
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
+            alert('@Localize.FileUploadOnlyCsvLegal');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(true);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+    }
+
+    function ShowGrid() {
+        $.ajax({
+            type: "POST",
+            url: "UploadFahrzeugeinsteuerungShowGrid",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+                if (_formWizardForceHideSubmitButton)
+                    FormWizard.ButtonSubmitShow(false);
+            }
+        });
+    }
+
+    function SubmitUpload() {
+        $.ajax({
+            type: "POST",
+            url: "UploadFahrzeugeinsteuerungSubmit",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(3, result);
+                window.scrollTo(0, 0);
+                GridAllColumnFilterApplyToGrid("GridUploadSaveFahrzeugeinsteuerung");
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+            }
+        });
+    }
+
+</script>
