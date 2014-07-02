@@ -185,7 +185,7 @@
                                                     <td>
                                                         <strong>Verantwortlich im Sinne des Pressegesetzes: </strong>
                                                     <br />
-                                                        Lars Häger
+                                                        Christian Bartelheimer
                                                     </td>
                                                 </tr>
                                                 <tr>
