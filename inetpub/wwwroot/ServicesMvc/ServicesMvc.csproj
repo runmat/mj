@@ -2201,6 +2201,9 @@
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Test\ImageUploadPlus.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
+    <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2316,11 +2319,45 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadSaveFahrzeugeinsteuerungGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\FileUpload.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadFahrzeugeinsteuerungGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugeGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocUpload.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoryEdit.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocCreate.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocEdit.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
+    <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\Common.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryAddressSelectionLink.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryPdf.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Dienstleistungen.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\DienstleistungenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionen.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionenForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\HalterAdresse.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\HalterAdresseForm.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
+    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocUpload.cshtml" />

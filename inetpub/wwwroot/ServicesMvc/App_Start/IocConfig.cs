@@ -121,6 +121,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<BriefbestandDataServiceSAP>().As<IBriefbestandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreDataServiceSAP>().As<IFinanceVersandsperreDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreReportDataServiceSAP>().As<IFinanceVersandsperreReportDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
             builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();
