@@ -3,10 +3,26 @@
 
 @foreach (var menuGroup in Model.GetMenuItemGroups())
 {
+    string menuGroupClassName;
+    switch (menuGroup.AppType)
+    {
+        case "Change":
+            menuGroupClassName = "icon-edit";
+            break;
+        case "Report":
+            menuGroupClassName = "icon-th";
+            break;
+        default:
+            menuGroupClassName = "icon-cogs";
+            break;
+    }
+    
+    <h5 class="margin-top-10 margin-bottom-10 group-favorite-on-homepage"><i class="@menuGroupClassName margin-right-5"></i> @Model.TranslateMenuAppType(menuGroup)</h5>
+    
     foreach (var menuItem in Model.GetMenuItems(menuGroup.AppType).Where(a => a.AppIsMvcFavorite))
     {
-        <a class="btn black" onclick="return OnMenuItemClick(this, @menuItem.AppID);" href="@Model.GetUserEncrytpedUrl(menuItem)">
-            <i class="icon-ok margin-right-25 margin-bottom-25"></i>
+        <a class="btn black app-favorite-on-homepage" onclick="return OnMenuItemClick(this, @menuItem.AppID, true);" href="@Model.GetUserEncrytpedUrl(menuItem)">
+            <i class="@menuGroupClassName margin-right-5"></i>
             @Model.TranslateMenuAppName(@menuItem)
         </a>
     }
