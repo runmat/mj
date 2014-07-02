@@ -696,6 +696,8 @@
                                                         ID="Label2" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.STREET_Z5") &amp; " " &amp; DataBinder.Eval(Container, "DataItem.HOUSE_NUM1_Z5") %>'>
                                                     </asp:Label><asp:Literal ID="Literal2" runat="server" Text="<br>"></asp:Literal><asp:Label
                                                         ID="Label3" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.POST_CODE1_Z5") &amp; " " &amp; DataBinder.Eval(Container, "DataItem.CITY1_Z5") %>'>
+                                                    </asp:Label><asp:Literal ID="Literal3" runat="server" Text="<br>"></asp:Literal><asp:Label
+                                                        ID="Label4" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LANDX_Z5") %>'>
                                                     </asp:Label></ItemTemplate>
                                             </asp:TemplateColumn>
                                             <asp:BoundColumn Visible="False" DataField="ERDAT" SortExpression="ERDAT" HeaderText="Erfassungs-&lt;br&gt;datum"
