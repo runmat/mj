@@ -2293,7 +2293,10 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
-    <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />  </ItemGroup>
+    <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />
+    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtons.cshtml" />
+    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
     <Content Include="assets\css\pages\about-us.css" />

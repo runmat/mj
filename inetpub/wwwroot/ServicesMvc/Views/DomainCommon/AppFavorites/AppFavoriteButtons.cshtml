@@ -5,7 +5,9 @@
     Ihre Favoriten
     @if (!logonContext.AppFavoritesEditMode)
     {
-        <a href="#" class="btn white app-favorite-on-homepage-command" onclick="return AppFavoritesEditSwitch();"><i class="icon-pencil"></i></a>
+        <a href="#" class="btn white app-favorite-on-homepage-command tooltips" onclick="return AppFavoritesEditSwitch();" data-original-title="Favoriten bearbeiten ..." data-placement="right">
+            <i class="icon-pencil"></i>
+        </a>
     }
 </h4>
 
@@ -64,6 +66,10 @@
 
 <script type="text/javascript">
 
+    function FormPreparePrivate() {
+        $(".tooltips").tooltip();
+    }
+    
     function AppFavoritesEditSwitch() {
         $.ajax({
             type: "POST",
