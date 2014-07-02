@@ -38,7 +38,7 @@
                 USt.-ID-Nr. DE811887896</p>
             <p>
                 <b>Verantwortlich im Sinne des Pressegesetzes:</b><br />
-                Lars Häger
+                Christian Bartelheimer
             </p>
             <p>
                 Haftungshinweis:<br />

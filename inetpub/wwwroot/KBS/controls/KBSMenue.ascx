@@ -7,7 +7,7 @@
 <div id="flyout">
 </div>
 <div id="info">
-    <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" HorizontalAlign="Center">
+    <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" HorizontalAlign="Center" Height="525px">
         <div id="btnCloseParent">
             schliessen
             <asp:LinkButton ID="btnClose" runat="server" OnClientClick="return false;" Text="X"
