@@ -2173,6 +2173,9 @@
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Test\ImageUploadPlus.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
+    <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2288,6 +2291,11 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadSaveFahrzeugeinsteuerungGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\FileUpload.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadFahrzeugeinsteuerungGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
