@@ -1,0 +1,35 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.CocBeauftragungViewModel
+
+<h4>Bestätigung für Ihre Auswahl: @Model.SelectedCocAuftraegeAsString</h4> 
+
+@if (Model.SaveErrorMessage.IsNullOrEmpty())
+{
+    <div class="alert alert-success">
+        <i class="icon-check"></i><span class="padding-left-5"><strong>Vielen Dank</strong>, wir haben Ihren Auftrag erhalten!</span>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <span class="label label-important"><i class="icon-bell"></i><span class="margin-left-5"> Es ist ein Fehler aufgetreten!</span></span><br /><br />
+        @Model.SaveErrorMessage.ToHtml()
+    </div>
+}
+
+<div id="ReceiptFormActions" class="hide">
+    <a href="SummaryAsPdf" class="btn blue tooltips" data-original-title="Ihr Vorgang als PDF Datei!" data-placement="top"> PDF Download <i class="icon-download-alt"></i></a>
+    <a target="blank" href="SummaryAsHtml" class="hide btn black tooltips margin-left-10" data-original-title="Ihr Vorgang als HTML Datei!" data-placement="top"> HTML <i class="icon-download-alt"></i></a>
+</div>
+
+@if (Model.SaveErrorMessage.IsNotNullOrEmpty())
+{
+    <script type="text/javascript">
+        FormWizard.ButtonPrevShowDelayed();
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        FormWizard.InsertActionButton("#ReceiptFormActions");
+    </script>    
+}

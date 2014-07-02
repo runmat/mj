@@ -94,16 +94,20 @@
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandDataService.cs" />
+    <Compile Include="Equi\Contracts\IBriefversandDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMeldungsdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiGrunddaten.cs" />
-    <Compile Include="Equi\Models\DataModels\FahrzeugbriefBestand.cs" />
+    <Compile Include="Equi\Models\DataModels\Fahrzeugbrief.cs" />
     <Compile Include="Equi\Models\GrunddatenEquiSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
-    <Compile Include="Equi\Models\UIModels\FahrzeugbriefBestandFilter.cs" />
+    <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
+    <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\BriefversandDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
+    <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikett.cs" />
@@ -157,6 +161,10 @@
     <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
       <Name>WebTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CkgDomainCommon\CkgDomainCommon.csproj">
+      <Project>{116FCA66-F690-41B3-86F5-B8BF7BBA2949}</Project>
+      <Name>CkgDomainCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lib\CkgDomainLogic.csproj">
       <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>

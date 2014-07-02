@@ -1,0 +1,41 @@
+﻿@model CkgDomainLogic.Equi.ViewModels.BriefversandViewModel
+@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridFahrzeugAuswahl"; }
+
+<h4 class="margin-bottom-20">
+    @Model.FahrzeugAuswahlTitleHint: 
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@(Html.Telerik()
+    .Grid<Fahrzeugbrief>()
+    .Name(gridName)
+    .XGroup("GridBriefversandFahrzeugAuswahl")
+    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
+    .Columns(columns =>
+        {
+            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ID #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
+            //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
+
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.TechnIdentnummer);
+            columns.XBound(c => c.Vertragsnummer);
+            columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.Stilllegungsdatum).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.StandortText);
+        })
+
+    .XAutoColumnConfiguration()      
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+
+    .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredExcel", "Equi").HtmlAttributes(new { @class = "hide btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "Equi").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+        })
+)

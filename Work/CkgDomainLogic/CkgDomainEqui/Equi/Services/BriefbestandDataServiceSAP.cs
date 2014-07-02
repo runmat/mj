@@ -11,11 +11,11 @@ namespace CkgDomainLogic.Equi.Services
 {
     public class BriefbestandDataServiceSAP : CkgGeneralDataServiceSAP, IBriefbestandDataService
     {
-        public FahrzeugbriefBestandFilter DatenFilter { get; set; }
+        public FahrzeugbriefFilter DatenFilter { get; set; }
 
-        private List<FahrzeugbriefBestand> FahrzeugbriefeGesamt { get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap().ToList()); } }
+        private List<Fahrzeugbrief> FahrzeugbriefeGesamt { get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap().ToList()); } }
 
-        public List<FahrzeugbriefBestand> Fahrzeugbriefe 
+        public List<Fahrzeugbrief> Fahrzeugbriefe 
         { 
             get
             {
@@ -31,14 +31,14 @@ namespace CkgDomainLogic.Equi.Services
                 {
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1").ToList();
                 }
-                return new List<FahrzeugbriefBestand>();
+                return new List<Fahrzeugbrief>();
             } 
         }
 
         public BriefbestandDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            DatenFilter = new FahrzeugbriefBestandFilter();
+            DatenFilter = new FahrzeugbriefFilter();
         }
 
         public void MarkForRefreshFahrzeugbriefe()
@@ -46,11 +46,11 @@ namespace CkgDomainLogic.Equi.Services
             PropertyCacheClear(this, m => m.FahrzeugbriefeGesamt);
         }
 
-        private IEnumerable<FahrzeugbriefBestand> LoadFahrzeugbriefeFromSap()
+        private IEnumerable<Fahrzeugbrief> LoadFahrzeugbriefeFromSap()
         {
             var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithInitExecute(SAP, "I_KUNNR, I_BESTAND, I_TEMPVERS", LogonContext.KundenNr.ToSapKunnr(), "X", "X");
 
-            return AppModelMappings.Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand.Copy(sapList);
+            return AppModelMappings.Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief.Copy(sapList);
         }
     }
 }

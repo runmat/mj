@@ -194,12 +194,12 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_M_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_M_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
@@ -228,12 +228,12 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {

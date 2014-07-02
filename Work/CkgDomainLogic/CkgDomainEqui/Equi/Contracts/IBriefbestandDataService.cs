@@ -6,9 +6,9 @@ namespace CkgDomainLogic.Equi.Contracts
 {
     public interface IBriefbestandDataService : ICkgGeneralDataService
     {
-        FahrzeugbriefBestandFilter DatenFilter { get; set; }
+        FahrzeugbriefFilter DatenFilter { get; set; }
 
-        List<FahrzeugbriefBestand> Fahrzeugbriefe { get; }
+        List<Fahrzeugbrief> Fahrzeugbriefe { get; }
 
         void MarkForRefreshFahrzeugbriefe();
     }
