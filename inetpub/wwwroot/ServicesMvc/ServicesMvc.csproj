@@ -2292,6 +2292,7 @@
     <Content Include="Web.DebugQuick.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtonsCore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

@@ -29,8 +29,6 @@
     }
     
     function AppFavoritesEditSwitchOneFavorite(a, appID) {
-        //console.log(appID);
-
         $.ajax({
             type: "POST",
             url: "DomainCommon/AppFavoritesEditSwitchOneFavorite",
@@ -41,6 +39,8 @@
                     $(a).addClass("app-favorite");
                 else
                     $(a).removeClass("app-favorite");
+
+                AppFavoriteButtonsCoreRefresh();
             },
             error: function (jqXhr) {
             }
@@ -48,9 +48,28 @@
 
         return false;
     }
+    
+    function AppFavoriteButtonsCoreRefresh() {
+        $.ajax({
+            type: "POST",
+            url: "DomainCommon/AppFavoriteButtonsCoreRefresh",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                $("#AppFavoriteButtonsCore").html(result);
+            },
+            error: function (jqXhr) {
+            }
+        }); 
+    }
 
 </script>
 
+<div id="AppFavoriteButtonsCore">
+    @Html.Partial("AppFavorites/AppFavoriteButtonsCore", logonContext)
+</div>
+
+<div class="margin-bottom-25"></div>
 
 @if (!logonContext.AppFavoritesEditMode)
 {

@@ -197,7 +197,13 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult AppFavoritesEditSwitchOneFavorite(int appID)
         {
-            return Json(new { isFavorite = LogonContext.AppFavoritesEditSwitchOneFavorite(appID) } );
+            return Json(new { isFavorite = LogonContext.AppFavoritesEditSwitchOneFavorite(appID) });
+        }
+
+        [HttpPost]
+        public ActionResult AppFavoriteButtonsCoreRefresh()
+        {
+            return PartialView("AppFavorites/AppFavoriteButtonsCore", LogonContext);
         }
     }
 }

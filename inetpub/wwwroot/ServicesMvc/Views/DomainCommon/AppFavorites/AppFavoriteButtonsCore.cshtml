@@ -1,0 +1,13 @@
+﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
+
+
+@foreach (var menuGroup in Model.GetMenuItemGroups())
+{
+    foreach (var menuItem in Model.GetMenuItems(menuGroup.AppType).Where(a => a.AppIsMvcFavorite))
+    {
+        <a class="btn black" onclick="return OnMenuItemClick(this, @menuItem.AppID);" href="@Model.GetUserEncrytpedUrl(menuItem)">
+            <i class="icon-ok margin-right-25 margin-bottom-25"></i>
+            @Model.TranslateMenuAppName(@menuItem)
+        </a>
+    }
+}
