@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UploadFahrzeugeinsteuerungViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadSaveFahrzeugeinsteuerung"; }
+
+@(Html.Telerik()
+    .Grid<FahrzeugeinsteuerungUploadModel>()
+    .Name(gridName)
+    .XGroup("GridUploadSaveFahrzeugeinsteuerung")
+    .XAjaxDataBinding("UploadSaveFahrzeugeinsteuerungAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzNr).Visible(false);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Flottennummer);
+        columns.XBound(c => c.SaveStatus);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugeinsteuerungFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugeinsteuerungFilteredPDF", "Fahrzeuge");
+    })
+)
+
