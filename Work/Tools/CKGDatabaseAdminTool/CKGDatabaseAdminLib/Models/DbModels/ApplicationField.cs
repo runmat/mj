@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     /// <summary>
     /// Feldübersetzung für Portal-/Services-Anwendungen
     /// </summary>
     [Table("ApplicationField")]
-    public class ApplicationField : DbModelBase
+    public class ApplicationField : ModelBase
     {
         private int _applicationFieldID;
         [Key]

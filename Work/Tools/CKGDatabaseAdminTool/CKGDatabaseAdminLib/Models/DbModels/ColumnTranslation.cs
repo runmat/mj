@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     /// <summary>
     /// Spaltenübersetzung für Portal-/Services-Anwendungen
     /// </summary>
     [Table("ColumnTranslation")]
-    public class ColumnTranslation : DbModelBase
+    public class ColumnTranslation : ModelBase
     {
         private int _appID;
         [Key, Column(Order = 0)]

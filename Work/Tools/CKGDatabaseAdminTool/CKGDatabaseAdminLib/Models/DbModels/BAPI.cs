@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     [Table("BAPI")]
-    public class BapiTable : DbModelBase
+    public class BapiTable : ModelBase
     {
         private int _id;
         [Key]

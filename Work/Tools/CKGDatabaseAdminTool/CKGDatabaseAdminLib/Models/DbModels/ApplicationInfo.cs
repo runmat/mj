@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     [Table("Application")]
-    public class ApplicationInfo : DbModelBase
+    public class ApplicationInfo : ModelBase
     {
         private int _appId;
         [Key]

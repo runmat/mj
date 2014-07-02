@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     /// <summary>
     /// ACHTUNG: Diese Klasse entspricht der Tabellendefinition auf den DAD-Servern und ist u.U. nicht 1:1 auf die anderen SQL-Datenbanken anwendbar!
     /// </summary>
     [Table("Application")]
-    public class Application : DbModelBase
+    public class Application : ModelBase
     {
         private int _appId;
         [Key]
