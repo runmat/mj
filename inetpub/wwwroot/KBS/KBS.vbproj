@@ -16,10 +16,14 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
-    <SccProjectName>%24/Migration/CKAG2/KBS</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>http://vms047:8080/tfs/defaultcollection</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -747,7 +751,7 @@
       <Project>{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}</Project>
       <Name>PM_Common_Functions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Work\CKG\SapExecutor\SapExecutor.csproj">
+    <ProjectReference Include="SapExecutor\SapExecutor.csproj">
       <Project>{C209B8CE-195A-4C9D-9397-C3B63BE585F6}</Project>
       <Name>SapExecutor</Name>
     </ProjectReference>

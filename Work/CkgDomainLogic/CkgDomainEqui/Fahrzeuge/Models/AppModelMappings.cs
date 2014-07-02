@@ -184,6 +184,26 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                                                      }));
             }
         }
+
+        /// <summary>
+        /// Upload Fahrzeugeinsteuerung
+        /// </summary>
+        static public ModelMapping<Z_DPM_UPLOAD_GRUDAT_TIP_01.GT_IN, FahrzeugeinsteuerungUploadModel> Z_DPM_UPLOAD_GRUDAT_TIP_01_GT_IN_From_FahrzeugeinsteuerungUploadModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UPLOAD_GRUDAT_TIP_01.GT_IN, FahrzeugeinsteuerungUploadModel>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.CHASSIS_NUM = source.Fahrgestellnummer;
+                        destination.ZZREFERENZ1 = source.Flottennummer;
+                    }
+                ));
+            }
+        }
+
         #endregion
     }
 }
