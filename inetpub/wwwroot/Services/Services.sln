@@ -10,8 +10,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ErpBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpBaseMvc", "..\..\..\work\ErpBase\ErpBaseMvc\ErpBaseMvc.csproj", "{C97E0F34-A91A-4F38-B792-73C4FC680A29}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Admin", "Admin\Admin.vbproj", "{E8DB9247-7356-4A45-B3D0-7B8E324C497C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,10 +28,6 @@ Global
 		{C97E0F34-A91A-4F38-B792-73C4FC680A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C97E0F34-A91A-4F38-B792-73C4FC680A29}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{C97E0F34-A91A-4F38-B792-73C4FC680A29}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{E8DB9247-7356-4A45-B3D0-7B8E324C497C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8DB9247-7356-4A45-B3D0-7B8E324C497C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8DB9247-7356-4A45-B3D0-7B8E324C497C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8DB9247-7356-4A45-B3D0-7B8E324C497C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
