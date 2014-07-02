@@ -72,5 +72,11 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.PickDate)]
         public DateTime? Pickdatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        public string Referenz1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        public string Referenz2 { get; set; }
     }
 }

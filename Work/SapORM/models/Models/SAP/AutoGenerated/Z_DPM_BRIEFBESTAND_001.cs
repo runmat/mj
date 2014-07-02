@@ -70,6 +70,10 @@ namespace SapORM.Models
 
 			public DateTime? PICKDAT { get; set; }
 
+			public string ZZREFERENZ1 { get; set; }
+
+			public string ZZREFERENZ2 { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -94,6 +98,8 @@ namespace SapORM.Models
 					STREET = (string)row["STREET"],
 					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
 					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
+					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
+					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
