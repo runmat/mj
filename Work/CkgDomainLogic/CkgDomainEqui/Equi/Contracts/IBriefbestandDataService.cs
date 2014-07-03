@@ -8,7 +8,9 @@ namespace CkgDomainLogic.Equi.Contracts
     {
         FahrzeugbriefFilter DatenFilter { get; set; }
 
-        List<Fahrzeugbrief> Fahrzeugbriefe { get; }
+        List<Fahrzeugbrief> FahrzeugbriefeBestand { get; }
+
+        List<Fahrzeugbrief> FahrzeugbriefeZumVersand { get; }
 
         void MarkForRefreshFahrzeugbriefe();
     }

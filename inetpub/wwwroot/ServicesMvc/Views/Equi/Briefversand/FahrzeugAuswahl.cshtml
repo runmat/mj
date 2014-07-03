@@ -16,20 +16,22 @@
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ID #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
+            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
             //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
 
             columns.XBound(c => c.Kennzeichen);
             columns.XBound(c => c.Fahrgestellnummer);
             columns.XBound(c => c.TechnIdentnummer);
             columns.XBound(c => c.Vertragsnummer);
+            columns.XBound(c => c.Referenz1);
+            columns.XBound(c => c.Referenz2);
+            columns.XBound(c => c.StandortText);
             columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
             columns.XBound(c => c.Stilllegungsdatum).Format("{0:dd.MM.yyyy}");
-            columns.XBound(c => c.StandortText);
         })
 
-    .XAutoColumnConfiguration()      
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
 

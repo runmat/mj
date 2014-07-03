@@ -257,6 +257,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Strasse = s.STREET;
                         d.Hausnummer = s.HOUSE_NUM1;
                         d.Pickdatum = s.PICKDAT;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
                     }));
             }
         }

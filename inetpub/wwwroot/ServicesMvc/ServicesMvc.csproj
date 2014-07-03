@@ -2308,6 +2308,9 @@
     <Content Include="Views\Equi\Briefversand\Partial\SummaryAddressSelectionLink.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\SummaryPdf.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\Common.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

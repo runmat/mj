@@ -1,14 +1,15 @@
-﻿@*
-<script type="text/javascript">
+﻿<script type="text/javascript">
 
+    var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
 
-    function AutohausZulassungFormPreparePrivate() {
-        FormPreparePrivate();
-    }
-
     function FormPreparePrivate() {
+
         try { FormWizardInitPrivate(); } catch (e) { }
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+
         try { MultiSelectPreparePrivate(); } catch (e) { }
     };
 
@@ -16,31 +17,26 @@
         FormPrepareAjax();
         $('.tooltips').tooltip();
     }
-
+    
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
-            FormWizard.ActionsShow(true);
+            FormWizard.ActionsShow(!FormWizard.HasStepKey('FahrzeugAuswahl') && typeof(_formErrorHint) == 'undefined');
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
-            if ('HalterAdresse' == FormWizard.GetStepKey(step - 1)) {
-                $("#HalterAdresseAjaxForm").submit();
+            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step - 1)) {
+                return FahrzeugAuswahl();
+            }
+            if ('VersandartOptionen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormVersandartOptionen").submit();
                 return false;
             }
-            if ('ZulassungsOptionen' == FormWizard.GetStepKey(step - 1)) {
-                $("#AjaxFormZulassungsOptionen").submit();
+            if ('VersandAdresse' == FormWizard.GetStepKey(step - 1)) {
+                $("#VersandAdresseAjaxForm").submit();
                 return false;
             }
-            if ('WunschkennzeichenOptionen' == FormWizard.GetStepKey(step - 1)) {
-                $("#AjaxFormWunschkennzeichen").submit();
-                return false;
-            }
-            if ('Dienstleistungen' == FormWizard.GetStepKey(step - 1)) {
-                $("#AjaxFormDienstleistungen").submit();
-                return false;
-            }
-            if ('FreieZulassungsOptionen' == FormWizard.GetStepKey(step - 1)) {
-                $("#AjaxFormFreieZulassungsOptionen").submit();
+            if ('VersandOptionen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormVersandOptionen").submit();
                 return false;
             }
 
@@ -48,22 +44,21 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
+            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step)) 
+                FormWizard.ActionsShow(true);
             return true;
         });
 
         FormWizard.OnSubmit(function () {
-
+            
             AjaxRequestNextStep();
 
             return true;
         });
 
         FormWizard.OnRestart(function () {
-            if ($("#FreieZulassungsOption.FahrzeugID").val() != "") {
-                location.href = '@Url.Action("Fahrzeugverwaltung","Autohaus")';
-            } else {
-                location.reload();
-            }
+            //alert('Ok, let´s restart! :)');
+            location.reload();
         });
     }
 
@@ -88,34 +83,46 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
-        });
+        });    
     }
 
-    function AjaxFormZulassungsOptionenComplete() {
+    function FahrzeugAuswahl() {
+        AjaxRequestNextStep();
+        return false;
+    }
+
+    function AjaxFormVersandartOptionenComplete() {
         FormPrepareAjax();
 
         if (_modelIsValid)
             AjaxRequestNextStep();
     }
 
+    function AjaxFormVersandOptionenComplete() {
+        FormPrepareAjax();
 
+        if (_modelIsValid)
+            AjaxRequestNextStep();
+    }
+
+    
     //    
     // <Adressen, Versandadressen, Halteradressen, etc>
     //
 
     function AjaxFormAdressePrepareAutoCompleteReset(formID) {
         var form = $("#" + formID);
-        form.find("input:text").each(function () {
+        form.find("input:text").each(function() {
             if ($(this).attr('id') != 'Name1')
-                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+                $(this).bind('keyup', function() { $("#Name1").autocomplete("disable"); });
         });
     }
-
+    
     function AjaxFormAdressePrepareAutoComplete(tb, url) {
 
-        var form = tb.closest("form");
+        var form = tb.closest("form"); 
         var textboxValues = '';
-        form.find("input:text").each(function () {
+        form.find("input:text").each(function() {
             if ($(this).attr('id') != 'Name1')
                 textboxValues = $(this).val();
         });
@@ -125,14 +132,14 @@
         $.ajax({
             type: "POST",
             url: url,
-            data: {},
+            data: { },
             loadingShow: false,
             success: function (result) {
                 AjaxFormAdresseInitAutoComplete(tb, result.items);
             }
-        });
+        });      
     }
-
+    
     function AjaxFormAdresseInitAutoComplete(tb, items) {
         tb.autocomplete({
             minLength: 0,
@@ -148,8 +155,8 @@
 
     function AjaxFormAdresseEmpty(formID, url) {
         var form = $("#" + formID);
-        form.find(":input").each(function () {
-            switch (this.type) {
+        form.find(":input").each(function() {
+            switch(this.type) {
                 case 'password':
                 case 'select-multiple':
                 case 'text':
@@ -162,7 +169,7 @@
                 case 'checkbox':
                 case 'radio':
                     this.checked = false;
-            }
+            }        
         });
 
         AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
@@ -205,7 +212,7 @@
 
         return false;
     }
-
+    
     function AjaxFormAdresseClose() {
         $("#AdresseBearbeiten").data("tWindow").close();
     }
@@ -213,7 +220,7 @@
     function GridAdresseOnSelect(id, formID, addressType) {
         var form = $("#" + formID);
 
-        if (typeof (form.attr('id')) != 'undefined') {
+        if (typeof(form.attr('id')) != 'undefined') {
             $("#TmpSelectionKey").val(id);
             form.submit();
         }
@@ -240,16 +247,17 @@
             }
         });
     }
-
+    
     //    
     // </Adressen, Versandadressen, Halteradressen, etc>
     //
 
+
     //    
-    // <Halteradressen>
+    // <Versandadressen>
     //
 
-    function HalterAdresseAjaxFormComplete() {
+    function VersandAdresseAjaxFormComplete() {
         FormPrepareAjax();
 
         if (_modelIsValid) {
@@ -261,107 +269,27 @@
         detailWindow.center().close();
     }
 
-    function LoadKfzKreisAusHalterAdresse() {
+    function OnDataBound_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
 
-        $.ajax(
-            {
-                type: "POST",
-                url: "LoadKfzKreisAusHalterAdresse",
-                data: {},
-                loadingShow: true,
-                success: function (result) {
-                    if (result.kfzKreis == '') {
-                        SpanAlertWarning("kfzKreisHint", "Hinweis: Der KFZ Kreis konnte nicht aus der Halteradresse geladen werden!", 1800);
-                        return;
-                    }
+    function OnColumnShowHide_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
 
-                    $("#ZulassungsKreis").val(result.kfzKreis);
-                    SpanAlertSuccess("kfzKreisHint", "Zulassungs-Kreis wurde erfolgreich aus der Halteradresse geladen!", 1800);
-                }
-            });
-
-        return false;
-
+    function OnColumnReorder_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
     //    
-    // </Halteradressen>
+    // </Versandadressen>
     //
 
 
     //
     // <Adressen generell>
     //
-
-    function OnDataBound_HalterAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnColumnShowHide_HalterAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_HalterAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-
-    function OnDataBound_ReguliererAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnColumnShowHide_ReguliererAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_ReguliererAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-
-    function OnDataBound_RechnungsEmpfaengerAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnColumnShowHide_RechnungsEmpfaengerAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_RechnungsEmpfaengerAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-
-    function OnDataBound_VersandScheinSchilderAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnColumnShowHide_VersandScheinSchilderAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_VersandScheinSchilderAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-
-    function OnDataBound_VersandZb2CocAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnColumnShowHide_VersandZb2CocAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_VersandZb2CocAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
 
     _adresseAjaxFormAddressType = '';
     function AdresseAjaxFormComplete() {
@@ -385,124 +313,58 @@
         setTimeout(function () {
             var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
             var newHeight = (gridHeight + 80) + 'px';
-            grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
+            grid.closest('.t-window-content').animate({height: newHeight}, 200); // .css('height', newHeight);
         }, 300);
     }
 
     //
     // </Adressen generell>
     //
+    
 
+    function OnDataBound_GridFahrzeugAuswahl() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
 
-    //    
-    // <Wunschkennzeichen>
-    //
-
-    function AjaxFormWunschkennzeichenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
     }
 
-    function WunschkennzeichenGridRowOnDataBound(e) {
-        GridFormatKennzeichen(e, "Kennzeichen1");
-        GridFormatKennzeichen(e, "Kennzeichen2");
-        GridFormatKennzeichen(e, "Kennzeichen3");
-        GridFormatKennzeichen(e, "KennzeichenReserviert");
-
-        GridFormatButtons();
+    function OnLoad_GridFahrzeugAuswahl() {
+        $('.t-no-data td').text(ladeHinweis);
     }
 
-    function WunschkennzeichenGridRowOnEdit(e) {
-        FormWizard.ButtonNextShow(false);
-        GridFormatButtons();
-        GridFormatTextBoxes();
+    function OnColumnShowHide_GridFahrzeugAuswahl() {
+        FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function WunschkennzeichenGridRowOnCommand(e) {
-        setTimeout('TryShowFormWizardNextButton()', 1000);
+    function OnColumnReorder_GridFahrzeugAuswahl() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function TryShowFormWizardNextButton() {
-        if ($("#GridVinWunschkennzeichen").find(".text-box").length > 0)
-        // still in edit mode, so let's leave FormWizard's "Next" Button disabled:
-            return;
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
 
-        FormWizard.ButtonNextShow(true);
-    }
+        Grid_FormatMultiRowSelected(cb);
 
-    function GridFormatButtons() {
-        $("#GridVinWunschkennzeichen").find(".t-grid-edit").html("<i class='halflings-icon pencil grid-edit-button tooltips' data-original-title='@Localize.Edit' data-placement='right''></i>");
-        $("#GridVinWunschkennzeichen").find(".tooltips").tooltip();
-        $("#GridVinWunschkennzeichen").find(".t-grid-edit").addClass("grid-button");
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                FormWizard.ActionsShow(count > 0);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
 
-        $("#GridVinWunschkennzeichen").find(".t-grid-update").addClass("grid-button");
-        $("#GridVinWunschkennzeichen").find(".t-grid-cancel").addClass("grid-button");
-    }
-
-    function GridFormatTextBoxes() {
-        $("#GridVinWunschkennzeichen").find("input[id^='Kennzeichen']").addClass("text-uppercase");
-    }
-
-    function GridFormatKennzeichen(e, kennzeichenColumn) {
-        var grid = $("#GridVinWunschkennzeichen").data('tGrid');
-
-        var kennzeichen = e.dataItem[kennzeichenColumn];
-        if (kennzeichen == '')
-            return;
-
-        if (kennzeichen[kennzeichen.length - 1] == '-') {
-            var index = -1;
-            for (var i = 0; i < grid.columns.length; i++) {
-                if (grid.columns[i].member == kennzeichenColumn)
-                    index = i;
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
             }
-            if (index != -1)
-                $(e.row.cells[index]).addClass("kennzeichen-nur-mit-kfzkreis");
-        }
+        }); 
     }
-
-    //    
-    // </Wunschkennzeichen>
-    //
-
-
-    //    
-    // <Dienstleistungen>
-    //
-
-    function AjaxFormDienstleistungenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
-    //    
-    // </Dienstleistungen>
-    //
-
-    //    
-    // <FreieZulassungsOptionen>
-    //
-
-    function AjaxFormFreieZulassungsOptionenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
-    //    
-    // </FreieZulassungsOptionen>
-    //
 
 </script>
 
@@ -529,4 +391,3 @@
     .Width(500)
     .Height(550)
     .Content(@<text><div id="InnerAdresseBearbeiten"></div></text>))
-*@

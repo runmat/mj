@@ -88,6 +88,7 @@
     <Compile Include="Controllers\Abmeldungen\FahrzeugeController.cs" />
     <Compile Include="Controllers\Bestand\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
+    <Compile Include="Controllers\Briefversand\EquiController.cs" />
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
@@ -97,18 +98,17 @@
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandDataService.cs" />
-    <Compile Include="Equi\Contracts\IBriefversandDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMeldungsdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiGrunddaten.cs" />
     <Compile Include="Equi\Models\DataModels\Fahrzeugbrief.cs" />
+    <Compile Include="Equi\Models\VersandartOptionen.cs" />
     <Compile Include="Equi\Models\GrunddatenEquiSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
-    <Compile Include="Equi\Services\BriefversandDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />

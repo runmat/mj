@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Equi.Models
         [XmlIgnore]
         public Fahrzeugbrief SelectedFahrzeug { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ShippingOptions)]
+        [LocalizedDisplay(LocalizeConstants.ShippingOption)]
         [Required]
         public string VersandOptionKey { get; set; }
 
@@ -40,6 +40,28 @@ namespace CkgDomainLogic.Equi.Models
         [MaxLength(60)]
         public string Bemerkung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
+        [Required]
+        public string VersandGrundKey { get; set; }
+
+        public VersandGrund VersandGrund
+        {
+            get
+            {
+                if (GruendeList == null)
+                    return new VersandGrund();
+
+                var grund = GruendeList.FirstOrDefault(vo => vo.Code == VersandGrundKey);
+                if (grund == null)
+                    return new VersandGrund();
+
+                return grund;
+            }
+        }
+
+        [XmlIgnore]
+        static public List<VersandGrund> GruendeList { get; set; }
+
         [ModelMappingCompareIgnore]
         public bool IsValid { get; set; }
 
@@ -49,6 +71,8 @@ namespace CkgDomainLogic.Equi.Models
 
             if (Bemerkung.IsNotNullOrEmpty())
                 s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, Bemerkung);
+
+            s += string.Format("<br/><br/>{0}: {1}", Localize.CauseOfDispatch, VersandGrund.Bezeichnung);
 
             return s;
         }

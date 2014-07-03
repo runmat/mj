@@ -1,0 +1,17 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model VersandartOptionen
+
+<div id="DivVersandartOptionen" class="margin-top-20">
+    @using (Ajax.BeginForm("VersandartOptionenForm", "Equi", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivVersandartOptionen", OnComplete = "AjaxFormVersandartOptionenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersandartOptionen" }))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormRadioButtonListFor(m => m.Versandart, VersandartOptionen.VersandartAuswahl)
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

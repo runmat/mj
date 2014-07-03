@@ -2,7 +2,7 @@
 @model Adresse
 
 <div id="DivVersandadresse" class="margin-top-20">
-    @using (Ajax.BeginForm("VersandAdresseForm", "CocBeauftragung", null,
+    @using (Ajax.BeginForm("VersandAdresseForm", "Equi", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivVersandadresse", OnComplete = "VersandAdresseAjaxFormComplete();" },
                     htmlAttributes: new { @class = "form-horizontal", id = "VersandAdresseAjaxForm" }))
     {

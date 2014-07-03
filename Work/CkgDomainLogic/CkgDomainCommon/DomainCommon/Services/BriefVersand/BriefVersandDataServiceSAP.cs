@@ -13,6 +13,7 @@ using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappingsDomainCommon = CkgDomainLogic.DomainCommon.Models.AppModelMappings;
+using AppModelMappingsGeneral = CkgDomainLogic.General.Models.AppModelMappings;
 
 // ReSharper restore RedundantUsingDirective
 
@@ -20,9 +21,42 @@ namespace CkgDomainLogic.DomainCommon.Services
 {
     public class BriefVersandDataServiceSAP : CkgGeneralDataServiceSAP, IBriefVersandDataService
     {
+        private bool? _endgVersand = null;
+
+        private List<VersandGrund> Versandgruende { get { return PropertyCacheGet(() => LoadVersandgruendeFromSap().ToList()); } }
+
         public BriefVersandDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
+        }
+
+        public List<VersandGrund> GetVersandgruende(bool endgVersand)
+        {
+            if (!_endgVersand.HasValue || endgVersand != _endgVersand.Value)
+            {
+                _endgVersand = endgVersand;
+                PropertyCacheClear(this, m => m.Versandgruende);
+            }
+
+            return Versandgruende;
+        }
+
+        private IEnumerable<VersandGrund> LoadVersandgruendeFromSap()
+        {
+            Z_DPM_READ_VERS_GRUND_KUN_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (_endgVersand.Value)
+            {
+                SAP.SetImportParameter("I_ABCKZ", "2");
+            }
+            else
+            {
+                SAP.SetImportParameter("I_ABCKZ", "1");
+            }
+
+            var sapList = Z_DPM_READ_VERS_GRUND_KUN_01.GT_OUT.GetExportListWithExecute(SAP);
+
+            return AppModelMappingsGeneral.Z_DPM_READ_VERS_GRUND_KUN_01_GT_OUT_To_VersandGrund.Copy(sapList);
         }
 
         public string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege)
