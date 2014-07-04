@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type ViewModels:FieldTranslationCopyViewModel}">
             <uc:ucCopyFieldTranslations/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:BapiCheckViewModel}">
+            <uc:ucCheckBapis/>
+        </DataTemplate>
     </Window.Resources>
 
     <DockPanel>
@@ -40,6 +43,7 @@
 
                 <fl:RibbonGroupBox DataContext="{Binding ApplicationBapiViewModel}" Header="BAPIs" HorizontalContentAlignment="Left">
                     <fl:Button Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
+                    <fl:Button Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
                 <fl:RibbonGroupBox DataContext="{Binding ApplicationCopyViewModel}" Header="Anwendungen" HorizontalContentAlignment="Left">

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
@@ -46,7 +45,7 @@ namespace CKGDatabaseAdminLib.ViewModels
         public void PerformBapiCheck(object parameter)
         {
             DataService.PerformBapiCheck();
-            SendPropertyChanged("BapiCheckItems");
+            SendPropertyChanged("BapiCheckResults");
             Parent.ShowMessage("Die BAPI-Prüfung wurde erfolgreich durchgeführt", MessageType.Success);
         }
 
