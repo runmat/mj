@@ -37,21 +37,26 @@
             
             <fl:RibbonTabItem Header="Verwaltung" Name="TabVerwaltung">
                 
-                <fl:RibbonGroupBox DataContext="{Binding LoginUserMessageViewModel}" Header="Login-Messages" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
+                <fl:RibbonGroupBox Header="Login-Messages" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Size="Middle" Command="{Binding CommandManageLoginMessages}" 
+                               Header="Login-Messages verwalten" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding ApplicationBapiViewModel}" Header="BAPIs" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
-                    <fl:Button Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
+                <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" 
+                               Header="BAPIs verwalten" Height="Auto" />
+                    <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" 
+                               Header="BAPI-Definitionen prüfen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding ApplicationCopyViewModel}" Header="Anwendungen" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyApplications}" 
+                               Header="Anwendungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding FieldTranslationCopyViewModel}" Header="Feldübersetzungen" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox Header="Feldübersetzungen" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding FieldTranslationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyFieldTranslations}" 
+                               Header="Feldübersetzungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
             </fl:RibbonTabItem>

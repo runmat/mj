@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
@@ -13,7 +14,7 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public List<BapiCheckResult> BapiCheckResults { get { return DataService.BapiCheckResults; } }
+        public List<BapiCheckAbweichung> BapiCheckAbweichungen { get { return DataService.BapiCheckAbweichungen; } }
 
         [XmlIgnore]
         private readonly IBapiCheckDataService DataService;
@@ -21,7 +22,9 @@ namespace CKGDatabaseAdminLib.ViewModels
         public MainViewModel Parent { get; set; }
 
         public ICommand CommandCheckBapis { get; private set; }
-        public ICommand CommandPerformBapiCheck { get; private set; }  
+        public ICommand CommandPerformBapiCheck { get; private set; }
+
+        public string SapSystem { get { return (Parent.TestSap ? "CKQ" : "CKP"); } }
 
         #endregion
 
@@ -44,9 +47,17 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public void PerformBapiCheck(object parameter)
         {
-            DataService.PerformBapiCheck();
-            SendPropertyChanged("BapiCheckResults");
-            Parent.ShowMessage("Die BAPI-Prüfung wurde erfolgreich durchgeführt", MessageType.Success);
+            var result = DataService.PerformBapiCheck();
+
+            if (String.IsNullOrEmpty(result))
+            {
+                SendPropertyChanged("BapiCheckAbweichungen");
+                Parent.ShowMessage("Die BAPI-Prüfung wurde erfolgreich durchgeführt", MessageType.Success);
+            }
+            else
+            {
+                Parent.ShowMessage("Bei der BAPI-Prüfung ist ein Fehler aufgetreten: " + result, MessageType.Error);
+            }
         }
 
         #endregion

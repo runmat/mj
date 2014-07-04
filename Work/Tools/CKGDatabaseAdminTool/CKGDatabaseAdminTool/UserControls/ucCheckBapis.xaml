@@ -18,6 +18,13 @@
             <Style TargetType="{x:Type DataGrid}">
                 <Setter Property="Margin" Value="2"/>
             </Style>
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DoesNotExistInSap}" Value="True">
+                        <Setter Property="Background" Value="Orange" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -27,13 +34,40 @@
             <RowDefinition Height="28px"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="BAPI-Definitionen:" FontWeight="Bold" />
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Row="2" Name="dgBapiCheck" ItemsSource="{Binding BapiCheckResults}" AutoGenerateColumns="False" IsReadOnly="True">
+            <TextBlock Grid.Column="0" Text="Geänderte BAPI-Definitionen:" FontWeight="Bold" />
+            <TextBlock Grid.Column="1" Text="{Binding SapSystem}" FontWeight="Bold" />
+        </Grid>
+
+        <DataGrid Grid.Row="2" Name="dgBapiCheck" ItemsSource="{Binding BapiCheckAbweichungen}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bapi" Binding="{Binding BapiName}" />
-                <DataGridTextColumn Header="geändert" Binding="{Binding HasChanged}" />
-                <DataGridTextColumn Header="neu" Binding="{Binding IsNew}" />
+                <DataGridTextColumn Header="Bapi" Binding="{Binding BapiName}" Width="*" />
+                <DataGridTemplateColumn Header="geändert" Width="60" SortMemberPath="HasChanged">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding HasChanged}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="neu" Width="40" SortMemberPath="IsNew">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsNew}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="nicht in Sap vorhanden" Width="140" SortMemberPath="DoesNotExistInSap">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DoesNotExistInSap}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

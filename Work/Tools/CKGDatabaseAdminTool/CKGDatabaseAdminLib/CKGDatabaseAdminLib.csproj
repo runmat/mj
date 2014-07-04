@@ -45,6 +45,13 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -67,7 +74,7 @@
     <Compile Include="Contracts\IBapi2Report4CsvExportDataService.cs" />
     <Compile Include="Contracts\IBapiCheckDataService.cs" />
     <Compile Include="DbContext.cs" />
-    <Compile Include="Models\BapiCheckResult.cs" />
+    <Compile Include="Models\BapiCheckAbweichung.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -80,6 +87,7 @@
     <Compile Include="Models\DbModels\BapiCheckItem.cs" />
     <Compile Include="Models\DbModels\LoginUserMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sap.cs" />
     <Compile Include="Services\ApplicationBapiDataServiceSql.cs" />
     <Compile Include="Services\ApplicationCopyDataServiceSql.cs" />
     <Compile Include="Services\FieldTranslationCopyDataServiceSql.cs" />

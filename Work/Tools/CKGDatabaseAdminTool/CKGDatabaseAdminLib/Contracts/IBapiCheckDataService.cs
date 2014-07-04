@@ -7,10 +7,10 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IBapiCheckDataService : ICkgGeneralDataService
     {
-        List<BapiCheckResult> BapiCheckResults { get; }
+        List<BapiCheckAbweichung> BapiCheckAbweichungen { get; }
 
         void InitDataContext(string connectionName);
 
-        void PerformBapiCheck();
+        string PerformBapiCheck();
     }
 }
