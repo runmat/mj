@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UploadFahrzeugeinsteuerungViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadFahrzeugeinsteuerung"; }
+
+<h5>
+    <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>:</span>
+</h5>
+
+@if (Model.UploadItemsUploadErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsUploadErrorsOccurred)</span>
+    </div>
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = true; </script>
+}
+else
+{
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = false; </script>
+}
+
+@(Html.Telerik()
+    .Grid<FahrzeugeinsteuerungUploadModel>()
+    .Name(gridName)
+    .XGroup("GridUploadFahrzeugeinsteuerung")
+    .XAjaxDataBinding("UploadFahrzeugeinsteuerungAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzNr).Visible(false);     
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Flottennummer);
+        columns.XBound(c => c.UploadStatus).Visible(Model.UploadItemsUploadErrorsOccurred);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+)
+
