@@ -101,10 +101,10 @@
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMeldungsdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiGrunddaten.cs" />
-    <Compile Include="Equi\Models\DataModels\FahrzeugbriefBestand.cs" />
+    <Compile Include="Equi\Models\DataModels\Fahrzeugbrief.cs" />
     <Compile Include="Equi\Models\GrunddatenEquiSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
-    <Compile Include="Equi\Models\UIModels\FahrzeugbriefBestandFilter.cs" />
+    <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
