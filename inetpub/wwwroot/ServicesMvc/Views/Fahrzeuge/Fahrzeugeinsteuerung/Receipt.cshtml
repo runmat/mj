@@ -1,0 +1,18 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.UploadFahrzeugeinsteuerungViewModel
+
+@if (!Model.SaveFailed)
+{
+    <div class="alert alert-success">
+        <i class="icon-check"></i><span class="padding-left-5"><strong>@Localize.ThankYou</strong>, @Localize.WeReceivedYourData!</span>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <span class="label label-important"> <i class="icon-bell"></i><span class="padding-left-5">@Localize.UploadErrorOccurred! @Model.SaveResultMessage</span></span>
+    </div>
+}
+
+<div class="margin-top-10"></div>
+
+@Html.Partial("Fahrzeugeinsteuerung/UploadSaveFahrzeugeinsteuerungGrid", Model)
