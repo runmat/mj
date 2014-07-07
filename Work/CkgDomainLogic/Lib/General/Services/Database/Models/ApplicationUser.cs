@@ -22,8 +22,6 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool AppInMenu { get; set; }
 
-        public bool AppIsMvcFavorite { get; set; }
-
         
         #region Menu Group
 
@@ -36,5 +34,8 @@ namespace CkgDomainLogic.General.Database.Models
         public string AppTypeFriendlyName { get; set; }
 
         #endregion
+
+
+        public bool AppIsMvcFavorite { get; set; }
     }
 }

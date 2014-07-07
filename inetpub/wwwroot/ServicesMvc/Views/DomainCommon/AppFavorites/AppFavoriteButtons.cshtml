@@ -86,6 +86,20 @@
         return false;
     }
     
+    function AppFavoriteButtonsCoreRefresh() {
+        $.ajax({
+            type: "POST",
+            url: "DomainCommon/AppFavoriteButtonsCoreRefresh",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                $("#AppFavoriteButtonsCore").html(result);
+            },
+            error: function (jqXhr) {
+            }
+        }); 
+    }
+
     function AppFavoritesEditSwitchOneFavorite(a, appID) {
         $.ajax({
             type: "POST",
@@ -105,20 +119,6 @@
         });
 
         return false;
-    }
-    
-    function AppFavoriteButtonsCoreRefresh() {
-        $.ajax({
-            type: "POST",
-            url: "DomainCommon/AppFavoriteButtonsCoreRefresh",
-            data: {},
-            loadingShow: false,
-            success: function (result) {
-                $("#AppFavoriteButtonsCore").html(result);
-            },
-            error: function (jqXhr) {
-            }
-        }); 
     }
 
 </script>
