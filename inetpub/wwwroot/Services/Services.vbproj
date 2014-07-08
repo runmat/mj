@@ -1053,6 +1053,36 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>  
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+		<_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls" />
+		<FilesForPackagingFromProject  Include="%(_Applications.Identity)">
+			<DestinationRelativePath>Applications\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+		</FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+		<_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls" />
+		<FilesForPackagingFromProject  Include="%(_Components.Identity)">
+			<DestinationRelativePath>Components\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+		</FilesForPackagingFromProject>
+    </ItemGroup>	
+    <ItemGroup>
+		<_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls" />
+		<FilesForPackagingFromProject  Include="%(_Admin.Identity)">
+			<DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+		</FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>  
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
