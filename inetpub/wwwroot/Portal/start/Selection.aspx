@@ -11,6 +11,7 @@
 		<meta content="JavaScript" name="vs_defaultClientScript">
 		<meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
 		<uc1:styles id="ucStyles" runat="server"></uc1:styles>
+        <script type="text/javascript" src="/Portal/Scripts/jquery-1.7.1.min.js"></script>
         <script type="text/javascript">
 
             function LogPageVisit(appId, href) {
