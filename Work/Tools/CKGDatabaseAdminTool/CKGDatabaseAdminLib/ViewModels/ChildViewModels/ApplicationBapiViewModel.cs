@@ -78,7 +78,7 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             if (!String.IsNullOrEmpty(NewBapiName))
             {
-                var id = DataService.AddBapi(NewBapiName.ToUpper());
+                var id = DataService.AddBapi(NewBapiName);
                 SendPropertyChanged("Bapis");
                 AddBapiId = id;
                 Parent.ShowMessage("BAPI " + NewBapiName + " wurde erfolgreich angelegt", MessageType.Success);
