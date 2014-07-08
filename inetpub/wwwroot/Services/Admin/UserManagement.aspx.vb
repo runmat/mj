@@ -1,5 +1,4 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel.Admin
+﻿Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Kernel.Security
 Imports Telerik.Web.UI
@@ -15,10 +14,8 @@ End Structure
 Partial Public Class UserManagement
     Inherits Page
 
-    Private objSuche As CKG.Base.Kernel.Common.Search
     Private Const CONST_LOESCHKENNZEICHEN As String = "X"
     Private isExcelExportConfigured As Boolean = False
-    Private isShowResult As Boolean = True
 
 #Region " Membervariables "
     Private m_User As User
@@ -451,7 +448,6 @@ Partial Public Class UserManagement
         If Not dvUser Is Nothing And dvUser.Table.Rows.Count > 0 Then
 
             Dim fitTable As DataTable = New DataTable()
-            Dim cols(dvUser.Table.Columns.Count) As DataColumn
             Dim startIndex As Integer = 0
 
             For Each col As DataColumn In dvUser.Table.Columns
@@ -1121,13 +1117,6 @@ Partial Public Class UserManagement
         End With
         Return tblPar
     End Function
-
-    '-----------
-    'Nachladen der Tabelle für die Rechte
-    '-----------
-    Private Sub RefillMatrix()
-        Fill_Matrix(ddlFilterCustomer.SelectedItem.Value, "")
-    End Sub
 
     '-----------
     'Erstellt die Tabelle für das Setzen der Rechte
@@ -1957,7 +1946,6 @@ Partial Public Class UserManagement
             End If
         Else
             Search(True, True, True, True, True)
-            BuildExcel()
             SearchNotApprovedMode(True, False)
 
         End If
@@ -2400,7 +2388,7 @@ Partial Public Class UserManagement
         'NameEditMode(Not _customer.CustomerPasswordRules.NameInputOptional)
     End Sub
 
-    Function refill_Groups()
+    Private Sub refill_Groups()
         Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
@@ -2423,7 +2411,7 @@ Partial Public Class UserManagement
         PasswordEditMode(autoPW)
 
         ddlCustomer.Focus()
-    End Function
+    End Sub
 
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
 
@@ -2433,51 +2421,6 @@ Partial Public Class UserManagement
         Else
             'nur nicht freigegebene
             Search(True, True, True, True, True)
-        End If
-
-        Dim dvUSer As DataView = CType(Session("myUserListView"), DataView)
-        If dvUSer.Table.Rows.Count > 0 Then
-            BuildExcel()
-        Else
-            lblError.Text = "Keine Datensätze gefunden."
-        End If
-
-    End Sub
-
-    Private Sub BuildExcel()
-        Dim _context As HttpContext = HttpContext.Current
-        Dim dvUser As DataView
-        Dim tableExport As New DataTable()
-
-        Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls"
-        Dim showExcel As Boolean
-        Dim customerList As String
-
-        trSearchSpacer.Visible = False
-        showExcel = False
-        customerList = ConfigurationManager.AppSettings("ShowExcelLinkUserDownload").ToString  'Liste aller Kundennummern, für die der Excel-Download sichtbar sein soll...
-
-        If (m_User.HighestAdminLevel = AdminLevel.Master) Then
-            showExcel = True
-        End If
-        If (m_User.HighestAdminLevel = AdminLevel.Customer) Then
-            If (Not (m_User.Customer.KUNNR Is Nothing)) AndAlso (customerList.IndexOf(m_User.Customer.KUNNR.ToString) >= 0) Then    'Kundennummer in Liste drin?
-                showExcel = True                        'Ja, Link sichtbar machen...
-            End If
-        End If
-
-        If (showExcel = True) Then
-            dvUser = CType(Session("myUserListView"), DataView)
-            tableExport = dvUser.Table      'DAD-Admin darf alles sehen
-
-            Dim objExcelExport As New CKG.Base.Kernel.Excel.ExcelExport()
-
-            Try
-                CKG.Base.Kernel.Excel.ExcelExport.WriteExcel(tableExport, ConfigurationManager.AppSettings("ExcelPath") & strFileName)
-            Catch ex As Exception
-            End Try
-            lnkExcel.NavigateUrl = "/Services/Temp/Excel/" & strFileName
-            trSearchSpacer.Visible = True
         End If
 
     End Sub
@@ -2661,32 +2604,6 @@ Partial Public Class UserManagement
 
 #End Region
 
-#Region "Selektion"
-
-    '-------
-    'Es wurde eine andere Benutzergruppe ausgewählt
-
-    '-------
-    Private Sub GroupList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Try
-            Fill_Matrix(m_User.KUNNR, "")
-        Catch ex As Exception
-            lblError.Text = "Fehler: " & ex.Message
-        End Try
-    End Sub
-
-#End Region
-
-    Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
-        Dim blnIsInNotApprovedMode = (ihNotApprovedMode.Value = "1")
-        FillDataGrid(blnIsInNotApprovedMode)
-    End Sub
-
-    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
-        Dim blnIsInNotApprovedMode = (ihNotApprovedMode.Value = "1")
-        FillDataGrid(blnIsInNotApprovedMode)
-    End Sub
-
 #If DEBUG Then
     Private Sub DebugDdl(ByVal ddl As DropDownList)
         Dim _li As ListItem
@@ -2723,7 +2640,6 @@ Partial Public Class UserManagement
             End If
         Else
             Search(True, True, True, True, True)
-            BuildExcel()
             SearchNotApprovedMode(True, False)
         End If
     End Sub
@@ -2758,13 +2674,6 @@ Partial Public Class UserManagement
 
         RightKey = RightUser
         WrongKey = WrongUser
-    End Sub
-
-    Protected Sub imgXls_OnClick() Handles imgXls.Click
-
-        If Not String.IsNullOrEmpty(lnkExcel.NavigateUrl) Then
-            Page.Response.Redirect(lnkExcel.NavigateUrl)
-        End If
     End Sub
 
     Protected Sub rgSearchResultSortCommand(sender As Object, e As GridSortCommandEventArgs) Handles rgSearchResult.SortCommand
@@ -2901,7 +2810,6 @@ Partial Public Class UserManagement
             End If
             Dim CtrlLabel As Label
             CtrlLabel = e.Item.Cells(0).FindControl("lblUserID")
-            isShowResult = False
             If Not searchNotApproved Then
                 'normales edit
                 EditEditMode(CInt(CtrlLabel.Text))

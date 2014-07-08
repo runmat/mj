@@ -491,33 +491,6 @@ Partial Public Class UserManagement
     Protected WithEvents Result As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''trSearchSpacer-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trSearchSpacer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''imgXls-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents imgXls As Global.System.Web.UI.WebControls.ImageButton
-
-    '''<summary>
-    '''lnkExcel-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lnkExcel As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
     '''lblNotApprovedMode-Steuerelement
     '''</summary>
     '''<remarks>
@@ -534,15 +507,6 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents ihNotApprovedMode As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
-    '''<summary>
-    '''GridNavigation1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
 
     '''<summary>
     '''divLegende-Steuerelement
@@ -570,15 +534,6 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Img2 As Global.System.Web.UI.HtmlControls.HtmlImage
-
-    '''<summary>
-    '''RadCodeBlock1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents RadCodeBlock1 As Global.Telerik.Web.UI.RadCodeBlock
 
     '''<summary>
     '''RadAjaxManager1-Steuerelement
