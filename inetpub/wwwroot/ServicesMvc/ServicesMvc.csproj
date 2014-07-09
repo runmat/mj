@@ -384,21 +384,49 @@
     <Compile Include="Models\TestFilterModel2.cs" />
     <Compile Include="Models\TestFilterModel.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
-    <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml" />
-    <None Include="App_Data\XmlData\StepsZulassung.xml" />
-    <None Include="App_Data\XmlData\StepsZulassungFrei.xml" />
-    <None Include="App_Data\XmlData\Charts\40_ChartAutovermieterFahrzeugAnzahlDoubleHeight.xml" />
-    <None Include="App_Data\XmlData\Charts\50_ChartAutovermieterKilometerLeistung.xml" />
-    <None Include="App_Data\XmlData\Charts\60_ChartAutovermieterKilometerLeistungProzent.xml" />
-    <None Include="App_Data\XmlData\Charts\20_ChartKbaKgsVW.xml" />
-    <None Include="App_Data\XmlData\Charts\10_MapKbaKgsDoubleHeight.xml" />
+    <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\StepsZulassung.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\StepsZulassungFrei.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\40_ChartAutovermieterFahrzeugAnzahlDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\50_ChartAutovermieterKilometerLeistung.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\60_ChartAutovermieterKilometerLeistungProzent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\20_ChartKbaKgsVW.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\10_MapKbaKgsDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App_Data\XmlData\Charts\30_ChartKbaKgsGesamt.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App_Data\XmlData\Charts\80_MapFspVkStandorteDoubleHeight.xml" />
-    <None Include="App_Data\XmlData\Charts\70_MapKennzeichenVkStandorteDoubleHeight.xml" />
-    <None Include="App_Data\XmlData\Charts\75_ChartKennzeichenVkStandorteDoubleHeight.xml" />
-    <None Include="App_Data\XmlData\Charts\85_ChartFspVkStandorteDoubleHeight.xml" />
+    <None Include="App_Data\XmlData\Charts\80_MapFspVkStandorteDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\70_MapKennzeichenVkStandorteDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\75_ChartKennzeichenVkStandorteDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\Charts\85_ChartFspVkStandorteDoubleHeight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\StepsBriefversand.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
@@ -2296,6 +2324,20 @@
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadFahrzeugeinsteuerungGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand.cshtml" />
+    <Content Include="Views\Equi\Briefversand\FahrzeugAuswahl.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandAdresseForm.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandAdresse.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandOptionen.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandOptionenForm.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Receipt.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Summary.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\SummaryAddressSelectionLink.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\SummaryPdf.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\Common.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

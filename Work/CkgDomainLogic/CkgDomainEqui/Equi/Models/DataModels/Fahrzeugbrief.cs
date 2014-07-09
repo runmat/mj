@@ -78,5 +78,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.Reference2)]
         public string Referenz2 { get; set; }
+
+        [ModelMappingCompareIgnore]
+        public bool IsSelected { get; set; }
     }
 }

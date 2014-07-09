@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public IBriefbestandDataService DataService { get { return CacheGet<IBriefbestandDataService>(); } }
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> Fahrzeugbriefe { get { return DataService.Fahrzeugbriefe; } }
+        public List<Fahrzeugbrief> Fahrzeugbriefe { get { return DataService.FahrzeugbriefeBestand; } }
 
         [LocalizedDisplay(LocalizeConstants.Stock)]
         public bool SelektionsfilterLagerbestand

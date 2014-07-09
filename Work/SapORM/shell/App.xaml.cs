@@ -194,6 +194,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_UPLOAD_GRUDAT_TIP_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
 
+            //new FunctionReflector("Z_DPM_READ_VERS_GRUND_KUN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
