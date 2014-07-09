@@ -89,10 +89,8 @@ namespace CkgDomainLogic.General.Services
             {
                 return PropertyCacheGet(() =>
                     AppModelMappings.Z_DPM_READ_LV_001__GT_OUT_DL_To_VersandOption.Copy(SapVersandOptionen)
-                        // vorerst nur Versandoptionen für endgültigen Versand hier
-                        .Where(vo => vo.IstEndgueltigerVersand)
-                            .Concat(new List<VersandOption> { new VersandOption { ID = "", Name = Localize.DropdownDefaultOptionPleaseChoose } })
-                                .OrderBy(w => w.Name).ToList());
+                        .Concat(new List<VersandOption> { new VersandOption { ID = "", Name = Localize.DropdownDefaultOptionPleaseChoose } })
+                            .OrderBy(w => w.Name).ToList());
             }
         }
 
