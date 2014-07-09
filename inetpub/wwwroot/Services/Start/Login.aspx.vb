@@ -6,6 +6,7 @@ Imports System.Drawing.Imaging
 Imports CKG.Base.Business
 Imports System.Security.Cryptography
 Imports System.IO
+Imports System.Reflection
 Imports WebTools.Services
 Imports CKG.Base.Business.HelpProcedures
 
@@ -264,17 +265,35 @@ Partial Public Class Login
                 If Not (Request.QueryString("ReturnURL") Is Nothing) Then
                     Dim returnUrl As String = Request.QueryString("ReturnURL").ToLower()
                     If (returnUrl.Contains("mvc/")) Then
-                        Dim urlParameterChar As String = "?"
-                        If (returnUrl.Contains("?")) Then
-                            urlParameterChar = "&"
+
+                        If (m_User.Customer.PortalType <> "MVC") Then
+                            ' --- 27.06.2014, MJE
+                            ' --- Fix für 
+                            ' --- Wenn Management sich
+                            ' --- 1.       mich in einem Metronic Kunden anmelde
+                            ' --- 2.       mich dort per „logout“ wieder abmelde
+                            ' --- 3.       mich danach bei einem Services-Kunden anmelde
+                            ' --- landet man auf der letzten Metronic-Seite ohne Rahmenlayout, nicht aber auf der gewünschten Services-Seite.
+                            ' ---
+                            ' --- Lösung: 
+                            ' --- Die ReturnUrl aus dem Request.QueryString entfernen, wenn Kunde kein MVC Metronic Layout hat
+                            Dim isreadonly As PropertyInfo = GetType(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance Or BindingFlags.NonPublic)
+                            isreadonly.SetValue(Request.QueryString, False, Nothing)
+                            Request.QueryString.Remove("ReturnUrl")
+                            isreadonly.SetValue(Request.QueryString, True, Nothing)
+                        Else
+                            Dim urlParameterChar As String = "?"
+                            If (returnUrl.Contains("?")) Then
+                                urlParameterChar = "&"
+                            End If
+
+                            m_User.SetLastLogin(DateTime.Now)
+                            Session("objUser") = m_User
+
+                            'FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), False)
+                            Response.Redirect(String.Format("{0}{1}un={2}", returnUrl, urlParameterChar, CryptoMd5.EncryptToUrlEncoded(m_User.UserName)))
+                            Exit Sub
                         End If
-
-                        m_User.SetLastLogin(DateTime.Now)
-                        Session("objUser") = m_User
-
-                        'FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), False)
-                        Response.Redirect(String.Format("{0}{1}un={2}", returnUrl, urlParameterChar, CryptoMd5.EncryptToUrlEncoded(m_User.UserName)))
-                        Exit Sub
                     End If
                 End If
 
