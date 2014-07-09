@@ -16,6 +16,8 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult BestandSicherungsscheine()
         {
+            SicherungsscheineViewModel.LoadSicherungsscheine();
+
             return View(SicherungsscheineViewModel);
         }
 

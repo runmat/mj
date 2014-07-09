@@ -213,13 +213,13 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult AlleTermineAjaxBinding()
         {
-            return View(new GridModel(EventsViewModel.AlleTermineFiltered));
+            return View(new GridModel(EventsViewModel.AlleSchadenfaelleTermineFiltered));
         }
 
         [HttpPost]
         public ActionResult FilterAlleTermineGrid(string filterValue, string filterColumns)
         {
-            EventsViewModel.AlleTermineFilter(filterValue, filterColumns);
+            EventsViewModel.AlleSchadenfaelleTermineFilter(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -363,7 +363,7 @@ namespace ServicesMvc.Controllers
                     {
                         key = t.VersBoxID.ToString(),
                         boxArt = boxArt,
-                        title = (t.IsBlockerDummyTermin ? "Blocker" : t.Schadenfall.Nachname),
+                        title = (t.IsBlockerDummyTermin ? "Blocker" : string.Format("{0} {1}", t.SchadenfallKennzeichen, t.Schadenfall.Nachname)),
                         isBlocker = t.IsBlockerDummyTermin,
 
                         startDateString = t.Datum.ToJsonDateTimeString(),

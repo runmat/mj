@@ -33,7 +33,6 @@ namespace CkgDomainLogic.General.Models
 
         private string _kennzeichen1;
         [LocalizedDisplay(LocalizeConstants.LicenseNoShort, 1)]
-        [Kennzeichen]
         public string Kennzeichen1
         {
             get { return _kennzeichen1; }
@@ -42,7 +41,6 @@ namespace CkgDomainLogic.General.Models
 
         private string _kennzeichen2;
         [LocalizedDisplay(LocalizeConstants.LicenseNoShort, 2)]
-        [Kennzeichen]
         public string Kennzeichen2
         {
             get { return _kennzeichen2; }
@@ -51,7 +49,6 @@ namespace CkgDomainLogic.General.Models
 
         private string _kennzeichen3;
         [LocalizedDisplay(LocalizeConstants.LicenseNoShort, 3)]
-        [Kennzeichen]
         public string Kennzeichen3
         {
             get { return _kennzeichen3; }

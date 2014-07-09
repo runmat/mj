@@ -9,6 +9,8 @@
 <head id="Head1" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
     <title>Württembergische - Bestellung Mopedkennzeichen </title>
+    <script src="/Services/JScript/Jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
+    <script src="/Services/JScript/services.js" type="text/javascript"></script>
 </head>
 </head>
 <body id="top">

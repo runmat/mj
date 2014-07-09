@@ -14,6 +14,7 @@ namespace AppZulassungsdienst.forms
         private CKG.Base.Kernel.Security.User m_User;
         private CKG.Base.Kernel.Security.App m_App;
         private clsWareneingang objWareneingang;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
         /// Erwartete Bestellungen laden(Z_FIL_READ_OFF_BEST_001) und an die Listbox binden.
@@ -38,11 +39,21 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                objWareneingang = new clsWareneingang(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-                objWareneingang.VKBUR = m_User.Reference.Substring(4, 4);
-                objWareneingang.VKORG = m_User.Reference.Substring(0, 4);
-                objWareneingang.getErwarteteLieferungenFromSAP(Session["AppID"].ToString(), Session.SessionID, this);
+                if (Request.QueryString["BackToList"] != null && Session["objWareneingang"] != null)
+                {
+                    objWareneingang = (clsWareneingang) Session["objWareneingang"];
+                    objWareneingang.ReInit(Request.QueryString["BackToList"]);
+                }
+                else
+                {
+                    objWareneingang = new clsWareneingang(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
+                    objWareneingang.VKBUR = m_User.Reference.Substring(4, 4);
+                    objWareneingang.VKORG = m_User.Reference.Substring(0, 4);
+                    objWareneingang.getErwarteteLieferungenFromSAP(Session["AppID"].ToString(), Session.SessionID, this);   
+                }
+
                 Session["objWareneingang"] = objWareneingang;
+
                 if (objWareneingang.Status != 0)
                 {
                     if (objWareneingang.Status == -1)
@@ -63,6 +74,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Positionen der ausgewählten Bestellung selektieren(Z_FIL_EFA_UML_OFF_POS). Und an die Detailseite übergeben.
         /// </summary>
@@ -99,6 +111,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Suche nach Bestellnummer. Funktionsaufruf SelectBestellung().
         /// </summary>
@@ -108,6 +121,7 @@ namespace AppZulassungsdienst.forms
         {
             SelectBestellung();
         }
+
         /// <summary>
         /// Suche nach Lieferanten. Funktionsaufruf SelectBestellung().
         /// </summary>
@@ -117,6 +131,7 @@ namespace AppZulassungsdienst.forms
         {
             SelectBestellung();
         }
+
         /// <summary>
         /// Filter auf die Listbox setzen. Bei Lieferanten- und/oder Bestellnummersuche.
         /// </summary>
@@ -136,6 +151,7 @@ namespace AppZulassungsdienst.forms
                 lbxBestellungen.SelectedIndex = 0;
             }
         }
+
         /// <summary>
         /// Zurück zur Startseite.
         /// </summary>
@@ -145,6 +161,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
         }
+
         /// <summary>
         /// Page_PreRender-Ereignis. Anzahl erwarteter Bestellungen in das Textfeld schreiben.
         /// </summary>
