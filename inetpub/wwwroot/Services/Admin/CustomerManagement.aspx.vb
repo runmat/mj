@@ -29,6 +29,10 @@ Partial Public Class CustomerManagement
 
         RadAsyncUpload1.Attributes.Add("onClick", "alert('Das Logo sollte ca. 220 x 70 Pixel haben');")
 
+        m_User = GetUser(Me)
+
+        HandleCheckBoxesAppIsMvcIsDefaultFavorite(sender)
+
 
         'LogoUploadList unten anzeigen 
         RadAsyncUpload1.UploadedFilesRendering = AsyncUpload.UploadedFilesRendering.BelowFileInput
@@ -40,7 +44,6 @@ Partial Public Class CustomerManagement
                                        "function onFileUploaded(sender, args) { " & _
                                        "document.getElementById('" & btnUpload.ClientID & "').click(); }", True)
 
-        m_User = GetUser(Me)
         lblHead.Text = "Kundenverwaltung"
         AdminAuth(Me, m_User, AdminLevel.Master)
         GridNavigation1.setGridElment(dgSearchResult)
@@ -81,6 +84,7 @@ Partial Public Class CustomerManagement
 
         FillLoginLinks()
         FillPortalTypes()
+        FillMvcSelectionTypes()
 
         If m_User.HighestAdminLevel = AdminLevel.Master Then
             'wenn SuperUser und übergeordnete Firma
@@ -172,6 +176,8 @@ Partial Public Class CustomerManagement
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
             txtMvcSelectionUrl.Text = _Customer.MvcSelectionUrl
+            'txtMvcSelectionType.Text = _Customer.MvcSelectionType
+            ddlMvcSelectionType.SelectedValue = _Customer.MvcSelectionType
 
             'fillAccountingArea
             FillAccountingArea(intCustomerId)
@@ -372,6 +378,7 @@ Partial Public Class CustomerManagement
         tblApps.Columns.Add("AppTechType")
         tblApps.Columns.Add("AppDescription")
         tblApps.Columns.Add("Assigned")
+        tblApps.Columns.Add("AppIsMvcDefaultFavorite", Type.GetType("System.Boolean"))
     End Sub
 
     Private Sub FillApps(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
@@ -411,6 +418,7 @@ Partial Public Class CustomerManagement
             newRow("AppTechType") = row("AppTechType")
             newRow("AppDescription") = row("AppDescription")
             newRow("Assigned") = "X"
+            newRow("AppIsMvcDefaultFavorite") = row("AppIsMvcDefaultFavorite")
             tblApps.Rows.Add(newRow)
         Next
 
@@ -712,6 +720,8 @@ Partial Public Class CustomerManagement
 
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
+
+        ddlMvcSelectionType.Enabled = Not blnLock
         txtMvcSelectionUrl.Enabled = Not blnLock
     End Sub
 
@@ -1090,6 +1100,14 @@ Partial Public Class CustomerManagement
         For Each row As DataRow In TempTable.Rows
             ddlPortalType.Items.Add(New ListItem(row("PortalType").ToString()))
         Next
+
+    End Sub
+
+    Private Sub FillMvcSelectionTypes()
+
+        ddlMvcSelectionType.Items.Add(New ListItem(""))
+        ddlMvcSelectionType.Items.Add(New ListItem("Anwendungs-Favoriten", "Favorites"))
+        ddlMvcSelectionType.Items.Add(New ListItem("Selection URL", "Url"))
 
     End Sub
 
@@ -1518,6 +1536,7 @@ Partial Public Class CustomerManagement
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
         txtMvcSelectionUrl.Text = String.Empty
+        ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False
         chkTeamviewer.Checked = False
         txtCName.Text = String.Empty
@@ -1716,7 +1735,8 @@ Partial Public Class CustomerManagement
                                                 strSDUserName:=txtSDUserName.Text, _
                                                 strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, _
                                                 strSDSignatur:=txtSDSignatur.Text, strSDSignatur2:=txtSDSignatur2.Text, _
-                                                strMvcSelectionUrl:=txtMvcSelectionUrl.Text)
+                                                strMvcSelectionUrl:=txtMvcSelectionUrl.Text, _
+                                                strMvcSelectionType:=ddlMvcSelectionType.SelectedValue)
             If (txtUserLockTime.Text.Trim() <> "") Then
                 If CInt(txtUserLockTime.Text) >= 5 Then
                     _customer.DaysUntilLock = CInt(txtUserLockTime.Text)
@@ -2188,6 +2208,58 @@ Partial Public Class CustomerManagement
 
     Protected Sub lbtFilterUnassignedApps_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtFilterUnassignedApps.Click
         rgAppUnAssigned.Rebind()
+    End Sub
+
+
+    Sub HandleCheckBoxesAppIsMvcIsDefaultFavorite(ByVal sender As Object)
+
+        If (Not IsPostBack) Then
+            Return
+        End If
+
+        Dim controlName As String = Request.Params("__EVENTTARGET")
+        If (controlName Is Nothing Or Not controlName.ToLower().Contains("rgappassigned")) Then
+            ' Parent dieses Controls ist nicht das Grid "rgAppAssigned" => raus hier!
+            Return
+        End If
+
+        Dim control As Control = Page.FindControl(controlName)
+        If (control Is Nothing) Then
+            Return
+        End If
+
+        Dim checkBox As CheckBox = TryCast(control, CheckBox)
+        If (checkBox Is Nothing) Then
+            ' dieses control ist keine CheckBox => raus hier!
+            Return
+        End If
+
+        Dim customerID As String = ihCustomerID.Value
+        Dim appID As String = checkBox.ToolTip
+
+        If (appID Is Nothing Or appID = "") Then
+            ' AppID nicht verfügbar => raus hier!
+            Return
+        End If
+
+        Dim sql As String
+        sql = " update vwCustomerAppAssigned " & _
+              " set AppIsMvcDefaultFavorite = " & IIf(checkBox.Checked, "1", "0") & " " & _
+              " where CustomerID = " & customerID & " and AppID = " & appID
+
+        Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+        Dim cmd As New SqlClient.SqlCommand
+        Try
+            cn.Open()
+            cmd.Connection = cn
+            cmd.CommandType = CommandType.Text
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw New Exception("Update des Datenbank-Flags 'Customer.AppIsMvcDefaultFavorite' fehlgeschlagen")
+        Finally
+            cn.Close()
+        End Try
     End Sub
 
 #End Region
