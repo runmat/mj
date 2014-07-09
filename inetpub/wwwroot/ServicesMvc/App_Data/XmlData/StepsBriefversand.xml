@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+  <item>
+    <key>
+      <string>FahrzeugAuswahl</string>
+    </key>
+    <value>
+      <string>Fahrzeug</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>VersandartOptionen</string>
+    </key>
+    <value>
+      <string>Versandart</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>VersandAdresse</string>
+    </key>
+    <value>
+      <string>Versand&lt;br /&gt;Adresse</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>VersandOptionen</string>
+    </key>
+    <value>
+      <string>Versand&lt;br /&gt;Optionen</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>Summary</string>
+    </key>
+    <value>
+      <string>Übersicht</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>Receipt</string>
+    </key>
+    <value>
+      <string>Fertig!</string>
+    </value>
+  </item>
+</dictionary>

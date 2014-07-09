@@ -475,10 +475,10 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery" id="trPwdHistoryNEntries" runat="server">
-                                                    <td class="firstLeft active" runat="server">
+                                                    <td id="Td1" class="firstLeft active" runat="server">
                                                         Sperre letze n Passwörter:
                                                     </td>
-                                                    <td class="active" runat="server">
+                                                    <td id="Td2" class="active" runat="server">
                                                         <asp:TextBox ID="txtPwdHistoryNEntries" runat="server" CssClass="InputTextbox">6</asp:TextBox>
                                                     </td>
                                                 </tr>
@@ -556,8 +556,8 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active" style="vertical-align: top;" runat="server">
-                                                        <asp:UpdatePanel runat="server">
+                                                    <td id="Td3" class="firstLeft active" style="vertical-align: top;" runat="server">
+                                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rbeing" EventName="CheckedChanged" />
                                                             </Triggers>
@@ -567,8 +567,8 @@
                                                             </ContentTemplate>
                                                         </asp:UpdatePanel>
                                                     </td>
-                                                    <td class="active" runat="server" style="width: 200px">
-                                                        <asp:UpdatePanel runat="server">
+                                                    <td id="Td4" class="active" runat="server" style="width: 200px">
+                                                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rbeing" EventName="CheckedChanged" />
                                                             </Triggers>
@@ -580,8 +580,8 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active" style="vertical-align: top;" runat="server">
-                                                        <asp:UpdatePanel runat="server">
+                                                    <td id="Td5" class="firstLeft active" style="vertical-align: top;" runat="server">
+                                                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rbKeine" EventName="CheckedChanged" />
                                                             </Triggers>
@@ -591,8 +591,8 @@
                                                             </ContentTemplate>
                                                         </asp:UpdatePanel>
                                                     </td>
-                                                    <td class="active" runat="server" style="width: 200px">
-                                                        <asp:UpdatePanel runat="server">
+                                                    <td id="Td6" class="active" runat="server" style="width: 200px">
+                                                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rbKeine" EventName="CheckedChanged" />
                                                             </Triggers>
@@ -603,7 +603,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active" style="vertical-align: top;" runat="server">
+                                                    <td id="Td7" class="firstLeft active" style="vertical-align: top;" runat="server">
                                                         Autom. Benutzersperrung nach:
                                                     </td>
                                                     <td class="active" style="vertical-align: top;width: 200px">
@@ -615,7 +615,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active" style="vertical-align: top;" runat="server">
+                                                    <td id="Td8" class="firstLeft active" style="vertical-align: top;" runat="server">
                                                         Autom. Benutzer löschen
                                                         <br />
                                                         nach Sperrung:
@@ -1118,7 +1118,7 @@
                                                                         <telerik:GridTemplateColumn Groupable="false" UniqueName="MvcDefaultFavorite" SortExpression="AppIsMvcDefaultFavorite" HeaderText="MVC Favorit">
                                                                             <HeaderStyle Width="60px" />
                                                                             <ItemTemplate>
-                                                                                <asp:CheckBox runat="server" EnableViewState="True" AutoPostBack="True" style="width: 16px; height: 16px" 
+                                                                                <asp:CheckBox ID="CheckBox1" runat="server" EnableViewState="True" AutoPostBack="True" style="width: 16px; height: 16px" 
                                                                                         Checked='<%# DataBinder.Eval(Container, "DataItem.AppIsMvcDefaultFavorite") %>' 
                                                                                         ToolTip='<%# DataBinder.Eval(Container, "DataItem.AppID").ToString() %>' />
                                                                             </ItemTemplate>
@@ -1404,7 +1404,7 @@
         }); 
         
     </script>
-    <telerik:RadScriptBlock runat="server">
+    <telerik:RadScriptBlock ID="RadScriptBlock1" runat="server">
         <script type="text/javascript">
             function imageDDLChanged() {
                 var imageDDLWert = $find("<%= imageDDL.ClientID %>").get_value();

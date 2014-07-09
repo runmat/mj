@@ -402,10 +402,6 @@ Partial Public Class CustomerManagement
             newRow("AppTechType") = row("AppTechType")
             newRow("AppDescription") = row("AppDescription")
             newRow("Assigned") = ""
-            Try
-                newRow("AppIsMvcDefaultFavorite") = False
-            Catch
-            End Try
             tblApps.Rows.Add(newRow)
         Next
 
@@ -422,10 +418,7 @@ Partial Public Class CustomerManagement
             newRow("AppTechType") = row("AppTechType")
             newRow("AppDescription") = row("AppDescription")
             newRow("Assigned") = "X"
-            Try
-                newRow("AppIsMvcDefaultFavorite") = row("AppIsMvcDefaultFavorite")
-            Catch
-            End Try
+            newRow("AppIsMvcDefaultFavorite") = row("AppIsMvcDefaultFavorite")
             tblApps.Rows.Add(newRow)
         Next
 
