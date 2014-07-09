@@ -367,7 +367,7 @@
                         <asp:LinkButton ID="lbCreate" runat="server" CssClass="Tablebutton" Width="78px"
                             OnClick="lbCreate_Click">» Suchen </asp:LinkButton>
                     </div>
-                    <div id="Result" runat="Server" visible="false">
+                    <div id="Result" runat="Server" visible="false" style="width: 100%; float: left">
                         <div style="padding-bottom: 10px">
                             <table id="tblZulassung" runat="server" visible="false" cellpadding="0" cellspacing="0"
                                 width="100%" style="border-width: 1px; border-color: #dfdfdf; border-style: solid;">

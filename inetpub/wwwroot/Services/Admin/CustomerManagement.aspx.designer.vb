@@ -419,6 +419,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents trMvcSelectionUrl As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
+    '''ddlMvcSelectionType-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlMvcSelectionType As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''tr2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents tr2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
     '''txtMvcSelectionUrl-Steuerelement
     '''</summary>
     '''<remarks>
@@ -635,6 +653,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents trPwdHistoryNEntries As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
+    '''Td1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''Td2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
     '''txtPwdHistoryNEntries-Steuerelement
     '''</summary>
     '''<remarks>
@@ -725,6 +761,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents rbeing As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
+    '''Td3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td3 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''lblKundenadministrationInfo-Steuerelement
     '''</summary>
     '''<remarks>
@@ -732,6 +786,24 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblKundenadministrationInfo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Td4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td4 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel2 As Global.System.Web.UI.UpdatePanel
 
     '''<summary>
     '''txtKundenadministrationBeschreibung-Steuerelement
@@ -743,6 +815,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtKundenadministrationBeschreibung As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''Td5-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td5 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel3 As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''lblKundenadministrationContact-Steuerelement
     '''</summary>
     '''<remarks>
@@ -752,6 +842,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents lblKundenadministrationContact As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Td6-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td6 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel4 As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''EditKundenadministrationContact-Steuerelement
     '''</summary>
     '''<remarks>
@@ -759,6 +867,15 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents EditKundenadministrationContact As Global.AjaxControlToolkit.HTMLEditor.Editor
+
+    '''<summary>
+    '''Td7-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td7 As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
     '''<summary>
     '''txtUserLockTime-Steuerelement
@@ -777,6 +894,15 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents ftbeUserLockTime As Global.AjaxControlToolkit.FilteredTextBoxExtender
+
+    '''<summary>
+    '''Td8-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Td8 As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
     '''<summary>
     '''txtUserDeleteTime-Steuerelement
@@ -1578,4 +1704,13 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lbtnCancelOptions As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''RadScriptBlock1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents RadScriptBlock1 As Global.Telerik.Web.UI.RadScriptBlock
 End Class

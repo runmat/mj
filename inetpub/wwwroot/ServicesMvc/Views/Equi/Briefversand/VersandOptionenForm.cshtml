@@ -1,0 +1,30 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model VersandOptionen
+
+<div id="DivVersandOptionen" class="margin-top-20">
+    @using (Ajax.BeginForm("VersandOptionenForm", "Equi", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivVersandOptionen", OnComplete = "AjaxFormVersandOptionenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersandOptionen" }))
+    {
+        @Html.HiddenFor(m => m.IsValid)
+
+        @Html.FormValidationSummary()
+
+
+        @Html.FormDropDownListFor(m => m.VersandOptionKey, VersandOptionen.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
+
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+
+        @Html.FormDropDownListFor(m => m.VersandGrundKey, VersandOptionen.GruendeList.ToSelectList(), new { @class = "m-wrap large" })
+        
+        
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+
+        </script>
+    }
+</div>
