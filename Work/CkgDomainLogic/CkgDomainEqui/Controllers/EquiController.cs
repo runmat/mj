@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -12,12 +13,13 @@ namespace ServicesMvc.Controllers
 
 
         public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
-            IBriefbestandDataService briefbestandDataService)
+            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
             InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
+            InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);
         }
 
         public ActionResult Index()

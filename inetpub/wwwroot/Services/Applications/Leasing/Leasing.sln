@@ -13,23 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload_Validator", "..\..\Components\ComCommon\Upload_Validator\Upload_Validator\Upload_Validator.csproj", "{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\Services.vbproj
-		SccProjectName1 = ../../Services
-		SccLocalPath1 = ..\\..
-		SccProjectUniqueName2 = Leasing.csproj
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\ErpBase\\Base.vbproj
-		SccProjectName3 = ../../../Work/ErpBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\ErpBase
-		SccProjectUniqueName4 = ..\\..\\Components\\ComCommon\\Upload_Validator\\Upload_Validator\\Upload_Validator.csproj
-		SccProjectName4 = ../../Services/Components/ComCommon/Upload_Validator/Upload_Validator
-		SccLocalPath4 = ..\\..\\Components\\ComCommon\\Upload_Validator\\Upload_Validator
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
