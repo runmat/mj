@@ -96,7 +96,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             get
             {
                 return BriefVersandDataService.VersandOptionen
-                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.Name.NotNullOrEmpty().ToLower() != "nicht abgemeldet versenden")
+                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.Name.NotNullOrEmpty().Trim().ToLower() != "versand ohne abmeldung")
                     .OrderBy(w => w.Name)
                     .ToList();
             }
