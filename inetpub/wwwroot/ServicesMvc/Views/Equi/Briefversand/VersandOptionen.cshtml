@@ -1,0 +1,5 @@
+﻿@model CkgDomainLogic.Equi.ViewModels.BriefversandViewModel
+
+<h4>Versandoptionen für Ihre Auswahl: @Model.SelectedFahrzeugeAsString</h4> 
+
+@Html.Partial("Briefversand/VersandOptionenForm", @Model.VersandOptionen)

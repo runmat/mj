@@ -16,6 +16,7 @@ namespace AppZulassungsdienst.forms
         private CKG.Base.Kernel.Security.User m_User;
         private CKG.Base.Kernel.Security.App m_App;
         private clsWareneingang objWareneingang;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
         /// Aufruf FillGrid().
@@ -47,6 +48,7 @@ namespace AppZulassungsdienst.forms
                 GridView1.Columns[9].Visible = false;
             }
          }
+
         /// <summary>
         /// Binden der Artikel zu einer Bestellung an das Grid.
         /// </summary>
@@ -121,6 +123,7 @@ namespace AppZulassungsdienst.forms
                 ImgButton.Attributes.Add("onclick", "javascript:SelectRbandChk('" + GridView1.Rows.Count + "', false)");
             }
         }
+
         /// <summary>
         /// Binden der Artikel an das Gridview2. Prüfung der Daten durch Benutzer.
         /// </summary>
@@ -204,6 +207,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Bestellung im Grid als vollständig markieren. Markieren der Bestellung in der Positionstabelle.
         /// </summary>
@@ -242,6 +246,7 @@ namespace AppZulassungsdienst.forms
             tmpRadio.Checked = false;
 
         }
+
         /// <summary>
         /// Binden der Checkboxes im Gridviewheader an Jacascriptfunktionen.
         /// </summary>
@@ -262,6 +267,7 @@ namespace AppZulassungsdienst.forms
                 tmpTxtBox.Attributes.Add("onkeyup", "javascript:MengeChanged('" + tmphidden.ClientID + "' , '" + tmpTxtBox.ClientID + "')");
             }
         }
+
         /// <summary>
         /// Sortieren nach. Prüfung auf Eingaben im Grid und. Eingaben übernehmen. 
         /// </summary>
@@ -272,6 +278,7 @@ namespace AppZulassungsdienst.forms
             Checkgrid();
             Fillgrid(GridView1.PageIndex, e.SortExpression);
         }
+
         /// <summary>
         /// Prüfung auf Eingaben im Grid und Eingaben übernehmen. 
         /// </summary>
@@ -334,6 +341,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Senden der Daten an SAP(Z_FIL_EFA_UML_STEP2).
         /// </summary>
@@ -365,6 +373,7 @@ namespace AppZulassungsdienst.forms
             
 
         }
+
         /// <summary>
         /// Prüfung auf Eingaben im Grid. Evtl. Fehler anzeigen. Kein Fehler = Übersicht zum Absenden anzeigen.
         /// </summary>
@@ -449,6 +458,7 @@ namespace AppZulassungsdienst.forms
 
 
         }
+
         /// <summary>
         /// Sortieren der Übersicht zum Absenden.
         /// </summary>
@@ -462,6 +472,7 @@ namespace AppZulassungsdienst.forms
             tblAnzeigeVersandDaten.Visible = false;
             lbAbsenden.Visible = false;
         }
+
         /// <summary>
         /// Schliessen des Absendendialogs.
         /// </summary>
@@ -482,15 +493,17 @@ namespace AppZulassungsdienst.forms
             mpeWareneingangsCheck.Hide();
             doSubmit();
         }
+
         /// <summary>
-        /// 
+        /// Zurück zur Auswahlseite.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void lb_zurueck_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Wareneingang.aspx?AppID=" + Session["AppID"].ToString());
+            Response.Redirect("Wareneingang.aspx?AppID=" + Session["AppID"].ToString() + "&BackToList=B");
         }
+
         /// <summary>
         /// Wareneingang abgeschlossen? Zurück zur Auswahlseite.
         /// </summary>
@@ -498,8 +511,9 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void lbWareneingangsbuchungFinalize_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Wareneingang.aspx?AppID=" + Session["AppID"].ToString());
+            Response.Redirect("Wareneingang.aspx?AppID=" + Session["AppID"].ToString() + "&BackToList=C");
         }
+
         /// <summary>
         /// Es soll ein Korrektur vorgenommen werden. Schliessen des Absendendialogs. 
         /// </summary>
@@ -509,7 +523,6 @@ namespace AppZulassungsdienst.forms
         {
 
         }
-
 
     }
 }

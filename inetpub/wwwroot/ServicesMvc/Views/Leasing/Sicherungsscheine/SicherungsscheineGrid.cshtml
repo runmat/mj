@@ -27,7 +27,7 @@
         columns.Bound(c => c.Klaerfalltext);
     })
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridSicherungsscheine"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Vertragsnummer).Ascending())
     .ToolBar(commands =>

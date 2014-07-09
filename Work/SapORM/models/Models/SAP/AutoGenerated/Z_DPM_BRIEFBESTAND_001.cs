@@ -54,21 +54,11 @@ namespace SapORM.Models
 
 			public DateTime? EXPIRY_DATE { get; set; }
 
-			public string ADRNR { get; set; }
-
-			public string NAME1 { get; set; }
-
-			public string NAME2 { get; set; }
-
-			public string CITY1 { get; set; }
-
-			public string POST_CODE1 { get; set; }
-
-			public string STREET { get; set; }
-
-			public string HOUSE_NUM1 { get; set; }
-
 			public DateTime? PICKDAT { get; set; }
+
+			public string ZZREFERENZ1 { get; set; }
+
+			public string ZZREFERENZ2 { get; set; }
 
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
@@ -86,14 +76,9 @@ namespace SapORM.Models
 					DATAB = (string.IsNullOrEmpty(row["DATAB"].ToString())) ? null : (DateTime?)row["DATAB"],
 					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
 					EXPIRY_DATE = (string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString())) ? null : (DateTime?)row["EXPIRY_DATE"],
-					ADRNR = (string)row["ADRNR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					CITY1 = (string)row["CITY1"],
-					POST_CODE1 = (string)row["POST_CODE1"],
-					STREET = (string)row["STREET"],
-					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
 					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
+					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
+					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
