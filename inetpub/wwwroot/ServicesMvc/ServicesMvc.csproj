@@ -85,9 +85,9 @@
     <Reference Include="FluentValidation.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\FluentValidation.MVC4.4.0.0.1\lib\Net40\FluentValidation.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySQL.Data, Version=6.7.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\work\GAC\EntityFramework\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\Work\GAC\MySQL.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -425,6 +425,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App_Data\XmlData\StepsAutohausZulassung.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\XmlData\StepsBriefversand.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="assets\css\pages\login-soft.css" />
@@ -2324,22 +2327,37 @@
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadFahrzeugeinsteuerung.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadFahrzeugeinsteuerungGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand.cshtml" />
+    <Content Include="Views\Equi\Briefversand\FahrzeugAuswahl.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandAdresseForm.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandAdresse.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandOptionen.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandOptionenForm.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Receipt.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Summary.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\SummaryAddressSelectionLink.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\SummaryPdf.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\Common.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
+    <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
+    <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugeGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />	
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocUpload.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoryEdit.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocCreate.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocEdit.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
-    <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />		
     <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
@@ -2357,36 +2375,6 @@
     <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocUpload.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoryEdit.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocCreate.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocEdit.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
-    <Content Include="Views\Autohaus\Common\StylesScripts.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\Common.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryAddressSelectionLink.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Partial\SummaryPdf.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionenForm.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Dienstleistungen.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\DienstleistungenForm.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionen.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\FreieZulassungsOptionenForm.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\HalterAdresse.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\HalterAdresseForm.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
-    <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

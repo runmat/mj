@@ -194,12 +194,12 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_M_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_M_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
@@ -228,12 +228,12 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand
+        static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, FahrzeugbriefBestand>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
@@ -249,14 +249,9 @@ namespace CkgDomainLogic.Equi.Models
                         d.Eingangsdatum = s.DATAB;
                         d.Versanddatum = s.ZZTMPDT;
                         d.Stilllegungsdatum = s.EXPIRY_DATE;
-                        d.Adresse = s.ADRNR;
-                        d.Name1 = s.NAME1;
-                        d.Name2 = s.NAME2;
-                        d.Ort = s.CITY1;
-                        d.PLZ = s.POST_CODE1;
-                        d.Strasse = s.STREET;
-                        d.Hausnummer = s.HOUSE_NUM1;
                         d.Pickdatum = s.PICKDAT;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
                     }));
             }
         }
