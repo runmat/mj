@@ -2159,7 +2159,7 @@
     <Content Include="Views\Leasing\Klaerfaelle\AnzeigeDatenPuGDetails.cshtml" />
     <Content Include="Views\CoC\Partial\DuplicateVinConfirmationMode.cshtml" />
     <Content Include="Views\CocBeauftragung\Beauftragung.cshtml" />
-    <Content Include="Views\Test\IndexOld.cshtml" />
+    <Content Include="Views\Test\IndexOldx.cshtml" />
     <Content Include="Views\Test\Partial\TestFormOld.cshtml" />
     <Content Include="Views\Test\Partial\TestForm2.cshtml" />
     <Content Include="Views\Leasing\CsvUpload.cshtml" />
