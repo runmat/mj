@@ -11,7 +11,7 @@
                     { %>
                     <tr>
                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>')"><%= row["AppFriendlyName"] %></a>
+                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>');"><%= row["AppFriendlyName"] %></a>
                         </td>
                     </tr>
                 <% } %>
@@ -29,7 +29,7 @@
                     { %>
                     <tr>
                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>')"><%= row["AppFriendlyName"] %></a>
+                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>');"><%= row["AppFriendlyName"] %></a>
                         </td>
                     </tr>
                 <% } %>
@@ -47,7 +47,7 @@
                     { %>
                     <tr>
                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>')"><%= row["AppFriendlyName"] %></a>
+                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>');"><%= row["AppFriendlyName"] %></a>
                         </td>
                     </tr>
                 <% } %>
@@ -65,7 +65,7 @@
                     { %>
                     <tr>
                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>')"><%= row["AppFriendlyName"] %></a>
+                            <a href='<%= ResolveClientUrl(row["AppURL"].ToString()) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(row["AppUrl"].ToString()) %>');"><%= row["AppFriendlyName"] %></a>
                         </td>
                     </tr>
                 <% } %>

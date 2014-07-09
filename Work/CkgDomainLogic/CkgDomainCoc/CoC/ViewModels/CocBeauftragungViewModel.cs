@@ -187,7 +187,14 @@ namespace CkgDomainLogic.CoC.ViewModels
         public List<Land> LaenderList { get { return CocErfassungDataService.Laender; } }
 
         [XmlIgnore]
-        public List<VersandOption> VersandOptionenList { get { return CocErfassungDataService.VersandOptionen; } }
+        public List<VersandOption> VersandOptionenList 
+        { 
+            get
+            {
+                // vorerst nur Versandoptionen für endgültigen Versand hier
+                return CocErfassungDataService.VersandOptionen.Where(vo => vo.IstEndgueltigerVersand).OrderBy(w => w.Name).ToList();
+            } 
+        }
 
         [XmlIgnore]
         public List<ZulassungsOption> ZulassungsOptionenList { get { return CocErfassungDataService.ZulassungsOptionen; } }

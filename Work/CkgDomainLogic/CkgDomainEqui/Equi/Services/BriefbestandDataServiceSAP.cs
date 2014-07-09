@@ -11,11 +11,13 @@ namespace CkgDomainLogic.Equi.Services
 {
     public class BriefbestandDataServiceSAP : CkgGeneralDataServiceSAP, IBriefbestandDataService
     {
-        public FahrzeugbriefBestandFilter DatenFilter { get; set; }
+        public FahrzeugbriefFilter DatenFilter { get; set; }
 
-        private List<FahrzeugbriefBestand> FahrzeugbriefeGesamt { get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap().ToList()); } }
+        public List<Fahrzeugbrief> FahrzeugbriefeZumVersand { get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, false).ToList()); } }
 
-        public List<FahrzeugbriefBestand> Fahrzeugbriefe 
+        private List<Fahrzeugbrief> FahrzeugbriefeGesamt { get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, true).ToList()); } }
+
+        public List<Fahrzeugbrief> FahrzeugbriefeBestand 
         { 
             get
             {
@@ -31,26 +33,35 @@ namespace CkgDomainLogic.Equi.Services
                 {
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1").ToList();
                 }
-                return new List<FahrzeugbriefBestand>();
+                return new List<Fahrzeugbrief>();
             } 
         }
 
         public BriefbestandDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            DatenFilter = new FahrzeugbriefBestandFilter();
+            DatenFilter = new FahrzeugbriefFilter();
         }
 
         public void MarkForRefreshFahrzeugbriefe()
         {
             PropertyCacheClear(this, m => m.FahrzeugbriefeGesamt);
+            PropertyCacheClear(this, m => m.FahrzeugbriefeZumVersand);
         }
 
-        private IEnumerable<FahrzeugbriefBestand> LoadFahrzeugbriefeFromSap()
+        private IEnumerable<Fahrzeugbrief> LoadFahrzeugbriefeFromSap(bool mitBestand, bool mitTempVers)
         {
-            var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithInitExecute(SAP, "I_KUNNR, I_BESTAND, I_TEMPVERS", LogonContext.KundenNr.ToSapKunnr(), "X", "X");
+            Z_DPM_BRIEFBESTAND_001.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            return AppModelMappings.Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_FahrzeugbriefBestand.Copy(sapList);
+            if (mitBestand)
+                SAP.SetImportParameter("I_BESTAND", "X");
+
+            if (mitTempVers)
+                SAP.SetImportParameter("I_TEMPVERS", "X");
+
+            var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief.Copy(sapList);
         }
     }
 }
