@@ -1,11 +1,7 @@
-﻿using CKG.Base.Kernel;
-using CKG.Base.Kernel.Common;
-using System.Data.OleDb;
+﻿using CKG.Base.Kernel.Common;
 using System.IO;
 using System.Configuration;
-using Microsoft.Office;
 using System;
-using System.Text.RegularExpressions;
 using System.Data;
 using System.Web.UI.WebControls;
 using System.Web.UI;
