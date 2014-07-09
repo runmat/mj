@@ -1327,6 +1327,11 @@
         <ObjectName>dirPath</ObjectName>
         <AbsolutePath>$(_Escaped_PackageTempDir)\\images\\Kundenlogos\\.*</AbsolutePath>
       </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\*.config</AbsolutePath>
+      </MsDeploySkipRules>	  
     </ItemGroup>
   </Target>
   <ProjectExtensions>
