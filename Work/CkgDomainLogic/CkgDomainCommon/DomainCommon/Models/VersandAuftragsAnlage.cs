@@ -28,6 +28,8 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Bemerkung { get; set; }
 
+        public string Versandgrund { get; set; }
+
 
         #region Versand Adresse
 

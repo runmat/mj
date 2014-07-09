@@ -76,9 +76,11 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+
         #endregion
 
         #region "Kontruktor"
+
         /// <summary>
         /// Kontruktor der Klasse.
         /// </summary>
@@ -91,6 +93,7 @@ namespace AppZulassungsdienst.lib
             : base(ref objUser,ref objApp, strAppID,  strSessionID, strFilename )
         {
         }
+
         #endregion
 
         #region "Methods"
@@ -100,6 +103,7 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         public override void Change()
         {}
+
         /// <summary>
         /// Overrides Show() in der CKG.Base.Business.BankBase.
         /// </summary>
@@ -376,6 +380,28 @@ namespace AppZulassungsdienst.lib
                 }
                 finally { m_blnGestartet = false; }
             }
+        }
+
+        /// <summary>
+        /// Reinitialisiert die Daten nach der Rückkehr aus der Detailansicht (ohne SAP-Neuladen)
+        /// </summary>
+        /// <param name="umlStatus">B = Abbruch, C = Abgeschlossen</param>
+        public void ReInit(string umlStatus)
+        {
+            if (umlStatus == "C")
+            {
+                // Abgeschlossene Umlagerung aus Liste entfernen
+                var tmpRows = ErwarteteLieferungen.Select("Bestellnummer='" + BELNR + "'");
+                if (tmpRows.Length > 0)
+                {
+                    ErwarteteLieferungen.Rows.Remove(tmpRows[0]);
+                }
+            }
+
+            // Selektion zurücksetzen
+            Bestellpositionen = null;
+            BELNR = null;
+            Lieferant = null;
         }
 
         #endregion

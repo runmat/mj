@@ -155,7 +155,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "ZZORT01_ZS", "Ort" },
                         { "ZZLAND_ZS", "Land" },
                         { "ERNAM", "ErfassungsUserName" },
-                        { "ZZBETREFF", "Bemerkung"}
+                        { "ZZBETREFF", "Bemerkung"},
+                        { "ZZVGRUND", "Versandgrund"}
                     },
 
                     // Init Copy  (from SAP)
