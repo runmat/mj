@@ -791,7 +791,7 @@ function LogPageVisit(appId, href) {
         window.location.href = href;
     });
 
-    return true;
+    return false;
 }
 
 function IsIEVersionOrLower(ieVersion) {

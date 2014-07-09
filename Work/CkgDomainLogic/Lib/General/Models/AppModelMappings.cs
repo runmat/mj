@@ -92,6 +92,23 @@ namespace CkgDomainLogic.General.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_READ_VERS_GRUND_KUN_01.GT_OUT, VersandGrund> Z_DPM_READ_VERS_GRUND_KUN_01_GT_OUT_To_VersandGrund
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_VERS_GRUND_KUN_01.GT_OUT, VersandGrund>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Code = s.ZZVGRUND;
+                        d.Bezeichnung = s.VGRUND_TEXT;
+                        d.IstEndgueltigerVersand = (s.ABCKZ == "2");
+                    }));
+            }
+        }
+
         #endregion
     }
 }
