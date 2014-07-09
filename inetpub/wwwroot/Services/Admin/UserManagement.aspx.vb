@@ -999,13 +999,12 @@ Partial Public Class UserManagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intUserId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intUserId As Int32) As DataTable
         Try
             Dim _User As New User(intUserId, m_User.App.Connectionstring)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -1044,11 +1043,10 @@ Partial Public Class UserManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal _User As User, ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters(ByVal _User As User) As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -2112,8 +2110,7 @@ Partial Public Class UserManagement
             Dim strTemp As String = txtUserID.Text
             If txtUserID.Text <> "-1" Then
                 strLogMsg = "User ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
+                tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text))
             End If
 
             Dim intGroupID As Integer
@@ -2205,8 +2202,7 @@ Partial Public Class UserManagement
                 Else
                     lblError.Text = _User.ErrorMessage
                 End If
-                tblLogParameter = New DataTable
-                tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
+                tblLogParameter = SetNewLogParameters(_User)
                 Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
                 If blnSuccess Then
@@ -2327,8 +2323,7 @@ Partial Public Class UserManagement
         Try
 
             Dim _User As New User()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text))
             If _User.Delete(CInt(txtUserID.Text), m_User.App.Connectionstring, m_User.UserName) Then
                 lblMessage.Text = "Das Benutzerkonto wurde gelöscht."
                 Search(True, True, , True)

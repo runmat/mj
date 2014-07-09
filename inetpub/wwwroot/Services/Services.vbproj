@@ -150,6 +150,7 @@
     <Content Include="Images\Dienstleistung.png" />
     <Content Include="Images\DienstleistungActive.png" />
     <Content Include="Images\Diskette_06s.png" />
+    <Content Include="Images\down.gif" />
     <Content Include="Images\erfolg.gif" />
     <Content Include="Images\ErweiterteSelektion.png" />
     <Content Include="Images\expand.jpg" />
@@ -213,6 +214,7 @@
     <Content Include="Images\TVRahmenSmall.png" />
     <Content Include="Images\Unfilter.gif" />
     <Content Include="Images\unlock.gif" />
+    <Content Include="Images\up.gif" />
     <Content Include="Images\VersandLegende.png" />
     <Content Include="Images\Versand\headopenoverflow2.png" />
     <Content Include="Images\vkb_logo.jpg" />

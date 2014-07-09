@@ -282,16 +282,15 @@ Partial Public Class ColumnTranslation
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal strOrgName As String, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal strOrgName As String) As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
             Dim _ColTrans As New Kernel.ColumnTranslation(intAppId, strOrgName, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -326,11 +325,10 @@ Partial Public Class ColumnTranslation
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -402,8 +400,7 @@ Partial Public Class ColumnTranslation
             Dim strLogMsg As String = "Spaltenübersetzungen anlegen"
             If Not (txtOrgNameAlt.Text = String.Empty) Then
                 strLogMsg = "Spaltenübersetzungen ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intAppId, txtOrgNameAlt.Text, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intAppId, txtOrgNameAlt.Text)
             End If
 
             Dim intDisplayOrder As Integer
@@ -424,8 +421,7 @@ Partial Public Class ColumnTranslation
                                                 cbxABEDaten.Checked, _
                                                 ddlAlignment.SelectedItem.Value)
             _ColTrans.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_ColTrans.AppId.ToString, strLogMsg, tblLogParameter)
             Search(True, True, , True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
@@ -452,8 +448,7 @@ Partial Public Class ColumnTranslation
             Dim _ColTrans As New Kernel.ColumnTranslation(CInt(txtAppID.Text), txtOrgNameAlt.Text)
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtAppID.Text), txtOrgNameAlt.Text, tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtAppID.Text), txtOrgNameAlt.Text)
             _ColTrans.Delete(cn)
             Log(_ColTrans.AppId.ToString, "Spaltenübersetzungen löschen", tblLogParameter)
             Search(True, True, True, True)

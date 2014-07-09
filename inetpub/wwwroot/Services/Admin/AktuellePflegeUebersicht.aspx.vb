@@ -32,16 +32,18 @@ Partial Public Class AktuellePflegeUebersicht
     End Sub
 
     Private Sub grvUebersicht_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grvUebersicht.PageIndexChanging
-        FillGridUebersicht(e.NewPageIndex)
+        grvUebersicht.PageIndex = e.NewPageIndex
+        FillGridUebersicht()
     End Sub
 
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
-        FillGridUebersicht(PageIndex)
+        grvUebersicht.PageIndex = PageIndex
+        FillGridUebersicht()
 
     End Sub
 
     Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
-        FillGridUebersicht(0)
+        FillGridUebersicht()
     End Sub
 
 
@@ -64,8 +66,17 @@ Partial Public Class AktuellePflegeUebersicht
 
             da.ExecuteNonQuery()
 
-            FillGridUebersicht(grvUebersicht.PageIndex, "")
+            FillGridUebersicht()
         End If
+    End Sub
+
+    Private Sub grvUebersicht_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles grvUebersicht.Sorting
+        Dim strSort As String = e.SortExpression
+        If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
+            strSort &= " DESC"
+        End If
+        ViewState("ResultSort") = strSort
+        FillGridUebersicht(strSort)
     End Sub
 
     Sub gridview_deletecommand(ByVal sender As Object, ByVal e As GridViewDeletedEventArgs) Handles grvUebersicht.RowDeleted
@@ -73,7 +84,7 @@ Partial Public Class AktuellePflegeUebersicht
     End Sub
 
     Protected Sub btnSuche_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSuche.Click
-        FillGridUebersicht(1)
+        FillGridUebersicht()
     End Sub
 
     Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
@@ -87,7 +98,7 @@ Partial Public Class AktuellePflegeUebersicht
     End Sub
 
     Protected Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
-        FillGridUebersicht(grvUebersicht.PageIndex, "")
+        FillGridUebersicht()
     End Sub
 #End Region
 
@@ -116,9 +127,15 @@ Partial Public Class AktuellePflegeUebersicht
         End Try
     End Sub
 
-    
+    Private Sub FillGridUebersicht()
+        Dim strSort As String = "Customername"
+        If Not ViewState("ResultSort") Is Nothing Then
+            strSort = ViewState("ResultSort").ToString
+        End If
+        FillGridUebersicht(strSort)
+    End Sub
 
-    Private Sub FillGridUebersicht(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
+    Private Sub FillGridUebersicht(ByVal strSort As String)
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Dim intID As Integer
         intID = ddlFilterCustomer.SelectedValue
@@ -127,9 +144,10 @@ Partial Public Class AktuellePflegeUebersicht
         mObjAktuelles.GetCustomerNews(intID, cn)
         If mObjAktuelles.clsError = "" Then
             If mObjAktuelles.tblUebersicht.Rows.Count > 0 Then
+                Dim tmpDataView As New DataView(mObjAktuelles.tblUebersicht)
+                tmpDataView.Sort = strSort
                 With grvUebersicht
-                    .PageIndex = intPageIndex
-                    .DataSource = mObjAktuelles.tblUebersicht
+                    .DataSource = tmpDataView
                     .DataBind()
                 End With
                 Result.Visible = True
