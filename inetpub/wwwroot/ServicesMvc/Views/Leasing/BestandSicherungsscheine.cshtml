@@ -13,6 +13,8 @@
 
 <script type="text/javascript">
 
+    var _ladeHinweis = '@Localize.LoadingData';
+
     function FormPreparePrivate() {
         GridAllColumnFilterApplyToGrid("GridSicherungsscheine");
     }
@@ -37,6 +39,10 @@
     function OnDataBound_GridSicherungsscheine() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridSicherungsscheine() {
+        $('.t-no-data td').text(_ladeHinweis);
     }
 
     function OnColumnShowHide_GridSicherungsscheine() {
