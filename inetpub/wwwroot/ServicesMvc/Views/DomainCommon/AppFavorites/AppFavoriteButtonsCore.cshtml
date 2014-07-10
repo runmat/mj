@@ -3,8 +3,6 @@
 
 @foreach (var menuGroup in Model.GetMenuItemGroups())
 {
-    <h5 class="margin-top-10 margin-bottom-10 group-favorite-on-homepage"><i class="@menuGroupClassName margin-right-5"></i> @Model.TranslateMenuAppType(menuGroup)</h5>
-
     string menuGroupClassName;
     switch (menuGroup.AppType)
     {
@@ -18,6 +16,8 @@
             menuGroupClassName = "icon-cogs";
             break;
     }
+
+    <h5 class="margin-top-10 margin-bottom-10 group-favorite-on-homepage"><i class="@menuGroupClassName margin-right-5"></i> @Model.TranslateMenuAppType(menuGroup)</h5>
 
     foreach (var menuItem in Model.GetMenuItems(menuGroup.AppType).Where(a => a.AppIsMvcFavorite))
     {
