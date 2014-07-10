@@ -25,6 +25,7 @@ Public Class jve_ZugriffsHistorie
     Private m_context As HttpContext = HttpContext.Current
     Private m_User As User
     Private m_App As App
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
     Private m_blnShowDetails() As Boolean
     Private m_objTrace As Base.Kernel.Logging.Trace

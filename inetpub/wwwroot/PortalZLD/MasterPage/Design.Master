@@ -22,16 +22,16 @@
 
         <div id="header">
             <div id="PlaceHeader" runat="Server" class="dvHead">
-            <asp:Image ID="imgLogo"  ImageUrl="/PortalZLD/Images/kroschke.jpg" 
+            <asp:Image ID="imgLogo"  ImageUrl="../Images/kroschke.jpg" 
                 alt="DAD Logo" class="dadLogo2" runat="server"  /></div>
             
             <ul id="navigation" ><!-- style="display:none" -->
-                <li runat="server" id="tdHauptmenue"> <asp:hyperlink id="lnkHauptmenue" runat="server" NavigateUrl="/PortalZLD/Start/Login.aspx">Startseite</asp:hyperlink></li>
-                <li runat="server" id="tdChangePasword"><asp:hyperlink id="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/PortalZLD/Start/ChangePassword.aspx">Passwort ändern</asp:hyperlink></li>
+                <li runat="server" id="tdHauptmenue"> <asp:hyperlink id="lnkHauptmenue" runat="server" NavigateUrl="../Start/Login.aspx">Startseite</asp:hyperlink></li>
+                <li runat="server" id="tdChangePasword"><asp:hyperlink id="lnkChangePassword" runat="server" Visible="False" NavigateUrl="../Start/ChangePassword.aspx">Passwort ändern</asp:hyperlink></li>
                  <li id="tdHandbuch" runat="server"><asp:hyperlink id="lnkHandbuch" runat="server" Target="_blank">Handbuch</asp:hyperlink></li>
-                <li id="tdContact" runat="server"><asp:hyperlink id="lnkContact" NavigateUrl="/PortalZLD/Info/ContactPage.aspx" Runat="server">Kontakt</asp:hyperlink></li>
-                <li id="tdResponsible" runat="server"><asp:hyperlink id="lnkResponsible" NavigateUrl="/PortalZLD/Info/ResponsiblePage.aspx" Runat="server">Ansprechpartner</asp:hyperlink></li>
-                <li id="tdImpressum" runat="server"><asp:hyperlink id="lnkImpressum" NavigateUrl="/PortalZLD/Info/Impressum.aspx" Runat="server">Impressum</asp:hyperlink></li>
+                <li id="tdContact" runat="server"><asp:hyperlink id="lnkContact" NavigateUrl="../Info/ContactPage.aspx" Runat="server">Kontakt</asp:hyperlink></li>
+                <li id="tdResponsible" runat="server"><asp:hyperlink id="lnkResponsible" NavigateUrl="../Info/ResponsiblePage.aspx" Runat="server">Ansprechpartner</asp:hyperlink></li>
+                <li id="tdImpressum" runat="server"><asp:hyperlink id="lnkImpressum" NavigateUrl="../Info/Impressum.aspx" Runat="server">Impressum</asp:hyperlink></li>
             </ul>
             <ul id="userinfo"  style="display:none">
                 <li>
@@ -39,7 +39,7 @@
                      <span class="bold">
                     <asp:Label ID="lblUserName" runat="server" ></asp:Label></span></li>
                 <li class="logout">
-                    <asp:hyperlink  Text="" id="lnkLogout"  runat="server" Visible="False" ImageUrl="/PortalZLD/Images/navLogout.gif" NavigateUrl="/Services/Start/Logout.aspx">Logout</asp:hyperlink>
+                    <asp:hyperlink  Text="" id="lnkLogout"  runat="server" Visible="False" ImageUrl="../Images/navLogout.gif" NavigateUrl="../Start/Logout.aspx">Logout</asp:hyperlink>
                 </li>    
             </ul>
 		</div>
@@ -69,7 +69,7 @@
                     </div>
                 <div class="rightAlign">
                     <a href="#top">Top
-                        <img src="/PortalZLD/Images/top.gif" alt="nach oben" /></a></div>
+                        <img src="../Images/top.gif" alt="nach oben" /></a></div>
             </div>
         </div>
     </div>

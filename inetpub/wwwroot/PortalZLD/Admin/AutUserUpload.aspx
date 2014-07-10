@@ -101,7 +101,7 @@
                                             </td>
                                             <td class="active" style="width: 100%" >
                                                 <asp:Panel ID="Panel2" runat="server" Height="22px">
-                                                    <asp:ImageButton ID="Image1" runat="server" ImageUrl="../images/down.gif" AlternateText="(Details...)"/>      
+                                                    <asp:ImageButton ID="Image1" runat="server" ImageUrl="/PortalZLD/images/down.gif" AlternateText="(Details...)"/>      
                                                 </asp:Panel>
                                             </td>
                                         </tr>
@@ -253,7 +253,7 @@
                                             <td class="firstLeft active">
                                             </td>
                                             <td style="width: 35%"  colspan="2">
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
                                                     Width="1px" />
                                                 <asp:Label ID="lblExcelfile" runat="server"></asp:Label>
                                             </td>
@@ -308,13 +308,13 @@
                             CollapseControlID="Panel2" 
                             Collapsed="True"
                             ImageControlID="Image1"    
-                            ExpandedImage="../images/up.gif"
-                            CollapsedImage="../images/down.gif"
+                            ExpandedImage="/PortalZLD/images/up.gif"
+                            CollapsedImage="/PortalZLD/images/down.gif"
                              SuppressPostBack="true" />     
                         <div id="Result" runat="Server" visible="false">
                             <div class="ExcelDiv">
                                 <div align="right" id="trSearchSpacer" runat="server">
-                                    <img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                    <img src="/PortalZLD/Images/iconXLS.gif" alt="Excel herunterladen" />
                                             <span class="ExcelSpan">
                                                 <asp:LinkButton ID="lnkCreateExcel" ForeColor="White" runat="server">Excel herunterladen</asp:LinkButton>
                                             </span>
