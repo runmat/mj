@@ -50,7 +50,7 @@
         <table style="background-color: White; width: 100%;">
             <tr class="tabHeader">
                 <td class="imgMsg">
-                    <asp:Image ID="imgMessage" runat="server" ImageUrl="/AutohausPortal/images/button_help_on.gif"/>
+                    <asp:Image ID="imgMessage" runat="server" ImageUrl="../images/button_help_on.gif"/>
                 </td>
                 <td>
                     <asp:Label ID="lblTitle" runat="server" Font-Bold="true" Font-Size="Large" Text="Information" />

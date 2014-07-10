@@ -17,7 +17,7 @@
         <div class="teaserstart">
 			<!--teaser-->
             <div id="teaser1" class="teaser" style="display: none;">
-				<div class="teaserbild"><img height="110" width="214" alt="Zulassungen" src="/AutohausPortal/images//teaser_zulassungen.jpg"/></div>
+				<div class="teaserbild"><img height="110" width="214" alt="Zulassungen" src="../images/teaser_zulassungen.jpg"/></div>
 				<div class="teasercontent" id ="teasercontent1" runat="server">
                     <h2> Zulassungen </h2>
                     <ul>
@@ -34,7 +34,7 @@
 			<!--teaser-->
 			<!--teaser-->
             <div id="teaser2" class="teaser" style="display: none;">
-				<div class="teaserbild"><img height="110" width="214" alt="Autohaus" src="/AutohausPortal/images//teaser_autohaus.jpg"/></div>
+				<div class="teaserbild"><img height="110" width="214" alt="Autohaus" src="../images/teaser_autohaus.jpg"/></div>
 				<div class="teasercontent" id ="teasercontent2" runat="server">
                     <h2> Autohaus </h2>
                     <ul>
@@ -51,7 +51,7 @@
 			<!--teaser-->
 			<!--teaser-->
             <div id="teaser3" class="teaser" style="display: none;">
-				<div class="teaserbild"><img height="110" width="214" alt="Aufträge" src="/AutohausPortal/images//teaser_auftraege.jpg"/></div>
+				<div class="teaserbild"><img height="110" width="214" alt="Aufträge" src="../images/teaser_auftraege.jpg"/></div>
 				<div class="teasercontent" id ="teasercontent3" runat="server">
                     <h2> Aufträge </h2>
                     <ul>
@@ -68,7 +68,7 @@
 			<!--teaser-->
 			<!--teaser-->
             <div id="teaser4" class="teaser" style="display: none;">
-				<div class="teaserbild"><img height="110" width="214" alt="Tools" src="/AutohausPortal/images//teaser_tools.jpg" /></div>
+				<div class="teaserbild"><img height="110" width="214" alt="Tools" src="../images/teaser_tools.jpg" /></div>
                 <div class="teasercontent" id ="teasercontent4" runat="server">
                     <h2> Tools </h2>
                     <ul>
@@ -143,7 +143,7 @@
                 <div class="teaserlarge">
                     <div class="teaserbild">
                         <asp:Image runat="server" ID="imgAnsprechpartner" AlternateText="Ansprechpartner" Height="66px" Width="200px" 
-                            style="margin-left: 7px; margin-right: 7px; margin-top: 10px" ImageUrl="/AutohausPortal/images/bild_ansprechpartner.jpg"/>
+                            style="margin-left: 7px; margin-right: 7px; margin-top: 10px" ImageUrl="../images/bild_ansprechpartner.jpg"/>
                     </div>
                     <div class="teasercontentlarge">
 						<h3>
@@ -225,7 +225,7 @@
 			<div class="contentrechts">
 				<!--teaser--><div class="teaser"><div class="teaserbild">
 					<img height="66" width="200" alt="Ansprechpartner" style="margin-left: 7px; margin-right: 7px; margin-top: 10px"
-                        src="/AutohausPortal/images/bild_ansprechpartner.jpg"/></div>
+                        src="../images/bild_ansprechpartner.jpg"/></div>
 					<div class="teasercontent">
 						<h3>Ansprechpartner</h3>
 						Unser kompetentes Berater-Team steht Ihnen mit Rat und Tat 
