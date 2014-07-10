@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
@@ -135,17 +134,6 @@ namespace ServicesMvc.Controllers
             ModelState.Clear();
             return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
         }
-
-        //[HttpPost]
-        //public ActionResult DuplicateAddress(int id)
-        //{
-        //    AdressenPflegeViewModel.InsertMode = true;
-
-        //    // very important here, because we duplicate the one item and modelstate should distinguish between original and new item
-        //    ModelState.Clear();
-
-        //    return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.DuplicateItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
-        //}
 
         [HttpPost]
         public ActionResult NewAddress()
