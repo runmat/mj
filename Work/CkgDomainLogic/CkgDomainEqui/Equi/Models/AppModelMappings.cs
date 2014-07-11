@@ -256,6 +256,31 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_READ_EQUI_MAHN_01.GT_OUT, EquiMahn> Z_DPM_READ_EQUI_MAHN_01_GT_OUT_To_EquiMahn
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_MAHN_01.GT_OUT, EquiMahn>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.VertragsNr = s.LIZNR;
+                            d.FahrgestellNr = s.CHASSIS_NUM;
+                            d.Kennzeichen = s.LICENSE_NUM;
+                            d.Erstzulassung = s.REPLA_DATE;
+                            d.Versanddatum = s.ZZTMPDT;
+                            d.UeberfaelligSeit = s.UEBERF_SEIT;
+                            d.Mahnstufe = s.ZZMAHNS;
+                            d.EmpfaengerName = s.NAME1_Z5;
+                            d.EmpfaengerStrasse = s.STREET_Z5;
+                            d.EmpfaengerPlz = s.POST_CODE1_Z5;
+                            d.EmpfaengerOrt = s.CITY1_Z5;
+                        }));
+            }
+        }
+
         #endregion
 
 

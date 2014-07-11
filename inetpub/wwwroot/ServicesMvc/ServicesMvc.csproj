@@ -2338,6 +2338,8 @@
     <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
+    <Content Include="Views\Equi\Mahnreport.cshtml" />
+    <Content Include="Views\Equi\Mahnreport\FahrzeugeMahnGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
