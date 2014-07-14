@@ -76,7 +76,7 @@
                                     <div id="data">
                                         <table cellspacing="0" cellpadding="0" width="100%" bgcolor="white" border="0">
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblID" runat="server">ID:</asp:Label>
                                                 </td>
                                                 <td>
@@ -84,7 +84,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblBelegtyp" runat="server">Belegtyp:</asp:Label>
                                                 </td>
                                                 <td>
@@ -92,7 +92,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblZulassungsdatum" runat="server">Zulassungsdatum:</asp:Label>
                                                 </td>
                                                 <td>
@@ -100,7 +100,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblKundennummer" runat="server">Kundennummer:</asp:Label>
                                                 </td>
                                                 <td>
@@ -108,7 +108,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblKreis" runat="server">Kreis:</asp:Label>
                                                 </td>
                                                 <td>
@@ -116,7 +116,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblKennzeichen" runat="server">Kennzeichen:</asp:Label>
                                                 </td>
                                                 <td>
@@ -124,7 +124,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblBEBStatus" runat="server">BEB-Status:</asp:Label>
                                                 </td>
                                                 <td>
@@ -132,7 +132,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblBEBStatusNeu" runat="server">neuer BEB-Status:</asp:Label>
                                                 </td>
                                                 <td>

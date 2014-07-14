@@ -12,13 +12,17 @@ namespace AppZulassungsdienst.lib
     {
         #region "Properties"
 
+        public string VkOrg { get; set; }
+
+        public string VkBur { get; set; }
+
         public string IDSuche { get; set; }
 
         public string ID { get; set; }
 
         public string Belegtyp { get; set; }
 
-        public string Zulassungsdatum { get; set; }
+        public DateTime? Zulassungsdatum { get; set; }
 
         public string Kundennummer { get; set; }
 
@@ -27,6 +31,23 @@ namespace AppZulassungsdienst.lib
         public string Kennzeichen { get; set; }
 
         public string BEBStatus { get; set; }
+
+        public string BEBStatusText
+        {
+            get
+            {
+                if (tblBEBStatusWerte != null)
+                {
+                    var statusRows = tblBEBStatusWerte.Select("DOMVALUE_L = '" + BEBStatus + "'");
+                    if (statusRows.Length > 0)
+                    {
+                        return statusRows[0]["DDTEXT"].ToString();
+                    }
+                }
+
+                return BEBStatus;
+            }
+        }
 
         public string BEBStatusNeu { get; set; }
 
@@ -42,9 +63,29 @@ namespace AppZulassungsdienst.lib
         /// <param name="objUser">Webuserobjekt</param>
         /// <param name="objApp">Applikationsobjekt</param>
         /// <param name="strFilename">Filename</param>
-        public StatusaenderungVorgang(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
+        public StatusaenderungVorgang(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp,
+                                      string strFilename)
             : base(ref objUser, objApp, strFilename)
-        {}
+        {
+            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
+            {
+                if (objUser.Reference.Length > 4)
+                {
+                    VkOrg = objUser.Reference.Substring(0, 4);
+                    VkBur = objUser.Reference.Substring(4);
+                }
+                else
+                {
+                    VkOrg = objUser.Reference;
+                    VkBur = "";
+                }
+            }
+            else
+            {
+                VkOrg = "";
+                VkBur = "";
+            }
+        }
 
         /// <summary>
         /// Werte für BEB-Status laden. Bapi: Z_ZLD_DOMAENEN_WERTE
@@ -118,7 +159,7 @@ namespace AppZulassungsdienst.lib
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_GET_VG_FOR_UPD", ref m_objApp, ref m_objUser, ref page);
                   
                     myProxy.setImportParameter("I_ZULBELN", IDSuche.PadLeft(10, '0'));
-                    myProxy.setImportParameter("I_MOBUSER", m_objUser.UserName);
+                    myProxy.setImportParameter("I_VKBUR", VkBur);
 
                     myProxy.callBapi();
 
@@ -136,19 +177,19 @@ namespace AppZulassungsdienst.lib
                         var row = tmpTable.Rows[0];
                         ID = row["ZULBELN"].ToString();
                         Belegtyp = row["BLTYP"].ToString();
-                        Zulassungsdatum = row["ZZZLDAT"].ToString();
+                        DateTime tmpDat;
+                        if (DateTime.TryParse(row["ZZZLDAT"].ToString(), out tmpDat))
+                        {
+                            Zulassungsdatum = tmpDat;
+                        }
+                        else
+                        {
+                            Zulassungsdatum = null;
+                        }
                         Kundennummer = row["KUNNR"].ToString();
                         Kreis = row["KREISKZ"].ToString();
                         Kennzeichen = row["ZZKENN"].ToString();
                         BEBStatus = row["BEB_STATUS"].ToString();
-                        if (tblBEBStatusWerte != null)
-                        {
-                            var statusRows = tblBEBStatusWerte.Select("DOMVALUE_L = '" + BEBStatus + "'");
-                            if (statusRows.Length > 0)
-                            {
-                                BEBStatus = statusRows[0]["DDTEXT"].ToString();
-                            }
-                        }
                     }
                 }
                 catch (Exception ex)

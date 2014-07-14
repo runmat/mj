@@ -98,7 +98,7 @@ namespace AppZulassungsdienst.forms
             cmdCreate.Visible = false;
 
             var dvTemp = new DataView(objStatusaenderung.tblBEBStatusWerte);
-            dvTemp.RowFilter = "DOMVALUE_L = '2' OR DOMVALUE_L = 'F' OR DOMVALUE_L = 'L'";
+            dvTemp.RowFilter = "DOMVALUE_L = '2' OR DOMVALUE_L = 'F' OR DOMVALUE_L = 'L' OR DOMVALUE_L = '" + objStatusaenderung.BEBStatus + "'";
             ddlBEBStatus.DataSource = dvTemp;
             ddlBEBStatus.DataTextField = "DDTEXT";
             ddlBEBStatus.DataValueField = "DOMVALUE_L";
@@ -106,11 +106,18 @@ namespace AppZulassungsdienst.forms
 
             lblIDDisplay.Text = objStatusaenderung.ID;
             lblBelegtypDisplay.Text = objStatusaenderung.Belegtyp;
-            lblZulassungsdatumDisplay.Text = objStatusaenderung.Zulassungsdatum;
+            if (objStatusaenderung.Zulassungsdatum.HasValue)
+            {
+                lblZulassungsdatumDisplay.Text = objStatusaenderung.Zulassungsdatum.Value.ToShortDateString();
+            }
+            else
+            {
+                lblZulassungsdatumDisplay.Text = "";
+            }
             lblKundennummerDisplay.Text = objStatusaenderung.Kundennummer;
             lblKreisDisplay.Text = objStatusaenderung.Kreis;
             lblKennzeichenDisplay.Text = objStatusaenderung.Kennzeichen;
-            lblBEBStatusDisplay.Text = objStatusaenderung.BEBStatus;
+            lblBEBStatusDisplay.Text = objStatusaenderung.BEBStatusText;
             ddlBEBStatus.SelectedValue = objStatusaenderung.BEBStatus;
 
             Panel2.Visible = true;
