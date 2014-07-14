@@ -69,7 +69,7 @@
                             </asp:Panel>
                             <div id="dataQueryFooter">
                                 <asp:LinkButton ID="cmdCreate" runat="server" CssClass="Tablebutton" 
-                                    Width="78px" onclick="cmdCreate_Click">» Erstellen </asp:LinkButton>
+                                    Width="78px" onclick="cmdCreate_Click">» Suchen </asp:LinkButton>
                             </div>
                             <asp:Panel ID="Panel2" DefaultButton="btnEmpty2" runat="server" Visible="False">
                                 <div id="Result" runat="Server">

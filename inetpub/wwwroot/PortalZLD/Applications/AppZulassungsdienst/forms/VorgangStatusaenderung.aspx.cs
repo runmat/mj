@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Web.UI;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -96,7 +97,9 @@ namespace AppZulassungsdienst.forms
             Panel1.Visible = false;
             cmdCreate.Visible = false;
 
-            ddlBEBStatus.DataSource = objStatusaenderung.tblBEBStatusWerte;
+            var dvTemp = new DataView(objStatusaenderung.tblBEBStatusWerte);
+            dvTemp.RowFilter = "DOMVALUE_L = '2' OR DOMVALUE_L = 'F' OR DOMVALUE_L = 'L'";
+            ddlBEBStatus.DataSource = dvTemp;
             ddlBEBStatus.DataTextField = "DDTEXT";
             ddlBEBStatus.DataValueField = "DOMVALUE_L";
             ddlBEBStatus.DataBind();
