@@ -491,22 +491,22 @@ Partial Public Class Groupmanagement
     Protected WithEvents trRights As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
-    '''tableAuthLevel-Steuerelement
+    '''tableAuthLevel1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents tableAuthLevel As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents tableAuthLevel1 As Global.System.Web.UI.HtmlControls.HtmlTable
 
     '''<summary>
-    '''Image2-Steuerelement
+    '''tableAuthLevel2-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents Image2 As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents tableAuthLevel2 As Global.System.Web.UI.HtmlControls.HtmlTable
 
     '''<summary>
     '''ddlAnwendung-Steuerelement

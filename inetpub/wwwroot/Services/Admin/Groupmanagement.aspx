@@ -347,7 +347,7 @@
                                                             border="0">
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active" colspan="3">
-                                                                    <table id="tableAuthLevel" runat="server" style="border-width: 0;" cellspacing="0"
+                                                                    <table id="tableAuthLevel1" runat="server" style="border-width: 0;" cellspacing="0"
                                                                         cellpadding="0" visible="False">
                                                                         <tr>
                                                                             <td style="background-color: #C2D69A; width: 340px; color: #000000; padding: 5px;">
@@ -356,17 +356,78 @@
                                                                                 </div>
                                                                                 <br />
                                                                                 <div style="text-decoration: none;">
-                                                                                    Level 1: Parameter notwendig, kein Bearbeiten m&ouml;glich<br />
-                                                                                    Level 2: Parameter notwendig, Bearbeiten m&ouml;glich<br />
-                                                                                    Level 3: Parameter optional, Bearbeiten m&ouml;glich<br />
+                                                                                    Level 1 = Parameter notwendig, kein Bearbeiten m&ouml;glich<br /><br />
+                                                                                    Level 2 = Parameter notwendig, Bearbeiten m&ouml;glich<br /><br />
+                                                                                    Level 3 = Parameter optional, Bearbeiten m&ouml;glich<br />
                                                                                 </div>
                                                                             </td>
                                                                             <td style="background: #93CDDD; width: 340px; color: #000000">
                                                                             </td>
                                                                         </tr>
                                                                     </table>
-                                                                    <asp:Image ID="Image2" runat="server" ImageUrl="/services/images/versandlegende.png"
-                                                                        Visible="True" />
+                                                                    <table id="tableAuthLevel2" runat="server" style="border-width: 0;" cellspacing="0"
+                                                                        cellpadding="0" visible="True">
+                                                                        <tr>
+                                                                            <td style="background-color: #C2D69A; width: 340px; color: #000000; padding: 5px;">
+                                                                                <table style="border: none; padding-bottom: 5px">
+                                                                                    <tr>
+                                                                                        <td style="text-underline-color: #000000; text-decoration: underline; font-size: 12px; padding-top: 3px">
+                                                                                            Temporärer Versand
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 1 = tempor&auml;rer Versand an hinterlegte Adressen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 2 = tempor&auml;rer Versand an Zulassungsstellen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 3 = tempor&auml;rer Versand an freie Adressen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            &nbsp;
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                            <td style="background: #93CDDD; width: 340px; color: #000000; padding: 5px;">
+                                                                                <table style="border: none; padding-bottom: 5px">
+                                                                                    <tr>
+                                                                                        <td style="text-underline-color: #000000; text-decoration: underline; font-size: 12px; padding-top: 3px">
+                                                                                            Endgültiger Versand
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 4 = endg&uuml;ltiger Versand an hinterlegte Adressen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 5 = endg&uuml;ltiger Versand an Zulassungsstellen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 6 = endg&uuml;ltiger Versand an freie Adressen
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="text-decoration: none; padding-top: 3px">
+                                                                                            Level 7 = Option "Versand ohne Abmeldung"
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">
