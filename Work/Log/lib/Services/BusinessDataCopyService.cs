@@ -43,13 +43,14 @@ namespace LogMaintenance.Services
 
                     var multiSqlSteps = new [] { "" };
                     if (sqlMaintenanceStep.IsSqlIndexStatement)
-                        multiSqlSteps = sqlMaintenanceTable.GetTableIndexColumNames();
+                        multiSqlSteps = sqlMaintenanceTable.GetTableIndexColumnNames();
 
                     foreach (var multiSqlStep in multiSqlSteps)
                     {
                         try
                         {
-                            logsDbContext.Database.ExecuteSqlCommand(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep));
+                            var sql = sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep);
+                            logsDbContext.Database.ExecuteSqlCommand(sql);
                         }
                         catch (MySqlException e)
                         {

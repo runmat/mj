@@ -7,10 +7,10 @@
     
     <DestTableName>SapBapiReadOnly</DestTableName>
 
-    <TableIndexColumNames>userID, customerID</TableIndexColumNames>
+    <TableIndexColumnNames>userID, customerID</TableIndexColumnNames>
 
     <Steps>
-      <DbMaintenanceStep>
+      <DbMaintenanceStep IgnoreSqlException="true">
         <Description>
           Try creating table '[DestTableName]' ...
         </Description>
@@ -31,21 +31,16 @@
           PRIMARY KEY (`Id`)
           ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
         </Sql>
-        <IgnoreSqlException>true</IgnoreSqlException>
       </DbMaintenanceStep>
 
-      <DbMaintenanceStep>
+      <DbMaintenanceStep IsSqlIndexStatement="true" IgnoreSqlException="true">
         <Description>
           Try dropping indexes on table '[DestTableName]' ...
         </Description>
 
         <Sql>
-          drop index `i_[DestTableName]_[IndexColumnName]` on [DestTableName];
+          DROP INDEX `i_[DestTableName]_[IndexColumnName]` ON [DestTableName];
         </Sql>
-
-        <IsSqlIndexStatement>true</IsSqlIndexStatement>
-        
-        <IgnoreSqlException>true</IgnoreSqlException>
       </DbMaintenanceStep>
 
       <DbMaintenanceStep>
@@ -54,7 +49,7 @@
         </Description>
 
         <Sql>
-          delete from `[DestTableName]`;
+          DELETE FROM `[DestTableName]`;
         </Sql>
       </DbMaintenanceStep>
 
@@ -64,7 +59,7 @@
         </Description>
     
         <Sql>
-          insert into `[DestTableName]`
+          INSERT INTO `[DestTableName]`
           (
           `Id` ,
           `Anmeldename` ,
@@ -78,7 +73,7 @@
           `kunnr` ,
           `portalType`
           )
-          select
+          SELECT
           `Id` ,
           `Anmeldename` ,
           `Bapi` ,
@@ -93,13 +88,13 @@
           from [SourceTableName];
         </Sql>
       </DbMaintenanceStep>
-      <DbMaintenanceStep>
+      <DbMaintenanceStep IsSqlIndexStatement="true">
         <Description>
           Adding indexes to table '[DestTableName]' ...
         </Description>
 
         <Sql>
-          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` on `[DestTableName]` (`[IndexColumnName]`);
+          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
         </Sql>
 
         <IsSqlIndexStatement>true</IsSqlIndexStatement>

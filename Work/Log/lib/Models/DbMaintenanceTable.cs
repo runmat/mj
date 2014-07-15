@@ -11,12 +11,12 @@ namespace LogMaintenance.Models
 
         public DbMaintenanceStep[] Steps { get; set; }
 
-        public string TableIndexColumNames { get; set; }
+        public string TableIndexColumnNames { get; set; }
 
         
-        public string[] GetTableIndexColumNames()
+        public string[] GetTableIndexColumnNames()
         {
-            return TableIndexColumNames.NotNullOrEmpty().Split(',').Select(s => s.Trim()).ToArray();
+            return TableIndexColumnNames.NotNullOrEmpty().Split(',').Select(s => s.Trim()).ToArray();
         }
 
         public string PrepareStatement(string sql, string indexColumnName="")
