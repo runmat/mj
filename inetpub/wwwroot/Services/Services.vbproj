@@ -54,12 +54,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\EasyAccessServices\CKG.EasyAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="DHLWebService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DHLWebService.dll</HintPath>
+    </Reference>
+    <Reference Include="dk.nita.saml20, Version=1.4.0.3461, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\dk.nita.saml20.dll</HintPath>
+    </Reference>
+    <Reference Include="eIDConnector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\eIDConnector.dll</HintPath>
+    </Reference>
     <Reference Include="GeneralTools, Version=1.0.5056.19011, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\work\GAC\GeneralTools.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\..\Work\GAC\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickEasy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\QuickEasy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -75,6 +107,10 @@
     <Reference Include="System.Configuration" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
     <Reference Include="WebTools35, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1337,7 +1373,7 @@
         <SkipAction>Delete</SkipAction>
         <ObjectName>dirPath</ObjectName>
         <AbsolutePath>$(_Escaped_PackageTempDir)\\*.config</AbsolutePath>
-      </MsDeploySkipRules>	  
+      </MsDeploySkipRules>
     </ItemGroup>
   </Target>
   <ProjectExtensions>
