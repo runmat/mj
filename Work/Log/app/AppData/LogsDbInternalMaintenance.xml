@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfDbMaintenanceStep>
+  <DbMaintenanceStep>
+    <Sql>Testing</Sql>
+    <Description>is good</Description>
+  </DbMaintenanceStep>
+  <DbMaintenanceStep>
+    <Sql>Maintenance</Sql>
+    <Description>is also good!</Description>
+  </DbMaintenanceStep>
+</ArrayOfDbMaintenanceStep>

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\DbMaintenanceStep.cs" />
     <Compile Include="Services\Database\MultiPlatform\Models\MpApplicationTranslated.cs" />
     <Compile Include="Services\Database\MultiPlatform\Models\MpCustomer.cs" />
     <Compile Include="Services\Database\MultiPlatform\Models\MpWebUser.cs" />
