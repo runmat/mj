@@ -53,9 +53,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\CKG\EasyAccess\bin\CKG.EasyAccess.dll</HintPath>
+    <Reference Include="CKG.EasyAccess">
+      <HintPath>..\..\..\..\..\Work\GAC\EasyAccessServices\CKG.EasyAccess.dll</HintPath>
     </Reference>
     <Reference Include="QuickEasy, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

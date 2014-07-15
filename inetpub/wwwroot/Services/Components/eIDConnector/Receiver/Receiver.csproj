@@ -12,10 +12,14 @@
     <RootNamespace>Receiver</RootNamespace>
     <AssemblyName>Receiver</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -42,10 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dk.nita.saml20">
-      <HintPath>..\..\..\GAC\dk.nita.saml20.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Work\GAC\dk.nita.saml20.dll</HintPath>
     </Reference>
     <Reference Include="eIDConnector">
-      <HintPath>..\..\..\GAC\eIDConnector.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Work\GAC\eIDConnector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
