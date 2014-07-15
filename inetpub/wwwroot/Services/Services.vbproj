@@ -1301,6 +1301,12 @@
       </FilesForPackagingFromProject>
     </ItemGroup>
     <ItemGroup>
+      <_Bin Include="Admin\Bin\Admin.*;Applications\AppArval\Bin\AppArval.*;Applications\appCheckServices\Bin\appCheckServices.*;Applications\AppF2\Bin\AppF2.*;Applications\AppInsurance\Bin\AppInsurance.*;Applications\AppMBB\Bin\AppMBB.*;Applications\AppRemarketing\Bin\AppRemarketing.*;Applications\AppServicesCarRent\Bin\AppServicesCarRent.*;Applications\Leasing\Bin\Leasing.*;Applications\Vermieter\Bin\Vermieter.*;Components\ComArchiv\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\CKG.Components.ComCommon.*;Components\Controls\bin\CKG.Components.Controls.*;Components\eIDConnector\Receiver\bin\Receiver.*;Components\Logistik\bin\CKG.Components.Controls.*;Components\Zulassung\bin\CKG.Components.Zulassung.dll" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
       <_DADQS Include="Downloads\DADQS_de.exe" />
       <FilesForPackagingFromProject Include="%(_DADQS.Identity)">
         <DestinationRelativePath>Downloads\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>

@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
     <WarningLevel>1</WarningLevel>
@@ -101,13 +101,8 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Upload_Validator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Upload_Validator.dll</HintPath>
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -931,6 +926,10 @@
       <Project>{695BD928-0E33-498F-B2B5-FC7C010E748F}</Project>
       <Name>DAT_BankenLinie_Connector</Name>
     </ProjectReference>
+    <ProjectReference Include="Upload_Validator\Upload_Validator\Upload_Validator.csproj">
+      <Project>{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}</Project>
+      <Name>Upload_Validator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -959,4 +958,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
+  </PropertyGroup>
 </Project>
