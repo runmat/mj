@@ -74,7 +74,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="AppData\LogsDbInternalMaintenance.xml">
+    <Content Include="AppData\LogsDbInternalMaintenance\PageVisit.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\LogsDbInternalMaintenance\SapBapi.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

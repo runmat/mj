@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using GeneralTools.Log.Models.MultiPlatform;
 using GeneralTools.Models;
@@ -16,13 +18,15 @@ namespace LogMaintenance.Services
 
         #region MaintenanceLogsDb
 
-        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string appDataFileName)
+        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string appDataFilePath)
         {
             _infoMessageAction = infoMessageAction;
 
-            var success = MaintenanceLogsDbForServer("Test", appDataFileName);
+            foreach (var xmlFileName in Directory.GetFiles(appDataFilePath))
+                if (!MaintenanceLogsDbForServer("Test", xmlFileName))
+                    return false;
 
-            return success;
+            return true;
         }
 
         private static bool MaintenanceLogsDbForServer(string serverType, string appDataFileName)
@@ -31,6 +35,7 @@ namespace LogMaintenance.Services
                 return false;
 
             var logsDbContext = CreateLogsDbContext(serverType);
+            ((IObjectContextAdapter)logsDbContext).ObjectContext.CommandTimeout = 3600;
 
             var sqlMaintenanceTables = XmlService.XmlTryDeserializeFromFile<DbMaintenanceTable[]>(appDataFileName);
             foreach (var sqlMaintenanceTable in sqlMaintenanceTables)

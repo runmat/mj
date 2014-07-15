@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfDbMaintenanceTable>
+
+  <DbMaintenanceTable>
+
+    <SourceTableName>PageVisit</SourceTableName>
+    
+    <DestTableName>PageVisitReadOnly</DestTableName>
+
+    <TableIndexColumnNames>UserID, CustomerID</TableIndexColumnNames>
+
+    <Steps>
+      <DbMaintenanceStep IgnoreSqlException="true">
+        <Description>
+          Try creating table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE TABLE `[DestTableName]` (
+          `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ',
+          `AppID` int(11) NOT NULL,
+          `UserID` varchar(40) NOT NULL,
+          `CustomerID` int(11) NOT NULL,
+          `KUNNR` int(11) NOT NULL,
+          `PortalType` int(11) NOT NULL,
+          `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          PRIMARY KEY (`Id`)
+          ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep IsSqlIndexStatement="true" IgnoreSqlException="true">
+        <Description>
+          Try dropping indexes on table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          DROP INDEX `i_[DestTableName]_[IndexColumnName]` ON [DestTableName];
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Cleaning table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          DELETE FROM `[DestTableName]`;
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Inserting data into table '[DestTableName]' ...
+        </Description>
+    
+        <Sql>
+          INSERT INTO `[DestTableName]`
+          (
+          `Id` ,
+          `AppId` ,
+          `UserID` ,
+          `CustomerID` ,
+          `KUNNR` ,
+          `portalType`,
+          `time_stamp`
+          )
+          SELECT
+          `Id` ,
+          `AppId` ,
+          `UserID` ,
+          `CustomerID` ,
+          `KUNNR` ,
+          `portalType`,
+          `time_stamp`
+          from [SourceTableName];
+        </Sql>
+      </DbMaintenanceStep>
+      <DbMaintenanceStep IsSqlIndexStatement="true">
+        <Description>
+          Adding indexes to table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
+        </Sql>
+
+        <IsSqlIndexStatement>true</IsSqlIndexStatement>
+      </DbMaintenanceStep>
+    </Steps>
+  </DbMaintenanceTable>
+</ArrayOfDbMaintenanceTable>
