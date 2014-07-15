@@ -2187,7 +2187,6 @@
     <Content Include="Views\Leasing\Klaerfaelle\AnzeigeDatenPuGDetails.cshtml" />
     <Content Include="Views\CoC\Partial\DuplicateVinConfirmationMode.cshtml" />
     <Content Include="Views\CocBeauftragung\Beauftragung.cshtml" />
-    <Content Include="Views\Test\IndexOld.cshtml" />
     <Content Include="Views\Test\Partial\TestFormOld.cshtml" />
     <Content Include="Views\Test\Partial\TestForm2.cshtml" />
     <Content Include="Views\Leasing\CsvUpload.cshtml" />
@@ -4675,6 +4674,10 @@
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainArchive\CkgDomainArchive.csproj">
       <Project>{F1C484BE-4B1D-465D-8761-E29DA430A53A}</Project>
       <Name>CkgDomainArchive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
+      <Project>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</Project>
+      <Name>CkgDomainAutohaus</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\work\CkgDomainLogic\CkgDomainCoc\CkgDomainCoc.csproj">
       <Project>{F01F55AC-5B2F-4877-B398-85FEE13E3EB5}</Project>
