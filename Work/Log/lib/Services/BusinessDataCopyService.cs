@@ -5,6 +5,7 @@ using GeneralTools.Log.Models.MultiPlatform;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using LogMaintenance.Models;
+using MySql.Data.MySqlClient;
 
 namespace LogMaintenance.Services
 {
@@ -15,22 +16,49 @@ namespace LogMaintenance.Services
 
         #region MaintenanceLogsDb
 
-        public static void MaintenanceLogsDb(Action<string> infoMessageAction, string appDataFileName)
+        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string appDataFileName)
         {
             _infoMessageAction = infoMessageAction;
 
-            MaintenanceLogsDbForServer("Prod", appDataFileName);
+            var success = MaintenanceLogsDbForServer("Test", appDataFileName);
+
+            return success;
         }
 
-        private static void MaintenanceLogsDbForServer(string serverType, string appDataFileName)
+        private static bool MaintenanceLogsDbForServer(string serverType, string appDataFileName)
         {
             if (serverType.IsNullOrEmpty())
-                return;
+                return false;
 
-            var sqlMaintenanceSteps = XmlService.XmlTryDeserializeFromFile<DbMaintenanceStep[]>(appDataFileName);
+            MultiDbPlatformContext businessDbContext;
+            MultiDbPlatformContext logsDbContext;
+            CreateDbContexts(serverType, out businessDbContext, out logsDbContext);
 
+            var sqlMaintenanceTables = XmlService.XmlTryDeserializeFromFile<DbMaintenanceTable[]>(appDataFileName);
+            foreach (var sqlMaintenanceTable in sqlMaintenanceTables)
+            {
+                Alert(string.Format("***  Refreshing content of table '{0}'  ***", sqlMaintenanceTable.DestTableName));
 
-            Alert("");
+                foreach (var sqlMaintenanceStep in sqlMaintenanceTable.Steps)
+                {
+                    Alert(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Description));
+                    try
+                    {
+                        logsDbContext.Database.ExecuteSqlCommand(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql));
+                    }
+                    catch (MySqlException e)
+                    {
+                        if (!sqlMaintenanceStep.IgnoreSqlException)
+                        {
+                            Alert(string.Format("\r\nA MySql Error has occured:\r\n>> {0} <<\r\nAborting !!!\r\n", e.Message));
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            Alert("\r\n***   Ok, all finished ;-)   ***\r\n");
+            return true;
         }
 
         #endregion

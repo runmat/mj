@@ -1,11 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ArrayOfDbMaintenanceStep>
-  <DbMaintenanceStep>
-    <Sql>Testing</Sql>
-    <Description>is good</Description>
-  </DbMaintenanceStep>
-  <DbMaintenanceStep>
-    <Sql>Maintenance</Sql>
-    <Description>is also good!</Description>
-  </DbMaintenanceStep>
-</ArrayOfDbMaintenanceStep>
+<ArrayOfDbMaintenanceTable>
+
+  <DbMaintenanceTable>
+
+    <SourceTableName>SapBapi</SourceTableName>
+    
+    <DestTableName>SapBapiReadOnly</DestTableName>
+
+    <Steps>
+      <DbMaintenanceStep>
+        <Description>
+          Try creating table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE TABLE `[DestTableName]` (
+          `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ',
+          `Anmeldename` char(40) NOT NULL,
+          `Bapi` char(40) NOT NULL,
+          `Status` bit(1) NOT NULL,
+          `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `dauer` decimal(8,4) DEFAULT NULL,
+          `AppId` int(11) DEFAULT NULL,
+          `userID` int(11) DEFAULT NULL,
+          `customerID` int(11) DEFAULT NULL,
+          `kunnr` int(11) DEFAULT NULL,
+          `portalType` int(11) DEFAULT NULL,
+          PRIMARY KEY (`Id`)
+          ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+        </Sql>
+        <IgnoreSqlException>true</IgnoreSqlException>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Try dropping indexes on table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          drop index `i_[DestTableName]_customerID` on [DestTableName];
+          drop index `i_[DestTableName]_userID` on [DestTableName];
+        </Sql>
+        <IgnoreSqlException>true</IgnoreSqlException>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Cleaning table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          delete from `[DestTableName]`;
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Inserting data into table '[DestTableName]' ...
+        </Description>
+    
+        <Sql>
+          insert into `[DestTableName]`
+          (
+          `Id` ,
+          `Anmeldename` ,
+          `Bapi` ,
+          `Status` ,
+          `time_stamp` ,
+          `dauer` ,
+          `AppId` ,
+          `userID` ,
+          `customerID` ,
+          `kunnr` ,
+          `portalType`
+          )
+          select
+          `Id` ,
+          `Anmeldename` ,
+          `Bapi` ,
+          `Status` ,
+          `time_stamp` ,
+          `dauer` ,
+          `AppId` ,
+          `userID` ,
+          `customerID` ,
+          `kunnr` ,
+          `portalType`
+          from [SourceTableName];
+        </Sql>
+      </DbMaintenanceStep>
+      <DbMaintenanceStep>
+        <Description>
+          Adding indexes to table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE INDEX `i_[DestTableName]_customerID` on `[DestTableName]` (`customerID`);
+          CREATE INDEX `i_[DestTableName]_userID` on `[DestTableName]` (`userID`);
+        </Sql>
+      </DbMaintenanceStep>
+    </Steps>
+  </DbMaintenanceTable>
+</ArrayOfDbMaintenanceTable>

@@ -7,14 +7,25 @@ namespace LogMaintenance
 {
     class Program
     {
+        static string LogsDbInternalMaintenanceXmlFileName
+        {
+            get
+            {
+                var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                if (exePath == null) return "";
+                return Path.Combine(exePath, "AppData", "LogsDbInternalMaintenance.xml");
+            }
+        }
+
         static void Main()
         {
-            //BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
+            bool success;
 
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            if (exePath == null) return;
-            var appDataFileName = Path.Combine(exePath, "AppData", "LogsDbInternalMaintenance.xml");
-            BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, appDataFileName);
+            //success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
+            //if (!success) Environment.Exit(-1);
+
+            success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, LogsDbInternalMaintenanceXmlFileName);
+            if (!success) Environment.Exit(-1);
         }
     }
 }
