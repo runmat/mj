@@ -2,7 +2,6 @@
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel
 Imports CKG.Base.Business
-Imports System.Data.OleDb
 Imports System.IO
 Imports System.Runtime.Serialization.Formatters.Binary
 
@@ -24,7 +23,6 @@ Partial Public Class Change99
         EndManuell = 6
     End Enum
 
-
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
@@ -44,20 +42,18 @@ Partial Public Class Change99
         'Prüfen, ob die Adresspflege in der Gruppe des Users ist
         InApp()
 
-
-
         cpeDokuAusgabe.Collapsed = False
         cpeDokuAusgabe.ClientState = Nothing
 
-
         If Not IsPostBack Then
             fillBrieflieferanten()
-
+            chkGruende.Attributes.Add("onclick", "return false;")
         ElseIf Not Session("App_Versand") Is Nothing Then
             m_Versand = CType(Session("App_Versand"), Briefversand)
         End If
 
     End Sub
+
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
         HelpProcedures.FixedGridViewCols(GridView1)
@@ -170,6 +166,7 @@ Partial Public Class Change99
         End If
 
     End Sub
+
     Private Sub DoSubmit2()
         m_Versand.EQuiTyp = "B"
         m_Versand.FILL(Session("AppID").ToString, Session.SessionID.ToString, Me, True)
@@ -179,6 +176,7 @@ Partial Public Class Change99
             Session("App_Versand") = m_Versand
         End If
     End Sub
+
     Private Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView1.PageIndexChanging
         FillGrid(e.NewPageIndex)
     End Sub
@@ -391,7 +389,6 @@ Partial Public Class Change99
                 lblOptionsOverViewShow.Text &= litem.Text & "<br />"
             End If
         Next
-        ' lblOptionsOverViewShow.Text = chkGruende.SelectedItem.Text
 
         If rb_endg.Checked = True Then
             lblVersArtOverviewShow.Text = rb_endg.Text
@@ -476,7 +473,6 @@ Partial Public Class Change99
         ddlBrieflieferant.DataBind()
 
     End Sub
-
 
     Private Sub fillLaenderDLL()
         Dim sprache As String
@@ -831,13 +827,33 @@ Partial Public Class Change99
             Panel3.CssClass = "StepActive"
             m_Versand.OptionFlag = "3"
 
+            Dim strVersandart As String = IIf(rb_temp.Checked, "1", "2")
+
             m_Versand.GetVersandOptions(Session("AppID").ToString, Session.SessionID.ToString, Me)
+
+            'Versandoption "Versand ohne Abmeldung" ggf. rausfiltern, sonst als selektiert vorbelegen
+            'NewLevel beinhaltet 2 Arrays: Level-Array und Autorisierungsarray(1 zu 1) getrennt durch |
+            Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
+            Dim levels() As String = strLevel.Split(",")
+            Dim updRows As DataRow() = m_Versand.VersandOptionen.Select("EXTGROUP='" & strVersandart & "' AND EAN11 = 'ZZABMELD'")
+            If strVersandart = "1" Or Not levels.Contains("7") Then
+                For Each updRow In updRows
+                    m_Versand.VersandOptionen.Rows.Remove(updRow)
+                Next
+            Else
+                For Each updRow In updRows
+                    updRow("Selected") = "1"
+                Next
+            End If
+
             If m_Versand.Status <> 0 Then
                 lblErrorAdressen.Visible = True
                 lblErrorAdressen.Text = m_Versand.Message
             Else
                 Session("App_Versand") = m_Versand
-                m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1' AND INTROW <> '0000000000' ", "EXTGROUP='2' AND INTROW <> '0000000000' ")
+
+                m_Versand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000'"
+
                 chkListGruende.DataSource = m_Versand.VersandOptionen.DefaultView
                 chkListGruende.DataValueField = "EAN11"
                 chkListGruende.DataTextField = "ASKTX"
@@ -849,17 +865,12 @@ Partial Public Class Change99
                 grvDL.DataSource = m_Versand.VersandOptionen.DefaultView
                 grvDL.DataBind()
 
-
-
                 If m_Versand.VersandOptionen.Select("Selected = '1'").Length > 0 Then
-                    m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1' AND INTROW <> '0000000000' AND Selected = '1' ",
-                                                                          "EXTGROUP='2' AND INTROW <> '0000000000' AND Selected = '1' ")
+                    m_Versand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000' AND Selected = '1'"
                     chkGruende.DataSource = m_Versand.VersandOptionen.DefaultView
                     chkGruende.DataValueField = "EAN11"
                     chkGruende.DataTextField = "ASKTX"
                     chkGruende.DataBind()
-
-                    'Dim ListGruendeItem As ListItem
 
                     Dim cbx As CheckBox
                     Dim lbl As Label
@@ -867,7 +878,6 @@ Partial Public Class Change99
 
                     Dim booInfo As Boolean = False
                     Dim booPreis As Boolean = False
-
 
                     For Each litem As ListItem In chkGruende.Items
                         litem.Selected = True
@@ -883,14 +893,6 @@ Partial Public Class Change99
                             End If
 
                         Next
-
-
-                        'litem.Selected = True
-                        'litem.Attributes.Add("onclick", "return false;")
-
-                        'ListGruendeItem = chkListGruende.Items.FindByValue(litem.Value)
-
-                        'ListGruendeItem.Selected = True
 
                     Next
 
@@ -913,13 +915,9 @@ Partial Public Class Change99
                     grvDL.Columns(2).Visible = booPreis
                     grvDL.Columns(3).Visible = booInfo
 
-
-
                 End If
-                m_Versand.VersandArt = IIf(rb_temp.Checked, "1", "2")
+                m_Versand.VersandArt = strVersandart
                 m_Versand.GetAbrufgrund(Session("AppID").ToString, Session.SessionID.ToString, Me)
-
-
 
                 If m_Versand.Status <> 0 Then
                     lblErrorAdressen.Visible = True
@@ -954,12 +952,13 @@ Partial Public Class Change99
         Else
             lblErrorAdressen.Visible = True
             lblErrorAdressen.Text = "Bitte wählen Sie eine Versandadresse aus!"
-        End If
+            End If
     End Sub
 
     Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ibtnNextToOverView.Click
         lblErrorVersandOpt.Text = ""
         m_Versand.VersohneAbeld = ""
+        Dim tempEndg As String = IIf(rb_temp.Checked, "1", "2")
         If ddlVersandgrund.SelectedIndex = 0 Then
             lblErrorVersandOpt.Text += "Bitte wählen Sie einen Versandgrund aus!<br />"
             lblErrorVersandOpt.Visible = True
@@ -981,16 +980,21 @@ Partial Public Class Change99
 
         Dim bAuswahlNormal As Boolean = False
         For Each litem As ListItem In chkGruende.Items
-            If litem.Selected = True Then
+            If litem.Selected Then
                 If litem.Value = "ZZABMELD" Then
                     m_Versand.VersohneAbeld = "X"
-
                 Else
                     m_Versand.Materialnummer = litem.Value
                     bAuswahlNormal = True
                 End If
             End If
         Next
+
+        'Wenn Versandoption "Versand ohne Abmeldung" nicht wählbar ist/war -> default setzen
+        If m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = 'ZZABMELD'").Length = 0 Then
+            m_Versand.VersohneAbeld = "X"
+        End If
+
         If bAuswahlNormal = False Then
             lblErrorVersandOpt.Text += "Bitte wählen Sie min. eine Versandoption aus, die nicht einer Zusatzoption entspricht!<br />"
             lblErrorVersandOpt.Visible = True
@@ -1012,6 +1016,7 @@ Partial Public Class Change99
             lbtnVersanddaten.Enabled = True
             lblSteps.Text = "Schritt 4 von 4"
             Panel4.CssClass = "StepActive"
+            ConfirmNextToOverview.Enabled = False
             FillGridOverView(0)
             FillOverView()
         End If
@@ -1058,7 +1063,6 @@ Partial Public Class Change99
 
         For Each litem As ListItem In chkGruende.Items
             litem.Selected = True
-            litem.Attributes.Add("onclick", "return false;")
         Next
     End Sub
 
@@ -1083,18 +1087,15 @@ Partial Public Class Change99
             m_Versand.VersandOptionen.AcceptChanges()
         Next
 
-
-        'For Each litem As ListItem In chkListGruende.Items
-        '    If litem.Selected Then
-        '        m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + litem.Value + "'")(0)("Selected") = "1"
-        '    Else
-        '        m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + litem.Value + "'")(0)("Selected") = "0"
-        '    End If
-        '    m_Versand.VersandOptionen.AcceptChanges()
-        'Next
-
         Dim bvalidate As Boolean = True
         lblErrPopUp.Visible = False
+
+        'Merken, ob Versandoption "Versand ohne Abmeldung" wählbar ist/war
+        Dim blnZZABMELDavailable As Boolean = False
+        Dim blnZZABMELDselected As Boolean = False
+        If m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = 'ZZABMELD'").Length > 0 Then
+            blnZZABMELDavailable = True
+        End If
 
         Dim drows() As DataRow = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1'")
         If drows.Length > 0 Then
@@ -1123,8 +1124,16 @@ Partial Public Class Change99
                         End If
                     End If
                 End If
+
+                If dRowSel("EAN11").ToString() = "ZZABMELD" Then
+                    blnZZABMELDselected = True
+                End If
             Next
         End If
+
+        'wenn "Versand ohne Abmeldung" bewusst abgewählt -> Warnhinweis
+        ConfirmNextToOverview.Enabled = (blnZZABMELDavailable And Not blnZZABMELDselected)
+
         If bvalidate = True Then
             m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1'", "EXTGROUP='2'")
             m_Versand.VersandOptionen.DefaultView.RowFilter += " AND Selected = '1'"
@@ -1133,11 +1142,8 @@ Partial Public Class Change99
             chkGruende.DataTextField = "ASKTX"
             chkGruende.DataBind()
 
-
-
             For Each litem As ListItem In chkGruende.Items
                 litem.Selected = True
-                litem.Attributes.Add("onclick", "return false;")
             Next
 
             divOptions.Visible = False
@@ -1422,10 +1428,8 @@ Partial Public Class Change99
         Panel4.CssClass = "Steps"
         For Each litem As ListItem In chkGruende.Items
             litem.Selected = True
-            litem.Attributes.Add("onclick", "return false;")
         Next
     End Sub
-
 
     Protected Sub lbtnSend_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSend.Click
         m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
@@ -1631,7 +1635,6 @@ Partial Public Class Change99
         trSelAdresse.Visible = False
     End Sub
 
-
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
         m_Versand = Nothing
         Session("m_Versand") = Nothing
@@ -1744,6 +1747,7 @@ Partial Public Class Change99
             lblErrorDokumente.Text += "Fehler beim Hochladen der Datei! " & ex.Message
         End Try
     End Sub
+
     Private Sub CheckInputTable(ByVal tblInput As DataTable)
 
         Dim rowData As DataRow
@@ -1838,6 +1842,7 @@ Partial Public Class Change99
             m_Versand.tblUpload.Rows.Add(UploadRow)
         Next
     End Sub
+
     Private Sub CreateTableUploadBriefNr(ByVal sBriefNr() As String)
         m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
         m_Versand.CreateUploadTable()
@@ -1856,6 +1861,7 @@ Partial Public Class Change99
 
 
     End Sub
+
     Private Sub CreateTableUploadVNr(ByVal sVNr() As String)
         m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
         m_Versand.CreateUploadTable()
@@ -1872,6 +1878,7 @@ Partial Public Class Change99
             m_Versand.tblUpload.Rows.Add(UploadRow)
         Next
     End Sub
+
     Protected Sub rb_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rb_temp.CheckedChanged, rb_endg.CheckedChanged
 
         m_Versand.VersandGrund = Nothing
@@ -2038,8 +2045,6 @@ Partial Public Class Change99
     End Function
 
 #End Region
-
-
    
     Protected Sub ibtnCreatePDF_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnCreatePDF.Click
 
@@ -2122,7 +2127,6 @@ Partial Public Class Change99
         End If
 
     End Sub
-
 
     Protected Sub ibtEdit_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles ibtEdit.Click
 

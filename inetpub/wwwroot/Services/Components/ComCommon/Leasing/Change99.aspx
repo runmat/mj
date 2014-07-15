@@ -1224,6 +1224,8 @@
                                    
                                          <asp:LinkButton ID="ibtnNextToOverView" runat="server" CssClass="TablebuttonLarge" Width="130px"
                                                         Height="16px">» Weiter</asp:LinkButton>
+                                        <cc1:ConfirmButtonExtender ID="ConfirmNextToOverview" runat="server" TargetControlID="ibtnNextToOverView"
+                                            ConfirmText="Achtung! Das Dokument wird erst nach erfolgter Abmeldung versendet!" Enabled="false" />
                                 </div>
                             </div>
                             
