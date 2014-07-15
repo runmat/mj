@@ -1283,13 +1283,13 @@
   </PropertyGroup>
   <Target Name="CustomCollectFiles">
     <ItemGroup>
-      <_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls;Applications\**\*.htm;Applications\**\*.asmx;Applications\**\*.htc;Applications\**\*.xml" />
+      <_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls;Applications\**\*.htm;Applications\**\*.asmx;Applications\**\*.htc;Applications\**\Templates\*.xml" />
       <FilesForPackagingFromProject Include="%(_Applications.Identity)">
         <DestinationRelativePath>Applications\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
     <ItemGroup>
-      <_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls;Components\**\*.htm;Components\**\*.asmx;Components\**\*.htc;Components\**\*.xml" />
+      <_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls;Components\**\*.htm;Components\**\*.asmx;Components\**\*.htc" />
       <FilesForPackagingFromProject Include="%(_Components.Identity)">
         <DestinationRelativePath>Components\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
