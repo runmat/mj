@@ -53,22 +53,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vermieter", "Applications\V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload_Validator", "Components\ComCommon\Upload_Validator\Upload_Validator\Upload_Validator.csproj", "{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAT_BankenLinie_Connector", "Components\ComCommon\DAT_BankenLinie_Connector\DAT_BankenLinie_Connector\DAT_BankenLinie_Connector.csproj", "{695BD928-0E33-498F-B2B5-FC7C010E748F}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = Components\\ComArchiv\\ComArchiv.vbproj
-		SccProjectName0 = Components/ComArchiv
-		SccAuxPath0 = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = Components\\ComArchiv
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = Components\\eIDConnector\\Receiver\\Receiver.csproj
-		SccProjectName1 = Components/eIDConnector/Receiver
-		SccAuxPath1 = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath1 = Components\\eIDConnector\\Receiver
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -426,6 +413,21 @@ Global
 		{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}.Release|x86.ActiveCfg = Release|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.DebugQuick|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.DebugQuick|Mixed Platforms.Build.0 = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.DebugQuick|x86.ActiveCfg = Debug|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{695BD928-0E33-498F-B2B5-FC7C010E748F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
