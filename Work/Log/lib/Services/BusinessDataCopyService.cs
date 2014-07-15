@@ -30,9 +30,7 @@ namespace LogMaintenance.Services
             if (serverType.IsNullOrEmpty())
                 return false;
 
-            MultiDbPlatformContext businessDbContext;
-            MultiDbPlatformContext logsDbContext;
-            CreateDbContexts(serverType, out businessDbContext, out logsDbContext);
+            var logsDbContext = CreateLogsDbContext(serverType);
 
             var sqlMaintenanceTables = XmlService.XmlTryDeserializeFromFile<DbMaintenanceTable[]>(appDataFileName);
             foreach (var sqlMaintenanceTable in sqlMaintenanceTables)
@@ -42,16 +40,25 @@ namespace LogMaintenance.Services
                 foreach (var sqlMaintenanceStep in sqlMaintenanceTable.Steps)
                 {
                     Alert(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Description));
-                    try
+
+                    var multiSqlSteps = new [] { "" };
+                    if (sqlMaintenanceStep.IsSqlIndexStatement)
+                        multiSqlSteps = sqlMaintenanceTable.GetTableIndexColumNames();
+
+                    foreach (var multiSqlStep in multiSqlSteps)
                     {
-                        logsDbContext.Database.ExecuteSqlCommand(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql));
-                    }
-                    catch (MySqlException e)
-                    {
-                        if (!sqlMaintenanceStep.IgnoreSqlException)
+                        try
                         {
-                            Alert(string.Format("\r\nA MySql Error has occured:\r\n>> {0} <<\r\nAborting !!!\r\n", e.Message));
-                            return false;
+                            logsDbContext.Database.ExecuteSqlCommand(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep));
+                        }
+                        catch (MySqlException e)
+                        {
+                            if (!sqlMaintenanceStep.IgnoreSqlException)
+                            {
+                                Alert(string.Format("\r\nA MySql Error has occured:\r\n>> {0} <<\r\nAborting !!!\r\n", e.Message));
+                                return false;
+                            }
+
                         }
                     }
                 }
@@ -94,9 +101,8 @@ namespace LogMaintenance.Services
             if (tableAttribute != null)
                 tableName = tableAttribute.Name;
 
-            MultiDbPlatformContext businessDbContext;
-            MultiDbPlatformContext logsDbContext;
-            CreateDbContexts(serverType, out businessDbContext, out logsDbContext);
+            var businessDbContext = CreateBusinessDbContext(serverType);
+            var logsDbContext = CreateLogsDbContext(serverType);
 
             logsDbContext.Database.ExecuteSqlCommand("delete from " + tableName);
             logsDbContext.SaveChanges();
@@ -116,14 +122,16 @@ namespace LogMaintenance.Services
 
         #region Misc
 
-        private static void CreateDbContexts(string serverType, out MultiDbPlatformContext businessDbContext,
-                                             out MultiDbPlatformContext logsDbContext)
+        private static MultiDbPlatformContext CreateLogsDbContext(string serverType)
+        {
+            var logsConnectionString = string.Format("Logs{0}", serverType);
+            return new MultiDbPlatformContext(logsConnectionString);
+        }
+
+        private static MultiDbPlatformContext CreateBusinessDbContext(string serverType)
         {
             var businessConnectionString = string.Format("Source{0}", serverType);
-            var logsConnectionString = string.Format("Logs{0}", serverType);
-
-            businessDbContext = new MultiDbPlatformContext(businessConnectionString);
-            logsDbContext = new MultiDbPlatformContext(logsConnectionString);
+            return new MultiDbPlatformContext(businessConnectionString);
         }
 
         private static void Alert(string info)

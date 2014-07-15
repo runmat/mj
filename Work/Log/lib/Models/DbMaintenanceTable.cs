@@ -1,4 +1,7 @@
-﻿namespace LogMaintenance.Models
+﻿using GeneralTools.Models;
+using System.Linq;
+
+namespace LogMaintenance.Models
 {
     public class DbMaintenanceTable
     {
@@ -8,10 +11,19 @@
 
         public DbMaintenanceStep[] Steps { get; set; }
 
-        public string PrepareStatement(string sql)
+        public string TableIndexColumNames { get; set; }
+
+        
+        public string[] GetTableIndexColumNames()
+        {
+            return TableIndexColumNames.NotNullOrEmpty().Split(',').Select(s => s.Trim()).ToArray();
+        }
+
+        public string PrepareStatement(string sql, string indexColumnName="")
         {
             sql = sql.Replace("[SourceTableName]", SourceTableName);
             sql = sql.Replace("[DestTableName]", DestTableName);
+            sql = sql.Replace("[IndexColumnName]", indexColumnName);
             
             return sql;
         }

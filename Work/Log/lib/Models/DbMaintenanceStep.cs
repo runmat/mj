@@ -7,5 +7,7 @@
         public string Sql { get; set; }
 
         public bool IgnoreSqlException { get; set; }
+
+        public bool IsSqlIndexStatement { get; set; }
     }
 }

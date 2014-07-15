@@ -7,6 +7,8 @@
     
     <DestTableName>SapBapiReadOnly</DestTableName>
 
+    <TableIndexColumNames>userID, customerID</TableIndexColumNames>
+
     <Steps>
       <DbMaintenanceStep>
         <Description>
@@ -38,9 +40,11 @@
         </Description>
 
         <Sql>
-          drop index `i_[DestTableName]_customerID` on [DestTableName];
-          drop index `i_[DestTableName]_userID` on [DestTableName];
+          drop index `i_[DestTableName]_[IndexColumnName]` on [DestTableName];
         </Sql>
+
+        <IsSqlIndexStatement>true</IsSqlIndexStatement>
+        
         <IgnoreSqlException>true</IgnoreSqlException>
       </DbMaintenanceStep>
 
@@ -95,9 +99,10 @@
         </Description>
 
         <Sql>
-          CREATE INDEX `i_[DestTableName]_customerID` on `[DestTableName]` (`customerID`);
-          CREATE INDEX `i_[DestTableName]_userID` on `[DestTableName]` (`userID`);
+          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` on `[DestTableName]` (`[IndexColumnName]`);
         </Sql>
+
+        <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>
