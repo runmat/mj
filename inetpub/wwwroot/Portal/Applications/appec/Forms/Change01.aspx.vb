@@ -26,7 +26,6 @@ Public Class Change01
 
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
-    Private m_objTable As DataTable
 
     Protected WithEvents ucHeader As Header
     Protected WithEvents lblHead As System.Web.UI.WebControls.Label
@@ -62,6 +61,7 @@ Public Class Change01
     Protected WithEvents rbJ2 As System.Web.UI.WebControls.RadioButton
     Protected WithEvents rbN2 As System.Web.UI.WebControls.RadioButton
     Protected WithEvents cmdCreate As System.Web.UI.WebControls.LinkButton
+    Protected WithEvents cmdReset As System.Web.UI.WebControls.LinkButton
     Protected WithEvents lblError As System.Web.UI.WebControls.Label
     Protected WithEvents txtAuftragsnummerBis As System.Web.UI.WebControls.TextBox
     Protected WithEvents txtHerstellerHidden As System.Web.UI.HtmlControls.HtmlInputHidden
@@ -112,196 +112,6 @@ Public Class Change01
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten. " & ex.Message
         End Try
-    End Sub
-
-    Private Sub FillForm()
-        txtModelId.Text = objBatch.ModelID
-        txtSippcode.Text = objBatch.SippCode
-        txtBatchId.Text = objBatch.BarchId
-        txtDatEinsteuerung.Text = objBatch.DatumEinsteuerung
-        txtAnzahlFahrzeuge.Text = objBatch.AnzahlFahrzeuge
-        txtUnitNrVon.Text = objBatch.UnitNrVon
-        txtUnitNrBis.Text = objBatch.UnitNrBis
-        txtLaufzeit.Text = objBatch.Laufzeit
-        cbxLaufz.Checked = objBatch.LaufzeitBindung
-        txtBemerkung.Text = objBatch.Bemerkungen
-        txtAuftragsnummerVon.Text = objBatch.AuftragsNrVon
-        txtAuftragsnummerBis.Text = objBatch.AuftragsNrBis
-
-        If objBatch.Fahrzeuggruppe = True Then
-            rbPKW.Checked = True
-            rbLKW.Checked = False
-        Else
-            rbPKW.Checked = False
-            rbLKW.Checked = True
-        End If
-
-        If objBatch.WinterBereifung = True Then
-            rbJ1.Checked = True
-            rbN1.Checked = False
-        Else
-            rbN1.Checked = True
-            rbJ1.Checked = False
-        End If
-
-        If objBatch.Navi = True Then
-            rb_NaviJa.Checked = True
-            rb_NaviNein.Checked = False
-        Else
-            rb_NaviJa.Checked = False
-            rb_NaviNein.Checked = True
-        End If
-
-        If objBatch.SecurFleet = True Then
-            rbJ2.Checked = True
-            rbN2.Checked = False
-        Else
-            rbN2.Checked = True
-            rbJ2.Checked = False
-        End If
-
-        If objBatch.Leasing = True Then
-            rbLeasingJa.Checked = True
-            rbLeasingNein.Checked = False
-        Else
-            rbLeasingNein.Checked = True
-            rbLeasingJa.Checked = False
-        End If
-
-        Dim item As ListItem        'Modellbezeichnung....
-
-        item = ddlModellHidden.Items.FindByValue(txtModelId.Text)
-        txtModell.Text = item.Text
-
-        txtHerstellerHidden.Value = objBatch.Hersteller 'Hersteller und Herstellerbezeichnung
-        txtHerstellerBezeichnungHidden.Value = objBatch.HerstellerBezeichnung
-    End Sub
-
-    Private Sub FillControls()
-        Dim tblHersteller As DataTable
-        Dim vwHersteller As DataView
-        Dim vwVerwendung As DataView
-        Dim vwModell As DataView
-
-
-        tblHersteller = CType(objBatch.HerstellerAuswahl, DataTable)
-        'Dropdownlisten befüllen
-
-        '1. Hersteller
-        vwHersteller = objBatch.HerstellerAuswahl.DefaultView
-        vwHersteller.Sort = "ZHERST asc"
-
-        With ddlHersteller
-            .DataSource = vwHersteller
-            .DataTextField = "ZHERST"
-            .DataValueField = "VALPOS"
-            .DataBind()
-        End With
-
-        '2. Verwendungszweck
-        vwVerwendung = objBatch.VerwendungszweckAuswahl.DefaultView
-        vwVerwendung.Sort = "ZVERWENDUNG asc"
-
-        With ddlVerwendung
-            .DataSource = vwVerwendung
-            .DataTextField = "ZVERWENDUNG"
-            .DataValueField = "DOMVALUE_L"
-            .DataBind()
-        End With
-
-        '3. Modellbezeichnung
-        vwModell = objBatch.ModellAuswahl.DefaultView
-
-        With ddlModellHidden
-            .DataSource = vwModell
-            .DataTextField = "BEZEI"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-        '4.Zuordnung Modell zu Hersteller
-        vwModell = objBatch.ModellAuswahl.DefaultView
-
-        With ddlModellZuHersteller
-            .DataSource = vwModell
-            .DataTextField = "HERST"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-        '5.Zuordnung Modell zu Sippcode
-        vwModell = objBatch.ModellAuswahl.DefaultView
-
-        With ddlModellZuSipp
-            .DataSource = vwModell
-            .DataTextField = "Sipp"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-        '6.Zuordnung Modell zur Laufzeit
-        With ddlModellZuLaufzeit
-            .DataSource = vwModell
-            .DataTextField = "ZLAUFZEIT"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-        '7.Zuordnung Modell zur Laufzeitbindung
-        With ddlModellZuLaufzeitbindung
-            .DataSource = vwModell
-            .DataTextField = "ZLZBINDUNG"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-
-        'KennzeichenSerie Füllen
-        fillKennzeichenserie()
-
-        'Zuletzt gewählten Eintrag setzen
-        ddlHersteller.Items.FindByValue(objBatch.Hersteller).Selected = True
-        ddlVerwendung.Items.FindByValue(objBatch.Verwendungszweck).Selected = True
-        ddlKennzeichenserie1.Items.FindByText(objBatch.KennzeichenSerie).Selected = True
-
-    End Sub
-
-    Private Sub FillDropDownHersteller()
-        'Dim objBatch As ec_01
-        Dim tblHersteller As DataTable
-        Dim tblModell As DataTable
-        Dim vwHersteller As DataView
-        Dim vwModell As DataView
-
-
-        tblHersteller = CType(objBatch.HerstellerAuswahl, DataTable)
-        tblModell = CType(objBatch.ModellAuswahl, DataTable)
-
-        'Dropdownlisten befüllen
-
-        '1. Hersteller
-        vwHersteller = tblHersteller.DefaultView
-        vwHersteller.Sort = "ZHERST asc"
-
-        With ddlHersteller
-            .DataSource = vwHersteller
-            .DataTextField = "ZHERST"
-            .DataValueField = "VALPOS"
-            .DataBind()
-        End With
-
-        '2. Modellbezeichnung
-        vwModell = tblModell.DefaultView
-
-        With ddlModellHidden
-            .DataSource = vwModell
-            .DataTextField = "BEZEI"
-            .DataValueField = "CODE"
-            .DataBind()
-        End With
-
-        'Zuletzt gewählten Eintrag setzen
-        ddlHersteller.Items.FindByValue(txtHerstellerHidden.Value).Selected = True
     End Sub
 
     Private Sub InitialLoad()
@@ -681,23 +491,27 @@ Public Class Change01
 
     End Sub
 
-    Private Sub clearControls()
+    Private Sub clearControls(Optional ByVal clearAll As Boolean = True)
         txtModelId.Text = String.Empty
         txtSippcode.Text = String.Empty
         txtBatchId.Text = String.Empty
         txtAnzahlFahrzeuge.Text = String.Empty
         txtUnitNrVon.Text = String.Empty
         txtUnitNrBis.Text = String.Empty
-        txtBemerkung.Text = String.Empty
-        txtAuftragsnummerVon.Text = String.Empty
-        txtAuftragsnummerBis.Text = String.Empty
-        rbJ1.Checked = False
-        rbN1.Checked = True
-        rbJ2.Checked = False
-        rbN2.Checked = True
-        rbJAnhaenger.Checked = False
-        rbNAnhaenger.Checked = True
-        rb_NaviNein.Checked = True
+
+        If clearAll Then
+            txtLaufzeit.Text = String.Empty
+            cbxLaufz.Checked = False
+            txtBemerkung.Text = String.Empty
+            txtAuftragsnummerVon.Text = String.Empty
+            txtAuftragsnummerBis.Text = String.Empty
+            rbPKW.Checked = True
+            rbN1.Checked = True
+            rbNAnhaenger.Checked = True
+            rb_NaviNein.Checked = True
+            rbN2.Checked = True
+            rbLeasingNein.Checked = True
+        End If
     End Sub
 
     Private Sub collectData(uploadUnitnummern As Boolean)
@@ -787,7 +601,7 @@ Public Class Change01
 
         If objBatch.Selection < 0 Then  'Neuer Datensatz
             objBatch.addNewRow()
-            clearControls()
+            clearControls(False)
         Else                            'Vorhandener Datensatz, nur aktualisieren
             objBatch.updateExistingRow(status)
             If (status <> String.Empty) Then
@@ -805,11 +619,7 @@ Public Class Change01
                 objBatch.saveData(Session("AppID").ToString, Session.SessionID, row, Me)
                 If (objBatch.Status = 0) Then
                     row("Status") = "Gespeichert."
-
                     lblSuccess.Text = "Daten gesichert."
-                    clearControls()
-
-
                 Else
                     row("Status") = objBatch.Message
                     lblError.Text = "Die Daten konnten nicht gespeichert werden. Bitte überprüfen Sie Ihre Eingaben. (" & objBatch.Message & ")"
@@ -828,6 +638,10 @@ Public Class Change01
             Exit Sub
         End If
         Response.Redirect("Change01_2.aspx?AppID=" & Session("AppID").ToString)
+    End Sub
+
+    Private Sub cmdReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdReset.Click
+        clearControls()
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender

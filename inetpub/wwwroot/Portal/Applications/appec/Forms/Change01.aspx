@@ -237,7 +237,11 @@
 														<TD vAlign="middle" colSpan="1">
 															<P align="right"><asp:linkbutton id="cmdCreate" runat="server" CssClass="StandardButton" Width="150px"> &#149;&nbsp;Speichern</asp:linkbutton></P>
 														</TD>
-														<TD vAlign="middle" colSpan="3">
+                                                        <TD vAlign="middle" colSpan="1">
+															<P align="right"><asp:linkbutton id="cmdReset" runat="server" 
+                                                                    CssClass="StandardButton" Width="150px"> &#149;&nbsp;Zurücksetzen</asp:linkbutton></P>
+														</TD>
+														<TD vAlign="middle" colSpan="2">
 															<P align="right"><asp:linkbutton id="btnFinished" runat="server" 
                                                                     CssClass="StandardButton" Width="150px" Visible="False"> &#149;&nbsp;Zur Übersicht</asp:linkbutton></P>
 														</TD>
