@@ -43,7 +43,7 @@
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -81,25 +81,11 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.20820.29687, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\..\..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gac\BusyBoxDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="GeneralTools, Version=1.0.5078.20301, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\GeneralTools.dll</HintPath>
-    </Reference>
-    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Services.dll</HintPath>
+    <Reference Include="BusyBoxDotNet">
+      <HintPath>..\..\..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -142,7 +128,19 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Admin\Admin.vbproj">
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\services\SapORM.Services.csproj">
+      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
+      <Name>SapORM.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\admin\Admin.vbproj">
       <Project>{086EBB20-F08F-4915-9E78-D68E05289AB3}</Project>
       <Name>Admin</Name>
     </ProjectReference>
@@ -150,9 +148,8 @@
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
       <Name>Portal</Name>
     </ProjectReference>
-    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1099,8 +1096,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

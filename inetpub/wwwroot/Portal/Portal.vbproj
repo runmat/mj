@@ -84,13 +84,12 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL" />
+    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\Work\GAC\Elmah\Elmah.dll</HintPath>
-    </Reference>
-    <Reference Include="GeneralTools, Version=1.0.5035.17824, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Work\GAC\GeneralTools.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -708,6 +707,10 @@
     <ProjectReference Include="..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj">
       <Project>{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}</Project>
       <Name>BtBaseMvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
