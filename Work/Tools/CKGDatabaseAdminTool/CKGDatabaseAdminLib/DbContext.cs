@@ -19,6 +19,8 @@ namespace CKGDatabaseAdminLib
 
         public DbSet<LoginUserMessage> LoginUserMessages { get; set; }
 
+        public DbSet<GitBranchInfo> GitBranchInfos { get; set; }
+
         public DbSet<ApplicationInfo> Applications { get; set; }
 
         public ObservableCollection<ApplicationInfo> ApplicationsInMenuOnly

@@ -25,6 +25,7 @@
             </Style>
             <Style TargetType="{x:Type DataGrid}">
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
             </Style>
         </Grid.Resources>
         

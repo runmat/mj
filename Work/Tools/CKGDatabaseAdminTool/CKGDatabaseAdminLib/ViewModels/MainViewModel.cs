@@ -52,6 +52,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _fieldTranslationCopyViewModel = value; SendPropertyChanged("FieldTranslationCopyViewModel"); }
         }
 
+        private GitBranchInfoViewModel _gitBranchViewModel;
+        public GitBranchInfoViewModel GitBranchViewModel
+        {
+            get { return _gitBranchViewModel; }
+            set { _gitBranchViewModel = value; SendPropertyChanged("GitBranchViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -81,7 +88,7 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public MainViewModel()
         {
-            _messageDisplayTimer = new Timer(5000);
+            _messageDisplayTimer = new Timer(10000);
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
             LoadDbConnections();
         }
@@ -117,6 +124,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+            GitBranchViewModel = new GitBranchInfoViewModel(this);
         }
 
         public void ShowMessage(string msg, MessageType typ)

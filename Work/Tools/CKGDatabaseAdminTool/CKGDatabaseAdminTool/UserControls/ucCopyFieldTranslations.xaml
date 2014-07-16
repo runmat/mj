@@ -20,6 +20,7 @@
             </Style>
             <Style TargetType="{x:Type DataGrid}">
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
             </Style>
             <CollectionViewSource x:Key="OtherDbConnections" Source="{Binding DbConnections}" 
                               Filter="OtherDbConnections_Filter">

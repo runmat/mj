@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type ViewModels:FieldTranslationCopyViewModel}">
             <uc:ucCopyFieldTranslations/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
+            <uc:ucManageGitBranches/>
+        </DataTemplate>
     </Window.Resources>
 
     <DockPanel>
@@ -48,6 +51,10 @@
 
                 <fl:RibbonGroupBox DataContext="{Binding FieldTranslationCopyViewModel}" Header="Feldübersetzungen" HorizontalContentAlignment="Left">
                     <fl:Button Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
+                </fl:RibbonGroupBox>
+
+                <fl:RibbonGroupBox DataContext="{Binding GitBranchViewModel}" Header="Git-Branches" HorizontalContentAlignment="Left">
+                    <fl:Button Size="Middle" Command="{Binding CommandManageGitBranches}" Header="Git-Branches verwalten" Height="Auto" />
                 </fl:RibbonGroupBox>
 
             </fl:RibbonTabItem>
