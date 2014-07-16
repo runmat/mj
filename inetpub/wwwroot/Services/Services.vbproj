@@ -1331,7 +1331,7 @@
       </FilesForPackagingFromProject>
     </ItemGroup>
     <ItemGroup>
-      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\*.xml" />
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
       <FilesForPackagingFromProject Include="%(_Admin.Identity)">
         <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
@@ -1373,6 +1373,21 @@
         <SkipAction>Delete</SkipAction>
         <ObjectName>dirPath</ObjectName>
         <AbsolutePath>$(_Escaped_PackageTempDir)\\*.config</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Bilder\\.*</AbsolutePath>
+      </MsDeploySkipRules>      
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Logs\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Temp\\.*</AbsolutePath>
       </MsDeploySkipRules>
     </ItemGroup>
   </Target>
