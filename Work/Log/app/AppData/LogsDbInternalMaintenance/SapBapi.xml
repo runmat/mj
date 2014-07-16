@@ -50,7 +50,10 @@
         </Description>
 
         <Sql>
-          DELETE FROM `[DestTableName]`;
+          DELETE `[DestTableName]`
+          FROM `[DestTableName]`
+          JOIN ReadOnlyTables ON ReadOnlyTables.TableName = '[DestTableName]'
+          where DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
         </Sql>
       </DbMaintenanceStep>
 
@@ -76,7 +79,7 @@
           `Browser`
           )
           SELECT
-          `Id` ,
+          [SourceTableName].`Id` ,
           CONVERT(LogonContext,char(40)) ,
           `Bapi` ,
           `Status` ,
@@ -88,10 +91,23 @@
           `kunnr` ,
           `portalType`,
           `Browser`
-          from [SourceTableName];
+          from [SourceTableName], ReadOnlyTables
+          where ReadOnlyTables.TableName = '[DestTableName]' and DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
         </Sql>
       </DbMaintenanceStep>
 
+      <DbMaintenanceStep IgnoreSqlException="true">
+        <Description>
+          Try apply 'now()' as 'Sync Date' for table [DestTableName] ...
+        </Description>
+
+        <Sql>
+          update ReadOnlyTables
+          set LastSyncDate = now()
+          where TableName = '[DestTableName]';
+        </Sql>
+      </DbMaintenanceStep>
+      
       <DbMaintenanceStep>
         <Description>
           Parsing missing AppID values from QueryString into AppID column ...
@@ -119,19 +135,7 @@
 
       <DbMaintenanceStep>
         <Description>
-          Apply 'now()' as 'Sync Date' for table [DestTableName] ...
-        </Description>
-
-        <Sql>
-          update ReadOnlyTables
-          set LastSyncDate = now()
-          where TableName = '[DestTableName]';
-        </Sql>
-      </DbMaintenanceStep>
-
-      <DbMaintenanceStep>
-        <Description>
-          Lightning up table [SourceTableName], cleaning some 'heavy' big columns ...
+          Lightning up data older than 40 days for table [SourceTableName], cleaning some 'heavy' big columns ...
         </Description>
 
         <Sql>

@@ -75,6 +75,7 @@ namespace LogMaintenance.Services
 
                 Alert(string.Format("\r\n***   Table '{0}' finished ;-)   ***\r\n", sqlMaintenanceTable.DestTableName));
             }
+
             return true;
         }
 

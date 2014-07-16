@@ -76,9 +76,11 @@
   <ItemGroup>
     <Content Include="AppData\LogsDbInternalMaintenance\PageVisit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="AppData\LogsDbInternalMaintenance\SapBapi.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

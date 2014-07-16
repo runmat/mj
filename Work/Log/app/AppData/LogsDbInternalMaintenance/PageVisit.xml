@@ -45,10 +45,13 @@
         </Description>
 
         <Sql>
-          DELETE FROM `[DestTableName]`;
+          DELETE `[DestTableName]` 
+          FROM `[DestTableName]`
+          JOIN ReadOnlyTables ON ReadOnlyTables.TableName = '[DestTableName]'
+          where DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
         </Sql>
       </DbMaintenanceStep>
-
+      
       <DbMaintenanceStep>
         <Description>
           Inserting data into table '[DestTableName]' ...
@@ -66,26 +69,16 @@
           `time_stamp`
           )
           SELECT
-          `Id` ,
+          [SourceTableName].`Id` ,
           `AppId` ,
           `UserID` ,
           `CustomerID` ,
           `KUNNR` ,
           `portalType`,
           `time_stamp`
-          from [SourceTableName];
+          from [SourceTableName], ReadOnlyTables
+          where ReadOnlyTables.TableName = '[DestTableName]' and DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
         </Sql>
-      </DbMaintenanceStep>
-      <DbMaintenanceStep IsSqlIndexStatement="true">
-        <Description>
-          Adding indexes to table '[DestTableName]' ...
-        </Description>
-
-        <Sql>
-          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
-        </Sql>
-
-        <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
 
       <DbMaintenanceStep>
@@ -98,6 +91,18 @@
           set LastSyncDate = now()
           where TableName = '[DestTableName]';
         </Sql>
+      </DbMaintenanceStep>
+      
+      <DbMaintenanceStep IsSqlIndexStatement="true">
+        <Description>
+          Adding indexes to table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
+        </Sql>
+
+        <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>
