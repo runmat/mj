@@ -101,7 +101,7 @@
           SET SQL_SAFE_UPDATES=0;
           update [DestTableName]
           set AppID = REPLACE(SUBSTRING_INDEX(QueryString, '&amp;', 1), 'AppID=','')
-          where AppID = 0 and QueryString like 'AppID=%' order by time_stamp desc;
+          where AppID = 0 and QueryString like 'AppID=%';
         </Sql>
       </DbMaintenanceStep>
 
@@ -115,6 +115,18 @@
         </Sql>
 
         <IsSqlIndexStatement>true</IsSqlIndexStatement>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Apply 'now()' as 'Sync Date' for table [DestTableName] ...
+        </Description>
+
+        <Sql>
+          update ReadOnlyTables
+          set LastSyncDate = now()
+          where TableName = '[DestTableName]';
+        </Sql>
       </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>

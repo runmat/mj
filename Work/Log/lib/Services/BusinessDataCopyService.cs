@@ -41,11 +41,11 @@ namespace LogMaintenance.Services
             var sqlMaintenanceTables = XmlService.XmlTryDeserializeFromFile<DbMaintenanceTable[]>(appDataFileName);
             foreach (var sqlMaintenanceTable in sqlMaintenanceTables)
             {
-                Alert(string.Format("***  Refreshing content of table '{0}'  ***", sqlMaintenanceTable.DestTableName));
+                Alert(string.Format("\r\n***  Refreshing content of table '{0}'  ***", sqlMaintenanceTable.DestTableName));
 
                 foreach (var sqlMaintenanceStep in sqlMaintenanceTable.Steps)
                 {
-                    Alert(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Description));
+                    Alert(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Description.Trim()));
 
                     var multiSqlSteps = new [] { "" };
                     if (sqlMaintenanceStep.IsSqlIndexStatement)
@@ -72,9 +72,9 @@ namespace LogMaintenance.Services
                         }
                     }
                 }
-            }
 
-            Alert("\r\n***   Ok, all finished ;-)   ***\r\n");
+                Alert(string.Format("\r\n***   Table '{0}' finished ;-)   ***\r\n", sqlMaintenanceTable.DestTableName));
+            }
             return true;
         }
 

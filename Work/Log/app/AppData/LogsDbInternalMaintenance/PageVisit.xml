@@ -87,6 +87,18 @@
 
         <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Apply 'now()' as 'Sync Date' for table [DestTableName] ...
+        </Description>
+
+        <Sql>
+          update ReadOnlyTables
+          set LastSyncDate = now()
+          where TableName = '[DestTableName]';
+        </Sql>
+      </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>
 </ArrayOfDbMaintenanceTable>
