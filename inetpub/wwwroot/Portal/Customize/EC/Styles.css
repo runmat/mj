@@ -677,11 +677,13 @@ A.StandardButtonTable:active
 }
 
 .ListStyle
-{	
-	font-size:12; 
+{
+    padding: 3px;
+	font-size:12px; 
 	color: #000000;
 	font-family:Arial;
-	background-color:#EEFFEE;
+	background-color:#FFFFFF;
+    font-weight: bold;
 }
 
 .InputEnabledStyle
