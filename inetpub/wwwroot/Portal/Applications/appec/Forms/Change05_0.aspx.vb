@@ -299,8 +299,11 @@ Public Class Change05_0
                 'Kopieren (Dropdownlist)
                 txtMenge = CType(item.FindControl("txtMenge"), TextBox)
                 btnKopieren = CType(item.FindControl("btnKopieren"), Button)
-                btnKopieren.Visible = False
-                txtMenge.Visible = False     'Feld unsichtbar
+
+                If item.ItemIndex = DataGrid1.Items.Count - 1 Then
+                    txtMenge.Visible = False
+                    btnKopieren.Visible = False
+                End If
             Next
         End If
     End Sub
@@ -460,6 +463,7 @@ Public Class Change05_0
 
             'DropDownListen holen
             txtMenge = CType(item.FindControl("txtMenge"), TextBox)
+            txtBemerkung = CType(item.FindControl("txtBemerkung"), TextBox)
             ddlKennzeichenserie = CType(item.FindControl("ddlKennzeichenserie"), DropDownList)
             ddlZielPdi = CType(item.FindControl("ddlZielPDI"), DropDownList)
 
@@ -506,8 +510,9 @@ Public Class Change05_0
                     End If
 
                     'Bemerkung setzen
-                    'txtBemerkung = CType(item.FindControl("txtBemerkung"), TextBox)
-                    'row("Bemerkung") = txtBemerkung.Text
+                    If objSuche.Task = StrTaskSperren Or objSuche.Task = StrTaskEntsperren Then
+                        row("Bemerkung") = txtBemerkung.Text
+                    End If
 
                     'Ziel-PDI setzen (bei Verschieben)
                     If Not (ddlZielPdi.SelectedItem Is Nothing) AndAlso (objSuche.Task = StrTaskVerschieben) Then
