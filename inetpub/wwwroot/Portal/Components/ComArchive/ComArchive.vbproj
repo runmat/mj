@@ -81,6 +81,9 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKG.EasyAccess">
+      <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -115,11 +118,6 @@
     <ProjectReference Include="..\..\..\..\..\Work\BtBase\Base.vbproj">
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Work\CKG\EasyAccess\EasyAccess.vbproj">
-      <Name>EasyAccess</Name>
-      <Project>{5DA38371-4A26-4228-9ED9-8AF45DD3C385}</Project>
-      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
     </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Name>Portal</Name>

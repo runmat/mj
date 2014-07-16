@@ -84,9 +84,12 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKG.EasyAccess">
+      <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
+    </Reference>
     <Reference Include="CuteWebUI.AjaxUploader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc00d4b0e43ec38d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Users\DittbernerC\Downloads\Ajax-Uploader\aspnet\net_vb_aspnetAjax\bin\CuteWebUI.AjaxUploader.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\CuteWebUI.AjaxUploader.dll</HintPath>
     </Reference>
     <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
@@ -123,10 +126,6 @@
     <ProjectReference Include="..\..\..\..\..\Work\BtBase\Base.vbproj">
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Work\CKG\EasyAccess\EasyAccess.vbproj">
-      <Project>{5DA38371-4A26-4228-9ED9-8AF45DD3C385}</Project>
-      <Name>EasyAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Name>Portal</Name>

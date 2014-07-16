@@ -86,6 +86,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
     </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
+    </Reference>
     <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
       <Name>DBauer.Web.UI.WebControls.HierarGrid</Name>
       <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
@@ -621,10 +625,6 @@
     <ProjectReference Include="..\..\..\..\..\Work\BtBase\Base.vbproj">
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Work\CKG\EasyAccess\EasyAccess.vbproj">
-      <Project>{5DA38371-4A26-4228-9ED9-8AF45DD3C385}</Project>
-      <Name>EasyAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
