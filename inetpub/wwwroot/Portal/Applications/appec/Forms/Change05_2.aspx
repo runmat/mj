@@ -57,7 +57,7 @@
 											</TR>
 											<TR id="trSumme" runat="server">
 												<TD vAlign="top">
-													<P align="left"><asp:listbox id="lstSumme" runat="server" CssClass="DropDownStyle" Height="300px"></asp:listbox></P>
+													<P align="left"><asp:listbox id="lstSumme" runat="server" CssClass="ListStyle" Height="300px"></asp:listbox></P>
 												</TD>
 												<TD vAlign="top">
 													<TABLE id="Table2" cellSpacing="0" cellPadding="0" width="100%" border="0">
