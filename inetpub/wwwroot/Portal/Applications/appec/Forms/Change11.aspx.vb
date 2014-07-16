@@ -166,6 +166,8 @@ Partial Public Class Change11
 
                             NewRow = objHaendler.Model.NewRow
 
+                            If dr(1).ToString.Length = 0 Then Exit For
+
                             If dr(0).ToString.Length > 0 Then
                                 NewRow("Fahrgestellnummer") = dr(0).ToString
                                 NewRow("Model") = dr(1).ToString

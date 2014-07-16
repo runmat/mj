@@ -369,7 +369,7 @@ Namespace Start
 
                                     ' 27.02.2014, MJE
                                     ' Integrate Page Visit Logging
-                                    Dim pageVisitLoggingPart As String = "onclick=""return LogPageVisit('" & CStr(dvAppLinks(intRows)("AppId")) & "', '" & appUrl & "');"""
+                                    Dim pageVisitLoggingPart As String = "onclick=""LogPageVisit('" & CStr(dvAppLinks(intRows)("AppId")) & "', '" & appUrl & "')"""
 
                                     litApp.Text &= "<td class=""MainmenuItem"" nowrap=""nowrap"">&nbsp;<a " & pageVisitLoggingPart & " href=""" & appUrl & """ target=""_self"">" & CStr(dvAppLinks(intRows)("AppFriendlyName")) & "</a>&nbsp;</td>" & vbCrLf
                                     '---------------------------------------------
