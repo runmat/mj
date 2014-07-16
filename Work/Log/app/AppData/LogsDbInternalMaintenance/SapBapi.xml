@@ -128,6 +128,23 @@
           where TableName = '[DestTableName]';
         </Sql>
       </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Lightning up table [SourceTableName], cleaning some 'heavy' big columns ...
+        </Description>
+
+        <Sql>
+          update [SourceTableName]
+          set
+          ImportParameters = null,
+          ImportTables = null,
+          DataContext = null,
+          ExportParameters = null,
+          ExportTables = null
+          where DATE_SUB(current_date(), INTERVAL 40 DAY) >= DATE(time_stamp);
+        </Sql>
+      </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>
 </ArrayOfDbMaintenanceTable>
