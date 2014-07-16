@@ -149,11 +149,11 @@ Namespace Kernel.Admin
                 Dim strSQL As String
                 If m_intGroupID = -2 Then
                     'Es wird nur nach Customer gesucht, nicht nach Gruppe
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AuthorizationLevel " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AuthorizationLevel, convert(bit, isnull(AppIsMvcDefaultFavorite,0)) AppIsMvcDefaultFavorite " & _
                                               "FROM vwCustomerAppAssigned " & _
                                               "WHERE (CustomerID = @CustomerID) "
                 Else
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AuthorizationLevel, LevelAppToGroup, WithAuthorization, NewLevel " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AuthorizationLevel, LevelAppToGroup, WithAuthorization, NewLevel, convert(bit, 0) AppIsMvcDefaultFavorite " & _
                              "FROM vwGroupAppAssigned " & _
                              "WHERE (CustomerID = @CustomerID) " & _
                                "AND (GroupID = @GroupID) "
@@ -182,12 +182,12 @@ Namespace Kernel.Admin
                 Dim strSQL As String
                 If m_intGroupID = -2 Then
                     'Es wird nur nach Customer gesucht, nicht nach Gruppe
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AppTechType, AppDescription, AuthorizationLevel, MaxLevel, MaxLevelsPerGroup " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AppTechType, AppDescription, AuthorizationLevel, MaxLevel, MaxLevelsPerGroup, convert(bit, isnull(AppIsMvcDefaultFavorite,0)) AppIsMvcDefaultFavorite " & _
                                               "FROM vwCustomerAppAssigned " & _
                                               "WHERE (CustomerID = @CustomerID) " & _
                                                 "AND (AppParent=0)"
                 Else
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AppTechType, AppDescription, AuthorizationLevel, MaxLevel, MaxLevelsPerGroup, LevelAppToGroup, WithAuthorization, NewLevel " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppInMenu, AppRank, AppComment, AppType, AppTechType, AppDescription, AuthorizationLevel, MaxLevel, MaxLevelsPerGroup, LevelAppToGroup, WithAuthorization, NewLevel, convert(bit, 0) AppIsMvcDefaultFavorite " & _
                              "FROM vwGroupAppAssigned " & _
                              "WHERE (CustomerID = @CustomerID) " & _
                                "AND (GroupID = @GroupID) " & _
@@ -211,18 +211,18 @@ Namespace Kernel.Admin
                 Dim strSQL As String
                 If m_intGroupID = -1 Then
                     'Gruppe ist neu: Zeige alle die Customer hat.
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription, convert(bit, isnull(AppIsMvcDefaultFavorite,0)) AppIsMvcDefaultFavorite " & _
                              "FROM vwCustomerAppAssigned " & _
                              "WHERE (CustomerID = @CustomerID) " & _
                                "AND (AppParent=0)"
                 ElseIf m_intGroupID = -2 Then
                     'Es wird nur nach Customer gesucht, nicht nach Gruppe
                     If m_intCustomerID = -1 Then
-                        strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription " & _
+                        strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription, convert(bit, 0) AppIsMvcDefaultFavorite " & _
                                  "FROM Application " & _
                                  "WHERE (AppParent=0)"
                     Else
-                        strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription " & _
+                        strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription, convert(bit, 0) AppIsMvcDefaultFavorite " & _
                                  "FROM vwCustomerAppUnAssigned " & _
                                  "WHERE (CustomerID = @CustomerID) " & _
                                    "AND (AppParent=0)"
@@ -236,7 +236,7 @@ Namespace Kernel.Admin
                         End If
                     End If
                 Else
-                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription " & _
+                    strSQL = "SELECT AppId, AppURL, AppName, AppFriendlyName, AppType, AppTechType, AppDescription, convert(bit, 0) AppIsMvcDefaultFavorite " & _
                              "FROM vwGroupAppUnAssigned " & _
                              "WHERE (CustomerID = @CustomerID) " & _
                                "AND (GroupID = @GroupID) " & _
