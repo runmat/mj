@@ -7,7 +7,7 @@
     
     <DestTableName>PageVisitReadOnly</DestTableName>
 
-    <TableIndexColumnNames>UserID, CustomerID</TableIndexColumnNames>
+    <TableIndexColumnNames>PortalType, AppID, UserID, CustomerID</TableIndexColumnNames>
 
     <Steps>
       <DbMaintenanceStep IgnoreSqlException="true">
@@ -17,7 +17,7 @@
 
         <Sql>
           CREATE TABLE `[DestTableName]` (
-          `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ',
+          `Id` bigint(20) NOT NULL AUTO_INCREMENT,
           `AppID` int(11) NOT NULL,
           `UserID` varchar(40) NOT NULL,
           `CustomerID` int(11) NOT NULL,

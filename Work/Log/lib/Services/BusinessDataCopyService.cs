@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GeneralTools.Log.Models.MultiPlatform;
@@ -23,7 +24,7 @@ namespace LogMaintenance.Services
             _infoMessageAction = infoMessageAction;
 
             foreach (var xmlFileName in Directory.GetFiles(appDataFilePath))
-                if (!MaintenanceLogsDbForServer("Test", xmlFileName))
+                if (!MaintenanceLogsDbForServer("Prod", xmlFileName))
                     return false;
 
             return true;
@@ -55,7 +56,10 @@ namespace LogMaintenance.Services
                         try
                         {
                             var sql = sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep);
+                            var stopWatch = Stopwatch.StartNew();
                             logsDbContext.Database.ExecuteSqlCommand(sql);
+                            stopWatch.Stop();
+                            Alert(string.Format("(Dauer: {0:00}:{1:00})", stopWatch.Elapsed.Minutes, stopWatch.Elapsed.Seconds));
                         }
                         catch (MySqlException e)
                         {

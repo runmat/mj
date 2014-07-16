@@ -7,7 +7,7 @@
     
     <DestTableName>SapBapiReadOnly</DestTableName>
 
-    <TableIndexColumnNames>userID, customerID</TableIndexColumnNames>
+    <TableIndexColumnNames>Bapi, portalType, AppId, userID, customerID</TableIndexColumnNames>
 
     <Steps>
       <DbMaintenanceStep IgnoreSqlException="true">
@@ -17,9 +17,8 @@
 
         <Sql>
           CREATE TABLE `[DestTableName]` (
-          `Id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' ',
-          `Anmeldename` char(40) NOT NULL,
-          `Bapi` char(40) NOT NULL,
+          `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+          `Bapi` varchar(40) NOT NULL,
           `Status` bit(1) NOT NULL,
           `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           `dauer` decimal(8,4) DEFAULT NULL,
@@ -28,6 +27,8 @@
           `customerID` int(11) DEFAULT NULL,
           `kunnr` int(11) DEFAULT NULL,
           `portalType` int(11) DEFAULT NULL,
+          `Browser` varchar(30) DEFAULT NULL,
+          `QueryString` char(40) DEFAULT NULL,
           PRIMARY KEY (`Id`)
           ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
         </Sql>
@@ -62,7 +63,7 @@
           INSERT INTO `[DestTableName]`
           (
           `Id` ,
-          `Anmeldename` ,
+          `QueryString` ,
           `Bapi` ,
           `Status` ,
           `time_stamp` ,
@@ -71,11 +72,12 @@
           `userID` ,
           `customerID` ,
           `kunnr` ,
-          `portalType`
+          `portalType`,
+          `Browser`
           )
           SELECT
           `Id` ,
-          `Anmeldename` ,
+          CONVERT(LogonContext,char(40)) ,
           `Bapi` ,
           `Status` ,
           `time_stamp` ,
@@ -84,10 +86,25 @@
           `userID` ,
           `customerID` ,
           `kunnr` ,
-          `portalType`
+          `portalType`,
+          `Browser`
           from [SourceTableName];
         </Sql>
       </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Parsing missing AppID values from QueryString into AppID column ...
+        </Description>
+
+        <Sql>
+          SET SQL_SAFE_UPDATES=0;
+          update [DestTableName]
+          set AppID = REPLACE(SUBSTRING_INDEX(QueryString, '&amp;', 1), 'AppID=','')
+          where AppID = 0 and QueryString like 'AppID=%' order by time_stamp desc;
+        </Sql>
+      </DbMaintenanceStep>
+
       <DbMaintenanceStep IsSqlIndexStatement="true">
         <Description>
           Adding indexes to table '[DestTableName]' ...
