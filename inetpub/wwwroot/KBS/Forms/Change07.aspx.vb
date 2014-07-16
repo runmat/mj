@@ -1,4 +1,6 @@
-﻿Imports KBS.KBS_BASE
+﻿Imports System.Globalization
+Imports KBS.KBS_BASE
+Imports System.IO
 
 Partial Public Class Change07
     Inherits Page
@@ -134,12 +136,12 @@ Partial Public Class Change07
                                 Dim row As DataRow = rows(0)
                                 If Not IsDBNull(row("TEXTPFLICHT")) Then
                                     If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                        OpenInfotext(CStr(row("MATNR")), txtMenge.Text, "", "", CStr(row("MAKTX")), "", True, KennzForm)
+                                        OpenInfotext(CStr(row("MATNR")), "", True, KennzForm)
                                     Else
-                                        .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
+                                        .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", KennzForm)
                                     End If
                                 Else
-                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
+                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", KennzForm)
                                 End If
                             End If
 
@@ -152,12 +154,12 @@ Partial Public Class Change07
                             Dim row As DataRow = rows(0)
                             If Not IsDBNull(row("TEXTPFLICHT")) Then
                                 If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                    OpenInfotext(CStr(row("MATNR")), txtMenge.Text, "", "", CStr(row("MAKTX")), "", True, KennzForm)
+                                    OpenInfotext(CStr(row("MATNR")), "", True, KennzForm)
                                 Else
-                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
+                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", KennzForm)
                                 End If
                             Else
-                                .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
+                                .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", KennzForm)
                             End If
                         End If
                         txtMenge.Text = ""
@@ -179,37 +181,26 @@ Partial Public Class Change07
     End Sub
 
     Private Sub OpenInfotext(ByVal MatNr As String, _
-                             ByVal Menge As String, _
                              ByVal Text As String, _
-                             ByVal TextNr As String, _
-                             ByVal MatText As String, _
-                             ByVal EAN As String, _
                              ByVal Pflicht As Boolean, _
                              ByVal sKennzForm As String)
         txtInfotext.Text = Text
-        lblLTextNr.Text = TextNr
         lblMatNr.Text = MatNr
-        lblMenge.Text = Menge
         lblKennzForm.Text = sKennzForm
         If Pflicht Then
             lblPflicht.Text = "true"
         Else
             lblPflicht.Text = "false"
         End If
-        lblArtikelbezeichnungInfo.Text = MatText
-        lblEAN.Text = EAN
 
         MPEInfotext.Show()
     End Sub
 
     Private Sub CloseInfotext()
         txtInfotext.Text = ""
-        lblLTextNr.Text = ""
         lblMatNr.Text = ""
         lblKennzForm.Text = ""
         lblPflicht.Text = ""
-        lblArtikelbezeichnungInfo.Text = ""
-        lblEAN.Text = ""
 
         MPEInfotext.Hide()
         FillGrid()
@@ -424,6 +415,8 @@ Partial Public Class Change07
     End Sub
 
     Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridView1.RowCommand
+        ApplyMengen()
+
         Select Case e.CommandName
             Case "entfernen"
                 mObjUmlagerung.Umlagerung.Select("MATNR='" & e.CommandArgument.ToString & "'")(0).Delete()
@@ -435,28 +428,12 @@ Partial Public Class Change07
                 Dim TRow As DataRow = mObjUmlagerung.Umlagerung.Select("MATNR='" & e.CommandArgument.ToString & "'")(0)
                 Dim PRow As DataRow = mObjUmlagerung.Artikel.Select("MATNR='" & e.CommandArgument.ToString & "'")(0)
 
-                Dim strMenge As String = ""
                 Dim strLText As String = ""
-                Dim strLTextNr As String = ""
-                Dim strMAKTX As String = ""
-                Dim strEAN As String = ""
                 Dim strKennzForm As String = ""
                 Dim bPflicht As Boolean = False
 
-                If Not IsDBNull(TRow("Menge")) Then
-                    strMenge = CStr(TRow("Menge"))
-                End If
                 If Not IsDBNull(TRow("LTEXT")) Then
                     strLText = CStr(TRow("LTEXT"))
-                End If
-                If Not IsDBNull(TRow("LTEXT_NR")) Then
-                    strLTextNr = CStr(TRow("LTEXT_NR"))
-                End If
-                If Not IsDBNull(PRow("MAKTX")) Then
-                    strMAKTX = CStr(PRow("MAKTX"))
-                End If
-                If Not IsDBNull(TRow("EAN11")) Then
-                    strEAN = CStr(TRow("EAN11"))
                 End If
                 If Not IsDBNull(PRow("TEXTPFLICHT")) Then
                     If CChar(PRow("TEXTPFLICHT")) = "X"c Then
@@ -468,7 +445,7 @@ Partial Public Class Change07
                 If Not IsDBNull(TRow("KENNZFORM")) Then
                     strKennzForm = CStr(TRow("KENNZFORM"))
                 End If
-                OpenInfotext(CStr(TRow("MATNR")), strMenge, strLText, strLTextNr, strMAKTX, strEAN, bPflicht, strKennzForm)
+                OpenInfotext(CStr(TRow("MATNR")), strLText, bPflicht, strKennzForm)
             Case "minusMenge"
                 Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & e.CommandArgument)
                 If rows.GetLength(0) > 0 Then
@@ -499,6 +476,7 @@ Partial Public Class Change07
                     Exit Sub
                 End If
             End If
+            ApplyMengen()
             FillGrid2()
             mpeBestellungsCheck.Show()
         End If
@@ -601,16 +579,16 @@ Partial Public Class Change07
                                 Dim row As DataRow = rows(0)
                                 If Not IsDBNull(row("TEXTPFLICHT")) Then
                                     If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                        OpenInfotext(CStr(row("MATNR")), txtMengeEAN.Text, "", "", CStr(row("MAKTX")), txtEAN.Text, True, KennzForm)
+                                        OpenInfotext(CStr(row("MATNR")), "", True, KennzForm)
                                     Else
-                                        .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
+                                        .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, KennzForm)
                                     End If
                                 Else
-                                    .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
+                                    .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, KennzForm)
                                 End If
                             End If
                         Else
-                            .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
+                            .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, KennzForm)
                         End If
 
                         txtEAN.Text = ""
@@ -650,6 +628,7 @@ Partial Public Class Change07
                 Exit Sub
             End If
         End If
+        ApplyMengen()
         mObjUmlagerung.ParkenERP()
         Session("mUmlagerung") = mObjUmlagerung
         FillGrid()
@@ -666,10 +645,10 @@ Partial Public Class Change07
                 MPEInfotext.Show()
                 Exit Sub
             Else
-                mObjUmlagerung.insertIntoBestellungen(lblMatNr.Text, CInt(lblMenge.Text), lblArtikelbezeichnungInfo.Text, lblEAN.Text, lblLTextNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
+                mObjUmlagerung.updateBestellungInfotext(lblMatNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
             End If
         Else
-            mObjUmlagerung.insertIntoBestellungen(lblMatNr.Text, CInt(lblMenge.Text), lblArtikelbezeichnungInfo.Text, lblEAN.Text, lblLTextNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
+            mObjUmlagerung.updateBestellungInfotext(lblMatNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
         End If
         Session("mUmlagerung") = mObjUmlagerung
         CloseInfotext()
@@ -719,6 +698,16 @@ Partial Public Class Change07
         gvAusparken.DataSource = dt
         gvAusparken.DataBind()
 
+        Dim dtNachdruck As DataTable = GetListeNachdruck()
+        If dtNachdruck.Rows.Count > 0 Then
+            lbNachdruck.Visible = True
+        Else
+            lbNachdruck.Visible = False
+        End If
+        dtNachdruck.DefaultView.Sort = "Datum DESC"
+        gvNachdruck.DataSource = dtNachdruck.DefaultView
+        gvNachdruck.DataBind()
+
         If mObjKasse.KUNNR <> "261030" Then
             If mObjUmlagerung.Umlagerung.Rows.Count > 0 Then
                 lbParken.Visible = True
@@ -764,6 +753,68 @@ Partial Public Class Change07
         End If
 
         Session("mUmlagerung") = mObjUmlagerung
+    End Sub
+
+    Private Sub ApplyMengen()
+        For Each tmprow As GridViewRow In GridView1.Rows
+            Dim labelMatnr As Label = CType(tmprow.FindControl("lblMatnr"), Label)
+            Dim textMenge As TextBox = CType(tmprow.FindControl("txtMenge"), TextBox)
+
+            Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & labelMatnr.Text)
+            If rows.GetLength(0) > 0 Then
+                If IsNumeric(textMenge.Text) Then
+                    rows(0)("Menge") = Int32.Parse(textMenge.Text)
+                Else
+                    rows(0)("Menge") = 0
+                End If
+            End If
+        Next
+
+        Session("mUmlagerung") = mObjUmlagerung
+    End Sub
+
+    Private Sub lbNachdruck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruck.Click
+        MPENachdruck.Show()
+    End Sub
+
+    Private Sub lbNachdruckClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruckClose.Click
+        MPENachdruck.Hide()
+    End Sub
+
+    Private Function GetListeNachdruck() As DataTable
+        Dim tbl As New DataTable()
+        tbl.Columns.Add("Datum", GetType(DateTime))
+
+        Dim verzeichnis As New DirectoryInfo(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung")
+        Dim dateien() As FileInfo = verzeichnis.GetFiles(mObjKasse.Lagerort & "_*")
+        For Each datei In dateien
+            Dim newRow As DataRow = tbl.NewRow()
+            newRow("Datum") = DateTime.ParseExact(datei.Name.Substring(5, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            tbl.Rows.Add(newRow)
+        Next
+
+        Return tbl
+    End Function
+
+    Protected Sub gvNachdruck_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvNachdruck.RowCommand
+        Select Case e.CommandName
+            Case "drucken"
+                ShowBeleg(e.CommandArgument)
+        End Select
+    End Sub
+
+    Private Sub ShowBeleg(ByVal datum As DateTime)
+        Session("App_ContentType") = "Application/pdf"
+        Session("App_Filepath") = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & mObjKasse.Lagerort & "_" & datum.ToString("ddMMyyyy_HHmm") & ".pdf"
+        If (Not ClientScript.IsStartupScriptRegistered("Enabled")) Then
+
+            Dim sb As StringBuilder = New StringBuilder()
+            sb.Append("<script type=""text/javascript"">")
+            sb.Append("window.open(""Printpdf.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
+            sb.Append("</script>")
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Enabled", sb.ToString())
+
+        End If
     End Sub
 
 End Class

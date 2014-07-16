@@ -122,7 +122,7 @@ Public Class Umlagerung
     End Sub
 
     Public Sub insertIntoBestellungen(ByVal Artikelnr As String, ByVal Menge As Integer, ByVal Artikelbezeichnung As String, ByVal EAN As String,
-                                         Optional ByVal LTextNR As String = "", Optional ByVal LText As String = "", Optional ByVal Kennzform As String = "")
+                                         Optional ByVal LTextNR As String = "", Optional ByVal Kennzform As String = "")
         ClearErrorState()
 
         Try
@@ -142,7 +142,7 @@ Public Class Umlagerung
                 tmpRow.Item("EAN11") = EAN
                 tmpRow("Menge") = Menge
                 tmpRow("LTEXT_NR") = LTextNR
-                tmpRow.Item("LTEXT") = LText
+                tmpRow.Item("LTEXT") = ""
                 tmpRow.Item("KENNZFORM") = Kennzform
             Else
                 tmpRow = mUmlagerung.NewRow()
@@ -152,9 +152,32 @@ Public Class Umlagerung
                 tmpRow.Item("EAN11") = EAN
                 tmpRow("Menge") = Menge
                 tmpRow("LTEXT_NR") = LTextNR
-                tmpRow.Item("LTEXT") = LText
+                tmpRow.Item("LTEXT") = ""
                 tmpRow.Item("KENNZFORM") = Kennzform
                 mUmlagerung.Rows.Add(tmpRow)
+            End If
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+        End Try
+
+    End Sub
+
+    Public Sub updateBestellungInfotext(ByVal Artikelnr As String, ByVal LText As String, Optional ByVal Kennzform As String = "")
+        ClearErrorState()
+
+        Try
+            Dim Rows As DataRow()
+            If Kennzform = "" Then
+                Rows = mUmlagerung.Select("MATNR='" & Artikelnr & "'")
+            Else
+                Rows = mUmlagerung.Select("MATNR='" & Artikelnr & "' AND Kennzform = '" & Kennzform & "'")
+            End If
+
+            Dim tmpRow As DataRow
+
+            If Rows.GetLength(0) > 0 Then
+                tmpRow = Rows(0)
+                tmpRow.Item("LTEXT") = LText
             End If
         Catch ex As Exception
             RaiseError("9999", ex.Message)

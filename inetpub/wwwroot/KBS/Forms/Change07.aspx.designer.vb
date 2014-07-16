@@ -302,6 +302,15 @@ Partial Public Class Change07
     Protected WithEvents GridView1 As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
+    '''lbNachdruck-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbNachdruck As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''lbParken-Steuerelement
     '''</summary>
     '''<remarks>
@@ -365,6 +374,15 @@ Partial Public Class Change07
     Protected WithEvents MPEDummy3 As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''MPEDummy4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents MPEDummy4 As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''MPEInfotext-Steuerelement
     '''</summary>
     '''<remarks>
@@ -401,15 +419,6 @@ Partial Public Class Change07
     Protected WithEvents lblErrorInfotext As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblLTextNr-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblLTextNr As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''lblMatNr-Steuerelement
     '''</summary>
     '''<remarks>
@@ -426,33 +435,6 @@ Partial Public Class Change07
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblPflicht As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblMenge-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblMenge As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblArtikelbezeichnungInfo-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblArtikelbezeichnungInfo As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblEAN-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblEAN As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblKennzForm-Steuerelement
@@ -642,4 +624,49 @@ Partial Public Class Change07
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lbAusparkenClose As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''MPENachdruck-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents MPENachdruck As Global.AjaxControlToolkit.ModalPopupExtender
+
+    '''<summary>
+    '''Nachdruck-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Nachdruck As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''lblErrorNachdruck-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblErrorNachdruck As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''gvNachdruck-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents gvNachdruck As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
+    '''lbNachdruckClose-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbNachdruckClose As Global.System.Web.UI.WebControls.LinkButton
 End Class

@@ -207,7 +207,11 @@
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField HeaderStyle-Width="32px" HeaderText="Menge" DataField="Menge" ItemStyle-HorizontalAlign="Center" />
+                                                    <asp:TemplateField HeaderStyle-Width="32px" HeaderText="Menge" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:TextBox runat="server" ID="txtMenge" Width="32px" Text='<%# DataBinder.Eval(Container, "DataItem.Menge") %>'></asp:TextBox>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="12px">
                                                         <ItemTemplate>
                                                             <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'
@@ -235,6 +239,8 @@
                                     </tr>
                                 </table>
                             <div id="dataFooter">
+                                        <asp:LinkButton ID="lbNachdruck" Text="Nachdruck" Height="16px" Width="78px" runat="server"
+                                            CssClass="Tablebutton" Visible="False"></asp:LinkButton>
                                         <asp:LinkButton ID="lbParken" Text="Parken" Height="16px" Width="78px" runat="server"
                                             CssClass="Tablebutton" Visible="False"></asp:LinkButton>
                                         <asp:LinkButton ID="lbAusparken" Text="Ausparken" Height="16px" Width="78px" runat="server"
@@ -249,6 +255,7 @@
                                 <asp:Button ID="MPEDummy1" Width="0" Height="0" runat="server" />
                                 <asp:Button ID="MPEDummy2" Width="0" Height="0" runat="server" />
                                 <asp:Button ID="MPEDummy3" Width="0" Height="0" runat="server" />
+                                <asp:Button ID="MPEDummy4" Width="0" Height="0" runat="server" />
                                 <cc1:ModalPopupExtender runat="server" ID="MPEInfotext" BackgroundCssClass="divProgress"
                                     Enabled="true" PopupControlID="Infotext" TargetControlID="MPEDummy2">
                                 </cc1:ModalPopupExtender>
@@ -256,14 +263,11 @@
                                     <table cellspacing="0" id="tblInfotext" runat="server" width="50%" bgcolor="white"
                                         cellpadding="0" style="width: 50%; border: solid 1px #646464">
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td class="firstLeft active">
                                                 Infotext Artikel:
                                             </td>
@@ -272,36 +276,26 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td class="firstLeft active">
                                                 <asp:Label ID="lblErrorInfotext" runat="server" ForeColor="Red"></asp:Label>
-                                                <asp:Label ID="lblLTextNr" runat="server" Visible="false"></asp:Label>
                                                 <asp:Label ID="lblMatNr" runat="server" Visible="false"></asp:Label>
                                                 <asp:Label ID="lblPflicht" runat="server" Visible="false"></asp:Label>
-                                                <asp:Label ID="lblMenge" runat="server" Visible="false"></asp:Label>
-                                                <asp:Label ID="lblArtikelbezeichnungInfo" runat="server" Visible="false"></asp:Label>
-                                                <asp:Label ID="lblEAN" runat="server" Visible="false"></asp:Label>
                                             </td>
                                             <td>
                                                 <asp:Label ID="lblKennzForm" runat="server" Visible="false"></asp:Label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtInfotext" runat="server" Width="400px" Height="300px" TextMode="MultiLine"
                                                     Wrap="true"></asp:TextBox>
@@ -311,14 +305,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td>
                                                 <asp:LinkButton ID="lbInfotextSave" Text="Speichern" Height="16px" Width="78px" runat="server"
                                                     CssClass="Tablebutton"></asp:LinkButton>
@@ -330,7 +321,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 &nbsp;
                                             </td>
                                         </tr>
@@ -344,29 +335,21 @@
                                     <table cellspacing="0" id="tblBestellungscheck" runat="server" bgcolor="white" cellpadding="0"
                                         style="overflow: auto; height: 425px; width: 583px; border: solid 1px #646464">
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="center" class="firstLeft active" colspan="3">
+                                            <td align="center" class="firstLeft active">
                                                 Bitte überprüfen Sie Ihre Umlagerung. Bitte korrigieren Sie gegebenenfalls!<br />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 <div>
                                                     <asp:GridView ID="GridView2" runat="server" AllowPaging="False" AllowSorting="True"
@@ -398,19 +381,13 @@
                                                     </asp:GridView>
                                                 </div>
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td align="center">
                                                 <asp:LinkButton ID="lbBestellungKorrektur" Text="Korrektur" Height="16px" Width="78px"
                                                     runat="server" CssClass="Tablebutton"></asp:LinkButton>
@@ -418,12 +395,9 @@
                                                 <asp:LinkButton ID="lbBestellungOk" Text="Weiter" Height="16px" Width="78px" runat="server"
                                                     CssClass="Tablebutton SendeButton"></asp:LinkButton>
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
@@ -436,56 +410,38 @@
                                     <table cellspacing="0" id="Table1" runat="server" width="50%" bgcolor="white" cellpadding="0"
                                         style="width: 50%; border: solid 1px #646464">
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td class="firstLeft active">
                                                 Umlagerungsstatus:
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td class="firstLeft active">
                                                 <asp:Label ID="lblBestellMeldung" runat="server"></asp:Label>
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 <asp:LinkButton ID="lbCreatePDF" Text="Drucken" Height="16px" Width="78px" runat="server"
                                                     CssClass="Tablebutton"></asp:LinkButton>
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
@@ -498,23 +454,17 @@
                                     <table cellspacing="0" id="Table3" runat="server" width="50%" bgcolor="white" cellpadding="0"
                                         style="width: 50%; border: solid 1px #646464">
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td class="firstLeft active">
                                                 geparkte Umlagerungen:
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
@@ -524,14 +474,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
                                             <td style="margin-left: 40px">
                                                 <asp:GridView ID="gvAusparken" runat="server" AllowPaging="False" AllowSorting="True"
                                                     AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
@@ -559,29 +506,90 @@
                                                     </Columns>
                                                 </asp:GridView>
                                             </td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                &nbsp;
-                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 <asp:LinkButton ID="lbAusparkenClose" Text="Schließen" Height="16px" Width="78px"
                                                     runat="server" CssClass="Tablebutton"></asp:LinkButton>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </asp:Panel>
+                                <cc1:ModalPopupExtender runat="server" ID="MPENachdruck" BackgroundCssClass="divProgress"
+                                    Enabled="true" PopupControlID="Nachdruck" TargetControlID="MPEDummy4">
+                                </cc1:ModalPopupExtender>
+                                <asp:Panel ID="Nachdruck" HorizontalAlign="Center" runat="server" Style="display: block">
+                                    <table cellspacing="0" runat="server" width="50%" bgcolor="white" cellpadding="0"
+                                        style="width: 50%; border: solid 1px #646464">
+                                        <tr>
                                             <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td class="firstLeft active">
+                                                letzte Umlagerungsbelege:
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="firstLeft active">
+                                                <asp:Label ID="lblErrorNachdruck" runat="server"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="margin-left: 40px">
+                                                <asp:GridView ID="gvNachdruck" runat="server" AllowPaging="False" AllowSorting="False"
+                                                    AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
+                                                    HorizontalAlign="Center" ShowFooter="False" Width="100%">
+                                                    <PagerSettings Visible="false" />
+                                                    <HeaderStyle CssClass="GridTableHead" />
+                                                    <AlternatingRowStyle CssClass="GridTableAlternate" />
+                                                    <RowStyle CssClass="ItemStyle" />
+                                                    <Columns>
+                                                        <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" />
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"
+                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.Datum") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:LinkButton ID="lbNachdruckClose" Text="Schließen" Height="16px" Width="78px"
+                                                    runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
                                                 &nbsp;
                                             </td>
                                         </tr>
