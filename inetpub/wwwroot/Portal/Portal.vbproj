@@ -88,8 +88,36 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="BarcodeLib, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="CuteWebUI.AjaxUploader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc00d4b0e43ec38d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\CuteWebUI.AjaxUploader.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\Work\GAC\Elmah\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="eWorld.UI, Version=1.9.0.0, Culture=neutral, PublicKeyToken=24d65337282035f2">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\eWorld.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -124,6 +152,18 @@
     </Reference>
     <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Web.Design, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -708,6 +748,18 @@
       <Project>{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}</Project>
       <Name>BtBaseMvc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\services\SapORM.Services.csproj">
+      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
+      <Name>SapORM.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
@@ -721,6 +773,42 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls;Applications\**\*.htm;Applications\**\*.asmx;Applications\**\*.htc;Applications\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Applications.Identity)">
+        <DestinationRelativePath>Applications\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls;Components\**\*.htm;Components\**\*.asmx;Components\**\*.htc" />
+      <FilesForPackagingFromProject Include="%(_Components.Identity)">
+        <DestinationRelativePath>Components\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Admin.Identity)">
+        <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Bin Include="Admin\Bin\Admin.*;Applications\appakf\bin\appakf.*;Applications\AppAlphabet\Bin\AppAlphabet.*;Applications\apparval\Bin\AppArval.*;Applications\appasl\Bin\AppASL.*;Applications\AppAvis\Bin\AppAvis.*;Applications\AppBPLG\Bin\AppBPLG.*;Applications\appccu\Bin\AppCCU.*;Applications\AppCheck\Bin\AppCheck.*;Applications\AppCommonCarRent\bin\AppCommonCarRent.*;Applications\AppCommonLeasing\bin\AppCommonLeasing.*;Applications\appcsc\bin\AppCSC.*;Applications\appdcb\bin\AppDCB.*;Applications\appdcl\bin\AppDCL.*;Applications\appec\bin\AppEC.*;Applications\appecan\bin\AppECAN.*;Applications\AppF1\bin\AppF1.*;Applications\appffd\bin\AppFFD.*;Applications\AppFFE\bin\AppFFE.*;Applications\appfms\bin\appfms.*;Applications\AppKBS\bin\AppKBS.*;Applications\AppKroschke\bin\AppKroschke.*;Applications\AppLeasePlan\bin\AppLeasePlan.dll;Applications\AppLeaseTrend\bin\AppLeaseTrend.dll;Applications\appqm\bin\appQM.*;Applications\apprdz\bin\AppRDZ.*;Applications\AppRenault\bin\AppRenault.*;Applications\appsixt\bin\AppSIXT.*;Applications\appsixtl\bin\AppSIXTL.dll;Applications\AppUeberf\bin\AppUeberf.*;Applications\appvw\bin\AppVW.*;Components\ComArchive\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\Components\ComCommon\bin.*" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
