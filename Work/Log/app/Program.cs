@@ -21,8 +21,8 @@ namespace LogMaintenance
         {
             bool success;
 
-            //success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
-            //if (!success) Environment.Exit(-1);
+            success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
+            if (!success) Environment.Exit(-1);
 
             success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);

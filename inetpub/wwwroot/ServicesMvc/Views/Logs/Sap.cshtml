@@ -3,9 +3,6 @@
 
 @Html.Partial("Partial/Common")
 
-<style type="text/css">
-</style>
-
 <h3 class="page-title" id="headerTitle">Logs <small>Sap</small></h3>
 
 @using (Html.FormSearchBox())
@@ -18,21 +15,16 @@
     <div id="divGrid"></div>
 }
 
-    <div class="portlet">
-        <div class="portlet-title" >Legende</div>
-        <div class="portlet-body" >
-            <table>
-                @foreach (var preset in SapBapiDuration.LegendPresets)
-                {
-                    <tr>
-                        <td width="30px" class="@preset.LevelCssClass"  ></td>
-                        <td>@preset.LevelAsString  @preset.ThresholdUpFromSecondsAsString </td>
-                    </tr>
-                }
-            </table>
+<div>Legende:</div>
+<div class="legend">
+    @foreach (var preset in SapBapiDuration.LegendPresets)
+    {
+        <div class="legend-row">
+            <span class="legend-color-item @preset.LevelCssClass"></span>
+            <span class="legend-text-item">@preset.LevelAsString,  @preset.ThresholdUpFromSecondsAsString </span>
         </div>
-    </div> 
-
+    }
+</div>
 
 
 <script type="text/javascript">

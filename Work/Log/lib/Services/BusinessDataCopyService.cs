@@ -84,13 +84,15 @@ namespace LogMaintenance.Services
 
         #region CopyToLogsDB
 
-        public static void CopyToLogsDb(Action<string> infoMessageAction)
+        public static bool CopyToLogsDb(Action<string> infoMessageAction)
         {
             _infoMessageAction = infoMessageAction;
 
             CopyToLogsDbForServer("Dev");
             CopyToLogsDbForServer("Test");
             CopyToLogsDbForServer("Prod");
+
+            return true;
         }
 
         private static void CopyToLogsDbForServer(string serverType)
