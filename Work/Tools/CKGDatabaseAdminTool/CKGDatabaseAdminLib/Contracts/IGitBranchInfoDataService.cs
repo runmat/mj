@@ -6,10 +6,14 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IGitBranchInfoDataService : ICkgGeneralDataService
     {
-        ObservableCollection<GitBranchInfo> GitBranches { get; }
+        GitBranchViewFilter AnzeigeFilter { get; set; }
+
+        ObservableCollection<GitBranchInfo> GitBranchesFiltered { get; }
 
         string SaveChanges();
 
-        void InitDataContext(string connectionName);
+        void ReloadData(string connectionName);
+
+        void FilterGitBranches();
     }
 }

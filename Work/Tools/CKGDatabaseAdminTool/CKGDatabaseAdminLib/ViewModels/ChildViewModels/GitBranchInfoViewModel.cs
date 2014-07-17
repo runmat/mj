@@ -14,12 +14,18 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<GitBranchInfo> GitBranches { get { return DataService.GitBranches; } }
+        public ObservableCollection<GitBranchInfo> GitBranches { get { return DataService.GitBranchesFiltered; } }
 
         [XmlIgnore]
         private readonly IGitBranchInfoDataService DataService;
 
         public MainViewModel Parent { get; set; }
+
+        public GitBranchViewFilter AnzeigeFilter
+        {
+            get { return DataService.AnzeigeFilter; }
+            set { DataService.AnzeigeFilter = value; SendPropertyChanged("AnzeigeFilter"); FilterGitBranches(); }
+        }
 
         public ICommand CommandManageGitBranches { get; private set; }
         public ICommand CommandSaveGitBranchInfos { get; private set; }
@@ -32,7 +38,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             Parent = parentVM;
 
             DataService = new GitBranchInfoDataServiceSql(Parent.ActualDatabase);
-
+            
             CommandManageGitBranches = new DelegateCommand(ManageGitBranches);
             CommandSaveGitBranchInfos = new DelegateCommand(SaveGitBranchInfos);
             CommandCancelGitBranchInfos = new DelegateCommand(CancelGitBranchInfos);
@@ -60,12 +66,18 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public void CancelGitBranchInfos(object parameter)
         {
-            DataService.InitDataContext(Parent.ActualDatabase);
+            DataService.ReloadData(Parent.ActualDatabase);
             SendPropertyChanged("GitBranches");
             Parent.ShowMessage("Änderungen verworfen", MessageType.Success);
         }
 
         #endregion
+
+        private void FilterGitBranches()
+        {
+            DataService.FilterGitBranches();
+            SendPropertyChanged("GitBranches");
+        }
 
     }
 }

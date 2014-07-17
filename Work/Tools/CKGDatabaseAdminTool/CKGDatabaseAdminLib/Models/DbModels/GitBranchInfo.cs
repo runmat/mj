@@ -41,7 +41,6 @@ namespace CKGDatabaseAdminLib.Models.DbModels
         }
 
         private string _entwickler;
-        [Required]
         [MaxLength(20)]
         public string Entwickler
         {
