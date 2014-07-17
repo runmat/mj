@@ -101,8 +101,6 @@
         <Sql>
           CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
         </Sql>
-
-        <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
     </Steps>
   </DbMaintenanceTable>

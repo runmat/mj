@@ -96,9 +96,9 @@
         </Sql>
       </DbMaintenanceStep>
 
-      <DbMaintenanceStep IgnoreSqlException="true">
+      <DbMaintenanceStep>
         <Description>
-          Try apply 'now()' as 'Sync Date' for table [DestTableName] ...
+          Apply 'now()' as 'Sync Date' for table [DestTableName] ...
         </Description>
 
         <Sql>
@@ -107,10 +107,10 @@
           where TableName = '[DestTableName]';
         </Sql>
       </DbMaintenanceStep>
-      
-      <DbMaintenanceStep>
+
+      <DbMaintenanceStep IgnoreSqlException="true">
         <Description>
-          Parsing missing AppID values from QueryString into AppID column ...
+          Try parsing missing AppID values from QueryString into AppID column ...
         </Description>
 
         <Sql>
@@ -129,13 +129,11 @@
         <Sql>
           CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
         </Sql>
-
-        <IsSqlIndexStatement>true</IsSqlIndexStatement>
       </DbMaintenanceStep>
 
       <DbMaintenanceStep>
         <Description>
-          Lightning up data older than 40 days for table [SourceTableName], cleaning some 'heavy' big columns ...
+          Lightning up data older than 90 days for table [SourceTableName], cleaning some 'heavy' big columns ...
         </Description>
 
         <Sql>
@@ -146,7 +144,7 @@
           DataContext = null,
           ExportParameters = null,
           ExportTables = null
-          where DATE_SUB(current_date(), INTERVAL 40 DAY) >= DATE(time_stamp);
+          where DATE_SUB(current_date(), INTERVAL 90 DAY) >= DATE(time_stamp);
         </Sql>
       </DbMaintenanceStep>
     </Steps>
