@@ -17,7 +17,14 @@ namespace CkgDomainLogic.Logs.ViewModels
 
         public SapLogItemSelector SapLogItemSelector
         {
-            get { return PropertyCacheGet(() => new SapLogItemSelector { LogsConnection = DataService.LogsDefaultConnectionString }); }
+            get { return PropertyCacheGet(() => new SapLogItemSelector
+                {
+                    LogsConnection = DataService.LogsDefaultConnectionString,
+                        // Test:
+                        AppIds = new List<int> { 1366 },
+                        UserIds = new List<string> { "19418" },
+                });
+            }
             set { PropertyCacheSet(value); }
         }
 

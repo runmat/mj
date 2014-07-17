@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable RedundantUsingDirective
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using CkgDomainLogic.Logs.Contracts;
@@ -10,9 +11,10 @@ namespace CkgDomainLogic.Logs.Services
 {
     public class LogsDataServiceSql : ILogsDataService 
     {
-        static bool BusinessDataOnProdSystem { get { return ConfigurationManager.AppSettings["ProdSAP"].NotNullOrEmpty().ToLower() == "true"; } }
+        //static bool BusinessDataOnProdSystem { get { return ConfigurationManager.AppSettings["ProdSAP"].NotNullOrEmpty().ToLower() == "true"; } }
+        //public string LogsDefaultConnectionString { get { return BusinessDataOnProdSystem ? "LogsProd" : "LogsTest"; } }
 
-        public string LogsDefaultConnectionString { get { return BusinessDataOnProdSystem ? "LogsProd" : "LogsTest"; } }
+        public string LogsDefaultConnectionString { get { return "LogsProd"; } }
 
         public string LogsConnectionString { get; set; }
 
