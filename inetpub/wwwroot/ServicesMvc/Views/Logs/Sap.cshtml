@@ -3,7 +3,7 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title" id="headerTitle">Logs <small>Sap</small></h3>
+<h3 class="page-title" id="headerTitle">Logs <small>Sap</small> </h3>
 
 @using (Html.FormSearchBox())
 {
@@ -62,12 +62,38 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-
-
     function OnRowDataBound_GridLogsSap(e) {
         var cssClass = e.dataItem["DauerCssClass"];
 
         $(e.row).addClass(cssClass);
+    }
+
+    var _gridAllColumnFilterQuickMouseClickFilter_isActive = false;
+    function GridAllColumnFilterQuickMouseClickFilter() {
+        _gridAllColumnFilterQuickMouseClickFilter_isActive = !_gridAllColumnFilterQuickMouseClickFilter_isActive;
+        
+        if (_gridAllColumnFilterQuickMouseClickFilter_isActive) {
+
+            $(".t-grid table td")
+                .on("click",
+                    function () {
+                        $(".grid-column-overall-filter").val($(this).text());
+                        FilterGridAllColumns($(".grid-column-overall-filter"));
+                        $(this).removeClass("red");
+                        GridAllColumnFilterQuickMouseClickFilter();
+                    })
+                .hover(
+                    function () {
+                        $(this).addClass("red");
+                    },
+                    function () {
+                        $(this).removeClass("red");
+                    }
+                );
+
+        } else {
+            $(".t-grid table td").off("click").unbind("hover");
+        }
     }
     
 </script>
