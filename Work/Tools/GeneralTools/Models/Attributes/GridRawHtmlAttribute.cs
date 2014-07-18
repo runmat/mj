@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace GeneralTools.Models
+﻿namespace GeneralTools.Models
 {
-    public class GridRawHtmlAttribute : Attribute
+    public class GridRawHtmlAttribute : GridExportIgnoreAttribute
     {
     }
 }
