@@ -58,14 +58,26 @@ namespace CarDocu.Models
         }
 
         private string _inputRule = (InputRules.FirstOrDefault(i => i.ID == "ST") ?? InputRules.First()).ID;
-        public string InputRule 
-        { 
+        public string InputRule
+        {
             get { return _inputRule; }
             set
             {
                 _inputRule = value;
                 SendPropertyChanged("InputRule");
                 SendPropertyChanged("InputRuleName");
+            }
+        }
+
+        private string _webServiceFunction = (WebServiceFunctions.FirstOrDefault(i => i.ID == "CARDOCU") ?? WebServiceFunctions.First()).ID;
+        public string WebServiceFunction
+        {
+            get { return _webServiceFunction; }
+            set
+            {
+                _webServiceFunction = value;
+                SendPropertyChanged("WebServiceFunction");
+                SendPropertyChanged("WebServiceFunctionName");
             }
         }
 
@@ -262,6 +274,32 @@ namespace CarDocu.Models
                                        ID = "TP",  Name = "Scan-Template", 
                                        AllowedLengths = new List<int>(), 
                                        InputRuleName = "Beliebige Vorlagenbezeichnung:"
+                                   },
+                           };
+            }
+        }
+
+        [XmlIgnore]
+        public DocumentTypeWebServiceFunction WebServiceFunctionObject { get { return WebServiceFunctions.First(i => i.ID == WebServiceFunction); } }
+
+        public string WebServiceFunctionName { get { return WebServiceFunctionObject.FunctionName; } }
+
+        public string WebServiceFunctionFriendlyName { get { return WebServiceFunctionObject.FriendlyName; } }
+
+        [XmlIgnore]
+        static public List<DocumentTypeWebServiceFunction> WebServiceFunctions
+        {
+            get
+            {
+                return new List<DocumentTypeWebServiceFunction>
+                           {
+                               new DocumentTypeWebServiceFunction
+                                   {
+                                       ID = "CARDOCU", FunctionName = "ProcessArchivMeldung", FriendlyName = "CarDocu Strafzettel"
+                                   },
+                               new DocumentTypeWebServiceFunction
+                                   {
+                                       ID = "VWL", FunctionName = "ProcessVwlKlaerfaelle", FriendlyName = "VW Leasing Klärfälle"
                                    },
                            };
             }

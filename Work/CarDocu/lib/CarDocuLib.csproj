@@ -67,6 +67,7 @@
     <Compile Include="Models\DocumentTypeInputRule.cs" />
     <Compile Include="Models\DomainLocation.cs" />
     <Compile Include="Models\DomainUser.cs" />
+    <Compile Include="Models\DocumentTypeWebServiceFunction.cs" />
     <Compile Include="Models\ScanDocument.cs" />
     <Compile Include="Models\ScanImage.cs" />
     <Compile Include="Models\Settings\AppSettings.cs" />
