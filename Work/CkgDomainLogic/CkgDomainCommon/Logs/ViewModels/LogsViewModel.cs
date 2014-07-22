@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Logs.Contracts;
 using CkgDomainLogic.Logs.Models;
 using GeneralTools.Log.Models.MultiPlatform;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 
 namespace CkgDomainLogic.Logs.ViewModels
@@ -103,6 +106,18 @@ namespace CkgDomainLogic.Logs.ViewModels
         public void FilterWebServiceTrafficLogItems(string filterValue, string filterProperties)
         {
             WebServiceTrafficLogItemsUIFiltered = WebServiceTrafficLogItemsUI.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public DataTable[] LastSapImportTables { get; private set; }
+
+        public void GetSapSapImportTables(int id)
+        {
+            var sapLogItemDetailed = DataService.GetSapLogItemDetailed(id);
+
+            LastSapImportTables = null;
+            if (sapLogItemDetailed.ImportTables == null)
+                return;
+            LastSapImportTables = XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables);
         }
 
         public void Validate(Action<string, string> addModelError)

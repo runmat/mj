@@ -80,6 +80,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult GetSapImportContext(int sapItemId)
+        {
+            ViewModel.GetSapSapImportTables(sapItemId);
+
+            return PartialView("Partial/Sap/SapImportTables", ViewModel.LastSapImportTables);
+        }
+
+        [HttpPost]
         public ActionResult FilterGridLogsSap(string filterValue, string filterColumns)
         {
             ViewModel.FilterSapLogItems(filterValue, filterColumns);

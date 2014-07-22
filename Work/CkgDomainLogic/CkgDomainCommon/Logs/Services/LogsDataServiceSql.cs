@@ -33,10 +33,17 @@ namespace CkgDomainLogic.Logs.Services
             LogsConnectionString = sapLogItemSelector.LogsConnection;
 
             var logsDbContext = CreateLogsDbContext();
-            
+
             var sapLogItems = logsDbContext.GetSapLogItems(sapLogItemSelector);
 
             return sapLogItems.ToList();
+        }
+
+        public SapLogItemDetailed GetSapLogItemDetailed(int id)
+        {
+            var logsDbContext = CreateLogsDbContext();
+
+            return logsDbContext.GetSapLogItemDetailed(id);
         }
 
         public List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector)

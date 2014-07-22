@@ -11,6 +11,8 @@ namespace CkgDomainLogic.Logs.Contracts
         string LogsConnectionString { get; set; }
 
         List<SapLogItem> GetSapLogItems(SapLogItemSelector sapLogItemSelector);
+        
+        SapLogItemDetailed GetSapLogItemDetailed(int id);
 
         List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector);
 

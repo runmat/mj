@@ -134,6 +134,7 @@
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
     <Compile Include="Logs\Contracts\ILogsDataService.cs" />
+    <Compile Include="Logs\Models\Data\SapLogItemDetailed.cs" />
     <Compile Include="Logs\Models\Data\WebServiceTrafficLogTable.cs" />
     <Compile Include="Logs\Models\Data\WebServiceTrafficLogItem.cs" />
     <Compile Include="Logs\Models\Data\SapLogItem.cs" />

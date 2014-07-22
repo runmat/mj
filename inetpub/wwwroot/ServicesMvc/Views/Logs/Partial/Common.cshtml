@@ -31,6 +31,18 @@
         display: inline;
     }
 
+    .sap-tables-context {
+        overflow-y: auto;
+        overflow-x: visible;
+    } 
+    .sap-tables-context .table-header {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .sap-tables-context .table-content {
+        margin-top: 10px;
+    }
+
 
     .duration-level-very-quick {
         color:#004400; background-color: #ddffdd;
@@ -74,22 +86,49 @@
     .t-grid-filter { display: none; }
     
     .red{ color: red!important; }
- 
+
 </style>
 
 
 <script type="text/javascript">
-    
+
+    function ShowSapImportContext(sapItemId) {
+
+        $.ajax({
+            type: "POST",
+            url: "GetSapImportContext",
+            data: { sapItemId: sapItemId },
+            loadingShow: true,
+            success: function (result) {
+                
+                var dialog = $("#SapImportContext").data("tWindow");
+                $("#InnerSapImportContext").html(result);
+                dialog.center().open();
+
+                setTimeout(function () {
+                    $("#SapImportContext").on("click", function () {
+                        dialog.close();
+                        $("#SapImportContext").of("click");
+                    });
+                }, 1000);
+            },
+            error: function (jqXhr) {
+            }
+        });
+
+        return false;
+    }
+
     function ShowStackContext(a) {
         var stackContextHtml = a.parent().find("div.hide").html();
 
-        var confirmationDialog = $("#StackContext").data("tWindow");
+        var dialog = $("#StackContext").data("tWindow");
         $("#InnerStackContext").html(stackContextHtml);
-        confirmationDialog.center().open();
+        dialog.center().open();
 
         setTimeout(function () {
             $("#StackContext").on("click", function () {
-                confirmationDialog.close();
+                dialog.close();
                 $("#StackContext").of("click");
             });
         }, 1000);
@@ -99,6 +138,17 @@
 
 </script>
 
+
+@(Html.Telerik().Window()
+    .Name("SapImportContext")
+    .Visible(false)
+    .Title("SAP Übergabedaten")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(true)
+    .Width(800)
+    .Height(600)
+    .Content(@<text><div id="InnerSapImportContext"></div></text>))
 
 
 @(Html.Telerik().Window()
