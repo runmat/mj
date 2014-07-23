@@ -12,29 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtBaseMvc", "..\..\..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj", "{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs
-		SccProjectName0 = .
-		SccAuxPath0 = http://vms047:8080/tfs
-		SccLocalPath0 = .
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = ..\\..\\Portal.vbproj
-		SccProjectName1 = ../../portal
-		SccLocalPath1 = ..\\..
-		SccProjectUniqueName2 = ComCommon.vbproj
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\BtBase\\Base.vbproj
-		SccProjectName3 = ../../../Work/BtBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\BtBase
-		SccProjectUniqueName4 = ..\\..\\admin\\Admin.vbproj
-		SccProjectName4 = ../../admin
-		SccLocalPath4 = ..\\..\\Admin
-		SccProjectUniqueName5 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc\\BtBaseMvc.csproj
-		SccProjectName5 = ../../../Work/BtBase/BtBaseMvc/BtBaseMvc
-		SccLocalPath5 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
