@@ -1,0 +1,211 @@
+BODY
+{
+    COLOR: #000000
+}
+DIV#header
+{
+    BACKGROUND-IMAGE: url(../../Images/header_volvo.jpg)
+}
+.dadLogo2
+{
+    BACKGROUND-IMAGE: url(Unicredit_logo.jpg)
+}
+DIV#header UL#navigation LI
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+DIV#header UL#navigation LI.active A
+{
+    COLOR: #d71d1e
+}
+DIV#content DIV#navigationSubmenu A.active
+{
+    COLOR: #000000
+}
+DIV#header UL#navigation LI A
+{
+    COLOR: #000000
+}
+DIV#content DIV#query
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+DIV#content DIV#innerContent DIV DIV.innerContentHeading
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+DIV#content DIV#innerContentRight DIV#innerContentRightHeading
+{
+    BACKGROUND-COLOR: #d71d1e;
+    COLOR: #000000
+}
+.Menutitle
+{
+    BACKGROUND-COLOR: #fecc00
+}
+.Tablehead
+{
+    BACKGROUND-IMAGE: url(../../Images/headerBig.png);
+    TEXT-ALIGN: left;
+    BACKGROUND-REPEAT: repeat-x;
+    HEIGHT: 30px;
+    MARGIN-LEFT: 15px
+}
+TD.MainmenuItemAlternate:hover
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+.divWait
+{
+    BORDER-BOTTOM: #d71d1e thin solid;
+    BORDER-LEFT: #d71d1e thin solid;
+    BORDER-TOP: #d71d1e thin solid;
+    BORDER-RIGHT: #d71d1e thin solid
+}
+.divProgress
+{
+    Z-INDEX: 0;
+    POSITION: absolute;
+    TEXT-ALIGN: center;
+    FILTER: alpha(opacity=50);
+    BACKGROUND-COLOR: #ffffff;
+    WIDTH: 100%;
+    HEIGHT: 100%;
+    COLOR: #333333;
+    FONT-SIZE: 12px;
+    VERTICAL-ALIGN: middle;
+    FONT-WEIGHT: bold;
+    -moz-opacity: 0.7;
+    opacity: 0.7
+}
+.WaitControl
+{
+    COLOR: #333333;
+    PADDING-TOP: 2px
+}
+.lblKontaktFirma
+{
+    COLOR: #d71d1e
+}
+.ImpressumHead
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+.NaviImg
+{
+    BACKGROUND-IMAGE: url(../../Images/navi_orange.gif);
+    BACKGROUND-REPEAT: no-repeat;
+    HEIGHT: 100%
+}
+.ExcelDiv
+{
+    BACKGROUND-COLOR: #d71d1e;
+    COLOR: #000000
+}
+.ExcelSpan A
+{
+    COLOR: #000000
+}
+A.TablebuttonLarge:hover
+{
+    COLOR: #000000
+}
+.GridTableHead TH
+{
+    COLOR: #000000
+}
+DIV#content DIV#innerContentRight DIV#data TABLE TBODY TR TD A
+{
+    COLOR: #000000
+}
+DIV#content DIV#innerContentRight DIV#data TABLE TBODY TR TD A:hover
+{
+    COLOR: #d71d1e
+}
+.formqueryHeader
+{
+    BACKGROUND-IMAGE: url(../../Images/overflowThead.png);
+    LINE-HEIGHT: 22px;
+    BACKGROUND-COLOR: #9b9b9b;
+    WIDTH: 100%;
+    WHITE-SPACE: nowrap;
+    FLOAT: left;
+    HEIGHT: 22px;
+    COLOR: #ffffff;
+    VERTICAL-ALIGN: baseline;
+    FONT-WEIGHT: bold
+}
+.TablebuttonXLarge
+{
+    BACKGROUND-IMAGE: url(../../Images/buttonXLarge.jpg);
+    TEXT-ALIGN: center;
+    BACKGROUND-REPEAT: no-repeat;
+    COLOR: #333333;
+    FONT-SIZE: 10px;
+    VERTICAL-ALIGN: middle;
+    FONT-WEIGHT: bold;
+    PADDING-TOP: 4px
+}
+A.Tablebutton:hover
+{
+    COLOR: #d71d1e
+}
+.modalBackground
+{
+    FILTER: alpha(opacity=70);
+    BACKGROUND-COLOR: gray;
+    opacity: 0.7
+}
+.responsibleTextName
+{
+    COLOR: #d71d1e
+}
+.responsibleTextName .responsibleText A:hover
+{
+    COLOR: #d71d1e
+}
+.menuehead
+{
+    TEXT-ALIGN: left;
+    COLOR: #d71d1e
+}
+.menuehead TH
+{
+    PADDING-LEFT: 15px
+}
+DIV#content DIV#innerContentRight DIV#innerContentRightHeading DIV A
+{
+    COLOR: #000000
+}
+.ZulDateDiv
+{
+    PADDING-BOTTOM: 15px;
+    BACKGROUND-COLOR: #ffffff
+}
+DIV#content DIV#innerContentRight DIV#pagination .ZulDateDiv SPAN
+{
+    PADDING-LEFT: 15px
+}
+DIV#content DIV#innerContentRight DIV#pagination .ZulDateDiv TABLE
+{
+    BORDER-BOTTOM: #dfdfdf 1px solid;
+    BORDER-LEFT: #dfdfdf 1px solid;
+    PADDING-LEFT: 0px;
+    WIDTH: 100%;
+    PADDING-RIGHT: 0px;
+    DISPLAY: block;
+    COLOR: #595959;
+    BORDER-TOP: #dfdfdf 1px solid;
+    BORDER-RIGHT: #dfdfdf 1px solid;
+    PADDING-TOP: 2px
+}
+DIV#content DIV#innerContentRight DIV#datainfo
+{
+    WIDTH: 100%;
+    FLOAT: left
+}
+DIV#content DIV#innerContentRight DIV#paginationQuery DIV#PlaceHolderDiv
+{
+    BACKGROUND-COLOR: #ffffff;
+    PADDING-TOP: 15px
+}

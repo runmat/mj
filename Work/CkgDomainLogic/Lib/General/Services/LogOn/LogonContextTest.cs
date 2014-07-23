@@ -77,7 +77,11 @@ namespace CkgDomainLogic.General.Services
         public LogonContextTest(ILocalizationService localizationService)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
-            Customer = ct.GetCustomer(User.CustomerID); // new Customer { CustomerID = this.User.CustomerID, Customername = "Test-Kunde", KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"] };
+            if (User != null)
+                Customer = ct.GetCustomer(User.CustomerID); 
+            else 
+                Customer = new Customer { CustomerID = 0, Customername = "Test-Kunde", KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"] };
+
             LocalizationService = localizationService;
 
             Group = new UserGroup {GroupName = "Standard", GroupID = 52, CustomerID = 0};

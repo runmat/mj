@@ -10,23 +10,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Logistik", "Logistik.vbproj", "{7A0F9030-5024-42CE-8077-C4E6BEB19F62}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\Services.vbproj
-		SccProjectName1 = ../../
-		SccLocalPath1 = ..\\..
-		SccProjectUniqueName2 = ..\\Controls\\Controls.csproj
-		SccProjectName2 = ../Controls
-		SccLocalPath2 = ..\\Controls
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\ErpBase\\Base.vbproj
-		SccProjectName3 = ../../../../Work/ErpBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\ErpBase
-		SccProjectUniqueName4 = Logistik.vbproj
-		SccLocalPath4 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
