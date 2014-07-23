@@ -85,16 +85,18 @@
                               Width="380" Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0,0,0" />
                     </StackPanel>
 
-                    <TextBlock Text="Eingabe Regel" Grid.Row="4" Grid.Column="0" />
+                    <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
+                               Text="Web-Service Schnittstelle" Grid.Row="4" Grid.Column="0" />
+                    <ComboBox Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
+                              ItemsSource="{Binding WebServiceFunctions}" 
+                              SelectedValue="{Binding WebServiceFunction, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectedValuePath="ID" DisplayMemberPath="FriendlyName"
+                              Grid.Row="4" Grid.Column="1" Width="400" Height="24" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <TextBlock Text="Eingabe Regel" Grid.Row="5" Grid.Column="0" />
                     <ComboBox ItemsSource="{Binding InputRules}" 
                               SelectedValue="{Binding InputRule, UpdateSourceTrigger=PropertyChanged}" 
                               SelectedValuePath="ID" DisplayMemberPath="InputRuleName"
-                              Grid.Row="4" Grid.Column="1" Width="400" Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" />
-
-                    <TextBlock Text="Web-Service Schnittstelle" Grid.Row="5" Grid.Column="0" />
-                    <ComboBox ItemsSource="{Binding WebServiceFunctions}" 
-                              SelectedValue="{Binding WebServiceFunction, UpdateSourceTrigger=PropertyChanged}" 
-                              SelectedValuePath="ID" DisplayMemberPath="FriendlyName"
                               Grid.Row="5" Grid.Column="1" Width="500" Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                     <TextBlock Visibility="{Binding FileNameAbbreviationMinimumLengthAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 

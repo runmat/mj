@@ -40,6 +40,7 @@ namespace CarDocu.Models
                 _archiveCode = value;
                 SendPropertyChanged("ArchiveCode");
                 SendPropertyChanged("IconSource");
+                SendPropertyChanged("WebServiceFunctionAvailable");
             }
         }
 
@@ -285,6 +286,12 @@ namespace CarDocu.Models
         public string WebServiceFunctionName { get { return WebServiceFunctionObject.FunctionName; } }
 
         public string WebServiceFunctionFriendlyName { get { return WebServiceFunctionObject.FriendlyName; } }
+
+        [XmlIgnore]
+        public bool WebServiceFunctionAvailable
+        {
+            get { return ArchiveCode == "EASY"; }
+        }
 
         [XmlIgnore]
         static public List<DocumentTypeWebServiceFunction> WebServiceFunctions
