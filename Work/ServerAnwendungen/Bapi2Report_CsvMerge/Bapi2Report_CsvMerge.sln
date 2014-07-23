@@ -4,15 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bapi2Report_CsvMerge", "Bapi2Report_CsvMerge\Bapi2Report_CsvMerge.csproj", "{68524FF3-7029-4516-93C7-9AEF65F7A1FB}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Bapi2Report_CsvMerge\\Bapi2Report_CsvMerge.csproj
-		SccProjectName1 = Bapi2Report_CsvMerge
-		SccLocalPath1 = Bapi2Report_CsvMerge
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
