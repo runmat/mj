@@ -12,14 +12,15 @@ namespace ServicesMvc.Controllers
         public override string DataContextKey { get { return "EquiViewModel"; } }
 
 
-        public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
-            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService)
+        public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService,
+            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
             InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
             InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);
+            InitViewModel(ErweiterterBriefbestandViewModel, appSettings, logonContext, erweiterterBriefbestandDataService);
         }
 
         public ActionResult Index()

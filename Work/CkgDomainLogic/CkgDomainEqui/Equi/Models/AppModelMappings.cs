@@ -256,6 +256,44 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_BRIEFBESTAND_002.GT_DATEN, FahrzeugbriefErweitert> Z_DPM_BRIEFBESTAND_002_GT_DATEN_To_FahrzeugbriefErweitert
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_002.GT_DATEN, FahrzeugbriefErweitert>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.TechnIdentnummer = s.TIDNR;
+                        d.AbcKennzeichen = s.ABCKZ;
+                        d.Raum = s.MSGRP;
+                        d.Standort = s.STORT;
+                        d.Versandgrund = s.ZZVGRUND;
+                        d.Eingangsdatum = s.DATAB;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Stilllegungsdatum = s.EXPIRY_DATE;
+                        d.Pickdatum = s.PICKDAT;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
+                        d.Name1 = s.NAME1_ZL;
+                        d.Name2 = s.NAME2_ZL;
+                        d.Ort = s.CITY1_ZL;
+                        d.PLZ = s.POST_CODE1_ZL;
+                        d.Strasse = s.STREET_ZL;
+                        d.Hausnummer = s.HOUSE_NUM1_ZL;
+                        d.VertragsBeginn = s.DAT_VERTR_BEG;
+                        d.VertragsEnde = s.DAT_VERTR_END;
+                        d.VertragsStatus = s.VERTRAGS_STAT;
+                    }));
+            }
+        }
+
         #endregion
 
 

@@ -2338,6 +2338,9 @@
     <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
+    <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
+    <Content Include="Views\Equi\ReportErweiterterBriefbestand.cshtml" />
+    <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefErweitertSuche.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
