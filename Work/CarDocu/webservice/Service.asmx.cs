@@ -155,7 +155,7 @@ namespace CarDocuWebService
                 var sb = new StringBuilder();
                 sb.AppendLine("_________________________________________________________________");
                 sb.AppendLine();
-                sb.AppendLine(string.Format("Meldungs-Typ\t\t{0}", meldungsTyp));
+                sb.AppendLine(string.Format("Meldungs-Typ\t{0}", meldungsTyp));
                 sb.AppendLine();
                 sb.AppendLine(string.Format("Datum\t\t{0}", DateTime.Now.ToString("dd.MM.yyyy HH:mm")));
                 sb.AppendLine(string.Format("ID\t\t{0}", id));
