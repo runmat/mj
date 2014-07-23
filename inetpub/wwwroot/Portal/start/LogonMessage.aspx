@@ -5,8 +5,6 @@
 <head id="Head1" runat="server">
     <base target="_self" />
     <title>Logon Message</title>
-    <link href="/Services/Styles/default.css" media="screen, projection" type="text/css"
-        rel="stylesheet" />
     <style type="text/css">
         .tabHeader
         {
@@ -76,8 +74,7 @@
             </tr>
             <tr class="tabControls">
                 <td colspan="2">
-                    <asp:Button OnClientClick="window.close();" ID="btOk" runat="server" Text="Ok" Width="101px"
-                        CssClass="TablebuttonLarge" />
+                    <asp:Button OnClientClick="window.close();" ID="btOk" runat="server" Text="Ok" Width="101px" />
                 </td>
             </tr>
         </table>
