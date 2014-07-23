@@ -2,25 +2,22 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4BE01D98-A628-470D-AE1D-9CD33326CC27}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{49BBB463-CB80-4896-85F6-0D9D9EC3DE6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bapi2Report_CsvExport</RootNamespace>
-    <AssemblyName>Bapi2Report_CsvExport</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <RootNamespace>UniversalFileBasedLogging</RootNamespace>
+    <AssemblyName>UniversalFileBasedLogging</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName></SccProjectName>
     <SccLocalPath></SccLocalPath>
     <SccAuxPath></SccAuxPath>
     <SccProvider></SccProvider>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -29,8 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,40 +36,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbConnection.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="LogDataset.cs" />
+    <Compile Include="LogEntry.cs" />
+    <Compile Include="LogFile.cs" />
+    <Compile Include="LoggingClass.cs" />
+    <Compile Include="LogCustomer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CkgDomainLogic\Lib\CkgDomainLogic.csproj">
-      <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
-      <Name>CkgDomainLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Tools\CKGDatabaseAdminTool\CKGDatabaseAdminLib\CKGDatabaseAdminLib.csproj">
-      <Project>{947F160C-56EB-4159-BC78-DE9C15794460}</Project>
-      <Name>CKGDatabaseAdminLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
-      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
-      <Name>GeneralTools</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Config.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

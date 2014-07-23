@@ -7,16 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalFileBasedLogging",
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 2
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = ..\\UniversalFileBasedLogging\\UniversalFileBasedLogging\\UniversalFileBasedLogging.csproj
 		SccProjectName1 = ../../UniversalFileBasedLogging/UniversalFileBasedLogging
 		SccLocalPath1 = ..\\UniversalFileBasedLogging\\UniversalFileBasedLogging
-		SccProjectUniqueName2 = EasyExportGeneralTask\\EasyExportGeneralTask.csproj
-		SccProjectName2 = EasyExportGeneralTask
-		SccLocalPath2 = EasyExportGeneralTask
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
