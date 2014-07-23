@@ -11,22 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\Tools
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 1
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = ..\\..\\Tools\\CKGDatabaseAdminTool\\CKGDatabaseAdminLib\\CKGDatabaseAdminLib.csproj
-		SccProjectName0 = ../../Work/Tools/CKGDatabaseAdminTool/CKGDatabaseAdminLib
-		SccLocalPath0 = ..\\..\\Tools\\CKGDatabaseAdminTool\\CKGDatabaseAdminLib
-		SccProjectUniqueName1 = ..\\..\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
-		SccProjectName1 = ../../Work/CkgDomainLogic/Lib
-		SccLocalPath1 = ..\\..\\CkgDomainLogic\\Lib
-		SccProjectUniqueName2 = ..\\..\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName2 = ../../Work/Tools/GeneralTools
-		SccLocalPath2 = ..\\..\\Tools\\GeneralTools
-		SccLocalPath3 = .
-		SccProjectUniqueName4 = Bapi2Report_CsvExport\\Bapi2Report_CsvExport.csproj
-		SccProjectName4 = Bapi2Report_CsvExport
-		SccLocalPath4 = Bapi2Report_CsvExport
+		SccLocalPath0 = .
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
