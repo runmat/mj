@@ -59,7 +59,7 @@ Public Class ec_03
 
             'Dim tblTemp2 As DataTable = myProxy.getExportTable("GT_WEB")
 
-            S.AP.InitExecute("Z_M_Ec_Avm_Nur_Brief_Vorh", "I_KUNNR", Right("0000000000" & m_objUser.KUNNR, 10))
+            S.AP.InitExecute("Z_M_Ec_Avm_Nur_Brief_Vorh", "I_KUNNR, I_HERST", Right("0000000000" & m_objUser.KUNNR, 10), m_strHersteller)
 
             Dim tblTemp2 As DataTable = S.AP.GetExportTable("GT_WEB")
 
