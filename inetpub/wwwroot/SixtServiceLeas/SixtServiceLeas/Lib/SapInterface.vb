@@ -314,7 +314,8 @@ Public Class SapInterface
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
                         dr("AUFGRUND") = "EVE"
-                        dr("AEKNZ") = "N"
+                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        dr("AEKNZ") = .Aenderungskennzeichen
                         dr("WKENNZ_V1") = .Akt_Kennzeichen
                         If Len(Trim(.FahrzeugIdent)) = 0 Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.FahrzeugIdent)) <> 17 Then Throw New Exception("Fahrgestellnummer: Feld ist nicht 17stellig. ")
@@ -396,7 +397,8 @@ Public Class SapInterface
                         Else
                             dr("AUFGRUND") = "TVE"
                         End If
-                        dr("AEKNZ") = "N"
+                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        dr("AEKNZ") = .Aenderungskennzeichen
                         dr("WKENNZ_V1") = .Akt_Kennzeichen
                         If Len(Trim(.FahrzeugIdent)) = 0 Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.FahrzeugIdent)) <> 17 Then Throw New Exception("Fahrgestellnummer: Feld ist nicht 17stellig.")
