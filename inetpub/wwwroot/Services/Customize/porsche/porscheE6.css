@@ -1,0 +1,343 @@
+﻿
+    
+* html .dadLogo2 
+{
+    background-image: url(../../Customize/Porsche/porsche_logo2.jpg);
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 25px;
+	padding-left: 735px;
+	width:192px;
+	height:67px;
+}
+
+* html div#sidebar {
+	margin-top: 39px;
+}
+
+div, thead, td, li, ul { behavior: url(../../Images/iepngfix.htc) } /* IE PNG-Fix */
+ /* IE6-Hacks */
+
+* html div#header ul {
+	margin-top: 36px;
+}
+
+* html div#header ul#navigation li {
+	background-color: #444444;
+}
+
+* html div#header ul#navigation li.active a {  
+	color: #444444;
+}
+
+
+
+* html div#content div#query {
+	background-color: #444444;
+}
+
+* html div#content div#navigationSubmenu a.active {
+	color: #930F1D;
+}
+* html div#content div#innerContent div div.innerContentHeading {
+background-color: #444444;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading {
+	background-color: #444444;
+    background-image: url(../../Images/overflow.png);
+
+    
+}
+
+* html div#footer {
+	background-color: #efefef;
+	clear: both;
+	color: #595959;
+	float: left;
+	height: 24px;
+	padding-top: 12px;
+	padding-left: 19px;
+	width: 926px;
+}
+* html .Menutitle{	
+	background-color: #444444;
+}
+
+* html A.MainmenuLink:hover {
+	color: #960C1C;
+	width:100%;
+}
+
+
+
+* html .Busybutton 
+{
+    padding-top: 2px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+* html .BusybuttonLarge 
+{
+    padding-top: 2px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	text-align: center;
+	font-size:10px;
+	font-weight:bolder;
+	color: #333333;
+	cursor:hand;
+	font-family:Verdana,sans-serif
+}
+
+
+* html .Tablebutton 
+{
+    padding-top: 4px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+* html A.Tablebutton
+{
+    padding-top: 4px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:hover
+{
+    padding-top: 4px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #444444;
+
+}
+* html A.Tablebutton:visited
+{
+    padding-top: 4px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:active
+{
+    padding-top: 4px;
+	background-image: url(../../Images/button.jpg);
+	background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+
+
+* html div#content div#innerContentRight div#TableQuery table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+    color:#595959;
+	width: 100%; 
+	display: block; 
+	border-left:1px solid #DFDFDF;
+    border-right:1px solid #DFDFDF;
+	
+}
+
+* html div#innerContentRight div#data table tbody tr td span
+{   
+    float:none;
+
+    }
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td {
+	padding-top: 10px;
+	vertical-align: baseline;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .active {
+    font-weight:bold;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .firstLeft {
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td.rightPadding { padding-right: 15px }
+
+* html div#content div#innerContentRight div#TableQuery table tfoot {
+	background-color: #dfdfdf;
+	height: 25px;
+}
+
+* html .InputTextbox
+{   
+    font-family: Verdana, sans-serif;
+    font-size:12px;
+    width: 265px;
+    }
+    
+    
+* html .TablebuttonLarge 
+{
+    padding-top: 4px;
+	background-image: url(../../Images/buttonLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+* html   .HeadDiv
+{
+
+	border-left-color:#dfdfdf;
+	border-left-width:1px;
+	border-left-style:solid;
+	border-right-color:#dfdfdf;
+	border-right-width:1px;
+	border-right-style:solid;
+	color: #333333;
+
+	
+    }
+    
+    
+* html .Tablehead {
+	background-image: url(../../Images/headerBig.png);
+	height:30px;
+	background-repeat:repeat-x;
+	text-align:left;
+	margin-left:15px;
+	
+}
+
+
+* html .menuehead 
+{
+    background-image: url(../../Images/overflowUpsideDown.png);
+	background-color: #9b9b9b;
+	height:30px;
+	color:#FFFFFF;
+	text-align:left;
+	height:22px;
+	
+     }
+
+* html .menuehead th{padding-left:15px}
+
+* html td.MainmenuItemAlternate:hover {
+	background-color: #FCDA93;
+	}
+    
+* html .radioAsp
+{
+border:medium none;
+margin:0;
+width:auto;
+float:left;
+
+    }
+
+* html .divProgress
+{
+    width: 100%;
+    height: 100%;
+    background-color:#ffffff;
+    position: absolute;
+    z-index:0;
+    -ms-filter:alpha(opacity=50); 
+    -moz-opacity:0.7; 
+    -ms-opacity:0.7; 
+   	vertical-align:middle;
+	text-align: center;
+	font-size:12px;
+	font-weight:bold; 
+	color: #333333;
+    
+    }
+    
+ * html   .divWait
+{
+    border: thin solid #444444;
+     
+    }
+* html .WaitControl
+{
+    padding-top:2px;
+    
+    }
+    
+* html .lblKontaktFirma
+ { 
+     color:#444444;
+     }
+     
+* html  .ImpressumHead {
+	background-color: #444444;
+    background-image: url(../../Images/overflow.png);
+    width:100%;
+    
+
+}
+    
+    
+* html .NaviImg 
+{
+    background-image:url(../../Images/navi_orange.gif);
+    background-repeat:no-repeat;
+    height:100%;
+    }
+    
+    
+* html div#content div#innerContentRight div#data table{
+
+    background-position:center top;
+    border-left: solid 1px #DFDFDF;
+    border-right: solid 1px #DFDFDF;
+
+}
+* html .PagerStyle A:link
+{
+    color: #930F1D;
+    text-decoration: underline;
+}
+
+* html .ExcelDiv
+{
+    background-color: #444444;
+}
+
