@@ -548,9 +548,9 @@
     <Content Include="Styles\default.css" />
     <Content Include="Styles\dad.css" />
     <Content Include="Customize\AppKroschke\Kroschke.css" />
-    <Content Include="Web.config">
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\RadGrid.Main.de-DE.designer.vb">
@@ -1279,7 +1279,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <Content Include="NLog.config" />
+    <None Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Admin\bin\" />
@@ -1378,7 +1378,7 @@
         <SkipAction>Delete</SkipAction>
         <ObjectName>dirPath</ObjectName>
         <AbsolutePath>$(_Escaped_PackageTempDir)\Bilder\\.*</AbsolutePath>
-      </MsDeploySkipRules>      
+      </MsDeploySkipRules>
       <MsDeploySkipRules Include="SkipDeleteAppData">
         <SkipAction>Delete</SkipAction>
         <ObjectName>dirPath</ObjectName>
