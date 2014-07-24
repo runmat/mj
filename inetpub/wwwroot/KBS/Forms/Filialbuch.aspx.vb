@@ -170,44 +170,67 @@ Public Class Filialbuch
             lblError.Text = mObjFilialbuch.ErrorCode & ": " & mObjFilialbuch.ErrorMessage
         Else
             Select Case curView
+
                 Case ViewStatus.FilialeProtokoll
                     gvAufgabenFiliale.Visible = False
                     gvAllFiliale.Visible = True
                     gvAllGL.Visible = False
-                    If ddlFilterFiliale.SelectedItem.Text = "Gelesen" OrElse
-                        ddlFilterFiliale.SelectedItem.Text = "Beantwortet" OrElse
-                        ddlFilterFiliale.SelectedItem.Text = "Erledigt" OrElse
-                        ddlFilterFiliale.SelectedItem.Text = "Neu" Then
-                        Dim sFilter = ddlFilterFiliale.SelectedValue.ToString().Trim("E"c)
-                        Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden, CType(sFilter, IFilialbuchEntry.EmpfängerStatus), CType(sFilter, IFilialbuchEntry.EmpfängerStatus))
 
-                        gvAllFiliale.DataSource = FilterClosed(dt)
-                    ElseIf ddlFilterFiliale.SelectedValue <> "all" Then
-                        Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus), CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus))
-                        gvAllFiliale.DataSource = dt
-                    Else
-                        gvAllFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable()
-                    End If
+                    Select Case ddlFilterFiliale.SelectedValue
+
+                        Case "all"
+                            gvAllFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable()
+
+                        Case "E0", "E1", "E3", "E4"
+                            ' "Gelesen", "Beantwortet", "Erledigt", "Neu"
+                            Dim sFilter = ddlFilterFiliale.SelectedValue.ToString().Trim("E"c)
+                            Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden, CType(sFilter, IFilialbuchEntry.EmpfängerStatus), CType(sFilter, IFilialbuchEntry.EmpfängerStatus))
+
+                            'Bei Auswahl "Erledigt" geschlossene nicht rausfiltern
+                            If ddlFilterFiliale.SelectedValue = "E4" Then
+                                gvAllFiliale.DataSource = dt
+                            Else
+                                gvAllFiliale.DataSource = FilterClosed(dt)
+                            End If
+
+                        Case Else
+                            Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus), CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus))
+                            gvAllFiliale.DataSource = dt
+
+                    End Select
+
                     gvAllFiliale.DataBind()
+
                 Case ViewStatus.Gebietsleiter
                     gvAufgabenFiliale.Visible = False
                     gvAllFiliale.Visible = False
                     gvAllGL.Visible = True
-                    If ddlFilter.SelectedItem.Text = "Gelesen" OrElse
-                        ddlFilter.SelectedItem.Text = "Beantwortet" OrElse
-                        ddlFilter.SelectedItem.Text = "Erledigt" OrElse
-                        ddlFilter.SelectedItem.Text = "Neu" Then
-                        Dim sFilter = ddlFilter.SelectedValue.ToString().Trim("E"c)
-                        Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden, CType(sFilter, IFilialbuchEntry.EmpfängerStatus), CType(sFilter, IFilialbuchEntry.EmpfängerStatus))
 
-                        gvAllGL.DataSource = FilterClosed(dt)
-                    ElseIf ddlFilter.SelectedValue <> "all" Then
-                        Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus), IFilialbuchEntry.EmpfängerStatus.Ausblenden, IFilialbuchEntry.EmpfängerStatus.Ausblenden)
-                        gvAllGL.DataSource = dt
-                    Else
-                        gvAllGL.DataSource = mObjFilialbuch.Protokoll.CreateTable()
-                    End If
+                    Select Case ddlFilter.SelectedValue
+
+                        Case "all"
+                            gvAllGL.DataSource = mObjFilialbuch.Protokoll.CreateTable()
+
+                        Case "E0", "E1", "E3", "E4"
+                            ' "Gelesen", "Beantwortet", "Erledigt", "Neu"
+                            Dim sFilter = ddlFilter.SelectedValue.ToString().Trim("E"c)
+                            Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, IFilialbuchEntry.EntryStatus.Ausblenden, CType(sFilter, IFilialbuchEntry.EmpfängerStatus), CType(sFilter, IFilialbuchEntry.EmpfängerStatus))
+
+                            'Bei Auswahl "Erledigt" geschlossene nicht rausfiltern
+                            If ddlFilter.SelectedValue = "E4" Then
+                                gvAllGL.DataSource = dt
+                            Else
+                                gvAllGL.DataSource = FilterClosed(dt)
+                            End If
+
+                        Case Else
+                            Dim dt As DataTable = mObjFilialbuch.Protokoll.CreateTable(IFilialbuchEntry.EntryStatus.Ausblenden, CType(ddlFilter.SelectedValue, IFilialbuchEntry.EntryStatus), IFilialbuchEntry.EmpfängerStatus.Ausblenden, IFilialbuchEntry.EmpfängerStatus.Ausblenden)
+                            gvAllGL.DataSource = dt
+
+                    End Select
+
                     gvAllGL.DataBind()
+
             End Select
         End If
     End Sub
