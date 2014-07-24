@@ -90,6 +90,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
     </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
+      <Name>DBauer.Web.UI.WebControls.HierarGrid</Name>
+      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
     <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>

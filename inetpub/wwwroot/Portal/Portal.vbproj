@@ -108,6 +108,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
+    <Reference Include="BtBaseMvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Work\GAC\BtBaseMvc.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\Work\GAC\Elmah\Elmah.dll</HintPath>
     </Reference>

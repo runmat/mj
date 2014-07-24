@@ -84,7 +84,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CKG.EasyAccess">
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
     </Reference>
     <Reference Include="CuteWebUI.AjaxUploader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc00d4b0e43ec38d, processorArchitecture=MSIL">

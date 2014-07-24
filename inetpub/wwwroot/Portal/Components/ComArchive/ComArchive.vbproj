@@ -81,7 +81,8 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CKG.EasyAccess">
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
     </Reference>
     <Reference Include="System">
