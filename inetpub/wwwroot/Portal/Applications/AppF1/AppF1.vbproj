@@ -453,6 +453,7 @@
     <Content Include="forms\Report07_1.aspx" />
     <Content Include="forms\Report08.aspx" />
     <Content Include="forms\Report10.aspx" />
+    <Content Include="forms\scroll.htc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
