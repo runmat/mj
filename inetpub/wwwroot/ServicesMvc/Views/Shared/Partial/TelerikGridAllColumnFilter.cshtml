@@ -1,4 +1,12 @@
 ﻿
+<style type="text/css">
+    .grid-column-overall-quick-filter-pick-cancel .text {
+        margin-left: 5px;
+        font-weight: bold;
+        color: black!important;
+    }
+</style>
+
 <div class="GridAllColumnFilter hide">
     <div>
         <div class="grid-toolbar">
@@ -36,9 +44,21 @@
             <div class="dataTables_filter tablet-or-wider">
                 <label>@Localize.ColumnOverallFilter: <input type="text" class="grid-column-overall-filter"></label>
             </div>
-            <div class="dataTables_filter tablet-or-wider margin-right-10">
-                <button type="submit" class='btn blue mini' onclick="GridAllColumnFilterQuickMouseClickFilter()"><i class='icon-filter'></i></button>
-                <button type="submit" class='btn grey mini' onclick="GridAllColumnFilterQuickMouseClickFilter()"><i class='icon-remove'></i></button>
+            <div class="dataTables_filter tablet-or-wider margin-right-10 margin-top-5">
+                
+                <button class="grid-column-overall-quick-filter-pick-start btn grey mini tooltips" onclick="GridAllColumnFilterQuickMouseClickFilterSwapPickingMode()" 
+                        data-original-title="Filtertext per Maus auswählen! Wählen Sie Ihren Filtertext per Mausklick aus einer beliebigen Zelle im Grid." data-placement="top">
+                    <i class='halflings-icon filter'></i><i class='halflings-icon magnet'></i>
+                </button>
+                <button class="grid-column-overall-quick-filter-pick-cancel btn red mini tooltips hide" onclick="GridAllColumnFilterQuickMouseClickFilterSwapPickingMode()" 
+                        data-original-title="Abbrechen! (Filtertext per Maus auswählen abbrechen)" data-placement="top">
+                        <i class='halflings-icon filter'></i><i class='halflings-icon magnet'></i> <span class="text"> Abbrechen</span>
+                </button>
+
+                <button class="grid-column-overall-quick-filter-reset btn blue mini tooltips hide" onclick="GridAllColumnFilterQuickMouseClickFilterReset()"
+                        data-original-title="Filtertext zurücksetzen" data-placement="top">
+                    <i class='halflings-icon filter'></i><i class='halflings-icon remove'></i>
+                </button>
             </div>
         </div>
     </div>
@@ -52,7 +72,6 @@
         var columnFilter = $(".GridAllColumnFilter");
 
         $("#" + gridName + " > .t-grid-toolbar").append(columnFilter.html());
-        //columnFilter.html('');
 
         // build grid export menu (excel + pdf)
         if (typeof (exportExcelAndPdfAvailable) == 'undefined')
@@ -70,6 +89,52 @@
         FilterGridInit(gridName);
     }
 
+    var _gridAllColumnFilterQuickMouseClickFilter_isActive = false;
+    function GridAllColumnFilterQuickMouseClickFilterReset() {
+        $(".grid-column-overall-filter").val("");
+        FilterGridAllColumns($(".grid-column-overall-filter"));
+        $(".grid-column-overall-quick-filter-reset").hide();
+    }
+
+    function GridAllColumnFilterQuickMouseClickFilterSwapPickingMode() {
+        _gridAllColumnFilterQuickMouseClickFilter_isActive = !_gridAllColumnFilterQuickMouseClickFilter_isActive;
+
+        if (_gridAllColumnFilterQuickMouseClickFilter_isActive) {
+            $(".grid-column-overall-quick-filter-pick-start").hide();
+            $(".grid-column-overall-quick-filter-pick-cancel").show();
+        } else {
+            $(".grid-column-overall-quick-filter-pick-start").show();
+            $(".grid-column-overall-quick-filter-pick-cancel").hide();
+        }
+
+        if (_gridAllColumnFilterQuickMouseClickFilter_isActive) {
+
+            $(".t-grid table td")
+                .css("cursor", "crosshair")
+                .on("click",
+                    function () {
+                        $(".grid-column-overall-filter").val($(this).text());
+                        FilterGridAllColumns($(".grid-column-overall-filter"));
+                        $(".grid-column-overall-quick-filter-reset").show();
+                        $(this).removeClass("red");
+                        GridAllColumnFilterQuickMouseClickFilterSwapPickingMode();
+                    })
+                .hover(
+                    function () {
+                        $(this).addClass("red");
+                    },
+                    function () {
+                        $(this).removeClass("red");
+                    }
+                );
+
+        } else {
+            $(".t-grid table td").off("click").unbind("hover").css("cursor", "default");
+        }
+
+        return false;
+    }
+    
     function TrySetOuterExportLink(grid, exportLink, href, exportType) {
         if (href.toLowerCase().indexOf(exportType) == -1)
             return;
