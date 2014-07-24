@@ -40,9 +40,11 @@
         $(window).resize(function () {
             $('.ui-dialog').css({
                 'width': $(window).width(),
-                //'height': $(window).height(),
                 'left': '0px',
-                //'top': '0px'
+            });
+            $('.ui-dialog-inner').css({
+                'width': $(window).width()-30,
+                'left': '0px',
             });
         }).resize(); //<-- resizes on page ready    
     }
@@ -86,8 +88,9 @@
         _gridAllColumnFilterQuickMouseClickFilter_isActive = !_gridAllColumnFilterQuickMouseClickFilter_isActive;
         
         if (_gridAllColumnFilterQuickMouseClickFilter_isActive) {
-
+            
             $(".t-grid table td")
+                .css("cursor", "crosshair")
                 .on("click",
                     function () {
                         $(".grid-column-overall-filter").val($(this).text());
@@ -105,8 +108,10 @@
                 );
 
         } else {
-            $(".t-grid table td").off("click").unbind("hover");
+            $(".t-grid table td").off("click").unbind("hover").css("cursor", "default");
         }
+        
+        return false;
     }
     
 </script>

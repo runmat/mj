@@ -4,10 +4,8 @@
     var gridName = "GridLogsSap";
 }
 
-<button type="submit" class='btn blue' onclick="GridAllColumnFilterQuickMouseClickFilter()"><i class='icon-filter'></i>&nbsp;Filtern</button>
-
 @(Html.Telerik()
-                    .Grid<SapLogItem>()
+    .Grid<SapLogItem>()
     .Name(gridName)
 
     .XAjaxDataBinding("LogsSapAjaxBinding", "Logs")

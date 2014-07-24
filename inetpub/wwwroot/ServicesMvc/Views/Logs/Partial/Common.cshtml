@@ -83,7 +83,8 @@
         display: inline-block;
     }
 
-    .t-grid-filter, .t-grid-pager { display: none; }
+    .t-grid-filter { display: none; }
+    .ui-dialog .t-grid-pager { display: none; }
     
     .red{ color: red!important; }
 
@@ -100,13 +101,15 @@
             data: { sapItemId: sapItemId },
             loadingShow: true,
             success: function (result) {
-                
+
                 var dialog = $("#SapImportContext").data("tWindow");
                 $("#InnerSapImportContext").html(result);
                 dialog.center().open();
 
                 setTimeout(function () {
-                    $("#SapImportContext").on("click", function () {
+                    $("#SapImportContext").on("click", function (e) {
+                        if (e.target.tagName.toLowerCase() == "td")
+                            return;
                         dialog.close();
                         $("#SapImportContext").of("click");
                     });
@@ -148,7 +151,7 @@
     .Scrollable(true)
     .Height(700)
     .HtmlAttributes(new { @class = "ui-dialog" })
-    .Content(@<text><div id="InnerSapImportContext" class="ui-dialog"></div></text>))
+    .Content(@<text><div id="InnerSapImportContext" class="ui-dialog-inner"></div></text>))
 
 
 @(Html.Telerik().Window()
@@ -159,5 +162,5 @@
     .Draggable(true)
     .Scrollable(true)
     .Height(700)
-    .HtmlAttributes(new { @class = "ui-dialog" })
-    .Content(@<text><div id="InnerStackContext"></div></text>))
+    .HtmlAttributes(new { @class = "ui-dialog-inner" })
+    .Content(@<text><div id="InnerStackContext" class="ui-dialog-inner"></div></text>))
