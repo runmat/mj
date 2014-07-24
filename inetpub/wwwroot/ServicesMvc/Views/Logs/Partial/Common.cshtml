@@ -83,7 +83,7 @@
         display: inline-block;
     }
 
-    .t-grid-filter { display: none; }
+    .t-grid-filter, .t-grid-pager { display: none; }
     
     .red{ color: red!important; }
 
@@ -146,9 +146,9 @@
     .Modal(true)
     .Draggable(true)
     .Scrollable(true)
-    .Width(800)
-    .Height(600)
-    .Content(@<text><div id="InnerSapImportContext"></div></text>))
+    .Height(700)
+    .HtmlAttributes(new { @class = "ui-dialog" })
+    .Content(@<text><div id="InnerSapImportContext" class="ui-dialog"></div></text>))
 
 
 @(Html.Telerik().Window()
@@ -158,6 +158,6 @@
     .Modal(true)
     .Draggable(true)
     .Scrollable(true)
-    .Width(800)
-    .Height(600)
+    .Height(700)
+    .HtmlAttributes(new { @class = "ui-dialog" })
     .Content(@<text><div id="InnerStackContext"></div></text>))
