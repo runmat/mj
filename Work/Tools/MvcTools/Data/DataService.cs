@@ -12,7 +12,9 @@ namespace MvcTools.Data
     {
         private static IEnumerable<PropertyInfo> GeValidProperties(Type type)
         {
-            return type.GetProperties().Where(p => p.GetCustomAttributes(true).All(c => c.GetType() != typeof(GridExportIgnoreAttribute)));
+            return type.GetProperties()
+                .Where(p => p.GetCustomAttributes(true)
+                    .All(c => c.GetType() != typeof(GridExportIgnoreAttribute) && !c.GetType().IsSubclassOf(typeof(GridExportIgnoreAttribute))));
         }
 
         public static DataTable ToTable(IEnumerable list)
