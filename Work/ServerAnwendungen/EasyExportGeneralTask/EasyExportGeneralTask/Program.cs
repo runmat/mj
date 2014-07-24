@@ -1306,109 +1306,123 @@ namespace EasyExportGeneralTask
 
             try
             {
-                S.AP.Init("Z_DPM_EXP_ERSTEINGANG_01", "I_KUNNR_AG", taskConfiguration.Kundennummer);
-                S.AP.SetImportParameter("I_NUR_UNZUGELASSENE_FZG", "X");
+                var logPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\cwlog_" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
-                DataTable tblImport = S.AP.GetImportTable("GT_IN");
-
-                List<string> werte = new List<string> { "720", "721", "722" };
-
-                foreach (string wert in werte)
+                using (StreamWriter logWriter = new StreamWriter(logPath, true))
                 {
-                    DataRow newRow = tblImport.NewRow();
-                    newRow["BAUTL"] = wert.PadLeft(18, '0');
-                    tblImport.Rows.Add(newRow);
-                }
+                    S.AP.Init("Z_DPM_EXP_ERSTEINGANG_01", "I_KUNNR_AG", taskConfiguration.Kundennummer);
+                    S.AP.SetImportParameter("I_NUR_UNZUGELASSENE_FZG", "X");
 
-                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT");
+                    DataTable tblImport = S.AP.GetImportTable("GT_IN");
 
-                // EasyArchiv-Query initialisieren
-                clsQueryClass Weblink = new clsQueryClass();
-                Weblink.Configure(taskConfiguration);
+                    List<string> werte = new List<string> { "720", "721", "722" };
 
-                string EasyTyp = "";
-                string ExportTyp = "";
-
-                foreach (DataRow row in tblSapResults.Rows)
-                {
-                    if (blnErrorOccured)
+                    foreach (string wert in werte)
                     {
-                        break;
+                        DataRow newRow = tblImport.NewRow();
+                        newRow["BAUTL"] = wert.PadLeft(18, '0');
+                        tblImport.Rows.Add(newRow);
                     }
 
-                    // Datensätze ohne VIN überspringen
-                    if (String.IsNullOrEmpty(row["ZZFAHRG"].ToString()))
-                    {
-                        continue;
-                    }
+                    DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT");
 
-                    string strBautl = row["BAUTL"].ToString().TrimStart('0');
+                    // EasyArchiv-Query initialisieren
+                    clsQueryClass Weblink = new clsQueryClass();
+                    Weblink.Configure(taskConfiguration);
 
-                    if (werte.Contains(strBautl))
+                    string EasyTyp = "";
+                    string ExportTyp = "";
+
+                    foreach (DataRow row in tblSapResults.Rows)
                     {
-                        switch (strBautl)
+                        if (blnErrorOccured)
                         {
-                            case "720":
-                                EasyTyp = "COC";
-                                ExportTyp = "720_COC";
-                                break;
-
-                            case "721":
-                                EasyTyp = "DATENBLATT";
-                                ExportTyp = "721_DATENBLATT";
-                                break;
-
-                            case "722":
-                                EasyTyp = "FZGBRIEF";
-                                ExportTyp = "722_ZBII";
-                                break;
-                        }
-                    }
-
-
-                    result.clear();
-
-                    string queryexpression = ".1001=" + row["ZZFAHRG"] + " & .110=" + EasyTyp;
-
-                    string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
-
-                    if (status != "Keine Daten gefunden.")
-                    {
-                        if (!String.IsNullOrEmpty(status))
-                        {
-                            throw new Exception(status);
+                            break;
                         }
 
-                        int iIndex = 0;
-
-                        if (result.hitCounter > 1)
+                        // Datensätze ohne VIN überspringen
+                        if (String.IsNullOrEmpty(row["ZZFAHRG"].ToString()))
                         {
-                            string strDate = "";
+                            continue;
+                        }
 
-                            for (int i = 0; i < result.hitList.Rows.Count; i++)
+                        string strBautl = row["BAUTL"].ToString().TrimStart('0');
+
+                        logWriter.WriteLine(DateTime.Now.ToString() + " - Verarbeite " + row["ZZFAHRG"].ToString() + ", " + strBautl);
+
+                        if (werte.Contains(strBautl))
+                        {
+                            switch (strBautl)
                             {
-                                string datum = result.hitList.Rows[i][4].ToString();
+                                case "720":
+                                    EasyTyp = "COC";
+                                    ExportTyp = "720_COC";
+                                    break;
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
-                                {
-                                    strDate = datum;
-                                    iIndex = i;
-                                }
+                                case "721":
+                                    EasyTyp = "DATENBLATT";
+                                    ExportTyp = "721_DATENBLATT";
+                                    break;
+
+                                case "722":
+                                    EasyTyp = "FZGBRIEF";
+                                    ExportTyp = "722_ZBII";
+                                    break;
                             }
                         }
 
-                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { ExportTyp });
 
-                        if (!String.IsNullOrEmpty(status))
-                        {
-                            Console.WriteLine(status);
-                        }
+                        result.clear();
 
-                        if (taskConfiguration.DatumInSapSetzen)
+                        string queryexpression = ".1001=" + row["ZZFAHRG"] + " & .110=" + EasyTyp;
+
+                        string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                        logWriter.WriteLine(DateTime.Now.ToString() + " - Abfragestatus für " + row["ZZFAHRG"].ToString() + ", " + strBautl + ": " + status);
+
+                        if (status != "Keine Daten gefunden.")
                         {
-                            if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
+                            if (!String.IsNullOrEmpty(status))
                             {
-                                blnErrorOccured = true;
+                                throw new Exception(status);
+                            }
+
+                            int iIndex = 0;
+
+                            if (result.hitCounter > 1)
+                            {
+                                string strDate = "";
+
+                                for (int i = 0; i < result.hitList.Rows.Count; i++)
+                                {
+                                    string datum = result.hitList.Rows[i][4].ToString();
+
+                                    if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                    {
+                                        strDate = datum;
+                                        iIndex = i;
+                                    }
+                                }
+                            }
+
+                            status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { ExportTyp });
+
+                            logWriter.WriteLine(DateTime.Now.ToString() + " - Dokumentabrufstatus für " + row["ZZFAHRG"].ToString() + ", " + strBautl + ": " + status);
+
+                            if (!String.IsNullOrEmpty(status))
+                            {
+                                Console.WriteLine(status);
+                            }
+
+                            if (taskConfiguration.DatumInSapSetzen)
+                            {
+                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
+
+                                if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
+                                {
+                                    blnErrorOccured = true;
+                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
+                                }
                             }
                         }
                     }
