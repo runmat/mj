@@ -87,7 +87,6 @@ Public Class Change05_2
                 .DataTextField = "ModellAnzeige"
                 .DataValueField = "Modell"
                 .DataBind()
-                .Enabled = False
             End With
             
             tmpDataView = objSuche.Result.DefaultView
