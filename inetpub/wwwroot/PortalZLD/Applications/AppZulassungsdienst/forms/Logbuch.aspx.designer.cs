@@ -112,13 +112,13 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblKostenstelle;
         
         /// <summary>
-        /// lblLFB-Steuerelement
+        /// lblGL-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLFB;
+        protected global::System.Web.UI.WebControls.Label lblGL;
         
         /// <summary>
         /// lblNoData-Steuerelement
@@ -256,13 +256,13 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.GridView gvProtokollFiliale;
         
         /// <summary>
-        /// gvProtokollLFB-Steuerelement
+        /// gvProtokollGL-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProtokollLFB;
+        protected global::System.Web.UI.WebControls.GridView gvProtokollGL;
         
         /// <summary>
         /// EditAufgabe2-Steuerelement

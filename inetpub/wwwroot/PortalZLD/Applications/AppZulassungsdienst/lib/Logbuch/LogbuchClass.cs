@@ -26,7 +26,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 		{
             Zulassungsdienst,
 			Filiale,
-			LFB
+			Gebietsleiter
 		}
 
 		public enum Antwortart
@@ -113,8 +113,8 @@ namespace AppZulassungsdienst.lib.Logbuch
                     return "ZUL";
 				case Rolle.Filiale:
 					return "FIL";
-				case Rolle.LFB:
-					return "LFB";
+				case Rolle.Gebietsleiter:
+					return "GL";
 				default:
 					return "FIL";
 			}
@@ -133,8 +133,8 @@ namespace AppZulassungsdienst.lib.Logbuch
 			        return Rolle.Zulassungsdienst;
 				case "FIL":
 					return Rolle.Filiale;
-				case "LFB":
-					return Rolle.LFB;
+				case "GL":
+					return Rolle.Gebietsleiter;
 				default:
 					return Rolle.Filiale;
 			}

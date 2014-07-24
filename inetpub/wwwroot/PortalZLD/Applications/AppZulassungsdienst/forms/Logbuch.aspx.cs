@@ -21,7 +21,7 @@ namespace AppZulassungsdienst.forms
         private enum ViewStatus
         {
             Unauthenticated,
-            Lfb,
+            Gebietsleiter,
             FilialeProtokoll,
             FilialeAufgaben
         }
@@ -105,8 +105,8 @@ namespace AppZulassungsdienst.forms
                             curView = ViewStatus.FilialeAufgaben;
                             FillListAufgaben();
                             break;
-                        case LogbuchClass.Rolle.LFB:
-                            curView = ViewStatus.Lfb;
+                        case LogbuchClass.Rolle.Gebietsleiter:
+                            curView = ViewStatus.Gebietsleiter;
                             FillListProtokoll();
                             break;
                         default:
@@ -134,7 +134,7 @@ namespace AppZulassungsdienst.forms
             {
                 gvAufgaben.Visible = true;
                 gvProtokollFiliale.Visible = false;
-                gvProtokollLFB.Visible = false;
+                gvProtokollGL.Visible = false;
 
                 gvAufgaben.DataSource = mObjFilialbuch.Protokoll.CreateTable(
                     EntryStatus.Ausblenden, EntryStatus.Ausblenden,
@@ -156,7 +156,7 @@ namespace AppZulassungsdienst.forms
 
             switch (curView)
             {
-                case ViewStatus.Lfb:
+                case ViewStatus.Gebietsleiter:
                     mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn, 
                         LogbuchClass.StatusFilter.Alle, mObjFilialbuch.VkBur, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
                     break;
@@ -178,7 +178,7 @@ namespace AppZulassungsdienst.forms
                     case ViewStatus.FilialeProtokoll:
                         gvAufgaben.Visible = false;
                         gvProtokollFiliale.Visible = true;
-                        gvProtokollLFB.Visible = false;
+                        gvProtokollGL.Visible = false;
                         if (ddlFilterFiliale.SelectedItem.Text == "Gelesen" ||
                             ddlFilterFiliale.SelectedItem.Text == "Beantwortet" ||
                             ddlFilterFiliale.SelectedItem.Text == "Erledigt" ||
@@ -206,10 +206,10 @@ namespace AppZulassungsdienst.forms
                         }
                         gvProtokollFiliale.DataBind();
                         break;
-                    case ViewStatus.Lfb:
+                    case ViewStatus.Gebietsleiter:
                         gvAufgaben.Visible = false;
                         gvProtokollFiliale.Visible = false;
-                        gvProtokollLFB.Visible = true;
+                        gvProtokollGL.Visible = true;
                         if (ddlFilter.SelectedItem.Text == "Gelesen" || ddlFilter.SelectedItem.Text == "Beantwortet" ||
                             ddlFilter.SelectedItem.Text == "Erledigt" || ddlFilter.SelectedItem.Text == "Neu")
                         {
@@ -219,7 +219,7 @@ namespace AppZulassungsdienst.forms
                                                                                 (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter),
                                                                                 (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter));
 
-                            gvProtokollLFB.DataSource = FilterClosed(ref dt);
+                            gvProtokollGL.DataSource = FilterClosed(ref dt);
                         }
                         else if (ddlFilter.SelectedValue != "all")
                         {
@@ -227,13 +227,13 @@ namespace AppZulassungsdienst.forms
                                                                                 (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue),
                                                                                 EmpfängerStatus.Ausblenden,
                                                                                 EmpfängerStatus.Ausblenden);
-                            gvProtokollLFB.DataSource = dt;
+                            gvProtokollGL.DataSource = dt;
                         }
                         else
                         {
-                            gvProtokollLFB.DataSource = mObjFilialbuch.Protokoll.CreateTable();
+                            gvProtokollGL.DataSource = mObjFilialbuch.Protokoll.CreateTable();
                         }
-                        gvProtokollLFB.DataBind();
+                        gvProtokollGL.DataBind();
                         break;
                 }
             }
@@ -351,7 +351,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                curView = ViewStatus.Lfb;
+                curView = ViewStatus.Gebietsleiter;
             }
             ViewControl(curView);
             FillListProtokoll();
@@ -366,7 +366,7 @@ namespace AppZulassungsdienst.forms
 
         protected void lbtnRefresh_Click(object sender, EventArgs e)
         {
-            // # CurView bereits auf LFB oder Filiale gesetzt, daher keine Änderung nötig
+            // # CurView bereits auf GL oder Filiale gesetzt, daher keine Änderung nötig
             FillListProtokoll();
         }
 
@@ -390,7 +390,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = true;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = true;
                     ddlFilter.Visible = false;
@@ -408,7 +408,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = true;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = false;
 
@@ -416,7 +416,7 @@ namespace AppZulassungsdienst.forms
                     lbtAdd.Text = "Anfrage";
                     break;
 
-                case ViewStatus.Lfb:
+                case ViewStatus.Gebietsleiter:
                     tblHeaderTabs.Visible = true;
 
                     lbAufgaben.Visible = false;
@@ -425,7 +425,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = true;
+                    gvProtokollGL.Visible = true;
 
                     divTimeSpan.Visible = true;
                     ddlFilter.Visible = true;
@@ -444,7 +444,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = false;
                     ddlFilter.Visible = false;
@@ -688,7 +688,7 @@ namespace AppZulassungsdienst.forms
             gvProtokollFiliale.DataBind();
         }
 
-        protected void gvProtokollLFB_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+        protected void gvProtokollGL_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
         {
             SortDirection NewDir;
             string Text;
@@ -754,7 +754,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("I_DATUM", NewDir);
+                    gvProtokollGL.Sort("I_DATUM", NewDir);
                     break;
                 case "DatumAusgangSort":
                     NewDir = default(SortDirection);
@@ -767,7 +767,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("O_DATUM", NewDir);
+                    gvProtokollGL.Sort("O_DATUM", NewDir);
                     break;
                 case "SortVon":
                     NewDir = default(SortDirection);
@@ -780,7 +780,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("I_VON", NewDir);
+                    gvProtokollGL.Sort("I_VON", NewDir);
                     break;
                 case "SortAn":
                     NewDir = default(SortDirection);
@@ -793,12 +793,12 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("O_AN", NewDir);
+                    gvProtokollGL.Sort("O_AN", NewDir);
                     break;
             }
         }
 
-        protected void gvProtokollLFB_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+        protected void gvProtokollGL_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
         {
             DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
             string[] sortparts = e.SortExpression.Split(',');
@@ -822,8 +822,8 @@ namespace AppZulassungsdienst.forms
                 }
             }
             View.Sort = sortString;
-            gvProtokollLFB.DataSource = View;
-            gvProtokollLFB.DataBind();
+            gvProtokollGL.DataSource = View;
+            gvProtokollGL.DataBind();
         }
 
         #endregion
@@ -1001,7 +1001,7 @@ namespace AppZulassungsdienst.forms
                     }
                     FillListProtokoll();
                 }
-                else if (curView == ViewStatus.Lfb)
+                else if (curView == ViewStatus.Gebietsleiter)
                 {
                     mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text), 
                         txtBetreff.Text, txtText.Text);
