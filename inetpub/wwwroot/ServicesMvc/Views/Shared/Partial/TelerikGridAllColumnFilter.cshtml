@@ -3,7 +3,11 @@
     .grid-column-overall-quick-filter-pick-cancel .text {
         margin-left: 5px;
         font-weight: bold;
-        color: black!important;
+    }
+    
+    .grid-column-overall-quick-filter-highlighted {
+         color: red!important;
+        background-color: yellow!important;
     }
 </style>
 
@@ -116,15 +120,15 @@
                         $(".grid-column-overall-filter").val($(this).text());
                         FilterGridAllColumns($(".grid-column-overall-filter"));
                         $(".grid-column-overall-quick-filter-reset").show();
-                        $(this).removeClass("red");
+                        $(this).removeClass("grid-column-overall-quick-filter-highlighted");
                         GridAllColumnFilterQuickMouseClickFilterSwapPickingMode();
                     })
                 .hover(
                     function () {
-                        $(this).addClass("red");
+                        $(this).addClass("grid-column-overall-quick-filter-highlighted");
                     },
                     function () {
-                        $(this).removeClass("red");
+                        $(this).removeClass("grid-column-overall-quick-filter-highlighted");
                     }
                 );
 
