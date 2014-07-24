@@ -53,6 +53,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public void DataInit()
         {
+            AlleTermineFetchAllDetails = false;
             VersEventsLoad();
         }
 
@@ -427,18 +428,23 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         #region Alle Termine
 
+        public bool AlleTermineFetchAllDetails { get; set; }
+
         [XmlIgnore]
         public List<TerminSchadenfall> AlleTermine
         {
             get { return PropertyCacheGet(() =>
                 {
                     var list = EventsDataService.TermineGet();
-                    list.ForEach(termin =>
-                        {
-                            termin.EventAsTextTmp = (termin.VersSchadenfallID == 0 ? "" : termin.EventAsText);
-                            termin.OrtAsTextTmp = termin.OrtAsText;
-                            termin.BoxAsTextTmp = termin.BoxAsText;
-                        });
+
+                    if (AlleTermineFetchAllDetails)
+                        list.ForEach(termin =>
+                            {
+                                termin.EventAsTextTmp = (termin.VersSchadenfallID == 0 ? "" : termin.EventAsText);
+                                termin.OrtAsTextTmp = termin.OrtAsText;
+                                termin.BoxAsTextTmp = termin.BoxAsText;
+                            });
+
                     return list;
                 }); }
         }
