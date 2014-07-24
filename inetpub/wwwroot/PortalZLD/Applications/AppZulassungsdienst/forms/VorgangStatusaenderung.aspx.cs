@@ -15,6 +15,7 @@ namespace AppZulassungsdienst.forms
         private User m_User;
         private App m_App;
         private StatusaenderungVorgang objStatusaenderung;
+        private ZLDCommon objCommon;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,10 +27,26 @@ namespace AppZulassungsdienst.forms
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
+            if (Session["objCommon"] == null)
+            {
+                objCommon = new ZLDCommon(ref m_User, m_App);
+                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
+                objCommon.VKORG = m_User.Reference.Substring(0, 4);
+                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon.LadeKennzeichenGroesse();
+                Session["objCommon"] = objCommon;
+            }
+            else
+            {
+                objCommon = (ZLDCommon)Session["objCommon"];
+            }
+
             if (!IsPostBack)
             {
                 objStatusaenderung = new StatusaenderungVorgang(ref m_User, m_App, "");
                 objStatusaenderung.LoadStatuswerte(Session["AppID"].ToString(), Session.SessionID, this);
+                objStatusaenderung.LoadBelegtypen(Session["AppID"].ToString(), Session.SessionID, this);
                 Session["objStatusaenderung"] = objStatusaenderung;
 
                 Title = lblHead.Text;
@@ -105,7 +122,7 @@ namespace AppZulassungsdienst.forms
             ddlBEBStatus.DataBind();
 
             lblIDDisplay.Text = objStatusaenderung.ID;
-            lblBelegtypDisplay.Text = objStatusaenderung.Belegtyp;
+            lblBelegtypDisplay.Text = objStatusaenderung.BelegtypLangtext;
             if (objStatusaenderung.Zulassungsdatum.HasValue)
             {
                 lblZulassungsdatumDisplay.Text = objStatusaenderung.Zulassungsdatum.Value.ToShortDateString();
@@ -114,7 +131,16 @@ namespace AppZulassungsdienst.forms
             {
                 lblZulassungsdatumDisplay.Text = "";
             }
-            lblKundennummerDisplay.Text = objStatusaenderung.Kundennummer;
+            lblKundennummerDisplay.Text = objStatusaenderung.Kundennummer.TrimStart('0');
+            DataRow[] drow = objCommon.tblKundenStamm.Select("KUNNR = '" + objStatusaenderung.Kundennummer.TrimStart('0') + "'");
+            if (drow.Length > 0)
+            {
+                lblKundeDisplay.Text = drow[0]["NAME1"].ToString();
+            }
+            else
+            {
+                lblKundeDisplay.Text = "";
+            }
             lblKreisDisplay.Text = objStatusaenderung.Kreis;
             lblKennzeichenDisplay.Text = objStatusaenderung.Kennzeichen;
             lblBEBStatusDisplay.Text = objStatusaenderung.BEBStatusText;

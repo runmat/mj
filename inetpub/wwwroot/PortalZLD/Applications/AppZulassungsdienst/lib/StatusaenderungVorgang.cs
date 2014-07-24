@@ -53,6 +53,25 @@ namespace AppZulassungsdienst.lib
 
         public DataTable tblBEBStatusWerte { get; private set; }
 
+        public DataTable tblBelegTypen { get; private set; }
+
+        public string BelegtypLangtext
+        {
+            get
+            {
+                if (tblBelegTypen != null)
+                {
+                    DataRow[] drow = tblBelegTypen.Select("DOMVALUE_L = '" + Belegtyp + "'");
+                    if (drow.Length > 0)
+                    {
+                        return drow[0]["DDTEXT"].ToString();
+                    }
+                }
+
+                return Belegtyp;
+            }
+        }
+
         #endregion
 
         #region "Methods"
@@ -96,7 +115,7 @@ namespace AppZulassungsdienst.lib
         public void LoadStatuswerte(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
 
-            m_strClassAndMethod = "StatusaenderungVorgang.LeseStatuswerte";
+            m_strClassAndMethod = "StatusaenderungVorgang.LoadStatuswerte";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
             m_intStatus = 0;
@@ -114,6 +133,55 @@ namespace AppZulassungsdienst.lib
                     myProxy.callBapi();
 
                     tblBEBStatusWerte = myProxy.getExportTable("GT_WERTE");
+
+                    Int32 subrc;
+                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
+                    {
+                        m_intStatus = subrc;
+                    }
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+                }
+                catch (Exception ex)
+                {
+                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    {
+                        default:
+                            m_intStatus = -9999;
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            break;
+                    }
+                }
+                finally { m_blnGestartet = false; }
+            }
+        }
+
+        /// <summary>
+        /// Werte für Belegtyp laden. Bapi: Z_ZLD_DOMAENEN_WERTE
+        /// </summary>
+        /// <param name="strAppID">AppID</param>
+        /// <param name="strSessionID">SessionID</param>
+        /// <param name="page">...aspx</param>
+        public void LoadBelegtypen(String strAppID, String strSessionID, System.Web.UI.Page page)
+        {
+
+            m_strClassAndMethod = "StatusaenderungVorgang.LoadBelegtypen";
+            m_strAppID = strAppID;
+            m_strSessionID = strSessionID;
+            m_intStatus = 0;
+            m_strMessage = String.Empty;
+
+            if (m_blnGestartet == false)
+            {
+                m_blnGestartet = true;
+                try
+                {
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_DOMAENEN_WERTE", ref m_objApp, ref m_objUser, ref page);
+
+                    myProxy.setImportParameter("I_DOMNAME", "ZZLD_BLTYP");
+
+                    myProxy.callBapi();
+
+                    tblBelegTypen = myProxy.getExportTable("GT_WERTE");
 
                     Int32 subrc;
                     if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))

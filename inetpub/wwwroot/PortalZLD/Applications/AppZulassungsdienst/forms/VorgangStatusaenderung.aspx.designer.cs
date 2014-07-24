@@ -220,6 +220,24 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblKundennummerDisplay;
         
         /// <summary>
+        /// lblKunde-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblKunde;
+        
+        /// <summary>
+        /// lblKundeDisplay-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblKundeDisplay;
+        
+        /// <summary>
         /// lblKreis-Steuerelement
         /// </summary>
         /// <remarks>

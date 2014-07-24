@@ -109,6 +109,14 @@
                                             </tr>
                                             <tr class="formquery" style="height: 32px">
                                                 <td class="firstLeft active" style="width: 150px">
+                                                    <asp:Label ID="lblKunde" runat="server">Kunde:</asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:Label ID="lblKundeDisplay" runat="server"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="formquery" style="height: 32px">
+                                                <td class="firstLeft active" style="width: 150px">
                                                     <asp:Label ID="lblKreis" runat="server">Kreis:</asp:Label>
                                                 </td>
                                                 <td>
