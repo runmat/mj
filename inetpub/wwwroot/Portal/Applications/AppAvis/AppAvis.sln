@@ -22,41 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtBaseMvc", "..\..\..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj", "{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = AppAvis.vbproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\Portal.vbproj
-		SccProjectName2 = ../../portal
-		SccLocalPath2 = ..\\..
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\BtBase\\Base.vbproj
-		SccProjectName3 = ../../../Work/BtBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\BtBase
-		SccProjectUniqueName4 = ..\\..\\..\\..\\..\\Work\\SapORM\\DynSapProxy\\ProxyObject\\DynSapProxyObjectErp35\\DynSapProxyObjectErp35.csproj
-		SccProjectName4 = ../../../Work/SapORM/DynSapProxy/ProxyObject/DynSapProxyObjectErp35
-		SccLocalPath4 = ..\\..\\..\\..\\..\\Work\\SapORM\\DynSapProxy\\ProxyObject\\DynSapProxyObjectErp35
-		SccProjectUniqueName5 = ..\\..\\..\\..\\..\\Work\\SapORM\\contracts\\SapORM.Contracts.csproj
-		SccProjectName5 = ../../../Work/SapORM/contracts
-		SccLocalPath5 = ..\\..\\..\\..\\..\\Work\\SapORM\\contracts
-		SccProjectUniqueName6 = ..\\..\\..\\..\\..\\Work\\SapORM\\services\\SapORM.Services.csproj
-		SccProjectName6 = ../../../Work/SapORM/services
-		SccLocalPath6 = ..\\..\\..\\..\\..\\Work\\SapORM\\services
-		SccProjectUniqueName7 = ..\\..\\..\\..\\..\\Work\\SapORM\\DynSapProxy\\ProxyFactory\\DynSapProxyCacheFactory\\DynSapProxyFactories.csproj
-		SccProjectName7 = ../../../Work/SapORM/DynSapProxy/ProxyFactory/DynSapProxyCacheFactory
-		SccLocalPath7 = ..\\..\\..\\..\\..\\Work\\SapORM\\DynSapProxy\\ProxyFactory\\DynSapProxyCacheFactory
-		SccProjectUniqueName8 = ..\\..\\..\\..\\..\\Work\\SapORM\\models\\SapORM.Models.csproj
-		SccProjectName8 = ../../../Work/SapORM/models
-		SccLocalPath8 = ..\\..\\..\\..\\..\\Work\\SapORM\\models
-		SccProjectUniqueName9 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName9 = ../../../Work/Tools/GeneralTools
-		SccLocalPath9 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools
-		SccProjectUniqueName10 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc\\BtBaseMvc.csproj
-		SccProjectName10 = ../../../Work/BtBase/BtBaseMvc/BtBaseMvc
-		SccLocalPath10 = ..\\..\\..\\..\\..\\Work\\BtBase\\BtBaseMvc\\BtBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
