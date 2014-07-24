@@ -148,7 +148,7 @@ namespace ServicesMvc.Controllers
             if (pdfBytes == null)
                 return new ContentResult { Content = Localize.PdfFileCouldNotBeGenerated };
 
-            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = auftragsNr };
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = string.Format("{0}.pdf", auftragsNr) };
         }
 
         [HttpPost]
