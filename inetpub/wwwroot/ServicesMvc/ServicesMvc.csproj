@@ -3809,9 +3809,9 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Web.config">
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -4588,9 +4588,7 @@
     <Content Include="Views\Shared\Partial\LayoutPage\ScriptsPreload.cshtml" />
     <Content Include="Views\Login\ChangePasswordLoggedOn.cshtml" />
     <Content Include="Views\Login\Partial\Logo.cshtml" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="NLog.config" />
     <Content Include="Views\Shared\Partial\MaintenanceHintsLogonDisabled.cshtml" />
     <Content Include="Views\Shared\Partial\MaintenanceHintsInformation.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
