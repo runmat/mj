@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data;
-using Microsoft.Data.SAPClient;
 using CKG.Base.Business;
-using CKG.Base.Kernel.Logging;
 using CKG.Base.Kernel.Security;
 using CKG.Base.Common;
 using System.Web.UI;
