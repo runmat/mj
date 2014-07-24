@@ -29,7 +29,16 @@ namespace ServicesMvc.Controllers
 
 
         [CkgApplication]
-        public ActionResult Sap() 
+        public ActionResult Sap()
+        {
+            //SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Pv()
         {
             //SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
             ViewModel.DataInit();
@@ -46,6 +55,48 @@ namespace ServicesMvc.Controllers
 
             return View(ViewModel);
         }
+
+
+        #region PageVisit Logs
+
+        [HttpPost]
+        public ActionResult LoadPageVisitLogItems(PageVisitLogItemSelector model)
+        {
+            ModelState.Clear();
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (ViewModel.LoadPageVisitLogItems(model))
+                    if (ViewModel.PageVisitLogItemsFiltered.None())
+                        ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/PageVisit/SuchePageVisitLogItems", ViewModel.PageVisitLogItemSelector);
+        }
+
+        [HttpPost]
+        public ActionResult ShowPageVisitLogItems()
+        {
+            return PartialView("Partial/PageVisit/Grid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult LogsPageVisitsAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.PageVisitLogItemsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridLogsPageVisits(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterPageVisitLogItems(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
 
 
         #region Sap Logs

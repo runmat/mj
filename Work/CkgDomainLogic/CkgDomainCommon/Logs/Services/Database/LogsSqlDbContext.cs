@@ -29,6 +29,13 @@ namespace CkgDomainLogic.Logs.Services
         {
             return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
         }
+        
+        
+        public IEnumerable<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector)
+        {
+            return Database.SqlQuery<PageVisitLogItem>(pageVisitLogItemSelector.GetSqlSelectStatement());
+        }
+
 
         public IEnumerable<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector)
         {

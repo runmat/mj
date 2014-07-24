@@ -39,6 +39,17 @@ namespace CkgDomainLogic.Logs.Services
             return sapLogItems.ToList();
         }
 
+        public List<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector)
+        {
+            LogsConnectionString = pageVisitLogItemSelector.LogsConnection;
+
+            var logsDbContext = CreateLogsDbContext();
+
+            var pageVisitLogItems = logsDbContext.GetPageVisitLogItems(pageVisitLogItemSelector);
+
+            return pageVisitLogItems.ToList();
+        }
+
         public SapLogItemDetailed GetSapLogItemDetailed(int id)
         {
             var logsDbContext = CreateLogsDbContext();

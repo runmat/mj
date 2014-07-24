@@ -44,6 +44,31 @@ namespace CkgDomainLogic.Logs.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public PageVisitLogItemSelector PageVisitLogItemSelector
+        {
+            get
+            {
+                return PropertyCacheGet(() => new PageVisitLogItemSelector
+                {
+                    LogsConnection = DataService.LogsDefaultConnectionString,
+                });
+            }
+            set { PropertyCacheSet(value); }
+        }
+
+        public List<PageVisitLogItem> PageVisitLogItems
+        {
+            get { return PropertyCacheGet(() => new List<PageVisitLogItem>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<PageVisitLogItem> PageVisitLogItemsFiltered
+        {
+            get { return PropertyCacheGet(() => PageVisitLogItems); }
+            private set { PropertyCacheSet(value); }
+        }
+
         public WebServiceTrafficLogItemSelector WebServiceTrafficLogItemSelector
         {
             get { return PropertyCacheGet(() => new WebServiceTrafficLogItemSelector { LogsConnection = DataService.LogsDefaultConnectionString }); }
@@ -86,11 +111,16 @@ namespace CkgDomainLogic.Logs.ViewModels
             SapLogItemSelector.AllApplications = Applications.ToSelectList();
             SapLogItemSelector.AllCustomers = Customers.ToSelectList();
             SapLogItemSelector.AllUsers = Users.ToSelectList();
+
+            PageVisitLogItemSelector.AllApplications = Applications.ToSelectList();
+            PageVisitLogItemSelector.AllCustomers = Customers.ToSelectList();
+            PageVisitLogItemSelector.AllUsers = Users.ToSelectList();
         }
 
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.SapLogItemsFiltered);
+            PropertyCacheClear(this, m => m.PageVisitLogItemsFiltered);
             PropertyCacheClear(this, m => m.WebServiceTrafficLogItemsUIFiltered);
 
             PropertyCacheClear(this, m => m.Applications);
@@ -101,6 +131,11 @@ namespace CkgDomainLogic.Logs.ViewModels
         public void FilterSapLogItems(string filterValue, string filterProperties)
         {
             SapLogItemsFiltered = SapLogItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterPageVisitLogItems(string filterValue, string filterProperties)
+        {
+            PageVisitLogItemsFiltered = PageVisitLogItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         public void FilterWebServiceTrafficLogItems(string filterValue, string filterProperties)
@@ -146,6 +181,32 @@ namespace CkgDomainLogic.Logs.ViewModels
                 return false;
 
             SapLogItems = DataService.GetSapLogItems(SapLogItemSelector);
+            DataMarkForRefresh();
+            return true;
+        }
+
+        public bool LoadPageVisitLogItems(PageVisitLogItemSelector newPageVisitLogItemSelector)
+        {
+            if (PageVisitLogItemSelector.LogsConnection != newPageVisitLogItemSelector.LogsConnection)
+            {
+                // Logs connection changed ==> reset filters that depend on server specifiy keys (app ids, user ids, customer ids, etc)
+
+                DataService.LogsConnectionString = newPageVisitLogItemSelector.LogsConnection;
+                PageVisitLogItemSelector = newPageVisitLogItemSelector;
+
+                PropertyCacheClear(this, m => m.Applications);
+                PropertyCacheClear(this, m => m.Customers);
+                PropertyCacheClear(this, m => m.Users);
+
+                DataInit();
+            }
+
+            PageVisitLogItemSelector = newPageVisitLogItemSelector;
+
+            if (PageVisitLogItemSelector.SubmitWithNoDataQuerying)
+                return false;
+
+            PageVisitLogItems = DataService.GetPageVisitLogItems(PageVisitLogItemSelector);
             DataMarkForRefresh();
             return true;
         }

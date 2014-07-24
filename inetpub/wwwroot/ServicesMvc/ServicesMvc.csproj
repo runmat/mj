@@ -3808,6 +3808,9 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Logs\Pv.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
