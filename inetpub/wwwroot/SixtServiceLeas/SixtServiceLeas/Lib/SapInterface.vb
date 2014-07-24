@@ -132,7 +132,12 @@ Public Class SapInterface
                 End With
             Next
 
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
             Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -275,7 +280,12 @@ Public Class SapInterface
                 End With
             Next
 
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
             Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -354,7 +364,12 @@ Public Class SapInterface
                 End With
             Next
 
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
             Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -453,7 +468,12 @@ Public Class SapInterface
                 End With
             Next
 
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
             Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -593,6 +613,29 @@ Public Class SapInterface
             Return errorMessage
 
         End If
+    End Function
+
+    Private Function GetTableAsString(ByVal tbl As DataTable) As String
+        Dim erg As String = ""
+
+        If tbl IsNot Nothing Then
+            erg &= tbl.TableName
+            erg &= "["
+            For Each col As DataColumn In tbl.Columns
+                erg &= col.ColumnName & "|"
+            Next
+            erg &= "]"
+            For Each row As DataRow In tbl.Rows
+                erg &= "["
+                For Each col As DataColumn In tbl.Columns
+                    erg &= row(col).ToString() & "|"
+                Next
+                erg = erg.TrimEnd("|"c)
+                erg &= "]"
+            Next
+        End If
+
+        Return erg
     End Function
 
 End Class
