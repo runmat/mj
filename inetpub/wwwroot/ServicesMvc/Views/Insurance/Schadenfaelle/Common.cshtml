@@ -176,11 +176,11 @@
     // <Schadenfall Status Werte>
     //
 
-    function SchadenfallStatusUpdate(statusID) {
+    function SchadenfallStatusUpdate() {
         $.ajax({
             type: "POST",
             url: "SchadenfallStatusUpdate",
-            data: {  },
+            data: {},
             loadingShow: true,
             success: function (result) {
                 LoadingHide();
