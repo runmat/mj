@@ -622,19 +622,19 @@ Public Class SapInterface
             'Header
             erg &= tbl.TableName & vbNewLine
             erg &= "["
-            For Each col As DataColumn In tbl.Columns
-                erg &= col.ColumnName & "|"
+            For i As Integer = 0 To tbl.Columns.Count - 1
+                erg &= tbl.Columns(i).ColumnName & "|"
             Next
-            erg = erg.TrimEnd("|"c)
+            If erg.EndsWith("|") Then erg = erg.Substring(0, erg.Length - 1)
             erg &= "]" & vbNewLine
 
             'Daten
-            For Each row As DataRow In tbl.Rows
+            For j As Integer = 0 To tbl.Rows.Count - 1
                 erg &= "["
-                For Each col As DataColumn In tbl.Columns
-                    erg &= row(col).ToString() & "|"
+                For k As Integer = 0 To tbl.Columns.Count - 1
+                    erg &= tbl.Rows(j)(tbl.Columns(k)).ToString() & "|"
                 Next
-                erg = erg.TrimEnd("|"c)
+                If erg.EndsWith("|") Then erg = erg.Substring(0, erg.Length - 1)
                 erg &= "]" & vbNewLine
             Next
         End If
