@@ -219,6 +219,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="docu\Fahrzeugschein.doc" />
     <None Include="docu\Kennzeichen.doc" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -247,6 +248,7 @@
     <Content Include="Forms\Report02.aspx" />
     <Content Include="Forms\Report03.aspx" />
     <Content Include="Forms\Report03_1.aspx" />
+    <Content Include="Forms\scroll.htc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
