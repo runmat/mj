@@ -1,0 +1,153 @@
+﻿div#header {
+    background-image: url(../../Images/header_volvo.jpg);
+}
+
+.dadLogo2
+{
+    background-image: url(eon.gif);
+}
+
+div#header ul#navigation li
+{
+    background-color: #F21C0A;
+}
+
+div#header ul#navigation li.active a
+{
+    color: #F21C0A;
+}
+
+div#content div#navigationSubmenu a.active
+{
+    color: #F21C0A;
+}
+
+div#content div#query
+{
+    background-color: #F21C0A;
+}
+
+div#content div#innerContent div div.innerContentHeading
+{
+    background-color: #F21C0A;
+}
+
+div#content div#innerContentRight div#innerContentRightHeading
+{
+    background-color: #F21C0A;
+}
+.Menutitle
+{
+    background-color: #F21C0A;
+}
+
+.Tablehead
+{
+    background-image: url(../../Images/headerBig.png);
+    height: 30px;
+    background-repeat: repeat-x;
+    text-align: left;
+    margin-left: 15px;
+}
+td.MainmenuItemAlternate:hover
+{
+    background-color: #85A5E5;
+}
+
+.divWait
+{
+    border: thin solid #F21C0A;
+}
+
+.lblKontaktFirma
+{
+    color: #F21C0A;
+}
+
+.ImpressumHead
+{
+    background-color: #F21C0A;
+}
+
+.NaviImg
+{
+    background-image: url(../../Images/navi_orange.gif);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
+.ExcelDiv {
+    background-color:#F21C0A;
+}
+
+A.TablebuttonLarge:hover
+{
+    color: #F21C0A;
+}
+
+.GridTableHead th
+{
+	color:#F21C0A;
+
+    }
+
+div#content div#innerContentRight div#data table tbody tr td a {
+    color: #F21C0A;
+
+}
+
+    
+.formqueryHeader {
+	vertical-align: baseline;
+	background-image:url(../../Images/overflowThead.png);
+    background-color:#9B9B9B;
+    color:#FFFFFF;
+    float:left;
+    font-weight:bold;
+    height:22px;
+    line-height:22px;
+    white-space:nowrap;
+    white-space:nowrap;
+    width:100%;
+}
+
+.TablebuttonXLarge 
+{
+    padding-top: 4px;
+	background-image: url(../../Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+a.Tablebutton:hover
+{
+    color: #ffffff;
+}
+.modalBackground {
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+}
+
+.responsibleTextName
+{
+	color:    #F21C0A;
+}
+.responsibleTextName .responsibleText a:hover
+{
+      color:    #F21C0A;
+    }
+    
+.menuehead 
+{
+	color:#F21C0A;
+	text-align:left;
+
+     }
+
+.menuehead th{padding-left:15px}
