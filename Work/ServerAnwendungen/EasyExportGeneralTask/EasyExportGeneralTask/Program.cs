@@ -488,8 +488,6 @@ namespace EasyExportGeneralTask
                     {
                         if (row["Filepath"] != DBNull.Value)
                         {
-                            generateJPLFile("ZB", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
-
                             string strFilePathZBII = row["Filepath"].ToString();
 
                             // COC finden
@@ -497,6 +495,8 @@ namespace EasyExportGeneralTask
 
                             if (rowFound.Length > 0)
                             {
+                                generateJPLFile("ZB", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
+
                                 DataRow rowCOC = rowFound[0];
 
                                 if (rowCOC == null)
@@ -578,7 +578,7 @@ namespace EasyExportGeneralTask
                         var fin = row["FAHRGESTELLNR"].ToString();
 
                         // jplDatei Schreiben
-                        generateJPLFile("ZB", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
+                        generateJPLFile("S", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
                         // Datei kopieren und umbenennen
                         File.Copy(row["Filepath"].ToString(), taskConfiguration.exportPathSteuerB + "\\S_" + fin + ".pdf", true);
 
