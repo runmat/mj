@@ -459,6 +459,7 @@
     <Content Include="forms\Report08.aspx" />
     <Content Include="forms\Report09.aspx" />
     <Content Include="forms\Report10.aspx" />
+    <Content Include="forms\scroll.htc" />
     <Content Include="Javascript\Slideup_Down.js" />
     <Content Include="Templates\DZFahrzeug.ascx" />
     <Content Include="Templates\Fahrzeug.ascx" />
