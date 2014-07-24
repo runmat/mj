@@ -237,38 +237,7 @@
                 End If
 
                 If Not bExit Then
-                    ' Zufilternde Datensätze überspringen
-                    'If Not FilterInput Is Nothing Then
-                    '    Dim bIsInput = True
-                    '    Dim bIsOutput = True
-
-                    '    If Not FilterOutput Is Nothing Then
-                    '        If protokoll(i, Side.Input) Is Nothing OrElse protokoll(i, Side.Input).Status <> FilterInput Then
-                    '            bIsInput = False
-                    '        End If
-                    '        If protokoll(i, Side.Output) Is Nothing OrElse protokoll(i, Side.Output).Status <> FilterOutput Then
-                    '            bIsOutput = False
-                    '        End If
-
-                    '        ' Wenn weder Input noch Output den gesuchten Wert enthalten, dann Exit
-                    '        If bIsInput Or bIsOutput Then
-                    '            bExit = False
-                    '        Else
-                    '            bExit = True
-                    '        End If
-                    '    Else
-                    '        If protokoll(i, Side.Input) Is Nothing OrElse protokoll(i, Side.Input).Status <> FilterInput Then
-                    '            bExit = True
-                    '        End If
-                    '    End If
-                    'Else
-                    '    If Not FilterOutput Is Nothing Then
-                    '        If protokoll(i, Side.Output) Is Nothing OrElse protokoll(i, Side.Output).Status <> FilterOutput Then
-                    '            bExit = True
-                    '        End If
-                    '    End If
-                    'End If
-
+                    ' Zu filternde Datensätze überspringen
                     Dim bIsInput = True
                     Dim bIsOutput = True
                     Dim bIsInputE = True
