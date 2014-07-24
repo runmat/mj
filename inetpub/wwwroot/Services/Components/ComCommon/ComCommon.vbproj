@@ -16,10 +16,14 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -32,7 +36,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
     <WarningLevel>1</WarningLevel>
@@ -44,7 +48,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Components.ComCommon.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
     <WarningLevel>1</WarningLevel>
@@ -54,29 +58,31 @@
   <ItemGroup>
     <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Pdf, Version=3.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\Aspose.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\Aspose.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="Aspose.Words, Version=4.2.2.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\Aspose.Words.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\BusyBoxDotNet.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
     </Reference>
     <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Work\CKG\EasyAccess\bin\CKG.EasyAccess.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\EasyAccessServices\CKG.EasyAccess.dll</HintPath>
     </Reference>
-    <Reference Include="DHLWebService">
-      <HintPath>..\..\GAC\DHLWebService.dll</HintPath>
+    <Reference Include="DHLWebService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\DHLWebService.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -97,13 +103,8 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\RadControls for ASP.NET AJAX Q3 2011 SP1\Bin35\Telerik.Web.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Upload_Validator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Upload_Validator.dll</HintPath>
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -927,6 +928,10 @@
       <Project>{695BD928-0E33-498F-B2B5-FC7C010E748F}</Project>
       <Name>DAT_BankenLinie_Connector</Name>
     </ProjectReference>
+    <ProjectReference Include="Upload_Validator\Upload_Validator\Upload_Validator.csproj">
+      <Project>{38AFBF90-7FD9-4627-903C-ABF0F0C9865F}</Project>
+      <Name>Upload_Validator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -955,4 +960,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
+  </PropertyGroup>
 </Project>

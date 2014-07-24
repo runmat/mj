@@ -1,0 +1,296 @@
+* HTML BODY
+{
+    COLOR: #000000
+}
+* HTML DIV#header
+{
+    BACKGROUND-IMAGE: url(../../Images/header_volvo.jpg)
+}
+DIV
+{
+    BEHAVIOR: url(/Services/Images/iepngfix.htc)
+}
+THEAD
+{
+    BEHAVIOR: url(/Services/Images/iepngfix.htc)
+}
+LI
+{
+    BEHAVIOR: url(/Services/Images/iepngfix.htc)
+}
+UL
+{
+    BEHAVIOR: url(/Services/Images/iepngfix.htc)
+}
+A
+{
+    BEHAVIOR: url(/Services/Images/iepngfix.htc)
+}
+* HTML DIV#header UL
+{
+    MARGIN-TOP: 43px
+}
+* HTML DIV#header TABLE
+{
+    MARGIN-TOP: 51px
+}
+* HTML DIV#content DIV#innerContent DIV DIV.innerContentHeading
+{
+    WIDTH: 90%;
+    MARGIN-RIGHT: 15px
+}
+* HTML DIV#content DIV#innxerContent DIV#login
+{
+    MARGIN-RIGHT: 0px
+}
+* HTML DIV#content DIV#innerContentLeft
+{
+    WIDTH: 18%
+}
+* HTML .NeutralCalendar TABLE
+{
+    TEXT-ALIGN: center !important;
+    PADDING-BOTTOM: 0px !important;
+    PADDING-LEFT: 0px !important;
+    PADDING-RIGHT: 0px !important;
+    PADDING-TOP: 0px !important
+}
+* HTML .dadLogo2
+{
+    BACKGROUND-IMAGE: url(Unicredit_logo.jpg)
+}
+* HTML DIV#header
+{
+    MARGIN-LEFT: 26px
+}
+* HTML DIV#header UL#navigation LI
+{
+    BORDER-LEFT: #bbbbbb 1px solid;
+    BACKGROUND-COLOR: #fecc00;
+    BORDER-TOP: #d71d1e 1px solid
+}
+* HTML DIV#header UL#navigation LI.active A
+{
+    COLOR: #d71d1e
+}
+* HTML DIV#content DIV#navigationSubmenu A.active
+{
+    COLOR: #000000
+}
+* HTML DIV#content DIV#query
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+* HTML DIV#content DIV#innerContent DIV DIV.innerContentHeading
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+* HTML DIV#content DIV#innerContentRight DIV#innerContentRightHeading
+{
+    BACKGROUND-COLOR: #d71d1e;
+    COLOR: #000000
+}
+* HTML .Menutitle
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+* HTML .Tablehead
+{
+    BACKGROUND-IMAGE: url(../../Images/headerBig.png);
+    TEXT-ALIGN: left;
+    BACKGROUND-REPEAT: repeat-x;
+    HEIGHT: 30px;
+    MARGIN-LEFT: 15px
+}
+* HTML TD.MainmenuItemAlternate
+{
+    BACKGROUND-COLOR: #85a5e5
+}
+* HTML A.MainmenuLink
+{
+    COLOR: #ffffff
+}
+* HTML A.MainmenuLink:hover
+{
+    COLOR: #c2c2b4
+}
+.divWait
+{
+    BORDER-BOTTOM: #d71d1e thin solid;
+    BORDER-LEFT: #d71d1e thin solid;
+    BORDER-TOP: #d71d1e thin solid;
+    BORDER-RIGHT: #d71d1e thin solid
+}
+* HTML .divProgress
+{
+    Z-INDEX: 0;
+    POSITION: absolute;
+    TEXT-ALIGN: center;
+    FILTER: alpha(opacity=50);
+    BACKGROUND-COLOR: #ffffff;
+    WIDTH: 100%;
+    HEIGHT: 100%;
+    COLOR: #333333;
+    FONT-SIZE: 12px;
+    VERTICAL-ALIGN: middle;
+    FONT-WEIGHT: bold;
+    -moz-opacity: 0.7;
+    opacity: 0.7
+}
+* HTML .WaitControl
+{
+    COLOR: #333333;
+    PADDING-TOP: 2px
+}
+* HTML .lblKontaktFirma
+{
+    COLOR: #d71d1e
+}
+* HTML .ImpressumHead
+{
+    BACKGROUND-COLOR: #d71d1e
+}
+* HTML .NaviImg
+{
+    BACKGROUND-IMAGE: url(../../Images/navi_orange.gif);
+    BACKGROUND-REPEAT: no-repeat;
+    HEIGHT: 100%
+}
+* HTML .ExcelDiv
+{
+    BACKGROUND-COLOR: #d71d1e;
+    COLOR: #000000
+}
+* HTML A.TablebuttonLarge:hover
+{
+    COLOR: #d71d1e
+}
+* HTML .GridTableHead TH
+{
+    COLOR: #000000
+}
+* HTML DIV#content DIV#innerContentRight DIV#data TABLE TBODY TR TD A
+{
+    COLOR: #000000
+}
+DIV#content DIV#innerContentRight DIV#data TABLE TBODY TR TD A:hover
+{
+    COLOR: #d71d1e
+}
+* HTML DIV#header UL#navigation LI A
+{
+    COLOR: #000000
+}
+* HTML .formqueryHeader
+{
+    BACKGROUND-IMAGE: url(../../Images/overflowThead.png);
+    LINE-HEIGHT: 22px;
+    BACKGROUND-COLOR: #9b9b9b;
+    WIDTH: 100%;
+    WHITE-SPACE: nowrap;
+    FLOAT: left;
+    HEIGHT: 22px;
+    COLOR: #ffffff;
+    VERTICAL-ALIGN: baseline;
+    FONT-WEIGHT: bold
+}
+* HTML .TablebuttonXLarge
+{
+    BACKGROUND-IMAGE: url(../../Images/buttonXLarge.jpg);
+    TEXT-ALIGN: center;
+    BACKGROUND-REPEAT: no-repeat;
+    COLOR: #333333;
+    FONT-SIZE: 10px;
+    VERTICAL-ALIGN: middle;
+    FONT-WEIGHT: bold;
+    PADDING-TOP: 4px
+}
+* HTML A.Tablebutton:hover
+{
+    COLOR: #ffffff
+}
+* HTML DIV#footer
+{
+    BACKGROUND-COLOR: #efefef;
+    PADDING-LEFT: 10px;
+    WIDTH: 935px;
+    FLOAT: left;
+    HEIGHT: 24px;
+    COLOR: #595959;
+    CLEAR: both;
+    PADDING-TOP: 12px
+}
+* HTML DIV#footer DIV A
+{
+    COLOR: #595959
+}
+* HTML DIV#footer DIV.leftAlign
+{
+    FLOAT: left
+}
+* HTML DIV#footer DIV.rightAlign
+{
+    FLOAT: right;
+    MARGIN-RIGHT: 15px
+}
+* HTML DIV#footfoot
+{
+    Z-INDEX: 1;
+    BORDER-LEFT: #bbbbbb 1px solid;
+    FLOAT: left;
+    MARGIN-LEFT: 13px;
+    BORDER-RIGHT: #bbbbbb 1px solid
+}
+* HTML .responsibleTextName
+{
+    COLOR: #d71d1e
+}
+* HTML .responsibleTextName .responsibleText A:hover
+{
+    COLOR: #d71d1e
+}
+* HTML .menuehead
+{
+    TEXT-ALIGN: left;
+    COLOR: #d71d1e
+}
+* HTML .menuehead TH
+{
+    PADDING-LEFT: 15px
+}
+* HTML DIV#content DIV#innerContentRight DIV#innerContentRightHeading DIV A
+{
+    COLOR: #000000
+}
+* HTML DIV#content DIV#innerContentRight DIV#datainfo
+{
+    WIDTH: 100%;
+    FLOAT: left
+}
+* HTML .ZulDateDiv
+{
+    PADDING-BOTTOM: 15px;
+    BACKGROUND-COLOR: #ffffff
+}
+* HTML DIV#content DIV#innerContentRight DIV#pagination .ZulDateDiv SPAN
+{
+    PADDING-LEFT: 15px
+}
+* HTML DIV#content DIV#innerContentRight DIV#pagination .ZulDateDiv TABLE
+{
+    BORDER-BOTTOM: #dfdfdf 1px solid;
+    BORDER-LEFT: #dfdfdf 1px solid;
+    PADDING-LEFT: 0px;
+    WIDTH: 100%;
+    PADDING-RIGHT: 0px;
+    DISPLAY: block;
+    COLOR: #595959;
+    BORDER-TOP: #dfdfdf 1px solid;
+    BORDER-RIGHT: #dfdfdf 1px solid;
+    PADDING-TOP: 2px
+}
+* HTML DIV#content DIV#innerContentRight DIV#paginationQuery DIV#PlaceHolderDiv
+{
+    BACKGROUND-COLOR: #ffffff;
+    PADDING-TOP: 15px
+}

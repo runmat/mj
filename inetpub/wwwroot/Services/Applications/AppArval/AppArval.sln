@@ -13,26 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpBaseMvc", "..\..\..\..\..\Work\ErpBase\ErpBaseMvc\ErpBaseMvc.csproj", "{C97E0F34-A91A-4F38-B792-73C4FC680A29}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccProjectName0 = .
-		SccAuxPath0 = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = ..\\..\\Services.vbproj
-		SccProjectName1 = ../../Services
-		SccLocalPath1 = ..\\..
-		SccProjectUniqueName2 = AppArval.vbproj
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\ErpBase\\Base.vbproj
-		SccProjectName3 = ../../../Work/ErpBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\ErpBase
-		SccProjectUniqueName4 = ..\\..\\..\\..\\..\\Work\\ErpBase\\ErpBaseMvc\\ErpBaseMvc.csproj
-		SccProjectName4 = ../../../Work/ErpBase/ErpBaseMvc
-		SccLocalPath4 = ..\\..\\..\\..\\..\\Work\\ErpBase\\ErpBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

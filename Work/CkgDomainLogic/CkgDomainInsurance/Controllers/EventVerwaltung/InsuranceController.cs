@@ -36,6 +36,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Termine()
         {
             EventsViewModel.DataInit();
+            EventsViewModel.AlleTermineFetchAllDetails = true;
 
             return View(EventsViewModel);
         }
