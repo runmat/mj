@@ -619,19 +619,23 @@ Public Class SapInterface
         Dim erg As String = ""
 
         If tbl IsNot Nothing Then
-            erg &= tbl.TableName
+            'Header
+            erg &= tbl.TableName & vbNewLine
             erg &= "["
             For Each col As DataColumn In tbl.Columns
                 erg &= col.ColumnName & "|"
             Next
-            erg &= "]"
+            erg = erg.TrimEnd("|"c)
+            erg &= "]" & vbNewLine
+
+            'Daten
             For Each row As DataRow In tbl.Rows
                 erg &= "["
                 For Each col As DataColumn In tbl.Columns
                     erg &= row(col).ToString() & "|"
                 Next
                 erg = erg.TrimEnd("|"c)
-                erg &= "]"
+                erg &= "]" & vbNewLine
             Next
         End If
 
