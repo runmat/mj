@@ -423,6 +423,10 @@
   <ItemGroup>
     <Folder Include="My Project\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="docu\haendler\haendler.pdf" />
+    <None Include="docu\Mitarbeiter.pdf" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent>
