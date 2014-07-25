@@ -105,6 +105,7 @@ Namespace Beauftragung2
 
                 'Stammdaten laden
                 .Fill(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                .FillFarben(Me)
             End With
         End Sub
 
