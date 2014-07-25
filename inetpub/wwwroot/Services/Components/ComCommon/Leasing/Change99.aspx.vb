@@ -831,7 +831,7 @@ Partial Public Class Change99
 
             m_Versand.GetVersandOptions(Session("AppID").ToString, Session.SessionID.ToString, Me)
 
-            'Versandoption "Versand ohne Abmeldung" ggf. rausfiltern, sonst als selektiert vorbelegen
+            'Versandoption "Versand ohne Abmeldung" ggf. rausfiltern, sonst als Inverses "Auf Abmeldung warten" weiter nutzen
             'NewLevel beinhaltet 2 Arrays: Level-Array und Autorisierungsarray(1 zu 1) getrennt durch |
             Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
             Dim levels() As String = strLevel.Split(",")
@@ -842,7 +842,8 @@ Partial Public Class Change99
                 Next
             Else
                 For Each updRow In updRows
-                    updRow("Selected") = "1"
+                    updRow("ASKTX") = "Auf Abmeldung warten"
+                    updRow("EAN11") = "ZZABMELD_INVERTED"
                 Next
             End If
 
@@ -957,8 +958,6 @@ Partial Public Class Change99
 
     Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ibtnNextToOverView.Click
         lblErrorVersandOpt.Text = ""
-        m_Versand.VersohneAbeld = ""
-        Dim tempEndg As String = IIf(rb_temp.Checked, "1", "2")
         If ddlVersandgrund.SelectedIndex = 0 Then
             lblErrorVersandOpt.Text += "Bitte wählen Sie einen Versandgrund aus!<br />"
             lblErrorVersandOpt.Visible = True
@@ -979,10 +978,11 @@ Partial Public Class Change99
         m_Versand.Bemerkung = txtBemerkung.Text
 
         Dim bAuswahlNormal As Boolean = False
+        Dim bAufAbmeldungWarten = False
         For Each litem As ListItem In chkGruende.Items
             If litem.Selected Then
-                If litem.Value = "ZZABMELD" Then
-                    m_Versand.VersohneAbeld = "X"
+                If litem.Value = "ZZABMELD_INVERTED" Then
+                    bAufAbmeldungWarten = True
                 Else
                     m_Versand.Materialnummer = litem.Value
                     bAuswahlNormal = True
@@ -990,8 +990,10 @@ Partial Public Class Change99
             End If
         Next
 
-        'Wenn Versandoption "Versand ohne Abmeldung" nicht wählbar ist/war -> default setzen
-        If m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = 'ZZABMELD'").Length = 0 Then
+        'Nur wenn Versandoption "Auf Abmeldung warten" explizit gewählt ist, kein "Versand ohne Abmeldung"
+        If bAufAbmeldungWarten Then
+            m_Versand.VersohneAbeld = ""
+        Else
             m_Versand.VersohneAbeld = "X"
         End If
 
@@ -1090,12 +1092,7 @@ Partial Public Class Change99
         Dim bvalidate As Boolean = True
         lblErrPopUp.Visible = False
 
-        'Merken, ob Versandoption "Versand ohne Abmeldung" wählbar ist/war
-        Dim blnZZABMELDavailable As Boolean = False
-        Dim blnZZABMELDselected As Boolean = False
-        If m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = 'ZZABMELD'").Length > 0 Then
-            blnZZABMELDavailable = True
-        End If
+        Dim bAufAbmeldungWarten As Boolean = False
 
         Dim drows() As DataRow = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1'")
         If drows.Length > 0 Then
@@ -1125,14 +1122,14 @@ Partial Public Class Change99
                     End If
                 End If
 
-                If dRowSel("EAN11").ToString() = "ZZABMELD" Then
-                    blnZZABMELDselected = True
+                If dRowSel("EAN11").ToString() = "ZZABMELD_INVERTED" Then
+                    bAufAbmeldungWarten = True
                 End If
             Next
         End If
 
-        'wenn "Versand ohne Abmeldung" bewusst abgewählt -> Warnhinweis
-        ConfirmNextToOverview.Enabled = (blnZZABMELDavailable And Not blnZZABMELDselected)
+        'wenn "Aus Abmeldung warten" bewusst gewählt wurde -> Warnhinweis
+        ConfirmNextToOverview.Enabled = bAufAbmeldungWarten
 
         If bvalidate = True Then
             m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1'", "EXTGROUP='2'")

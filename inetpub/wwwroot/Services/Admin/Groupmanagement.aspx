@@ -421,7 +421,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td style="text-decoration: none; padding-top: 3px">
-                                                                                            Level 7 = Option "Versand ohne Abmeldung"
+                                                                                            Level 7 = Option "Auf Abmeldung warten"
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
