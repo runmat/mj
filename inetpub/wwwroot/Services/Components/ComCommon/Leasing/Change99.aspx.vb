@@ -833,10 +833,16 @@ Partial Public Class Change99
 
             'Versandoption "Versand ohne Abmeldung" ggf. rausfiltern, sonst als Inverses "Auf Abmeldung warten" weiter nutzen
             'NewLevel beinhaltet 2 Arrays: Level-Array und Autorisierungsarray(1 zu 1) getrennt durch |
-            Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
-            Dim levels() As String = strLevel.Split(",")
+            Dim blnLevel7 As Boolean = False
+            Dim strLevelText = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel")
+            If Not String.IsNullOrEmpty(strLevelText) Then
+                Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
+                Dim levels() As String = strLevel.Split(",")
+                blnLevel7 = levels.Contains("7")
+            End If
+
             Dim updRows As DataRow() = m_Versand.VersandOptionen.Select("EXTGROUP='" & strVersandart & "' AND EAN11 = 'ZZABMELD'")
-            If strVersandart = "1" Or Not levels.Contains("7") Then
+            If strVersandart = "1" Or Not blnLevel7 Then
                 For Each updRow In updRows
                     m_Versand.VersandOptionen.Rows.Remove(updRow)
                 Next
@@ -953,7 +959,7 @@ Partial Public Class Change99
         Else
             lblErrorAdressen.Visible = True
             lblErrorAdressen.Text = "Bitte wählen Sie eine Versandadresse aus!"
-            End If
+        End If
     End Sub
 
     Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ibtnNextToOverView.Click
