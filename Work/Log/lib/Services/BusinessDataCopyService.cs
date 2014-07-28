@@ -88,8 +88,8 @@ namespace LogMaintenance.Services
         {
             _infoMessageAction = infoMessageAction;
 
-            CopyToLogsDbForServer("Dev");
-            CopyToLogsDbForServer("Test");
+            //CopyToLogsDbForServer("Dev");
+            //CopyToLogsDbForServer("Test");
             CopyToLogsDbForServer("Prod");
 
             return true;
