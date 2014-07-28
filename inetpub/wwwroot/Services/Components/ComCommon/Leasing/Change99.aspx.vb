@@ -835,7 +835,7 @@ Partial Public Class Change99
             'NewLevel beinhaltet 2 Arrays: Level-Array und Autorisierungsarray(1 zu 1) getrennt durch |
             Dim blnLevel7 As Boolean = False
             Dim strLevelText = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel")
-            If Not String.IsNullOrEmpty(strLevelText) Then
+            If Not IsDBNull(strLevelText) AndAlso Not String.IsNullOrEmpty(strLevelText) Then
                 Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
                 Dim levels() As String = strLevel.Split(",")
                 blnLevel7 = levels.Contains("7")
