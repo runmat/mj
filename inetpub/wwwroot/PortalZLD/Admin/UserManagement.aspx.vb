@@ -1541,6 +1541,15 @@ Partial Public Class UserManagement
         Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
 
         If intCustomerID > 0 Then
+
+            'Auswahl Gruppen/Organisationen füllen
+            Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+            cn.Open()
+            Dim dtGroups As New Kernel.GroupList(intCustomerID, cn, m_User.Customer.AccountingArea)
+            FillGroup(ddlGroups, False, dtGroups)
+            Dim dtOrganizations As New OrganizationList(intCustomerID, cn, m_User.Customer.AccountingArea)
+            FillOrganization(ddlOrganizations, False, dtOrganizations)
+
             Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
             Dim autoPW As Boolean = False
 
