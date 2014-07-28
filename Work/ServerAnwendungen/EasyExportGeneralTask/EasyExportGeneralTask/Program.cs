@@ -473,11 +473,11 @@ namespace EasyExportGeneralTask
 
                 if (blnFehlersaetze)
                 {
-                    selection = result.hitList.Select("([.TITEL]='ZB2' OR [.TITEL]='ZB1') AND found=true");
+                    selection = result.hitList.Select("[.TITEL]='ZB2' AND found=true");
                 }
                 else
                 {
-                    selection = result.hitList.Select("[.TITEL]='ZB2' OR [.TITEL]='ZB1'");
+                    selection = result.hitList.Select("[.TITEL]='ZB2'");
                 }
 
                 foreach (DataRow row in selection)
@@ -488,75 +488,76 @@ namespace EasyExportGeneralTask
                     {
                         if (row["Filepath"] != DBNull.Value)
                         {
+                            generateJPLFile("ZB", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
+
                             string strFilePathZBII = row["Filepath"].ToString();
 
                             // COC finden
                             var rowFound = result.hitList.Select("[.TITEL]='COC' AND FAHRGESTELLNR='" + fin + "'");
+                            DataRow rowCOC = null;
 
                             if (rowFound.Length > 0)
                             {
-                                generateJPLFile("ZB", fin, row["LVNR"].ToString(), row["NUMMERLN"].ToString(), row["KENNZEICHEN"].ToString(), DateTime.Parse(row[".ARCHIVDATUM"].ToString()));
+                                rowCOC = rowFound[0];
+                            }
 
-                                DataRow rowCOC = rowFound[0];
+                            if (rowCOC == null)
+                            {
+                                File.Copy(strFilePathZBII, taskConfiguration.exportPathZBII + "\\ZB_" + fin + ".pdf", true);
 
-                                if (rowCOC == null)
+                                Console.WriteLine("Für " + fin + " " + row[".TITEL"] + " existiert keine COC. Datei als ZB_" + fin + ".pdf übertragen.");
+                            }
+                            else
+                            {
+                                string strFilePathCOC = rowCOC["Filepath"].ToString();
+
+                                string AdultPDFCommand = "-mer -i \"" + strFilePathZBII + "\" -i \"" + strFilePathCOC + "\" -o \"" + taskConfiguration.exportPathZBII + "\\ZB_" + fin + ".pdf\"";
+
+                                int indexLastTrenn = strFilePathZBII.LastIndexOf('\\') + 1;
+                                string strFilname = strFilePathZBII.Substring(indexLastTrenn, strFilePathZBII.Length - indexLastTrenn);
+
+                                int indexLastTrennCOC = strFilePathCOC.LastIndexOf('\\') + 1;
+                                string strFilnameCOC = strFilePathCOC.Substring(indexLastTrennCOC, strFilePathCOC.Length - indexLastTrennCOC);
+
+                                Console.WriteLine("Führe die PDFs ");
+                                Console.WriteLine(strFilname);
+                                Console.WriteLine(strFilnameCOC);
+                                Console.WriteLine(" zu ZB_" + fin + ".pdf zusammen.");
+
+                                if (File.Exists(Konfiguration.pathPdfSplitAndMergeApplication))
                                 {
-                                    File.Copy(strFilePathZBII, taskConfiguration.exportPathZBII + "\\ZB_" + fin + ".pdf", true);
+                                    // Mergen der PDF's
+                                    sdp = Process.Start(Konfiguration.pathPdfSplitAndMergeApplication, AdultPDFCommand);
 
-                                    Console.WriteLine("Für " + fin + " " + row[".TITEL"] + " existiert keine COC. Datei als ZB_" + fin + ".pdf übertragen.");
+                                    if (sdp != null)
+                                    {
+                                        int waitCount = 0;
+
+                                        while (!sdp.HasExited)
+                                        {
+                                            if (waitCount == 10)
+                                            {
+                                                if (sdp.Responding)
+                                                {
+                                                    sdp.CloseMainWindow();
+                                                }
+                                                else
+                                                {
+                                                    sdp.Kill();
+                                                }
+                                                Console.WriteLine("Exit with Error!");
+                                                break;
+                                            }
+
+                                            waitCount++;
+                                            // Ressourcen vorübergehend freigeben während Merge-Prozess arbeitet
+                                            System.Threading.Thread.Sleep(2000);
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    string strFilePathCOC = rowCOC["Filepath"].ToString();
-
-                                    string AdultPDFCommand = "-mer -i \"" + strFilePathZBII + "\" -i \"" + strFilePathCOC + "\" -o \"" + taskConfiguration.exportPathZBII + "\\ZB_" + fin + ".pdf\"";
-
-                                    int indexLastTrenn = strFilePathZBII.LastIndexOf('\\') + 1;
-                                    string strFilname = strFilePathZBII.Substring(indexLastTrenn, strFilePathZBII.Length - indexLastTrenn);
-
-                                    int indexLastTrennCOC = strFilePathCOC.LastIndexOf('\\') + 1;
-                                    string strFilnameCOC = strFilePathCOC.Substring(indexLastTrennCOC, strFilePathCOC.Length - indexLastTrennCOC);
-
-                                    Console.WriteLine("Führe die PDFs ");
-                                    Console.WriteLine(strFilname);
-                                    Console.WriteLine(strFilnameCOC);
-                                    Console.WriteLine(" zu ZB_" + fin + ".pdf zusammen.");
-
-                                    if (File.Exists(Konfiguration.pathPdfSplitAndMergeApplication))
-                                    {
-                                        // Mergen der PDF's
-                                        sdp = Process.Start(Konfiguration.pathPdfSplitAndMergeApplication, AdultPDFCommand);
-
-                                        if (sdp != null)
-                                        {
-                                            int waitCount = 0;
-
-                                            while (!sdp.HasExited)
-                                            {
-                                                if (waitCount == 10)
-                                                {
-                                                    if (sdp.Responding)
-                                                    {
-                                                        sdp.CloseMainWindow();
-                                                    }
-                                                    else
-                                                    {
-                                                        sdp.Kill();
-                                                    }
-                                                    Console.WriteLine("Exit with Error!");
-                                                    break;
-                                                }
-
-                                                waitCount++;
-                                                // Ressourcen vorübergehend freigeben während Merge-Prozess arbeitet
-                                                System.Threading.Thread.Sleep(2000);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "AdultPDF.exe nicht gefunden! ZBII- und COC-Mergen übersprungen.", EventLogEntryType.Warning);
-                                    }
+                                    EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "AdultPDF.exe nicht gefunden! ZBII- und COC-Mergen übersprungen.", EventLogEntryType.Warning);
                                 }
                             }
                         }
