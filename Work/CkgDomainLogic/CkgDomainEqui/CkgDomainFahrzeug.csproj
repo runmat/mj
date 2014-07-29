@@ -145,7 +145,7 @@
     <Compile Include="Strafzettel\Services\StrafzettelDataServiceSAP.cs" />
     <Compile Include="Strafzettel\ViewModels\StrafzettelViewModel.cs" />
     <Compile Include="Uebfuehrg\Contracts\IUebfuehrgDataService.cs" />
-    <Compile Include="Uebfuehrg\Models\AppModelmappings.cs" />
+    <Compile Include="Uebfuehrg\Models\AppModelMappings.cs" />
     <Compile Include="Uebfuehrg\Models\CompositeModels\Fahrt.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\Dienstleistung.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\KurzBemerkung.cs" />

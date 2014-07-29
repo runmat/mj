@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
@@ -51,46 +50,11 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public List<Dienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Where(dl => NichtGewaehlteDienstleistungenString.Split(',').Contains(dl.ID)).ToList(); } }
 
         [XmlIgnore]
-        public override string ViewName { get { return "Partial/DienstleistungsAuswahl"; } }
-
-        [XmlIgnore]
-        public override bool IsValid { get { return true; } }
-
-        [XmlIgnore]
-        public override bool IsEmpty
-        {
-            get { return GewaehlteDienstleistungen.None(); }
-        }
-
-        [XmlIgnore]
         public bool DienstleistungenInitialized
         {
             get
             {
                 return AvailableDienstleistungen != null && (!string.IsNullOrEmpty(GewaehlteDienstleistungenString) || !string.IsNullOrEmpty(NichtGewaehlteDienstleistungenString));
-            }
-        }
-
-        [XmlIgnore]
-        public override GeneralEntity SummaryItem
-        {
-            get
-            {
-                var sumPreis = GewaehlteDienstleistungen.Sum(p => p.Preis);
-                var sumPreisTxt = string.Format(", Summe: {0:c}", sumPreis);
-                if (sumPreis == 0)
-                    sumPreisTxt = "";
-
-                var anzahl = GewaehlteDienstleistungen.Count();
-                var anzahlTxt = string.Format("{0} gewählte Dienstleistung{1}", anzahl, (anzahl > 1 ? "en" : ""));
-                if (anzahl == 0)
-                    anzahlTxt = "";
-
-                return new GeneralEntity
-                {
-                    Title = string.Join(",", HeaderShort.Split(',').Take(2).ToArray()),
-                    Body = string.Format("{0}{1}", anzahlTxt, sumPreisTxt),
-                };
             }
         }
 
