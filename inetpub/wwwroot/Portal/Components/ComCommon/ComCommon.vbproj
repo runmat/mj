@@ -824,6 +824,7 @@
     <Content Include="SonstigeDL\Change81_2.aspx" />
     <Content Include="SonstigeDL\Change81_3.aspx" />
     <Content Include="SonstigeDL\Change81_4.aspx" />
+    <Content Include="SonstigeDL\info01.htm" />
     <Content Include="Treuhand\Autorisierung.aspx" />
     <Content Include="Treuhand\Change01.aspx" />
     <Content Include="Treuhand\Change01Aut.aspx" />
@@ -1091,6 +1092,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Treuhand\docu\HandbuchTreuhand.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
