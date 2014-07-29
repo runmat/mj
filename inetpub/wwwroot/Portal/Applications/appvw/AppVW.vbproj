@@ -258,6 +258,7 @@
     <None Include="Docs\Lastschrift\Bremen.pdf" />
     <None Include="Docs\Lastschrift\Hamburg.pdf" />
     <None Include="Docs\Lastschrift\Hessen.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern.pdf" />
     <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern1.pdf" />
     <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern2.pdf" />
     <None Include="Docs\Lastschrift\Niedersachsen.pdf" />
