@@ -534,7 +534,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="Docu\benutzerhandbuch_ffd_web.htm" />
-    <Content Include="Docu\ffd_benutz1.jpg" />
+    <Content Include="Docu\ffd_benutz1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Docu\Haendler\benutzerhandbuch_ffd_web.htm" />
     <Content Include="Forms\Antrag.aspx" />
     <Content Include="Forms\Change01.aspx" />
