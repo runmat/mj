@@ -148,6 +148,7 @@
     <Import Include="System.Web.UI.WebControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Forms\scroll.htc" />
     <None Include="AppLeasePlan.vsdisco" />
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
@@ -174,6 +175,8 @@
       <DependentUpon>Report02_2.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="docs\WEB Handbuch Händler.pdf" />
+    <None Include="docs\WEB Handbuch Mitarbeiter.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
