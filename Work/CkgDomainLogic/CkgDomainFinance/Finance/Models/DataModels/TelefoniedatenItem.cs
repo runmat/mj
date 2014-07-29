@@ -99,7 +99,7 @@ namespace CkgDomainLogic.Finance.Models
                     && DateTime.TryParseExact(AnrufzeitVon, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out startZeit)
                     && DateTime.TryParseExact(AnrufzeitBis, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out endeZeit))
                 {
-                    return String.Format("{0} Min.", Math.Ceiling((endeZeit - startZeit).TotalMinutes).ToString());
+                    return (endeZeit - startZeit).ToString();
                 }
 
                 return ""; 
