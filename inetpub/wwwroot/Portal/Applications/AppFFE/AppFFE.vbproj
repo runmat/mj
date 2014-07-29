@@ -194,6 +194,9 @@
       <DependentUpon>Suche.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="forms\info01.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="forms\Report23.aspx" />
     <Content Include="forms\Report23_2.aspx" />
     <Content Include="forms\Report23_3.aspx" />
@@ -228,7 +231,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="docu\bank\MazdaBankPortal.pdf" />
     <None Include="docu\FahrzeughistoriePrint.doc" />
+    <None Include="docu\haendler_notKill_Braasch\handbuch.pdf" />
+    <None Include="docu\haendler_notKill_Braasch\MazdaHaendlerPor.pdf" />
+    <None Include="docu\haendler_notKill_Braasch\MazdaHdl.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
