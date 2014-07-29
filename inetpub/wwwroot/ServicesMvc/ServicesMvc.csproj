@@ -3807,6 +3807,8 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
+    <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
