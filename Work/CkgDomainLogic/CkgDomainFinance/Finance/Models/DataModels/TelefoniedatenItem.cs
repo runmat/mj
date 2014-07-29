@@ -96,10 +96,10 @@ namespace CkgDomainLogic.Finance.Models
 
                 if (!String.IsNullOrEmpty(AnrufzeitVon) 
                     && !String.IsNullOrEmpty(AnrufzeitBis)
-                    && DateTime.TryParseExact(AnrufzeitVon, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out startZeit)
-                    && DateTime.TryParseExact(AnrufzeitBis, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out endeZeit))
+                    && DateTime.TryParseExact(AnrufzeitVon, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out startZeit)
+                    && DateTime.TryParseExact(AnrufzeitBis, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out endeZeit))
                 {
-                    return String.Format("{0} Min.", Math.Truncate((endeZeit - startZeit).TotalMinutes).ToString());
+                    return String.Format("{0} Min.", Math.Ceiling((endeZeit - startZeit).TotalMinutes).ToString());
                 }
 
                 return ""; 
