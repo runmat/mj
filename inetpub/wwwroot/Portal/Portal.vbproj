@@ -741,6 +741,9 @@
       <DependentUpon>Selection.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Aspose.Total.lic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Customize\Kruell\Thumbs.db" />
     <None Include="Docs\Lastschrift\Baden-Wuerttemberg.pdf" />
     <None Include="Docs\Lastschrift\Bayern.pdf" />
