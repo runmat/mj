@@ -428,6 +428,7 @@
     </Content>
     <Content Include="Forms\Change02.aspx" />
     <Content Include="Forms\ChangeStdText.aspx" />
+    <Content Include="Forms\scroll.htc" />
     <Content Include="Forms\Ueberf01.aspx" />
     <Content Include="Forms\Ueberf02.aspx" />
     <Content Include="Forms\Ueberf03.aspx" />
@@ -607,6 +608,7 @@
     <None Include="Documents\DADZulassungAuslieferung.doc" />
     <None Include="Documents\Zulassung.doc" />
     <None Include="Documents\ZulassungStandard.doc" />
+    <None Include="Documents\ZulassungUndÜberführung.doc" />
     <None Include="Documents\ZulassungUndÜberführungLeasing.doc" />
     <None Include="Documents\ZulassungUndÜberführungStandard.doc" />
     <None Include="Documents\Überführung.doc" />
