@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -74,6 +75,8 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public LogonLevel UserLogonLevel { get { return LogonContext.UserLogonLevel; } }
 
+        public int CurrentAppID { get; set; }
+
 
         #region Step "Fahrzeugwahl"
 
@@ -95,10 +98,31 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                return BriefVersandDataService.VersandOptionen
-                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.Name.NotNullOrEmpty().Trim().ToLower() != "versand ohne abmeldung")
+                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
+                    LogonContext.UserApps.Any(a => a.AppID == CurrentAppID && a.BerechtigungsLevel.ContainsKey("7")))
+                {
+                    var liste = BriefVersandDataService.VersandOptionen
+                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand)
                     .OrderBy(w => w.Name)
                     .ToList();
+                    
+                    var updItems = liste.Where(vo => vo.MaterialCode == "ZZABMELD");
+
+                    foreach (var item in updItems)
+                    {
+                        item.MaterialCode = "ZZABMELD_INVERTED";
+                        item.Name = "Auf Abmeldung warten";
+                    }
+
+                    return liste;
+                }
+                else
+                {
+                    return BriefVersandDataService.VersandOptionen
+                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.MaterialCode != "ZZABMELD")
+                    .OrderBy(w => w.Name)
+                    .ToList();
+                }
             }
         }
 
@@ -219,8 +243,9 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void DataMarkForRefresh(string vins)
         {
+            GetCurrentAppID();
+
             Adresse.Laender = LaenderList;
-            VersandOptionen.OptionenList = VersandOptionenList;
 
             BriefbestandDataService.MarkForRefreshFahrzeugbriefe();
             AdressenDataService.MarkForRefreshAdressen();
@@ -240,6 +265,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void DataMarkForRefreshVersandAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
+        }
+
+        public void DataMarkForRefreshVersandoptionen()
+        {
+            VersandOptionen.OptionenList = VersandOptionenList;
         }
 
         public void DataMarkForRefreshVersandgruende()
@@ -286,7 +316,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                 BriefVersand = true,
                 SchluesselVersand = false,
                 StuecklistenKomponente = stuecklistenCode,
-                AbmeldeKennzeichen = true,
+                AbmeldeKennzeichen = (VersandOptionen.VersandOption.MaterialCode != "ZZABMELD_INVERTED"),
                 AbcKennzeichen = VersandartOptionen.Versandart,
                 MaterialNr = VersandOptionen.VersandOption.MaterialCode,
                 DadAnforderungsDatum = DateTime.Today,
@@ -361,6 +391,19 @@ namespace CkgDomainLogic.Equi.ViewModels
             };
 
             return summaryModel;
+        }
+
+        private void GetCurrentAppID()
+        {
+            int tmpAppId;
+            int tmpUserId;
+            int tmpCustomerId;
+            int tmpKunnr;
+            int tmpPortalType;
+
+            HttpContextService.TryGetUserDataFromUrlOrSession(out tmpAppId, out tmpUserId, out tmpCustomerId, out tmpKunnr, out tmpPortalType);
+
+            CurrentAppID = tmpAppId;
         }
 
         #endregion
