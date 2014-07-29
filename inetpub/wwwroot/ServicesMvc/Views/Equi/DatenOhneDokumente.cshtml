@@ -101,6 +101,9 @@
             success: function (result) {
                 FormPreparePrivateAjax();
                 GridRefresh();
+                setTimeout(function () {
+                    GetGrid().pageTo(1);
+                }, 500);
             }
         });
     }
