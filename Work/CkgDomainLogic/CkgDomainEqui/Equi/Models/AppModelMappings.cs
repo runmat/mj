@@ -275,6 +275,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.Raum = s.MSGRP;
                         d.Standort = s.STORT;
                         d.Versandgrund = s.ZZVGRUND;
+                        d.VersandgrundText = s.VERSGRU_TXT;
                         d.Eingangsdatum = s.DATAB;
                         d.Versanddatum = s.ZZTMPDT;
                         d.Stilllegungsdatum = s.EXPIRY_DATE;

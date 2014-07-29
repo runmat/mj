@@ -78,6 +78,8 @@ namespace SapORM.Models
 
 			public string VERTRAGS_STAT { get; set; }
 
+			public string VERSGRU_TXT { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -106,6 +108,7 @@ namespace SapORM.Models
 					DAT_VERTR_BEG = (string.IsNullOrEmpty(row["DAT_VERTR_BEG"].ToString())) ? null : (DateTime?)row["DAT_VERTR_BEG"],
 					DAT_VERTR_END = (string.IsNullOrEmpty(row["DAT_VERTR_END"].ToString())) ? null : (DateTime?)row["DAT_VERTR_END"],
 					VERTRAGS_STAT = (string)row["VERTRAGS_STAT"],
+					VERSGRU_TXT = (string)row["VERSGRU_TXT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

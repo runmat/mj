@@ -40,6 +40,9 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
         public string Versandgrund { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
+        public string VersandgrundText { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]
         public DateTime? Eingangsdatum { get; set; }
 
@@ -82,7 +85,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ContractEnd)]
         public DateTime? VertragsEnde { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractStatus)]
+        [LocalizedDisplay(LocalizeConstants.CustomerContinuance)]
         public string VertragsStatus { get; set; }
     }
 }
