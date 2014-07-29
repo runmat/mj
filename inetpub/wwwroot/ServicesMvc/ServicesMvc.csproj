@@ -3807,6 +3807,8 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Uebfuehrg\Index.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
