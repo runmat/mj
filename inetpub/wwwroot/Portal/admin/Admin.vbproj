@@ -252,7 +252,6 @@
     </Compile>
     <Compile Include="BapiOverView.aspx.vb">
       <DependentUpon>BapiOverView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ColumnTranslation.aspx.vb">
       <DependentUpon>ColumnTranslation.aspx</DependentUpon>
@@ -267,7 +266,6 @@
     </Compile>
     <Compile Include="CustomerManagement.aspx.vb">
       <DependentUpon>CustomerManagement.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DatenarchivierungDAD.aspx.designer.vb">
       <DependentUpon>DatenarchivierungDAD.aspx</DependentUpon>
@@ -449,14 +447,12 @@
     </Compile>
     <Compile Include="SapORMTest.aspx.vb">
       <DependentUpon>SapORMTest.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="ShowBapis.aspx.designer.vb">
       <DependentUpon>ShowBapis.aspx</DependentUpon>
     </Compile>
     <Compile Include="ShowBapis.aspx.vb">
       <DependentUpon>ShowBapis.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SingleUserHistory.aspx.vb">
       <DependentUpon>SingleUserHistory.aspx</DependentUpon>
@@ -493,7 +489,6 @@
     </Compile>
     <Compile Include="UpdateUpdateDB.aspx.vb">
       <DependentUpon>UpdateUpdateDB.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserHistory.aspx.vb">
       <DependentUpon>UserHistory.aspx</DependentUpon>
