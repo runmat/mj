@@ -12,6 +12,7 @@ using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;
 using MvcTools.Web;
+using System.Web.Mvc.Ajax;
 
 namespace PortalMvcTools.Web
 {
@@ -171,6 +172,18 @@ namespace PortalMvcTools.Web
         {
             html.ViewBag.ResponsiveErrorUrlFunction = responsiveErrorUrlFunction;
             return html.Partial("Partial/FormRequiredFieldsSummary", html.ViewData.ModelState);
+        }
+
+        public static MvcForm AutoForm<T>(this AjaxHelper ajax, T model, string controllerName, int id) where T : class
+        {
+            return ajax.BeginForm(typeof(T).Name + "Form", controllerName, null,
+                                  new MvcAjaxOptions { UpdateTargetId = ajax.AutoFormWrapperDivID(id), OnComplete = "AjaxFormComplete();" },
+                                  htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + id });
+        }
+
+        public static string AutoFormWrapperDivID(this AjaxHelper ajax, int id) 
+        {
+            return string.Format("Div_{0}", id);
         }
 
         #endregion

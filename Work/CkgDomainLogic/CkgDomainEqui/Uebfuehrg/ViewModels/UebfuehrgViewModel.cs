@@ -97,8 +97,14 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 ViewName = "Fahrzeug",
 
                 // TEST
-                FIN = "#4711987654",
-                Fahrzeugklasse = "PKW"
+                FIN = "4711987654",
+                Fahrzeugklasse = "PKW",
+                Kennzeichen = "OD-J104",
+                Fahrzeugwert = "1000",
+                Typ = "AUDI",
+                FahrzeugZugelassen = "J",
+                ZulassungsauftragAnDAD = "N",
+                Bereifung = "Winterreifen",
             };
             list.Add(uiModel);
             index++;
@@ -107,6 +113,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             {
                 TransportTypAvailable = false,
 
+                Kennung = "-",
                 UhrzeitwunschAvailable = true,
                 AdressTyp = AdressenTyp.FahrtAdresse,
                 SubTyp = "ABHOLADRESSE",

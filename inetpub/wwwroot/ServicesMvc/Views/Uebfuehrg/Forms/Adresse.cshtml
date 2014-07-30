@@ -1,10 +1,7 @@
-﻿@using CkgDomainLogic.DomainCommon.Models
-@model CkgDomainLogic.Uebfuehrg.Models.Adresse 
+﻿@model CkgDomainLogic.Uebfuehrg.Models.Adresse 
 
-<div id="Div_@Model.UiIndex" class="margin-top-20">
-    @using (Ajax.BeginForm(@Model.GetType().Name + "Form", "Uebfuehrg", null,
-                new MvcAjaxOptions { UpdateTargetId = "Div_" + Model.UiIndex, OnComplete = "AjaxFormComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + Model.UiIndex }))
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         <div class="margin-bottom-15">@Model.Header</div>
 
@@ -31,7 +28,8 @@
 
         @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
         @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
-        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Land, new { @class = "m-wrap medium" })
+
         
         @Html.FormRequiredFieldsSummary()
         

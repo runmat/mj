@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -13,52 +14,39 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
+        [VIN]
         public string FIN
         {
             get { return _mFIN; }
-            set { _mFIN = (value == null ? null : value.ToUpper()); }
+            set { _mFIN = value.NotNullOrEmpty().ToUpper(); }
         }
 
         [XmlIgnore]
-        public string Kennzeichen { get { return string.Format("{0}-{1}", KennzeichenOrt, KennzeichenRest); } }
-
-        private string _mKennzeichenOrt;
-
-        [Required]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
-        public string KennzeichenOrt
+        [Kennzeichen]
+        public string Kennzeichen
         {
-            get { return _mKennzeichenOrt; }
-            set { _mKennzeichenOrt = (value == null ? null : value.ToUpper()); }
-        }
-
-        private string _mKennzeichenRest;
-
-        [Required]
-        [LocalizedDisplay(LocalizeConstants.Hyphen)]
-        public string KennzeichenRest
-        {
-            get { return _mKennzeichenRest; }
-            set { _mKennzeichenRest = (value == null ? null : value.ToUpper()); }
+            get { return _kennzeichen; }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
         }
 
         private string _mTyp;
-
         [Required]
         [LocalizedDisplay(LocalizeConstants._Typ)]
         public string Typ
         {
             get { return _mTyp; }
-            set { _mTyp = (value == null ? null : value.ToUpper()); }
+            set { _mTyp = value.NotNullOrEmpty().ToUpper(); }
         }
 
         private string _mReferenznummer;
+        private string _kennzeichen;
 
         [LocalizedDisplay(LocalizeConstants._Referenznummer)]
         public string Referenznummer
         {
             get { return _mReferenznummer; }
-            set { _mReferenznummer = (value == null ? null : value.ToUpper()); }
+            set { _mReferenznummer = value.NotNullOrEmpty().ToUpper(); }
         }
 
         public string FahrzeugIndex { get; set; }

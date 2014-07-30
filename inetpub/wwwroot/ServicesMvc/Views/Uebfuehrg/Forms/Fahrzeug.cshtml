@@ -1,9 +1,7 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.Models.Fahrzeug 
 
-<div id="Div_@Model.UiIndex" class="margin-top-20">
-    @using (Ajax.BeginForm(@Model.GetType().Name + "Form", "Uebfuehrg", null,
-                new MvcAjaxOptions { UpdateTargetId = "Div_" + Model.UiIndex, OnComplete = "AjaxFormComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + Model.UiIndex }))
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         <div class="margin-bottom-15">@Model.Header</div>
 
@@ -22,7 +20,16 @@
 
         @Html.FormTextBoxFor(m => m.Fahrzeugklasse, new { @class = "m-wrap medium" })
 
-                
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small" })
+        
+
+        @Html.FormTextBoxFor(m => m.Fahrzeugwert, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Typ, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.ZulassungsauftragAnDAD, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Bereifung, new { @class = "m-wrap medium" })
+
+        
         @Html.FormRequiredFieldsSummary()
         
         

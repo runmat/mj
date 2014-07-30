@@ -1,9 +1,7 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.Models.RgDaten 
 
-<div id="Div_@Model.UiIndex" class="margin-top-20">
-    @using (Ajax.BeginForm(@Model.GetType().Name + "Form", "Uebfuehrg", null,
-                new MvcAjaxOptions { UpdateTargetId = "Div_" + Model.UiIndex, OnComplete = "AjaxFormComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + Model.UiIndex }))
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         <div class="margin-bottom-15">@Model.Header</div>
 

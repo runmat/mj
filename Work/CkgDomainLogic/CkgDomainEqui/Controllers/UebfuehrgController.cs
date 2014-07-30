@@ -35,31 +35,6 @@ namespace ServicesMvc.Controllers
         }
 
 
-        #region Common
-
-        [HttpPost]
-        public ActionResult NextStepView()
-        {
-            ViewModel.MoveToNextStep();
-
-            return PartialView("CurrentStepView", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult CurrentStepView()
-        {
-            return PartialView(ViewModel);
-        }
-
-        private PartialViewResult GetStepPartialView()
-        {
-            return PartialView(ViewModel.StepCurrentFormPartialViewName, ViewModel.StepCurrentModel);
-        }
-
-        #endregion
-
-
-
         #region RgDaten
 
         [HttpPost]
@@ -71,8 +46,6 @@ namespace ServicesMvc.Controllers
             {
                 ViewModel.SaveSubModelWithPreservingUiModel(model);
                 //LogonContext.DataContextPersist(ViewModel);
-
-                var vmRgDaten = ViewModel.GetStepModel();
             }
 
             return GetStepPartialView();
@@ -91,8 +64,6 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.SaveSubModelWithPreservingUiModel(model);
-
-                var vmFahrzeug = ViewModel.GetStepModel();
             }
 
             return GetStepPartialView();
@@ -118,5 +89,28 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+
+        #region Common
+
+        [HttpPost]
+        public ActionResult NextStepView()
+        {
+            ViewModel.MoveToNextStep();
+
+            return PartialView("CurrentStepView", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CurrentStepView()
+        {
+            return PartialView(ViewModel);
+        }
+
+        private PartialViewResult GetStepPartialView()
+        {
+            return PartialView(ViewModel.StepCurrentFormPartialViewName, ViewModel.StepCurrentModel);
+        }
+
+        #endregion
     }
 }
