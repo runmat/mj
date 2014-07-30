@@ -9,8 +9,6 @@ Imports System.Web.UI
 Namespace Business
 
     Public Class LongStringsFromSap
-        Dim mDynSAPProxy As DynSapProxy
-
         Dim mLText As String = ""
         Dim mLTextID As String = ""
         Dim mLTextNr As String = ""
