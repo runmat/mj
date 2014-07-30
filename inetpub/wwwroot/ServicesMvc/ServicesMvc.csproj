@@ -2338,6 +2338,12 @@
     <Content Include="Views\Equi\Briefversand\Partial\VersandAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionen.cshtml" />
     <Content Include="Views\Equi\Briefversand\VersandartOptionenForm.cshtml" />
+    <Content Include="Views\Logs\Partial\Sap\SapImportTables.cshtml" />
+    <Content Include="Views\Equi\Mahnreport.cshtml" />
+    <Content Include="Views\Equi\Mahnreport\FahrzeugeMahnGrid.cshtml" />
+    <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
+    <Content Include="Views\Equi\ReportErweiterterBriefbestand.cshtml" />
+    <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefErweitertSuche.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
@@ -3807,9 +3813,14 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Logs\Pv.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
     <Content Include="Views\Uebfuehrg\Index.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\RgDaten.cshtml" />
+    <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
+    <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Fahrzeug.cshtml" />
     <Content Include="Views\Uebfuehrg\CurrentStepView.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Adresse.cshtml" />

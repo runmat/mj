@@ -537,7 +537,7 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
 
@@ -549,6 +549,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
