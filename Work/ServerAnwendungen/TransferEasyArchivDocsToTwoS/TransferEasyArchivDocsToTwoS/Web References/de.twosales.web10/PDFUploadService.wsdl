@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://web10.two-sales.de/WebServices/DAD/wsdl.wsdl" name="PDFUploadService" targetNamespace="https://web10.two-sales.de/WebServices/DAD/wsdl.wsdl" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types />
+  <message name="importRequest">
+    <part name="auth_key" type="xsd:string" />
+    <part name="import_xml" type="xsd:string" />
+  </message>
+  <message name="uploadResponse">
+    <part name="response_xml" type="xsd:string" />
+  </message>
+  <portType name="import_PortType">
+    <operation name="import">
+      <input message="tns:importRequest" />
+      <output message="tns:uploadResponse" />
+    </operation>
+  </portType>
+  <binding name="import_binding" type="tns:import_PortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="import">
+      <soap:operation soapAction="import" />
+      <input>
+        <soap:body use="encoded" namespace="urn:examples:PDFUploadService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:examples:PDFUploadService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="upload_Service">
+    <documentation>WSDL File for PDFUploadService</documentation>
+    <port name="upload_Port" binding="tns:import_binding">
+      <soap:address location="https://web10.two-sales.de/WebServices/DAD/index.php" />
+    </port>
+  </service>
+</definitions>
