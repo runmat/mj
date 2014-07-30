@@ -281,13 +281,55 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_DAT_OHNE_DOKUMENT_01.GT_OUT, DatenOhneDokumente> Z_DPM_DAT_OHNE_DOKUMENT_01_GT_OUT_To_DatenOhneDokumente
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_DAT_OHNE_DOKUMENT_01.GT_OUT, DatenOhneDokumente>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Erfassungsdatum = s.ERDAT;
+                        d.Vertragsbeginn = s.DAT_VERTR_BEG;
+                        d.Vertragsende = s.DAT_VERTR_END;
+                        d.Name1 = s.NAME1_ZL;
+                        d.Name2 = s.NAME2_ZL;
+                        d.Strasse = s.STREET_ZL;
+                        d.Hausnummer = s.HOUSE_NUM1_ZL;
+                        d.PLZ = s.POST_CODE1_ZL;
+                        d.Ort = s.CITY1_ZL;
+                        d.Vertragsstatus = s.VERTRAGS_STAT;
+                    }));
+            }
+        }
+
         #endregion
 
 
         #region Save to Repository
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_MARK_DAT_OHNE_DOKUM_01.GT_DAT, DatenOhneDokumente> Z_DPM_MARK_DAT_OHNE_DOKUM_01_GT_DAT_From_DatenOhneDokumente
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_MARK_DAT_OHNE_DOKUM_01.GT_DAT, DatenOhneDokumente>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.CHASSIS_NUM = s.Fahrgestellnummer;
+                        d.VERTRAGS_STAT = s.Vertragsstatus;
+                        d.LOESCH = (s.Loeschkennzeichen ? "X" : "");
+                    }));
+            }
+        }
         
-
         #endregion
     }
 }

@@ -3813,6 +3813,8 @@
     <Content Include="Views\Logs\Pv.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
+    <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
+    <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

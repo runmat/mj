@@ -198,6 +198,10 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_READ_EQUI_MAHN_01").WriteOrmForExportTableStructures("I_AG", "10065502");
 
+            //Daten ohne Dokumente
+            //new FunctionReflector("Z_DPM_DAT_OHNE_DOKUMENT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
+            //new FunctionReflector("Z_DPM_MARK_DAT_OHNE_DOKUM_01").WriteOrmForExportTableStructures("I_AG", "10062897");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
