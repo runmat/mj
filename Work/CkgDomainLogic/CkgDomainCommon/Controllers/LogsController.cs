@@ -29,9 +29,18 @@ namespace ServicesMvc.Controllers
 
 
         [CkgApplication]
-        public ActionResult Sap() 
+        public ActionResult Sap()
         {
-            SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
+            //SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Pv()
+        {
+            //SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
             ViewModel.DataInit();
 
             return View(ViewModel);
@@ -48,25 +57,41 @@ namespace ServicesMvc.Controllers
         }
 
 
-        #region Export
+        #region PageVisit Logs
 
-        protected override IEnumerable GetGridExportData()
+        [HttpPost]
+        public ActionResult LoadPageVisitLogItems(PageVisitLogItemSelector model)
         {
-            return ViewModel.SapLogItemsFiltered;
+            ModelState.Clear();
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (ViewModel.LoadPageVisitLogItems(model))
+                    if (ViewModel.PageVisitLogItemsFiltered.None())
+                        ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/PageVisit/SuchePageVisitLogItems", ViewModel.PageVisitLogItemSelector);
         }
 
-        public ActionResult ExportWebServiceTrafficLogItemsFilteredExcel(int page, string orderBy, string filterBy)
+        [HttpPost]
+        public ActionResult ShowPageVisitLogItems()
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Webservice-Log", dt);
-
-            return new EmptyResult();
+            return PartialView("Partial/PageVisit/Grid", ViewModel);
         }
 
-        public ActionResult ExportWebServiceTrafficLogItemsFilteredPDF(int page, string orderBy, string filterBy)
+        [GridAction]
+        public ActionResult LogsPageVisitsAjaxBinding()
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Webservice-Log", dt, landscapeOrientation: true);
+            return View(new GridModel(ViewModel.PageVisitLogItemsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridLogsPageVisits(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterPageVisitLogItems(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -106,6 +131,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult GetSapImportContext(int sapItemId)
+        {
+            ViewModel.GetSapSapImportTables(sapItemId);
+
+            return PartialView("Partial/Sap/SapImportTables", ViewModel.LastSapImportTables);
+        }
+
+        [HttpPost]
         public ActionResult FilterGridLogsSap(string filterValue, string filterColumns)
         {
             ViewModel.FilterSapLogItems(filterValue, filterColumns);
@@ -114,6 +147,7 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
 
         #region Webservice Logs
 
@@ -158,6 +192,32 @@ namespace ServicesMvc.Controllers
         public ActionResult FilterGridLogsWebServiceTraffic(string filterValue, string filterColumns)
         {
             ViewModel.FilterWebServiceTrafficLogItems(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
+        #region Export
+
+        protected override IEnumerable GetGridExportData()
+        {
+            return ViewModel.SapLogItemsFiltered;
+        }
+
+        public ActionResult ExportWebServiceTrafficLogItemsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Webservice-Log", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportWebServiceTrafficLogItemsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Webservice-Log", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
