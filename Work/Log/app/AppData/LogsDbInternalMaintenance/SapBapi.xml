@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfDbMaintenanceTable>
+
+  <DbMaintenanceTable>
+
+    <SourceTableName>SapBapi</SourceTableName>
+    
+    <DestTableName>SapBapiReadOnly</DestTableName>
+
+    <TableIndexColumnNames>Bapi, portalType, AppId, userID, customerID</TableIndexColumnNames>
+
+    <Steps>
+      <DbMaintenanceStep IgnoreSqlException="true">
+        <Description>
+          Try creating table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE TABLE `[DestTableName]` (
+          `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+          `Bapi` varchar(40) NOT NULL,
+          `Status` bit(1) NOT NULL,
+          `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `dauer` decimal(8,4) DEFAULT NULL,
+          `AppId` int(11) DEFAULT NULL,
+          `userID` int(11) DEFAULT NULL,
+          `customerID` int(11) DEFAULT NULL,
+          `kunnr` int(11) DEFAULT NULL,
+          `portalType` int(11) DEFAULT NULL,
+          `Browser` varchar(30) DEFAULT NULL,
+          `QueryString` char(40) DEFAULT NULL,
+          PRIMARY KEY (`Id`)
+          ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep IsSqlIndexStatement="true" IgnoreSqlException="true">
+        <Description>
+          Try dropping indexes on table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          DROP INDEX `i_[DestTableName]_[IndexColumnName]` ON [DestTableName];
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Cleaning table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          DELETE `[DestTableName]`
+          FROM `[DestTableName]`
+          JOIN ReadOnlyTables ON ReadOnlyTables.TableName = '[DestTableName]'
+          where DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Inserting data into table '[DestTableName]' ...
+        </Description>
+    
+        <Sql>
+          INSERT INTO `[DestTableName]`
+          (
+          `Id` ,
+          `QueryString` ,
+          `Bapi` ,
+          `Status` ,
+          `time_stamp` ,
+          `dauer` ,
+          `AppId` ,
+          `userID` ,
+          `customerID` ,
+          `kunnr` ,
+          `portalType`,
+          `Browser`
+          )
+          SELECT
+          [SourceTableName].`Id` ,
+          CONVERT(LogonContext,char(40)) ,
+          `Bapi` ,
+          `Status` ,
+          `time_stamp` ,
+          `dauer` ,
+          `AppId` ,
+          `userID` ,
+          `customerID` ,
+          `kunnr` ,
+          `portalType`,
+          `Browser`
+          from [SourceTableName], ReadOnlyTables
+          where ReadOnlyTables.TableName = '[DestTableName]' and DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Apply 'now()' as 'Sync Date' for table [DestTableName] ...
+        </Description>
+
+        <Sql>
+          update ReadOnlyTables
+          set LastSyncDate = now()
+          where TableName = '[DestTableName]';
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep IgnoreSqlException="true">
+        <Description>
+          Try parsing missing AppID values from QueryString into AppID column ...
+        </Description>
+
+        <Sql>
+          SET SQL_SAFE_UPDATES=0;
+          update [DestTableName]
+          set AppID = REPLACE(SUBSTRING_INDEX(QueryString, '&amp;', 1), 'AppID=','')
+          where AppID = 0 and QueryString like 'AppID=%';
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep IsSqlIndexStatement="true">
+        <Description>
+          Adding indexes to table '[DestTableName]' ...
+        </Description>
+
+        <Sql>
+          CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
+        </Sql>
+      </DbMaintenanceStep>
+
+      <DbMaintenanceStep>
+        <Description>
+          Lightning up data older than 90 days for table [SourceTableName], cleaning some 'heavy' big columns ...
+        </Description>
+
+        <Sql>
+          update [SourceTableName]
+          set
+          ImportParameters = null,
+          ImportTables = null,
+          DataContext = null,
+          ExportParameters = null,
+          ExportTables = null
+          where DATE_SUB(current_date(), INTERVAL 90 DAY) >= DATE(time_stamp);
+        </Sql>
+      </DbMaintenanceStep>
+    </Steps>
+  </DbMaintenanceTable>
+</ArrayOfDbMaintenanceTable>

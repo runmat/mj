@@ -154,6 +154,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "ZZPSTLZ_ZS", "PLZ" },
                         { "ZZORT01_ZS", "Ort" },
                         { "ZZLAND_ZS", "Land" },
+                        { "COUNTRY_ZS", "Land" },
                         { "ERNAM", "ErfassungsUserName" },
                         { "ZZBETREFF", "Bemerkung"},
                         { "ZZVGRUND", "Versandgrund"}
