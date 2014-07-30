@@ -1,7 +1,7 @@
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../../../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../../../PageElements/Header.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Kopfdaten" Src="PageElements/Kopfdaten.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="BusyIndicator" Src="../PageElements/BusyIndicator.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="BusyIndicator" Src="../../../PageElements/BusyIndicator.ascx" %>
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Change54_2.aspx.vb" Inherits="CKG.Components.ComCommon.Change54_2" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
