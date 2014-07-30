@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridFahrzeugeMahn"; }
+
+@(Html.Telerik()
+    .Grid<EquiMahn>()
+    .Name(gridName)
+    .XGroup("GridFahrzeugeMahn")
+    .XAjaxDataBinding("FahrzeugeMahnAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.VertragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Erstzulassung).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.UeberfaelligSeit).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Mahnstufe);
+        columns.XBound(c => c.EmpfaengerName);
+        columns.XBound(c => c.EmpfaengerStrasse);
+        columns.XBound(c => c.EmpfaengerPlz);
+        columns.XBound(c => c.EmpfaengerOrt); 
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugeMahn"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Mahnstufe).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrzeugeMahnFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportFahrzeugeMahnFilteredPDF", "Equi");
+    })
+)
+

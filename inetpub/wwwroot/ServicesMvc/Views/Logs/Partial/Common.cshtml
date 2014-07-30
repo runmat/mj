@@ -31,6 +31,18 @@
         display: inline;
     }
 
+    .sap-tables-context {
+        overflow-y: auto;
+        overflow-x: visible;
+    } 
+    .sap-tables-context .table-header {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .sap-tables-context .table-content {
+        margin-top: 10px;
+    }
+
 
     .duration-level-very-quick {
         color:#004400; background-color: #ddffdd;
@@ -50,23 +62,74 @@
     .duration-level-unacceptable {
         font-weight: bold; color:yellow; background-color: red;
     }
+    
+    .legend {
+        margin: 10px;
+    }
+    .legend-row {
+        margin-right: 25px;
+        float: left;
+        display: block;
+    }
+    .legend-color-item {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+    }
+    .legend-text-item 
+    {
+        vertical-align: middle;
+        margin-bottom: 15px;
+        display: inline-block;
+    }
 
- 
+    .t-grid-filter { display: none; }
+    .ui-dialog .t-grid-pager { display: none; }
+
 </style>
 
 
 <script type="text/javascript">
-    
+
+    function ShowSapImportContext(sapItemId) {
+
+        $.ajax({
+            type: "POST",
+            url: "GetSapImportContext",
+            data: { sapItemId: sapItemId },
+            loadingShow: true,
+            success: function (result) {
+
+                var dialog = $("#SapImportContext").data("tWindow");
+                $("#InnerSapImportContext").html(result);
+                dialog.center().open();
+
+                setTimeout(function () {
+                    $("#SapImportContext").on("click", function (e) {
+                        if (e.target.tagName.toLowerCase() == "td")
+                            return;
+                        dialog.close();
+                        $("#SapImportContext").of("click");
+                    });
+                }, 1000);
+            },
+            error: function (jqXhr) {
+            }
+        });
+
+        return false;
+    }
+
     function ShowStackContext(a) {
         var stackContextHtml = a.parent().find("div.hide").html();
 
-        var confirmationDialog = $("#StackContext").data("tWindow");
+        var dialog = $("#StackContext").data("tWindow");
         $("#InnerStackContext").html(stackContextHtml);
-        confirmationDialog.center().open();
+        dialog.center().open();
 
         setTimeout(function () {
             $("#StackContext").on("click", function () {
-                confirmationDialog.close();
+                dialog.close();
                 $("#StackContext").of("click");
             });
         }, 1000);
@@ -77,6 +140,17 @@
 </script>
 
 
+@(Html.Telerik().Window()
+    .Name("SapImportContext")
+    .Visible(false)
+    .Title("SAP Übergabedaten")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(true)
+    .Height(700)
+    .HtmlAttributes(new { @class = "ui-dialog" })
+    .Content(@<text><div id="InnerSapImportContext" class="ui-dialog-inner"></div></text>))
+
 
 @(Html.Telerik().Window()
     .Name("StackContext")
@@ -85,6 +159,6 @@
     .Modal(true)
     .Draggable(true)
     .Scrollable(true)
-    .Width(800)
-    .Height(600)
-    .Content(@<text><div id="InnerStackContext"></div></text>))
+    .Height(700)
+    .HtmlAttributes(new { @class = "ui-dialog-inner" })
+    .Content(@<text><div id="InnerStackContext" class="ui-dialog-inner"></div></text>))

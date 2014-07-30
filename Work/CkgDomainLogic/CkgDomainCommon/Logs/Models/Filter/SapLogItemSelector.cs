@@ -16,7 +16,7 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateRange DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
-        [LocalizedDisplay(LocalizeConstants.ShowMaxDauerProBapiAndKunde)]
+        [LocalizedDisplay(LocalizeConstants.LongRunner)]
         public bool ShowMaxDauerProBapiAndKunde { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
@@ -73,16 +73,11 @@ namespace CkgDomainLogic.Logs.Models
             if (tableAttribute == null)
                 return "";
 
-            string sql = string.Empty;
-
+            string sql;
             if (ShowMaxDauerProBapiAndKunde)
-            {
-                sql = @"SELECT * FROM SapBapiView inner join (select Bapi as d_bapi,customerID as d_customerID,DATE(time_stamp) as ds_timestamp,max(dauer) as d_max_dauer from SapBapi group by Bapi, customerID, DAY(time_stamp) ) as ds on Bapi = ds.d_Bapi and customerID = ds.d_customerID and DATE(time_stamp) = DATE(ds_timestamp) and dauer = ds.d_max_dauer ";
-            }
+                sql = @"SELECT * FROM SapBapiView inner join (select Bapi as d_bapi, customerID as d_customerID, DATE(time_stamp) as ds_timestamp, max(dauer) as d_max_dauer from SapBapi group by Bapi, customerID, DAY(time_stamp) ) as ds on Bapi = ds.d_Bapi and customerID = ds.d_customerID and DATE(time_stamp) = DATE(ds_timestamp) and dauer = ds.d_max_dauer ";
             else
-            {
                 sql = "SELECT * FROM " + tableAttribute.Name;
-            }
 
             sql += PortalTypes.GetSqlMultiselectCondition(sql, "PortalType");
             sql += AppIds.GetSqlMultiselectCondition(sql, "AppID");
