@@ -1,0 +1,69 @@
+﻿@using CkgDomainLogic.Equi.Models
+@using CkgDomainLogic.Equi.ViewModels
+@model DatenOhneDokumenteViewModel 
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridDatenOhneDokumente"; }
+
+@(Html.Telerik()
+    .Grid<DatenOhneDokumente>()
+    .Name(gridName)
+    .XGroup("GridDatenOhneDokumente")
+    .DataKeys(d => d.Add(a => a.Fahrgestellnummer).RouteKey("Fahrgestellnummer"))
+    .XAjaxDataBinding("DatenOhneDokumenteAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Status).Visible(!Model.EditMode);
+        columns.Bound(c => c.IsSelected).Visible(Model.EditMode).ClientTemplate(
+                "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+            ).Filterable(false).Groupable(false).Sortable(false);
+        columns.Bound(c => c.IsSelectedShow).Visible(!Model.EditMode).ClientTemplate(
+                "<input type='checkbox' <# if (data.IsSelectedShow) { #> checked <# } #> disabled />"
+            );
+        columns.Bound(c => c.Fahrgestellnummer);
+        columns.Bound(c => c.Vertragsnummer);
+        columns.Bound(c => c.Erfassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Vertragsbeginn).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Vertragsende).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Name1);
+        columns.Bound(c => c.Name2);
+        columns.Bound(c => c.Strasse);
+        columns.Bound(c => c.Hausnummer);
+        columns.Bound(c => c.PLZ);
+        columns.Bound(c => c.Ort);
+        columns.Bound(c => c.Vertragsstatus);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridDatenOhneDokumente"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDatenOhneDokumenteFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportDatenOhneDokumenteFilteredPDF", "Equi");
+    })
+)
+
+<div class="form-horizontal">
+    <div class="form-actions">
+        @if (Model.EditMode)
+        {
+            <button type="button" class="btn" onclick="location.reload();">@Localize.Cancel</button>
+            <button type="button" class="btn green" onclick='SaveDatenOhneDokumente("MARK");'><i class="icon-ok"></i> @Localize.MarkCustomerContinuance</button>
+            <button type="button" class="btn green" onclick='SaveDatenOhneDokumente("DEL");'><i class="icon-ok"></i> @Localize.MarkDelete</button>
+            <button type="button" class="btn green hide" onclick="location.reload();">@Localize.Continue</button>
+        }
+        else
+        {
+            <button type="button" class="btn hide" onclick="location.reload();">@Localize.Cancel</button>
+            <button type="button" class="btn green hide" onclick='SaveDatenOhneDokumente("MARK");'><i class="icon-ok"></i> @Localize.MarkCustomerContinuance</button>
+            <button type="button" class="btn green hide" onclick='SaveDatenOhneDokumente("DEL");'><i class="icon-ok"></i> @Localize.MarkDelete</button>
+            <button type="button" class="btn green" onclick="location.reload();">@Localize.Continue</button>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>
