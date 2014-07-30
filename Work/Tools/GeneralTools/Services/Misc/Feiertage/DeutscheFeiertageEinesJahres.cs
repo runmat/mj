@@ -20,7 +20,6 @@ namespace GeneralTools.Services
                     new Feiertag(true, new DateTime(Jahr, 1, 1), "Neujahr"),
                     //new Feiertag(true, new DateTime(Jahr, 1, 6), "Heilige Drei Könige"),
                     new Feiertag(true, new DateTime(Jahr, 5, 1), "Tag der Arbeit"),
-                    new Feiertag(true, new DateTime(Jahr, 8, 15), "Himmelfahrt"),
                     new Feiertag(true, new DateTime(Jahr, 10, 3), "Tag der dt. Einheit"),
                     //new Feiertag(true, new DateTime(Jahr, 10, 31), "Reformationstag"),
                     //new Feiertag(true, new DateTime(Jahr, 11, 1), "Allerheiligen "),

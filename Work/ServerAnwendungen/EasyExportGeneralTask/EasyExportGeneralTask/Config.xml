@@ -1,0 +1,439 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ArrayOfTaskKonfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>Athlon</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer></Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>Athlon</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>true</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>true</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>ATHLON</easyLocation>
+        <!--<easyBlobPathLocal>C:\Programme\Athlon\Export\TempA</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\Athlon</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>ATHLON</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Dokumente</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>STEUER</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Steuerbescheide</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <!--<exportPathZBII>C:\Programme\Athlon\Export\TempB\ZBII</exportPathZBII>-->
+        <exportPathZBII>C:\TEMP\Athlon\ZBII</exportPathZBII>
+        <!--<exportPathSteuerB>C:\Programme\Athlon\Export\TempB\SteuerB</exportPathSteuerB>-->
+        <exportPathSteuerB>C:\TEMP\Athlon\SteuerB</exportPathSteuerB>
+        <!--<exportPathZip>\\vms013\PROD\dad\athlon\out</exportPathZip>-->
+        <exportPathZip>C:\TEMP\Athlon\out</exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>EuropaService</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer></Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>EuropaService</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>Europa</easyLocation>
+        <!--<easyBlobPathLocal>\\VMS013\Prod\portal\europaservice\archivtransfer</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\EuropaService</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>EuroSV</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>StarCar</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer></Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>StarCar</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>STARCAR</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\prod\portal\starcar</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\StarCar</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>STARCA</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>XLeasing</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer></Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>XLeasing</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>true</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>XLEASING</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\PROD\portal\XLeasing\optischedokumente</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\XLeasing</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>XLEASING</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>false</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>Alphabet</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>0000325503</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>Alphabet</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>false</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>true</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>true</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>true</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger>marco.carl@kroschke.de</MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>ALPHABET</easyLocation>
+        <!--<easyBlobPathLocal>C:\TEMP\Alphabet\</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\Alphabet</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>ALPHA</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>LeasePlan</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>0000336070</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>LeasePlan</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>false</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>true</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>true</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>true</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <!--<MailEmpfaenger>KFZ-Dokumente@leaseplan.de;leaseplan-daten@dad.de</MailEmpfaenger>-->
+        <MailEmpfaenger>marco.carl@kroschke.de</MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>LPLAN</easyLocation>
+        <!--<easyBlobPathLocal>C:\TEMP\Leaseplan</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\LeasePlan</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>LP</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>XLCheck</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>*</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>XLCheck</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>false</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>true</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>XLCHECK</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\PROD\portal\xlcheck\exportdaten\Beauftragung_PDF</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\XLCheck</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>XLCHECK</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>false</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>CharterWay_All</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>0010020162</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>CharterWay_All</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>CHARTERWAY</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\prod\portal\charterway\OptischeDokumente</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\CharterWay_All</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>CW</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>true</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>CharterWay_Single</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>0010020162</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>CharterWay_Single</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>false</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>true</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>true</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>CHARTERWAY</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\prod\portal\charterway</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\CharterWay_Single</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>CW</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>true</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>DCBank</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer></Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <Ablauf>DCBank</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>DCBANK</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\PROD\dad\DCBank</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\DCBank</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>DCB</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+</ArrayOfTaskKonfiguration>

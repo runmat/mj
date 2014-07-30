@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetAnsweredRespondentList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnsweredRespondentListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAnsweredRespondentListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyListByCustomerId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="intCustomerId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyListByCustomerIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyListByCustomerIdResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddRespondentToSurvey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strRespondentDetails" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddRespondentToSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddRespondentToSurveyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnswersFromRespondent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strAnswerSetId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnswersFromRespondentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAnswersFromRespondentResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnswersFromRespondent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strAnswerSetId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnswersFromRespondentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFullAnswersFromRespondentResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnsweredRespondentList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnsweredRespondentListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFullAnsweredRespondentListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnsweredRespondentListByDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFullAnsweredRespondentListByDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFullAnsweredRespondentListByDateResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyQuestionsBySurveyId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="intSurveyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="strGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyQuestionsBySurveyIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyQuestionsBySurveyIdResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetAnsweredRespondentListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAnsweredRespondentList" />
+  </wsdl:message>
+  <wsdl:message name="GetAnsweredRespondentListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAnsweredRespondentListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyListByCustomerIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyListByCustomerId" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyListByCustomerIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyListByCustomerIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddRespondentToSurveySoapIn">
+    <wsdl:part name="parameters" element="tns:AddRespondentToSurvey" />
+  </wsdl:message>
+  <wsdl:message name="AddRespondentToSurveySoapOut">
+    <wsdl:part name="parameters" element="tns:AddRespondentToSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAnswersFromRespondentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAnswersFromRespondent" />
+  </wsdl:message>
+  <wsdl:message name="GetAnswersFromRespondentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAnswersFromRespondentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnswersFromRespondentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFullAnswersFromRespondent" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnswersFromRespondentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFullAnswersFromRespondentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnsweredRespondentListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFullAnsweredRespondentList" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnsweredRespondentListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFullAnsweredRespondentListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnsweredRespondentListByDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFullAnsweredRespondentListByDate" />
+  </wsdl:message>
+  <wsdl:message name="GetFullAnsweredRespondentListByDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFullAnsweredRespondentListByDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyQuestionsBySurveyIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyQuestionsBySurveyId" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyQuestionsBySurveyIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyQuestionsBySurveyIdResponse" />
+  </wsdl:message>
+  <wsdl:portType name="NetigateAPISoap">
+    <wsdl:operation name="GetAnsweredRespondentList">
+      <wsdl:input message="tns:GetAnsweredRespondentListSoapIn" />
+      <wsdl:output message="tns:GetAnsweredRespondentListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyListByCustomerId">
+      <wsdl:input message="tns:GetSurveyListByCustomerIdSoapIn" />
+      <wsdl:output message="tns:GetSurveyListByCustomerIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddRespondentToSurvey">
+      <wsdl:input message="tns:AddRespondentToSurveySoapIn" />
+      <wsdl:output message="tns:AddRespondentToSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnswersFromRespondent">
+      <wsdl:input message="tns:GetAnswersFromRespondentSoapIn" />
+      <wsdl:output message="tns:GetAnswersFromRespondentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnswersFromRespondent">
+      <wsdl:input message="tns:GetFullAnswersFromRespondentSoapIn" />
+      <wsdl:output message="tns:GetFullAnswersFromRespondentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentList">
+      <wsdl:input message="tns:GetFullAnsweredRespondentListSoapIn" />
+      <wsdl:output message="tns:GetFullAnsweredRespondentListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentListByDate">
+      <wsdl:input message="tns:GetFullAnsweredRespondentListByDateSoapIn" />
+      <wsdl:output message="tns:GetFullAnsweredRespondentListByDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyQuestionsBySurveyId">
+      <wsdl:input message="tns:GetSurveyQuestionsBySurveyIdSoapIn" />
+      <wsdl:output message="tns:GetSurveyQuestionsBySurveyIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetigateAPISoap" type="tns:NetigateAPISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAnsweredRespondentList">
+      <soap:operation soapAction="http://tempuri.org/GetAnsweredRespondentList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyListByCustomerId">
+      <soap:operation soapAction="http://tempuri.org/GetSurveyListByCustomerId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddRespondentToSurvey">
+      <soap:operation soapAction="http://tempuri.org/AddRespondentToSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnswersFromRespondent">
+      <soap:operation soapAction="http://tempuri.org/GetAnswersFromRespondent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnswersFromRespondent">
+      <soap:operation soapAction="http://tempuri.org/GetFullAnswersFromRespondent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentList">
+      <soap:operation soapAction="http://tempuri.org/GetFullAnsweredRespondentList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentListByDate">
+      <soap:operation soapAction="http://tempuri.org/GetFullAnsweredRespondentListByDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyQuestionsBySurveyId">
+      <soap:operation soapAction="http://tempuri.org/GetSurveyQuestionsBySurveyId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="NetigateAPISoap12" type="tns:NetigateAPISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAnsweredRespondentList">
+      <soap12:operation soapAction="http://tempuri.org/GetAnsweredRespondentList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyListByCustomerId">
+      <soap12:operation soapAction="http://tempuri.org/GetSurveyListByCustomerId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddRespondentToSurvey">
+      <soap12:operation soapAction="http://tempuri.org/AddRespondentToSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnswersFromRespondent">
+      <soap12:operation soapAction="http://tempuri.org/GetAnswersFromRespondent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnswersFromRespondent">
+      <soap12:operation soapAction="http://tempuri.org/GetFullAnswersFromRespondent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentList">
+      <soap12:operation soapAction="http://tempuri.org/GetFullAnsweredRespondentList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFullAnsweredRespondentListByDate">
+      <soap12:operation soapAction="http://tempuri.org/GetFullAnsweredRespondentListByDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyQuestionsBySurveyId">
+      <soap12:operation soapAction="http://tempuri.org/GetSurveyQuestionsBySurveyId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NetigateAPI">
+    <wsdl:port name="NetigateAPISoap" binding="tns:NetigateAPISoap">
+      <soap:address location="https://www.netigate.se/netigateapidad/netigateapi.asmx" />
+    </wsdl:port>
+    <wsdl:port name="NetigateAPISoap12" binding="tns:NetigateAPISoap12">
+      <soap12:address location="https://www.netigate.se/netigateapidad/netigateapi.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
