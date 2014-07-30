@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ArrayOfDbConnection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <DbConnection>
+        <Name>VMS012</Name>
+        <ConnectionString>Data Source=vms012;initial catalog=CKGPortal;User ID=DADWebAccess;Password=seE?Anemone;persist security info=true;packet size=4096</ConnectionString>
+    </DbConnection>
+
+    <DbConnection>
+        <Name>VMS056_ZLD</Name>
+        <ConnectionString>Data Source=vms056;initial catalog=CKGPortalTest;User ID=DADWebAccess;Password=seE?Anemone;persist security info=true;packet size=4096</ConnectionString>
+    </DbConnection>
+
+    <DbConnection>
+        <Name>VMS056_AH</Name>
+        <ConnectionString>Data Source=vms056;initial catalog=ZLDAutohaus;User ID=DADWebAccess;Password=seE?Anemone;persist security info=true;packet size=4096</ConnectionString>
+    </DbConnection>
+
+    <DbConnection>
+        <Name>VMS029</Name>
+        <ConnectionString>Data Source=vms029;initial catalog=CKGPortal;User ID=DADWebAccess;Password=seE?Anemone;persist security info=true;packet size=4096</ConnectionString>
+    </DbConnection>
+
+</ArrayOfDbConnection>

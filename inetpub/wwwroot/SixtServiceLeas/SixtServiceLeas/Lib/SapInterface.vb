@@ -8,7 +8,9 @@ Public Class SapInterface
         Dim strKUNNR As String = "0000300997"
 
         Try
-            Dim impTable As DataTable = S.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
+            Dim objS As New S()
+
+            Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
             For Each item As VehicleRegistrationZul In VehicleRegistrations
                 With item
@@ -132,7 +134,12 @@ Public Class SapInterface
                 End With
             Next
 
-            Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            Dim expTable As DataTable = objS.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -159,7 +166,9 @@ Public Class SapInterface
         Dim strKUNNR As String = "0000300997"
 
         Try
-            Dim impTable As DataTable = S.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
+            Dim objS As New S()
+
+            Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
             For Each item As VehicleRegistrationSonst In VehicleRegistrations
                 With item
@@ -275,7 +284,12 @@ Public Class SapInterface
                 End With
             Next
 
-            Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            Dim expTable As DataTable = objS.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -302,7 +316,9 @@ Public Class SapInterface
         Dim strKUNNR As String = "0000300997"
 
         Try
-            Dim impTable As DataTable = S.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
+            Dim objS As New S()
+
+            Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
             For Each item As VehicleRegistrationEndgVers In VehicleRegistrations
                 With item
@@ -354,7 +370,12 @@ Public Class SapInterface
                 End With
             Next
 
-            Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            Dim expTable As DataTable = objS.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -381,7 +402,9 @@ Public Class SapInterface
         Dim strKUNNR As String = "0000300997"
 
         Try
-            Dim impTable As DataTable = S.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
+            Dim objS As New S()
+
+            Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
             For Each item As VehicleRegistrationTempVers In VehicleRegistrations
                 With item
@@ -453,7 +476,12 @@ Public Class SapInterface
                 End With
             Next
 
-            Dim expTable As DataTable = S.AP.GetExportTableWithExecute("GT_WEB")
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            Dim expTable As DataTable = objS.AP.GetExportTableWithExecute("GT_WEB")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(expTable), ConfigurationManager.AppSettings("LogTableName"))
 
             VerifyResult(impTable, expTable)
 
@@ -563,9 +591,11 @@ Public Class SapInterface
         Dim strTest As String = ConfigurationManager.AppSettings("ISTEST")
 
         Try
-            S.AP.Init("Z_M_STATUS_SIXT_LS_001", "I_KUNNR, I_TEST", "A", strTest)
+            Dim objS As New S()
 
-            Return S.AP.GetExportParameterWithExecute("E_XML")
+            objS.AP.Init("Z_M_STATUS_SIXT_LS_001", "I_KUNNR, I_TEST", "A", strTest)
+
+            Return objS.AP.GetExportParameterWithExecute("E_XML")
 
         Catch ex As Exception
             Select Case CastSapBizTalkErrorMessage(ex.Message)
@@ -579,7 +609,7 @@ Public Class SapInterface
         End Try
     End Function
 
-    Public Shared Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String
+    Private Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String
         If errorMessage.Contains("SapErrorMessage") = True Then
 
             Dim errMessage As String = Mid(errorMessage, errorMessage.IndexOf("SapErrorMessage") + 17, _
@@ -593,6 +623,33 @@ Public Class SapInterface
             Return errorMessage
 
         End If
+    End Function
+
+    Private Function GetTableAsString(ByVal tbl As DataTable) As String
+        Dim erg As String = ""
+
+        If tbl IsNot Nothing Then
+            'Header
+            erg &= tbl.TableName & vbNewLine
+            erg &= "["
+            For i As Integer = 0 To tbl.Columns.Count - 1
+                erg &= tbl.Columns(i).ColumnName & "|"
+            Next
+            If erg.EndsWith("|") Then erg = erg.Substring(0, erg.Length - 1)
+            erg &= "]" & vbNewLine
+
+            'Daten
+            For j As Integer = 0 To tbl.Rows.Count - 1
+                erg &= "["
+                For k As Integer = 0 To tbl.Columns.Count - 1
+                    erg &= tbl.Rows(j)(tbl.Columns(k)).ToString() & "|"
+                Next
+                If erg.EndsWith("|") Then erg = erg.Substring(0, erg.Length - 1)
+                erg &= "]" & vbNewLine
+            Next
+        End If
+
+        Return erg
     End Function
 
 End Class

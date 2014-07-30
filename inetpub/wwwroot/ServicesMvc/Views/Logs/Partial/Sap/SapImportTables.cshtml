@@ -1,0 +1,24 @@
+﻿@model System.Data.DataTable[] 
+
+@if (Model == null)
+{
+   <div>(keine SAP Importdaten verfügbar)</div>
+}
+else
+{
+    <div class="sap-tables-context">
+    
+        <div>
+            @for (var i = 0; i < Model.Length; i++)
+            {
+                var dataTable = Model[i];
+
+                <div class="table-header"><strong>@dataTable.TableName</strong></div>
+                <div class="table-content">
+                    @Html.Telerik().Grid(dataTable).Name(dataTable.TableName)
+                </div>
+            }
+        </div>
+
+    </div>
+}

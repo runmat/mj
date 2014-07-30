@@ -153,7 +153,26 @@ namespace GeneralTools.Services
 
             return data;
         }
-        
+
+        public static T XmlTryDeserializeFromFile<T>(string xmlFileName) 
+        {
+            if (!File.Exists(xmlFileName))
+                return default(T);
+
+            T data;
+
+            try
+            {
+                data = (T)XmlDeserialize(new StreamReader(xmlFileName), typeof(T));
+            }
+            catch
+            {
+                return default(T);
+            }
+
+            return data;
+        }      
+  
         public static T XmlTryDeserializeFromPath<T>(string xmlDirectoryName, string fileNameWithoutDirectory) where T : class, new()
         {
             var xmlFileName = GetXmlFileName(xmlDirectoryName, fileNameWithoutDirectory);

@@ -6,9 +6,9 @@ Imports SapORM.Services
 
 Public Class S
 
-    Private Shared _sapDataService As ISapDataService
+    Private _sapDataService As ISapDataService
 
-    Public Shared ReadOnly Property AP() As ISapDataService
+    Public ReadOnly Property AP() As ISapDataService
         Get
             If (_sapDataService Is Nothing) Then
                 _sapDataService = SapDataServiceFactory.Create()
@@ -18,7 +18,7 @@ Public Class S
         End Get
     End Property
 
-    Public Shared ReadOnly Property SapDataServiceFactory() As ISapDataServiceFactory
+    Public ReadOnly Property SapDataServiceFactory() As ISapDataServiceFactory
         Get
             Return New SapDataServiceFromConfigNoCacheFactory()
         End Get
