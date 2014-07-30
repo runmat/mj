@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using GeneralTools.Log.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.Logs.Models
 {
@@ -15,6 +14,7 @@ namespace CkgDomainLogic.Logs.Models
 
         [LocalizedDisplay(LocalizeConstants.Date)]
         [NotMapped]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
         public DateTime Datum { get { return time_stamp; } }
         
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
@@ -47,9 +47,9 @@ namespace CkgDomainLogic.Logs.Models
         public string Portal { get { return LogConstants.PortalTypes.TryGetValue(PortalType.GetValueOrDefault()); } }
 
 
-        [GridRawHtml, NotMapped]
-        [LocalizedDisplay(LocalizeConstants.StackContext)]
-        public string StackContextHtml { get { return StackContextItemTemplate == null ? "" : StackContextItemTemplate(this.StackContext); } }
+        //[GridRawHtml, NotMapped]
+        //[LocalizedDisplay(LocalizeConstants.StackContext)]
+        //public string StackContextHtml { get { return StackContextItemTemplate == null ? "" : StackContextItemTemplate(this.StackContext); } }
 
 
         #region Grid Hidden
@@ -63,13 +63,7 @@ namespace CkgDomainLogic.Logs.Models
         public int? CustomerID { get; set; }
 
         [GridHidden]
-        public string LogonContext { get; set; }
-
-        [GridHidden]
         public int? PortalType { get; set; }
-
-        [GridHidden]
-        public string DataContext { get; set; }
 
         // ReSharper disable InconsistentNaming
         [GridHidden]
@@ -83,69 +77,27 @@ namespace CkgDomainLogic.Logs.Models
         [GridHidden]
         public string DauerCssClass { get { return SapBapiDuration.GetSapBapiDuration(Dauer).LevelCssClass; } }
 
-        [GridHidden, NotMapped]
-        public StackContext StackContext
-        {
-            get
-            {
-                if (StackContextItemTemplate == null || DataContext.IsNullOrEmpty())
-                    return new StackContext();
+        //[GridHidden]
+        //public string LogonContext { get; set; }
 
-                return XmlService.XmlTryDeserializeFromString<StackContext>(DataContext);
-            }
-        }
+        //[GridHidden]
+        //public string DataContext { get; set; }
 
-        [GridHidden, NotMapped]
-        public static Func<StackContext, string> StackContextItemTemplate { get; set; }
+        //[GridHidden, NotMapped]
+        //public StackContext StackContext
+        //{
+        //    get
+        //    {
+        //        if (StackContextItemTemplate == null || DataContext.IsNullOrEmpty())
+        //            return new StackContext();
+
+        //        return XmlService.XmlTryDeserializeFromString<StackContext>(DataContext);
+        //    }
+        //}
+
+        //[GridHidden, NotMapped]
+        //public static Func<StackContext, string> StackContextItemTemplate { get; set; }
 
         #endregion
-
-        /*
-         * ITA 7295
-        Hier das SQL Script was gegen die Prod Datenbank laufen muss.  Es ist bereits gegen DEV gelaufen
-        */
-
-        /*
-
-ALTER TABLE SapBapi ADD Browesr VARCHAR(60) AFTER portalType;
-DROP VIEW `SapBapiView`;
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `karl2heinz`@`%` 
-    SQL SECURITY DEFINER
-VIEW `SapBapiView` AS
-    select 
-        `U`.`Username` AS `UserName`,
-        `C`.`Customername` AS `CustomerName`,
-        `A`.`AppFriendlyName` AS `AppFriendlyName`,
-        `A`.`AppName` AS `AppName`,
-        `L`.`Id` AS `Id`,
-        `L`.`Anmeldename` AS `Anmeldename`,
-        `L`.`Bapi` AS `Bapi`,
-        `L`.`ImportParameters` AS `ImportParameters`,
-        `L`.`ImportTables` AS `ImportTables`,
-        `L`.`DataContext` AS `DataContext`,
-        `L`.`LogonContext` AS `LogonContext`,
-        `L`.`Status` AS `Status`,
-        `L`.`time_stamp` AS `time_stamp`,
-        `L`.`dauer` AS `dauer`,
-        `L`.`ExportParameters` AS `ExportParameters`,
-        `L`.`ExportTables` AS `ExportTables`,
-        `L`.`AppId` AS `AppId`,
-        `L`.`userID` AS `userID`,
-        `L`.`customerID` AS `customerID`,
-        `L`.`kunnr` AS `kunnr`,
-        `L`.`portalType` AS `portalType`,
-        `L`.`Browser` AS `Browser`
-    from
-        (((`LogsTest`.`SapBapi` `L`
-        join `Customer` `C` ON ((`L`.`customerID` = `C`.`CustomerID`)))
-        join `WebUser` `U` ON ((`L`.`userID` = `U`.`UserID`)))
-        join `ApplicationTranslated` `A` ON ((`L`.`AppId` = `A`.`AppID`)))
-
-
-
-        */
-
     }
 }
