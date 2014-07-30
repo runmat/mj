@@ -3,38 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.Ueberfuehrung.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
+    public enum AdressenTyp { FahrtAdresse, RechnungsAdresse }
+
     public class Adresse : DomainCommon.Models.Adresse 
     {
-        public string GroupName { get; set; }
-
-        public string SubGroupName { get; set; }
-
-        public string Header { get; set; }
-
-        private string _headerShort;
-        public string HeaderShort
-        {
-            get { return !string.IsNullOrEmpty(_headerShort) ? _headerShort : Header; }
-            set { _headerShort = value; }
-        }
-
         public AdressenTyp AdressTyp { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContactpersonRequired)]
+        [LocalizedDisplay(LocalizeConstants.Contactperson)]
         public string Ansprechpartner { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
-        public string Carport { get; set; }
-
         [XmlIgnore, SelectListText]
-        public string FirmaOrt { get { return Ort.IsNullOrEmpty() ? Name1 : String.Format("{0}, {1}", Name1, Ort); } }
+        public string NameOrt { get { return Ort.IsNullOrEmpty() ? Name1 : String.Format("{0}, {1}", Name1, Ort); } }
 
         [LocalizedDisplay(LocalizeConstants.Selection)]
         public int SelectedID { get; set; }
@@ -48,13 +33,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [XmlIgnore]
         public string UhrzeitwunschOptions { get { return "; 08:00; 09:00; 10:00; 11:00; 12:00; 13:00; 14:00; 15:00; 16:00; 17:00; 18:00"; } }
         public bool UhrzeitwunschAvailable { get; set; }
-
-        [XmlIgnore]
-        static public List<Ueberfuehrung.Models.Adresse> RechnungsAdressen { get; set; }
-
-        private List<Ueberfuehrung.Models.Adresse> _filteredRechnungsAdressen;
-        [XmlIgnore]
-        public List<Ueberfuehrung.Models.Adresse> FilteredRechnungsAdressen { get { return (_filteredRechnungsAdressen ?? (_filteredRechnungsAdressen = RechnungsAdressen.Where(a => a.SubTyp == SubTyp).ToList())); } }
 
         private string _transportTyp = "";
 
@@ -71,9 +49,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
 
         [XmlIgnore]
-        public static List<Ueberfuehrung.Models.TransportTyp> AlleTransportTypen { get; set; }
+        public static List<TransportTyp> AlleTransportTypen { get; set; }
         [XmlIgnore]
-        public List<Ueberfuehrung.Models.TransportTyp> ValideTransportTypen
+        public List<TransportTyp> ValideTransportTypen
         {
             get
             {
@@ -94,7 +72,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                                                          String.Format("fahrzeug{0}", fahrzeugIndex),
                                                          String.Format("fahrzeug {0}", fahrzeugIndex),
                                                      };
-                var intelligentTransportTypes = new List<Ueberfuehrung.Models.TransportTyp>();
+                var intelligentTransportTypes = new List<TransportTyp>();
                 AlleTransportTypen.ForEach(transportTyp =>
                 {
                     var matchTransportType = intelligentFahrzeugMatches.FirstOrDefault(match => transportTyp.Name.ToLower().Contains(match));
@@ -123,7 +101,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         }
 
         [XmlIgnore]
-        public List<Ueberfuehrung.Models.Fahrt> Fahrten { get; set; }
+        public List<Fahrt> Fahrten { get; set; }
 
         [XmlIgnore]
         public string FahrzeugBezeichnung
@@ -208,7 +186,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             return dict;
         }
 
-        public static Ueberfuehrung.Models.TransportTyp GetTransportTypModel(string transportTyp)
+        public static TransportTyp GetTransportTypModel(string transportTyp)
         {
             return (AlleTransportTypen == null ? null : AlleTransportTypen.FirstOrDefault(tt => tt.ID == transportTyp));
         }

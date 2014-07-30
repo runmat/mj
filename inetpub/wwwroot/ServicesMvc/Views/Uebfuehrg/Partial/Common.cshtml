@@ -1,6 +1,76 @@
-﻿
+﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgViewModel
+
 <style type="text/css">
 
 </style>
 
+<script type="text/javascript">
 
+    var _modelIsValid = false;
+
+    function FormPreparePrivate() {
+
+        try { FormWizardInitPrivate(); } catch (e) { }
+
+    };
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $('.tooltips').tooltip();
+    }
+
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+
+            var ajaxFormID = "#AjaxForm" + (step - 2);
+            $(ajaxFormID).submit();
+            return false;
+
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+
+            AjaxRequestNextStep();
+
+            return true;
+        });
+
+        FormWizard.OnRestart(function () {
+            location.reload();
+        });
+    }
+
+    function AjaxFormComplete() {
+        console.log(_modelIsValid);
+        FormPrepareAjax();
+        if (_modelIsValid)
+            AjaxRequestNextStep();
+    }
+
+    function AjaxRequestNextStep() {
+        $.ajax({
+            type: "POST",
+            url: "NextStepView",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+            }
+        });
+    }
+
+
+</script>

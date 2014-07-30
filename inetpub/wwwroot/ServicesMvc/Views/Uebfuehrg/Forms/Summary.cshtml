@@ -1,0 +1,16 @@
+﻿@model CkgDomainLogic.DomainCommon.Models.CommonUiModel 
+
+<div id="Div_@Model.UiIndex" class="margin-top-20">
+    @using (Ajax.BeginForm(@Model.GetType().Name + "Form", "Uebfuehrg", null,
+                new MvcAjaxOptions { UpdateTargetId = "Div_" + Model.UiIndex, OnComplete = "AjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + Model.UiIndex }))
+    {
+        <div>Übersicht</div>
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        
+        </script>
+    }
+</div>

@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
-    public class Fahrzeug
+    public class Fahrzeug : CommonUiModel
     {
         private string _mFIN;
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants.VINRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN
         {
             get { return _mFIN; }
@@ -23,9 +24,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private string _mKennzeichenOrt;
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants.LicenseNoRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string KennzeichenOrt
         {
             get { return _mKennzeichenOrt; }
@@ -34,8 +34,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private string _mKennzeichenRest;
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
+        [Required]
         [LocalizedDisplay(LocalizeConstants.Hyphen)]
         public string KennzeichenRest
         {
@@ -45,9 +44,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private string _mTyp;
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants._TypRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants._Typ)]
         public string Typ
         {
             get { return _mTyp; }
@@ -56,7 +54,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private string _mReferenznummer;
 
-        [ModelMappingClearable]
         [LocalizedDisplay(LocalizeConstants._Referenznummer)]
         public string Referenznummer
         {
@@ -66,9 +63,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         public string FahrzeugIndex { get; set; }
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants._FahrzeugwertRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.VehicleValue)]
         public string Fahrzeugwert { get; set; }
 
         [XmlIgnore]
@@ -85,20 +81,17 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants._FahrzeugZugelassenUndBetriebsbereitRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.VehiclesLicenseStatus)]
         public string FahrzeugZugelassen { get; set; }
 
         public string FahrzeugZugelassenDAD { get { return "N"; } }
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
+        [Required]
         [LocalizedDisplay(LocalizeConstants._ZulassungAnKroschkeBeauftragtRequired)]
         public string ZulassungsauftragAnDAD { get; set; }
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
+        [Required]
         [LocalizedDisplay(LocalizeConstants._Bereifung)]
         public string Bereifung { get; set; }
         [XmlIgnore]
@@ -116,9 +109,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [RequiredButModelOptional]
-        [ModelMappingClearable]
-        [LocalizedDisplay(LocalizeConstants._FahrzeugklasseRequired)]
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.VehicleClass)]
         public string Fahrzeugklasse { get; set; }
         [XmlIgnore]
         public List<SelectItem> FahrzeugklasseOptions 
@@ -134,9 +126,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 }; 
             } 
         }
-
-        public bool RequestLoadCarData { get; set; }
-        public string RequestLoadCarDataSource { get; set; }
 
         [XmlIgnore]
         public string EmptyString { get { return ""; } }

@@ -1,15 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
-    public class DienstleistungsAuswahl
+    public class DienstleistungsAuswahl : CommonUiModel
     {
-        public string FahrtIndex { get; set; }
+        public string FahrtIndex
+        {
+            get { return _fahrtIndex; }
+            set
+            {
+                _fahrtIndex = value;
+                Bemerkungen.FahrtIndex = value;
+            }
+        }
 
         public string FahrtTyp { get; set; }
+
+        public Bemerkungen Bemerkungen { get; set; }
 
         // Alle Dienstleistungen
         [XmlIgnore]
@@ -40,6 +51,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             
         // Nicht gewählte Dienstleistungen
         private string _nichtGewaehlteDienstleistungenString;
+        private string _fahrtIndex;
+
         public string NichtGewaehlteDienstleistungenString
         {
             get { return _nichtGewaehlteDienstleistungenString.NotNullOrEmpty(); }
@@ -56,6 +69,12 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             {
                 return AvailableDienstleistungen != null && (!string.IsNullOrEmpty(GewaehlteDienstleistungenString) || !string.IsNullOrEmpty(NichtGewaehlteDienstleistungenString));
             }
+        }
+
+
+        public DienstleistungsAuswahl()
+        {
+            Bemerkungen = new Bemerkungen();
         }
 
         public void InitAuswahlDienstleistungen(List<Dienstleistung> dienstleistungen)

@@ -35,9 +35,86 @@ namespace ServicesMvc.Controllers
         }
 
 
+        #region Common
+
+        [HttpPost]
+        public ActionResult NextStepView()
+        {
+            ViewModel.MoveToNextStep();
+
+            return PartialView("CurrentStepView", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CurrentStepView()
+        {
+            return PartialView(ViewModel);
+        }
+
+        private PartialViewResult GetStepPartialView()
+        {
+            return PartialView(ViewModel.StepCurrentFormPartialViewName, ViewModel.StepCurrentModel);
+        }
+
+        #endregion
+
+
+
+        #region RgDaten
+
+        [HttpPost]
+        public ActionResult RgDatenForm(RgDaten model)
+        {
+            ViewModel.StepCurrentIndex = model.UiIndex;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.SaveSubModelWithPreservingUiModel(model);
+                //LogonContext.DataContextPersist(ViewModel);
+
+                var vmRgDaten = ViewModel.GetStepModel();
+            }
+
+            return GetStepPartialView();
+        }
+
+        #endregion
+
+
         #region Fahrzeug
 
+        [HttpPost]
+        public ActionResult FahrzeugForm(Fahrzeug model)
+        {
+            ViewModel.StepCurrentIndex = model.UiIndex;
 
+            if (ModelState.IsValid)
+            {
+                ViewModel.SaveSubModelWithPreservingUiModel(model);
+
+                var vmFahrzeug = ViewModel.GetStepModel();
+            }
+
+            return GetStepPartialView();
+        }
+
+        #endregion
+
+
+        #region Adresse
+
+        [HttpPost]
+        public ActionResult AdresseForm(Adresse model)
+        {
+            ViewModel.StepCurrentIndex = model.UiIndex;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.SaveSubModelWithPreservingUiModel(model);
+            }
+
+            return GetStepPartialView();
+        }
 
         #endregion
 
