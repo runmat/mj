@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
 using CkgDomainLogic.Logs.Models;
 using GeneralTools.Log.Models.MultiPlatform;
 
@@ -23,6 +24,18 @@ namespace CkgDomainLogic.Logs.Services
         {
             return Database.SqlQuery<SapLogItem>(sapLogItemSelector.GetSqlSelectStatement());
         }
+
+        public SapLogItemDetailed GetSapLogItemDetailed(int id)
+        {
+            return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
+        }
+        
+        
+        public IEnumerable<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector)
+        {
+            return Database.SqlQuery<PageVisitLogItem>(pageVisitLogItemSelector.GetSqlSelectStatement());
+        }
+
 
         public IEnumerable<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector)
         {
