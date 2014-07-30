@@ -1627,7 +1627,7 @@ Imports CKG.Base.Common
         row("LAND_EMPF") = m_strLaenderKuerzel
         row("SYSTEMKENNZ") = ""
         row("AUFTRAGGEBERID") = m_objUser.UserName
-        row("ANSPRECHPART_NAME") = m_strName2
+        row("NAME_ANSP") = m_strName2
         row("NAME_ANF") = ""
         row("VORNAME_ANF") = ""
         row("STRASSE_ANF") = ""
@@ -1689,7 +1689,7 @@ Imports CKG.Base.Common
                         SapRow("LAND_EMPF") = m_strLaenderKuerzel
                         SapRow("SYSTEMKENNZ") = ""
                         SapRow("AUFTRAGGEBERID") = m_objUser.UserName
-                        SapRow("ANSPRECHPART_NAME") = m_strName2
+                        SapRow("NAME_ANSP") = m_strName2
                         SapRow("NAME_ANF") = ""
                         SapRow("VORNAME_ANF") = ""
                         SapRow("STRASSE_ANF") = ""

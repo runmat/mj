@@ -1418,6 +1418,33 @@
                                                         </asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
+                                                <asp:TemplateField SortExpression="PAID" HeaderText="col_PAID">
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_PAID" runat="server" CommandName="Sort" CommandArgument="PAID">col_PAID</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" ID="lblPAID" Text='<%# DataBinder.Eval(Container, "DataItem.PAID") %>'>
+                                                        </asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField SortExpression="KONTONR" HeaderText="col_KONTONR">
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_KONTONR" runat="server" CommandName="Sort" CommandArgument="KONTONR">col_KONTONR</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" ID="lblKONTONR" Text='<%# DataBinder.Eval(Container, "DataItem.KONTONR") %>'>
+                                                        </asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField SortExpression="CIN" HeaderText="col_CIN">
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_CIN" runat="server" CommandName="Sort" CommandArgument="CIN">col_CIN</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" ID="lblCIN" Text='<%# DataBinder.Eval(Container, "DataItem.CIN") %>'>
+                                                        </asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField SortExpression="NummerZBII" HeaderText="col_NummerZBII">
                                                     <HeaderTemplate>
                                                         <asp:LinkButton ID="col_NummerZBII" runat="server" CommandName="Sort" CommandArgument="NummerZBII">col_NummerZBII</asp:LinkButton>
