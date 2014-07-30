@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Portal", "Portal.vbproj", "{30A2EB24-1053-4213-A502-DC1534F4D73E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7} = {A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\BtBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
 EndProject
