@@ -118,7 +118,7 @@
                                         </tr>
                                         <tr class="formquery">
                                             <td colspan="3" align="right" class="firstLeft active" nowrap="nowrap">
-                                                <asp:LinkButton ID="lbtAcceptBasisdaten" runat="server" CssClass="TablebuttonMiddle" Text="Übernehmnen" Width="100px" 
+                                                <asp:LinkButton ID="lbtAcceptBasisdaten" runat="server" CssClass="TablebuttonMiddle" Text="Übernehmen" Width="100px" 
                                                 Height="20px" TabIndex="7"></asp:LinkButton>
                                             </td>
                                         </tr>

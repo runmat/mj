@@ -256,13 +256,119 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_READ_EQUI_MAHN_01.GT_OUT, EquiMahn> Z_DPM_READ_EQUI_MAHN_01_GT_OUT_To_EquiMahn
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_MAHN_01.GT_OUT, EquiMahn>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.VertragsNr = s.LIZNR;
+                            d.FahrgestellNr = s.CHASSIS_NUM;
+                            d.Kennzeichen = s.LICENSE_NUM;
+                            d.Erstzulassung = s.REPLA_DATE;
+                            d.Versanddatum = s.ZZTMPDT;
+                            d.UeberfaelligSeit = s.UEBERF_SEIT;
+                            d.Mahnstufe = s.ZZMAHNS;
+                            d.EmpfaengerName = s.NAME1_Z5;
+                            d.EmpfaengerStrasse = s.STREET_Z5;
+                            d.EmpfaengerPlz = s.POST_CODE1_Z5;
+                            d.EmpfaengerOrt = s.CITY1_Z5;
+                        }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_DAT_OHNE_DOKUMENT_01.GT_OUT, DatenOhneDokumente> Z_DPM_DAT_OHNE_DOKUMENT_01_GT_OUT_To_DatenOhneDokumente
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_DAT_OHNE_DOKUMENT_01.GT_OUT, DatenOhneDokumente>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Erfassungsdatum = s.ERDAT;
+                        d.Vertragsbeginn = s.DAT_VERTR_BEG;
+                        d.Vertragsende = s.DAT_VERTR_END;
+                        d.Name1 = s.NAME1_ZL;
+                        d.Name2 = s.NAME2_ZL;
+                        d.Strasse = s.STREET_ZL;
+                        d.Hausnummer = s.HOUSE_NUM1_ZL;
+                        d.PLZ = s.POST_CODE1_ZL;
+                        d.Ort = s.CITY1_ZL;
+                        d.Vertragsstatus = s.VERTRAGS_STAT;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_BRIEFBESTAND_002.GT_DATEN, FahrzeugbriefErweitert> Z_DPM_BRIEFBESTAND_002_GT_DATEN_To_FahrzeugbriefErweitert
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_BRIEFBESTAND_002.GT_DATEN, FahrzeugbriefErweitert>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.TechnIdentnummer = s.TIDNR;
+                        d.AbcKennzeichen = s.ABCKZ;
+                        d.Raum = s.MSGRP;
+                        d.Standort = s.STORT;
+                        d.Versandgrund = s.ZZVGRUND;
+                        d.VersandgrundText = s.VERSGRU_TXT;
+                        d.Eingangsdatum = s.DATAB;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Stilllegungsdatum = s.EXPIRY_DATE;
+                        d.Pickdatum = s.PICKDAT;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
+                        d.Name1 = s.NAME1_ZL;
+                        d.Name2 = s.NAME2_ZL;
+                        d.Ort = s.CITY1_ZL;
+                        d.PLZ = s.POST_CODE1_ZL;
+                        d.Strasse = s.STREET_ZL;
+                        d.Hausnummer = s.HOUSE_NUM1_ZL;
+                        d.VertragsBeginn = s.DAT_VERTR_BEG;
+                        d.VertragsEnde = s.DAT_VERTR_END;
+                        d.VertragsStatus = s.VERTRAGS_STAT;
+                    }));
+            }
+        }
+
         #endregion
 
 
         #region Save to Repository
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_MARK_DAT_OHNE_DOKUM_01.GT_DAT, DatenOhneDokumente> Z_DPM_MARK_DAT_OHNE_DOKUM_01_GT_DAT_From_DatenOhneDokumente
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_MARK_DAT_OHNE_DOKUM_01.GT_DAT, DatenOhneDokumente>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.CHASSIS_NUM = s.Fahrgestellnummer;
+                        d.VERTRAGS_STAT = s.Vertragsstatus;
+                        d.LOESCH = (s.Loeschkennzeichen ? "X" : "");
+                    }));
+            }
+        }
         
-
         #endregion
     }
 }
