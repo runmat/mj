@@ -13,13 +13,15 @@ namespace ServicesMvc.Controllers
 
 
         public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
-            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService)
+            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService, 
+            IHalterabweichungenDataService halterabweichungenDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
             InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
             InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);
+            InitViewModel(HalterabweichungenViewModel, appSettings, logonContext, halterabweichungenDataService);
         }
 
         public ActionResult Index()

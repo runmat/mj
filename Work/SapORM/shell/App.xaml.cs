@@ -198,7 +198,7 @@ namespace SapORM
 
             //Halterabweichungen
             //new FunctionReflector("Z_DPM_DAT_MIT_ABW_ZH_01").WriteOrmForExportTableStructures("I_AG", "10062897");
-            //new FunctionReflector("Z_DPM_SET_ZH_ABW_ERL_01").WriteOrmForExportTableStructures("I_AG, I_CHASSIS_NUM", "10062897", "ABC");
+            //new FunctionReflector("Z_DPM_SET_ZH_ABW_ERL_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
             //CoCTest();
             //TeslaTest();

@@ -256,12 +256,54 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_DAT_MIT_ABW_ZH_01.GT_OUT, Halterabweichung> Z_DPM_DAT_MIT_ABW_ZH_01_GT_OUT_To_Halterabweichung
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_DAT_MIT_ABW_ZH_01.GT_OUT, Halterabweichung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Vertragspartner_Name1 = s.NAME1_ZL;
+                        d.Vertragspartner_Name2 = s.NAME2_ZL;
+                        d.Vertragspartner_Strasse = s.STREET_ZL;
+                        d.Vertragspartner_Hausnummer = s.HOUSE_NUM1_ZL;
+                        d.Vertragspartner_PLZ = s.POST_CODE1_ZL;
+                        d.Vertragspartner_Ort = s.CITY1_ZL;
+                        d.Halter_Name1 = s.NAME1_ZH;
+                        d.Halter_Name2 = s.NAME2_ZH;
+                        d.Halter_Strasse = s.STREET_ZH;
+                        d.Halter_Hausnummer = s.HOUSE_NUM1_ZH;
+                        d.Halter_PLZ = s.POST_CODE1_ZH;
+                        d.Halter_Ort = s.CITY1_ZH;
+                        d.Vertragsbeginn = s.DAT_VERTR_BEG;
+                        d.Vertragsende = s.DAT_VERTR_END;
+                    }));
+            }
+        }
+
         #endregion
 
 
         #region Save to Repository
 
-        
+        static public ModelMapping<Z_DPM_SET_ZH_ABW_ERL_01.GT_TAB, Halterabweichung> Z_DPM_SET_ZH_ABW_ERL_01_GT_TAB_From_Halterabweichung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SET_ZH_ABW_ERL_01.GT_TAB, Halterabweichung>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.CHASSIS_NUM = source.Fahrgestellnummer;
+                    }));
+            }
+        }
 
         #endregion
     }
