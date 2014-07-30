@@ -1,0 +1,32 @@
+﻿@model CkgDomainLogic.Uebfuehrg.Models.RgDaten 
+
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
+    {
+        <div class="margin-bottom-15">@Model.Header</div>
+
+        <div class="margin-bottom-15">@Model.GetType().FullName</div>
+
+        <div class="margin-bottom-15">Rechnung: @Model.ReKundenNr</div>
+
+        <div class="margin-bottom-15">Ich hasse Rechnungen...</div>
+
+        
+        @Html.HiddenFor(m => m.UiIndex)
+
+
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.ReKundenNr, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.RgKundenNr, new { @class = "m-wrap medium" })
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        
+        </script>
+    }
+</div>

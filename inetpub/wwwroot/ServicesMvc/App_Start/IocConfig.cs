@@ -29,6 +29,8 @@ using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Services;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
+using CkgDomainLogic.Uebfuehrg.Contracts;
+using CkgDomainLogic.Uebfuehrg.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -133,6 +135,8 @@ namespace ServicesMvc.App_Start
                 builder.RegisterType<VersEventsDataServiceSQL>().As<IVersEventsDataService>().InstancePerHttpRequest();
             else
                 builder.RegisterType<VersEventsDataServiceSAP>().As<IVersEventsDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

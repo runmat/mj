@@ -10,9 +10,8 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.DomainCommon.Models
 {
-    public class Adresse : IAddressStreetHouseNo, IValidatableObject
+    public class Adresse : CommonUiModel, IAddressStreetHouseNo, IValidatableObject
     {
-        [ModelMappingCompareIgnore]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Name1)]
@@ -67,36 +66,28 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Typ { get; set; }
 
-        [ModelMappingCompareIgnore]
         public int ID { get; set; }
 
-        [ModelMappingCompareIgnore]
         public int TestInt { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public bool NoSaveButUiRefreshOnly { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public bool IsValid { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public bool InsertModeTmp { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public string InternalKey { get; set; }
 
         [GridHidden]
         public string InternalKey2 { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public string TmpSelectionKey { get; set; }
 
-        [ModelMappingCompareIgnore]
         [GridHidden]
         public bool IsDefaultPartner { get; set; }
 

@@ -3816,9 +3816,17 @@
     </Content>
     <Content Include="Views\Logs\Pv.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Index.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\RgDaten.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Fahrzeug.cshtml" />
+    <Content Include="Views\Uebfuehrg\CurrentStepView.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Adresse.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Summary.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Receipt.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
