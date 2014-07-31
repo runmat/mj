@@ -8,6 +8,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 {
     public class DienstleistungsAuswahl : CommonUiModel
     {
+        private string _fahrtIndex;
         public string FahrtIndex
         {
             get { return _fahrtIndex; }
@@ -22,68 +23,54 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         public Bemerkungen Bemerkungen { get; set; }
 
-        // Alle Dienstleistungen
         [XmlIgnore]
         public static List<Dienstleistung> AlleDienstleistungen { get; set; }
 
         [XmlIgnore]
         public List<Dienstleistung> AvailableDienstleistungen { get { return AlleDienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).ToList(); } }
 
+
         // Gewählte Dienstleistungen
         private string _gewaehlteDienstleistungenString;
         public string GewaehlteDienstleistungenString
         {
             get { return _gewaehlteDienstleistungenString.NotNullOrEmpty(); }
-            set { _gewaehlteDienstleistungenString = value; }
-        }
-
-        [XmlIgnore]
-        public List<Dienstleistung> GewaehlteDienstleistungen
-        {
-            get
+            set
             {
-                var list = AvailableDienstleistungen.Where(dl => GewaehlteDienstleistungenString.Split(',').Contains(dl.ID)).ToList();
-                list.ForEach(dienstleistung => dienstleistung.FahrtIndex = FahrtIndex);
-                return list;
+                _gewaehlteDienstleistungenString = value;
+
+                if (AvailableDienstleistungen != null)
+                {
+                    AvailableDienstleistungen.ForEach(dl => dl.IstGewaehlt = false);
+                    GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
+                }
             }
         }
 
-            
-        // Nicht gewählte Dienstleistungen
-        private string _nichtGewaehlteDienstleistungenString;
-        private string _fahrtIndex;
-
-        public string NichtGewaehlteDienstleistungenString
-        {
-            get { return _nichtGewaehlteDienstleistungenString.NotNullOrEmpty(); }
-            set { _nichtGewaehlteDienstleistungenString = value; }
-        }
+        [XmlIgnore]
+        public List<Dienstleistung> GewaehlteDienstleistungen { get { return AvailableDienstleistungen.Where(dl => GewaehlteDienstleistungenString.Split(',').Contains(dl.ID)).ToList(); } }
 
         [XmlIgnore]
-        public List<Dienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Where(dl => NichtGewaehlteDienstleistungenString.Split(',').Contains(dl.ID)).ToList(); } }
+        public List<Dienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Except(AlleDienstleistungen).ToList(); } }
 
-        [XmlIgnore]
-        public bool DienstleistungenInitialized
+
+        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen = null)
         {
-            get
-            {
-                return AvailableDienstleistungen != null && (!string.IsNullOrEmpty(GewaehlteDienstleistungenString) || !string.IsNullOrEmpty(NichtGewaehlteDienstleistungenString));
-            }
+            if (dienstleistungen != null)
+                AlleDienstleistungen = dienstleistungen;
+
+            if (GewaehlteDienstleistungenString.IsNullOrEmpty())
+                GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
         }
 
+        public string GetSummaryString()
+        {
+            return string.Join("<br />", GewaehlteDienstleistungen.Select(dienstleistung => dienstleistung.Name));
+        }
 
         public DienstleistungsAuswahl()
         {
             Bemerkungen = new Bemerkungen();
-        }
-
-        public void InitAuswahlDienstleistungen(List<Dienstleistung> dienstleistungen)
-        {
-            if (GewaehlteDienstleistungenString.IsNullOrEmpty())
-                GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstStandard).Select(dl => dl.ID).ToList());
-
-            if (NichtGewaehlteDienstleistungenString.IsNullOrEmpty())
-                NichtGewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => !dl.IstStandard).Select(dl => dl.ID).ToList());
         }
     }
 }

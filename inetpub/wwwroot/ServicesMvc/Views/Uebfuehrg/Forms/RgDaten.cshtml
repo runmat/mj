@@ -5,7 +5,6 @@
     {
         @Html.HiddenFor(m => m.UiIndex)
 
-
         @Html.FormValidationSummary()
 
         @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })

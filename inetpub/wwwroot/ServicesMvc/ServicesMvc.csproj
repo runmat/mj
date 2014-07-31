@@ -3826,6 +3826,7 @@
     <Content Include="Views\Uebfuehrg\Forms\Adresse.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Summary.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Receipt.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

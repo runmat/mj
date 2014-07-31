@@ -1,0 +1,65 @@
+﻿@model CkgDomainLogic.Uebfuehrg.Models.DienstleistungsAuswahl  
+
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
+    {
+        <div>Dienstleistungen</div>
+
+        @Html.HiddenFor(m => m.UiIndex)
+        
+        @Html.FormValidationSummary()
+        
+        
+        <div id="dienstleistungen-wrapper-@Model.UiIndex" class="dienstleistungen-wrapper">
+            
+            @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+            @Html.HiddenFor(m => m.FahrtTyp)
+            @Html.HiddenFor(m => m.FahrtIndex)
+
+            <div class="dienstleistungen-header">
+                <span class="header-left">Verfügbare Dienstleistungen</span>
+                <span class="header-right">Gewählte Dienstleistungen</span>
+            </div>
+
+            <select multiple id="pre-selected-options-@Model.UiIndex" class="multiselect hide" name="pre-selected-options-(@Model.UiIndex)[]">
+                @foreach (var dienstleistung in Model.AvailableDienstleistungen)
+                {
+                    <option value="@dienstleistung.ID" @dienstleistung.SelectedAsString>@dienstleistung.Name</option>
+                }
+            </select>
+        </div>
+        
+
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            MultiSelectPreparePrivate();
+
+            function MultiSelectPreparePrivate() {
+                $('#pre-selected-options-@Model.UiIndex').multiSelect();
+
+                $('#ms-pre-selected-options-@Model.UiIndex > .ms-selectable > .ms-list > li').each(function () {
+                    $(this).append('<i class="icon-chevron-right"></i>');
+                });
+                $('#ms-pre-selected-options-@Model.UiIndex > .ms-selection > .ms-list > li').each(function () {
+                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
+                    $(this).append('<i class="icon-remove"></i>');
+                });
+                $('#ms-pre-selected-options-@Model.UiIndex').removeClass('hide');
+
+                $('#pre-selected-options-@Model.UiIndex').change(function() {
+                    var selectedOptions = '';
+                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
+                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
+                    });
+
+                    //console.log($("#dienstleistungen-wrapper-@Model.UiIndex").attr("class"));
+                    var hiddenInputGewaehlteDienstleistungenString = $("#dienstleistungen-wrapper-@Model.UiIndex").find("input[name=GewaehlteDienstleistungenString]");
+                    hiddenInputGewaehlteDienstleistungenString.val(selectedOptions);
+                });
+            }
+
+        </script>
+    }
+</div>

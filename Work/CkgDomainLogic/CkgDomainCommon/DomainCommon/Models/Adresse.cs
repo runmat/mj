@@ -62,7 +62,6 @@ namespace CkgDomainLogic.DomainCommon.Models
         public string Email { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Recognition)]
-        [Required]
         public string Kennung { get; set; }
 
         public string Typ { get; set; }

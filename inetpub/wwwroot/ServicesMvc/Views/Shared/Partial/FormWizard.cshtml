@@ -24,6 +24,14 @@
     }
     
     
+    .row-fluid .formWizardStepSpan11 {
+      width: 9.14680851063829%;
+      *width: 9.19361702127659%;
+    }
+    .row-fluid .formWizardStepSpan10 {
+      width: 9.84680851063829%;
+      *width: 9.89361702127659%;
+    }
     .row-fluid .formWizardStepSpan9 {
       width: 11.04680851063829%;
       *width: 11.09361702127659%;
@@ -485,9 +493,9 @@
                                         <li class="@Model.GetStepSpanCssClass()" id="formWizardStep_@Model.GetStepNo(i)">
                                             <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
                                                 <span class="number">@Model.GetStepNo(i)</span>
-                                                <i class="icon-ok"></i>
                                                 <span class="formWizardStepDescWrapper">
-                                                     <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
+                                                    <i class="icon-ok"></i>
+                                                    <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
                                                 </span>
                                             </a>
                                         </li>

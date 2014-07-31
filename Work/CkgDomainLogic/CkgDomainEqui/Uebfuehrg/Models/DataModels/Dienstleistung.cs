@@ -44,20 +44,12 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.Standard)]
         [XmlIgnore]
-        public bool IstStandard { get { return SapFlagVwAG == "X"; } }
+        public bool IstGewaehlt { get; set; }
+
+        public string SelectedAsString { get { return IstGewaehlt ? "selected" : ""; } }
 
         [LocalizedDisplay(LocalizeConstants.Service)]
         [XmlIgnore]
         public string CroppedName { get { return Name.Crop(44); } }
-
-        [XmlIgnore]
-        public string TextCssClass { get { return string.Format("text{0}", IstStandard ? "" : " text_extra"); } }
-
-
-        #region intern
-
-        public string SapFlagVwAG { get; set; }
-        
-        #endregion
     }
 }

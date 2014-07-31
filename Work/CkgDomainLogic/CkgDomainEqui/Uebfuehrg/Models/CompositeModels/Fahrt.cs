@@ -46,22 +46,5 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [XmlIgnore]
         public bool IstHauptFahrt { get { return !IstZusatzFahrt; } }
-
-        public void Init()
-        {
-        }
-
-        public DienstleistungsAuswahl GetDienstleistungsAuswahl()
-        {
-            return null;
-        }
-
-        public void InitAuswahlDienstleistungen(bool forceInit=false)
-        {
-            var dienstleistungsAuswahl = GetDienstleistungsAuswahl();
-
-            if (forceInit || !dienstleistungsAuswahl.DienstleistungenInitialized)
-                dienstleistungsAuswahl.InitAuswahlDienstleistungen(AvailableDienstleistungen);
-        }
     }
 }

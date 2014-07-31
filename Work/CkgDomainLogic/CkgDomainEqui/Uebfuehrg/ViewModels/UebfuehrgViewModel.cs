@@ -5,12 +5,14 @@ using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
 using GeneralTools.Models;
 using System.IO;
+using GeneralTools.Resources;
 using GeneralTools.Services;
 using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
@@ -109,7 +111,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 UiIndex = index,
                 GroupName = "RGDATEN",
                 SubGroupName = "-",
-                Header = "Rechnungsdaten",
+                Header = "Rg",
                 IsMandatory = true,
 
                 ViewName = "RgDaten",
@@ -130,7 +132,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 GroupName = "FAHRZEUGE",
                 SubGroupName = "FAHRZEUG_1",
                 Header = "Fahrzeug 1 (Hinfahrt)",
-                HeaderShort = "Fahrzeug 1",
+                HeaderShort = "Fzg1",
                 IsMandatory = true,
 
                 ViewName = "Fahrzeug",
@@ -140,7 +142,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 Fahrzeugklasse = "PKW",
                 Kennzeichen = "OD-J104",
                 Fahrzeugwert = "1000",
-                Typ = "AUDI",
+                Typ = "Renault",
                 FahrzeugZugelassen = "J",
                 ZulassungsauftragAnDAD = "N",
                 Bereifung = "Winterreifen",
@@ -151,25 +153,149 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             uiModel = new Adresse
             {
                 TransportTypAvailable = false,
+                TransportTyp = "-",
 
-                Kennung = "-",
                 UhrzeitwunschAvailable = true,
                 AdressTyp = AdressenTyp.FahrtAdresse,
                 SubTyp = "ABHOLADRESSE",
                 UiIndex = index,
                 GroupName = "FAHRZEUG_1",
                 SubGroupName = "START",
-                Header = "Abholadresse",
+                Header = "Abholadresse (Fzg. 1)",
+                HeaderShort = "Ab",
+                Land = "DE",
                 IsMandatory = true,
 
                 ViewName = "Adresse",
 
                 // TEST
                 Name1 = "Walter Zabel",
-                Strasse = "Teststraße 3",
+                Strasse = "Teststraße",
                 HausNr = "3",
                 PLZ = "22926",
                 Ort = "Ahrensburg",
+                Ansprechpartner = "...",
+                Telefon = "...",
+                Email = "xxx@xxx.de",
+            };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new Adresse
+            {
+                TransportTypAvailable = true,
+                TransportTyp = "1",
+
+                UhrzeitwunschAvailable = true,
+                AdressTyp = AdressenTyp.FahrtAdresse,
+                SubTyp = "AUSLIEFERUNG",
+                UiIndex = index,
+                GroupName = "FAHRZEUG_1",
+                SubGroupName = "ZIEL",
+                Header = "Ziel Hinfahrt (Fzg. 1)",
+                HeaderShort = "Ziel",
+                Land = "DE",
+                IsMandatory = true,
+
+                ViewName = "Adresse",
+
+                // TEST
+                Name1 = "Göster Halmacken",
+                Strasse = "Willistraße",
+                HausNr = "42",
+                PLZ = "22941",
+                Ort = "Bargteheide",
+                Ansprechpartner = "...",
+                Telefon = "...",
+                Email = "xxx@xxx.de",
+            };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new DienstleistungsAuswahl
+            {
+                FahrtTyp = "1",
+
+                UiIndex = index,
+                GroupName = "DIENSTLEISTUNGEN",
+                SubGroupName = "DIENSTLEISTUNGEN",
+                HeaderShort = "DL1",
+                IsMandatory = false,
+
+                ViewName = "DienstleistungsAuswahl",
+            };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new Fahrzeug
+            {
+                FahrzeugIndex = "2",
+
+                UiIndex = index,
+
+                GroupName = "FAHRZEUGE",
+                SubGroupName = "FAHRZEUG_2",
+                Header = "Fahrzeug 2 (Rückfahrt)",
+                HeaderShort = "Fzg2",
+                IsMandatory = true,
+
+                ViewName = "Fahrzeug",
+
+                // TEST
+                FIN = "4711987654",
+                Fahrzeugklasse = "PKW",
+                Kennzeichen = "OD-EZ133",
+                Fahrzeugwert = "900",
+                Typ = "AUDI",
+                FahrzeugZugelassen = "J",
+                ZulassungsauftragAnDAD = "N",
+                Bereifung = "Sommerreifen",
+            };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new Adresse
+            {
+                TransportTypAvailable = true,
+                TransportTyp = "2",
+
+                UhrzeitwunschAvailable = true,
+                AdressTyp = AdressenTyp.FahrtAdresse,
+                SubTyp = "RÜCKHOLUNG",
+                UiIndex = index,
+                GroupName = "FAHRZEUG_2",
+                SubGroupName = "ZIEL",
+                Header = "Ziel Rückfahrt (Fzg. 2)",
+                HeaderShort = "Rück",
+                Land = "DE",
+                IsMandatory = true,
+
+                ViewName = "Adresse",
+
+                // TEST
+                Name1 = "Gundulbert Hammer",
+                Strasse = "Herbertstraße ",
+                HausNr = "42",
+                PLZ = "22941",
+                Ort = "Bargteheide",
+                Ansprechpartner = "...",
+                Telefon = "...",
+                Email = "xxx@xxx.de",
+            };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new DienstleistungsAuswahl
+            {
+                FahrtTyp = "2",
+
+                UiIndex = index,
+                GroupName = "DIENSTLEISTUNGEN",
+                SubGroupName = "DIENSTLEISTUNGEN",
+                HeaderShort = "DL2",
+                IsMandatory = false,
+
+                ViewName = "DienstleistungsAuswahl",
             };
             list.Add(uiModel);
             index++;
@@ -179,7 +305,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 UiIndex = index,
                 GroupName = "SUMMARY",
                 SubGroupName = "SUMMARY",
-                Header = "Übersicht",
+                HeaderShort = "Üb",
                 IsMandatory = false,
 
                 ViewName = "Summary",
@@ -192,7 +318,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 UiIndex = index,
                 GroupName = "FINISH",
                 SubGroupName = "FINISH",
-                Header = "Fertig!",
+                HeaderShort = "OK!",
                 IsMandatory = false,
 
                 ViewName = "Finish",
@@ -261,7 +387,42 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             SetStepModel(subModel, uiIndex);
             ModelMapping.Copy(savedUiModel, GetStepModel(uiIndex));
 
+            PrepareFollowingSteps(subModel);
+
             return (T)GetStepModel(uiIndex);
         }
+
+        private void PrepareFollowingSteps<T>(T subModel) where T : CommonUiModel
+        {
+            if (subModel is RgDaten)
+                PrepareFahrtAdressenAndTransportTypen(subModel as RgDaten);
+
+            if (subModel is DienstleistungsAuswahl)
+                SaveDienstleistungen(subModel as DienstleistungsAuswahl);
+        }
+
+        private void PrepareFahrtAdressenAndTransportTypen(RgDaten rgDaten)
+        {
+            DataService.AuftragGeber = rgDaten.RgKundenNr;
+
+            FahrtAdressen = DataService.GetFahrtAdressen(_addressTypes);
+
+            DataService.GetTransportTypenAndDienstleistungen(out _transportTypen, out _dienstleistungen);
+            DienstleistungsAuswahl.AlleDienstleistungen = _dienstleistungen;
+
+            Adresse.AlleTransportTypen = _transportTypen.CopyAndInsertAtTop(new TransportTyp { ID = "", Name = Localize.TranslateResourceKey(LocalizeConstants.DropdownDefaultOptionPleaseChoose) });
+        }
+
+
+        #region Dienstleistungen
+
+        public void SaveDienstleistungen(DienstleistungsAuswahl model)
+        {
+            var dienstleistungsAuswahl = (GetStepModel() as DienstleistungsAuswahl);
+            if (dienstleistungsAuswahl != null)
+                dienstleistungsAuswahl.GewaehlteDienstleistungenString = model.GewaehlteDienstleistungenString;
+        }
+
+        #endregion
     }
 }

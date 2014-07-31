@@ -90,6 +90,24 @@ namespace ServicesMvc.Controllers
         #endregion
 
 
+        #region DienstleistungsAuswahl
+
+        [HttpPost]
+        public ActionResult DienstleistungsAuswahlForm(DienstleistungsAuswahl model)
+        {
+            ViewModel.StepCurrentIndex = model.UiIndex;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.SaveSubModelWithPreservingUiModel(model);
+            }
+
+            return GetStepPartialView();
+        }
+
+        #endregion
+
+
         #region Common
 
         [HttpPost]

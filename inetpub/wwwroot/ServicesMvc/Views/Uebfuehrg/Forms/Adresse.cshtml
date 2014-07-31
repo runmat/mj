@@ -1,4 +1,6 @@
-﻿@model CkgDomainLogic.Uebfuehrg.Models.Adresse 
+﻿@using CkgDomainLogic.Uebfuehrg.Models
+@model Adresse 
+@* ReSharper disable AccessToStaticMemberViaDerivedType *@
 
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
@@ -10,18 +12,33 @@
         @Html.HiddenFor(m => m.Typ)
         @Html.HiddenFor(m => m.TmpSelectionKey)
         @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
-        
+        @Html.HiddenFor(m => m.TransportTypAvailable)
+
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+        if (Model.TransportTypAvailable)
+        {
+            @Html.FormDropDownListFor(m => m.TransportTyp, Model.ValideTransportTypen.ToSelectList(), new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.TransportTyp)
+        }
 
-        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
-        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Land, new { @class = "m-wrap medium" })
-
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap large", col = "right" })
         
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap large", col = "right" }) 
+
+        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap large", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large" })
+
         @Html.FormRequiredFieldsSummary()
         
         

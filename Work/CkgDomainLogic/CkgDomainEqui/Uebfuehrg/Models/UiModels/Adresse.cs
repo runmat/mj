@@ -16,7 +16,17 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public AdressenTyp AdressTyp { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
+        [Required]
         public string Ansprechpartner { get; set; }
+        
+        [LocalizedDisplay(LocalizeConstants.Phone)]
+        [Required]
+        public new string Telefon { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Email)]
+        [EmailAddress]
+        [Required]
+        public new string Email { get; set; }
 
         [SelectListText, XmlIgnore]
         public string NameOrt { get { return Ort.IsNullOrEmpty() ? Name1 : String.Format("{0}, {1}", Name1, Ort); } }
@@ -34,6 +44,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         private string _transportTyp = "";
 
         [LocalizedDisplay(LocalizeConstants.TransportType)]
+        [Required]
         public string TransportTyp
         {
             get { return _transportTyp; }

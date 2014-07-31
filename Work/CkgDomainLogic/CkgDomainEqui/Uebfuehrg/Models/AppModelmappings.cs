@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
+using System.Linq;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
@@ -81,7 +82,12 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                         { "ASKTX", "Name" },
                         { "TBTWR", "Preis" },
                         { "EAN11", "MaterialNummer" },
-                        { "VW_AG", "SapFlagVwAG" },
+                    }, (sap, business) =>
+                    {
+                        business.IstGewaehlt = (sap.VW_AG.NotNullOrEmpty() == "X");
+
+                        // ToDo: Remove this Test
+                        business.IstGewaehlt = new[] { "1912", "2803" }.Contains(sap.EAN11.NotNullOrEmpty());
                     }));
             }
         }
