@@ -7,27 +7,22 @@
     {    
         <div class="form-horizontal" id="searchForm">
             
+            @Html.HiddenFor(m => m.SubmitWithNoDataQuerying)
+
             @Html.FormValidationSummary()
 
-            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap" })
+
+            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
 
             @Html.FormMultiSelectListFor(m => m.PortalTypes, Model.AllPortalTypes, new { @class = "m-wrap chosen", col = "left" })
             @Html.FormMultiSelectListFor(m => m.AppIds, SapLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "right" })
 
-
             @Html.FormMultiSelectListFor(m => m.CustomerIds, SapLogItemSelector.AllCustomers, new { @class = "m-wrap chosen", col = "left" })
             @Html.FormMultiSelectListFor(m => m.UserIds, SapLogItemSelector.AllUsers, new { @class = "m-wrap chosen", col = "right" })
 
-
-            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "left" })
-            @Html.FormRadioButtonListFor(m => m.BapiDurationMinimumLevel, Model.AllSapBapiDurationLevels, new { @class = "m-wrap", col = "right" })
-            
-            @Html.HiddenFor(m => m.SubmitWithNoDataQuerying)
-
-            @Html.FormCheckBoxFor(m => m.ShowMaxDauerProBapiAndKunde, new { @class = "m-wrap", col = "left" })
-
-            @*TODO*@
-            @*Wie kann ich eine leere "Zelle" erstellen in einem Form?  Jetzt wird das Checkbox im DIV des Buttons geschoben...*@
+            @Html.FormRadioButtonListFor(m => m.BapiDurationMinimumLevel, Model.AllSapBapiDurationLevels, new { @class = "m-wrap", col = "left" })
+            @Html.FormCheckBoxFor(m => m.ShowMaxDauerProBapiAndKunde, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.ShowMaxDauerProBapiAndKunde</label></text>)
 
 
             <div class="form-actions">
