@@ -16,14 +16,31 @@
     var ladeHinweis = '@Localize.LoadingData';
     var selectedFzgHalterabweichungen;
 
-    function GridHalterabweichungen_SelectAll() {
+    function GridHalterabweichungen_SelectAll(setSelected) {
         $.ajax(
         {
             type: "POST",
             url: "HalterabweichungenSelectAll",
             loadingShow: true,
             success: function (data) {
-                selectedFzgHalterabweichungen = JSON.parse(data);
+                var items = JSON.parse(data);
+                
+                if (setSelected) {
+                    items.forEach(function(strItem) {
+                        if (jQuery.inArray(strItem, selectedFzgHalterabweichungen) < 0) {
+                            selectedFzgHalterabweichungen.push(strItem);
+                        }
+                    });
+                } else {
+                    items.forEach(function(strItem) {
+                        if (jQuery.inArray(strItem, selectedFzgHalterabweichungen) > -1) {
+                            selectedFzgHalterabweichungen = $.grep(selectedFzgHalterabweichungen, function(item, index) {
+                                return item != strItem;
+                            });
+                        }
+                    });
+                }
+
                 GridRefresh();
                 FormPreparePrivateAjax();
             },
@@ -34,15 +51,7 @@
 
     function InitGridSelectionPersister() {
         $('#GridHalterabweichungen').on('change', ':checkbox[id=cbxCheckAll]', function(e) {
-            var cbx = $(this);
-
-            if (cbx.is(':checked')) {
-                GridHalterabweichungen_SelectAll();
-            } else {
-                selectedFzgHalterabweichungen = [];
-                GridRefresh();
-                FormPreparePrivateAjax();
-            }
+            GridHalterabweichungen_SelectAll($(this).is(':checked'));
         });
 
         // Selektion merken (wichtig bei Paging etc.)
@@ -57,6 +66,12 @@
                     return item != fin;
                 });
             }
+        });
+        
+        // Bei Filteränderung "checkall"-Checkbox zurücksetzen
+        $('#GridHalterabweichungen').on('filter_all_columns', function(e) {
+            $("#cbxCheckAll").attr('checked', false);
+            $("#cbxCheckAll").closest("span").removeClass("checked");
         });
     }
     

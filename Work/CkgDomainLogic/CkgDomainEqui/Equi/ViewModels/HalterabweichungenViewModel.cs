@@ -84,7 +84,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public List<string> GetFahrgestellnummern()
         {
-            var items = from h in Halterabweichungen
+            var items = from h in HalterabweichungenFiltered
                         select h.Fahrgestellnummer;
             return items.ToList();
         } 
