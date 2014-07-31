@@ -3,15 +3,6 @@
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
-        <div class="margin-bottom-15">@Model.Header</div>
-
-        <div class="margin-bottom-15">@Model.GetType().FullName</div>
-
-        <div class="margin-bottom-15">Adressat: @Model.Name1</div>
-
-        <div class="margin-bottom-15">Meine Adresse ist nice...</div>
-
-        
         @Html.HiddenFor(m => m.UiIndex)
 
         @Html.HiddenFor(m => m.ID)
