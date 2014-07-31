@@ -204,6 +204,9 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_BRIEFBESTAND_002").WriteOrmForExportTableStructures("I_KUNNR", "10062897");
 
+            //Dokumente ohne Daten
+            //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
