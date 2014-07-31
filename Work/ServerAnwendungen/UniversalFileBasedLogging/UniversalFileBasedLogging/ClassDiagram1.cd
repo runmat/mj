@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UniversalFileBasedLogging.LogCustomer">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAIAAAAAEAAAAAAQAAAAAAAAAgAAAAAAAAIA=</HashCode>
+      <FileName>LogCustomer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversalFileBasedLogging.LogDataset">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYCAAAAAIAAAAAAAAAAAEAAAAAAAAAAgAAAAAAAEIA=</HashCode>
+      <FileName>LogDataset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversalFileBasedLogging.LogEntry">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEQAAAEAAACAAAGAAAAAAAAAAAEACACBAAAAABAAAA=</HashCode>
+      <FileName>LogEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversalFileBasedLogging.LogFile">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAAAAIAAAQAAEAAQAgAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LogFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversalFileBasedLogging.LoggingClass">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAgAAAAAAAIAIAQABAAABACAAAEAQAAAAAAAgAg=</HashCode>
+      <FileName>LoggingClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

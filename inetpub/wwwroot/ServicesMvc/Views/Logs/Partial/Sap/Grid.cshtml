@@ -7,10 +7,13 @@
 @(Html.Telerik()
     .Grid<SapLogItem>()
     .Name(gridName)
-    .XGroup("GridLogsSapModel")
 
     .XAjaxDataBinding("LogsSapAjaxBinding", "Logs")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns =>
+        {
+            columns.Bound(c => c.Dauer).Title("").ClientTemplate("<a href=\"#\" onclick=\"return ShowSapImportContext(<#= data.Id #>);\" class=\"btn gray mini tooltips\" data-original-title=\"SAP Übergabedaten anzeigen ... \" data-placement=\"top\"><i class=\"icon-reorder\"></i></a>");
+            columns.XBoundAll();
+        })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridLogsSap"))
     .XPageSize(10)
