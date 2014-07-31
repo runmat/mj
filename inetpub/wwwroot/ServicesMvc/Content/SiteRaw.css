@@ -295,3 +295,9 @@ label, input, button, select, textarea {
 .dataTables_length label {
     padding-top: 3px;
 }
+
+/* MCarl, 23.07.2014: Wenn Anwendung im iframe läuft, Grid selbst scrollbar machen (wg. Scrollproblem im IE) */
+.t-widget.t-grid 
+{
+    overflow-x: auto;
+}
