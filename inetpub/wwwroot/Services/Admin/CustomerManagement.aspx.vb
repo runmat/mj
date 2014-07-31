@@ -402,6 +402,7 @@ Partial Public Class CustomerManagement
             newRow("AppTechType") = row("AppTechType")
             newRow("AppDescription") = row("AppDescription")
             newRow("Assigned") = ""
+            newRow("AppIsMvcDefaultFavorite") = False
             tblApps.Rows.Add(newRow)
         Next
 
