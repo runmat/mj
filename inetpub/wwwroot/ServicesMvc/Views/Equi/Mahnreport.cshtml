@@ -1,0 +1,54 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model MahnreportViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_Mahnreport <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div id="divFahrzeugeMahnGrid">
+    @Html.Partial("Mahnreport/FahrzeugeMahnGrid", Model)
+</div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridFahrzeugeMahn");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridFahrzeugeMahn").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridFahrzeugeMahnItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridFahrzeugeMahn() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridFahrzeugeMahn() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridFahrzeugeMahn() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugeMahn() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

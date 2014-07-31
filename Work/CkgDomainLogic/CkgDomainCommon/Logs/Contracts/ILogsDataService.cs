@@ -10,11 +10,19 @@ namespace CkgDomainLogic.Logs.Contracts
 
         string LogsConnectionString { get; set; }
 
+
         List<SapLogItem> GetSapLogItems(SapLogItemSelector sapLogItemSelector);
+        
+        SapLogItemDetailed GetSapLogItemDetailed(int id);
+
+
+        List<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector);
+
 
         List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector);
 
         List<WebServiceTrafficLogTable> GetWebServiceTrafficLogTables();
+
 
         List<MpApplicationTranslated> Applications { get; }
 
