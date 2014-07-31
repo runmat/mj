@@ -249,14 +249,16 @@ namespace Telerik.Web.Mvc.UI
                     column.Title(title);    
                 }
                 
-                // Format nur dann übernehmen wenn eines auch angegeben ist
+                // Format aus Datenbank nur dann übernehmen wenn eines auch angegeben ist
                 var formatAusDb = TranslationFormatService.GetFormat(localizedDisplayAttribute.ResourceID);
-
                 if (string.IsNullOrEmpty(formatAusDb) == false)
-                {
                     columnFormat = formatAusDb;    
-                }
             }
+
+            // Falls explizites Data Annotatioon Format angegeben, dieses mit höchster Prio verwenden: 
+            var displayFormatAttribute = propertyInfo.GetCustomAttributes(true).OfType<DisplayFormatAttribute>().FirstOrDefault();
+            if (displayFormatAttribute != null)
+                columnFormat = displayFormatAttribute.DataFormatString;
 
             if (!columnVisibleOnStart)
                 columnFormat = "X~" + columnFormat;
