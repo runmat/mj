@@ -30,18 +30,6 @@ namespace CkgDomainLogic.Logs.Models
 
         public int ThresholdUpFromSeconds { get; set; }
 
-        //public string ThresholdUpFromSecondsAsString
-        //{
-        //    get
-        //    {
-        //        if (ThresholdUpFromSeconds > 0)
-        //        {
-        //            return string.Format("Kleiner als {0} Sekunden", ThresholdUpFromSeconds);
-        //        }
-        //        return string.Empty;
-        //    }
-        //}
-
         public static List<SapBapiDuration> Presets
         {
             get
@@ -60,18 +48,7 @@ namespace CkgDomainLogic.Logs.Models
 
         public static List<SapBapiDuration> LegendPresets
         {
-            get
-            {
-                return new List<SapBapiDuration>
-                    {
-                        new SapBapiDuration { Level = SapBapiDurationLevel.VeryQuick, ThresholdUpFromSeconds = -1 },
-                        new SapBapiDuration { Level = SapBapiDurationLevel.Quick, ThresholdUpFromSeconds = 3 },
-                        new SapBapiDuration { Level = SapBapiDurationLevel.Normal, ThresholdUpFromSeconds = 6 },
-                        new SapBapiDuration { Level = SapBapiDurationLevel.Long, ThresholdUpFromSeconds = 20 },
-                        new SapBapiDuration { Level = SapBapiDurationLevel.VeryLong, ThresholdUpFromSeconds = 60 },
-                        new SapBapiDuration { Level = SapBapiDurationLevel.Unacceptable, ThresholdUpFromSeconds = 120 }
-                    };
-            }
+            get { return Presets; }
         }
 
         public string ThresholdUpFromSecondsAsString
