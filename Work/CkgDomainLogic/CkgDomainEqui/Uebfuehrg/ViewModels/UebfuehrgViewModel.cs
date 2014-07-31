@@ -50,6 +50,45 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public string FirstStepErrorHint { get { return null; } }
 
+        readonly string[] _addressTypes = { "ABHOLADRESSE", "AUSLIEFERUNG", "RÜCKHOLUNG", "HALTER" };
+
+        [XmlIgnore]
+        public List<Adresse> FahrtAdressen { get; private set; }
+
+        [XmlIgnore]
+        public List<Adresse> RechnungsAdressen { get; private set; }
+
+        [XmlIgnore]
+        public List<Land> Laender { get; private set; }
+
+        private List<TransportTyp> _transportTypen;
+        [XmlIgnore]
+        public List<TransportTyp> TransportTypen
+        {
+            get { return _transportTypen; }
+        }
+
+        private List<Dienstleistung> _dienstleistungen;
+
+        [XmlIgnore]
+        public List<Dienstleistung> Dienstleistungen
+        {
+            get { return _dienstleistungen; }
+        }
+
+        public List<Fahrt> Fahrten { get; set; }
+
+        [XmlIgnore]
+        public List<Fahrt> DienstleistungsFahrten { get { return Fahrten.Where(f => f.TypNr.IsNotNullOrEmpty()).ToList(); } }
+
+        private List<UeberfuehrungsAuftragsPosition> _auftragsPositionen = new List<UeberfuehrungsAuftragsPosition>();
+
+        [XmlIgnore]
+        public List<UeberfuehrungsAuftragsPosition> AuftragsPositionen
+        {
+            get { return _auftragsPositionen; }
+            private set { _auftragsPositionen = value; }
+        }
 
         public void DataInit()
         {
@@ -167,8 +206,18 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.StepFriendlyNames);
-
             StepCurrentIndex = 0;
+
+            Laender = DataService.Laender;
+            DomainCommon.Models.Adresse.Laender = Laender;
+
+            RechnungsAdressen = DataService.GetRechnungsAdressen();
+            RechnungsAdressen.ForEach(a =>
+            {
+                a.TransportTypAvailable = false;
+                a.TransportTyp = "";
+            });
+            RgDaten.RechnungsAdressen = RechnungsAdressen;
         }
 
         public void MoveToNextStep()

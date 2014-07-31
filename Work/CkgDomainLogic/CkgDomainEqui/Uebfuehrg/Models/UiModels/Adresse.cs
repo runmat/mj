@@ -18,11 +18,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
         public string Ansprechpartner { get; set; }
 
-        [XmlIgnore, SelectListText]
+        [SelectListText, XmlIgnore]
         public string NameOrt { get { return Ort.IsNullOrEmpty() ? Name1 : String.Format("{0}, {1}", Name1, Ort); } }
-
-        [LocalizedDisplay(LocalizeConstants.Selection)]
-        public int SelectedID { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateTime? Datum { get; set; }
@@ -36,7 +33,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private string _transportTyp = "";
 
-        [ModelMappingClearable]
         [LocalizedDisplay(LocalizeConstants.TransportType)]
         public string TransportTyp
         {
