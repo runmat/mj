@@ -72,11 +72,12 @@
                         <div id="dataFooter">
                             <asp:LinkButton ID="lbAbsenden" 
                                 Text="Inventur Abschließen" Height="16px" Width="155px" runat="server" CssClass="TablebuttonXLarge"></asp:LinkButton>
-                                <asp:LinkButton ID="lbNachdruck" 
+                            <asp:LinkButton ID="lbNachdruck" 
                                 Text="Nachdruck" Height="16px" Width="78px" Visible="false" runat="server" CssClass="Tablebutton"></asp:LinkButton>
                         </div>
-                        <asp:Panel ID="PLCheck" runat="server" Width="350px" style="display:none">
-                            <table cellspacing="0" id="tblCheck" runat="server" width="100%" bgcolor="#FFFFFF"
+
+                        <asp:Panel ID="PLCheck1" runat="server" Width="550px" style="display:none">
+                            <table cellspacing="0" id="tblCheck1" runat="server" width="100%" bgcolor="#FFFFFF"
                                 cellpadding="0" border="0" style="border: solid 1px #000000" > 
                                 <tr>
                                     <td>
@@ -85,7 +86,27 @@
                                 </tr>                              
                                <tr>
                                     <td align="center" class="firstLeft active" >
-                                       Wollen Sie die Inventur wirklich abschließen?
+                                        Sie haben alle Artikel erfasst und wollen die Inventur abschließen. Wenn Sie jetzt den Button 
+                                        <br/>
+                                        &#8222;Testdruck&#8220; klicken, wird ein Testdruck erzeugt. Diesen drucken Sie sich bitte 1 x aus und 
+                                        <br/>
+                                        kontrollieren diesen auf Vollständigkeit. Sollten Sie Artikel vergessen oder sich vertippt haben, 
+                                        <br/>
+                                        können Sie über &#8222;Korrektur&#8220; wieder in die Eingabemaske gelangen. Dort können Sie Ihre Eingaben 
+                                        <br/>
+                                        entsprechend korrigieren. Nach der Änderung klicken Sie wieder auf &#8222;Inventur abschließen&#8220; und Sie 
+                                        <br/>
+                                        gelangen erneut in dieses Fenster. Sollte die Inventur nach der Kontrolle vollständig sein, klicken Sie 
+                                        <br/>
+                                        auf &#8222;Abschließen&#8220;. Nachdem Sie in dem dann erscheinenden Fenster bestätigt haben, dass Sie die 
+                                        <br/>
+                                        Inventur wirklich abschließen wollen, wird das richtige Inventurformular (ohne Aufdruck &#8222;Testdruck&#8220;) 
+                                        <br/>
+                                        erzeugt. <b>Bitte drucken Sie dieses in zweifacher Ausfertigung aus und unterschreiben es mit allen an </b>
+                                        <br/>
+                                        <b>der Inventur teilgenommenen Mitarbeitern/innen!</b> Ein Exemplar ist für Ihre Unterlagen und ein 
+                                        <br/>
+                                        Exemplar schicken Sie nach Ahrensburg.
                                     </td>
                                 </tr>
                                 <tr>
@@ -94,11 +115,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td align="center">
-                                        <asp:LinkButton ID="lbOk" Text="Abschließen" Height="16px" Width="78px" runat="server"
-                                            CssClass="Tablebutton"></asp:LinkButton>
-                                        &nbsp; &nbsp;
-                                        <asp:LinkButton ID="lbCancel" Text="Abbrechen" Height="16px" Width="78px"
+                                    <td align="center"> 
+                                        <asp:LinkButton ID="lbCancel1" Text="Korrektur" Height="16px" Width="78px" 
+                                            runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                        <asp:LinkButton ID="lbTestdruck" Text="Testdruck" Height="16px" Width="78px" 
+                                            runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                        <asp:LinkButton ID="lbOk1" Text="Abschließen" Height="16px" Width="78px" 
                                             runat="server" CssClass="Tablebutton"></asp:LinkButton>
                                     </td>
                                 </tr>
@@ -109,9 +131,47 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                        <asp:Button ID="MPEDummy" Width="0" Height="0" style="display:none" runat="server" />
-                        <cc1:ModalPopupExtender runat="server" ID="mpeCheck" BackgroundCssClass="divProgress"
-                            Enabled="true" PopupControlID="PLCheck" TargetControlID="MPEDummy" CancelControlID="lbCancel">
+                        <asp:Button ID="MPEDummy1" Width="0" Height="0" style="display:none" runat="server" />
+                        <cc1:ModalPopupExtender runat="server" ID="mpeCheck1" BackgroundCssClass="divProgress"
+                            Enabled="true" PopupControlID="PLCheck1" TargetControlID="MPEDummy1" CancelControlID="lbCancel1">
+                        </cc1:ModalPopupExtender>
+
+                        <asp:Panel ID="PLCheck2" runat="server" Width="350px" style="display:none">
+                            <table cellspacing="0" id="tblCheck2" runat="server" width="100%" bgcolor="#FFFFFF"
+                                cellpadding="0" border="0" style="border: solid 1px #000000" > 
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>                              
+                               <tr>
+                                    <td align="center" class="firstLeft active" >
+                                        Wollen Sie die Inventur wirklich abschließen?
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <asp:LinkButton ID="lbCancel2" Text="Abbrechen" Height="16px" Width="78px" 
+                                            runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                        <asp:LinkButton ID="lbOk2" Text="Abschließen" Height="16px" Width="78px" 
+                                            runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                        <asp:Button ID="MPEDummy2" Width="0" Height="0" style="display:none" runat="server" />
+                        <cc1:ModalPopupExtender runat="server" ID="mpeCheck2" BackgroundCssClass="divProgress"
+                            Enabled="true" PopupControlID="PLCheck2" TargetControlID="MPEDummy2" CancelControlID="lbCancel2">
                         </cc1:ModalPopupExtender>
                    </div>
                 </div>

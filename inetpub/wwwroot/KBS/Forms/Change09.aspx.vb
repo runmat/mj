@@ -13,8 +13,8 @@ Partial Public Class Change09
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         FormAuth(Me)
-
         Title = lblHead.Text
+
         If mObjKasse Is Nothing Then
             If Not Session("mKasse") Is Nothing Then
                 mObjKasse = CType(Session("mKasse"), Kasse)
@@ -22,48 +22,29 @@ Partial Public Class Change09
                 Throw New Exception("benötigtes Session Objekt nicht vorhanden")
             End If
         End If
-        If Not Session("mObjInventur") Is Nothing Then
+
+        If Session("mObjInventur") IsNot Nothing Then
             mObjInventur = CType(Session("mObjInventur"), Inventur)
         Else
             mObjInventur = New Inventur(mObjKasse)
             mObjInventur.FillProdukthierarchieERP()
-            If mObjInventur.E_SUBRC <> 0 Then
-                lblNoData.Text = mObjInventur.E_MESSAGE
-                lblNoData.Visible = True
-                lbAbsenden.Visible = False
-                If mObjInventur.E_SUBRC = 102 Then
-                    If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf") Then
-                        mObjInventur.Filepath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
-                        lbNachdruck.Visible = True
-                    End If
-                    If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\InventurUtsch.pdf") Then
-                        mObjInventur.FilepathUtsch = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\InventurUtsch.pdf"
-                        lbNachdruck.Visible = True
-                    End If
-                End If
-
-            End If
             Session("mObjInventur") = mObjInventur
         End If
-        If Not IsPostBack Then
 
+        If mObjInventur.E_SUBRC <> 0 Then
+            lblNoData.Text = mObjInventur.E_MESSAGE
+            lblNoData.Visible = True
+            lbAbsenden.Visible = False
             If mObjInventur.E_SUBRC = 102 Then
-                lblNoData.Text = mObjInventur.E_MESSAGE
-                lblNoData.Visible = True
-                lbAbsenden.Visible = False
-
-                If mObjInventur.E_SUBRC = 102 Then
-
-                    If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf") Then
-                        mObjInventur.Filepath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
-                        lbNachdruck.Visible = True
-                    End If
-                    If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\InventurUtsch.pdf") Then
-                        mObjInventur.FilepathUtsch = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\InventurUtsch.pdf"
-                        lbNachdruck.Visible = True
-                    End If
-
+                If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf") Then
+                    mObjInventur.Filepath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
+                    lbNachdruck.Visible = True
                 End If
+            End If
+        End If
+
+        If Not IsPostBack Then
+            If mObjInventur.E_SUBRC = 102 Then
                 Exit Sub
             Else
                 fillRepeater()
@@ -92,23 +73,18 @@ Partial Public Class Change09
     End Sub
 
     Protected Sub lbtNext_Click(ByVal sender As Object, ByVal e As EventArgs)
-
         Try
+
             Dim lbTemp As LinkButton = CType(sender, LinkButton)
-            Dim dRow As DataRow
-            Dim tmpERFTYP As String
-            Dim tmpProdBezeich As String
             mObjInventur.ProdHNr = lbTemp.CommandArgument
-            dRow = mObjInventur.Produktierarchie.Select("PRODH = '" & mObjInventur.ProdHNr & "'")(0)
-            tmpERFTYP = dRow("ERFTYP").ToString
-            tmpProdBezeich = dRow("VTEXT").ToString
+            Dim dRow As DataRow = mObjInventur.Produktierarchie.Select("PRODH = '" & mObjInventur.ProdHNr & "'")(0)
+            Dim tmpERFTYP As String = dRow("ERFTYP").ToString
+            Dim tmpProdBezeich As String = dRow("VTEXT").ToString
             mObjInventur.ErfTyp = tmpERFTYP
             mObjInventur.ProdHBezeichnung = tmpProdBezeich
-
             mObjInventur.FillInventurMaterialienERP()
 
             If mObjInventur.E_SUBRC <> 0 Then
-
                 If mObjInventur.E_SUBRC = 104 Then
                     dRow("ZAEHLVH") = "X"
                     fillRepeater()
@@ -138,13 +114,14 @@ Partial Public Class Change09
     End Sub
 
     Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
+        mpeCheck1.Show()
+    End Sub
 
+    Private Sub InventurDrucken(ByVal blnTestdruck As Boolean)
         Try
             Dim bKonsiPrint As Boolean = False
             Dim files() As String
             Dim filesUtsch() As String
-            Dim filesByte As New List(Of Byte())()
-            Dim filesByteUtsch As New List(Of Byte())()
             If Directory.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort) Then
                 files = Directory.GetFiles(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\", "*.pdf")
                 For Each sFile As String In files
@@ -179,7 +156,7 @@ Partial Public Class Change09
                 Dim tmpSAPRow As DataRow
                 tmpSAPRow = headTable.NewRow
                 tmpSAPRow("Kostenstelle") = mObjKasse.Lagerort
-                If mObjInventur.EndInventur = False Then
+                If blnTestdruck Then
                     tmpSAPRow("Testdruck") = "Testdruck"
                 Else
                     tmpSAPRow("Testdruck") = ""
@@ -197,7 +174,7 @@ Partial Public Class Change09
                 Dim tmpKonsiSAPRow As DataRow
                 tmpKonsiSAPRow = KonsiHeadTable.NewRow
                 tmpKonsiSAPRow("Kostenstelle") = mObjKasse.Lagerort
-                If mObjInventur.EndInventur = False Then
+                If blnTestdruck Then
                     tmpKonsiSAPRow("Testdruck") = "Testdruck"
                 Else
                     tmpKonsiSAPRow("Testdruck") = ""
@@ -213,6 +190,7 @@ Partial Public Class Change09
                 mObjInventur.ProdHNr = PHRow("PRODH").ToString
                 mObjInventur.ErfTyp = PHRow("ERFTYP").ToString
                 mObjInventur.FillInventurMaterialienERP()
+
                 If mObjInventur.InvMaterialien.Rows.Count > 0 Then
                     Dim bKonsi As Boolean = False
                     For Each selRows In mObjInventur.InvMaterialien.Rows
@@ -245,9 +223,6 @@ Partial Public Class Change09
                         KonsiHeadTable.Rows.Add(tmpKonsiSAPRow)
                         PrintPDFKonsi(tmpSAPRow("ProdHBezeichnung").ToString, stemp)
                         bKonsiPrint = bKonsi
-                    Else
-                        mObjInventur.FilepathUtsch = Nothing
-                        Session("App_FilepathUtsch") = Nothing
                     End If
                     ' Vielleicht nur Konsiartikel in der Produkthierarchie
                     If ReportTable.Rows.Count > 0 Then
@@ -257,33 +232,24 @@ Partial Public Class Change09
                         Session("App_Filepath") = Nothing
                     End If
                 End If
-
             Next
 
             files = Directory.GetFiles(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\", "*Kroschke.pdf")
             filesUtsch = Directory.GetFiles(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\", "*Utsch.pdf")
 
             Dim sPath As String
-            Dim sPathUtsch As String
-            filesByte = New List(Of Byte())()
+            Dim filesByte As New List(Of Byte())()
 
             For Each sFile As String In files
                 filesByte.Add(File.ReadAllBytes(sFile))
             Next
             If bKonsiPrint = True Then
                 For Each sFile As String In filesUtsch
-                    filesByteUtsch.Add(File.ReadAllBytes(sFile))
+                    filesByte.Add(File.ReadAllBytes(sFile))
                 Next
-                If mObjInventur.EndInventur = False Then
-                    sPathUtsch = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\TestInventurUtsch.pdf"
-                Else
-                    sPathUtsch = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\InventurUtsch.pdf"
-                End If
-                File.WriteAllBytes(sPathUtsch, PdfMerger.MergeFiles(filesByteUtsch))
-                mObjInventur.FilepathUtsch = sPathUtsch
             End If
 
-            If mObjInventur.EndInventur = False Then
+            If blnTestdruck Then
                 sPath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\TestInventur.pdf"
             Else
                 sPath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
@@ -291,16 +257,9 @@ Partial Public Class Change09
             If files.Length > 0 Then
                 File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte))
                 mObjInventur.Filepath = sPath
-                'Session("App_Filepath") = mObjInventur.Filepath
             End If
             Session("App_ContentType") = "Application/pdf"
-
-            If mObjInventur.EndInventur = False Then
-                Session("mObjInventur") = mObjInventur
-                Response.Redirect("Change09_3.aspx")
-            Else
-                mpeCheck.Show()
-            End If
+            Session("mObjInventur") = mObjInventur
 
         Catch ex As Exception
             lblNoData.Visible = True
@@ -354,7 +313,29 @@ Partial Public Class Change09
 
     End Sub
 
-    Private Sub lbOk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbOk.Click
+    Private Sub PDFAnzeigen(ByVal blnTestdruck As Boolean)
+        Session("App_ContentType") = "Application/pdf"
+        Session("App_Filepath") = mObjInventur.Filepath
+        If (Not ClientScript.IsStartupScriptRegistered("Enabled")) Then
+
+            Dim sb As StringBuilder = New StringBuilder()
+            sb.Append("<script type=""text/javascript"">")
+            If Not mObjInventur.Filepath Is Nothing Then
+                sb.Append("window.open(""Printpdf.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
+            End If
+            sb.Append("</script>")
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Enabled", sb.ToString())
+
+        End If
+        Session("mObjInventur") = mObjInventur
+        If blnTestdruck Then
+            mpeCheck1.Show()
+        Else
+            lbAbsenden.Enabled = False
+        End If
+    End Sub
+
+    Private Sub InventurAbschliessen()
         Try
             mObjInventur.SetInventurEndERP()
             If mObjInventur.E_SUBRC > 0 Then
@@ -375,7 +356,7 @@ Partial Public Class Change09
                 lbAbsenden.Enabled = False
                 lblNoData.Visible = True
                 lblNoData.Text = "Inventur erfolgreich abgeschlossen!"
-                lbNachdruck_Click(sender, e)
+                PDFAnzeigen(False)
                 Session("mObjInventur") = Nothing
             End If
         Catch ex As Exception
@@ -384,27 +365,22 @@ Partial Public Class Change09
         End Try
     End Sub
 
+    Private Sub lbTestdruck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbTestdruck.Click
+        InventurDrucken(True)
+        PDFAnzeigen(True)
+    End Sub
+
+    Private Sub lbOk1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbOk1.Click
+        mpeCheck2.Show()
+    End Sub
+
+    Private Sub lbOk2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbOk2.Click
+        InventurDrucken(False)
+        InventurAbschliessen()
+    End Sub
+
     Protected Sub lbNachdruck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruck.Click
-        Session("App_ContentType") = "Application/pdf"
-        Session("App_Filepath") = mObjInventur.Filepath
-        Session("App_FilepathUtsch") = mObjInventur.FilepathUtsch
-        If (Not ClientScript.IsStartupScriptRegistered("Enabled")) Then
-
-            Dim sb As StringBuilder = New StringBuilder()
-            sb.Append("<script type=""text/javascript"">")
-            If Not mObjInventur.FilepathUtsch Is Nothing Then
-                sb.Append("newWind=window.open(""PrintPDF2.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
-            End If
-            If Not mObjInventur.Filepath Is Nothing Then
-                sb.Append("window.open(""Printpdf.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
-            End If
-            sb.Append("</script>")
-            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Enabled", sb.ToString())
-
-        End If
-        mObjInventur.EndInventur = True
-        Session("mObjInventur") = mObjInventur
-        lbAbsenden.Enabled = False
+        PDFAnzeigen(False)
     End Sub
 
 End Class
