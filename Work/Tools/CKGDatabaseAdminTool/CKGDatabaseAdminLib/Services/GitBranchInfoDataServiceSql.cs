@@ -14,9 +14,9 @@ namespace CKGDatabaseAdminLib.Services
     {
         public GitBranchViewFilter AnzeigeFilter { get; set; }
 
-        private ObservableCollection<GitBranchInfo> GitBranches { get { return _dataContext.GitBranchInfos.Local; } }
+        private ObservableCollection<GitBranchInfo> GitBranchesAll { get { return _dataContext.GitBranchInfos.Local; } }
 
-        public ObservableCollection<GitBranchInfo> GitBranchesFiltered { get; set; }
+        public ObservableCollection<GitBranchInfo> GitBranches { get; set; }
 
         private DatabaseContext _dataContext;
 
@@ -56,36 +56,38 @@ namespace CKGDatabaseAdminLib.Services
 
             switch (AnzeigeFilter)
             {
-                case GitBranchViewFilter.imMasterUndNichtProduktiv:
-                    listeTemp = GitBranches.Where(g => g.ImMaster && !g.ProduktivSeit.HasValue).OrderBy(g => g.ID);
+                case GitBranchViewFilter.inaktive:
+                    listeTemp = GitBranchesAll.Where(g => g.Inaktiv);
                     break;
+
                 case GitBranchViewFilter.imMasterUndProduktiv:
-                    listeTemp = GitBranches.Where(g => g.ImMaster && g.ProduktivSeit.HasValue).OrderBy(g => g.ID);
+                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && g.ImMaster && g.ProduktivSeit.HasValue);
                     break;
-                case GitBranchViewFilter.nichtImMaster:
-                    listeTemp = GitBranches.Where(g => !g.ImMaster).OrderBy(g => g.ID);
-                    break;
+
                 case GitBranchViewFilter.nichtImMasterUndNichtProduktiv:
-                    listeTemp = GitBranches.Where(g => !g.ImMaster && !g.ProduktivSeit.HasValue).OrderBy(g => g.ID);
+                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && !g.ImMaster && !g.ProduktivSeit.HasValue);
                     break;
-                case GitBranchViewFilter.nichtProduktiv:
-                    listeTemp = GitBranches.Where(g => !g.ProduktivSeit.HasValue).OrderBy(g => g.ID);
+
+                case GitBranchViewFilter.imMasterUndNichtProduktiv:
+                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && g.ImMaster && !g.ProduktivSeit.HasValue);
                     break;
+
                 case GitBranchViewFilter.produktivUndNichtImMaster:
-                    listeTemp = GitBranches.Where(g => !g.ImMaster && g.ProduktivSeit.HasValue).OrderBy(g => g.ID);
+                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && !g.ImMaster && g.ProduktivSeit.HasValue);
                     break;
+
                 default:
-                    // alle
-                    listeTemp = GitBranches.OrderBy(g => g.ID);
+                    // alle (ohne inaktive)
+                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv);
                     break;
             }
 
-            if (GitBranchesFiltered != null)
-            {
-                GitBranchesFiltered.CollectionChanged -= GitBranchesFilteredOnCollectionChanged;
-            }      
-            GitBranchesFiltered = new ObservableCollection<GitBranchInfo>(listeTemp);
-            GitBranchesFiltered.CollectionChanged += GitBranchesFilteredOnCollectionChanged;
+            if (GitBranches != null)
+                GitBranches.CollectionChanged -= GitBranchesFilteredOnCollectionChanged;
+   
+            GitBranches = new ObservableCollection<GitBranchInfo>(listeTemp.OrderBy(g => g.ID));
+
+            GitBranches.CollectionChanged += GitBranchesFilteredOnCollectionChanged;
         }
 
         private void GitBranchesFilteredOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -96,15 +98,15 @@ namespace CKGDatabaseAdminLib.Services
                     foreach (var newItem in e.NewItems)
                     {
                         // temporäre Id vergeben, um neue Entities auch vor dem Speichern in SQL anhand der ID unterscheiden zu können
-                        var minId = GitBranches.Min(g => g.ID);
+                        var minId = GitBranchesAll.Min(g => g.ID);
                         (newItem as GitBranchInfo).ID = (minId < 0 ? minId - 1 : -1);
-                        GitBranches.Add(newItem as GitBranchInfo);
+                        GitBranchesAll.Add(newItem as GitBranchInfo);
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var oldItem in e.OldItems)
                     {
-                        GitBranches.Remove(oldItem as GitBranchInfo);
+                        GitBranchesAll.Remove(oldItem as GitBranchInfo);
                     }
                     break;
             }
@@ -132,11 +134,11 @@ namespace CKGDatabaseAdminLib.Services
 
         private void ApplyChanges()
         {
-            if (GitBranchesFiltered != null)
+            if (GitBranches != null)
             {
-                foreach (var gitBranch in GitBranchesFiltered)
+                foreach (var gitBranch in GitBranches)
                 {
-                    var item = GitBranches.FirstOrDefault(g => g.ID == gitBranch.ID);
+                    var item = GitBranchesAll.FirstOrDefault(g => g.ID == gitBranch.ID);
 
                     if (item != null)
                     {

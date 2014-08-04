@@ -14,7 +14,7 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<GitBranchInfo> GitBranches { get { return DataService.GitBranchesFiltered; } }
+        public ObservableCollection<GitBranchInfo> GitBranches { get { return DataService.GitBranches; } }
 
         [XmlIgnore]
         private readonly IGitBranchInfoDataService DataService;
@@ -78,6 +78,5 @@ namespace CKGDatabaseAdminLib.ViewModels
             DataService.FilterGitBranches();
             SendPropertyChanged("GitBranches");
         }
-
     }
 }

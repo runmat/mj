@@ -3,8 +3,7 @@
     public enum GitBranchViewFilter
     {
         alle,
-        nichtImMaster,
-        nichtProduktiv,
+        inaktive,
         imMasterUndProduktiv,
         nichtImMasterUndNichtProduktiv,
         imMasterUndNichtProduktiv,

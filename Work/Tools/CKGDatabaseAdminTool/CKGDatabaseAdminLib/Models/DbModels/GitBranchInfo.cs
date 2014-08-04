@@ -157,5 +157,20 @@ namespace CKGDatabaseAdminLib.Models.DbModels
                 }
             }
         }
+
+        private bool _inaktiv;
+        [Required]
+        public bool Inaktiv
+        {
+            get { return _inaktiv; }
+            set
+            {
+                if (_inaktiv != value)
+                {
+                    _inaktiv = value;
+                    OnPropertyChanged("Inaktiv");
+                }
+            }
+        }
     }
 }
