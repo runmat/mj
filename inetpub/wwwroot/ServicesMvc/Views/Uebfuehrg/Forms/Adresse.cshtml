@@ -6,7 +6,7 @@
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         <div class="form-actions">
-            <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg')" class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top">Adressen auswählen <i class="icon-chevron-right"></i></a>
+            <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top">Adressen auswählen <i class="icon-chevron-right"></i></a>
             <a href="#" onclick="return AjaxFormAdresseEmpty('AjaxForm' + '@Model.UiIndex', 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-right-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top">Formular leeren <i class="icon-remove"></i></a>
         </div>
 
@@ -50,6 +50,8 @@
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            if (_modelIsValid && false == @(Model.IsValid.ToString().ToLower()))
+                _modelIsValid = false;
             
             AjaxFormAdressePrepareAutoComplete($("#Name1"), "UebfuehrgAdresseGetAutoCompleteItems");
             AjaxFormAdressePrepareAutoCompleteReset(@Model.UiIndex);        
