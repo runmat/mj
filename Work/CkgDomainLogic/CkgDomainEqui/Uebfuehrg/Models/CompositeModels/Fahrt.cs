@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string EmptyString { get { return ""; } }
 
         [XmlIgnore]
-        public bool IstZusatzFahrt { get { return Adresse.AlleTransportTypen.Any(at => at.IstZusatzTransport && at.ID == TypNr); } }
+        public bool IstZusatzFahrt { get { return StartAdresse.GetAlleTransportTypen().Any(at => at.IstZusatzTransport && at.ID == TypNr); } }
 
         [XmlIgnore]
         public bool IstHauptFahrt { get { return !IstZusatzFahrt; } }

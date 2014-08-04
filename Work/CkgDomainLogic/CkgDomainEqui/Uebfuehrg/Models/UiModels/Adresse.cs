@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -56,21 +57,23 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
 
         [XmlIgnore]
-        public static List<TransportTyp> AlleTransportTypen { get; set; }
+        public Func<List<TransportTyp>> GetAlleTransportTypen { get; set; }
         [XmlIgnore]
         public List<TransportTyp> ValideTransportTypen
         {
             get
             {
+                var alleTransportTypen = GetAlleTransportTypen().CopyAndInsertAtTop(new TransportTyp { ID = "", Name = Localize.TranslateResourceKey(LocalizeConstants.DropdownDefaultOptionPleaseChoose) });
+
                 if (GroupName.IsNullOrEmpty())
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
                 if (SubGroupName.IsNullOrEmpty())
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
 
                 var fahrzeugIndexString = GroupName.Substring(GroupName.Length - 1);
                 int fahrzeugIndex;
                 if (!Int32.TryParse(fahrzeugIndexString, out fahrzeugIndex))
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
 
                 var intelligentFahrzeugMatches = new List<string>
                                                      {
@@ -80,7 +83,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                                                          String.Format("fahrzeug {0}", fahrzeugIndex),
                                                      };
                 var intelligentTransportTypes = new List<TransportTyp>();
-                AlleTransportTypen.ForEach(transportTyp =>
+                alleTransportTypen.ForEach(transportTyp =>
                 {
                     var matchTransportType = intelligentFahrzeugMatches.FirstOrDefault(match => transportTyp.Name.ToLower().Contains(match));
                     if (matchTransportType != null)
@@ -98,12 +101,12 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
                     if (intelligentTransportTypes.Count() > 1)
                         // if we have mor than 1 entry, also insert the choosing option ("bitte auswählen")
-                        intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(AlleTransportTypen.First(t => t.ID == ""));
+                        intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(GetAlleTransportTypen().First(t => t.ID == ""));
 
                     return intelligentTransportTypes;
                 }
 
-                return AlleTransportTypen;
+                return alleTransportTypen;
             }
         }
 
@@ -193,12 +196,13 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             return dict;
         }
 
-        public static TransportTyp GetTransportTypModel(string transportTyp)
+        public TransportTyp GetTransportTypModel(string transportTyp)
         {
-            return (AlleTransportTypen == null ? null : AlleTransportTypen.FirstOrDefault(tt => tt.ID == transportTyp));
+            var alleTransportTypen = GetAlleTransportTypen();
+            return (alleTransportTypen == null ? null : alleTransportTypen.FirstOrDefault(tt => tt.ID == transportTyp));
         }
 
-        public static string GetTransportTypName(string transportTyp, string defaultTypName = "")
+        public string GetTransportTypName(string transportTyp, string defaultTypName = "")
         {
             var transportTypModel = GetTransportTypModel(transportTyp);
             return transportTypModel == null ? "" : (transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);

@@ -53,6 +53,12 @@
         FormPrepareAjax();
         if (_modelIsValid)
             AjaxRequestNextStep();
+        
+        try {
+            var detailWindow = $("#Adressen").data("tWindow");
+            detailWindow.center().close();
+        } catch(e) {
+        }
     }
 
     function AjaxRequestNextStep() {
@@ -73,4 +79,197 @@
     }
 
 
+    //    
+    // <Adressen common>
+    //
+
+    function AjaxFormAdressePrepareAutoCompleteReset(uiIndex) {
+        var form = $("#AjaxForm" + uiIndex);
+        form.find("input:text").each(function () {
+            if ($(this).attr('id') != 'Name1')
+                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+        });
+    }
+
+    function AjaxFormAdressePrepareAutoComplete(tb, url) {
+
+        var form = tb.closest("form");
+        var textboxValues = '';
+        form.find("input:text").each(function () {
+            if ($(this).attr('id') != 'Name1')
+                textboxValues = $(this).val();
+        });
+        if (textboxValues != '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                AjaxFormAdresseInitAutoComplete(tb, result.items);
+            }
+        });
+    }
+
+    function AjaxFormAdresseInitAutoComplete(tb, items) {
+        tb.autocomplete({
+            minLength: 0,
+            source: items,
+            select: function (event, ui) {
+                //alert(ui.item.value);
+                $("#TmpSelectionKey").val(ui.item.value);
+                var form = tb.closest("form");
+                form.submit();
+            }
+        });
+        tb.autocomplete("enable");
+    }
+
+    function AjaxFormAdresseEmpty(formID, url) {
+        var form = $("#" + formID);
+        form.find(":input").each(function () {
+            switch (this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'select-one':
+                    $(this).val('DE');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        return false;
+    }
+
+    function AjaxFormAdressenShowGrid(addressType) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: addressType + "AdressenShowGrid",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#Adressen").data("tWindow");
+                    $("#InnerAdressen").html(result);
+                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+
+    function AjaxFormAdresseEdit(addressType) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "Adresse",
+                data: { addressType: addressType },
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#AdresseBearbeiten").data("tWindow");
+                    $("#InnerAdresseBearbeiten").html(result);
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+
+    function AjaxFormAdresseClose() {
+        $("#AdresseBearbeiten").data("tWindow").close();
+    }
+
+    function GridAdresseOnSelect(id, formID, addressType) {
+        var form = $("#" + formID);
+
+        if (typeof (form.attr('id')) != 'undefined') {
+            $("#TmpSelectionKey").val(id);
+            form.submit();
+        }
+
+        // no form available, so we assume that we are inside the "summary" context:
+        UpdateAddressAndGetSummary(id, addressType);
+    }
+
+//    function UpdateAddressAndGetSummary(id, addressType) {
+//        $.ajax(
+//        {
+//            type: "POST",
+//            url: "UpdateAddressAndGetSummary",
+//            data: { updateAddressid: id, addressType: addressType },
+//            loadingShow: false,
+//            success: function (result) {
+//                FormWizard.SetTabHtml("Summary", result);
+//                AjaxFormAdresseClose();
+//                $("#Adressen").data("tWindow").close();
+//                SpanAlertSuccess(addressType, "Adresse aktualisiert.", 1800);
+//            },
+//            error: function (jqXhr, exception) {
+//                alert(jqXhr.responseText);
+//            }
+//        });
+//    }
+
+    //    
+    // </Adressen common>
+    //
+
+
+    //    
+    // <UebfuehrgAdressen>
+    //
+
+    function OnDataBound_UebfuehrgAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_UebfuehrgAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_UebfuehrgAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    //    
+    // </UebfuehrgAdressen>
+    //
+    
 </script>
+
+
+@(Html.Telerik().Window()
+    .Name("Adressen")
+    .Visible(false)
+    .Title("Auswahl Adressen")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+    .Content(@<text><div id="InnerAdressen"></div></text>))
+
+
+@(Html.Telerik().Window()
+    .Name("AdresseBearbeiten")
+    .Visible(false)
+    .Title("Adresse bearbeiten")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(500)
+    .Height(550)
+    .Content(@<text><div id="InnerAdresseBearbeiten"></div></text>))
