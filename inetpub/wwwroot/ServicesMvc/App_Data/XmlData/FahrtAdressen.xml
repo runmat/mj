@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfUebfuehrgAdresse>
+  <UebfuehrgAdresse>
+    <Mandant>1</Mandant>
+    <KundenNr>0010010753</KundenNr>
+    <Name1>Walter Abhol 1</Name1>
+    <Ansprechpartner></Ansprechpartner>
+    <Strasse>Teststraße 33</Strasse>
+    <PLZ>22941</PLZ>
+    <Ort>Bargteheide</Ort>
+    <Telefon></Telefon>
+    <Email>test1@abhol.de</Email>
+    <Fax></Fax>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+  </UebfuehrgAdresse>
+  <UebfuehrgAdresse>
+    <Mandant>1</Mandant>
+    <KundenNr>0010010753</KundenNr>
+    <Name1>Walter Abhol 2</Name1>
+    <Ansprechpartner></Ansprechpartner>
+    <Strasse>Teststraße 44</Strasse>
+    <PLZ>22926</PLZ>
+    <Ort>Ahrensburg</Ort>
+    <Telefon></Telefon>
+    <Email>test2@abhol.de</Email>
+    <Fax></Fax>
+    <SubTyp>ABHOLADRESSE</SubTyp>
+  </UebfuehrgAdresse>
+  <UebfuehrgAdresse>
+    <Mandant>1</Mandant>
+    <KundenNr>0010010753</KundenNr>
+    <Name1>Walter Auslieferung 1</Name1>
+    <Ansprechpartner></Ansprechpartner>
+    <Strasse>Teststraße 55</Strasse>
+    <PLZ>21031</PLZ>
+    <Ort>Hamburg</Ort>
+    <Telefon></Telefon>
+    <Email>test2@auslieferung.de</Email>
+    <Fax></Fax>
+    <SubTyp>AUSLIEFERUNG</SubTyp>
+  </UebfuehrgAdresse>
+</ArrayOfUebfuehrgAdresse>
