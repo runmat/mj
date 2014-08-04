@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -12,9 +13,17 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 {
     public enum AdressenTyp { FahrtAdresse, RechnungsAdresse }
 
+    [XmlType(TypeName = "UebfuehrgAdresse")]
     public class Adresse : DomainCommon.Models.Adresse 
     {
-        public AdressenTyp AdressTyp { get; set; }
+        private AdressenTyp _adressTyp = AdressenTyp.FahrtAdresse;
+
+        [XmlIgnore, ScriptIgnore]
+        public AdressenTyp AdressTyp
+        {
+            get { return _adressTyp; }
+            set { _adressTyp = value; }
+        }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
         [Required]
@@ -38,7 +47,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
         public string Uhrzeitwunsch { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string UhrzeitwunschOptions { get { return "; 08:00; 09:00; 10:00; 11:00; 12:00; 13:00; 14:00; 15:00; 16:00; 17:00; 18:00"; } }
         public bool UhrzeitwunschAvailable { get; set; }
 
@@ -48,17 +57,17 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [Required]
         public string TransportTyp
         {
-            get { return _transportTyp; }
+            get { return _transportTyp;  }
             set { _transportTyp = value; }
         }
         public bool TransportTypAvailable { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public Func<List<TransportTyp>> GetAlleTransportTypen { get; set; }
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<TransportTyp> ValideTransportTypen
         {
             get
@@ -110,10 +119,10 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Fahrt> Fahrten { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string FahrzeugBezeichnung
         {
             get { return String.Format("Fahrzeug {0}", Fahrten == null || Fahrten.None() ? "1" : Fahrten.First().FahrzeugIndex); }
@@ -138,7 +147,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         public string Mandant { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string FahrtTitleFromAddressType
         {
             get
@@ -198,8 +207,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         public TransportTyp GetTransportTypModel(string transportTyp)
         {
-            var alleTransportTypen = GetAlleTransportTypen();
-            return (alleTransportTypen == null ? null : alleTransportTypen.FirstOrDefault(tt => tt.ID == transportTyp));
+            var getAlleTransportTypen = GetAlleTransportTypen;
+            return (getAlleTransportTypen == null ? null : getAlleTransportTypen().FirstOrDefault(tt => tt.ID == transportTyp));
         }
 
         public string GetTransportTypName(string transportTyp, string defaultTypName = "")

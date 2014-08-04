@@ -2,7 +2,7 @@
 <ArrayOfUebfuehrgAdresse>
   <UebfuehrgAdresse>
     <Mandant>1</Mandant>
-    <KundenNr>0010010753</KundenNr>
+    <KundenNr>4711</KundenNr>
     <Name1>Walter Abhol 1</Name1>
     <Ansprechpartner></Ansprechpartner>
     <Strasse>Teststraße 33</Strasse>
@@ -15,7 +15,7 @@
   </UebfuehrgAdresse>
   <UebfuehrgAdresse>
     <Mandant>1</Mandant>
-    <KundenNr>0010010753</KundenNr>
+    <KundenNr>4712</KundenNr>
     <Name1>Walter Abhol 2</Name1>
     <Ansprechpartner></Ansprechpartner>
     <Strasse>Teststraße 44</Strasse>
@@ -28,7 +28,7 @@
   </UebfuehrgAdresse>
   <UebfuehrgAdresse>
     <Mandant>1</Mandant>
-    <KundenNr>0010010753</KundenNr>
+    <KundenNr>4713</KundenNr>
     <Name1>Walter Auslieferung 1</Name1>
     <Ansprechpartner></Ansprechpartner>
     <Strasse>Teststraße 55</Strasse>
