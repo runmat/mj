@@ -192,15 +192,21 @@
     }
 
     function GridAdresseOnSelect(id, formID, addressType) {
+
+        console.log(id);
+        console.log(formID);
+
         var form = $("#" + formID);
 
         if (typeof (form.attr('id')) != 'undefined') {
+            AjaxFormAdresseClose();
+            $("#Adressen").data("tWindow").close();
             $("#TmpSelectionKey").val(id);
             form.submit();
         }
 
         // no form available, so we assume that we are inside the "summary" context:
-        UpdateAddressAndGetSummary(id, addressType);
+        //UpdateAddressAndGetSummary(id, addressType);
     }
 
 //    function UpdateAddressAndGetSummary(id, addressType) {
@@ -242,6 +248,15 @@
 
     function OnColumnReorder_UebfuehrgAdressenAuswahlGrid() {
         FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnComplete_UebfuehrgAdressenAuswahlGrid() {
+        var grid = $(this);
+        setTimeout(function () {
+            var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
+            var newHeight = (gridHeight + 80) + 'px';
+            grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
+        }, 300);
     }
 
     //    
