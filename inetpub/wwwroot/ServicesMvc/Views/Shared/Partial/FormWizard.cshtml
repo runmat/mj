@@ -193,6 +193,14 @@
                     return true;
                 }).hide();
 
+                $('#formWizard .button-backtosummary').click(function () {
+                    var buttonType = 'backtosummary';
+                    if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
+                        if (!FormWizard.buttonOnClickPrivate[buttonType]())
+                            return false;
+                    return true;
+                }).hide();
+
                 $('#formWizard').removeClass("hide");
             },
 
@@ -231,6 +239,10 @@
                 return this.getCurrentIndex() + 2;
             },
 
+            GetCurrentTabIndex: function () {
+                return this.getCurrentIndex() + 1;
+            },
+
 
             getCurrentIndex : function() {
                 return ($('#formWizard').data('bootstrapWizard')).currentIndex();
@@ -254,6 +266,10 @@
 
             ButtonRestartShow: function (show) {
                 this.buttonShow('restart', show);
+            },
+
+            ButtonBackToSummaryShow: function (show) {
+                this.buttonShow('backtosummary', show);
             },
 
 
@@ -288,6 +304,10 @@
 
             OnRestart: function (func) {
                 this.setButtonOnClick('restart', func);
+            },
+
+            OnBackToSummary: function (func) {
+                this.setButtonOnClick('backtosummary', func);
             },
 
             InsertActionButton: function (customActionContainerId) {
@@ -526,6 +546,9 @@
                             </a>
                             <a href="javascript:;" class="btn green button-restart">
                                 Neuen Vorgang beginnen <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn green button-backtosummary">
+                                Zurück zur Übersicht <i class="m-icon-swapright m-icon-white"></i>
                             </a>
                         </div>
                     </div>
