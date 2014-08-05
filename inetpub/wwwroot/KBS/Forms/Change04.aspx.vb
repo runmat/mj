@@ -32,6 +32,7 @@ Partial Public Class Change04
                 txtKST.Enabled = False
                 txtKST.Text = mObjKasse.Lagerort
                 fillDropdown()
+                lbLetzteBestellungen.Enabled = True
             End If
         End If
 
@@ -161,6 +162,23 @@ Partial Public Class Change04
         End If
     End Sub
 
+    Private Sub FillGridLetzteBestellungen()
+
+        Dim tmpDataView As New DataView(mObjZentrallager.LetzteBestellungen)
+        tmpDataView.Sort = "BEDAT DESC"
+
+        If tmpDataView.Count = 0 Then
+            gvLetzteBestellungen.Visible = False
+            lblNoDataLetzteBestellungen.Visible = True
+        Else
+            gvLetzteBestellungen.Visible = True
+            lblNoDataLetzteBestellungen.Visible = False
+
+            gvLetzteBestellungen.DataSource = tmpDataView
+            gvLetzteBestellungen.DataBind()
+        End If
+    End Sub
+
     Private Sub doSubmit()
         mObjZentrallager.KostStelle = mObjKasse.Lagerort
         mObjZentrallager.SendToKost = txtKST.Text
@@ -247,8 +265,10 @@ Partial Public Class Change04
     End Sub
 
     Protected Sub txtKST_TextChanged(sender As Object, e As EventArgs) Handles txtKST.TextChanged
+        divLetzteBestellungen.Visible = False
+
         If mObjKasse.Master Then
-            If txtKST.Text.Length > 0 Then
+            If Not String.IsNullOrEmpty(txtKST.Text) Then
                 With mObjZentrallager
                     .CheckKostStelleERP(txtKST.Text.Trim)
                     If .E_MESSAGE <> "" Then
@@ -261,6 +281,7 @@ Partial Public Class Change04
                         lbtnInsert.Enabled = False
                         txtFreitext.Enabled = False
                         lbtFreitextSend.Enabled = False
+                        lbLetzteBestellungen.Enabled = False
                     Else
                         lblKSTText.Visible = True
                         lblKSTText.Text = .KostText
@@ -270,8 +291,8 @@ Partial Public Class Change04
                         lbtnInsert.Enabled = True
                         txtFreitext.Enabled = True
                         lbtFreitextSend.Enabled = True
+                        lbLetzteBestellungen.Enabled = True
                         SetFocus(ddlArtikel)
-
                     End If
                 End With
             End If
@@ -284,7 +305,18 @@ Partial Public Class Change04
             lbtnInsert.Enabled = False
             txtFreitext.Enabled = False
             lbtFreitextSend.Enabled = False
+            lbLetzteBestellungen.Enabled = False
         End If
+    End Sub
+
+    Private Sub lbLetzteBestellungen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbLetzteBestellungen.Click
+        ShowLetzteBestellungen()
+    End Sub
+
+    Private Sub ShowLetzteBestellungen()
+        divLetzteBestellungen.Visible = True
+        mObjZentrallager.FillLetzteBestellungen(txtKST.Text)
+        FillGridLetzteBestellungen()
     End Sub
 
 End Class

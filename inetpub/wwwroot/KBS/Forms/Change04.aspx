@@ -56,9 +56,12 @@
                                         <tr class="formquery">
                                             <td class="firstLeft active">
                                                 <asp:Label ID="lblKst" runat="server">Kostenstelle</asp:Label>
-                                                &nbsp;
+                                            </td>
+                                            <td class="firstLeft active">
                                                 <asp:TextBox ID="txtKST" runat="server" Enabled="false" AutoPostBack="true" Width="100px"></asp:TextBox>
-                                                <div style="margin-left: 10px; margin-top: 5px; position: absolute;">
+                                            </td>
+                                            <td class="firstLeft active" colspan="2">
+                                                <div style="margin-left: 10px">
                                                     <asp:Label ID="lblKSTText" runat="server" TabIndex="0" Visible="false"></asp:Label>
                                                 </div>
                                             </td>
@@ -114,11 +117,6 @@
                                         </tr>
                                         <tr class="formquery">
                                             <td colspan="4" class="firstLeft active">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr class="formquery">
-                                            <td colspan="4" class="firstLeft active">
                                                 <asp:Label ID="lblMessage" CssClass="TextError" runat="server"></asp:Label>&nbsp;
                                             </td>
                                         </tr>
@@ -169,9 +167,53 @@
                         <div id="dataFooter">
                             <asp:LinkButton ID="lbAbsenden" Text="Absenden" Height="16px" Width="78px" runat="server"
                                 CssClass="Tablebutton"></asp:LinkButton>
+                            <asp:LinkButton ID="lbLetzteBestellungen" Text="letzte Bestellungen" Height="16px" Width="128px" runat="server"
+                                CssClass="TablebuttonLarge" Enabled="False" style="margin-left: 10px"></asp:LinkButton>
                         </div>
-                        <asp:Button ID="MPEDummy" Width="0" Height="0" runat="server" />
-                        <asp:Button ID="MPEDummy1" Width="0" Height="0" runat="server" />
+                        <div id="divLetzteBestellungen" runat="server" Visible="False" style="margin-bottom: 10px">
+                            <table cellspacing="0" width="100%" cellpadding="0" bgcolor="white" border="0">
+                                <tr>
+                                    <td class="firstLeft active">
+                                        Bestellungen in den letzten 4 Wochen:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Label ID="lblNoDataLetzteBestellungen" runat="server" Visible="False" Font-Bold="True">Keine Daten gefunden</asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:GridView CssClass="GridView" ID="gvLetzteBestellungen" runat="server" Width="100%" AutoGenerateColumns="False"
+                                            AllowPaging="False" AllowSorting="False" ShowFooter="False" GridLines="None">
+                                            <PagerSettings Visible="false" />
+                                            <HeaderStyle CssClass="GridTableHead"></HeaderStyle>
+                                            <AlternatingRowStyle CssClass="GridTableAlternate" />
+                                            <RowStyle CssClass="ItemStyle" />
+                                            <Columns>
+                                                <asp:BoundField HeaderText="Datum" DataField="BEDAT" />
+                                                <asp:BoundField HeaderText="Bestellung Nr." DataField="BSTNR" />
+                                                <asp:BoundField HeaderText="Artikel-Nr." DataField="ARTLIF" />
+                                                <asp:BoundField HeaderText="Bezeichnung" DataField="ARTBEZ" />
+                                                <asp:TemplateField HeaderText="Menge">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# IIf(Eval("MENGE") Is Nothing, "", Eval("MENGE").ToString().TrimStart("0"c)) %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:BoundField HeaderText="Freitext" DataField="FREITEXT" />
+                                            </Columns>
+                                        </asp:GridView>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
+                        <asp:Button ID="MPEDummy1" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender runat="server" ID="mpeBestellungsCheck" BackgroundCssClass="divProgress"
                             Enabled="true" PopupControlID="BestellungsCheck" TargetControlID="MPEDummy" BehaviorID="BestellCheck">
                         </cc1:ModalPopupExtender>

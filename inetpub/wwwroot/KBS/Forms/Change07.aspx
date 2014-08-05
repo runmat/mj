@@ -251,11 +251,11 @@
                            </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>                                
-                                <asp:Button ID="MPEDummy" Width="0" Height="0" runat="server" />
-                                <asp:Button ID="MPEDummy1" Width="0" Height="0" runat="server" />
-                                <asp:Button ID="MPEDummy2" Width="0" Height="0" runat="server" />
-                                <asp:Button ID="MPEDummy3" Width="0" Height="0" runat="server" />
-                                <asp:Button ID="MPEDummy4" Width="0" Height="0" runat="server" />
+                                <asp:Button ID="MPEDummy" style="display: none" runat="server" />
+                                <asp:Button ID="MPEDummy1" style="display: none" runat="server" />
+                                <asp:Button ID="MPEDummy2" style="display: none" runat="server" />
+                                <asp:Button ID="MPEDummy3" style="display: none" runat="server" />
+                                <asp:Button ID="MPEDummy4" style="display: none" runat="server" />
                                 <cc1:ModalPopupExtender runat="server" ID="MPEInfotext" BackgroundCssClass="divProgress"
                                     Enabled="true" PopupControlID="Infotext" TargetControlID="MPEDummy2">
                                 </cc1:ModalPopupExtender>
