@@ -49,7 +49,7 @@
     }
 
     function AjaxFormComplete() {
-        console.log(_modelIsValid);
+        //console.log(_modelIsValid);
         FormPrepareAjax();
         if (_modelIsValid)
             AjaxRequestNextStep();
@@ -86,8 +86,8 @@
     function AjaxFormAdressePrepareAutoCompleteReset(uiIndex) {
         var form = $("#AjaxForm" + uiIndex);
         form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
-                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+            if ($(this).attr('name') != 'Name1')
+                $(this).bind('keyup', function () { $("#AjaxForm" + uiIndex + " input[name='Name1']").autocomplete("disable"); });
         });
     }
 
@@ -96,7 +96,7 @@
         var form = tb.closest("form");
         var textboxValues = '';
         form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
+            if ($(this).attr('name') != 'Name1')
                 textboxValues = $(this).val();
         });
         if (textboxValues != '')
@@ -119,8 +119,8 @@
             source: items,
             select: function (event, ui) {
                 //alert(ui.item.value);
-                $("#TmpSelectionKey").val(ui.item.value);
                 var form = tb.closest("form");
+                $("#" + form.attr("id") + " input[name='TmpSelectionKey']").val(ui.item.value);
                 form.submit();
             }
         });
@@ -146,17 +146,17 @@
             }
         });
 
-        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        AjaxFormAdressePrepareAutoComplete($("#" + formID + " input[name='Name1']"), url);
         return false;
     }
 
-    function AjaxFormAdressenShowGrid(addressType) {
+    function AjaxFormAdressenShowGrid(addressType, uiIndex) {
 
         $.ajax(
             {
                 type: "POST",
                 url: addressType + "AdressenShowGrid",
-                data: {},
+                data: { uiIndex: uiIndex},
                 loadingShow: true,
                 success: function (result) {
                     var detailWindow = $("#Adressen").data("tWindow");
@@ -201,7 +201,7 @@
         if (typeof (form.attr('id')) != 'undefined') {
             AjaxFormAdresseClose();
             $("#Adressen").data("tWindow").close();
-            $("#TmpSelectionKey").val(id);
+            $("#" + formID + " input[name='TmpSelectionKey']").val(id);
             form.submit();
         }
 

@@ -12,7 +12,7 @@
 
         @Html.HiddenFor(m => m.UiIndex)
 
-        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.Kennung)
         @Html.HiddenFor(m => m.Typ)
         @Html.HiddenFor(m => m.TmpSelectionKey)
@@ -50,6 +50,8 @@
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            console.log(_modelIsValid);
+            console.log(@(Model.IsValid.ToString().ToLower()));
             if (_modelIsValid && false == @(Model.IsValid.ToString().ToLower()))
                 _modelIsValid = false;
             
