@@ -843,6 +843,12 @@
         <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
+    <ItemGroup>
+      <_Assemblies Include="bin\**\*" />
+      <FilesForPackagingFromProject Include="%(_Assemblies.Identity)">
+        <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>	
   </Target>
   <ProjectExtensions>
     <VisualStudio>
