@@ -43,16 +43,30 @@
             return true;
         });
 
+        FormWizard.OnBackToSummary(function () {
+
+            //FormWizard.ButtonBackToSummaryShow(false);
+            FormWizard.ButtonNextShow(true);
+            $("#AjaxForm" + FormWizard.getCurrentIndex()).submit();
+
+            return true;
+        });
+
         FormWizard.OnRestart(function () {
             location.reload();
         });
     }
 
     function AjaxFormComplete() {
-        //console.log(_modelIsValid);
         FormPrepareAjax();
-        if (_modelIsValid)
-            AjaxRequestNextStep();
+        if (_modelIsValid) {
+            if (FormWizard.buttonVisible("backtosummary")) {
+                var uiIndex = 4;
+                $("#formWizardStep_" + (uiIndex + 1)).find("a").trigger("click");
+                FormWizard.ButtonBackToSummaryShow(false);
+            } else
+                AjaxRequestNextStep();
+        }
         
         try {
             var detailWindow = $("#Adressen").data("tWindow");
@@ -72,7 +86,7 @@
                     alert(result.message);
                     return;
                 }
-                
+
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
         });
@@ -150,37 +164,18 @@
         return false;
     }
 
-    function AjaxFormAdressenShowGrid(addressType, uiIndex) {
+    function SummaryStepDataEdit(uiIndex) {
 
         $.ajax(
             {
                 type: "POST",
-                url: addressType + "AdressenShowGrid",
-                data: { uiIndex: uiIndex},
-                loadingShow: true,
-                success: function (result) {
-                    var detailWindow = $("#Adressen").data("tWindow");
-                    $("#InnerAdressen").html(result);
-                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
-                    detailWindow.center().open();
-                }
-            });
-
-        return false;
-    }
-
-    function AjaxFormAdresseEdit(addressType) {
-
-        $.ajax(
-            {
-                type: "POST",
-                url: "Adresse",
-                data: { addressType: addressType },
-                loadingShow: true,
-                success: function (result) {
-                    var detailWindow = $("#AdresseBearbeiten").data("tWindow");
-                    $("#InnerAdresseBearbeiten").html(result);
-                    detailWindow.center().open();
+                url: "SummaryStepDataEdit",
+                data: { uiIndex: uiIndex },
+                loadingShow: false,
+                success: function () {
+                    $("#formWizardStep_" + (uiIndex + 1)).find("a").trigger("click");
+                    FormWizard.ButtonNextShow(false);
+                    FormWizard.ButtonBackToSummaryShow(true);
                 }
             });
 
@@ -193,9 +188,6 @@
 
     function GridAdresseOnSelect(id, formID, addressType) {
 
-        console.log(id);
-        console.log(formID);
-
         var form = $("#" + formID);
 
         if (typeof (form.attr('id')) != 'undefined') {
@@ -204,29 +196,7 @@
             $("#" + formID + " input[name='TmpSelectionKey']").val(id);
             form.submit();
         }
-
-        // no form available, so we assume that we are inside the "summary" context:
-        //UpdateAddressAndGetSummary(id, addressType);
     }
-
-//    function UpdateAddressAndGetSummary(id, addressType) {
-//        $.ajax(
-//        {
-//            type: "POST",
-//            url: "UpdateAddressAndGetSummary",
-//            data: { updateAddressid: id, addressType: addressType },
-//            loadingShow: false,
-//            success: function (result) {
-//                FormWizard.SetTabHtml("Summary", result);
-//                AjaxFormAdresseClose();
-//                $("#Adressen").data("tWindow").close();
-//                SpanAlertSuccess(addressType, "Adresse aktualisiert.", 1800);
-//            },
-//            error: function (jqXhr, exception) {
-//                alert(jqXhr.responseText);
-//            }
-//        });
-//    }
 
     //    
     // </Adressen common>

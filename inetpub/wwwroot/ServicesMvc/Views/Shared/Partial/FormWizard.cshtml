@@ -99,7 +99,8 @@
                         if (index == (total - 1))
                             return false;
 
-                        var tabClickValid = index > clickedIndex;
+                        var tabClickValid = index > clickedIndex-100;
+                        console.log(clickedIndex);
                         if (tabClickValid)
                             FormWizard.formWizardNavButtonsShowHide(clickedIndex + 1, total);
                         return tabClickValid;
@@ -389,6 +390,12 @@
                 var button = $('#formWizard').find('.button-' + buttonType);
                 if (button != null)
                     if (show) button.show(); else button.hide();
+            },
+
+            buttonVisible: function (buttonType) {
+                var button = $('#formWizard').find('.button-' + buttonType);
+                if (button != null)
+                    return (button.css("display") != "none");
             },
 
             buttonInvoke: function (buttonType) {
