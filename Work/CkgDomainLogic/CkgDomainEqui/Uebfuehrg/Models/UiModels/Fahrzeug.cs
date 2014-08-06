@@ -126,5 +126,10 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [XmlIgnore]
         public string FahrzeugklasseConverted { get { return Fahrzeugklasse.NotNullOrEmpty().Replace("1", "W"); } }
+    
+        public override string GetSummaryString()
+        {
+            return string.Format("FIN: {0}<br/>Kennzeichen: {1}<br/>", FIN, Kennzeichen);
+        }
     }
 }

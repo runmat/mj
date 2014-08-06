@@ -50,8 +50,6 @@
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            console.log(_modelIsValid);
-            console.log(@(Model.IsValid.ToString().ToLower()));
             if (_modelIsValid && false == @(Model.IsValid.ToString().ToLower()))
                 _modelIsValid = false;
             

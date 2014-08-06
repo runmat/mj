@@ -1,5 +1,4 @@
-﻿using System.Xml.Serialization;
-using GeneralTools.Contracts;
+﻿using GeneralTools.Contracts;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.DomainCommon.Models
@@ -25,12 +24,13 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public bool IsMandatory { get; set; }
 
-        [XmlIgnore]
-        public virtual GeneralEntity SummaryItem
-        {
-            get { return new GeneralEntity(); }
-        }
-
         public bool IgnoreSummaryItem { get; set; }
+
+        public bool IgnoreEditFromSummary { get; set; }
+
+        public virtual string GetSummaryString()
+        {
+            return "";
+        }
     }
 }

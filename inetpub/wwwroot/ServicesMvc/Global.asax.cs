@@ -85,7 +85,6 @@ namespace ServicesMvc
             new CkgDomainLogic.Fahrzeuge.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Strafzettel.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Leasing.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Ueberfuehrung.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Uebfuehrg.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Zulassung.MobileErfassung.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Finance.Models.AppModelMappings().ValidateAndRaiseError();

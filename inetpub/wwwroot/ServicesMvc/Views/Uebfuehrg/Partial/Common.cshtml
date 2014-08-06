@@ -7,6 +7,7 @@
 <script type="text/javascript">
 
     var _modelIsValid = false;
+    var _comingFromSummary = false;
 
     function FormPreparePrivate() {
 
@@ -43,15 +44,6 @@
             return true;
         });
 
-        FormWizard.OnBackToSummary(function () {
-
-            //FormWizard.ButtonBackToSummaryShow(false);
-            FormWizard.ButtonNextShow(true);
-            $("#AjaxForm" + FormWizard.getCurrentIndex()).submit();
-
-            return true;
-        });
-
         FormWizard.OnRestart(function () {
             location.reload();
         });
@@ -60,12 +52,7 @@
     function AjaxFormComplete() {
         FormPrepareAjax();
         if (_modelIsValid) {
-            if (FormWizard.buttonVisible("backtosummary")) {
-                var uiIndex = 4;
-                $("#formWizardStep_" + (uiIndex + 1)).find("a").trigger("click");
-                FormWizard.ButtonBackToSummaryShow(false);
-            } else
-                AjaxRequestNextStep();
+            AjaxRequestNextStep();
         }
         
         try {
@@ -87,7 +74,12 @@
                     return;
                 }
 
-                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                if (_comingFromSummary) {
+                    _comingFromSummary = false;
+                    $("#formWizard a.button-next span").text("Weiter");
+                    FormWizard.SetSummaryTabHtmlAndMoveToSummary(result);
+                } else
+                    FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
         });
     }
@@ -164,6 +156,25 @@
         return false;
     }
 
+    function AjaxFormAdressenShowGrid(addressType, uiIndex) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: addressType + "AdressenShowGrid",
+                data: { uiIndex: uiIndex },
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#Adressen").data("tWindow");
+                    $("#InnerAdressen").html(result);
+                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+    
     function SummaryStepDataEdit(uiIndex) {
 
         $.ajax(
@@ -173,9 +184,11 @@
                 data: { uiIndex: uiIndex },
                 loadingShow: false,
                 success: function () {
+                    _comingFromSummary = true;
+
                     $("#formWizardStep_" + (uiIndex + 1)).find("a").trigger("click");
-                    FormWizard.ButtonNextShow(false);
-                    FormWizard.ButtonBackToSummaryShow(true);
+
+                    $("#formWizard a.button-next span").text("Zurück zur Übersicht");
                 }
             });
 

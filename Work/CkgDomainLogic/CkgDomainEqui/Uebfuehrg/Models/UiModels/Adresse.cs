@@ -18,7 +18,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
     {
         private AdressenTyp _adressTyp = AdressenTyp.FahrtAdresse;
 
-        [XmlIgnore, ScriptIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public AdressenTyp AdressTyp
         {
             get { return _adressTyp; }
@@ -45,29 +45,33 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public DateTime? Datum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
+        [ModelMappingCopyIgnore]
         public string Uhrzeitwunsch { get; set; }
 
         [XmlIgnore, ScriptIgnore]
         public string UhrzeitwunschOptions { get { return "; 08:00; 09:00; 10:00; 11:00; 12:00; 13:00; 14:00; 15:00; 16:00; 17:00; 18:00"; } }
+        
+        [ModelMappingCopyIgnore]
         public bool UhrzeitwunschAvailable { get; set; }
 
         private string _transportTyp = "";
 
         [LocalizedDisplay(LocalizeConstants.TransportType)]
-        [Required]
+        [ModelMappingCopyIgnore]
         public string TransportTyp
         {
             get { return _transportTyp;  }
             set { _transportTyp = value; }
         }
+        [ModelMappingCopyIgnore]
         public bool TransportTypAvailable { get; set; }
 
         [XmlIgnore, ScriptIgnore]
         public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
 
-        [XmlIgnore, ScriptIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public Func<List<TransportTyp>> GetAlleTransportTypen { get; set; }
-        [XmlIgnore, ScriptIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public List<TransportTyp> ValideTransportTypen
         {
             get
@@ -119,7 +123,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [XmlIgnore, ScriptIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public List<Fahrt> Fahrten { get; set; }
 
         [XmlIgnore, ScriptIgnore]
@@ -145,6 +149,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         /// </summary>
         public string SubTyp { get; set; }
 
+        [ModelMappingCopyIgnore]
         public string Mandant { get; set; }
 
         [XmlIgnore, ScriptIgnore]
@@ -215,6 +220,16 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         {
             var transportTypModel = GetTransportTypModel(transportTyp);
             return transportTypModel == null ? "" : (transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);
+        }
+
+        public override string GetSummaryString()
+        {
+            return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
+        }
+
+        static string LandAsFormatted(string land)
+        {
+            return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
         }
     }
 }

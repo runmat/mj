@@ -163,7 +163,6 @@
     <Compile Include="General\Services\Database\DomainDbContext.cs" />
     <Compile Include="General\Services\Database\Models\ApplicationType.cs" />
     <Compile Include="General\Services\Database\Models\ApplicationUser.cs" />
-    <Compile Include="General\Contracts\ICkgGeneralDataService.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceSAP.cs" />
     <Compile Include="UnitTests\SAP\GeneralTests.cs" />
     <Compile Include="UnitTests\SAP\UeberfuehrungTests.cs" />

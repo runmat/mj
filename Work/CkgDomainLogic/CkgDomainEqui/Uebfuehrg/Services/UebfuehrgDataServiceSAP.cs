@@ -67,6 +67,8 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                                             {
                                                 item.ID = ++id;
                                                 item.AdressTyp = AdressenTyp.FahrtAdresse;
+                                                if (item.Land.IsNullOrEmpty()) 
+                                                    item.Land = "DE";
                                             });
 
                     return webItems;
@@ -96,12 +98,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             TryAddDefaultAddressOption(webItems, "RE");
             TryAddDefaultAddressOption(webItems, "RG");
 
-            var id = 0;
             webItems.ForEach(item =>
-            {
-                item.ID = ++id;
-                item.AdressTyp = AdressenTyp.RechnungsAdresse;
-            });
+                {
+                    item.AdressTyp = AdressenTyp.RechnungsAdresse;
+                    if (item.Land.IsNullOrEmpty())
+                        item.Land = "DE";
+                });
 
             return webItems;
         }

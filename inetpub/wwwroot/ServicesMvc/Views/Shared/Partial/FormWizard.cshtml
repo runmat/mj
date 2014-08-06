@@ -99,8 +99,7 @@
                         if (index == (total - 1))
                             return false;
 
-                        var tabClickValid = index > clickedIndex-100;
-                        console.log(clickedIndex);
+                        var tabClickValid = FormWizard.tabClickForwardValid || (index > clickedIndex);
                         if (tabClickValid)
                             FormWizard.formWizardNavButtonsShowHide(clickedIndex + 1, total);
                         return tabClickValid;
@@ -194,14 +193,6 @@
                     return true;
                 }).hide();
 
-                $('#formWizard .button-backtosummary').click(function () {
-                    var buttonType = 'backtosummary';
-                    if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
-                        if (!FormWizard.buttonOnClickPrivate[buttonType]())
-                            return false;
-                    return true;
-                }).hide();
-
                 $('#formWizard').removeClass("hide");
             },
 
@@ -230,6 +221,19 @@
                 this.SetTabHtml(tabNumber, html);
                 try { FormPreparePrivateAjax(); } catch (e) {}
                 this.ButtonNextInvoke();
+            },
+
+            SetSummaryTabHtmlAndMoveToSummary: function (html) {
+                var tabNumber = ($('#formWizard').data('bootstrapWizard')).navigationLength();
+                //console.log("* " + tabNumber + " *");
+                
+                this.SetTabHtml(tabNumber, html);
+                try { FormPreparePrivateAjax(); } catch (e) {}
+
+                var that = this;
+                this.tabClickForwardValid = true;
+                $("#formWizardStep_" + (tabNumber)).find("a").trigger("click");
+                setTimeout(function() { that.tabClickForwardValid = false; }, 500);
             },
 
             GetNextTabKey: function () {
@@ -269,10 +273,6 @@
                 this.buttonShow('restart', show);
             },
 
-            ButtonBackToSummaryShow: function (show) {
-                this.buttonShow('backtosummary', show);
-            },
-
 
             ButtonNextInvoke: function () {
                 this.buttonInvoke('next');
@@ -305,10 +305,6 @@
 
             OnRestart: function (func) {
                 this.setButtonOnClick('restart', func);
-            },
-
-            OnBackToSummary: function (func) {
-                this.setButtonOnClick('backtosummary', func);
             },
 
             InsertActionButton: function (customActionContainerId) {
@@ -379,6 +375,8 @@
             },
 
             stepKeys: [ @Model.StepKeysAsJavascript ],
+                
+            tabClickForwardValid : false,
 
             buttonHandlersDisabled: false,
 
@@ -546,16 +544,13 @@
                                 <i class="m-icon-swapleft"></i> Zurück 
                             </a>
                             <a href="javascript:;" class="btn green button-next">
-                                Weiter <i class="m-icon-swapright m-icon-white"></i>
+                                <span>Weiter</span> <i class="m-icon-swapright m-icon-white"></i>
                             </a>
                             <a href="javascript:;" class="btn green button-submit">
                                 Absenden <i class="m-icon-swapright m-icon-white"></i>
                             </a>
                             <a href="javascript:;" class="btn green button-restart">
                                 Neuen Vorgang beginnen <i class="m-icon-swapright m-icon-white"></i>
-                            </a>
-                            <a href="javascript:;" class="btn green button-backtosummary">
-                                Zurück zur Übersicht <i class="m-icon-swapright m-icon-white"></i>
                             </a>
                         </div>
                     </div>

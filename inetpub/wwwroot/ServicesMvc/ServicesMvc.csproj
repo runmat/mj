@@ -427,6 +427,9 @@
     <None Include="App_Data\XmlData\StepsBriefversand.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="App_Data\XmlData\FahrtAdressen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />

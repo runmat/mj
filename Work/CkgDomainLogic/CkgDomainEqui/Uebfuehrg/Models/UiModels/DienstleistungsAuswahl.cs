@@ -24,10 +24,13 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public Bemerkungen Bemerkungen { get; set; }
 
         [XmlIgnore]
-        public static List<Dienstleistung> AlleDienstleistungen { get; set; }
+        public List<Dienstleistung> AlleDienstleistungen { get; set; }
 
         [XmlIgnore]
-        public List<Dienstleistung> AvailableDienstleistungen { get { return AlleDienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).ToList(); } }
+        public List<Dienstleistung> AvailableDienstleistungen
+        {
+            get { return AlleDienstleistungen == null ? null : AlleDienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).ToList(); }
+        }
 
 
         // Gewählte Dienstleistungen
@@ -54,23 +57,25 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public List<Dienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Except(AlleDienstleistungen).ToList(); } }
 
 
-        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen = null)
+        public DienstleistungsAuswahl()
         {
-            if (dienstleistungen != null)
-                AlleDienstleistungen = dienstleistungen;
+            Bemerkungen = new Bemerkungen();
+        }
+
+        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen, bool resetGewaehlteDienstleistungen = false)
+        {
+            AlleDienstleistungen = dienstleistungen;
+
+            if (resetGewaehlteDienstleistungen)
+                _gewaehlteDienstleistungenString = "";
 
             if (GewaehlteDienstleistungenString.IsNullOrEmpty())
                 GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
         }
 
-        public string GetSummaryString()
+        public override string GetSummaryString()
         {
             return string.Join("<br />", GewaehlteDienstleistungen.Select(dienstleistung => dienstleistung.Name));
-        }
-
-        public DienstleistungsAuswahl()
-        {
-            Bemerkungen = new Bemerkungen();
         }
     }
 }

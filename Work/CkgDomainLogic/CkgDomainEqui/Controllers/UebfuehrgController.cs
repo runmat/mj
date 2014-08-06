@@ -210,9 +210,15 @@ namespace ServicesMvc.Controllers
         public ActionResult NextStepView()
         {
             ViewModel.MoveToNextStep();
-
             if (ViewModel.GetStepModel() is CommonSummary)
                 ViewModel.SaveSubModelWithPreservingUiModel(ViewModel.CreateSummaryModel(false, GetSummaryStepDataEditLink));
+
+            if (ViewModel.ComingFromSummary)
+            {
+                ViewModel.ComingFromSummary = false;
+                ViewModel.MoveToSummaryStep();
+                ViewModel.SaveSubModelWithPreservingUiModel(ViewModel.CreateSummaryModel(false, GetSummaryStepDataEditLink));
+            }
 
             return PartialView("CurrentStepView", ViewModel);
         }
@@ -225,12 +231,6 @@ namespace ServicesMvc.Controllers
 
         private PartialViewResult GetStepPartialView()
         {
-            if (ViewModel.ComingFromSummary)
-            {
-                ViewModel.ComingFromSummary = false;
-                ViewModel.MoveToSummaryStep();
-            }
-
             return PartialView(ViewModel.StepCurrentFormPartialViewName, ViewModel.StepCurrentModel);
         }
 
