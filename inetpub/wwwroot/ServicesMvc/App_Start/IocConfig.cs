@@ -120,7 +120,8 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<BriefbestandDataServiceSAP>().As<IBriefbestandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreDataServiceSAP>().As<IFinanceVersandsperreDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreReportDataServiceSAP>().As<IFinanceVersandsperreReportDataService>().InstancePerHttpRequest();
-            builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerHttpRequest();
+	    builder.RegisterType<FinanceTelefonieReportDataServiceSAP>().As<IFinanceTelefonieReportDataService>().InstancePerHttpRequest();
+	    builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerHttpRequest();
             builder.RegisterType<MahnreportDataServiceSAP>().As<IMahnreportDataService>().InstancePerHttpRequest();
             builder.RegisterType<DatenOhneDokumenteDataServiceSAP>().As<IDatenOhneDokumenteDataService>().InstancePerHttpRequest();
             builder.RegisterType<ErweiterterBriefbestandDataServiceSAP>().As<IErweiterterBriefbestandDataService>().InstancePerHttpRequest();

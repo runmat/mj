@@ -2318,6 +2318,9 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenSuche.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadSaveFahrzeugeinsteuerungGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
