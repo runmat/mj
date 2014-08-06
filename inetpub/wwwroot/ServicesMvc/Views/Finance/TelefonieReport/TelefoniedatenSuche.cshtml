@@ -1,0 +1,47 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using MvcTools.Models
+@model TelefoniedatenSuchparameter
+
+<div id="divTelefoniedatenSuche">
+    @using (Ajax.BeginForm("LoadTelefoniedaten", "Finance", null,
+        new MvcAjaxOptions("divTelefoniedatenSuche") { OnComplete = "ShowTelefoniedaten();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            
+            @Html.FormRadioButtonListFor(m => m.Vertragsart, Model.AuswahlVertragsart.ToSelectList())
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap" })
+            @Html.FormTextBlockFor(m => m.DatumRangeHinweis)
+
+            @Html.FormRadioButtonListFor(m => m.Anrufart, Model.Anrufarten.ToSelectList())
+           
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowTelefoniedaten() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowTelefoniedaten",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowTelefoniedatenSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>

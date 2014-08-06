@@ -1348,6 +1348,12 @@
         <DestinationRelativePath>Downloads\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
+    <ItemGroup>
+      <_Assemblies Include="bin\**\*" />
+      <FilesForPackagingFromProject Include="%(_Assemblies.Identity)">
+        <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
   </Target>
   <PropertyGroup>
     <OnBeforePackageUsingManifest>AddCustomSkipRules</OnBeforePackageUsingManifest>
