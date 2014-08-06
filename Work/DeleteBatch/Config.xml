@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DeleteOrder>
+	<Paths Path="C:\Inetpub\wwwroot\StartApplication\Bilder\View\" MitUnterverzeichnis="Nein" DaysBack="10">
+		<Patterns Pattern="*.jpg"/>
+	</Paths>
+	<Paths Path="C:\Inetpub\wwwroot\StartApplication\temp\" MitUnterverzeichnis="Ja" DaysBack="10">
+		<Patterns Pattern="*.XLS"/>
+		<Patterns Pattern="*.PDF"/>
+	</Paths>
+</DeleteOrder>
