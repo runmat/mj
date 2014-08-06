@@ -108,8 +108,8 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
                 {
                     a.TransportTypAvailable = false;
                     a.TransportTyp = "";
+                    a.RechnungsAdressen = RechnungsAdressen;
                 });
-            Adresse.RechnungsAdressen = RechnungsAdressen;
 
             StepFormsCollectionInit();
         }
@@ -295,7 +295,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
             if (selectedRgAdresse.SubGroupName != "RG")
                 return;
 
-            var rgAdresse = Adresse.RechnungsAdressen.FirstOrDefault(r => r.SubTyp == "RG" && r.ID == selectedRgAdresse.SelectedID);
+            var rgAdresse = RechnungsAdressen.FirstOrDefault(r => r.SubTyp == "RG" && r.ID == selectedRgAdresse.SelectedID);
             if (rgAdresse == null)
                 return;
 
@@ -305,7 +305,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
                 // ==> No preassignment for RE-Adresse here!
                 return;
 
-            var newReAdresse = Adresse.RechnungsAdressen.FirstOrDefault(r => r.SubTyp == "RE" && r.KundenNr == rgAdresse.KundenNr);
+            var newReAdresse = RechnungsAdressen.FirstOrDefault(r => r.SubTyp == "RE" && r.KundenNr == rgAdresse.KundenNr);
             var savedReAdresse = StepForms.OfType<Adresse>().FirstOrDefault(a => a.SubGroupName == "RE");
             if (newReAdresse != null && savedReAdresse != null)
             {
