@@ -21,42 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainCommon", "..\..\..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainAutohaus", "..\..\..\Work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj", "{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.Models", "..\..\..\Work\SapORM\models\SapORM.Models.csproj", "{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\..\\work\\Tools\\MvcTools\\MvcTools.csproj
-		SccProjectName1 = ../Work/Tools/MvcTools
-		SccLocalPath1 = ..\\..\\..\\work\\Tools\\MvcTools
-		SccProjectUniqueName2 = ..\\..\\..\\work\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName2 = ../Work/Tools/GeneralTools
-		SccLocalPath2 = ..\\..\\..\\work\\Tools\\GeneralTools
-		SccProjectUniqueName3 = ..\\..\\..\\work\\Tools\\WebTools\\WebTools.csproj
-		SccProjectName3 = ../Work/Tools/WebTools
-		SccLocalPath3 = ..\\..\\..\\work\\Tools\\WebTools
-		SccProjectUniqueName4 = ..\\..\\..\\work\\Tools\\DocumentTools\\DocumentTools.csproj
-		SccProjectName4 = ../Work/Tools/DocumentTools
-		SccLocalPath4 = ..\\..\\..\\work\\Tools\\DocumentTools
-		SccProjectUniqueName5 = ..\\..\\..\\work\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
-		SccProjectName5 = ../Work/CkgDomainLogic/Lib
-		SccLocalPath5 = ..\\..\\..\\work\\CkgDomainLogic\\Lib
-		SccProjectUniqueName6 = ..\\..\\..\\work\\Tools\\WebTools35\\WebTools35.csproj
-		SccProjectName6 = ../Work/Tools/WebTools35
-		SccLocalPath6 = ..\\..\\..\\work\\Tools\\WebTools35
-		SccProjectUniqueName7 = AutohausPortalMvc.csproj
-		SccLocalPath7 = .
-		SccProjectUniqueName8 = PortalMvcTools\\PortalMvcTools.csproj
-		SccProjectName8 = PortalMvcTools
-		SccLocalPath8 = PortalMvcTools
-		SccProjectUniqueName9 = ..\\..\\..\\work\\CkgDomainLogic\\CkgDomainCommon\\CkgDomainCommon.csproj
-		SccProjectName9 = ../Work/CkgDomainLogic/CkgDomainCommon
-		SccLocalPath9 = ..\\..\\..\\work\\CkgDomainLogic\\CkgDomainCommon
-		SccProjectUniqueName10 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainAutohaus\\CkgDomainAutohaus.csproj
-		SccProjectName10 = ../Work/CkgDomainLogic/CkgDomainAutohaus
-		SccLocalPath10 = ..\\..\\..\\Work\\CkgDomainLogic\\CkgDomainAutohaus
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DebugQuick|Any CPU = DebugQuick|Any CPU
@@ -118,6 +85,12 @@ Global
 		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
 		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

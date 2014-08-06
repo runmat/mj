@@ -87,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\Contracts\ICkgGeneralDataService.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
@@ -158,40 +159,11 @@
     </Compile>
     <Compile Include="Services\CkgDomainAppSettings.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />
-    <Compile Include="Ueberfuehrung\Contracts\IUeberfuehrungDataService.cs" />
-    <Compile Include="Ueberfuehrung\Models\AppModelMappings.cs" />
-    <Compile Include="Ueberfuehrung\Models\CompositeModels\RoutingInfo.cs" />
-    <Compile Include="Ueberfuehrung\Models\CompositeModels\Fahrt.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftrag.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftragFilter.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\KurzBemerkung.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\WebUploadProtokoll.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\DienstleistungsAuswahl.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\Adresse.cs" />
-    <Compile Include="General\Models\UiModel.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\Dienstleistung.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\Fahrzeug.cs" />
     <Compile Include="General\Models\DataModels\Land.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\TransportTyp.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\Bemerkungen.cs" />
-    <Compile Include="Ueberfuehrung\Models\DataModels\KclGruppe.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\SubStep.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\Step.cs" />
-    <Compile Include="Ueberfuehrung\Models\TrivialModels\SummaryItem.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\Summary.cs" />
-    <Compile Include="Ueberfuehrung\Models\UiModels\UploadFiles.cs" />
     <Compile Include="General\Services\Database\DomainDbContext.cs" />
     <Compile Include="General\Services\Database\Models\ApplicationType.cs" />
     <Compile Include="General\Services\Database\Models\ApplicationUser.cs" />
-    <Compile Include="Ueberfuehrung\Contracts\ICkgGeneralDataService.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceSAP.cs" />
-    <Compile Include="Ueberfuehrung\Services\ReceiptCreationService.cs" />
-    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceTest.cs" />
-    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceSAP.cs" />
-    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungHistoryViewModel.cs" />
-    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelData.cs" />
-    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelUI.cs" />
     <Compile Include="UnitTests\SAP\GeneralTests.cs" />
     <Compile Include="UnitTests\SAP\UeberfuehrungTests.cs" />
     <Compile Include="Zulassung\MobileErfassung\Contracts\IZulMobileErfassungDataService.cs" />
@@ -211,14 +183,6 @@
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceSAP.cs" />
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceTest.cs" />
     <Compile Include="Zulassung\MobileErfassung\ViewModels\ZulMobileErfassungViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung_org.doc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung.doc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SapORM\models\SapORM.Models.csproj">
