@@ -90,6 +90,7 @@
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
+    <Compile Include="Controllers\DokumenteOhneDaten\EquiController.cs" />
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Equi\Contracts\IMahnreportDataService.cs" />
     <Compile Include="Equi\Contracts\IDatenOhneDokumenteDataService.cs" />
     <Compile Include="Equi\Contracts\IErweiterterBriefbestandDataService.cs" />
+    <Compile Include="Equi\Contracts\IDokumenteOhneDatenDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMeldungsdaten.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Equi\Models\DataModels\Fahrzeugbrief.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMahn.cs" />
     <Compile Include="Equi\Models\DataModels\DatenOhneDokumente.cs" />
+    <Compile Include="Equi\Models\DataModels\DokumentOhneDaten.cs" />
     <Compile Include="Equi\Models\UIModels\DatenOhneDokumenteFilter.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
@@ -121,11 +124,13 @@
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\DokumenteOhneDatenDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />
     <Compile Include="Equi\Services\ErweiterterBriefbestandDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
+    <Compile Include="Equi\ViewModels\DokumenteOhneDatenViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnreportViewModel.cs" />
     <Compile Include="Equi\ViewModels\DatenOhneDokumenteViewModel.cs" />
     <Compile Include="Equi\ViewModels\ErweiterterBriefbestandViewModel.cs" />
