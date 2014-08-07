@@ -3,8 +3,6 @@ Option Strict On
 
 Imports System
 Imports CKG.Base.Kernel
-Imports CKG.Base.Business
-
 Imports SapORM.Contracts
 
 '#################################################################
@@ -426,7 +424,7 @@ Public Class Carport
 
                 FindRow = m_tblResultCarports.Rows.Find(row(0))
 
-                If FindRow Is Nothing = True Then
+                If FindRow Is Nothing Then
                     PdiRow(0) = row(0).ToString
                     PdiRow(1) = row(1).ToString
                     PdiRow(2) = 1
@@ -725,7 +723,7 @@ Public Class Carport
 
                 FindRow = m_tblResultCarports.Rows.Find(row(0))
 
-                If FindRow Is Nothing = True Then
+                If FindRow Is Nothing Then
                     PdiRow(0) = row(0).ToString
                     PdiRow(1) = row(1).ToString
                     PdiRow(2) = 1
@@ -790,6 +788,7 @@ Public Class Carport
             m_tblResultExcel.Columns.Add("Händlerkurzname", System.Type.GetType("System.String"))
             m_tblResultExcel.Columns.Add("Einkaufsindikator", System.Type.GetType("System.String"))
             m_tblResultExcel.Columns.Add("MVA-Nummer", System.Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Status", System.Type.GetType("System.String"))
 
             Dim sCarport As String = ""
             Do While e < dv.Count
@@ -830,6 +829,7 @@ Public Class Carport
                 row(26) = dv.Item(e)("Haendler_Kurzname")
                 row(27) = dv.Item(e)("Einkaufsindikator")
                 row(28) = dv.Item(e)("MVA-Nummer")
+                row(29) = dv.Item(e)("Status")
                 m_tblResultExcel.Rows.Add(row)
 
                 e = e + 1
