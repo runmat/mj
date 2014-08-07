@@ -16,32 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTools", "..\..\Tools\WebTools\WebTools.csproj", "{540F0A45-F018-4489-8153-4504CA663CFE}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = CarDocu.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\Tools\\TwainDotNet\\TwainDotNet.csproj
-		SccProjectName2 = ../../Tools/TwainDotNet
-		SccLocalPath2 = ..\\..\\Tools\\TwainDotNet
-		SccProjectUniqueName3 = ..\\..\\Tools\\WpfTools4\\WpfTools4.csproj
-		SccProjectName3 = ../../Tools/WpfTools4
-		SccLocalPath3 = ..\\..\\Tools\\WpfTools4
-		SccProjectUniqueName4 = ..\\..\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName4 = ../../Tools/GeneralTools
-		SccLocalPath4 = ..\\..\\Tools\\GeneralTools
-		SccProjectUniqueName5 = ..\\lib\\CarDocuLib.csproj
-		SccProjectName5 = ../lib
-		SccLocalPath5 = ..\\lib
-		SccProjectUniqueName6 = ..\\..\\Tools\\DocumentTools\\DocumentTools.csproj
-		SccProjectName6 = ../../Tools/DocumentTools
-		SccLocalPath6 = ..\\..\\Tools\\DocumentTools
-		SccProjectUniqueName7 = ..\\..\\Tools\\WebTools\\WebTools.csproj
-		SccProjectName7 = ../../Tools/WebTools
-		SccLocalPath7 = ..\\..\\Tools\\WebTools
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
