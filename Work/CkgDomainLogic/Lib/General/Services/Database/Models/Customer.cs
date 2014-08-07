@@ -28,6 +28,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string MvcSelectionUrl { get; set; }
 
+        public string MvcSelectionType { get; set; }
+
 
         #region Password Settings
 

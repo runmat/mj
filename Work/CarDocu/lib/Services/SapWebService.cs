@@ -36,7 +36,7 @@ namespace CarDocu.Services
             return isOnline;
         }
 
-        public bool ProcessArchivMeldung(ref CardocuQueueEntity baseLogItem)
+        public bool ProcessWebServiceSapMeldung(ref CardocuQueueEntity baseLogItem)
         {
             var logItem = (SapLogItem) baseLogItem;
 
@@ -59,12 +59,27 @@ namespace CarDocu.Services
 
             try
             {
-                if (!Service.ProcessArchivMeldung(scanDocument.KundenNr,
-                                                  scanDocument.DocumentID, scanDocument.FinNumber,
-                                                  scanDocument.StandortCode,
-                                                  string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
-                                                  out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
-                    return false;
+                commaSeparatedReturnCodes = "";
+                commaSeparatedReturnMessages = "";
+
+                var webServiceFuntionID = scanDocument.SelectedDocumentType.WebServiceFunction;
+
+                if (webServiceFuntionID == "CARDOCU")
+                    if (!Service.ProcessArchivMeldung(scanDocument.KundenNr,
+                                                      scanDocument.DocumentID, scanDocument.FinNumber,
+                                                      scanDocument.StandortCode,
+                                                      string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
+                                                      out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
+                        return false;
+
+                if (webServiceFuntionID == "VWL")
+                    if (!Service.ProcessVwlKlaerfallMeldung(scanDocument.KundenNr,
+                                                      scanDocument.DocumentID, scanDocument.FinNumber,
+                                                      scanDocument.StandortCode,
+                                                      string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
+                                                      out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
+                        return false;
+
             }
             catch { return false; }
 
