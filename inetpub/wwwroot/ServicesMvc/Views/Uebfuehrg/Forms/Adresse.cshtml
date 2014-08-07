@@ -1,0 +1,34 @@
+﻿@model CkgDomainLogic.Uebfuehrg.Models.Adresse 
+
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
+    {
+        @Html.HiddenFor(m => m.UiIndex)
+
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.Kennung)
+        @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.TmpSelectionKey)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+        
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Land, new { @class = "m-wrap medium" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        
+        </script>
+    }
+</div>

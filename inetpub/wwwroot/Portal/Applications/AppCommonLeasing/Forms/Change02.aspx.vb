@@ -192,7 +192,6 @@ Public Class Change02
 
     End Sub
 
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
         Auswahl()
@@ -278,92 +277,45 @@ Public Class Change02
                 If Not tblTemp.Rows Is Nothing AndAlso tblTemp.Rows.Count > 0 Then
                     mObjBriefanforderung = New Briefanforderung(m_User, m_App, Session("AppId").ToString, Me.Session.SessionID, "")
 
-                    Dim i As Integer = 0
-
                     If rb_Auswahl.SelectedItem.Value = "2" Then
-                        tblTemp.Columns(0).ColumnName = "LICENSE_NUM"
 
-                        'Spalten löschen
-                        If tblTemp.Columns.Count > 1 Then
+                        'Kennzeichen
+                        Dim tblTemp2 As New DataTable
+                        tblTemp2.Columns.Add("LICENSE_NUM", GetType(System.String))
 
-                            i = tblTemp.Columns.Count - 1
-
-                            Do Until i = 0
-
-                                tblTemp.Columns.RemoveAt(i)
-
-                                tblTemp.AcceptChanges()
-
-                                i -= 1
-
-                            Loop
-
-
-                        End If
-
-
-                        i = tblTemp.Rows.Count
-
-                        Do Until i = 0
-
-                            If Len(tblTemp.Rows(i - 1)(0).ToString) = 0 Then
-                                tblTemp.Rows.RemoveAt(i - 1)
-
-                                tblTemp.AcceptChanges()
+                        For i As Integer = 0 To (tblTemp.Rows.Count - 1)
+                            Dim strWert As String = tblTemp.Rows(i)(0).ToString()
+                            If Not String.IsNullOrEmpty(strWert) Then
+                                Dim newRow As DataRow = tblTemp2.NewRow()
+                                newRow("LICENSE_NUM") = strWert
+                                tblTemp2.Rows.Add(newRow)
                             End If
+                        Next
 
-                            
-                            i -= 1
-
-                        Loop
-
-
-
-
-                        mObjBriefanforderung.KennzeichenTable = tblTemp
-
-
+                        mObjBriefanforderung.KennzeichenTable = tblTemp2
 
                     Else
-                        tblTemp.Columns(0).ColumnName = "LIZNR"
 
-                        If tblTemp.Columns.Count > 1 Then
+                        'Kennzeichen
+                        Dim tblTemp2 As New DataTable
+                        tblTemp2.Columns.Add("LIZNR", GetType(System.String))
 
-                            i = tblTemp.Columns.Count - 1
-
-                            Do Until i = 0
-
-                                tblTemp.Columns.RemoveAt(i)
-
-                                tblTemp.AcceptChanges()
-
-                                i -= 1
-
-                            Loop
-                        End If
-
-                        i = tblTemp.Rows.Count
-
-                        Do Until i = 0
-
-                            If Len(tblTemp.Rows(i - 1)(0).ToString) = 0 Then
-                                tblTemp.Rows.RemoveAt(i - 1)
-
-                                tblTemp.AcceptChanges()
+                        For i As Integer = 0 To (tblTemp.Rows.Count - 1)
+                            Dim strWert As String = tblTemp.Rows(i)(0).ToString()
+                            If Not String.IsNullOrEmpty(strWert) Then
+                                Dim newRow As DataRow = tblTemp2.NewRow()
+                                newRow("LIZNR") = strWert
+                                tblTemp2.Rows.Add(newRow)
                             End If
+                        Next
 
-                            i -= 1
-
-                        Loop
-
-
-                        mObjBriefanforderung.VertragsnummernTable = tblTemp
+                        mObjBriefanforderung.VertragsnummernTable = tblTemp2
 
                     End If
                         FillBriefanforderung(mObjBriefanforderung)
 
                 Else
-                        lblError.Text = "Datei enthielt keine verwendbaren Daten."
+                    lblError.Text = "Datei enthielt keine verwendbaren Daten."
                 End If
             End If
         Catch ex As Exception
@@ -421,7 +373,6 @@ Public Class Change02
 
     End Sub
 
- 
 End Class
 ' ************************************************
 ' $History: Change02.aspx.vb $
