@@ -36,6 +36,37 @@ namespace ServicesMvc.Controllers
         }
 
 
+        public ActionResult LogPageVisit(string appID)
+        {
+            if (appID.IsNullOrEmpty() || LogonContext == null || LogonContext.User == null || LogonContext.Customer == null)
+                return new EmptyResult();
+
+            var logService = new LogService();
+            logService.LogPageVisit(appID.ToInt(), LogonContext.User.UserID, LogonContext.Customer.CustomerID, LogonContext.Customer.KUNNR.ToInt(), _portalType);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AppFavoritesEditModeSwitch()
+        {
+            LogonContext.AppFavoritesEditMode = !LogonContext.AppFavoritesEditMode;
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AppFavoritesEditSwitchOneFavorite(int appID)
+        {
+            return Json(new { isFavorite = LogonContext.AppFavoritesEditSwitchOneFavorite(appID) });
+        }
+
+        [HttpPost]
+        public ActionResult AppFavoriteButtonsCoreRefresh()
+        {
+            return PartialView("AppFavorites/AppFavoriteButtonsCore", LogonContext);
+        }
+
         [CkgApplication]
         public ActionResult Index()
         {
@@ -49,17 +80,6 @@ namespace ServicesMvc.Controllers
         public ActionResult Search()
         {
             return RedirectToAction("Index");
-        }
-
-        public ActionResult LogPageVisit(string appID)
-        {
-            if (appID.IsNullOrEmpty() || LogonContext == null || LogonContext.User == null || LogonContext.Customer == null)
-                return new EmptyResult();
-
-            var logService = new LogService();
-            logService.LogPageVisit(appID.ToInt(), LogonContext.User.UserID, LogonContext.Customer.CustomerID, LogonContext.Customer.KUNNR.ToInt(), _portalType);
-
-            return new EmptyResult();
         }
 
         [CkgApplication]
@@ -114,17 +134,6 @@ namespace ServicesMvc.Controllers
             ModelState.Clear();
             return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
         }
-
-        //[HttpPost]
-        //public ActionResult DuplicateAddress(int id)
-        //{
-        //    AdressenPflegeViewModel.InsertMode = true;
-
-        //    // very important here, because we duplicate the one item and modelstate should distinguish between original and new item
-        //    ModelState.Clear();
-
-        //    return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.DuplicateItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
-        //}
 
         [HttpPost]
         public ActionResult NewAddress()
