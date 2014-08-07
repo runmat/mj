@@ -44,7 +44,9 @@ namespace CkgDomainLogic.Controllers
         public ActionResult DocumentsForCurrentCustomer()
         {
             DokumentViewModel = null;
+                                                                                        // ReSharper disable PossibleNullReferenceException
             DokumentViewModel.IsAdministrator = true;
+                                                                                        // ReSharper restore PossibleNullReferenceException
             return View("Index", DokumentViewModel);
         }
 
@@ -104,21 +106,23 @@ namespace CkgDomainLogic.Controllers
 
         private void InsertNewDocument(HttpPostedFileBase uploadFile)
         {
-            FileInfo fileInfo = new FileInfo(uploadFile.FileName);
-            string extension = fileInfo.Extension.Replace(".", string.Empty);
+            var fileInfo = new FileInfo(uploadFile.FileName);
+            var extension = fileInfo.Extension.Replace(".", string.Empty);
 
-            string fileName = uploadFile.SavePostedFile(FileSourcePath, Path.GetFileNameWithoutExtension(uploadFile.FileName), fileInfo.Extension);
+            var fileName = uploadFile.SavePostedFile(FileSourcePath, Path.GetFileNameWithoutExtension(uploadFile.FileName), fileInfo.Extension);
 
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
-            Dokument dokument = new Dokument();
-            dokument.DocTypeID = DokumentViewModel.NewDocumentProperties.DocTypeID;
-            dokument.FileName = fileName;
-            dokument.FileSize = uploadFile.ContentLength;
-            dokument.LastEdited = now;
-            dokument.Uploaded = now;
-            dokument.CustomerID = LogonContext.User.CustomerID;
-            dokument.FileType = extension;
+            var dokument = new Dokument
+                {
+                    DocTypeID = DokumentViewModel.NewDocumentProperties.DocTypeID,
+                    FileName = fileName,
+                    FileSize = uploadFile.ContentLength,
+                    LastEdited = now,
+                    Uploaded = now,
+                    CustomerID = LogonContext.User.CustomerID,
+                    FileType = extension
+                };
 
             dokument = DokumentViewModel.SaveItem(dokument, (s, s1) => { });
 
@@ -157,7 +161,7 @@ namespace CkgDomainLogic.Controllers
 
             if (!CheckFileExtention(uploadFile.FileName))
             {
-                return Json(new { success = false, message = Localize.FileUploadLegalFileTypesWarning }, "text/plain"); ;
+                return Json(new { success = false, message = Localize.FileUploadLegalFileTypesWarning }, "text/plain"); 
             }
 
             return null;
@@ -189,8 +193,8 @@ namespace CkgDomainLogic.Controllers
             }
             catch (Exception)
             {
-                LogService logService = new LogService(string.Empty, string.Empty);
-                Exception wrappepException = new Exception(string.Format(Localize.DocumentCannotCreateFolderDetail, FileSourcePath));
+                var logService = new LogService(string.Empty, string.Empty);
+                var wrappepException = new Exception(string.Format(Localize.DocumentCannotCreateFolderDetail, FileSourcePath));
                 // Via Elmah eine detailierte Meldung erzeugung mit dem Namen des Verzeichnis was nicht erstellt werden könnte
                 logService.LogElmahError(wrappepException, LogonContext);
                 // Diese Fehlermeldung beinhaltet keine Informationen zum Verzeichnis
@@ -202,8 +206,8 @@ namespace CkgDomainLogic.Controllers
 
         private bool CheckFileExtention(string filename)
         {
-            FileInfo fileInfo = new FileInfo(filename);
-            string extension = fileInfo.Extension;
+            var fileInfo = new FileInfo(filename);
+            var extension = fileInfo.Extension;
 
             switch (extension)
             {
@@ -243,9 +247,11 @@ namespace CkgDomainLogic.Controllers
         [HttpPost]
         public ActionResult SetDocumentProperties(string docTypeId, string userGroups)
         {
-            DokumentViewModel.NewDocumentProperties = new DocumentErstellenBearbeiten();
-            DokumentViewModel.NewDocumentProperties.DocTypeID = Int32.Parse(docTypeId);
-            DokumentViewModel.NewDocumentProperties.SelectedWebGroups = new List<string>();
+            DokumentViewModel.NewDocumentProperties = new DocumentErstellenBearbeiten
+                {
+                    DocTypeID = Int32.Parse(docTypeId),
+                    SelectedWebGroups = new List<string>()
+                };
             if (!String.IsNullOrEmpty(userGroups))
             {
                 var teile = userGroups.Split(',');
@@ -276,9 +282,7 @@ namespace CkgDomainLogic.Controllers
                                   where dokumentRight.DocumentID == id
                                   select dokumentRight.GroupID.ToString();
 
-            var model = new DocumentErstellenBearbeiten();
-            model.ID = id;
-            model.DocTypeID = dokument.DocTypeID;
+            var model = new DocumentErstellenBearbeiten {ID = id, DocTypeID = dokument.DocTypeID};
             SetSources(model);
             model.SelectedWebGroups = dokumentGruppen.ToList();
             
@@ -345,7 +349,7 @@ namespace CkgDomainLogic.Controllers
             var dokument = DokumentViewModel.Dokuments.Single(x => x.DocumentID == id);
             var result = DokumentViewModel.DataService.DeleteDocument(dokument);
 
-            FileInfo fileInfo = new FileInfo(string.Concat(FileSourcePath, dokument.FileName, ".", dokument.FileType));
+            var fileInfo = new FileInfo(string.Concat(FileSourcePath, dokument.FileName, ".", dokument.FileType));
             fileInfo.Delete();
 
             return Json(result);
@@ -435,7 +439,7 @@ namespace CkgDomainLogic.Controllers
 
             var documentType = DokumentViewModel.DataService.DocumentTypes.Single(x => x.DocumentTypeID == id);
 
-            var itemsDeleted = DokumentViewModel.DataService.DeleteDocumentType(documentType);
+            DokumentViewModel.DataService.DeleteDocumentType(documentType);
             // Ich Rückgabewert verwende ich im Moment nicht, wenn etwas schief geht bei der Speicherung dann wird eine Ausnahme geworfen
 
             return Json(0);    

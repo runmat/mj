@@ -194,7 +194,21 @@ namespace CkgDomainLogic.General.Database.Services
 
         public IEnumerable<ApplicationUser> UserApps
         {
-            get { return _userApps ?? (_userApps = Database.SqlQuery<ApplicationUser>("SELECT * FROM vwApplicationWebUser WHERE UserID = {0}", UserID)); }
+            get
+            {
+                if (_userApps != null)
+                    return _userApps;
+
+                Database.ExecuteSqlCommand("exec ApplicationUserSettingsPrepareCustomerDefaults {0}", UserID);
+                _userApps = Database.SqlQuery<ApplicationUser>("SELECT * FROM vwApplicationWebUser WHERE UserID = {0}", UserID);
+
+                return _userApps;
+            }
+        }
+
+        public void UserAppsRefresh()
+        {
+            _userApps = null;
         }
 
         public bool TryLogin(string password)
