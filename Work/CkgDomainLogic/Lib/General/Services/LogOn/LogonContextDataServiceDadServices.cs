@@ -474,5 +474,16 @@ namespace CkgDomainLogic.General.Services
             MvcEnforceRawLayout = false;
             LogoutUrl = "";
         }
+
+        override public bool AppFavoritesEditSwitchOneFavorite(int appID)
+        {
+            var sql = string.Format("update ApplicationUserSettings set AppIsMvcFavorite = case when (AppIsMvcFavorite = 0) then 1 else 0 end where AppID = {0} and UserID = {1}", appID, UserID);
+            CreateDbContext().Database.ExecuteSqlCommand(sql);
+            
+            CreateDbContext().UserAppsRefresh();
+            UserApps = CreateDbContext().UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
+
+            return UserApps.First(a => a.AppID == appID).AppIsMvcFavorite;
+        }
     }
 }
