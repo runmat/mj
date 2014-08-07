@@ -3,7 +3,22 @@
 @{
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
 }
+
 <script type="text/javascript">
+
+    var _appFavoritesEditMode = @((logonContext != null && logonContext.AppFavoritesEditMode).ToString().ToLower()) ;
+
+    function OnMenuItemClick(a, appId, ignoreAppFavoritesEditSwitchOneFavorite) {
+        if (_appFavoritesEditMode) {
+            if (ignoreAppFavoritesEditSwitchOneFavorite)
+                return false;
+            
+            return AppFavoritesEditSwitchOneFavorite(a, appId);
+        }
+
+        return LogPageVisit(a, appId);
+    }
+
     function LogPageVisit(a, appId) {
         
         var href = $(a).attr("href");
@@ -16,7 +31,7 @@
     }
 </script>
 
-<li class="@MvcApplication.GetActiveMenuItemCssClass("/ServicesMvc/")">
+<li class="@MvcApplication.GetActiveMenuItemCssClass()">
     <a href="~/">
         <i class="icon-home"></i> 
         <span class="title">Home</span>
@@ -50,9 +65,10 @@
 		    <ul class="sub-menu">
                 @foreach (var menuItem in logonContext.GetMenuItems(menuGroup.AppType))
                 {
-		        <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
-		            <a onclick="return LogPageVisit(this, @menuItem.AppID);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
-                </li>
+                    var appFavoriteClassName = logonContext.AppFavoritesEditMode && menuItem.AppIsMvcFavorite ? "app-favorite" : "";
+		            <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
+		                <a class="@appFavoriteClassName" onclick="return OnMenuItemClick(this, @menuItem.AppID, false);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
+                    </li>
                 }
 		    </ul>
 		</li>
