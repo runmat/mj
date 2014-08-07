@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="492dd75b-b27d-41b1-8931-f48eae34b24a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://dev.virtualearth.net/webservices/v1/routeservice/routeservice.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="routeservice1.xsd" MetadataType="Schema" ID="5775b5c4-3b13-434a-9791-b871647c6cd3" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice1.xsd" />
+    <MetadataFile FileName="routeservice2.xsd" MetadataType="Schema" ID="3ace1cbd-a404-4a9d-ae45-b14277f15d91" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice2.xsd" />
+    <MetadataFile FileName="routeservice3.xsd" MetadataType="Schema" ID="695f2c9c-af9e-4bc8-9618-e7f789b54618" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice3.xsd" />
+    <MetadataFile FileName="routeservice1.wsdl" MetadataType="Wsdl" ID="5f60e4b8-9a07-4e27-ad59-44c4fd38a0b1" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice1.wsdl" />
+    <MetadataFile FileName="routeservice.xsd" MetadataType="Schema" ID="b3f2f08e-47de-4672-8769-5ddc95cf92c7" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice.xsd" />
+    <MetadataFile FileName="RouteService.wsdl" MetadataType="Wsdl" ID="2f573c46-51f6-4b37-8a2a-de4146286372" SourceId="1" SourceUrl="http://dev.virtualearth.net/webservices/v1/metadata/routeservice/routeservice.wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

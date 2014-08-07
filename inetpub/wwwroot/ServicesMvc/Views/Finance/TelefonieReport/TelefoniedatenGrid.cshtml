@@ -1,0 +1,41 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceTelefonieReportViewModel 
+
+@{ var gridName = "GridTelefoniedaten"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseTelefoniedatenSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<TelefoniedatenItem>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("TelefoniedatenAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Anrufart);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Anrufdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.AnrufzeitVonFormatted);
+        columns.XBound(c => c.AnrufzeitBisFormatted);
+        columns.XBound(c => c.Anrufdauer);
+        columns.XBound(c => c.Telefonnummer);
+        columns.XBound(c => c.Anrufername);
+        columns.XBound(c => c.Anrufgrund);
+        columns.XBound(c => c.AnrufgrundBemerkung);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridTelefoniedaten"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AnrufStart).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportTelefoniedatenFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportTelefoniedatenFilteredPDF", "Finance");
+    })
+)
