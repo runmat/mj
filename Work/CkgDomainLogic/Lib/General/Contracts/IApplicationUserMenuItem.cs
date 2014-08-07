@@ -14,6 +14,7 @@ namespace CkgDomainLogic.General.Contracts
 
         int AppRank { get; set; }
 
+        bool AppIsMvcFavorite { get; set; }
         string NewLevel { get; set; }
 
         Dictionary<string, string> BerechtigungsLevel { get; }
