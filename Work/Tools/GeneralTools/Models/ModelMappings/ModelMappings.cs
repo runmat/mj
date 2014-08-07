@@ -16,7 +16,8 @@ namespace GeneralTools.Models
             where T2 : class, new()
         {
             if (mappingCreateFunction.Method.ReturnParameter == null) return null;
-            var dictKey = mappingCreateFunction.Method.ReturnParameter.Member.Name;
+            var member = mappingCreateFunction.Method.ReturnParameter.Member;
+            var dictKey = member.ReflectedType.FullName + "_" + member.Name;
             if (ModelMappingSingletons.ContainsKey(dictKey))
             {
                 object storedMapping;

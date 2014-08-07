@@ -34,5 +34,8 @@ namespace CkgDomainLogic.General.Database.Models
         public string AppTypeFriendlyName { get; set; }
 
         #endregion
+
+
+        public bool AppIsMvcFavorite { get; set; }
     }
 }
