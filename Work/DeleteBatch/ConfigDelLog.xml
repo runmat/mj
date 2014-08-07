@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+	<DeleteLogSettings>
+		<!-- SQL Server -->
+		<Connections>
+			<Conns Conn="Data Source=HHSRVW2KBCK019;initial catalog=DADWebApplikationNew;User ID=WebAccess;Password=seE?Anemone;persist security info=true;packet size=4096" /> 
+
+		</Connections>
+	<!-- QueryString -->
+		<Queries>
+			<SqlQuery qString="Delete FROM Logstandard	where Inserted < GETDATE()-90" />
+		</Queries>
+	</DeleteLogSettings>

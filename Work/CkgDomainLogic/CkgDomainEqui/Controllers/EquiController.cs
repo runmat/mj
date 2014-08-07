@@ -14,7 +14,7 @@ namespace ServicesMvc.Controllers
 
         public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
             IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService, IMahnreportDataService mahnreportDataService,
-            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, IHalterabweichungenDataService halterabweichungenDataService)
+            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, IHalterabweichungenDataService halterabweichungenDataService, IDokumenteOhneDatenDataService dokumenteOhneDatenDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
@@ -25,6 +25,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(DatenOhneDokumenteViewModel, appSettings, logonContext, datenOhneDokumenteDataService);
             InitViewModel(ErweiterterBriefbestandViewModel, appSettings, logonContext, erweiterterBriefbestandDataService);
             InitViewModel(HalterabweichungenViewModel, appSettings, logonContext, halterabweichungenDataService);
+            InitViewModel(DokumenteOhneDatenViewModel, appSettings, logonContext, dokumenteOhneDatenDataService);
         }
 
         public ActionResult Index()

@@ -90,6 +90,7 @@
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
+    <Compile Include="Controllers\DokumenteOhneDaten\EquiController.cs" />
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
+    <Compile Include="Controllers\UebfuehrgController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Equi\Contracts\IDatenOhneDokumenteDataService.cs" />
     <Compile Include="Equi\Contracts\IErweiterterBriefbestandDataService.cs" />
     <Compile Include="Equi\Contracts\IHalterabweichungenDataService.cs" />
+    <Compile Include="Equi\Contracts\IDokumenteOhneDatenDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMeldungsdaten.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="Equi\Models\DataModels\Fahrzeugbrief.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMahn.cs" />
     <Compile Include="Equi\Models\DataModels\DatenOhneDokumente.cs" />
+    <Compile Include="Equi\Models\DataModels\DokumentOhneDaten.cs" />
     <Compile Include="Equi\Models\UIModels\DatenOhneDokumenteFilter.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
@@ -123,12 +127,14 @@
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\DokumenteOhneDatenDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />
     <Compile Include="Equi\Services\ErweiterterBriefbestandDataServiceSAP.cs" />
     <Compile Include="Equi\Services\HalterabweichungenDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
+    <Compile Include="Equi\ViewModels\DokumenteOhneDatenViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnreportViewModel.cs" />
     <Compile Include="Equi\ViewModels\DatenOhneDokumenteViewModel.cs" />
     <Compile Include="Equi\ViewModels\ErweiterterBriefbestandViewModel.cs" />
@@ -165,6 +171,20 @@
     <Compile Include="Strafzettel\Models\AppModelmappings.cs" />
     <Compile Include="Strafzettel\Services\StrafzettelDataServiceSAP.cs" />
     <Compile Include="Strafzettel\ViewModels\StrafzettelViewModel.cs" />
+    <Compile Include="Uebfuehrg\Contracts\IUebfuehrgDataService.cs" />
+    <Compile Include="Uebfuehrg\Models\AppModelMappings.cs" />
+    <Compile Include="Uebfuehrg\Models\CompositeModels\Fahrt.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\Dienstleistung.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\KurzBemerkung.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\TransportTyp.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\Adresse.cs" />
+    <Compile Include="Uebfuehrg\Models\TrivialModels\Bemerkungen.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\DienstleistungsAuswahl.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\Fahrzeug.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\RgDaten.cs" />
+    <Compile Include="Uebfuehrg\Services\UebfuehrgDataServiceSAP.cs" />
+    <Compile Include="Uebfuehrg\ViewModels\UebfuehrgViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\inetpub\wwwroot\ServicesMvc\PortalMvcTools\PortalMvcTools.csproj">

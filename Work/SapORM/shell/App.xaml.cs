@@ -192,7 +192,9 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG, I_VERKZ, I_WEB_USER", "10026883", "N", "CARLM");
             //new FunctionReflector("Z_DPM_LIST_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG", "10026883");
 
+//new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
             //new FunctionReflector("Z_DPM_UPLOAD_GRUDAT_TIP_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
+
 
             //new FunctionReflector("Z_DPM_READ_VERS_GRUND_KUN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
 
@@ -207,6 +209,9 @@ namespace SapORM
             //Halterabweichungen
             //new FunctionReflector("Z_DPM_DAT_MIT_ABW_ZH_01").WriteOrmForExportTableStructures("I_AG", "10062897");
             //new FunctionReflector("Z_DPM_SET_ZH_ABW_ERL_01").WriteOrmForExportTableStructures("I_AG", "10062897");
+
+            //Dokumente ohne Daten
+            //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
             //CoCTest();
             //TeslaTest();
@@ -281,6 +286,8 @@ namespace SapORM
 
             
             //CsiTest();
+
+            TargoTest3();
 
             Shutdown();
         }
@@ -1341,6 +1348,18 @@ namespace SapORM
 
             var exportList = Z_DPM_TAB_ZEVENT_KONFIG_01.GT_EVENT.GetExportList(Sap);
             var savedItem = exportList.FirstOrDefault();
+        }
+
+        static readonly string KunnrTargo = "0010026883";
+        
+        static void TargoTest3()
+        {
+            var list = Z_dpm_Read_Prot_Telefonate_01.GT_OUT.GetExportListWithInitExecute(Sap,
+                        "I_AG",
+                        KunnrTargo.ToSapKunnr()
+                        );
+
+            var listCount = list.Count;
         }
 
         #region Chart Table Export

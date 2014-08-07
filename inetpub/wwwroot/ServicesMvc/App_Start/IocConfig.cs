@@ -29,6 +29,8 @@ using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Services;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
+using CkgDomainLogic.Uebfuehrg.Contracts;
+using CkgDomainLogic.Uebfuehrg.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -118,11 +120,13 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<BriefbestandDataServiceSAP>().As<IBriefbestandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreDataServiceSAP>().As<IFinanceVersandsperreDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreReportDataServiceSAP>().As<IFinanceVersandsperreReportDataService>().InstancePerHttpRequest();
+	    builder.RegisterType<FinanceTelefonieReportDataServiceSAP>().As<IFinanceTelefonieReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerHttpRequest();
             builder.RegisterType<MahnreportDataServiceSAP>().As<IMahnreportDataService>().InstancePerHttpRequest();
             builder.RegisterType<DatenOhneDokumenteDataServiceSAP>().As<IDatenOhneDokumenteDataService>().InstancePerHttpRequest();
             builder.RegisterType<ErweiterterBriefbestandDataServiceSAP>().As<IErweiterterBriefbestandDataService>().InstancePerHttpRequest();
             builder.RegisterType<HalterabweichungenDataServiceSAP>().As<IHalterabweichungenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DokumenteOhneDatenDataServiceSAP>().As<IDokumenteOhneDatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
             builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();
@@ -134,6 +138,8 @@ namespace ServicesMvc.App_Start
                 builder.RegisterType<VersEventsDataServiceSQL>().As<IVersEventsDataService>().InstancePerHttpRequest();
             else
                 builder.RegisterType<VersEventsDataServiceSAP>().As<IVersEventsDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
