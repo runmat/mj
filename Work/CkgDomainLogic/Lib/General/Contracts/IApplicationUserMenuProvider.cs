@@ -7,5 +7,9 @@ namespace CkgDomainLogic.General.Contracts
         List<IApplicationUserMenuItem> GetMenuItemGroups();
 
         List<IApplicationUserMenuItem> GetMenuItems(string appType = null);
+
+        bool AppFavoritesEditMode { get; set; }
+
+        bool AppFavoritesEditSwitchOneFavorite(int appID);
     }
 }
