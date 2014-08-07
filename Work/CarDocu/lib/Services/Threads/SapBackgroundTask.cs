@@ -41,7 +41,7 @@ namespace CarDocu.Services.Threads
             TaskService.StartUiTask(() => IsBusy = true);
 
             // here is our long operation:
-            var success = new SapWebService().ProcessArchivMeldung(ref CurrentQueuedItem);
+            var success = new SapWebService().ProcessWebServiceSapMeldung(ref CurrentQueuedItem);
             Thread.Sleep(1000);
             while (ActiveJobFreeze)
                 Thread.Sleep(1000);

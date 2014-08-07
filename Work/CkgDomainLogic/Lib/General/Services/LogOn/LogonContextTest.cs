@@ -152,7 +152,14 @@ namespace CkgDomainLogic.General.Services
         public Organization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
+
+        public bool AppFavoritesEditMode { get; set; }
         
+        public bool AppFavoritesEditSwitchOneFavorite(int appID)
+        {
+            return false;
+        }
+
         public string ReturnUrl { get; set; }
 
         public ISecurityService SecurityService { get; set; }
