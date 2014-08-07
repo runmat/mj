@@ -22,20 +22,6 @@ namespace CkgDomainLogic.General.ViewModels
         }
 
         [XmlIgnore]
-        public List<Contact> TestGroupContacts
-        {
-            get 
-            { 
-                return new List<Contact>
-                {
-                    new Contact { Anrede = "Frau", Name1 = "Gundulinde", Name2 = "Halmacken", Telefon = "04532 45654", Fax = null, Mail = "halmacken@test.de", Mobile = "01765461257", Abteilung = "Finanzbuchhaltung", Position = "Chefin", PictureName = "9063.jpg"},
-                    new Contact { Anrede = "Frau", Name1 = "Hermine", Name2 = "Granger", Telefon = "04102 6987635", Fax = "040 97821213", Mail = "granger@dad.de", Mobile = null, Abteilung = "Verkauf", Position = "Disponentin", PictureName = "9065.jpg" },
-                    new Contact { Anrede = "Herr", Name1 = "Göster", Name2 = "Reuther", Telefon = "040 454541211", Fax = null, Mail = "gr@ckg.de", Mobile = null, Abteilung = "Vertrieb", Position = "Berater", PictureName = "9155.jpg" },
-                }; 
-            }
-        }
-
-        [XmlIgnore]
         public List<Contact> CustomerGroupContacts
         {
             get
@@ -45,7 +31,7 @@ namespace CkgDomainLogic.General.ViewModels
                         if (LogonContext == null)
                             return new List<Contact>();
 
-                        return LogonContext.TryGetGroupContacts().ToListOrEmptyList(); //.Concat(TestGroupContacts).ToList();
+                        return LogonContext.TryGetGroupContacts().ToListOrEmptyList(); 
                     });
             }
         }
@@ -60,5 +46,12 @@ namespace CkgDomainLogic.General.ViewModels
         {
             return string.Format("{0}{1}", AppSettings.WebPictureContactsRelativePath.ToWebPath(), contact.PictureName);
         }
+
+        
+        #region AppFavorites
+
+        public bool AppFavoritesAvailable { get { return LogonContext != null && LogonContext.Customer != null && LogonContext.Customer.MvcSelectionType.NotNullOrEmpty().ToLower() == "favorites"; } }
+
+        #endregion
     }
 }

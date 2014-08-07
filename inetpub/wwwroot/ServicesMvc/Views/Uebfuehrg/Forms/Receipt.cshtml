@@ -1,0 +1,14 @@
+﻿@model CkgDomainLogic.DomainCommon.Models.CommonUiModel 
+
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
+    {
+        <div>Vielen Dank, wie folgt Ihr Beleg!</div>
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        
+        </script>
+    }
+</div>
