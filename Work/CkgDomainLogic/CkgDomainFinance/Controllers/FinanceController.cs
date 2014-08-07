@@ -16,7 +16,8 @@ namespace ServicesMvc.Controllers
 
         public FinanceController(IAppSettings appSettings, ILogonContextDataService logonContext, IFinanceAktivcheckDataService aktivcheckDataService, 
             IFinanceGebuehrenauslageDataService gebuehrenauslageDataService, IFinanceBewertungDataService bewertungDataService, 
-            IFinanceVersandsperreDataService versandsperreDataService, IFinanceVersandsperreReportDataService versandsperreReportDataService)
+            IFinanceVersandsperreDataService versandsperreDataService, IFinanceVersandsperreReportDataService versandsperreReportDataService, 
+            IFinanceTelefonieReportDataService telefonieReportDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(AktivcheckViewModel, appSettings, logonContext, aktivcheckDataService);
@@ -24,6 +25,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(BewertungViewModel, appSettings, logonContext, bewertungDataService);
             InitViewModel(VersandsperreViewModel, appSettings, logonContext, versandsperreDataService);
             InitViewModel(VersandsperreReportViewModel, appSettings, logonContext, versandsperreReportDataService);
+            InitViewModel(TelefonieReportViewModel, appSettings, logonContext, telefonieReportDataService);
         }
 
         public ActionResult Index(string un, string appID)

@@ -1,0 +1,37 @@
+﻿@using CkgDomainLogic.Equi.Models
+@using CkgDomainLogic.Equi.ViewModels
+@model DokumenteOhneDatenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridDokumenteOhneDaten"; }
+
+@(Html.Telerik()
+    .Grid<DokumentOhneDaten>()
+    .Name(gridName)
+    .XGroup("GridDokumenteOhneDaten")
+    .XAjaxDataBinding("DokumenteOhneDatenAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
+        columns.Bound(c => c.Fahrgestellnummer);
+        columns.Bound(c => c.Kennzeichen);
+        columns.Bound(c => c.ZB2);
+        columns.Bound(c => c.Name1);
+        columns.Bound(c => c.Name2);
+        columns.Bound(c => c.Strasse);
+        columns.Bound(c => c.Hausnummer);
+        columns.Bound(c => c.PLZ);
+        columns.Bound(c => c.Ort);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridDokumenteOhneDaten"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDokumenteOhneDatenFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportDokumenteOhneDatenFilteredPDF", "Equi");
+    })
+)
+

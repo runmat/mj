@@ -87,6 +87,7 @@ namespace ServicesMvc
             new CkgDomainLogic.Strafzettel.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Leasing.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Ueberfuehrung.Models.AppModelMappings().ValidateAndRaiseError();
+            new CkgDomainLogic.Uebfuehrg.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Zulassung.MobileErfassung.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Finance.Models.AppModelMappings().ValidateAndRaiseError();
             new CkgDomainLogic.Fahrer.Models.AppModelMappings().ValidateAndRaiseError();
@@ -165,8 +166,15 @@ namespace ServicesMvc
             return isActive;
         }
 
-        public static string GetActiveMenuItemCssClass(string appName)
+        public static string GetActiveMenuItemCssClass(string appName = null)
         {
+            if (appName.IsNullOrEmpty())
+            {
+                appName = "/ServicesMvc/";
+                if (LogonContext.Customer != null && LogonContext.Customer.MvcSelectionUrl.IsNotNullOrEmpty())
+                    appName += LogonContext.Customer.MvcSelectionUrl.Replace("~/","");
+            }
+
             return IsActiveMenuItem(appName) ? "active" : "";
         }
 
