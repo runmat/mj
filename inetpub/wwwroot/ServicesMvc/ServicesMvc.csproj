@@ -2190,7 +2190,6 @@
     <Content Include="Views\Leasing\Klaerfaelle\AnzeigeDatenPuGDetails.cshtml" />
     <Content Include="Views\CoC\Partial\DuplicateVinConfirmationMode.cshtml" />
     <Content Include="Views\CocBeauftragung\Beauftragung.cshtml" />
-    <Content Include="Views\Test\IndexOld.cshtml" />
     <Content Include="Views\Test\Partial\TestFormOld.cshtml" />
     <Content Include="Views\Test\Partial\TestForm2.cshtml" />
     <Content Include="Views\Leasing\CsvUpload.cshtml" />
@@ -2322,6 +2321,9 @@
     <Content Include="Views\Finance\Versandsperre\VersandsperreSuche.cshtml" />
     <Content Include="Views\Finance\ReportVersandsperre.cshtml" />
     <Content Include="Views\Finance\Versandsperre\VersandsperreReportGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenSuche.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport\TelefoniedatenGrid.cshtml" />
+    <Content Include="Views\Finance\TelefonieReport.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\UploadSaveFahrzeugeinsteuerungGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugeinsteuerung\Receipt.cshtml" />
@@ -2381,6 +2383,8 @@
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
     <Content Include="Views\Equi\ReportErweiterterBriefbestand.cshtml" />
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefErweitertSuche.cshtml" />
+    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtons.cshtml" />
+    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtonsCore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
@@ -3852,9 +3856,19 @@
     </Content>
     <Content Include="Views\Logs\Pv.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Index.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\RgDaten.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Fahrzeug.cshtml" />
+    <Content Include="Views\Uebfuehrg\CurrentStepView.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Adresse.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Summary.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\Receipt.cshtml" />
+    <Content Include="Views\Equi\DokumenteOhneDaten\DokumenteOhneDatenGrid.cshtml" />
+    <Content Include="Views\Equi\DokumenteOhneDaten.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4720,7 +4734,7 @@
       <Project>{F1C484BE-4B1D-465D-8761-E29DA430A53A}</Project>
       <Name>CkgDomainArchive</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
+    <ProjectReference Include="..\..\..\work\CkgDomainLogic\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
       <Project>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</Project>
       <Name>CkgDomainAutohaus</Name>
     </ProjectReference>

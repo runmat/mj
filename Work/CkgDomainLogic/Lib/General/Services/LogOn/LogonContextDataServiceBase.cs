@@ -72,6 +72,8 @@ namespace CkgDomainLogic.General.Services
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
+        public bool AppFavoritesEditMode { get; set; }
+
         public virtual List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return null; } }
 
         public MaintenanceResult MaintenanceInfo { get; private set; }
@@ -94,6 +96,10 @@ namespace CkgDomainLogic.General.Services
 
         public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
 
+        virtual public bool AppFavoritesEditSwitchOneFavorite(int appID)
+        {
+            return false;
+        }
 
         virtual public bool LogonUser(string userName)
         {

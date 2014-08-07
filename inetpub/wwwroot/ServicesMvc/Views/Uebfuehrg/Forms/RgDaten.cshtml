@@ -1,0 +1,33 @@
+﻿@model CkgDomainLogic.Uebfuehrg.Models.RgDaten 
+
+<div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
+    @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
+    {
+        @Html.HiddenFor(m => m.UiIndex)
+
+
+        @Html.FormValidationSummary()
+
+        @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.RgKundenNr, Model.RgAdressen.ToSelectList(), new { @class = "m-wrap large" })
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            $("#ReKundenNr").on("change", function() {
+                var matchingRgItems = $.grep($("#RgKundenNr option"), function (item, index) {
+                    return ($(item).val() == $("#ReKundenNr").val());
+                });
+                if (matchingRgItems.length > 0)
+                    // only if RG values contains the selected RE value, set default RG dropdown value to RE value
+                    $("#RgKundenNr").val($("#ReKundenNr").val());
+                }
+            );
+        
+        </script>
+    }
+</div>
