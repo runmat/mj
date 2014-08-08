@@ -177,7 +177,7 @@ namespace PortalMvcTools.Web
         public static MvcForm AutoForm<T>(this AjaxHelper ajax, T model, string controllerName, int id) where T : class
         {
             return ajax.BeginForm(typeof(T).Name + "Form", controllerName, null,
-                                  new MvcAjaxOptions { UpdateTargetId = ajax.AutoFormWrapperDivID(id), OnComplete = "AjaxFormComplete();" },
+                                  new MvcAjaxOptions { UpdateTargetId = ajax.AutoFormWrapperDivID(id), OnComplete = "AjaxFormComplete(" + id +");" },
                                   htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + id });
         }
 

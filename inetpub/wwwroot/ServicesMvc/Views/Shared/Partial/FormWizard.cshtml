@@ -219,7 +219,7 @@
                 var tabNumber = this.GetNextTabIndex();
                 
                 this.SetTabHtml(tabNumber, html);
-                try { FormPreparePrivateAjax(); } catch (e) {}
+                try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
                 this.ButtonNextInvoke();
             },
 
@@ -228,7 +228,7 @@
                 //console.log("* " + tabNumber + " *");
                 
                 this.SetTabHtml(tabNumber, html);
-                try { FormPreparePrivateAjax(); } catch (e) {}
+                try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
 
                 var that = this;
                 this.tabClickForwardValid = true;

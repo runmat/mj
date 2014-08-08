@@ -2,6 +2,22 @@
 
 <style type="text/css">
 
+    .dienstleistungen-wrapper-uebfuehrg {
+        margin-left: 40px;
+        margin-top: 10px;
+    }
+    .dienstleistungen-wrapper-uebfuehrg .bemerkungen {
+        margin-top: 30px;
+        margin-left: 260px;
+    }
+    .dienstleistungen-wrapper-uebfuehrg .bemerkungen textarea {
+        width: 345px!important;
+    }
+    
+    .receipt-wrapper-uebfuehrg {
+        margin: 40px;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -15,8 +31,8 @@
 
     };
 
-    function FormPreparePrivateAjax() {
-        FormPrepareAjax();
+    function FormPreparePrivateAjax(id) {
+        FormPrepareAjax(id);
         $('.tooltips').tooltip();
     }
 
@@ -49,8 +65,11 @@
         });
     }
 
-    function AjaxFormComplete() {
-        FormPrepareAjax();
+    function AjaxFormComplete(id) {
+        
+        //console.log(id);
+        FormPrepareAjax(id);
+        
         if (_modelIsValid) {
             AjaxRequestNextStep();
         }
@@ -245,6 +264,28 @@
     //    
     // </UebfuehrgAdressen>
     //
+
+    function SaveAllStart() {
+        LoadingShow();
+        $.ajax(
+            {
+                type: "POST",
+                url: "SaveAllStart",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    $("#receipt-wait").hide();
+                    if (result.receiptErrorMessages == "") {
+                        $("#receipt-success").show();
+                        FormWizard.InsertActionButton("#ReceiptFormActions");
+                        $('.tooltips').tooltip();
+                    } else {
+                        $("#receipt-error").html("Leider konnten wir Ihren Auftrag nicht verarbeiten.<br /><br />" + result.receiptErrorMessages);
+                        $("#receipt-error").show();
+                    }
+                }
+            });
+    }
     
 </script>
 
