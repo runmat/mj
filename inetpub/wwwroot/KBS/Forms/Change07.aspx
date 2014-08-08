@@ -58,7 +58,6 @@
                                                 &nbsp;
                                                 <div style="margin-left: 10px; margin-top: 5px; position: absolute;">
                                                     <asp:Label ID="lblKSTText" runat="server" TabIndex="0" Visible="false"></asp:Label>
-                                                     <asp:Label ID="lblERDAT" runat="server" TabIndex="0" Visible="false"></asp:Label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -193,28 +192,26 @@
                                                 <Columns>
                                                     <asp:TemplateField Visible="false">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'></asp:Label>
+                                                            <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("MATNR") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField HeaderStyle-Width="70px" HeaderText="an Kostenstelle" DataField="UMLGO"
-                                                        ItemStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField HeaderStyle-Width="180px" HeaderText="Artikel" DataField="MAKTX" />
                                                      <asp:BoundField HeaderStyle-Width="65px" HeaderText="Kennz.-Größe" DataField="KENNZFORM" />
                                                     <asp:TemplateField HeaderStyle-Width="12px">
                                                         <ItemTemplate>
-                                                            <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'
+                                                            <asp:ImageButton CommandArgument='<%# Eval("MATNR") %>'
                                                                 CommandName="minusMenge" ID="imgbMinus" ImageUrl="~/Images/Minus.jpg" Width="15px"
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="32px" HeaderText="Menge" ItemStyle-HorizontalAlign="Center">
                                                         <ItemTemplate>
-                                                            <asp:TextBox runat="server" ID="txtMenge" Width="32px" Text='<%# DataBinder.Eval(Container, "DataItem.Menge") %>'></asp:TextBox>
+                                                            <asp:TextBox runat="server" ID="txtMenge" Width="32px" Text='<%# Eval("Menge") %>'></asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="12px">
                                                         <ItemTemplate>
-                                                            <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'
+                                                            <asp:ImageButton CommandArgument='<%# Eval("MATNR") %>'
                                                                 CommandName="plusMenge" ID="imgbPlus" ImageUrl="~/Images/Plus.jpg" Width="15px"
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
@@ -224,13 +221,13 @@
                                                     <asp:TemplateField HeaderStyle-Width="27px" Visible="true">
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="ibEditInfotext" runat="server" Width="27px" Height="30px" ImageUrl="~/Images/edit_01.gif"
-                                                                CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>' CommandName="bearbeiten" />
+                                                                CommandArgument='<%# Eval("MATNR") %>' CommandName="bearbeiten" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="32px">
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="lbDelete" runat="server" Width="32px" Height="32px" ImageUrl="~/Images/RecycleBin.png"
-                                                                CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>' CommandName="entfernen" />
+                                                                CommandArgument='<%# Eval("MATNR") %>' CommandName="entfernen" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
@@ -362,11 +359,9 @@
                                                         <Columns>
                                                             <asp:TemplateField Visible="false">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'></asp:Label>
+                                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("MATNR") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:BoundField DataField="UMLGO" HeaderStyle-Width="15%" HeaderText="an Kostenstelle"
-                                                                ItemStyle-HorizontalAlign="Center" />
                                                             <asp:BoundField DataField="MAKTX" HeaderStyle-Width="55%" HeaderText="Artikel" />
                                                             <asp:BoundField HeaderStyle-Width="10%" HeaderText="Kennz.-Größe" DataField="KENNZFORM" />
                                                             <asp:BoundField DataField="Menge" HeaderStyle-Width="15%" HeaderText="Menge" ItemStyle-HorizontalAlign="Center" />
@@ -480,7 +475,7 @@
                                         </tr>
                                         <tr>
                                             <td style="margin-left: 40px">
-                                                <asp:GridView ID="gvAusparken" runat="server" AllowPaging="False" AllowSorting="True"
+                                                <asp:GridView ID="gvAusparken" runat="server" AllowPaging="False" AllowSorting="False"
                                                     AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
                                                     HorizontalAlign="Center" ShowFooter="False" Width="100%">
                                                     <PagerSettings Visible="false" />
@@ -494,13 +489,13 @@
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibAusparkenTable" runat="server" Text="Ausparken" Height="16px"
-                                                                    Width="78px" CssClass="Tablebutton" CommandName="ausparken" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BELNR") %>' />
+                                                                    Width="78px" CssClass="Tablebutton" CommandName="ausparken" CommandArgument='<%# Eval("BELNR") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:ImageButton ID="ibAusparkenDelete" runat="server" Width="32" Height="32" ImageUrl="~/Images/RecycleBin.png"
-                                                                    CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BELNR") %>' CommandName="löschen" />
+                                                                    CommandArgument='<%# Eval("BELNR") %>' CommandName="löschen" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>
@@ -570,7 +565,7 @@
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"
-                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.Datum") %>' />
+                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# Eval("Datum") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

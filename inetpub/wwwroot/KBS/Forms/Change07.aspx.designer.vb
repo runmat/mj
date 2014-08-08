@@ -77,15 +77,6 @@ Partial Public Class Change07
     Protected WithEvents lblKSTText As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblERDAT-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblERDAT As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''trPlaceHolderArtikel-Steuerelement
     '''</summary>
     '''<remarks>

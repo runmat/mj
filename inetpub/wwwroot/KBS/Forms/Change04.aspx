@@ -168,7 +168,7 @@
                             <asp:LinkButton ID="lbAbsenden" Text="Absenden" Height="16px" Width="78px" runat="server"
                                 CssClass="Tablebutton"></asp:LinkButton>
                             <asp:LinkButton ID="lbLetzteBestellungen" Text="letzte Bestellungen" Height="16px" Width="128px" runat="server"
-                                CssClass="TablebuttonLarge" Enabled="False" style="margin-left: 10px"></asp:LinkButton>
+                                CssClass="TablebuttonLarge" style="margin-left: 10px"></asp:LinkButton>
                         </div>
                         <div id="divLetzteBestellungen" runat="server" Visible="False" style="margin-bottom: 10px">
                             <table cellspacing="0" width="100%" cellpadding="0" bgcolor="white" border="0">

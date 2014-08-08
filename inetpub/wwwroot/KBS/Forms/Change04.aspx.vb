@@ -32,7 +32,6 @@ Partial Public Class Change04
                 txtKST.Enabled = False
                 txtKST.Text = mObjKasse.Lagerort
                 fillDropdown()
-                lbLetzteBestellungen.Enabled = True
             End If
         End If
 
@@ -281,7 +280,6 @@ Partial Public Class Change04
                         lbtnInsert.Enabled = False
                         txtFreitext.Enabled = False
                         lbtFreitextSend.Enabled = False
-                        lbLetzteBestellungen.Enabled = False
                     Else
                         lblKSTText.Visible = True
                         lblKSTText.Text = .KostText
@@ -291,7 +289,6 @@ Partial Public Class Change04
                         lbtnInsert.Enabled = True
                         txtFreitext.Enabled = True
                         lbtFreitextSend.Enabled = True
-                        lbLetzteBestellungen.Enabled = True
                         SetFocus(ddlArtikel)
                     End If
                 End With
@@ -305,11 +302,15 @@ Partial Public Class Change04
             lbtnInsert.Enabled = False
             txtFreitext.Enabled = False
             lbtFreitextSend.Enabled = False
-            lbLetzteBestellungen.Enabled = False
         End If
     End Sub
 
     Private Sub lbLetzteBestellungen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbLetzteBestellungen.Click
+        If String.IsNullOrEmpty(txtKST.Text) Then
+            lblError.Text = "Bitte geben Sie eine Kostenstelle an!"
+            Exit Sub
+        End If
+
         ShowLetzteBestellungen()
     End Sub
 
