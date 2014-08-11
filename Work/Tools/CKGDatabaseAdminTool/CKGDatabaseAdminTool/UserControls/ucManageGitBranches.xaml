@@ -35,18 +35,14 @@
                 </Style>
             </StackPanel.Resources>
 
+            <RadioButton Content="nur aktive" 
+                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktive}}"/>
+            <RadioButton Content="nur aktive mit Freigabe" 
+                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktiveMitFreigabe}}"/>
+            <RadioButton Content="nur abgeschlossene" 
+                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.abgeschlossene}}"/>
             <RadioButton Content="alle" 
                          IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
-            <RadioButton Content="inaktive" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.inaktive}}"/>
-            <RadioButton Content="im Master und produktiv" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.imMasterUndProduktiv}}"/>
-            <RadioButton Content="weder im Master noch produktiv" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.nichtImMasterUndNichtProduktiv}}"/>
-            <RadioButton Content="im Master, aber nicht produktiv" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.imMasterUndNichtProduktiv}}"/>
-            <RadioButton Content="produktiv, aber nicht im Master" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.produktivUndNichtImMaster}}"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="dgGitBranches" ItemsSource="{Binding GitBranches}" AutoGenerateColumns="False">
@@ -88,10 +84,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Inaktiv" Width="64" SortMemberPath="Inaktiv">
+                <DataGridTemplateColumn Header="Deaktiviert" Width="64" SortMemberPath="Deaktiviert">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Inaktiv}" HorizontalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding Deaktiviert}" HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

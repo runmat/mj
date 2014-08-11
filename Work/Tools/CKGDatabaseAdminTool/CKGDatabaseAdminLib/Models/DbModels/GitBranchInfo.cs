@@ -158,19 +158,22 @@ namespace CKGDatabaseAdminLib.Models.DbModels
             }
         }
 
-        private bool _inaktiv;
+        private bool _deaktiviert;
         [Required]
-        public bool Inaktiv
+        public bool Deaktiviert
         {
-            get { return _inaktiv; }
+            get { return _deaktiviert; }
             set
             {
-                if (_inaktiv != value)
+                if (_deaktiviert != value)
                 {
-                    _inaktiv = value;
-                    OnPropertyChanged("Inaktiv");
+                    _deaktiviert = value;
+                    OnPropertyChanged("Deaktiviert");
                 }
             }
         }
+
+        [NotMapped]
+        public bool Erledigt { get { return (Deaktiviert || (ImMaster && ProduktivSeit.HasValue)); } }
     }
 }

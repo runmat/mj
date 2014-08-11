@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -22,7 +23,7 @@ namespace CKGDatabaseAdminLib.Services
 
         public GitBranchInfoDataServiceSql(string connectionName)
         {
-            AnzeigeFilter = GitBranchViewFilter.alle;
+            AnzeigeFilter = GitBranchViewFilter.aktive;
             InitDataContext(connectionName);
         }
 
@@ -56,29 +57,20 @@ namespace CKGDatabaseAdminLib.Services
 
             switch (AnzeigeFilter)
             {
-                case GitBranchViewFilter.inaktive:
-                    listeTemp = GitBranchesAll.Where(g => g.Inaktiv);
+                case GitBranchViewFilter.aktive:
+                    listeTemp = GitBranchesAll.Where(g => !g.Erledigt);
                     break;
 
-                case GitBranchViewFilter.imMasterUndProduktiv:
-                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && g.ImMaster && g.ProduktivSeit.HasValue);
+                case GitBranchViewFilter.aktiveMitFreigabe:
+                    listeTemp = GitBranchesAll.Where(g => !g.Erledigt && !String.IsNullOrEmpty(g.FreigegebenDurch));
                     break;
 
-                case GitBranchViewFilter.nichtImMasterUndNichtProduktiv:
-                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && !g.ImMaster && !g.ProduktivSeit.HasValue);
+                case GitBranchViewFilter.abgeschlossene:
+                    listeTemp = GitBranchesAll.Where(g => g.Erledigt);
                     break;
 
-                case GitBranchViewFilter.imMasterUndNichtProduktiv:
-                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && g.ImMaster && !g.ProduktivSeit.HasValue);
-                    break;
-
-                case GitBranchViewFilter.produktivUndNichtImMaster:
-                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv && !g.ImMaster && g.ProduktivSeit.HasValue);
-                    break;
-
-                default:
-                    // alle (ohne inaktive)
-                    listeTemp = GitBranchesAll.Where(g => !g.Inaktiv);
+                default: //alle
+                    listeTemp = GitBranchesAll;
                     break;
             }
 
