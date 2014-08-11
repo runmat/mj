@@ -11,6 +11,7 @@ using CkgDomainLogic.Uebfuehrg.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 using System.Linq;
@@ -35,11 +36,22 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Fzg1()
         {
-            ViewModel.DataInit();
+            return Fzg(1);
+        }
 
-            return View(ViewModel);
+        [CkgApplication]
+        public ActionResult Fzg2()
+        {
+            return Fzg(2);
+        }
+
+        private ActionResult Fzg(int anzahlFahrzeugeGewuenscht)
+        {
+            ViewModel.DataInit(anzahlFahrzeugeGewuenscht);
+
+            return View("Fzg", ViewModel);
         }
 
 
@@ -89,21 +101,33 @@ namespace ServicesMvc.Controllers
             
             if (model.TmpSelectionKey.IsNotNullOrEmpty())
             {
-                model = ViewModel.GetUebfuehrgAdresseFromKey(model.TmpSelectionKey);
-                if (model == null)
+                var savedModel = ViewModel.GetUebfuehrgAdresseFromKey(model.TmpSelectionKey);
+                if (savedModel == null)
                     return new EmptyResult();
 
-                ModelState.Clear();
-                model.IsValid = false;
+                savedModel.TransportTypAvailable = model.TransportTypAvailable;
+                savedModel.TransportTyp = model.TransportTyp;
 
-                ViewModel.SaveSubModelWithPreservingUiModel(model);
+                ModelState.Clear();
+                savedModel.IsValid = false;
+
+                ViewModel.SaveSubModelWithPreservingUiModel(savedModel);
 
                 return GetStepPartialView();
             }
 
             model.IsValid = ModelState.IsValid;
             if (ModelState.IsValid)
+            {
+                var savedModel = ((Adresse)ViewModel.GetStepModel());
+                var savedDatum = savedModel.Datum;
                 ViewModel.SaveSubModelWithPreservingUiModel(model);
+                ViewModel.CheckAdressDatum(model, savedDatum, ModelState.AddModelError, () =>
+                    {
+                        ModelState.SetModelValue("Datum", savedDatum == null ? null : savedDatum.GetValueOrDefault().ToString("dd.MM.yyyy"));
+                        savedModel.Datum = savedDatum;
+                    });
+            }
 
             return GetStepPartialView();
         }
@@ -111,10 +135,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult UebfuehrgAdressenShowGrid(int uiIndex)
         {
-            ViewModel.DataMarkForRefreshUebfuehrgAdressenFiltered();
-
             ViewModel.StepCurrentIndex = uiIndex;
             ViewModel.FahrtAdressen.ForEach(adresse => adresse.UiIndex = ViewModel.StepCurrentIndex);
+
+            ViewModel.DataMarkForRefreshUebfuehrgAdressenFiltered();
 
             return PartialView("Partial/AdressenAuswahlGrid");
         }
@@ -138,6 +162,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public JsonResult UebfuehrgAdresseGetAutoCompleteItems()
         {
+            ViewModel.DataMarkForRefreshUebfuehrgAdressenFiltered();
+
             return Json(new { items = ViewModel.UebfuehrgAdressenAsAutoCompleteItems });
         }
 
@@ -154,12 +180,14 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.SaveSubModelWithPreservingUiModel(model);
+                ViewModel.CheckDienstleistungsAuswahl(model, ModelState.AddModelError);
             }
 
             return GetStepPartialView();
         }
 
         #endregion
+
 
         #region Summary + Receipt
 
@@ -177,29 +205,21 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        public FileContentResult SummaryAsPdf()
+        [HttpPost]
+        public JsonResult SaveAllStart()
         {
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel(true, GetSummaryStepDataEditLink));
+            ViewModel.SaveAll();
 
-            var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
-            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
-
-            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = "Übersicht.pdf" };
+            return Json(new { receiptErrorMessages = ViewModel.ReceiptErrorMessages });
         }
 
-        public ActionResult SummaryAsHtml()
+        public FileContentResult DownloadPdf()
         {
-            return View("Partial/SummaryPdf", ViewModel.CreateSummaryModel(true, GetSummaryStepDataEditLink));
+            return new FileContentResult(FileService.GetBytesFromFile(ViewModel.ReceiptPdfFileName), "application/pdf")
+            {
+                FileDownloadName = "Ueberfuehrung.pdf"
+            };
         }
-
-        //[HttpPost]
-        //public ActionResult Receipt()
-        //{
-        //    LogonContext.DataContextPersist(ViewModel);
-        //    ViewModel.Save();
-
-        //    return PartialView(ViewModel);
-        //}
 
         #endregion
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Linq;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
@@ -45,6 +46,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public bool IstZusatzFahrt { get { return StartAdresse.GetAlleTransportTypen().Any(at => at.IstZusatzTransport && at.ID == TypNr); } }
 
         [XmlIgnore]
-        public bool IstHauptFahrt { get { return !IstZusatzFahrt; } }
+        public bool IstHauptFahrt { get { return !IstZusatzFahrt && FahrtIndex.NotNullOrEmpty() != "0"; } }
+
+        [XmlIgnore]
+        public int Sort { get; set; }
     }
 }

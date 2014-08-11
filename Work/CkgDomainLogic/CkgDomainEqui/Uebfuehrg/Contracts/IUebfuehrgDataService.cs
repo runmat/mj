@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
 using GeneralTools.Contracts;
+using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 
 namespace CkgDomainLogic.Uebfuehrg.Contracts
 {
@@ -15,7 +17,7 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
 
         void GetTransportTypenAndDienstleistungen(out List<TransportTyp> transportTypen, out List<Dienstleistung> dienstleistungen);
 
-        List<UeberfuehrungsAuftragsPosition> Save(List<Fahrt> fahrten);
+        List<UeberfuehrungsAuftragsPosition> Save(List<CommonUiModel> stepModels, List<Fahrt> fahrten);
 
         void OnInit(ILogonContext logonContext, IAppSettings appSettings);
     }
