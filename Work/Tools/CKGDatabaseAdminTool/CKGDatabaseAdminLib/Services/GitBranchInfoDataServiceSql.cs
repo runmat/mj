@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using CKGDatabaseAdminLib.Contracts;
 using CkgDomainLogic.General.Services;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 
 namespace CKGDatabaseAdminLib.Services
 {

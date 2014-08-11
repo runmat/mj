@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     [Table("LoginUserMessage")]
     public class LoginUserMessage : DbModelBase

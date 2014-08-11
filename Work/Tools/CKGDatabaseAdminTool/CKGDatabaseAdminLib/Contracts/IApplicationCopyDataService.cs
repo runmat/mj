@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 using CkgDomainLogic.General.Contracts;
 
 namespace CKGDatabaseAdminLib.Contracts
