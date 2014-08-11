@@ -124,7 +124,15 @@ namespace CKGDatabaseAdminLib.ViewModels
             ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
-            GitBranchViewModel = new GitBranchInfoViewModel(this);
+            // Git-Branch Verwaltung nur in DAD-Datenbanken
+            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().Contains("(VMS047)") || ActualDatabase.ToUpper().Contains("(VMS026)") || ActualDatabase.ToUpper().Contains("(VMS012)")))
+            {
+                GitBranchViewModel = new GitBranchInfoViewModel(this);
+            }
+            else
+            {
+                GitBranchViewModel = null;
+            }
         }
 
         public void ShowMessage(string msg, MessageType typ)

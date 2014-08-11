@@ -72,6 +72,7 @@
     <Compile Include="Converters\IntegerToStringConverter.cs" />
     <Compile Include="Converters\IntegerVisibilityConverter.cs" />
     <Compile Include="Converters\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="Converters\NotNullToBooleanConverter.cs" />
     <Compile Include="Converters\ListboxItemStringConverter.cs" />
     <Compile Include="Converters\NotNullVisibilityConverter.cs" />
     <Compile Include="Converters\NullableIntegerVisibilityConverter.cs" />
