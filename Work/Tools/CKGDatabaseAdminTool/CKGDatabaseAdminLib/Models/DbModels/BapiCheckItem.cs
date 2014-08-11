@@ -6,7 +6,7 @@ using System.Linq;
 namespace CKGDatabaseAdminLib.Models
 {
     [Table("BapiStrukturCheck")]
-    public class BapiCheckItem : ModelBase
+    public class BapiCheckItem : DbModelBase
     {
         private int _id;
         [Key]

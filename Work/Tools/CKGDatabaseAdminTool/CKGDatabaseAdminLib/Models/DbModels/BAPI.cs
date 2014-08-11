@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CKGDatabaseAdminLib.Models
 {
     [Table("BAPI")]
-    public class BapiTable : ModelBase
+    public class BapiTable : DbModelBase
     {
         private int _id;
         [Key]

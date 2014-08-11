@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CKGDatabaseAdminLib.Models
 {
     [Table("LoginUserMessage")]
-    public class LoginUserMessage : ModelBase
+    public class LoginUserMessage : DbModelBase
     {
         private int _id;
         [Key]

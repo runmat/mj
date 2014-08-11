@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CKGDatabaseAdminLib.Models
 {
     [Table("Application")]
-    public class ApplicationInfo : ModelBase
+    public class ApplicationInfo : DbModelBase
     {
         private int _appId;
         [Key]

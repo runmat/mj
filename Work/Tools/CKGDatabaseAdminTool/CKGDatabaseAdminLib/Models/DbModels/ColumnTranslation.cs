@@ -7,7 +7,7 @@ namespace CKGDatabaseAdminLib.Models
     /// Spaltenübersetzung für Portal-/Services-Anwendungen
     /// </summary>
     [Table("ColumnTranslation")]
-    public class ColumnTranslation : ModelBase
+    public class ColumnTranslation : DbModelBase
     {
         private int _appID;
         [Key, Column(Order = 0)]

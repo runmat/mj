@@ -2,7 +2,7 @@
 
 namespace CKGDatabaseAdminLib.Models
 {
-    public abstract class ModelBase : INotifyPropertyChanged
+    public abstract class DbModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
  

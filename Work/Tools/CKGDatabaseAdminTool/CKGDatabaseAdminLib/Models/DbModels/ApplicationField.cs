@@ -7,7 +7,7 @@ namespace CKGDatabaseAdminLib.Models
     /// Feldübersetzung für Portal-/Services-Anwendungen
     /// </summary>
     [Table("ApplicationField")]
-    public class ApplicationField : ModelBase
+    public class ApplicationField : DbModelBase
     {
         private int _applicationFieldID;
         [Key]

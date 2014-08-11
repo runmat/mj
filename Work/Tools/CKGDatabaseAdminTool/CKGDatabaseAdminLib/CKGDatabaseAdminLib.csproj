@@ -80,7 +80,7 @@
     </Compile>
     <Compile Include="Models\DbModels\ApplicationField.cs" />
     <Compile Include="Models\DbModels\ColumnTranslation.cs" />
-    <Compile Include="Models\DbModels\ModelBase.cs" />
+    <Compile Include="Models\DbModels\DbModelBase.cs" />
     <Compile Include="Models\DbModels\BAPI.cs" />
     <Compile Include="Models\DbModels\ApplicationInfo.cs" />
     <Compile Include="Models\DbModels\Bapi2Report4CsvExport.cs" />

@@ -7,7 +7,7 @@ namespace CKGDatabaseAdminLib.Models
     /// ACHTUNG: Diese Klasse entspricht der Tabellendefinition auf den DAD-Servern und ist u.U. nicht 1:1 auf die anderen SQL-Datenbanken anwendbar!
     /// </summary>
     [Table("Application")]
-    public class Application : ModelBase
+    public class Application : DbModelBase
     {
         private int _appId;
         [Key]
