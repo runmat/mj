@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Services;
 using CarDocuWebService.SAP;
 using GeneralTools.Services;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 
@@ -16,22 +17,18 @@ namespace CarDocuWebService
     [System.ComponentModel.ToolboxItem(false)]
     public class Service : WebService
     {
-        //public Service()
-        //{
-        //    var commaSeparatedReturnCodes = "";
-        //    var commaSeparatedReturnMessages = "";
-
-        //    ProcessArchivMeldung("10043902", "4711", "ZIUZIUZ451", "1601", "KALK", out commaSeparatedReturnCodes, out commaSeparatedReturnMessages);
-        //}
-
         [WebMethod]
         public bool IsOnline()
         {
             return true;
         }
 
+
+        #region CarDocu
+
         [WebMethod]
-        public bool ProcessArchivMeldung(string kundennr, string documentID, string id, string standortCode, string commaSeparatedDocumentCodes, out string commaSeparatedReturnCodes, out string commaSeparatedReturnMessages)
+        public bool ProcessArchivMeldung(string kundennr, string documentID, string id, string standortCode, string commaSeparatedDocumentCodes, 
+                                         out string commaSeparatedReturnCodes, out string commaSeparatedReturnMessages)
         {
             var success = false;
 
@@ -47,14 +44,14 @@ namespace CarDocuWebService
 
                 importList
                     .AddRange(commaSeparatedDocumentCodes.Split(',')
-                        .Select(documentCode => new Z_DPM_CD_OPTISCH_ARCHIVIERT.GT_WEB
-                                                    {
-                                                        INDEXNR = id, //"IT12345612",
-                                                        QMCOD = documentCode, //"KALK",
-                                                        STORT = standortCode, //"1600",
-                                                        SUBRC = 9999,
-                                                        MESSAGE = "---"
-                                                    }));
+                                                         .Select(documentCode => new Z_DPM_CD_OPTISCH_ARCHIVIERT.GT_WEB
+                                                         {
+                                                             INDEXNR = id, //"IT12345612",
+                                                             QMCOD = documentCode, //"KALK",
+                                                             STORT = standortCode, //"1600",
+                                                             SUBRC = 9999,
+                                                             MESSAGE = "---"
+                                                         }));
 
                 sap.ApplyImport(importList);
 
@@ -63,33 +60,102 @@ namespace CarDocuWebService
                 var processedList = Z_DPM_CD_OPTISCH_ARCHIVIERT.GT_WEB.GetExportList(sap);
                 if (processedList != null && processedList.Count > 0)
                 {
-                    commaSeparatedReturnCodes = string.Join(",", processedList.Select(e => e.SUBRC.GetValueOrDefault().ToString()).ToArray());
+                    commaSeparatedReturnCodes = string.Join(",",
+                                                            processedList.Select(
+                                                                e => e.SUBRC.GetValueOrDefault().ToString()).ToArray());
                     commaSeparatedReturnMessages = string.Join(",", processedList.Select(e => e.MESSAGE).ToArray());
                     success = true;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 success = false;
                 exception = e;
             }
 
-            LogArchivMeldung(kundennr, documentID, id, standortCode, commaSeparatedDocumentCodes, commaSeparatedReturnCodes, commaSeparatedReturnMessages, exception, success);
+            LogArchivMeldung("CarDocu Strafzettel", kundennr, documentID, id, standortCode, commaSeparatedDocumentCodes,
+                             commaSeparatedReturnCodes, commaSeparatedReturnMessages, exception, success);
 
             return success;
         }
 
-        static void LogArchivMeldung(string kundennr, string documentID, string id, string standortCode, string commaSeparatedDocumentCodes, string commaSeparatedReturnCodes, string commaSeparatedReturnMessages, Exception exception, bool success)
+        #endregion
+
+
+        #region VW Leasing
+
+        [WebMethod]
+        public bool ProcessVwlKlaerfallMeldung(string kundennr, string documentID, string id, string standortCode, string commaSeparatedDocumentCodes,
+                                               out string commaSeparatedReturnCodes, out string commaSeparatedReturnMessages)
+        {
+            var success = false;
+
+            commaSeparatedReturnCodes = "";
+            commaSeparatedReturnMessages = "";
+
+            Exception exception = null;
+            try
+            {
+                var sap = Sap.CreateDataService();
+
+                var importList = Z_DPM_SET_DAT_ABM_STATUS_01.GT_WEB.GetImportListWithInit(sap, "I_KUNNR_AG", kundennr.ToSapKunnr());
+
+                importList
+                    .AddRange(commaSeparatedDocumentCodes.Split(',')
+                                                         .Select(documentCode => new Z_DPM_SET_DAT_ABM_STATUS_01.GT_WEB
+                                                         {
+                                                             CHASSIS_NUM = id, //"IT12345612",
+                                                             SAP_CODE = documentCode, //"KALK",
+                                                         }));
+
+                sap.ApplyImport(importList);
+
+                sap.Execute();
+
+                var processedList = Z_DPM_SET_DAT_ABM_STATUS_01.GT_WEB.GetExportList(sap);
+                if (processedList != null && processedList.Count > 0)
+                {
+                    commaSeparatedReturnCodes = string.Join(",",
+                                                            processedList.Select(
+                                                            e => e.RET_BEM.IsNullOrEmpty() ? "0" : "-1").ToArray());
+                    commaSeparatedReturnMessages = string.Join(",", processedList.Select(e => e.RET_BEM).ToArray());
+                    success = true;
+                }
+            }
+            catch (Exception e)
+            {
+                success = false;
+                exception = e;
+            }
+
+            LogArchivMeldung("VW Leasing Klärfälle", kundennr, documentID, id, standortCode, commaSeparatedDocumentCodes,
+                             commaSeparatedReturnCodes, commaSeparatedReturnMessages, exception, success);
+
+            return success;
+        }
+
+        #endregion
+
+
+        #region Misc
+
+        private static void LogArchivMeldung(string meldungsTyp, string kundennr, string documentID, string id, string standortCode,
+                                             string commaSeparatedDocumentCodes, string commaSeparatedReturnCodes,
+                                             string commaSeparatedReturnMessages, Exception exception, bool success)
         {
             try
             {
                 var applicationRootFolder = HttpContext.Current.Server.MapPath("~/");
-                var fileName = Path.Combine(applicationRootFolder, string.Format("logs/{0}____{1}.txt", DateTime.Now.ToString("yyyy_MM_dd__HH_mm_ss_ms"), documentID));
+                var fileName = Path.Combine(applicationRootFolder,
+                                            string.Format("logs/{0}____{1}.txt",
+                                                          DateTime.Now.ToString("yyyy_MM_dd__HH_mm_ss_ms"), documentID));
                 if (!FileService.TryFileDelete(fileName))
                     return;
 
                 var sb = new StringBuilder();
                 sb.AppendLine("_________________________________________________________________");
+                sb.AppendLine();
+                sb.AppendLine(string.Format("Meldungs-Typ\t{0}", meldungsTyp));
                 sb.AppendLine();
                 sb.AppendLine(string.Format("Datum\t\t{0}", DateTime.Now.ToString("dd.MM.yyyy HH:mm")));
                 sb.AppendLine(string.Format("ID\t\t{0}", id));
@@ -109,7 +175,9 @@ namespace CarDocuWebService
                 }
 
                 sb.AppendLine();
-                sb.AppendLine(success ? "*** SAP Verarbeitung technisch fehlerfrei ***" : "!!!!!! SAP Verarbeitung MIT TECHNISCHEM FEHLER !!!!!!");
+                sb.AppendLine(success
+                                  ? "*** SAP Verarbeitung technisch fehlerfrei ***"
+                                  : "!!!!!! SAP Verarbeitung MIT TECHNISCHEM FEHLER !!!!!!");
                 sb.AppendLine();
 
                 if (exception != null)
@@ -126,7 +194,12 @@ namespace CarDocuWebService
                     outfile.Write(sb.ToString());
                 }
             }
-            catch {}
+            catch
+            {
+            }
         }
+
+        #endregion
+
     }
 }

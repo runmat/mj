@@ -119,6 +119,7 @@
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
+    <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
     <Compile Include="DomainCommon\Models\VersandAuftragsAnlage.cs">
       <SubType>Code</SubType>
     </Compile>
