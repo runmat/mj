@@ -26,7 +26,7 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public bool IgnoreSummaryItem { get; set; }
 
-        public bool IgnoreEditFromSummary { get; set; }
+        public bool EditFromSummaryDisabled { get; set; }
 
         public virtual string GetSummaryString()
         {

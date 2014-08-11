@@ -43,7 +43,10 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         public override string GetSummaryString()
         {
-            return string.Format("Rechnungsempfänger: {0}<br/>Rechnungs-Regulierer: {1}<br/>", ReKundenNr, RgKundenNr);
+            return string.Format(   "Rechnungsempfänger:<br/>{0}<br/>" +
+                                    "Rechnungs-Regulierer:<br/>{1}<br/>", 
+                                    (ReAdressen.FirstOrDefault() ?? new Adresse()).GetSummaryString(),
+                                    (RgAdressen.FirstOrDefault() ?? new Adresse()).GetSummaryString());
         }
     }
 }

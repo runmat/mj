@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
     public enum AdressenTyp { FahrtAdresse, RechnungsAdresse }
 
     [XmlType(TypeName = "UebfuehrgAdresse")]
-    public class Adresse : DomainCommon.Models.Adresse 
+    public class Adresse : DomainCommon.Models.Adresse, IValidatableObject
     {
         private AdressenTyp _adressTyp = AdressenTyp.FahrtAdresse;
 
@@ -57,17 +57,15 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         private string _transportTyp = "";
 
         [LocalizedDisplay(LocalizeConstants.TransportType)]
-        [ModelMappingCopyIgnore]
         public string TransportTyp
         {
             get { return _transportTyp;  }
             set { _transportTyp = value; }
         }
-        [ModelMappingCopyIgnore]
         public bool TransportTypAvailable { get; set; }
 
         [XmlIgnore, ScriptIgnore]
-        public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
+        public string TransportTypName { get { return GetTransportTypName(TransportTyp, Header); } }
 
         [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public Func<List<TransportTyp>> GetAlleTransportTypen { get; set; }
@@ -112,9 +110,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                             intelligentTransportTypes.RemoveAll(t => t.Name.ToLower().Contains("zusatz"));
                     }
 
-                    if (intelligentTransportTypes.Count() > 1)
-                        // if we have mor than 1 entry, also insert the choosing option ("bitte auswählen")
-                        intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(GetAlleTransportTypen().First(t => t.ID == ""));
+                    //if (intelligentTransportTypes.Count() > 1)
+                    //    // if we have mor than 1 entry, also insert the choosing option ("bitte auswählen")
+                    //    intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(alleTransportTypen.First(t => t.ID == ""));
 
                     return intelligentTransportTypes;
                 }
@@ -151,6 +149,12 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [ModelMappingCopyIgnore]
         public string Mandant { get; set; }
+
+        [XmlIgnore]
+        public string AdresseAsRouteInfo { get { return String.Format("{0}, {1} {2}", Strasse, PLZ, Ort); } }
+
+        [XmlIgnore]
+        public string AdresseAsBlock { get { return GetSummaryString().Replace("<br/>", "\r\n"); } }
 
         [XmlIgnore, ScriptIgnore]
         public string FahrtTitleFromAddressType
@@ -216,10 +220,10 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             return (getAlleTransportTypen == null ? null : getAlleTransportTypen().FirstOrDefault(tt => tt.ID == transportTyp));
         }
 
-        public string GetTransportTypName(string transportTyp, string defaultTypName = "")
+        public string GetTransportTypName(string transportTyp, string defaultTypName)
         {
             var transportTypModel = GetTransportTypModel(transportTyp);
-            return transportTypModel == null ? "" : (transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);
+            return (transportTypModel == null || transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);
         }
 
         public override string GetSummaryString()

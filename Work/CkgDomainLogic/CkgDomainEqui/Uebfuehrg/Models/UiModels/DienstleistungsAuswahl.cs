@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
@@ -29,7 +31,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [XmlIgnore]
         public List<Dienstleistung> AvailableDienstleistungen
         {
-            get { return AlleDienstleistungen == null ? null : AlleDienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).ToList(); }
+            get { return AlleDienstleistungen == null ? null : AlleDienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).OrderBy(d => d.Name).ToList(); }
         }
 
 
@@ -42,11 +44,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             {
                 _gewaehlteDienstleistungenString = value;
 
-                if (AvailableDienstleistungen != null)
-                {
-                    AvailableDienstleistungen.ForEach(dl => dl.IstGewaehlt = false);
-                    GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
-                }
+                InitDienstleistungenFlags();
             }
         }
 
@@ -62,15 +60,35 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             Bemerkungen = new Bemerkungen();
         }
 
-        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen, bool resetGewaehlteDienstleistungen = false)
+        public void InitDienstleistungenFlags()
         {
-            AlleDienstleistungen = dienstleistungen;
+            if (AvailableDienstleistungen == null)
+                return;
+
+            AvailableDienstleistungen.ForEach(dl => dl.IstGewaehlt = false);
+            GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
+        }
+
+        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen, string fahrtTyp = null, bool resetGewaehlteDienstleistungen = false)
+        {
+            if (fahrtTyp != null)
+                this.FahrtTyp = fahrtTyp;
+
+            AlleDienstleistungen = dienstleistungen.Where(dl => dl.TransportTyp == this.FahrtTyp).ToListOrEmptyList().Copy((src, dst) =>
+                {
+                    dst.FahrtIndex = this.FahrtIndex;
+                    dst.TransportTyp = this.FahrtTyp;
+                });
 
             if (resetGewaehlteDienstleistungen)
-                _gewaehlteDienstleistungenString = "";
+            {
+                if (dienstleistungen.Any(dl => dl.IstGewaehlt))
+                    GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
+                else
+                    GewaehlteDienstleistungenString = "";
+            }
 
-            if (GewaehlteDienstleistungenString.IsNullOrEmpty())
-                GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
+            InitDienstleistungenFlags();
         }
 
         public override string GetSummaryString()
