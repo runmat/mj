@@ -6,8 +6,10 @@
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         <div class="form-actions">
-            <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top">Adressen auswählen <i class="icon-chevron-right"></i></a>
-            <a href="#" onclick="return AjaxFormAdresseEmpty('AjaxForm' + '@Model.UiIndex', 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-right-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top">Formular leeren <i class="icon-remove"></i></a>
+            <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-left-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top"><i class="icon-search margin-right-5"></i> Adressen suchen</a>
+            <a href="#" onclick="return AjaxFormAdresseEmpty(@Model.UiIndex, 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top"><i class="icon-remove margin-right-5"></i> Formular leeren</a>
+            
+            <a target="blank" href="#" onclick="return AjaxFormAdresseMapLocation('AjaxForm' + '@Model.UiIndex')" class="route-info location btn blue tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte" data-placement="top"><i class="icon-map-marker margin-right-5"></i> Karte</a>
         </div>
 
         @Html.HiddenFor(m => m.UiIndex)
@@ -15,9 +17,11 @@
         @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.Kennung)
         @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.SubTyp)
         @Html.HiddenFor(m => m.TmpSelectionKey)
         @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
         @Html.HiddenFor(m => m.TransportTypAvailable)
+        @Html.HiddenFor(m => m.UhrzeitwunschAvailable)
 
         @Html.FormValidationSummary()
 
@@ -42,7 +46,17 @@
         @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap large", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large" })
+        if (Model.UhrzeitwunschAvailable)
+        {
+            @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
+            @Html.FormDropDownListFor(m => m.Uhrzeitwunsch, Model.UhrzeitwunschOptions.ToSelectList(), new { @class = "m-wrap small", col = "right" }) 
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large", col = "right" })
+        }
 
         @Html.FormRequiredFieldsSummary()
         
@@ -54,7 +68,55 @@
                 _modelIsValid = false;
             
             AjaxFormAdressePrepareAutoComplete($("#Name1"), "UebfuehrgAdresseGetAutoCompleteItems");
-            AjaxFormAdressePrepareAutoCompleteReset(@Model.UiIndex);        
+            AjaxFormAdressePrepareAutoCompleteReset(@Model.UiIndex);
+
+            var _routeTextBoxArray = [];
+            RouteInfoSurveyAddressTextBoxes(@Model.UiIndex);
+            
+            function RouteInfoSurveyAddressTextBoxes(id) {
+
+                $("#AjaxForm" + id + " input[type=text]").each(function(index, elem) {
+                    var tb = $(elem);
+                    if ("name1,strasse,plz,ort".indexOf(tb.attr("name").toLowerCase()) >= 0) {
+                        _routeTextBoxArray.push(elem);
+                        tb.bind("keyup", function() {
+                            RouteInfoShowHideButtons(id);
+                        });
+                        //console.log(tb);
+                    }
+                });
+
+                RouteInfoShowHideButtons(id);
+            }
+
+            function RouteInfoShowHideButtons(id) {
+
+                var addressIsEmpty = false;
+                $.each(_routeTextBoxArray, function(index, elem) {
+                    if ($(elem).val() == '')
+                        addressIsEmpty = true;
+                });
+                
+                var routeLinks = $("#AjaxForm" + id + " .route-info");
+                if (addressIsEmpty)
+                    routeLinks.hide();
+                else {
+                    routeLinks.show();
+
+                    var href = "http://bing.com/maps/default.aspx?where1=" + GetAddressString(id);
+                    routeLinks.attr("href", href);
+                }
+            }
+            
+            function GetAddressString(id) {
+                return  GetTextBox(id, "Strasse").val() + "," + 
+                        GetTextBox(id, "PLZ").val() + " " + 
+                        GetTextBox(id, "Ort").val();
+            }
+            
+            function GetTextBox(id, tbName) {
+                return $("#AjaxForm" + id + " input[name='" + tbName + "']");
+            }
         </script>
     }
 </div>

@@ -798,10 +798,6 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
                         dateList => dateList.Where(date => date != null).Distinct().Count() > 1);
         }
 
-        /// <summary>
-        /// Bei unterschiedlichen Tagen der Eigenschaft Adresse.Datum aller Fahrt-Adressen eines Fahrzeugs...
-        /// ==> muss die Dienstleistung "Vorholung" gewählt werden
-        /// </summary>        
         DienstleistungsAuswahl CheckDienstleistungsDatumsWerte(string dienstleistungsNameToCheck, string validationMessage, Func<IEnumerable<DateTime?>, bool> datesInvalidFunc)
         {
             var dienstleistungsAuswahl = StepForms.OfType<DienstleistungsAuswahl>().FirstOrDefault();

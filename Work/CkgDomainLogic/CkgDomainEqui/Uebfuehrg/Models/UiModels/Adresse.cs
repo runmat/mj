@@ -151,9 +151,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string Mandant { get; set; }
 
         [XmlIgnore]
-        public string AdresseAsRouteInfo { get { return String.Format("{0}, {1} {2}", Strasse, PLZ, Ort); } }
-
-        [XmlIgnore]
         public string AdresseAsBlock { get { return GetSummaryString().Replace("<br/>", "\r\n"); } }
 
         [XmlIgnore, ScriptIgnore]
@@ -235,5 +232,23 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         {
             return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
         }
+
+
+
+        #region Route Info
+
+        [XmlIgnore]
+        public string AdresseAsRouteInfo
+        {
+            get { return String.Format("{0}, {1} {2}", StrasseHausNr, PLZ, Ort); }
+        }
+
+        [XmlIgnore]
+        public bool ShowRouteInfo
+        {
+            get { return new[] {"ZIEL", "ZUSATZ"}.Contains(SubGroupName.NotNullOrEmpty().ToUpper()); }
+        }
+
+        #endregion
     }
 }
