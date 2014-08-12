@@ -155,7 +155,7 @@ namespace PortalMvcTools.Web
         //    return html.ValidationSummary(excludePropertyErrors);
         //}
 
-        public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null)
+        public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null, bool stepTitlesInNewLine = false)
         {
             var model = new FormWizardModel
             {
@@ -163,6 +163,7 @@ namespace PortalMvcTools.Web
                 HeaderIconCssClass = headerIconCssClass,
                 StepTitles = stepTitles.Select(t => new HtmlString(t)).ToArray(),
                 StepKeys = stepKeys.ToArrayOrEmptyArray(),
+                StepTitlesInNewLine = stepTitlesInNewLine,
             };
 
             return html.Partial("Partial/FormWizard", model);

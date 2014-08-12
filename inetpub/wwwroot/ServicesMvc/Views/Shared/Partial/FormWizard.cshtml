@@ -5,11 +5,9 @@
     .step .formWizardStepDescWrapper {
         display: inline;
     }
-    .step .formWizardStepDescWrapperManySteps {
-        display: block;
-    }
     .step .formWizardStepDesc {
         font-size: 14px!important;
+        margin-bottom: 2px;
     }
     .active .step .formWizardStepDesc {
         font-weight: bold;
@@ -21,6 +19,10 @@
 
     .row-fluid .formWizardStepSpanGeneral {
         display: block;
+    }
+    
+    .new-line {
+        padding-top: 5px!important;     
     }
     
     
@@ -81,10 +83,6 @@
                 if (!jQuery().bootstrapWizard)
                     return;
 
-                //alert(FormWizard.stepKeys.length);
-                if (FormWizard.stepKeys.length >= 8)
-                    $(".formWizardStepDescWrapper").removeClass("formWizardStepDescWrapper").addClass("formWizardStepDescWrapperManySteps");
-
                 FormWizard.onInitPrivate = onInit;
 
                 this.formWizardInitTabs();
@@ -99,7 +97,8 @@
                         if (index == (total - 1))
                             return false;
 
-                        var tabClickValid = FormWizard.tabClickForwardValid || (index > clickedIndex);
+                        var tabClickValid = FormWizard.tabClickForwardEnforceValid || (!FormWizard.tabClickDisabled && (index > clickedIndex));
+                        //alert(FormWizard.tabClickDisabled + " - (" + tabClickValid + ")");
                         if (tabClickValid)
                             FormWizard.formWizardNavButtonsShowHide(clickedIndex + 1, total);
                         return tabClickValid;
@@ -231,9 +230,9 @@
                 try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
 
                 var that = this;
-                this.tabClickForwardValid = true;
+                that.tabClickForwardEnforceValid = true;
                 $("#formWizardStep_" + (tabNumber)).find("a").trigger("click");
-                setTimeout(function() { that.tabClickForwardValid = false; }, 500);
+                setTimeout(function() { that.tabClickForwardEnforceValid = false; }, 500);
             },
 
             GetNextTabKey: function () {
@@ -376,7 +375,9 @@
 
             stepKeys: [ @Model.StepKeysAsJavascript ],
                 
-            tabClickForwardValid : false,
+            tabClickForwardEnforceValid : false,
+
+            tabClickDisabled : false,
 
             buttonHandlersDisabled: false,
 
@@ -518,13 +519,20 @@
                                         <li class="@Model.GetStepSpanCssClass()" id="formWizardStep_@Model.GetStepNo(i)">
                                             <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
                                                 <span class="number">@Model.GetStepNo(i)</span>
-                                                <span class="formWizardStepDescWrapper">
-                                                    <i class="icon-ok"></i>
+                                                <span class="formWizardStepDescWrapper new-line">
+                                                    @if (!Model.StepTitlesInNewLine)
+                                                    {
+                                                        <i class="icon-ok"></i>
+                                                    }
                                                     <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
+                                                    @if (Model.StepTitlesInNewLine)
+                                                    {
+                                                        <i class="icon-ok"></i>
+                                                    }
                                                 </span>
                                             </a>
                                         </li>
-                                     }
+                                    }
                                 </ul>
                             </div>
                         </div>
