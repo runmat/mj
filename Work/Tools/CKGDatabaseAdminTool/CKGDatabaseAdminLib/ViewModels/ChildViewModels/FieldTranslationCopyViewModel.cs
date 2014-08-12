@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Serialization;
@@ -26,6 +27,13 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public ObservableCollection<string> DbConnections { get { return Parent.DbConnections; } }
 
+        private bool _showOnlyNewApplications;
+        public bool ShowOnlyNewApplications
+        {
+            get { return _showOnlyNewApplications; }
+            set { _showOnlyNewApplications = value; SendPropertyChanged("ShowOnlyNewApplications"); }
+        }
+
         private string _destinationDatabase;
         public string DestinationDatabase
         {
@@ -41,11 +49,31 @@ namespace CKGDatabaseAdminLib.ViewModels
         public FieldTranslationCopyViewModel(MainViewModel parentVM)
         {
             Parent = parentVM;
+            ShowOnlyNewApplications = true;
 
             DataService = new FieldTranslationCopyDataServiceSql(Parent.ActualDatabase);
 
             CommandCopyFieldTranslations = new DelegateCommand(CopyFieldTranslations);
             CommandCopyFieldTranslationsToDestinationDatabase = new DelegateCommand(CopyFieldTranslationsToDestinationDatabase);
+
+            this.PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "DestinationDatabase":
+                    DataService.InitDestinationDataContext(DestinationDatabase);
+                    DataService.FilterData(ShowOnlyNewApplications);
+                    SendPropertyChanged("Applications");
+                    break;
+
+                case "ShowOnlyNewApplications":
+                    DataService.FilterData(ShowOnlyNewApplications);
+                    SendPropertyChanged("Applications");
+                    break;
+            }
         }
 
         #region Commands
@@ -69,7 +97,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             {
                 if (!String.IsNullOrEmpty(DestinationDatabase))
                 {
-                    DataService.CopyFieldTranslations(DestinationDatabase);
+                    DataService.CopyFieldTranslations();
 
                     Parent.ShowMessage("Feldübersetzungen wurden erfolgreich kopiert", MessageType.Success);
                 }
@@ -89,12 +117,14 @@ namespace CKGDatabaseAdminLib.ViewModels
             if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var selectedApp = (e.AddedItems[0] as ApplicationInfo);
-                if (selectedApp != null)
-                {
-                    DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
-                    SendPropertyChanged("FieldTranslations");
-                }
+                DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
             }
+            else
+            {
+                DataService.ResetCurrentApp();
+            }
+
+            SendPropertyChanged("FieldTranslations");
         }
 
         #endregion

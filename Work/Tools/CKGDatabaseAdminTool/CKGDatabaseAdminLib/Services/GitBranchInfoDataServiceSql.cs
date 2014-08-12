@@ -17,7 +17,7 @@ namespace CKGDatabaseAdminLib.Services
 
         private ObservableCollection<GitBranchInfo> GitBranchesAll { get { return _dataContext.GitBranchInfos.Local; } }
 
-        public ObservableCollection<GitBranchInfo> GitBranches { get; set; }
+        public ObservableCollection<GitBranchInfo> GitBranches { get; private set; }
 
         private DatabaseContext _dataContext;
 
