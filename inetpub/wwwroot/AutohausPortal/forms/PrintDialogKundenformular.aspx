@@ -41,7 +41,7 @@
                         <table align="center">
                             <tr>
                                 <td align="center">
-                                    <asp:ImageButton ID="cmdPrint" runat="server" ImageUrl="/AutohausPortal/Images/logoPDF.png" onclick="cmdPrint_Click" />
+                                    <asp:ImageButton ID="cmdPrint" runat="server" ImageUrl="../Images/logoPDF.png" onclick="cmdPrint_Click" />
                                 </td>
                             </tr>
                             <tr>

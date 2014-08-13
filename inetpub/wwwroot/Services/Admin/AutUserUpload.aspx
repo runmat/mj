@@ -102,7 +102,7 @@
                                             </td>
                                             <td class="active" style="width: 100%" >
                                                 <asp:Panel ID="Panel2" runat="server" Height="22px">
-                                                    <asp:ImageButton ID="Image1" runat="server" ImageUrl="/images/down.gif" AlternateText="(Details...)"/>      
+                                                    <asp:ImageButton ID="Image1" runat="server" ImageUrl="../images/down.gif" AlternateText="(Details...)"/>      
                                                 </asp:Panel>
                                             </td>
                                         </tr>
@@ -309,8 +309,8 @@
                             CollapseControlID="Panel2" 
                             Collapsed="True"
                             ImageControlID="Image1"    
-                            ExpandedImage="/images/up.gif"
-                            CollapsedImage="/images/down.gif"
+                            ExpandedImage="../images/up.gif"
+                            CollapsedImage="../images/down.gif"
                              SuppressPostBack="true" />     
                         <div id="Result" runat="Server" visible="false">
                             <div class="ExcelDiv">

@@ -66,6 +66,32 @@ namespace SapORM.Services
 		    throw new Exception("Fehlende Parameter zum Abfragen eines ProxyObj");
 		}
 
+        public void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure)
+        {
+            if (!string.IsNullOrEmpty(BapiName.Trim(' ')) && (SapConnection != null))
+            {
+                var tmpProxyObj = GenerateNewProxy(BapiName.ToUpper());
+                if ((tmpProxyObj != null))
+                {
+                    var msI = new MemoryStream();
+                    var msE = new MemoryStream();
+                    var myFormatterImportS = new BinaryFormatter();
+                    var myFormatterExportS = new BinaryFormatter();
+
+                    myFormatterImportS.Serialize(msI, tmpProxyObj.Import);
+                    myFormatterExportS.Serialize(msE, tmpProxyObj.Export);
+                    msI.Close();
+                    msE.Close();
+                    importStructure = msE.ToArray();
+                    exportStructure = msI.ToArray();
+                }
+            }
+            else
+            {
+                throw new Exception("Fehlende Parameter zum Abfragen eines ProxyObj");
+            }
+        }
+
 		protected bool RemoveBapiFromDB(string bapiName, string srcModule)
 		{
 			var cn = new System.Data.SqlClient.SqlConnection(SapConnection.SqlServerConnectionString);

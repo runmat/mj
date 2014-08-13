@@ -59,8 +59,7 @@ Partial Public Class UserManagement
             ddlHierarchy.DataValueField = "ID"
             ddlHierarchy.DataTextField = "Level"
             ddlHierarchy.DataBind()
-            ddlHierarchy.ClearSelection()
-            ddlHierarchy.Items.FindByValue("1").Selected = True
+            ddlHierarchy.SelectedValue = "1"
 
             Dim _HierarchyList2 As New Kernel.HierarchyList(cn, True)
             Dim vwHierarchy2 As DataView = _HierarchyList2.DefaultView
@@ -68,8 +67,7 @@ Partial Public Class UserManagement
             ddlHierarchyDisplay.DataValueField = "ID"
             ddlHierarchyDisplay.DataTextField = "Level"
             ddlHierarchyDisplay.DataBind()
-            ddlHierarchyDisplay.ClearSelection()
-            ddlHierarchyDisplay.Items(ddlHierarchyDisplay.Items.Count - 1).Selected = True
+            ddlHierarchyDisplay.SelectedIndex = ddlHierarchyDisplay.Items.Count - 1
         Catch ex As Exception
             Throw
         Finally
@@ -242,22 +240,17 @@ Partial Public Class UserManagement
             .DataValueField = "GroupID"
             .DataBind()
             If m_User.Groups.HasGroups Then
-                Dim _li As ListItem
-                _li = .Items.FindByValue(m_User.Groups(0).GroupId.ToString)
-                If Not _li Is Nothing Then _li.Selected = True
+                If .Items.FindByValue(m_User.Groups(0).GroupId.ToString) IsNot Nothing Then .SelectedValue = m_User.Groups(0).GroupId.ToString
                 If ddl.ID = "ddlGroups" Then
-                    _li = .Items.FindByValue("-1")
-                    If Not _li Is Nothing Then
-                        ddl.ClearSelection()
-                        _li.Selected = True
+                    If .Items.FindByValue("-1") IsNot Nothing Then
+                        .SelectedValue = "-1"
                     End If
                 End If
             Else
                 If .Items.Count <> 0 Then
                     If blnAllNone Then
-                        Dim _li As ListItem = .Items.FindByValue("-1")
-                        If Not _li Is Nothing Then
-                            _li.Selected = True
+                        If .Items.FindByValue("-1") IsNot Nothing Then
+                            .SelectedValue = "-1"
                         End If
                     End If
                 End If
@@ -282,12 +275,11 @@ Partial Public Class UserManagement
             .DataValueField = "OrganizationID"
             .DataBind()
             If IsNumeric(m_User.Organization.OrganizationId) Then
-                Dim _li As ListItem = .Items.FindByValue(m_User.Organization.OrganizationId.ToString)
-                If Not (_li Is Nothing) Then
-                    _li.Selected = True
+                If .Items.FindByValue(m_User.Organization.OrganizationId.ToString) IsNot Nothing Then
+                    .SelectedValue = m_User.Organization.OrganizationId.ToString
                 End If
             Else
-                If blnAllNone Then .Items.FindByValue("-1").Selected = True
+                If blnAllNone Then .SelectedValue = "-1"
             End If
         End With
     End Sub
@@ -303,7 +295,7 @@ Partial Public Class UserManagement
             .DataTextField = "Customername"
             .DataValueField = "CustomerID"
             .DataBind()
-            .Items.FindByValue(m_User.Customer.CustomerId.ToString).Selected = True
+            .SelectedValue = m_User.Customer.CustomerId.ToString
         End With
         dtCustomers.AddAllNone(True, True)
         With ddlFilterCustomer
@@ -314,10 +306,10 @@ Partial Public Class UserManagement
             .DataValueField = "CustomerID"
             .DataBind()
             If m_User.HighestAdminLevel = AdminLevel.Master Or m_User.HighestAdminLevel = AdminLevel.FirstLevel Then
-                .Items.FindByValue("0").Selected = True
+                .SelectedValue = "0"
             Else
                 .Enabled = False
-                .Items.FindByValue(m_User.Customer.CustomerId.ToString).Selected = True
+                .SelectedValue = m_User.Customer.CustomerId.ToString
             End If
 
         End With
@@ -484,19 +476,13 @@ Partial Public Class UserManagement
             cbxFirstLevelAdmin.Checked = _User.FirstLevelAdmin
             lblUrlRemoteLoginKey.Text = _User.UrlRemoteLoginKey
             If _User.Customer.CustomerId > 0 Then
-                If Not ddlCustomer.SelectedItem Is Nothing Then
-                    ddlCustomer.SelectedItem.Selected = False
-
-                End If
-                _li = ddlCustomer.Items.FindByValue(_User.Customer.CustomerId.ToString)
-                If Not _li Is Nothing Then
-                    _li.Selected = True
+                ddlCustomer.ClearSelection()
+                If ddlCustomer.Items.FindByValue(_User.Customer.CustomerId.ToString) IsNot Nothing Then
+                    ddlCustomer.SelectedValue = _User.Customer.CustomerId.ToString
                 End If
             End If
             cbxOrganizationAdmin.Checked = _User.Organization.OrganizationAdmin
-            If Not ddlGroups.SelectedItem Is Nothing Then
-                ddlGroups.SelectedItem.Selected = False
-            End If
+            ddlGroups.ClearSelection()
             If _User.Groups.HasGroups Then
                 'If CInt(ddlFilterCustomer.SelectedItem.Value) < 1 Then
                 Dim intCustomerID As Integer = _User.Customer.CustomerId
@@ -506,20 +492,15 @@ Partial Public Class UserManagement
                 FillGroup(ddlGroups, False, dtGroups)
                 'End If
                 _li = ddlGroups.Items.FindByValue(_User.Groups(0).GroupId.ToString)
-                If Not _li Is Nothing Then
-                    If Not ddlGroups.SelectedItem Is Nothing Then
-                        ddlGroups.SelectedItem.Selected = False
-                    End If
-                    _li.Selected = True
+                If ddlGroups.Items.FindByValue(_User.Groups(0).GroupId.ToString) IsNot Nothing Then
+                    ddlGroups.SelectedValue = _User.Groups(0).GroupId.ToString
                 End If
             Else
                 _li = New ListItem("- keine -", "-1")
-                _li.Selected = True
                 ddlGroups.Items.Add(_li)
+                ddlGroups.SelectedValue = "-1"
             End If
-            If Not ddlOrganizations.SelectedItem Is Nothing Then
-                ddlOrganizations.SelectedItem.Selected = False
-            End If
+            ddlOrganizations.ClearSelection()
             If IsNumeric(_User.Organization.OrganizationId) Then
                 'If CInt(ddlFilterCustomer.SelectedItem.Value) < 1 Then
                 Dim intCustomerID As Integer = _User.Customer.CustomerId
@@ -529,16 +510,13 @@ Partial Public Class UserManagement
                 FillOrganization(ddlOrganizations, False, dtOrganizations)
                 'End If
                 _li = ddlOrganizations.Items.FindByValue(_User.Organization.OrganizationId.ToString)
-                If Not _li Is Nothing Then
-                    If Not ddlOrganizations.SelectedItem Is Nothing Then
-                        ddlOrganizations.SelectedItem.Selected = False
-                    End If
-                    _li.Selected = True
+                If ddlOrganizations.Items.FindByValue(_User.Organization.OrganizationId.ToString) IsNot Nothing Then
+                    ddlOrganizations.SelectedValue = _User.Organization.OrganizationId.ToString
                 End If
             Else
                 _li = New ListItem("- keine -", "-1")
-                _li.Selected = True
                 ddlOrganizations.Items.Add(_li)
+                ddlOrganizations.SelectedValue = "-1"
             End If
             lblLastPwdChange.Text = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
             cbxPwdNeverExpires.Checked = _User.PasswordNeverExpires
@@ -562,16 +540,12 @@ Partial Public Class UserManagement
             cbxApproved.Checked = _User.Approved
 
             txtReadMessageCount.Text = _User.ReadMessageCount.ToString
-            If Not ddlTitle.SelectedItem Is Nothing Then
-                ddlTitle.SelectedItem.Selected = False
+            ddlTitle.ClearSelection()
+
+            If ddlTitle.Items.FindByValue(_User.Title) IsNot Nothing Then
+                ddlTitle.SelectedValue = _User.Title
             End If
 
-            For Each _li In ddlTitle.Items
-                If _li.Value = _User.Title Then
-                    _li.Selected = True
-                    Exit For
-                End If
-            Next
             txtFirstName.Text = _User.FirstName
             txtLastName.Text = _User.LastName
             txtStore.Text = _User.Store
@@ -579,14 +553,10 @@ Partial Public Class UserManagement
             PasswordEditMode((Not _User.Customer.CustomerPasswordRules.DontSendEmail) And (_User.HighestAdminLevel = AdminLevel.None))
 
             'Mitarbeiterdaten
-            ddlHierarchy.ClearSelection()
-            _li = ddlHierarchy.Items.FindByValue(_User.HierarchyID.ToString)
-            If Not _li Is Nothing Then
-
-
-                _li.Selected = True
+            If ddlHierarchy.Items.FindByValue(_User.HierarchyID.ToString) IsNot Nothing Then
+                ddlHierarchy.SelectedValue = _User.HierarchyID.ToString
             Else
-                ddlHierarchy.Items.FindByValue("1").Selected = True
+                ddlHierarchy.SelectedValue = "1"
             End If
             chkEmployee.Checked = _User.Employee
             If _User.Picture Then
@@ -711,9 +681,8 @@ Partial Public Class UserManagement
         '----------------------------------------
         ddlOrganizations.ClearSelection()
         If IsNumeric(m_User.Organization.OrganizationId) Then
-            Dim _li As ListItem = ddlOrganizations.Items.FindByValue(m_User.Organization.OrganizationId.ToString)
-            If Not (_li Is Nothing) Then
-                _li.Selected = True
+            If ddlOrganizations.Items.FindByValue(m_User.Organization.OrganizationId.ToString) IsNot Nothing Then
+                ddlOrganizations.SelectedValue = m_User.Organization.OrganizationId.ToString
             End If
         Else
             ddlOrganizations.SelectedIndex = 0
@@ -1541,6 +1510,15 @@ Partial Public Class UserManagement
         Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
 
         If intCustomerID > 0 Then
+
+            'Auswahl Gruppen/Organisationen füllen
+            Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+            cn.Open()
+            Dim dtGroups As New Kernel.GroupList(intCustomerID, cn, m_User.Customer.AccountingArea)
+            FillGroup(ddlGroups, False, dtGroups)
+            Dim dtOrganizations As New OrganizationList(intCustomerID, cn, m_User.Customer.AccountingArea)
+            FillOrganization(ddlOrganizations, False, dtOrganizations)
+
             Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
             Dim autoPW As Boolean = False
 
@@ -1990,8 +1968,10 @@ Partial Public Class UserManagement
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
         If intCustomerID > 0 Then
-            ddlCustomer.SelectedItem.Selected = False
-            ddlCustomer.Items.FindByValue(intCustomerID.ToString).Selected = True
+            ddlCustomer.ClearSelection()
+            If ddlCustomer.Items.FindByValue(intCustomerID.ToString) IsNot Nothing Then
+                ddlCustomer.SelectedValue = intCustomerID.ToString
+            End If
             FillGroups(intCustomerID, cn)
             FillOrganizations(intCustomerID, cn)
             Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)

@@ -4,7 +4,7 @@
 
    
     <div style="width: 21px; position: static; margin-top: 15px; ">
-    <asp:ImageButton ID="ibtnInfo" CssClass="NaviPic" ToolTip="Menü" OnClientClick="return false;"  runat="server" ImageUrl="/PortalZLD/Images/navi_grey2.gif" />
+    <asp:ImageButton ID="ibtnInfo" CssClass="NaviPic" ToolTip="Menü" OnClientClick="return false;"  runat="server" ImageUrl="../Images/navi_grey2.gif" />
 </div>
     <div id="flyout">
     

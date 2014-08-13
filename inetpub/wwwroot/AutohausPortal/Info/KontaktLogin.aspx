@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KontaktLogin.aspx.cs" Inherits="AutohausPortal.Info.KontaktLogin"  
-     MasterPageFile="/AutohausPortal/MasterPage/Login.Master" %>
+     MasterPageFile="../MasterPage/Login.Master" %>
      
-<%@ MasterType VirtualPath="/AutohausPortal/MasterPage/Login.Master" %>
+<%@ MasterType VirtualPath="../MasterPage/Login.Master" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server">

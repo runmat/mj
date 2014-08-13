@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using CKGDatabaseAdminLib.Contracts;
 using CkgDomainLogic.General.Services;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 
 namespace CKGDatabaseAdminLib.Services
 {
@@ -39,7 +39,7 @@ namespace CKGDatabaseAdminLib.Services
         {
             int erg = 0;
 
-            var existingItem = Bapis.FirstOrDefault(b => b.BAPI == name);
+            var existingItem = Bapis.FirstOrDefault(b => b.BAPI.ToUpper() == name.ToUpper());
             if (existingItem == null)
             {
                 var newItem = new BapiTable { BAPI = name };

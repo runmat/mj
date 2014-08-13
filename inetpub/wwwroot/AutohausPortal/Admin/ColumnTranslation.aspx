@@ -116,7 +116,7 @@
                                                                 Enabled="False"></asp:CheckBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="../../Images/del.png" />
+                                                    <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="Images/del.png" />
                                                 </Columns>
                                             </asp:GridView>
                                     </div>
