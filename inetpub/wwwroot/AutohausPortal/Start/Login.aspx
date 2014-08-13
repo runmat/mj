@@ -27,7 +27,7 @@
                 <!--formulardaten-->
                 <div class="logindaten" id="StandardLogin" runat = "server">
                     <div class="loginpfeil">
-                        <img width="42" height="42" alt="" src="/Autohausportal/images/loginpfeil.gif" />
+                        <img width="42" height="42" alt="" src="../images/loginpfeil.gif" />
                     </div>
                     <h3>
                         Kunden Login</h3>
@@ -99,7 +99,7 @@
                             <!--formulardaten-->
                             <div class="formulardaten">
                                 <div class="loginpfeil">
-                                    <img width="42" height="42" alt="" src="/Autohausportal/images/loginpfeil.gif" />
+                                    <img width="42" height="42" alt="" src="../images/loginpfeil.gif" />
                                 </div>
                                 <h3>
                                     Ihre Kontaktdaten</h3>

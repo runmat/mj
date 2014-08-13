@@ -25,6 +25,7 @@
             </Style>
             <Style TargetType="{x:Type DataGrid}">
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
             </Style>
         </Grid.Resources>
         
@@ -63,7 +64,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Name" Binding="{Binding AppName}" />
                 <DataGridTextColumn Header="Anzeigename" Binding="{Binding AppFriendlyName}" />
-                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" />
+                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" ItemsSource="{Binding ApplicationBapis}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">

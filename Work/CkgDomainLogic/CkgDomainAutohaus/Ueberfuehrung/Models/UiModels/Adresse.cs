@@ -121,12 +121,12 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         [XmlIgnore]
         static public List<Land> Laender { get; set; }
 
-        [XmlIgnore]
-        static public List<Adresse> RechnungsAdressen { get; set; }
+        [XmlIgnore, ModelMappingCopyIgnore]
+        public List<Adresse> RechnungsAdressen { get; set; }
 
         private List<Adresse> _filteredRechnungsAdressen;
         [XmlIgnore]
-        public List<Adresse> FilteredRechnungsAdressen { get { return (_filteredRechnungsAdressen ?? (_filteredRechnungsAdressen = RechnungsAdressen.Where(a => a.SubTyp == SubTyp).ToList())); } }
+        public List<Adresse> FilteredRechnungsAdressen { get { return (_filteredRechnungsAdressen ?? (_filteredRechnungsAdressen = (RechnungsAdressen ?? new List<Adresse>()).Where(a => a.SubTyp == SubTyp).ToList())); } }
 
         public AdressenTyp Typ { get; set; }
 

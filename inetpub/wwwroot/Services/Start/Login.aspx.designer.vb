@@ -401,6 +401,15 @@ Partial Public Class Login
     Protected WithEvents Repeater1 As Global.System.Web.UI.WebControls.Repeater
 
     '''<summary>
+    '''divSicherheitszertifikat-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents divSicherheitszertifikat As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''DoubleLogin2-Steuerelement
     '''</summary>
     '''<remarks>

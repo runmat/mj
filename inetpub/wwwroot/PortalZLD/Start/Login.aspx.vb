@@ -110,93 +110,89 @@ Partial Public Class Login
     End Function
 
     Private Sub displayMessages()
-        'Nachrichten generieren  
-
-        Dim table As DataTable
-        Dim row As System.Data.DataRow
-        Dim command As New SqlClient.SqlCommand()
-
-        Dim datTime As DateTime = CDate("01.01.1900 " & Now.ToShortTimeString)  '01.01.1900 !!!
-
-        command.CommandText = "SELECT id,(convert(varchar,creationDate,104) + ' ' + convert(varchar,creationdate,108) + ' - ' + titleText) as titleText,messageText,enableLogin,onlyTEST,onlyPROD FROM LoginMessage" & _
-                " WHERE" & _
-                " datediff(minute,getdate(),convert(varchar,activeDateFrom,104)+' '+convert(varchar,activeTimeFrom,108)) <=0" & _
-                " and" & _
-                " datediff(minute,getdate(),convert(varchar,activeDateTo,104)+' '+convert(varchar,activeTimeTo,108)) >=0" & _
-                " and active <> 0 and messagecolor = 0" & _
-                " ORDER BY id DESC"
-
-        command.Parameters.AddWithValue("@now", Now)
-        command.Parameters.AddWithValue("@time", datTime)
-
         Try
-            Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim da As New SqlClient.SqlDataAdapter(command)
-            command.Connection = conn
-            conn.Open()
-            table = New DataTable()
-            da.Fill(table)
-            conn.Close()
-            conn.Dispose()
-            da.Dispose()
-            'Login erlaubt? 
-            cbxLogin_TEST.Checked = True
-            cbxLogin_PROD.Checked = True
+            Dim table As New DataTable()
+            table.Columns.Add("Created", GetType(DateTime))
+            table.Columns.Add("Title", GetType(String))
+            table.Columns.Add("Message", GetType(String))
 
+            Dim jetzt As DateTime = DateTime.Now
             Dim text As String
             Dim htext As String
 
-            For Each row In table.Rows
-                text = CType(row.Item("titleText"), String)     '--- Überschrift formatieren                
-                text = text.Replace("{c=", "{font color=")
-                text = text.Replace("{/c}", "{/font}")
-                text = text.Replace("{", "<")
-                text = text.Replace("}", ">")
-                row.Item("titleText") = text
+            cbxLogin_TEST.Checked = True
+            cbxLogin_PROD.Checked = True
 
-                text = CType(row.Item("messageText"), String)   '--- Nachricht formatieren
-                If text.IndexOf("{h}") > 0 Then
-                    htext = text.Substring(text.IndexOf("{h}") + 3, text.IndexOf("{/h}") - text.IndexOf("{h}") - 3)
-                    text = text.Replace("{h}", "<a href=""")
-                    text = text.Replace("{/h}", """ target = ""_BLANK"">" & htext & "</a>")
-                End If
-                text = text.Replace("{c=", "{font color=")
-                text = text.Replace("{/c}", "{/font}")
-                text = text.Replace("{", "<")
-                text = text.Replace("}", ">")
-                row.Item("messageText") = text
+            Using conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+                conn.Open()
 
-                table.AcceptChanges()
-                If (CType(row.Item("onlyTEST"), Integer) = 0) Then
-                    cbxLogin_TEST.Checked = False
-                End If
-                If (CType(row.Item("onlyPROD"), Integer) = 0) Then
-                    cbxLogin_PROD.Checked = False
-                End If
-            Next
-            Repeater1.DataSource = table
+                Dim command As SqlClient.SqlCommand = conn.CreateCommand()
+
+                command.CommandText = "SELECT * FROM LoginUserMessage" & _
+                    " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND LockLoginTo)" & _
+                    " ORDER BY ID DESC"
+
+                command.Parameters.AddWithValue("@jetzt", jetzt)
+
+                Using dr As SqlClient.SqlDataReader = command.ExecuteReader()
+                    While dr.Read()
+
+                        'Nachricht anzeigen?
+                        If Not IsDBNull(dr("ShowMessageFrom")) AndAlso jetzt > CType(dr("ShowMessageFrom"), DateTime) AndAlso Not IsDBNull(dr("ShowMessageTo")) AndAlso jetzt < CType(dr("ShowMessageTo"), DateTime) Then
+                            Dim newRow As DataRow = table.NewRow()
+
+                            newRow("Created") = CType(dr("Created"), DateTime)
+
+                            '--- Überschrift formatieren      
+                            text = dr("Title").ToString()
+                            text = text.Replace("{c=", "{font color=")
+                            text = text.Replace("{/c}", "{/font}")
+                            text = text.Replace("{", "<")
+                            text = text.Replace("}", ">")
+                            newRow("Title") = text
+
+                            '--- Nachricht formatieren
+                            text = dr("Message").ToString()
+                            If text.Contains("{h}") Then
+                                htext = text.Substring(text.IndexOf("{h}") + 3, text.IndexOf("{/h}") - text.IndexOf("{h}") - 3)
+                                text = text.Replace("{h}", "<a href=""")
+                                text = text.Replace("{/h}", """ target = ""_BLANK"">" & htext & "</a>")
+                            End If
+                            text = text.Replace("{c=", "{font color=")
+                            text = text.Replace("{/c}", "{/font}")
+                            text = text.Replace("{", "<")
+                            text = text.Replace("}", ">")
+                            newRow("Message") = text
+
+                            table.Rows.Add(newRow)
+                        End If
+
+                        'Login sperren?
+                        If Not IsDBNull(dr("LockLoginFrom")) AndAlso jetzt > CType(dr("LockLoginFrom"), DateTime) AndAlso Not IsDBNull(dr("LockLoginTo")) AndAlso jetzt < CType(dr("LockLoginTo"), DateTime) Then
+                            If CType(dr("LockForTest"), Boolean) Then
+                                cbxLogin_TEST.Checked = False
+                            End If
+                            If CType(dr("LockForProd"), Boolean) Then
+                                cbxLogin_PROD.Checked = False
+                            End If
+                        End If
+
+                    End While
+                End Using
+
+                conn.Close()
+            End Using
+
+            Repeater1.DataSource = Table
             Repeater1.DataBind()
-        Catch ex As Exception
-            'm_App = New App(m_User)
-            'm_App.WriteErrorText(1, "Not logged in", "Login", "displayMessages", ex.ToString)
-
-            'lblError.Text = "Systemfehler! Anmeldedaten konnten nicht geprüft werden."
+        Catch
         End Try
-
     End Sub
 
     Private Function checkLogin() As Boolean
         If (m_User.HighestAdminLevel = Kernel.Security.AdminLevel.Master) Then
             Return True
         Else
-            '----------------------------------------------------------
-            'Try
-            '    Base.Kernel.Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
-            'Catch ex As Exception
-            '    Return False  'Response.Redirect("..\Start\Login.aspx")
-            'End Try
-            '-----------------------------------------------------------
-
             If (Not cbxLogin_TEST.Checked) And (Not cbxLogin_PROD.Checked) Then
                 'Weder CKE noch CKP - Login erlaubt (nur DAD-Admin)
                 Me.lblError.Text = "Die Anmeldung ist z.Z. gesperrt."

@@ -7,6 +7,7 @@ using CkgDomainLogic.General.Database.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using WebTools.Services;
+using System.Web;
 
 namespace CkgDomainLogic.General.Services
 {
@@ -124,6 +125,22 @@ namespace CkgDomainLogic.General.Services
             AppUrl = "";
             MvcEnforceRawLayout = false;
             LogoutUrl = "";
+        }
+
+        /// <summary>
+        /// override für die gleichnamige LogonContextDataServiceBase-Funktion
+        /// </summary>
+        /// <param name="menuItem"></param>
+        /// <returns></returns>
+        public new IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem)
+        {
+            if (UserNameEncryptedToUrlEncoded.IsNullOrEmpty())
+                return new HtmlString("#");
+
+            var appUrl = menuItem.AppURL.ToLower();
+            appUrl = FormatUserEncrytpedUrl(appUrl).ToString();
+
+            return new HtmlString(appUrl.Replace("?", string.Format("?appID={0}&", menuItem.AppID)));
         }
     }
 }

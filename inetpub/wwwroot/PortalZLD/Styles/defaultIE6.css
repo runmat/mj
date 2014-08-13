@@ -1,6 +1,6 @@
 ﻿* html body {
 	background-color: #bababa;
-	background-image: url(/PortalZLD/Images/backgroundImage.gif);
+	background-image: url(../Images/backgroundImage.gif);
 	background-position: 0px 0px;
 	background-repeat: repeat-x;
 	font-family: Verdana, sans-serif;
@@ -16,7 +16,7 @@
     border-width: 0;
 }
 
-div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PNG-Fix */
+div, thead, li, ul, a { behavior: url(../Images/iepngfix.htc) } /* IE PNG-Fix */
  /* IE6-Hacks */
  
 * html div#header ul { margin-top: 90px }
@@ -105,7 +105,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 }
 
 * html div#header {
-    background-image: url(/PortalZLD/Images/kroschkeBridge.jpg);
+    background-image: url(../Images/kroschkeBridge.jpg);
 	background-position: 0px 0px;
 	background-repeat: no-repeat;
 	height: 125px;
@@ -141,7 +141,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 }
 
 * html div#header ul#navigation {
-	background-image: url(/PortalZLD/Images/overflowNavigationShadow.png);
+	background-image: url(../Images/overflowNavigationShadow.png);
 	background-position: right;
 	background-repeat: no-repeat;
 	padding-right: 18px;
@@ -149,7 +149,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 }
 
 * html div#header ul#navigation li {
-	background-image: url(/PortalZLD/Images/overflowNavigation.png);
+	background-image: url(../Images/overflowNavigation.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 	border-top: 1px solid #bbbbbb;
@@ -238,7 +238,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 }
 
 * html div#content div#innerContent div div.innerContentHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	line-height: 22px;
 	padding-left: 15px;
@@ -266,7 +266,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 
 * html div#content div#innerContentLeft ul li {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #595959;
 	height: 22px;
 	line-height: 22px;
@@ -276,7 +276,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 
 * html div#content div#innerContentLeft ul li {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #595959;
 	height: 22px;
 	line-height: 22px;
@@ -298,7 +298,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 
 
 * html div#content div#innerContentRight div#innerContentRightHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: left;
@@ -353,7 +353,7 @@ div, thead, li, ul, a { behavior: url(/PortalZLD/Images/iepngfix.htc) } /* IE PN
 
 
 * html div#content div#innerContentLeft2 div#innerContentLeftHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: right;
@@ -412,7 +412,7 @@ float: left;
 }
 
 * html div#content div#query {
-	background-image:url(/PortalZLD/Images/overflow.png);
+	background-image:url(../Images/overflow.png);
     color:#FFFFFF;
     font-weight:bold;
     height:22px;
@@ -914,7 +914,7 @@ white-space:nowrap;
 }    
 
 * html .Tablehead {
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	background-color: #9b9b9b;
 	height:30px;
 	color:#FFFFFF;
@@ -927,7 +927,7 @@ white-space:nowrap;
 
 * html .GridTableHead
 {
-    background-image: url(/PortalZLD/Images/overflowThead.png);
+    background-image: url(../Images/overflowThead.png);
 	background-color: #9b9b9b;
 	height:23px;
 	color:#FFFFFF;
@@ -1009,7 +1009,7 @@ white-space:nowrap;
 * html A.Tablebutton
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1019,7 +1019,7 @@ white-space:nowrap;
 * html A.Tablebutton:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1030,7 +1030,7 @@ white-space:nowrap;
 * html A.Tablebutton:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1040,7 +1040,7 @@ white-space:nowrap;
 * html A.Tablebutton:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1051,7 +1051,7 @@ white-space:nowrap;
   * html  .TablebuttonMiddle
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -1063,7 +1063,7 @@ white-space:nowrap;
  * html  A.TablebuttonMiddle
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1075,7 +1075,7 @@ white-space:nowrap;
 * html A.TablebuttonLarge
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1085,7 +1085,7 @@ white-space:nowrap;
 * html A.TablebuttonLarge:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1096,7 +1096,7 @@ white-space:nowrap;
 * html A.TablebuttonLarge:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1106,7 +1106,7 @@ white-space:nowrap;
 * html A.TablebuttonLarge:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1117,7 +1117,7 @@ white-space:nowrap;
 * html .TablebuttonLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -1144,14 +1144,14 @@ white-space:nowrap;
 	font-size: 11px;	
     }
     
-* html .Menutitle{	background-image: url(/PortalZLD/Images/overflow.png);
+* html .Menutitle{	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	line-height: 22px;
 	padding-left: 15px;
 }
 * html .MainmenuItemComment {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 10px;
 	line-height: 22px;
@@ -1228,11 +1228,11 @@ white-space:nowrap;
    border-width: 1px;   
 }
 * html Link.MainmenuItemSide {
-	background-image: url(/PortalZLD/Images/Gruppen.png);
+	background-image: url(../Images/Gruppen.png);
 }
 
 * html Link.MainmenuItemSide:hover {
-	background-image: url(/PortalZLD/Images/Archive.png);
+	background-image: url(../Images/Archive.png);
 }
 
 
@@ -1297,7 +1297,7 @@ white-space:nowrap;
 
 * html .ExcelDiv
 {
-    background-image: url(/PortalZLD/Images/overflow.png);
+    background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: left;
@@ -1348,7 +1348,7 @@ white-space:nowrap;
      }
      
 * html  div.ImpressumHead {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	float: left;
 	height: 22px;
@@ -1366,7 +1366,7 @@ white-space:nowrap;
 
 * html .NaviImg 
 {
-    background-image:url(/PortalZLD/Images/navi.gif);
+    background-image:url(../Images/navi.gif);
     }
     
 
@@ -1779,7 +1779,7 @@ white-space:nowrap;
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButton.png)
+     background-image: url(../Images/HistButton.png)
      }
      
 * html .HistbuttonFirst:hover 
@@ -1799,7 +1799,7 @@ white-space:nowrap;
      color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButton2.png)
+     background-image: url(../Images/HistButton2.png)
      
      
      }  
@@ -1821,7 +1821,7 @@ white-space:nowrap;
       color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonBeforActive.png)
+     background-image: url(../Images/HistButtonBeforActive.png)
      }  
 * html .HistButtonBeforActive:hover 
      {
@@ -1840,7 +1840,7 @@ white-space:nowrap;
       color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonLast.png)
+     background-image: url(../Images/HistButtonLast.png)
      } 
 * html .HistButtonLast:hover 
      {
@@ -1859,7 +1859,7 @@ white-space:nowrap;
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonLastActive.png)
+     background-image: url(../Images/HistButtonLastActive.png)
      } 
 * html .HistButtonLastActive:hover 
      {
@@ -1877,7 +1877,7 @@ white-space:nowrap;
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonMiddleActive.png)
+     background-image: url(../Images/HistButtonMiddleActive.png)
      } 
      
 * html .HistButtonMiddleActive:hover 

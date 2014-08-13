@@ -77,6 +77,11 @@ namespace SapORM.Services
             return DynSapProxyFactory.CreateProxyCache(sapFunction, SapConnection, DynSapProxyFactory).GetProxy();
         }
 
+        public void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure)
+        {
+            DynSapProxyFactory.CreateProxyCache(sapFunction, SapConnection, DynSapProxyFactory).GetSerializedBapiStructuresForBapiCheck(sapFunction, ref importStructure, ref exportStructure);
+        }
+
         private void PrepareBapi(string sapFunction, string inputParameterKeys, params object[] inputParameterValues)
         {
             _sapProxy = GetProxy(sapFunction);
