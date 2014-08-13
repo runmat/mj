@@ -723,14 +723,7 @@ Partial Public Class Login
     End Function
 
     Private Function GetCaptchaURL(imagekey As String) As String
-        Dim captchaPath = ConfigurationManager.AppSettings("ExcelPath")
-
-        If String.IsNullOrEmpty(captchaPath) Then
-            captchaPath = "C:\inetpub\wwwroot\Services\temp\excel\" ' (default)
-        End If
-
-        ' ensure that we have a full, rooted path..
-        captchaPath = Path.GetFullPath(captchaPath)
+        Dim captchaPath = HttpContext.Current.Server.MapPath("/Services/Images/Captcha/")
 
         If Not Directory.Exists(captchaPath) Then Directory.CreateDirectory(captchaPath)
 
