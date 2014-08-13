@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
              xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
-             xmlns:dbModels="clr-namespace:CKGDatabaseAdminLib.Models.DbModels;assembly=CKGDatabaseAdminLib"
+             xmlns:dbModels="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
              mc:Ignorable="d" 
              d:DesignHeight="311" d:DesignWidth="588">
     <DockPanel Background="#EEEEEE">

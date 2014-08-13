@@ -52,6 +52,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _fieldTranslationCopyViewModel = value; SendPropertyChanged("FieldTranslationCopyViewModel"); }
         }
 
+        private BapiCheckViewModel _bapiCheckViewModel;
+        public BapiCheckViewModel BapiCheckViewModel
+        {
+            get { return _bapiCheckViewModel; }
+            set { _bapiCheckViewModel = value; SendPropertyChanged("BapiCheckViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -59,6 +66,13 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             get { return _actualDatabase; }
             set { _actualDatabase = value; SendPropertyChanged("ActualDatabase"); }
+        }
+
+        private bool _testSap;
+        public bool TestSap
+        {
+            get { return _testSap; }
+            set { _testSap = value; SendPropertyChanged("TestSap"); }
         }
 
         private string _nachricht;
@@ -81,6 +95,7 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public MainViewModel()
         {
+            TestSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
             _messageDisplayTimer = new Timer(5000);
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
             LoadDbConnections();
@@ -117,6 +132,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+            BapiCheckViewModel = new BapiCheckViewModel(this);
         }
 
         public void ShowMessage(string msg, MessageType typ)

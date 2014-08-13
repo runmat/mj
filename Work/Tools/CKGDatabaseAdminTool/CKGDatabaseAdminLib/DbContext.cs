@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 
 namespace CKGDatabaseAdminLib
 {
@@ -105,6 +105,46 @@ namespace CKGDatabaseAdminLib
             }
 
             return liste;
+        }
+
+        public DbSet<BapiCheckItem> BapiCheckItems { get; set; }
+
+        public List<BapiCheckItem> GetBapiCheckItemsForCheck(bool testSap)
+        {
+            List<BapiCheckItem> liste = new List<BapiCheckItem>();
+
+            liste = (
+                from s in BapiCheckItems
+                where s.TestSap == testSap
+                select s
+            ).ToList();
+
+            return liste;
+        }
+
+        public void SaveBapiCheckItem(string bapi, byte[] impStruktur, byte[] expStruktur, bool neu, bool testSap)
+        {
+            BapiCheckItem itemToSave;
+
+            if (neu)
+            {
+                itemToSave = BapiCheckItems.Create();
+                itemToSave.BapiName = bapi;
+                itemToSave.TestSap = testSap;
+            }
+            else
+            {
+                itemToSave = BapiCheckItems.First(b => b.BapiName == bapi && b.TestSap == testSap);
+            }
+
+            itemToSave.ImportStruktur = impStruktur;
+            itemToSave.ExportStruktur = expStruktur;
+            itemToSave.Updated = DateTime.Now;
+
+            if (neu)
+                BapiCheckItems.Add(itemToSave);
+
+            SaveChanges();
         }
 
         public List<ApplicationInfo> GetChildApplicationsForApplication()

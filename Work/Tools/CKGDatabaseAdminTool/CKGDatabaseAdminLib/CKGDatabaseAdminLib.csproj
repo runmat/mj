@@ -45,6 +45,13 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -65,7 +72,9 @@
     <Compile Include="Contracts\IApplicationCopyDataService.cs" />
     <Compile Include="Contracts\IFieldTranslationCopyDataService.cs" />
     <Compile Include="Contracts\IBapi2Report4CsvExportDataService.cs" />
+    <Compile Include="Contracts\IBapiCheckDataService.cs" />
     <Compile Include="DbContext.cs" />
+    <Compile Include="Models\BapiCheckAbweichung.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -75,16 +84,20 @@
     <Compile Include="Models\DbModels\BAPI.cs" />
     <Compile Include="Models\DbModels\ApplicationInfo.cs" />
     <Compile Include="Models\DbModels\Bapi2Report4CsvExport.cs" />
+    <Compile Include="Models\DbModels\BapiCheckItem.cs" />
     <Compile Include="Models\DbModels\LoginUserMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sap.cs" />
     <Compile Include="Services\ApplicationBapiDataServiceSql.cs" />
     <Compile Include="Services\ApplicationCopyDataServiceSql.cs" />
     <Compile Include="Services\FieldTranslationCopyDataServiceSql.cs" />
     <Compile Include="Services\Bapi2Report4CsvExportDataServiceSql.cs" />
+    <Compile Include="Services\BapiCheckDataService.cs" />
     <Compile Include="Services\LoginUserMessageDataServiceSql.cs" />
     <Compile Include="ViewModels\ChildViewModels\ApplicationBapiViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\FieldTranslationCopyViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\ApplicationCopyViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\BapiCheckViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\LoginUserMessageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
