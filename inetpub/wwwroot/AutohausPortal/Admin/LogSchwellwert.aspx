@@ -69,7 +69,7 @@
                             <div id="Result" runat="Server" visible="false">
                                 <div class="ExcelDiv">
                                     <div align="right" class="rightPadding">
-                                        <img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                        <img src="Images/iconXLS.gif" alt="Excel herunterladen" />
                                         <span class="ExcelSpan">
                                             <asp:LinkButton ID="lnkCreateExcel1" ForeColor="White" runat="server">Excel herunterladen</asp:LinkButton>
                                         </span>
@@ -105,7 +105,7 @@
                                                     <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("ID") %>'></asp:TextBox>
                                                 </EditItemTemplate>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton ID="ibtDetail" runat="server" CommandName="Detail" Width="16px" Height="16px" ImageUrl="../Images/lupe_01.gif"
+                                                    <asp:ImageButton ID="ibtDetail" runat="server" CommandName="Detail" Width="16px" Height="16px" ImageUrl="Images/lupe_01.gif"
                                                         CommandArgument='<%# Container.DataItemIndex %>' />
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />

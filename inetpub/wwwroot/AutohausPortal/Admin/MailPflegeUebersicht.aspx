@@ -85,7 +85,7 @@
                                                     </td>
                                                     <td valign="top">
                                                         <asp:ImageButton ID="ibnTextLoeschen" runat="server" Width="16" AlternateText="Vorlage löschen"
-                                                            ImageUrl="../Images/Papierkorb_01.gif"></asp:ImageButton>
+                                                            ImageUrl="Images/Papierkorb_01.gif"></asp:ImageButton>
                                                         <label>Löschen</label>
                                                     </td>
                                                 </tr>
@@ -97,7 +97,7 @@
                                                 <tr valign="top">
                                                     <td valign="top">
                                                         <asp:ImageButton ID="ibnTextBearbeiten" runat="server" Width="16" AlternateText="Vorlage löschen"
-                                                            ImageUrl="../Images/Edit_01.gif"></asp:ImageButton>
+                                                            ImageUrl="Images/Edit_01.gif"></asp:ImageButton>
                                                         <label>Bearbeiten</label>
                                                     </td>
                                                 </tr>
@@ -169,12 +169,12 @@
                                     <td class="firstLeft" colspan="3" align="right">
                                         <asp:LinkButton ID="lbnNewText" runat="server" AlternateText="Neuer Text" 
                                             CssClass="TablebuttonLarge " Font-Names="Verdana,sans-serif" 
-                                            ImageUrl="../Images/buttonMiddle.jpg" Style="vertical-align: middle;
+                                            ImageUrl="Images/buttonMiddle.jpg" Style="vertical-align: middle;
                                                 text-align: center; font-size: 10px; font-weight: bold; color: #333333; height: 20px;
                                                 margin-left: 4px;" Text="» Neuer Text" Width="128px"></asp:LinkButton>
                                         <asp:LinkButton ID="lbnNewMail" runat="server" 
                                             AlternateText="Neue Mailadresse" CssClass="TablebuttonLarge " 
-                                            Font-Names="Verdana,sans-serif" ImageUrl="../Images/buttonMiddle.jpg" Style="vertical-align: middle;
+                                            Font-Names="Verdana,sans-serif" ImageUrl="Images/buttonMiddle.jpg" Style="vertical-align: middle;
                                                 text-align: center; font-size: 10px; font-weight: bold; color: #333333; height: 20px;
                                                 margin-left: 4px;" Text="» Neue Mailadresse" Width="128px"></asp:LinkButton>
                                     </td>
@@ -193,7 +193,7 @@
                                         <td class="firstLeft">
                                             <asp:TextBox ID="txtVorgangsnummer" runat="server" Width="240px"></asp:TextBox>
                                             <asp:ImageButton ID="btnVorgangsnrListe" runat="server" Width="20" AlternateText="Liste Vorgangsnummer"
-                                                ImageUrl="../Images/Dokumente03_09.jpg"></asp:ImageButton>      
+                                                ImageUrl="Images/Dokumente03_09.jpg"></asp:ImageButton>      
                                         </td>
                                         <td width="100%">
                                         </td>

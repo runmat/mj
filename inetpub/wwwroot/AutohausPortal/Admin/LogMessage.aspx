@@ -220,7 +220,7 @@
                                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                             <ItemTemplate>
                                                                 <asp:Image ID="active" runat="server" Font-Bold="True" Width="16px" Visible='<%# DataBinder.Eval(Container, "DataItem.active") %>'
-                                                                    ImageUrl="../images/Confirm_mini.gif" Height="16px"></asp:Image>
+                                                                    ImageUrl="images/Confirm_mini.gif" Height="16px"></asp:Image>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <asp:TextBox ID="Textbox1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.active") %>'>
@@ -231,7 +231,7 @@
                                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                             <ItemTemplate>
                                                                 <asp:Image ID="activeSite" runat="server" Font-Bold="True" Width="16px" Visible='<%# DataBinder.Eval(Container, "DataItem.messageColor") %>'
-                                                                    ImageUrl="../images/Confirm_mini.gif" Height="16px"></asp:Image>
+                                                                    ImageUrl="images/Confirm_mini.gif" Height="16px"></asp:Image>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <asp:TextBox ID="Textbox4" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.messageColor") %>'>
@@ -242,7 +242,7 @@
                                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                             <ItemTemplate>
                                                                 <asp:Image ID="ckeUser" runat="server" Font-Bold="True" Width="16px" Visible='<%# DataBinder.Eval(Container, "DataItem.onlyTEST") %>'
-                                                                    ImageUrl="../images/Confirm_mini.gif" Height="16px"></asp:Image>
+                                                                    ImageUrl="images/Confirm_mini.gif" Height="16px"></asp:Image>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <asp:TextBox ID="Textbox6" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.onlyTEST") %>'>
@@ -253,7 +253,7 @@
                                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                             <ItemTemplate>
                                                                 <asp:Image ID="ckpUser" runat="server" Font-Bold="True" Width="16px" Visible='<%# DataBinder.Eval(Container, "DataItem.onlyPROD") %>'
-                                                                    ImageUrl="../images/Confirm_mini.gif" Height="16px"></asp:Image>
+                                                                    ImageUrl="images/Confirm_mini.gif" Height="16px"></asp:Image>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <asp:TextBox ID="Textbox8" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.onlyPROD") %>'>
@@ -262,7 +262,7 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Auswahl">
                                                             <ItemTemplate>
-                                                                <asp:ImageButton ID="btnSelect" runat="server" CommandName="Select" ImageUrl="../Images/Edit_01.gif"
+                                                                <asp:ImageButton ID="btnSelect" runat="server" CommandName="Select" ImageUrl="Images/Edit_01.gif"
                                                                     CausesValidation="false" Width="16px" Height="16px"></asp:ImageButton>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>

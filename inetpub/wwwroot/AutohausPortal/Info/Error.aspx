@@ -30,7 +30,7 @@
 			<!--head-->
 			<div id="head" class="login">
 				<div class="logo">
-					<img src="/AutohausPortal/images/kroschke-logo.gif" width="382" height="51" alt="Kroschke" />
+					<img src="../images/kroschke-logo.gif" width="382" height="51" alt="Kroschke" />
 				</div>
 				<!--metanavigation-->
 				<div id="metanavigation">
