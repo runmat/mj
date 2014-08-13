@@ -268,15 +268,14 @@
                                                     <img alt="" src="../Images/arrow.gif" border="0" />
                                                 </td>
                                                 <td style="padding: 2px">
-                                                    <b>
-                                                        <%# DataBinder.Eval(Container.DataItem, "titleText") %></b>
+                                                    <b><%# Eval("Created").ToString() & " - " & Eval("Title")%></b>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 2px">
                                                 </td>
                                                 <td style="padding: 2px">
-                                                    <%# DataBinder.Eval(Container.DataItem, "messageText") %>
+                                                    <%# Eval("Message")%>
                                                 </td>
                                             </tr>
                                         </table>
