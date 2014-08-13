@@ -1139,15 +1139,18 @@ namespace AutohausPortal.forms
                     DataRow[] KennzRow = KennzControls.Select("ID=" + lblID.Text);
                     if (KennzRow.Length == 1)
                     {
-                        if (txtKennz1.Text.Trim() != "")
-                        {
-                            DataRow[] kennzStamm = objCommon.tblStvaStamm.Select("KREISKZ = '" + txtKennz1.Text.ToUpper().Trim() + "'");
-                            if (kennzStamm.Length == 0)
-                            {
-                                divKennz1.Attributes["class"] = "formfeld error"; bError = true;
-                            }
-                        }
-                        else
+                        // MCarl, 08.08.2014: Prüfung vorübergehend rausgenommen, bis SAP-seitig die Stammdaten aus ZULST_ALLEKENNZ ermittelt werden
+                        // *************************************************************************************************************************
+                        //if (txtKennz1.Text.Trim() != "")
+                        //{
+                        //    DataRow[] kennzStamm = objCommon.tblStvaStamm.Select("KREISKZ = '" + txtKennz1.Text.ToUpper().Trim() + "'");
+                        //    if (kennzStamm.Length == 0)
+                        //    {
+                        //        divKennz1.Attributes["class"] = "formfeld error"; bError = true;
+                        //    }
+                        //}
+                        //else
+                        if (txtKennz1.Text.Trim() == "")
                         {
                             divKennz1.Attributes["class"] = "formfeld error"; bError = true;
 
