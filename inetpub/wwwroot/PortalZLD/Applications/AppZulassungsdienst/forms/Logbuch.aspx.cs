@@ -21,7 +21,7 @@ namespace AppZulassungsdienst.forms
         private enum ViewStatus
         {
             Unauthenticated,
-            Lfb,
+            Gebietsleiter,
             FilialeProtokoll,
             FilialeAufgaben
         }
@@ -105,8 +105,8 @@ namespace AppZulassungsdienst.forms
                             curView = ViewStatus.FilialeAufgaben;
                             FillListAufgaben();
                             break;
-                        case LogbuchClass.Rolle.LFB:
-                            curView = ViewStatus.Lfb;
+                        case LogbuchClass.Rolle.Gebietsleiter:
+                            curView = ViewStatus.Gebietsleiter;
                             FillListProtokoll();
                             break;
                         default:
@@ -134,7 +134,7 @@ namespace AppZulassungsdienst.forms
             {
                 gvAufgaben.Visible = true;
                 gvProtokollFiliale.Visible = false;
-                gvProtokollLFB.Visible = false;
+                gvProtokollGL.Visible = false;
 
                 gvAufgaben.DataSource = mObjFilialbuch.Protokoll.CreateTable(
                     EntryStatus.Ausblenden, EntryStatus.Ausblenden,
@@ -145,6 +145,8 @@ namespace AppZulassungsdienst.forms
 
         private void FillListProtokoll()
         {
+            DataTable dt;
+
             if (txtDatumVon.Text.Trim() == string.Empty)
             {
                 txtDatumVon.Text = DateTime.Today.AddMonths(-3).ToShortDateString();
@@ -156,16 +158,15 @@ namespace AppZulassungsdienst.forms
 
             switch (curView)
             {
-                case ViewStatus.Lfb:
-                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn, 
+                case ViewStatus.Gebietsleiter:
+                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn,
                         LogbuchClass.StatusFilter.Alle, mObjFilialbuch.VkBur, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
                     break;
                 default:
-                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn, 
+                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn,
                         LogbuchClass.StatusFilter.Alle, null, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
                     break;
             }
-
 
             if (mObjFilialbuch.Status != 0)
             {
@@ -178,62 +179,87 @@ namespace AppZulassungsdienst.forms
                     case ViewStatus.FilialeProtokoll:
                         gvAufgaben.Visible = false;
                         gvProtokollFiliale.Visible = true;
-                        gvProtokollLFB.Visible = false;
-                        if (ddlFilterFiliale.SelectedItem.Text == "Gelesen" ||
-                            ddlFilterFiliale.SelectedItem.Text == "Beantwortet" ||
-                            ddlFilterFiliale.SelectedItem.Text == "Erledigt" ||
-                            ddlFilterFiliale.SelectedItem.Text == "Neu")
-                        {
-                            string sFilter = ddlFilterFiliale.SelectedValue.Trim('E');
-                            DataTable dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
-                                                                                EntryStatus.Ausblenden,
-                                                                                (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter),
-                                                                                (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter));
+                        gvProtokollGL.Visible = false;
 
-                            gvProtokollFiliale.DataSource = FilterClosed(ref dt);
-                        }
-                        else if (ddlFilterFiliale.SelectedValue != "all")
+                        switch (ddlFilterFiliale.SelectedValue)
                         {
-                            DataTable dt =
-                                mObjFilialbuch.Protokoll.CreateTable(
-                                    (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue),
-                                    (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue));
-                            gvProtokollFiliale.DataSource = dt;
+                            case "all":
+                                gvProtokollFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable();
+                                break;
+
+                            case "E0":
+                            case "E1":
+                            case "E3":
+                            case "E4":
+                                string sFilter = ddlFilterFiliale.SelectedValue.Trim('E');
+                                dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
+                                                                          EntryStatus.Ausblenden,
+                                                                         (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter),
+                                                                         (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter));
+
+                                // Bei Auswahl "Erledigt" geschlossene nicht rausfiltern
+                                if (ddlFilterFiliale.SelectedValue == "E4")
+                                {
+                                    gvProtokollFiliale.DataSource = dt;
+                                }
+                                else
+                                {
+                                    gvProtokollFiliale.DataSource = FilterClosed(ref dt);
+                                }
+                                break;
+
+                            default:
+                                dt = mObjFilialbuch.Protokoll.CreateTable((EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue),
+                                                                          (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue));
+                                gvProtokollFiliale.DataSource = dt;
+                                break;
                         }
-                        else
-                        {
-                            gvProtokollFiliale.DataSource = mObjFilialbuch.Protokoll.CreateTable();
-                        }
+
                         gvProtokollFiliale.DataBind();
                         break;
-                    case ViewStatus.Lfb:
+
+                    case ViewStatus.Gebietsleiter:
                         gvAufgaben.Visible = false;
                         gvProtokollFiliale.Visible = false;
-                        gvProtokollLFB.Visible = true;
-                        if (ddlFilter.SelectedItem.Text == "Gelesen" || ddlFilter.SelectedItem.Text == "Beantwortet" ||
-                            ddlFilter.SelectedItem.Text == "Erledigt" || ddlFilter.SelectedItem.Text == "Neu")
-                        {
-                            string sFilter = ddlFilter.SelectedValue.Trim('E');
-                            DataTable dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
-                                                                                EntryStatus.Ausblenden,
-                                                                                (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter),
-                                                                                (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter));
+                        gvProtokollGL.Visible = true;
 
-                            gvProtokollLFB.DataSource = FilterClosed(ref dt);
-                        }
-                        else if (ddlFilter.SelectedValue != "all")
+                        switch (ddlFilter.SelectedValue)
                         {
-                            DataTable dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
-                                                                                (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue),
-                                                                                EmpfängerStatus.Ausblenden,
-                                                                                EmpfängerStatus.Ausblenden);
-                            gvProtokollLFB.DataSource = dt;
+                            case "all":
+                                gvProtokollGL.DataSource = mObjFilialbuch.Protokoll.CreateTable();
+                                break;
+
+                            case "E0":
+                            case "E1":
+                            case "E3":
+                            case "E4":
+                                string sFilter = ddlFilter.SelectedValue.Trim('E');
+                                dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
+                                                                          EntryStatus.Ausblenden,
+                                                                         (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter),
+                                                                         (EmpfängerStatus)Enum.Parse(typeof(EmpfängerStatus), sFilter));
+
+                                // Bei Auswahl "Erledigt" geschlossene nicht rausfiltern
+                                if (ddlFilter.SelectedValue == "E4")
+                                {
+                                    gvProtokollGL.DataSource = dt;
+                                }
+                                else
+                                {
+                                    gvProtokollGL.DataSource = FilterClosed(ref dt);
+                                }
+                                break;
+
+                            default:
+                                dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Ausblenden,
+                                                                         (EntryStatus)Enum.Parse(typeof(EntryStatus), ddlFilter.SelectedValue),
+                                                                          EmpfängerStatus.Ausblenden,
+                                                                          EmpfängerStatus.Ausblenden);
+                                gvProtokollGL.DataSource = dt;
+                                break;
                         }
-                        else
-                        {
-                            gvProtokollLFB.DataSource = mObjFilialbuch.Protokoll.CreateTable();
-                        }
-                        gvProtokollLFB.DataBind();
+
+                        gvProtokollGL.DataBind();
                         break;
                 }
             }
@@ -351,7 +377,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                curView = ViewStatus.Lfb;
+                curView = ViewStatus.Gebietsleiter;
             }
             ViewControl(curView);
             FillListProtokoll();
@@ -366,7 +392,7 @@ namespace AppZulassungsdienst.forms
 
         protected void lbtnRefresh_Click(object sender, EventArgs e)
         {
-            // # CurView bereits auf LFB oder Filiale gesetzt, daher keine Änderung nötig
+            // # CurView bereits auf GL oder Filiale gesetzt, daher keine Änderung nötig
             FillListProtokoll();
         }
 
@@ -390,7 +416,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = true;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = true;
                     ddlFilter.Visible = false;
@@ -408,7 +434,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = true;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = false;
 
@@ -416,7 +442,7 @@ namespace AppZulassungsdienst.forms
                     lbtAdd.Text = "Anfrage";
                     break;
 
-                case ViewStatus.Lfb:
+                case ViewStatus.Gebietsleiter:
                     tblHeaderTabs.Visible = true;
 
                     lbAufgaben.Visible = false;
@@ -425,7 +451,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = true;
+                    gvProtokollGL.Visible = true;
 
                     divTimeSpan.Visible = true;
                     ddlFilter.Visible = true;
@@ -444,7 +470,7 @@ namespace AppZulassungsdienst.forms
 
                     gvAufgaben.Visible = false;
                     gvProtokollFiliale.Visible = false;
-                    gvProtokollLFB.Visible = false;
+                    gvProtokollGL.Visible = false;
 
                     divTimeSpan.Visible = false;
                     ddlFilter.Visible = false;
@@ -473,7 +499,7 @@ namespace AppZulassungsdienst.forms
                     ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
                     break;
                 case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Erledigt);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -482,7 +508,7 @@ namespace AppZulassungsdienst.forms
                     FillListAufgaben();
                     break;
                 case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Gelesen);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -570,7 +596,7 @@ namespace AppZulassungsdienst.forms
                     ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
                     break;
                 case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Erledigt);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -579,7 +605,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "LoeAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EntryStatus.Gelöscht);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -588,7 +614,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "CloseAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EntryStatus.Geschlossen);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -597,7 +623,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Gelesen);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -688,7 +714,7 @@ namespace AppZulassungsdienst.forms
             gvProtokollFiliale.DataBind();
         }
 
-        protected void gvProtokollLFB_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+        protected void gvProtokollGL_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
         {
             SortDirection NewDir;
             string Text;
@@ -708,7 +734,7 @@ namespace AppZulassungsdienst.forms
                     ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
                     break;
                 case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Erledigt);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -717,7 +743,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "LoeAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EntryStatus.Gelöscht);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -726,7 +752,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "CloseAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EntryStatus.Geschlossen);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -735,7 +761,7 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
                         EmpfängerStatus.Gelesen);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -754,7 +780,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("I_DATUM", NewDir);
+                    gvProtokollGL.Sort("I_DATUM", NewDir);
                     break;
                 case "DatumAusgangSort":
                     NewDir = default(SortDirection);
@@ -767,7 +793,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("O_DATUM", NewDir);
+                    gvProtokollGL.Sort("O_DATUM", NewDir);
                     break;
                 case "SortVon":
                     NewDir = default(SortDirection);
@@ -780,7 +806,7 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("I_VON", NewDir);
+                    gvProtokollGL.Sort("I_VON", NewDir);
                     break;
                 case "SortAn":
                     NewDir = default(SortDirection);
@@ -793,12 +819,12 @@ namespace AppZulassungsdienst.forms
                         NewDir = SortDirection.Ascending;
                     }
                     ViewState["SortDirection"] = NewDir;
-                    gvProtokollLFB.Sort("O_AN", NewDir);
+                    gvProtokollGL.Sort("O_AN", NewDir);
                     break;
             }
         }
 
-        protected void gvProtokollLFB_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+        protected void gvProtokollGL_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
         {
             DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
             string[] sortparts = e.SortExpression.Split(',');
@@ -822,8 +848,8 @@ namespace AppZulassungsdienst.forms
                 }
             }
             View.Sort = sortString;
-            gvProtokollLFB.DataSource = View;
-            gvProtokollLFB.DataBind();
+            gvProtokollGL.DataSource = View;
+            gvProtokollGL.DataBind();
         }
 
         #endregion
@@ -976,12 +1002,12 @@ namespace AppZulassungsdienst.forms
                 {
                     if (chkIsRückfrage.Checked)
                     {
-                        mObjFilialbuch.Protokoll.Rückfrage(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text), 
+                        mObjFilialbuch.Protokoll.Rückfrage(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
                             txtBetreff.Text, txtText.Text);
                     }
                     else
                     {
-                        mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text), 
+                        mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
                             txtBetreff.Text, txtText.Text);
                     }
 
@@ -993,7 +1019,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else if (curView == ViewStatus.FilialeProtokoll)
                 {
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
                         txtBetreff.Text, txtText.Text);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {
@@ -1001,9 +1027,9 @@ namespace AppZulassungsdienst.forms
                     }
                     FillListProtokoll();
                 }
-                else if (curView == ViewStatus.Lfb)
+                else if (curView == ViewStatus.Gebietsleiter)
                 {
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text), 
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
                         txtBetreff.Text, txtText.Text);
                     if (mObjFilialbuch.Protokoll.Status != 0)
                     {

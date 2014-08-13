@@ -9,6 +9,7 @@ Partial Public Class AktuellePflegeUebersicht
     Private mSeite As String
     Private mDatum As Date
     Private mObjAktuelles As Aktuelles
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
 #Region "Events"
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

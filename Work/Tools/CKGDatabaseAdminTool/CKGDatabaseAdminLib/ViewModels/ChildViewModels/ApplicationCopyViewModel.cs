@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 using CKGDatabaseAdminLib.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
@@ -29,6 +30,13 @@ namespace CKGDatabaseAdminLib.ViewModels
         public MainViewModel Parent { get; set; }
 
         public ObservableCollection<string> DbConnections { get { return Parent.DbConnections; } }
+
+        private bool _showOnlyNewApplications;
+        public bool ShowOnlyNewApplications
+        {
+            get { return _showOnlyNewApplications; }
+            set { _showOnlyNewApplications = value; SendPropertyChanged("ShowOnlyNewApplications"); }
+        }
 
         private string _destinationDatabase;
         public string DestinationDatabase
@@ -66,11 +74,31 @@ namespace CKGDatabaseAdminLib.ViewModels
         public ApplicationCopyViewModel(MainViewModel parentVM)
         {
             Parent = parentVM;
+            ShowOnlyNewApplications = true;
 
             DataService = new ApplicationCopyDataServiceSql(Parent.ActualDatabase);
 
             CommandCopyApplications = new DelegateCommand(CopyApplications);
             CommandCopyApplicationToDestinationDatabase = new DelegateCommand(CopyApplicationToDestinationDatabase);
+
+            this.PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "DestinationDatabase":
+                    DataService.InitDestinationDataContext(DestinationDatabase);
+                    DataService.FilterData(ShowOnlyNewApplications);
+                    SendPropertyChanged("Applications");
+                    break;
+
+                case "ShowOnlyNewApplications":
+                    DataService.FilterData(ShowOnlyNewApplications);
+                    SendPropertyChanged("Applications");
+                    break;
+            }
         }
 
         #region Commands
@@ -96,12 +124,10 @@ namespace CKGDatabaseAdminLib.ViewModels
             {
                 if (!String.IsNullOrEmpty(DestinationDatabase))
                 {
-                    var neueID = DataService.CopyApplication(DestinationDatabase, CopyAppWithChildApplications,
-                                                             CopyAppWithFieldTranslations, CopyAppWithColumnTranslations);
+                    var neueID = DataService.CopyApplication(CopyAppWithChildApplications, CopyAppWithFieldTranslations, CopyAppWithColumnTranslations);
                     if (neueID != null)
                     {
-                        Parent.ShowMessage("Anwendung wurde erfolgreich kopiert (neue ID: " + neueID.Value + ")",
-                                           MessageType.Success);
+                        Parent.ShowMessage("Anwendung wurde erfolgreich kopiert (neue ID: " + neueID.Value + ")", MessageType.Success);
                     }
                     else
                     {
@@ -124,14 +150,16 @@ namespace CKGDatabaseAdminLib.ViewModels
             if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var selectedApp = (e.AddedItems[0] as ApplicationInfo);
-                if (selectedApp != null)
-                {
-                    DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
-                    SendPropertyChanged("ChildApplications");
-                    SendPropertyChanged("FieldTranslations");
-                    SendPropertyChanged("ColumnTranslations");
-                }
+                DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
             }
+            else
+            {
+                DataService.ResetCurrentApp();
+            }
+
+            SendPropertyChanged("ChildApplications");
+            SendPropertyChanged("FieldTranslations");
+            SendPropertyChanged("ColumnTranslations");
         }
 
         #endregion

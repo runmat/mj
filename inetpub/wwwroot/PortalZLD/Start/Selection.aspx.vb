@@ -138,14 +138,6 @@ Partial Public Class Selection
         End If
         m_User = GetUser(Me)
 
-        '------------------------------------------------------------------------
-        'Try
-        '    Common.Alert.alert(litAlert, m_User.Customer.CustomerId)
-        'Catch ex As Exception
-        '    Response.Redirect(ConfigurationManager.AppSettings("Exit"))
-        'End Try
-        '------------------------------------------------------------------------
-
         Try
             If m_User.FailedLogins > 0 Then
                 If m_User.Email.Length > 0 And m_User.Customer.ForcePasswordQuestion And m_User.QuestionID > -1 Then

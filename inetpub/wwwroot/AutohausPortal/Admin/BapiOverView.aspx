@@ -31,7 +31,7 @@
                                             </td>
                                             <td align="right">
                                                 <div id="queryImage">
-                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="/PortalZLD/Images/queryArrow.gif" />
+                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="Images/queryArrow.gif" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -61,7 +61,7 @@
                                             <tr class="formquery">
                                                 <td colspan="2">
                                                     <asp:TextBox ID="TextBox1" runat="server" Visible="false"></asp:TextBox>
-                                                    <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
+                                                    <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="images/empty.gif"
                                                         Width="1px" />
                                                 </td>
                                             </tr>
@@ -81,7 +81,7 @@
                                         <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                             <tr>
                                                 <td nowrap="nowrap" valign="bottom">
-                                                    <asp:ImageButton runat="server" ID="imgbDBVisible" Height="16px" Width="16px" ImageUrl="/PortalZLD/Images/minus.gif" />
+                                                    <asp:ImageButton runat="server" ID="imgbDBVisible" Height="16px" Width="16px" ImageUrl="Images/minus.gif" />
                                                     <span lang="de">&nbsp;DB-Overview&nbsp;&nbsp;&nbsp;</span>
                                                 </td>
                                                 <td align="left" valign="bottom">
@@ -99,7 +99,7 @@
                                     <asp:Panel ID="PanelDB" runat="server">
                                     <div class="ExcelDiv">
                                         <div align="right" class="rightPadding">
-                                            <img src="/PortalZLD/Images/iconXLS.gif" alt="Excel herunterladen" />
+                                            <img src="Images/iconXLS.gif" alt="Excel herunterladen" />
                                             <span class="ExcelSpan">
                                                 <asp:LinkButton ID="imgbDBExcel" ForeColor="White" runat="server">Excel herunterladen</asp:LinkButton>
                                             </span>
@@ -174,7 +174,7 @@
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="lbDetails" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BapiName") %>'
                                                                     runat="server" Width="16px" CommandName="Details" Height="16px">
-																		<img  src="/PortalZLD/Images/Lupe_01.gif" Width="16px" Height="16px" alt="Details" border="0"/></asp:LinkButton>
+																		<img  src="Images/Lupe_01.gif" Width="16px" Height="16px" alt="Details" border="0"/></asp:LinkButton>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="col_Delete" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
@@ -184,7 +184,7 @@
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="lbDelete" runat="server" Width="10px" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BapiName") %>'
                                                                     CommandName="Delete" Height="10px">
-																		                <img src="/PortalZLD/Images/Papierkorb_01.gif"  width="16px" height="16px"  alt="löschen" border="0" /></asp:LinkButton>
+																		                <img src="Images/Papierkorb_01.gif"  width="16px" height="16px"  alt="löschen" border="0" /></asp:LinkButton>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

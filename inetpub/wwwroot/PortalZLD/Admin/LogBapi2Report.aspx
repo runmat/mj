@@ -28,7 +28,7 @@
                                             </td>
                                             <td align="right">
                                                 <div id="queryImage">
-                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="../Images/queryArrow.gif" />
+                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="/PortalZLD/Images/queryArrow.gif" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -118,7 +118,7 @@
                     <div id="Result" runat="Server" visible="false">
                         <div class="ExcelDiv">
                             <div align="right" class="rightPadding">
-                                <img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                <img src="/PortalZLD/Images/iconXLS.gif" alt="Excel herunterladen" />
                                 <asp:LinkButton ID="lnkCreateExcel" runat="server" Visible="False" ForeColor="White">Excel herunterladen</asp:LinkButton>
                             </div>
                         </div>
