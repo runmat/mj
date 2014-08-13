@@ -215,6 +215,33 @@ Partial Public Class Login
         End Try
     End Sub
 
+    Private Sub displaySecurityCertificate()
+        Try
+            Using conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+                conn.Open()
+
+                Dim command As SqlClient.SqlCommand = conn.CreateCommand()
+
+                command.CommandText = "SELECT value FROM Config" & _
+                    " WHERE context = @context AND [key] = @key"
+
+                command.Parameters.AddWithValue("@context", "Login")
+                command.Parameters.AddWithValue("@key", "SecurityCertificate")
+
+                Dim wert As Object = command.ExecuteScalar()
+
+                If wert IsNot Nothing Then
+                    Dim strHtmlString As String = wert.ToString()
+                    divSicherheitszertifikat.InnerHtml = strHtmlString
+                End If
+
+                conn.Close()
+            End Using
+
+        Catch
+        End Try
+    End Sub
+
     Private Function checkLogin() As Boolean
         If (m_User.HighestAdminLevel = Security.AdminLevel.Master) Then
             Return True
@@ -528,6 +555,7 @@ Partial Public Class Login
                 Response.Redirect(BouncePage(Me), True)
 
             End If
+            displaySecurityCertificate()
             displayMessages()
             Me.StandardLogin.Visible = True
             Me.DoubleLogin2.Visible = False
