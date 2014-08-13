@@ -59,6 +59,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _bapiCheckViewModel = value; SendPropertyChanged("BapiCheckViewModel"); }
         }
 
+        private GitBranchInfoViewModel _gitBranchViewModel;
+        public GitBranchInfoViewModel GitBranchViewModel
+        {
+            get { return _gitBranchViewModel; }
+            set { _gitBranchViewModel = value; SendPropertyChanged("GitBranchViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -95,8 +102,8 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public MainViewModel()
         {
+            _messageDisplayTimer = new Timer(10000);
             TestSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
-            _messageDisplayTimer = new Timer(5000);
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
             LoadDbConnections();
         }
@@ -133,6 +140,16 @@ namespace CKGDatabaseAdminLib.ViewModels
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
             BapiCheckViewModel = new BapiCheckViewModel(this);
+
+            // Git-Branch Verwaltung nur in DAD-Datenbanken
+            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
+            {
+                GitBranchViewModel = new GitBranchInfoViewModel(this);
+            }
+            else
+            {
+                GitBranchViewModel = null;
+            }
         }
 
         public void ShowMessage(string msg, MessageType typ)

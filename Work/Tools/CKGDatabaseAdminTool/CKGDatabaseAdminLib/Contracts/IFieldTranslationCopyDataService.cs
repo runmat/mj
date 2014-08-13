@@ -14,9 +14,13 @@ namespace CKGDatabaseAdminLib.Contracts
 
         void InitDataContext(string connectionName);
 
+        void InitDestinationDataContext(string connectionName);
+
+        void FilterData(bool onlyNew);
+
         void BeginEdit(int appId, string appURL);
 
-        void CopyFieldTranslations(string destinationDb);
+        void CopyFieldTranslations();
 
         void ResetCurrentApp();
     }
