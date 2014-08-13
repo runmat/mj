@@ -1,0 +1,134 @@
+﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgViewModel
+
+
+<!-- <Bing utilities> -->
+
+<style type="text/css">
+   .bing-map 
+   {
+       float: left;
+       position: relative;
+       width: 400px;
+       height: 400px;
+       margin-right: 30px;
+    }
+</style>
+
+<script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=de-de">
+</script>
+
+<script type="text/javascript">
+
+    var _bingKey = "";
+    var _bingLocationMap = null;
+    var _bingRouteMap = null;
+    var _currentLocation = "", _currentRouteStartAddress = "", _currentRouteEndAddress = "";
+
+    DocumentReadyBind(function () {
+        _bingKey = "AjhclM9Z2vaz98bcKZnOd5dkHLf87cX4qKkJJBi7G6jqvy1wuoNVubNKGBijbzzQ";
+        _bingLocationMap = new Microsoft.Maps.Map(document.getElementById("bingLocationDiv"), {
+            credentials: _bingKey,
+            mapTypeId: Microsoft.Maps.MapTypeId.road
+        });
+        _bingRouteMap = new Microsoft.Maps.Map(document.getElementById("bingRouteDiv"), {
+            credentials: _bingKey,
+            mapTypeId: Microsoft.Maps.MapTypeId.road
+        });
+    });
+
+    function CallRestService(request) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", request);
+        document.body.appendChild(script);
+    }
+
+    function MakeGeocodeRequest() {
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_currentLocation) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
+
+        $("#bingLocationDiv").show();
+        CallRestService(geocodeRequest);
+    }
+
+    function GeocodeCallback(result) {
+        //alert("Found location: " + result.resourceSets[0].resources[0].name);
+
+        if (result &&
+                        result.resourceSets &&
+                        result.resourceSets.length > 0 &&
+                        result.resourceSets[0].resources &&
+                        result.resourceSets[0].resources.length > 0) {
+            // Set the map view using the returned bounding box
+            var bbox = result.resourceSets[0].resources[0].bbox;
+            var viewBoundaries = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(bbox[0], bbox[1]), new Microsoft.Maps.Location(bbox[2], bbox[3]));
+            console.log(viewBoundaries);
+            _bingLocationMap.setView({ bounds: viewBoundaries });
+            //setTimeout(function() { _bingLocationMap.setView({ bounds: viewBoundaries }); }, 1000);
+
+            // Add a pushpin at the found location
+            var location = new Microsoft.Maps.Location(result.resourceSets[0].resources[0].point.coordinates[0], result.resourceSets[0].resources[0].point.coordinates[1]);
+            var pushpin = new Microsoft.Maps.Pushpin(location);
+            _bingLocationMap.entities.push(pushpin);
+        }
+    }
+
+
+    function MakeRouteRequest() {
+        var routeRequest = "http://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_currentRouteStartAddress) + "&wp.1=" + encodeURI(_currentRouteEndAddress) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
+
+        $("#bingRouteDiv").show();
+        CallRestService(routeRequest);
+    }
+
+    function RouteCallback(result) {
+
+        if (result &&
+                   result.resourceSets &&
+                   result.resourceSets.length > 0 &&
+                   result.resourceSets[0].resources &&
+                   result.resourceSets[0].resources.length > 0) {
+
+            // Set the map view
+            var bbox = result.resourceSets[0].resources[0].bbox;
+            var viewBoundaries = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(bbox[0], bbox[1]), new Microsoft.Maps.Location(bbox[2], bbox[3]));
+            _bingRouteMap.setView({ bounds: viewBoundaries });
+
+
+            // Draw the route
+            var routeline = result.resourceSets[0].resources[0].routePath.line;
+            var routepoints = new Array();
+
+            for (var i = 0; i < routeline.coordinates.length; i++) {
+                routepoints[i] = new Microsoft.Maps.Location(routeline.coordinates[i][0], routeline.coordinates[i][1]);
+            }
+
+            // Draw the route on the map
+            var routeshape = new Microsoft.Maps.Polyline(routepoints, { strokeColor: new Microsoft.Maps.Color(200, 200, 0, 0) });
+            _bingRouteMap.entities.push(routeshape);
+        }
+    }
+    
+</script>
+
+<!-- </Bing utilities> -->
+
+
+<h3 class="page-title">
+    @Model.Title  
+    <small>@Model.TitleSmall</small> 
+    <a class="btn grey mini margin-left-25" href="@Model.ActionCorresponding"><i class="icon-chevron-right margin-right-5"></i> @Model.TitleSmallCorresponding</a>
+</h3>
+
+<div class="portlet app-view beauftragung">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, stepTitlesInNewLine:true)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.PartialOrFormErrorHint("CurrentStepView", Model.FirstStepErrorHint)
+    </div>
+</div>
+
+@Html.Partial("Partial/Common")
+    
+<div id="bingLocationDiv" class="bing-map hide"></div>
+<div id="bingRouteDiv" class="bing-map hide"></div>
