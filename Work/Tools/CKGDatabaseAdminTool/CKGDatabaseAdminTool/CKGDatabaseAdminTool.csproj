@@ -44,7 +44,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fluent">
+    <Reference Include="Fluent, Version=2.0.4807.24668, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Ribbon\Fluent.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -67,6 +68,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucCheckBapis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ucManageGitBranches.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ucApplicationDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +121,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucCheckBapis.xaml.cs">
+      <DependentUpon>ucCheckBapis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucManageGitBranches.xaml.cs">
+      <DependentUpon>ucManageGitBranches.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucApplicationDetails.xaml.cs">
       <DependentUpon>ucApplicationDetails.xaml</DependentUpon>
     </Compile>

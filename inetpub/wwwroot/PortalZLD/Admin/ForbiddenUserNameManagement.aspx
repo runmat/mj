@@ -50,7 +50,7 @@
                                             </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
                                                     Width="1px" />
                                             </td>
                                         </tr>
@@ -126,7 +126,7 @@
                                                         </asp:TemplateField>                                                            
                                                         <asp:TemplateField HeaderText="l&#246;schen">
      														<ItemTemplate>
-															<asp:ImageButton id="ibtnSRDelete" runat="server" CausesValidation="false"  CommandName="Del" ImageUrl="../Images/Papierkorb_01.gif" Width="16px" Height="16px"></asp:ImageButton>
+															<asp:ImageButton id="ibtnSRDelete" runat="server" CausesValidation="false"  CommandName="Del" ImageUrl="/PortalZLD/Images/Papierkorb_01.gif" Width="16px" Height="16px"></asp:ImageButton>
 														</ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

@@ -52,6 +52,20 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _fieldTranslationCopyViewModel = value; SendPropertyChanged("FieldTranslationCopyViewModel"); }
         }
 
+        private BapiCheckViewModel _bapiCheckViewModel;
+        public BapiCheckViewModel BapiCheckViewModel
+        {
+            get { return _bapiCheckViewModel; }
+            set { _bapiCheckViewModel = value; SendPropertyChanged("BapiCheckViewModel"); }
+        }
+
+        private GitBranchInfoViewModel _gitBranchViewModel;
+        public GitBranchInfoViewModel GitBranchViewModel
+        {
+            get { return _gitBranchViewModel; }
+            set { _gitBranchViewModel = value; SendPropertyChanged("GitBranchViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -59,6 +73,13 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             get { return _actualDatabase; }
             set { _actualDatabase = value; SendPropertyChanged("ActualDatabase"); }
+        }
+
+        private bool _testSap;
+        public bool TestSap
+        {
+            get { return _testSap; }
+            set { _testSap = value; SendPropertyChanged("TestSap"); }
         }
 
         private string _nachricht;
@@ -81,7 +102,8 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public MainViewModel()
         {
-            _messageDisplayTimer = new Timer(5000);
+            _messageDisplayTimer = new Timer(10000);
+            TestSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
             LoadDbConnections();
         }
@@ -117,6 +139,17 @@ namespace CKGDatabaseAdminLib.ViewModels
             ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+            BapiCheckViewModel = new BapiCheckViewModel(this);
+
+            // Git-Branch Verwaltung nur in DAD-Datenbanken
+            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
+            {
+                GitBranchViewModel = new GitBranchInfoViewModel(this);
+            }
+            else
+            {
+                GitBranchViewModel = null;
+            }
         }
 
         public void ShowMessage(string msg, MessageType typ)

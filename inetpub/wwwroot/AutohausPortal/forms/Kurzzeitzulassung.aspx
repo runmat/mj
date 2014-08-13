@@ -234,7 +234,7 @@
                                                         Andernfalls besteht die Möglichkeit, den grünen Versicherungsschein durch Setzen des Hakens zu deselektieren.
 													</p>
 												</div>
-												<img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
+												<img src="../images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
 											</div>
 											<!--formulardaten zeile2-->
 											<div class="trenner5">
@@ -286,7 +286,7 @@
                                                         Wünschen Sie eine Kennzeichen-Sondergröße, setzen Sie dort den Haken und wählen Sie diese aus dem Drop-Down-Menü aus.
 													</p>
 												</div>
-												<img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
+												<img src="../images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
 											</div>
 											<!--formulardaten zeile4-->
 											<div class="trenner">
@@ -312,7 +312,7 @@
                                                 <asp:TextBox ID="txtZulDate" runat="server" CssClass="formtext jqcalendar jqcalendarWerktage" Width="130px"
                                                     MaxLength="10"></asp:TextBox>
 												<div class="formfeld_end_wide">
-													<img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
+													<img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
 												</div>
 											</div>
 											<!--datepicker-->
@@ -323,7 +323,7 @@
 														Wählen Sie die Fahrzeugart aus und wählen Sie das gewünschte Zulassungsdatum aus.
 													</p>
 												</div>
-												<img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
+												<img src="../images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
 											</div>
 
 											<!--formulardaten zeile5-->

@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="SapORM.Contracts">
       <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
     </Reference>
@@ -79,9 +83,44 @@
     <Compile Include="Feinstaub\Services\AutohausFeinstaubReportDataServiceSAP.cs" />
     <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubVergabeViewModel.cs" />
     <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubReportViewModel.cs" />
+    <Compile Include="General\Models\UiModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ueberfuehrung\Contracts\IUeberfuehrungDataService.cs" />
+    <Compile Include="Ueberfuehrung\Models\AppModelMappings.cs" />
+    <Compile Include="Ueberfuehrung\Models\CompositeModels\Fahrt.cs" />
+    <Compile Include="Ueberfuehrung\Models\CompositeModels\RoutingInfo.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\Dienstleistung.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftrag.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\HistoryAuftragFilter.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\KclGruppe.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\KurzBemerkung.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\TransportTyp.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
+    <Compile Include="Ueberfuehrung\Models\DataModels\WebUploadProtokoll.cs" />
+    <Compile Include="Ueberfuehrung\Models\TrivialModels\SummaryItem.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Adresse.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Bemerkungen.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\DienstleistungsAuswahl.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Fahrzeug.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Step.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\SubStep.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\Summary.cs" />
+    <Compile Include="Ueberfuehrung\Models\UiModels\UploadFiles.cs" />
+    <Compile Include="Ueberfuehrung\Services\ReceiptCreationService.cs" />
+    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceSAP.cs" />
+    <Compile Include="Ueberfuehrung\Services\UeberfuehrungDataServiceTest.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungHistoryViewModel.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelData.cs" />
+    <Compile Include="Ueberfuehrung\ViewModels\UeberfuehrungViewModelUI.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung_org.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
       <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
@@ -94,6 +133,10 @@
     <ProjectReference Include="..\..\Tools\MvcTools\MvcTools.csproj">
       <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
       <Name>MvcTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\CkgDomainCommon\CkgDomainCommon.csproj">
       <Project>{116FCA66-F690-41B3-86F5-B8BF7BBA2949}</Project>
