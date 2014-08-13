@@ -74,7 +74,7 @@
                                                 TextMode="Password" TabIndex="2"></asp:TextBox>
                                         </td>
                                         <td class="lock">
-                                            <asp:ImageButton ID="btnEmpty" runat="server" ImageUrl="/PortalZLD/Images/empty.gif" Height="1px"
+                                            <asp:ImageButton ID="btnEmpty" runat="server" ImageUrl="../Images/empty.gif" Height="1px"
                                                 Width="1px" />                                        
                                             <asp:LinkButton ID="cmdLogin" runat="server" CssClass="Tablebutton" Height="16px"
                                                 Text="&amp;nbsp;&amp;#187; Login" Width="78px" TabIndex="3"></asp:LinkButton>
@@ -85,7 +85,7 @@
                                             &nbsp;
                                         </td>
                                         <td class="help">
-                                            <img alt="Hilfe" src="/PortalZLD/Images/Fragezeichen_10.jpg" style="width: 11px; height: 11px" />
+                                            <img alt="Hilfe" src="../Images/Fragezeichen_10.jpg" style="width: 11px; height: 11px" />
                                             <asp:LinkButton ID="lbtnHelpCenter" runat="server" Font-Underline="False" TabIndex="4"
                                                 ForeColor="#333333">Benötigen Sie Hilfe?</asp:LinkButton>
                                         </td>
@@ -97,7 +97,7 @@
                                         <td class="bold">
                                             &nbsp;</td>
                                         <td class="help">
-                                            <img src="/PortalZLD/Images/lock.gif" alt="Schloss" />
+                                            <img src="../Images/lock.gif" alt="Schloss" />
                                             <asp:LinkButton ID="lnkPasswortVergessen" runat="server" TabIndex="5" 
                                                 ForeColor="#333333" >Passwort vergessen?</asp:LinkButton></td>
                                         <td class="lock">
@@ -229,7 +229,7 @@
                                                                <img src="" alt="" id="imgCatcha2" runat="server" />&nbsp;
                                                             </td>   
                                                             <td style="padding: 5px 0px 15px 0px">
-                                                                <asp:ImageButton ID="ibtnRefresh" ImageUrl="/PortalZLD/images/Kreislauf_01.jpg" runat="server"
+                                                                <asp:ImageButton ID="ibtnRefresh" ImageUrl="../images/Kreislauf_01.jpg" runat="server"
                                                                 Height="32px" AlternateText="Generieren"  Width="32px" />
                                                             </td> 
                                                             <td style="width:420;padding: 5px 0px 15px 3px">
@@ -265,7 +265,7 @@
                                         <table class="" border="0" cellpadding="0" cellspacing="0" width="100%">
                                             <tr>
                                                 <td style="padding: 3px 1px 2px 28px">
-                                                    <img alt="" src="/PortalZLD/Images/arrow.gif" border="0" />
+                                                    <img alt="" src="../Images/arrow.gif" border="0" />
                                                 </td>
                                                 <td style="padding: 2px">
                                                     <b>

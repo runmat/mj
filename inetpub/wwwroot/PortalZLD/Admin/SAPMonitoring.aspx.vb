@@ -30,6 +30,7 @@ Public Class SAPMonitoring
 
     Private m_blnShowDetails() As Boolean
     Private m_objTrace As Base.Kernel.Logging.Trace
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
 #Region "Events"
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -197,10 +198,10 @@ Public Class SAPMonitoring
                             image.Width = 16
                             image.Height = 16
                             If InStr(image.ImageUrl, "plus.gif") > 0 Then
-                                image.ImageUrl = "/Services/Images/plus.gif"
+                                image.ImageUrl = "/PortalZLD/Images/plus.gif"
                             End If
                             If InStr(image.ImageUrl, "minus.gif") > 0 Then
-                                image.ImageUrl = "/Services/Images/minus.gif"
+                                image.ImageUrl = "/PortalZLD/Images/minus.gif"
                             End If
                         End If
                     Next
