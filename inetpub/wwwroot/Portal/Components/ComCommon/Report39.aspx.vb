@@ -307,7 +307,7 @@ Public Class Report39
 
             ' Erste Zeile füllen, falls nicht durch Statuszeile mit Status 0 geschehen
             If String.IsNullOrEmpty(lblDat0.Text) Then
-                Dim row As DataRow = mExpress.TableVersendungen.Select("POOLNR=" & e.CommandArgument.ToString())(0)
+                Dim row As DataRow = mExpress.TableVersendungen.Select("POOLNR='" & e.CommandArgument.ToString() & "'")(0)
                 lblDat0.Text = Left(row("ZZLSDAT").ToString(), 10)
                 lblTime0.Text = row("ZZLSTIM").ToString()
             End If
