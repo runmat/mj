@@ -1,0 +1,229 @@
+﻿@Html.Partial("Common/StylesScripts")
+
+<h3 class="page-title" id="headerTitle">@Localize.Autohaus_Fahrzeugverwaltung <small></small></h3>
+
+<ul class="breadcrumbs vehicle-breadcrumbs">
+	<li><a href="">@Localize.Vehicles</a></li>
+	<li class="hide"><a href="" class="current">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+</ul>	
+
+@Html.IeWarning(8)
+
+@Html.SpanAlert("Message")
+
+<div class="portlet">
+    @Html.Partial("Fahrzeugverwaltung/FahrzeugeGrid")
+
+    <div id="divFahrzeugakte"></div>
+    <div id="divFahrzeugCreate"></div>
+</div>
+
+<script type="text/javascript">
+
+    var _ladeHinweis = '@Localize.LoadingData';
+    var _modelStateValid = false;
+    var _breadCrumbInitial = '@Localize.Vehicles';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("FahrzeugeGrid");
+        BreadcrumbsPrepare();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function BreadcrumbsPrepare() {
+        $(".vehicle-breadcrumbs li").each(function (index, elem) {
+            var li = $(elem);
+            var a = li.find("a");
+            a.attr("href", "javascript:void(0)");
+        });
+    }
+
+    var _tabsEnabled = true;
+
+    function TabsEnable(enable) {
+        _tabsEnabled = enable;
+    }
+
+    /// Fahrzeuge-Grid
+    function GetFahrzeugeGrid() {
+        return $("#FahrzeugeGrid").data("tGrid");
+    }
+
+    function TryFahrzeugeGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetFahrzeugeGrid()) !== "undefined") {
+            GetFahrzeugeGrid().ajaxRequest();
+        }
+    }
+
+    function FahrzeugeLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#FahrzeugeGridItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function OnDataBound_FahrzeugeGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        FahrzeugeLoadingHide();
+    }
+
+    function OnLoad_FahrzeugeGrid() {
+        $('.t-no-data td').text(_ladeHinweis);
+    }
+
+    function OnColumnShowHide_FahrzeugeGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_FahrzeugeGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    /// Fahrzeug anlegen/löschen/bearbeiten
+    function FahrzeugCreateAjax() {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugCreate",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                FahrzeugCreate(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function FahrzeugCreate(result) {
+        $("#divFahrzeugCreate").html(result);
+        $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugCreate").slideDown(200); });
+        BreadcrumbsMoveNext('@Localize.VehicleCreate');
+    }
+
+    function FahrzeugCreateComplete() {
+        if (_modelStateValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+            FahrzeugCreateClose();
+        }
+    }
+
+    function FahrzeugCreateClose() {
+        $("#divFahrzeugCreate").slideUp(200, function () {
+            $("#FahrzeugeGridDiv").delay(200).show();
+            window.scrollTo(0, 0);
+            FormPrepareAjax();
+            BreadcrumbsMoveTo(1);
+            TryFahrzeugeGridRefresh();
+        });
+    }
+
+    function FahrzeugDeleteAjax(id) {
+        if (!confirm('@Localize.VehicleDoYouReallyWantToDelete.ToJavascriptString()'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugDelete",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", '@Localize.DeleteSuccessful.ToJavascriptString()', 1800);
+                TryFahrzeugeGridRefresh();
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function FahrzeugDetailsEditMode(editable) {
+        if (editable) {
+            $("#btnFahrzeugDetailsEdit").hide();
+            $("#btnFahrzeugDetailsSave").show();
+            $("#btnFahrzeugDetailsCancel").show();
+        } else {
+            $("#btnFahrzeugDetailsEdit").show();
+            $("#btnFahrzeugDetailsSave").hide();
+            $("#btnFahrzeugDetailsCancel").hide();
+        }
+
+        $("#ReferenzNr").attr("readonly", !editable);
+        $("#Vorname").attr("readonly", !editable);
+        $("#Nachname").attr("readonly", !editable);
+        $("#Email").attr("readonly", !editable);
+        $("#TelefonNr").attr("readonly", !editable);
+        $("#Kennzeichen").attr("readonly", !editable);
+        $("#FahrgestellNr").attr("readonly", !editable);
+        $("#FzgHersteller").attr("readonly", !editable);
+        $("#FzgModell").attr("readonly", !editable);
+    }
+
+    function FahrzeugEditComplete() {
+        if (_modelStateValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+        }
+    }
+
+    /// Fahrzeugakte
+    function ShowFahrzeugakte(result) {
+        $("#divFahrzeugakte").html(result);
+        GridAllColumnFilterApplyToGrid("FahrzeugakteDocsGrid"); 
+        $("#FahrzeugeGridDiv").slideUp(200, function () { $("#divFahrzeugakte").slideDown(200); });
+
+        FormPreparePrivateAjax();
+        
+        BreadcrumbsMoveNext($("#idFahrzeugakte").text());
+        BreadcrumbsMoveNext('@Localize.Autohaus_Fahrzeugakte');
+        TabsEnable(true);
+
+        $(".nav-tabs a").on("click", function () {
+            if (!_tabsEnabled) {
+                var levelName = $(".nav-tabs li.active").text();
+                SpanAlertWarning("Message", "Ein Registerwechsel ist erst wieder möglich sobald Sie sich auf der Hierarchie-Ebene  '" + levelName + "'  befinden.", 4000);
+                return false;
+            }
+
+            BreadcrumbsMovePrev();
+            BreadcrumbsMoveNext($(this).text());
+            return true;
+        });
+
+        GridAllColumnFilterApplyToGrid("BeauftragteZulassungenGrid");
+    }
+
+    function ShowFahrzeugakteAjax(id) {
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugakte",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugakte(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+
+        return false;
+    }
+
+    function CloseFahrzeugakte() {
+        $("#divFahrzeugakte").slideUp(function () {
+            $("#FahrzeugeGridDiv").delay(200).show();
+            window.scrollTo(0, 0);
+            FormPrepareAjax();
+            BreadcrumbsMoveTo(1);
+            TryFahrzeugeGridRefresh();
+        });
+    }
+    
+</script>
