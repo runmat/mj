@@ -465,7 +465,7 @@
                                                 <asp:TextBox ID="txtDatum" runat="server" CssClass="formtext jqcalendar jqcalendarWerktage" Width="130px"
                                                     MaxLength="10"></asp:TextBox>
 												<div class="formfeld_end_wide">
-													<img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
+													<img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
 												</div>
 											</div>
 											<!--datepicker-->		
@@ -479,7 +479,7 @@
                                                 <asp:TextBox ID="txtHalteDauer" runat="server" CssClass="formtext jqcalendar" Width="130px"
                                                     MaxLength="10"></asp:TextBox>
 												<div class="formfeld_end_wide">
-													<img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
+													<img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
 												</div>
 											</div>
 											<!--datepicker-->	                                            	
@@ -490,7 +490,7 @@
                                                         Wählen Sie das gewünschte Zulassungsdatum aus. Dies darf nicht in der Vergangenheit liegen. Wählen Sie außerdem die gewünschte Haltedauer bis aus.
 													</p>
 												</div>
-												<img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
+												<img src="../images/button_help.gif" width="27" height="26" alt="Hilfe" class="helpicon" />
 											</div>
 											<!--formulardaten zeile5 -->
                                             								

@@ -63,7 +63,7 @@
                                             </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
                                                     Width="1px" />
                                             </td>
                                         </tr>
@@ -149,7 +149,7 @@
                                                         </asp:TemplateField>
                                                         <asp:BoundField DataField="Customername" SortExpression="Customername" HeaderText="Firma" />
                                                         <asp:BoundField DataField="OName" SortExpression="OName" HeaderText="Kontakt-Name" />
-                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="../../Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
+                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="/PortalZLD/Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
                                                         </asp:ButtonField>
                                                     </Columns>
                                                 </asp:GridView>

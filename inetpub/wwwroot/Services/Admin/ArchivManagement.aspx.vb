@@ -225,7 +225,7 @@ Partial Public Class ArchivManagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "Archiv")
+    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
         Dim logArchiv As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
 
         Dim strUserName As String = m_User.UserName ' strUserName
@@ -239,16 +239,15 @@ Partial Public Class ArchivManagement
         logArchiv.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intArchivId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intArchivId As Int32) As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
             Dim _Archiv As New Kernel.Archiv(intArchivId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -280,16 +279,15 @@ Partial Public Class ArchivManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
                 .Rows(.Rows.Count - 1)("Archiv-Name") = txtEasyArchivName.Text
-                .Rows(.Rows.Count - 1)("Freundlicher Name") = txtEasyLagerortName.Text
+                .Rows(.Rows.Count - 1)("Lagerort-Name") = txtEasyLagerortName.Text
                 .Rows(.Rows.Count - 1)("QueryIndex") = txtEasyQueryIndex.Text
                 .Rows(.Rows.Count - 1)("QueryIndex-Name") = txtEasyQueryIndexName.Text
                 .Rows(.Rows.Count - 1)("Titel") = txtEasyTitleName.Text
@@ -352,8 +350,7 @@ Partial Public Class ArchivManagement
             Dim strLogMsg As String = "Archiv anlegen"
             If Not (intArchivId = -1) Then
                 strLogMsg = "Archiv ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intArchivId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intArchivId)
             End If
             Dim _Archiv As New Kernel.Archiv(intArchivId, _
                                                  txtEasyLagerortName.Text, _
@@ -366,8 +363,7 @@ Partial Public Class ArchivManagement
                                                  CInt(txtSortOrder.Text))
             Dim typ As Boolean
             _Archiv.Save(cn, typ)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_Archiv.ArchivId.ToString, strLogMsg, tblLogParameter)
             Search(True, True, , True)
 
@@ -395,8 +391,7 @@ Partial Public Class ArchivManagement
             Dim _Archiv As New Kernel.Archiv(CInt(txtArchivID.Text))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_Archiv.ArchivId, tblLogParameter)
+            tblLogParameter = SetOldLogParameters(_Archiv.ArchivId)
             _Archiv.Delete(cn)
             Log(_Archiv.ArchivId.ToString, "Archiv löschen", tblLogParameter)
             Search(True, True, True, True)

@@ -56,7 +56,7 @@
                         <asp:TemplateField HeaderText="Aufrufen">
                             <ItemTemplate>
                                 <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.Path") %>'
-                                    runat="server" ImageUrl="/AutohausPortal/Images/logoPDF.png" />
+                                    runat="server" ImageUrl="../Images/logoPDF.png" />
                             </ItemTemplate>
                             <HeaderStyle Width="40px" />
                             <ItemStyle Width="40px" />

@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucCheckBapis"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+    <Grid Margin="5" Background="#EEEEEE">
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type DataGrid}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DoesNotExistInSap}" Value="True">
+                        <Setter Property="Background" Value="Orange" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="5px"/>
+            <RowDefinition/>
+            <RowDefinition Height="28px"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Geänderte BAPI-Definitionen:" FontWeight="Bold" />
+            <TextBlock Grid.Column="1" Text="{Binding SapSystem}" FontWeight="Bold" />
+        </Grid>
+
+        <DataGrid Grid.Row="2" Name="dgBapiCheck" ItemsSource="{Binding BapiCheckAbweichungen}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Bapi" Binding="{Binding BapiName}" Width="*" />
+                <DataGridTemplateColumn Header="geändert" Width="60" SortMemberPath="HasChanged">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding HasChanged}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="neu" Width="40" SortMemberPath="IsNew">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsNew}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="nicht in Sap vorhanden" Width="140" SortMemberPath="DoesNotExistInSap">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DoesNotExistInSap}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="3" Command="{Binding CommandPerformBapiCheck}" Content="BAPI-Definitionen prüfen" Width="200"/>
+
+    </Grid>
+</UserControl>

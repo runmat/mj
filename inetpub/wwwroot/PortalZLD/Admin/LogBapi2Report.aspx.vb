@@ -9,6 +9,7 @@ Partial Public Class LogBapi2Report
     Private m_App As App
 #Region " Declarations"
     Private werteTable As DataTable
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 #End Region
 
 #Region " Properties"

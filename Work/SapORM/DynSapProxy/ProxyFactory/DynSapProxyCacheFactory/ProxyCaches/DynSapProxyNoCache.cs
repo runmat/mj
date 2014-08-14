@@ -310,6 +310,11 @@ namespace SapORM.Services
             }
         }
 
+        public void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

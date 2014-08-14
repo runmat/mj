@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ImpressumLogin.aspx.cs" Inherits="AutohausPortal.Info.ImpressumLogin"  
-     MasterPageFile="/AutohausPortal/MasterPage/Login.Master" %>
+     MasterPageFile="../MasterPage/Login.Master" %>
      
-<%@ MasterType VirtualPath="/AutohausPortal/MasterPage/Login.Master" %>
+<%@ MasterType VirtualPath="../MasterPage/Login.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="spacer" style="height: 10px;">
     </div>
