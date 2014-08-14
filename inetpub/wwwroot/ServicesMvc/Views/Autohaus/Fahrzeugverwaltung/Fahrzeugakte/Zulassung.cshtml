@@ -1,0 +1,10 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@model FahrzeugakteViewModel
+
+<div id="divBeauftragteZulassungenGrid">
+    @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Partial/Zulassung/BeauftragteZulassungenGrid", Model)
+</div>
+
+<div class="form-actions">
+    <a href='@Url.Action("ZulassungFromId", "Autohaus", new { fahrzeugId = Model.Fahrzeug.ID })' class='btn margin-right-5'>@Localize.VehicleRegister</a>
+</div>
