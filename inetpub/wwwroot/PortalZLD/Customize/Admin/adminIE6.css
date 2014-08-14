@@ -41,7 +41,7 @@
 }
 * html .Tablehead
 {
-    background-image: url(/PortalZLD/Images/headerBig.png);
+    background-image: url(../../Images/headerBig.png);
     height: 30px;
     background-repeat: repeat-x;
     text-align: left;
@@ -69,7 +69,7 @@
 
 * html .NaviImg
 {
-    background-image: url(/PortalZLD/Images/navi_orange.gif);
+    background-image: url(../../Images/navi_orange.gif);
     background-repeat: no-repeat;
     height: 100%;
 }
@@ -166,7 +166,7 @@ white-space:nowrap;
 * html .TablebuttonXLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../../Images/buttonXLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -179,7 +179,7 @@ white-space:nowrap;
 
 * html .formqueryHeader {
 	vertical-align: baseline;
-	background-image:url(/PortalZLD/Images/overflowThead.png);
+	background-image:url(../../Images/overflowThead.png);
     background-color:#9B9B9B;
     color:#FFFFFF;
     float:left;

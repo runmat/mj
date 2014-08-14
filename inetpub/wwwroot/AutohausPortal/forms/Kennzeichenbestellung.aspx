@@ -354,7 +354,7 @@
                                 <asp:TextBox ID="txtDatum" runat="server" CssClass="formtext jqcalendar jqcalendarWerktage" Width="130px"
                                     MaxLength="10"></asp:TextBox>
 								<div class="formfeld_end_wide">
-									<img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
+									<img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender" class="datepicker" />
 								</div>
 							</div>
 							<!--datepicker-->			

@@ -14,7 +14,7 @@
 						<div class="formlayer">
 							<div class="formlayer_top">
 								<div class="formopener" id="formopener1" onclick="openforms(1);">
-									<img src="/AutohausPortal/images/transp.gif" width="42" height="42" alt="" />
+									<img src="../images/transp.gif" width="42" height="42" alt="" />
 								</div>
 								<h2>Suchanfrage</h2>
 								<div class="hinweispflicht" id="hinweispflicht1">

@@ -138,7 +138,7 @@
                                 <telerik:GridTemplateColumn>
                                     <ItemTemplate> 
                                         <asp:ImageButton runat="server" ID="lnkPrint"  CommandName="print" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.AH_DOKNAME") %>'
-                                         ImageUrl="/AutohausPortal/images/logoPDF.png" Visible='<%# DataBinder.Eval(Container, "DataItem.AH_DOKNAME").ToString() != "" %>' ></asp:ImageButton>
+                                         ImageUrl="../images/logoPDF.png" Visible='<%# DataBinder.Eval(Container, "DataItem.AH_DOKNAME").ToString() != "" %>' ></asp:ImageButton>
                                     </ItemTemplate>
                                 </telerik:GridTemplateColumn>
                         </Columns>

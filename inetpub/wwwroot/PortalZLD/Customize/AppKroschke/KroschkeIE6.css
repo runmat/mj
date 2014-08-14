@@ -78,7 +78,7 @@ background-color: #2265BE;
  * html  .Busybutton 
 {
     padding-top: 2px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	text-align: center;
 	font-size:10px;
@@ -90,7 +90,7 @@ background-color: #2265BE;
  * html  .BusybuttonLarge 
 {
     padding-top: 2px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	text-align: center;
 	font-size:10px;
@@ -103,7 +103,7 @@ background-color: #2265BE;
  * html  .Adminbutton 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/Gear.png);
+	background-image: url(../../Images/Gear.png);
 	background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: right;
@@ -115,7 +115,7 @@ background-color: #2265BE;
  * html  .LinksVerwaltung {
     padding-top: 4px;
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../../Images/overflowUpsideDown.png);
 	color: #000000;
 	width: 180px;
 	height:23px;
@@ -134,7 +134,7 @@ background-color: #2265BE;
  * html  .Tablebutton 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -145,7 +145,7 @@ background-color: #2265BE;
  * html  A.Tablebutton
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -156,7 +156,7 @@ background-color: #2265BE;
  * html  A.Tablebutton:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -168,7 +168,7 @@ background-color: #2265BE;
  * html  A.Tablebutton:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	
 	vertical-align:middle;
@@ -180,7 +180,7 @@ background-color: #2265BE;
  * html  A.Tablebutton:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../../Images/button.jpg);
 	background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -222,7 +222,7 @@ background-color: #2265BE;
   * html  .TablebuttonLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../../Images/buttonLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -234,7 +234,7 @@ background-color: #2265BE;
  * html  A.TablebuttonLarge
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/images/buttonLarge.jpg);
+	background-image: url(../../images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -245,7 +245,7 @@ background-color: #2265BE;
  * html  A.TablebuttonLarge:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -258,7 +258,7 @@ background-color: #2265BE;
   * html  .TablebuttonMiddle
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../../Images/buttonMiddle.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -270,7 +270,7 @@ background-color: #2265BE;
  * html  A.TablebuttonMiddle
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/images/buttonMiddle.jpg);
+	background-image: url(../../images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -281,7 +281,7 @@ background-color: #2265BE;
 
  * html  .ExcelDiv
 {
-    background-image: url(/PortalZLD/Images/overflow.png);
+    background-image: url(../../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: left;
@@ -310,7 +310,7 @@ background-color: #2265BE;
     
 
  * html  .Tablehead {
-	background-image: url(/PortalZLD/Images/headerBig.png);
+	background-image: url(../../Images/headerBig.png);
 	height:30px;
 	background-repeat:repeat-x
 }
@@ -348,7 +348,7 @@ background-color: #2265BE;
   * html  .InfoBoxFlat
  {
 	background-color: #FFE97F;
-    background-image: url(/PortalZLD/Images/overflowupdown.png);
+    background-image: url(../../Images/overflowupdown.png);
     border-color:#2265BE;
     border-style:solid;
     border-width:1px;

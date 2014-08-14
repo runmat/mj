@@ -50,15 +50,15 @@
                                                 <telerik:GridBoundColumn SortExpression="DocumentId" DataField="DocumentId" visible="false" />
                                                 <telerik:GridTemplateColumn SortExpression="FileName" HeaderText="Dokument" HeaderButtonType="TextButton">
                                                     <ItemTemplate>
-                                                        <asp:ImageButton ID="lbtPDF" runat="server" CommandName="showDocument" Height="18px" ImageUrl="../images/iconPDF.gif" 
+                                                        <asp:ImageButton ID="lbtPDF" runat="server" CommandName="showDocument" Height="18px" ImageUrl="images/iconPDF.gif" 
                                                             ToolTip="PDF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "pdf" %>' />
-                                                        <asp:ImageButton ID="lbtExcel" runat="server" CommandName="showDocument" Height="18px" ImageUrl="../Images/iconXLS.gif" 
+                                                        <asp:ImageButton ID="lbtExcel" runat="server" CommandName="showDocument" Height="18px" ImageUrl="Images/iconXLS.gif" 
                                                             ToolTip="Excel" ImageAlign="Middle" Visible='<%# Eval("FileType").StartsWith("xls") %>' />
-                                                        <asp:ImageButton ID="lbtWord" runat="server" CommandName="showDocument" Height="18px" ImageUrl="../Images/Word_Logo.jpg"
+                                                        <asp:ImageButton ID="lbtWord" runat="server" CommandName="showDocument" Height="18px" ImageUrl="Images/Word_Logo.jpg"
                                                             ToolTip="Word" ImageAlign="Middle" Visible='<%# Eval("FileType").StartsWith("doc") %>' />
-                                                        <asp:ImageButton ID="lbtJepg" runat="server" CommandName="showDocument" Height="18px" ImageUrl="../Images/Fotos.jpg"
+                                                        <asp:ImageButton ID="lbtJepg" runat="server" CommandName="showDocument" Height="18px" ImageUrl="Images/Fotos.jpg"
                                                             ToolTip="JPG" ImageAlign="Middle" Visible='<%# Eval("FileType").StartsWith("jp") %>' />
-                                                        <asp:ImageButton ID="lbtGif" runat="server" CommandName="showDocument" Height="18px" ImageUrl="../Images/Fotos.jpg"
+                                                        <asp:ImageButton ID="lbtGif" runat="server" CommandName="showDocument" Height="18px" ImageUrl="Images/Fotos.jpg"
                                                             ToolTip="GIF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "gif" %>' />                                         
                                                         <span>
                                                             <asp:LinkButton ID="lbtDateiOeffnen" runat="server" CommandName="showDocument" Text='<%# Eval("FileName") %>' >
@@ -70,7 +70,7 @@
                                                 <telerik:GridBoundColumn SortExpression="DocTypeId" DataField="docTypeId" Visible="false" />
                                                 <telerik:GridBoundColumn SortExpression="DocTypeName" HeaderText="Art" AllowSorting="false" 
                                                     DataField="DocTypeName" HeaderStyle-Width="200px" />
-                                                <telerik:GridButtonColumn UniqueName="colBearbeiten" HeaderStyle-Width="50px" ButtonType="ImageButton" ImageUrl="/Autohausportal/Admin/Images/Edit_01.gif" Text="bearbeiten" CommandName="editDocument" >
+                                                <telerik:GridButtonColumn UniqueName="colBearbeiten" HeaderStyle-Width="50px" ButtonType="ImageButton" ImageUrl="Images/Edit_01.gif" Text="bearbeiten" CommandName="editDocument" >
                                                 </telerik:GridButtonColumn>
                                                 <telerik:GridBoundColumn SortExpression="LastEdited" HeaderText="Letzte Änderung" HeaderButtonType="TextButton" 
                                                     DataField="LastEdited" DataFormatString="{0:dd.MM.yyyy HH:mm:ss}" HeaderStyle-Width="150px">
