@@ -208,7 +208,7 @@ Hier können Sie die Selektion nach den individuellen Zuordnungskriterien für d
                                 <asp:TextBox ID="txtBeauftragtVon" runat="server" CssClass="formtext jqcalendar" Width="130px"
                                     MaxLength="10"></asp:TextBox>
                                 <div class="formfeld_end_wide">
-                                    <img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
+                                    <img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
                                         class="datepicker" />
                                 </div>
                             </div>
@@ -223,7 +223,7 @@ Hier können Sie die Selektion nach den individuellen Zuordnungskriterien für d
                                 <asp:TextBox ID="txtBeauftragtBis" runat="server" CssClass="formtext jqcalendar" Width="130px"
                                     MaxLength="10"></asp:TextBox>
                                 <div class="formfeld_end_wide">
-                                    <img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
+                                    <img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
                                         class="datepicker" />
                                 </div>
                             </div>
@@ -252,7 +252,7 @@ Hier können Sie die Selektion nach den individuellen Zuordnungskriterien für d
                                 <asp:TextBox ID="txtZuldateVon" runat="server" CssClass="formtext jqcalendar" Width="130px"
                                     MaxLength="10"></asp:TextBox>
                                 <div class="formfeld_end_wide">
-                                    <img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
+                                    <img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
                                         class="datepicker" />
                                 </div>
                             </div>
@@ -267,7 +267,7 @@ Hier können Sie die Selektion nach den individuellen Zuordnungskriterien für d
                                 <asp:TextBox ID="txtZuldateBis" runat="server" CssClass="formtext jqcalendar" Width="130px"
                                     MaxLength="10"></asp:TextBox>
                                 <div class="formfeld_end_wide">
-                                    <img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
+                                    <img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
                                         class="datepicker" />
                                 </div>
                             </div>

@@ -63,7 +63,7 @@ A.Tablebutton:hover
 }
 .Tablehead
 {
-    background-image: url(/PortalZLD//Images/headerBig.png);
+    background-image: url(../../Images/headerBig.png);
     height: 30px;
     background-repeat: repeat-x;
     text-align: left;
@@ -91,7 +91,7 @@ td.MainmenuItemAlternate:hover
 
 .NaviImg
 {
-    background-image: url(/PortalZLD//Images/navi_orange.gif);
+    background-image: url(../../Images/navi_orange.gif);
     background-repeat: no-repeat;
     height: 100%;
 }

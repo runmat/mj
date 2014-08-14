@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     /// <summary>
     /// Spaltenübersetzung für Portal-/Services-Anwendungen

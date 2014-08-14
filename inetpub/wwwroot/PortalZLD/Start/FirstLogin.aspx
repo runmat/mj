@@ -175,7 +175,7 @@
                                             <asp:TextBox ID="txtAnfordernSpeichern" CssClass="LoginTextbox" runat="server" Width="500px"></asp:TextBox>
                                         </td>
                                         <td class="lock">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="/PortalZLD/Images/empty.gif"
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../Images/empty.gif"
                                                 Height="16px" Width="1px" />
                                         </td>
                                     </tr>

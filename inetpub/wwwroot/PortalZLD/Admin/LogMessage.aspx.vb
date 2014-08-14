@@ -6,6 +6,7 @@ Partial Public Class LogMessage
     Inherits System.Web.UI.Page
     Private m_User As User
     Private m_App As App
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         m_User = GetUser(Me)

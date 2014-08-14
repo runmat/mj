@@ -28,7 +28,7 @@
                                             </td>
                                             <td align="right">
                                                 <div id="queryImage">
-                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="/PortalZLD/Images/queryArrow.gif" />
+                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="Images/queryArrow.gif" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -52,8 +52,8 @@
                                                 <td colspan="3" align="center">
                                                    Bapi Name:&nbsp;<asp:TextBox ID="txtFilter" runat="server" Text="**" Width="250px"></asp:TextBox>
                                                     &nbsp;<asp:ImageButton ID="imgbSetFilter" runat="server" Height="20px"
-                                                        ImageUrl="/PortalZLD/Images/Filter.gif" Visible="True" Width="20px" />
-                                                    &nbsp; &nbsp;<asp:ImageButton ID="imgbLookSAP" runat="server"  ImageUrl="/PortalZLD/Images/SAPLogo.gif"
+                                                        ImageUrl="Images/Filter.gif" Visible="True" Width="20px" />
+                                                    &nbsp; &nbsp;<asp:ImageButton ID="imgbLookSAP" runat="server"  ImageUrl="Images/SAPLogo.gif"
                                                         Visible="True"  />
                                                            
                                                 </td>
@@ -86,10 +86,10 @@
                                         <ItemTemplate>
                                             <asp:LinkButton ID="lbLookSAP" runat="server"  CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BapiName") %>'
                                                 CommandName="ShowSAP" >
-																		<img src="/PortalZLD/Images/SAPLogo.gif" alt="SAP" border="0"></asp:LinkButton>
+																		<img src="Images/SAPLogo.gif" alt="SAP" border="0"></asp:LinkButton>
                                             &nbsp;&nbsp;<asp:LinkButton ID="lbLookWEB" runat="server" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.BapiName") %>'
                                                 CommandName="ShowWEB" >
-																		<img src="/PortalZLD/Images/dotNet.jpeg" alt="NET" border="0"></asp:LinkButton>
+																		<img src="Images/dotNet.jpeg" alt="NET" border="0"></asp:LinkButton>
 																		
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
@@ -145,7 +145,7 @@
                                 <tr class="TextLarge">
                                     <td nowrap="nowrap" valign="bottom" width="15%">
                                         <asp:ImageButton runat="server" ID="imgbWebBapiVisible" 
-                                            ImageUrl="/PortalZLD/Images/minus.gif" />
+                                            ImageUrl="Images/minus.gif" />
                                         <span lang="de">&nbsp;<span class="style1"><strong>Web-Bapi Struktur</strong></span>&nbsp;&nbsp;&nbsp;</span>
                                     </td>
                                     <td align="left" valign="bottom" style="width:100%">
@@ -174,7 +174,7 @@
                                             <tr class="TextLarge">
                                                 <td nowrap="nowrap" valign="bottom" width="15%">
                                                     <asp:ImageButton runat="server" ID="imgbWebImportVisible" 
-                                                        ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                        ImageUrl="Images/Plus1.gif" />
                                                     <span lang="de">&nbsp;<strong>Web-Bapi Import</strong>&nbsp;&nbsp;&nbsp;</span>
                                                 </td>
                                                 <td align="left" valign="bottom" style="width:65%">
@@ -185,7 +185,7 @@
                                                         CssClass="TextError"></asp:Label></span>
                                                 </td>
                                                 <td align="right">
-                                                    <asp:ImageButton ID="imgbWebImportParameter" runat="server" Height="20px" ImageUrl="/PortalZLD/Images/iconxls.gif"
+                                                    <asp:ImageButton ID="imgbWebImportParameter" runat="server" Height="20px" ImageUrl="Images/iconxls.gif"
                                                         Visible="True" Width="20px" />
                                                 </td>
                                             </tr>
@@ -201,7 +201,7 @@
                                                     <asp:TemplateColumn ItemStyle-HorizontalAlign="Center"  ItemStyle-Width ="100px"  ItemStyle-VerticalAlign="Middle">
                                                         <ItemTemplate >
                                                             <asp:ImageButton runat="server" ID="imgbWebImportTabelleVisible" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                CommandName="Visible" ImageUrl="../Images/Plus1.gif" />
+                                                                CommandName="Visible" ImageUrl="Images/Plus1.gif" />
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:BoundColumn ItemStyle-Width ="100px"  DataField="PARAMETER" HeaderText="Parameter Name"></asp:BoundColumn>
@@ -212,7 +212,7 @@
                                                         <ItemTemplate   >
                                                             <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
                                                                 CommandName="Excel" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
+                                                                ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
                                                             <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                 runat="server" EnableViewState="true">
                                                             </asp:Literal>
@@ -251,7 +251,7 @@
                                         <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                             <tr class="TextLarge">
                                                 <td nowrap="nowrap" valign="bottom" width="15%">
-                                                    <asp:ImageButton runat="server" ID="imgbWebExportVisible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                    <asp:ImageButton runat="server" ID="imgbWebExportVisible" ImageUrl="Images/Plus1.gif" />
                                                     <span lang="de">&nbsp;<strong>Web-Bapi Export&nbsp;</strong>&nbsp;&nbsp;</span>
                                                 </td>
                                                 <td align="left" valign="bottom">
@@ -262,7 +262,7 @@
                                                         CssClass="TextError"></asp:Label></span>
                                                 </td>
                                                 <td align="right">
-                                                    <asp:ImageButton ID="imgbWebExportParameter" runat="server" Height="20px" ImageUrl="/PortalZLD/Images/iconxls.gif"
+                                                    <asp:ImageButton ID="imgbWebExportParameter" runat="server" Height="20px" ImageUrl="Images/iconxls.gif"
                                                         Visible="True" Width="20px" />
                                                 </td>
                                             </tr>
@@ -277,7 +277,7 @@
                                                     <asp:TemplateColumn ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                         <ItemTemplate>
                                                             <asp:ImageButton runat="server" ID="imgbWebExportTabelleVisible" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                CommandName="Visible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                                CommandName="Visible" ImageUrl="Images/Plus1.gif" />
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:BoundColumn ItemStyle-Width="34%" DataField="PARAMETER" HeaderText="Parameter Name">
@@ -290,7 +290,7 @@
                                                         <ItemTemplate>
                                                             <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
                                                                 CommandName="Excel" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
+                                                                ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
                                                             <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                 runat="server" EnableViewState="true">
                                                             </asp:Literal>
@@ -329,7 +329,7 @@
                                         <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                             <tr class="TextLarge">
                                                 <td nowrap="nowrap" valign="bottom" width="15%">
-                                                    <asp:ImageButton runat="server" ID="imgbWebTabellenVisible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                    <asp:ImageButton runat="server" ID="imgbWebTabellenVisible" ImageUrl="Images/Plus1.gif" />
                                                     <span lang="de">&nbsp;<strong>Web-Bapi Tabellen</strong>&nbsp;&nbsp;&nbsp;</span>
                                                 </td>
                                                 <td align="left" valign="bottom" colspan="3">
@@ -351,7 +351,7 @@
                                                     <asp:TemplateColumn ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                         <ItemTemplate>
                                                             <asp:ImageButton runat="server" ID="imgbWebTabellenTabelleVisible" 
-                                                                CommandName="Visible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                                CommandName="Visible" ImageUrl="Images/Plus1.gif" />
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:BoundColumn ItemStyle-Width="50%" DataField="TabellenName" HeaderText="Tabellen Name">
@@ -361,7 +361,7 @@
                                                     <asp:TemplateColumn Visible="true" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                         <ItemTemplate>
                                                             <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
-                                                                CommandName="Excel" ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.TabellenName") %>' />
+                                                                CommandName="Excel" ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.TabellenName") %>' />
                                                             <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                 runat="server" EnableViewState="true">
                                                             </asp:Literal>
@@ -420,7 +420,7 @@
                             <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                 <tr class="TextLarge">
                                     <td nowrap="nowrap" valign="bottom" width="15%">
-                                        <asp:ImageButton runat="server" ID="imgbSAPBapiVisible" ImageUrl="/PortalZLD/Images/minus.gif" />
+                                        <asp:ImageButton runat="server" ID="imgbSAPBapiVisible" ImageUrl="Images/minus.gif" />
                                         <span lang="de">&nbsp;<strong><span class="style1">SAP-Bapi Struktur&nbsp;</span></strong>&nbsp;&nbsp;</span>
                                     </td>
                                     <td align="left" valign="bottom" colspan="3" Style="width:100%">
@@ -444,7 +444,7 @@
                                             <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                 <tr class="TextLarge">
                                                     <td nowrap="nowrap" valign="bottom" width="15%">
-                                                        <asp:ImageButton runat="server" ID="imgbSAPImportVisible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                        <asp:ImageButton runat="server" ID="imgbSAPImportVisible" ImageUrl="Images/Plus1.gif" />
                                                         <span lang="de">&nbsp;<strong>SAP-Bapi Import&nbsp;</strong>&nbsp;&nbsp;</span>
                                                     </td>
                                                     <td align="left" valign="bottom">
@@ -455,7 +455,7 @@
                                                             CssClass="TextError"></asp:Label></span>
                                                     </td>
                                                     <td align="right">
-                                                        <asp:ImageButton ID="imgbSAPImportParameter" runat="server" Height="20px" ImageUrl="/PortalZLD/Images/iconxls.gif"
+                                                        <asp:ImageButton ID="imgbSAPImportParameter" runat="server" Height="20px" ImageUrl="Images/iconxls.gif"
                                                             Visible="True" Width="20px" />
                                                     </td>
                                                 </tr>
@@ -470,7 +470,7 @@
                                                         <asp:TemplateColumn ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbSAPImportTabelleVisible" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                    CommandName="Visible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                                    CommandName="Visible" ImageUrl="Images/Plus1.gif" />
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
                                                         <asp:BoundColumn ItemStyle-Width="34%" DataField="PARAMETER" HeaderText="Parameter Name">
@@ -483,7 +483,7 @@
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
                                                                     CommandName="Excel" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                    ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
+                                                                    ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
                                                                 <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                     runat="server" EnableViewState="true">
                                                                 </asp:Literal>
@@ -522,7 +522,7 @@
                                             <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                 <tr class="TextLarge">
                                                     <td nowrap="nowrap" valign="bottom" width="15%">
-                                                        <asp:ImageButton runat="server" ID="imgbSAPExportVisible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                        <asp:ImageButton runat="server" ID="imgbSAPExportVisible" ImageUrl="Images/Plus1.gif" />
                                                         <span lang="de"><strong>&nbsp;SAP-Bapi Export&nbsp;</strong>&nbsp;&nbsp;</span>
                                                     </td>
                                                     <td align="left" valign="bottom">
@@ -533,7 +533,7 @@
                                                             CssClass="TextError"></asp:Label></span>
                                                     </td>
                                                     <td align="right">
-                                                        <asp:ImageButton ID="imgbSAPExportParameter" runat="server" Height="20px" ImageUrl="/PortalZLD/Images/iconxls.gif"
+                                                        <asp:ImageButton ID="imgbSAPExportParameter" runat="server" Height="20px" ImageUrl="Images/iconxls.gif"
                                                             Visible="True" Width="20px" />
                                                     </td>
                                                 </tr>
@@ -548,7 +548,7 @@
                                                         <asp:TemplateColumn ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbSAPExportTabelleVisible" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                    CommandName="Visible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                                    CommandName="Visible" ImageUrl="Images/Plus1.gif" />
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
                                                         <asp:BoundColumn ItemStyle-Width="34%" DataField="PARAMETER" HeaderText="Parameter Name">
@@ -561,7 +561,7 @@
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
                                                                     CommandName="Excel" Visible='<%# DataBinder.Eval(Container, "DataItem.ParameterDATATYPE")="Tabelle" %>'
-                                                                    ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
+                                                                    ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.PARAMETER") %>' />
                                                                 <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                     runat="server" EnableViewState="true">
                                                                 </asp:Literal>
@@ -600,7 +600,7 @@
                                             <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                 <tr class="TextLarge">
                                                     <td nowrap="nowrap" valign="bottom" width="15%">
-                                                        <asp:ImageButton runat="server" ID="imgbSAPTabellenVisible" ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                        <asp:ImageButton runat="server" ID="imgbSAPTabellenVisible" ImageUrl="Images/Plus1.gif" />
                                                         <span lang="de"><strong>&nbsp;SAP-Bapi Tabellen&nbsp;</strong>&nbsp;&nbsp;</span>
                                                     </td>
                                                     <td align="left" valign="bottom">
@@ -625,7 +625,7 @@
                                                         <asp:TemplateColumn ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbSAPTabellenTabelleVisible" CommandName="Visible"
-                                                                    ImageUrl="/PortalZLD/Images/Plus1.gif" />
+                                                                    ImageUrl="Images/Plus1.gif" />
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
                                                         <asp:BoundColumn ItemStyle-Width="50%" DataField="TabellenName" HeaderText="Tabellen Name">
@@ -635,7 +635,7 @@
                                                         <asp:TemplateColumn Visible="true" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ID="imgbExcelFuerTabelle" Width="20px" Height="20px"
-                                                                    CommandName="Excel" ImageUrl="/PortalZLD/Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.TabellenName") %>' />
+                                                                    CommandName="Excel" ImageUrl="Images/iconxls.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.TabellenName") %>' />
                                                                 <asp:Literal Text='</TD></TR><TR align="center"><TD colspan="4">' ID="litHirarBeginn"
                                                                     runat="server" EnableViewState="true">
                                                                 </asp:Literal>

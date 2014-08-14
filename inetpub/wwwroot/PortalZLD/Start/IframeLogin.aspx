@@ -36,7 +36,7 @@
                                                 TextMode="Password" TabIndex="2"></asp:TextBox>
                                         </td>
                                         <td class="lock">
-                                            <asp:ImageButton ID="btnEmpty" runat="server" ImageUrl="/PortalZLD/Images/empty.gif" Height="1px"
+                                            <asp:ImageButton ID="btnEmpty" runat="server" ImageUrl="../Images/empty.gif" Height="1px"
                                                 Width="1px" />                                        
                                             <asp:LinkButton ID="cmdLogin" runat="server" CssClass="Tablebutton" Height="16px"
                                                 Text="&amp;nbsp;&amp;#187; Login" Width="78px" TabIndex="3"></asp:LinkButton>

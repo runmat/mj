@@ -59,7 +59,7 @@ Partial Public Class Admin
             lnkHauptmenue.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Start/Selection.aspx"
             lnkChangePassword.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Start/ChangePassword.aspx"
             lnkLogout.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Start/Logout.aspx"
-            lnkContact.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Info/ContactPage.aspx"
+            lnkContact.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Info/Kontakt.aspx"
             lnkResponsible.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Info/ResponsiblePage.aspx"
             lnkImpressum.NavigateUrl = "/AutohausPortal/(S(" & Session.SessionID & "))/Info/Impressum.aspx"
 
