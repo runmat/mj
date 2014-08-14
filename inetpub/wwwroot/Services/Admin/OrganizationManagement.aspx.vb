@@ -303,15 +303,14 @@ Partial Public Class OrganizationManagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intOrganizationId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intOrganizationId As Int32) As DataTable
         Try
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
             Dim _Organization As New Organization(intOrganizationId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -362,11 +361,10 @@ Partial Public Class OrganizationManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -454,8 +452,7 @@ Partial Public Class OrganizationManagement
             If Not (intOrganizationId = -1) Then
                 blnNew = False
                 strLogMsg = "Organisation ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intOrganizationId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intOrganizationId)
             End If
 
             Dim _Organization As New Organization(intOrganizationId, txtOrganizationName.Text, _
@@ -467,8 +464,7 @@ Partial Public Class OrganizationManagement
                                                 txtCWebDisplay.Text, txtCWeb.Text, _
                                                 blnNew)
             _Organization.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_Organization.OrganizationId.ToString, strLogMsg, tblLogParameter)
 
             Search(True, True, True, True)
@@ -499,8 +495,7 @@ Partial Public Class OrganizationManagement
                 False)
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtOrganizationID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtOrganizationID.Text))
 
             If Not _Organization.HasUser(cn) Then
                 _Organization.Delete(cn)

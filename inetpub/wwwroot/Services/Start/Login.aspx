@@ -317,10 +317,7 @@
                                     </ItemTemplate>
                                 </asp:Repeater>
                             </div>
-                            <div>
-
-                                <script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=sgw.kroschke.de&amp;size=S&amp;use_flash=YES&amp;use_transparent=YES&amp;lang=de"></script>
-
+                            <div id="divSicherheitszertifikat" runat="server">
                             </div>
                         </div>
                         <div id="DoubleLogin2" runat="server">

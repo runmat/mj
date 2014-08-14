@@ -4,7 +4,7 @@
         xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
         xmlns:ViewModels="clr-namespace:CKGDatabaseAdminLib.ViewModels;assembly=CKGDatabaseAdminLib"
         xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
-                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
                  WindowStartupLocation="CenterScreen" 
         Width="1024" Height="768" Title="CKGDatabaseAdminTool" IsIconVisible="False">
 
@@ -21,6 +21,13 @@
         <DataTemplate DataType="{x:Type ViewModels:FieldTranslationCopyViewModel}">
             <uc:ucCopyFieldTranslations/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:BapiCheckViewModel}">
+            <uc:ucCheckBapis/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
+            <uc:ucManageGitBranches/>
+        </DataTemplate>
+        <conv:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
     </Window.Resources>
 
     <DockPanel>
@@ -34,20 +41,27 @@
             
             <fl:RibbonTabItem Header="Verwaltung" Name="TabVerwaltung">
                 
-                <fl:RibbonGroupBox DataContext="{Binding LoginUserMessageViewModel}" Header="Login-Messages" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
+                <fl:RibbonGroupBox Header="Login-Messages" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding ApplicationBapiViewModel}" Header="BAPIs" HorizontalContentAlignment="Left">
                     <fl:Button Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
+                <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
+                    <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding ApplicationCopyViewModel}" Header="Anwendungen" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox DataContext="{Binding FieldTranslationCopyViewModel}" Header="Feldübersetzungen" HorizontalContentAlignment="Left">
-                    <fl:Button Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox Header="Feldübersetzungen" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding FieldTranslationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
+                </fl:RibbonGroupBox>
+
+                <fl:RibbonGroupBox Header="Git-Branches" HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding GitBranchViewModel}" Size="Middle" Command="{Binding CommandManageGitBranches}" Header="Git-Branches verwalten" 
+                        Height="Auto" IsEnabled="{Binding Path=DataContext, RelativeSource={RelativeSource Self}, Converter={StaticResource NotNullToBooleanConverter}}" />
                 </fl:RibbonGroupBox>
 
             </fl:RibbonTabItem>

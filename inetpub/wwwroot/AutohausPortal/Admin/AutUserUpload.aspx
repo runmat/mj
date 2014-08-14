@@ -314,7 +314,7 @@
                         <div id="Result" runat="Server" visible="false">
                             <div class="ExcelDiv">
                                 <div align="right" id="trSearchSpacer" runat="server">
-                                    <img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                    <img src="Images/iconXLS.gif" alt="Excel herunterladen" />
                                             <span class="ExcelSpan">
                                                 <asp:LinkButton ID="lnkCreateExcel" ForeColor="White" runat="server">Excel herunterladen</asp:LinkButton>
                                             </span>

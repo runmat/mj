@@ -36,6 +36,7 @@ Public Class LogViewer
     Protected WithEvents TblLog As System.Web.UI.HtmlControls.HtmlTable
     Protected WithEvents lblDownloadTip As System.Web.UI.WebControls.Label
     Protected WithEvents lnkExcel As System.Web.UI.WebControls.HyperLink
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
 #Region "Events"
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
