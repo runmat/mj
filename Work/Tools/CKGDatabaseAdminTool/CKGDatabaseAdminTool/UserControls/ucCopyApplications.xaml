@@ -21,6 +21,7 @@
             </Style>
             <Style TargetType="{x:Type DataGrid}">
                 <Setter Property="Margin" Value="2"/>
+                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
             </Style>
             <CollectionViewSource x:Key="OtherDbConnections" Source="{Binding DbConnections}" 
                               Filter="OtherDbConnections_Filter">
@@ -30,6 +31,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="24px"/>
             <RowDefinition Height="5px"/>
+            <RowDefinition Height="20px"/>
             <RowDefinition Height="370px"/>
             <RowDefinition Height="24px"/>
             <RowDefinition/>
@@ -48,34 +50,28 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Anwendungen:" FontWeight="Bold" />
         <TextBlock Grid.Row="0" Grid.Column="2" Text="Details:" FontWeight="Bold" />
 
-        <DataGrid Grid.Row="2" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="2" Name="dgApplications" ItemsSource="{Binding Applications}" SelectionChanged="dgApplications_OnSelectionChanged" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
+        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ShowOnlyNewApplications}" VerticalAlignment="Center" Margin="2,0">Nur neue</CheckBox>
+        <DataGrid Grid.Row="3" Grid.RowSpan="5" Grid.Column="0" Grid.ColumnSpan="2" Name="dgApplications" ItemsSource="{Binding Applications}" SelectionChanged="dgApplications_OnSelectionChanged" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding AppID}" />
-                <!--<DataGridTemplateColumn Header="Menü" Width="42" SortMemberPath="AppInMenu">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding AppInMenu}" IsEnabled="False" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
                 <DataGridTextColumn Header="Name" Binding="{Binding AppName}" />
                 <DataGridTextColumn Header="Anzeigename" Binding="{Binding AppFriendlyName}" />
-                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" />
+                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        <uc:ucApplicationDetails Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" DataContext="{Binding ElementName=dgApplications, Path=SelectedItem}" Margin="2,2,2,0"/>
+        <uc:ucApplicationDetails Grid.Row="2" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" DataContext="{Binding ElementName=dgApplications, Path=SelectedItem}" Margin="2,2,2,0"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="Unterseiten:" FontWeight="Bold" />
+        <TextBlock Grid.Row="4" Grid.Column="2" Text="Unterseiten:" FontWeight="Bold" />
 
-        <DataGrid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ChildApplications}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ChildApplications}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding AppID}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding AppFriendlyName}" />
-                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" />
+                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Margin="2,0,2,2">
+        <Grid Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Margin="2,0,2,2">
 
             <Grid.Resources>
                 <Style TargetType="{x:Type CheckBox}">
@@ -96,8 +92,8 @@
             
         </Grid>
         
-        <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Source={StaticResource OtherDbConnections}}" SelectedValue="{Binding DestinationDatabase}" />
-        <Button Grid.Row="6" Grid.Column="3" Command="{Binding CommandCopyApplicationToDestinationDatabase}" Content="Anwendung kopieren" />
+        <ComboBox Grid.Row="7" Grid.Column="2" ItemsSource="{Binding Source={StaticResource OtherDbConnections}}" SelectedValue="{Binding DestinationDatabase}" />
+        <Button Grid.Row="7" Grid.Column="3" Command="{Binding CommandCopyApplicationToDestinationDatabase}" Content="Anwendung kopieren" />
 
     </Grid>
 </UserControl>

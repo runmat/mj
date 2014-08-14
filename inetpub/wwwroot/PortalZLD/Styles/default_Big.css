@@ -1,6 +1,6 @@
 ﻿body {
 	background-color: #bababa;
-	background-image: url(/PortalZLD/Images/backgroundImage.gif);
+	background-image: url(../Images/backgroundImage.gif);
 	background-position: 0px 0px;
 	background-repeat: repeat-x;
 	font-family: Verdana, sans-serif;
@@ -106,7 +106,7 @@ div#site {
 }
 
 div#header {
-    background-image: url(/PortalZLD/Images/BigKroschkeBridge.jpg);
+    background-image: url(../Images/BigKroschkeBridge.jpg);
 	background-position: 0px 0px;
 	background-repeat: no-repeat;
 	height: 100px;
@@ -142,7 +142,7 @@ div#header ul li {
 }
 
 div#header ul#navigation {
-	background-image: url(/PortalZLD/Images/overflowNavigationShadow.png);
+	background-image: url(../Images/overflowNavigationShadow.png);
 	background-position: right;
 	background-repeat: no-repeat;
 	padding-right: 18px;
@@ -150,7 +150,7 @@ div#header ul#navigation {
 }
 
 div#header ul#navigation li {
-	background-image: url(/PortalZLD/Images/overflowNavigation.png);
+	background-image: url(../Images/overflowNavigation.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 	
@@ -238,7 +238,7 @@ div#content div#innerContentLeft {
 }
 
 div#content div#innerContent div div.innerContentHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	line-height: 22px;
 	padding-left: 15px;
@@ -266,7 +266,7 @@ div#content div#innerContentLeft ul {
 
 div#content div#innerContentLeft ul li {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #595959;
 	height: 22px;
 	line-height: 22px;
@@ -276,7 +276,7 @@ div#content div#innerContentLeft ul li {
 
 div#content div#innerContentLeft ul li {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #595959;
 	height: 22px;
 	line-height: 22px;
@@ -298,7 +298,7 @@ div#content div#innerContentRight { float: left }
 
 
 div#content div#innerContentRight div#innerContentRightHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: left;
@@ -362,7 +362,7 @@ div#content div#innerContentLeft2 {
 
 
 div#content div#innerContentLeft2 div#innerContentLeftHeading {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: right;
@@ -421,7 +421,7 @@ div#content div#innerContentLeft2 div#innerContentLeft2Callback td.innerCallback
 }
 
 div#content div#query {
-	background-image:url(/PortalZLD/Images/overflow.png);
+	background-image:url(../Images/overflow.png);
     color:#FFFFFF;
     font-weight:bold;
     height:22px;
@@ -803,7 +803,7 @@ div#content div#innerContentRight div#data table .active { font-weight: bold;
 }
 
 div#content div#innerContentRight div#data table thead {
-	background-image: url(/PortalZLD/imgages/overflowThead.png);
+	background-image: url(../images/overflowThead.png);
 	background-color: #9b9b9b;
 }
 
@@ -1025,7 +1025,7 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
 }    
 
 .Tablehead {
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	background-color: #9b9b9b;
 	height:30px;
 	color:#FFFFFF;
@@ -1036,7 +1036,7 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
 
 .GridTableHead
 {
-    background-image: url(/PortalZLD/Images/overflowThead.png);
+    background-image: url(../Images/overflowThead.png);
 	background-color: #9b9b9b;
 	height:23px;
 	color:#FFFFFF;
@@ -1110,7 +1110,7 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
 {
     padding-top: 4px;
     margin-left: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1124,7 +1124,7 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
 A.Tablebutton
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1135,7 +1135,7 @@ A.Tablebutton
 A.Tablebutton:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1146,7 +1146,7 @@ A.Tablebutton:hover
 A.Tablebutton:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1156,7 +1156,7 @@ A.Tablebutton:visited
 A.Tablebutton:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/button.jpg);
+	background-image: url(../Images/button.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1168,7 +1168,7 @@ A.Tablebutton:active
 A.TablebuttonLarge
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1178,7 +1178,7 @@ A.TablebuttonLarge
 A.TablebuttonLarge:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1189,7 +1189,7 @@ A.TablebuttonLarge:hover
 A.TablebuttonLarge:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1199,7 +1199,7 @@ A.TablebuttonLarge:visited
 A.TablebuttonLarge:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1210,7 +1210,7 @@ A.TablebuttonLarge:active
 .TablebuttonLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	background-image: url(../Images/buttonLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -1223,7 +1223,7 @@ A.TablebuttonLarge:active
 {
     padding-top: 4px;
     margin-left: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: left;
@@ -1236,7 +1236,7 @@ A.TablebuttonLarge:active
   A.TablebuttonMiddle
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1247,7 +1247,7 @@ A.TablebuttonLarge:active
 A.TablebuttonMiddle:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1258,7 +1258,7 @@ A.TablebuttonMiddle:hover
 A.TablebuttonMiddle:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1268,7 +1268,7 @@ A.TablebuttonMiddle:visited
 A.TablebuttonMiddle:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	background-image: url(../Images/buttonMiddle.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1279,7 +1279,7 @@ A.TablebuttonMiddle:active
 A.TablebuttonXLarge
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1290,7 +1290,7 @@ A.TablebuttonXLarge
 A.TablebuttonXLarge:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1301,7 +1301,7 @@ A.TablebuttonXLarge:hover
 A.TablebuttonXLarge:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1311,7 +1311,7 @@ A.TablebuttonXLarge:visited
 A.TablebuttonXLarge:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1322,7 +1322,7 @@ A.TablebuttonXLarge:active
 .TablebuttonXLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -1336,7 +1336,7 @@ A.TablebuttonXLarge:active
 {
     padding-top: 4px;
     margin-left: 4px;
-	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	background-image: url(../Images/buttonSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1350,7 +1350,7 @@ A.TablebuttonXLarge:active
 A.TablebuttonSmall
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	background-image: url(../Images/buttonSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1361,7 +1361,7 @@ A.TablebuttonSmall
 A.TablebuttonSmall:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	background-image: url(../Images/buttonSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1372,7 +1372,7 @@ A.TablebuttonSmall:hover
 A.TablebuttonSmall:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	background-image: url(../Images/buttonSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1384,7 +1384,7 @@ A.TablebuttonSmall:visited
 {
     padding-top: 4px;
     margin-left: 4px;
-	background-image: url(/PortalZLD/Images/buttonXSmall.jpg);
+	background-image: url(../Images/buttonXSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1398,7 +1398,7 @@ A.TablebuttonSmall:visited
 A.TablebuttonXSmall
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXSmall.jpg);
+	background-image: url(../Images/buttonXSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1409,7 +1409,7 @@ A.TablebuttonXSmall
 A.TablebuttonXSmall:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXSmall.jpg);
+	background-image: url(../Images/buttonXSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1420,7 +1420,7 @@ A.TablebuttonXSmall:hover
 A.TablebuttonXSmall:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXSmall.jpg);
+	background-image: url(../Images/buttonXSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1431,7 +1431,7 @@ A.TablebuttonXSmall:visited
 A.Tablebutton:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	background-image: url(../Images/buttonSmall.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1441,7 +1441,7 @@ A.Tablebutton:active
 A.TablebuttonXLarge
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1452,7 +1452,7 @@ A.TablebuttonXLarge
 A.TablebuttonXLarge:hover
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	background-image: url(../Images/buttonXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1463,7 +1463,7 @@ A.TablebuttonXLarge:hover
 A.TablebuttonXXLarge:visited
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+	background-image: url(../Images/buttonXXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1473,7 +1473,7 @@ A.TablebuttonXXLarge:visited
 A.TablebuttonXXLarge:active
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+	background-image: url(../Images/buttonXXLarge.jpg);
 	vertical-align:middle;
 	text-align: center;
 	font-size:10px;
@@ -1484,7 +1484,7 @@ A.TablebuttonXXLarge:active
 .TablebuttonXXLarge 
 {
     padding-top: 4px;
-	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+	background-image: url(../Images/buttonXXLarge.jpg);
     background-repeat: no-repeat;
 	vertical-align:middle;
 	text-align: center;
@@ -1509,14 +1509,14 @@ A.TablebuttonXXLarge:active
 	font-size: 11px;	
     }
     
-.Menutitle{	background-image: url(/PortalZLD/Images/overflow.png);
+.Menutitle{	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	line-height: 22px;
 	padding-left: 15px;
 }
 .MainmenuItemComment {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 10px;
 	line-height: 22px;
@@ -1526,7 +1526,7 @@ A.TablebuttonXXLarge:active
 
 .MainmenuItemAlternate {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 20px;
 	line-height: 22px;
@@ -1536,7 +1536,7 @@ A.TablebuttonXXLarge:active
 
 .MainmenuItemAlternate:hover {
 	background-color: #BC4B4B;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 20px;
 	line-height: 22px;
@@ -1546,7 +1546,7 @@ A.TablebuttonXXLarge:active
 
 td.MainmenuItemAlternate {
 	background-color: #dfdfdf;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 10px;
 	line-height: 22px;
@@ -1555,7 +1555,7 @@ td.MainmenuItemAlternate {
 
 td.MainmenuItemAlternate:hover {
 	background-color: #BC4B4B;
-	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-image: url(../Images/overflowUpsideDown.png);
 	color: #ffffff;
 	height: 10px;
 	line-height: 22px;
@@ -1673,7 +1673,7 @@ A.MainmenuLink {
 
 .ExcelDiv
 {
-    background-image: url(/PortalZLD/Images/overflow.png);
+    background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
 	float: left;
@@ -1730,7 +1730,7 @@ A.MainmenuLink {
      }
      
  div.ImpressumHead {
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	float: left;
 	height: 22px;
@@ -1748,7 +1748,7 @@ A.MainmenuLink {
 
 .NaviImg 
 {
-    background-image:url(/PortalZLD/Images/navi.gif);
+    background-image:url(../Images/navi.gif);
     }
     
 
@@ -2308,7 +2308,7 @@ div#VorschauHead{
 div#VorschauHead h1
 	{
 	background-color: #576B96;
-	background-image: url(/PortalZLD/Images/overflow.png);
+	background-image: url(../Images/overflow.png);
 	padding-left: 10px;
 	white-space:nowrap;	
 	font-size: 10px;
@@ -2352,7 +2352,7 @@ div#VorschauHead h1
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButton.png)
+     background-image: url(../Images/HistButton.png)
      }
      
      .HistbuttonFirst:hover 
@@ -2372,7 +2372,7 @@ div#VorschauHead h1
      color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButton2.png)
+     background-image: url(../Images/HistButton2.png)
      
      
      }  
@@ -2394,7 +2394,7 @@ div#VorschauHead h1
       color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonBeforActive.png)
+     background-image: url(../Images/HistButtonBeforActive.png)
      }  
       .HistButtonBeforActive:hover 
      {
@@ -2413,7 +2413,7 @@ div#VorschauHead h1
       color:#FFFFFF;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonLast.png)
+     background-image: url(../Images/HistButtonLast.png)
      } 
       .HistButtonLast:hover 
      {
@@ -2432,7 +2432,7 @@ div#VorschauHead h1
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonLastActive.png)
+     background-image: url(../Images/HistButtonLastActive.png)
      } 
       .HistButtonLastActive:hover 
      {
@@ -2450,7 +2450,7 @@ div#VorschauHead h1
      color:#4C4C4C;
      cursor:pointer;
      font-weight:bold;
-     background-image: url(/PortalZLD/Images/HistButtonMiddleActive.png)
+     background-image: url(../Images/HistButtonMiddleActive.png)
      } 
      
       .HistButtonMiddleActive:hover 
@@ -2500,76 +2500,76 @@ div#VorschauHead h1
 
    .VersandButtonStamm  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardBlueStift.png);
+         background-image: url(../Images/Versand/StandardBlueStift.png);
          width:150px;
     }   
    .VersandButtonAdresse  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardBlueAdresse.png);
+         background-image: url(../Images/Versand/StandardBlueAdresse.png);
          width:120px;
         }  
    .VersandButtonOptionen  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardBlueOptionen.png);
+         background-image: url(../Images/Versand/StandardBlueOptionen.png);
          width:160px;
 
          
         }       
    .VersandButtonOverview  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardBlueOverview.png);
+         background-image: url(../Images/Versand/StandardBlueOverview.png);
          float:left;
          width:140px;
         }
 
    .VersandButtonStammEnabled  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardGreyStift.png);
+         background-image: url(../Images/Versand/StandardGreyStift.png);
          width:150px;
          
         }   
    .VersandButtonAdresseEnabled  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardGreyAdresse.png);
+         background-image: url(../Images/Versand/StandardGreyAdresse.png);
          width:120px;
        
         }  
    .VersandButtonOptionenEnabled  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardGreyOptionen.png);
+         background-image: url(../Images/Versand/StandardGreyOptionen.png);
          width:160px;
 
          
         }       
    .VersandButtonOverviewEnabled  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardGreyOverview.png);
+         background-image: url(../Images/Versand/StandardGreyOverview.png);
          width:140px;
        
         }
 
    .VersandButtonStammReady  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardReadyStift.png);
+         background-image: url(../Images/Versand/StandardReadyStift.png);
         width:150px;
         
         }   
    .VersandButtonAdresseReady  
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardReadyAdresse.png);
+         background-image: url(../Images/Versand/StandardReadyAdresse.png);
         width:120px;
      
         }  
    .VersandButtonOptionenReady 
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardReadyOptionen.png);
+         background-image: url(../Images/Versand/StandardReadyOptionen.png);
          width:160px;
 
          
         }       
    .VersandButtonOverviewReady 
     {	
-         background-image: url(/PortalZLD/Images/Versand/StandardReadyOverview.png);
+         background-image: url(../Images/Versand/StandardReadyOverview.png);
          width:140px;
 }      
 
@@ -2619,7 +2619,7 @@ div#VorschauHead h1
      font-size:12px;
      background-repeat:no-repeat;
      width:100%;
-     background-image: url(/PortalZLD/Images/Versand/Suche2.png);
+     background-image: url(../Images/Versand/Suche2.png);
      vertical-align:bottom
     }
   .VersandTabPanel div.PanelHeadSuche input
@@ -2667,35 +2667,35 @@ div#VorschauHead h1
                 
      .LogistikButtonTour  
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardBlueTour.png);
+         background-image: url(../Images/Logistik/StandardBlueTour.png);
          width:120px;
         }  
    .LogistikButtonDL  
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardBlueDL.png);
+         background-image: url(../Images/Logistik/StandardBlueDL.png);
          width:180px;
     }
            .LogistikButtonTourDisabled  
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardGreyTour.png);
+         background-image: url(../Images/Logistik/StandardGreyTour.png);
          width:120px;
        
         }  
    .LogistikButtonDL_Disabled  
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardGreyDL.png);
+         background-image: url(../Images/Logistik/StandardGreyDL.png);
          width:180px;
     }
     
     .LogistikButtonTourReady  
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardReadyTour.png);
+         background-image: url(../Images/Logistik/StandardReadyTour.png);
         width:120px;
      
         }  
    .LogistikButtonDL_Ready 
     {	
-         background-image: url(/PortalZLD/Images/Logistik/StandardReadyDL.png);
+         background-image: url(../Images/Logistik/StandardReadyDL.png);
          width:180px;
 
          
@@ -2797,7 +2797,7 @@ div#content div#innerContentRight div#VersandOverviewData table {
 .StandardHeadDetail
 
 {
-    background-image: url(/PortalZLD/Images/Versand/Stepheadoverflow.png);
+    background-image: url(../Images/Versand/Stepheadoverflow.png);
     background-repeat:no-repeat;
     background-color: #576B96;
     height: 28px; 
@@ -2808,7 +2808,7 @@ div#content div#innerContentRight div#VersandOverviewData table {
 
 {
         margin-left: 15px;
-        background-image: url(/PortalZLD/Images/Versand/headopenoverflow.png);
+        background-image: url(../Images/Versand/headopenoverflow.png);
         background-repeat: no-repeat;
         background-color: #576B96; 
         height: 8px; 

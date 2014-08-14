@@ -10,6 +10,7 @@ Partial Public Class ArchivManagement
     Private m_User As User
     Private m_App As App
     Private m_context As HttpContext = HttpContext.Current
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

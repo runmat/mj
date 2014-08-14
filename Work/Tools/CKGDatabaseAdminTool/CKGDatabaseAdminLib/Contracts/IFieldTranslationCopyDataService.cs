@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using CKGDatabaseAdminLib.Models.DbModels;
+using CKGDatabaseAdminLib.Models;
 using CkgDomainLogic.General.Contracts;
 
 namespace CKGDatabaseAdminLib.Contracts
@@ -14,9 +14,13 @@ namespace CKGDatabaseAdminLib.Contracts
 
         void InitDataContext(string connectionName);
 
+        void InitDestinationDataContext(string connectionName);
+
+        void FilterData(bool onlyNew);
+
         void BeginEdit(int appId, string appURL);
 
-        void CopyFieldTranslations(string destinationDb);
+        void CopyFieldTranslations();
 
         void ResetCurrentApp();
     }

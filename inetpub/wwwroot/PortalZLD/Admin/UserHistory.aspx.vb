@@ -60,6 +60,7 @@ Public Class UserHistory
 #Region " Membervariables "
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 #End Region
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
