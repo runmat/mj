@@ -108,12 +108,12 @@ function toggleNavigation() {
 
     if (navigation.style.display == 'none') {
         navigation.style.display = 'block';
-        img.src = '../Images/navDisplayArrowLeft.gif';
+        img.src = '/PortalZLD/Images/navDisplayArrowLeft.gif';
         content.style.width = '78%';
     }
     else {
         navigation.style.display = 'none';
-        img.src = '../Images/navDisplayArrowRight.gif';
+        img.src = '/PortalZLD/Images/navDisplayArrowRight.gif';
         content.style.width = '100%';
     }
 }
@@ -125,11 +125,11 @@ function toggleQuery() {
 
     if (TableQuery.style.display == 'none') {
         TableQuery.style.display = 'block';
-        img.src = '../../../Images/navDisplayArrowLeft.gif';
+        img.src = '/PortalZLD/Images/navDisplayArrowLeft.gif';
     }
     else {
         TableQuery.style.display = 'none';
-        img.src = '../../../Images/navDisplayArrowRight.gif';
+        img.src = '/PortalZLD/Images/navDisplayArrowRight.gif';
     }
 }
 

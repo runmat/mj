@@ -70,7 +70,7 @@
                                             </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="images/empty.gif"
                                                     Width="1px" />
                                             </td>
                                         </tr>
@@ -132,7 +132,7 @@
                                                                 </asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:ButtonField CommandName="Del" HeaderStyle-ForeColor="White"  HeaderText="Löschen" ButtonType="Image" ImageUrl="/AutohausPortal/Admin/Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
+                                                        <asp:ButtonField CommandName="Del" HeaderStyle-ForeColor="White"  HeaderText="Löschen" ButtonType="Image" ImageUrl="Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
                                                         </asp:ButtonField>                                                    
                                                         <asp:ButtonField DataTextField="CustomerName" ItemStyle-Font-Underline="true" ItemStyle-ForeColor="#595959" SortExpression="CustomerName"  HeaderText="Kunde"
                                                             CommandName="Edit" ></asp:ButtonField>
@@ -655,7 +655,7 @@
                                                                             <table class="" border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                                 <tr>
                                                                                     <td style="padding: 2px">
-                                                                                        <img alt="" src="/Portal/Images/arrow.gif" border="0" />
+                                                                                        <img alt="" src="Images/arrow.gif" border="0" />
                                                                                     </td>
                                                                                     <td style="padding: 2px">
                                                                                         <b>
@@ -740,11 +740,11 @@
                                                         </p>
                                                     </td>
                                                     <td>
-                                                        <asp:ImageButton Style="margin-left: 20px" ID="btnAssign" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_vor_01.jpg"
+                                                        <asp:ImageButton Style="margin-left: 20px" ID="btnAssign" runat="server" ImageUrl="Images/Pfeil_vor_01.jpg"
                                                             ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                     </td>
                                                     <td>
-                                                        <asp:ImageButton ID="btnUnAssign" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_zurueck_01.jpg"
+                                                        <asp:ImageButton ID="btnUnAssign" runat="server" ImageUrl="Images/Pfeil_zurueck_01.jpg"
                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                     </td>
                                                     <td class="active" width="35%">
@@ -771,11 +771,11 @@
                                                         </p>
                                                     </td>
                                                     <td>
-                                                        <asp:ImageButton ID="btnAssignArchiv" Style="margin-left: 40px" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_vor_01.jpg"
+                                                        <asp:ImageButton ID="btnAssignArchiv" Style="margin-left: 40px" runat="server" ImageUrl="Images/Pfeil_vor_01.jpg"
                                                             ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                     </td>
                                                     <td>
-                                                        <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_zurueck_01.jpg"
+                                                        <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="Images/Pfeil_zurueck_01.jpg"
                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                     </td>
                                                     <td class="active" width="35%">

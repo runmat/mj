@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
- <link href="PortalZLD/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+ <link href="/PortalZLD/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
  <link href="/PortalZLD/Styles/js/jquery-ui.css" rel="stylesheet" type="text/css"/>
   </head>
 <body id="top">
@@ -72,11 +72,11 @@
             </ul>
             <ul id="userinfo">
                 <li>
-                    <asp:Label ID="lblBenutzer" runat="server" ></asp:Label></span>
+                    <asp:Label ID="lblBenutzer" runat="server" ></asp:Label>
                     <span class="bold">
                         <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
                 <li class="logout">
-                    <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="../../Images/navLogout.gif"
+                    <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="/PortalZLD/Images/navLogout.gif"
                         NavigateUrl="/PortalZLD/Start/Logout.aspx"></asp:HyperLink>
                 </li>
             </ul>

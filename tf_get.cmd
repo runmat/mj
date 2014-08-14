@@ -44,6 +44,7 @@ tf get $/Migration/PortalORM /recursive /force
 
 cd..
 cd PortalZLD
+tf get $/Migration/CKPortalZLD/PortalZLD /recursive /force
 
 cd..
 cd Services

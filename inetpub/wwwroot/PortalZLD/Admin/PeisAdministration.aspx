@@ -74,7 +74,7 @@
                                 <div id="Resultshow" runat="server" visible="false">
                                     <div class="ExcelDiv">
                                         <div align="right" class="rightPadding" id = "ExcelDiv" runat="server">
-                                            &nbsp;<img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                            &nbsp;<img src="/PortalZLD/Images/iconXLS.gif" alt="Excel herunterladen" />
                                             <span class="ExcelSpan">
                                                 <asp:LinkButton ID="lnkCreateExcel1" ForeColor="White" runat="server">Excel 
                                                                 herunterladen</asp:LinkButton>
@@ -113,7 +113,7 @@
                                                         <ItemTemplate>
                                                             <asp:LinkButton ID="lbDelete" runat="server" Width="10px" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.FilterID") %>'
                                                                 CommandName="Delete" Height="10px">
-																		<img src="../Images/loesch.gif" border="0"></asp:LinkButton>
+																		<img src="/PortalZLD/Images/loesch.gif" border="0"></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                 </Columns>

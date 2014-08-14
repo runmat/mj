@@ -2,7 +2,6 @@
     Inherits="Admin.UserManagement" MasterPageFile="MasterPage/Admin.Master" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
-<%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="~/PageElements/GridNavigation.ascx" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
@@ -219,21 +218,11 @@
                             </div>
                         </asp:Panel>
                         <div id="Result" runat="Server" style="display: none" >
-                            <%--  <div class="ExcelDiv">--%>
-                            <div align="right" style="padding-right: 5px" id="trSearchSpacer" runat="server">
-                                <asp:ImageButton Visible="false" ID="imgXls" runat="server" src="../Images/iconXLS.gif"
-                                    alt="Excel herunterladen" OnClick="imgXls_OnClick" />
-                                <asp:HyperLink ID="lnkExcel" runat="server" Visible="false" ForeColor="White">Excel-Download: 
-                                                                        rechte Maustaste -&gt; Speichern unter...</asp:HyperLink>
-                            </div>
-                            <%--  </div>--%>
                             <div id="pagination">
                                 <asp:Label ID="lblNotApprovedMode" runat="server" Visible="False" Width="100%" ForeColor="#772D34"
                                     Font-Bold="True" BackColor="Transparent" BorderWidth="1px" BorderStyle="Solid"
                                     BorderColor="#772D34"> <center>Freigabeliste</center></asp:Label>
                                 <input id="ihNotApprovedMode" type="hidden" runat="server" value="0"/>
-                                <uc2:GridNavigation ID="GridNavigation1" runat="server" Visible="false">
-                                </uc2:GridNavigation>
                             </div>
                             <div ID="divLegende" style="margin-bottom: 5px" runat="server" visible="false"><u>Legende:</u> <img id="Img1" runat="server" alt="SelfAdmLevel1" src="../Images/SelfAdmIcon1.gif" height="16" width="16" align="middle" /> = SelfAdministration-Level 1, <img id="Img2" runat="server" alt="SelfAdmLevel2" src="../Images/SelfAdmIcon2.gif" height="16" width="16" align="middle" /> = SelfAdministration-Level 2 (Benutzerkonten nur durch Kunden bearbeitbar)</div>
                             <div id="divTelerik">
@@ -248,21 +237,6 @@
                                     }
 
                                 </script>
-                                <telerik:RadCodeBlock ID="RadCodeBlock1" runat="server">
-                                    <script type="text/javascript">
-                    <!--
-                                        function ShowColumnHeaderMenu(ev, columnName) {
-                                            var grid = $find("<%=rgSearchResult.ClientID %>");
-                                            var columns = grid.get_masterTableView().get_columns();
-                                            for (var i = 0; i < columns.length; i++) {
-                                                if (columns[i].get_uniqueName() == columnName) {
-                                                    columns[i].showHeaderMenu(ev, 75, 20);
-                                                }
-                                            }
-                                        }
-                        -->
-                                    </script>
-                                </telerik:RadCodeBlock>
                                 <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
                                     <ClientEvents OnRequestStart="onRequestStart" />
                                     <AjaxSettings>
@@ -504,8 +478,6 @@
                                                 <tr class="formquery">
                                                     <td class="firstLeft active" colspan="4">
                                                         &nbsp;
-                                                        <%--<asp:Label ID="lblErrorSave" CssClass="TextError" runat="server"></asp:Label>
-                                                        <asp:Label ID="lblMessageSave" runat="server" CssClass="TextExtraLarge" EnableViewState="False"></asp:Label>--%>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -937,65 +909,65 @@
             </div>
         </div>
     </div>
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-            function CheckCollapseExpandStatus() {
-                if ($("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value") == "1") {
-                    $("#arealnkSuche").hide();
-                    $("#lnkSuche").hide();
-                    $("#arealnkSuchergebnis").hide();
-                    $("#lnkSuchergebnis").hide();
-                    $("#<%= Result.ClientID %>").hide();
-                    $("#<%= Input.ClientID %>").hide();
-                    $("#<%= DivSearch.ClientID %>").show();
-                    $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-                    $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                    $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
-                    $("#<%= txtFilterUserName.ClientID %>").setCaretPos(2);
-                }
-                else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
-                    $("#arealnkSuchergebnis").hide();
-                    $("#lnkSuchergebnis").hide();
-                    $("#arealnkSuche").show();
-                    $("#lnkSuche").show();
-                    $("#<%= DivSearch.ClientID %>").hide();
-                    $("#<%= Input.ClientID %>").hide();
-                    $("#<%= Result.ClientID %>").show();
-                    $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                    $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-                    $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
-                }
-                else {
-                    $("#arealnkSuche").show();
-                    $("#lnkSuche").show();
-                    $("#arealnkSuchergebnis").show();
-                    $("#lnkSuchergebnis").show();
-                    $("#<%= DivSearch.ClientID %>").hide();
-                    $("#<%= Result.ClientID %>").hide();
-                    $("#<%= Input.ClientID %>").show();
-                    $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                    $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                    $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "1");
-                }
+        function CheckCollapseExpandStatus() {
+            if ($("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value") == "1") {
+                $("#arealnkSuche").hide();
+                $("#lnkSuche").hide();
+                $("#arealnkSuchergebnis").hide();
+                $("#lnkSuchergebnis").hide();
+                $("#<%= Result.ClientID %>").hide();
+                $("#<%= Input.ClientID %>").hide();
+                $("#<%= DivSearch.ClientID %>").show();
+                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
+                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
+                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
+                $("#<%= txtFilterUserName.ClientID %>").setCaretPos(2);
             }
-
-            function showSearchFilterArea() {
-                $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-                $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
-                CheckCollapseExpandStatus();
+            else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
+                $("#arealnkSuchergebnis").hide();
+                $("#lnkSuchergebnis").hide();
+                $("#arealnkSuche").show();
+                $("#lnkSuche").show();
+                $("#<%= DivSearch.ClientID %>").hide();
+                $("#<%= Input.ClientID %>").hide();
+                $("#<%= Result.ClientID %>").show();
+                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
+                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
+                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
             }
-
-            function showSearchResultArea() {
-                $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-                $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
-                CheckCollapseExpandStatus();
+            else {
+                $("#arealnkSuche").show();
+                $("#lnkSuche").show();
+                $("#arealnkSuchergebnis").show();
+                $("#lnkSuchergebnis").show();
+                $("#<%= DivSearch.ClientID %>").hide();
+                $("#<%= Result.ClientID %>").hide();
+                $("#<%= Input.ClientID %>").show();
+                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
+                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
+                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "1");
             }
+        }
 
-            $(function () {
-                CheckCollapseExpandStatus();
-            }); 
+        function showSearchFilterArea() {
+            $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
+            $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
+            $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
+            CheckCollapseExpandStatus();
+        }
+
+        function showSearchResultArea() {
+            $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
+            $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
+            $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
+            CheckCollapseExpandStatus();
+        }
+
+        $(function () {
+            CheckCollapseExpandStatus();
+        }); 
         
     </script>
 </asp:Content>

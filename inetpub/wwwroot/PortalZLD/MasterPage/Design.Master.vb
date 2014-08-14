@@ -1,7 +1,7 @@
 ﻿Imports CKG.Base.Kernel
 
 Partial Public Class Design
-    Inherits System.Web.UI.MasterPage
+    Inherits MasterPage
     Private m_User As Security.User
     Private m_strTitleText As String
 
@@ -13,17 +13,15 @@ Partial Public Class Design
             m_strTitleText = Value
         End Set
     End Property
- 
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
- 
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
     End Sub
 
     Public Sub HideLinks()
         With Me
             .tdChangePasword.Visible = False
             .tdHandbuch.Visible = False
-            'Me.tdLogout.Visible = False
             .tdHauptmenue.Visible = False
         End With
     End Sub
@@ -39,25 +37,17 @@ Partial Public Class Design
         End With
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-        Dim strLogoPath As String = ""
-        Dim strLogoPath2 As String = ""
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
         Dim strDocuPath As String = ""
         Dim strTitle As String
         Dim strCSSLink As String = ""
         Dim bc As HttpBrowserCapabilities
-        Dim s As String = ""
         bc = Request.Browser
-        'm_User = GetUser(Page)
-        ''imgDADLogo.Alt = Me.Page.User.Identity.Name
-        'Me.
+
         lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString())
         m_User = Session("objUser")
         If m_User Is Nothing Then
-            '    With Me
-            '        'UH: 02.05.2007
-            '        'Fehler: Bei jeder Rückkekr ins Hauptmenü wird eine neue Session erzeugt.
-            '        'Lösungsansatz: SessionID in URL mitgeben
+
             If Not IsPostBack Then
                 tdHandbuch.Visible = False
                 lnkHauptmenue.Text = "Anmeldung"
@@ -112,7 +102,6 @@ Partial Public Class Design
             lnkResponsible.NavigateUrl = "/PortalZLD/(S(" & Session.SessionID & "))/Info/ResponsiblePage.aspx"
             lnkImpressum.NavigateUrl = "/PortalZLD/(S(" & Session.SessionID & "))/Info/Impressum.aspx"
 
-
             lnkChangePassword.Visible = True
             lblBenutzer.Text = "Benutzer: "
             If m_User.IsLeiterZLD Then
@@ -122,7 +111,6 @@ Partial Public Class Design
             End If
             lnkLogout.Visible = True
             lnkChangePassword.Visible = True
-
 
             If Page.User.Identity.IsAuthenticated Then
                 If Page.Title = "Startseite" Then
@@ -141,7 +129,6 @@ Partial Public Class Design
             End If
 
             If m_User.GroupID > 0 Then
-                strLogoPath = m_User.Organization.LogoPath
                 strDocuPath = m_User.Groups.ItemByID(m_User.GroupID).DocuPath
 
                 Dim cn As SqlClient.SqlConnection
@@ -162,11 +149,6 @@ Partial Public Class Design
                 tdHandbuch.Visible = True
                 lnkHandbuch.NavigateUrl = strDocuPath
             End If
-
-            If strLogoPath = String.Empty Then
-                strLogoPath = m_User.Customer.CustomerStyle.LogoPath
-            End If
-
 
         End If
         Select Case Page.Title
@@ -214,4 +196,5 @@ Partial Public Class Design
                 tdResponsible.Attributes.Add("class", "")
         End Select
     End Sub
+
 End Class
