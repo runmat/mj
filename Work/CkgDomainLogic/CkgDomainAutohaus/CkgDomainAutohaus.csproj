@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\Ionic.Zip.dll</HintPath>
@@ -51,7 +54,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -64,11 +69,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autohaus\Contracts\IFahrzeugverwaltungDataService.cs" />
+    <Compile Include="Autohaus\Contracts\IFahrzeugakteDataService.cs" />
+    <Compile Include="Autohaus\Contracts\IAutohausZulassungDataService.cs" />
+    <Compile Include="Autohaus\Models\DataModels\Fahrzeug.cs" />
+    <Compile Include="Autohaus\Models\DataModels\FahrzeugakteDocument.cs" />
+    <Compile Include="Autohaus\Models\DataModels\BeauftragteZulassung.cs" />
+    <Compile Include="Autohaus\Models\FreieZulassung.cs" />
+    <Compile Include="Autohaus\Models\Versicherungsdaten.cs" />
+    <Compile Include="Autohaus\Models\WunschkennzeichenOptionen.cs" />
+    <Compile Include="Autohaus\Models\ZulassungsDienstleistungen.cs" />
+    <Compile Include="Autohaus\Models\ZulassungsOptionen.cs" />
+    <Compile Include="Autohaus\Services\Database\AutohausSqlDbContext.cs" />
+    <Compile Include="Autohaus\Services\FahrzeugverwaltungDataServiceSQL.cs" />
+    <Compile Include="Autohaus\Services\FahrzeugakteDataServiceSQL.cs" />
+    <Compile Include="Autohaus\Services\AutohausZulassungDataServiceSAP.cs" />
+    <Compile Include="Autohaus\ViewModels\AutohausZulassungViewModel.cs" />
+    <Compile Include="Autohaus\ViewModels\FahrzeugverwaltungViewModel.cs" />
+    <Compile Include="Autohaus\ViewModels\FahrzeugakteViewModel.cs" />
+    <Compile Include="Autohaus\ViewModels\FahrzeugakteDocsViewModel.cs" />
     <Compile Include="Common\Models\DataModels\Kundenstammdaten.cs" />
     <Compile Include="Common\Models\DataModels\Materialstammdaten.cs" />
+    <Compile Include="Controllers\Fahrzeugakte\AutohausController.cs" />
+    <Compile Include="Controllers\Fahrzeugverwaltung\AutohausController.cs" />
     <Compile Include="Controllers\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
+    <Compile Include="Controllers\AutohausController.cs" />
+    <Compile Include="Controllers\Zulassung\AutohausController.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
     <Compile Include="Common\Models\AppModelMappings.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubReportDataService.cs" />
