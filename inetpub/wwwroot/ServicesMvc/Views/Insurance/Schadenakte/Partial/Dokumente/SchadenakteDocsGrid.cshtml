@@ -16,12 +16,12 @@
     {
         columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
                 .ClientTemplate(
-                "<button onclick='SchadenakteDocEdit(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.DocumentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                "<button onclick='SchadenakteDocEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                 + "&nbsp;"
-                + "<button onclick='SchadenakteDocRemove(\"<#= data.ID #>\");' class='btn mini black tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                + "<button onclick='SchadenakteDocRemove(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
             )
             .HeaderTemplate(
-                "<button onclick='SchadenakteDocCreate();' class='btn mini black tooltips' data-original-title='" + Localize.DocumentUploadDocument + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                "<button onclick='SchadenakteDocCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentUploadDocument + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
             )
         ;
 
@@ -30,7 +30,7 @@
         columns.XBound(c => c.FileType);
         columns.XBound(c => c.Dienstleister);
         columns.XBound(c => c.Uploaded);
-        columns.XBound(c => c.ID).ClientTemplate("<a target='_blank' class='btn mini black tooltips a_btn_mini' data-original-title='" + Localize.Download + "' data-placement='right' href='Get/<#= data.ID #>' ><i class='halflings-icon white file'></i></a>").Title(Localize.Download);
+        columns.XBound(c => c.ID).ClientTemplate("<a target='_blank' class='btn mini gray tooltips a_btn_mini' data-original-title='" + Localize.Download + "' data-placement='right' href='Get/<#= data.ID #>' ><i class='halflings-icon white file'></i></a>").Title(Localize.Download);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
