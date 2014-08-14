@@ -6,21 +6,24 @@
         @Html.FormValidationSummary()
         
         @Html.HiddenFor(m => m.UiIndex)
+        @Html.HiddenFor(m => m.FahrzeugIndex)
 
-        @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap medium" })
 
-        @Html.FormTextBoxFor(m => m.Fahrzeugklasse, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small" })
-        
+        @Html.FormTextBoxFor(m => m.Hersteller, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Modell, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Fahrzeugwert, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Typ, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.ZulassungsauftragAnDAD, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Bereifung, new { @class = "m-wrap medium" })
+        @Html.FormDropDownListFor(m => m.Fahrzeugklasse, Model.FahrzeugklasseOptions.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.Fahrzeugwert, Model.FahrzeugwertOptions.ToSelectList(), new { @class = "m-wrap medium", col = "right" })
 
-        
+        @Html.FormCheckBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">@Localize.VehicleRegisteredAndReady</label></text>)
+        @Html.FormCheckBoxFor(m => m.ZulassungBeauftragt, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.VehiclesLicenseOrdered</label></text>)
+
+        @Html.FormTextBoxFor(m => m.Referenznummer, new { @class = "m-wrap medium" })
+
+                
         @Html.FormRequiredFieldsSummary()
         
         

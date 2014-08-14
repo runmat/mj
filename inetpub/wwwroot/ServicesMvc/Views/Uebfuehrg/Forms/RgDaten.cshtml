@@ -7,8 +7,8 @@
 
         @Html.FormValidationSummary()
 
-        @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })
         @Html.FormDropDownListFor(m => m.RgKundenNr, Model.RgAdressen.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })
         
         @Html.FormRequiredFieldsSummary()
         
@@ -17,13 +17,13 @@
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
-            $("#ReKundenNr").on("change", function() {
-                var matchingRgItems = $.grep($("#RgKundenNr option"), function (item, index) {
-                    return ($(item).val() == $("#ReKundenNr").val());
+            $("#RgKundenNr").on("change", function() {
+                var matchingRgItems = $.grep($("#ReKundenNr option"), function (item, index) {
+                    return ($(item).val() == $("#RgKundenNr").val());
                 });
                 if (matchingRgItems.length > 0)
-                    // only if RG values contains the selected RE value, set default RG dropdown value to RE value
-                    $("#RgKundenNr").val($("#ReKundenNr").val());
+                    // only if RE values contains the selected RG value, set default RE dropdown value to RG value
+                    $("#ReKundenNr").val($("#RgKundenNr").val());
                 }
             );
         

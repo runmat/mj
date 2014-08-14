@@ -178,7 +178,9 @@
     <Compile Include="Uebfuehrg\Models\TrivialModels\Bemerkungen.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\DienstleistungsAuswahl.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\Fahrzeug.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\Receipt.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\RgDaten.cs" />
+    <Compile Include="Uebfuehrg\Services\ReceiptCreationService.cs" />
     <Compile Include="Uebfuehrg\Services\UebfuehrgDataServiceSAP.cs" />
     <Compile Include="Uebfuehrg\ViewModels\UebfuehrgViewModel.cs" />
   </ItemGroup>
@@ -216,7 +218,11 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Uebfuehrg\Docs\Auftragsbestätigung.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

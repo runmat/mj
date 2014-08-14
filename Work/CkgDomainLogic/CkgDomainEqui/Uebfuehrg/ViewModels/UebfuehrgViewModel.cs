@@ -811,6 +811,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             startAdresse.Fahrten.Add(fahrt);
             zielAdresse.Fahrten.Add(fahrt);
+            zielAdresse.StartAdresseAsRouteInfo = startAdresse.AdresseAsRouteInfo;
 
             // only to ensure proper sorting of our "Fahrten"
             // ==> remove and then again add to the end of the list:

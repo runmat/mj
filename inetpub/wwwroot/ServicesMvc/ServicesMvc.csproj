@@ -433,6 +433,7 @@
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
+    <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.js" />
     <Content Include="assets\plugins\uniform\images\sprite.png" />
     <Content Include="Content\fileupload\blueimp-gallery.min.css" />
     <Content Include="Content\fileupload\bootstrap.min.css" />
@@ -3169,7 +3170,7 @@
     <Content Include="assets\plugins\jquery-ui\images\ui-icons_ffffff_256x240.png" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.css" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.css" />
-    <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.js" />
+    <Content Include="assets\plugins\jquery-ui\xjquery-ui-1.10.1.custom.min.js" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.9.2.custom.min.js" />
     <Content Include="assets\plugins\jquery-ui\jquery.ui.datepicker-de.js" />
@@ -3822,7 +3823,7 @@
     </Content>
     <Content Include="Views\Logs\Pv.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
-    <Content Include="Views\Uebfuehrg\Index.cshtml" />
+    <Content Include="Views\Uebfuehrg\Fzg.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\RgDaten.cshtml" />
@@ -3836,6 +3837,8 @@
     <Content Include="Views\Equi\DokumenteOhneDaten\DokumenteOhneDatenGrid.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\AdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

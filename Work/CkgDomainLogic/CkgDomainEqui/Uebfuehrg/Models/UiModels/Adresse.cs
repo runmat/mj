@@ -243,6 +243,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             get { return String.Format("{0}, {1} {2}", StrasseHausNr, PLZ, Ort); }
         }
 
+        public string StartAdresseAsRouteInfo { get; set; }
+
         [XmlIgnore]
         public bool ShowRouteInfo
         {

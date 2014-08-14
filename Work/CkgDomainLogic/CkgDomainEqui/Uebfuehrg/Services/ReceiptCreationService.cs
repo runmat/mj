@@ -132,7 +132,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             var r = GetFzgAddressPostfix(index);
 
             var rgDaten = _viewModel.StepModels.OfType<RgDaten>().First();
-            var address = (r == "RG" ? rgDaten.RgAdressen.FirstOrDefault() : rgDaten.ReAdressen.FirstOrDefault());
+            var address = (r == "RG" ? rgDaten.RgKunde : rgDaten.ReKunde);
             if (address == null)
             {
                 row["Name" + r] = "";

@@ -139,14 +139,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                 returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungsadressen verfügbar" });
                 return returnList;
             }
-            var rgAdresse = rgDaten.RgAdressen.FirstOrDefault(a => a.SubTyp == "RG");
-            var reAdresse = rgDaten.ReAdressen.FirstOrDefault(a => a.SubTyp == "RE");
-            if (rgAdresse == null)
+            if (rgDaten.RgKundenNr.IsNullOrEmpty())
             {
                 returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungszahler angegeben" });
                 return returnList;
             }
-            if (reAdresse == null)
+            if (rgDaten.ReKundenNr.IsNullOrEmpty())
             {
                 returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungsempfänger angegeben", FahrtIndex = "1" });
                 return returnList;
@@ -170,8 +168,8 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             fahrten.ForEach(fahrt => fahrt.VorgangsNummer = vorgangsNr);
 
             SAP.Init("Z_UEB_CREATE_ORDER_01",
-                        "AG, RE, RG, WEB_USER, EMAIL_WEB_USER",
-                        KundenNr.ToSapKunnr(), reAdresse.KundenNr.ToSapKunnr(), rgAdresse.KundenNr.ToSapKunnr(), webUser, webUserEmail);
+                        "AG, RG, RE, WEB_USER, EMAIL_WEB_USER",
+                        KundenNr.ToSapKunnr(), rgDaten.RgKundenNr.ToSapKunnr(), rgDaten.ReKundenNr.ToSapKunnr(), webUser, webUserEmail);
 
             var fahrtenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FAHRTEN_To_Fahrt.CopyBack(fahrten).ToList();
             var adressenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_ADRESSEN_To_Adresse.CopyBack(fahrtAdressen).ToList();

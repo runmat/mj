@@ -15,11 +15,23 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         private List<Adresse> _reAdressen;
         [XmlIgnore]
-        public List<Adresse> ReAdressen { get { return (_reAdressen ?? (_reAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RE").ToList())); } }
+        public List<Adresse> ReAdressen
+        {
+            get
+            {
+                if (GetRechnungsAdressen == null)
+                    return new List<Adresse>();
+
+                return (_reAdressen ?? (_reAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RE").ToList()));
+            }
+        }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.InvoicePayer)]
+        [LocalizedDisplay(LocalizeConstants.InvoiceRecipientDeviant)]
         public string ReKundenNr { get; set; }
+
+        [XmlIgnore]
+        public Adresse ReKunde { get { return RgAdressen.FirstOrDefault(r => r.KundenNr == ReKundenNr) ?? new Adresse(); } }
 
         #endregion
 
@@ -29,11 +41,23 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         private List<Adresse> _rgAdressen;
 
         [XmlIgnore]
-        public List<Adresse> RgAdressen { get { return (_rgAdressen ?? (_rgAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToList())); } }
+        public List<Adresse> RgAdressen
+        {
+            get
+            {
+                if (GetRechnungsAdressen == null)
+                    return new List<Adresse>();
+
+                return (_rgAdressen ?? (_rgAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToList()));
+            }
+        }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.InvoiceRecipientDeviant)]
+        [LocalizedDisplay(LocalizeConstants.InvoicePayer)]
         public string RgKundenNr { get; set; }
+
+        [XmlIgnore]
+        public Adresse RgKunde { get { return RgAdressen.FirstOrDefault(r => r.KundenNr == RgKundenNr) ?? new Adresse(); } }
 
         #endregion
 
@@ -45,8 +69,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         {
             return string.Format(   "Rechnungsempfänger:<br/>{0}<br/>" +
                                     "Rechnungs-Regulierer:<br/>{1}<br/>", 
-                                    (ReAdressen.FirstOrDefault() ?? new Adresse()).GetSummaryString(),
-                                    (RgAdressen.FirstOrDefault() ?? new Adresse()).GetSummaryString());
+                                    ReKunde.GetSummaryString(),
+                                    RgKunde.GetSummaryString());
         }
     }
 }
