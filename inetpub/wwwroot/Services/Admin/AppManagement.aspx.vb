@@ -325,18 +325,13 @@ Partial Public Class AppManagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intAppId As Int32) As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
             Dim _App As New Kernel.Application(intAppId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
-
+            Dim tblPar = CreateLogTableStructure()
 
             With tblPar
                 .Rows.Add(.NewRow)
@@ -370,13 +365,10 @@ Partial Public Class AppManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -490,8 +482,7 @@ Partial Public Class AppManagement
             Dim strLogMsg As String = "Anwendung anlegen"
             If Not (intAppId = -1) Then
                 strLogMsg = "Anwendung ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intAppId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intAppId)
             End If
             Dim _App As New Kernel.Application(intAppId, _
                                                 txtAppName.Text, _
@@ -514,8 +505,7 @@ Partial Public Class AppManagement
 
             'Save Zuordnungen, falls es sich um ein Child handelt
             _App.ReAssign(conn, _App.AppId, CInt(ddlAppParent.SelectedItem.Value.ToString))
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_App.AppId.ToString, strLogMsg, tblLogParameter)
             FillAppParent(cn)
             Search(True, True, , True)
@@ -544,8 +534,7 @@ Partial Public Class AppManagement
             Dim _app As New Kernel.Application(CInt(txtAppID.Text))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_app.AppId, tblLogParameter)
+            tblLogParameter = SetOldLogParameters(_app.AppId)
             If Not _app.HasChildren(cn) Then
                 _app.Delete(cn)
                 Log(_app.AppId.ToString, "Anwendung löschen", tblLogParameter)

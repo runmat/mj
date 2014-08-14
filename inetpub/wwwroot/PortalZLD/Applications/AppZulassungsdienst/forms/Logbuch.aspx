@@ -77,8 +77,8 @@
                                 <td style="text-align: right;" width="100%">
                                     KST.:
                                     <asp:Label ID="lblKostenstelle" runat="server"></asp:Label>
-                                    / LFB-Gebiet:
-                                    <asp:Label ID="lblLFB" runat="server"></asp:Label>
+                                    / GL-Gebiet:
+                                    <asp:Label ID="lblGL" runat="server"></asp:Label>
                                 </td>
                             </tr>
                         </table>
@@ -94,7 +94,7 @@
                                 <td>
                                     <div id="divTimeSpan" style="text-align: left; padding: 3px 0px 8px 5px; border-right: solid 1px gray;
                                         border-left: solid 1px #595959; border-bottom: solid 1px #595959;" runat="server">
-                                        <asp:Label runat="server">Von:</asp:Label>
+                                        <asp:Label ID="Label1" runat="server">Von:</asp:Label>
                                         <asp:TextBox ID="txtDatumVon" runat="server" Width="80px" Style="padding-left: 3px;"></asp:TextBox>
                                         <ajaxToolkit:CalendarExtender ID="CeTxtDatumVon" runat="server" TargetControlID="txtDatumVon">
                                         </ajaxToolkit:CalendarExtender>
@@ -106,7 +106,7 @@
                                             MaximumValueMessage="Datum liegt zu weit in der Zukunft!" MinimumValueMessage="Datum liegt in der Vergangenheit!"
                                             InvalidValueMessage="ung&uuml;ltiger Wert" Display="Dynamic" EmptyValueMessage="Geben Sie ein Datum ein!"
                                             ValidationExpression="(([0-2]\d)|(3[0,1]))\.((0\d)|(1[0-2]))\.(2\d{3})"></ajaxToolkit:MaskedEditValidator>
-                                        <asp:Label runat="server" Style="padding-left: 5px;">Bis:</asp:Label>
+                                        <asp:Label ID="Label2" runat="server" Style="padding-left: 5px;">Bis:</asp:Label>
                                         <asp:TextBox ID="txtDatumBis" runat="server" Width="80px" Style="padding-left: 3px;"></asp:TextBox>
                                         <ajaxToolkit:CalendarExtender ID="cetxtDatumBis" runat="server" TargetControlID="txtDatumBis">
                                         </ajaxToolkit:CalendarExtender>
@@ -118,11 +118,9 @@
                                             MaximumValueMessage="Datum liegt zu weit in der Zukunft!" MinimumValueMessage="Datum liegt in der Vergangenheit!"
                                             InvalidValueMessage="ung&uuml;ltiger Wert" Display="Dynamic" EmptyValueMessage="Geben Sie ein Datum ein!"
                                             ValidationExpression="(([0-2]\d)|(3[0,1]))\.((0\d)|(1[0-2]))\.(2\d{3})"></ajaxToolkit:MaskedEditValidator>
-                                        <asp:Label runat="server" Text="Filter:"></asp:Label>
+                                        <asp:Label ID="Label3" runat="server" Text="Filter:"></asp:Label>
                                         <asp:DropDownList ID="ddlFilter" runat="server">
                                             <asp:ListItem Selected="True" Text="-- Alle --" Value="all"></asp:ListItem>
-                                            <%--<asp:ListItem Text="Gelöscht" Value="2"></asp:ListItem>--%>
-                                            <%--<asp:ListItem Text="Neu" Value="0"></asp:ListItem>--%>
                                             <asp:ListItem Text="Beantwortet" Value="E3"></asp:ListItem>
                                             <asp:ListItem Text="Erledigt" Value="E4"></asp:ListItem>
                                             <asp:ListItem Text="Gelesen" Value="E1"></asp:ListItem>
@@ -132,9 +130,6 @@
                                         </asp:DropDownList>
                                         <asp:DropDownList ID="ddlFilterFiliale" runat="server">
                                             <asp:ListItem Selected="True" Text="-- Alle --" Value="all"></asp:ListItem>
-                                            <%--<asp:ListItem Text="Geschlossen" Value="3"></asp:ListItem>--%>
-                                            <%--<asp:ListItem Text="Gelöscht" Value="2"></asp:ListItem>--%>
-                                            <%--<asp:ListItem Text="Gesendet" Value="1"></asp:ListItem>--%>
                                             <asp:ListItem Text="Beantwortet" Value="E3"></asp:ListItem>
                                             <asp:ListItem Text="Erledigt" Value="E4"></asp:ListItem>
                                             <asp:ListItem Text="Gelesen" Value="E1"></asp:ListItem>
@@ -160,18 +155,18 @@
                                             <asp:BoundField DataField="I_LFDNR" Visible="false" />
                                             <asp:TemplateField HeaderText="Datum">
                                                <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Datum" CommandName="DatumEingangSort"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton1" runat="server" Text="Datum" CommandName="DatumEingangSort"></asp:LinkButton>
                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("I_DATUM","{0:dd.MM.yyyy HH:mm:ss}") %>'></asp:Label>
+                                                    <asp:Label ID="Label4" runat="server" Text='<%# Eval("I_DATUM","{0:dd.MM.yyyy HH:mm:ss}") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Von" CommandName="SortVon"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton2" runat="server" Text="Von" CommandName="SortVon"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("I_VON") %>'></asp:Label>
+                                                    <asp:Label ID="Label5" runat="server" Text='<%# Eval("I_VON") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Eingang">
@@ -186,9 +181,9 @@
                                                                     onprerender="img2_prerender" value='<%# Eval("I_STATUSE")%>' />
                                                             </td>
                                                             <td width="100%">
-                                                                <asp:Label runat="server" Text='<%# Eval("I_BETREFF")%>'
+                                                                <asp:Label ID="Label6" runat="server" Text='<%# Eval("I_BETREFF")%>'
                                                                     style="white-space:normal;" Visible='<%# (bool)Eval("I_HASLANGTEXT") == false %>'></asp:Label>
-                                                                <asp:LinkButton runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>'
+                                                                <asp:LinkButton ID="LinkButton3" runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>'
                                                                     Text='<%# Eval("I_BETREFF")%>' Visible='<%# Eval("I_HASLANGTEXT") %>' 
                                                                     style="white-space:normal; color: #595959;" />
                                                             </td>
@@ -198,22 +193,22 @@
                                                         <table class="NoDistance">
                                                             <tr>
                                                                 <td style="white-space: nowrap;">
-                                                                    <asp:LinkButton runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton4" runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="antworten" Visible='<%# Eval("I_ANTW")%>'>
-                                                                        <asp:Image  ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
+                                                                        <asp:Image ID="Image1"  ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
                                                                     </asp:LinkButton>
-                                                                    <asp:LinkButton runat="server" CommandName="ReadAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton5" runat="server" CommandName="ReadAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="gelesen" Visible='<%# Eval("I_READ")%>'>
-                                                                        <asp:Image runat="server" ImageUrl="/PortalZLD/Images/Eye.png" Width="16px" Height="16px" />
+                                                                        <asp:Image ID="Image2" runat="server" ImageUrl="/PortalZLD/Images/Eye.png" Width="16px" Height="16px" />
                                                                     </asp:LinkButton>
-                                                                    <asp:LinkButton runat="server" CommandName="ErlAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton6" runat="server" CommandName="ErlAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="erledigt" Visible='<%# Eval("I_ERL")%>'>
                                                                         <asp:Image ID="Image3" runat="server" ImageUrl="/PortalZLD/Images/haken_gruen.gif" Width="16px"
                                                                             Height="16px" />
                                                                     </asp:LinkButton>
                                                                 </td>
                                                                 <td width="100%" align="right">
-                                                                    <asp:Label runat="server" Text='<%# "Bis: " + Eval("I_ZERLDAT") %>'
+                                                                    <asp:Label ID="Label7" runat="server" Text='<%# "Bis: " + Eval("I_ZERLDAT") %>'
                                                                         Visible='<%# (Eval("I_ZERLDAT") != DBNull.Value) && (Eval("I_ZERLDAT").ToString().Length > 0) %>'></asp:Label>
                                                                 </td>
                                                             </tr>
@@ -239,18 +234,18 @@
                                             <asp:BoundField DataField="I_LFDNR" Visible="false" />
                                             <asp:TemplateField HeaderText="Datum">
                                                <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Datum" CommandName="DatumEingangSort"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton7" runat="server" Text="Datum" CommandName="DatumEingangSort"></asp:LinkButton>
                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("I_DATUM","{0:dd.MM.yyyy HH:mm:ss}") %>'></asp:Label>
+                                                    <asp:Label ID="Label8" runat="server" Text='<%# Eval("I_DATUM","{0:dd.MM.yyyy HH:mm:ss}") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                              <asp:TemplateField>
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Von" CommandName="SortVon"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton8" runat="server" Text="Von" CommandName="SortVon"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("I_VON") %>'></asp:Label>
+                                                    <asp:Label ID="Label9" runat="server" Text='<%# Eval("I_VON") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Eingang">
@@ -260,29 +255,29 @@
                                                         visible='<%# Eval("DEBUG")%>'/>                                            
                                                     <img id="Img3" alt="" src="" height="16" width="16" style="padding: 3px 3px 0px 0px;" runat="server"
                                                         onprerender="img2_prerender" value='<%# Eval("I_STATUSE")%>' />
-                                                    <asp:Label runat="server" Text='<%# Eval("I_BETREFF")%>'
+                                                    <asp:Label ID="Label10" runat="server" Text='<%# Eval("I_BETREFF")%>'
                                                         Visible='<%# (bool)Eval("I_HASLANGTEXT") == false %>' style="white-space:normal;"></asp:Label>
-                                                    <asp:LinkButton runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>'
+                                                    <asp:LinkButton ID="LinkButton9" runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>'
                                                         Text='<%# Eval("I_BETREFF")%>' Visible='<%# Eval("I_HASLANGTEXT") %>' style="white-space:normal; color: #595959;" />
                                                     <div id="Div2" runat="server" onprerender="DivRender" value='<%# Eval("I_TRENN") %>'>
                                                         <table class="NoDistance">
                                                             <tr>
                                                                 <td style="white-space: nowrap;">
-                                                                    <asp:LinkButton runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton10" runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="antworten" Visible='<%# Eval("I_ANTW")%>'>
-                                                             <asp:Image ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
+                                                             <asp:Image ID="Image3" ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
                                                                     </asp:LinkButton>
-                                                                    <asp:LinkButton runat="server" CommandName="ReadAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton11" runat="server" CommandName="ReadAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="gelesen" Visible='<%# Eval("I_READ")%>'>
-                                                            <asp:Image runat="server" ImageUrl="/PortalZLD/Images/Eye.png" Width="16px" Height="16px" />
+                                                            <asp:Image ID="Image4" runat="server" ImageUrl="/PortalZLD/Images/Eye.png" Width="16px" Height="16px" />
                                                                     </asp:LinkButton>
-                                                                    <asp:LinkButton runat="server" CommandName="ErlAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton12" runat="server" CommandName="ErlAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="erledigt" Visible='<%# Eval("I_ERL")%>'>
-                                                            <asp:Image runat="server" ImageUrl="/PortalZLD/Images/haken_gruen.gif" Width="16px" Height="16px" />
+                                                            <asp:Image ID="Image5" runat="server" ImageUrl="/PortalZLD/Images/haken_gruen.gif" Width="16px" Height="16px" />
                                                                     </asp:LinkButton>
                                                                 </td>
                                                                 <td width="100%" align="right">
-                                                                    <asp:Label runat="server" Text='<%# "Bis: " + Eval("I_ZERLDAT") %>'
+                                                                    <asp:Label ID="Label11" runat="server" Text='<%# "Bis: " + Eval("I_ZERLDAT") %>'
                                                                         Visible='<%# (Eval("I_ZERLDAT") != DBNull.Value) && (Eval("I_ZERLDAT").ToString().Length > 0) %>'></asp:Label>
                                                                 </td>
                                                             </tr>
@@ -297,9 +292,9 @@
                                                         visible='<%# Eval("DEBUG")%>'/>
                                                     <img id="Img5" alt="O_STATUSE" src="" height="16" width="16" style="padding: 3px 3px 0px 0px;"
                                                         runat="server" onprerender="img2_prerender" value='<%# Eval("O_STATUSE")%>' />
-                                                    <asp:Label runat="server" Text='<%# Eval("O_BETREFF")%>' style="white-space:normal;"
+                                                    <asp:Label ID="Label12" runat="server" Text='<%# Eval("O_BETREFF")%>' style="white-space:normal;"
                                                         Visible='<%# (bool)Eval("O_HASLANGTEXT") == false %>'></asp:Label>
-                                                    <asp:LinkButton runat="server" CommandName="ReadAnswerText" CommandArgument='<%# Eval("Rowindex")%>' style="white-space:normal; color: #595959;"
+                                                    <asp:LinkButton ID="LinkButton13" runat="server" CommandName="ReadAnswerText" CommandArgument='<%# Eval("Rowindex")%>' style="white-space:normal; color: #595959;"
                                                         Text='<%# Eval("O_BETREFF")%>' Visible='<%# Eval("O_HASLANGTEXT")%>'></asp:LinkButton>
                                                     <div id="Div3" runat="server" onprerender="DivRender" value='<%# Eval("O_TRENN") %>'>
                                                         <table class="NoDistance">
@@ -307,7 +302,7 @@
                                                                 <td style="white-space: nowrap;">
                                                                 </td>
                                                                 <td width="100%" align="right">
-                                                                    <asp:Label runat="server" Text='<%# "Bis: " + Eval("O_ZERLDAT") %>'
+                                                                    <asp:Label ID="Label13" runat="server" Text='<%# "Bis: " + Eval("O_ZERLDAT") %>'
                                                                         Visible='<%# (Eval("O_ZERLDAT") != DBNull.Value) && (Eval("O_ZERLDAT").ToString().Length > 0) %>'></asp:Label>
                                                                 </td>
                                                             </tr>
@@ -317,26 +312,26 @@
                                             </asp:TemplateField>
                                              <asp:TemplateField>
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton  runat="server" Text="An" CommandName="SortAn"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton14"  runat="server" Text="An" CommandName="SortAn"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label  runat="server" Text='<%# Eval("O_AN") %>'></asp:Label>
+                                                    <asp:Label ID="Label14"  runat="server" Text='<%# Eval("O_AN") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Datum">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Datum" CommandName="DatumAusgangSort"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton15" runat="server" Text="Datum" CommandName="DatumAusgangSort"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("O_DATUM","{0:dd.MM.yyyy HH:mm:ss}")%>'></asp:Label>
+                                                    <asp:Label ID="Label15" runat="server" Text='<%# Eval("O_DATUM","{0:dd.MM.yyyy HH:mm:ss}")%>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
-                                    <asp:GridView ID="gvProtokollLFB" runat="server" AutoGenerateColumns="false" AllowPaging="false"
+                                    <asp:GridView ID="gvProtokollGL" runat="server" AutoGenerateColumns="false" AllowPaging="false"
                                         Width="100%" ShowFooter="False" GridLines="Vertical" Visible="true" 
                                         Style="border-collapse: collapse ! important;" 
-                                        onrowcommand="gvProtokollLFB_RowCommand" onsorting="gvProtokollLFB_Sorting">
+                                        onrowcommand="gvProtokollGL_RowCommand" onsorting="gvProtokollGL_Sorting">
                                         <PagerSettings Visible="false" />
                                         <HeaderStyle CssClass="GridTableHead"></HeaderStyle>
                                         <AlternatingRowStyle CssClass="GridTableAlternate" />
@@ -347,23 +342,23 @@
                                             <asp:BoundField DataField="I_LFDNR" Visible="false" />
                                             <asp:TemplateField HeaderText="Datum">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Datum" CommandName="DatumAusgangSort"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton16" runat="server" Text="Datum" CommandName="DatumAusgangSort"></asp:LinkButton>
                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label  runat="server" Text='<%# Eval("O_DATUM","{0:dd.MM.yyyy HH:mm:ss}")%>'></asp:Label>
+                                                    <asp:Label ID="Label16"  runat="server" Text='<%# Eval("O_DATUM","{0:dd.MM.yyyy HH:mm:ss}")%>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>                                           
                                             <asp:TemplateField>
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="An" CommandName="SortAn"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton17" runat="server" Text="An" CommandName="SortAn"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label runat="server" Text='<%# Eval("O_AN") %>'></asp:Label>
+                                                    <asp:Label ID="Label17" runat="server" Text='<%# Eval("O_AN") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField> 
                                             <asp:TemplateField>
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton runat="server" Text="Status" CommandName="SortAn"></asp:LinkButton>
+                                                    <asp:LinkButton ID="LinkButton18" runat="server" Text="Status" CommandName="SortAn"></asp:LinkButton>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <img id="Img6" alt="" src="" height="16" width="16" runat="server" style="padding: 3px 3px 0px 0px;"
@@ -377,26 +372,26 @@
                                                         visible='<%# Eval("DEBUG")%>'/>
                                                     <img id="Img8" alt="" src="" height="16" width="16" style="padding: 3px 3px 0px 0px;" runat="server"
                                                         onprerender="img2_prerender" value='<%# Eval("O_STATUSE")%>' />
-                                                    <asp:Label runat="server" Text='<%# Eval("O_BETREFF")%>' style="white-space:normal;"
+                                                    <asp:Label ID="Label18" runat="server" Text='<%# Eval("O_BETREFF")%>' style="white-space:normal;"
                                                         Visible='<%# (bool)Eval("O_HASLANGTEXT") == false %>'></asp:Label>
-                                                    <asp:LinkButton runat="server" CommandName="ReadAnswerText" CommandArgument='<%# Eval("Rowindex")%>' style="white-space:normal; color: #595959;"
+                                                    <asp:LinkButton ID="LinkButton19" runat="server" CommandName="ReadAnswerText" CommandArgument='<%# Eval("Rowindex")%>' style="white-space:normal; color: #595959;"
                                                         Text='<%# Eval("O_BETREFF")%>' Visible='<%# Eval("O_HASLANGTEXT")%>'></asp:LinkButton>
                                                     <div id="Div4" runat="server" onprerender="DivRender" value='<%# Eval("O_TRENN") %>'>
                                                         <table class="NoDistance">
                                                             <tr>
                                                                 <td style="white-space: nowrap;">
-                                                                    <asp:LinkButton runat="server" CommandName="LoeAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton20" runat="server" CommandName="LoeAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="löschen" Visible='<%# Eval("O_LOE")%>' title="löschen">
-                                                                <asp:Image runat="server" ImageUrl="/PortalZLD/Images/bin_closed.png" Width="16px" Height="16px" />
+                                                                <asp:Image ID="Image6" runat="server" ImageUrl="/PortalZLD/Images/bin_closed.png" Width="16px" Height="16px" />
                                                                     </asp:LinkButton>
-                                                                    <asp:LinkButton runat="server" CommandName="CloseAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton21" runat="server" CommandName="CloseAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="Vorgang schließen" Visible='<%# Eval("O_ClO")%>' title="schließen">
-                                                            <asp:Image runat="server" ImageUrl="/PortalZLD/Images/Lock.png" Width="16px"
+                                                            <asp:Image ID="Image7" runat="server" ImageUrl="/PortalZLD/Images/Lock.png" Width="16px"
                                                                 Height="16px" />
                                                                     </asp:LinkButton>
                                                                 </td>
                                                                 <td width="100%" align="right">
-                                                                    <asp:Label runat="server" Text='<%# "Bis: " + Eval("O_ZERLDAT") %>'
+                                                                    <asp:Label ID="Label19" runat="server" Text='<%# "Bis: " + Eval("O_ZERLDAT") %>'
                                                                         Visible='<%# (Eval("O_ZERLDAT") != DBNull.Value) && (Eval("O_ZERLDAT").ToString().Length > 0) %>'></asp:Label>
                                                                 </td>
                                                             </tr>
@@ -411,17 +406,17 @@
                                                         visible='<%# Eval("DEBUG")%>'/>
                                                     <img id="Img10" alt="" src="" height="16" width="16" style="padding: 3px 3px 0px 0px;" runat="server"
                                                         onprerender="img2_prerender" value='<%# Eval("I_STATUSE")%>' />
-                                                    <asp:Label runat="server" Text='<%# Eval("I_BETREFF")%>' style="white-space:normal;"
+                                                    <asp:Label ID="Label20" runat="server" Text='<%# Eval("I_BETREFF")%>' style="white-space:normal;"
                                                         Visible='<%# (bool)Eval("I_HASLANGTEXT") == false %>'></asp:Label>
-                                                    <asp:LinkButton runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>' style="white-space:normal; color: #595959;"
+                                                    <asp:LinkButton ID="LinkButton22" runat="server" CommandName="ReadAufgabeText" CommandArgument='<%# Eval("Rowindex") %>' style="white-space:normal; color: #595959;"
                                                         Text='<%# Eval("I_BETREFF")%>' Visible='<%# Eval("I_HASLANGTEXT") %>' />
                                                     <div id="Div5" runat="server" onprerender="DivRender" value='<%# Eval("I_TRENN") %>'>
                                                         <table class="NoDistance">
                                                             <tr>
                                                                 <td style="white-space: nowrap;">
-                                                                    <asp:LinkButton runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
+                                                                    <asp:LinkButton ID="LinkButton23" runat="server" CommandName="AnswerAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="antworten" Visible='<%# Eval("I_ANTW")%>'>
-                                                             <asp:Image  ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
+                                                             <asp:Image ID="Image8"  ImageUrl="/PortalZLD/Images/email.png" Width="16px" Height="16px" runat="server"/>
                                                                     </asp:LinkButton>
                                                                     <asp:LinkButton runat="server" CommandName="ReadAufgabe" CommandArgument='<%# Eval("Rowindex")%>'
                                                                         ToolTip="gelesen" Visible='<%# Eval("I_READ")%>'>

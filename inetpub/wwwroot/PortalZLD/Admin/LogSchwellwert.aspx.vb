@@ -14,6 +14,7 @@ Partial Public Class LogSchwellwert
     Private m_blnShowDetails() As Boolean
     Private mSeite As String
     Private mDatum As Date
+    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
 #Region "Events"
 
