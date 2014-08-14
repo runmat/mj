@@ -26,7 +26,7 @@
                                             </td>
                                             <td align="right">
                                                 <div id="queryImage">
-                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="../Images/queryArrow.gif" />
+                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="Images/queryArrow.gif" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -149,7 +149,7 @@
                                                 <asp:TemplateField HeaderText="Entfernen" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <asp:ImageButton CausesValidation="false" runat="server" ToolTip="Dieses Fahrzeug aus Übernahmetabelle entfernen"
-                                                            ID="imgDelete" Height="14" CommandName="loesch" Width="14" ImageUrl="../Images/del.png"
+                                                            ID="imgDelete" Height="14" CommandName="loesch" Width="14" ImageUrl="Images/del.png"
                                                             CommandArgument='<%# DataBinder.Eval(Container, "DataItem.SapWert") %>' />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" />
@@ -199,7 +199,7 @@
                                                 <asp:TemplateField HeaderText="Entfernen" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <asp:ImageButton  CausesValidation="false" runat="server" ToolTip="Dieses Fahrzeug aus Übernahmetabelle entfernen"
-                                                            ID="imgDelete" Height="14" CommandName="loesch" Width="14" ImageUrl="../Images/del.png"
+                                                            ID="imgDelete" Height="14" CommandName="loesch" Width="14" ImageUrl="Images/del.png"
                                                            CommandArgument='<%# DataBinder.Eval(Container, "DataItem.SapWert") %>'  />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" />

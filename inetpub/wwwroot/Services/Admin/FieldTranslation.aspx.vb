@@ -427,7 +427,7 @@ Partial Public Class FieldTranslation
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intAppId As Int32) As DataTable
         'Fehler in der logik der Funktion, JJ  2007.11.09
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
@@ -436,9 +436,8 @@ Partial Public Class FieldTranslation
             cn.Open()
             Dim _FieldTrans As New Kernel.FieldTranslation(intAppId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -472,12 +471,11 @@ Partial Public Class FieldTranslation
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         'Fehler in der logik der Function, JJ  2007.11.09
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -564,8 +562,7 @@ Partial Public Class FieldTranslation
             Dim strLogMsg As String = "Spaltenübersetzungen anlegen"
             If Not (intApplicationFieldID = -1) Then
                 strLogMsg = "Spaltenübersetzungen ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intApplicationFieldID, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intApplicationFieldID)
             End If
 
             Dim strFieldType As String = ""
@@ -593,8 +590,7 @@ Partial Public Class FieldTranslation
                                                 txtContent.Text, _
                                                 txt_Tooltip.Text)
             _FieldTranslation.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_FieldTranslation.ApplicationFieldID.ToString, strLogMsg, tblLogParameter)
             Search(False, True, True, , True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
@@ -622,8 +618,7 @@ Partial Public Class FieldTranslation
 
             Dim _FieldTranslation As New Kernel.FieldTranslation(CInt(lblFieldID.Text), m_User)
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(lblFieldID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(lblFieldID.Text))
             _FieldTranslation.Delete(cn)
             Log(_FieldTranslation.ApplicationFieldID.ToString, "Spaltenübersetzungen löschen", tblLogParameter)
             Search(False, True, True, True, True)

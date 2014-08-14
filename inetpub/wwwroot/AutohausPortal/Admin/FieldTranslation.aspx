@@ -136,8 +136,8 @@
 										</asp:TemplateField>
                                         <asp:TemplateField HeaderText="Löschen">
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="ibtnDel"  Visible='<%# Not (CInt(DataBinder.Eval(Container, "DataItem.ApplicationFieldID")) = -1) %>' CommandName="Del" ImageUrl="/PortalZLD/Images/del.png" runat="server" />
-                                                <asp:Image ID="DelEnabled"  Visible='<%# (CInt(DataBinder.Eval(Container, "DataItem.ApplicationFieldID")) = -1) %>' ImageUrl="/PortalZLD/Images/delgrey.png" runat="server" />
+                                                <asp:ImageButton ID="ibtnDel"  Visible='<%# Not (CInt(DataBinder.Eval(Container, "DataItem.ApplicationFieldID")) = -1) %>' CommandName="Del" ImageUrl="Images/del.png" runat="server" />
+                                                <asp:Image ID="DelEnabled"  Visible='<%# (CInt(DataBinder.Eval(Container, "DataItem.ApplicationFieldID")) = -1) %>' ImageUrl="Images/delgrey.png" runat="server" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

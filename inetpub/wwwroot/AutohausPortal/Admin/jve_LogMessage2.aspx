@@ -120,7 +120,7 @@
                                             <asp:TemplateField HeaderStyle-Width="20px">
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="btnSelect" runat="server" CommandName="Select" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ID") %>'
-                                                        ImageUrl="/PortalZLD/Images/Edit.gif" CausesValidation="false"></asp:ImageButton>
+                                                        ImageUrl="Images/Edit.gif" CausesValidation="false"></asp:ImageButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>

@@ -82,6 +82,15 @@ namespace SapORM.Contracts
         /// </summary>
         void Init(string sapFunction);
 
+        /// <summary>
+        /// Gibt die serialisierten Im-/Export-Strukturen eines Bapis für den Bapistruktur-Check zurück
+        /// </summary>
+        /// <param name="sapFunction"></param>
+        /// <param name="importStructure"></param>
+        /// <param name="exportStructure"></param>
+        /// <returns></returns>
+        void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure);
+
 
         #region Export 
 

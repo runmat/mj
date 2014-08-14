@@ -21,7 +21,7 @@
                             <tr id="trUserManagement" runat="server" >
                                 <td align="left">
                                     <asp:HyperLink ID="lnkUserManagementPic" runat="server" NavigateUrl="UserManagement.aspx"
-                                        ImageUrl="../Images/User01_06.jpg" Width="60px">Benutzer</asp:HyperLink>
+                                        ImageUrl="/PortalZLD/Images/User01_06.jpg" Width="60px">Benutzer</asp:HyperLink>
                                 </td>
                                 <td align="left">
                                     <asp:HyperLink ID="lnkUserManagement" CssClass="LinksVerwaltung" Width="180px" Height="20px"
@@ -33,7 +33,7 @@
                             <tr id="trOrganizationManagement" runat="server" visible="false">
                                 <td align="left">
                                     <asp:HyperLink ID="lnkOrganizationManagement0" runat="server" NavigateUrl="OrganizationManagement.aspx"
-                                        Width="60px" ImageUrl="../Images/Diagramm02_08.jpg" >Organisationen</asp:HyperLink>
+                                        Width="60px" ImageUrl="/PortalZLD/Images/Diagramm02_08.jpg" >Organisationen</asp:HyperLink>
                                 </td>
                                 <td align="left">
                                     <asp:HyperLink ID="lnkOrganizationManagement" runat="server" CssClass="LinksVerwaltung"
@@ -46,7 +46,7 @@
                             <tr  id="trGroupManagement" runat="server" visible="false">
                                 <td align="left">
                                     <asp:HyperLink ID="lnkGroupManagement0" runat="server" Width="60px" NavigateUrl="GroupManagement.aspx"
-                                      Text="asdasd" ImageUrl="../Images/User02_06.jpg">Gruppen</asp:HyperLink>
+                                      Text="asdasd" ImageUrl="/PortalZLD/Images/User02_06.jpg">Gruppen</asp:HyperLink>
                                 </td>
                                 <td class="" align="left">
                                     <asp:HyperLink ID="lnkGroupManagement" runat="server" CssClass="LinksVerwaltung"
@@ -59,7 +59,7 @@
                             <tr id="trCustomerManagement" runat="server" visible="false">
                                 <td align="left">
                                     <asp:HyperLink ID="lnkCustomerManagement0" runat="server" Width="60px" NavigateUrl="CustomerManagement.aspx"
-                                      ImageUrl="../Images/customer11.png" >Kunden</asp:HyperLink>
+                                      ImageUrl="/PortalZLD/Images/customer11.png" >Kunden</asp:HyperLink>
                                 </td>
                                 <td class="" align="left">
                                     <asp:HyperLink ID="lnkCustomerManagement" runat="server" CssClass="LinksVerwaltung"
@@ -73,7 +73,7 @@
                             <tr  id="trAppManagement" runat="server" visible="false">
                                 <td align="left" height="32px">
                                     <asp:HyperLink ID="lnkAppManagement0" Width="60px" runat="server" NavigateUrl="AppManagement.aspx"
-                                        Text="Anwendungen" ImageUrl="../Images/Fenster_max.jpg" >Anwendungen</asp:HyperLink>
+                                        Text="Anwendungen" ImageUrl="/PortalZLD/Images/Fenster_max.jpg" >Anwendungen</asp:HyperLink>
                                 </td>
                                 <td nowrap="nowrap" align="left">
                                     <asp:HyperLink ID="lnkAppManagement" CssClass="LinksVerwaltung" Width="180px" Height="20"
@@ -86,7 +86,7 @@
                             <tr id="trArchivManagement" runat="server" visible="false">
                                 <td align="left" height="32px" valign="baseline">
                                     <asp:HyperLink ID="lnkArchivManagement0" Width="60px" runat="server" NavigateUrl="AppManagement.aspx"
-                                        ImageUrl="../Images/Buch_08.jpg" >Archive</asp:HyperLink>
+                                        ImageUrl="/PortalZLD/Images/Buch_08.jpg" >Archive</asp:HyperLink>
                                 </td>
                                 <td class="" nowrap="nowrap" align="left" valign="middle">
                                     <asp:HyperLink ID="lnkArchivManagement" runat="server" NavigateUrl="ArchivManagement.aspx"
@@ -98,7 +98,9 @@
                             </tr>
 
                             <tr>
-                                <td colspan="3" />
+                                <td colspan="3">
+
+                                </td>
                             </tr>
 
                         </table>
