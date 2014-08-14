@@ -1,0 +1,16 @@
+﻿@model GeneralSummary
+
+<h4>@Model.Header</h4>
+
+<div class="SummaryItems">
+    @foreach (var item in Model.Items)
+    {
+        <div class="SummaryItem @item.Tag">
+            <h5 class="SummaryItemTitle">@item.TitleAsHtml</h5>
+    
+            <div class="SummaryItemBody">
+                @item.BodyAsHtml
+            </div>
+        </div>
+    }
+</div>
