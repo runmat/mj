@@ -1,0 +1,531 @@
+﻿
+<script type="text/javascript">
+
+    var _modelIsValid = false;
+
+    function AutohausZulassungFormPreparePrivate() {
+        FormPreparePrivate();
+    }
+
+    function FormPreparePrivate() {
+        try { FormWizardInitPrivate(); } catch (e) { }
+        try { MultiSelectPreparePrivate(); } catch (e) { }
+    };
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $('.tooltips').tooltip();
+    }
+    
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(true);
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+            if ('HalterAdresse' == FormWizard.GetStepKey(step - 1)) {
+                $("#HalterAdresseAjaxForm").submit();
+                return false;
+            }
+            if ('ZulassungsOptionen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormZulassungsOptionen").submit();
+                return false;
+            }
+            if ('WunschkennzeichenOptionen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormWunschkennzeichen").submit();
+                return false;
+            }
+            if ('Dienstleistungen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormDienstleistungen").submit();
+                return false;
+            }
+            if ('FreieZulassungsOptionen' == FormWizard.GetStepKey(step - 1)) {
+                $("#AjaxFormFreieZulassungsOptionen").submit();
+                return false;
+            }
+
+            return true;
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            
+            AjaxRequestNextStep();
+
+            return true;
+        });
+
+        FormWizard.OnRestart(function () {
+            if ($("#FreieZulassungsOption.FahrzeugID").val() != "") {
+                location.href = '@Url.Action("Fahrzeugverwaltung","Autohaus")';
+            } else {
+                location.reload();
+            }
+        });
+    }
+
+    function GetGrid(gridName) {
+        return $("#" + gridName).data("tGrid");
+    }
+
+    function GridRefresh(gridName) {
+        GetGrid(gridName).pageTo(1);
+    }
+
+    function AjaxRequestNextStep() {
+        $.ajax({
+            type: "POST",
+            url: FormWizard.GetNextTabKey(),
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+            }
+        });    
+    }
+
+    function AjaxFormZulassungsOptionenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid)
+            AjaxRequestNextStep();
+    }
+    
+    
+    //    
+    // <Adressen, Versandadressen, Halteradressen, etc>
+    //
+
+    function AjaxFormAdressePrepareAutoCompleteReset(formID) {
+        var form = $("#" + formID);
+        form.find("input:text").each(function() {
+            if ($(this).attr('id') != 'Name1')
+                $(this).bind('keyup', function() { $("#Name1").autocomplete("disable"); });
+        });
+    }
+    
+    function AjaxFormAdressePrepareAutoComplete(tb, url) {
+
+        var form = tb.closest("form"); 
+        var textboxValues = '';
+        form.find("input:text").each(function() {
+            if ($(this).attr('id') != 'Name1')
+                textboxValues = $(this).val();
+        });
+        if (textboxValues != '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { },
+            loadingShow: false,
+            success: function (result) {
+                AjaxFormAdresseInitAutoComplete(tb, result.items);
+            }
+        });      
+    }
+    
+    function AjaxFormAdresseInitAutoComplete(tb, items) {
+        tb.autocomplete({
+            minLength: 0,
+            source: items,
+            select: function (event, ui) {
+                $("#TmpSelectionKey").val(ui.item.value);
+                var form = tb.closest("form");
+                form.submit();
+            }
+        });
+        tb.autocomplete("enable");
+    }
+
+    function AjaxFormAdresseEmpty(formID, url) {
+        var form = $("#" + formID);
+        form.find(":input").each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'select-one':
+                    $(this).val('DE');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }        
+        });
+
+        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        return false;
+    }
+
+    function AjaxFormAdressenShowGrid(addressType) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: addressType + "AdressenShowGrid",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#Adressen").data("tWindow");
+                    $("#InnerAdressen").html(result);
+                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+
+    function AjaxFormAdresseEdit(addressType) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "Adresse",
+                data: { addressType: addressType },
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#AdresseBearbeiten").data("tWindow");
+                    $("#InnerAdresseBearbeiten").html(result);
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+    
+    function AjaxFormAdresseClose() {
+        $("#AdresseBearbeiten").data("tWindow").close();
+    }
+
+    function GridAdresseOnSelect(id, formID, addressType) {
+        var form = $("#" + formID);
+
+        if (typeof(form.attr('id')) != 'undefined') {
+            $("#TmpSelectionKey").val(id);
+            form.submit();
+        }
+
+        // no form available, so we assume that we are inside the "summary" context:
+        UpdateAddressAndGetSummary(id, addressType);
+    }
+
+    function UpdateAddressAndGetSummary(id, addressType) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "UpdateAddressAndGetSummary",
+            data: { updateAddressid: id, addressType: addressType },
+            loadingShow: false,
+            success: function (result) {
+                FormWizard.SetTabHtml("Summary", result);
+                AjaxFormAdresseClose();
+                $("#Adressen").data("tWindow").close();
+                SpanAlertSuccess(addressType, "Adresse aktualisiert.", 1800);
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
+    }
+    
+    //    
+    // </Adressen, Versandadressen, Halteradressen, etc>
+    //
+
+    //    
+    // <Halteradressen>
+    //
+
+    function HalterAdresseAjaxFormComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+    }
+    
+    function LoadKfzKreisAusHalterAdresse() {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadKfzKreisAusHalterAdresse",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    if (result.kfzKreis == '') {
+                        SpanAlertWarning("kfzKreisHint", "Hinweis: Der KFZ Kreis konnte nicht aus der Halteradresse geladen werden!", 1800);
+                        return;
+                    }
+
+                    $("#ZulassungsKreis").val(result.kfzKreis);
+                    SpanAlertSuccess("kfzKreisHint", "Zulassungs-Kreis wurde erfolgreich aus der Halteradresse geladen!", 1800);
+                }
+            });
+
+        return false;
+        
+    }
+    
+    //    
+    // </Halteradressen>
+    //
+
+
+    //
+    // <Adressen generell>
+    //
+
+    function OnDataBound_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_ReguliererAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ReguliererAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ReguliererAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_RechnungsEmpfaengerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_RechnungsEmpfaengerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_RechnungsEmpfaengerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_VersandScheinSchilderAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_VersandScheinSchilderAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersandScheinSchilderAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_VersandZb2CocAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_VersandZb2CocAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersandZb2CocAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    _adresseAjaxFormAddressType = '';
+    function AdresseAjaxFormComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            UpdateAddressAndGetSummary(-1, _adresseAjaxFormAddressType);
+            return;
+        }
+    }
+
+    function OnComplete_AdressenAuswahlGridX() {
+        var grid = $(this);
+        grid.resize(function () {
+            alert($(this));
+        });
+    }
+
+    function OnComplete_AdressenAuswahlGrid() {
+        var grid = $(this);
+        setTimeout(function () {
+            var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
+            var newHeight = (gridHeight + 80) + 'px';
+            grid.closest('.t-window-content').animate({height: newHeight}, 200); // .css('height', newHeight);
+        }, 300);
+    }
+
+    //
+    // </Adressen generell>
+    //
+    
+
+    //    
+    // <Wunschkennzeichen>
+    //
+
+    function AjaxFormWunschkennzeichenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function WunschkennzeichenGridRowOnDataBound(e) {
+        GridFormatKennzeichen(e, "Kennzeichen1");
+        GridFormatKennzeichen(e, "Kennzeichen2");
+        GridFormatKennzeichen(e, "Kennzeichen3");
+        GridFormatKennzeichen(e, "KennzeichenReserviert");
+
+        GridFormatButtons();
+    }
+
+    function WunschkennzeichenGridRowOnEdit(e) {
+        FormWizard.ButtonNextShow(false);
+        GridFormatButtons();
+        GridFormatTextBoxes();
+    }
+
+    function WunschkennzeichenGridRowOnCommand(e) {
+        setTimeout('TryShowFormWizardNextButton()', 1000);
+    }
+    
+    function TryShowFormWizardNextButton() {
+        if ($("#GridVinWunschkennzeichen").find(".text-box").length > 0)
+            // still in edit mode, so let's leave FormWizard's "Next" Button disabled:
+            return;
+        
+        FormWizard.ButtonNextShow(true);
+    }
+
+    function GridFormatButtons() {
+        $("#GridVinWunschkennzeichen").find(".t-grid-edit").html("<i class='halflings-icon pencil grid-edit-button tooltips' data-original-title='@Localize.Edit' data-placement='right''></i>");
+        $("#GridVinWunschkennzeichen").find(".tooltips").tooltip();
+        $("#GridVinWunschkennzeichen").find(".t-grid-edit").addClass("grid-button");
+
+        $("#GridVinWunschkennzeichen").find(".t-grid-update").addClass("grid-button");
+        $("#GridVinWunschkennzeichen").find(".t-grid-cancel").addClass("grid-button");
+    }
+
+    function GridFormatTextBoxes() {
+        $("#GridVinWunschkennzeichen").find("input[id^='Kennzeichen']").addClass("text-uppercase");
+    }
+
+    function GridFormatKennzeichen(e, kennzeichenColumn) {
+        var grid = $("#GridVinWunschkennzeichen").data('tGrid');
+
+        var kennzeichen = e.dataItem[kennzeichenColumn];
+        if (kennzeichen == '')
+            return;
+
+        if (kennzeichen[kennzeichen.length - 1] == '-') {
+            var index = -1;
+            for (var i = 0; i < grid.columns.length; i++) {
+                if (grid.columns[i].member == kennzeichenColumn) 
+                    index = i;
+            }
+            if (index != -1)
+                $(e.row.cells[index]).addClass("kennzeichen-nur-mit-kfzkreis");
+        }
+    }
+    
+    //    
+    // </Wunschkennzeichen>
+    //
+
+
+    //    
+    // <Dienstleistungen>
+    //
+
+    function AjaxFormDienstleistungenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    //    
+    // </Dienstleistungen>
+    //
+
+    //    
+    // <FreieZulassungsOptionen>
+    //
+
+    function AjaxFormFreieZulassungsOptionenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    //    
+    // </FreieZulassungsOptionen>
+    //
+
+</script>
+
+
+@(Html.Telerik().Window()
+    .Name("Adressen")
+    .Visible(false)
+    .Title("Auswahl Adressen")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+    .Content(@<text><div id="InnerAdressen"></div></text>))
+
+
+@(Html.Telerik().Window()
+    .Name("AdresseBearbeiten")
+    .Visible(false)
+    .Title("Adresse bearbeiten")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(500)
+    .Height(550)
+    .Content(@<text><div id="InnerAdresseBearbeiten"></div></text>))
