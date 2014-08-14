@@ -117,9 +117,6 @@
     <None Include="Ueberfuehrung\Docs\Auftragsbestätigung.doc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Ueberfuehrung\Docs\Auftragsbestätigung_org.doc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">
