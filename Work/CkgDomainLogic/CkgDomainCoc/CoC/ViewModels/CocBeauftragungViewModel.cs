@@ -48,7 +48,7 @@ namespace CkgDomainLogic.CoC.ViewModels
                 return PropertyCacheGet(() =>
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsVersandBeauftragung.xml"));
-                    if (ParamVins.IsNotNullOrEmpty())
+                    if (ParamVins.IsNotNullOrEmpty() || ParamAuftragsNummern.IsNotNullOrEmpty())
                         dict.Remove("FahrzeugAuswahl");
 
                     return dict;
@@ -64,7 +64,7 @@ namespace CkgDomainLogic.CoC.ViewModels
                 return PropertyCacheGet(() =>
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsZulassung.xml"));
-                    if (ParamVins.IsNotNullOrEmpty())
+                    if (ParamVins.IsNotNullOrEmpty() || ParamAuftragsNummern.IsNotNullOrEmpty())
                         dict.Remove("FahrzeugAuswahl");
 
                     return dict;
@@ -102,12 +102,18 @@ namespace CkgDomainLogic.CoC.ViewModels
                 if (ParamVins.IsNotNullOrEmpty() && SelectedCocAuftraege.None())
                     return string.Format("Die Fahrzeug VIN(s) {0} ist/sind in unserem System nicht vorhanden.", ParamVins);
 
+                if (ParamAuftragsNummern.IsNotNullOrEmpty() && SelectedCocAuftraege.None())
+                    return string.Format("Die Auftragsnummer(n) {0} ist/sind in unserem System nicht vorhanden.", ParamAuftragsNummern);
+
                 return null;
             }
         }
 
         [XmlIgnore]
         public string ParamVins { get; private set; }
+
+        [XmlIgnore]
+        public string ParamAuftragsNummern { get; private set; }
 
         [XmlIgnore]
         [DisplayName("Spaltenmodus")]
@@ -390,7 +396,7 @@ namespace CkgDomainLogic.CoC.ViewModels
             DruckOptionen.SetBeauftragungMode(Mode);
         }
 
-        public void DataMarkForRefresh(string vins)
+        public void DataMarkForRefresh(string vins, string auftragsNummern = "")
         {
             ZulassungDataService.AuftragsNummer = null;
 
@@ -406,8 +412,11 @@ namespace CkgDomainLogic.CoC.ViewModels
             DataMarkForRefreshVersandAdressenFiltered();
 
             ParamVins = vins;
+            ParamAuftragsNummern = auftragsNummern;
             if (ParamVins.IsNotNullOrEmpty())
                 ParamVins.Split(',').ToList().ForEach(vin => TrySelectCocVIN(vin.Trim()));
+            else if (ParamAuftragsNummern.IsNotNullOrEmpty())
+                ParamAuftragsNummern.Split(',').ToList().ForEach(aufNr => TrySelectCocAuftrag(aufNr.Trim()));
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepsVersandBeauftragung);
             PropertyCacheClear(this, m => m.StepsZulassung);
@@ -447,6 +456,15 @@ namespace CkgDomainLogic.CoC.ViewModels
         public void TrySelectCocVIN(string vin)
         {
             var cocAuftrag = CocAuftraege.FirstOrDefault(f => f.VIN.NotNullOrEmpty().ToLower() == vin.NotNullOrEmpty().ToLower());
+            if (cocAuftrag == null)
+                return;
+
+            cocAuftrag.IsSelected = true;
+        }
+
+        public void TrySelectCocAuftrag(string auftragsNr)
+        {
+            var cocAuftrag = CocAuftraege.FirstOrDefault(f => f.AUFTR_NR_KD.NotNullOrEmpty().ToLower() == auftragsNr.NotNullOrEmpty().ToLower());
             if (cocAuftrag == null)
                 return;
 
