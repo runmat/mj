@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Autohaus.ViewModels
+@model FahrzeugakteViewModel
+@{ 
+    var gridName = "BeauftragteZulassungenGrid";
+}
+   
+@(Html.Telerik()
+    .Grid<BeauftragteZulassung>()
+    .Name(gridName)
+    .XGroup("BeauftragteZulassungenGrid")
+    .XAjaxDataBinding("BeauftragteZulassungenAjaxBinding", "Autohaus")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ReferenzNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.ZBIINr);
+        columns.XBound(c => c.AuftragsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.ZulassungsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.WebUser);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_BeauftragteZulassungenGrid"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AuftragsDatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportBeauftragteZulassungenFilteredExcel", "Autohaus");
+        commands.FilteredDataCommand("ExportBeauftragteZulassungenFilteredPDF", "Autohaus");
+    })
+)

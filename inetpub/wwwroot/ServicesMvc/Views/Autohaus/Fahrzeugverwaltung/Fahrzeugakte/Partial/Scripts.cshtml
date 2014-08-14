@@ -1,0 +1,389 @@
+﻿<script type="text/javascript" >
+
+    var _ladeHinweis = '@Localize.LoadingData';
+
+    /// Tab Dokumente
+    // Dokumente
+    function GetFahrzeugakteDocsGrid() {
+        return $("#FahrzeugakteDocsGrid").data("tGrid");
+    }
+
+    function FahrzeugakteDocsLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#FahrzeugakteDocsGridItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function OnDataBound_FahrzeugakteDocsGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        FahrzeugakteDocsLoadingHide();
+    }
+
+    function OnColumnShowHide_FahrzeugakteDocsGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_FahrzeugakteDocsGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FahrzeugakteDocRemove(id) {
+        var message = '@Localize.DocumentDoYouReallyWantToDelete.ToJavascriptString()';
+
+        if (!confirm(message)) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "DeleteFahrzeugakteDoc",
+            data: { id: id.toString() },
+            loadingShow: true,
+            success: function (data) {
+                var success = data["Success"];
+                var message = data["Message"];
+                if (success == true) {
+                    SpanAlertSuccess("Message", message, 1800);
+                    TryFahrzeugakteDocsGridRefresh();
+                } else {
+                    SpanAlertError("Message", message, 5000);
+                }
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function FahrzeugakteDocEdit(id) {
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugakteDocEdit",
+            data: { id: id.toString() },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugakteDocEdit(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function FahrzeugakteDocCreate() {
+        $.ajax({
+            type: "POST",
+            url: "CreateFahrzeugakteDoc",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugakteDocEdit(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function ShowFahrzeugakteDocEdit(result) {
+        $("#divFahrzeugakteDocEdit").html(result);
+        $("#divFahrzeugakteDocsGrid").slideUp();
+        $("#divFahrzeugakteDocEdit").slideDown();
+
+        FormPreparePrivateAjax();
+        BreadcrumbsMoveNext("@Localize.Edit");
+        TabsEnable(false);
+    }
+
+    function CloseFahrzeugakteDocEdit() {
+        $("#divFahrzeugakteDocEdit").slideUp(function () {
+            $("#divFahrzeugakteDocsGrid").delay(200).show();
+            window.scrollTo(0, 0);
+            BreadcrumbsMovePrev();
+            TabsEnable(true);
+        });
+        TryFahrzeugakteDocsGridRefresh();
+    }
+
+    function EditFahrzeugakteDocComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+            SpanAlertSuccess("Message", successMessage, 1800);
+            CloseFahrzeugakteDocEdit();
+        }
+    }
+
+    function TryFahrzeugakteDocsGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetFahrzeugakteDocsGrid()) !== "undefined") {
+            GetFahrzeugakteDocsGrid().ajaxRequest();
+        }
+    }
+
+    //Dokument-Upload
+    function SetFahrzeugakteDocProperties() {
+        var categoryId = $("#CategoryID").val().toString();
+        var bemerkung = $("#Bemerkung").val().toString();
+
+        $.ajax({
+            type: "POST",
+            url: "SetFahrzeugakteDocProperties",
+            data: { categoryId: categoryId, bemerkung: bemerkung }
+        });
+    }
+
+    function isLegalExtension(ext) {
+        switch (ext.toLowerCase()) {
+            case 'pdf':
+            case 'doc':
+            case 'docx':
+            case 'xls':
+            case 'xlsx':
+            case 'txt':
+            case 'csv':
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+            case 'png':
+                return true;
+        }
+        return false;
+    }
+
+    function onFileSelect(e) {
+        // Kategorie und Bemerkung an Server übermitteln
+        SetFahrzeugakteDocProperties();
+
+        e.files.forEach(function (file) {
+            var fileName = file.name;
+            var parts = fileName.split('.');
+            var extension = parts[parts.length - 1];
+
+            // Nur bestimmte Dateitypen sind zugelassen
+            if (!isLegalExtension(extension)) {
+                var message = '@Localize.CustomerDocumentUploadLegalFiletypeWarning.ToJavascriptString()';
+                SpanAlertWarning("Message", message, 3000);
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+
+    function UploadStart(e) {
+        // Kategorie und Bemerkung an Server übermitteln
+        SetFahrzeugakteDocProperties();
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        // AutoUpload immer am Ende auf false setzen.  So habe ich die Chance dem Anwender notfalls zu fragen was mit einem dokument passieren soll
+        $('#UploadFahrzeugakteDoc').data('tUpload').async.autoUpload = false;
+        CloseFahrzeugakteDocEdit();
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        LoadingHide();
+        var message = '@Localize.UploadErrorOccurred.ToJavascriptString()';
+        SpanAlertWarning("Message", message, 3000);
+    }
+
+    // Kategorien
+    function GetDocCategoriesGrid() {
+        return $("#DocCategoriesGrid").data("tGrid");
+    }
+
+    function DocCategoriesLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#DocCategoriesGridItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function OnDataBound_DocCategoriesGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_DocCategoriesGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_DocCategoriesGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function DocCategoryRemove(id) {
+        var message = '@Localize.DocumentTypeDoYouReallyWantToDelete.ToJavascriptString()';
+
+        if (!confirm(message)) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "DeleteDocCategory",
+            data: { id: id.toString() },
+            loadingShow: true,
+            success: function (data) {
+                var success = data["Success"];
+                var message = data["Message"];
+                if (success == true) {
+                    SpanAlertSuccess("Message", message, 1800);
+                    TryDocCategoriesGridRefresh();
+                } else {
+                    SpanAlertError("Message", message, 5000);
+                }
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function DocCategoryEdit(id) {
+        $.ajax({
+            type: "POST",
+            url: "ShowDocCategoryEdit",
+            data: { id: id.toString() },
+            loadingShow: true,
+            success: function (result) {
+                ShowDocCategoryEdit(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function DocCategoryCreate() {
+        $.ajax({
+            type: "POST",
+            url: "CreateDocCategory",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                ShowDocCategoryEdit(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function ShowDocCategories() {
+        $.ajax({
+            type: "POST",
+            url: "ShowDocCategories",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                ShowDocCategoriesGrid(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("Message", result.data, 5000);
+            }
+        });
+    }
+
+    function ShowDocCategoriesGrid(result, showCloseButton) {
+        $("#divDocCategoriesGrid").html(result);
+        $("#divFahrzeugakteDocsGrid").slideUp();
+        $("#divDocCategoriesGrid").slideDown();
+
+        GridAllColumnFilterApplyToGrid("DocCategoriesGrid");
+
+        FormPreparePrivateAjax();
+
+        BreadcrumbsMoveNext("@Localize.Categories");
+        TabsEnable(false);
+    }
+
+    function ShowDocCategoryEdit(result, showCloseButton) {
+        $("#divDocCategoryEdit").html(result);
+        $("#divDocCategoriesGrid").slideUp();
+        $("#divDocCategoryEdit").slideDown();
+
+        FormPreparePrivateAjax();
+        BreadcrumbsMoveNext("@Localize.Edit");
+    }
+
+    function EditDocCategoryComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid == 'true') {
+            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+            SpanAlertSuccess("Message", successMessage, 1800);
+            CloseDocCategoryEdit();
+        }
+    }
+
+    function CloseDocCategoriesGrid() {
+        $("#divDocCategoriesGrid").slideUp(function () {
+            $("#divDocCategoriesGrid").html('');
+            $("#divFahrzeugakteDocsGrid").delay(200).show();
+            window.scrollTo(0, 0);
+            BreadcrumbsMovePrev();
+            TabsEnable(true);
+        });
+    }
+
+    function CloseDocCategoryEdit() {
+        $("#divDocCategoryEdit").slideUp(function () {
+            $("#divDocCategoriesGrid").delay(200).show();
+            window.scrollTo(0, 0);
+            BreadcrumbsMovePrev();
+        });
+        TryDocCategoriesGridRefresh();
+    }
+
+    function TryDocCategoriesGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetDocCategoriesGrid()) !== "undefined") {
+            GetDocCategoriesGrid().ajaxRequest();
+        }
+    }
+
+    /// Tab Zulassung
+    function GetBeauftragteZulassungenGrid() {
+        return $("#BeauftragteZulassungenGrid").data("tGrid");
+    }
+
+    function BeauftragteZulassungenLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#BeauftragteZulassungenGridItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function OnDataBound_BeauftragteZulassungenGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        BeauftragteZulassungenLoadingHide();
+    }
+
+    function OnLoad_BeauftragteZulassungenGrid() {
+        $('.t-no-data td').text(_ladeHinweis);
+    }
+
+    function OnColumnShowHide_BeauftragteZulassungenGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_BeauftragteZulassungenGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function TryBeauftragteZulassungenGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetBeauftragteZulassungenGrid()) !== "undefined") {
+            GetBeauftragteZulassungenGrid().ajaxRequest();
+        }
+    }
+
+</script>

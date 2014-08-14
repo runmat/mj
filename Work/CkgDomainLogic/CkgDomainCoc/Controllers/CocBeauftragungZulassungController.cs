@@ -40,6 +40,15 @@ namespace ServicesMvc.Controllers
             return View("Beauftragung", ViewModel);
         }
 
+        public ActionResult ZulassungFreiMitVorbelegung(string vin, string auftragsNr)
+        {
+            ViewModel.DataMarkForRefresh(null);
+            ViewModel.SetFreieZulassungsOption(new FreieZulassung{ VIN = vin, AuftragsReferenz = auftragsNr });
+            ViewModel.SetCocBeauftragungMode(CocBeauftragungMode.FreieZulassung);
+
+            return View("Beauftragung", ViewModel);
+        }
+
 
         #region Freie Zulassungs-Optionen
 
