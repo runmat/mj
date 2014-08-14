@@ -274,6 +274,13 @@
     <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
       <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\Auftragsnachbearbeitung.aspx.cs">
+      <DependentUpon>Auftragsnachbearbeitung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Auftragsnachbearbeitung.aspx.designer.cs">
+      <DependentUpon>Auftragsnachbearbeitung.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\KVPBewertung.aspx.cs">
       <DependentUpon>KVPBewertung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -455,6 +462,7 @@
     <Compile Include="lib\KomplettZLD.cs" />
     <Compile Include="lib\Barabhebung.cs" />
     <Compile Include="lib\clsDisposition.cs" />
+    <Compile Include="lib\NachbearbeitungAuftrag.cs" />
     <Compile Include="lib\Listen.cs" />
     <Compile Include="lib\Logbuch\Ausgang.cs">
       <SubType>Code</SubType>
@@ -534,6 +542,7 @@
     <Content Include="forms\Disposition.aspx" />
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
+    <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />
     <Content Include="forms\KVPErfassung.aspx" />
     <Content Include="forms\Kundengruppe.aspx" />
@@ -646,7 +655,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
