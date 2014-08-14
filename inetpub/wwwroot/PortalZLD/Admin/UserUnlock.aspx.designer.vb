@@ -194,15 +194,6 @@ Partial Public Class UserUnlock
     Protected WithEvents trSearchSpacer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''GridNavigation1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
-
-    '''<summary>
     '''trSearchResult-Steuerelement
     '''</summary>
     '''<remarks>

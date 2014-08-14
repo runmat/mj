@@ -62,7 +62,7 @@
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" 
                                                     Visible="False" Width="160px">*</asp:TextBox>
                                                 <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" 
-                                                    ImageUrl="../images/empty.gif" Width="1px" />
+                                                    ImageUrl="/PortalZLD/images/empty.gif" Width="1px" />
                                             </td>
                                         </tr>
                                         <tr class="formquery">

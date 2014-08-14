@@ -110,7 +110,7 @@
                             <div id="Result" runat="server" visible="false">                                
                                     <div class="ExcelDiv">
                                         <div align="right" class="rightPadding" id="ExcelDiv" runat="server">
-                                            &nbsp;<img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                            &nbsp;<img src="Images/iconXLS.gif" alt="Excel herunterladen" />
                                             <span class="ExcelSpan">
                                                 <asp:LinkButton ID="lnkCreateExcel1" ForeColor="White" runat="server">Excel 
                                                                 herunterladen</asp:LinkButton>

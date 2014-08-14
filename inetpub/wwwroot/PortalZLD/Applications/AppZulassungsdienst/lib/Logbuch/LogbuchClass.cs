@@ -6,76 +6,76 @@ using CKG.Base.Common;
 
 namespace AppZulassungsdienst.lib.Logbuch
 {
-	/// <summary>
-	/// Arbeitsklasse die ein Filialbuch darstellt. Sie beinhaltet alle Funktionen zur Kommunikation mit SAP und hält die Daten
-	/// die ein Filialbuch kennzeichnen
-	/// </summary>
-	/// <remarks></remarks>
-	public class LogbuchClass : BankBase
-	{
-		#region "Enumeratoren"
+    /// <summary>
+    /// Arbeitsklasse die ein Filialbuch darstellt. Sie beinhaltet alle Funktionen zur Kommunikation mit SAP und hält die Daten
+    /// die ein Filialbuch kennzeichnen
+    /// </summary>
+    /// <remarks></remarks>
+    public class LogbuchClass : BankBase
+    {
+        #region "Enumeratoren"
 
-		public enum EntryTyp
-		{
-			Alle,
-			Rückfragen,
-			Aufgaben
-		}
+        public enum EntryTyp
+        {
+            Alle,
+            Rückfragen,
+            Aufgaben
+        }
 
-		public enum Rolle
-		{
+        public enum Rolle
+        {
             Zulassungsdienst,
-			Filiale,
-			LFB
-		}
+            Filiale,
+            Gebietsleiter
+        }
 
-		public enum Antwortart
-		{
-			Erledigt,
-			Gelesen,
-			Antwort
-		}
+        public enum Antwortart
+        {
+            Erledigt,
+            Gelesen,
+            Antwort
+        }
 
-		public enum StatusFilter
-		{
-			Neu,
-			Alle
-		}
+        public enum StatusFilter
+        {
+            Neu,
+            Alle
+        }
 
-		#endregion
+        #endregion
 
-		#region "Globale Objekte"
+        #region "Globale Objekte"
 
         private List<VorgangsartRolleDetails> lstVorgangsartenRolle = new List<VorgangsartRolleDetails>();
         private List<VorgangsartDetails> lstVorgangsarten = new List<VorgangsartDetails>();
 
-		#endregion
+        #endregion
 
-		#region "Properties"
+        #region "Properties"
 
-		public Protokoll Protokoll { get; set; }
-		public FilialbuchUser UserLoggedIn { get; set; }
+        public Protokoll Protokoll { get; set; }
+        public FilialbuchUser UserLoggedIn { get; set; }
         public string VkOrg { get; set; }
         public string VkBur { get; set; }
-		public StatusFilter letzterStatus { get; set; }
-		public System.DateTime? Von { get; set; }
-		public System.DateTime? Bis { get; set; }
+        public StatusFilter letzterStatus { get; set; }
+        public System.DateTime? Von { get; set; }
+        public System.DateTime? Bis { get; set; }
 
-		public List<VorgangsartDetails> Vorgangsarten 
+        public List<VorgangsartDetails> Vorgangsarten
         {
-			get { return lstVorgangsarten; }
-		}
+            get { return lstVorgangsarten; }
+        }
 
-        public List<VorgangsartRolleDetails> VorgangsartenRolle 
+        public List<VorgangsartRolleDetails> VorgangsartenRolle
         {
-			get { return lstVorgangsartenRolle; }
-		}
+            get { return lstVorgangsartenRolle; }
+        }
 
-		#endregion
+        #endregion
 
         public LogbuchClass(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
             : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
-		{
+        {
             if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
             {
                 if (objUser.Reference.Length > 4)
@@ -95,136 +95,142 @@ namespace AppZulassungsdienst.lib.Logbuch
                 VkBur = "";
             }
 
-			Protokoll = new Protokoll(ref lstVorgangsarten, ref m_objUser, m_objApp, strAppID, strSessionID, strFilename);
-		}
+            Protokoll = new Protokoll(ref lstVorgangsarten, ref m_objUser, m_objApp, strAppID, strSessionID, strFilename);
+        }
 
-		#region "Shared Functions"
+        #region "Shared Functions"
 
-		/// <summary>
-		/// Übersetzt Rollenwerte für SAP
-		/// </summary>
-		/// <param name="rolle">Rolle</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static string TranslateRolle(Rolle rolle)
-		{
-			switch (rolle) {
+        /// <summary>
+        /// Übersetzt Rollenwerte für SAP
+        /// </summary>
+        /// <param name="rolle">Rolle</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static string TranslateRolle(Rolle rolle)
+        {
+            switch (rolle)
+            {
                 case Rolle.Zulassungsdienst:
                     return "ZUL";
-				case Rolle.Filiale:
-					return "FIL";
-				case Rolle.LFB:
-					return "LFB";
-				default:
-					return "FIL";
-			}
-		}
+                case Rolle.Filiale:
+                    return "FIL";
+                case Rolle.Gebietsleiter:
+                    return "GL";
+                default:
+                    return "FIL";
+            }
+        }
 
-		/// <summary>
-		/// Übersetzt Rollenwerte aus SAP
-		/// </summary>
-		/// <param name="rolle">Rolle</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static Rolle TranslateRolle(string rolle)
-		{
-			switch (rolle) {
+        /// <summary>
+        /// Übersetzt Rollenwerte aus SAP
+        /// </summary>
+        /// <param name="rolle">Rolle</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static Rolle TranslateRolle(string rolle)
+        {
+            switch (rolle)
+            {
                 case "ZUL":
-			        return Rolle.Zulassungsdienst;
-				case "FIL":
-					return Rolle.Filiale;
-				case "LFB":
-					return Rolle.LFB;
-				default:
-					return Rolle.Filiale;
-			}
-		}
+                    return Rolle.Zulassungsdienst;
+                case "FIL":
+                    return Rolle.Filiale;
+                case "GL":
+                    return Rolle.Gebietsleiter;
+                default:
+                    return Rolle.Filiale;
+            }
+        }
 
-		/// <summary>
-		/// Übersetzt Antwortarten für SAP
-		/// </summary>
-		/// <param name="antwortart">Antwortart</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static char TranslateAntwortart(Antwortart antwortart)
-		{
-			switch (antwortart) {
-				case Antwortart.Antwort:
-					return 'A';
-				case Antwortart.Gelesen:
-					return 'G';
-				case Antwortart.Erledigt:
-					return 'E';
-				default:
-					return 'G';
-			}
-		}
+        /// <summary>
+        /// Übersetzt Antwortarten für SAP
+        /// </summary>
+        /// <param name="antwortart">Antwortart</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static char TranslateAntwortart(Antwortart antwortart)
+        {
+            switch (antwortart)
+            {
+                case Antwortart.Antwort:
+                    return 'A';
+                case Antwortart.Gelesen:
+                    return 'G';
+                case Antwortart.Erledigt:
+                    return 'E';
+                default:
+                    return 'G';
+            }
+        }
 
-		/// <summary>
-		/// Übersetzt Antwortarten für SAP
-		/// </summary>
-		/// <param name="antwortart">Antwortart</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static Antwortart TranslateAntwortart(char antwortart)
-		{
-			switch (antwortart) {
-				case 'A':
-					return Antwortart.Antwort;
-				case 'G':
-					return Antwortart.Gelesen;
-				case 'E':
-					return Antwortart.Erledigt;
-				default:
-					return Antwortart.Gelesen;
-			}
-		}
+        /// <summary>
+        /// Übersetzt Antwortarten für SAP
+        /// </summary>
+        /// <param name="antwortart">Antwortart</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static Antwortart TranslateAntwortart(char antwortart)
+        {
+            switch (antwortart)
+            {
+                case 'A':
+                    return Antwortart.Antwort;
+                case 'G':
+                    return Antwortart.Gelesen;
+                case 'E':
+                    return Antwortart.Erledigt;
+                default:
+                    return Antwortart.Gelesen;
+            }
+        }
 
-		/// <summary>
-		/// Übersetzt Eintragsstatus für SAP
-		/// </summary>
-		/// <param name="status">Status</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static string TranslateStatus(StatusFilter status)
-		{
-			switch (status) {
-				case StatusFilter.Alle:
-					return "ALL";
-				case StatusFilter.Neu:
-					return "NEW";
-				default:
-					return "ALL";
-			}
-		}
+        /// <summary>
+        /// Übersetzt Eintragsstatus für SAP
+        /// </summary>
+        /// <param name="status">Status</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static string TranslateStatus(StatusFilter status)
+        {
+            switch (status)
+            {
+                case StatusFilter.Alle:
+                    return "ALL";
+                case StatusFilter.Neu:
+                    return "NEW";
+                default:
+                    return "ALL";
+            }
+        }
 
-		/// <summary>
-		/// Übersetzt Eintragsstatus für SAP
-		/// </summary>
-		/// <param name="status">Status</param>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		public static StatusFilter TranslateStatus(string status)
-		{
-			switch (status) {
-				case "NEW":
-					return StatusFilter.Neu;
-				case "ALL":
-					return StatusFilter.Alle;
-				default:
-					return StatusFilter.Alle;
-			}
-		}
+        /// <summary>
+        /// Übersetzt Eintragsstatus für SAP
+        /// </summary>
+        /// <param name="status">Status</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static StatusFilter TranslateStatus(string status)
+        {
+            switch (status)
+            {
+                case "NEW":
+                    return StatusFilter.Neu;
+                case "ALL":
+                    return StatusFilter.Alle;
+                default:
+                    return StatusFilter.Alle;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		public DataTable GetGroups()
-		{
+        public DataTable GetGroups()
+        {
             return new DataTable();
-		}
+        }
 
-		public FilialbuchUser LoginUser(string strAppID, string strSessionID, System.Web.UI.Page page, string VkBur, string LoginValue)
-		{
+        public FilialbuchUser LoginUser(string strAppID, string strSessionID, System.Web.UI.Page page, string VkBur, string LoginValue)
+        {
             m_strClassAndMethod = "LogbuchClass.LoginUser";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -340,12 +346,12 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
 
             return UserLoggedIn;
-		}
+        }
 
 
-		public void GetEinträge(string strAppID, string strSessionID, System.Web.UI.Page page, FilialbuchUser FilBuUser, 
+        public void GetEinträge(string strAppID, string strSessionID, System.Web.UI.Page page, FilialbuchUser FilBuUser,
             StatusFilter status, string an_kst = null, DateTime? Von = null, DateTime? Bis = null)
-		{
+        {
             m_strClassAndMethod = "LogbuchClass.GetEinträge";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -405,9 +411,9 @@ namespace AppZulassungsdienst.lib.Logbuch
                     {
                         foreach (DataRow dRow in tblEingang.Rows)
                         {
-		                    int erfHour = 0;
-		                    int erfMinute = 0;
-		                    int erfSecond = 0;
+                            int erfHour = 0;
+                            int erfMinute = 0;
+                            int erfSecond = 0;
 
                             string erfZpt = dRow["ERZEIT"].ToString();
                             if (!String.IsNullOrEmpty(erfZpt))
@@ -423,10 +429,10 @@ namespace AppZulassungsdienst.lib.Logbuch
                                 //Filter auf Kostenstelle und User
                                 if (dRow["VON"].ToString() == an_kst | dRow["VON"].ToString() == UserLoggedIn.UsernameSAP)
                                 {
-                                    Protokoll.addEntry(Protokoll.Side.Input, new Eingang(dRow["VORGID"].ToString(), dRow["LFDNR"].ToString(), erfDat, 
-                                        dRow["VON"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(), 
-                                        dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()), 
-                                        LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(), 
+                                    Protokoll.addEntry(Protokoll.Side.Input, new Eingang(dRow["VORGID"].ToString(), dRow["LFDNR"].ToString(), erfDat,
+                                        dRow["VON"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(),
+                                        dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()),
+                                        LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(),
                                         UserLoggedIn.UsernameSAP, ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName));
                                 }
                             }
@@ -447,8 +453,8 @@ namespace AppZulassungsdienst.lib.Logbuch
                         foreach (DataRow dRow in tblAusgang.Rows)
                         {
                             int erfHour = 0;
-		                    int erfMinute = 0;
-		                    int erfSecond = 0;
+                            int erfMinute = 0;
+                            int erfSecond = 0;
 
                             string erfZpt = dRow["ERZEIT"].ToString();
                             if (!String.IsNullOrEmpty(erfZpt))
@@ -505,19 +511,19 @@ namespace AppZulassungsdienst.lib.Logbuch
                 }
                 finally { m_blnGestartet = false; }
             }
-		}
+        }
 
-		/// <summary>
-		/// Erstellt einen neuen Filialbucheintrag
-		/// </summary>
-		/// <param name="Betreff"></param>
-		/// <param name="Text"></param>
-		/// <param name="an"></param>
-		/// <param name="vorgangsart"></param>
-		/// <param name="zuerledigenBis"></param>
-		/// <remarks></remarks>
+        /// <summary>
+        /// Erstellt einen neuen Filialbucheintrag
+        /// </summary>
+        /// <param name="Betreff"></param>
+        /// <param name="Text"></param>
+        /// <param name="an"></param>
+        /// <param name="vorgangsart"></param>
+        /// <param name="zuerledigenBis"></param>
+        /// <remarks></remarks>
         public void NeuerEintrag(string strAppID, string strSessionID, System.Web.UI.Page page, string Betreff, string Text, string an, string vorgangsart, string zuerledigenBis)
-		{
+        {
             m_strClassAndMethod = "LogbuchClass.NeuerEintrag";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -587,19 +593,20 @@ namespace AppZulassungsdienst.lib.Logbuch
                 }
                 finally { m_blnGestartet = false; }
             }
-		}
+        }
 
-		public string GetAntwortToVorgangsart(string vgart)
-		{
-			VorgangsartDetails Antwort = lstVorgangsarten.Find((VorgangsartDetails vg) =>
-			{
-				if (vg.Vorgangsart == vgart) {
-					return true;
-				}
-				return false;
-			});
-			return Antwort.Antwortart.ToString();
-		}
+        public string GetAntwortToVorgangsart(string vgart)
+        {
+            VorgangsartDetails Antwort = lstVorgangsarten.Find((VorgangsartDetails vg) =>
+            {
+                if (vg.Vorgangsart == vgart)
+                {
+                    return true;
+                }
+                return false;
+            });
+            return Antwort.Antwortart.ToString();
+        }
 
         public override void Show()
         {
@@ -610,75 +617,75 @@ namespace AppZulassungsdienst.lib.Logbuch
         {
             throw new System.NotImplementedException();
         }
-	}
+    }
 
-	#region "Strukturen"
+    #region "Strukturen"
 
-	/// <summary>
-	/// Daten eines angemeldeten Filialbuchbenutzers
-	/// </summary>
-	/// <remarks></remarks>
-	public class FilialbuchUser
-	{
-		public string UsernameSAP { get; set; }
-		public string Bedienername { get; set; }
-		public LogbuchClass.Rolle Rolle { get; set; }
-		public string RollenName { get; set; }
-		public string RollePa { get; set; }
+    /// <summary>
+    /// Daten eines angemeldeten Filialbuchbenutzers
+    /// </summary>
+    /// <remarks></remarks>
+    public class FilialbuchUser
+    {
+        public string UsernameSAP { get; set; }
+        public string Bedienername { get; set; }
+        public LogbuchClass.Rolle Rolle { get; set; }
+        public string RollenName { get; set; }
+        public string RollePa { get; set; }
         public string NamePa { get; set; }
 
-		public FilialbuchUser(string usernamesap, string bedienername, string rolle, string rollenname, string rollepa, string namepa)
-		{
-			this.UsernameSAP = usernamesap;
-			this.Bedienername = bedienername;
-		    this.Rolle = LogbuchClass.TranslateRolle(rolle.Trim().ToUpper());
-			this.RollenName = rollenname;
-			this.RollePa = rollepa;
-		    this.NamePa = namepa;
-		}
-	}
+        public FilialbuchUser(string usernamesap, string bedienername, string rolle, string rollenname, string rollepa, string namepa)
+        {
+            this.UsernameSAP = usernamesap;
+            this.Bedienername = bedienername;
+            this.Rolle = LogbuchClass.TranslateRolle(rolle.Trim().ToUpper());
+            this.RollenName = rollenname;
+            this.RollePa = rollepa;
+            this.NamePa = namepa;
+        }
+    }
 
-	/// <summary>
-	/// Detailwerte Vorgangsart der Rolle
-	/// </summary>
-	/// <remarks></remarks>
-	public class VorgangsartRolleDetails
-	{
-		public LogbuchClass.Rolle Rolle { get; set; }
-		public string Vorgangsart { get; set; }
-		public char Stufe { get; set; }
-		public bool VonEmpfängerZuSchliessen { get; set; }
+    /// <summary>
+    /// Detailwerte Vorgangsart der Rolle
+    /// </summary>
+    /// <remarks></remarks>
+    public class VorgangsartRolleDetails
+    {
+        public LogbuchClass.Rolle Rolle { get; set; }
+        public string Vorgangsart { get; set; }
+        public char Stufe { get; set; }
+        public bool VonEmpfängerZuSchliessen { get; set; }
 
         public VorgangsartRolleDetails(LogbuchClass.Rolle rolle, string vorgangsart, char stufe, bool schliessbar)
-		{
-			this.Rolle = rolle;
-			this.Vorgangsart = vorgangsart;
-			this.Stufe = stufe;
-			this.VonEmpfängerZuSchliessen = schliessbar;
-		}
-	}
+        {
+            this.Rolle = rolle;
+            this.Vorgangsart = vorgangsart;
+            this.Stufe = stufe;
+            this.VonEmpfängerZuSchliessen = schliessbar;
+        }
+    }
 
-	/// <summary>
-	/// Detailwerte Vorgangsart
-	/// </summary>
-	/// <remarks></remarks>
-	public class VorgangsartDetails
-	{
-		public string Vorgangsart { get; set; }
-		public string Bezeichnung { get; set; }
-		public char Antwortart { get; set; }
-		public bool Filialbuchvorgang { get; set; }
+    /// <summary>
+    /// Detailwerte Vorgangsart
+    /// </summary>
+    /// <remarks></remarks>
+    public class VorgangsartDetails
+    {
+        public string Vorgangsart { get; set; }
+        public string Bezeichnung { get; set; }
+        public char Antwortart { get; set; }
+        public bool Filialbuchvorgang { get; set; }
 
-		public VorgangsartDetails(string vorgangsart, string bezeichnung, char antwortart, bool Filialbuchvorgang)
-		{
-			this.Vorgangsart = vorgangsart;
-			this.Bezeichnung = bezeichnung;
-			this.Antwortart = antwortart;
-			this.Filialbuchvorgang = Filialbuchvorgang;
-		}
-	}
+        public VorgangsartDetails(string vorgangsart, string bezeichnung, char antwortart, bool Filialbuchvorgang)
+        {
+            this.Vorgangsart = vorgangsart;
+            this.Bezeichnung = bezeichnung;
+            this.Antwortart = antwortart;
+            this.Filialbuchvorgang = Filialbuchvorgang;
+        }
+    }
 
-	#endregion
+    #endregion
 
 }
 

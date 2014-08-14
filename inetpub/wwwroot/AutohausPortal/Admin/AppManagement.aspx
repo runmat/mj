@@ -59,7 +59,7 @@
                                             </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="images/empty.gif"
                                                     Width="1px" />
                                             </td>
                                         </tr>
@@ -143,7 +143,7 @@
                                                                 </asp:TextBox>
                                                             </EditItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="/AutohausPortal/Admin/Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
+                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="Images/Papierkorb_01.gif" ControlStyle-Height="16px" ControlStyle-Width="16px">
                                                         </asp:ButtonField>
                                                     </Columns>
                                                 </asp:GridView>

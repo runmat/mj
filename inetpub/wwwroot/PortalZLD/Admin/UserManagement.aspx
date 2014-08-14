@@ -96,7 +96,7 @@
                                         </td>
                                         <td class="firstLeft active">
                                             <asp:TextBox ID="txtFilterUserName" runat="server" CssClass="InputTextbox" Width="257px">*</asp:TextBox>
-                                            <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                            <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
                                                 Width="1px" />
                                         </td>
                                         <td class="secondLeft active" id="td_OnlyDisabledUser1" runat="server">
@@ -166,7 +166,7 @@
                         <div id="Result" runat="Server" visible="false">
                             <div class="ExcelDiv">
                                 <div align="right" id="trSearchSpacer" runat="server" >
-                                    <img src="../Images/iconXLS.gif" alt="Excel herunterladen" />
+                                    <img src="/PortalZLD/Images/iconXLS.gif" alt="Excel herunterladen" />
                                     <asp:HyperLink ID="lnkExcel" runat="server" Visible="False" ForeColor="White">Excel-Download: 
                                                                         rechte Maustaste -&gt; Speichern unter...</asp:HyperLink>
                                 </div>
@@ -271,7 +271,7 @@
                                                         <asp:BoundField DataField="URLRemoteLoginKey" SortExpression="URLRemoteLoginKey" HeaderText="RemoteLoginKey">
                                                         </asp:BoundField>
                                                         <asp:ButtonField CommandName="Del"  HeaderText="Löschen" ButtonType="Image" 
-                                                            ImageUrl="../../Images/Papierkorb_01.gif"  ControlStyle-Height="16px" 
+                                                            ImageUrl="/PortalZLD/Images/Papierkorb_01.gif"  ControlStyle-Height="16px" 
                                                             ControlStyle-Width="16px">
                                                             <ControlStyle Height="16px" Width="16px" />
                                                         </asp:ButtonField>

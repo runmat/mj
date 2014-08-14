@@ -60,7 +60,7 @@
                                             </td>
                                             <td class="firstLeft active">
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="images/empty.gif"
                                                     Width="1px" />
                                             </td>
                                         </tr>
@@ -150,7 +150,7 @@
                                                                 </asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image"  ControlStyle-Height="16px" ControlStyle-Width="16px" ImageUrl="/AutohausPortal/Admin/Images/Papierkorb_01.gif">
+                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image"  ControlStyle-Height="16px" ControlStyle-Width="16px" ImageUrl="Images/Papierkorb_01.gif">
                                                         </asp:ButtonField>
                                                     </Columns>
                                                 </asp:GridView>
@@ -325,7 +325,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssign" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_vor_01.jpg"
+                                                                    <asp:ImageButton ID="btnAssign" runat="server" ImageUrl="Images/Pfeil_vor_01.jpg"
                                                                         ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                                 </td>
                                                                 <td class="active" width="15%">
@@ -334,7 +334,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssign" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_zurueck_01.jpg"
+                                                                        <asp:ImageButton ID="btnUnAssign" runat="server" ImageUrl="Images/Pfeil_zurueck_01.jpg"
                                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                                 </td>
                                                                 <td class="active" width="35%">
@@ -368,7 +368,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignArchiv" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_vor_01.jpg"
+                                                                    <asp:ImageButton ID="btnAssignArchiv" runat="server" ImageUrl="Images/Pfeil_vor_01.jpg"
                                                                         ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                                 </td>
                                                                 <td class="active" width="15%">
@@ -377,7 +377,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_zurueck_01.jpg"
+                                                                        <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="Images/Pfeil_zurueck_01.jpg"
                                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                                 </td>
                                                                 <td class="active" width="35%">
@@ -411,7 +411,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignEmployee" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_vor_01.jpg"
+                                                                    <asp:ImageButton ID="btnAssignEmployee" runat="server" ImageUrl="Images/Pfeil_vor_01.jpg"
                                                                         ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                                 </td>
                                                                 <td class="active" width="15%">
@@ -420,7 +420,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignEmployee" runat="server" ImageUrl="/AutohausPortal/Admin/Images/Pfeil_zurueck_01.jpg"
+                                                                        <asp:ImageButton ID="btnUnAssignEmployee" runat="server" ImageUrl="Images/Pfeil_zurueck_01.jpg"
                                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                                 </td>
                                                                 <td class="active" width="35%">

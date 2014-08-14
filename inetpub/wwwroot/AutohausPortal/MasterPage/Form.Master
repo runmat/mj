@@ -12,32 +12,32 @@
     <link href="../Styles/jquery.selectBox.css" type="text/css" rel="stylesheet" />
     <link href="../Styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <!--[if lte IE 10]>
-		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/iestyles.css">
+		<link rel="stylesheet" type="text/css" href="../Styles/iestyles.css">
 		<![endif]-->
     <!--[if IE 7]>
-		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie7styles.css">
+		<link rel="stylesheet" type="text/css" href="../Styles/ie7styles.css">
 		<![endif]-->
     <!--[if lte IE 6]>
-		<link rel="stylesheet" type="text/css" href="/AutohausPortal/Styles/ie6styles.css">
+		<link rel="stylesheet" type="text/css" href="../Styles/ie6styles.css">
 		<![endif]-->
 </head>
 <!--Skriptdefinitionen nicht im head-Bereich, da sonst der Switch zum IE9-ContentMode nicht funktioniert-->
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-1.7.1.js"></script>
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery.selectBox.js"></script>
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery-ui.min.js"></script>
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/ezmark.js?23052013"></script>
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/kroschkeportal.js?26052014"></script>
-<script language="JavaScript" type="text/javascript" src="/AutohausPortal/Scripts/jquery.blockUI.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/jquery-1.7.1.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/jquery.selectBox.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/jquery-ui.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/ezmark.js?23052013"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/kroschkeportal.js?26052014"></script>
+<script language="JavaScript" type="text/javascript" src="../Scripts/jquery.blockUI.js"></script>
 <body id="top">
     <form id="Form1" runat="server" style="margin: 0">
     <div id="maincontainer">
         <div id="head" class="breadcrump">
             <div class="logo">
-                <img height="51" width="382" alt="Kroschke" src="/AutohausPortal/images/kroschke-logo.gif" />
+                <img height="51" width="382" alt="Kroschke" src="../images/kroschke-logo.gif" />
             </div>
             <div class="extapp">
-                <a id="A1" runat="server" href="/AutohausPortal/Downloads/Support.exe">
-                    <img src="/AutohausPortal/images/TeamviewerLogoSmall.png" alt="Download TeamViewer" title="Download TeamViewer"/>
+                <a id="A1" runat="server" href="../Downloads/Support.exe">
+                    <img src="../images/TeamviewerLogoSmall.png" alt="Download TeamViewer" title="Download TeamViewer"/>
                 </a> 
             </div>
             <!--metanavigation-->
@@ -45,7 +45,7 @@
                 <div class="metalinks">
                     &nbsp;</div>
                 <div class="metabutton">
-                    <asp:HyperLink ID="lnkDatenschutz" Target="_blank" NavigateUrl="/AutohausPortal/Docs/Portal/Datenschutz.pdf"
+                    <asp:HyperLink ID="lnkDatenschutz" Target="_blank" NavigateUrl="../Docs/Portal/Datenschutz.pdf"
                         runat="server">Datenschutz</asp:HyperLink></div>
                 <div class="metatrenner">
                     &nbsp;</div>
@@ -54,16 +54,16 @@
                 <div class="metatrenner">
                     &nbsp;</div>
                 <div class="metabutton">
-                     <asp:HyperLink ID="lnkImpressum" NavigateUrl="/AutohausPortal/Info/Impressum.aspx"
+                     <asp:HyperLink ID="lnkImpressum" NavigateUrl="../Info/Impressum.aspx"
                         runat="server">Impressum/ AGBs</asp:HyperLink></div>
                 <div class="metatrenner">
                     &nbsp;</div>
                 <div class="metabutton">
-                    <asp:HyperLink ID="lnkChangePassword" runat="server" NavigateUrl="/AutohausPortal/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></div>
+                    <asp:HyperLink ID="lnkChangePassword" runat="server" NavigateUrl="../Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></div>
                 <div class="metatrenner">
                     &nbsp;</div>
                 <div class="metabutton">
-                    <asp:HyperLink ID="lnkLogout" runat="server" NavigateUrl="/AutohausPortal/Start/Logout.aspx">Logout </asp:HyperLink>
+                    <asp:HyperLink ID="lnkLogout" runat="server" NavigateUrl="../Start/Logout.aspx">Logout </asp:HyperLink>
                 </div>
                 <div class="metarechts">
                     &nbsp;</div>
@@ -71,11 +71,11 @@
             <!--metanavigation-->
             <!--startmenu-->
             <div id="startbutton" style="background-position: 0px 0px;">
-                <img height="105" width="105" alt="Startmenu" src="/AutohausPortal/images/transp.gif" />
+                <img height="105" width="105" alt="Startmenu" src="../images/transp.gif" />
             </div>
             <div id="startmenu" style="display: none;">
                 <div class="startmenu_top">
-                    <asp:HyperLink ID="lnkStart" NavigateUrl="/AutohausPortal/Start/Selection.aspx" ImageUrl="/AutohausPortal/images/transp.gif"
+                    <asp:HyperLink ID="lnkStart" NavigateUrl="../Start/Selection.aspx" ImageUrl="../images/transp.gif"
                         Height="105" Width="105" runat="server" Text="Startmenu"></asp:HyperLink></div>
                 <div class="startmenu_contentlayer">
                     <uc:Startmenue runat="server"/>
@@ -87,7 +87,7 @@
             <!--breadcrump-->
             <div id="breadcrump">
                 <div class="backlink">
-                    <asp:HyperLink ID="lnkBack" runat="server" NavigateUrl="/AutohausPortal/Start/Selection.aspx">&lt;&lt; Zurück </asp:HyperLink>
+                    <asp:HyperLink ID="lnkBack" runat="server" NavigateUrl="../Start/Selection.aspx">&lt;&lt; Zurück </asp:HyperLink>
                 </div>
                 <div class="headline">
                     <asp:Label ID="lblHeadLine" runat="server"></asp:Label>
