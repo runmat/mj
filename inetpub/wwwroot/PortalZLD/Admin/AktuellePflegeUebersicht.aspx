@@ -87,14 +87,14 @@
                                             <asp:TemplateField HeaderText="Bearbeiten">
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="lbnBearbeiten" runat="server" 
-                                                     ImageUrl="../../Images/Edit_01.gif" Height="16px" Width="16px"
+                                                     ImageUrl="/PortalZLD/Images/Edit_01.gif" Height="16px" Width="16px"
                                                         Text="Bearbeiten" CommandName="Select"  CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ID") %>' ></asp:ImageButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Löschen">
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="lbnLoeschen" runat="server" 
-                                                     ImageUrl="../../Images/Papierkorb_01.gif" Height="16px" Width="16px"
+                                                     ImageUrl="/PortalZLD/Images/Papierkorb_01.gif" Height="16px" Width="16px"
                                                         Text="Löschen" CommandName="Delete"  CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ID") %>' ></asp:ImageButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>                                            

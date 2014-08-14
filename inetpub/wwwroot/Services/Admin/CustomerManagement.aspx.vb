@@ -837,18 +837,15 @@ Partial Public Class CustomerManagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intCustomerId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intCustomerId As Int32) As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
             Dim _Customer As New Customer(intCustomerId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -909,13 +906,10 @@ Partial Public Class CustomerManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -972,36 +966,36 @@ Partial Public Class CustomerManagement
         With tblPar
             'CHC ITA 5968
             Try
-                .Columns.Add("Status", Type.GetType("String"))
-                .Columns.Add("Firmenname", Type.GetType("String"))
-                .Columns.Add("KUNNR", Type.GetType("String"))
-                .Columns.Add("DAD", Type.GetType("Boolean"))
-                .Columns.Add("Neues Kennwort nach n Tagen", Type.GetType("String"))
-                .Columns.Add("Konto sperren nach n Fehlversuchen", Type.GetType("String"))
-                .Columns.Add("Mehrfaches Login", Type.GetType("Boolean"))
-                .Columns.Add("URL Remote Login", Type.GetType("Boolean"))
-                .Columns.Add("Mindestlänge", Type.GetType("String"))
-                .Columns.Add("n numerische Zeichen", Type.GetType("String"))
-                .Columns.Add("n Großbuchstaben", Type.GetType("String"))
-                .Columns.Add("n Sonderzeichen", Type.GetType("String"))
-                .Columns.Add("Sperre letzte n Kennworte", Type.GetType("String"))
-                .Columns.Add("Anwendungen", Type.GetType("String"))
-                .Columns.Add("Kontakt- Name", Type.GetType("String"))
-                .Columns.Add("Kontakt- Adresse", Type.GetType("String"))
-                .Columns.Add("Mailadresse Anzeigetext", Type.GetType("String"))
-                .Columns.Add("Mailadresse", Type.GetType("String"))
-                .Columns.Add("Web-Adresse Anzeigetext", Type.GetType("String"))
-                .Columns.Add("Web-Adresse", Type.GetType("String"))
-                .Columns.Add("Logo", Type.GetType("String"))
+                .Columns.Add("Status", Type.GetType("System.String"))
+                .Columns.Add("Firmenname", Type.GetType("System.String"))
+                .Columns.Add("KUNNR", Type.GetType("System.String"))
+                .Columns.Add("DAD", Type.GetType("System.Boolean"))
+                .Columns.Add("Neues Kennwort nach n Tagen", Type.GetType("System.String"))
+                .Columns.Add("Konto sperren nach n Fehlversuchen", Type.GetType("System.String"))
+                .Columns.Add("Mehrfaches Login", Type.GetType("System.Boolean"))
+                .Columns.Add("URL Remote Login", Type.GetType("System.Boolean"))
+                .Columns.Add("Mindestlänge", Type.GetType("System.String"))
+                .Columns.Add("n numerische Zeichen", Type.GetType("System.String"))
+                .Columns.Add("n Großbuchstaben", Type.GetType("System.String"))
+                .Columns.Add("n Sonderzeichen", Type.GetType("System.String"))
+                .Columns.Add("Sperre letzte n Kennworte", Type.GetType("System.String"))
+                .Columns.Add("Anwendungen", Type.GetType("System.String"))
+                .Columns.Add("Kontakt- Name", Type.GetType("System.String"))
+                .Columns.Add("Kontakt- Adresse", Type.GetType("System.String"))
+                .Columns.Add("Mailadresse Anzeigetext", Type.GetType("System.String"))
+                .Columns.Add("Mailadresse", Type.GetType("System.String"))
+                .Columns.Add("Web-Adresse Anzeigetext", Type.GetType("System.String"))
+                .Columns.Add("Web-Adresse", Type.GetType("System.String"))
+                .Columns.Add("Logo", Type.GetType("System.String"))
 
                 '§§§ JVE 18.09.2006: Logo2
-                .Columns.Add("Logo2", Type.GetType("String"))
+                .Columns.Add("Logo2", Type.GetType("System.String"))
                 '-------------------------
-                .Columns.Add("Stylesheets", Type.GetType("String"))
-                .Columns.Add("Handbuch", Type.GetType("String"))
-                .Columns.Add("Max. Anzahl Benutzer", Type.GetType("String"))
-                .Columns.Add("Organisationsanzeige", Type.GetType("String"))
-                .Columns.Add("Nur Kundengruppen administrieren", Type.GetType("String"))
+                .Columns.Add("Stylesheets", Type.GetType("System.String"))
+                .Columns.Add("Handbuch", Type.GetType("System.String"))
+                .Columns.Add("Max. Anzahl Benutzer", Type.GetType("System.String"))
+                .Columns.Add("Organisationsanzeige", Type.GetType("System.String"))
+                .Columns.Add("Nur Kundengruppen administrieren", Type.GetType("System.String"))
             Catch
                 .Columns.Add("Status", Type.GetType("System.String"))
                 .Columns.Add("Firmenname", Type.GetType("System.String"))
@@ -1222,7 +1216,7 @@ Partial Public Class CustomerManagement
                 Return
             End If
 
-            Dim sLogoPath As String = VirtualPathUtility.ToAbsolute(txt.Text)
+            Dim sLogoPath As String = VirtualPathUtility.ToAbsolute(txt.Text.Replace("../", "~/"))
             Dim sPhysPath As String = HttpContext.Current.Server.MapPath(sLogoPath)
 
             If File.Exists(sPhysPath) Then
@@ -1633,8 +1627,7 @@ Partial Public Class CustomerManagement
             Dim _customer As New Customer(CInt(ihCustomerID.Value))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(ihCustomerID.Value), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(ihCustomerID.Value))
             If Not _customer.HasUser(cn) Then
                 _customer.Delete(cn)
                 Log(_customer.CustomerId.ToString, "Firma löschen", tblLogParameter)
@@ -1675,8 +1668,7 @@ Partial Public Class CustomerManagement
             Dim strLogMsg As String = "Firma anlegen"
             If Not (intCustomerId = -1) Then
                 strLogMsg = "Firma ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intCustomerId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intCustomerId)
             End If
             Dim KundenAdministration As Integer
             If rbKeine.Checked = True Then
@@ -1765,8 +1757,7 @@ Partial Public Class CustomerManagement
 
             _customer.Save(cn)
 
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_customer.CustomerId.ToString, strLogMsg, tblLogParameter)
 
             'Anwendungen zuordnen

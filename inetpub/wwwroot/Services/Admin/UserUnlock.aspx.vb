@@ -500,13 +500,12 @@ Partial Public Class UserUnlock
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intUserId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intUserId As Int32) As DataTable
         Try
             Dim _User As New User(intUserId, m_User.App.Connectionstring)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -545,11 +544,10 @@ Partial Public Class UserUnlock
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal _User As User, ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters(ByVal _User As User) As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
@@ -781,8 +779,7 @@ Partial Public Class UserUnlock
 
             Dim strTemp As String = txtUserID.Text
             Dim strLogMsg As String = "User ändern"
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text))
 
             Dim intGroupID As Integer
 
@@ -819,8 +816,7 @@ Partial Public Class UserUnlock
             Else
                 lblError.Text = _User.ErrorMessage
             End If
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
+            tblLogParameter = SetNewLogParameters(_User)
             Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
             If blnSuccess Then

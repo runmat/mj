@@ -191,7 +191,7 @@ Partial Public Class AutorisierungenLoeschen
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intZVId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intZVId As Int32) As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
@@ -201,9 +201,8 @@ Partial Public Class AutorisierungenLoeschen
                                                       "FROM vwAuthorizationToDelete WHERE AuthorizationID = " & CInt(intZVId.ToString), cn)
             daApp.Fill(dtAutorisierungenLoeschenList)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -257,11 +256,11 @@ Partial Public Class AutorisierungenLoeschen
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable = Nothing
+        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
-            tblLogParameter = SetOldLogParameters(CInt(txtAuthorizationID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtAuthorizationID.Text))
 
             Dim strDeleteSQL As String = "DELETE " & _
                                           "FROM [Authorization] " & _

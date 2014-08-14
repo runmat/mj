@@ -28,8 +28,6 @@ Partial Public Class LogSchwellwert
         Try
             m_App = New App(m_User)
 
-            Dim Datum As Date
-
             lblError.Text = ""
 
             If Not IsPostBack Then
