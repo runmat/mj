@@ -103,15 +103,13 @@ Partial Public Class ForbiddenUserNameManagement
             If Not (intId = -1) Then
                 blnNew = False
                 strLogMsg = "Eintrag (" & txtForbiddenUserNameName.Text & ") ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intId)
             End If
 
             Dim _ForbiddenUserName As New ForbiddenUserName(intId, txtForbiddenUserNameName.Text, _
                                                 m_User.UserName, blnNew)
             _ForbiddenUserName.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_ForbiddenUserName.Id.ToString, strLogMsg, tblLogParameter)
 
             Search(True, True, True, True)
@@ -144,8 +142,7 @@ Partial Public Class ForbiddenUserNameManagement
 
             cn.Open()
             _ForbiddenUserName.Delete(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtID.Text), tblLogParameter)
+            tblLogParameter = SetOldLogParameters(CInt(txtID.Text))
             Log(_ForbiddenUserName.Id.ToString, strLogMsg, tblLogParameter)
 
             Search(True, True, True, True)
@@ -325,7 +322,7 @@ Partial Public Class ForbiddenUserNameManagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intId As Int32) As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -333,9 +330,8 @@ Partial Public Class ForbiddenUserNameManagement
             cn.Open()
             Dim _ForbiddenUserName As New Kernel.ForbiddenUserName(intId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Alt"
@@ -361,11 +357,10 @@ Partial Public Class ForbiddenUserNameManagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
+
             With tblPar
                 .Rows.Add(.NewRow)
                 .Rows(.Rows.Count - 1)("Status") = "Neu"
