@@ -438,7 +438,7 @@ Partial Public Class Groupmanagement
         logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
     End Sub
 
-    Private Function SetOldLogParameters(ByVal intGroupId As Int32, ByVal tblPar As DataTable) As DataTable
+    Private Function SetOldLogParameters(ByVal intGroupId As Int32) As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -446,11 +446,7 @@ Partial Public Class Groupmanagement
             cn.Open()
             Dim _Group As New Group(intGroupId, cn)
 
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
 
             With tblPar
                 .Rows.Add(.NewRow)
@@ -507,13 +503,9 @@ Partial Public Class Groupmanagement
         End Try
     End Function
 
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
+    Private Function SetNewLogParameters() As DataTable
         Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
+            Dim tblPar = CreateLogTableStructure()
 
             With tblPar
                 .Rows.Add(.NewRow)
@@ -615,8 +607,7 @@ Partial Public Class Groupmanagement
             Dim strLogMsg As String = "Gruppe anlegen"
             If Not (intGroupId = -1) Then
                 strLogMsg = "Gruppe ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intGroupId, tblLogParameter)
+                tblLogParameter = SetOldLogParameters(intGroupId)
             End If
 
             Dim htmlMessage As String = TranslateHTML(radMessage.Content.Trim, TranslationDirection.SaveHTML)
@@ -723,8 +714,7 @@ Partial Public Class Groupmanagement
             Dim _archivassignment As New Kernel.ArchivAssignments(intGroupId, Kernel.AssignmentType.Group)
             _archivassignment.Save(dvArchivAssigned, lstArchivAssigned.Items, cn)
 
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
+            tblLogParameter = SetNewLogParameters()
             Log(_group.GroupId.ToString, strLogMsg, tblLogParameter)
 
             Search(True, True, , True)
@@ -754,8 +744,7 @@ Partial Public Class Groupmanagement
             Dim _Group As New Group(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_Group.GroupId, tblLogParameter)
+            tblLogParameter = SetOldLogParameters(_Group.GroupId)
             If Not _Group.HasUser(cn) Then
                 _Group.Delete(cn)
                 Log(_Group.GroupId.ToString, "Gruppe löschen", tblLogParameter)

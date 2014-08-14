@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CKGDatabaseAdminLib.Models.DbModels
+namespace CKGDatabaseAdminLib.Models
 {
     public abstract class DbModelBase : INotifyPropertyChanged
     {

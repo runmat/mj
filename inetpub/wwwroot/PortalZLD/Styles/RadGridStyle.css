@@ -105,12 +105,12 @@
 
 .RadGrid_Default .rgSaveLayout
 {
-    background-image: url("/Services/Images/Diskette_06s.png");
+    background-image: url("../Images/Diskette_06s.png");
 }
 
 .RadGrid_Default .rgResetLayout
 {
-    background-image: url("/Services/Images/Papierkorb_01s.png");
+    background-image: url("../Images/Papierkorb_01s.png");
 }
 
 .rgDataDiv

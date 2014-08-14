@@ -8,8 +8,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
- <link href="/AutohausPortal/Admin/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
- <link href="/AutohausPortal/Admin/Styles/js/jquery-ui.css" rel="stylesheet" type="text/css"/>
+ <link href="../Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+ <link href="../Styles/js/jquery-ui.css" rel="stylesheet" type="text/css"/>
   </head>
 <body id="top">
     <form id="Form1" runat="server">
@@ -24,7 +24,7 @@
 
                         <tr>
                             <td>
-                              <asp:Image ID="Image1" runat="server" ImageUrl="/AutohausPortal/Admin/Images/indicator.gif" ImageAlign="Middle" /><br />
+                              <asp:Image ID="Image1" runat="server" ImageUrl="../Images/indicator.gif" ImageAlign="Middle" /><br />
                             </td>
                             <td  align="left">
                                 <asp:Label ID="Label1" runat="server" CssClass="WaitControl" Text="Bitte warten..."
@@ -46,7 +46,7 @@
     
     <div id="website">
         <div id="header">
-        <asp:Image ID="imgLogo" ImageUrl="/AutohausPortal/Admin/Images/kroschke.jpg" alt="Kroschke Logo" class="dadLogo2"
+        <asp:Image ID="imgLogo" ImageUrl="../Images/kroschke.jpg" alt="Kroschke Logo" class="dadLogo2"
                 runat="server" />
             <div id="PlaceHeader" runat="Server" class="dvHead">
             </div>
@@ -55,18 +55,18 @@
                 <li runat="server" id="tdHauptmenue">
                     <asp:HyperLink ID="lnkHauptmenue" runat="server" NavigateUrl="/AutohausPortal/Start/Login.aspx">Startseite</asp:HyperLink></li>
                 <li runat="server" id="tdChangePasword">
-                    <asp:HyperLink ID="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/PortalZLD/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></li>
+                    <asp:HyperLink ID="lnkChangePassword" runat="server" Visible="False" NavigateUrl="/AutohausPortal/Start/ChangePassword.aspx">Passwort ändern</asp:HyperLink></li>
                 <%--<li id="tdLogout" runat="server">
                     <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" NavigateUrl="/Services/Start/Logout.aspx">Abmelden</asp:HyperLink></li>--%>
                 <li id="tdHandbuch" runat="server">
                     <asp:HyperLink ID="lnkHandbuch" runat="server" Target="_blank">Handbuch</asp:HyperLink></li>
                 <li id="tdContact" runat="server">
-                    <asp:HyperLink ID="lnkContact" NavigateUrl="/PortalZLD/Info/ContactPage.aspx" runat="server">Kontakt</asp:HyperLink></li>
+                    <asp:HyperLink ID="lnkContact" NavigateUrl="/AutohausPortal/Info/Kontakt.aspx" runat="server">Kontakt</asp:HyperLink></li>
                 <li id="tdResponsible" runat="server">
-                    <asp:HyperLink ID="lnkResponsible" NavigateUrl="/PortalZLD/Info/ResponsiblePage.aspx"
+                    <asp:HyperLink ID="lnkResponsible" NavigateUrl="/AutohausPortal/Info/ResponsiblePage.aspx"
                         runat="server">Verantwortliche</asp:HyperLink></li>
                 <li id="tdImpressum" runat="server">
-                    <asp:HyperLink ID="lnkImpressum" NavigateUrl="/PortalZLD/Info/Impressum.aspx" runat="server">Impressum</asp:HyperLink></li>
+                    <asp:HyperLink ID="lnkImpressum" NavigateUrl="/AutohausPortal/Info/Impressum.aspx" runat="server">Impressum</asp:HyperLink></li>
             </ul>
             <ul id="userinfo">
                 <li>
@@ -74,7 +74,7 @@
                     <span class="bold">
                         <asp:Label ID="lblUserName" runat="server"></asp:Label></span></li>
                 <li class="logout">
-                    <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="/AutohausPortal/Admin/Images/navLogout.gif"
+                    <asp:HyperLink ID="lnkLogout" runat="server" Visible="False" ImageUrl="../Images/navLogout.gif"
                         NavigateUrl="/AutohausPortal/Start/Logout.aspx"></asp:HyperLink>
                 </li>
             </ul>
@@ -95,7 +95,7 @@
                     </div>
                 <div class="rightAlign">
                     <a href="#top">Top
-                        <img src="/AutohausPortal/Admin/Images/top.gif" alt="nach oben" /></a></div>
+                        <img src="../Images/top.gif" alt="nach oben" /></a></div>
             </div>
         </div>
     </div>

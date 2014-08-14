@@ -1,13 +1,10 @@
 ﻿Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Services
-    Inherits System.Web.UI.MasterPage
+    Inherits MasterPage
     Private m_User As Security.User
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-        Dim strLogoPath As String = ""
-        Dim strLogoPath2 As String = ""
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
         Dim strDocuPath As String = ""
         Dim strTitle As String
         Dim bc As HttpBrowserCapabilities
@@ -50,25 +47,14 @@ Partial Public Class Services
                                 End If
                         End Select
                     Else
-                        Dim strtemp As String = Server.MapPath("~/PortalZLD/Styles/default.css")
                         strCSSLink = "<link href=""/PortalZLD/Styles/default.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
 
                         If Not m_User Is Nothing Then
 
                             Select Case m_User.CustomerName
-                                Case "Volksfürsorge"
-                                    strCSSLink &= "<link href=""/PortalZLD/Customize/Wuerttenbergische/wuerttenb.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
-                                Case "AKF Bank Retail"
-                                    strCSSLink &= "<link href=""/PortalZLD//Akf_Retail/AKFRetail.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
-                                Case "Arval"
-                                    strCSSLink &= "<link href=""/PortalZLD/Customize/Arval/Arval.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
-                                Case "Porsche"
-                                    strCSSLink &= "<link href=""/PortalZLD/Customize/porsche/porsche.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                                 Case "Firma 1"
                                     strCSSLink &= ("<link href=""/PortalZLD/Customize/Admin/admin.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
                                     imgLogo.ImageUrl = "/PortalZLD/Images/kroschke.jpg"
-                                Case "DAD"
-                                    strCSSLink &= ("<link href=""/PortalZLD/Styles/dad.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
                                 Case Else
                                     strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                                     If m_User.Customer.AccountingArea = 1010 Then
@@ -128,7 +114,6 @@ Partial Public Class Services
                         imgLogo.ImageUrl = m_User.Customer.LogoPath2
                     End If
                 Else
-                    Dim strtemp As String = Server.MapPath("~/PortalZLD/Styles/default.css")
                     strCSSLink = "<link href=""/PortalZLD/Styles/default.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                     Select Case m_User.CustomerName
                         Case "Firma 1"
@@ -152,9 +137,6 @@ Partial Public Class Services
                 Me.Head1.Controls.Add(New LiteralControl("<META content=""IE=9,chrome=1"" http-equiv=""X-UA-Compatible"">"))
             End If
 
-            ' If Me.Page.User.Identity.IsAuthenticated Then
-
-
             If Me.Page.User.Identity.IsAuthenticated Then
                 If Me.Page.Title = "Startseite" Then
                     strTitle = m_User.Customer.CustomerName & " - " & "Startseite"
@@ -172,7 +154,6 @@ Partial Public Class Services
             End If
 
             If m_User.GroupID > 0 Then
-                strLogoPath = m_User.Organization.LogoPath
                 strDocuPath = m_User.Groups.ItemByID(m_User.GroupID).DocuPath
 
                 Dim cn As SqlClient.SqlConnection
@@ -194,55 +175,45 @@ Partial Public Class Services
                 lnkHandbuch.NavigateUrl = strDocuPath
             End If
 
-            If strLogoPath = String.Empty Then
-                strLogoPath = m_User.Customer.CustomerStyle.LogoPath
-            End If
-
         End If
         Select Case Me.Request.FilePath
             Case "/Services/Start/Selection.aspx"
                 tdHauptmenue.Attributes.Add("class", "active")
                 tdChangePasword.Attributes.Add("class", "")
-                'tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "")
                 tdImpressum.Attributes.Add("class", "")
                 tdResponsible.Attributes.Add("class", "")
-
             Case "/Services/Start/ChangePassword.aspx"
                 tdHauptmenue.Attributes.Add("class", "")
                 tdChangePasword.Attributes.Add("class", "active")
-                'tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "")
                 tdImpressum.Attributes.Add("class", "")
                 tdResponsible.Attributes.Add("class", "")
             Case "/Services/Info/ContactPage.aspx"
                 tdHauptmenue.Attributes.Add("class", "")
                 tdChangePasword.Attributes.Add("class", "")
-                ' tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "active")
                 tdImpressum.Attributes.Add("class", "")
                 tdResponsible.Attributes.Add("class", "")
             Case "/Services/Info/Impressum.aspx"
                 tdHauptmenue.Attributes.Add("class", "")
                 tdChangePasword.Attributes.Add("class", "")
-                'tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "")
                 tdImpressum.Attributes.Add("class", "active")
                 tdResponsible.Attributes.Add("class", "")
             Case "/Services/Info/ResponsiblePage.aspx"
                 tdHauptmenue.Attributes.Add("class", "")
                 tdChangePasword.Attributes.Add("class", "")
-                'tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "")
                 tdImpressum.Attributes.Add("class", "")
                 tdResponsible.Attributes.Add("class", "active")
             Case Else
                 tdHauptmenue.Attributes.Add("class", "")
                 tdChangePasword.Attributes.Add("class", "")
-                'tdLogout.Attributes.Add("class", "")
                 tdContact.Attributes.Add("class", "")
                 tdImpressum.Attributes.Add("class", "")
                 tdResponsible.Attributes.Add("class", "")
         End Select
     End Sub
+
 End Class

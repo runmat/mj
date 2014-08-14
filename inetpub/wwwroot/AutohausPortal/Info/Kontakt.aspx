@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Kontakt.aspx.cs" Inherits="AutohausPortal.Info.Kontakt"
-    MasterPageFile="/AutohausPortal/MasterPage/Selection.Master" %>
+    MasterPageFile="../MasterPage/Selection.Master" %>
 
-<%@ MasterType VirtualPath="/AutohausPortal/MasterPage/Selection.Master" %>
+<%@ MasterType VirtualPath="../MasterPage/Selection.Master" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <telerik:RadScriptManager runat="server">

@@ -51,7 +51,7 @@
                                                 &nbsp;
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
+                                                <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="/PortalZLD/images/empty.gif"
                                                     Width="1px" />
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
                                             </td>
@@ -117,7 +117,7 @@
                                                         <asp:BoundField DataField="EasyQueryIndexName" SortExpression="EasyQueryIndexName" HeaderText="QueryIndex-Name" />
                                                         <asp:BoundField DataField="EasyTitleName" SortExpression="EasyTitleName" HeaderText="Titel" />
                                                         <asp:BoundField DataField="Archivetype" SortExpression="Archivetype" HeaderText="Archivtyp" />
-                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="../../Images/Papierkorb_01.gif"  ControlStyle-Height="16px" ControlStyle-Width="16px">
+                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="/PortalZLD/Images/Papierkorb_01.gif"  ControlStyle-Height="16px" ControlStyle-Width="16px">
                                                         </asp:ButtonField>
                                                     </Columns>
                                                 </asp:GridView>
@@ -253,5 +253,5 @@
                 </div>
             </div>
          </div>
- 
+    </div>
 </asp:Content>
