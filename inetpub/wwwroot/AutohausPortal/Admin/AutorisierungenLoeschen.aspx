@@ -122,7 +122,7 @@
                                                                 </asp:TemplateField>
                                                                 <asp:ButtonField HeaderStyle-ForeColor="#000000" HeaderStyle-HorizontalAlign="Center"
                                                                     ItemStyle-CssClass="TableLink" CommandName="Del" HeaderText="Löschen" HeaderStyle-CssClass="TableLinkHead"
-                                                                    ItemStyle-ForeColor="#595959" ButtonType="Image" ImageUrl="../../Images/del.png"
+                                                                    ItemStyle-ForeColor="#595959" ButtonType="Image" ImageUrl="Images/del.png"
                                                                     ItemStyle-HorizontalAlign="Center">
                                                                     <HeaderStyle HorizontalAlign="Center" CssClass="TableLinkHead" ForeColor="Black">
                                                                     </HeaderStyle>

@@ -148,7 +148,7 @@ namespace AutohausPortalMvc.Controllers
             string reAdresseOpticalCheck;
             ViewModel.TryPreassignReToRgAdresse(model, out reAdresseOpticalCheck);
 
-            model = Adresse.RechnungsAdressen.FirstOrDefault(a => a.ID == model.SelectedID) ?? new Adresse();
+            model = ViewModel.RechnungsAdressen.FirstOrDefault(a => a.ID == model.SelectedID) ?? new Adresse();
             model.ReAdresseOpticalCheck = reAdresseOpticalCheck;
             model = ViewModel.SaveSubModelWithPreservingUiModel(model, addressIndex);
 

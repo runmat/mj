@@ -280,7 +280,7 @@
                                         Wünschen Sie eine Kennzeichen-Sondergröße, setzen Sie dort den Haken und wählen Sie diese aus dem Drop-Down-Menü aus.
                                     </p>
                                 </div>
-                                <img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe"
+                                <img src="../images/button_help.gif" width="27" height="26" alt="Hilfe"
                                     class="helpicon" />
                             </div>
                             <!--formulardaten zeile4-->
@@ -310,7 +310,7 @@
                                         Wählen Sie die Fahrzeugart aus und erfassen Sie das Ende von TÜV und AU durch Eingabe von Monat und Jahr.
                                     </p>
                                 </div>
-                                <img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe"
+                                <img src="../images/button_help.gif" width="27" height="26" alt="Hilfe"
                                     class="helpicon" />
                             </div>
                             <!--formulardaten zeile5-->
@@ -328,7 +328,7 @@
                                 <asp:TextBox ID="txtZulDate" runat="server" CssClass="formtext jqcalendar jqcalendarWerktage" Width="130px"
                                     MaxLength="10"></asp:TextBox>
                                 <div class="formfeld_end_wide">
-                                    <img src="/AutohausPortal/images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
+                                    <img src="../images/icon_datepicker.gif" width="22" height="19" alt="Kalender"
                                         class="datepicker" />
                                 </div>
                             </div>
@@ -340,7 +340,7 @@
 Wählen Sie das gewünschte Zulassungsdatum aus. Dies darf nicht in der Vergangenheit liegen.
                                     </p>
                                 </div>
-                                <img src="/AutohausPortal/images/button_help.gif" width="27" height="26" alt="Hilfe"
+                                <img src="../images/button_help.gif" width="27" height="26" alt="Hilfe"
                                     class="helpicon" />
                             </div>
                             <!--formulardaten zeile6-->
