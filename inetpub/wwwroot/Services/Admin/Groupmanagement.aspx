@@ -1,9 +1,6 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Groupmanagement.aspx.vb"
     Inherits="Admin.Groupmanagement" MasterPageFile="MasterPage/Admin.Master" %>
 
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
-    TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="~/PageElements/GridNavigation.ascx" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -117,11 +114,6 @@
                             </div>
                         </asp:Panel>
                         <div id="Result" runat="Server" style="display: none">
-                            <%--<div class="ExcelDiv">
-                                <div align="right" id="trSearchSpacer1" runat="server">
-                                    &nbsp;
-                                </div>
-                            </div>--%>
                             <div id="pagination">
                                 <uc2:GridNavigation ID="GridNavigation1" runat="server" PageSizeIndex="0">
                                 </uc2:GridNavigation>
@@ -197,7 +189,7 @@
                                     <tr>
                                         <td width="100%">
                                             <table style="border-color: #ffffff" width="100%">
-                                                <tr id="trEditUser" runat="server">
+                                                <tr>
                                                     <td align="left" width="50%" valign="top">
                                                         <table id="tblLeft" style="border-color: #ffffff; padding-right: 50px;" cellspacing="0"
                                                             cellpadding="0">
@@ -412,12 +404,6 @@
                                                                                     <EditItemTemplate>
                                                                                         <asp:DropDownList ID="ddlEditLevel" runat="server" SelectedValue='<%# Bind("Level") %>' Width="125px">
                                                                                             <asp:ListItem Value="0">---Auswahl---</asp:ListItem>
-                                                                                          <%--  <asp:ListItem Value="1">Level 1</asp:ListItem>
-                                                                                            <asp:ListItem Value="2">Level 2</asp:ListItem>
-                                                                                            <asp:ListItem Value="3">Level 3</asp:ListItem>
-                                                                                            <asp:ListItem Value="4">Level 4</asp:ListItem>
-                                                                                            <asp:ListItem Value="5">Level 5</asp:ListItem>
-                                                                                            <asp:ListItem Value="6">Level 6</asp:ListItem>--%>
                                                                                         </asp:DropDownList>
                                                                                     </EditItemTemplate>
                                                                                 </asp:TemplateField>
@@ -516,7 +502,7 @@
                                                         <div class="formqueryHeader">
                                                             <span>Archive</span>
                                                         </div>
-                                                        <table id="tblArchiv" cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
+                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
                                                             border="0">
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active" width="35%">
@@ -555,18 +541,18 @@
                                                         </table>
                                                     </td>
                                                 </tr>
-                                                <%-- <tr id="trEmployee" runat="server" visible="false">
+                                                <tr id="trAbrufgruendeEndg" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
                                                         <div class="formqueryHeader">
-                                                            <span>Verantwortliche Mitarbeiter</span>
+                                                            <span>Abrufgründe endgültig</span>
                                                         </div>
-                                                        <table id="tblEmployee" cellspacing="0" cellpadding="0" style="border-color: #FFFFFF"
+                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
                                                             border="0">
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active" width="35%">
                                                                     nicht zugewiesen
                                                                     <p>
-                                                                        <asp:ListBox ID="lstEmployeeUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                        <asp:ListBox ID="lstAbrufgruendeEndgUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
                                                                             Width="300px" Height="150px"></asp:ListBox>
                                                                     </p>
                                                                 </td>
@@ -576,7 +562,7 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignEmployee" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
+                                                                    <asp:ImageButton ID="btnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
                                                                         ToolTip="Zuweisen" Height="37px" Width="37px" />
                                                                 </td>
                                                                 <td class="active" width="15%">
@@ -585,38 +571,76 @@
                                                                     <p>
                                                                         &nbsp;</p>
                                                                     <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignEmployee" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
+                                                                        <asp:ImageButton ID="btnUnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
                                                                             ToolTip="Entfernen" Height="37px" Width="37px" /></span>
                                                                 </td>
                                                                 <td class="active" width="35%">
                                                                     zugewiesen
                                                                     <p>
-                                                                        <asp:ListBox ID="lstEmployeeAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                        <asp:ListBox ID="lstAbrufgruendeEndgAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
                                                                             Width="300px" Height="150"></asp:ListBox>
                                                                     </p>
                                                                 </td>
                                                             </tr>
                                                         </table>
                                                     </td>
-                                                </tr>--%>
+                                                </tr>
+                                                <tr id="trAbrufgruendeTemp" runat="server">
+                                                    <td class="InfoBoxFlat" valign="top" align="left">
+                                                        <div class="formqueryHeader">
+                                                            <span>Abrufgründe temporär</span>
+                                                        </div>
+                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
+                                                            border="0">
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active" width="35%">
+                                                                    nicht zugewiesen
+                                                                    <p>
+                                                                        <asp:ListBox ID="lstAbrufgruendeTempUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                            Width="300px" Height="150px"></asp:ListBox>
+                                                                    </p>
+                                                                </td>
+                                                                <td class="active" width="15%">
+                                                                    <p>
+                                                                        &nbsp;</p>
+                                                                    <p>
+                                                                        &nbsp;</p>
+                                                                    <span style="padding-left: 55px"></span>
+                                                                    <asp:ImageButton ID="btnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
+                                                                        ToolTip="Zuweisen" Height="37px" Width="37px" />
+                                                                </td>
+                                                                <td class="active" width="15%">
+                                                                    <p>
+                                                                        &nbsp;</p>
+                                                                    <p>
+                                                                        &nbsp;</p>
+                                                                    <span style="padding-left: 30px">
+                                                                        <asp:ImageButton ID="btnUnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
+                                                                            ToolTip="Entfernen" Height="37px" Width="37px" /></span>
+                                                                </td>
+                                                                <td class="active" width="35%">
+                                                                    zugewiesen
+                                                                    <p>
+                                                                        <asp:ListBox ID="lstAbrufgruendeTempAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                            Width="300px" Height="150"></asp:ListBox>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                                 <tr class="formquery" id="trMeldung" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
                                                         <div class="formqueryHeader">
                                                             <span>Startmeldung</span>
                                                         </div>
                                                         <table id="tblMeldung" cellspacing="0" cellpadding="0" border="0" style="border-color: #FFFFFF">
-                                                            <%-- <tr class="formquery">--%>
                                                             <tr>
                                                                 <td class="firstLeft active" valign="top" width="60%">
                                                                     <div>
                                                                         Häufigkeit der Startmeldungsanzeige (pro Benutzer):
                                                                         <asp:TextBox ID="txtMaxReadMessageCount" runat="server" Width="40px" MaxLength="2"
                                                                             CssClass="InputTextbox"></asp:TextBox></div>
-                                                                    <%--                                      <ajaxToolkit:Editor Visible="false" ID="editMessage" runat="server" Width="650px" Height="200px">
-                                                            </ajaxToolkit:Editor>
-
-                                                                    <asp:TextBox ID="txtMessage" runat="server" Width="300px" MaxLength="500" Height="150px" Visible="false"  Rows="5" TextMode="MultiLine"></asp:TextBox>
-                                                                    --%>
                                                                     <br />
                                                                     <asp:Label Font-Size="Medium" ID="lblInfo" runat="server" CssClass="TextError" />
                                                                     <asp:TextBox ID="txtMessageOld" runat="server" Visible="False" MaxLength="500" TextMode="MultiLine"></asp:TextBox>
@@ -646,14 +670,14 @@
                                 </div>
                                 <div id="dataFooter">
                                     &nbsp;&nbsp;
-                                    <asp:LinkButton class="Tablebutton" ID="lbtnDelete" runat="server" Text="Löschen&amp;nbsp;&amp;#187; "
-                                        CssClass="Tablebutton" Height="16px" Width="78px" Visible="False"></asp:LinkButton>&nbsp;<asp:LinkButton
-                                            class="Tablebutton" ID="lbtnConfirm" runat="server" Text="Bestätigen&amp;nbsp;&amp;#187; "
-                                            CssClass="Tablebutton" Height="16px" Width="78px" Visible="False"></asp:LinkButton>&nbsp;<asp:LinkButton
-                                                class="Tablebutton" ID="lbtnSave" runat="server" Text="Speichern&amp;nbsp;&amp;#187; "
-                                                CssClass="Tablebutton" Height="16px" Width="78px" ></asp:LinkButton>&nbsp;<asp:LinkButton
-                                                    class="Tablebutton" ID="lbtnCancel" runat="server" Text="Verwerfen&amp;nbsp;&amp;#187; "
-                                                    CssClass="Tablebutton" Height="16px" Width="78px" ></asp:LinkButton>
+                                    <asp:LinkButton CssClass="Tablebutton" ID="lbtnDelete" runat="server" Text="Löschen&amp;nbsp;&amp;#187; "
+                                        Height="16px" Width="78px" Visible="False"/>&nbsp;
+                                    <asp:LinkButton CssClass="Tablebutton" ID="lbtnConfirm" runat="server" Text="Bestätigen&amp;nbsp;&amp;#187; "
+                                        Height="16px" Width="78px" Visible="False"/>&nbsp;
+                                    <asp:LinkButton CssClass="Tablebutton" ID="lbtnSave" runat="server" Text="Speichern&amp;nbsp;&amp;#187; "
+                                        Height="16px" Width="78px"/>&nbsp;
+                                    <asp:LinkButton CssClass="Tablebutton" ID="lbtnCancel" runat="server" Text="Verwerfen&amp;nbsp;&amp;#187; "
+                                        Height="16px" Width="78px"/>
                                 </div>
                             </div>
                         </div>

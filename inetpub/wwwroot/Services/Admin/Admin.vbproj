@@ -236,6 +236,7 @@
       <DependentUpon>JahresArchivManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Kernel\AbrufgrundAssignments.vb" />
     <Compile Include="lib\ShowBapisClass.vb" />
     <Compile Include="Bapi2Report.aspx.designer.vb">
       <DependentUpon>Bapi2Report.aspx</DependentUpon>

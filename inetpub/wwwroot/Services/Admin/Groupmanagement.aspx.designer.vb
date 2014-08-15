@@ -311,15 +311,6 @@ Partial Public Class Groupmanagement
     Protected WithEvents Tablex1 As Global.System.Web.UI.HtmlControls.HtmlTable
 
     '''<summary>
-    '''trEditUser-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trEditUser As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
     '''txtGroupID-Steuerelement
     '''</summary>
     '''<remarks>
@@ -642,6 +633,96 @@ Partial Public Class Groupmanagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lstArchivAssigned As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
+    '''trAbrufgruendeEndg-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trAbrufgruendeEndg As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lstAbrufgruendeEndgUnAssigned-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lstAbrufgruendeEndgUnAssigned As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
+    '''btnAssignAbrufgruendeEndg-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnAssignAbrufgruendeEndg As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''btnUnAssignAbrufgruendeEndg-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnUnAssignAbrufgruendeEndg As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''lstAbrufgruendeEndgAssigned-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lstAbrufgruendeEndgAssigned As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
+    '''trAbrufgruendeTemp-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trAbrufgruendeTemp As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lstAbrufgruendeTempUnAssigned-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lstAbrufgruendeTempUnAssigned As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
+    '''btnAssignAbrufgruendeTemp-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnAssignAbrufgruendeTemp As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''btnUnAssignAbrufgruendeTemp-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnUnAssignAbrufgruendeTemp As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''lstAbrufgruendeTempAssigned-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lstAbrufgruendeTempAssigned As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
     '''trMeldung-Steuerelement
