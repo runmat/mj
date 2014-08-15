@@ -90,8 +90,15 @@ namespace CKGDatabaseAdminLib.Services
                     foreach (var newItem in e.NewItems)
                     {
                         // temporäre Id vergeben, um neue Entities auch vor dem Speichern in SQL anhand der ID unterscheiden zu können
-                        var minId = GitBranchesAll.Min(g => g.ID);
-                        (newItem as GitBranchInfo).ID = (minId < 0 ? minId - 1 : -1);
+                        if (GitBranchesAll.Count > 0)
+                        {
+                            var minId = GitBranchesAll.Min(g => g.ID);
+                            (newItem as GitBranchInfo).ID = (minId < 0 ? minId - 1 : -1);
+                        }
+                        else
+                        {
+                            (newItem as GitBranchInfo).ID = -1;
+                        }
                         GitBranchesAll.Add(newItem as GitBranchInfo);
                     }
                     break;
@@ -143,6 +150,7 @@ namespace CKGDatabaseAdminLib.Services
                         item.Name = gitBranch.Name;
                         item.PM = gitBranch.PM;
                         item.ProduktivSeit = gitBranch.ProduktivSeit;
+                        item.Deaktiviert = gitBranch.Deaktiviert;
                     }
                 }
             }
