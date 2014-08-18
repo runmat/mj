@@ -81,7 +81,7 @@
                                         <AlternatingItemStyle CssClass="ItemStyle" />
                                         <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" DataKeyNames="BSTNR">
                                             <SortExpressions>
-                                                <telerik:GridSortExpression FieldName="BEDAT" SortOrder="Descending" />
+                                                <telerik:GridSortExpression FieldName="Bestelldatum" SortOrder="Descending" />
                                             </SortExpressions>
                                             <HeaderStyle ForeColor="#595959" />
                                             <DetailTables>
@@ -100,9 +100,7 @@
                                                         </telerik:GridBoundColumn>
                                                         <telerik:GridBoundColumn DataField="MENGE" SortExpression="MENGE" HeaderText="Menge" >
                                                         </telerik:GridBoundColumn>
-                                                        <telerik:GridBoundColumn DataField="EEIND" SortExpression="EEIND" HeaderText="Lieferdatum" >
-                                                        </telerik:GridBoundColumn>
-                                                        <telerik:GridBoundColumn DataField="PREIS" SortExpression="PREIS" HeaderText="Preis" >
+                                                        <telerik:GridBoundColumn DataField="ELIKZ" SortExpression="ELIKZ" HeaderText="Geliefert" >
                                                         </telerik:GridBoundColumn>
                                                         <telerik:GridBoundColumn DataField="ZUSINFO_TXT" SortExpression="ZUSINFO_TXT" HeaderText="Zusatzinfo" >
                                                         </telerik:GridBoundColumn>
@@ -110,13 +108,13 @@
                                                 </telerik:GridTableView>
                                             </DetailTables>
                                             <Columns>
-                                                <telerik:GridBoundColumn DataField="BEDAT" SortExpression="BEDAT" HeaderText="Datum" >
+                                                <telerik:GridBoundColumn DataField="Bestelldatum" SortExpression="Bestelldatum" HeaderText="Datum" DataFormatString="{0:dd.MM.yyyy}" >
                                                 </telerik:GridBoundColumn>
                                                 <telerik:GridBoundColumn DataField="BSTNR" SortExpression="BSTNR" HeaderText="Bestellung Nr." >
                                                 </telerik:GridBoundColumn>
                                                 <telerik:GridBoundColumn DataField="LIEFERSNR" SortExpression="LIEFERSNR" HeaderText="Lieferschein Nr." >
                                                 </telerik:GridBoundColumn>
-                                                <telerik:GridBoundColumn DataField="EEIND" SortExpression="EEIND" HeaderText="Lieferdatum" >
+                                                <telerik:GridBoundColumn DataField="Lieferdatum" SortExpression="Lieferdatum" HeaderText="Lieferdatum" DataFormatString="{0:dd.MM.yyyy}" >
                                                 </telerik:GridBoundColumn>
                                             </Columns>
                                         </MasterTableView>

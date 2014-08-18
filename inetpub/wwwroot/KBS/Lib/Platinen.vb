@@ -289,6 +289,9 @@ Public Class Platinen
             If mLieferdatum.HasValue Then
                 dt.Rows.Add(New Object() {"I_EEIND", False, mLieferdatum.Value, 8})
             End If
+            If Not String.IsNullOrEmpty(mBestellnummerParken) Then
+                dt.Rows.Add(New Object() {"I_BSTNR_PARK", False, mBestellnummerParken.PadLeft(10, "0"c), 10})
+            End If
 
             dt.Rows.Add(New Object() {"GT_POS", False, tblSAP})
 
@@ -420,7 +423,18 @@ Public Class Platinen
 
             Dim retRowsKopf As DataRow = dt.Select("Fieldname='GT_PO_K'")(0)
             If Not retRowsKopf Is Nothing Then
+                Dim tmpDate As DateTime
                 mLetzteBestellungenKopf = DirectCast(retRowsKopf("Data"), DataTable)
+                mLetzteBestellungenKopf.Columns.Add("Bestelldatum", GetType(DateTime))
+                mLetzteBestellungenKopf.Columns.Add("Lieferdatum", GetType(DateTime))
+                For Each row As DataRow In mLetzteBestellungenKopf.Rows
+                    If Not String.IsNullOrEmpty(row("BEDAT").ToString()) AndAlso DateTime.TryParse(row("BEDAT").ToString(), tmpDate) Then
+                        row("Bestelldatum") = tmpDate
+                    End If
+                    If Not String.IsNullOrEmpty(row("EEIND").ToString()) AndAlso DateTime.TryParse(row("EEIND").ToString(), tmpDate) Then
+                        row("Lieferdatum") = tmpDate
+                    End If
+                Next
             End If
             Dim retRowsPos As DataRow = dt.Select("Fieldname='GT_PO_P'")(0)
             If Not retRowsPos Is Nothing Then
@@ -649,6 +663,10 @@ Public Class Platinen
         ClearErrorState()
 
         Try
+            If Not String.IsNullOrEmpty(mBestellnummerParken) AndAlso mBestellnummerParken.PadLeft(10, "0"c) = BstNr.PadLeft(10, "0"c) Then
+                mBestellnummerParken = ""
+            End If
+
             SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
             Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
 

@@ -164,7 +164,7 @@ Partial Public Class Change04
     Private Sub FillGridLetzteBestellungen()
 
         Dim tmpDataView As New DataView(mObjZentrallager.LetzteBestellungen)
-        tmpDataView.Sort = "BEDAT DESC"
+        tmpDataView.Sort = "Bestelldatum DESC"
 
         If tmpDataView.Count = 0 Then
             gvLetzteBestellungen.Visible = False
@@ -176,6 +176,7 @@ Partial Public Class Change04
             gvLetzteBestellungen.DataSource = tmpDataView
             gvLetzteBestellungen.DataBind()
         End If
+
     End Sub
 
     Private Sub doSubmit()
@@ -317,7 +318,11 @@ Partial Public Class Change04
     Private Sub ShowLetzteBestellungen()
         divLetzteBestellungen.Visible = True
         mObjZentrallager.FillLetzteBestellungen(txtKST.Text)
-        FillGridLetzteBestellungen()
+        If mObjZentrallager.E_MESSAGE <> "" AndAlso Not mObjZentrallager.E_SUBRC = "141" Then
+            lblError.Text = "Fehler beim Abrufen der letzten Bestellungen: " & mObjZentrallager.E_MESSAGE
+        Else
+            FillGridLetzteBestellungen()
+        End If
     End Sub
 
 End Class

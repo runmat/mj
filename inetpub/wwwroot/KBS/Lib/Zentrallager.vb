@@ -274,13 +274,20 @@ Public Class Zentrallager
 
             SAPExc.ExecuteERP("Z_FIL_EFA_PO_ZENTRALE_LISTE", dt)
 
-            If (SAPExc.ErrorOccured) Then
+            If SAPExc.ErrorOccured AndAlso Not SAPExc.E_SUBRC = "141" Then
                 E_SUBRC = SAPExc.E_SUBRC
                 E_MESSAGE = SAPExc.E_MESSAGE
             Else
                 Dim retRows As DataRow = dt.Select("Fieldname='GT_LISTE'")(0)
                 If retRows IsNot Nothing Then
+                    Dim tmpDate As DateTime
                     mLetzteBestellungen = DirectCast(retRows("Data"), DataTable)
+                    mLetzteBestellungen.Columns.Add("Bestelldatum", GetType(DateTime))
+                    For Each row As DataRow In mLetzteBestellungen.Rows
+                        If Not String.IsNullOrEmpty(row("BEDAT").ToString()) AndAlso DateTime.TryParse(row("BEDAT").ToString(), tmpDate) Then
+                            row("Bestelldatum") = tmpDate
+                        End If
+                    Next
                 End If
             End If
 

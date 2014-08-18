@@ -2,6 +2,7 @@
     MasterPageFile="~/KBS.Master" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script language="javascript" type="text/javascript">
         function Count(text, long) {
@@ -196,7 +197,7 @@
                                             <AlternatingRowStyle CssClass="GridTableAlternate" />
                                             <RowStyle CssClass="ItemStyle" />
                                             <Columns>
-                                                <asp:BoundField HeaderText="Datum" DataField="BEDAT" />
+                                                <asp:BoundField HeaderText="Datum" DataField="Bestelldatum" DataFormatString="{0:dd.MM.yyyy}" />
                                                 <asp:BoundField HeaderText="Bestellung Nr." DataField="BSTNR" />
                                                 <asp:BoundField HeaderText="Artikel-Nr." DataField="ARTLIF" />
                                                 <asp:BoundField HeaderText="Bezeichnung" DataField="ARTBEZ" />

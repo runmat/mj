@@ -254,7 +254,9 @@ Public Class Umlagerung
             dt.Rows.Add(New Object() {"I_KOSTL_IN", False, mstrKostStelleNeu, 4})
             dt.Rows.Add(New Object() {"GT_MAT", False, tblSAP})
             dt.Rows.Add(New Object() {"I_KOSTL_OUT", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"I_BELNR", False, mstrBelegNrParken.PadLeft(10, "0"c), 10})
+            If Not String.IsNullOrEmpty(mstrBelegNrParken) Then
+                dt.Rows.Add(New Object() {"I_BELNR", False, mstrBelegNrParken.PadLeft(10, "0"c), 10})
+            End If
             dt.Rows.Add(New Object() {"GT_BELNR", True})
             dt.Rows.Add(New Object() {"I_BUDAT", False, DateTime.Today, 8})
 
@@ -553,6 +555,10 @@ Public Class Umlagerung
         ClearErrorState()
 
         Try
+            If Not String.IsNullOrEmpty(mstrBelegNrParken) AndAlso mstrBelegNrParken.PadLeft(10, "0"c) = BelNr.PadLeft(10, "0"c) Then
+                mstrBelegNrParken = ""
+            End If
+
             SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
             Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
 
