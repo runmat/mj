@@ -73,13 +73,10 @@ Public Class Platinen
         End Set
     End Property
 
-    Public Property BestellnummerParken() As String
+    Public ReadOnly Property BestellnummerParken() As String
         Get
             Return mBestellnummerParken
         End Get
-        Set(ByVal value As String)
-            mBestellnummerParken = value
-        End Set
     End Property
 
     Public Property SelReiter() As String
@@ -301,6 +298,8 @@ Public Class Platinen
             If (SAPExc.ErrorOccured) Then
                 RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
                 Commited = False
+            Else
+                mBestellnummerParken = ""
             End If
         Catch ex As Exception
             RaiseError("0", ex.Message)

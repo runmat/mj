@@ -265,6 +265,8 @@ Public Class Umlagerung
             If (SAPExc.ErrorOccured) Then
                 RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
             Else
+                mstrBelegNrParken = ""
+
                 Dim BelegTable As DataTable
                 Dim retRows As DataRow = dt.Select("Fieldname='GT_BELNR'")(0)
                 If Not retRows Is Nothing Then
