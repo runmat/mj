@@ -1024,7 +1024,6 @@ Partial Public Class Change99
             lbtnVersanddaten.Enabled = True
             lblSteps.Text = "Schritt 4 von 4"
             Panel4.CssClass = "StepActive"
-            ConfirmNextToOverview.Enabled = False
             FillGridOverView(0)
             FillOverView()
         End If
@@ -1133,9 +1132,6 @@ Partial Public Class Change99
                 End If
             Next
         End If
-
-        'wenn "Aus Abmeldung warten" bewusst gewählt wurde -> Warnhinweis
-        ConfirmNextToOverview.Enabled = bAufAbmeldungWarten
 
         If bvalidate = True Then
             m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1'", "EXTGROUP='2'")

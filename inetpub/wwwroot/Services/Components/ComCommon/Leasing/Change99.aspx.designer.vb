@@ -1841,15 +1841,6 @@ Partial Public Class Change99
     Protected WithEvents ibtnNextToOverView As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''ConfirmNextToOverview-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ConfirmNextToOverview As Global.AjaxControlToolkit.ConfirmButtonExtender
-
-    '''<summary>
     '''VersandTabPanel4-Steuerelement
     '''</summary>
     '''<remarks>
