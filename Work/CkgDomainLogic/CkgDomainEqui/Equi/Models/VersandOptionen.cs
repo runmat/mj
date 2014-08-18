@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Serialization;
@@ -62,7 +63,7 @@ namespace CkgDomainLogic.Equi.Models
         [XmlIgnore]
         static public List<VersandGrund> GruendeList { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.WaitForDeregistration)]
+        [LocalizedDisplay(" ")]
         public bool AufAbmeldungWarten { get; set; }
 
         public bool AufAbmeldungWartenAvailable { get; set; }

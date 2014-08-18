@@ -36,7 +36,6 @@
                 return false;
             }
             if ('VersandOptionen' == FormWizard.GetStepKey(step - 1)) {
-                CheckVersandOptionen();
                 $("#AjaxFormVersandOptionen").submit();
                 return false;
             }
@@ -365,14 +364,6 @@
                 $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
             }
         });
-    }
-
-    function CheckVersandOptionen() {
-        if ($("#AufAbmeldungWarten").is(":visible")) {
-            if ($("#AufAbmeldungWarten").is(':checked')) {
-                alert("Achtung: Das Dokument wird erst nach erfolgter Abmeldung versendet!");
-            }
-        }
     }
 
 </script>

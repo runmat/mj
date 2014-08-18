@@ -16,7 +16,7 @@
 
         if (Model.AufAbmeldungWartenAvailable)
         {
-            @Html.FormCheckBoxFor(m => m.AufAbmeldungWarten, new { @class = "m-wrap large" })
+            @Html.FormCheckBoxFor(m => m.AufAbmeldungWarten, new { @class = "m-wrap large" }, postControlHtml: @<text><label class="checker">@Localize.WaitForDeregistration</label></text>)
         }
         else
         {
