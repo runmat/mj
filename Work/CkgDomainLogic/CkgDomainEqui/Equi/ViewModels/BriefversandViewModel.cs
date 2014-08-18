@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -98,31 +97,10 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
-                    LogonContext.UserApps.Any(a => a.AppID == CurrentAppID && a.BerechtigungsLevel.ContainsKey("7")))
-                {
-                    var liste = BriefVersandDataService.VersandOptionen
-                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand)
-                    .OrderBy(w => w.Name)
-                    .ToList();
-                    
-                    var updItems = liste.Where(vo => vo.MaterialCode == "ZZABMELD");
-
-                    foreach (var item in updItems)
-                    {
-                        item.MaterialCode = "ZZABMELD_INVERTED";
-                        item.Name = "Auf Abmeldung warten";
-                    }
-
-                    return liste;
-                }
-                else
-                {
-                    return BriefVersandDataService.VersandOptionen
+                return BriefVersandDataService.VersandOptionen
                     .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.MaterialCode != "ZZABMELD")
                     .OrderBy(w => w.Name)
                     .ToList();
-                }
             }
         }
 
@@ -206,6 +184,19 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get { return PropertyCacheGet(() => new VersandOptionen()); }
             set { PropertyCacheSet(value); }
+        }
+
+        public bool VersandOptionAufAbmeldungWartenAvailable
+        {
+            get
+            {
+                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
+                    LogonContext.UserApps.Any(a => a.AppID == CurrentAppID && a.BerechtigungsLevel.ContainsKey("7")))
+                {
+                    return true;
+                }
+                return false;
+            }
         }
 
         #endregion
@@ -316,7 +307,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                 BriefVersand = true,
                 SchluesselVersand = false,
                 StuecklistenKomponente = stuecklistenCode,
-                AbmeldeKennzeichen = (VersandOptionen.VersandOption.MaterialCode != "ZZABMELD_INVERTED"),
+                AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten),
                 AbcKennzeichen = VersandartOptionen.Versandart,
                 MaterialNr = VersandOptionen.VersandOption.MaterialCode,
                 DadAnforderungsDatum = DateTime.Today,
@@ -334,19 +325,10 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             SaveErrorMessage = "";
 
-            // 1. Versandauftrags-Datensätze anlegen (Druck-Datensätze)
+            // 1. Versandauftrags-Datensätze anlegen
             var versandAuftraege = new List<VersandAuftragsAnlage>();
 
-            SelectedFahrzeuge.ForEach(fzg =>
-            {
-                versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, ""));
-
-                //if (DruckOptionen.DruckCoc)
-                //    versandAuftraege.Add(CreateVersandAuftrag(fzg.VIN, "720"));
-
-                //if (DruckOptionen.DruckZBII)
-                //    versandAuftraege.Add(CreateVersandAuftrag(fzg.VIN, "722"));
-            });
+            SelectedFahrzeuge.ForEach(fzg => versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "")));
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
         }

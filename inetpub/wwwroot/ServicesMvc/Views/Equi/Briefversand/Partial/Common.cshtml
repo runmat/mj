@@ -368,8 +368,10 @@
     }
 
     function CheckVersandOptionen() {
-        if ($("#VersandOptionKey option:selected").text() == "Auf Abmeldung warten") {
-            alert("Achtung: Das Dokument wird erst nach erfolgter Abmeldung versendet!");
+        if ($("#AufAbmeldungWarten").is(":visible")) {
+            if ($("#AufAbmeldungWarten").is(':checked')) {
+                alert("Achtung: Das Dokument wird erst nach erfolgter Abmeldung versendet!");
+            }
         }
     }
 
