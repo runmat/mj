@@ -293,7 +293,7 @@ Partial Public Class Change07
             headTable.Rows.Add(tmpSAPRow)
 
             Dim imageHt As New Hashtable()
-            Dim sFilePath As String = mObjUmlagerung.KostStelle & "_" & Replace(Now.ToShortDateString, ".", "") & "_" & Replace(Now.ToShortTimeString, ":", "")
+            Dim sFilePath As String = mObjUmlagerung.KostStelle & "_" & mObjUmlagerung.KostStelleNeu & "_" & Replace(Now.ToShortDateString, ".", "") & "_" & Replace(Now.ToShortTimeString, ":", "")
             mObjUmlagerung.FilePath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & sFilePath & ".pdf"
             Dim docFactory As New DocumentGeneration.WordDocumentFactory(ReportTable, imageHt)
             If mObjKasse.KUNNR = "261030" Then
@@ -669,13 +669,25 @@ Partial Public Class Change07
 
     Private Function GetListeNachdruck() As DataTable
         Dim tbl As New DataTable()
+        tbl.Columns.Add("Dateiname", GetType(String))
+        tbl.Columns.Add("EmpfangendeKst", GetType(String))
         tbl.Columns.Add("Datum", GetType(DateTime))
 
         Dim verzeichnis As New DirectoryInfo(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung")
         Dim dateien() As FileInfo = verzeichnis.GetFiles(mObjKasse.Lagerort & "_*")
         For Each datei In dateien
             Dim newRow As DataRow = tbl.NewRow()
-            newRow("Datum") = DateTime.ParseExact(datei.Name.Substring(5, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            newRow("Dateiname") = datei.Name
+            Dim nameRaw As String = datei.Name.Substring(0, datei.Name.Length - datei.Extension.Length)
+            If nameRaw.Length > 18 Then
+                'Neues Format: Kst_EmpfKst_Datum_Zeit
+                newRow("EmpfangendeKst") = nameRaw.Substring(5, 4)
+                newRow("Datum") = DateTime.ParseExact(nameRaw.Substring(10, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            Else
+                'Altes Format: Kst_Datum_Zeit
+                newRow("EmpfangendeKst") = ""
+                newRow("Datum") = DateTime.ParseExact(nameRaw.Substring(5, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            End If
             tbl.Rows.Add(newRow)
         Next
 
@@ -689,9 +701,9 @@ Partial Public Class Change07
         End Select
     End Sub
 
-    Private Sub ShowBeleg(ByVal datum As DateTime)
+    Private Sub ShowBeleg(ByVal dateiname As String)
         Session("App_ContentType") = "Application/pdf"
-        Session("App_Filepath") = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & mObjKasse.Lagerort & "_" & datum.ToString("ddMMyyyy_HHmm") & ".pdf"
+        Session("App_Filepath") = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & dateiname
         If (Not ClientScript.IsStartupScriptRegistered("Enabled")) Then
 
             Dim sb As StringBuilder = New StringBuilder()

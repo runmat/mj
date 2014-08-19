@@ -561,11 +561,12 @@
                                                     <AlternatingRowStyle CssClass="GridTableAlternate" />
                                                     <RowStyle CssClass="ItemStyle" />
                                                     <Columns>
+                                                        <asp:BoundField DataField="EmpfangendeKst" HeaderText="Empf. Kst" HeaderStyle-Wrap="False" />
                                                         <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" />
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"
-                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# Eval("Datum") %>' />
+                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# Eval("Dateiname") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>
