@@ -953,7 +953,6 @@ Partial Public Class Change99
 
                     txtBemerkung.Text = m_Versand.Bemerkung
                     txtHalter.Text = m_Versand.Halter
-                    ConfirmNextToOptions.Enabled = False
                 End If
             End If
         Else
@@ -1199,7 +1198,6 @@ Partial Public Class Change99
                 m_Versand.Adressart = Adressarten.TempSuche
             Else
                 m_Versand.Adressart = Adressarten.EndSuche
-                ConfirmNextToOptions.Enabled = m_Versand.Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any()
             End If
         Else
             lblSucheAdr.Visible = True
@@ -1248,7 +1246,6 @@ Partial Public Class Change99
                 m_Versand.Adressart = Adressarten.TempZulassungsstelle
             Else
                 m_Versand.Adressart = Adressarten.EndZulassungsstelle
-                ConfirmNextToOptions.Enabled = m_Versand.Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any()
             End If
 
         End If
@@ -1316,7 +1313,6 @@ Partial Public Class Change99
                 m_Versand.Adressart = Adressarten.TempManuell
             Else
                 m_Versand.Adressart = Adressarten.EndManuell
-                ConfirmNextToOptions.Enabled = m_Versand.Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any()
             End If
 
             trSelAdresse.Visible = True
