@@ -1612,9 +1612,9 @@ Imports CKG.Base.Common
         row("VERS_GRUND") = m_versgrund
         Select Case mAdressart
             Case 1, 4
-                row("EMPF_ART") = "Dritte"
+                row("EMPF_ART") = "DRITTE"
             Case 2, 5
-                row("EMPF_ART") = "Zulassungsstelle"
+                row("EMPF_ART") = "ZULASSUNGSSTELLE"
             Case Else
                 row("EMPF_ART") = ""
         End Select
@@ -1627,7 +1627,7 @@ Imports CKG.Base.Common
         row("LAND_EMPF") = m_strLaenderKuerzel
         row("SYSTEMKENNZ") = ""
         row("AUFTRAGGEBERID") = m_objUser.UserName
-        row("ANSPRECHPART_NAME") = m_strName2
+        row("NAME_ANSP") = m_strName2
         row("NAME_ANF") = ""
         row("VORNAME_ANF") = ""
         row("STRASSE_ANF") = ""
@@ -1674,9 +1674,9 @@ Imports CKG.Base.Common
                         SapRow("VERS_GRUND") = m_versgrund
                         Select Case mAdressart
                             Case 1, 4
-                                SapRow("EMPF_ART") = "Dritte"
+                                SapRow("EMPF_ART") = "DRITTE"
                             Case 2, 5
-                                SapRow("EMPF_ART") = "Zulassungsstelle"
+                                SapRow("EMPF_ART") = "ZULASSUNGSSTELLE"
                             Case Else
                                 SapRow("EMPF_ART") = ""
                         End Select
@@ -1689,7 +1689,7 @@ Imports CKG.Base.Common
                         SapRow("LAND_EMPF") = m_strLaenderKuerzel
                         SapRow("SYSTEMKENNZ") = ""
                         SapRow("AUFTRAGGEBERID") = m_objUser.UserName
-                        SapRow("ANSPRECHPART_NAME") = m_strName2
+                        SapRow("NAME_ANSP") = m_strName2
                         SapRow("NAME_ANF") = ""
                         SapRow("VORNAME_ANF") = ""
                         SapRow("STRASSE_ANF") = ""
