@@ -82,7 +82,7 @@
                                             <Columns>
                                                 <asp:TemplateField Visible="false">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblEQUNR" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.EQUNR") %>'>
+                                                        <asp:Label ID="lblEQUNR" runat="server" Text='<%# Eval("EQUNR") %>'>
                                                         </asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -92,7 +92,7 @@
                                                         <asp:LinkButton ID="col_Anforderer" runat="server" CommandName="Sort" CommandArgument="Anforderer">col_Anforderer</asp:LinkButton>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblAnforderer" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Anforderer") %>'>
+                                                        <asp:Label ID="lblAnforderer" runat="server" Text='<%# Eval("Anforderer") %>'>
                                                         </asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -103,7 +103,7 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <asp:LinkButton ID="lbtnHaendlernummer" ToolTip="Filtern" CommandArgument="Haendlernummer"
-                                                            CommandName="Filter" Text='<%# DataBinder.Eval(Container, "DataItem.Haendlernummer") %>'
+                                                            CommandName="Filter" Text='<%# Eval("Haendlernummer") %>'
                                                             runat="server">LinkButton</asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -113,7 +113,7 @@
                                                         <asp:LinkButton ID="col_LIZNR" runat="server" CommandName="Sort" CommandArgument="LIZNR">col_LIZNR</asp:LinkButton>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Label ID="Label2" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LIZNR") %>'>
+                                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("LIZNR") %>'>
                                                         </asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -123,7 +123,7 @@
                                                         <asp:LinkButton ID="col_Vertragsnummer" runat="server" CommandName="Sort" CommandArgument="Vertragsnummer">col_Vertragsnummer</asp:LinkButton>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblVertragsnummer" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Vertragsnummer") %>'></asp:Label>
+                                                        <asp:Label ID="lblVertragsnummer" runat="server" Text='<%# Eval("Vertragsnummer") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField SortExpression="Fahrgestellnummer" HeaderText="col_Fahrgestellnummer">
@@ -132,40 +132,61 @@
                                                         <asp:LinkButton ID="col_Fahrgestellnummer" runat="server" CommandName="Sort" CommandArgument="Fahrgestellnummer">col_Fahrgestellnummer</asp:LinkButton>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:HyperLink ID="lnkHistorie" Target="_blank" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Fahrgestellnummer") %>'>
+                                                        <asp:HyperLink ID="lnkHistorie" Target="_blank" runat="server" Text='<%# Eval("Fahrgestellnummer") %>'>
                                                         </asp:HyperLink>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:BoundField ControlStyle-Width="25px" DataField="Distrikt" SortExpression="Distrikt"
-                                                    ReadOnly="True" HeaderText="Distrikt"></asp:BoundField>
+                                                <asp:TemplateField SortExpression="Distrikt" HeaderText="col_Distrikt">
+                                                    <HeaderStyle Width="50px"></HeaderStyle>
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_Distrikt" runat="server" CommandName="Sort" CommandArgument="Distrikt">col_Distrikt</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblDistrikt" runat="server" Text='<%# Eval("Distrikt") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField SortExpression="Nummer ZB2" HeaderText="col_Briefnummer">
                                                     <HeaderStyle Width="50px"></HeaderStyle>
                                                     <HeaderTemplate>
                                                         <asp:LinkButton ID="col_Briefnummer" runat="server" CommandName="Sort" CommandArgument="Nummer ZB2">col_Briefnummer</asp:LinkButton>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Label ID="Label1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Nummer ZBII") %>'>
+                                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("Nummer ZBII") %>'>
                                                         </asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField SortExpression="Memo" HeaderText="Memo">
+                                                <asp:TemplateField SortExpression="Memo" HeaderText="col_Memo">
                                                     <HeaderStyle Width="150px"></HeaderStyle>
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_Memo" runat="server" CommandName="Sort" CommandArgument="Memo">col_Memo</asp:LinkButton>
+                                                    </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblMemo" Visible="True" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Memo") %>'>
-                                                        </asp:Label>
+                                                        <asp:Label ID="lblMemo" runat="server" Text='<%# Eval("Memo") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:BoundField ControlStyle-Width="80px" DataField="Datum Ausgang" SortExpression="Datum Ausgang"
-                                                    ReadOnly="True" HeaderText="Datum Ausgang" DataFormatString="{0:dd.MM.yyyy}">
-                                                </asp:BoundField>
-                                                <asp:BoundField ControlStyle-Width="80px" DataField="Datum Eingang" SortExpression="Datum Eingang"
-                                                    ReadOnly="True" HeaderText="Datum Eingang" DataFormatString="{0:dd.MM.yyyy}">
-                                                </asp:BoundField>
+                                                <asp:TemplateField SortExpression="Datum Ausgang" HeaderText="col_DatumAusgang">
+                                                    <HeaderStyle Width="80px"></HeaderStyle>
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_DatumAusgang" runat="server" CommandName="Sort" CommandArgument="Datum Ausgang">col_DatumAusgang</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblDatumAusgang" runat="server" Text='<%# Eval("Datum Ausgang", "{0:dd.MM.yyyy}") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField SortExpression="Datum Eingang" HeaderText="col_DatumEingang">
+                                                    <HeaderStyle Width="80px"></HeaderStyle>
+                                                    <HeaderTemplate>
+                                                        <asp:LinkButton ID="col_DatumEingang" runat="server" CommandName="Sort" CommandArgument="Datum Eingang">col_DatumEingang</asp:LinkButton>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblDatumEingang" runat="server" Text='<%# Eval("Datum Eingang", "{0:dd.MM.yyyy}") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField  HeaderText="Abweichung">
                                                     <HeaderStyle Width="50px"></HeaderStyle>
                                                     <ItemTemplate>
                                                         <p align="center">
-                                                            <asp:ImageButton ID="ImageButton1" runat="server" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.EQUNR") %>'
+                                                            <asp:ImageButton ID="ImageButton1" runat="server" CommandArgument='<%# Eval("EQUNR") %>'
                                                                 CommandName="Edit" ImageUrl="../../../Images/Plus.gif" Height="16px" Width="16px" /></p>
                                                     </ItemTemplate>
                                                    
@@ -174,7 +195,7 @@
                                                     <HeaderStyle Width="30px"></HeaderStyle>
                                                     <ItemTemplate>
                                                         <p align="center">
-                                                            <asp:ImageButton ID="lbErledigt" runat="server" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.EQUNR") %>'
+                                                            <asp:ImageButton ID="lbErledigt" runat="server" CommandArgument='<%# Eval("EQUNR") %>'
                                                                 CommandName="Erledigt" ImageUrl="../../../Images/Confirm_mini.gif" Height="16px"
                                                                 Width="16px" />
                                                         </p>
