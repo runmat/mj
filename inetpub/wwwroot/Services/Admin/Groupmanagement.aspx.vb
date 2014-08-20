@@ -1,59 +1,24 @@
-﻿
-Imports CKG.Base.Kernel.Admin
+﻿Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Business
 Imports CKG.Base.Business.HelpProcedures
-Imports Telerik.Web.UI
 Imports System.Data.SqlClient
 
 Partial Public Class Groupmanagement
-    Inherits System.Web.UI.Page
+    Inherits Page
+
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
+
 #End Region
 
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        m_User = GetUser(Me)
-        lblHead.Text = "Gruppenverwaltung"
-        AdminAuth(Me, m_User, AdminLevel.Customer)
-        GridNavigation1.setGridElment(dgSearchResult)
-        Try
-            m_App = New App(m_User)
-
-            lblError.Text = ""
-            lblMessage.Text = ""
-
-            If Not IsPostBack Then
-                'Fülle ddlAuthorizationright mit festen Vorgaben
-                Dim strAuthorRights(4) As String
-                strAuthorRights(0) = "0 - keine"
-                strAuthorRights(1) = "0..1 - wenig"
-                strAuthorRights(2) = "0..2 - mittel"
-                strAuthorRights(3) = "0..3 - viel"
-                Dim i As Int32
-                For i = 0 To 3
-                    Dim listitem As New ListItem()
-                    listitem.Value = CStr(i)
-                    listitem.Text = strAuthorRights(i)
-                    ddlAuthorizationright.Items.Add(listitem)
-                Next
-
-                FillForm()
-            End If
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "Page_Load", ex.ToString)
-            lblError.Text = ex.ToString
-        End Try
-    End Sub
-
 #Region " Data and Function "
+
     Private Sub FillForm()
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
             FillCustomer(cn)
@@ -93,7 +58,7 @@ Partial Public Class Groupmanagement
         End Try
     End Sub
 
-    Private Sub FillCustomer(ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillCustomer(ByVal cn As SqlConnection)
         Dim dtCustomers As Kernel.CustomerList
         dtCustomers = New Kernel.CustomerList(m_User.Customer.AccountingArea, cn, True, False)
 
@@ -125,7 +90,7 @@ Partial Public Class Groupmanagement
             dvGroup = CType(Session("myGroupListView"), DataView)
         Else
             Dim dtGroup As Kernel.GroupList
-            Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+            Dim cn As New SqlConnection(m_User.App.Connectionstring)
             Try
                 cn.Open()
 
@@ -157,8 +122,8 @@ Partial Public Class Groupmanagement
     End Sub
 
     Private Function FillEdit(ByVal intGroupId As Integer) As Boolean
-        Dim cn As SqlClient.SqlConnection
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As SqlConnection
+        cn = New SqlConnection(m_User.App.Connectionstring)
         Try
             SearchMode(False)
             cn.Open()
@@ -212,7 +177,7 @@ Partial Public Class Groupmanagement
         End Try
     End Function
 
-    Private Function GetAppAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection) As DataView
+    Private Function GetAppAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection) As DataView
         'Als Extra-Funktion ausgelagert, da beim Speichern evtl.
         'benoetigt, wenn Cache leer ist (in jenem Fall soll die
         'List kein DataBind ausfuehren).
@@ -225,7 +190,7 @@ Partial Public Class Groupmanagement
         Return _AppAssigned.DefaultView
     End Function
 
-    Private Function GetArchivAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection) As DataView
+    Private Function GetArchivAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection) As DataView
         'Als Extra-Funktion ausgelagert, da beim Speichern evtl.
         'benoetigt, wenn Cache leer ist (in jenem Fall soll die
         'List kein DataBind ausfuehren).
@@ -238,20 +203,31 @@ Partial Public Class Groupmanagement
         Return _ArchivAssigned.DefaultView
     End Function
 
-    Private Function GetEmployeeAssignedView(ByVal intGroupID As Integer, ByVal intAccountingArea As Integer, ByVal cn As SqlClient.SqlConnection) As DataView
+    Private Function GetAbrufgruendeEndgAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection) As DataView
         'Als Extra-Funktion ausgelagert, da beim Speichern evtl.
         'benoetigt, wenn Cache leer ist (in jenem Fall soll die
         'List kein DataBind ausfuehren).
-        Dim _EmployeeAssigned As New EmployeeList(intGroupID, intAccountingArea, cn)
-        _EmployeeAssigned.GetAssigned()
-        _EmployeeAssigned.DefaultView.Sort = "EmployeeName"
+        Dim _AbrufgruendeEndgAssigned As New Kernel.AbrufgruendeDT(cn, intCustomerID, intGroupID, False, "Endg")
+        _AbrufgruendeEndgAssigned.DefaultView.Sort = "WebBezeichnung"
         'Cache wird befuellt, um spaeter beim Speichern darauf
         'zu zugreifen.
-        Session.Add("myEmployeeAssigned", _EmployeeAssigned.DefaultView)
-        Return _EmployeeAssigned.DefaultView
+        Session.Add("myAbrufgruendeEndgAssigned", _AbrufgruendeEndgAssigned.DefaultView)
+        Return _AbrufgruendeEndgAssigned.DefaultView
     End Function
 
-    Private Sub FillAssigned(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
+    Private Function GetAbrufgruendeTempAssignedView(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection) As DataView
+        'Als Extra-Funktion ausgelagert, da beim Speichern evtl.
+        'benoetigt, wenn Cache leer ist (in jenem Fall soll die
+        'List kein DataBind ausfuehren).
+        Dim _AbrufgruendeTempAssigned As New Kernel.AbrufgruendeDT(cn, intCustomerID, intGroupID, False, "temp")
+        _AbrufgruendeTempAssigned.DefaultView.Sort = "WebBezeichnung"
+        'Cache wird befuellt, um spaeter beim Speichern darauf
+        'zu zugreifen.
+        Session.Add("myAbrufgruendeTempAssigned", _AbrufgruendeTempAssigned.DefaultView)
+        Return _AbrufgruendeTempAssigned.DefaultView
+    End Function
+
+    Private Sub FillAssigned(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection)
         Dim dvAppAssigned As DataView = GetAppAssignedView(intGroupID, intCustomerID, cn)
         lstAppAssigned.DataSource = dvAppAssigned
         lstAppAssigned.DataTextField = "AppFriendlyName"
@@ -264,9 +240,21 @@ Partial Public Class Groupmanagement
         lstArchivAssigned.DataValueField = "ArchivID"
         lstArchivAssigned.DataBind()
 
+        Dim dvAbrufgruendeEndgAssigned As DataView = GetAbrufgruendeEndgAssignedView(intGroupID, intCustomerID, cn)
+        lstAbrufgruendeEndgAssigned.DataSource = dvAbrufgruendeEndgAssigned
+        lstAbrufgruendeEndgAssigned.DataTextField = "WebBezeichnung"
+        lstAbrufgruendeEndgAssigned.DataValueField = "SapWert"
+        lstAbrufgruendeEndgAssigned.DataBind()
+
+        Dim dvAbrufgruendeTempAssigned As DataView = GetAbrufgruendeTempAssignedView(intGroupID, intCustomerID, cn)
+        lstAbrufgruendeTempAssigned.DataSource = dvAbrufgruendeTempAssigned
+        lstAbrufgruendeTempAssigned.DataTextField = "WebBezeichnung"
+        lstAbrufgruendeTempAssigned.DataValueField = "SapWert"
+        lstAbrufgruendeTempAssigned.DataBind()
+
     End Sub
 
-    Private Sub FillUnAssigned(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillUnAssigned(ByVal intGroupID As Integer, ByVal intCustomerID As Integer, ByVal cn As SqlConnection)
         Dim _AppUnAssigned As New ApplicationList(intGroupID, intCustomerID, cn)
         _AppUnAssigned.GetUnassigned()
         _AppUnAssigned.DefaultView.Sort = "AppFriendlyName"
@@ -282,6 +270,20 @@ Partial Public Class Groupmanagement
         lstArchivUnAssigned.DataTextField = "EasyArchivName"
         lstArchivUnAssigned.DataValueField = "ArchivID"
         lstArchivUnAssigned.DataBind()
+
+        Dim _AbrufgruendeEndgUnAssigned As New Kernel.AbrufgruendeDT(cn, intCustomerID, intGroupID, True, "Endg")
+        _AbrufgruendeEndgUnAssigned.DefaultView.Sort = "WebBezeichnung"
+        lstAbrufgruendeEndgUnAssigned.DataSource = _AbrufgruendeEndgUnAssigned.DefaultView
+        lstAbrufgruendeEndgUnAssigned.DataTextField = "WebBezeichnung"
+        lstAbrufgruendeEndgUnAssigned.DataValueField = "SapWert"
+        lstAbrufgruendeEndgUnAssigned.DataBind()
+
+        Dim _AbrufgruendeTempUnAssigned As New Kernel.AbrufgruendeDT(cn, intCustomerID, intGroupID, True, "temp")
+        _AbrufgruendeTempUnAssigned.DefaultView.Sort = "WebBezeichnung"
+        lstAbrufgruendeTempUnAssigned.DataSource = _AbrufgruendeTempUnAssigned.DefaultView
+        lstAbrufgruendeTempUnAssigned.DataTextField = "WebBezeichnung"
+        lstAbrufgruendeTempUnAssigned.DataValueField = "SapWert"
+        lstAbrufgruendeTempUnAssigned.DataBind()
 
     End Sub
 
@@ -321,24 +323,24 @@ Partial Public Class Groupmanagement
             strBackColor = "LightGray"
         End If
         txtGroupID.Enabled = Not blnLock
-        txtGroupID.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtGroupID.BackColor = Drawing.Color.FromName(strBackColor)
         txtGroupName.Enabled = Not blnLock
-        txtGroupName.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtGroupName.BackColor = Drawing.Color.FromName(strBackColor)
 
         radMessage.Enabled = Not blnLock
-        radMessage.BackColor = System.Drawing.Color.FromName(strBackColor)
+        radMessage.BackColor = Drawing.Color.FromName(strBackColor)
 
         txtMaxReadMessageCount.Enabled = Not blnLock
-        txtMaxReadMessageCount.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtMaxReadMessageCount.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAuthorizationright.Enabled = Not blnLock
-        ddlAuthorizationright.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAuthorizationright.BackColor = Drawing.Color.FromName(strBackColor)
         cbxIsCustomerGroup.Enabled = Not blnLock
         txtDocuPath.Enabled = Not blnLock
-        txtDocuPath.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtDocuPath.BackColor = Drawing.Color.FromName(strBackColor)
         lstAppAssigned.Enabled = Not blnLock
-        lstAppAssigned.BackColor = System.Drawing.Color.FromName(strBackColor)
+        lstAppAssigned.BackColor = Drawing.Color.FromName(strBackColor)
         lstAppUnAssigned.Enabled = Not blnLock
-        lstAppUnAssigned.BackColor = System.Drawing.Color.FromName(strBackColor)
+        lstAppUnAssigned.BackColor = Drawing.Color.FromName(strBackColor)
         btnAssign.Enabled = Not blnLock
         btnUnAssign.Enabled = Not blnLock
         cbxTeamViewer.Enabled = Not blnLock
@@ -439,8 +441,8 @@ Partial Public Class Groupmanagement
     End Sub
 
     Private Function SetOldLogParameters(ByVal intGroupId As Int32) As DataTable
-        Dim cn As SqlClient.SqlConnection
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As SqlConnection
+        cn = New SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
@@ -488,7 +490,7 @@ Partial Public Class Groupmanagement
             m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "SetOldLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -530,7 +532,7 @@ Partial Public Class Groupmanagement
             m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "SetNewLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -544,367 +546,34 @@ Partial Public Class Groupmanagement
     Private Function CreateLogTableStructure() As DataTable
         Dim tblPar As New DataTable()
         With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Gruppenname", System.Type.GetType("System.String"))
-            .Columns.Add("Aut.- Recht", System.Type.GetType("System.String"))
-            .Columns.Add("Kunden- Gruppe", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendungen", System.Type.GetType("System.String"))
-            .Columns.Add("Handbuch", System.Type.GetType("System.String"))
-            .Columns.Add("Startmethode", System.Type.GetType("System.String"))
-            .Columns.Add("Message", System.Type.GetType("System.String"))
-            .Columns.Add("MaxReadMessageCount", System.Type.GetType("System.Int32"))
+            .Columns.Add("Status", Type.GetType("System.String"))
+            .Columns.Add("Gruppenname", Type.GetType("System.String"))
+            .Columns.Add("Aut.- Recht", Type.GetType("System.String"))
+            .Columns.Add("Kunden- Gruppe", Type.GetType("System.Boolean"))
+            .Columns.Add("Firma", Type.GetType("System.String"))
+            .Columns.Add("Anwendungen", Type.GetType("System.String"))
+            .Columns.Add("Handbuch", Type.GetType("System.String"))
+            .Columns.Add("Startmethode", Type.GetType("System.String"))
+            .Columns.Add("Message", Type.GetType("System.String"))
+            .Columns.Add("MaxReadMessageCount", Type.GetType("System.Int32"))
         End With
         Return tblPar
     End Function
-#End Region
 
-#Region " Events "
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
-        Search(True, True)
-    End Sub
-
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNew.Click
-        Dim intCustomer As Integer = CInt(ddlFilterCustomer.SelectedItem.Value)
-        Session("myAppAssigned") = Nothing
-        txtGroupID.Text = -1
-
-        If intCustomer < 1 Then
-            lblError.Text = "Wählen Sie bitte zunächst eine Firma aus!"
-        Else
-            SearchMode(False)
-            ClearEdit()
-            Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-            Try
-                cn.Open()
-                FillUnAssigned(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value), cn)
-            Finally
-                If cn.State <> ConnectionState.Closed Then
-                    cn.Close()
-                End If
-            End Try
-        End If
-    End Sub
-
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
-        Dim cn As SqlClient.SqlConnection
-
-        If String.IsNullOrEmpty(txtGroupName.Text) Then
-            lblError.Text = "Bitte geben Sie einen Gruppennamen an!"
-            Exit Sub
-        End If
-
-        If Not IsNumeric(txtMaxReadMessageCount.Text) Then
-            lblMessage.Text = "Bitte geben Sie einen Zahlenwert für die Häufigkeit ein."
-            Exit Sub
-        End If
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim intGroupId As Integer = CInt(txtGroupID.Text)
-            Dim strLogMsg As String = "Gruppe anlegen"
-            If Not (intGroupId = -1) Then
-                strLogMsg = "Gruppe ändern"
-                tblLogParameter = SetOldLogParameters(intGroupId)
-            End If
-
-            Dim htmlMessage As String = TranslateHTML(radMessage.Content.Trim, TranslationDirection.SaveHTML)
-
-            If htmlMessage.Length > 1500 Then
-                lblInfo.Text = "Die Nachricht (inkl. Formatierungen) ist mit akt. '" + htmlMessage.Length.ToString + "' Zeichen zu lang zum Speichern."
-                Return
-            Else
-                lblInfo.Text = String.Empty
-            End If
-
-
-
-            If txtGroupID.Text = "-1" Then
-
-                'bereits genutzte
-                Dim cnGivven As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-                cnGivven.Open()
-
-                Dim dtGivvenGroupNameAll As Kernel.GivvenGroupAllList = New Kernel.GivvenGroupAllList(cn, txtCustomerID.Text)
-                Dim dvGivvenGroupName As DataView = dtGivvenGroupNameAll.DefaultView
-                For intLoop = 0 To dvGivvenGroupName.Count - 1
-                    If UCase(txtGroupName.Text) = UCase(dvGivvenGroupName(intLoop)("GroupName")) Then
-                        lblError.Text = "Bitte wählen Sie einen anderen Namen für die neue Gruppe!<br />(Der Gruppename wird bereits benutzt.)<br /><br />"
-                        Exit For
-                    End If
-                Next
-
-            End If
-
-            Dim blnNew As Boolean = False
-            If CInt(txtGroupID.Text) < 1 Then blnNew = True
-            Dim _group As New Group(intGroupId, _
-                                                txtGroupName.Text, _
-                                                CInt(txtCustomerID.Text), _
-                                                txtDocuPath.Text, _
-                                                CInt(ddlAuthorizationright.SelectedItem.Value.ToString), _
-                                                cbxIsCustomerGroup.Checked, _
-                                                blnNew, _
-                                                txtStartMethod.Text, _
-                                                htmlMessage, _
-                                                CInt(txtMaxReadMessageCount.Text), _
-                                                cbxTeamViewer.Checked, _
-                                                cbxIsServiceGroup.Checked)
-
-
-
-            If lblError.Text = "" Then
-                _group.Save(cn)
-            Else
-                Exit Sub
-            End If
-
-            If (Not (radMessage.Content = txtMessageOld.Text)) OrElse (Not blnNew) Then
-                'User Count zurücksetzen
-                Dim cmdUpdateUser As SqlClient.SqlCommand
-                Dim cmdGetUser As New SqlClient.SqlCommand("SELECT UserID FROM WebMember WHERE GroupID=@GroupID", cn)
-                cmdGetUser.Parameters.AddWithValue("@GroupID", intGroupId)
-                Dim dt As New DataTable()
-                Dim da As New SqlClient.SqlDataAdapter()
-                da.SelectCommand = cmdGetUser
-                da.Fill(dt)
-                Dim dr As DataRow
-                For Each dr In dt.Rows
-                    cmdUpdateUser = New SqlClient.SqlCommand("UPDATE WebUser SET ReadMessageCount=@ReadMessageCount WHERE UserID=@UserID", cn)
-                    Dim intReadMessageCount As Int32 = 0
-                    cmdUpdateUser.Parameters.AddWithValue("@ReadMessageCount", intReadMessageCount)
-                    cmdUpdateUser.Parameters.AddWithValue("@UserID", CInt(dr("UserID")))
-                    cmdUpdateUser.ExecuteNonQuery()
-                Next
-            End If
-
-            'Anwendungen zuordnen
-            Dim dvAppAssigned As New DataView
-            If blnNew Then
-                intGroupId = _group.GroupId
-                txtGroupID.Text = intGroupId.ToString
-            Else
-                If Not Session("myAppAssigned") Is Nothing Then
-                    dvAppAssigned = CType(Session("myAppAssigned"), DataView)
-                Else
-                    dvAppAssigned = GetAppAssignedView(intGroupId, _group.CustomerId, cn)
-                End If
-            End If
-            Dim lstAssignedApps As New List(Of String)
-            For Each li As ListItem In lstAppAssigned.Items
-                lstAssignedApps.Add(li.Value)
-            Next
-            Dim _assignment As New Kernel.AppAssignments(intGroupId, Kernel.AssignmentType.Group)
-            _assignment.Save(dvAppAssigned, lstAssignedApps, cn)
-
-            'Archive zuordnen
-            Dim dvArchivAssigned As New DataView
-            If blnNew Then
-                intGroupId = _group.GroupId
-                txtGroupID.Text = intGroupId.ToString
-            Else
-                If Not Session("myArchivAssigned") Is Nothing Then
-                    dvArchivAssigned = CType(Session("myArchivAssigned"), DataView)
-                Else
-                    dvArchivAssigned = GetArchivAssignedView(intGroupId, _group.CustomerId, cn)
-                End If
-            End If
-            Dim _archivassignment As New Kernel.ArchivAssignments(intGroupId, Kernel.AssignmentType.Group)
-            _archivassignment.Save(dvArchivAssigned, lstArchivAssigned.Items, cn)
-
-            tblLogParameter = SetNewLogParameters()
-            Log(_group.GroupId.ToString, strLogMsg, tblLogParameter)
-
-            Search(True, True, , True)
-            lblMessage.Text = "Die Änderungen wurden gespeichert."
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "lbtnSave_Click", ex.ToString)
-
-            lblError.Text &= ex.Message
-            If Not ex.InnerException Is Nothing Then
-                lblError.Text &= ": " & ex.InnerException.Message
-            End If
-            tblLogParameter = New DataTable
-            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Sub
-
-    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
-        Dim cn As SqlClient.SqlConnection
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            Dim _Group As New Group(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value))
-
-            cn.Open()
-            tblLogParameter = SetOldLogParameters(_Group.GroupId)
-            If Not _Group.HasUser(cn) Then
-                _Group.Delete(cn)
-                Log(_Group.GroupId.ToString, "Gruppe löschen", tblLogParameter)
-
-                Search(True, True, True, True)
-                lblMessage.Text = "Die Gruppe wurde gelöscht."
-            Else
-                lblMessage.Text = "Die Gruppe kann nicht gelöscht werden, da ihr noch Benutzer zugeordnet sind."
-            End If
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "lbtnDelete_Click", ex.ToString)
-
-            lblError.Text = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                lblError.Text &= ": " & ex.InnerException.Message
-            End If
-            tblLogParameter = New DataTable
-            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Sub
-#End Region
-
-    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-        Search(True, True, True, True)
-        If dgSearchResult.Rows.Count = 0 Then
-            lblError.Text = "Keine Datensätze gefunden."
-        End If
-    End Sub
-
-    Protected Sub btnAssign_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnAssign.Click
-        Dim _item As ListItem
+    Private Sub MoveListboxElements(ByRef lstFrom As ListBox, ByRef lstTo As ListBox)
         Dim _coll As New ListItemCollection()
 
-        For Each _item In lstAppUnAssigned.Items
+        For Each _item As ListItem In lstFrom.Items
             If _item.Selected = True Then
                 _item.Selected = False
                 _coll.Add(_item)
             End If
         Next
 
-        For Each _item In _coll
-            lstAppAssigned.Items.Add(_item)
-            lstAppUnAssigned.Items.Remove(_item)
+        For Each _item As ListItem In _coll
+            lstTo.Items.Add(_item)
+            lstFrom.Items.Remove(_item)
         Next
-    End Sub
-
-    Protected Sub btnUnAssign_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnUnAssign.Click
-        Dim _item As ListItem
-        Dim _coll As New ListItemCollection()
-
-        For Each _item In lstAppAssigned.Items
-            If _item.Selected = True Then
-                _item.Selected = False
-                _coll.Add(_item)
-            End If
-        Next
-
-        For Each _item In _coll
-            lstAppUnAssigned.Items.Add(_item)
-            lstAppAssigned.Items.Remove(_item)
-        Next
-    End Sub
-
-    Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnAssignArchiv.Click
-        Dim _item As ListItem
-        Dim _coll As New ListItemCollection()
-
-        For Each _item In lstArchivUnAssigned.Items
-            If _item.Selected = True Then
-                _item.Selected = False
-                _coll.Add(_item)
-            End If
-        Next
-
-        For Each _item In _coll
-            lstArchivAssigned.Items.Add(_item)
-            lstArchivUnAssigned.Items.Remove(_item)
-        Next
-    End Sub
-
-    Protected Sub btnUnAssignArchiv_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnUnAssignArchiv.Click
-        Dim _item As ListItem
-        Dim _coll As New ListItemCollection()
-
-        For Each _item In lstArchivAssigned.Items
-            If _item.Selected = True Then
-                _item.Selected = False
-                _coll.Add(_item)
-            End If
-        Next
-
-        For Each _item In _coll
-            lstArchivUnAssigned.Items.Add(_item)
-            lstArchivAssigned.Items.Remove(_item)
-        Next
-    End Sub
-
-    Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
-        dgSearchResult.PageIndex = PageIndex
-        FillDataGrid()
-    End Sub
-
-    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
-        FillDataGrid()
-    End Sub
-
-    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
-        Dim index As Integer
-        Dim row As GridViewRow
-        Dim CtrlLabel As Label
-
-
-        If e.CommandName = "Edit" Then
-            index = Convert.ToInt32(e.CommandArgument)
-            row = dgSearchResult.Rows(index)
-            CtrlLabel = row.Cells(0).FindControl("lblGroupID")
-            EditEditMode(CInt(CtrlLabel.Text))
-            dgSearchResult.SelectedIndex = row.RowIndex
-        ElseIf e.CommandName = "Del" Then
-            index = Convert.ToInt32(e.CommandArgument)
-            row = dgSearchResult.Rows(index)
-            CtrlLabel = row.Cells(0).FindControl("lblGroupID")
-            EditDeleteMode(CInt(CtrlLabel.Text))
-            dgSearchResult.SelectedIndex = row.RowIndex
-        End If
-    End Sub
-
-    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
-
-    End Sub
-
-    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
-        Dim strSort As String = e.SortExpression
-        If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
-            strSort &= " DESC"
-        End If
-        ViewState("ResultSort") = strSort
-        FillDataGrid(strSort)
-    End Sub
-
-    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEmpty.Click
-        btnSuche_Click(sender, e)
-    End Sub
-
-    Protected Sub cbxLevel_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbxLevel.CheckedChanged
-
-        trApp.Visible = Not cbxLevel.Checked
-        trArchiv.Visible = Not cbxLevel.Checked
-        trMeldung.Visible = Not cbxLevel.Checked
-        lbtnSave.Visible = Not cbxLevel.Checked
-        lbtnCancel.Visible = Not cbxLevel.Checked
-        trRights.Visible = cbxLevel.Checked
-
-        FillApps()
-        LoadLevel()
-
     End Sub
 
     Private Sub FillApps()
@@ -929,22 +598,7 @@ Partial Public Class Groupmanagement
         End If
     End Sub
 
-    Protected Sub ddlAnwendung_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAnwendung.SelectedIndexChanged
-
-        LoadLevel()
-        If ddlAnwendung.SelectedItem.ToString() = "Fahrzeugbestand" Then
-            tableAuthLevel.Visible = True
-            Image2.Visible = False
-        Else
-            tableAuthLevel.Visible = False
-            Image2.Visible = True
-        End If
-
-    End Sub
-
     Private Sub LoadLevel()
-        Dim Filter As String = ""
-
         Dim dt As New DataTable
 
         dt.Columns.Add("Name", GetType(System.String))
@@ -997,7 +651,486 @@ Partial Public Class Groupmanagement
         Session("Level") = dt
     End Sub
 
-    Protected Sub ibtNew_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtNew.Click
+    Private Function GetLevel() As String
+        Dim cn = New SqlConnection(m_User.App.Connectionstring)
+        Dim da As New SqlDataAdapter()
+        da.SelectCommand = New SqlCommand()
+        da.SelectCommand.Connection = cn
+
+        Dim RetValue As String = ""
+
+        Dim SQL As String = "Select NewLevel from Rights where groupid = " & CInt(txtGroupID.Text) & " and appid = " & CInt(ddlAnwendung.SelectedValue)
+
+        Try
+            da.SelectCommand.CommandText = SQL
+
+            Dim dt As New DataTable
+
+            da.Fill(dt)
+
+            If dt.Rows.Count > 0 Then
+                RetValue = dt.Rows(0)("NewLevel").ToString
+            End If
+
+
+        Catch ex As Exception
+
+
+        Finally
+            cn.Close()
+
+        End Try
+
+        Return RetValue
+
+    End Function
+
+    Private Sub UpdateLevel()
+        Dim appName = ddlAnwendung.SelectedItem.Text
+
+        Dim levels = String.Empty
+        Dim autorisierungen = String.Empty
+
+        Dim dt As DataTable = CType(Session("Level"), DataTable).Clone
+        For Each dr As GridViewRow In gvAutorisierung.Rows
+            Dim level As String = DirectCast(dr.FindControl("litItemLevel"), Literal).Text.Trim
+            Dim autorisierung As String = DirectCast(dr.FindControl("ddlItemAutorisierung"), DropDownList).SelectedValue
+
+            levels &= level & ","
+            autorisierungen &= autorisierung & ","
+
+            Dim drLevel = dt.NewRow
+
+            drLevel("Name") = appName
+            drLevel("Level") = level
+            drLevel("Autorisierung") = autorisierung
+
+            dt.Rows.Add(drLevel)
+        Next
+
+        levels = levels.TrimEnd(","c)
+        autorisierungen = autorisierungen.TrimEnd(","c)
+
+        Dim sqlString = String.Empty
+        If (levels & autorisierungen).Length > 0 Then
+            sqlString = levels & "|" & autorisierungen
+        End If
+
+        Dim cn = New SqlConnection(m_User.App.Connectionstring)
+        Try
+            cn.Open()
+
+            Dim cmd = cn.CreateCommand()
+            cmd.CommandText = "Update Rights set newLevel = '" & sqlString & "' where groupid = " & CInt(txtGroupID.Text) & " and appid = " & CInt(ddlAnwendung.SelectedValue)
+            cmd.ExecuteNonQuery()
+
+            Session("Level") = dt
+
+            gvAutorisierung.DataSource = dt.DefaultView
+            gvAutorisierung.DataBind()
+
+        Catch ex As Exception
+            lblAutError.Text = ex.Message
+        Finally
+            cn.Close()
+        End Try
+    End Sub
+
+#End Region
+
+#Region " Events "
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
+        m_User = GetUser(Me)
+        lblHead.Text = "Gruppenverwaltung"
+        AdminAuth(Me, m_User, AdminLevel.Customer)
+        GridNavigation1.setGridElment(dgSearchResult)
+        Try
+            m_App = New App(m_User)
+
+            lblError.Text = ""
+            lblMessage.Text = ""
+
+            If Not IsPostBack Then
+                'Fülle ddlAuthorizationright mit festen Vorgaben
+                Dim strAuthorRights(4) As String
+                strAuthorRights(0) = "0 - keine"
+                strAuthorRights(1) = "0..1 - wenig"
+                strAuthorRights(2) = "0..2 - mittel"
+                strAuthorRights(3) = "0..3 - viel"
+                Dim i As Int32
+                For i = 0 To 3
+                    Dim listitem As New ListItem()
+                    listitem.Value = CStr(i)
+                    listitem.Text = strAuthorRights(i)
+                    ddlAuthorizationright.Items.Add(listitem)
+                Next
+
+                FillForm()
+            End If
+        Catch ex As Exception
+            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "Page_Load", ex.ToString)
+            lblError.Text = ex.ToString
+        End Try
+    End Sub
+
+    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
+        Search(True, True)
+    End Sub
+
+    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNew.Click
+        Dim intCustomer As Integer = CInt(ddlFilterCustomer.SelectedItem.Value)
+        Session("myAppAssigned") = Nothing
+        txtGroupID.Text = -1
+
+        If intCustomer < 1 Then
+            lblError.Text = "Wählen Sie bitte zunächst eine Firma aus!"
+        Else
+            SearchMode(False)
+            ClearEdit()
+            Dim cn As New SqlConnection(m_User.App.Connectionstring)
+            Try
+                cn.Open()
+                FillUnAssigned(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value), cn)
+            Finally
+                If cn.State <> ConnectionState.Closed Then
+                    cn.Close()
+                End If
+            End Try
+        End If
+    End Sub
+
+    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
+        Dim tblLogParameter As DataTable
+        Dim cn As SqlConnection
+
+        If String.IsNullOrEmpty(txtGroupName.Text) Then
+            lblError.Text = "Bitte geben Sie einen Gruppennamen an!"
+            Exit Sub
+        End If
+
+        If Not IsNumeric(txtMaxReadMessageCount.Text) Then
+            lblMessage.Text = "Bitte geben Sie einen Zahlenwert für die Häufigkeit ein."
+            Exit Sub
+        End If
+        cn = New SqlConnection(m_User.App.Connectionstring)
+        Try
+
+            cn.Open()
+            Dim intGroupId As Integer = CInt(txtGroupID.Text)
+            Dim strLogMsg As String = "Gruppe anlegen"
+            If Not (intGroupId = -1) Then
+                strLogMsg = "Gruppe ändern"
+                tblLogParameter = SetOldLogParameters(intGroupId)
+            End If
+
+            Dim htmlMessage As String = TranslateHTML(radMessage.Content.Trim, TranslationDirection.SaveHTML)
+
+            If htmlMessage.Length > 1500 Then
+                lblInfo.Text = "Die Nachricht (inkl. Formatierungen) ist mit akt. '" + htmlMessage.Length.ToString + "' Zeichen zu lang zum Speichern."
+                Return
+            Else
+                lblInfo.Text = String.Empty
+            End If
+
+
+
+            If txtGroupID.Text = "-1" Then
+
+                'bereits genutzte
+                Dim cnGivven As New SqlConnection(m_User.App.Connectionstring)
+                cnGivven.Open()
+
+                Dim dtGivvenGroupNameAll As Kernel.GivvenGroupAllList = New Kernel.GivvenGroupAllList(cn, txtCustomerID.Text)
+                Dim dvGivvenGroupName As DataView = dtGivvenGroupNameAll.DefaultView
+                For intLoop = 0 To dvGivvenGroupName.Count - 1
+                    If UCase(txtGroupName.Text) = UCase(dvGivvenGroupName(intLoop)("GroupName")) Then
+                        lblError.Text = "Bitte wählen Sie einen anderen Namen für die neue Gruppe!<br />(Der Gruppename wird bereits benutzt.)<br /><br />"
+                        Exit For
+                    End If
+                Next
+
+            End If
+
+            Dim blnNew As Boolean = False
+            If CInt(txtGroupID.Text) < 1 Then blnNew = True
+            Dim _group As New Group(intGroupId, _
+                                                txtGroupName.Text, _
+                                                CInt(txtCustomerID.Text), _
+                                                txtDocuPath.Text, _
+                                                CInt(ddlAuthorizationright.SelectedItem.Value.ToString), _
+                                                cbxIsCustomerGroup.Checked, _
+                                                blnNew, _
+                                                txtStartMethod.Text, _
+                                                htmlMessage, _
+                                                CInt(txtMaxReadMessageCount.Text), _
+                                                cbxTeamViewer.Checked, _
+                                                cbxIsServiceGroup.Checked)
+
+
+
+            If lblError.Text = "" Then
+                _group.Save(cn)
+            Else
+                Exit Sub
+            End If
+
+            If (Not (radMessage.Content = txtMessageOld.Text)) OrElse (Not blnNew) Then
+                'User Count zurücksetzen
+                Dim cmdUpdateUser As SqlCommand
+                Dim cmdGetUser As New SqlCommand("SELECT UserID FROM WebMember WHERE GroupID=@GroupID", cn)
+                cmdGetUser.Parameters.AddWithValue("@GroupID", intGroupId)
+                Dim dt As New DataTable()
+                Dim da As New SqlDataAdapter()
+                da.SelectCommand = cmdGetUser
+                da.Fill(dt)
+                Dim dr As DataRow
+                For Each dr In dt.Rows
+                    cmdUpdateUser = New SqlCommand("UPDATE WebUser SET ReadMessageCount=@ReadMessageCount WHERE UserID=@UserID", cn)
+                    Dim intReadMessageCount As Int32 = 0
+                    cmdUpdateUser.Parameters.AddWithValue("@ReadMessageCount", intReadMessageCount)
+                    cmdUpdateUser.Parameters.AddWithValue("@UserID", CInt(dr("UserID")))
+                    cmdUpdateUser.ExecuteNonQuery()
+                Next
+            End If
+
+            'Anwendungen zuordnen
+            Dim dvAppAssigned As New DataView
+            If blnNew Then
+                intGroupId = _group.GroupId
+                txtGroupID.Text = intGroupId.ToString
+            Else
+                If Not Session("myAppAssigned") Is Nothing Then
+                    dvAppAssigned = CType(Session("myAppAssigned"), DataView)
+                Else
+                    dvAppAssigned = GetAppAssignedView(intGroupId, _group.CustomerId, cn)
+                End If
+            End If
+            Dim lstAssignedApps As New List(Of String)
+            For Each li As ListItem In lstAppAssigned.Items
+                lstAssignedApps.Add(li.Value)
+            Next
+            Dim _assignment As New Kernel.AppAssignments(intGroupId, Kernel.AssignmentType.Group)
+            _assignment.Save(dvAppAssigned, lstAssignedApps, cn)
+
+            'Archive zuordnen
+            Dim dvArchivAssigned As New DataView
+            If blnNew Then
+                intGroupId = _group.GroupId
+                txtGroupID.Text = intGroupId.ToString
+            Else
+                If Not Session("myArchivAssigned") Is Nothing Then
+                    dvArchivAssigned = CType(Session("myArchivAssigned"), DataView)
+                Else
+                    dvArchivAssigned = GetArchivAssignedView(intGroupId, _group.CustomerId, cn)
+                End If
+            End If
+            Dim _archivassignment As New Kernel.ArchivAssignments(intGroupId, Kernel.AssignmentType.Group)
+            _archivassignment.Save(dvArchivAssigned, lstArchivAssigned.Items, cn)
+
+            'Endg. Abrufgründe zuordnen
+            Dim dvAbrufgruendeEndgAssigned As New DataView
+            If blnNew Then
+                intGroupId = _group.GroupId
+                txtGroupID.Text = intGroupId.ToString
+            Else
+                If Not Session("myAbrufgruendeEndgAssigned") Is Nothing Then
+                    dvAbrufgruendeEndgAssigned = CType(Session("myAbrufgruendeEndgAssigned"), DataView)
+                Else
+                    dvAbrufgruendeEndgAssigned = GetAbrufgruendeEndgAssignedView(intGroupId, _group.CustomerId, cn)
+                End If
+            End If
+            Dim _abrufgruendeEndgassignment As New Kernel.AbrufgrundAssignments(_group.CustomerId, intGroupId)
+            _abrufgruendeEndgassignment.Save(dvAbrufgruendeEndgAssigned, lstAbrufgruendeEndgAssigned.Items, "Endg", cn)
+
+            'Temp. Abrufgründe zuordnen
+            Dim dvAbrufgruendeTempAssigned As New DataView
+            If blnNew Then
+                intGroupId = _group.GroupId
+                txtGroupID.Text = intGroupId.ToString
+            Else
+                If Not Session("myAbrufgruendeTempAssigned") Is Nothing Then
+                    dvAbrufgruendeTempAssigned = CType(Session("myAbrufgruendeTempAssigned"), DataView)
+                Else
+                    dvAbrufgruendeTempAssigned = GetAbrufgruendeTempAssignedView(intGroupId, _group.CustomerId, cn)
+                End If
+            End If
+            Dim _abrufgruendeTempassignment As New Kernel.AbrufgrundAssignments(_group.CustomerId, intGroupId)
+            _abrufgruendeTempassignment.Save(dvAbrufgruendeTempAssigned, lstAbrufgruendeTempAssigned.Items, "temp", cn)
+
+            tblLogParameter = SetNewLogParameters()
+            Log(_group.GroupId.ToString, strLogMsg, tblLogParameter)
+
+            Search(True, True, , True)
+            lblMessage.Text = "Die Änderungen wurden gespeichert."
+        Catch ex As Exception
+            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "lbtnSave_Click", ex.ToString)
+
+            lblError.Text &= ex.Message
+            If Not ex.InnerException Is Nothing Then
+                lblError.Text &= ": " & ex.InnerException.Message
+            End If
+            tblLogParameter = New DataTable
+            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
+        Finally
+            If cn.State <> ConnectionState.Closed Then
+                cn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
+        Dim tblLogParameter As DataTable
+        Dim cn As SqlConnection
+        cn = New SqlConnection(m_User.App.Connectionstring)
+        Try
+
+            Dim _Group As New Group(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value))
+
+            cn.Open()
+            tblLogParameter = SetOldLogParameters(_Group.GroupId)
+            If Not _Group.HasUser(cn) Then
+                _Group.Delete(cn)
+                Log(_Group.GroupId.ToString, "Gruppe löschen", tblLogParameter)
+
+                Search(True, True, True, True)
+                lblMessage.Text = "Die Gruppe wurde gelöscht."
+            Else
+                lblMessage.Text = "Die Gruppe kann nicht gelöscht werden, da ihr noch Benutzer zugeordnet sind."
+            End If
+        Catch ex As Exception
+            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "lbtnDelete_Click", ex.ToString)
+
+            lblError.Text = ex.Message
+            If Not ex.InnerException Is Nothing Then
+                lblError.Text &= ": " & ex.InnerException.Message
+            End If
+            tblLogParameter = New DataTable
+            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
+        Finally
+            If cn.State <> ConnectionState.Closed Then
+                cn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSuche.Click
+        Search(True, True, True, True)
+        If dgSearchResult.Rows.Count = 0 Then
+            lblError.Text = "Keine Datensätze gefunden."
+        End If
+    End Sub
+
+    Protected Sub btnAssign_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssign.Click
+        MoveListboxElements(lstAppUnAssigned, lstAppAssigned)
+    End Sub
+
+    Protected Sub btnUnAssign_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssign.Click
+        MoveListboxElements(lstAppAssigned, lstAppUnAssigned)
+    End Sub
+
+    Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssignArchiv.Click
+        MoveListboxElements(lstArchivUnAssigned, lstArchivAssigned)
+    End Sub
+
+    Protected Sub btnUnAssignArchiv_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssignArchiv.Click
+        MoveListboxElements(lstArchivAssigned, lstArchivUnAssigned)
+    End Sub
+
+    Protected Sub btnAssignAbrufgruendeEndg_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssignAbrufgruendeEndg.Click
+        MoveListboxElements(lstAbrufgruendeEndgUnAssigned, lstAbrufgruendeEndgAssigned)
+    End Sub
+
+    Protected Sub btnUnAssignAbrufgruendeEndg_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssignAbrufgruendeEndg.Click
+        MoveListboxElements(lstAbrufgruendeEndgAssigned, lstAbrufgruendeEndgUnAssigned)
+    End Sub
+
+    Protected Sub btnAssignAbrufgruendeTemp_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssignAbrufgruendeTemp.Click
+        MoveListboxElements(lstAbrufgruendeTempUnAssigned, lstAbrufgruendeTempAssigned)
+    End Sub
+
+    Protected Sub btnUnAssignAbrufgruendeTemp_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssignAbrufgruendeTemp.Click
+        MoveListboxElements(lstAbrufgruendeTempAssigned, lstAbrufgruendeTempUnAssigned)
+    End Sub
+
+    Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
+        dgSearchResult.PageIndex = PageIndex
+        FillDataGrid()
+    End Sub
+
+    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
+        FillDataGrid()
+    End Sub
+
+    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
+        Dim index As Integer
+        Dim row As GridViewRow
+        Dim CtrlLabel As Label
+
+
+        If e.CommandName = "Edit" Then
+            index = Convert.ToInt32(e.CommandArgument)
+            row = dgSearchResult.Rows(index)
+            CtrlLabel = row.Cells(0).FindControl("lblGroupID")
+            EditEditMode(CInt(CtrlLabel.Text))
+            dgSearchResult.SelectedIndex = row.RowIndex
+        ElseIf e.CommandName = "Del" Then
+            index = Convert.ToInt32(e.CommandArgument)
+            row = dgSearchResult.Rows(index)
+            CtrlLabel = row.Cells(0).FindControl("lblGroupID")
+            EditDeleteMode(CInt(CtrlLabel.Text))
+            dgSearchResult.SelectedIndex = row.RowIndex
+        End If
+    End Sub
+
+    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
+
+    End Sub
+
+    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles dgSearchResult.Sorting
+        Dim strSort As String = e.SortExpression
+        If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
+            strSort &= " DESC"
+        End If
+        ViewState("ResultSort") = strSort
+        FillDataGrid(strSort)
+    End Sub
+
+    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnEmpty.Click
+        btnSuche_Click(sender, e)
+    End Sub
+
+    Protected Sub cbxLevel_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbxLevel.CheckedChanged
+
+        trApp.Visible = Not cbxLevel.Checked
+        trArchiv.Visible = Not cbxLevel.Checked
+        trAbrufgruendeEndg.Visible = Not cbxLevel.Checked
+        trAbrufgruendeTemp.Visible = Not cbxLevel.Checked
+        trMeldung.Visible = Not cbxLevel.Checked
+        lbtnSave.Visible = Not cbxLevel.Checked
+        lbtnCancel.Visible = Not cbxLevel.Checked
+        trRights.Visible = cbxLevel.Checked
+
+        FillApps()
+        LoadLevel()
+
+    End Sub
+
+    Protected Sub ddlAnwendung_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAnwendung.SelectedIndexChanged
+
+        LoadLevel()
+        If ddlAnwendung.SelectedItem.ToString() = "Fahrzeugbestand" Then
+            tableAuthLevel1.Visible = True
+            tableAuthLevel2.Visible = False
+        Else
+            tableAuthLevel1.Visible = False
+            tableAuthLevel2.Visible = True
+        End If
+
+    End Sub
+
+    Protected Sub ibtNew_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtNew.Click
 
         LoadLevel()
 
@@ -1075,94 +1208,7 @@ Partial Public Class Groupmanagement
         UpdateLevel()
     End Sub
 
-    Private Function GetLevel() As String
-        Dim cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Dim da As New SqlClient.SqlDataAdapter()
-        da.SelectCommand = New SqlClient.SqlCommand()
-        da.SelectCommand.Connection = cn
-
-        Dim SQL As String = ""
-        Dim RetValue As String = ""
-
-        SQL = "Select NewLevel from Rights where groupid = " & CInt(txtGroupID.Text) & " and appid = " & CInt(ddlAnwendung.SelectedValue)
-
-        Try
-            da.SelectCommand.CommandText = SQL
-
-            Dim dt As New DataTable
-
-            da.Fill(dt)
-
-            If dt.Rows.Count > 0 Then
-                RetValue = dt.Rows(0)("NewLevel").ToString
-            End If
-
-
-        Catch ex As Exception
-
-
-        Finally
-            cn.Close()
-
-        End Try
-
-        Return RetValue
-
-    End Function
-
-    Private Sub UpdateLevel()
-        Dim appName = ddlAnwendung.SelectedItem.Text
-
-        Dim levels = String.Empty
-        Dim autorisierungen = String.Empty
-
-        Dim dt As DataTable = CType(Session("Level"), DataTable).Clone
-        For Each dr As GridViewRow In gvAutorisierung.Rows
-            Dim level As String = DirectCast(dr.FindControl("litItemLevel"), Literal).Text.Trim
-            Dim autorisierung As String = DirectCast(dr.FindControl("ddlItemAutorisierung"), DropDownList).SelectedValue
-
-            levels &= level & ","
-            autorisierungen &= autorisierung & ","
-
-            Dim drLevel = dt.NewRow
-
-            drLevel("Name") = appName
-            drLevel("Level") = level
-            drLevel("Autorisierung") = autorisierung
-
-            dt.Rows.Add(drLevel)
-        Next
-
-        levels = levels.TrimEnd(","c)
-        autorisierungen = autorisierungen.TrimEnd(","c)
-
-        Dim sqlString = String.Empty
-        If (levels & autorisierungen).Length > 0 Then
-            sqlString = levels & "|" & autorisierungen
-        End If
-
-        Dim cn = New SqlConnection(m_User.App.Connectionstring)
-        Try
-            cn.Open()
-
-            Dim cmd = cn.CreateCommand()
-            cmd.CommandText = "Update Rights set newLevel = '" & sqlString & "' where groupid = " & CInt(txtGroupID.Text) & " and appid = " & CInt(ddlAnwendung.SelectedValue)
-            cmd.ExecuteNonQuery()
-
-            Session("Level") = dt
-
-            gvAutorisierung.DataSource = dt.DefaultView
-            gvAutorisierung.DataBind()
-
-        Catch ex As Exception
-            lblAutError.Text = ex.Message
-        Finally
-            cn.Close()
-        End Try
-    End Sub
-
-
-    Private Sub gvAutorisierung_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvAutorisierung.RowCommand
+    Private Sub gvAutorisierung_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvAutorisierung.RowCommand
         Dim levelData = CType(Session("Level"), DataTable)
 
         If e.CommandName = "Del" Then
@@ -1205,12 +1251,15 @@ Partial Public Class Groupmanagement
         End If
     End Sub
 
-    Private Sub gvAutorisierung_RowDeleting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewDeleteEventArgs) Handles gvAutorisierung.RowDeleting
+    Private Sub gvAutorisierung_RowDeleting(ByVal sender As Object, ByVal e As GridViewDeleteEventArgs) Handles gvAutorisierung.RowDeleting
 
     End Sub
 
-    Private Sub Groupmanagement_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
+    Private Sub Groupmanagement_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         HelpProcedures.FixedGridViewCols(dgSearchResult)
     End Sub
+
+#End Region
+
 End Class
 
