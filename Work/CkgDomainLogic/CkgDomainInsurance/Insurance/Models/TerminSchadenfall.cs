@@ -326,7 +326,7 @@ namespace CkgDomainLogic.Insurance.Models
 
             if (DatumTmpBlockerSerieBis != null)
             {
-                if (DatumTmpBlockerSerieBis.GetValueOrDefault() <= Datum)
+                if (DatumTmpBlockerSerieBis.GetValueOrDefault() < Datum)
                     yield return new ValidationResult(Localize.DateToMustBeBeforeDateFrom, new[] { "DatumTmpBlockerSerieBis" });
                 
                 if (DatumTmpBlockerSerieBis.GetValueOrDefault().DayOfWeek == DayOfWeek.Sunday)
