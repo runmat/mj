@@ -370,6 +370,40 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_READ_TEMP_VERS_EQUI_01.GT_WEB, EquiMahnsperre> Z_DPM_READ_TEMP_VERS_EQUI_01_GT_WEB_To_EquiMahnsperre
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_TEMP_VERS_EQUI_01.GT_WEB, EquiMahnsperre>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.EquiNr = s.EQUNR;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.VertragsNr = s.LIZNR;
+                        d.BriefNr = s.TIDNR;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Strasse = s.STREET;
+                        d.Hausnummer = s.HOUSE_NUM1;
+                        d.PLZ = s.POST_CODE1;
+                        d.Ort = s.CITY1;
+                        d.Mahnsperre = (s.ZZMANSP.NotNullOrEmpty().ToUpper() == "X");
+                        d.MahnsperreBis = s.ZZMANSP_DATBI;
+                        d.KomponentenID = s.IDNRK;
+                        d.Komponente = s.MAKTX;
+                        d.StuecklistenPosKnotenNr = s.STLKN;
+                        d.VersandID = s.VERS_ID;
+                        d.Kontonummer = s.KONTONR;
+                        d.CIN = s.CIN;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -389,6 +423,29 @@ namespace CkgDomainLogic.Equi.Models
                         d.CHASSIS_NUM = s.Fahrgestellnummer;
                         d.VERTRAGS_STAT = s.Vertragsstatus;
                         d.LOESCH = (s.Loeschkennzeichen ? "X" : "");
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_CHANGE_MAHNSP_EQUI_01.GT_WEB, EquiMahnsperre> Z_DPM_CHANGE_MAHNSP_EQUI_01_GT_WEB_From_EquiMahnsperre
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CHANGE_MAHNSP_EQUI_01.GT_WEB, EquiMahnsperre>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.EQUNR = s.EquiNr;
+                        d.CHASSIS_NUM = s.FahrgestellNr;
+                        d.ZZTMPDT = s.Versanddatum;
+                        d.IDNRK = s.KomponentenID;
+                        d.STLKN = s.StuecklistenPosKnotenNr;
+                        d.VERS_ID = s.VersandID;
+                        d.ZZMANSP = (s.Mahnsperre ? "X" : "");
+                        d.ZZMANSP_DATBI = s.MahnsperreBis;
                     }));
             }
         }

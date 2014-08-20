@@ -1,0 +1,74 @@
+﻿@using CkgDomainLogic.Equi.Models
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseMahnsperreSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridMahnsperreEquis"; }
+
+@(Html.Telerik()
+    .Grid<EquiMahnsperre>()
+    .Name(gridName)
+    .XGroup("GridMahnsperreEquis")
+    .XAjaxDataBinding("MahnsperreEquisAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Status).Visible(!Model.EditMode);
+        columns.XBound(c => c.IsSelected).ClientTemplate(
+                "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+            ).Filterable(false).Groupable(false).Sortable(false).Visible(Model.EditMode);
+        columns.XBound(c => c.IsSelected).ClientTemplate(
+                "<input type='checkbox' <# if (data.IsSelected) { #> checked <# } #> disabled />"
+            ).Filterable(false).Groupable(false).Sortable(false).Visible(!Model.EditMode);
+        columns.XBound(c => c.EquiNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.VertragsNr);
+        columns.XBound(c => c.BriefNr);
+        columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Name1);
+        columns.XBound(c => c.Name2);
+        columns.XBound(c => c.Strasse);
+        columns.XBound(c => c.Hausnummer);
+        columns.XBound(c => c.PLZ);
+        columns.XBound(c => c.Ort);
+        columns.XBound(c => c.Mahnsperre);
+        columns.XBound(c => c.MahnsperreBis).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Komponente);
+        columns.XBound(c => c.VersandID);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnsperreEquis"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportMahnsperreEquisFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportMahnsperreEquisFilteredPDF", "Equi");
+    })
+)
+      
+@if (Model.EditMode)
+{
+    if (Model.MahnsperreVorhanden)
+    {
+        <div class="form-actions">
+            <button type="button" class="btn blue" onclick="EditMahnsperre(false);">@Localize.DunningBlockEdit</button>
+            <button type="button" class="btn blue" onclick="DeleteMahnsperre();">@Localize.DunningBlockDelete</button>
+        </div>
+    }
+    else
+    {
+        <div class="form-actions">
+            <button type="button" class="btn blue" onclick="EditMahnsperre(true);">@Localize.DunningBlockCreate</button>
+        </div>
+    }
+}
+
+<script type="text/javascript">
+    var _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>
