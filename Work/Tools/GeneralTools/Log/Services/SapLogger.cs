@@ -87,25 +87,7 @@ namespace GeneralTools.Log.Services
                 //
                 if (appID == 0 && userID == 0)
                 {
-                    // try to obtain "appID, userID, customerID, kunnr, portalType"
-                    // => .. from Request QueryString
-                    var cp = HttpContext.Current.Request["cp"];
-                    if (String.IsNullOrEmpty(cp) && HttpContext.Current.Session != null && HttpContext.Current.Session["cp"] != null)
-                        // => .. or from Session
-                        cp = HttpContext.Current.Session["cp"].ToString();
-
-                    if (!String.IsNullOrEmpty(cp))
-                    {
-                        var userContextParams = cp.Split('_');
-                        if (userContextParams.Length >= 5)
-                        {
-                            appID = userContextParams[0].ToInt();
-                            userID = userContextParams[1].ToInt();
-                            customerID = userContextParams[2].ToInt();
-                            kunnr = userContextParams[3].ToInt();
-                            portalType = userContextParams[4].ToInt();
-                        }
-                    }
+                    HttpContextService.TryGetUserDataFromUrlOrSession(out appID, out userID, out customerID, out kunnr, out portalType);
                 }
             }
 

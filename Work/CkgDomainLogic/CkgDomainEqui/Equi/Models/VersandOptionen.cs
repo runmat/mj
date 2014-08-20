@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Serialization;
@@ -62,12 +63,20 @@ namespace CkgDomainLogic.Equi.Models
         [XmlIgnore]
         static public List<VersandGrund> GruendeList { get; set; }
 
+        [LocalizedDisplay(" ")]
+        public bool AufAbmeldungWarten { get; set; }
+
+        public bool AufAbmeldungWartenAvailable { get; set; }
+
         [ModelMappingCompareIgnore]
         public bool IsValid { get; set; }
 
         public string GetSummaryString()
         {
             var s = string.Format("{0}", VersandOption.Name);
+
+            if (AufAbmeldungWartenAvailable && AufAbmeldungWarten)
+                s += string.Format("<br/>{0}", Localize.WaitForDeregistration);
 
             if (Bemerkung.IsNotNullOrEmpty())
                 s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, Bemerkung);

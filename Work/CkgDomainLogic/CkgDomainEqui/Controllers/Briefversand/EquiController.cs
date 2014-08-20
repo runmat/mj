@@ -157,7 +157,9 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult VersandOptionen()
         {
+            BriefversandViewModel.DataMarkForRefreshVersandoptionen();
             BriefversandViewModel.DataMarkForRefreshVersandgruende();
+            BriefversandViewModel.VersandOptionen.AufAbmeldungWartenAvailable = BriefversandViewModel.VersandOptionAufAbmeldungWartenAvailable;
 
             return PartialView("Briefversand/VersandOptionen", BriefversandViewModel);
         }
