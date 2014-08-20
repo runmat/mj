@@ -53,6 +53,11 @@ Partial Public Class Report13s
         End Try
     End Sub
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "", Optional ByVal fill As Boolean = False)
+
+        If Not Session("App_Report") Is Nothing Then
+            m_Report = CType(Session("App_Report"), Mahnstufe3)
+        End If
+
         Dim tmpDataView As New DataView()
         m_Report.Result.DefaultView.RowFilter = ""
         tmpDataView = m_Report.Result.DefaultView
