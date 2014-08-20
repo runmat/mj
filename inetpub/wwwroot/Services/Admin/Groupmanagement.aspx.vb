@@ -933,11 +933,11 @@ Partial Public Class Groupmanagement
 
         LoadLevel()
         If ddlAnwendung.SelectedItem.ToString() = "Fahrzeugbestand" Then
-            tableAuthLevel.Visible = True
-            Image2.Visible = False
+            tableAuthLevel1.Visible = True
+            tableAuthLevel2.Visible = False
         Else
-            tableAuthLevel.Visible = False
-            Image2.Visible = True
+            tableAuthLevel1.Visible = False
+            tableAuthLevel2.Visible = True
         End If
 
     End Sub
