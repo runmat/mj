@@ -65,13 +65,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Freigegeben durch" Binding="{Binding FreigegebenDurch}" />
-                <DataGridTemplateColumn Header="Im Master" Width="64" SortMemberPath="ImMaster">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding ImMaster}" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="Im Master" Width="64" SortMemberPath="ImMaster" Binding="{Binding ImMaster}" />
                 <DataGridTemplateColumn Header="Produktiv seit">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -84,13 +78,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Deaktiviert" Width="64" SortMemberPath="Deaktiviert">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Deaktiviert}" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="Deaktiviert" Width="64" SortMemberPath="Deaktiviert" Binding="{Binding Deaktiviert}" />
             </DataGrid.Columns>
         </DataGrid>
 
