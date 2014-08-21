@@ -358,7 +358,8 @@
             success: function (result) {
                 LoadingHide();
                 setTimeout(function() {
-                     grid.pageTo(1);
+                    grid.pageTo(1);
+                    $("#" + gridName).trigger('filter_all_columns');
                 }, 500);
             }
         });
