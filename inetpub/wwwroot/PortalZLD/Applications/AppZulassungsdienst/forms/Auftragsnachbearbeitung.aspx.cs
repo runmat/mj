@@ -107,6 +107,7 @@ namespace AppZulassungsdienst.forms
                 trStornoBegruendung.Visible = false;
                 trStornoStva.Visible = false;
                 trStornoKennzeichen.Visible = false;
+                cmdStorno.Text = "» Stornieren ";
             }
             else
             {
@@ -118,6 +119,15 @@ namespace AppZulassungsdienst.forms
                     trStornoBegruendung.Visible = (grundRows[0]["GRUND_PFLICHT"].ToString() == "X");
                     trStornoStva.Visible = (grundRows[0]["AMT_CHG"].ToString() == "X");
                     trStornoKennzeichen.Visible = (grundRows[0]["KENNZ_CHG"].ToString() == "X");
+
+                    if (grundRows[0]["PREISE_CHG"].ToString() == "X")
+                    {
+                        cmdStorno.Text = "» Speichern ";
+                    }
+                    else
+                    {
+                        cmdStorno.Text = "» Stornieren ";
+                    }
                 }
                 else
                 {
@@ -125,6 +135,7 @@ namespace AppZulassungsdienst.forms
                     trStornoBegruendung.Visible = false;
                     trStornoStva.Visible = false;
                     trStornoKennzeichen.Visible = false;
+                    cmdStorno.Text = "» Stornieren ";
                 }
             }
         }
@@ -136,21 +147,7 @@ namespace AppZulassungsdienst.forms
 
         protected void cmdAbbrechen_Click(object sender, EventArgs e)
         {
-            objNachbearbeitung.StornoKundennummer = "";
-            objNachbearbeitung.StornoBegruendung = "";
-            objNachbearbeitung.StornoStva = "";
-            objNachbearbeitung.StornoKennzeichen = "";
-
-            Session["objNachbearbeitung"] = objNachbearbeitung;
-
-            VorgangInfo.Visible = false;
-            StornoDetails.Visible = false;
-            cmdAbbrechen.Visible = false;
-            cmdStorno.Visible = false;
-
-            Panel1.Visible = true;
-            cmdCreate.Visible = true;
-            cmdOffeneStornos.Visible = true;
+            ResetNachbearbeitung(false);
         }
 
         protected void cmdStorno_Click(object sender, EventArgs e)
@@ -460,19 +457,19 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    lblError.Text = "Der Vorgang wurde erfolgreich storniert!";
-
                     VorgangInfo.Visible = false;
                     StornoDetails.Visible = false;
                     cmdAbbrechen.Visible = false;
                     cmdStorno.Visible = false;
 
-                    if (!String.IsNullOrEmpty(objNachbearbeitung.VorgangId))
-                    {
-                        var grundRows = objNachbearbeitung.tblStornogruende.Select("STORNOGRUND = '" + objNachbearbeitung.Stornogrund + "'");
+                    var grundRows = objNachbearbeitung.tblStornogruende.Select("STORNOGRUND = '" + objNachbearbeitung.Stornogrund + "'");
 
-                        // Ggf. noch neuen Vorgang laden/anzeigen und zur Preisbearbeitung wechseln
-                        if (grundRows.Length > 0 && grundRows[0]["PREISE_CHG"].ToString() == "X")
+                    // Ggf. noch neuen Vorgang laden/anzeigen und zur Preisbearbeitung wechseln
+                    if (grundRows.Length > 0 && grundRows[0]["PREISE_CHG"].ToString() == "X")
+                    {
+                        lblError.Text = "Vorgang erfolgreich angelegt";
+
+                        if (!String.IsNullOrEmpty(objNachbearbeitung.VorgangId))
                         {
                             objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
 
@@ -494,6 +491,12 @@ namespace AppZulassungsdienst.forms
                                 cmdAbsenden.Visible = true;
                             }
                         }
+                    }
+                    else
+                    {
+                        lblError.Text = "Vorgang erfolgreich storniert";
+
+                        ResetNachbearbeitung(true);
                     }
                 }
             }
@@ -686,11 +689,9 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    lblError.Text = "Der Vorgang wurde erfolgreich in SAP gespeichert!";
+                    lblError.Text = "Vorgang erfolgreich storniert";
 
-                    VorgangInfo.Visible = false;
-                    EditPreise.Visible = false;
-                    cmdAbsenden.Visible = false;
+                    ResetNachbearbeitung(true);
                 }
             }
             catch (Exception ex)
@@ -714,6 +715,45 @@ namespace AppZulassungsdienst.forms
             {
                 rgOffeneStornos.Visible = false;
             }
+        }
+
+        private void ResetNachbearbeitung(bool resetSuchparameter)
+        {
+            objNachbearbeitung.ResetData(resetSuchparameter);
+
+            Session["objNachbearbeitung"] = objNachbearbeitung;
+
+            if (resetSuchparameter)
+            {
+                txtSucheId.Text = "";
+                txtSucheAuftragsnummer.Text = "";
+            }
+
+            ddlStornogrund.SelectedValue = "0";
+            trStornoKundennummer.Visible = false;
+            trStornoBegruendung.Visible = false;
+            trStornoStva.Visible = false;
+            trStornoKennzeichen.Visible = false;
+            cmdStorno.Text = "» Stornieren ";
+
+            ddlStornoKunde.SelectedIndex = 0;
+            txtStornoKundennummer.Text = ddlStornoKunde.SelectedValue;
+            txtStornoBegruendung.Text = "";
+            txtStornoAmt.Text = "";
+            txtStornoKennz1.Text = "";
+            txtStornoKennz2.Text = "";
+
+            VorgangInfo.Visible = false;
+            StornoDetails.Visible = false;
+            EditPreise.Visible = false;
+            cmdZurSuche.Visible = false;
+            cmdAbbrechen.Visible = false;
+            cmdStorno.Visible = false;
+            cmdAbsenden.Visible = false;
+
+            Panel1.Visible = true;
+            cmdCreate.Visible = true;
+            cmdOffeneStornos.Visible = true;
         }
 
         #endregion

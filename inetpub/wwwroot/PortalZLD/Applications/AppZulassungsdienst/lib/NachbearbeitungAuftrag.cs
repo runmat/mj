@@ -482,6 +482,35 @@ namespace AppZulassungsdienst.lib
             impTable.AcceptChanges();
         }
 
+        /// <summary>
+        /// Daten "auf Anfang" zurücksetzen
+        /// </summary>
+        public void ResetData(bool resetSuchparameter)
+        {
+            if (resetSuchparameter)
+            {
+                SucheId = "";
+                SucheAuftragsnummer = "";
+            }
+          
+            VorgangId = "";
+
+            if (tblKopfdaten != null)
+                tblKopfdaten.Clear();
+            if (tblBankdaten != null)
+                tblBankdaten.Clear();
+            if (tblAdressdaten != null)
+                tblAdressdaten.Clear();
+            if (tblPositionsdaten != null)
+                tblPositionsdaten.Clear();
+
+            Stornogrund = "";
+            StornoKundennummer = "";
+            StornoBegruendung = "";
+            StornoStva = "";
+            StornoKennzeichen = "";
+        }
+
         #endregion
     }
 }

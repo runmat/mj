@@ -300,7 +300,7 @@
                                                             <telerik:GridTemplateColumn HeaderText="Gebühr Amt" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtGebuehrAmt" runat="server" CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("GEB_AMT_C", "{0:F}") %>'/>
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("GEB_AMT_C", "{0:F}") %>' Enabled='<%# Eval("WEBMTART").ToString() != "D" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Steuer" HeaderStyle-Width="12%">
