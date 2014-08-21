@@ -3,22 +3,22 @@ Imports CKG.Base.Business
 Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Report02_2
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Declarations"
+
     Private m_App As App
     Private m_User As User
     Private BRIEFLEBENSLAUF_LPTable As DataTable
     Private QMMIDATENTable As DataTable
     Private QMEL_DATENTable As DataTable
-    Private GT_EQUITable As DataTable
     Private objPDIs As ABEDaten
 
 #End Region
 
 #Region "Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
 
@@ -34,58 +34,48 @@ Partial Public Class Report02_2
 
             If Not IsPostBack Then
 
-
                 If Not Request.QueryString.Item("cw") Is Nothing Then
                     lbBack.Text = "schließen"
                 End If
 
-
                 'Fülle Übersicht
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 FillUebersicht()
 
                 'Fülle Typdaten
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 FillABEDaten()
 
                 'Fülle Lebenslauf
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 FillGrid2(0)
 
                 'Fülle Übermittlung
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 FillGrid(0)
 
                 'Fülle Händlerdaten
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
                 FillHaendleradresse()
 
-
-                'ShowUebersicht()
             End If
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
+    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
         FillGrid(e.NewPageIndex)
     End Sub
 
-    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
+    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
         FillGrid(DataGrid1.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub Datagrid2_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Datagrid2.PageIndexChanged
+    Private Sub Datagrid2_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles Datagrid2.PageIndexChanged
         FillGrid2(e.NewPageIndex)
     End Sub
 
-    Private Sub Datagrid2_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Datagrid2.SortCommand
+    Private Sub Datagrid2_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles Datagrid2.SortCommand
         FillGrid2(Datagrid2.CurrentPageIndex, e.SortExpression)
     End Sub
 
     Protected Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
-
 
         If Not Request.QueryString.Item("cw") Is Nothing Then
             Dim strscript As String = "<script language=javascript>window.top.close();</script>"
@@ -97,9 +87,6 @@ Partial Public Class Report02_2
 
             Exit Sub
         End If
-
-
-
 
         If Not Request.QueryString.Item("LinkedID") Is Nothing Then
             Dim dRow() As DataRow
@@ -116,7 +103,6 @@ Partial Public Class Report02_2
         Else
             Response.Redirect("Report02.aspx?AppID=" & Session("AppID").ToString)
         End If
-
 
     End Sub
 
@@ -175,8 +161,6 @@ Partial Public Class Report02_2
 
             End With
 
-
-
             Dim tblData As DataTable = CKG.Base.Kernel.Common.DataTableHelper.ObjectToDataTable(mReport)
 
             Dim docFactory As New CKG.Base.Kernel.DocumentGeneration.WordDocumentFactory(tblData, imageHt)
@@ -185,27 +169,24 @@ Partial Public Class Report02_2
 
             dataTables(0) = createLebenslaufTable()
             dataTables(1) = createUebermittlungsTable()
-            docFactory.CreateDocument("Fahrzeughistorie_" & lblFahrgestellnummerShow.Text, Me.Page, "\Applications\appF2\docu\FahrzeughistoriePrint.doc", "Tabelle", dataTables)
+            docFactory.CreateDocument("Fahrzeughistorie_" & lblFahrgestellnummerShow.Text, Page, "\Applications\appF2\docu\FahrzeughistoriePrint.doc", "Tabelle", dataTables)
         Catch ex As Exception
             lblError.Text = "Fehler beim Erstellen des Ausdrucks: " + ex.Message
         End Try
 
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
 #End Region
 
-
 #Region "Methods"
-
-
 
     Private Sub FillUebersicht()
         lblKennzeichenShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN").ToString
@@ -218,21 +199,10 @@ Partial Public Class Report02_2
             chkBriefaufbietung.Checked = False
         End If
         lblFahrgestellnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZFAHRG").ToString
-        'lnkSchluesselinformationen.NavigateUrl &= lblFahrgestellnummerShow.Text
+
         lblOrdernummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREF1").ToString
-        'If MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE").ToString) = "00.00.0000" Then
-        '    lblErstzulassungsdatumShow.Text = ""
-        'Else
-        '    lblErstzulassungsdatumShow.Text = MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE").ToString)
-        'End If
 
         lblErstzulassungsdatumShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE").ToString)
-
-        'If MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString) = "00.00.0000" Then
-        '    lblAbmeldedatumShow.Text = ""
-        'Else
-        '    lblAbmeldedatumShow.Text = MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString)
-        'End If
 
         lblAbmeldedatumShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString)
 
@@ -321,13 +291,6 @@ Partial Public Class Report02_2
                 End If
         End Select
 
-
-        'If MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE").ToString) = "00.00.0000" Then
-        '    lblUmgemeldetAmShow.Text = ""
-        'Else
-        '    lblUmgemeldetAmShow.Text = MakeStandardDateString(BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE").ToString)
-        'End If
-
         lblUmgemeldetAmShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE").ToString)
 
         lblFahrzeugmodellShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHANDELSNAME").ToString
@@ -335,7 +298,6 @@ Partial Public Class Report02_2
         lblHerstellerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERST_TEXT").ToString
         lblHerstellerSchluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERSTELLER_SCH").ToString
         lblTypschluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTYP_SCHL").ToString
-        'lblFarbe.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZFARBE").ToString
         lblVarianteVersionShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVVS_SCHLUESSEL").ToString
 
         'Bemerkungen in die Übersicht eintragen
@@ -353,9 +315,14 @@ Partial Public Class Report02_2
         lblRef1Show.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREFERENZ1").ToString
         lblRef2Show.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREFERENZ2").ToString
 
+        lblCarportEingangShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZCARPORT_EING").ToString())
+        lblKennzeichenEingangShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN_EING").ToString())
+        lblCheckInShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("CHECK_IN").ToString())
+        cbxFahrzeugschein.Checked = (BRIEFLEBENSLAUF_LPTable.Rows(0)("SCHEIN_PHY").ToString() = "X")
+        cbxBeideKennzVorhanden.Checked = (BRIEFLEBENSLAUF_LPTable.Rows(0)("SCHILDER_PHY").ToString() = "X")
+        lblStilllegungShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString())
 
     End Sub
-
 
     Private Function FormatToDate(inStr As String) As String
 
@@ -365,10 +332,8 @@ Partial Public Class Report02_2
             outStr = CDate(inStr).ToShortDateString
         End If
 
-
         Return outStr
     End Function
-
 
     Private Sub FillABEDaten()
         'Farben erstmal ausblenden
@@ -400,11 +365,9 @@ Partial Public Class Report02_2
             If BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR") Is Nothing OrElse CType(BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR"), String).Trim(" "c).Length = 0 Then
                 lblError.Text = "Fehler: Die Daten enthalten keine Fahrzeugnummer."
             Else
-                'TrimStart("0"c)
-                objPDIs.FillDatenABE(Session("AppID").ToString, Session.SessionID.ToString, Me.Page, CType(BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR"), String))
+                objPDIs.FillDatenABE(Session("AppID").ToString, Session.SessionID.ToString, Page, CType(BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR"), String))
                 If objPDIs.Status = 0 Then
                     With objPDIs.ABE_Daten
-                        'lbl_00.Text = .Farbziffer
                         lbl_0.Text = .ZZKLARTEXT_TYP
                         lbl_1.Text = .ZZHERST_TEXT
                         lbl_2.Text = .ZZHERSTELLER_SCH
@@ -502,7 +465,6 @@ Partial Public Class Report02_2
                             Case 9
                                 lbl_55.Visible = True
                                 lbl_155.Visible = True
-                            Case Else
 
                         End Select
                         Session.Add("objPDIs", objPDIs)
@@ -519,8 +481,7 @@ Partial Public Class Report02_2
             QMMIDATENTable = CType(Session("QMMIDATENTable"), DataTable)
 
             If QMMIDATENTable.Rows.Count > 0 Then
-                Dim tmpDataView As New DataView()
-                tmpDataView = QMMIDATENTable.DefaultView
+                Dim tmpDataView As DataView = QMMIDATENTable.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -586,8 +547,7 @@ Partial Public Class Report02_2
             QMEL_DATENTable = CType(Session("QMEL_DATENTable"), DataTable)
 
             If QMEL_DATENTable.Rows.Count > 0 Then
-                Dim tmpDataView As New DataView()
-                tmpDataView = QMEL_DATENTable.DefaultView
+                Dim tmpDataView As DataView = QMEL_DATENTable.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -672,7 +632,6 @@ Partial Public Class Report02_2
                     End If
                 Next
 
-
             End If
 
         End If
@@ -682,38 +641,28 @@ Partial Public Class Report02_2
 
         Dim TempTable As DataTable
 
-
         TempTable = CType(Session("GT_ADDR"), DataTable)
 
         Dim TempRow As DataRow() = TempTable.Select("ADDRTYP = 'ZF'")
 
         If Not TempRow Is Nothing Then
-            'lblHaendlernrShow.Text = TempRow(0)("EX_KUNNR").ToString.TrimStart("0")
             If TempRow.Length > 0 Then
                 lblHaendleradresseShow.Text = TempRow(0)("Anschrift")
             End If
 
         End If
 
-
-
     End Sub
-
-    Private Function MakeStandardDateString(ByVal strSAPDate As String) As String
-        Return Right(strSAPDate, 2) & "." & Mid(strSAPDate, 5, 2) & "." & Left(strSAPDate, 4)
-    End Function
-
 
     Private Function createLebenslaufTable() As DataTable
         Dim tmpTable As DataTable = CType(Session("QMEL_DATENTable"), DataTable)
         Dim Lebenslauf As New DataTable
-        'Dim tmpRow As DataRow
 
-        Lebenslauf.Columns.Add("Vorgang", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Durchführungsdatum", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Versandadresse", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Versandart", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Beauftragt durch", System.Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Vorgang", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Durchführungsdatum", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Versandadresse", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Versandart", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Beauftragt durch", Type.GetType("System.String"))
 
         For Each tmpRow As DataRow In tmpTable.Rows
 
@@ -732,18 +681,16 @@ Partial Public Class Report02_2
         Lebenslauf.TableName = "Lebenslauf"
         Return Lebenslauf
 
-
     End Function
 
     Private Function createUebermittlungsTable() As DataTable
         Dim tmpTable As DataTable = CType(Session("QMMIDATENTable"), DataTable)
         Dim Uebersicht As New DataTable
-        'Dim tmpRow As DataRow
 
-        Uebersicht.Columns.Add("Aktionscode", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Vorgang", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Statusdatum", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Übermittlungsdatum", System.Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Aktionscode", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Vorgang", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Statusdatum", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Übermittlungsdatum", Type.GetType("System.String"))
 
         For Each tmpRow As DataRow In tmpTable.Rows
 
@@ -754,7 +701,6 @@ Partial Public Class Report02_2
             tmpUebersichtsRow.Item("Statusdatum") = tmpRow("PSTER").ToString
             tmpUebersichtsRow.Item("Übermittlungsdatum") = tmpRow("ZZUEBER").ToString
 
-
             Uebersicht.Rows.Add(tmpUebersichtsRow)
             Uebersicht.AcceptChanges()
 
@@ -762,49 +708,10 @@ Partial Public Class Report02_2
         Uebersicht.TableName = "Übermittlung"
         Return Uebersicht
 
-
     End Function
+
 #End Region
 
-    'Protected Sub LinkButton1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LinkButton1.Click
-    '    First.Attributes.Item("class") = "HistbuttonFirst"
-    '    Second.Attributes.Item("class") = "Histbutton"
-    '    Third.Attributes.Item("class") = "Histbutton"
-    '    Fourth.Attributes.Item("class") = "Histbutton"
-    '    Last.Attributes.Item("class") = "HistButtonLast"
-    'End Sub
-
-    'Protected Sub LinkButton2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LinkButton2.Click
-    '    First.Attributes.Item("class") = "HistButtonBeforActive"
-    '    Second.Attributes.Item("class") = "HistButtonMiddleActive"
-    '    Third.Attributes.Item("class") = "Histbutton"
-    '    Fourth.Attributes.Item("class") = "Histbutton"
-    '    Last.Attributes.Item("class") = "HistButtonLast"
-    'End Sub
-
-    'Protected Sub LinkButton3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LinkButton3.Click
-    '    First.Attributes.Item("class") = "Histbutton"
-    '    Second.Attributes.Item("class") = "HistButtonBeforActive"
-    '    Third.Attributes.Item("class") = "HistButtonMiddleActive"
-    '    Fourth.Attributes.Item("class") = "Histbutton"
-    '    Last.Attributes.Item("class") = "HistButtonLast"
-    'End Sub
-
-    'Protected Sub LinkButton4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LinkButton4.Click
-    '    First.Attributes.Item("class") = "Histbutton"
-    '    Second.Attributes.Item("class") = "Histbutton"
-    '    Third.Attributes.Item("class") = "HistButtonBeforActive"
-    '    Fourth.Attributes.Item("class") = "HistButtonMiddleActive"
-    '    Last.Attributes.Item("class") = "HistButtonLast"
-    'End Sub
-
-    'Protected Sub LinkButton5_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LinkButton5.Click
-    '    First.Attributes.Item("class") = "Histbutton"
-    '    Second.Attributes.Item("class") = "Histbutton"
-    '    Third.Attributes.Item("class") = "Histbutton"
-    '    Fourth.Attributes.Item("class") = "HistButtonBeforActive"
-    '    Last.Attributes.Item("class") = "HistButtonLastActive"
-    'End Sub
 End Class
 
 ' ************************************************

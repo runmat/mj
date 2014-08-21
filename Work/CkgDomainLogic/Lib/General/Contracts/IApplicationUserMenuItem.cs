@@ -1,4 +1,6 @@
-﻿namespace CkgDomainLogic.General.Contracts
+﻿using System.Collections.Generic;
+
+namespace CkgDomainLogic.General.Contracts
 {
     public interface IApplicationUserMenuItem 
     {
@@ -13,7 +15,9 @@
         int AppRank { get; set; }
 
         bool AppIsMvcFavorite { get; set; }
+        string NewLevel { get; set; }
 
+        Dictionary<string, string> BerechtigungsLevel { get; }
         
         #region Menu Group
         

@@ -1652,15 +1652,6 @@ Partial Public Class Change99
     Protected WithEvents ibtnNextToOptions As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''ConfirmNextToOptions-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ConfirmNextToOptions As Global.AjaxControlToolkit.ConfirmButtonExtender
-
-    '''<summary>
     '''VersandTabPanel3-Steuerelement
     '''</summary>
     '''<remarks>
