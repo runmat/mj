@@ -45,7 +45,6 @@
                     <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                    <fl:Button Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
                 <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
                     <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
