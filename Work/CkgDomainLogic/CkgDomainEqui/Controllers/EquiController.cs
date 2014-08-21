@@ -14,8 +14,8 @@ namespace ServicesMvc.Controllers
 
         public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
             IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService, IMahnreportDataService mahnreportDataService,
-            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, 
-            IMahnsperreDataService mahnsperreDataService)
+            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, IHalterabweichungenDataService halterabweichungenDataService, 
+            IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, IMahnsperreDataService mahnsperreDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
@@ -25,6 +25,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnreportViewModel, appSettings, logonContext, mahnreportDataService);
             InitViewModel(DatenOhneDokumenteViewModel, appSettings, logonContext, datenOhneDokumenteDataService);
             InitViewModel(ErweiterterBriefbestandViewModel, appSettings, logonContext, erweiterterBriefbestandDataService);
+            InitViewModel(HalterabweichungenViewModel, appSettings, logonContext, halterabweichungenDataService);
             InitViewModel(DokumenteOhneDatenViewModel, appSettings, logonContext, dokumenteOhneDatenDataService);
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
         }
