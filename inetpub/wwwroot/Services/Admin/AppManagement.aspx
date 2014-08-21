@@ -275,7 +275,7 @@
                                                                                         <td>
                                                                                             <asp:TextBox runat="server" ID="txtMaxLevel" />
                                                                                             <ajaxToolkit:SliderExtender runat="server" BoundControlID="lblBoundMaxLevel" TargetControlID="txtMaxLevel"
-                                                                                                Minimum="0" Maximum="6" Steps="7" />
+                                                                                                Minimum="0" Maximum="7" Steps="8" />
                                                                                         </td>
                                                                                         <td>
                                                                                             <asp:Label runat="server" ID="lblBoundMaxLevel" Style="margin-left: 8px; line-height: 22px;" />
@@ -376,7 +376,7 @@
                                                                             <td>
                                                                                 <asp:TextBox runat="server" ID="txtMaxLevelsPerGroup" />
                                                                                 <ajaxToolkit:SliderExtender runat="server" BoundControlID="lblBoundMaxLevelsPerGroup"
-                                                                                    TargetControlID="txtMaxLevelsPerGroup" Minimum="0" Maximum="6" Steps="7" />
+                                                                                    TargetControlID="txtMaxLevelsPerGroup" Minimum="0" Maximum="7" Steps="8" />
                                                                             </td>
                                                                             <td>
                                                                                 <asp:Label runat="server" ID="lblBoundMaxLevelsPerGroup" Style="margin-left: 8px; line-height: 22px;" />

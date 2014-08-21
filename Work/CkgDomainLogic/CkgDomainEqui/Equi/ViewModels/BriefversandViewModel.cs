@@ -74,6 +74,8 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public LogonLevel UserLogonLevel { get { return LogonContext.UserLogonLevel; } }
 
+        public int CurrentAppID { get; set; }
+
 
         #region Step "Fahrzeugwahl"
 
@@ -96,7 +98,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             get
             {
                 return BriefVersandDataService.VersandOptionen
-                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.Name.NotNullOrEmpty().Trim().ToLower() != "versand ohne abmeldung")
+                    .Where(vo => vo.IstEndgueltigerVersand == VersandartOptionen.IstEndgueltigerVersand && vo.MaterialCode != "ZZABMELD")
                     .OrderBy(w => w.Name)
                     .ToList();
             }
@@ -184,6 +186,19 @@ namespace CkgDomainLogic.Equi.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+        public bool VersandOptionAufAbmeldungWartenAvailable
+        {
+            get
+            {
+                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
+                    LogonContext.UserApps.Any(a => a.AppID == CurrentAppID && a.BerechtigungsLevel.ContainsKey("7")))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         #endregion
 
 
@@ -219,8 +234,9 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void DataMarkForRefresh(string vins)
         {
+            GetCurrentAppID();
+
             Adresse.Laender = LaenderList;
-            VersandOptionen.OptionenList = VersandOptionenList;
 
             BriefbestandDataService.MarkForRefreshFahrzeugbriefe();
             AdressenDataService.MarkForRefreshAdressen();
@@ -240,6 +256,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void DataMarkForRefreshVersandAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
+        }
+
+        public void DataMarkForRefreshVersandoptionen()
+        {
+            VersandOptionen.OptionenList = VersandOptionenList;
         }
 
         public void DataMarkForRefreshVersandgruende()
@@ -286,7 +307,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                 BriefVersand = true,
                 SchluesselVersand = false,
                 StuecklistenKomponente = stuecklistenCode,
-                AbmeldeKennzeichen = true,
+                AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten),
                 AbcKennzeichen = VersandartOptionen.Versandart,
                 MaterialNr = VersandOptionen.VersandOption.MaterialCode,
                 DadAnforderungsDatum = DateTime.Today,
@@ -304,19 +325,10 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             SaveErrorMessage = "";
 
-            // 1. Versandauftrags-Datensätze anlegen (Druck-Datensätze)
+            // 1. Versandauftrags-Datensätze anlegen
             var versandAuftraege = new List<VersandAuftragsAnlage>();
 
-            SelectedFahrzeuge.ForEach(fzg =>
-            {
-                versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, ""));
-
-                //if (DruckOptionen.DruckCoc)
-                //    versandAuftraege.Add(CreateVersandAuftrag(fzg.VIN, "720"));
-
-                //if (DruckOptionen.DruckZBII)
-                //    versandAuftraege.Add(CreateVersandAuftrag(fzg.VIN, "722"));
-            });
+            SelectedFahrzeuge.ForEach(fzg => versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "")));
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
         }
@@ -361,6 +373,19 @@ namespace CkgDomainLogic.Equi.ViewModels
             };
 
             return summaryModel;
+        }
+
+        private void GetCurrentAppID()
+        {
+            int tmpAppId;
+            int tmpUserId;
+            int tmpCustomerId;
+            int tmpKunnr;
+            int tmpPortalType;
+
+            HttpContextService.TryGetUserDataFromUrlOrSession(out tmpAppId, out tmpUserId, out tmpCustomerId, out tmpKunnr, out tmpPortalType);
+
+            CurrentAppID = tmpAppId;
         }
 
         #endregion
