@@ -1,4 +1,6 @@
 ﻿
+Imports System.Globalization
+
 Public Class Platinen
     Inherits ErrorHandlingClass
 
@@ -546,9 +548,9 @@ Public Class Platinen
                     kRow("LIEFERSNR") = Lieferscheinnummer
                     kRow("LIEF_KZ") = Geliefert
                     If mLieferdatum.HasValue Then
-                        kRow("EEIND") = Lieferdatum.Value
+                        kRow("EEIND") = Lieferdatum.Value.ToString("yyyyMMdd")
                     Else
-                        kRow("EEIND") = "00000000"
+                        kRow("EEIND") = ""
                     End If
                     tblKopf.Rows.Add(kRow)
 
@@ -608,6 +610,7 @@ Public Class Platinen
             dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle.PadLeft(10, "0"c), 10})
             dt.Rows.Add(New Object() {"E_KOPF", True})
             dt.Rows.Add(New Object() {"GT_POS", True})
+
             SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_READ", dt)
 
             If (SAPExc.ErrorOccured) Then
@@ -623,7 +626,7 @@ Public Class Platinen
                         mstrGeliefert = tblTemp.Rows(0)("LIEF_KZ")
                         mstrLieferscheinnr = tblTemp.Rows(0)("LIEFERSNR")
                         Dim tmpDate As DateTime
-                        If tblTemp.Rows(0)("EEIND") IsNot Nothing AndAlso Not IsDBNull(tblTemp.Rows(0)("EEIND")) AndAlso DateTime.TryParse(tblTemp.Rows(0)("EEIND"), tmpDate) Then
+                        If Not IsDBNull(tblTemp.Rows(0)("EEIND")) AndAlso Not String.IsNullOrEmpty(tblTemp.Rows(0)("EEIND").ToString()) AndAlso DateTime.TryParseExact(tblTemp.Rows(0)("EEIND"), "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, tmpDate) Then
                             mLieferdatum = tmpDate
                         Else
                             mLieferdatum = Nothing
