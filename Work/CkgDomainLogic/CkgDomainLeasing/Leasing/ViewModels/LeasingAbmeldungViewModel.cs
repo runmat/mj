@@ -86,7 +86,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         public List<string> GetFahrgestellnummern()
         {
-            var items = from f in AbzumeldendeFzge
+            var items = from f in AbzumeldendeFzgeFiltered
                         select f.Fahrgestellnummer;
             return items.ToList();
         } 

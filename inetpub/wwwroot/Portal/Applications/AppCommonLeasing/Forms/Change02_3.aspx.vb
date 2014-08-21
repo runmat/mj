@@ -195,12 +195,15 @@ Public Class Change02_3
 
                 DataGrid1.DataBind()
 
-                For Each item As DataGridItem In DataGrid1.Items
-                    If Not item.FindControl("lnkFahrgestellnummer") Is Nothing Then
-                        CType(item.FindControl("lnkFahrgestellnummer"), HyperLink).NavigateUrl = "../../../Components/ComCommon/Finance/Report46.aspx?AppID=" & m_User.Applications.Select("AppName = 'Report46'")(0)("AppID").ToString & "&VIN=" & CType(item.FindControl("lnkFahrgestellnummer"), HyperLink).Text
-                    End If
-                Next
+                Dim appRows() As DataRow = m_User.Applications.Select("AppName = 'Report46'")
 
+                If appRows.Length > 0 Then
+                    For Each item As DataGridItem In DataGrid1.Items
+                        If Not item.FindControl("lnkFahrgestellnummer") Is Nothing Then
+                            CType(item.FindControl("lnkFahrgestellnummer"), HyperLink).NavigateUrl = "../../../Components/ComCommon/Finance/Report46.aspx?AppID=" & appRows(0)("AppID").ToString & "&VIN=" & CType(item.FindControl("lnkFahrgestellnummer"), HyperLink).Text
+                        End If
+                    Next
+                End If
 
             End If
         Else
