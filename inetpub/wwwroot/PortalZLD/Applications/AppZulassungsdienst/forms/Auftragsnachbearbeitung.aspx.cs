@@ -279,6 +279,7 @@ namespace AppZulassungsdienst.forms
             ddlStornoKunde.DataTextField = "NAME1";
             ddlStornoKunde.DataBind();
             ddlStornoKunde.SelectedIndex = 0;
+            txtStornoKundennummer.Text = ddlStornoKunde.SelectedValue;
             txtStornoKundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlStornoKunde.ClientID + ")");
             txtStornoKundennummer.Attributes.Add("onblur", "SetDDLValue(this," + ddlStornoKunde.ClientID + ")");
         }
