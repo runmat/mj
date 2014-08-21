@@ -1097,8 +1097,6 @@
                                 <div style="float: right;padding-top:10px;padding-bottom:10px;padding-right:10px">
                                     <asp:LinkButton ID="ibtnNextToOptions" runat="server" CssClass="TablebuttonLarge"
                                         Width="130px" Height="16px">» Weiter</asp:LinkButton>
-                                    <cc1:ConfirmButtonExtender ID="ConfirmNextToOptions" runat="server" TargetControlID="ibtnNextToOptions"
-                                        ConfirmText="Achtung! Sie beauftragen Fahrzeuge ohne Stilllegungsdatum." Enabled="false" />
                                 </div>
                             </div>
 
