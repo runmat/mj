@@ -473,6 +473,123 @@ Partial Public Class Report02_2
     Protected WithEvents lblVersandgrundShow As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''lbl_Abmeldedaten-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_Abmeldedaten As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lbl_CarportEingang-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_CarportEingang As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblCarportEingangShow-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblCarportEingangShow As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lbl_KennzeichenEingang-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_KennzeichenEingang As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblKennzeichenEingangShow-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblKennzeichenEingangShow As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lbl_CheckIn-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_CheckIn As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblCheckInShow-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblCheckInShow As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lbl_Fahrzeugschein-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_Fahrzeugschein As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cbxFahrzeugschein-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cbxFahrzeugschein As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''lbl_BeideKennzVorhanden-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_BeideKennzVorhanden As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cbxBeideKennzVorhanden-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cbxBeideKennzVorhanden As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''lbl_Stilllegung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbl_Stilllegung As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblStilllegungShow-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblStilllegungShow As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lbl_Aenderungsdaten-Steuerelement
     '''</summary>
     '''<remarks>

@@ -3862,6 +3862,8 @@
     <Content Include="Views\Uebfuehrg\Forms\RgDaten.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente.cshtml" />
     <Content Include="Views\Equi\DatenOhneDokumente\DatenOhneDokumenteGrid.cshtml" />
+    <Content Include="Views\Equi\Halterabweichungen\HalterabweichungenGrid.cshtml" />
+    <Content Include="Views\Equi\Halterabweichungen.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Fahrzeug.cshtml" />
     <Content Include="Views\Uebfuehrg\CurrentStepView.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\Adresse.cshtml" />
