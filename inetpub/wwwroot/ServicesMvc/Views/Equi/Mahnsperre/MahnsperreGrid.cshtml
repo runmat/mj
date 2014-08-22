@@ -22,7 +22,8 @@
         columns.XBound(c => c.IsSelected).ClientTemplate(
                 "<input type='checkbox' <# if (data.IsSelected) { #> checked <# } #> disabled />"
             ).Filterable(false).Groupable(false).Sortable(false).Visible(!Model.EditMode);
-        columns.XBound(c => c.EquiNr);
+        columns.XBound(c => c.Mahnsperre);
+        columns.XBound(c => c.MahnsperreBis).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.FahrgestellNr);
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.Kontonummer);
@@ -36,10 +37,7 @@
         columns.XBound(c => c.Hausnummer);
         columns.XBound(c => c.PLZ);
         columns.XBound(c => c.Ort);
-        columns.XBound(c => c.Mahnsperre);
-        columns.XBound(c => c.MahnsperreBis).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Komponente);
-        columns.XBound(c => c.VersandID);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnsperreEquis"))
