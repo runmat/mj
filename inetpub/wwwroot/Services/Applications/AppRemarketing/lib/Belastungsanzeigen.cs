@@ -232,7 +232,6 @@ namespace AppRemarketing.lib
 
         }
 
-
         public void ShowRechnungMietfahrzeuge(String strAppID, String strSessionID, Page page)
         {
             m_strClassAndMethod = "Belastungsanzeigen.ShowRechnungMietfahrzeuge";
@@ -287,8 +286,6 @@ namespace AppRemarketing.lib
             }
 
         }
-
-
 
         public void ShowBelastungsanzeigen(String strAppID, String strSessionID, Page page)
         {
@@ -720,6 +717,62 @@ namespace AppRemarketing.lib
             }
 
             return null;
+        }
+
+        public void StornoRechnung(String strAppID, String strSessionID, Page page, string stornoText)
+        {
+            m_strClassAndMethod = "Belastungsanzeigen.StornoRechnung";
+            m_strAppID = strAppID;
+            m_strSessionID = strSessionID;
+            m_intStatus = 0;
+            m_strMessage = String.Empty;
+
+            try
+            {
+                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_SET_STORNO_RG", ref m_objApp, ref m_objUser, ref page);
+
+                myProxy.setImportParameter("I_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+                myProxy.setImportParameter("I_USER_STORNO", m_objUser.UserName);
+
+                var sapTable = myProxy.getImportTable("GT_TAB");
+
+                var newRow = sapTable.NewRow();
+                newRow["RENNR"] = Rechnungsnummer;
+                newRow["TEXT_STORNO"] = stornoText;
+                sapTable.Rows.Add(newRow);
+
+                myProxy.callBapi();
+
+                m_intStatus = Convert.ToInt16(myProxy.getExportParameter("E_SUBRC"));
+                m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+
+                var tblOut = myProxy.getExportTable("GT_TAB");
+
+                var errorRows = tblOut.Select("RET_BEM <> ''");
+
+                if (errorRows.Length > 0)
+                {
+                    m_intStatus = -9999;
+                    m_strMessage = errorRows[0]["RET_BEM"].ToString();
+                }
+
+                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
+
+            }
+            catch (Exception ex)
+            {
+                switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                {
+                    default:
+                        m_intStatus = -9999;
+                        m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                        break;
+                }
+
+                WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
+
+            }
+
         }
     }
 }
