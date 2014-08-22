@@ -143,6 +143,7 @@
     <Compile Include="Logs\Models\Filter\PageVisitLogItemSelector.cs" />
     <Compile Include="Logs\Models\Filter\WebServiceTrafficLogItemSelector.cs" />
     <Compile Include="Logs\Models\Filter\SapLogItemSelector.cs" />
+    <Compile Include="Logs\Models\SapCallContext.cs" />
     <Compile Include="Logs\Models\SapBapiDuration.cs" />
     <Compile Include="Logs\Models\UI\WebServiceTrafficLogItemUI.cs" />
     <Compile Include="Logs\Services\Database\LogsSqlDbContext.cs" />

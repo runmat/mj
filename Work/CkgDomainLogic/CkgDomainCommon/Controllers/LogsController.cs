@@ -131,11 +131,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSapImportContext(int sapItemId)
+        public ActionResult GetSapCallContext(int sapItemId)
         {
-            ViewModel.GetSapSapImportTables(sapItemId);
+            ViewModel.GetSapCallContext(sapItemId);
 
-            return PartialView("Partial/Sap/SapImportTables", ViewModel.LastSapImportTables);
+            return PartialView("Partial/Sap/SapCallContext", ViewModel.LastSapCallContext);
         }
 
         [HttpPost]

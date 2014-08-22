@@ -27,7 +27,7 @@ namespace CkgDomainLogic.Logs.Services
 
         public SapLogItemDetailed GetSapLogItemDetailed(int id)
         {
-            return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
+            return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportParameters, ImportTables, ExportParameters, ExportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
         }
         
         

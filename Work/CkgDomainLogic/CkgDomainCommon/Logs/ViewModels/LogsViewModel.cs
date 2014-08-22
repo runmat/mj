@@ -143,16 +143,40 @@ namespace CkgDomainLogic.Logs.ViewModels
             WebServiceTrafficLogItemsUIFiltered = WebServiceTrafficLogItemsUI.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        public DataTable[] LastSapImportTables { get; private set; }
+        public SapCallContext LastSapCallContext { get; private set; }
 
-        public void GetSapSapImportTables(int id)
+        public void GetSapCallContext(int id)
         {
             var sapLogItemDetailed = DataService.GetSapLogItemDetailed(id);
 
-            LastSapImportTables = null;
-            if (sapLogItemDetailed.ImportTables == null)
-                return;
-            LastSapImportTables = XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables);
+            //var strExpTables = (sapLogItemDetailed.ExportTables == null ? null : sapLogItemDetailed.ExportTables.Replace("<ExportTables>", "").Replace("</ExportTables>", "").Trim('\r', '\n'));
+
+            var strExpTables = sapLogItemDetailed.ExportTables;
+
+            var expTables = new List<ExportTable>();
+            if (strExpTables != null)
+            {
+                var teile = strExpTables.Replace('\r', '\n').Split('\n');
+                for (int i = 0; i < teile.Length; i++)
+                {
+                    if (teile[i].Contains("TableName"))
+                    {
+                        var strName = teile[i].Substring(teile[i].IndexOf("TableName=\"") + 11);
+                        strName = strName.Substring(0, strName.IndexOf("\""));
+                        var strCount = teile[i].Substring(teile[i].IndexOf("RowCount=\"") + 10);
+                        strCount = strCount.Substring(0, strCount.IndexOf("\""));
+                        expTables.Add(new ExportTable { TableName = strName, RowCount = strCount });
+                    }
+                }
+            }
+
+            LastSapCallContext = new SapCallContext
+                {
+                    ImportParameters = (sapLogItemDetailed.ImportParameters == null ? null : XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ImportParameters)),
+                    ImportTables = (sapLogItemDetailed.ImportTables == null ? null : XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables)),
+                    ExportParameters = (sapLogItemDetailed.ExportParameters == null ? null : XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ExportParameters)),
+                    ExportTables = (expTables.Count == 0 ? null : expTables.ToArray())
+                };
         }
 
         public void Validate(Action<string, string> addModelError)
