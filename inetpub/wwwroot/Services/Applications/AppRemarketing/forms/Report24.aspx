@@ -390,7 +390,7 @@
                             <asp:Label runat="server" Text="Storno Rechnung " Font-Bold="True" ForeColor="white"></asp:Label>
                             <asp:Label ID="lblRechnr" runat="server" Font-Bold="True" ForeColor="white"/>
                         </div>
-                        <div style="padding-left: 10px; padding-top: 15px; margin-bottom: 10px; padding-bottom: 10px;height:70px">
+                        <div style="padding-left: 10px; padding-top: 15px; margin-bottom: 10px; padding-bottom: 10px;height:50px">
                             <table align="center">
                                 <tbody>
                                     <tr>
