@@ -384,7 +384,7 @@
                         PopupControlID="mbStorno" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancelStorno"
                         X="450" Y="200">
                     </cc1:ModalPopupExtender>
-                    <asp:Panel ID="mbStorno" runat="server" Width="500px" Height="180px" BackColor="#F4F7FC" style="display:none">
+                    <asp:Panel ID="mbStorno" runat="server" Width="500px" Height="160px" BackColor="#F4F7FC" style="display:none">
                         <div style="padding-left: 110px; padding-bottom: 5px; padding-top: 7px; background-color: #64759E;
                             height: 17px;">
                             <asp:Label runat="server" Text="Storno Rechnung " Font-Bold="True" ForeColor="white"></asp:Label>
