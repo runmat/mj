@@ -22,6 +22,7 @@ Public Class Platinen
     Private mstrKostText As String = ""
     Private mLetzteBestellungenKopf As DataTable
     Private mLetzteBestellungenPos As DataTable
+    Private mAusgeparkteBestellungPos As DataTable
 
     Dim SAPExc As SAPExecutor.SAPExecutor
 
@@ -162,6 +163,12 @@ Public Class Platinen
     Public ReadOnly Property LetzteBestellungenPos() As DataTable
         Get
             Return mLetzteBestellungenPos
+        End Get
+    End Property
+
+    Public ReadOnly Property AusgeparkteBestellungPos() As DataTable
+        Get
+            Return mAusgeparkteBestellungPos
         End Get
     End Property
 
@@ -639,19 +646,10 @@ Public Class Platinen
                     row("MENGE") = DBNull.Value
                 Next
 
-                Dim tblTemp2 As New DataTable
                 retRows = dt.Select("Fieldname='GT_POS'")(0)
                 If Not retRows Is Nothing Then
-                    tblTemp2 = DirectCast(retRows("Data"), DataTable)
+                    mAusgeparkteBestellungPos = DirectCast(retRows("Data"), DataTable)
                 End If
-
-                For Each row As DataRow In tblTemp2.Rows
-                    Dim posRows() As DataRow = Artikel.Select("ARTLIF = '" & row("ARTLIF").ToString() & "'")
-                    If posRows.Length > 0 Then
-                        posRows(0)("MENGE") = row("MENGE")
-                        posRows(0)("Beschreibung") = row("ZUSINFO_TXT")
-                    End If
-                Next
             End If
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -660,6 +658,16 @@ Public Class Platinen
         Return mArtikel
 
     End Function
+
+    Public Sub GeparktePositionenUebernehmen()
+        For Each row As DataRow In mAusgeparkteBestellungPos.Rows
+            Dim posRows() As DataRow = Artikel.Select("ARTLIF = '" & row("ARTLIF").ToString() & "'")
+            If posRows.Length > 0 Then
+                posRows(0)("MENGE") = row("MENGE")
+                posRows(0)("Beschreibung") = row("ZUSINFO_TXT")
+            End If
+        Next
+    End Sub
 
     Public Sub GeparktLoeschenERP(ByVal BstNr As String, ByVal TextDel As String)
         ClearErrorState()

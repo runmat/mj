@@ -192,11 +192,10 @@ Public Class Bestellung_Platinen
             If Not strSort.Length = 0 Then
                 tmpDataView.Sort = strSort & " asc"
             End If
-
-            GridView1.DataSource = tmpDataView
-
-            GridView1.DataBind()
         End If
+
+        GridView1.DataSource = tmpDataView
+        GridView1.DataBind()
     End Sub
 
     ''' <summary>
@@ -221,11 +220,10 @@ Public Class Bestellung_Platinen
             If Not strSort.Length = 0 Then
                 tmpDataView.Sort = strSort & " asc"
             End If
-
-            GridView3.DataSource = tmpDataView
-
-            GridView3.DataBind()
         End If
+
+        GridView3.DataSource = tmpDataView
+        GridView3.DataBind()
     End Sub
 
     ''' <summary>
@@ -638,6 +636,8 @@ Public Class Bestellung_Platinen
             txtLieferdatum.Text = ""
         End If
         Session("mPlatinen") = mObjPlatinen
+        ChangeLiefHidden.Value = 1
+        Hidden1.Value = ""
         FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
         FillGrid(mObjPlatinen.SelReiter)
 
@@ -660,7 +660,9 @@ Public Class Bestellung_Platinen
                     Else
                         If ddlLieferant.Items.FindByValue(.Lieferantennr) IsNot Nothing Then
                             ddlLieferant.SelectedValue = .Lieferantennr
+                            ApplyLieferantennr()
                         End If
+                        .GeparktePositionenUebernehmen()
                         chkGeliefert.Checked = (.Geliefert = "X")
                         If Not String.IsNullOrEmpty(.Lieferscheinnummer) Then
                             txtLieferscheinnummer.Text = .Lieferscheinnummer
