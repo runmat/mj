@@ -14,7 +14,7 @@
         width: 345px!important;
     }
     .ms-container .ms-list {
-        height: 300px!important;
+        height: 200px!important;
     }
     
     .receipt-wrapper-uebfuehrg {
@@ -90,6 +90,9 @@
         FormWizard.OnRestart(function () {
             location.reload();
         });
+
+        if ($(".alert-error").length > 0)
+            FormWizard.ActionsShow(false);
     }
 
     function AjaxFormComplete(id) {
@@ -338,9 +341,23 @@
    {
        float: left;
        position: relative;
-       width: 400px;
-       height: 400px;
+       width: 900px;
+       height: 670px;
        margin-right: 30px;
+    }
+    
+    .bing-header {
+        font-size: 1.5em;
+        margin: 5px;
+    }
+    .header-distance {
+        background-color: yellow;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .header-address {
+        font-weight: normal;
+        font-size: 0.8em;
     }
 </style>
 
@@ -352,16 +369,17 @@
     var _bingKey = "";
     var _bingLocationMap = null;
     var _bingRouteMap = null;
-    var _currentLocation = "", _currentRouteStartAddress = "", _currentRouteEndAddress = "";
-    var _makeLocationRequestCount = 0;
-    var _makeRouteRequestCount = 0;
+    var _bingCurrentUiIndex = 0;
+    var _bingCurrentLocation = new Array(20), _bingCurrentRouteStartAddress = new Array(20), _bingCurrentRouteEndAddress = new Array(20);
+    var _bingMakeLocationRequestCount = 0;
+    var _bingMakeRouteRequestCount = 0;
 
     DocumentReadyBind(function () {
         BingInit();
     });
 
     function BingInit() {
-        _bingKey = "AjhclM9Z2vaz98bcKZnOd5dkHLf87cX4qKkJJBi7G6jqvy1wuoNVubNKGBijbzzQ";
+        _bingKey = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav"; // "AjhclM9Z2vaz98bcKZnOd5dkHLf87cX4qKkJJBi7G6jqvy1wuoNVubNKGBijbzzQ";
         _bingLocationMap = new Microsoft.Maps.Map(document.getElementById("bingLocationDiv"), {
             credentials: _bingKey,
             mapTypeId: Microsoft.Maps.MapTypeId.road
@@ -381,9 +399,9 @@
     }
 
     function MakeGeocodeRequest() {
-        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_currentLocation) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_bingCurrentLocation[_bingCurrentUiIndex]) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
 
-        $("#bingLocationDiv").show();
+        //$("#bingLocationDiv").show();
         CallRestService(geocodeRequest);
     }
 
@@ -407,20 +425,22 @@
             var pushpin = new Microsoft.Maps.Pushpin(location);
             _bingLocationMap.entities.push(pushpin);
 
-            _makeLocationRequestCount++;
-            if (_makeLocationRequestCount == 1)
+            $("#bingLocationHeaderDiv span.header-address").html("Adresse: " + _bingCurrentLocation[_bingCurrentUiIndex]);
+
+            _bingMakeLocationRequestCount++;
+            if (_bingMakeLocationRequestCount == 1)
                 setTimeout(function () {
                     _bingLocationMap.getCredentials(MakeGeocodeRequest);
-                    _makeLocationRequestCount++;
+                    _bingMakeLocationRequestCount++;
                 }, 1500);
         }
     }
 
 
     function MakeRouteRequest() {
-        var routeRequest = "http://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_currentRouteStartAddress) + "&wp.1=" + encodeURI(_currentRouteEndAddress) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
+        var routeRequest = "http://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_bingCurrentRouteStartAddress[_bingCurrentUiIndex]) + "&wp.1=" + encodeURI(_bingCurrentRouteEndAddress[_bingCurrentUiIndex]) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
 
-        $("#bingRouteDiv").show();
+        //$("#bingRouteDiv").show();
         CallRestService(routeRequest);
     }
 
@@ -451,13 +471,15 @@
             _bingRouteMap.entities.push(routeshape);
 
             var distance = result.resourceSets[0].resources[0].travelDistance;
-            console.log(distance);
+            //console.log(distance);
+            $("#bingRouteHeaderDiv span.header-distance").html(distance.toFixed(2).replace(/\./, ",") + " Km");
+            $("#bingRouteHeaderDiv span.header-address").html("Ihre Route von " + _bingCurrentRouteStartAddress[_bingCurrentUiIndex] + " => " + _bingCurrentRouteEndAddress[_bingCurrentUiIndex]);
 
-            _makeRouteRequestCount++;
-            if (_makeRouteRequestCount == 1)
+            _bingMakeRouteRequestCount++;
+            if (_bingMakeRouteRequestCount == 1)
                 setTimeout(function () {
                     _bingLocationMap.getCredentials(MakeRouteRequest);
-                    _makeRouteRequestCount++;
+                    _bingMakeRouteRequestCount++;
                 }, 1500);
         }
     }
@@ -511,8 +533,6 @@
         var routeLinks = $("#AjaxForm" + id + " .route-info");
         if (addressIsEmpty) {
             routeLinks.hide();
-            $("#bingLocationDiv").hide();
-            $("#bingRouteDiv").hide();
         } else {
 
             // location, public map url:
@@ -524,14 +544,9 @@
             // location, ajax inline map:
             BingInit();
 
-            _currentLocation = GetAddressString(id);
-            _makeLocationRequestCount = 0;
-            _bingLocationMap.getCredentials(MakeGeocodeRequest);
+            _bingCurrentLocation[id] = GetAddressString(id);
 
-            if (!showRouteInfo) {
-                $("#bingRouteDiv").hide();
-            }
-            else {
+            if (showRouteInfo) {
                 // route, public map url:
                 var routeLinkMap = $("#AjaxForm" + id + " .route-info.map");
                 href = "http://bing.com/maps/default.aspx?rtp=adr." + startAddressAsRouteInfo + "~adr." + GetAddressString(id) + "&mode=D&rtop=0";
@@ -539,12 +554,30 @@
                 routeLinkMap.show();
 
                 // route, ajax inline map:
-                _currentRouteStartAddress = startAddressAsRouteInfo;
-                _currentRouteEndAddress = GetAddressString(id);
-                _makeRouteRequestCount = 0;
-                _bingRouteMap.getCredentials(MakeRouteRequest);
+                _bingCurrentRouteStartAddress[id] = startAddressAsRouteInfo;
+                _bingCurrentRouteEndAddress[id] = GetAddressString(id);
             }
         }
+    }
+
+    function BingLocationMapShow(id) {
+        BingInit();
+        _bingCurrentUiIndex = id;
+        var detailWindow = $("#BingKarte").data("tWindow");
+        detailWindow.center().open();
+        _bingMakeLocationRequestCount = 0;
+        _bingLocationMap.getCredentials(MakeGeocodeRequest);
+        return false;
+    }
+
+    function BingRouteMapShow(id) {
+        BingInit();
+        _bingCurrentUiIndex = id;
+        var detailWindow = $("#BingRoute").data("tWindow");
+        detailWindow.center().open();
+        _bingMakeRouteRequestCount = 0;
+        _bingRouteMap.getCredentials(MakeRouteRequest);
+        return false;
     }
 
 </script>
@@ -564,7 +597,6 @@
     .Height(700)
     .Content(@<text><div id="InnerAdressen"></div></text>))
 
-
 @(Html.Telerik().Window()
     .Name("AdresseBearbeiten")
     .Visible(false)
@@ -575,3 +607,26 @@
     .Width(500)
     .Height(550)
     .Content(@<text><div id="InnerAdresseBearbeiten"></div></text>))
+    
+    
+@(Html.Telerik().Window()
+    .Name("BingKarte")
+    .Visible(false)
+    .Title("Kartenansicht")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+    .Content(@<text><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></text>))
+    
+@(Html.Telerik().Window()
+    .Name("BingRoute")
+    .Visible(false)
+    .Title("Route für Ihre Fahrt")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+    .Content(@<text><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></text>))

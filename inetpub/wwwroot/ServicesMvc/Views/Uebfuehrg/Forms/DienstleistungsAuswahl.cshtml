@@ -74,8 +74,10 @@
                     
                     var requredDienstleistungsName = splits[1];
                     $(".ms-elem-selectable span").each(function(index2, elem2) {
-                        if ($(elem2).text() == requredDienstleistungsName)
+                        if ($(elem2).text() == requredDienstleistungsName) {
                             $(elem2).addClass("required");
+                            $(elem2).scrollIntoView({ ofsetY: 30, duration: '1500' });
+                        }
                     });
                 });
             }
