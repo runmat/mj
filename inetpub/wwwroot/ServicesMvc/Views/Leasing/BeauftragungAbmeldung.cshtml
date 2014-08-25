@@ -22,16 +22,32 @@
 
     var selectedFzgBeauftragungAbmeldung;
 
-    function GridAbzumeldendeFzg_SelectAll() {
+    function GridAbzumeldendeFzg_SelectAll(setSelected) {
         $.ajax(
         {
             type: "POST",
             url: "AbmeldungenSelectAll",
             loadingShow: true,
             success: function (data) {
-                selectedFzgBeauftragungAbmeldung = JSON.parse(data);
-                var grid = $("#GridAbzumeldendeFzg").data('tGrid');
-                grid.ajaxRequest();
+                var items = JSON.parse(data);
+                
+                if (setSelected) {
+                    items.forEach(function(strItem) {
+                        if (jQuery.inArray(strItem, selectedFzgBeauftragungAbmeldung) < 0) {
+                            selectedFzgBeauftragungAbmeldung.push(strItem);
+                        }
+                    });
+                } else {
+                    items.forEach(function(strItem) {
+                        if (jQuery.inArray(strItem, selectedFzgBeauftragungAbmeldung) > -1) {
+                            selectedFzgBeauftragungAbmeldung = $.grep(selectedFzgBeauftragungAbmeldung, function(item, index) {
+                                return item != strItem;
+                            });
+                        }
+                    });
+                }
+
+                GridRefresh();
                 FormPreparePrivateAjax();
             },
         });
@@ -41,16 +57,7 @@
 
     function InitGridSelectionPersister() {
         $('#GridAbzumeldendeFzg').on('change', ':checkbox[id=cbxCheckAll]', function(e) {
-            var cbx = $(this);
-
-            if (cbx.is(':checked')) {
-                GridAbzumeldendeFzg_SelectAll();
-            } else {
-                selectedFzgBeauftragungAbmeldung = [];
-                var grid = $("#GridAbzumeldendeFzg").data('tGrid');
-                grid.ajaxRequest();
-                FormPreparePrivateAjax();
-            }
+            GridAbzumeldendeFzg_SelectAll($(this).is(':checked'));
         });
 
         // Selektion merken (wichtig bei Paging etc.)
@@ -66,6 +73,12 @@
                 });
             }
         });
+        
+        // Bei Filteränderung "checkall"-Checkbox zurücksetzen
+        $('#GridAbzumeldendeFzg').on('filter_all_columns', function(e) {
+            $("#cbxCheckAll").attr('checked', false);
+            $("#cbxCheckAll").closest("span").removeClass("checked");
+        });
     }
 
     function FormPreparePrivate() {
@@ -79,7 +92,7 @@
     }
 
     function GetGrid() {
-        return $("#GridAbzumeldendeFzgItems").data("tGrid");
+        return $("#GridAbzumeldendeFzg").data("tGrid");
     }
 
     function GridLoadingHide() {
@@ -98,7 +111,7 @@
             var fin = $('#GridAbzumeldendeFzg').data("tGrid").dataItem(cbx.closest('tr')).Fahrgestellnummer;
             cbx.attr('checked', jQuery.inArray(fin, selectedFzgBeauftragungAbmeldung) > -1);
         });
-        
+
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
     }
