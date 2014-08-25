@@ -446,6 +446,15 @@ Partial Public Class TransportAddress
     Protected WithEvents txtAbDatum_CalendarExtender As Global.AjaxControlToolkit.CalendarExtender
 
     '''<summary>
+    '''cvAbDatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cvAbDatum As Global.System.Web.UI.WebControls.CustomValidator
+
+    '''<summary>
     '''trUhrzeit-Steuerelement
     '''</summary>
     '''<remarks>
