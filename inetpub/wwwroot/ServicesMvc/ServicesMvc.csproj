@@ -3854,7 +3854,7 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\Logs\Pv.cshtml" />
+    <Content Include="Views\Logs\PageVisitsDetail.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
     <Content Include="Views\Uebfuehrg\Index.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
@@ -3871,6 +3871,9 @@
     <Content Include="Views\Uebfuehrg\Forms\Receipt.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten\DokumenteOhneDatenGrid.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten.cshtml" />
+    <Content Include="Views\Logs\PageVisits.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\DetailGrid.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItemsDetail.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

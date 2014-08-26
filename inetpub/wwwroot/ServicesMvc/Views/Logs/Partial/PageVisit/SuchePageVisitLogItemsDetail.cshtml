@@ -1,9 +1,9 @@
 ﻿@using CkgDomainLogic.Logs.Models
-@model PageVisitLogItemSelector
+@model PageVisitLogItemDetailSelector
 
-<div id="divPageVisitLogItemsSuche">
-    @using (Ajax.BeginForm("LoadPageVisitLogItems", "Logs", null,
-        new MvcAjaxOptions("divPageVisitLogItemsSuche") { OnComplete = "ShowPageVisitLogItems();" }, new { id = "PageVisitLogItemsForm" }))
+<div id="divPageVisitLogItemsDetailSuche">
+    @using (Ajax.BeginForm("LoadPageVisitLogItemsDetail", "Logs", null,
+        new MvcAjaxOptions("divPageVisitLogItemsDetailSuche") { OnComplete = "ShowPageVisitLogItemsDetail();" }, new { id = "PageVisitLogItemsDetailForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             
@@ -15,10 +15,11 @@
             @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
             @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormCheckBoxFor(m => m.OnlyUnusedApplications, new { @class = "m-wrap", col = "right" })
+            @Html.FormMultiSelectListFor(m => m.PortalTypes, Model.AllPortalTypes, new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemDetailSelector.AllApplications, new { @class = "m-wrap chosen", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemSelector.AllCustomers, new { @class = "m-wrap chosen" })
+            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemDetailSelector.AllCustomers, new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.UserIds, PageVisitLogItemDetailSelector.AllUsers, new { @class = "m-wrap chosen", col = "right" })
 
 
             <div class="form-actions">
@@ -40,9 +41,10 @@
     function ResetFilter() {
         ClearChosenMultiSelect("#AppIds");
         ClearChosenMultiSelect("#CustomerIds");
+        ClearChosenMultiSelect("#UserIds");
 
         $("#SubmitWithNoDataQuerying").val(true);
-        $("#PageVisitLogItemsForm").submit();
+        $("#PageVisitLogItemsDetailForm").submit();
     }
     
     function ClearChosenMultiSelect(id) {
@@ -50,7 +52,7 @@
         $(id).parent().find('.chzn-container li.search-choice').remove();
     }
 
-    function ShowPageVisitLogItems() {
+    function ShowPageVisitLogItemsDetail() {
 
         FormPreparePrivateAjax();
 
@@ -61,14 +63,14 @@
 
         $.ajax({
             type: "POST",
-            url: "ShowPageVisitLogItems",
+            url: "ShowPageVisitLogItemsDetail",
             loadingShow: true,
             success: function (result) {
 
                 SearchResultsTryHide();
 
                 if (_modelStateValid) {
-                    ShowPageVisitLogItemsSearchResult(result);
+                    ShowPageVisitLogItemsDetailSearchResult(result);
                     //return;
                 }
 
