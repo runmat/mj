@@ -361,7 +361,7 @@
     }
 </style>
 
-<script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=de-de">
+<script charset="UTF-8" type="text/javascript" src="https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=de-de&s=1">
 </script>
 
 <script type="text/javascript">
@@ -399,7 +399,7 @@
     }
 
     function MakeGeocodeRequest() {
-        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_bingCurrentLocation[_bingCurrentUiIndex]) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
+        var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_bingCurrentLocation[_bingCurrentUiIndex]) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
 
         //$("#bingLocationDiv").show();
         CallRestService(geocodeRequest);
@@ -438,7 +438,7 @@
 
 
     function MakeRouteRequest() {
-        var routeRequest = "http://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_bingCurrentRouteStartAddress[_bingCurrentUiIndex]) + "&wp.1=" + encodeURI(_bingCurrentRouteEndAddress[_bingCurrentUiIndex]) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
+        var routeRequest = "https://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_bingCurrentRouteStartAddress[_bingCurrentUiIndex]) + "&wp.1=" + encodeURI(_bingCurrentRouteEndAddress[_bingCurrentUiIndex]) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
 
         //$("#bingRouteDiv").show();
         CallRestService(routeRequest);
@@ -536,7 +536,7 @@
         } else {
 
             // location, public map url:
-            var href = "http://bing.com/maps/default.aspx?where1=" + GetAddressString(id);
+            var href = "https://bing.com/maps/default.aspx?where1=" + GetAddressString(id);
             var routeLinkLocation = $("#AjaxForm" + id + " .route-info.location");
             routeLinkLocation.attr("href", href);
             routeLinkLocation.show();
@@ -549,7 +549,7 @@
             if (showRouteInfo) {
                 // route, public map url:
                 var routeLinkMap = $("#AjaxForm" + id + " .route-info.map");
-                href = "http://bing.com/maps/default.aspx?rtp=adr." + startAddressAsRouteInfo + "~adr." + GetAddressString(id) + "&mode=D&rtop=0";
+                href = "https://bing.com/maps/default.aspx?rtp=adr." + startAddressAsRouteInfo + "~adr." + GetAddressString(id) + "&mode=D&rtop=0";
                 routeLinkMap.attr("href", href);
                 routeLinkMap.show();
 
