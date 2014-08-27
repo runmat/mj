@@ -1,15 +1,16 @@
 ﻿Imports CKG.Base.Business
 Imports CKG.Base.Common
+Imports System.Data.SqlClient
 
 <Serializable()> Public Class Briefversand
     Inherits Base.Business.BankBase
 
     Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByVal objApp As Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFilename As String)
         MyBase.New(objUser, objApp, strAppID, strSessionID, strFilename)
-
     End Sub
 
 #Region " Declarations"
+
     Private mE_SUBRC As String
     Private mE_MESSAGE As String
     Private m_strFahrgestellnr As String
@@ -46,7 +47,6 @@ Imports CKG.Base.Common
     Private m_versartText As String
     Private strAuftragsstatus As String
     Private strAuftragsnummer As String
-    Private m_strAdressNummer As String
     Private m_AutLevel As String
     Private m_tblUpload As DataTable
     Private m_strReferenceforAut As String
@@ -67,9 +67,11 @@ Imports CKG.Base.Common
     Private mBeauftragungsdatum As String
     Private m_tblStueckliste As DataTable
     Private m_Brieflieferanten As DataTable
+
 #End Region
 
 #Region " Properties "
+
     Public Property OptionFlag() As String
         Get
             Return m_OptionFlag
@@ -78,6 +80,7 @@ Imports CKG.Base.Common
             m_OptionFlag = value
         End Set
     End Property
+
     Public Property Briefversand() As String
         Get
             Return m_Briefversand
@@ -86,6 +89,7 @@ Imports CKG.Base.Common
             m_Briefversand = value
         End Set
     End Property
+
     Public Property SchluesselVersand() As String
         Get
             Return m_SchluesselVersand
@@ -139,6 +143,7 @@ Imports CKG.Base.Common
             m_kbanr = Value
         End Set
     End Property
+
     Public Property neueAdresse() As Boolean
         Get
             Return m_boolNewAdress
@@ -148,6 +153,7 @@ Imports CKG.Base.Common
         End Set
 
     End Property
+
     Public Property VersandArt() As String
         Get
             Return m_strVersandArt
@@ -156,6 +162,7 @@ Imports CKG.Base.Common
             m_strVersandArt = Value
         End Set
     End Property
+
     Public Property Versandgruende() As DataTable
         Get
             Return m_tblVersandgruende
@@ -164,6 +171,7 @@ Imports CKG.Base.Common
             m_tblVersandgruende = value
         End Set
     End Property
+
     Public Property VersandOptionen() As DataTable
         Get
             Return m_tblVersandOptions
@@ -190,6 +198,7 @@ Imports CKG.Base.Common
             m_tblAdressen = value
         End Set
     End Property
+
     Public Property ZulStellen() As DataTable
         Get
             Return m_tblZulStellen
@@ -198,6 +207,7 @@ Imports CKG.Base.Common
             m_tblZulStellen = value
         End Set
     End Property
+
     Public ReadOnly Property Laender() As DataTable
         Get
             If m_tblLaender Is Nothing Then
@@ -224,6 +234,7 @@ Imports CKG.Base.Common
             m_tblFahrzeuge = value
         End Set
     End Property
+
     Public Property FahrzeugePrint() As DataTable
         Get
             Return m_tblFahrzeugePrint
@@ -241,6 +252,7 @@ Imports CKG.Base.Common
             m_tblFahrzeugeFehler = value
         End Set
     End Property
+
     Public Property E_SUBRC() As String
         Get
             Return mE_SUBRC
@@ -258,6 +270,7 @@ Imports CKG.Base.Common
             mE_MESSAGE = Value
         End Set
     End Property
+
     Public Property Fahrgestellnr() As String
         Get
             Return m_strFahrgestellnr
@@ -275,6 +288,7 @@ Imports CKG.Base.Common
             m_strKennzeichen = value
         End Set
     End Property
+
     Public Property ZBIINr() As String
         Get
             Return m_strZBIINr
@@ -283,6 +297,7 @@ Imports CKG.Base.Common
             m_strZBIINr = value
         End Set
     End Property
+
     Public Property LVnr() As String
         Get
             Return m_strLVnr
@@ -291,6 +306,7 @@ Imports CKG.Base.Common
             m_strLVnr = value
         End Set
     End Property
+
     Public Property Ref1() As String
         Get
             Return m_strRef1
@@ -299,6 +315,7 @@ Imports CKG.Base.Common
             m_strRef1 = value
         End Set
     End Property
+
     Public Property Ref2() As String
         Get
             Return m_strRef2
@@ -307,6 +324,7 @@ Imports CKG.Base.Common
             m_strRef2 = value
         End Set
     End Property
+
     Public Property Anrede() As String
         Get
             Return m_strAnrede
@@ -316,6 +334,7 @@ Imports CKG.Base.Common
         End Set
 
     End Property
+
     Public Property Name1() As String
         Get
             Return m_strName1
@@ -335,7 +354,6 @@ Imports CKG.Base.Common
         End Set
 
     End Property
-
 
     Public Property City() As String
         Get
@@ -363,6 +381,7 @@ Imports CKG.Base.Common
             m_strStreet = Value
         End Set
     End Property
+
     Public Property HouseNum() As String
         Get
             Return m_strHouseNum
@@ -371,6 +390,7 @@ Imports CKG.Base.Common
             m_strHouseNum = Value
         End Set
     End Property
+
     Public Property laenderKuerzel() As String
         Get
             Return m_strLaenderKuerzel
@@ -380,6 +400,7 @@ Imports CKG.Base.Common
         End Set
 
     End Property
+
     Public Property Materialnummer() As String
         Get
             Return m_material
@@ -415,6 +436,7 @@ Imports CKG.Base.Common
             m_versandadrtext = Value
         End Set
     End Property
+
     Public Property VersandGrund() As String
         Get
             Return m_versgrund
@@ -423,11 +445,7 @@ Imports CKG.Base.Common
             m_versgrund = Value
         End Set
     End Property
-    Public ReadOnly Property AdressNummer() As String
-        Get
-            Return m_strAdressNummer
-        End Get
-    End Property
+
     Public Property Auftragsstatus() As String
         Get
             Return strAuftragsstatus
@@ -445,6 +463,7 @@ Imports CKG.Base.Common
             strAuftragsnummer = Value
         End Set
     End Property
+
     Public Property Sachbearbeiter() As String
         Get
             Return m_Sachbearbeiter
@@ -453,6 +472,7 @@ Imports CKG.Base.Common
             m_Sachbearbeiter = Value
         End Set
     End Property
+
     Public Property tblUpload() As DataTable
         Get
             Return m_tblUpload
@@ -470,6 +490,7 @@ Imports CKG.Base.Common
             m_VersohneAbeld = Value
         End Set
     End Property
+
     Public Property EQuiTyp() As String
         Get
             Return m_EQuiTyp
@@ -584,7 +605,7 @@ Imports CKG.Base.Common
 
     Public Overloads Sub FILL(ByVal strAppID As String, _
                             ByVal strSessionID As String, _
-                            ByVal page As Web.UI.Page, _
+                            ByVal page As Page, _
                             Optional ByVal Upload As Boolean = False)
         m_strClassAndMethod = "Briefversand.FILL"
         m_strAppID = strAppID
@@ -593,7 +614,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID As Int32 = -1
 
             Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
@@ -706,22 +726,6 @@ Imports CKG.Base.Common
 
                 Next
 
-                ' # Vervielfältigung der Einträge um Listendarstellung zu testen
-
-                'If tblTemp2.Rows.Count > 0 Then
-                '    For i = 0 To 50
-                '        ' alle Spalten durchlaufen und kopieren
-                '        Dim tmpRow As DataRow = tblTemp2.NewRow()
-                '        For k = 0 To tblTemp2.Columns.Count - 1
-                '            tmpRow.Item(k) = tblTemp2.Rows(0)(k)
-                '        Next
-
-                '        tblTemp2.Rows.Add(tmpRow)
-                '    Next
-                '    tblTemp2.AcceptChanges()
-                'End If
-                '#
-
                 m_tblFahrzeuge = CreateOutPut(tblTemp2, strAppID)
 
 
@@ -754,22 +758,6 @@ Imports CKG.Base.Common
 
                     tblTemp.AcceptChanges()
                 Next
-
-                ' # Vervielfältigung der Einträge um Listendarstellung zu testen
-                'If tblTemp.Rows.Count > 0 Then
-                '    For i = 0 To 50
-                '        ' alle Spalten durchlaufen und kopieren
-                '        Dim tmpRow As DataRow = tblTemp.NewRow()
-                '        For k = 0 To tblTemp.Columns.Count - 1
-                '            tmpRow.Item(k) = tblTemp.Rows(0)(k)
-                '        Next
-
-                '        tblTemp.Rows.Add(tmpRow)
-                '    Next
-                '    tblTemp.AcceptChanges()
-                'End If
-
-                '#
 
                 m_tblFahrzeugeFehler = CreateOutPut(tblTemp, strAppID)
 
@@ -944,7 +932,7 @@ Imports CKG.Base.Common
 
     Public Sub GetAbrufgrund(ByVal strAppID As String, _
                    ByVal strSessionID As String, _
-                   ByVal page As Web.UI.Page)
+                   ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetAbrufgrund"
         m_strAppID = strAppID
         m_strSessionID = strSessionID
@@ -952,7 +940,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID As Int32 = -1
 
             Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
@@ -989,7 +976,7 @@ Imports CKG.Base.Common
 
     Public Sub GetVersandOptions(ByVal strAppID As String, _
                        ByVal strSessionID As String, _
-                       ByVal page As Web.UI.Page)
+                       ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetVersandOptions"
         m_strAppID = strAppID
         m_strSessionID = strSessionID
@@ -997,7 +984,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID As Int32 = -1
 
             Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
@@ -1052,7 +1038,7 @@ Imports CKG.Base.Common
 
                 If LangTextTable.Rows.Count > 0 Then
 
-                    Dim strText As String = ""
+                    Dim strText As String
 
                     For Each dr As DataRow In m_tblVersandOptions.Rows
 
@@ -1066,23 +1052,15 @@ Imports CKG.Base.Common
 
                                 strText &= LangTextTable.DefaultView.Item(i)("TDLINE").ToString & " "
 
-
-
                             Next
-
-
 
                         End If
 
                         dr("Description") = strText
 
-
                     Next
 
-
                 End If
-
-
 
                 WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblVersandOptions)
 
@@ -1101,7 +1079,7 @@ Imports CKG.Base.Common
         End If
     End Sub
 
-    Private Sub getLaender(ByVal page As Web.UI.Page)
+    Private Sub getLaender(ByVal page As Page)
         '----------------------------------------------------------------------
         ' Methode: getLaender
         ' Autor: JJU
@@ -1121,8 +1099,8 @@ Imports CKG.Base.Common
             m_tblLaender = myProxy.getExportTable("GT_WEB")
 
 
-            m_tblLaender.Columns.Add("Beschreibung", System.Type.GetType("System.String"))
-            m_tblLaender.Columns.Add("FullDesc", System.Type.GetType("System.String"))
+            m_tblLaender.Columns.Add("Beschreibung", Type.GetType("System.String"))
+            m_tblLaender.Columns.Add("FullDesc", Type.GetType("System.String"))
             Dim rowTemp As DataRow
             For Each rowTemp In m_tblLaender.Rows
                 If CInt(rowTemp("LNPLZ")) > 0 Then
@@ -1155,7 +1133,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID = -1
             Dim strKUNNR = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
@@ -1176,14 +1153,6 @@ Imports CKG.Base.Common
                 myProxy.callBapi()
 
                 Dim gt_out = myProxy.getExportTable("GT_OUT")
-
-                ' keep one-part vehicles
-                '' find and remove vehicles with only one part to send
-                'Dim singleEntries = gt_out.Rows.Cast(Of DataRow).GroupBy(Function(r) r("CHASSIS_NUM")).Where(Function(g) g.Count() = 1).ToList()
-                'singleEntries.ForEach(Sub(g)
-                '                          g.ToList.ForEach(Sub(gr) gt_out.Rows.Remove(gr))
-                '                      End Sub)
-                'gt_out.AcceptChanges()
 
                 Dim col = New DataColumn("Selected", GetType(String))
                 col.DefaultValue = String.Empty
@@ -1207,7 +1176,7 @@ Imports CKG.Base.Common
         End If
     End Sub
 
-    Private Sub getBrieflieferanten(ByVal page As Web.UI.Page)
+    Private Sub getBrieflieferanten(ByVal page As Page)
 
         m_intStatus = 0
         Try
@@ -1221,7 +1190,7 @@ Imports CKG.Base.Common
             m_Brieflieferanten = myProxy.getExportTable("GT_OUT")
 
 
-            m_Brieflieferanten.Columns.Add("Adresse", System.Type.GetType("System.String"))
+            m_Brieflieferanten.Columns.Add("Adresse", Type.GetType("System.String"))
 
             Dim rowTemp As DataRow
             For Each rowTemp In m_Brieflieferanten.Rows
@@ -1262,7 +1231,7 @@ Imports CKG.Base.Common
 
     Public Sub Anfordern(ByVal strAppID As String, _
                       ByVal strSessionID As String, _
-                      ByVal page As Web.UI.Page)
+                      ByVal page As Page)
         m_strClassAndMethod = "Briefversand.Anfordern"
         m_strAppID = strAppID
         m_strSessionID = strSessionID
@@ -1270,7 +1239,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID As Int32 = -1
 
             Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
@@ -1316,23 +1284,6 @@ Imports CKG.Base.Common
                     mE_SUBRC = myProxy.getExportParameter("E_SUBRC")
                     mE_MESSAGE = myProxy.getExportParameter("E_MESSAGE")
 
-                    'Dim debugtable As DataTable
-                    'Try
-                    '    debugtable = myProxy.getExportTable("GT_IN")
-                    'Catch ex As Exception
-
-                    'End Try
-                    'Dim debugstring As String
-                    'Dim debugstring2 As String
-                    'Try
-                    '    debugstring = myProxy.getExportParameter("EX_IN_GT_IN")
-                    'Catch
-                    'End Try
-                    'Try
-                    '    debugstring2 = myProxy.getExportParameter("EX_OUT_GT_IN")
-                    'Catch
-                    'End Try
-
                     If IsNumeric(mE_SUBRC) Then
                         m_intStatus = CInt(mE_SUBRC)
                         If mE_MESSAGE.Length > 0 Then m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden."
@@ -1374,8 +1325,8 @@ Imports CKG.Base.Common
         End If
     End Sub
 
-    Private Sub FillSapRow(ByVal row As DataRow, ByVal fzgRow As DataRow, ByVal kunnr As String, Optional ByVal partRow As DataRow = Nothing)
-        row("ZZKUNNR_AG") = kunnr
+    Private Sub FillSapRow(ByVal row As DataRow, ByVal fzgRow As DataRow, ByVal kundennr As String, Optional ByVal partRow As DataRow = Nothing)
+        row("ZZKUNNR_AG") = kundennr
         row("LICENSE_NUM") = fzgRow("Kennzeichen").ToString
         row("CHASSIS_NUM") = fzgRow("Fahrgestellnummer").ToString
         row("ZZBRFVERS") = m_Briefversand
@@ -1422,7 +1373,7 @@ Imports CKG.Base.Common
 
     Public Sub AnfordernAusAutorisierung(ByVal strAppID As String, _
                   ByVal strSessionID As String, _
-                  ByVal page As Web.UI.Page)
+                  ByVal page As Page)
 
         m_strClassAndMethod = "Briefversand.Anfordern"
         m_strAppID = strAppID
@@ -1431,7 +1382,6 @@ Imports CKG.Base.Common
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim intID As Int32 = -1
 
             Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
@@ -1784,6 +1734,12 @@ Imports CKG.Base.Common
         End Try
 
     End Sub
+
+    Public Function ShowStilllegungsdatumPopup(ByVal strAppID As String) As Boolean
+        Dim strWert As String = Base.Kernel.Common.Common.GetApplicationConfigValue("PopupStilllegungsdatumAnzeigen", strAppID, m_objUser.Customer.CustomerId, m_objUser.GroupID)
+
+        Return (Not String.IsNullOrEmpty(strWert) AndAlso strWert.ToUpper() = "TRUE")
+    End Function
 
 #End Region
 

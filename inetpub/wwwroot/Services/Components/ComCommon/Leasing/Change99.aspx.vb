@@ -6,13 +6,13 @@ Imports System.IO
 Imports System.Runtime.Serialization.Formatters.Binary
 
 Partial Public Class Change99
-    Inherits System.Web.UI.Page
+    Inherits Page
     Private m_App As App
     Private m_User As User
     Private m_Versand As Briefversand
 
-    Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
-    Protected WithEvents GridNavigation2 As CKG.Services.GridNavigation
+    Protected WithEvents GridNavigation1 As Services.GridNavigation
+    Protected WithEvents GridNavigation2 As Services.GridNavigation
 
     Private Enum Adressarten
         TempSuche = 1
@@ -23,7 +23,7 @@ Partial Public Class Change99
         EndManuell = 6
     End Enum
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
         GetAppIDFromQueryString(Me)
@@ -54,7 +54,7 @@ Partial Public Class Change99
 
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
         HelpProcedures.FixedGridViewCols(GridView1)
         HelpProcedures.FixedGridViewCols(GridView2)
@@ -65,11 +65,11 @@ Partial Public Class Change99
         lbl_ExtendSearch.Text = ""
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Protected Sub ImageButton2_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ImageButton2.Click
+    Protected Sub ImageButton2_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ImageButton2.Click
 
         'GridViews zurücksetzen
         Dim DummyTable As New DataTable
@@ -113,14 +113,14 @@ Partial Public Class Change99
                 cpeAllData.ClientState = True
                 cpeUpload.ClientState = True
             End If
-           
+
         Else
             lblErrorDokumente.Text = "Bitte geben Sie ein Suchkriterium ein!"
         End If
     End Sub
 
     Private Sub DoSubmit()
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString,  "")
+        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
 
         m_Versand.Fahrgestellnr = txtFahrgestellnummer.Text.Trim
         If txtKennz.Text.Trim.Length > 0 Then
@@ -177,7 +177,7 @@ Partial Public Class Change99
         End If
     End Sub
 
-    Private Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+    Private Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
         FillGrid(e.NewPageIndex)
     End Sub
 
@@ -190,11 +190,11 @@ Partial Public Class Change99
         FillGrid(0)
     End Sub
 
-    Private Sub Gridview1_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView1.Sorting
+    Private Sub Gridview1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex, e.SortExpression)
     End Sub
 
-    Private Sub GridView2_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView2.PageIndexChanging
+    Private Sub GridView2_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridView2.PageIndexChanging
         FillGridFehler(e.NewPageIndex)
     End Sub
 
@@ -207,7 +207,7 @@ Partial Public Class Change99
         FillGridFehler(0)
     End Sub
 
-    Private Sub Gridview2_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView2.Sorting
+    Private Sub Gridview2_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView2.Sorting
         FillGridFehler(GridView1.PageIndex, e.SortExpression)
     End Sub
 
@@ -215,8 +215,7 @@ Partial Public Class Change99
 
         CheckGridFahrzeuge()
 
-        Dim tmpDataView As New DataView()
-        tmpDataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = ""
 
         If tmpDataView.Count = 0 Then
@@ -277,7 +276,7 @@ Partial Public Class Change99
 
             For Each gridrow As GridViewRow In GridView1.Rows
 
-                Dim strHistoryLink As [String] = ""
+                Dim strHistoryLink As String
                 Dim lnkFahrgestellnummer As HyperLink
                 Dim lbl As Label
                 If m_User.Applications.[Select]("AppName = 'Report02'").Length > 0 Then
@@ -316,8 +315,7 @@ Partial Public Class Change99
     End Sub
 
     Private Sub FillGridFehler(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-        Dim tmpDataView As New DataView()
-        tmpDataView = m_Versand.FahrzeugeFehler.DefaultView
+        Dim tmpDataView As DataView = m_Versand.FahrzeugeFehler.DefaultView
         tmpDataView.RowFilter = ""
 
         If tmpDataView.Count = 0 Then
@@ -398,8 +396,7 @@ Partial Public Class Change99
     End Sub
 
     Private Sub FillGridOverView(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-        Dim tmpDataView As New DataView()
-        tmpDataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = "Selected = '1'"
 
         If tmpDataView.Count = 0 Then
@@ -478,7 +475,6 @@ Partial Public Class Change99
         Dim sprache As String
         'Länder DLL füllen
         ddlLand.DataSource = m_Versand.Laender
-        'ddlLand.DataTextField = "Beschreibung"
         ddlLand.DataTextField = "FullDesc"
         ddlLand.DataValueField = "Land1"
         ddlLand.DataBind()
@@ -504,7 +500,7 @@ Partial Public Class Change99
 
     End Sub
 
-    Private Sub ibtNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ibtNext.Click
+    Private Sub ibtNext_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ibtNext.Click
         If CheckGridFahrzeuge() = True Then
             If m_Versand.Fahrzeuge.Select("Selected = '1'").Length > 1 Then
                 lblMsgHeader.Text = "Ausgewählte Fahrzeuge"
@@ -575,13 +571,6 @@ Partial Public Class Change99
                 Next
             End If
 
-
-            'If m_App.AppAutLevel >= 4 Then
-            '    rb_endg.Visible = True
-            'Else
-            '    rb_endg.Visible = False
-            'End If
-
             If rb_temp.Visible = True AndAlso rb_endg.Visible = False Then
                 rb_temp.Checked = True
             ElseIf rb_temp.Visible = False AndAlso rb_endg.Visible = True Then
@@ -612,14 +601,12 @@ Partial Public Class Change99
             chkAnfordern = CType(gvRow.Cells(1).FindControl("chkAnfordern"), CheckBox)
             If chkAnfordern.Checked = True Then
                 m_Versand.Fahrzeuge.Select("EQUNR = '" + lblEQUNR.Text + "'")(0)("Selected") = "1"
-                'Else
-                '    m_Versand.Fahrzeuge.Select("EQUNR = '" + lblEQUNR.Text + "'")(0)("Selected") = ""
             End If
         Next
         Return m_Versand.Fahrzeuge.Select("Selected = '1'").Any()
     End Function
 
-    Protected Sub ibtnSearchAdresse_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnSearchAdresse.Click
+    Protected Sub ibtnSearchAdresse_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnSearchAdresse.Click
         Dim tmpItem As ListItem
         Dim strFirma As String
         Dim strStrasse As String
@@ -636,29 +623,6 @@ Partial Public Class Change99
 
         If strFirma.Length + strStrasse.Length + strPlz.Length + strOrt.Length + strReferenz.Length > 0 Then
 
-            'Dim sQuery As String = ""
-
-            'If strFirma.Length > 0 Then
-            '    sQuery += "NAME1 LIKE '" & strFirma.Trim & "' AND "
-            'End If
-
-            'If strStrasse.Length > 0 Then
-            '    sQuery += "STREET LIKE '" & strStrasse.Trim & "' AND "
-            'End If
-
-            'If strOrt.Length > 0 Then
-            '    sQuery += "CITY1 LIKE '" & strOrt.Trim & "' AND "
-            'End If
-
-            'If strPlz.Length > 0 Then
-            '    sQuery += "POST_CODE1 LIKE '" & strPlz.Trim & "' AND "
-            'End If
-
-            'If strLand.Length > 0 Then
-            '    sQuery += "COUNTRY LIKE '" & strLand.Trim & "' AND "
-            'End If
-            'sQuery = Left(sQuery, sQuery.Length - 4)
-
             m_Versand.sReferenz = strReferenz
             m_Versand.sName1 = strFirma
             m_Versand.sName2 = txtName2.Text
@@ -667,12 +631,10 @@ Partial Public Class Change99
             m_Versand.sOrt = strOrt
 
 
-            m_Versand.GetAdressen(Session("AppID").ToString, Session.SessionID.ToString, Me.Page)
+            m_Versand.GetAdressen(Session("AppID").ToString, Session.SessionID.ToString, Page)
 
 
-            Dim dv As New DataView
-            dv = m_Versand.Adressen.DefaultView
-            'dv.RowFilter = sQuery
+            Dim dv As DataView = m_Versand.Adressen.DefaultView
             dv.Sort = "NAME1 asc"
 
             If dv.Count > 0 Then
@@ -727,7 +689,7 @@ Partial Public Class Change99
         End If
     End Sub
 
-    Protected Sub ibtn_SucheGesch_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtn_SucheGesch.Click
+    Protected Sub ibtn_SucheGesch_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtn_SucheGesch.Click
         Dim tmpItem As ListItem
         Dim strKennzKreis As String
         Dim strPLZ As String
@@ -755,9 +717,7 @@ Partial Public Class Change99
 
             sQuery = Left(sQuery, sQuery.Length - 4)
 
-
-            Dim dv As New DataView
-            dv = m_Versand.ZulStellen.DefaultView
+            Dim dv As DataView = m_Versand.ZulStellen.DefaultView
             dv.RowFilter = sQuery
             dv.Sort = "PSTLZ asc"
 
@@ -924,6 +884,9 @@ Partial Public Class Change99
 
                 End If
                 m_Versand.VersandArt = strVersandart
+                If m_Versand.Adressart = Adressarten.EndManuell Then
+                    ConfirmNextToOverView.Enabled = (m_Versand.Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any() AndAlso m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString))
+                End If
                 m_Versand.GetAbrufgrund(Session("AppID").ToString, Session.SessionID.ToString, Me)
 
                 If m_Versand.Status <> 0 Then
@@ -961,7 +924,7 @@ Partial Public Class Change99
         End If
     End Sub
 
-    Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ibtnNextToOverView.Click
+    Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ibtnNextToOverView.Click
         lblErrorVersandOpt.Text = ""
         If ddlVersandgrund.SelectedIndex = 0 Then
             lblErrorVersandOpt.Text += "Bitte wählen Sie einen Versandgrund aus!<br />"
@@ -1025,12 +988,13 @@ Partial Public Class Change99
             Panel4.CssClass = "StepActive"
             FillGridOverView(0)
             FillOverView()
+            ConfirmNextToOverView.Enabled = False
         End If
 
 
     End Sub
 
-    Protected Sub ibtnShowOptions_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnShowOptions.Click
+    Protected Sub ibtnShowOptions_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnShowOptions.Click
 
         Dim ibt As ImageButton
 
@@ -1063,7 +1027,7 @@ Partial Public Class Change99
         divBackDisabled.Visible = True
     End Sub
 
-    Private Sub lbtnCloseOption_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbtnCloseOption.Click
+    Private Sub lbtnCloseOption_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCloseOption.Click
         divOptions.Visible = False
         divBackDisabled.Visible = False
 
@@ -1096,8 +1060,6 @@ Partial Public Class Change99
         Dim bvalidate As Boolean = True
         lblErrPopUp.Visible = False
 
-        Dim bAufAbmeldungWarten As Boolean = False
-
         Dim drows() As DataRow = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1'")
         If drows.Length > 0 Then
             For Each dRowSel As DataRow In drows
@@ -1124,10 +1086,6 @@ Partial Public Class Change99
 
                         End If
                     End If
-                End If
-
-                If dRowSel("EAN11").ToString() = "ZZABMELD_INVERTED" Then
-                    bAufAbmeldungWarten = True
                 End If
             Next
         End If
@@ -1251,17 +1209,14 @@ Partial Public Class Change99
         End If
     End Sub
 
-    Protected Sub ibtnSucheManuellSave_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnSucheManuellSave.Click
+    Protected Sub ibtnSucheManuellSave_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnSucheManuellSave.Click
         m_Versand.VersandAdresseText = ""
         lblErrorAdrManuell.Text = ""
-        Dim strAdresse As String = ""
-
 
         If txtFirmaManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Name"" eingeben!<br>&nbsp;"
         Else
             m_Versand.Name1 = txtFirmaManuell.Text.Trim(" "c)
-            strAdresse = txtFirmaManuell.Text.Trim(" "c) & ", "
         End If
         If txtPlzManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""PLZ"" eingeben!<br>&nbsp;"
@@ -1271,7 +1226,6 @@ Partial Public Class Change99
                     lblError.Text = "Postleitzahl hat falsche Länge."
                 Else
                     m_Versand.PostCode = txtPlzManuell.Text.Trim(" "c)
-                    strAdresse = strAdresse & ddlLand.SelectedItem.Value & "-" & txtPlzManuell.Text.Trim(" "c) & " "
                 End If
             End If
 
@@ -1280,19 +1234,16 @@ Partial Public Class Change99
             lblErrorAdrManuell.Text &= "Bitte ""Ort"" eingeben!<br>"
         Else
             m_Versand.City = txtOrtManuell.Text.Trim(" "c)
-            strAdresse = strAdresse & txtOrtManuell.Text.Trim(" "c) & ", "
         End If
         If txtStrasseManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Strasse"" eingeben!<br>"
         Else
             m_Versand.Street = txtStrasseManuell.Text.Trim(" "c)
-            strAdresse = strAdresse & txtStrasseManuell.Text.Trim(" "c) & " "
         End If
         If txtNrManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Nummer"" eingeben!<br>"
         Else
             m_Versand.HouseNum = txtNrManuell.Text.Trim(" "c)
-            strAdresse = strAdresse & txtNrManuell.Text.Trim(" "c)
         End If
         m_Versand.Name2 = txtName2.Text.Trim(" "c)
         If lblErrorAdrManuell.Text = "" Then
@@ -1364,7 +1315,7 @@ Partial Public Class Change99
         lblErrorAnfordern.Text = ""
 
 
-        If Me.Request.Url.ToString.Contains("mode") = True Then
+        If Request.Url.ToString.Contains("mode") = True Then
 
             GridView1.Visible = False
             data.Visible = False
@@ -1476,7 +1427,7 @@ Partial Public Class Change99
                     formatter = New BinaryFormatter()
                     formatter.Serialize(ms, m_Versand)
                     b = ms.ToArray
-                    ms = New IO.MemoryStream(b)
+                    ms = New MemoryStream(b)
                     DetailArray(0, 0) = ms
                     DetailArray(0, 1) = "VersandObject"
 
@@ -1560,8 +1511,6 @@ Partial Public Class Change99
            
         End If
 
-
-
     End Sub
 
     Private Sub ResetAdress()
@@ -1636,7 +1585,7 @@ Partial Public Class Change99
         Response.Redirect("Change99.aspx?AppID=" & Session("AppID").ToString, False)
     End Sub
 
-    Protected Sub ibtnUpload_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnUpload.Click
+    Protected Sub ibtnUpload_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnUpload.Click
 
         Result.Visible = False
 
@@ -1658,49 +1607,10 @@ Partial Public Class Change99
 
     End Sub
 
-    Private Sub upload(ByVal uFile As System.Web.HttpPostedFile)
+    Private Sub upload(ByVal uFile As HttpPostedFile)
 
-        'Dim filepath As String = ConfigurationManager.AppSettings("ExcelPath")
-        'Dim filename As String = ""
-        'Dim info As System.IO.FileInfo
-
-        ''Dateiname: User_yyyyMMddhhmmss.xls
-        'If Right(upFile1.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
-        '    filename = m_User.UserName & "_" & Format(Now, "yyyyMMddhhmmss") & ".xls"
-        'End If
-        'If Right(upFile1.PostedFile.FileName.ToUpper, 5) = ".XLSX" Then
-        '    filename = m_User.UserName & "_" & Format(Now, "yyyyMMddhhmmss") & ".xlsx"
-        'End If
         Try
             If Not (uFile Is Nothing) Then
-                'uFile.SaveAs(ConfigurationManager.AppSettings("ExcelPath") & filename)
-                'info = New System.IO.FileInfo(filepath & filename)
-                'If Not (info.Exists) Then
-                '    lblError.Text = "Fehler beim Speichern."
-                '    Exit Sub
-                'End If
-
-                'Dim sConnectionString As String = ""
-                'If Right(upFile1.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
-                '    sConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
-                '     "Data Source=" & filepath & filename & ";" & _
-                '     "Extended Properties=""Excel 8.0;HDR=YES;"""
-                'Else
-                '    sConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + filename + _
-                '    ";Extended Properties=""Excel 12.0 Xml;HDR=YES"""
-                'End If
-
-                'Dim objConn As New OleDbConnection(sConnectionString)
-                'objConn.Open()
-
-                'Dim objCmdSelect As New OleDbCommand("SELECT * FROM [Tabelle1$]", objConn)
-
-                'Dim objAdapter1 As New OleDbDataAdapter()
-                'objAdapter1.SelectCommand = objCmdSelect
-
-                'Dim objDataset1 As New DataSet()
-                'objAdapter1.Fill(objDataset1, "XLData")
-
                 'CHC ITA 5972
                 lblError.Text = ""
                 lblErrorDokumente.Text = ""
@@ -1715,9 +1625,6 @@ Partial Public Class Change99
                 CheckInputTable(XLS_CheckTable)
                 lblErrorDokumente.Text += lblError.Text
                 lblError.Text = ""
-                'CheckInputTable(objDataset1.Tables(0))
-
-                'objConn.Close()
 
                 If m_Versand.tblUpload.Rows.Count > 0 Then
                     m_Versand.EQuiTyp = "B"
@@ -1731,7 +1638,6 @@ Partial Public Class Change99
                         Session("App_Versand") = m_Versand
                         cpeAllData.ClientState = True
                         cpeUpload.ClientState = True
-                        'cpeDokuAusgabe.ClientState = True
                     End If
                 Else
                     lblErrorDokumente.Text += "Fehler beim Hochladen der Datei!"
@@ -1746,7 +1652,6 @@ Partial Public Class Change99
     Private Sub CheckInputTable(ByVal tblInput As DataTable)
 
         Dim rowData As DataRow
-        Dim tblReturn As DataTable = Nothing
         Dim Fahrgestellnummer As String = ""
         Dim Kennzeichen As String = ""
         Dim NummerZB2 As String = ""
@@ -1759,35 +1664,34 @@ Partial Public Class Change99
 
         For Each rowData In tblInput.Rows
 
-            If Not TypeOf rowData(0) Is System.DBNull Then
+            If Not TypeOf rowData(0) Is DBNull Then
                 Fahrgestellnummer = CStr(rowData(0)).Trim
             End If
 
             If tblInput.Columns.Count > 1 Then
-                If Not TypeOf rowData(1) Is System.DBNull Then
-                    'Kennzeichen = CStr(rowData(1)).Trim
+                If Not TypeOf rowData(1) Is DBNull Then
                     Kennzeichen = uploadV.FindeDeutschesKennzeichen(rowData)
                 End If
             End If
             If tblInput.Columns.Count > 2 Then
-                If Not TypeOf rowData(2) Is System.DBNull Then
+                If Not TypeOf rowData(2) Is DBNull Then
                     NummerZB2 = CStr(rowData(2)).Trim
                 End If
             End If
             If tblInput.Columns.Count > 3 Then
-                If Not TypeOf rowData(3) Is System.DBNull Then
+                If Not TypeOf rowData(3) Is DBNull Then
                     LeaseNr = CStr(rowData(3)).Trim
                 End If
             End If
 
             If tblInput.Columns.Count > 4 Then
-                If Not TypeOf rowData(4) Is System.DBNull Then
+                If Not TypeOf rowData(4) Is DBNull Then
                     Ref1 = CStr(rowData(4)).Trim(" "c)
                 End If
             End If
 
             If tblInput.Columns.Count > 5 Then
-                If Not TypeOf rowData(5) Is System.DBNull Then
+                If Not TypeOf rowData(5) Is DBNull Then
                     Ref2 = CStr(rowData(5)).Trim
                 End If
             End If
@@ -1933,59 +1837,9 @@ Partial Public Class Change99
             cpeAdressSuche.ClientState = True
         End If
 
-
-        'If rb_temp.Checked = True Then
-        '    m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
-
-
-
-        '    Select Case m_App.AppAutLevel
-        '        Case 1
-        '            trAdressuche.Visible = False
-        '            trZulStelleSuche.Visible = True
-        '            cpeZulstelle.ClientState = True
-        '            trFreieAdresse.Visible = False
-        '        Case 2
-        '            rb_endg.Visible = False
-        '            trAdressuche.Visible = True
-        '            cpeAdressSuche.ClientState = True
-        '            trZulStelleSuche.Visible = True
-        '            trFreieAdresse.Visible = False
-        '        Case 3
-        '            cpeAdressSuche.ClientState = True
-        '            trAdressuche.Visible = True
-        '            trZulStelleSuche.Visible = True
-        '            trFreieAdresse.Visible = True
-        '        Case Else
-        '            cpeAdressSuche.ClientState = True
-        '            trAdressuche.Visible = True
-        '            trZulStelleSuche.Visible = True
-        '            trFreieAdresse.Visible = True
-        '    End Select
-
-        'ElseIf rb_endg.Checked = True Then
-        '    m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
-        '    Select Case m_App.AppAutLevel
-        '        Case 4
-        '            cpeAdressSuche.ClientState = True
-        '            trAdressuche.Visible = True
-        '            trZulStelleSuche.Visible = False
-        '            trFreieAdresse.Visible = False
-        '        Case 5
-        '            cpeAdressSuche.ClientState = True
-        '            trAdressuche.Visible = True
-        '            trZulStelleSuche.Visible = True
-        '            trFreieAdresse.Visible = False
-        '        Case 6
-        '            cpeAdressSuche.ClientState = True
-        '            trAdressuche.Visible = True
-        '            trZulStelleSuche.Visible = True
-        '            trFreieAdresse.Visible = True
-        '    End Select
-        'End If
     End Sub
 
-    Protected Sub ibtAuswahl_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+    Protected Sub ibtAuswahl_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs)
         Dim chk As CheckBox
 
         For Each dr As GridViewRow In GridView1.Rows
@@ -2025,15 +1879,11 @@ Partial Public Class Change99
 
                     End If
 
-
                 Next
-
 
             End If
 
-
         End If
-
 
         Return ZurAutorisierung
 
@@ -2041,10 +1891,9 @@ Partial Public Class Change99
 
 #End Region
    
-    Protected Sub ibtnCreatePDF_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnCreatePDF.Click
+    Protected Sub ibtnCreatePDF_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnCreatePDF.Click
 
-        Dim tmpDataView As New DataView()
-        tmpDataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = "Selected = '1'"
 
         Select Case m_Versand.Adressart
@@ -2059,8 +1908,6 @@ Partial Public Class Change99
         m_Versand.VersandoptionenText = lblOptionsOverViewShow.Text.Replace("<br />", vbCrLf)
         m_Versand.VersandAdresseText = m_Versand.VersandAdresseText.Replace(" <br /> ", vbCrLf)
         m_Versand.FahrzeugePrint = tmpDataView.ToTable
-        'm_Versand.Beauftragungsdatum = Date.Now().ToShortDateString
-
 
         Dim headTable As New DataTable("Kopf")
 
@@ -2093,9 +1940,7 @@ Partial Public Class Change99
         headTable.Rows.Add(dr)
         headTable.AcceptChanges()
 
-
         m_Versand.FahrzeugePrint.TableName = "Fahrzeuge"
-
 
         Dim imageHt As New Hashtable()
         Try
@@ -2105,7 +1950,7 @@ Partial Public Class Change99
         End Try
 
         Dim docFactory As New DocumentGeneration.WordDocumentFactory(m_Versand.FahrzeugePrint, imageHt)
-        docFactory.CreateDocumentTable("Versandauftrag_" & m_User.UserName, Me.Page, "\Components\ComCommon\Documents\VersandZB2.doc", headTable)
+        docFactory.CreateDocumentTable("Versandauftrag_" & m_User.UserName, Page, "\Components\ComCommon\Documents\VersandZB2.doc", headTable)
 
     End Sub
 
@@ -2123,7 +1968,7 @@ Partial Public Class Change99
 
     End Sub
 
-    Protected Sub ibtEdit_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles ibtEdit.Click
+    Protected Sub ibtEdit_Click(sender As Object, e As ImageClickEventArgs) Handles ibtEdit.Click
 
         If ddlAdresse.SelectedIndex > 0 Then
             Dim Name As String
@@ -2145,7 +1990,6 @@ Partial Public Class Change99
     End Sub
 
     Private Sub Reset()
-
 
         Try
             Dim MeControls As Change99 = CType(Session("me"), Change99)
@@ -2194,7 +2038,6 @@ Partial Public Class Change99
                             rb_endg.Visible = True
                     End Select
 
-
                 Next
             End If
 
@@ -2214,8 +2057,6 @@ Partial Public Class Change99
             Dim tmpItem As ListItem
 
             For Each Item As ListItem In MeControls.ddlAdresse.Items
-                tmpItem = New ListItem
-
                 tmpItem = Item
 
                 ddlAdresse.Items.Add(tmpItem)
@@ -2228,16 +2069,11 @@ Partial Public Class Change99
 
             Dim Mode As String = Request.QueryString.Item("mode").ToString
 
-
-
-
             If Mode = "success" Then
                 m_Versand.GetAdressenandZulStellen(Session("AppID").ToString, Session.SessionID.ToString, Me)
                 Session("App_Versand") = m_Versand
                 AdressChoice()
             End If
-
-
 
         Catch ex As Exception
             Session("me") = Nothing
@@ -2247,7 +2083,7 @@ Partial Public Class Change99
 
     End Sub
 
-    Protected Sub ibtExtendSearch_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles ibtExtendSearch.Click
+    Protected Sub ibtExtendSearch_Click(sender As Object, e As ImageClickEventArgs) Handles ibtExtendSearch.Click
 
         If hdnField.Value = "1" Then
             tr_Brieflieferant.Visible = False
@@ -2262,7 +2098,7 @@ Partial Public Class Change99
         cpeDokuAusgabe.ClientState = Nothing
     End Sub
 
-    Protected Sub ibtBack_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles ibtBack.Click
+    Protected Sub ibtBack_Click(sender As Object, e As ImageClickEventArgs) Handles ibtBack.Click
         ibtExtendSearch.Visible = True
         ibtBack.Visible = False
         tblSearch.Visible = True
