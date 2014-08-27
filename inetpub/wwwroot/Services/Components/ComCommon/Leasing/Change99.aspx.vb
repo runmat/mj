@@ -14,15 +14,6 @@ Partial Public Class Change99
     Protected WithEvents GridNavigation1 As Services.GridNavigation
     Protected WithEvents GridNavigation2 As Services.GridNavigation
 
-    Private Enum Adressarten
-        TempSuche = 1
-        TempZulassungsstelle = 2
-        TempManuell = 3
-        EndSuche = 4
-        EndZulassungsstelle = 5
-        EndManuell = 6
-    End Enum
-
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
@@ -884,9 +875,7 @@ Partial Public Class Change99
 
                 End If
                 m_Versand.VersandArt = strVersandart
-                If m_Versand.Adressart = Adressarten.EndManuell Then
-                    ConfirmNextToOverView.Enabled = (m_Versand.Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any() AndAlso m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString))
-                End If
+                ConfirmNextToOverView.Enabled = m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
                 m_Versand.GetAbrufgrund(Session("AppID").ToString, Session.SessionID.ToString, Me)
 
                 If m_Versand.Status <> 0 Then
@@ -1106,6 +1095,8 @@ Partial Public Class Change99
             divBackDisabled.Visible = False
         End If
 
+        ConfirmNextToOverView.Enabled = m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
+
     End Sub
 
     Protected Sub ibtnSucheSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ibtnSucheSave.Click
@@ -1153,9 +1144,9 @@ Partial Public Class Change99
             m_Versand.laenderKuerzel = AdrRow("COUNTRY").ToString
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Adressarten.TempSuche
+                m_Versand.Adressart = Briefversand.Adressarten.TempSuche
             Else
-                m_Versand.Adressart = Adressarten.EndSuche
+                m_Versand.Adressart = Briefversand.Adressarten.EndSuche
             End If
         Else
             lblSucheAdr.Visible = True
@@ -1201,9 +1192,9 @@ Partial Public Class Change99
             m_Versand.laenderKuerzel = String.Empty
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Adressarten.TempZulassungsstelle
+                m_Versand.Adressart = Briefversand.Adressarten.TempZulassungsstelle
             Else
-                m_Versand.Adressart = Adressarten.EndZulassungsstelle
+                m_Versand.Adressart = Briefversand.Adressarten.EndZulassungsstelle
             End If
 
         End If
@@ -1261,9 +1252,9 @@ Partial Public Class Change99
 
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Adressarten.TempManuell
+                m_Versand.Adressart = Briefversand.Adressarten.TempManuell
             Else
-                m_Versand.Adressart = Adressarten.EndManuell
+                m_Versand.Adressart = Briefversand.Adressarten.EndManuell
             End If
 
             trSelAdresse.Visible = True
@@ -1806,11 +1797,11 @@ Partial Public Class Change99
 
                     Select Case Level(i)
 
-                        Case Adressarten.TempSuche
+                        Case Briefversand.Adressarten.TempSuche
                             trAdressuche.Visible = True
-                        Case Adressarten.TempZulassungsstelle
+                        Case Briefversand.Adressarten.TempZulassungsstelle
                             trZulStelleSuche.Visible = True
-                        Case Adressarten.TempManuell
+                        Case Briefversand.Adressarten.TempManuell
                             trFreieAdresse.Visible = True
 
                     End Select
@@ -1819,11 +1810,11 @@ Partial Public Class Change99
                 ElseIf rb_endg.Checked = True Then
                     Select Case Level(i)
 
-                        Case Adressarten.EndSuche
+                        Case Briefversand.Adressarten.EndSuche
                             trAdressuche.Visible = True
-                        Case Adressarten.EndZulassungsstelle
+                        Case Briefversand.Adressarten.EndZulassungsstelle
                             trZulStelleSuche.Visible = True
-                        Case Adressarten.EndManuell
+                        Case Briefversand.Adressarten.EndManuell
                             trFreieAdresse.Visible = True
 
                     End Select

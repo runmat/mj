@@ -70,6 +70,15 @@ Imports System.Data.SqlClient
 
 #End Region
 
+    Public Enum Adressarten
+        TempSuche = 1
+        TempZulassungsstelle = 2
+        TempManuell = 3
+        EndSuche = 4
+        EndZulassungsstelle = 5
+        EndManuell = 6
+    End Enum
+
 #Region " Properties "
 
     Public Property OptionFlag() As String
@@ -1737,8 +1746,11 @@ Imports System.Data.SqlClient
 
     Public Function ShowStilllegungsdatumPopup(ByVal strAppID As String) As Boolean
         Dim strWert As String = Base.Kernel.Common.Common.GetApplicationConfigValue("PopupStilllegungsdatumAnzeigen", strAppID, m_objUser.Customer.CustomerId, m_objUser.GroupID)
+        Dim blnShowPopup = (Not String.IsNullOrEmpty(strWert) AndAlso strWert.ToUpper() = "TRUE")
 
-        Return (Not String.IsNullOrEmpty(strWert) AndAlso strWert.ToUpper() = "TRUE")
+        Dim blnAufAbmeldungWarten = VersandOptionen.Select("EXTGROUP='" & VersandArt & "' AND EAN11 = 'ZZABMELD_INVERTED' AND Selected = '1'").Any()
+
+        Return (Adressart = Adressarten.EndManuell AndAlso Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any() AndAlso blnShowPopup AndAlso Not blnAufAbmeldungWarten)
     End Function
 
 #End Region
