@@ -285,7 +285,7 @@ namespace AppRemarketing.forms
             }
         }
 
-    private void FillDate()
+        private void FillDate()
         {
             txtDatumVon.Text = Helper.DateFrom;
             txtDatumBis.Text = Helper.DateTo;
@@ -304,69 +304,59 @@ namespace AppRemarketing.forms
             lbtnBack.Visible = false;
         }
 
-        protected void btnOK_Click(object sender, EventArgs e)
+        protected void btnOKStorno_Click(object sender, EventArgs e)
         {
-            //if (txtBemerkung.Text.Length == 0)
-            //{
-            //    lblSaveInfo.Visible = true;
-            //    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
-            //    lblSaveInfo.Text = "Bitte geben Sie eine Bemerkung ein.";
-            //    ModalPopupExtender2.Show();
-            //    return;
-            //}
+            m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
+            m_Report.Rechnungsnummer = lblRechnr.Text;
 
-            //if (txtBetrag.Text.Length == 0)
-            //{
-            //    lblSaveInfo.Visible = true;
-            //    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
-            //    lblSaveInfo.Text = "Bitte geben Sie einen Betrag ein.";
-            //    ModalPopupExtender2.Show();
-            //    return;
-            //}
+            m_Report.StornoRechnung((string)Session["AppID"], (string)Session.SessionID, this.Page, txtStornotext.Text);
+            
+            if (m_Report.Status == 0)
+            {
+                txtStornotext.Enabled = false;
+                lblStornoMessage.Text = "Rechnung " + m_Report.Rechnungsnummer + " erfolgreich storniert";
+                btnOKStorno.Visible = false;
+                btnCancelStorno.Style["display"] = "none";
+                btnCloseStorno.Visible = true;
+                mpeStorno.Show();
+            }
+            else
+            {
+                txtStornotext.Enabled = true;
+                lblStornoMessage.Text = "Storno fehlgeschlagen: " + m_Report.Message;
+                btnOKStorno.Visible = true;
+                btnCancelStorno.Style["display"] = "";
+                btnCloseStorno.Visible = false;
+                mpeStorno.Show();
+            }
+        }
 
-            //double DummyDouble;
+        protected void btnCloseStorno_Click(object sender, EventArgs e)
+        {
+            // Nach Storno Grid-Daten aktualisieren
+            m_Report.Rechnungsnummer = "";
+            m_Report.ShowRechnungMietfahrzeuge((string)Session["AppID"], (string)Session.SessionID, this);
 
-            //if (double.TryParse(txtBetrag.Text, out DummyDouble) == false)
-            //{
-            //    lblSaveInfo.Visible = true;
-            //    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
-            //    lblSaveInfo.Text = "Bitte geben Sie gültigen Betrag ein.";
-            //    ModalPopupExtender2.Show();
-            //    return;
-            //}
-
-
-
-            //m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
-            //m_Report.Rechnungsnummer = lblRechnr.Text;
-            //m_Report.GutschriftBetrag = txtBetrag.Text;
-            //m_Report.GutschriftBemerkung = txtBemerkung.Text;
-
-            //m_Report.SetGutschrift((string)Session["AppID"], (string)Session.SessionID, this.Page);
-
-            //if (m_Report.Status == 102)
-            //{
-            //    lblSaveInfo.ForeColor = System.Drawing.Color.Blue;
-            //    lblSaveInfo.Visible = true;
-            //    btnCancel.Text = "Schließen";
-            //    btnOK.Width = 0;
-            //    ModalPopupExtender2.Show();
-            //    lblSaveInfo.Text = "Die Gutschrift wurde gespeichert.";
-            //}
-            //else
-            //{
-            //    lblSaveInfo.Visible = true;
-            //    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
-            //    //lblSaveInfo.Text = "Fehler beim Speichern der Gutschrift.";
-            //    lblSaveInfo.Text = m_Report.Message;
-            //    ModalPopupExtender2.Show();
-            //}
-
+            if (m_Report.Status == 0)
+            {
+                Session["RechnungMietfahrzeuge"] = m_Report;
+                Fillgrid();
+            }
+            else
+            {
+                lblError.Text = m_Report.Message;
+            }
+            mpeStorno.Hide();
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            ModalPopupExtender2.Show();
+            mpeBemerkung.Show();
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            mpeStorno.Show();
         }
 
         private void StoreGridSettings(RadGrid grid, GridSettingsType settingsType)
@@ -455,7 +445,7 @@ namespace AppRemarketing.forms
                         lblBemerkung.Text = m_Report.TableBemerkungen.Rows[0]["KTEXT"].ToString();
                     }
 
-                    ModalPopupExtender2.Show();
+                    mpeBemerkung.Show();
                     break;
 
                 case "PDF":
@@ -496,6 +486,21 @@ namespace AppRemarketing.forms
                     {
                         lblError.Text = "Das Dokument wurde nicht gefunden.";
                     }
+                    break;
+
+                case "Storno":
+                    m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
+                    m_Report.Rechnungsnummer = e.CommandArgument.ToString();
+
+                    lblRechnr.Text = m_Report.Rechnungsnummer;
+                    txtStornotext.Enabled = true;
+                    txtStornotext.Text = "";
+                    lblStornoMessage.Text = "";
+                    btnOKStorno.Visible = true;
+                    btnCancelStorno.Style["display"] = "";
+                    btnCloseStorno.Visible = false;
+
+                    mpeStorno.Show();
                     break;
             }
         }
