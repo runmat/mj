@@ -96,6 +96,7 @@
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
+    <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Equi\Contracts\IMahnreportDataService.cs" />
     <Compile Include="Equi\Contracts\IDatenOhneDokumenteDataService.cs" />
     <Compile Include="Equi\Contracts\IErweiterterBriefbestandDataService.cs" />
+    <Compile Include="Equi\Contracts\IHalterabweichungenDataService.cs" />
     <Compile Include="Equi\Contracts\IDokumenteOhneDatenDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Equi\Models\UIModels\DatenOhneDokumenteFilter.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
+    <Compile Include="Equi\Models\DataModels\Halterabweichung.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />
     <Compile Include="Equi\Models\UIModels\GrunddatenEquiSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
@@ -128,12 +131,14 @@
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />
     <Compile Include="Equi\Services\ErweiterterBriefbestandDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\HalterabweichungenDataServiceSAP.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
     <Compile Include="Equi\ViewModels\DokumenteOhneDatenViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnreportViewModel.cs" />
     <Compile Include="Equi\ViewModels\DatenOhneDokumenteViewModel.cs" />
     <Compile Include="Equi\ViewModels\ErweiterterBriefbestandViewModel.cs" />
+    <Compile Include="Equi\ViewModels\HalterabweichungenViewModel.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />

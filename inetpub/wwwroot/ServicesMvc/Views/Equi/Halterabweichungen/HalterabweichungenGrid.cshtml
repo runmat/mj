@@ -1,0 +1,60 @@
+﻿@using CkgDomainLogic.Equi.Models
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridHalterabweichungen"; }
+
+@(Html.Telerik()
+    .Grid<Halterabweichung>()
+    .Name(gridName)
+    .XGroup("GridHalterabweichungen")
+    .XAjaxDataBinding("HalterabweichungenAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Status).Visible(!Model.EditMode);
+        columns.XBound(c => c.IsSelected).ClientTemplate(
+                "<input type='checkbox' name='cbxCheckRow' class='margin-right-10' />"
+            ).HeaderTemplate(
+                "<input type='checkbox' id='cbxCheckAll' />" + Localize.Selection
+            ).Filterable(false).Groupable(false).Sortable(false).Visible(Model.EditMode);
+        columns.XBound(c => c.IsSelected).ClientTemplate(
+                "<input type='checkbox' <# if (data.IsSelected) { #> checked <# } #> disabled />"
+            ).Filterable(false).Groupable(false).Sortable(false).Visible(!Model.EditMode);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Vertragsnummer);
+        columns.XBound(c => c.Vertragspartner_Name1);
+        columns.XBound(c => c.Vertragspartner_Name2);
+        columns.XBound(c => c.Vertragspartner_Strasse);
+        columns.XBound(c => c.Vertragspartner_Hausnummer);
+        columns.XBound(c => c.Vertragspartner_PLZ);
+        columns.XBound(c => c.Vertragspartner_Ort);
+        columns.XBound(c => c.Halter_Name1);
+        columns.XBound(c => c.Halter_Name2);
+        columns.XBound(c => c.Halter_Strasse);
+        columns.XBound(c => c.Halter_Hausnummer);
+        columns.XBound(c => c.Halter_PLZ);
+        columns.XBound(c => c.Halter_Ort);
+        columns.XBound(c => c.Vertragsbeginn).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Vertragsende).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridHalterabweichungen"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportHalterabweichungenFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportHalterabweichungenFilteredPDF", "Equi");
+    })
+)
+      
+@if (Model.EditMode)
+{
+    <div class="form-actions">
+        <button type="button" class="btn green" onclick="SaveHalterabweichungen();">@Localize.Send <i class="m-icon-swapright m-icon-white"></i></button>
+    </div>
+}
+
+<script type="text/javascript">
+    var _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>

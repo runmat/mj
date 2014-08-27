@@ -541,9 +541,10 @@ Public Class Briefanforderung
             m_intStatus = 0
 
             Try
-
-                mFahrzeuge.Columns.Add("ErrorMessage", String.Empty.GetType)
-                mFahrzeuge.AcceptChanges()
+                If Not mFahrzeuge.Columns.Contains("ErrorMessage") Then
+                    mFahrzeuge.Columns.Add("ErrorMessage", String.Empty.GetType)
+                    mFahrzeuge.AcceptChanges()
+                End If         
 
                 For Each tmptRow As DataRow In mFahrzeuge.Select("Anfordern='X'")
 
