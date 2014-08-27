@@ -52,6 +52,11 @@ Public Class CWSAbholadresse
         End If
     End Sub
 
+    Protected Sub OnValidateDate(sender As Object, e As ValidateDateEventArgs)
+        Dim tmpDate As DateTime
+        e.IsValid = DateTime.TryParse(e.Datum, tmpDate)
+    End Sub
+
     Public Sub Save() Implements ICollapsibleWizardStep.Save
         TransferPage.Dal.Fzg1.Abholfahrt = TransportAddress.Fahrt
     End Sub
