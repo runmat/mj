@@ -495,6 +495,23 @@ namespace AppRemarketing.forms
                     var rechnungsnummer = parts[0];
                     var status = parts[1];
 
+                    string dateityp;
+                    switch (status)
+                    {
+                        case "R":
+                            dateityp = "Rechnung";
+                            break;
+                        case "N":
+                            dateityp = "Nachbelastung";
+                            break;
+                        case "G":
+                            dateityp = "Gutschrift";
+                            break;
+                        default:
+                            dateityp = status;
+                            break;
+                    }
+
                     // Nachberechnung wie Gutschrift
                     if (status.Equals("N", StringComparison.Ordinal))
                     {
@@ -522,15 +539,7 @@ namespace AppRemarketing.forms
 
                     if (qe.ReturnStatus == 2)
                     {
-                        string Path = qe.path;
-
-                        Session["App_Filepath"] = Path;
-
-                        Literal1.Text = " <script language=\"Javascript\">" + Environment.NewLine;
-                        Literal1.Text += " <!-- //" + Environment.NewLine;
-                        Literal1.Text += " window.open(\"Report11Formular.aspx?AppID=" + (String)Session["AppID"] + "\", \"_blank\", \"left=0,top=0,resizable=YES,scrollbars=YES\");" + Environment.NewLine;
-                        Literal1.Text += " //-->" + Environment.NewLine;
-                        Literal1.Text += " </script>" + Environment.NewLine;
+                        Helper.GetPDF(this, qe.path, dateityp + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
                     }
                     else
                     {
