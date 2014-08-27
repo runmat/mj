@@ -290,7 +290,7 @@ namespace AppRemarketing.forms
             m_report = (Historie)Session["Historie"];
             if (Links == null) return;
 
-            Links.OpenBelastungsanzeige(ShowReportHelper);
+            Links.OpenBelastungsanzeige(ShowReportHelper, this);
         }
 
         protected void ShowSchadensgutachten(object sender, EventArgs e)
@@ -298,7 +298,7 @@ namespace AppRemarketing.forms
             m_report = (Historie)Session["Historie"];
             if (Links == null) return;
 
-            Links.OpenSchadensgutachten(ShowReportHelper);
+            Links.OpenSchadensgutachten(ShowReportHelper, this);
         }
 
         protected void ShowRechnung(object sender, EventArgs e)
@@ -306,7 +306,7 @@ namespace AppRemarketing.forms
             m_report = (Historie)Session["Historie"];
             if (Links == null) return;
 
-            Links.OpenRechnung(ShowReportHelper);
+            Links.OpenRechnung(ShowReportHelper, this);
         }
     }
 }

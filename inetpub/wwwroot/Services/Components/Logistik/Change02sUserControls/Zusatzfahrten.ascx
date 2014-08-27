@@ -56,7 +56,7 @@
       </asp:GridView>
     </div>
     <div id="address">
-      <uc:TransportAddress ID="TransportAddress" runat="server" ShowSearch="false" ShowTransportTypes="true" />
+      <uc:TransportAddress ID="TransportAddress" runat="server" ShowSearch="false" ShowTransportTypes="true" OnValidateDate="OnValidateDate" />
       <asp:LinkButton ID="lbSave" runat="server" CssClass="greyButton save" Style="margin-top: 5px; margin-right: 8px;"
         Text="Speichern" OnClick="OnSave" />
       <asp:LinkButton ID="lbCancel" runat="server" CssClass="greyButton cancel" Style="margin-top: 5px;"
