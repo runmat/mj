@@ -18,7 +18,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        [VIN]
         public string FIN
         {
             get { return _mFIN; }

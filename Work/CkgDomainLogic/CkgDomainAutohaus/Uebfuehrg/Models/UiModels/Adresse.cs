@@ -35,7 +35,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.Email)]
         [EmailAddress]
-        [Required]
         public new string Email { get; set; }
 
         [SelectListText, XmlIgnore]
