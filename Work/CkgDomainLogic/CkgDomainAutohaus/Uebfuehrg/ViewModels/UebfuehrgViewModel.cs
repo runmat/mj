@@ -164,6 +164,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         void TryInitExternalParams(IDictionary<string, string> externalParams)
         {
+            AnzahlFahrzeugeGewuenschtCorrespondingDisabled = false;
             if (externalParams == null)
                 return;
 

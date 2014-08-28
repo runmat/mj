@@ -43,6 +43,7 @@
     .ms-elem-selectable span.required {
         background-color: yellow;
         font-weight: bold;
+        cursor: pointer;
     }
     
 </style>
@@ -636,6 +637,7 @@
     .Scrollable(false)
     .Width(900)
     .Height(700)
+    .ClientEvents(c => c.OnClose("LoadingHide()"))
     .Content(@<text><div id="bingLocationDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></div></div></text>))
     
 @(Html.Telerik().Window()
@@ -647,4 +649,5 @@
     .Scrollable(false)
     .Width(900)
     .Height(700)
+    .ClientEvents(c => c.OnClose("LoadingHide()"))
     .Content(@<text><div id="bingRouteDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></div></div></text>))
