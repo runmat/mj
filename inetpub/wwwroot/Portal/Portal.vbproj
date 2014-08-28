@@ -463,27 +463,6 @@
     <Content Include="Customize\VW\vwlogo.jpg" />
     <Content Include="Default.aspx" />
     <Content Include="Downloads\DADQS_de.exe" />
-    <Content Include="GAC\AjaxControlToolkit.dll" />
-    <Content Include="GAC\Aspose.Cells.dll" />
-    <Content Include="GAC\Aspose.Pdf.dll" />
-    <Content Include="GAC\Aspose.Words.dll" />
-    <Content Include="GAC\BarcodeLib.dll" />
-    <Content Include="GAC\BusyBoxDotNet.dll" />
-    <Content Include="GAC\CuteWebUI.AjaxUploader.dll" />
-    <Content Include="GAC\DBauer.Web.UI.WebControls.HierarGrid.dll" />
-    <Content Include="GAC\dsofile.dll" />
-    <Content Include="GAC\ERPConnect35.dll" />
-    <Content Include="GAC\eWorld.UI.dll" />
-    <Content Include="GAC\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="GAC\SAP.Connector.dll" />
-    <Content Include="GAC\SAP.Connector.Rfc.dll" />
-    <Content Include="GAC\SAPProxy_Base.dll" />
-    <Content Include="GAC\Telerik.Web.Design.dll" />
-    <Content Include="GAC\Telerik.Web.UI.dll" />
-    <Content Include="GAC\Telerik.Web.UI.Skins.dll" />
-    <Content Include="GAC\Telerik.Web.UI.XML" />
-    <Content Include="GAC\WMDQryCln.dll" />
-    <Content Include="GAC\WMDWebLink32Client.dll" />
     <Content Include="Global.asax" />
     <Content Include="Images\abrunden.gif" />
     <Content Include="Images\Achtung2.gif" />
@@ -761,8 +740,6 @@
     <None Include="Docs\Lastschrift\Sachsen.pdf" />
     <None Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
     <None Include="Docs\Lastschrift\Thueringen.pdf" />
-    <None Include="GAC\ajaxuploader.lic" />
-    <None Include="GAC\Aspose.Total.lic" />
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
