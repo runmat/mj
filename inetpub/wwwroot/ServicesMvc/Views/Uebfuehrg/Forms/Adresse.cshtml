@@ -15,11 +15,13 @@
                 <a target="blank" href="#" onclick="return BingRouteMapShow(@Model.UiIndex)" class="route-info map btn blue tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (mit Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
             }
             
-            <a target="blank" href="#" class="route-info location btn red tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
-            @if (Model.ShowRouteInfo)
-            {
-                <a target="blank" href="#" class="route-info map btn red tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
-            }
+            <div class="hide">
+                <a target="blank" href="#" class="route-info location btn red tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
+                @if (Model.ShowRouteInfo)
+                {
+                    <a target="blank" href="#" class="route-info map btn red tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
+                }
+            </div>
         </div>
 
         @Html.HiddenFor(m => m.UiIndex)

@@ -428,11 +428,13 @@
             $("#bingLocationHeaderDiv span.header-address").html("Adresse: " + _bingCurrentLocation[_bingCurrentUiIndex]);
 
             _bingMakeLocationRequestCount++;
-            if (_bingMakeLocationRequestCount == 1)
-                setTimeout(function () {
+            if (_bingMakeLocationRequestCount == 1) {
+                setTimeout(function() {
                     _bingLocationMap.getCredentials(MakeGeocodeRequest);
-                    _bingMakeLocationRequestCount++;
                 }, 1500);
+            } else {
+                BingMapHideBusyIndicator("#bingLocationDivWrapper");
+            }
         }
     }
 
@@ -476,11 +478,13 @@
             $("#bingRouteHeaderDiv span.header-address").html("Ihre Route von " + _bingCurrentRouteStartAddress[_bingCurrentUiIndex] + " => " + _bingCurrentRouteEndAddress[_bingCurrentUiIndex]);
 
             _bingMakeRouteRequestCount++;
-            if (_bingMakeRouteRequestCount == 1)
-                setTimeout(function () {
+            if (_bingMakeRouteRequestCount == 1) {
+                setTimeout(function() {
                     _bingLocationMap.getCredentials(MakeRouteRequest);
-                    _bingMakeRouteRequestCount++;
                 }, 1500);
+            } else {
+                BingMapHideBusyIndicator("#bingRouteDivWrapper");
+            }
         }
     }
     
@@ -561,6 +565,7 @@
     }
 
     function BingLocationMapShow(id) {
+        BingMapShowBusyIndicator("#bingLocationDivWrapper");
         BingInit();
         _bingCurrentUiIndex = id;
         var detailWindow = $("#BingKarte").data("tWindow");
@@ -571,6 +576,7 @@
     }
 
     function BingRouteMapShow(id) {
+        BingMapShowBusyIndicator("#bingRouteDivWrapper");
         BingInit();
         _bingCurrentUiIndex = id;
         var detailWindow = $("#BingRoute").data("tWindow");
@@ -580,6 +586,18 @@
         return false;
     }
 
+    function BingMapHideBusyIndicator(mapDivID) {
+        LoadingHide();
+        $(mapDivID + " .bing-container").css("opacity", 1.0);
+        $(mapDivID + " div:first").slideUp(700);
+    }
+
+    function BingMapShowBusyIndicator(mapDivID) {
+        LoadingShow();
+        $(mapDivID + " .bing-container").css("opacity", 0.1);
+        $(mapDivID + " div:first").html("<div class='alert alert-warning'><i class='icon-bell margin-right-10'></i>Einen Moment bitte ...</div>").show();
+    }
+    
 </script>
 
 <!-- </General geo location + route utilities> -->
@@ -618,7 +636,7 @@
     .Scrollable(false)
     .Width(900)
     .Height(700)
-    .Content(@<text><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></text>))
+    .Content(@<text><div id="bingLocationDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></div></div></text>))
     
 @(Html.Telerik().Window()
     .Name("BingRoute")
@@ -629,4 +647,4 @@
     .Scrollable(false)
     .Width(900)
     .Height(700)
-    .Content(@<text><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></text>))
+    .Content(@<text><div id="bingRouteDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></div></div></text>))
