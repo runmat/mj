@@ -18,7 +18,6 @@
         }
     </style>
 
-
     <div id="site">
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <Triggers>
@@ -1099,7 +1098,6 @@
                                         Width="130px" Height="16px">» Weiter</asp:LinkButton>
                                 </div>
                             </div>
-
                             <div id="VersandTabPanel3" class="VersandTabPanel" runat="server" visible="false"
                                 style="height: 600px; margin-bottom: 10px">
                                 <div style="height: 545px">
@@ -1219,13 +1217,12 @@
                                     </table>
                                 </div>
                                 <div style="float: right; padding-top: 10px; padding-bottom: 10px; padding-right: 10px">
-                                   
-                                         <asp:LinkButton ID="ibtnNextToOverView" runat="server" CssClass="TablebuttonLarge" Width="130px"
-                                                        Height="16px">» Weiter</asp:LinkButton>
+                                    <asp:LinkButton ID="ibtnNextToOverView" runat="server" CssClass="TablebuttonLarge" Width="130px"
+                                        Height="16px">» Weiter</asp:LinkButton>
+                                    <cc1:ConfirmButtonExtender ID="ConfirmNextToOverView" runat="server" TargetControlID="ibtnNextToOverView"
+                                        ConfirmText="Achtung! Sie beauftragen Fahrzeuge ohne Stilllegungsdatum." Enabled="false" />
                                 </div>
                             </div>
-                            
-                        </div>
                             <div id="VersandTabPanel4" class="VersandTabPanel" runat="server" visible="false" style="height:600px;margin-bottom:10px">
                                
                                 <table cellspacing="0" cellpadding="0">
@@ -1434,6 +1431,7 @@
                                         Height="16px">» Senden</asp:LinkButton>&nbsp;
                                 </div>
                             </div>
+                        </div>
                             <cc1:CollapsiblePanelExtender ID="cpeAllData" runat="Server" TargetControlID="pnlAllgDaten"
                                 ExpandControlID="divSearch" CollapseControlID="divSearch" Collapsed="false" ImageControlID="NewSearch"
                                 ExpandedImage="../../../Images/versand/minusred.png" CollapsedImage="../../../Images/versand/plusgreen.png"
