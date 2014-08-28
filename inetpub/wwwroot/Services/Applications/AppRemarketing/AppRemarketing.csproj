@@ -333,13 +333,6 @@
     <Compile Include="forms\Report11.aspx.designer.cs">
       <DependentUpon>Report11.aspx</DependentUpon>
     </Compile>
-    <Compile Include="forms\Report11Formular.aspx.cs">
-      <DependentUpon>Report11Formular.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="forms\Report11Formular.aspx.designer.cs">
-      <DependentUpon>Report11Formular.aspx</DependentUpon>
-    </Compile>
     <Compile Include="forms\Report12.aspx.cs">
       <DependentUpon>Report12.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -542,7 +535,6 @@
     <Content Include="forms\Report09.aspx" />
     <Content Include="forms\Report10.aspx" />
     <Content Include="forms\Report11.aspx" />
-    <Content Include="forms\Report11Formular.aspx" />
     <Content Include="forms\Report12.aspx" />
     <Content Include="forms\Report12_2.aspx" />
     <Content Include="forms\Report13.aspx" />

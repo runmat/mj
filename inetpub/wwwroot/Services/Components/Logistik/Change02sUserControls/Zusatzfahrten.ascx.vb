@@ -110,6 +110,11 @@ Option Explicit On
         End Select
     End Sub
 
+    Protected Sub OnValidateDate(sender As Object, e As ValidateDateEventArgs)
+        Dim tmpDate As DateTime
+        e.IsValid = DateTime.TryParse(e.Datum, tmpDate)
+    End Sub
+
     Protected Sub OnSave(sender As Object, e As EventArgs)
         Me.Page.Validate(Me.ValidationGroup)
 
