@@ -55,7 +55,7 @@
     </Reference>
     <Reference Include="Aspose.Pdf, Version=3.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gac\Aspose.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\Aspose.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

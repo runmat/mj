@@ -56,9 +56,8 @@
       <HintPath>..\..\..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
-      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -77,7 +76,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\Telerik.Web.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -408,10 +407,6 @@
     <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
       <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
       <Name>SapORM.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Work\SapORM\DynSapProxy\ProxyObject\DynSapProxyObjectErp35\DynSapProxyObjectErp35.csproj">
-      <Project>{FD5710DE-3532-4F4A-AF62-4EF97F11A4E9}</Project>
-      <Name>DynSapProxyObjectErp35</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
