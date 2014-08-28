@@ -28,9 +28,29 @@ Public Class ValidatePostcodeEventArgs
     Public Property IsValid As Boolean
 End Class
 
+Public Class ValidateDateEventArgs
+    Inherits EventArgs
+    Private ReadOnly _datum As String
+
+
+    Public Sub New(datum As String)
+        Me._datum = datum
+        Me.IsValid = True
+    End Sub
+
+    Public ReadOnly Property Datum As String
+        Get
+            Return Me._datum
+        End Get
+    End Property
+
+    Public Property IsValid As Boolean
+End Class
+
 Public Class TransportAddress
     Inherits UserControl
     Private Shared ReadOnly EventValidatePostcode As New Object()
+    Private Shared ReadOnly EventValidateDate As New Object()
 
     Protected WithEvents UpdatePanel1 As UpdatePanel
 
@@ -110,6 +130,7 @@ Public Class TransportAddress
             Me.rfvAbStrasse.ValidationGroup = value
             Me.rfvAbPLZ.ValidationGroup = value
             Me.cvAbPLZ.ValidationGroup = value
+            Me.cvAbDatum.ValidationGroup = value
             Me.rfvAbOrt.ValidationGroup = value
             Me.rfvAbAnsprechpartner.ValidationGroup = value
             Me.rfvAbtelefon.ValidationGroup = value
@@ -207,6 +228,24 @@ Public Class TransportAddress
 
         RaiseEvent(sender As Object, e As ValidatePostcodeEventArgs)
             Dim eh As EventHandler(Of ValidatePostcodeEventArgs) = DirectCast(Me.Events(TransportAddress.EventValidatePostcode), EventHandler(Of ValidatePostcodeEventArgs))
+
+            If eh IsNot Nothing Then
+                eh(sender, e)
+            End If
+        End RaiseEvent
+    End Event
+
+    Public Custom Event ValidateDate As EventHandler(Of ValidateDateEventArgs)
+        AddHandler(value As EventHandler(Of ValidateDateEventArgs))
+            Me.Events.AddHandler(TransportAddress.EventValidateDate, value)
+        End AddHandler
+
+        RemoveHandler(value As EventHandler(Of ValidateDateEventArgs))
+            Me.Events.RemoveHandler(TransportAddress.EventValidateDate, value)
+        End RemoveHandler
+
+        RaiseEvent(sender As Object, e As ValidateDateEventArgs)
+            Dim eh As EventHandler(Of ValidateDateEventArgs) = DirectCast(Me.Events(TransportAddress.EventValidateDate), EventHandler(Of ValidateDateEventArgs))
 
             If eh IsNot Nothing Then
                 eh(sender, e)
@@ -345,6 +384,14 @@ Public Class TransportAddress
         Dim vpe As New ValidatePostcodeEventArgs(e.Value.Trim(), Me.ddlAbLand.SelectedValue)
 
         RaiseEvent ValidatePostcode(Me, vpe)
+
+        e.IsValid = vpe.IsValid
+    End Sub
+
+    Protected Sub OnValidateDate(sender As Object, e As ServerValidateEventArgs)
+        Dim vpe As New ValidateDateEventArgs(e.Value.Trim())
+
+        RaiseEvent ValidateDate(Me, vpe)
 
         e.IsValid = vpe.IsValid
     End Sub

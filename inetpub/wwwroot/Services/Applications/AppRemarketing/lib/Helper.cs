@@ -216,5 +216,42 @@ namespace AppRemarketing.lib
             }
         }
 
+        /// <summary>
+        /// PDF an Client senden
+        /// </summary>
+        /// <param name="page">Aufrufende Seite</param>
+        /// <param name="filepath">Vollständiger Dateipfad</param>
+        /// <param name="desiredFilename">optional: gewünschter abweichender Dateiname bei Download/Anzeige</param>
+        public static void GetPDF(System.Web.UI.Page page, string filepath, string desiredFilename = "")
+        {
+            HttpResponse resp = page.Response;
+            string filename = "";
+
+            if (!String.IsNullOrEmpty(desiredFilename))
+            {
+                filename = desiredFilename;
+            }
+            else
+            {
+                if (filepath.Contains("\\"))
+                {
+                    string[] teile = filepath.Split('\\');
+                    filename = teile[teile.Length - 1];
+                }
+                else
+                {
+                    filename = filepath;
+                }
+            }
+            
+            resp.Clear();
+            resp.ClearContent();
+            resp.ClearHeaders();
+            resp.ContentType = "application/pdf";
+            resp.AddHeader("Content-Disposition", "attachment; filename=" + filename);
+            resp.WriteFile(filepath);
+            resp.End();
+        }
+
     }
 }
