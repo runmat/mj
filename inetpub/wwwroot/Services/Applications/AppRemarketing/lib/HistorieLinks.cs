@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Text;
@@ -27,7 +25,7 @@ namespace AppRemarketing.lib
         public bool HasSchadensgutachten { get { return (!String.IsNullOrEmpty(UploaddatumSchadensgutachten)); } }
         public bool HasRechnung { get; set; }
 
-        public void OpenBelastungsanzeige(Literal destLiteral)
+        public void OpenBelastungsanzeige(Literal destLiteral, System.Web.UI.Page page)
         {
             if (!HasBelastungsanzeige) return;
 
@@ -45,30 +43,24 @@ namespace AppRemarketing.lib
 
             qe.GetDocument();
 
-            var sb = new StringBuilder();
-            sb.AppendLine(" <script language=\"Javascript\">");
-            sb.AppendLine(" <!-- //");
-
             if (qe.ReturnStatus == 2)
             {
-                string Path = qe.path;
-
-                HttpContext.Current.Session["App_Filepath"] = Path;
-
-                sb.AppendFormat(" window.open(\"Report11Formular.aspx?AppID={0}\", \"_blank\", \"left=0,top=0,resizable=YES,scrollbars=YES\");" + Environment.NewLine, HttpContext.Current.Session["AppID"]);
+                Helper.GetPDF(page, qe.path, "Belastungsanzeige_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
             }
             else
             {
+                var sb = new StringBuilder();
+                sb.AppendLine(" <script language=\"Javascript\">");
+                sb.AppendLine(" <!-- //");
                 sb.AppendLine(" alert('Die Belastungsanzeige konnte nicht gefunden werden.');");
+                sb.AppendLine(" //-->");
+                sb.AppendLine(" </script>");
+                destLiteral.Text = sb.ToString();
+                destLiteral.Visible = true;
             }
-
-            sb.AppendLine(" //-->");
-            sb.AppendLine(" </script>");
-            destLiteral.Text = sb.ToString();
-            destLiteral.Visible = true;
         }
 
-        public void OpenSchadensgutachten(Literal destLiteral)
+        public void OpenSchadensgutachten(Literal destLiteral, System.Web.UI.Page page)
         {
             string archivname = "VWRSG";
 
@@ -91,30 +83,24 @@ namespace AppRemarketing.lib
 
             qe.GetDocument();
 
-            var sb = new StringBuilder();
-            sb.AppendLine(" <script language=\"Javascript\">");
-            sb.AppendLine(" <!-- //");
-
             if (qe.ReturnStatus == 2)
             {
-                string Path = qe.path;
-
-                HttpContext.Current.Session["App_Filepath"] = Path;
-
-                sb.AppendFormat(" window.open(\"Report11Formular.aspx?AppID={0}\", \"_blank\", \"left=0,top=0,resizable=YES,scrollbars=YES\");" + Environment.NewLine, HttpContext.Current.Session["AppID"]);
+                Helper.GetPDF(page, qe.path, "Schadensgutachten_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
             }
             else
             {
+                var sb = new StringBuilder();
+                sb.AppendLine(" <script language=\"Javascript\">");
+                sb.AppendLine(" <!-- //");
                 sb.AppendLine(" alert('Das Schadensgutachten konnte nicht gefunden werden.');");
+                sb.AppendLine(" //-->");
+                sb.AppendLine(" </script>");
+                destLiteral.Text = sb.ToString();
+                destLiteral.Visible = true;
             }
-
-            sb.AppendLine(" //-->");
-            sb.AppendLine(" </script>");
-            destLiteral.Text = sb.ToString();
-            destLiteral.Visible = true;
         }
 
-        public void OpenRechnung(Literal destLiteral)
+        public void OpenRechnung(Literal destLiteral, System.Web.UI.Page page)
         {
             if (!HasRechnung) return;
 
@@ -135,28 +121,21 @@ namespace AppRemarketing.lib
 
             qe.GetDocument();
 
-
-            var sb = new StringBuilder();
-            sb.AppendLine(" <script language=\"Javascript\">");
-            sb.AppendLine(" <!-- //");
-
             if (qe.ReturnStatus == 2)
             {
-                string Path = qe.path;
-
-                HttpContext.Current.Session["App_Filepath"] = Path;
-
-                sb.AppendFormat(" window.open(\"Report11Formular.aspx?AppID={0}\", \"_blank\", \"left=0,top=0,resizable=YES,scrollbars=YES\");" + Environment.NewLine, HttpContext.Current.Session["AppID"]);
+                Helper.GetPDF(page, qe.path, "Rechnung_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
             }
             else
             {
+                var sb = new StringBuilder();
+                sb.AppendLine(" <script language=\"Javascript\">");
+                sb.AppendLine(" <!-- //");
                 sb.AppendLine(" alert('Die Rechnung konnte nicht gefunden werden.');");
+                sb.AppendLine(" //-->");
+                sb.AppendLine(" </script>");
+                destLiteral.Text = sb.ToString();
+                destLiteral.Visible = true;
             }
-
-            sb.AppendLine(" //-->");
-            sb.AppendLine(" </script>");
-            destLiteral.Text = sb.ToString();
-            destLiteral.Visible = true;
         }
 
         public string TuevGutachtenUrl

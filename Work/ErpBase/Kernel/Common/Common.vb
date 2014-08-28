@@ -1256,6 +1256,10 @@ Namespace Kernel.Common
 
             End Try
         End Function
+
+        Public Shared Function GetApplicationConfigValue(ByVal configKey As String, ByVal appID As String, Optional ByVal customerID As Integer = 0, Optional ByVal groupID As Integer = 0) As String
+            Return GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue(configKey, appID, customerID, groupID)
+        End Function
     End Class
 End Namespace
 ' ************************************************
