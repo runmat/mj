@@ -80,7 +80,8 @@
             if (_modelIsValid && false == @(Model.IsValid.ToString().ToLower()))
                 _modelIsValid = false;
 
-            AjaxFormAdressePrepareAutoComplete($("#Name1"), "UebfuehrgAdresseGetAutoCompleteItems");
+            var uiIndex = @Model.UiIndex;
+            AjaxFormAdressePrepareAutoComplete($("#AjaxForm" + uiIndex + " input[name='Name1']"), "UebfuehrgAdresseGetAutoCompleteItems");
             AjaxFormAdressePrepareAutoCompleteReset(@Model.UiIndex);
 
             RouteInfoSurveyAddressTextBoxes(@Model.UiIndex, @Model.ShowRouteInfo.ToString().ToLower(), '@Model.StartAdresseAsRouteInfo');

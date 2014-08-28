@@ -1,4 +1,4 @@
-﻿//#define TESTDATA
+﻿#define TESTDATA
 
 // ReSharper disable RedundantUsingDirective
 using System;
