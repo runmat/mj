@@ -52,6 +52,11 @@ Public Class CWSHalteradresse
         End If
     End Sub
 
+    Protected Sub OnValidateDate(sender As Object, e As ValidateDateEventArgs)
+        Dim tmpDate As DateTime
+        e.IsValid = DateTime.TryParse(e.Datum, tmpDate)
+    End Sub
+
     Public Sub Save() Implements ICollapsibleWizardStep.Save
         'TransferPage.Transfer.Halteradresse = TransportAddress.Fahrt
         TransferPage.Dal.Fzg1.Halterfahrt = TransportAddress.Fahrt

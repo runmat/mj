@@ -7,7 +7,7 @@
         <div id="content">
             <div id="navigationSubmenu" style="margin-top: 10px; margin-bottom: 10px">
                 <asp:LinkButton ID="lbBack" Style="padding-left: 15px" runat="server" class="firstLeft active"
-                    Text="zurück" OnClick="lbBack_Click" CausesValidation="False "></asp:LinkButton>
+                    Text="zurück" OnClick="lbBack_Click" CausesValidation="False"></asp:LinkButton>
             </div>
             <div id="innerContent">
                 <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server" >
@@ -193,6 +193,14 @@
                                                 </SortExpressions>
                                                 <HeaderStyle ForeColor="White" />
                                                 <Columns>
+                                                    <telerik:GridTemplateColumn Groupable="false" UniqueName="Storno" >
+                                                        <HeaderStyle Width="15px" />
+                                                        <ItemTemplate>
+                                                            <asp:ImageButton ID="ibtnStorno" runat="server" Visible='<%# (Eval("STATUS")).ToString()== "Rechnung" %>'
+                                                                CommandName="Storno" ImageUrl="/services/images/del.png"
+                                                                ToolTip="Rechnung stornieren" CommandArgument='<%# Eval("RENNR") %>' />
+                                                        </ItemTemplate>
+                                                    </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn Groupable="false" UniqueName="Bearbeiten" >
                                                         <HeaderStyle Width="15px" />
                                                         <ItemTemplate>
@@ -337,11 +345,11 @@
                 <div>
                     <asp:Button ID="btnFake" runat="server" Text="Fake" Style="display: none" />
                     <asp:Button ID="Button1" runat="server" Text="BUTTON" OnClick="Button1_Click" Visible="False" />
-                    <cc1:ModalPopupExtender ID="ModalPopupExtender2" runat="server" TargetControlID="btnFake"
-                        PopupControlID="mb" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancel"
+                    <cc1:ModalPopupExtender ID="mpeBemerkung" runat="server" TargetControlID="btnFake"
+                        PopupControlID="mbBemerkung" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancelBemerkung"
                         X="450" Y="200">
                     </cc1:ModalPopupExtender>
-                    <asp:Panel ID="mb" runat="server" Width="500px" Height="180px" BackColor="#F4F7FC" style="display:none">
+                    <asp:Panel ID="mbBemerkung" runat="server" Width="500px" Height="180px" BackColor="#F4F7FC" style="display:none">
                         <div style="padding-left: 110px; padding-bottom: 5px; padding-top: 7px; background-color: #64759E;
                             height: 17px;">
                             <asp:Label ID="lblAdressMessage" runat="server" Text="Bemerkungstext "
@@ -365,9 +373,50 @@
                         <table width="100%" style="text-align: center">
                             <tr>
                                 <td align="center">
-                                    <asp:Button ID="btnOK" runat="server" Text="Übernehmen" CssClass="TablebuttonLarge"
-                                        Font-Bold="True" Width="90px" Height="25px" OnClick="btnOK_Click" Style="vertical-align: middle" visible="false" />
-                                    <asp:Button ID="btnCancel" runat="server" Text="OK" CssClass="TablebuttonLarge"
+                                    <asp:Button ID="btnCancelBemerkung" runat="server" Text="OK" CssClass="TablebuttonLarge"
+                                        Font-Bold="true" Width="90px" Height="25px" Style="vertical-align: middle" />
+                                </td>
+                            </tr>
+                        </table>
+                    </asp:Panel>
+                    <asp:Button ID="Button2" runat="server" Text="BUTTON" OnClick="Button2_Click" Visible="False" />
+                    <cc1:ModalPopupExtender ID="mpeStorno" runat="server" TargetControlID="btnFake"
+                        PopupControlID="mbStorno" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancelStorno"
+                        X="450" Y="200">
+                    </cc1:ModalPopupExtender>
+                    <asp:Panel ID="mbStorno" runat="server" Width="500px" Height="160px" BackColor="#F4F7FC" style="display:none">
+                        <div style="padding-left: 110px; padding-bottom: 5px; padding-top: 7px; background-color: #64759E;
+                            height: 17px;">
+                            <asp:Label runat="server" Text="Storno Rechnung " Font-Bold="True" ForeColor="white"></asp:Label>
+                            <asp:Label ID="lblRechnr" runat="server" Font-Bold="True" ForeColor="white"/>
+                        </div>
+                        <div style="padding-left: 10px; padding-top: 15px; margin-bottom: 10px; padding-bottom: 10px;height:50px">
+                            <table align="center">
+                                <tbody>
+                                    <tr>
+                                        <td style="color: #4C4C4C; font-weight: bold; width: 90px">
+                                            Stornotext:
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtStornotext" runat="server" CssClass="TextBoxNormal"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #4C4C4C;" colspan="2">
+                                            <asp:Label ID="lblStornoMessage" runat="server"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table width="100%" style="text-align: center">
+                            <tr>
+                                <td align="center">
+                                    <asp:Button ID="btnOKStorno" runat="server" Text="Übernehmen" CssClass="TablebuttonLarge"
+                                        Font-Bold="True" Width="90px" Height="25px" OnClick="btnOKStorno_Click" Style="vertical-align: middle" />
+                                    <asp:Button ID="btnCloseStorno" runat="server" Text="Schließen" CssClass="TablebuttonLarge"
+                                        Font-Bold="true" Width="90px" Height="25px" OnClick="btnCloseStorno_Click" Style="vertical-align: middle" Visible="False" />
+                                    <asp:Button ID="btnCancelStorno" runat="server" Text="Abbrechen" CssClass="TablebuttonLarge"
                                         Font-Bold="true" Width="90px" Height="25px" Style="vertical-align: middle" />
                                 </td>
                             </tr>
