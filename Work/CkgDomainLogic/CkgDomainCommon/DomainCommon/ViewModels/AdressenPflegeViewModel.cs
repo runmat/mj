@@ -31,9 +31,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public bool InsertMode { get; set; }
 
 
-        public void DataInit(string adressenKennung)
+        public void DataInit(string adressenKennung, string kundennrOverride)
         {
             AdressenKennung = adressenKennung;
+            DataService.KundennrOverride = kundennrOverride;
 
             Adresse.Laender = Laender;
 
