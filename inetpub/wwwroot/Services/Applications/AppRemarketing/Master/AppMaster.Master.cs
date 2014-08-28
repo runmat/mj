@@ -119,6 +119,11 @@ namespace AppRemarketing.Master
                 }
                 this.Head1.Controls.Add(new LiteralControl(strCSSLink));
 
+                if (HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10"))
+                {
+                    this.Head1.Controls.AddAt(0, new LiteralControl("<META content=\"IE=9,chrome=1\" http-equiv=\"X-UA-Compatible\">"));
+                }
+
                 if (this.Page.User.Identity.IsAuthenticated)
                 {
                     switch (this.Page.Title)
