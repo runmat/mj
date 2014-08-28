@@ -13,6 +13,7 @@ namespace CkgDomainLogic.DomainCommon.Models
     public class Adresse : CommonUiModel, IAddressStreetHouseNo, IValidatableObject
     {
         [SelectListKey]
+        [ModelMappingCompareIgnore]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Name1)]

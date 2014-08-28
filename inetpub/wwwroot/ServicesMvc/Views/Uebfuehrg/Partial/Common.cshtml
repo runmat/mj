@@ -400,7 +400,7 @@
     }
 
     function MakeGeocodeRequest() {
-        var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURI(_bingCurrentLocation[_bingCurrentUiIndex]) + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
+        var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + _bingCurrentLocation[_bingCurrentUiIndex] + "&output=json&jsonp=GeocodeCallback&key=" + _bingKey;
 
         //$("#bingLocationDiv").show();
         CallRestService(geocodeRequest);
@@ -441,7 +441,7 @@
 
 
     function MakeRouteRequest() {
-        var routeRequest = "https://dev.virtualearth.net/REST/v1/Routes?wp.0=" + encodeURI(_bingCurrentRouteStartAddress[_bingCurrentUiIndex]) + "&wp.1=" + encodeURI(_bingCurrentRouteEndAddress[_bingCurrentUiIndex]) + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
+        var routeRequest = "https://dev.virtualearth.net/REST/v1/Routes?wp.0=" + _bingCurrentRouteStartAddress[_bingCurrentUiIndex] + "&wp.1=" + _bingCurrentRouteEndAddress[_bingCurrentUiIndex] + "&routePathOutput=Points&output=json&jsonp=RouteCallback&key=" + _bingKey;
 
         //$("#bingRouteDiv").show();
         CallRestService(routeRequest);
@@ -549,7 +549,7 @@
             // location, ajax inline map:
             BingInit();
 
-            _bingCurrentLocation[id] = GetAddressString(id);
+            _bingCurrentLocation[id] = UnescapeAddress(GetAddressString(id));
 
             if (showRouteInfo) {
                 // route, public map url:
@@ -559,8 +559,8 @@
                 routeLinkMap.show();
 
                 // route, ajax inline map:
-                _bingCurrentRouteStartAddress[id] = startAddressAsRouteInfo;
-                _bingCurrentRouteEndAddress[id] = GetAddressString(id);
+                _bingCurrentRouteStartAddress[id] = UnescapeAddress(startAddressAsRouteInfo);
+                _bingCurrentRouteEndAddress[id] = UnescapeAddress(GetAddressString(id));
             }
         }
     }
@@ -597,6 +597,12 @@
         LoadingShow();
         $(mapDivID + " .bing-container").css("opacity", 0.1);
         $(mapDivID + " div:first").html("<div class='alert alert-warning'><i class='icon-bell margin-right-10'></i>Einen Moment bitte ...</div>").show();
+    }
+
+    function UnescapeAddress(address) {
+        address = address.replace(/&#(\d+);/g, function (m, n) { return String.fromCharCode(n); });
+        //console.log("-->" + address);
+        return address;
     }
     
 </script>
