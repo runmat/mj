@@ -3,6 +3,6 @@
 <%@ Register TagPrefix="uc" TagName="TransportAddress" Src="~/Components/Logistik/Change02sUserControls/TransportAddress.ascx" %>
 <asp:Panel ID="pnlHalteradresse" runat="server" Width="100%">
     <uc:TransportAddress ID="TransportAddress" runat="server" ValidationGroup="CWSHalteradresse"
-        SearchType="Halteradresse" ShowSearch="true" OnValidatePostcode="OnValidatePostcode"
+        SearchType="Halteradresse" ShowSearch="true" OnValidatePostcode="OnValidatePostcode" OnValidateDate="OnValidateDate"
         ShowTransportTypes="false"  />
 </asp:Panel>
