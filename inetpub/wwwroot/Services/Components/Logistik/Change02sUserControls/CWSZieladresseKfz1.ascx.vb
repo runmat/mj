@@ -52,6 +52,11 @@ Public Class CWSZieladresseKfz1
         End If
     End Sub
 
+    Protected Sub OnValidateDate(sender As Object, e As ValidateDateEventArgs)
+        Dim tmpDate As DateTime
+        e.IsValid = DateTime.TryParse(e.Datum, tmpDate)
+    End Sub
+
     Public Sub Save() Implements ICollapsibleWizardStep.Save
         Dim fahrt As Fahrt = TransportAddress.Fahrt
 
