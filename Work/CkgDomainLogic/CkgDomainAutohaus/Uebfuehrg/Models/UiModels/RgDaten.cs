@@ -22,7 +22,19 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 if (GetRechnungsAdressen == null)
                     return new List<Adresse>();
 
-                return (_reAdressen ?? (_reAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RE").ToList()));
+                if (_reAdressen != null)
+                    return _reAdressen;
+
+                _reAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RE").ToList();
+                if (_reAdressen.None())
+                {
+                    _reAdressen = new List<Adresse> { new Adresse {KundenNr = KundenNr, AdressTyp = AdressenTyp.RechnungsAdresse, SubTyp = "RE"} };
+                    ReKundenNr = KundenNr;
+                }
+                else if (_reAdressen.Count() == 1)
+                    ReKundenNr = _reAdressen.First().KundenNr;
+
+                return _reAdressen;
             }
         }
 
@@ -48,7 +60,19 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 if (GetRechnungsAdressen == null)
                     return new List<Adresse>();
 
-                return (_rgAdressen ?? (_rgAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToList()));
+                if (_rgAdressen != null)
+                    return _rgAdressen;
+
+                _rgAdressen = GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToList();
+                if (_rgAdressen.None())
+                {
+                    _rgAdressen = new List<Adresse> { new Adresse {KundenNr = KundenNr, AdressTyp = AdressenTyp.RechnungsAdresse, SubTyp = "RG"} };
+                    RgKundenNr = KundenNr;
+                }
+                else if (_rgAdressen.Count() == 1)
+                    RgKundenNr = _rgAdressen.First().KundenNr;
+
+                return _rgAdressen;
             }
         }
 
@@ -61,6 +85,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         #endregion
 
+
+        public string KundenNr { get; set; }
 
         [XmlIgnore]
         public Func<List<Adresse>> GetRechnungsAdressen { get; set; }

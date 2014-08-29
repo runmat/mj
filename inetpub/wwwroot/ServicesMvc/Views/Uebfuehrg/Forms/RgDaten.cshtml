@@ -4,6 +4,7 @@
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         @Html.HiddenFor(m => m.UiIndex)
+        @Html.HiddenFor(m => m.KundenNr)
 
         @Html.FormValidationSummary()
 

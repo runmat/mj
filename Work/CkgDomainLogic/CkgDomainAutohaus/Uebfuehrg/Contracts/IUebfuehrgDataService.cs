@@ -17,7 +17,7 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
 
         void GetTransportTypenAndDienstleistungen(out List<TransportTyp> transportTypen, out List<Dienstleistung> dienstleistungen);
 
-        List<UeberfuehrungsAuftragsPosition> Save(List<CommonUiModel> stepModels, List<Fahrt> fahrten);
+        List<UeberfuehrungsAuftragsPosition> Save(RgDaten rgDaten, List<CommonUiModel> stepModels, List<Fahrt> fahrten);
 
         void OnInit(ILogonContext logonContext, IAppSettings appSettings);
     }

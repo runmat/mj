@@ -1,4 +1,4 @@
-﻿//#define TESTDATA
+﻿#define TESTDATA
 
 // ReSharper disable RedundantUsingDirective
 using System;
@@ -123,6 +123,10 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public List<Fahrt> Fahrten { get; set; }
 
+        public RgDaten RgDaten { get; private set; }
+
+        public RgDaten RgDatenFromStepModels { get { return (StepModels.FirstOrDefault() is RgDaten) ? (RgDaten)StepModels.First() : RgDaten; } }
+
         [XmlIgnore]
         public List<Fahrt> DienstleistungsFahrten
         {
@@ -216,7 +220,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             var list = new List<CommonUiModel>();
 
-            uiModel = new RgDaten
+            RgDaten = new RgDaten
                 {
                     UiIndex = index,
                     GroupName = "RGDATEN",
@@ -225,17 +229,22 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Header = "Rechnungsdaten",
                     EditFromSummaryDisabled = true,
                     IsMandatory = true,
+                    KundenNr = LogonContext.KundenNr,
 
                     ViewName = "RgDaten",
                     GetRechnungsAdressen = () => RechnungsAdressen,
 
 #if TESTDATA
-                    ReKundenNr = "0000349980",
-                    RgKundenNr = "0000349980"
+                    //ReKundenNr = "0000349980",
+                    //RgKundenNr = "0000349980"
 #endif
                 };
-            list.Add(uiModel);
-            index++;
+
+            if (RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
+            {
+                list.Add(RgDaten);
+                index++;
+            }
 
             uiModel = new Fahrzeug
                 {
@@ -529,8 +538,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         private void PrepareFollowingSteps<T>(T subModel) where T : CommonUiModel
         {
-            if (subModel is RgDaten)
-                PrepareRgDatenFahrtAdressenTransportTypen(subModel as RgDaten);
+            if (subModel.UiIndex == 0)
+                PrepareRgDatenFahrtAdressenTransportTypen(subModel is RgDaten ? (subModel as RgDaten) : RgDaten);
 
             if (subModel is Fahrzeug)
                 SaveFahrzeug(subModel as Fahrzeug);
@@ -779,7 +788,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             ReceiptErrorMessages = "";
             try
             {
-                AuftragsPositionen = DataService.Save(StepModels, Fahrten).ToListOrEmptyList();
+                AuftragsPositionen = DataService.Save(RgDatenFromStepModels, StepModels, Fahrten).ToListOrEmptyList();
                 ReceiptPdfFileName = new ReceiptCreationService(this).CreatePDF();
             }
             catch (Exception e)

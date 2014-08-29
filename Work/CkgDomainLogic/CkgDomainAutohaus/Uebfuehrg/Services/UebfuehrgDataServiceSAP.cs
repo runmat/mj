@@ -127,18 +127,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             AppSettings = appSettings;
         }
 
-        public List<UeberfuehrungsAuftragsPosition> Save(List<CommonUiModel> stepModels, List<Fahrt> fahrten)
+        public List<UeberfuehrungsAuftragsPosition> Save(RgDaten rgDaten, List<CommonUiModel> stepModels, List<Fahrt> fahrten)
         {
             var returnList = new List<UeberfuehrungsAuftragsPosition>();
             var webUser = LogonContext.UserName;  
             var webUserEmail = "test@test.de";
 
-            var rgDaten = stepModels.OfType<RgDaten>().First();
-            if (rgDaten.GetRechnungsAdressen().None())
-            {
-                returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungsadressen verfügbar" });
-                return returnList;
-            }
             if (rgDaten.RgKundenNr.IsNullOrEmpty())
             {
                 returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungszahler angegeben" });
