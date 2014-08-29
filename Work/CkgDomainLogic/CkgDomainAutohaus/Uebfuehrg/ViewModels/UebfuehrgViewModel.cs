@@ -570,6 +570,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         private void TryDataContextRestoreUiModel(CommonUiModel subModel)
         {
+            if (subModel == null)
+                return;
+
             if (subModel is RgDaten)
             {
                 var storedRgDaten = (RgDaten)LogonContext.DataContextRestore(typeof(RgDaten).GetFullTypeName());
@@ -627,6 +630,12 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public void SaveFahrzeug(Fahrzeug model)
         {
             LogonContext.DataContextPersist(model);
+
+            if (AnzahlFahrzeugeGewuenscht == 2 && model.FahrzeugIndex == "1")
+            {
+                var fahrzeug2 = StepModels.OfType<Fahrzeug>().LastOrDefault();
+                TryDataContextRestoreUiModel(fahrzeug2);
+            }
         }
 
         #endregion
