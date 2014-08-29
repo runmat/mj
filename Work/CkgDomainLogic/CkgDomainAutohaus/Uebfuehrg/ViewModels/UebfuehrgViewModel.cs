@@ -1,4 +1,4 @@
-﻿#define TESTDATA
+﻿//#define TESTDATA
 
 // ReSharper disable RedundantUsingDirective
 using System;
@@ -242,6 +242,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             if (RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
             {
+                TryDataContextRestoreUiModel(RgDaten);
                 list.Add(RgDaten);
                 index++;
             }
@@ -272,6 +273,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     ZulassungBeauftragt = true,
 #endif
                 };
+            TryDataContextRestoreUiModel(uiModel);
             list.Add(uiModel);
             index++;
 
@@ -354,7 +356,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     IsMandatory = false,
 
                     ViewName = "DienstleistungsAuswahl",
-                    Bemerkungen = new Bemerkungen { Bemerkung = "Die ist die 1. Test-Bemerkung für Fahrzeug 1" }
+                    Bemerkungen = new Bemerkungen(),
                 };
             list.Add(uiModel);
             index++;
@@ -387,6 +389,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         ZulassungBeauftragt = true,
 #endif
                     };
+                TryDataContextRestoreUiModel(uiModel);
                 list.Add(uiModel);
                 index++;
 
@@ -436,7 +439,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         IsMandatory = false,
 
                         ViewName = "DienstleistungsAuswahl",
-                        Bemerkungen = new Bemerkungen {Bemerkung = "Die ist die 2. Test-Bemerkung für Fahrzeug 2"}
+                        Bemerkungen = new Bemerkungen(),
                     };
                 list.Add(uiModel);
                 index++;
@@ -539,7 +542,12 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         private void PrepareFollowingSteps<T>(T subModel) where T : CommonUiModel
         {
             if (subModel.UiIndex == 0)
+            {
+                if (subModel is RgDaten)
+                    LogonContext.DataContextPersist(subModel as RgDaten);
+
                 PrepareRgDatenFahrtAdressenTransportTypen(subModel is RgDaten ? (subModel as RgDaten) : RgDaten);
+            }
 
             if (subModel is Fahrzeug)
                 SaveFahrzeug(subModel as Fahrzeug);
@@ -558,6 +566,35 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             if (subModel is Receipt)
                 SaveAll();
+        }
+
+        private void TryDataContextRestoreUiModel(CommonUiModel subModel)
+        {
+            if (subModel is RgDaten)
+            {
+                var storedRgDaten = (RgDaten)LogonContext.DataContextRestore(typeof(RgDaten).GetFullTypeName());
+                if (storedRgDaten != null)
+                {
+                    var subModelRgDaten = subModel as RgDaten;
+
+                    subModelRgDaten.RgKundenNr = storedRgDaten.RgKundenNr;
+                    subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
+                }
+            }
+
+            if (subModel is Fahrzeug)
+            {
+                var storedFahrzeug = (Fahrzeug)LogonContext.DataContextRestore(typeof(Fahrzeug).GetFullTypeName());
+                if (storedFahrzeug != null)
+                {
+                    var subModelFahrzeug = subModel as Fahrzeug;
+
+                    subModelFahrzeug.Fahrzeugklasse = storedFahrzeug.Fahrzeugklasse;
+                    subModelFahrzeug.Fahrzeugwert = storedFahrzeug.Fahrzeugwert;
+                    subModelFahrzeug.FahrzeugZugelassen = storedFahrzeug.FahrzeugZugelassen;
+                    subModelFahrzeug.ZulassungBeauftragt = storedFahrzeug.ZulassungBeauftragt;
+                }
+            }
         }
 
         private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten)
@@ -589,6 +626,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void SaveFahrzeug(Fahrzeug model)
         {
+            LogonContext.DataContextPersist(model);
         }
 
         #endregion

@@ -85,7 +85,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public bool ZulassungBeauftragt { get; set; }
 
         [Required]
-        [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.VehicleClass)]
         public string Fahrzeugklasse { get; set; }
 
