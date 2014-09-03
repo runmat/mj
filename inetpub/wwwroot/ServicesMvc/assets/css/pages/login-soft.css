@@ -27,10 +27,11 @@ Login page
 }
 
 .login .content h3 {
-  color: #eee;
+    color: #eee;
+    font-size: 1.8em;
 }
 .login .content h4  {
-  color: #eee;
+    color: #eee;
 }
 
 .login .content p,
@@ -182,4 +183,42 @@ input.m-wrap, select.m-wrap {
     margin-top: -10px;
     margin-bottom: 10px;
     margin-left: 240px;
+}
+
+#forget-password {
+    color: white!important;    
+}
+#forget-password i.icon-chevron-right {
+    font-size: 0.85em;
+}
+
+.footer-link {
+    float: right;
+    font-size: 0.8em;
+    color: #dfdfdf;
+    display: block;
+    line-height: 20px;
+    margin-top: -5px;
+    margin-left: 10px;
+}
+
+.language-menu {
+    display: block;
+    margin-bottom: 0;
+    padding-left: 40px;
+    width: 35px;
+}
+.dropdown-menu {
+    min-width: 45px;
+}
+.dropdown a {
+    padding-left: 5px;
+}
+
+
+.no-top-margin {
+  margin-top: 0 !important;
+}
+.no-bottom-margin {
+  margin-bottom: 0 !important;
 }
