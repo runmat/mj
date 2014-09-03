@@ -80,6 +80,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.Models", "..\..\..\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.Services", "..\..\..\Work\SapORM\services\SapORM.Services.csproj", "{94855E9C-AF22-46A7-A55B-9CFF8E96F961}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppECAN", "Applications\appecan\AppECAN.vbproj", "{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppCSC", "Applications\appcsc\AppCSC.vbproj", "{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -434,6 +438,24 @@ Global
 		{94855E9C-AF22-46A7-A55B-9CFF8E96F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94855E9C-AF22-46A7-A55B-9CFF8E96F961}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94855E9C-AF22-46A7-A55B-9CFF8E96F961}.Release|x86.ActiveCfg = Release|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.DebugQuick|x86.ActiveCfg = Debug|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74C9121-0F45-4E19-97E1-5EA29B60BE1A}.Release|x86.ActiveCfg = Release|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.DebugQuick|x86.ActiveCfg = Debug|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3D74A4-37F4-40A1-AF75-F20DA074B4BF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
