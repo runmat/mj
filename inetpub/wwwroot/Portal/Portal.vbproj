@@ -84,9 +84,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="AjaxControlToolkit">
       <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="BarcodeLib, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -740,9 +740,9 @@
     <None Include="Docs\Lastschrift\Sachsen.pdf" />
     <None Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
     <None Include="Docs\Lastschrift\Thueringen.pdf" />
-    <Content Include="NLog.config">
+    <None Include="NLog.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bilder\View\" />
@@ -815,7 +815,7 @@
       </FilesForPackagingFromProject>
     </ItemGroup>
     <ItemGroup>
-      <_Bin Include="Admin\Bin\Admin.*;Applications\appakf\bin\appakf.*;Applications\AppAlphabet\Bin\AppAlphabet.*;Applications\apparval\Bin\AppArval.*;Applications\appasl\Bin\AppASL.*;Applications\AppAvis\Bin\AppAvis.*;Applications\AppBPLG\Bin\AppBPLG.*;Applications\appccu\Bin\AppCCU.*;Applications\AppCheck\Bin\AppCheck.*;Applications\AppCommonCarRent\bin\AppCommonCarRent.*;Applications\AppCommonLeasing\bin\AppCommonLeasing.*;Applications\appcsc\bin\AppCSC.*;Applications\appdcb\bin\AppDCB.*;Applications\appdcl\bin\AppDCL.*;Applications\appec\bin\AppEC.*;Applications\appecan\bin\AppECAN.*;Applications\AppF1\bin\AppF1.*;Applications\appffd\bin\AppFFD.*;Applications\AppFFE\bin\AppFFE.*;Applications\appfms\bin\appfms.*;Applications\AppKBS\bin\AppKBS.*;Applications\AppKroschke\bin\AppKroschke.*;Applications\AppLeasePlan\bin\AppLeasePlan.dll;Applications\AppLeaseTrend\bin\AppLeaseTrend.dll;Applications\appqm\bin\appQM.*;Applications\apprdz\bin\AppRDZ.*;Applications\AppRenault\bin\AppRenault.*;Applications\appsixt\bin\AppSIXT.*;Applications\appsixtl\bin\AppSIXTL.dll;Applications\AppUeberf\bin\AppUeberf.*;Applications\appvw\bin\AppVW.*;Components\ComArchive\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\Components\ComCommon\bin.*" />
+      <_Bin Include="Admin\Bin\Admin.*;Applications\appakf\bin\appakf.*;Applications\AppAlphabet\Bin\AppAlphabet.*;Applications\apparval\Bin\AppArval.*;Applications\appasl\Bin\AppASL.*;Applications\AppAvis\Bin\AppAvis.*;Applications\AppBPLG\Bin\AppBPLG.*;Applications\appccu\Bin\AppCCU.*;Applications\AppCheck\Bin\AppCheck.*;Applications\AppCommonCarRent\bin\AppCommonCarRent.*;Applications\AppCommonLeasing\bin\AppCommonLeasing.*;Applications\appdcb\bin\AppDCB.*;Applications\appdcl\bin\AppDCL.*;Applications\appec\bin\AppEC.*;Applications\AppF1\bin\AppF1.*;Applications\appffd\bin\AppFFD.*;Applications\AppFFE\bin\AppFFE.*;Applications\appfms\bin\appfms.*;Applications\AppKBS\bin\AppKBS.*;Applications\AppKroschke\bin\AppKroschke.*;Applications\AppLeasePlan\bin\AppLeasePlan.dll;Applications\AppLeaseTrend\bin\AppLeaseTrend.dll;Applications\appqm\bin\appQM.*;Applications\apprdz\bin\AppRDZ.*;Applications\AppRenault\bin\AppRenault.*;Applications\appsixt\bin\AppSIXT.*;Applications\appsixtl\bin\AppSIXTL.dll;Applications\AppUeberf\bin\AppUeberf.*;Applications\appvw\bin\AppVW.*;Components\ComArchive\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\Components\ComCommon\bin.*" />
       <FilesForPackagingFromProject Include="%(_Bin.Identity)">
         <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
