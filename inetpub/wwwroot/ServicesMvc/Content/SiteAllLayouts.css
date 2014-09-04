@@ -106,6 +106,9 @@ textarea.m-wrap {
 }
 
 
+.padding-top-2 {
+    padding-top: 2px;
+}
 .padding-top-3 {
     padding-top: 3px;
 }
@@ -1154,3 +1157,7 @@ i.dienstleistung-gewaehlt {
     color: #468847!important;
 }
 /* </Dienstleistungs Auswahl> */
+
+.font-bold {
+    font-weight: bold;
+}

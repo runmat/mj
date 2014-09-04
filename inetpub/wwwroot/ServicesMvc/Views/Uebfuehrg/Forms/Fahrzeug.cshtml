@@ -7,8 +7,48 @@
         
         @Html.HiddenFor(m => m.UiIndex)
         @Html.HiddenFor(m => m.FahrzeugIndex)
+        @Html.HiddenFor(m => m.AnzahlFahrzeugeGewuenscht)
 
+        if (Model.FahrzeugIndex == "1")
+        {
+             @Html.FormTemplateControl(Localize.NumberOfVehicles,
+                                       @<text>
+                                            <div class="padding-top-2">
+                                                <span class="margin-left-5 slider-label">1</span>
+                                                <span class="margin-left-40 slider-label">2</span>
+                                            </div>
+                                            <div id="slider" class="slider margin-left-10 bg-green ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false" style="width:52px;">
+                                                <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a>
+                                            </div>
+                                            <style type="text/css">
+                                                .slider-label {
+                                                    font-weight: bold;
+                                                    cursor: pointer;
+                                                }
+                                            </style>
+                                            <script type="text/javascript">
+                                                $("#slider").slider({
+                                                    min: 1,
+                                                    max: 2,
+                                                    value: @(Model.AnzahlFahrzeugeGewuenscht == 1 ? "1" : "2"),
+                                                    slide: function (event, ui) {
+                                                        slideTo(ui.value);
+                                                    }
+                                                });
+                                                $(".slider-label").on("click", function() {
+                                                    var sliderValue = $(this).text();
+                                                    $("#slider").slider('value', sliderValue);
+                                                    slideTo(sliderValue);
+                                                });
 
+                                                function slideTo(value) {
+                                                    LoadingShow();
+                                                    location.replace("Fzg" + value);
+                                                }
+                                            </script>
+                                        </text>, new {@class = "m-wrap"})
+        }
+        
         @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
 

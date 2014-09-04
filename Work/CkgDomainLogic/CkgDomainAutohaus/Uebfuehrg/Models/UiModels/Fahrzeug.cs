@@ -76,11 +76,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.VehiclesLicenseStatus)]
         public bool FahrzeugZugelassen { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.VehiclesLicenseOrderStatus)]
         public bool ZulassungBeauftragt { get; set; }
 
@@ -102,6 +100,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 }; 
             } 
         }
+
+        [XmlIgnore]
+        public int AnzahlFahrzeugeGewuenscht { get; set; }
 
         [XmlIgnore]
         public string EmptyString { get { return ""; } }

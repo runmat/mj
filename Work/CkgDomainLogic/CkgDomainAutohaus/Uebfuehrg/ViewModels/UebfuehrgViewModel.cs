@@ -255,9 +255,10 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
                     GroupName = "FAHRZEUGE",
                     SubGroupName = "FAHRZEUG_1",
-                    Header = "Fahrzeug 1 (Hinfahrt)",
-                    HeaderShort = "Fahrzeug 1",
+                    Header = "Fahrzeug" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1 (Hinfahrt)" : ""),
+                    HeaderShort = "Fahrzeug" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
                     IsMandatory = true,
+                    AnzahlFahrzeugeGewuenscht = AnzahlFahrzeugeGewuenscht,
 
                     ViewName = "Fahrzeug",
 
@@ -288,8 +289,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     UiIndex = index,
                     GroupName = "FAHRZEUG_1",
                     SubGroupName = "START",
-                    Header = "Abholadresse (Fahrzeug 1)",
-                    HeaderShort = "Abholen Fzg.1",
+                    Header = "Abholadresse" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
+                    HeaderShort = "Start" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
                     Land = "DE",
                     GetAlleTransportTypen = () => TransportTypen,
                     IsMandatory = true,
@@ -322,7 +323,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     GroupName = "FAHRZEUG_1",
                     SubGroupName = "ZIEL",
                     Header = "Ziel Hinfahrt (Fahrzeug 1)",
-                    HeaderShort = "Ziel Fzg.1",
+                    HeaderShort = "Ziel" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
                     Land = "DE",
                     GetAlleTransportTypen = () => TransportTypen,
                     IsMandatory = true,
@@ -351,8 +352,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     UiIndex = index,
                     GroupName = "DIENSTLEISTUNGEN",
                     SubGroupName = "DIENSTLEISTUNGEN",
-                    HeaderShort = "Dienstl. Fzg.1",
-                    Header = "Dienstleistungen (Fahrzeug 1)",
+                    Header = "Dienstleistungen" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
+                    HeaderShort = "Optionen" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
                     IsMandatory = false,
 
                     ViewName = "DienstleistungsAuswahl",
@@ -374,6 +375,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         Header = "Fahrzeug 2 (Rückfahrt)",
                         HeaderShort = "Fahrzeug 2",
                         IsMandatory = true,
+                        AnzahlFahrzeugeGewuenscht = AnzahlFahrzeugeGewuenscht,
 
                         ViewName = "Fahrzeug",
 
@@ -405,7 +407,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         GroupName = "FAHRZEUG_2",
                         SubGroupName = "ZIEL",
                         Header = "Ziel Rückfahrt (Fahrzeug 2)",
-                        HeaderShort = "Ziel Fzg.2",
+                        HeaderShort = "Ziel 2",
                         Land = "DE",
                         GetAlleTransportTypen = () => TransportTypen,
                         IsMandatory = true,
@@ -434,8 +436,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         UiIndex = index,
                         GroupName = "DIENSTLEISTUNGEN",
                         SubGroupName = "DIENSTLEISTUNGEN",
-                        HeaderShort = "Dienstl. Fzg.2",
-                        Header = "Dienstleistungen (Fahrzeug 2)",
+                        Header = "Dienstleistungen Fahrzeug 2",
+                        HeaderShort = "Optionen 2",
                         IsMandatory = false,
 
                         ViewName = "DienstleistungsAuswahl",
