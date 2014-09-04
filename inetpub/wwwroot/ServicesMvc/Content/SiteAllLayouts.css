@@ -161,6 +161,9 @@ textarea.m-wrap {
 .no-top-margin {
   margin-top: 0 !important;
 }
+.no-bottom-margin {
+  margin-bottom: 0 !important;
+}
 
 .margin-bottom-5 {
     margin-bottom: 5px;
