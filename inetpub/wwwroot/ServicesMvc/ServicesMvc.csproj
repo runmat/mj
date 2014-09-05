@@ -2348,7 +2348,7 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugeGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />	
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
@@ -2359,7 +2359,7 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
-    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />		
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
@@ -3871,6 +3871,11 @@
     <Content Include="Views\Uebfuehrg\Forms\Receipt.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten\DokumenteOhneDatenGrid.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten.cshtml" />
+    <Content Include="Views\Shared\Partial\Impressum.cshtml" />
+    <Content Include="Views\Login\Impressum.cshtml" />
+    <Content Include="Views\Login\Kontakt.cshtml" />
+    <Content Include="Views\Shared\Partial\Kontakt.cshtml" />
+    <Content Include="Views\Shared\Partial\MaintenanceHintsInformationToConfirm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
