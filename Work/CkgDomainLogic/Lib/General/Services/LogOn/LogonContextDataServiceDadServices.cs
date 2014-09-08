@@ -167,14 +167,7 @@ namespace CkgDomainLogic.General.Services
             var dbContext = CreateDbContext(loginModel.UserName);
             if (dbContext.User == null)
             {
-                addModelError(m => m.UserName, Localize.LoginUserDoesNotExist);
-                return;
-            }
-            
-            List<string> userErrorMessages;
-            if (!ValidateUser(dbContext.User, dbContext.GetCustomer(dbContext.User.CustomerID), LocalizationService, out userErrorMessages))
-            {
-                addModelError(m => m.UserName, userErrorMessages.FirstOrDefault());
+                addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
                 return;
             }
 
@@ -183,6 +176,21 @@ namespace CkgDomainLogic.General.Services
                 addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
                 dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
                 return;
+            }
+
+            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
+            List<string> userErrorMessages;
+            if (!ValidateUser(dbContext.User, customer, LocalizationService, out userErrorMessages))
+            {
+                addModelError(m => m.UserName, userErrorMessages.FirstOrDefault());
+                return;
+            }
+
+            if (customer != null && customer.PortalType.NotNullOrEmpty().ToLower() != "mvc")
+            {
+                var urlParam = "FromMvc_" + dbContext.User.UserID + "_" + DateTime.Now.ToString("dd.MM.yyyy-HH:mm");
+                var crypted = CryptoMd5.EncryptToUrlEncoded(urlParam);
+                ReturnUrl = "/Services/Start/Login.aspx?unm=" + crypted;
             }
 
             loginModel.RedirectUrl = ReturnUrl;
@@ -195,12 +203,12 @@ namespace CkgDomainLogic.General.Services
         public override string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             var dbContext = CreateDbContext(loginModel.UserName);
-            if (dbContext.User == null)
-                addModelError(m => m.UserName, Localize.LoginUserDoesNotExist);
+            //if (dbContext.User == null)
+            //    addModelError(m => m.UserName, Localize.LoginUserDoesNotExist);
 
             var email = dbContext.GetEmailAddressFromUserName(dbContext.UserName);
-            if (email.IsNullOrEmpty())
-                addModelError(m => m.UserName, Localize.UserInvalidEmail);
+            //if (email.IsNullOrEmpty())
+            //    addModelError(m => m.UserName, Localize.UserInvalidEmail);
 
             return email;
         }

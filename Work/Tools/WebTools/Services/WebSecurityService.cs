@@ -89,15 +89,15 @@ namespace WebTools.Services
             if (maintenanceMessages == null)
                 return new MaintenanceResult();
 
-            var now = DateTime.Now;
             var result = new MaintenanceResult
                              {
                                  Messages = maintenanceMessages.Select(message => new MaintenanceMessage
                                      {
-                                         IsComing = now < message.MaintenanceStartDateTime,
-                                         IsActive = now >= message.MaintenanceStartDateTime && now <= message.MaintenanceEndDateTime,
                                          Title = message.MaintenanceTitle,
                                          Message = message.MaintenanceText,
+
+                                         IsActive = message.MaintenanceShow,
+                                         IsActiveAndLetConfirmMessageAfterLogin = message.MaintenanceShowAndLetConfirmMessageAfterLogin,
                                          LogonDisabledCore = message.MaintenanceLoginDisabled,
                                      }).ToList()
                              };

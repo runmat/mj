@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Services;
 using MvcTools.Web;
 using CkgDomainLogic.General.Contracts;
@@ -28,9 +27,24 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult Index()
         {
+            if (LogonContext != null)
+                LogonContext.MvcEnforceRawLayout = false;
+
             CaptchaGenerate();
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Kontakt()
+        {
+            return View();
+        }
+
+        [CkgApplication]
+        public ActionResult Impressum()
+        {
+            return View();
         }
 
         static void CaptchaGenerate()
@@ -67,6 +81,8 @@ namespace CkgDomainLogic.General.Controllers
 
             if (ModelState.IsValid)
             {
+                model.MaintenanceInfo = ViewModel.MaintenanceInfo;
+
                 if (!model.ModePasswordReset)
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
@@ -85,7 +101,8 @@ namespace CkgDomainLogic.General.Controllers
                         return new EmptyResult();
 
                     // send e-mail with password reset link
-                    ViewModel.TrySendPassordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
+                    if (userEmail.IsNotNullOrEmpty())
+                        ViewModel.TrySendPassordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
 
                     if (ModelState.IsValid)
                     {

@@ -33,9 +33,9 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<ColumnTranslationsMvc> ColumnTranslations { get; set; }
 
-        public DbSet<LoginMessage> LoginMessages { get; set; }
+        public DbSet<LoginUserMessage> LoginMessages { get; set; }
 
-        public List<LoginMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList().Where(message => message.active.GetValueOrDefault()).ToListOrEmptyList(); } }
+        public List<LoginUserMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList().ToListOrEmptyList(); } }
 
         private User _user;
         public User User
