@@ -112,10 +112,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
-    <Reference Include="WebTools35, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Work\GAC\WebTools35.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -1315,6 +1311,10 @@
     <ProjectReference Include="..\..\..\Work\ErpBase\ErpBaseMvc\ErpBaseMvc.csproj">
       <Project>{C97E0F34-A91A-4F38-B792-73C4FC680A29}</Project>
       <Name>ErpBaseMvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\Tools\WebTools35\WebTools35.csproj">
+      <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
+      <Name>WebTools35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
