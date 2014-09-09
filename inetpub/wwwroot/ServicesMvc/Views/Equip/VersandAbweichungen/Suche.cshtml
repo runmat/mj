@@ -1,0 +1,21 @@
+﻿<div id="divVersandAbweichungenSuche">
+    @using (Ajax.BeginForm("LoadVersandAbweichungen", "Equip", null,
+        new MvcAjaxOptions("divVersandAbweichungenSuche") { OnComplete = "ShowVersandAbweichungen();" }, new { id = "VersandAbweichungenForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
