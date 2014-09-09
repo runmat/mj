@@ -188,6 +188,9 @@
                             WatermarkText="kein Fixtermin" WatermarkCssClass="long Watermarked" />
                         <cc1:CalendarExtender ID="txtAbDatum_CalendarExtender" runat="server" TargetControlID="txtAbDatum" 
                             OnClientDateSelectionChanged="checkAbDatum" />
+                        <asp:CustomValidator ID="cvAbDatum" runat="server" EnableClientScript="false" ControlToValidate="txtAbDatum"
+                            Display="None" SetFocusOnError="true" ErrorMessage="Bitte überprüfen Sie das Datum."
+                            OnServerValidate="OnValidateDate" />
                     </td>
                 </tr>
                 <tr id="trUhrzeit" runat="server">
