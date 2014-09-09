@@ -196,6 +196,9 @@ Misc tools
 .no-margin {
   margin: 0px !important;
 }
+.no-margin-left {
+  margin-left: 0px !important;
+}
 
 .no-bottom-space {
   padding-bottom:0px !important;

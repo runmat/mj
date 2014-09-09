@@ -8,22 +8,39 @@ Login page
 }
 
 .login .logo {
-  width: 247px;
-  margin: 0 auto;   
-  margin-top:60px;
   padding: 15px;
-  text-align: center;
+  text-align: left;
 }  
+.logo.text {
+    padding: 5px;
+    padding-left: 0;
+    font-size: 14pt;
+    font-weight: normal;
+    white-space: nowrap;
+}
+.logo.text span.logo-title {
+    color: red;
+}
+.logo.text span.logo-name {
+    color: white;
+}
 
 
 .login .content {
   background: url(../../img/bg-white-lock.png) repeat;
   width: 291px;
   margin: 0 auto; 
+  margin-top:60px;
   margin-bottom: 0px;
   padding: 30px;  
   padding-top: 20px;  
   padding-bottom: 15px;  
+}
+  
+.login .content .language-flags {
+    margin-top: -25px;
+    margin-bottom: 10px;
+    margin-left: 240px;
 }
 
 .login .content h3 {
@@ -69,6 +86,7 @@ Login page
 
 .login .content .form-title {
   font-weight: 300;
+  margin-top: 35px;
   margin-bottom: 25px;
 }
 
@@ -104,7 +122,8 @@ Login page
 }
 
 .login .content .forget-password {
-  margin-top: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .login .content .create-account {
@@ -178,12 +197,6 @@ input.m-wrap, select.m-wrap {
     padding: 2px;
 }
 
-  
-.login .content .language-flags {
-    margin-top: -10px;
-    margin-bottom: 10px;
-    margin-left: 240px;
-}
 
 #forget-password {
     color: white!important;    
