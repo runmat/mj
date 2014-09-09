@@ -347,6 +347,8 @@
     <Content Include="Customize\AVIS\styles.css" />
     <Content Include="Customize\BPLG\BPLG_LOGO2.JPG" />
     <Content Include="Customize\BPLG\styles.css" />
+    <Content Include="Customize\bruehlerbank\bb.gif" />
+    <Content Include="Customize\bruehlerbank\styles.css" />
     <Content Include="Customize\CCU\info.GIF" />
     <Content Include="Customize\CCU\styles.css" />
     <Content Include="Customize\CCU\unirent_logo.gif" />
@@ -393,16 +395,28 @@
     <Content Include="Customize\JBC\JCBLogoOriginal.JPG" />
     <Content Include="Customize\JBC\styles.css" />
     <Content Include="Customize\JBC\stylesX.css" />
+    <Content Include="Customize\Kroschke\Customer\atu_logo.gif" />
     <Content Include="Customize\Kroschke\Customer\bmwlogo.jpg" />
+    <Content Include="Customize\Kroschke\Customer\BoehmKellenersLogo.JPG" />
     <Content Include="Customize\Kroschke\Customer\dello.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Duerkop_logo.JPG" />
     <Content Include="Customize\Kroschke\Customer\Duerkop_logp.JPG" />
+    <Content Include="Customize\Kroschke\Customer\GSchultz_logo.JPG" />
+    <Content Include="Customize\Kroschke\Customer\GvOpel_logo.JPG" />
     <Content Include="Customize\Kroschke\Customer\lhs.gif" />
+    <Content Include="Customize\Kroschke\Customer\logoschwaben.JPG" />
     <Content Include="Customize\Kroschke\Customer\marnet.gif" />
+    <Content Include="Customize\Kroschke\Customer\Microsoft.jpg" />
+    <Content Include="Customize\Kroschke\Customer\minrath.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Pfohe_logo.JPG" />
+    <Content Include="Customize\Kroschke\Customer\plätzlogo.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Porsche_logo.gif" />
     <Content Include="Customize\Kroschke\Customer\raffay.gif" />
     <Content Include="Customize\Kroschke\Customer\renault_muenchen.gif" />
     <Content Include="Customize\Kroschke\Customer\renault_muenchen.jpg" />
     <Content Include="Customize\Kroschke\Customer\schultz.gif" />
     <Content Include="Customize\Kroschke\Customer\schwaben.jpg" />
+    <Content Include="Customize\Kroschke\Customer\seat.jpg" />
     <Content Include="Customize\Kroschke\Customer\wiest.gif" />
     <Content Include="Customize\Kroschke\kroschke.jpg" />
     <Content Include="Customize\Kroschke\kroschke_buttonbackground.jpg" />
@@ -437,6 +451,7 @@
     <Content Include="Customize\RDZ\RDZlogo.gif" />
     <Content Include="Customize\RDZ\Styles.css" />
     <Content Include="Customize\Renault\kroschke.jpg" />
+    <Content Include="Customize\Renault\renault_muenchen.jpg" />
     <Content Include="Customize\Renault\Styles.css" />
     <Content Include="Customize\RTFS\RTFS.GIF" />
     <Content Include="Customize\RTFS\styles.css" />
@@ -628,6 +643,8 @@
     <Content Include="Start\Selection.aspx" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Styles.css" />
+    <None Include="Customize\AVIS\Handbuch\Handbuch zur Web Anwendung AVIS 022008.pdf" />
+    <None Include="Customize\bruehlerbank\HandbuchTreuhand.pdf" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
