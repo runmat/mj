@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Insurance.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -83,7 +84,10 @@ namespace CkgDomainLogic.Insurance.Models
         [XmlIgnore]
         public static string BoxArten
         {
-            get { return "GU,Gutachten;RE,Reparatur"; }
+            get 
+            { 
+                return string.Format("GU,{0};RE,{1}", Localize.ReportCertificate, Localize.Repair); 
+            }
         }
 
         [XmlIgnore]

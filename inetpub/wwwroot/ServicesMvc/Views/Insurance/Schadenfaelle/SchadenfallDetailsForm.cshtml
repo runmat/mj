@@ -13,7 +13,7 @@
         @Html.HiddenFor(m => m.AnlageUser)
                 
 
-        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">Vorgang bearbeiten</span></text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">@Localize.OccurrenceEdit</span></text>, new { @class = "m-wrap" })
         
         
         @Html.FormValidationSummary()
@@ -41,9 +41,9 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="submit" class="btn green margin-right-5" onclick="_directNavigateToTermine = false"><i class="icon-ok"></i> Speichern</button>
-            <button type="submit" class="btn blue margin-right-5" onclick="_directNavigateToTermine = true"><i class="icon-ok"></i> Speichern + Termineingabe</button>
-            <button type="button" class="btn margin-right-5" onclick="VorgangCloseDetails();">Abbrechen</button>
+            <button type="submit" class="btn green margin-right-5" onclick="_directNavigateToTermine = false"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="submit" class="btn blue margin-right-5" onclick="_directNavigateToTermine = true"><i class="icon-ok"></i> @Localize.Save + @Localize.AppointmentEdit</button>
+            <button type="button" class="btn margin-right-5" onclick="VorgangCloseDetails();">@Localize.Cancel</button>
         </div>
     
         <script type="text/javascript">
