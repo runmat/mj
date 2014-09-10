@@ -53,9 +53,9 @@
     </tr>
 </table>
 <script language="JavaScript" type="text/javascript">
-	//
+										<!--    //
     // window.document.Form1.elements[window.document.Form1.length-3].focus();
-    //
+    //-->
     function openinfoMessage() {
         var width = 550;
         var height = 200;
