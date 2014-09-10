@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
@@ -44,7 +46,41 @@ namespace AgisWebService
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            var app = sender as HttpApplication;
+            var context = app.Context;
 
+            if (context.Request.ContentLength == 0)
+                return;
+
+            var request = context.Request;
+            var response = context.Response;
+
+            response.Filter = new ResponseFilterStream(response.Filter);
+
+            var logService = new GeneralTools.Services.LogService(String.Empty, String.Empty);
+            logService.LogWebServiceTraffic("Request", GetString(request.InputStream), Common.LogTable);
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            var app = sender as HttpApplication;
+            var context = app.Context;
+
+            if (context.Request.ContentLength == 0)
+                return;
+
+            var filter = context.Response.Filter as ResponseFilterStream;
+
+            var logService = new GeneralTools.Services.LogService(String.Empty, String.Empty);
+            logService.LogWebServiceTraffic("Response", filter.ReadStream(), Common.LogTable);
+        }
+
+        private static string GetString(Stream stream)
+        {
+            var bytes = new byte[stream.Length - 1];
+            stream.Read(bytes, 0, bytes.Length);
+            stream.Position = 0;
+            return Encoding.UTF8.GetString(bytes);
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
