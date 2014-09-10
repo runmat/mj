@@ -168,17 +168,385 @@
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Forms\admZulassung.aspx.vb">
+      <DependentUpon>admZulassung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change01.aspx.designer.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change01.aspx.vb">
+      <DependentUpon>Change01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06.aspx.vb">
+      <DependentUpon>Change06.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06_2.aspx.vb">
+      <DependentUpon>Change06_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change06_6.aspx.vb">
+      <DependentUpon>Change06_6.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07.aspx.vb">
+      <DependentUpon>Change07.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07_2.aspx.vb">
+      <DependentUpon>Change07_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07_3.aspx.vb">
+      <DependentUpon>Change07_3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change07_4.aspx.vb">
+      <DependentUpon>Change07_4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change13.aspx.vb">
+      <DependentUpon>Change13.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change13_2.aspx.vb">
+      <DependentUpon>Change13_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Change14.aspx.designer.vb">
+      <DependentUpon>Change14.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Change14.aspx.vb">
+      <DependentUpon>Change14.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report11.aspx.vb">
+      <DependentUpon>Report11.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report11_2.aspx.vb">
+      <DependentUpon>Report11_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report16.aspx.vb">
+      <DependentUpon>Report16.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report17.aspx.vb">
+      <DependentUpon>Report17.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report19.aspx.vb">
+      <DependentUpon>Report19.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report22.aspx.vb">
+      <DependentUpon>Report22.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report22_2.aspx.vb">
+      <DependentUpon>Report22_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report25.aspx.vb">
+      <DependentUpon>Report25.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report26.aspx.vb">
+      <DependentUpon>Report26.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report27.aspx.vb">
+      <DependentUpon>Report27.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report28.aspx.vb">
+      <DependentUpon>Report28.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report29.aspx.designer.vb">
+      <DependentUpon>Report29.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report29.aspx.vb">
+      <DependentUpon>Report29.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report32.aspx.vb">
+      <DependentUpon>Report32.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report34.aspx.vb">
+      <DependentUpon>Report34.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report37.aspx.vb">
+      <DependentUpon>Report37.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report37_2.aspx.vb">
+      <DependentUpon>Report37_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report38.aspx.vb">
+      <DependentUpon>Report38.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report39.aspx.vb">
+      <DependentUpon>Report39.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report40.aspx.vb">
+      <DependentUpon>Report40.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report41.aspx.vb">
+      <DependentUpon>Report41.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report42.aspx.vb">
+      <DependentUpon>Report42.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report60.aspx.vb">
+      <DependentUpon>Report60.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report66.aspx.vb">
+      <DependentUpon>Report66.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Report66_2.aspx.vb">
+      <DependentUpon>Report66_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\SchluesselTuetenVorgaben.aspx.vb">
+      <DependentUpon>SchluesselTuetenVorgaben.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ZulassungsVorbelegung.aspx.vb">
+      <DependentUpon>ZulassungsVorbelegung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Lib\Klaerfaelle.vb" />
+    <Compile Include="Lib\SixtRFID.vb" />
+    <Compile Include="Lib\SixtThread.vb" />
+    <Compile Include="Lib\Sixt_AbmeldUnterlagen.vb" />
+    <Compile Include="Lib\Sixt_B02.vb" />
+    <Compile Include="Lib\Sixt_B03.vb" />
+    <Compile Include="Lib\Sixt_B04.vb" />
+    <Compile Include="Lib\Sixt_B05.vb" />
+    <Compile Include="Lib\Sixt_B06.vb" />
+    <Compile Include="Lib\Sixt_B07.vb" />
+    <Compile Include="Lib\Sixt_B08.vb" />
+    <Compile Include="Lib\Sixt_B09.vb" />
+    <Compile Include="Lib\Sixt_B10.vb" />
+    <Compile Include="Lib\Sixt_B11.vb" />
+    <Compile Include="Lib\Sixt_B12.vb" />
+    <Compile Include="Lib\Sixt_B13.vb" />
+    <Compile Include="Lib\Sixt_B14.vb" />
+    <Compile Include="Lib\Sixt_B15.vb" />
+    <Compile Include="Lib\Sixt_B16.vb" />
+    <Compile Include="Lib\Sixt_B17.vb" />
+    <Compile Include="Lib\Sixt_B66.vb" />
+    <Compile Include="Lib\SIXT_Mindesthaltefrist.vb" />
+    <Compile Include="Lib\SIXT_PDI.vb" />
+    <Compile Include="Lib\SIXT_SchluesselTuetenVorgaben.vb" />
+    <Compile Include="Templates\BlkFahrzeuge.ascx.vb">
+      <DependentUpon>BlkFahrzeuge.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\BlkModell.ascx.vb">
+      <DependentUpon>BlkModell.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\DZFahrzeuge.ascx.vb">
+      <DependentUpon>DZFahrzeuge.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Fahrzeug.ascx.vb">
+      <DependentUpon>Fahrzeug.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Modell.ascx.vb">
+      <DependentUpon>Modell.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Content Include="Forms\admZulassung.aspx" />
+    <Content Include="Forms\Change01.aspx" />
+    <Content Include="Forms\Change06.aspx" />
+    <Content Include="Forms\Change06_2.aspx" />
+    <Content Include="Forms\Change06_6.aspx" />
+    <Content Include="Forms\Change07.aspx" />
+    <Content Include="Forms\Change07_2.aspx" />
+    <Content Include="Forms\Change07_3.aspx" />
+    <Content Include="Forms\Change07_4.aspx" />
+    <Content Include="Forms\Change13.aspx" />
+    <Content Include="Forms\Change13_2.aspx" />
+    <Content Include="Forms\Change14.aspx" />
     <Content Include="Forms\info.htm" />
+    <Content Include="Forms\Report11.aspx" />
+    <Content Include="Forms\Report11_2.aspx" />
+    <Content Include="Forms\Report16.aspx" />
+    <Content Include="Forms\Report17.aspx" />
+    <Content Include="Forms\Report19.aspx" />
+    <Content Include="Forms\Report22.aspx" />
+    <Content Include="Forms\Report22_2.aspx" />
+    <Content Include="Forms\Report25.aspx" />
+    <Content Include="Forms\Report26.aspx" />
+    <Content Include="Forms\Report27.aspx" />
+    <Content Include="Forms\Report28.aspx" />
+    <Content Include="Forms\Report29.aspx" />
+    <Content Include="Forms\Report32.aspx" />
+    <Content Include="Forms\Report34.aspx" />
+    <Content Include="Forms\Report37.aspx" />
+    <Content Include="Forms\Report37_2.aspx" />
+    <Content Include="Forms\Report38.aspx" />
+    <Content Include="Forms\Report39.aspx" />
+    <Content Include="Forms\Report40.aspx" />
+    <Content Include="Forms\Report41.aspx" />
+    <Content Include="Forms\Report42.aspx" />
+    <Content Include="Forms\Report60.aspx" />
+    <Content Include="Forms\Report66.aspx" />
+    <Content Include="Forms\Report66_2.aspx" />
+    <Content Include="Forms\SchluesselTuetenVorgaben.aspx" />
     <Content Include="Forms\scroll.htc" />
+    <Content Include="Forms\ZulassungsVorbelegung.aspx" />
+    <Content Include="Templates\BlkFahrzeuge.ascx" />
+    <Content Include="Templates\BlkModell.ascx" />
+    <Content Include="Templates\DZFahrzeuge.ascx" />
+    <Content Include="Templates\Fahrzeug.ascx" />
+    <Content Include="Templates\Modell.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\Bestellung.doc" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Lib\" />
     <Folder Include="My Project\" />
-    <Folder Include="Templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\admZulassung.aspx.resx">
+      <DependentUpon>admZulassung.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change06.aspx.resx">
+      <DependentUpon>Change06.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change06_2.aspx.resx">
+      <DependentUpon>Change06_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change06_6.aspx.resx">
+      <DependentUpon>Change06_6.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change07.aspx.resx">
+      <DependentUpon>Change07.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change07_2.aspx.resx">
+      <DependentUpon>Change07_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change07_3.aspx.resx">
+      <DependentUpon>Change07_3.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change07_4.aspx.resx">
+      <DependentUpon>Change07_4.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change13.aspx.resx">
+      <DependentUpon>Change13.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Change13_2.aspx.resx">
+      <DependentUpon>Change13_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report11.aspx.resx">
+      <DependentUpon>Report11.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report11_2.aspx.resx">
+      <DependentUpon>Report11_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report16.aspx.resx">
+      <DependentUpon>Report16.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report17.aspx.resx">
+      <DependentUpon>Report17.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report19.aspx.resx">
+      <DependentUpon>Report19.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report22.aspx.resx">
+      <DependentUpon>Report22.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report22_2.aspx.resx">
+      <DependentUpon>Report22_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report25.aspx.resx">
+      <DependentUpon>Report25.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report26.aspx.resx">
+      <DependentUpon>Report26.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report27.aspx.resx">
+      <DependentUpon>Report27.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report28.aspx.resx">
+      <DependentUpon>Report28.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report32.aspx.resx">
+      <DependentUpon>Report32.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report34.aspx.resx">
+      <DependentUpon>Report34.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report37.aspx.resx">
+      <DependentUpon>Report37.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report37_2.aspx.resx">
+      <DependentUpon>Report37_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report38.aspx.resx">
+      <DependentUpon>Report38.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report39.aspx.resx">
+      <DependentUpon>Report39.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report40.aspx.resx">
+      <DependentUpon>Report40.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report41.aspx.resx">
+      <DependentUpon>Report41.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report42.aspx.resx">
+      <DependentUpon>Report42.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report60.aspx.resx">
+      <DependentUpon>Report60.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report66.aspx.resx">
+      <DependentUpon>Report66.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report66_2.aspx.resx">
+      <DependentUpon>Report66_2.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SchluesselTuetenVorgaben.aspx.resx">
+      <DependentUpon>SchluesselTuetenVorgaben.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZulassungsVorbelegung.aspx.resx">
+      <DependentUpon>ZulassungsVorbelegung.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\BlkFahrzeuge.ascx.resx">
+      <DependentUpon>BlkFahrzeuge.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\BlkModell.ascx.resx">
+      <DependentUpon>BlkModell.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\DZFahrzeuge.ascx.resx">
+      <DependentUpon>DZFahrzeuge.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Fahrzeug.ascx.resx">
+      <DependentUpon>Fahrzeug.ascx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Modell.ascx.resx">
+      <DependentUpon>Modell.ascx.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
