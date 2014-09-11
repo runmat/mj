@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.CoC.Models
+@{
+    var gridName = "GridCocSendungen";
+}
+
+@(Html.Telerik()
+    .Grid<SendungsAuftrag>()
+    .Name(gridName)
+
+    .XGroup("CocSendungen")
+    .XAjaxDataBinding("SendungenAjaxBinding", "CocSendung")
+    .Columns(columns =>
+        {
+            columns.Bound(c => c.FIN);
+            columns.Bound(c => c.ZulassungsDatum);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ZulassungsDatum).Descending())
+    .XToolBar("CocSendung")
+)
+

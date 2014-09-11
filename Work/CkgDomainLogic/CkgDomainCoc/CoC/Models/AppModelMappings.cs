@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable InconsistentNaming
+using System;
 using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -424,6 +425,25 @@ namespace CkgDomainLogic.CoC.Models
         #region Save to Repository
 
         #endregion
+
+        #endregion
+
+
+        #region Sendungsaufträge
+
+        static public ModelMapping<Z_DPM_GET_ZZSEND2.GT_WEB, SendungsAuftrag> Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_GET_ZZSEND2.GT_WEB, SendungsAuftrag>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.FIN = s.ZZFAHRG;
+                            d.ZulassungsDatum = s.ERDAT;
+                        }));
+            }
+        }
 
         #endregion
     }

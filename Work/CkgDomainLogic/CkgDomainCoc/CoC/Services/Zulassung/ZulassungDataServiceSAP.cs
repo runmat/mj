@@ -14,7 +14,6 @@ using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
-using AppModelMappingsDomainCommon = CkgDomainLogic.CoC.Models.AppModelMappings;
 
 // ReSharper restore RedundantUsingDirective
 
@@ -29,6 +28,9 @@ namespace CkgDomainLogic.CoC.Services
         {
         }
 
+
+        #region Zulassung
+
         public string SaveZulassung(
             Adresse auftraggeberAdresse,
             Adresse halterAdresse,
@@ -38,7 +40,7 @@ namespace CkgDomainLogic.CoC.Services
             Adresse versandScheinSchilderAdresse,
             Adresse versandZb2CocAdresse,
 
-            ZulassungsOptionen zulassungsOptionen, 
+            ZulassungsOptionen zulassungsOptionen,
             ZulassungsDienstleistungen zulassungsDienstleistungen,
             Versicherungsdaten versicherungsdaten,
             WunschkennzeichenOptionen wunschkennzeichen
@@ -65,28 +67,29 @@ namespace CkgDomainLogic.CoC.Services
                             var auftrag = auftragsList[i];
 
                             // Auftrag allgemein
-                            CreateRowForAuftrag(auftraegeList, auftrag, halterAdresse, zulassungsOptionen, versicherungsdaten);
+                            CreateRowForAuftrag(auftraegeList, auftrag, halterAdresse, zulassungsOptionen,
+                                                versicherungsdaten);
 
                             // Partner
                             CreateRowsForPartner(partnerList,
-                                auftrag,
-                                halterAdresse,
-                                reguliererAdresse,
-                                rechnungsEmpfaengerAdresse,
-                                versicherungsNehmerAdresse,
-                                versandScheinSchilderAdresse, 
-                                versandZb2CocAdresse);
+                                                 auftrag,
+                                                 halterAdresse,
+                                                 reguliererAdresse,
+                                                 rechnungsEmpfaengerAdresse,
+                                                 versicherungsNehmerAdresse,
+                                                 versandScheinSchilderAdresse,
+                                                 versandZb2CocAdresse);
 
                             // Dienstleistungen
                             CreateRowsForDienstleistungen(dienstleistungenList,
-                                auftrag,
-                                zulassungsDienstleistungen);
+                                                          auftrag,
+                                                          zulassungsDienstleistungen);
                         }
 
                         SAP.ApplyImport(auftraegeList);
                         SAP.ApplyImport(partnerList);
                         SAP.ApplyImport(dienstleistungenList);
-   
+
                         SAP.Execute();
                     },
 
@@ -101,7 +104,7 @@ namespace CkgDomainLogic.CoC.Services
                             AuftragsNummer = sapResult.VBELN;
                             return sapResult.MESSAGE;
                         }
-                        
+
                         return "Fehler: Es wurde kein Auftrag angelegt.";
                     });
 
@@ -110,34 +113,34 @@ namespace CkgDomainLogic.CoC.Services
 
         private static void CreateRowForAuftrag(
             List<Z_DPM_WEB_ZULASSUNG_01.GT_AUF> auftraegeList,
-            VinWunschkennzeichen auftrag, 
-            Adresse halterAdresse, 
-            ZulassungsOptionen zulassungsOptionen, 
+            VinWunschkennzeichen auftrag,
+            Adresse halterAdresse,
+            ZulassungsOptionen zulassungsOptionen,
             Versicherungsdaten versicherungsdaten)
         {
             var sapAuftrag = new Z_DPM_WEB_ZULASSUNG_01.GT_AUF
-            {
-                // Fahrzeug Info
-                ZZFAHRG = auftrag.VIN,
-                ZZBRIEF = auftrag.ZBII,
-                ZZREFNR = auftrag.AuftragsReferenz,
+                {
+                    // Fahrzeug Info
+                    ZZFAHRG = auftrag.VIN,
+                    ZZBRIEF = auftrag.ZBII,
+                    ZZREFNR = auftrag.AuftragsReferenz,
 
-                ZFAHRZEUGART = "",
+                    ZFAHRZEUGART = "",
 
-                // Zulassungs-Optionen
-                SFV_FZG = zulassungsOptionen.ZulassungsOption.Name,
-                ZULDAT = zulassungsOptionen.AuslieferDatum,
-                ZUL_DEZ = halterAdresse.Land.NotNullOrEmpty().ToUpper() == "DE" ? "1" : "0",
-                ZUL_AUSLAND = halterAdresse.Land.NotNullOrEmpty().ToUpper() == "DE" ? "0" : "1",
-                ZUL_EXPORT = "0",
+                    // Zulassungs-Optionen
+                    SFV_FZG = zulassungsOptionen.ZulassungsOption.Name,
+                    ZULDAT = zulassungsOptionen.AuslieferDatum,
+                    ZUL_DEZ = halterAdresse.Land.NotNullOrEmpty().ToUpper() == "DE" ? "1" : "0",
+                    ZUL_AUSLAND = halterAdresse.Land.NotNullOrEmpty().ToUpper() == "DE" ? "0" : "1",
+                    ZUL_EXPORT = "0",
 
-                // Wunschkennzeichen
-                WUNSCHKENNZ = auftrag.WunschKennzeichenAsString.Replace("<br />", "; "),
+                    // Wunschkennzeichen
+                    WUNSCHKENNZ = auftrag.WunschKennzeichenAsString.Replace("<br />", "; "),
 
-                // Versicherung
-                VERSICHERUNG = versicherungsdaten.VersicherungsGesellschaft,
-                EVBNR = versicherungsdaten.EvbNummer,
-            };
+                    // Versicherung
+                    VERSICHERUNG = versicherungsdaten.VersicherungsGesellschaft,
+                    EVBNR = versicherungsdaten.EvbNummer,
+                };
 
             auftraegeList.Add(sapAuftrag);
         }
@@ -172,19 +175,24 @@ namespace CkgDomainLogic.CoC.Services
             CreateRowForOnePartner(partnerList, versandZb2CocAdresse, "ZS", auftrag);
         }
 
-        private void CreateRowForOnePartner(List<Z_DPM_WEB_ZULASSUNG_01.GT_PARTNER> partnerList, Adresse adresse, string partnerKennung, VinWunschkennzeichen auftrag, bool useCustomerNumberOnly = false)
+        private void CreateRowForOnePartner(List<Z_DPM_WEB_ZULASSUNG_01.GT_PARTNER> partnerList, Adresse adresse,
+                                            string partnerKennung, VinWunschkennzeichen auftrag,
+                                            bool useCustomerNumberOnly = false)
         {
-            var partnerNumber = partnerKennung.StartsWith("Z") ? "" : (adresse.KundenNr.IsNotNullOrEmpty() ? adresse.KundenNr : LogonContext.KundenNr).ToSapKunnr();
+            var partnerNumber = partnerKennung.StartsWith("Z")
+                                    ? ""
+                                    : (adresse.KundenNr.IsNotNullOrEmpty() ? adresse.KundenNr : LogonContext.KundenNr)
+                                          .ToSapKunnr();
 
             var partner = new Z_DPM_WEB_ZULASSUNG_01.GT_PARTNER
-            {
-                ZZFAHRG = auftrag.VIN,
-                ZZBRIEF = auftrag.ZBII,
-                ZZREFNR = auftrag.AuftragsReferenz,
+                {
+                    ZZFAHRG = auftrag.VIN,
+                    ZZBRIEF = auftrag.ZBII,
+                    ZZREFNR = auftrag.AuftragsReferenz,
 
-                PARTN_ROLE = partnerKennung,
-                PARTN_NUMB = partnerNumber,
-            };
+                    PARTN_ROLE = partnerKennung,
+                    PARTN_NUMB = partnerNumber,
+                };
 
             if (!useCustomerNumberOnly)
             {
@@ -199,22 +207,24 @@ namespace CkgDomainLogic.CoC.Services
             partnerList.Add(partner);
         }
 
-        private static void CreateRowsForDienstleistungen(List<Z_DPM_WEB_ZULASSUNG_01.GT_DIENSTL> dienstleistungenList, VinWunschkennzeichen auftrag, ZulassungsDienstleistungen zulassungsDienstleistungen)
+        private static void CreateRowsForDienstleistungen(List<Z_DPM_WEB_ZULASSUNG_01.GT_DIENSTL> dienstleistungenList,
+                                                          VinWunschkennzeichen auftrag,
+                                                          ZulassungsDienstleistungen zulassungsDienstleistungen)
         {
             for (var i = 0; i < zulassungsDienstleistungen.GewaehlteDienstleistungen.Count; i++)
             {
                 var dienstleistung = zulassungsDienstleistungen.GewaehlteDienstleistungen[i];
 
                 var sapDienstleistung = new Z_DPM_WEB_ZULASSUNG_01.GT_DIENSTL
-                {
-                    ZZFAHRG = auftrag.VIN,
-                    ZZBRIEF = auftrag.ZBII,
-                    ZZREFNR = auftrag.AuftragsReferenz,
+                    {
+                        ZZFAHRG = auftrag.VIN,
+                        ZZBRIEF = auftrag.ZBII,
+                        ZZREFNR = auftrag.AuftragsReferenz,
 
-                    DIENSTL_NR = dienstleistung.ID,
-                    DIENSTL_TEXT = dienstleistung.Name,
-                    MATNR = dienstleistung.Code,
-                };
+                        DIENSTL_NR = dienstleistung.ID,
+                        DIENSTL_TEXT = dienstleistung.Name,
+                        MATNR = dienstleistung.Code,
+                    };
 
                 dienstleistungenList.Add(sapDienstleistung);
             }
@@ -225,5 +235,33 @@ namespace CkgDomainLogic.CoC.Services
             if (LogonContext.KundenNr.ToSapKunnr() == "0010010753" && halterAdresse.KundenNr.IsNullOrEmpty())
                 halterAdresse.KundenNr = "0000349980";
         }
+
+        #endregion
+
+
+        #region Sendungsaufträge
+
+        public List<SendungsAuftrag> GetSendungsAuftraege(SendungsAuftragSelektor model)
+        {
+            return CkgDomainLogic.CoC.Models.AppModelMappings.Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag.Copy(GetSapSendungsAuftraege(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_GET_ZZSEND2.GT_WEB> GetSapSendungsAuftraege(SendungsAuftragSelektor model)
+        {
+            Z_DPM_GET_ZZSEND2.Init(SAP);
+
+            SAP.SetImportParameter("KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.DatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("ERDAT_VON", model.DatumRange.StartDate);
+                SAP.SetImportParameter("ERDAT_BIS", model.DatumRange.EndDate);
+            }
+
+            SAP.Execute();
+
+            return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
+        }
+        #endregion
     }
 }
