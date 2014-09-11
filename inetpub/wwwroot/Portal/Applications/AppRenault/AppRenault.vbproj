@@ -44,7 +44,7 @@
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppRenault.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -63,7 +63,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppRenault.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -82,6 +82,10 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppUeberf\AppUeberf.vbproj">
+      <Project>{D0F123F6-350F-48E8-BD47-ACE69289402B}</Project>
+      <Name>AppUeberf</Name>
+    </ProjectReference>
     <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
@@ -124,10 +128,6 @@
       <Name>Portal</Name>
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
       <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\AppUeberf\AppUeberf.vbproj">
-      <Project>{D0F123F6-350F-48E8-BD47-ACE69289402B}</Project>
-      <Name>AppUeberf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -175,8 +175,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

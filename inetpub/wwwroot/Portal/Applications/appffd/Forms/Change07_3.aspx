@@ -58,10 +58,7 @@
 												<asp:textbox id="txtKopf" runat="server" Width="100px" MaxLength="9"></asp:textbox><asp:linkbutton id="LinkButton1" runat="server" CssClass="StandardButtonTable" Visible="False">&#149;&nbsp;Kopftext erf.</asp:linkbutton></TD>
 										</TR>
 										<tr>
-											<td vAlign="top" align="left" colSpan="3"><asp:datagrid id="DataGrid1" 
-                                                    runat="server" BackColor="White" PageSize="20" headerCSS="tableHeader" 
-                                                    bodyCSS="tableBody" cssclass="tableMain" bodyHeight="400" AllowSorting="True" 
-                                                    AllowPaging="True" AutoGenerateColumns="False" Width="100%">
+											<td vAlign="top" align="left" colSpan="3"><asp:datagrid id="DataGrid1" runat="server" BackColor="White" PageSize="50" headerCSS="tableHeader" bodyCSS="tableBody" cssclass="tableMain" bodyHeight="400" AllowSorting="True" AllowPaging="True" AutoGenerateColumns="False" Width="100%">
 													<AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
 													<HeaderStyle Wrap="False" ForeColor="White" CssClass="GridTableHead"></HeaderStyle>
 													<Columns>
