@@ -26,7 +26,7 @@
             color: #FFFFFF;
             background-color: #CC0033;
         }
-    </style>
+    </style>   
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
@@ -92,13 +92,13 @@
                                             <table>
                                                 <tr>
                                                     <td width="100%" height="100%" valign="top">
-                                                        <telerik:RadGrid ID="rgMail" runat="server" AllowPaging="false" AllowSorting="true" AllowMultiRowSelection="true" 
+                                                        <telerik:RadGrid ID="rgMail" runat="server" AllowPaging="false" AllowSorting="true" AllowMultiRowSelection="True"
                                                             AutoGenerateColumns="False" GridLines="None" CellSpacing="0">
                                                             <PagerStyle Mode="NextPrevAndNumeric"></PagerStyle>
                                                             <ClientSettings AllowKeyboardNavigation="True">
                                                                 <Scrolling AllowScroll="False" UseStaticHeaders="true" SaveScrollPosition="True" />
                                                                 <Resizing AllowColumnResize="true" AllowResizeToFit="True" ResizeGridOnColumnResize="true" />
-                                                                <Selecting AllowRowSelect="true" />
+                                                                <Selecting AllowRowSelect="True" />
                                                             </ClientSettings>
                                                             <MasterTableView GroupLoadMode="Client" TableLayout="Fixed" GroupsDefaultExpanded="true"
                                                                 Width="100%">

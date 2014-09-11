@@ -48,7 +48,7 @@
 														<TD>
 															<asp:RadioButtonList ID="rblAuswahl" runat="server" 
                                                                 RepeatDirection="Horizontal" >
-                                                                <asp:ListItem Selected="True" Value="U">Unfallmeldung</asp:ListItem>
+                                                                <asp:ListItem Selected="True" Value="U">Unfallfahrzeug</asp:ListItem>
                                                                 <asp:ListItem Value="D">Diebstahl</asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </TD>

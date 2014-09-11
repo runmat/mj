@@ -17,7 +17,6 @@
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     
     <uc1:BusyIndicator ID="BusyIndicator1" runat="server" />
-    <a href="Change54_2.aspx">Change54_2.aspx</a>
 
     <form id="Form1" method="post" runat="server">
     <table cellspacing="0" cellpadding="0" width="100%" align="center" border="0">

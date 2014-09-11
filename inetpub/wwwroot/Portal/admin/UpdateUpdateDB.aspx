@@ -3,8 +3,7 @@
 
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../PageElements/Header.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="BusyIndicator" Src="../../../PageElements/BusyIndicator.ascx" %>
-
+<%@ Register Assembly="BusyBoxDotNet" Namespace="BusyBoxDotNet" TagPrefix="busyboxdotnet" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -16,9 +15,6 @@
     </uc1:styles>
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
-    
-    <uc1:BusyIndicator runat="server" />
-
     <form id="Form1" method="post" runat="server">
 
     <script language="javascript" id="ScrollPosition">
@@ -104,6 +100,9 @@
                             <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0">
                                 <tr>
                                     <td>
+                                        <busyboxdotnet:BusyBox ID="BusyBox1" runat="server" Image="Custom" ImageUrl="../images/zahnrad.gif"
+                                        Text="Ihr Vorgang wird bearbeitet. Dies kann einige Zeit in Anspruch nehmen." Title="Bitte warten.." 
+                                        ShowBusyBox="Custom" GZipCompression="False" />
                                     </td>
                                 </tr>
                                 <tr>

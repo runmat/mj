@@ -1,0 +1,1412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CKG.Services</RootNamespace>
+    <AssemblyName>CKG.Services</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>CKG.Services.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>CKG.Services.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.5.50401.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\EasyAccessServices\CKG.EasyAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="DHLWebService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DHLWebService.dll</HintPath>
+    </Reference>
+    <Reference Include="dk.nita.saml20, Version=1.4.0.3461, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\dk.nita.saml20.dll</HintPath>
+    </Reference>
+    <Reference Include="eIDConnector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\eIDConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralTools, Version=1.0.5056.19011, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\work\GAC\GeneralTools.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\Work\GAC\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickEasy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\QuickEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
+    <Reference Include="WebTools35, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\WebTools35.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Customize\AHFischer\dadlogo.jpg" />
+    <Content Include="Customize\AHFischer\LogoFischer.png" />
+    <Content Include="Customize\AHFischer\volvo.css" />
+    <Content Include="Customize\AHFischer\volvoie6.css" />
+    <Content Include="Customize\athlon\athlon.css" />
+    <Content Include="Customize\athlon\athlonie6.css" />
+    <Content Include="Customize\athlon\logo.gif" />
+    <Content Include="Customize\AtlasLeasing\AtlasLeasing.jpg" />
+    <Content Include="Customize\AtlasLeasing\dadlogo.jpg" />
+    <Content Include="Customize\AtlasLeasing\volvo.css" />
+    <Content Include="Customize\AtlasLeasing\volvoie6.css" />
+    <Content Include="Customize\avisRussmann\Avis_Logo.GIF" />
+    <Content Include="Customize\avisRussmann\dadlogo.jpg" />
+    <Content Include="Customize\avisRussmann\volvo.css" />
+    <Content Include="Customize\avisRussmann\volvoie6.css" />
+    <Content Include="Customize\BayernLB\bayernlb.png" />
+    <Content Include="Customize\BayernLB\dadlogo.jpg" />
+    <Content Include="Customize\BayernLB\volvo.css" />
+    <Content Include="Customize\BayernLB\volvoie6.css" />
+    <Content Include="Customize\bca\bca.png" />
+    <Content Include="Customize\bca\dadlogo.jpg" />
+    <Content Include="Customize\bca\volvo.css" />
+    <Content Include="Customize\bca\volvoie6.css" />
+    <Content Include="Customize\Cardocu\Cardocu.css" />
+    <Content Include="Customize\Cardocu\CardocuIE6.css" />
+    <Content Include="Customize\Charterway\Charterway.jpg" />
+    <Content Include="Customize\Charterway\dadlogo.jpg" />
+    <Content Include="Customize\Charterway\volvo.css" />
+    <Content Include="Customize\Charterway\volvoie6.css" />
+    <Content Include="Customize\Chrysler\chryslerE6.css" />
+    <Content Include="Customize\Citroen\Citroen.jpg" />
+    <Content Include="Customize\Citroen\dadlogo.jpg" />
+    <Content Include="Customize\Citroen\volvo.css" />
+    <Content Include="Customize\Citroen\volvoie6.css" />
+    <Content Include="Customize\cpm\cpm.png" />
+    <Content Include="Customize\cpm\dadlogo.jpg" />
+    <Content Include="Customize\cpm\volvo.css" />
+    <Content Include="Customize\cpm\volvoie6.css" />
+    <Content Include="Customize\dadcarports\BannerBack.jpg" />
+    <Content Include="Customize\dadcarports\dad.css" />
+    <Content Include="Customize\dadcarports\dadlogo.jpg" />
+    <Content Include="Customize\dadcarports\TableAlternate.jpg" />
+    <Content Include="Customize\dadcarports\TableBack.jpg" />
+    <Content Include="Customize\dadcarports\TaskTitleBack.jpg" />
+    <Content Include="Customize\dadcarports\volvoie6.css" />
+    <Content Include="Customize\dc\DaimlerChrysler.jpg" />
+    <Content Include="Customize\dc\dc.css" />
+    <Content Include="Customize\dc\dcie6.css" />
+    <Content Include="Customize\Dorma\Dorma.png" />
+    <Content Include="Customize\Dorma\volvo.css" />
+    <Content Include="Customize\Dorma\volvoie6.css" />
+    <Content Include="Customize\enterprise\enterprise.png" />
+    <Content Include="Customize\enterprise\logo.jpg" />
+    <Content Include="Customize\enterprise\volvo.css" />
+    <Content Include="Customize\enterprise\volvoie6.css" />
+    <Content Include="Customize\eon\dadlogo.jpg" />
+    <Content Include="Customize\eon\eon.gif" />
+    <Content Include="Customize\eon\Kopie von volvo.css" />
+    <Content Include="Customize\eon\volvo.css" />
+    <Content Include="Customize\eon\volvoie6.css" />
+    <Content Include="Customize\EuropaService\logo.gif" />
+    <Content Include="Customize\Fiat\dadlogo.jpg" />
+    <Content Include="Customize\Fiat\fiat.jpg" />
+    <Content Include="Customize\Fiat\volvo.css" />
+    <Content Include="Customize\Fiat\volvoie6.css" />
+    <Content Include="Customize\FleetsEnterprises\dadlogo.jpg" />
+    <Content Include="Customize\FleetsEnterprises\fleetsEnterprises_logo.jpg" />
+    <Content Include="Customize\FleetsEnterprises\fleets_logo.jpg" />
+    <Content Include="Customize\FleetsEnterprises\volvo.css" />
+    <Content Include="Customize\FleetsEnterprises\volvoie6.css" />
+    <Content Include="Customize\gmac_hetzer\GMAC_Logo.gif" />
+    <Content Include="Customize\gmac_hetzer\volvo.css" />
+    <Content Include="Customize\Haspa\haspa.css" />
+    <Content Include="Customize\Haspa\haspa.png" />
+    <Content Include="Customize\held\dadlogo.jpg" />
+    <Content Include="Customize\held\Held_Stroehle.png" />
+    <Content Include="Customize\held\volvo.css" />
+    <Content Include="Customize\held\volvoie6.css" />
+    <Content Include="Customize\hpi\dadlogo.jpg" />
+    <Content Include="Customize\hpi\hpi.jpg" />
+    <Content Include="Customize\hpi\volvo.css" />
+    <Content Include="Customize\LoehrGruppe\dadlogo.jpg" />
+    <Content Include="Customize\LoehrGruppe\loehrgruppe.jpg" />
+    <Content Include="Customize\LoehrGruppe\volvo.css" />
+    <Content Include="Customize\LoehrGruppe\volvoie6.css" />
+    <Content Include="Customize\mbb\dcblogo2.jpg" />
+    <Content Include="Customize\mbb\volvo.css" />
+    <Content Include="Customize\mercedes\daimler.gif" />
+    <Content Include="Customize\mercedes\Daimler_NL_B_2011.jpg" />
+    <Content Include="Customize\mercedes\Kroschke2.jpg" />
+    <Content Include="Customize\mercedes\Mercedes-Benz_logo.gif" />
+    <Content Include="Customize\mercedes\mercedes2.gif" />
+    <Content Include="Customize\mercedes\mercedesIE6.css" />
+    <Content Include="Customize\Merkur\merkur.css" />
+    <Content Include="Customize\Merkur\Merkur.png" />
+    <Content Include="Customize\nissan\nissan.css" />
+    <Content Include="Customize\nissan\Nissan.png" />
+    <Content Include="Customize\Peugeot\dadlogo.jpg" />
+    <Content Include="Customize\Peugeot\peugeot.jpg" />
+    <Content Include="Customize\Peugeot\volvo.css" />
+    <Content Include="Customize\Peugeot\volvoie6.css" />
+    <Content Include="Customize\porsche\porscheE6.css" />
+    <Content Include="Customize\Postbank\postbank.css" />
+    <Content Include="Customize\Postbank\postbank.png" />
+    <Content Include="Customize\Postbank\postbankie6.css" />
+    <Content Include="Customize\seat\seat-logo.png" />
+    <Content Include="Customize\seat\seat.css" />
+    <Content Include="Customize\SixtlNeu\sixt.gif" />
+    <Content Include="Customize\SixtlNeu\Sixtl.css" />
+    <Content Include="Customize\SixtlNeu\Sixtlie6.css" />
+    <Content Include="Customize\SparkasseRemscheid\sparkasse.jpg" />
+    <Content Include="Customize\SparkasseRemscheid\volvo.css" />
+    <Content Include="Customize\SpaWu\sparkasse.jpg" />
+    <Content Include="Customize\SpaWu\spawu.css" />
+    <Content Include="Customize\starcar\starcar.css" />
+    <Content Include="Customize\starcar\StarCar.png" />
+    <Content Include="Customize\TargoBank\targo.gif" />
+    <Content Include="Customize\TargoBank\volvo.css" />
+    <Content Include="Customize\TargoBank\volvoie6.css" />
+    <Content Include="Customize\tuevnord\tuevnord.css" />
+    <Content Include="Customize\tuevnord\TUEVNord.png" />
+    <Content Include="Customize\UniCredit\Unicredit.css" />
+    <Content Include="Customize\UniCredit\UnicreditIE6.css" />
+    <Content Include="Customize\UniCredit\Unicredit_logo.jpg" />
+    <Content Include="Customize\UniCredLeas\UnicreditLeasing.jpg" />
+    <Content Include="Customize\UniCredLeas\UniCredLeas.css" />
+    <Content Include="Customize\UniCredLeas\UniCredLeasIE6.css" />
+    <Content Include="Customize\vrdiskontbank\vr.css" />
+    <Content Include="Customize\vrdiskontbank\VRDiskontbank.png" />
+    <Content Include="Customize\VWLeasing\logo.jpg" />
+    <Content Include="Customize\VWLeasing\volvo.css" />
+    <Content Include="Customize\VWLeasing\volvoie6.css" />
+    <Content Include="Customize\VWLeasing\VWLeasingLogo.png" />
+    <Content Include="Customize\VWRemarketing\vw.css" />
+    <Content Include="Customize\VWRemarketing\vwIE6.css" />
+    <Content Include="Customize\VWRemarketing\VWRemarketing.png" />
+    <Content Include="Customize\Wuerttembergische\Logo_WV.png" />
+    <Content Include="Customize\Wuerttembergische\wuerttenb.css" />
+    <Content Include="Customize\Wuerttenbergische\logo_wuerttenb.jpg" />
+    <Content Include="Customize\Wuerttenbergische\logo_wv_head.gif" />
+    <Content Include="Customize\Wuerttenbergische\MenueDateneingabeButtonHover.gif" />
+    <Content Include="Customize\Wuerttenbergische\MenueDateneingabeButtonNormal.gif" />
+    <Content Include="Customize\Wuerttenbergische\MenueReportsButtonHover.gif" />
+    <Content Include="Customize\Wuerttenbergische\MenueReportsButtonNormal.gif" />
+    <Content Include="Customize\Wuerttenbergische\wuerttenb.css" />
+    <Content Include="Customize\Wuerttenbergische\wuerttenbIE6.css" />
+    <Content Include="Customize\XLeasing\xleasing.css" />
+    <Content Include="Customize\XLeasing\xleasing.png" />
+    <Content Include="Default.aspx" />
+    <Content Include="GAC\AjaxControlToolkit.dll" />
+    <Content Include="GAC\Aspose.Cells.dll" />
+    <Content Include="GAC\Aspose.Pdf.dll" />
+    <Content Include="GAC\Aspose.Words.dll" />
+    <Content Include="GAC\BusyBoxDotNet.dll" />
+    <Content Include="GAC\DBauer.Web.UI.WebControls.HierarGrid.dll" />
+    <Content Include="GAC\de\AjaxControlToolkit.resources.dll" />
+    <Content Include="GAC\DHLWebService.dll" />
+    <Content Include="GAC\dk.nita.saml20.dll" />
+    <Content Include="GAC\eIDConnector.dll" />
+    <Content Include="GAC\eWorld.UI.dll" />
+    <Content Include="GAC\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="GAC\QuickEasy.dll" />
+    <Content Include="GAC\SAP.Connector.dll" />
+    <Content Include="GAC\WebControls.dll" />
+    <Content Include="GAC\WMDQryCln.dll" />
+    <Content Include="GAC\WMDWebLink32Client.dll" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\addfromleft.png" />
+    <Content Include="Images\admin.png" />
+    <Content Include="Images\Adresspflege\Cancel.png" />
+    <Content Include="Images\Adresspflege\ConfirmMiddle.png" />
+    <Content Include="Images\Adresspflege\EditSmall.png" />
+    <Content Include="Images\Adresspflege\Neuanlage.png" />
+    <Content Include="Images\Adresspflege\Save.png" />
+    <Content Include="Images\Adresspflege\Suche.png" />
+    <Content Include="Images\Adresspflege\SucheMiddle.png" />
+    <Content Include="Images\Adresspflege\SucheSmall.png" />
+    <Content Include="Images\ajax-loading.gif" />
+    <Content Include="Images\Anwendungen.png" />
+    <Content Include="Images\AnwendungenHover.png" />
+    <Content Include="Images\Application.png" />
+    <Content Include="Images\Application_Hover.png" />
+    <Content Include="Images\apptype.gif" />
+    <Content Include="Images\AppTypeAdminHover.gif" />
+    <Content Include="Images\AppTypeAdminNormal.gif" />
+    <Content Include="Images\AppTypeHelpNormal.gif" />
+    <Content Include="Images\archiv.png" />
+    <Content Include="Images\archive.png" />
+    <Content Include="Images\Archiv_Hover.png" />
+    <Content Include="Images\Armaturenbrett.jpg" />
+    <Content Include="Images\arrow.gif" />
+    <Content Include="Images\BAB.png" />
+    <Content Include="Images\back.jpg" />
+    <Content Include="Images\backgroundImage.gif" />
+    <Content Include="Images\benutzer.gif" />
+    <Content Include="Images\benutzer.jpg" />
+    <Content Include="Images\benutzer.png" />
+    <Content Include="Images\blank.gif" />
+    <Content Include="Images\button.jpg" />
+    <Content Include="Images\buttonHaken.png" />
+    <Content Include="Images\Cancel.png" />
+    <Content Include="Images\ChangePasswd_Blue.jpg" />
+    <Content Include="Images\collapse.jpg" />
+    <Content Include="Images\comment.png" />
+    <Content Include="Images\cont.png" />
+    <Content Include="Images\contact.png" />
+    <Content Include="Images\continue.jpg" />
+    <Content Include="Images\customer.png" />
+    <Content Include="Images\customer_Hover.png" />
+    <Content Include="Images\dadlogo.jpg" />
+    <Content Include="Images\DAD_SixtLeasing.jpg" />
+    <Content Include="Images\dhl-logo.gif" />
+    <Content Include="Images\Dienstleistung.png" />
+    <Content Include="Images\DienstleistungActive.png" />
+    <Content Include="Images\Diskette_06s.png" />
+    <Content Include="Images\document.gif" />
+    <Content Include="Images\down.gif" />
+    <Content Include="Images\erfolg.gif" />
+    <Content Include="Images\ErweiterteSelektion.png" />
+    <Content Include="Images\expand.jpg" />
+    <Content Include="Images\Fahrzeugdaten.png" />
+    <Content Include="Images\FahrzeugdatenActive.png" />
+    <Content Include="Images\Federspitze.jpg" />
+    <Content Include="Images\fehler.gif" />
+    <Content Include="Images\FilterClose.png" />
+    <Content Include="Images\FilterEFA.gif" />
+    <Content Include="Images\FilterOpen.png" />
+    <Content Include="Images\flamme.jpg" />
+    <Content Include="Images\fotos.jpg" />
+    <Content Include="Images\fragezeichen.png" />
+    <Content Include="Images\fragezeichen_normal.png" />
+    <Content Include="Images\fragezeichen_hover.png" />
+    <Content Include="Images\gear.png" />
+    <Content Include="Images\groups.png" />
+    <Content Include="Images\groups_hover.png" />
+    <Content Include="Images\gruppen.png" />
+    <Content Include="Images\haken_gruen.gif" />
+    <Content Include="Images\Halterdaten.png" />
+    <Content Include="Images\HalterdatenActive.png" />
+    <Content Include="Images\header.jpg" />
+    <Content Include="Images\headerBig.png" />
+    <Content Include="Images\header_wuert.jpg" />
+    <Content Include="Images\history_bullet.gif" />
+    <Content Include="Images\iconPDF.gif" />
+    <Content Include="Images\iconword.gif" />
+    <Content Include="Images\iconXLS.gif" />
+    <Content Include="Images\iepngfix.htc" />
+    <Content Include="Images\info.jpg" />
+    <Content Include="Images\buttonXXXLarge.jpg" />
+    <Content Include="Images\kroschke.gif" />
+    <Content Include="Images\KroschkeLogisticLogo.JPG" />
+    <Content Include="Images\kroschkeTrans.jpg" />
+    <Content Include="Images\kunden.png" />
+    <Content Include="Images\lkw.png" />
+    <Content Include="Images\lock.gif" />
+    <Content Include="Images\locked.gif" />
+    <Content Include="Images\lockwhite.gif" />
+    <Content Include="Images\lockwhite.jpg" />
+    <Content Include="Images\login.jpg" />
+    <Content Include="Images\loginHeader.jpg" />
+    <Content Include="Images\Logistik\arrow_up.png" />
+    <Content Include="Images\logoDADTrans.jpg" />
+    <Content Include="Images\LogoKroschke.jpg" />
+    <Content Include="Images\mahnstufe1.png" />
+    <Content Include="Images\mahnstufe2.png" />
+    <Content Include="Images\mahnstufe3.png" />
+    <Content Include="Images\orga.png" />
+    <Content Include="Images\Orga_Hover.png" />
+    <Content Include="Images\overflowbackwhite.png" />
+    <Content Include="Images\overflowThead2.png" />
+    <Content Include="Images\overflowupdown.png" />
+    <Content Include="Images\RadGridBodyBgrnd.png" />
+    <Content Include="Images\remove.png" />
+    <Content Include="Images\SelfAdmIcon1.gif" />
+    <Content Include="Images\SelfAdmIcon2.gif" />
+    <Content Include="Images\logoDAD.jpg" />
+    <Content Include="Images\logoGenerali.jpg" />
+    <Content Include="Images\LogoPlatzhalter.png" />
+    <Content Include="Images\navDateneingabe.gif" />
+    <Content Include="Images\navDisplayArrowLeft.gif" />
+    <Content Include="Images\navDisplayArrowRight.gif" />
+    <Content Include="Images\navLogout.gif" />
+    <Content Include="Images\navMenuepunkt1.gif" />
+    <Content Include="Images\navMenuepunkt2.gif" />
+    <Content Include="Images\navReports.gif" />
+    <Content Include="Images\note.png" />
+    <Content Include="Images\overflow.png" />
+    <Content Include="Images\overflowNavigation.png" />
+    <Content Include="Images\overflowNavigationShadow.png" />
+    <Content Include="Images\overflowThead.png" />
+    <Content Include="Images\overflowUpsideDown.png" />
+    <Content Include="Images\Papierkorb_01s.png" />
+    <Content Include="Images\pdf_email_btn.gif" />
+    <Content Include="Images\queryArrow.gif" />
+    <Content Include="Images\queryArrowUp.gif" />
+    <Content Include="Images\RadGridHeader.png" />
+    <Content Include="Images\Reactivate.png" />
+    <Content Include="Images\SAPLogo.gif" />
+    <Content Include="Images\shipping.gif" />
+    <Content Include="Images\showAddress.jpg" />
+    <Content Include="Images\stop.png" />
+    <Content Include="Images\TabButton.png" />
+    <Content Include="Images\TabButtonActive.png" />
+    <Content Include="Images\TeamviewerLogo.png" />
+    <Content Include="Images\TeamviewerLogoSmall.png" />
+    <Content Include="Images\thumb.jpg" />
+    <Content Include="Images\title1.png" />
+    <Content Include="Images\top.gif" />
+    <Content Include="Images\TUEV.png" />
+    <Content Include="Images\TVRahmenKlein.png" />
+    <Content Include="Images\TVRahmenSmall.png" />
+    <Content Include="Images\Unfilter.gif" />
+    <Content Include="Images\UnicreditLeasing.jpg" />
+    <Content Include="Images\unlock.gif" />
+    <Content Include="Images\up.gif" />
+    <Content Include="Images\Uploadoverflow.png" />
+    <Content Include="Images\user.png" />
+    <Content Include="Images\user_Hover.png" />
+    <Content Include="Images\VersandLegende.png" />
+    <Content Include="Images\Versand\headopenoverflow2.png" />
+    <Content Include="Images\Versand\versand\overflowbackwhite.png" />
+    <Content Include="Images\Versand\versand\Uploadoverflow.png" />
+    <Content Include="Images\Verwaltung.png" />
+    <Content Include="Images\vkb_logo.jpg" />
+    <Content Include="Images\vLog\1.png" />
+    <Content Include="Images\vLog\2.png" />
+    <Content Include="Images\vLog\3.png" />
+    <Content Include="Images\vLog\4.png" />
+    <Content Include="Images\vLog\5.png" />
+    <Content Include="Images\vLog\6.png" />
+    <Content Include="Images\vLog\7.png" />
+    <Content Include="Images\vLog\8.png" />
+    <Content Include="Images\vLog\9.png" />
+    <Content Include="Images\vLog\Fehler.png" />
+    <Content Include="Images\zip.gif" />
+    <Content Include="Images\Zulassung\cancel_icon.png" />
+    <Content Include="Images\Zulassung\check_icon.png" />
+    <Content Include="Images\Zulassung\delete_icon.png" />
+    <Content Include="Images\Zulassung\dienstleistungen_active.png" />
+    <Content Include="Images\Zulassung\dienstleistungen_inactive.png" />
+    <Content Include="Images\Zulassung\dienstleistungen_ready.png" />
+    <Content Include="Images\Zulassung\dokumente_active.png" />
+    <Content Include="Images\Zulassung\edit_icon.png" />
+    <Content Include="Images\Zulassung\error_icon.png" />
+    <Content Include="Images\Zulassung\excel_icon.png" />
+    <Content Include="Images\Zulassung\fahrzeugauswahl_active.png" />
+    <Content Include="Images\Zulassung\fahrzeugauswahl_inactive.png" />
+    <Content Include="Images\Zulassung\fahrzeugauswahl_ready.png" />
+    <Content Include="Images\Zulassung\icon_checkbox_active.gif" />
+    <Content Include="Images\Zulassung\icon_checkbox_inactive.gif" />
+    <Content Include="Images\Zulassung\icon_select.gif" />
+    <Content Include="Images\Zulassung\icon_tooltip.gif" />
+    <Content Include="Images\Zulassung\info_icon.png" />
+    <Content Include="Images\Zulassung\loading.gif" />
+    <Content Include="Images\Zulassung\loading2.gif" />
+    <Content Include="Images\Zulassung\minusIcon.png" />
+    <Content Include="Images\Zulassung\movinghand.gif" />
+    <Content Include="Images\Zulassung\noIcon.png" />
+    <Content Include="Images\Zulassung\pdf_icon.png" />
+    <Content Include="Images\Zulassung\plusIcon.png" />
+    <Content Include="Images\Zulassung\saveIcon.png" />
+    <Content Include="Images\Zulassung\save_icon.png" />
+    <Content Include="Images\Zulassung\searchButton.png" />
+    <Content Include="Images\Zulassung\searchIcon.gif" />
+    <Content Include="Images\Zulassung\SearchIcon.png" />
+    <Content Include="Images\Zulassung\stammdaten_active.png" />
+    <Content Include="Images\Zulassung\stammdaten_inactive.png" />
+    <Content Include="Images\Zulassung\stammdaten_ready.png" />
+    <Content Include="Images\Zulassung\switch_icon.gif" />
+    <Content Include="Images\Zulassung\switch_icon.jpg" />
+    <Content Include="Images\Zulassung\toggleDown.png" />
+    <Content Include="Images\Zulassung\toggleUp.png" />
+    <Content Include="Images\Zulassung\uebersicht_active.png" />
+    <Content Include="Images\Zulassung\uebersicht_inactive.png" />
+    <Content Include="Images\Zulassung\uebersicht_ready.png" />
+    <Content Include="Images\Zulassung\versand_active.png" />
+    <Content Include="Images\Zulassung\versand_inactive.png" />
+    <Content Include="Images\Zulassung\versand_ready.png" />
+    <Content Include="JScript\Jquery\colResizable-1.3.min.js" />
+    <Content Include="JScript\Jquery\jquery-1.8.0.min.js" />
+    <Content Include="JScript\Jquery\jquery-ui-1.8.23.custom.min.js" />
+    <Content Include="JScript\Jquery\jquery.js" />
+    <Content Include="JScript\Jquery\jquery.ui.core.js" />
+    <Content Include="JScript\Jquery\jquery.ui.mouse.js" />
+    <Content Include="JScript\Jquery\jquery.ui.resizable.js" />
+    <Content Include="JScript\Jquery\jquery.ui.widget.js" />
+    <Content Include="JScript\Jquery\MSDropdown\dd.css" />
+    <Content Include="JScript\Jquery\MSDropdown\dd_arrow.gif" />
+    <Content Include="JScript\Jquery\MSDropdown\js\jquery.dd.js" />
+    <Content Include="JScript\services.js" />
+    <Content Include="JScript\overlib_mini.js" />
+    <Content Include="Log.aspx" />
+    <Content Include="PageElements\BusyIndicator.ascx" />
+    <Content Include="PageElements\OldBusyIndicator.ascx" />
+    <Content Include="PageElements\SearchForm\Scripts\TextBoxKeyPressFiltering.js" />
+    <Content Include="PageElements\SearchForm\Scripts\IE7\Json.js" />
+    <Content Include="JScript\selectfilter.js" />
+    <Content Include="PageElements\SearchForm\Scripts\jquery-textbox-selection.js" />
+    <Content Include="PageElements\SearchForm\SearchForm.ascx" />
+    <Content Include="PageElements\SearchForm\SearchFormTypes.ascx" />
+    <Content Include="Start\LogonMessage.aspx" />
+    <Content Include="Start\Login.aspx" />
+    <Content Include="Start\Mvc.aspx" />
+    <Content Include="Styles\colResizable.css" />
+    <Content Include="Styles\default.css" />
+    <Content Include="Styles\dad.css" />
+    <Content Include="Customize\AppKroschke\Kroschke.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\RadGrid.Main.de-DE.designer.vb">
+      <DependentUpon>RadGrid.Main.de-DE.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\RadGrid.Main.designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RadGrid.Main.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Info\ContactPage.aspx.designer.vb">
+      <DependentUpon>ContactPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\ContactPage.aspx.vb">
+      <DependentUpon>ContactPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\Error.aspx.designer.vb">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\Error.aspx.vb">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\Impressum.aspx.designer.vb">
+      <DependentUpon>Impressum.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\Impressum.aspx.vb">
+      <DependentUpon>Impressum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info\ResponsiblePage.aspx.designer.vb">
+      <DependentUpon>ResponsiblePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info\ResponsiblePage.aspx.vb">
+      <DependentUpon>ResponsiblePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Log.aspx.designer.vb">
+      <DependentUpon>Log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Log.aspx.vb">
+      <DependentUpon>Log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Design.Master.designer.vb">
+      <DependentUpon>Design.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Design.Master.vb">
+      <DependentUpon>Design.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage\Services.Master.designer.vb">
+      <DependentUpon>Services.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage\Services.Master.vb">
+      <DependentUpon>Services.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Menue\ServicesMenue.ascx.designer.vb">
+      <DependentUpon>ServicesMenue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Menue\ServicesMenue.ascx.vb">
+      <DependentUpon>ServicesMenue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PageElements\BusyIndicator.ascx.designer.vb">
+      <DependentUpon>BusyIndicator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\BusyIndicator.ascx.vb">
+      <DependentUpon>BusyIndicator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\Controls\ErrorLabel.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PageElements\GridNavigation.ascx.designer.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\GridNavigation.ascx.vb">
+      <DependentUpon>GridNavigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\Kopfdaten.ascx.designer.vb">
+      <DependentUpon>Kopfdaten.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\Kopfdaten.ascx.vb">
+      <DependentUpon>Kopfdaten.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\OldBusyIndicator.ascx.designer.vb">
+      <DependentUpon>OldBusyIndicator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\OldBusyIndicator.ascx.vb">
+      <DependentUpon>OldBusyIndicator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\SearchForm\SearchForm.ascx.designer.vb">
+      <DependentUpon>SearchForm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\SearchForm\SearchForm.ascx.vb">
+      <DependentUpon>SearchForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageElements\SearchForm\SearchFormTypes.ascx.designer.vb">
+      <DependentUpon>SearchFormTypes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PageElements\SearchForm\SearchFormTypes.ascx.vb">
+      <DependentUpon>SearchFormTypes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\LogonMessage.aspx.designer.vb">
+      <DependentUpon>LogonMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\LogonMessage.aspx.vb">
+      <DependentUpon>LogonMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Shared\Report01_2.aspx.designer.vb">
+      <DependentUpon>Report01_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\Report01_2.aspx.vb">
+      <DependentUpon>Report01_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Bounce.aspx.designer.vb">
+      <DependentUpon>Bounce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Bounce.aspx.vb">
+      <DependentUpon>Bounce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\ChangePassword.aspx.designer.vb">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\ChangePassword.aspx.vb">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\FirstLogin.aspx.designer.vb">
+      <DependentUpon>FirstLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\FirstLogin.aspx.vb">
+      <DependentUpon>FirstLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\IframeLogin.aspx.designer.vb">
+      <DependentUpon>IframeLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\IframeLogin.aspx.vb">
+      <DependentUpon>IframeLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Login.aspx.designer.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Login.aspx.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Logout.aspx.designer.vb">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Logout.aspx.vb">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\MainMenu.ascx.designer.vb">
+      <DependentUpon>MainMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\MainMenu.ascx.vb">
+      <DependentUpon>MainMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Menue.ascx.designer.vb">
+      <DependentUpon>Menue.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Menue.ascx.vb">
+      <DependentUpon>Menue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Mvc.aspx.designer.vb">
+      <DependentUpon>Mvc.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Mvc.aspx.vb">
+      <DependentUpon>Mvc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Selection.aspx.designer.vb">
+      <DependentUpon>Selection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Selection.aspx.vb">
+      <DependentUpon>Selection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\SelektionmitGrid.aspx.designer.vb">
+      <DependentUpon>SelektionmitGrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\SelektionmitGrid.aspx.vb">
+      <DependentUpon>SelektionmitGrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\Grid.aspx.designer.vb">
+      <DependentUpon>Grid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\Grid.aspx.vb">
+      <DependentUpon>Grid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\Dateneingabe.aspx.designer.vb">
+      <DependentUpon>Dateneingabe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\Dateneingabe.aspx.vb">
+      <DependentUpon>Dateneingabe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\SelektionohneGrid.aspx.designer.vb">
+      <DependentUpon>SelektionohneGrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\SelektionohneGrid.aspx.vb">
+      <DependentUpon>SelektionohneGrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\SelectionStatistikGrid.aspx.designer.vb">
+      <DependentUpon>SelectionStatistikGrid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\SelectionStatistikGrid.aspx.vb">
+      <DependentUpon>SelectionStatistikGrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vorlagen\Kopfdaten_Selektion.aspx.designer.vb">
+      <DependentUpon>Kopfdaten_Selektion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vorlagen\Kopfdaten_Selektion.aspx.vb">
+      <DependentUpon>Kopfdaten_Selektion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\RadGrid.Main.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>RadGrid.Main.designer.vb</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\RadGrid.Main.de-DE.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>RadGrid.Main.de-DE.designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationImages\indicator.gif" />
+    <Content Include="ApplicationImages\loesch.gif" />
+    <Content Include="Customize\ADAC\adac.css" />
+    <Content Include="Customize\ADAC\adacIE6.css" />
+    <Content Include="Customize\ADAC\logo_adac.gif" />
+    <Content Include="Customize\Admin\admin.css" />
+    <Content Include="Customize\Admin\adminIE6.css" />
+    <Content Include="Customize\Akf_Retail\AKFRetail.css" />
+    <Content Include="Customize\Akf_Retail\AKFRetailIE6.css" />
+    <Content Include="Customize\Akf_Retail\akf_Retail_logo.gif" />
+    <Content Include="Customize\AppGenerali\generaliIE6.css" />
+    <Content Include="Customize\AppGenerali\MenueDateneingabeButtonHover.gif" />
+    <Content Include="Customize\AppGenerali\MenueDateneingabeButtonNormal.gif" />
+    <Content Include="Customize\AppGenerali\MenueReportsButtonHover.gif" />
+    <Content Include="Customize\AppGenerali\MenueReportsButtonNormal.gif" />
+    <Content Include="Customize\AppKroschke\KroschkeIE6.css" />
+    <Content Include="Customize\Arval\Arval.css" />
+    <Content Include="Customize\Arval\ArvalIE6.css" />
+    <Content Include="Customize\Arval\arval_logo.gif" />
+    <Content Include="Customize\Audi\Audi.css" />
+    <Content Include="Customize\Audi\AudiIE6.css" />
+    <Content Include="Customize\Audi\audi_logo.jpg" />
+    <Content Include="Customize\BremerLB\BLB.jpg" />
+    <Content Include="Customize\BremerLB\BremerLB.css" />
+    <Content Include="Customize\BremerLB\BremerLBIE6.css" />
+    <Content Include="Customize\caro\dadlogo.jpg" />
+    <Content Include="Customize\caro\logo_caro.gif" />
+    <Content Include="Customize\caro\volvo.css" />
+    <Content Include="Customize\caro\volvoie6.css" />
+    <Content Include="Customize\Chrysler\BannerBack.jpg" />
+    <Content Include="Customize\Chrysler\chrysler.css" />
+    <Content Include="Customize\Chrysler\Chrysler.gif" />
+    <Content Include="Customize\Chrysler\chryslerIE6.css" />
+    <Content Include="Customize\Chrysler\dadlogo.jpg" />
+    <Content Include="Customize\Chrysler\TableAlternate.jpg" />
+    <Content Include="Customize\Chrysler\TableBack.jpg" />
+    <Content Include="Customize\Chrysler\TaskTitleBack.jpg" />
+    <Content Include="Customize\DAD\BannerBack.jpg" />
+    <Content Include="Customize\DAD\dadlogo.jpg" />
+    <Content Include="Customize\DAD\TableAlternate.jpg" />
+    <Content Include="Customize\DAD\TableBack.jpg" />
+    <Content Include="Customize\DAD\TaskTitleBack.jpg" />
+    <Content Include="Customize\DAD\volvo.css" />
+    <Content Include="Customize\DAD\volvoE6.css" />
+    <Content Include="Customize\DAD\volvoIE6.css" />
+    <Content Include="Customize\EuropaService\EuropaService.css" />
+    <Content Include="Customize\LeasePlan\LP.css" />
+    <Content Include="Customize\LeasePlan\LPIE6.css" />
+    <Content Include="Customize\LeasePlan\LP_Logo.jpg" />
+    <Content Include="Customize\mercedes\mercedes.css" />
+    <Content Include="Customize\mercedes\mercedes.gif" />
+    <Content Include="Customize\porsche\BannerBack.jpg" />
+    <Content Include="Customize\porsche\dadlogo.jpg" />
+    <Content Include="Customize\porsche\porsche.css" />
+    <Content Include="Customize\porsche\porscheIE6.css" />
+    <Content Include="Customize\porsche\porsche_logo.jpg" />
+    <Content Include="Customize\porsche\porsche_logo2.jpg" />
+    <Content Include="Customize\porsche\TableAlternate.jpg" />
+    <Content Include="Customize\porsche\TableBack.jpg" />
+    <Content Include="Customize\porsche\TaskTitleBack.jpg" />
+    <Content Include="Customize\Volvo\BannerBack.jpg" />
+    <Content Include="Customize\Volvo\dadlogo.jpg" />
+    <Content Include="Customize\Volvo\porsche_logo.jpg" />
+    <Content Include="Customize\Volvo\porsche_logo2.jpg" />
+    <Content Include="Customize\Volvo\TableAlternate.jpg" />
+    <Content Include="Customize\Volvo\TableBack.jpg" />
+    <Content Include="Customize\Volvo\TaskTitleBack.jpg" />
+    <Content Include="Customize\Volvo\volvo.css" />
+    <Content Include="Customize\Volvo\volvoIE6.css" />
+    <Content Include="Customize\Volvo\volvo_logo.gif" />
+    <Content Include="Customize\Wuerttembergische\logo_wuerttemb.jpg" />
+    <Content Include="Customize\Wuerttembergische\MenueDateneingabeButtonHover.gif" />
+    <Content Include="Customize\Wuerttembergische\MenueDateneingabeButtonNormal.gif" />
+    <Content Include="Customize\Wuerttembergische\MenueReportsButtonHover.gif" />
+    <Content Include="Customize\Wuerttembergische\MenueReportsButtonNormal.gif" />
+    <Content Include="Customize\Wuerttembergische\wuerttemb.css" />
+    <Content Include="Customize\Wuerttembergische\wuerttembIE6.css" />
+    <Content Include="Images\%40_10.jpg" />
+    <Content Include="Images\AppTypeChangeHover.gif" />
+    <Content Include="Images\AppTypeChangeNormal.gif" />
+    <Content Include="Images\AppTypeReportsHover.gif" />
+    <Content Include="Images\AppTypeReportsNormal.gif" />
+    <Content Include="Images\arrowgrey.gif" />
+    <Content Include="Images\Ausrufezeichen.gif" />
+    <Content Include="Images\Ausrufezeichen01_10.jpg" />
+    <Content Include="Images\Ausrufezeichen02_10.jpg" />
+    <Content Include="Images\Ausrufezeichen03_10.jpg" />
+    <Content Include="Images\Blatt_08.jpg" />
+    <Content Include="Images\Buch_08.jpg" />
+    <Content Include="Images\Bueroklammer_01.jpg" />
+    <Content Include="Images\buttonLarge.jpg" />
+    <Content Include="Images\buttonMiddle.jpg" />
+    <Content Include="Images\buttonXLarge.jpg" />
+    <Content Include="Images\buttonXXLarge.jpg" />
+    <Content Include="Images\calendar.jpg" />
+    <Content Include="Images\calendar_red.jpg" />
+    <Content Include="Images\CD01_05.jpg" />
+    <Content Include="Images\CD02_05.jpg" />
+    <Content Include="Images\Confirm_mini.gif" />
+    <Content Include="Images\copy.gif" />
+    <Content Include="Images\customer11.png" />
+    <Content Include="Images\del.png" />
+    <Content Include="Images\Delete01_06.jpg" />
+    <Content Include="Images\Delete02_06.jpg" />
+    <Content Include="Images\Diagramm01_07.jpg" />
+    <Content Include="Images\Diagramm01_08.jpg" />
+    <Content Include="Images\Diagramm02_07.jpg" />
+    <Content Include="Images\Diagramm02_08.jpg" />
+    <Content Include="Images\Diagramm03_07.jpg" />
+    <Content Include="Images\Diagramm03_08.jpg" />
+    <Content Include="Images\Diagramm04_07.jpg" />
+    <Content Include="Images\Diagramm04_08.jpg" />
+    <Content Include="Images\Diagramm05_07.jpg" />
+    <Content Include="Images\Diagramm05_08.jpg" />
+    <Content Include="Images\Diagramm06_07.jpg" />
+    <Content Include="Images\Diagramm06_08.jpg" />
+    <Content Include="Images\Dienstleistung.jpg" />
+    <Content Include="Images\DienstleistungActive.jpg" />
+    <Content Include="Images\Diskette_06.jpg" />
+    <Content Include="Images\Dokumente01_09.jpg" />
+    <Content Include="Images\Dokumente03_09.jpg" />
+    <Content Include="Images\Dokumente_02_09.jpg" />
+    <Content Include="Images\Dollar01_08.jpg" />
+    <Content Include="Images\Dollar02_08.jpg" />
+    <Content Include="Images\Drucker01_08.jpg" />
+    <Content Include="Images\Drucker02_08.jpg" />
+    <Content Include="Images\Drucker03_08.jpg" />
+    <Content Include="Images\Drucker04_08.jpg" />
+    <Content Include="Images\EditTableHS.png" />
+    <Content Include="Images\Edit_01.gif" />
+    <Content Include="Images\Edit_01.jpg" />
+    <Content Include="Images\Edit_02.jpg" />
+    <Content Include="Images\empty.gif" />
+    <Content Include="Images\Fahrzeugdaten.jpg" />
+    <Content Include="Images\FahrzeugdatenActive.jpg" />
+    <Content Include="Images\Fenster_max.jpg" />
+    <Content Include="Images\Filter.gif" />
+    <Content Include="Images\Formular.gif" />
+    <Content Include="Images\fragezeichen.gif" />
+    <Content Include="Images\Fragezeichen02_10.jpg" />
+    <Content Include="Images\Fragezeichen03_10.jpg" />
+    <Content Include="Images\Fragezeichen_10.jpg" />
+    <Content Include="Images\GanzVor02_09.jpg" />
+    <Content Include="Images\GanzVor_09.jpg" />
+    <Content Include="Images\GanzZurueck02_09.jpg" />
+    <Content Include="Images\GanzZurueck_09.jpg" />
+    <Content Include="Images\Gif_Logo.gif" />
+    <Content Include="Images\Grunddaten.jpg" />
+    <Content Include="Images\GrunddatenActive.jpg" />
+    <Content Include="Images\haken_gruen24x24.gif" />
+    <Content Include="Images\header2.jpg" />
+    <Content Include="Images\header_volvo.jpg" />
+    <Content Include="Images\Herz01_09.jpg" />
+    <Content Include="Images\Herz02_09.jpg" />
+    <Content Include="Images\Herz03_09.jpg" />
+    <Content Include="Images\HistButton.png" />
+    <Content Include="Images\HistButton2.png" />
+    <Content Include="Images\HistButtonBeforActive.png" />
+    <Content Include="Images\HistButtonLast.png" />
+    <Content Include="Images\HistButtonLastActive.png" />
+    <Content Include="Images\HistButtonMiddleActive.png" />
+    <Content Include="Images\HochRunter01_06.jpg" />
+    <Content Include="Images\HochRunter02_06.jpg" />
+    <Content Include="Images\Home01_06.jpg" />
+    <Content Include="Images\Home02_06.jpg" />
+    <Content Include="Images\Icon_01.jpg" />
+    <Content Include="Images\icon_nein.gif" />
+    <Content Include="Images\Icon_Zeile_03.jpg" />
+    <Content Include="Images\indicator.gif" />
+    <Content Include="Images\info.gif" />
+    <Content Include="Images\Info01_06.jpg" />
+    <Content Include="Images\Info01_10.jpg" />
+    <Content Include="Images\Info02_06.jpg" />
+    <Content Include="Images\jpg-file.png" />
+    <Content Include="Images\Kalender01_07.jpg" />
+    <Content Include="Images\Kalender02_07.jpg" />
+    <Content Include="Images\Kreislauf_01.jpg" />
+    <Content Include="Images\kroschke.jpg" />
+    <Content Include="Images\kroschke2.jpg" />
+    <Content Include="Images\Lautstaerke_09.jpg" />
+    <Content Include="Images\Lautstaerke_10.jpg" />
+    <Content Include="Images\Lesezeichen_08.jpg" />
+    <Content Include="Images\Locked01_06.jpg" />
+    <Content Include="Images\Locked02_06.jpg" />
+    <Content Include="Images\loginHeader_blue.jpg" />
+    <Content Include="Images\Logistik\arrowdown.png" />
+    <Content Include="Images\Logistik\arrowup.png" />
+    <Content Include="Images\Logistik\BackDetails - Kopie.png" />
+    <Content Include="Images\Logistik\BackDetails.png" />
+    <Content Include="Images\Logistik\Delete.jpg" />
+    <Content Include="Images\Logistik\delete.png" />
+    <Content Include="Images\Logistik\edit.png" />
+    <Content Include="Images\Logistik\loesch.gif" />
+    <Content Include="Images\Logistik\plusgreen.png" />
+    <Content Include="Images\Logistik\save.png" />
+    <Content Include="Images\Logistik\savegreen.png" />
+    <Content Include="Images\Logistik\StandardBlueDL.png" />
+    <Content Include="Images\Logistik\StandardBlueTour.png" />
+    <Content Include="Images\Logistik\StandardGreyDL.png" />
+    <Content Include="Images\Logistik\StandardGreyTour.png" />
+    <Content Include="Images\Logistik\StandardReadyDL.png" />
+    <Content Include="Images\Logistik\StandardReadyTour.png" />
+    <Content Include="Images\logoGenerali2.jpg" />
+    <Content Include="Images\Lupe_+.jpg" />
+    <Content Include="Images\Lupe_-.jpg" />
+    <Content Include="Images\Lupe_01.gif" />
+    <Content Include="Images\Lupe_01.jpg" />
+    <Content Include="Images\Lupe_16x16.gif" />
+    <Content Include="Images\Mail02_06.jpg" />
+    <Content Include="Images\Mail_06.jpg" />
+    <Content Include="Images\MannFrau_08.jpg" />
+    <Content Include="Images\minus.gif" />
+    <Content Include="Images\Minus.jpg" />
+    <Content Include="Images\MsgAtt.png" />
+    <Content Include="Images\MsgBottom.png" />
+    <Content Include="Images\MsgClose.png" />
+    <Content Include="Images\MsgTitle.png" />
+    <Content Include="Images\Muell_08.jpg" />
+    <Content Include="Images\navi.gif" />
+    <Content Include="Images\navi_grey.gif" />
+    <Content Include="Images\navi_grey2.gif" />
+    <Content Include="Images\navi_orange.gif" />
+    <Content Include="Images\Notenschluessel_06.jpg" />
+    <Content Include="Images\Note_01.jpg" />
+    <Content Include="Images\Note_02.jpg" />
+    <Content Include="Images\nPALogo.jpg" />
+    <Content Include="Images\nPALogoSmall.gif" />
+    <Content Include="Images\ok02_10.jpg" />
+    <Content Include="Images\ok_10.jpg" />
+    <Content Include="Images\Open01_09.jpg" />
+    <Content Include="Images\Open02__09.jpg" />
+    <Content Include="Images\Ordner.jpg" />
+    <Content Include="Images\Ordner01_10.jpg" />
+    <Content Include="Images\Ordner02_10.jpg" />
+    <Content Include="Images\Ordner03_10.jpg" />
+    <Content Include="Images\Ordner04_10.jpg" />
+    <Content Include="Images\Ordner_+.jpg" />
+    <Content Include="Images\Ordner_+_04.jpg" />
+    <Content Include="Images\Ordner_-_04.jpg" />
+    <Content Include="Images\Ordner_04_01.jpg" />
+    <Content Include="Images\Ordner_04_02.jpg" />
+    <Content Include="Images\Ordner_Benutzer.jpg" />
+    <Content Include="Images\Ordner_Benutzer_04.jpg" />
+    <Content Include="Images\Ordner_Delete.jpg" />
+    <Content Include="Images\Ordner_Diagramme.jpg" />
+    <Content Include="Images\Ordner_Erledigt.jpg" />
+    <Content Include="Images\Ordner_Favoriten.jpg" />
+    <Content Include="Images\Ordner_Favoriten2.jpg" />
+    <Content Include="Images\Ordner_Home.jpg" />
+    <Content Include="Images\Ordner_keinZugang.jpg" />
+    <Content Include="Images\Ordner_Logged.jpg" />
+    <Content Include="Images\Ordner_Mails.jpg" />
+    <Content Include="Images\Ordner_oeffnen.jpg" />
+    <Content Include="Images\Ordner_offen_+_04.jpg" />
+    <Content Include="Images\Ordner_offen_-_04.jpg" />
+    <Content Include="Images\Ordner_offen_04.jpg" />
+    <Content Include="Images\Ordner_Papierkorb.jpg" />
+    <Content Include="Images\Ordner_recycle.jpg" />
+    <Content Include="Images\Ordner_schliessen.jpg" />
+    <Content Include="Images\Ordner_Sound.jpg" />
+    <Content Include="Images\Ordner_Warning.jpg" />
+    <Content Include="Images\Ordner_Werkzeuge.jpg" />
+    <Content Include="Images\overflowleftright.png" />
+    <Content Include="Images\overflowleftrightslow.png" />
+    <Content Include="Images\Papierkorb_01.gif" />
+    <Content Include="Images\Papierkorb_01.jpg" />
+    <Content Include="Images\Papierkorb_02.jpg" />
+    <Content Include="Images\Papierkorb_04.jpg" />
+    <Content Include="Images\Papierkorb_05.jpg" />
+    <Content Include="Images\Papierkorb_Delete_06.jpg" />
+    <Content Include="Images\Pause_09.jpg" />
+    <Content Include="Images\pdf-logo.png" />
+    <Content Include="Images\pdf.gif" />
+    <Content Include="Images\Pfeil01_07.jpg" />
+    <Content Include="Images\Pfeil03_07.jpg" />
+    <Content Include="Images\Pfeil202_07.jpg" />
+    <Content Include="Images\Pfeile01_05.jpg" />
+    <Content Include="Images\Pfeile02_05.jpg" />
+    <Content Include="Images\Pfeile03_05.jpg" />
+    <Content Include="Images\Pfeile_Kreislauf_01.jpg" />
+    <Content Include="Images\Pfeile_Kreislauf_02.jpg" />
+    <Content Include="Images\PfeilzZurueck_03.jpg" />
+    <Content Include="Images\Pfeil_Ablegen_01.jpg" />
+    <Content Include="Images\Pfeil_Ablegen_02.jpg" />
+    <Content Include="Images\Pfeil_abwaerts_01.jpg" />
+    <Content Include="Images\Pfeil_aufwaerts_01.jpg" />
+    <Content Include="Images\Pfeil_hoch_03.jpg" />
+    <Content Include="Images\Pfeil_hoch_04.jpg" />
+    <Content Include="Images\Pfeil_hoch_05.jpg" />
+    <Content Include="Images\Pfeil_nachLinks.jpg" />
+    <Content Include="Images\Pfeil_nachrechts.jpg" />
+    <Content Include="Images\Pfeil_nachRechts2.jpg" />
+    <Content Include="Images\Pfeil_nachUnten04.jpg" />
+    <Content Include="Images\Pfeil_oben_02.jpg" />
+    <Content Include="Images\Pfeil_runter_03.jpg" />
+    <Content Include="Images\Pfeil_runter_04.jpg" />
+    <Content Include="Images\Pfeil_unten_02.jpg" />
+    <Content Include="Images\Pfeil_vor01_09.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_02.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_03.jpg" />
+    <Content Include="Images\Pfeil_vorwaerts_04.jpg" />
+    <Content Include="Images\Pfeil_vor_01.gif" />
+    <Content Include="Images\Pfeil_vor_01.jpg" />
+    <Content Include="Images\Pfeil_zurueck01_09.jpg" />
+    <Content Include="Images\Pfeil_zurueck_01.jpg" />
+    <Content Include="Images\Pfeil_zurueck_02.jpg" />
+    <Content Include="Images\Pfeil_zurueck_03.jpg" />
+    <Content Include="Images\PixelPfeil_hoch_05.jpg" />
+    <Content Include="Images\PixelPfeil_runter_05.jpg" />
+    <Content Include="Images\PixelPfeil_vor_05.jpg" />
+    <Content Include="Images\PixelPfeil_zurueck_05.jpg" />
+    <Content Include="Images\Placeholder.png" />
+    <Content Include="Images\Plus.gif" />
+    <Content Include="Images\Plus.jpg" />
+    <Content Include="Images\Power01_10.jpg" />
+    <Content Include="Images\Power02_10.jpg" />
+    <Content Include="Images\Rein01_04.jpg" />
+    <Content Include="Images\Rein02_04.jpg" />
+    <Content Include="Images\Rein03_04.jpg" />
+    <Content Include="Images\Rein04_04.jpg" />
+    <Content Include="Images\Rein05_04.jpg" />
+    <Content Include="Images\Sanduhr01_07.jpg" />
+    <Content Include="Images\Sanduhr02_07.jpg" />
+    <Content Include="Images\Sanduhr03_07.jpg" />
+    <Content Include="Images\Save.gif" />
+    <Content Include="Images\Schere01_05.jpg" />
+    <Content Include="Images\Schere02_05.jpg" />
+    <Content Include="Images\Schluessel01_05.jpg" />
+    <Content Include="Images\Schluessel02_05.jpg" />
+    <Content Include="Images\Sound_08.jpg" />
+    <Content Include="Images\Sprechblase01_09.jpg" />
+    <Content Include="Images\Sprechblase_Blog.jpg" />
+    <Content Include="Images\Sprechblase_Chat.jpg" />
+    <Content Include="Images\Star01_06.jpg" />
+    <Content Include="Images\Star02_06.jpg" />
+    <Content Include="Images\Stern_10.jpg" />
+    <Content Include="Images\Stop_09.jpg" />
+    <Content Include="Images\SzenenKlappe_05.jpg" />
+    <Content Include="Images\Telefon01_07.jpg" />
+    <Content Include="Images\Telefon02_07.jpg" />
+    <Content Include="Images\Text_04.jpg" />
+    <Content Include="Images\Tool.gif" />
+    <Content Include="Images\Tool.jpg" />
+    <Content Include="Images\Tools01_08.jpg" />
+    <Content Include="Images\Tools02_08.jpg" />
+    <Content Include="Images\Unlock_06.jpg" />
+    <Content Include="Images\User01_06.jpg" />
+    <Content Include="Images\User02_06.jpg" />
+    <Content Include="Images\Versand\headopen.png" />
+    <Content Include="Images\Versand\headopenoverflow.png" />
+    <Content Include="Images\Versand\headSucheopen.png" />
+    <Content Include="Images\Versand\minusred.png" />
+    <Content Include="Images\Versand\overflowbackwhite.png" />
+    <Content Include="Images\Versand\plusgreen.png" />
+    <Content Include="Images\Versand\search.png" />
+    <Content Include="Images\Versand\StandardBlueAdresse.png" />
+    <Content Include="Images\Versand\StandardBlueOptionen.png" />
+    <Content Include="Images\Versand\StandardBlueOverview.png" />
+    <Content Include="Images\Versand\StandardBlueStift.png" />
+    <Content Include="Images\Versand\StandardGreyAdresse.png" />
+    <Content Include="Images\Versand\StandardGreyOptionen.png" />
+    <Content Include="Images\Versand\StandardGreyOverview.png" />
+    <Content Include="Images\Versand\StandardGreyStift.png" />
+    <Content Include="Images\Versand\StandardGreyTool.png" />
+    <Content Include="Images\Versand\StandardReadyAdresse.png" />
+    <Content Include="Images\Versand\StandardReadyOptionen.png" />
+    <Content Include="Images\Versand\StandardReadyOverview.png" />
+    <Content Include="Images\Versand\StandardReadyStift.png" />
+    <Content Include="Images\Versand\StandardReadyTool.png" />
+    <Content Include="Images\Versand\StandardRedAdresse.png" />
+    <Content Include="Images\Versand\StandardRedOtionen.png" />
+    <Content Include="Images\Versand\StandardRedOverview.png" />
+    <Content Include="Images\Versand\StandardRedStift.png" />
+    <Content Include="Images\Versand\StandardRedTool.png" />
+    <Content Include="Images\Versand\Stephead.png" />
+    <Content Include="Images\Versand\Stepheadopen.png" />
+    <Content Include="Images\Versand\Stepheadoverflow.png" />
+    <Content Include="Images\Versand\Suche.png" />
+    <Content Include="Images\Versand\Suche2.png" />
+    <Content Include="Images\Versand\Uploadoverflow.png" />
+    <Content Include="Images\Wappen01_10.jpg" />
+    <Content Include="Images\Wappen02_10.jpg" />
+    <Content Include="Images\Wappen03_10.jpg" />
+    <Content Include="Images\Warenkorb01_07.jpg" />
+    <Content Include="Images\Warenkorb02_07.jpg" />
+    <Content Include="Images\Warenkorb03_07.jpg" />
+    <Content Include="Images\Warenkorb04_07.jpg" />
+    <Content Include="Images\Warning.jpg" />
+    <Content Include="Images\Welt_01.jpg" />
+    <Content Include="Images\Welt_02.jpg" />
+    <Content Include="Images\Welt_03.jpg" />
+    <Content Include="Images\Welt_04.jpg" />
+    <Content Include="Images\Word_Logo.jpg" />
+    <Content Include="Images\Zahnrad.jpg" />
+    <Content Include="Images\Zahnraeder_01.jpg" />
+    <Content Include="Images\ZulPDF.gif" />
+    <Content Include="Info\ContactPage.aspx" />
+    <Content Include="Info\Error.aspx" />
+    <Content Include="Info\Impressum.aspx" />
+    <Content Include="Info\ResponsiblePage.aspx" />
+    <Content Include="JScript\Menue.js" />
+    <Content Include="JScript\PasswordStrength.js" />
+    <Content Include="MasterPage\Design.Master" />
+    <Content Include="Menue\ServicesMenue.ascx" />
+    <Content Include="PageElements\GridNavigation.ascx" />
+    <Content Include="PageElements\Kopfdaten.ascx" />
+    <Content Include="Shared\Report01_2.aspx" />
+    <Content Include="Start\Bounce.aspx" />
+    <Content Include="Start\ChangePassword.aspx" />
+    <Content Include="Start\FirstLogin.aspx" />
+    <Content Include="Start\IframeLogin.aspx" />
+    <Content Include="Start\Logout.aspx" />
+    <Content Include="Start\MainMenu.ascx" />
+    <Content Include="Start\Menue.ascx" />
+    <Content Include="Start\Selection.aspx" />
+    <Content Include="Customize\AppGenerali\generali.css" />
+    <Content Include="Styles\dadIE6.css" />
+    <Content Include="Styles\defaultIE6.css" />
+    <Content Include="Vorlagen\SelektionmitGrid.aspx" />
+    <Content Include="Vorlagen\Grid.aspx" />
+    <Content Include="Vorlagen\Dateneingabe.aspx" />
+    <Content Include="MasterPage\Services.Master" />
+    <Content Include="Vorlagen\SelektionohneGrid.aspx" />
+    <Content Include="Vorlagen\SelectionStatistikGrid.aspx" />
+    <Content Include="Vorlagen\Kopfdaten_Selektion.aspx" />
+    <None Include="App_Data\RadUploadTemp\RadUploadTestFile" />
+    <Content Include="Customize\Aspose.Total.lic" />
+    <Content Include="Customize\Audi\Handbuch_Audi.pdf" />
+    <Content Include="Customize\Fiat\DockViews" />
+    <Content Include="Customize\VWLeasing\VW_Langzeitmiete.pdf" />
+    <Content Include="Excelvorlagen\Upload_Treuhand-Services_VWL.xls" />
+    <Content Include="Excelvorlagen\Upload_Treuhand-Services.xls" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="NLog.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Admin\bin\" />
+    <Folder Include="Customize\AppEC\" />
+    <Folder Include="Downloads\" />
+    <Folder Include="Images\Buchungskreis\" />
+    <Folder Include="Images\HeaderBackgrounds\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Work\ErpBase\Base.vbproj">
+      <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
+      <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\ErpBase\ErpBaseMvc\ErpBaseMvc.csproj">
+      <Project>{C97E0F34-A91A-4F38-B792-73C4FC680A29}</Project>
+      <Name>ErpBaseMvc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls;Applications\**\*.htm;Applications\**\*.asmx;Applications\**\*.htc;Applications\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Applications.Identity)">
+        <DestinationRelativePath>Applications\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls;Components\**\*.htm;Components\**\*.asmx;Components\**\*.htc" />
+      <FilesForPackagingFromProject Include="%(_Components.Identity)">
+        <DestinationRelativePath>Components\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Admin.Identity)">
+        <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Bin Include="Admin\Bin\Admin.*;Applications\AppArval\Bin\AppArval.*;Applications\appCheckServices\Bin\appCheckServices.*;Applications\AppF2\Bin\AppF2.*;Applications\AppInsurance\Bin\AppInsurance.*;Applications\AppMBB\Bin\AppMBB.*;Applications\AppRemarketing\Bin\AppRemarketing.*;Applications\AppServicesCarRent\Bin\AppServicesCarRent.*;Applications\Leasing\Bin\Leasing.*;Applications\Vermieter\Bin\Vermieter.*;Components\ComArchiv\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\CKG.Components.ComCommon.*;Components\Controls\bin\CKG.Components.Controls.*;Components\eIDConnector\Receiver\bin\Receiver.*;Components\Logistik\bin\CKG.Components.Controls.*;Components\Zulassung\bin\CKG.Components.Zulassung.*;Components\ComCommon\DAT_BankenLinie_Connector\DAT_BankenLinie_Connector\bin\DAT_BankenLinie_Connector.*" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_DADQS Include="Downloads\DADQS_de.exe" />
+      <FilesForPackagingFromProject Include="%(_DADQS.Identity)">
+        <DestinationRelativePath>Downloads\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <OnBeforePackageUsingManifest>AddCustomSkipRules</OnBeforePackageUsingManifest>
+  </PropertyGroup>
+  <Target Name="AddCustomSkipRules">
+    <ItemGroup>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\images\\Buchungskreis\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\images\\HeaderBackgrounds\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\images\\Kundenlogos\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\*.config</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Bilder\\.*</AbsolutePath>
+      </MsDeploySkipRules>      
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Logs\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\Temp\\.*</AbsolutePath>
+      </MsDeploySkipRules>
+    </ItemGroup>
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3911</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Services</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
