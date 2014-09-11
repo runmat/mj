@@ -44,7 +44,7 @@
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppVW.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -64,7 +64,7 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppVW.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -84,19 +84,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
-      <Name>DBauer.Web.UI.WebControls.HierarGrid</Name>
-      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
-    </Reference>
-    <Reference Include="GeneralTools, Version=1.0.5219.21251, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\GeneralTools.dll</HintPath>
-    </Reference>
-    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\SapORM\services\bin\Debug\SapORM.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="SapORM.Models">
-      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Models.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -132,6 +120,22 @@
     <ProjectReference Include="..\..\..\..\..\Work\BtBase\Base.vbproj">
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\admin\Admin.vbproj">
+      <Project>{086EBB20-F08F-4915-9E78-D68E05289AB3}</Project>
+      <Name>Admin</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Name>Portal</Name>
@@ -254,6 +258,7 @@
     <None Include="Docs\Lastschrift\Bremen.pdf" />
     <None Include="Docs\Lastschrift\Hamburg.pdf" />
     <None Include="Docs\Lastschrift\Hessen.pdf" />
+    <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern.pdf" />
     <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern1.pdf" />
     <None Include="Docs\Lastschrift\Mecklenburg-Vorpommern2.pdf" />
     <None Include="Docs\Lastschrift\Niedersachsen.pdf" />
@@ -322,8 +327,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

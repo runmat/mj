@@ -42,7 +42,7 @@
                     <table id="Table1" cellspacing="0" cellpadding="0" width="100%" border="0">
                         <tr>
                             <td class="PageNavigation" width="150" colspan="2">
-                                Passwort ändern
+                                Kennwort ändern
                             </td>
                         </tr>
                         <tr>
@@ -73,11 +73,11 @@
                                     </tr>                                    
                                     <tr class="TextLarge"  id="trPwdExp" runat="server">
                                         <td style="padding-left:15px;" align="left">
-                                            Glückwunsch - die erste Hürde haben Sie bewältigt. Jetzt müssen Sie sich Ihr eigenes 
-                                            Passwort anlegen<br />
+                                            Glückwunsch - die erste Hürde haben Sie bewältigt. Jetzt müssen Sie sich Ihre eigenes anlegen<br />
                                             Hier erhalten Sie eine Hilfestellung, wie Sie Ihr Passwort korrekt anlegen. <br />
-                                            Bitte beachten Sie:<br />
-                                            DAD Deutscher Auto Dienst GmbH/Christoph Kroschke GmbH wird Sie    <br /><br />
+                                            Bitte beachten Sie - DAD Deutscher Auto Dienst GmbH/Christoph Kroschke GmbH wird Sie 
+                                            <b>niemals</b> nach Ihrem Passwort fragen!
+                                          <br /><br />
                                         </td>
                                     </tr>
                                     <tr>
