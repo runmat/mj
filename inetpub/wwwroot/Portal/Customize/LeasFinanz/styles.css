@@ -697,7 +697,7 @@ A.StandardButtonSmall:active
     padding-bottom: 4px;
     color: #000000;
     padding-top: 4px;
-    background-image: url(../Images/PageNavBack.jpg);
+    background-image: url(/Portal/Images/PageNavBack.jpg);
     border-bottom-style: solid;
     border-top-style: solid;
     border-bottom-width: thin;

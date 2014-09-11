@@ -12,392 +12,216 @@
 		<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
 		<uc1:styles id="ucStyles" runat="server"></uc1:styles>
 	</HEAD>
-<body leftmargin="0" topmargin="0">
-    <form id="Form1" method="post" runat="server">
-    <table id="Table4" width="100%" align="center">
-        <tr>
-            <td>
-                <uc1:Header ID="ucHeader" runat="server"></uc1:Header>
-            </td>
-        </tr>
-        <tr>
-            <td class="PageNavigation" colspan="2">
-                <asp:Label ID="lblHead" runat="server"></asp:Label>&nbsp;(
-                <asp:Label ID="lblPageTitle" runat="server">Adressdaten</asp:Label>)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <table id="Table5" style="width: 1032px; height: 27px" cellspacing="1" cellpadding="1"
-                    width="1032" border="0">
-                    <tr>
-                        <td style="width: 431px">
-                        </td>
-                        <td style="width: 360px">
-                            <strong>Schritt&nbsp;2 von 4</strong>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                </table>
-                &nbsp;
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <table id="Table1" cellspacing="1" cellpadding="1" width="100%" border="0">
-                    <tr>
-                        <td style="width: 113px">
-                        </td>
-                        <td style="width: 449px">
-                            <asp:Label ID="lblKundeName1" runat="server" Font-Italic="True" Font-Bold="True"
-                                Width="312px"></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblKundeStrasse" runat="server" Font-Italic="True" Font-Bold="True"
-                                Width="272px"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="120">
-                        </td>
-                        <td style="width: 449px">
-                            <asp:Label ID="lblKundeAnsprechpartner" runat="server" Font-Italic="True" Font-Bold="True"
-                                Width="307px"></asp:Label>
-                        </td>
-                        <td>
-                            <p>
-                                <asp:Label ID="lblKundePlzOrt" runat="server" Font-Italic="True" Font-Bold="True"
-                                    Width="134px"></asp:Label></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 113px">
-                            &nbsp;
-                        </td>
-                        <td style="width: 449px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 113px">
-                        </td>
-                        <td style="width: 449px">
-                            <strong>
-                                <asp:Label ID="Label1" runat="server" Width="122px" Height="17px">Abholung</asp:Label></strong>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 113px">
-                        </td>
-                        <td style="width: 449px">
-                            <strong>
-                                <uc1:AddressSearchInputControl ID="ctrlAddressSearchAbholung" runat="server"></uc1:AddressSearchInputControl>
-                            </strong>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                </table>
-                <table id="Table2" cellspacing="1" cellpadding="1" width="100%" border="0">
-                    <tr>
-                        <td width="121" style="width: 121px">
-                        </td>
-                        <td width="120">
-                            Auswahl
-                        </td>
-                        <td style="width: 255px">
-                            <asp:DropDownList ID="drpAbholung" runat="server" Width="217px" AutoPostBack="True">
-                            </asp:DropDownList>
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="121" style="width: 121px">
-                        </td>
-                        <td width="120">
-                            Firma / Name*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAbName" runat="server" Width="220px" MaxLength="35"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Strasse*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAbStrasse" runat="server" Width="218px"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            Nr.*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAbNr" runat="server" Width="73px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            PLZ*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAbPLZ" runat="server" Width="88px" MaxLength="5"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            Ort*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAbOrt" runat="server" Width="299px" MaxLength="35"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Ansprechpartner*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAbAnsprechpartner" runat="server" Width="223px" MaxLength="35"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            1. Tel.:*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAbTelefon" runat="server" Width="299px" MaxLength="16"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            &nbsp;Fax
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAbFax" runat="server" Width="223px" MaxLength="16"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            2. Tel.:
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAbTelefon2" runat="server" Width="299px" MaxLength="16"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            &nbsp;
-                        </td>
-                        <td style="width: 255px">
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            <strong>Anlieferung</strong>
-                        </td>
-                        <td style="width: 255px">
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="121" style="width: 121px">
-                        </td>
-                        <td colspan="3">
-                            <uc1:AddressSearchInputControl ID="ctrlAddressSearchAnlieferung" runat="server">
-                            </uc1:AddressSearchInputControl>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Auswahl
-                        </td>
-                        <td style="width: 255px">
-                            <asp:DropDownList ID="drpAnlieferung" runat="server" Width="220px" AutoPostBack="True">
-                            </asp:DropDownList>
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Firma / Name*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAnName" runat="server" Width="219px" MaxLength="35"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Strasse*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAnStrasse" runat="server" Width="214px" MaxLength="35"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            Nr.*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAnNr" runat="server" Width="73px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            PLZ*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAnPLZ" runat="server" Width="88px" MaxLength="5"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            Ort*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAnOrt" runat="server" Width="299px" MaxLength="35"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            Ansprechpartner*
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAnAnsprechpartner" runat="server" Width="220px" MaxLength="35"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            1. Tel.:*
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAnTelefon" runat="server" Width="299px" MaxLength="16"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            &nbsp;Fax
-                        </td>
-                        <td style="width: 255px">
-                            <asp:TextBox ID="txtAnFax" runat="server" Width="220px" MaxLength="16"></asp:TextBox>
-                        </td>
-                        <td style="width: 68px">
-                            2. Tel.:
-                        </td>
-                        <td>
-                            <asp:TextBox ID="txtAnTelefon2" runat="server" Width="299px" MaxLength="16"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            &nbsp;
-                        </td>
-                        <td style="width: 255px">
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                        </td>
-                        <td style="width: 255px">
-                            <p align="right">
-                                <asp:ImageButton ID="cmdBack" runat="server" Width="73px" Height="34px" ImageUrl="/Portal/Images/arrowUeberfLeft.gif">
-                                </asp:ImageButton></p>
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                            <asp:ImageButton ID="cmdRight1" runat="server" Width="73px" Height="34px" ImageUrl="/Portal/Images/arrowUeberfRight.gif">
-                            </asp:ImageButton>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                            &nbsp;
-                        </td>
-                        <td style="width: 255px">
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 121px">
-                        </td>
-                        <td style="width: 108px">
-                        </td>
-                        <td style="width: 255px">
-                        </td>
-                        <td style="width: 68px">
-                        </td>
-                        <td>
-                            <strong><font color="red">* = Pflichtfeld</font></strong>
-                        </td>
-                    </tr>
-                </table>
-                <table id="Table3" cellspacing="1" cellpadding="1" width="100%" border="0">
-                    <tr>
-                        <td style="width: 119px" align="center">
-                        </td>
-                        <td align="center">
-                            <p align="left">
-                                <asp:Label ID="lblError" runat="server" Width="325px" Height="19px" EnableViewState="False"
-                                    CssClass="TextError"></asp:Label></p>
-                        </td>
-                    </tr>
-                </table>
-                <p>
-                    &nbsp;</p>
-            </td>
-        </tr>
-    </table>
-    </form>
-</body>
+	<body leftMargin="0" topMargin="0">
+		<FORM id="Form1" method="post" runat="server">
+			<TABLE id="Table4" width="100%" align="center">
+				<TR>
+					<td><uc1:header id="ucHeader" runat="server"></uc1:header></td>
+				</TR>
+				<TR>
+					<TD class="PageNavigation" colSpan="2"><asp:label id="lblHead" runat="server"></asp:label>&nbsp;(
+						<asp:label id="lblPageTitle" runat="server">Adressdaten</asp:label>)
+					</TD>
+				</TR>
+				<TR>
+					<TD colSpan="2">
+						<TABLE id="Table5" style="WIDTH: 1032px; HEIGHT: 27px" cellSpacing="1" cellPadding="1" width="1032" border="0">
+							<TR>
+								<TD style="WIDTH: 431px"></TD>
+								<TD style="WIDTH: 360px"><STRONG>Schritt&nbsp;2 von 4</STRONG></TD>
+								<TD></TD>
+							</TR>
+						</TABLE>
+						&nbsp;</TD>
+				</TR>
+				<TR>
+					<TD>
+						<TABLE id="Table1" cellSpacing="1" cellPadding="1" width="100%" border="0">
+							<TR>
+								<TD style="WIDTH: 113px"></TD>
+								<TD style="WIDTH: 449px"><asp:label id="lblKundeName1" runat="server" Font-Italic="True" Font-Bold="True" Width="312px"></asp:label></TD>
+								<TD><asp:label id="lblKundeStrasse" runat="server" Font-Italic="True" Font-Bold="True" Width="272px"></asp:label></TD>
+							</TR>
+							<TR>
+								<TD width="120"></TD>
+								<TD style="WIDTH: 449px"><asp:label id="lblKundeAnsprechpartner" runat="server" Font-Italic="True" Font-Bold="True" Width="307px"></asp:label></TD>
+								<TD>
+									<P><asp:label id="lblKundePlzOrt" runat="server" Font-Italic="True" Font-Bold="True" Width="134px"></asp:label></P>
+								</TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 113px">&nbsp;</TD>
+								<TD style="WIDTH: 449px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 113px"></TD>
+								<TD style="WIDTH: 449px"><STRONG>
+										<asp:label id="Label1" runat="server" Width="122px" Height="17px">Abholung</asp:label></STRONG></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 113px"></TD>
+								<TD style="WIDTH: 449px"><STRONG>
+										<uc1:AddressSearchInputControl id="ctrlAddressSearchAbholung" runat="server"></uc1:AddressSearchInputControl></STRONG></TD>
+								<TD></TD>
+							</TR>
+						</TABLE>
+						<TABLE id="Table2" cellSpacing="1" cellPadding="1" width="100%" border="0">
+							<TR>
+								<TD width="121" style="WIDTH: 121px"></TD>
+								<TD width="120">Auswahl</TD>
+								<TD style="WIDTH: 255px"><asp:dropdownlist id="drpAbholung" runat="server" Width="217px" AutoPostBack="True"></asp:dropdownlist></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD width="121" style="WIDTH: 121px"></TD>
+								<TD width="120">Firma / Name*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAbName" runat="server" Width="220px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Strasse*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAbStrasse" runat="server" Width="218px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">Nr.*</TD>
+								<TD><asp:textbox id="txtAbNr" runat="server" Width="73px"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">PLZ*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAbPLZ" runat="server" Width="88px" MaxLength="5"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">Ort*</TD>
+								<TD><asp:textbox id="txtAbOrt" runat="server" Width="299px"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Ansprechpartner*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAbAnsprechpartner" runat="server" Width="223px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">1. Tel.:*</TD>
+								<TD><asp:textbox id="txtAbTelefon" runat="server" Width="299px" MaxLength="16"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">&nbsp;Fax</TD>
+								<TD style="WIDTH: 255px">
+									<asp:textbox id="txtAbFax" runat="server" Width="223px" MaxLength="16"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">2. Tel.:</TD>
+								<TD>
+									<asp:textbox id="txtAbTelefon2" runat="server" Width="299px" MaxLength="16"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">&nbsp;</TD>
+								<TD style="WIDTH: 255px"></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px"><STRONG>Anlieferung</STRONG></TD>
+								<TD style="WIDTH: 255px"></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD width="121" style="WIDTH: 121px"></TD>
+								<TD colSpan="3">
+									<uc1:AddressSearchInputControl id="ctrlAddressSearchAnlieferung" runat="server"></uc1:AddressSearchInputControl>
+								</TD>
+								<TD></TD>
+							</TR>
+							<TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Auswahl</TD>
+								<TD style="WIDTH: 255px"><asp:dropdownlist id="drpAnlieferung" runat="server" Width="220px" AutoPostBack="True"></asp:dropdownlist></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Firma / Name*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAnName" runat="server" Width="219px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Strasse*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAnStrasse" runat="server" Width="214px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">Nr.*</TD>
+								<TD><asp:textbox id="txtAnNr" runat="server" Width="73px"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">PLZ*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAnPLZ" runat="server" Width="88px" MaxLength="5"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">Ort*</TD>
+								<TD><asp:textbox id="txtAnOrt" runat="server" Width="299px"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">Ansprechpartner*</TD>
+								<TD style="WIDTH: 255px"><asp:textbox id="txtAnAnsprechpartner" runat="server" Width="220px"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">1. Tel.:*</TD>
+								<TD><asp:textbox id="txtAnTelefon" runat="server" Width="299px" MaxLength="16"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">&nbsp;Fax</TD>
+								<TD style="WIDTH: 255px">
+									<asp:textbox id="txtAnFax" runat="server" Width="220px" MaxLength="16"></asp:textbox></TD>
+								<TD style="WIDTH: 68px">2. Tel.:</TD>
+								<TD>
+									<asp:textbox id="txtAnTelefon2" runat="server" Width="299px" MaxLength="16"></asp:textbox></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">&nbsp;</TD>
+								<TD style="WIDTH: 255px"></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px"></TD>
+								<TD style="WIDTH: 255px">
+									<P align="right">
+										<asp:imagebutton id="cmdBack" runat="server" Width="73px" Height="34px" ImageUrl="/Portal/Images/arrowUeberfLeft.gif"></asp:imagebutton></P>
+								</TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD><asp:imagebutton id="cmdRight1" runat="server" Width="73px" Height="34px" ImageUrl="/Portal/Images/arrowUeberfRight.gif"></asp:imagebutton></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px">&nbsp;</TD>
+								<TD style="WIDTH: 255px"></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD></TD>
+							</TR>
+							<TR>
+								<TD style="WIDTH: 121px"></TD>
+								<TD style="WIDTH: 108px"></TD>
+								<TD style="WIDTH: 255px"></TD>
+								<TD style="WIDTH: 68px"></TD>
+								<TD><STRONG><FONT color="red">* = Pflichtfeld</FONT></STRONG></TD>
+							</TR>
+						</TABLE>
+						<TABLE id="Table3" cellSpacing="1" cellPadding="1" width="100%" border="0">
+							<TR>
+								<TD style="WIDTH: 119px" align="center"></TD>
+								<TD align="center">
+									<P align="left"><asp:label id="lblError" runat="server" Width="325px" Height="19px" EnableViewState="False" CssClass="TextError"></asp:label></P>
+								</TD>
+							</TR>
+						</TABLE>
+						<P>&nbsp;</P>
+					</TD>
+				</TR>
+			</TABLE>
+		</FORM>
+	</body>
 </HTML>
