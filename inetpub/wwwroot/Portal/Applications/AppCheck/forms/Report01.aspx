@@ -36,24 +36,35 @@
                                 </td>
                             </tr>
                             <tr>
-                        <td valign="top" style="width:140px">
-                            <table id="Table2" cellspacing="0" cellpadding="0" style="width:140px"
-                                border="0">
-                                <tr>
-                                    <td class="TaskTitle" >
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                           
-                                <tr>
-                                    <td valign="middle">
-                                         &nbsp;
-                                    </td>
-                                </tr>
- 
-                            </table>  
-                        </td>
-                        <td valign="top">
+                                <td valign="top" width="120">
+                                    <table id="Table2" bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="120"
+                                        border="0">
+                                        <tr>
+                                            <td class="TaskTitle" width="150">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle" width="150">
+                                                &nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle" width="150">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle" width="150">
+                                                &nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle" width="150">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td valign="top">
                                     <table id="Table6" cellspacing="0" cellpadding="0" width="100%" border="0">
                                     </table>
                                     <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0">
@@ -71,11 +82,6 @@
                                                                 <asp:Label ID="lblNoData" runat="server" Visible="False" Font-Bold="True"></asp:Label>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>
-                                                                &nbsp;
-                                                            </td>
-                                                        </tr>                                                                                                                                                                        
                                                         <tr>
                                                             <td>
                                                                 <asp:DataGrid ID="DataGrid1" runat="server" Width="100%" headerCSS="tableHeader"
@@ -141,14 +147,28 @@
                             </tr>
                             <tr>
                                 <td valign="top">
-                                   
+                                    &nbsp;
                                 </td>
-                                <td align="left">
-                                    <!--#include File="../../../PageElements/Footer.html" -->
+                                <td>
                                     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                 </td>
                             </tr>
-
+                            <tr>
+                                <td valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <!--#include File="../../../PageElements/Footer.html" -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>

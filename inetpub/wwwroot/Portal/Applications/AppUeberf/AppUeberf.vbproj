@@ -44,7 +44,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppUeberf.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -63,7 +63,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>AppUeberf.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -90,21 +90,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
     </Reference>
-    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
-      <Name>DBauer.Web.UI.WebControls.HierarGrid</Name>
-      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
-    </Reference>
-    <Reference Include="eWorld.UI">
-      <Name>eWorld.UI</Name>
-      <HintPath>..\..\GAC\eWorld.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
-    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="eWorld.UI, Version=1.9.0.0, Culture=neutral, PublicKeyToken=24d65337282035f2">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\GAC\eWorld.UI.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -432,6 +424,7 @@
     </Content>
     <Content Include="Forms\Change02.aspx" />
     <Content Include="Forms\ChangeStdText.aspx" />
+    <Content Include="Forms\scroll.htc" />
     <Content Include="Forms\Ueberf01.aspx" />
     <Content Include="Forms\Ueberf02.aspx" />
     <Content Include="Forms\Ueberf03.aspx" />
@@ -611,6 +604,7 @@
     <None Include="Documents\DADZulassungAuslieferung.doc" />
     <None Include="Documents\Zulassung.doc" />
     <None Include="Documents\ZulassungStandard.doc" />
+    <None Include="Documents\ZulassungUndÜberführung.doc" />
     <None Include="Documents\ZulassungUndÜberführungLeasing.doc" />
     <None Include="Documents\ZulassungUndÜberführungStandard.doc" />
     <None Include="Documents\Überführung.doc" />
@@ -626,6 +620,10 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Portal.vbproj">
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
       <Name>Portal</Name>
@@ -635,8 +633,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\..\bin\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
