@@ -439,8 +439,12 @@ namespace CkgDomainLogic.CoC.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                         {
+                            d.AnlageDatum = s.ERDAT;
                             d.FIN = s.ZZFAHRG;
-                            d.ZulassungsDatum = s.ERDAT;
+                            d.Kennzeichen = s.ZZKENN;
+                            d.RechnungsNr = s.VBELN;
+                            d.ZulassungsDatum = s.VDATU;
+                            d.VersandID = s.ZZSEND2;
                         }));
             }
         }
