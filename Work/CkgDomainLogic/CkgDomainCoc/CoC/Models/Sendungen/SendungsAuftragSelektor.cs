@@ -12,5 +12,8 @@ namespace CkgDomainLogic.CoC.Models
             get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) {IsSelected = true}); }
             set { PropertyCacheSet(value); }
         }
+
+        [LocalizedDisplay(LocalizeConstants._blank)]
+        public bool FilterNurMitSendungsNummer { get; set; }
     }
 }

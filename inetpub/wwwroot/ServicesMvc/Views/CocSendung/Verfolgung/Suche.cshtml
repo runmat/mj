@@ -9,7 +9,9 @@
             @Html.FormValidationSummary()
             
            
-            @Html.FormDateRangePickerFor(m => m.DatumRange, new {})
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new {  })
+
+            @Html.FormCheckBoxFor(m => m.FilterNurMitSendungsNummer, new { @class = "m-wrap" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
 
 
             @*@Html.FormRequiredFieldsSummary()*@

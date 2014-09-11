@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 using CkgDomainLogic.CoC.Contracts;
 using CkgDomainLogic.CoC.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using GeneralTools.Models;
 
@@ -45,9 +46,13 @@ namespace CkgDomainLogic.CoC.ViewModels
             PropertyCacheClear(this, m => m.SendungsAuftragSelektor);
         }
 
-        public void LoadSendungen(SendungsAuftragSelektor model)
+        public void LoadSendungen(SendungsAuftragSelektor model, Action<string, string> addModelError)
         {
             Sendungen = DataService.GetSendungsAuftraege(model);
+
+            if (Sendungen.None())
+                addModelError("", Localize.NoDataFound);
+
             DataMarkForRefresh();
         }
 

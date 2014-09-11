@@ -54,7 +54,7 @@ namespace ServicesMvc.Controllers
             ViewModel.SendungsAuftragSelektor = model;
 
             if (ModelState.IsValid)
-                ViewModel.LoadSendungen(model);
+                ViewModel.LoadSendungen(model, ModelState.AddModelError);
 
             return PartialView("Verfolgung/Suche", ViewModel.SendungsAuftragSelektor);
         }

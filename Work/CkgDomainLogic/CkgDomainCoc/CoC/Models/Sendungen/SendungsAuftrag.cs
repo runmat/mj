@@ -23,5 +23,9 @@ namespace CkgDomainLogic.CoC.Models
 
         [LocalizedDisplay(LocalizeConstants.ShippingID)]
         public string VersandID { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingSurvey)]
+        [GridExportIgnore]
+        public string VersandIdSurveyLink { get; set; }
     }
 }

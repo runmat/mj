@@ -14,6 +14,7 @@ using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
+using CoCAppModelMappings = CkgDomainLogic.CoC.Models.AppModelMappings;
 
 // ReSharper restore RedundantUsingDirective
 
@@ -243,7 +244,7 @@ namespace CkgDomainLogic.CoC.Services
 
         public List<SendungsAuftrag> GetSendungsAuftraege(SendungsAuftragSelektor model)
         {
-            return CkgDomainLogic.CoC.Models.AppModelMappings.Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag.Copy(GetSapSendungsAuftraege(model)).ToList();
+            return CoCAppModelMappings.Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag.Copy(GetSapSendungsAuftraege(model)).ToList();
         }
 
         private IEnumerable<Z_DPM_GET_ZZSEND2.GT_WEB> GetSapSendungsAuftraege(SendungsAuftragSelektor model)
@@ -257,6 +258,9 @@ namespace CkgDomainLogic.CoC.Services
                 SAP.SetImportParameter("ERDAT_VON", model.DatumRange.StartDate);
                 SAP.SetImportParameter("ERDAT_BIS", model.DatumRange.EndDate);
             }
+
+            if (model.FilterNurMitSendungsNummer)
+                SAP.SetImportParameter("CHECK_SEND2", "X");
 
             SAP.Execute();
 
