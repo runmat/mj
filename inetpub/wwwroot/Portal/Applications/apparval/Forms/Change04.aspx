@@ -25,8 +25,12 @@
     </style>
 </head>
 <body>
+    
+    <uc1:BusyIndicator runat="server" />
+
     <form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" ScriptMode="Auto">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization="true"
+        EnableScriptLocalization="true" ScriptMode="Release">
     </asp:ScriptManager>
     <table id="Table4" width="100%" align="center">
         <tr>
@@ -54,8 +58,7 @@
                                 </tr>
                                 <tr>
                                     <td valign="center" width="120">
-                                        <asp:LinkButton ID="cmdCreate" runat="server" OnClientClick="Show_BusyBox1();" CssClass="StandardButton"
-                                            Width="120px"> •&nbsp;Suche</asp:LinkButton>
+                                        <asp:LinkButton ID="cmdCreate" runat="server" OnClientClick="Show_BusyBox1();" CssClass="StandardButton" Width="120px"> •&nbsp;Suche</asp:LinkButton>
                                     </td>
                                 </tr>
                                 <tr>
@@ -113,7 +116,8 @@
                                 </tr>
                                 <tr>
                                     <td valign="top" align="left">
-                                        <table id="tblAdressenAnzeige" runat="server" visible="false" cellspacing="0" cellpadding="5"
+                                        
+                                    <table id="tblAdressenAnzeige" runat="server" visible="false" cellspacing="0" cellpadding="5"
                                             width="100%" bgcolor="white" border="0">
                                             <tr>
                                                 <td class="TaskTitle">
@@ -124,14 +128,13 @@
                                             </tr>
                                             <tr>
                                                 <td class="TextLarge">
-                                                    Vetragsnummer:
-                                                </td>
+                                                    Vetragsnummer:</td>
                                                 <td>
                                                     <asp:Label ID="lblVetragsnummer" runat="server"></asp:Label>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="StandardTableAlternate">
+                                                <td class="StandardTableAlternate" >
                                                     Kfz-Kennzeichen:
                                                 </td>
                                                 <td class="StandardTableAlternate" colspan="3">
@@ -151,6 +154,7 @@
                                                     <span class="style11">Halter</span>
                                                 </td>
                                                 <td class="StandardTableAlternate">
+                                                
                                                 </td>
                                                 <td width="150" class="StandardTableAlternate" colspan="2">
                                                     <span class="style11">Leasingnehmer</span>
@@ -174,8 +178,10 @@
                                             </tr>
                                             <tr>
                                                 <td class="StandardTableAlternate">
+                                                    
                                                 </td>
                                                 <td class="StandardTableAlternate">
+                                                   
                                                 </td>
                                                 <td class="StandardTableAlternate" width="150">
                                                     Name2:
@@ -213,36 +219,38 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                        
                                     </td>
                                 </tr>
+                                
                                 <tr>
                                     <td valign="top" align="left">
-                                        <table id="tblEdit" runat="server" visible="false" cellspacing="0" cellpadding="5"
+                                     <table id="tblEdit" runat="server" visible="false" cellspacing="0" cellpadding="5"
                                             width="100%" bgcolor="white" border="0">
                                             <tr>
                                                 <td class="TaskTitle" valign="top" align="left" colspan="2">
-                                                    Vertragsdaten ändern
-                                                </td>
+                                                    Vertragsdaten ändern</td>
                                             </tr>
                                             <tr>
                                                 <td class="TextLarge" valign="center" width="150" height="31">
-                                                    Neue Vertragsnummer:
-                                                </td>
+                                                    Neue
+                                                    Vertragsnummer:</td>
                                                 <td class="TextLarge" valign="center" height="31">
                                                     <asp:TextBox ID="txtNewVertragsnummer" runat="server" MaxLength="7"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="TextLarge" valign="center" width="150" height="31">
-                                                    Neuer Leasingnehmer:
-                                                </td>
+                                                    Neuer
+                                                    Leasingnehmer:</td>
                                                 <td class="TextLarge" valign="center" height="31">
                                                     <div>
                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
                                                                 <asp:TextBox ID="txtLeasingnehmer" runat="server" Width="650px" AutoPostBack="true"></asp:TextBox>
-                                                                <cc1:TextBoxWatermarkExtender ID="txtLeasingnehmer_TextBoxWatermarkExtender" runat="server"
-                                                                    Enabled="True" TargetControlID="txtLeasingnehmer" WatermarkCssClass="watermarked"
+                                                                <cc1:TextBoxWatermarkExtender ID="txtLeasingnehmer_TextBoxWatermarkExtender" 
+                                                                    runat="server" Enabled="True" TargetControlID="txtLeasingnehmer" 
+                                                                    WatermarkCssClass="watermarked" 
                                                                     WatermarkText="Geben Sie mindestens 3 Zeichen ein um eine Auswahlliste zu erhalten.">
                                                                 </cc1:TextBoxWatermarkExtender>
                                                                 <cc1:AutoCompleteExtender ID="txtLeasingnehmer_AutoCompleteExtender" runat="server"
@@ -257,13 +265,21 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            
                                         </table>
+                                    
+                                   
+                                    
                                     </td>
+                                
                                 </tr>
+                                
                                 <tr>
                                     <td valign="top" align="left">
+                                       
                                     </td>
                                 </tr>
+                                
                             </table>
                         </td>
                     </tr>
@@ -273,8 +289,8 @@
                         </td>
                         <td valign="top">
                             <asp:Label ID="lblError" runat="server" CssClass="TextError" EnableViewState="False"></asp:Label>
-                            <asp:Label ID="lblInfo" runat="server" EnableViewState="False" ForeColor="#0033CC"
-                                Visible="False"></asp:Label>
+                            <asp:Label ID="lblInfo" runat="server" EnableViewState="False" 
+                                ForeColor="#0033CC" Visible="False"></asp:Label>
                         </td>
                     </tr>
                     <tr>
