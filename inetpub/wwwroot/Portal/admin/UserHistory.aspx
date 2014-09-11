@@ -102,10 +102,10 @@
 																		</asp:CheckBox>
 																	</ItemTemplate>
 																</asp:TemplateColumn>
-																<asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Passwort&#228;nderung" DataFormatString="{0:dd.MM.yy}">
+																<asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Kennwort&#228;nderung" DataFormatString="{0:dd.MM.yy}">
 																	<ItemStyle HorizontalAlign="Center"></ItemStyle>
 																</asp:BoundColumn>
-																<asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Passwort&lt;br&gt;l&#228;uft nicht ab">
+																<asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Kennwort&lt;br&gt;l&#228;uft nicht ab">
 																	<ItemStyle HorizontalAlign="Center"></ItemStyle>
 																	<ItemTemplate>
 																		<asp:CheckBox id=cbxSRPwdNeverExpires runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "PwdNeverExpires") %>' Enabled="False">
@@ -177,11 +177,11 @@
 																<TD vAlign="top" align="right">
 																	<TABLE id="tblRight" cellSpacing="2" cellPadding="0" width="345" bgColor="white" border="0">
 																		<TR>
-																			<TD height="22">letzte Passwortänderung:</TD>
+																			<TD height="22">letzte Kennwortänderung:</TD>
 																			<TD align="left" height="22"><asp:label id="lblLastPwdChange" runat="server" CssClass="InfoBoxFlat" Width="160px"></asp:label></TD>
 																		</TR>
 																		<TR id="trPwdNeverExpires" runat="server">
-																			<TD height="22">Passwort läuft nie ab:</TD>
+																			<TD height="22">Kennwort läuft nie ab:</TD>
 																			<TD align="left" height="22"><asp:checkbox id="cbxPwdNeverExpires" runat="server" Enabled="False"></asp:checkbox></TD>
 																		</TR>
 																		<TR>
@@ -193,7 +193,7 @@
 																			<TD align="left" height="22"><asp:checkbox id="cbxAccountIsLockedOut" runat="server" Enabled="False"></asp:checkbox></TD>
 																		</TR>
 																		<TR>
-																			<TD height="22">Passwort:&nbsp;</TD>
+																			<TD height="22">Kennwort:&nbsp;</TD>
 																			<TD noWrap align="left" height="22">&nbsp;
 																				<asp:label id="txtPassword" runat="server" CssClass="InfoBoxFlat" Width="160px"></asp:label></TD>
 																		</TR>

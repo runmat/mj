@@ -32,22 +32,18 @@
 						<HeaderStyle HorizontalAlign="Center" Width="205px"></HeaderStyle>
 						<ItemStyle HorizontalAlign="Right"></ItemStyle>
 						<ItemTemplate>
-                            <table id="Table18" cellspacing="0" cellpadding="0" border="0">
-                                <tr>
-                                    <td align="right" width="50">
-                                        &nbsp;
-                                    </td>
-                                    <td align="right" width="30">
-                                        <asp:Label ID="Label6" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Dauer SAP") %>'>
-                                        </asp:Label>&nbsp;
-                                    </td>
-                                    <td width="125">
-                                        <asp:Label ID="Label7" runat="server" BackColor="Highlight" Width='<%# System.Web.UI.WebControls.Unit.Pixel(CInt(DataBinder.Eval(Container, "DataItem.Dauer SAP"))) %>'
-                                            Height="10px">
-                                        </asp:Label>
-                                    </td>
-                                </tr>
-                            </table>
+							<TABLE id="Table18" cellSpacing="0" cellPadding="0" border="0">
+								<TR>
+									<TD align="right" width="50">
+										&nbsp;</TD>
+									<TD align="right" width="30">
+										<asp:Label id=Label6 runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Dauer SAP") %>'>
+										</asp:Label>&nbsp;</TD>
+									<TD width="125">
+										<asp:Label id=Label7 runat="server" BackColor="Highlight" Width='<%# System.Web.UI.WebControls.Unit.Pixel(CInt(DataBinder.Eval(Container, "DataItem.Dauer SAP"))) %>' Height="10px">
+										</asp:Label></TD>
+								</TR>
+							</TABLE>
 						</ItemTemplate>
 					</asp:TemplateColumn>
 				</Columns>

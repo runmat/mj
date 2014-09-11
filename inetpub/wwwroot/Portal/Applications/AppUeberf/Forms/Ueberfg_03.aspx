@@ -75,22 +75,16 @@
 											<TD></TD>
 										</TR>
 										<TR>
-											<TD style="WIDTH: 405px" width="405"><asp:label id="Label6" runat="server" Width="110px">Firma / Name*</asp:label>
-                                                <asp:textbox id="txtAbName" runat="server" Width="220px" Wrap="False" 
-                                                    MaxLength="35"></asp:textbox></TD>
+											<TD style="WIDTH: 405px" width="405"><asp:label id="Label6" runat="server" Width="110px">Firma / Name*</asp:label><asp:textbox id="txtAbName" runat="server" Width="220px" Wrap="False"></asp:textbox></TD>
 											<TD></TD>
 										</TR>
 										<TR>
-											<TD style="WIDTH: 405px" width="405" height="21"><asp:label id="Label7" runat="server" Width="110px">Strasse*</asp:label>
-                                                <asp:textbox id="txtAbStrasse" runat="server" Width="220px" Wrap="False" 
-                                                    MaxLength="35"></asp:textbox></TD>
+											<TD style="WIDTH: 405px" width="405" height="21"><asp:label id="Label7" runat="server" Width="110px">Strasse*</asp:label><asp:textbox id="txtAbStrasse" runat="server" Width="220px" Wrap="False"></asp:textbox></TD>
 											<TD height="21"><asp:label id="Label13" runat="server" Width="50px">Nr.*</asp:label><asp:textbox id="txtAbNr" runat="server" Width="73px" Wrap="False"></asp:textbox></TD>
 										</TR>
 										<TR>
 											<TD style="WIDTH: 405px" width="405"><asp:label id="Label8" runat="server" Width="110px">PLZ*</asp:label><asp:textbox id="txtAbPLZ" runat="server" Width="102px" Wrap="False" MaxLength="5"></asp:textbox></TD>
-											<TD><asp:label id="Label15" runat="server" Width="50px">Ort*</asp:label>
-                                                <asp:textbox id="txtAbOrt" runat="server" Width="299px" Wrap="False" 
-                                                    MaxLength="35"></asp:textbox></TD>
+											<TD><asp:label id="Label15" runat="server" Width="50px">Ort*</asp:label><asp:textbox id="txtAbOrt" runat="server" Width="299px" Wrap="False"></asp:textbox></TD>
 										</TR>
 										<TR>
 											<TD style="WIDTH: 405px" width="405"><asp:label id="Label9" runat="server" Width="110px">Ansprechpartner*</asp:label><asp:textbox id="txtAbAnsprechpartner" runat="server" Width="223px" Wrap="False"></asp:textbox></TD>
@@ -109,9 +103,7 @@
 											<TD></TD>
 										</TR>
 										<TR>
-											<TD style="WIDTH: 405px" width="405"><asp:label id="Label1" runat="server" Width="110px">Hersteller / Typ*</asp:label>
-                                                <asp:textbox id="txtHerstTyp" runat="server" Width="200px" Wrap="False" 
-                                                    MaxLength="24"></asp:textbox></TD>
+											<TD style="WIDTH: 405px" width="405"><asp:label id="Label1" runat="server" Width="110px">Hersteller / Typ*</asp:label><asp:textbox id="txtHerstTyp" runat="server" Width="200px" Wrap="False" MaxLength="25"></asp:textbox></TD>
 											<TD><asp:label id="Label11" runat="server" Width="286px" Font-Bold="True">Fahrzeug zugelassen und betriebsbereit?*</asp:label></TD>
 										</TR>
 										<TR>

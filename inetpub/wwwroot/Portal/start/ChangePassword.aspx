@@ -43,7 +43,7 @@
                     <table id="Table1" cellspacing="0" cellpadding="0" width="100%" border="0">
                         <tr>
                             <td class="PageNavigation" width="150" colspan="2">
-                                Passwort ändern
+                                Kennwort ändern
                             </td>
                         </tr>
                         <tr>
