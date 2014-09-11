@@ -131,7 +131,7 @@
                                 <PagerStyle CssClass="TextExtraLarge" Wrap="False" />
                                 <Columns>
                                     <asp:BoundField DataField="CHASSIS_NUM" HeaderText="Fahrgestellnummer" />
-                                    <asp:BoundField DataField="DAT_SPERRE" DataFormatString="{0:dd.MM.yyyy}" HeaderText="Datum Sperre bis" />
+                                    <asp:BoundField DataField="DAT_SPERRE" HeaderText="Datum Sperre bis" />
                                     <asp:BoundField DataField="SPERRVERMERK" HeaderText="Sperrvermerk" />
                                     <asp:BoundField DataField="RETUR_BEM" HeaderText="Status" />
                                 </Columns>

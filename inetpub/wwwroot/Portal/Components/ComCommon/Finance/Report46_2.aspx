@@ -15,10 +15,6 @@
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
-        
-        <asp:Label runat="server" ID="lbError" ForeColor="Red" Font-Bold="True" 
-            Font-Size="14pt" Visible="False" />
-
     <table width="100%" align="center" border="0">
         <tr>
             <td>
@@ -815,7 +811,7 @@
                                                             </asp:BoundColumn>
                                                             <asp:BoundColumn Visible="False" DataField="QMNUM" SortExpression="QMNUM" HeaderText="Meldungsnummer">
                                                             </asp:BoundColumn>
-<%--													<asp:TemplateColumn HeaderText="col_Vertragsnummer" SortExpression="LIZNR">
+													<asp:TemplateColumn HeaderText="col_Vertragsnummer" SortExpression="LIZNR">
 															<HeaderTemplate>
 																<asp:LinkButton Runat="server" CommandName="sort" CommandArgument="LIZNR" ID="col_Vertragsnummer">col_Vertragsnummer</asp:LinkButton>
 															</HeaderTemplate>
@@ -832,7 +828,7 @@
 																<asp:Label ID="lblPartner" Runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ZZREFERENZ1")%>'>
 																</asp:Label>
 															</ItemTemplate>
-														</asp:TemplateColumn>--%>														
+														</asp:TemplateColumn>														
                                                         </Columns>
                                                         <PagerStyle NextPageText="n&#228;chste&amp;gt;" PrevPageText="&amp;lt;vorherige"
                                                             HorizontalAlign="Left" Position="Top" Wrap="False" Mode="NumericPages"></PagerStyle>

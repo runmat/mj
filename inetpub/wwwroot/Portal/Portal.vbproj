@@ -84,16 +84,43 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.20820.24635, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL" />
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="BarcodeLib, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CKG.EasyAccess, Version=2007.8.27.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\EasyAccessPortal\CKG.EasyAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="CuteWebUI.AjaxUploader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc00d4b0e43ec38d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\CuteWebUI.AjaxUploader.dll</HintPath>
+    </Reference>
     <Reference Include="BtBaseMvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Work\GAC\BtBaseMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\Work\GAC\Elmah\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="GeneralTools, Version=1.0.5035.17824, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="eWorld.UI, Version=1.9.0.0, Culture=neutral, PublicKeyToken=24d65337282035f2">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Work\GAC\GeneralTools.dll</HintPath>
+      <HintPath>..\..\..\Work\GAC\eWorld.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -114,9 +141,6 @@
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
-    <Reference Include="System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -131,6 +155,18 @@
     </Reference>
     <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Web.Design, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +347,8 @@
     <Content Include="Customize\AVIS\styles.css" />
     <Content Include="Customize\BPLG\BPLG_LOGO2.JPG" />
     <Content Include="Customize\BPLG\styles.css" />
+    <Content Include="Customize\bruehlerbank\bb.gif" />
+    <Content Include="Customize\bruehlerbank\styles.css" />
     <Content Include="Customize\CCU\info.GIF" />
     <Content Include="Customize\CCU\styles.css" />
     <Content Include="Customize\CCU\unirent_logo.gif" />
@@ -357,16 +395,28 @@
     <Content Include="Customize\JBC\JCBLogoOriginal.JPG" />
     <Content Include="Customize\JBC\styles.css" />
     <Content Include="Customize\JBC\stylesX.css" />
+    <Content Include="Customize\Kroschke\Customer\atu_logo.gif" />
     <Content Include="Customize\Kroschke\Customer\bmwlogo.jpg" />
+    <Content Include="Customize\Kroschke\Customer\BoehmKellenersLogo.JPG" />
     <Content Include="Customize\Kroschke\Customer\dello.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Duerkop_logo.JPG" />
     <Content Include="Customize\Kroschke\Customer\Duerkop_logp.JPG" />
+    <Content Include="Customize\Kroschke\Customer\GSchultz_logo.JPG" />
+    <Content Include="Customize\Kroschke\Customer\GvOpel_logo.JPG" />
     <Content Include="Customize\Kroschke\Customer\lhs.gif" />
+    <Content Include="Customize\Kroschke\Customer\logoschwaben.JPG" />
     <Content Include="Customize\Kroschke\Customer\marnet.gif" />
+    <Content Include="Customize\Kroschke\Customer\Microsoft.jpg" />
+    <Content Include="Customize\Kroschke\Customer\minrath.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Pfohe_logo.JPG" />
+    <Content Include="Customize\Kroschke\Customer\plätzlogo.jpg" />
+    <Content Include="Customize\Kroschke\Customer\Porsche_logo.gif" />
     <Content Include="Customize\Kroschke\Customer\raffay.gif" />
     <Content Include="Customize\Kroschke\Customer\renault_muenchen.gif" />
     <Content Include="Customize\Kroschke\Customer\renault_muenchen.jpg" />
     <Content Include="Customize\Kroschke\Customer\schultz.gif" />
     <Content Include="Customize\Kroschke\Customer\schwaben.jpg" />
+    <Content Include="Customize\Kroschke\Customer\seat.jpg" />
     <Content Include="Customize\Kroschke\Customer\wiest.gif" />
     <Content Include="Customize\Kroschke\kroschke.jpg" />
     <Content Include="Customize\Kroschke\kroschke_buttonbackground.jpg" />
@@ -401,6 +451,7 @@
     <Content Include="Customize\RDZ\RDZlogo.gif" />
     <Content Include="Customize\RDZ\Styles.css" />
     <Content Include="Customize\Renault\kroschke.jpg" />
+    <Content Include="Customize\Renault\renault_muenchen.jpg" />
     <Content Include="Customize\Renault\Styles.css" />
     <Content Include="Customize\RTFS\RTFS.GIF" />
     <Content Include="Customize\RTFS\styles.css" />
@@ -426,27 +477,7 @@
     <Content Include="Customize\VW\Styles.css" />
     <Content Include="Customize\VW\vwlogo.jpg" />
     <Content Include="Default.aspx" />
-    <Content Include="GAC\AjaxControlToolkit.dll" />
-    <Content Include="GAC\Aspose.Cells.dll" />
-    <Content Include="GAC\Aspose.Pdf.dll" />
-    <Content Include="GAC\Aspose.Words.dll" />
-    <Content Include="GAC\BarcodeLib.dll" />
-    <Content Include="GAC\BusyBoxDotNet.dll" />
-    <Content Include="GAC\CuteWebUI.AjaxUploader.dll" />
-    <Content Include="GAC\DBauer.Web.UI.WebControls.HierarGrid.dll" />
-    <Content Include="GAC\dsofile.dll" />
-    <Content Include="GAC\ERPConnect35.dll" />
-    <Content Include="GAC\eWorld.UI.dll" />
-    <Content Include="GAC\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="GAC\SAP.Connector.dll" />
-    <Content Include="GAC\SAP.Connector.Rfc.dll" />
-    <Content Include="GAC\SAPProxy_Base.dll" />
-    <Content Include="GAC\Telerik.Web.Design.dll" />
-    <Content Include="GAC\Telerik.Web.UI.dll" />
-    <Content Include="GAC\Telerik.Web.UI.Skins.dll" />
-    <Content Include="GAC\Telerik.Web.UI.XML" />
-    <Content Include="GAC\WMDQryCln.dll" />
-    <Content Include="GAC\WMDWebLink32Client.dll" />
+    <Content Include="Downloads\DADQS_de.exe" />
     <Content Include="Global.asax" />
     <Content Include="Images\abrunden.gif" />
     <Content Include="Images\Achtung2.gif" />
@@ -457,6 +488,7 @@
     <Content Include="Images\arrowright.gif" />
     <Content Include="Images\arrowUeberfLeft.gif" />
     <Content Include="Images\arrowUeberfRight.gif" />
+    <Content Include="Images\arrowUeberfRight.jpg" />
     <Content Include="Images\arrow_left.gif" />
     <Content Include="Images\arrow_right.gif" />
     <Content Include="Images\ausruf.gif" />
@@ -473,17 +505,22 @@
     <Content Include="Images\closed.gif" />
     <Content Include="Images\collapse.jpg" />
     <Content Include="Images\Confirm_Mini.GIF" />
+    <Content Include="Images\Confirm_Mini2.gif" />
     <Content Include="Images\Confirm_Mini_Grey.GIF" />
     <Content Include="Images\Confirm_Mini_red.gif" />
     <Content Include="Images\copy.jpg" />
     <Content Include="Images\copyright.jpg" />
+    <Content Include="Images\csv.gif" />
     <Content Include="Images\DADLogo.gif" />
     <Content Include="Images\DADLogo.jpg" />
     <Content Include="Images\democar.jpg" />
     <Content Include="Images\dhl.png" />
     <Content Include="Images\divBody.jpg" />
     <Content Include="Images\document.gif" />
+    <Content Include="Images\dotNet.jpeg" />
     <Content Include="Images\DoubleArrow.gif" />
+    <Content Include="Images\DoubleArrow2.gif" />
+    <Content Include="Images\DoubleArrow3.gif" />
     <Content Include="Images\EditTableHS.png" />
     <Content Include="Images\empty.gif" />
     <Content Include="Images\erfolg.gif" />
@@ -497,6 +534,7 @@
     <Content Include="Images\headbox.jpg" />
     <Content Include="Images\help_icon.png" />
     <Content Include="Images\iconPDF.gif" />
+    <Content Include="Images\iconxls.gif" />
     <Content Include="Images\icon_nein.gif" />
     <Content Include="Images\icon_nein_s.gif" />
     <Content Include="Images\indicator.gif" />
@@ -508,14 +546,20 @@
     <Content Include="Images\Kcl.jpg" />
     <Content Include="Images\key1.jpg" />
     <Content Include="Images\Kreislauf_01.jpg" />
+    <Content Include="Images\kroschke.jpg" />
+    <Content Include="Images\KroschkeLogisticLogo.JPG" />
     <Content Include="Images\KruellLogo.JPG" />
     <Content Include="Images\leer.gif" />
     <Content Include="Images\lhs.gif" />
     <Content Include="Images\lockLogin.gif" />
     <Content Include="Images\loesch.gif" />
+    <Content Include="Images\LogoSparkasseEssen.jpg" />
     <Content Include="Images\lupe.gif" />
     <Content Include="Images\lupe2.gif" />
     <Content Include="Images\minus.gif" />
+    <Content Include="Images\Not_Confirm_Mini.gif" />
+    <Content Include="Images\Not_Confirm_Mini2.gif" />
+    <Content Include="Images\ok.gif" />
     <Content Include="Images\opend.gif" />
     <Content Include="Images\OpenProtect.png" />
     <Content Include="Images\overflowNavigation.png" />
@@ -531,23 +575,38 @@
     <Content Include="Images\Protect.png" />
     <Content Include="Images\red.JPG" />
     <Content Include="Images\redwarn.jpg" />
+    <Content Include="Images\refresh.gif" />
     <Content Include="Images\SAPLogo.gif" />
     <Content Include="Images\saveHS.png" />
     <Content Include="Images\Schluessel01_05.jpg" />
     <Content Include="Images\select.gif" />
     <Content Include="Images\selectgrey.gif" />
+    <Content Include="Images\spinner.gif" />
     <Content Include="Images\SSL-Verschluesselt.jpg" />
     <Content Include="Images\ssl.gif" />
     <Content Include="Images\TableAlternate.jpg" />
     <Content Include="Images\TableBack.jpg" />
     <Content Include="Images\TaskTitleBack.jpg" />
     <Content Include="Images\TaskTitleEdge.jpg" />
+    <Content Include="Images\TeamviewerLogo.png" />
     <Content Include="Images\TestUser.JPG" />
+    <Content Include="Images\testuser1.jpg" />
     <Content Include="Images\thumb.jpg" />
     <Content Include="Images\tnt.png" />
     <Content Include="Images\Umschlag.gif" />
     <Content Include="Images\ups_logo.png" />
+    <Content Include="Images\vLog\1.png" />
+    <Content Include="Images\vLog\2.png" />
+    <Content Include="Images\vLog\3.png" />
+    <Content Include="Images\vLog\4.png" />
+    <Content Include="Images\vLog\5.png" />
+    <Content Include="Images\vLog\6.png" />
+    <Content Include="Images\vLog\7.png" />
+    <Content Include="Images\vLog\8.png" />
+    <Content Include="Images\vLog\9.png" />
+    <Content Include="Images\vLog\Fehler.png" />
     <Content Include="Images\warnung.gif" />
+    <Content Include="Images\wiest.gif" />
     <Content Include="Images\Word_Logo.jpg" />
     <Content Include="Images\yellow.JPG" />
     <Content Include="Images\Zahnrad.gif" />
@@ -584,9 +643,11 @@
     <Content Include="Start\Selection.aspx" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Styles.css" />
-    <Content Include="Web.config">
+    <None Include="Customize\AVIS\Handbuch\Handbuch zur Web Anwendung AVIS 022008.pdf" />
+    <None Include="Customize\bruehlerbank\HandbuchTreuhand.pdf" />
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="App_GlobalResources\RadGrid.Main.de-DE.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>RadGrid.Main.de-DE.designer.vb</LastGenOutput>
@@ -676,6 +737,9 @@
       <DependentUpon>Selection.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Aspose.Total.lic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Customize\Kruell\Thumbs.db" />
     <None Include="Docs\Lastschrift\Baden-Wuerttemberg.pdf" />
     <None Include="Docs\Lastschrift\Bayern.pdf" />
@@ -693,11 +757,9 @@
     <None Include="Docs\Lastschrift\Sachsen.pdf" />
     <None Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
     <None Include="Docs\Lastschrift\Thueringen.pdf" />
-    <None Include="GAC\ajaxuploader.lic" />
-    <None Include="GAC\Aspose.Total.lic" />
-    <Content Include="NLog.config">
+    <None Include="NLog.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bilder\View\" />
@@ -711,6 +773,26 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj">
+      <Project>{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}</Project>
+      <Name>BtBaseMvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\services\SapORM.Services.csproj">
+      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
+      <Name>SapORM.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
@@ -720,6 +802,48 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_Applications Include="Applications\**\*.aspx;Applications\**\*.ascx;Applications\**\*.master;Applications\**\*.js;Applications\**\*.css;Applications\**\*.doc;Applications\**\*.pdf;Applications\**\*.xls;Applications\**\*.htm;Applications\**\*.asmx;Applications\**\*.htc;Applications\**\Templates\*.xml;Applications\**\*.jpg" />
+      <FilesForPackagingFromProject Include="%(_Applications.Identity)">
+        <DestinationRelativePath>Applications\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Components Include="Components\**\*.aspx;Components\**\*.ascx;Components\**\*.master;Components\**\*.js;Components\**\*.css;Components\**\*.doc;Components\**\*.pdf;Components\**\*.xls;Components\**\*.htm;Components\**\*.asmx;Components\**\*.htc" />
+      <FilesForPackagingFromProject Include="%(_Components.Identity)">
+        <DestinationRelativePath>Components\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Admin.Identity)">
+        <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Bin Include="Admin\Bin\Admin.*;Applications\appakf\bin\appakf.*;Applications\AppAlphabet\Bin\AppAlphabet.*;Applications\apparval\Bin\AppArval.*;Applications\appasl\Bin\AppASL.*;Applications\AppAvis\Bin\AppAvis.*;Applications\AppBPLG\Bin\AppBPLG.*;Applications\appccu\Bin\AppCCU.*;Applications\AppCheck\Bin\AppCheck.*;Applications\AppCommonCarRent\bin\AppCommonCarRent.*;Applications\AppCommonLeasing\bin\AppCommonLeasing.*;Applications\appcsc\bin\Appcsc.*;Applications\appdcb\bin\AppDCB.*;Applications\appdcl\bin\AppDCL.*;Applications\appec\bin\AppEC.*;Applications\appecan\bin\AppECAN.*;Applications\AppF1\bin\AppF1.*;Applications\appffd\bin\AppFFD.*;Applications\AppFFE\bin\AppFFE.*;Applications\appfms\bin\appfms.*;Applications\AppKBS\bin\AppKBS.*;Applications\AppKroschke\bin\AppKroschke.*;Applications\AppLeasePlan\bin\AppLeasePlan.dll;Applications\AppLeaseTrend\bin\AppLeaseTrend.dll;Applications\appqm\bin\appQM.*;Applications\apprdz\bin\AppRDZ.*;Applications\AppRenault\bin\AppRenault.*;Applications\appsixt\bin\AppSIXT.*;Applications\appsixtl\bin\AppSIXTL.dll;Applications\AppUeberf\bin\AppUeberf.*;Applications\appvw\bin\AppVW.*;Components\ComArchive\bin\CKG.Components.ComArchive.*;Components\ComCommon\bin\Components\ComCommon\bin.*" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <ItemGroup>
+      <_Assemblies Include="bin\**\*" />
+      <FilesForPackagingFromProject Include="%(_Assemblies.Identity)">
+        <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

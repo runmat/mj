@@ -14,7 +14,7 @@
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     
-    <uc1:BusyIndicator ID="BusyIndicator1" runat="server" />
+    <uc1:BusyIndicator runat="server" />
 
     <form id="Form1" method="post" runat="server">
 
