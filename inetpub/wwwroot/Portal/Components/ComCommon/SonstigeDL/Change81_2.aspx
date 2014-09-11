@@ -81,7 +81,7 @@
 														<asp:BoundColumn Visible="False" DataField="ZZREFERENZ1" SortExpression="ZZREFERENZ1" HeaderText="Ordernummer"></asp:BoundColumn>
 														<asp:TemplateColumn SortExpression="EXPIRY_DATE" HeaderText="Abmeldedatum">
 															<ItemTemplate>
-																																<asp:Label id=lblYesDate runat="server" Visible='<%# Not (TypeOf DataBinder.Eval(Container, "DataItem.EXPIRY_DATE") Is System.DBNull) AndAlso not (DataBinder.Eval(Container, "DataItem.EXPIRY_DATE") Is nothing) %>' Text='<%# DataBinder.Eval(Container, "DataItem.EXPIRY_DATE") %>'>
+																																<asp:Label id=lblYesDate runat="server" Visible='<%# Not (TypeOf DataBinder.Eval(Container, "DataItem.EXPIRY_DATE") Is System.DBNull) AndAlso (DataBinder.Eval(Container, "DataItem.EXPIRY_DATE")<>"00000000") %>' Text='<%# DataBinder.Eval(Container, "DataItem.EXPIRY_DATE") %>'>
 																</asp:Label>
 															</ItemTemplate>
 														</asp:TemplateColumn>

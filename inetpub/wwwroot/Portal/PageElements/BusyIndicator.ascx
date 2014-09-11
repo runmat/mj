@@ -1,4 +1,4 @@
-﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="BusyIndicator.ascx.vb" Inherits="CKG.Portal.PageElements.BusyIndicator" %>
+﻿<%@ Control Language="vb" AutoEventWireup="false" %>
 
 
 <script src="/Portal/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>

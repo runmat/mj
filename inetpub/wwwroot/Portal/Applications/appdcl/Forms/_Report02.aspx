@@ -47,7 +47,7 @@
 																				</TR>
 																				<TR>
 																					<TD id="td03" vAlign="top" bgColor="#ffffff" runat="server" align="left">
-                                                                                        <asp:listbox id="lbxAuftrag" runat="server" Height="380px" Width="450px" BackColor="White" CssClass="DropDownStyle" OnSelectedIndexChanged="AuftragSelected" AutoPostBack="True" />
+                                                                                        <asp:listbox id="lbxAuftrag" runat="server" Height="380px" Width="350px" BackColor="White" CssClass="DropDownStyle" OnSelectedIndexChanged="AuftragSelected" AutoPostBack="True" />
                                                                                     </TD>
 																					<TD vAlign="top" width="100%" bgColor="#ffffff">
                                                                                         <div style="height:380px; overflow-y:auto;">
@@ -60,8 +60,8 @@
                                                                                                     <asp:TemplateField HeaderText="Vorschau">
                                                                                                         <ItemTemplate>
                                                                                                             <div style="margin-left:1px;margin-top:1px;">
-                                                                                                        	    <asp:Image runat="server" Width="75px" Height="75px" BorderColor="Black" ToolTip='<%# DataBinder.Eval(Container, "DataItem.Filename") %>' ImageUrl='<%# DataBinder.Eval(Container, "DataItem.ServerFile") %>' BorderStyle="Solid" BorderWidth="1px" />
-																											    <asp:HyperLink runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.ServerFile") %>' ToolTip="Bild in Originalgröße anzeigen" ImageUrl="/Portal/Images/lupe.gif" Target="_blank" style="vertical-align:top;" >HyperLink</asp:HyperLink>
+                                                                                                        	    <asp:Image ID="Image1" runat="server" Width="75px" Height="75px" BorderColor="Black" ToolTip='<%# DataBinder.Eval(Container, "DataItem.Filename") %>' ImageUrl='<%# DataBinder.Eval(Container, "DataItem.ServerFile") %>' BorderStyle="Solid" BorderWidth="1px" />
+																											    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.ServerFile") %>' ToolTip="Bild in Originalgröße anzeigen" ImageUrl="/Portal/Images/lupe.gif" Target="_blank" style="vertical-align:top;" >HyperLink</asp:HyperLink>
                                                                                                             </div>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
