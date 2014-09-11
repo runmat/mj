@@ -109,8 +109,7 @@
 														</TR>
 														<TR>
 															<TD class="" vAlign="top" noWrap align="left" width="137"><A class="StandardButtonTable" href="javascript:showhide()">•&nbsp;Dateiauswahl</A>&nbsp; 
-																</STRONG><A href="javascript:openinfo('Info01.htm');">
-                                                                <IMG src="/Portal/Images/fragezeichen.gif" border="0" style="height: 13px"></A></TD>
+																</STRONG><A href="javascript:openinfo('Info01.htm');"><IMG src="/Portal/Images/fragezeichen.gif" border="0"></A></TD>
 															</STRONG>
 															<TD class="" vAlign="top" align="left" width="100%">
 																<TABLE id="Table3" cellSpacing="1" cellPadding="1" border="0">

@@ -3,8 +3,7 @@
 
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../PageElements/Header.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="BusyIndicator" Src="../../../PageElements/BusyIndicator.ascx" %>
-
+<%@ Register Assembly="BusyBoxDotNet" Namespace="BusyBoxDotNet" TagPrefix="busyboxdotnet" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -15,9 +14,6 @@
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
 </head>
 <body>
-    
-    <uc1:BusyIndicator runat="server" />
-
     <form id="Form1" method="post" runat="server">
 
     <script type="text/javascript" language="javascript" id="ScrollPosition">

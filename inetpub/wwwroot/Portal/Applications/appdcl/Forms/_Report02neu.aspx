@@ -97,7 +97,11 @@
                                                                                                                     ToolTip='<%# DataBinder.Eval(Container, "DataItem.Filename") %>' ImageUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") &amp; DataBinder.Eval(Container, "DataItem.Filename") %>'
                                                                                                                     BorderStyle="Solid" BorderWidth="1px"></asp:Image>
                                                                                                             </asp:HyperLink>
-                                                                                                        </td>                                                                                                      
+                                                                                                        </td>
+                                                                                                        <%--<td valign="top">
+                                                                                                            <asp:HyperLink ID="Hyperlink2" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") &amp; DataBinder.Eval(Container, "DataItem.Filename") %>'
+                                                                                                                ToolTip="Bild in Originalgröße anzeigen" ImageUrl="/Portal/Images/lupe.gif" Target="_blank">HyperLink</asp:HyperLink>
+                                                                                                        </td>--%>
                                                                                                     </tr>
                                                                                                 </table>
                                                                                             </ItemTemplate>
@@ -194,21 +198,21 @@
                                                                         <tr>
                                                                             <td id="td04" valign="top" nowrap align="left" bgcolor="#ffffff" runat="server">
                                                                                 <%--<asp:LinkButton ID="btnShowPics" runat="server" CssClass="StandardButtonTable"> &#149;&nbsp;Hochgeladene Bilder anzeigen</asp:LinkButton>&nbsp;--%>
+                                                                            <%--<asp:LinkButton ID="btnSessionAbort" runat="server" CssClass="StandardButtonTable" visible="false">&#149;&nbsp;Abort Session</asp:LinkButton>--%>
                                                                             </td>
-                                                                            <td valign="top" nowrap="nowrap" align="right" width="100%" bgcolor="#ffffff">
+                                                                            <td valign="top" nowrap align="right" width="100%" bgcolor="#ffffff">
                                                                                 <table id="Table2" cellspacing="1" cellpadding="1" width="100%" border="0">
                                                                                     <tr>
-                                                                                        <%--<td nowrap="nowrap">
+                                                                                        <td nowrap>
                                                                                             <asp:CheckBox ID="cbxFinished" runat="server" Text="Auftrag abgeschlossen" AutoPostBack="True"
                                                                                                 CssClass="TableBackground" Font-Underline="True" Visible="False"></asp:CheckBox>
-                                                                                        </td>--%>
-                                                                                        <td nowrap="nowrap" align="right" width="100%" colspan="2" rowspan="1">
-                                                                                            <%--<asp:LinkButton ID="btnBack" runat="server" Visible="False" CssClass="StandardButtonTable"
-                                                                                                ToolTip="Zurück zur Bearbeitung">&#149;&nbsp;Zurück</asp:LinkButton>--%>
-                                                                                                <asp:LinkButton
+                                                                                        </td>
+                                                                                        <td nowrap align="right" width="100%" colspan="1" rowspan="1">
+                                                                                            <asp:LinkButton ID="btnBack" runat="server" Visible="False" CssClass="StandardButtonTable"
+                                                                                                ToolTip="Zurück zur Bearbeitung">&#149;&nbsp;Zurück</asp:LinkButton><asp:LinkButton
                                                                                                     ID="btnConfirm" runat="server" Visible="False" CssClass="StandardButtonTable"
                                                                                                     ToolTip="Dateien auf dem Archivserver ablegen">&#149;&nbsp;Auftrag absenden!</asp:LinkButton>
-                                                                                            <!-- <asp:LinkButton ID="btnFinish" runat="server" CssClass="StandardButtonTable" ToolTip="Weiter zur Bestätigungsseite"> &#149;&nbsp;Fertig</asp:LinkButton> -->
+                                                                                            <asp:LinkButton ID="btnFinish" runat="server" CssClass="StandardButtonTable" ToolTip="Weiter zur Bestätigungsseite"> &#149;&nbsp;Fertig</asp:LinkButton>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
