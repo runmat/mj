@@ -1,93 +1,75 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Report19.aspx.vb" Inherits="AppEC.Report19" %>
-
+<%@ Page Language="vb" AutoEventWireup="false" Codebehind="Report19.aspx.vb" Inherits="AppEC.Report19"%>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../../../PageElements/Header.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../../../PageElements/Styles.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
-    <meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
-    <meta content="JavaScript" name="vs_defaultClientScript">
-    <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
-    <uc1:styles id="ucStyles" runat="server"></uc1:styles>
-</head>
-<body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
-    <form id="Form1" method="post" runat="server">
-    <table id="Table4" width="100%" align="center">
-        <tr>
-            <td>
-                <uc1:header id="ucHeader" runat="server"></uc1:header>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <table id="Table0" cellspacing="0" cellpadding="0" width="100%" border="0">
-                    <tr>
-                        <td class="PageNavigation" colspan="2" height="19">
-                            <asp:Label ID="lblHead" runat="server"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top" width="120">
-                            <table id="Table2" bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="120"
-                                border="0">
-                                <tr>
-                                    <td class="TaskTitle" width="150">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="center" width="150">
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td valign="top">
-                            <table id="Table6" cellspacing="0" cellpadding="0" width="100%" border="0">
-                                <tr>
-                                    <td class="TaskTitle" valign="top">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="" valign="top">
-                                        <asp:Label ID="lblError" runat="server" EnableViewState="False" CssClass="TextError"></asp:Label>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0">
-                                <tr>
-                                    <td valign="top" align="left">
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            &nbsp;
-                        </td>
-                        <td valign="top">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                        </td>
-                        <td valign="top" width="100%">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            &nbsp;
-                        </td>
-                        <td>
-                            <!--#include File="../../../PageElements/Footer.html" -->
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    </form>
-</body>
-</html>
+<HTML>
+	<HEAD>
+		<meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
+		<meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
+		<meta content="JavaScript" name="vs_defaultClientScript">
+		<meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
+		<uc1:Styles id="ucStyles" runat="server"></uc1:Styles>
+	</HEAD>
+	<body leftMargin="0" topMargin="0" MS_POSITIONING="FlowLayout">
+		<form id="Form1" method="post" runat="server">
+			<TABLE id="Table4" width="100%" align="center">
+				<TR>
+					<td><uc1:Header id="ucHeader" runat="server"></uc1:Header></td>
+				</TR>
+				<TR>
+					<TD>
+						<TABLE id="Table0" cellSpacing="0" cellPadding="0" width="100%" border="0">
+							<TR>
+								<TD class="PageNavigation" colSpan="2" height="19">
+									<asp:Label id="lblHead" runat="server"></asp:Label>
+								</TD>
+							</TR>
+							<TR>
+								<TD vAlign="top" width="120">
+									<TABLE id="Table2" borderColor="#ffffff" cellSpacing="0" cellPadding="0" width="120" border="0">
+										<TR>
+											<TD class="TaskTitle" width="150">
+												&nbsp;</TD>
+										</TR>
+										<TR>
+											<TD vAlign="center" width="150"></TD>
+										</TR>
+									</TABLE>
+								</TD>
+								<TD vAlign="top">
+									<TABLE id="Table6" cellSpacing="0" cellPadding="0" width="100%" border="0">
+										<TR>
+											<TD class="TaskTitle" vAlign="top">&nbsp;</TD>
+										</TR>
+										<TR>
+											<TD class="" vAlign="top">
+												<asp:label id="lblError" runat="server" EnableViewState="False" CssClass="TextError"></asp:label></TD>
+										</TR>
+									</TABLE>
+									<TABLE id="Table3" cellSpacing="0" cellPadding="0" width="100%" border="0">
+										<TR>
+											<TD vAlign="top" align="left">
+											</TD>
+										</TR>
+									</TABLE>
+								</TD>
+							</TR>
+							<TR>
+								<TD vAlign="top">&nbsp;</TD>
+								<TD vAlign="top"></TD>
+							</TR>
+							<TR>
+								<TD vAlign="top"></TD>
+								<TD vAlign="top" width="100%"></TD>
+							</TR>
+							<TR>
+								<TD vAlign="top">&nbsp;</TD>
+								<TD><!--#include File="../../../PageElements/Footer.html" --></TD>
+							</TR>
+						</TABLE>
+					</TD>
+				</TR>
+			</TABLE>
+		</form>
+	</body>
+</HTML>
