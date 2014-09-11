@@ -71,10 +71,7 @@
 												<asp:label id="lblError" runat="server" CssClass="TextError" DESIGNTIMEDRAGDROP="61" EnableViewState="False"></asp:label></TD>
 										</TR>
 										<TR>
-											<TD vAlign="top" align="left" colSpan="3"><asp:datagrid id="DataGrid1" 
-                                                    runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" 
-                                                    AllowSorting="True" bodyHeight="400" cssclass="tableMain" bodyCSS="tableBody" 
-                                                    headerCSS="tableHeader" PageSize="20" BackColor="White">
+											<TD vAlign="top" align="left" colSpan="3"><asp:datagrid id="DataGrid1" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" AllowSorting="True" bodyHeight="400" cssclass="tableMain" bodyCSS="tableBody" headerCSS="tableHeader" PageSize="50" BackColor="White">
 													<AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
 													<HeaderStyle Wrap="False" ForeColor="White" CssClass="GridTableHead"></HeaderStyle>
 													<Columns>

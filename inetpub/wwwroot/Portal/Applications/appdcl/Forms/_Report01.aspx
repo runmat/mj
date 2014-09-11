@@ -13,8 +13,7 @@
     <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema" />
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
     <style type="text/css">
-        .style1
-        {
+        .style1 {
             height: 22px;
         }
     </style>
@@ -63,26 +62,32 @@
                                                                         <tr>
                                                                             <td class="style1" id="td0" valign="middle" nowrap align="center" bgcolor="#ffffff"
                                                                                 rowspan="1" runat="server">
-                                                                                <div style="float: left; width: 45px;">
-                                                                                    <p>
-                                                                                        <strong>Hilfe</strong>
-                                                                                        <asp:ImageButton ID="ibtnHelp" runat="server" ToolTip="Hilfe" ImageUrl="../../../Images/fragezeichen.gif"
-                                                                                            Style="height: 13px;" Height="13px" /></p>
-                                                                                </div>
-                                                                                <p align="center">
-                                                                                    <strong>Auftragsliste (Fahrer:
-                                                                                        <asp:Label ID="lblFahrernr" runat="server"></asp:Label>)</strong></p>
+                                                                               
+                                                                                   <div style="float: left; width: 45px;">
+                                                                                    <p >
+                                                                                        <strong>                                                                                   
+                                                                                   Hilfe</strong>
+                                                                                   <asp:ImageButton ID="ibtnHelp" runat="server" ToolTip="Hilfe"
+                                                                                     ImageUrl="../../../Images/fragezeichen.gif" style="height: 13px;" 
+                                                                                     Height="13px" /></p></div>
+                                                                                    <p align="center">
+                                                                                        <strong>Auftragsliste (Fahrer:
+                                                                                            <asp:Label ID="lblFahrernr" runat="server"></asp:Label>)</strong></p>
+
                                                                             </td>
-                                                                            <td colspan="2" style="padding-left: 15px" bgcolor="#ffffff">
+                                                                        
+                                                                            <td colspan="2" style="padding-left:15px" bgcolor="#ffffff">
                                                                                 <strong>Auftrag:&nbsp;
                                                                                     <asp:Label ID="lblInfo1" runat="server"></asp:Label></strong>
                                                                             </td>
+                                                                                                  
                                                                         </tr>
                                                                         <tr>
                                                                             <td id="td02" valign="top" align="center" bgcolor="#ffffff" colspan="1" rowspan="1"
                                                                                 runat="server">
-                                                                                <asp:ListBox ID="lbxAuftrag" runat="server" Width="350px" BackColor="White" Height="380px"
-                                                                                    AutoPostBack="True"></asp:ListBox>
+                                                                                <asp:ListBox ID="lbxAuftrag" runat="server" Width="350px" BackColor="White" 
+                                                                                    Height="380px" AutoPostBack="True" >
+                                                                                </asp:ListBox>
                                                                             </td>
                                                                             <td valign="top" id="td1" align="center" bgcolor="#ffffff" runat="server">
                                                                                 <cc1:UploadAttachments CancelText="Abbrechen" runat="server" InsertText="Durchsuchen.."
@@ -93,108 +98,104 @@
                                                                                     ShowCheckBoxes="False" ShowRemoveButtons="true" AutoUseSystemTempFolder="False"
                                                                                     ProgressPanelWidth="220" RemoveButtonBehavior="Delete" ShowProgressInfo="False"
                                                                                     ShowTableHeader="False" TempDirectory="~/temp/pictures" UploadProcessingMsg="Dateien werden hochgeladen.."
-                                                                                    UploadType="Auto" OnAttachmentAdded="UploaderAttachmentAdded" OnAttachmentRemoveClicked="UploaderAttachmentRemove"
-                                                                                    OnUploadCompleted="UploaderCompleted">
+                                                                                    UploadType="Auto" OnAttachmentAdded="UploaderAttachmentAdded" OnAttachmentRemoveClicked="UploaderAttachmentRemove" OnUploadCompleted="UploaderCompleted">
                                                                                     <ValidateOption AllowedFileExtensions="jpeg, jpg, gif" MaxSizeKB="300" />
                                                                                     <InsertButtonStyle Width="120px" />
                                                                                 </cc1:UploadAttachments>
                                                                             </td>
                                                                             <td valign="top" width="100%" bgcolor="#ffffff">
-                                                                                <div style="height: 380px; overflow-y: auto;">
-                                                                                    <asp:DataGrid ID="gridServer" runat="server" Width="100%" BackColor="White" BorderColor="Transparent"
-                                                                                        CssClass="tableMain" bodyCSS="tableBody" headerCSS="tableHeader" AllowSorting="True"
-                                                                                        AutoGenerateColumns="False">
-                                                                                        <SelectedItemStyle BackColor="#FFE0C0"></SelectedItemStyle>
-                                                                                        <AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
-                                                                                        <HeaderStyle HorizontalAlign="Left" CssClass="GridTableHead" VerticalAlign="Top">
-                                                                                        </HeaderStyle>
-                                                                                        <Columns>
-                                                                                            <asp:BoundColumn Visible="False" DataField="Serverpfad" SortExpression="Serverpfad"
-                                                                                                HeaderText="Serverpfad"></asp:BoundColumn>
-                                                                                            <asp:BoundColumn Visible="False" DataField="Zeit" SortExpression="Zeit" HeaderText="Erstellt am">
-                                                                                            </asp:BoundColumn>
-                                                                                            <asp:TemplateColumn Visible="False" SortExpression="Filename" HeaderText="Dateiname">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:HyperLink ID="lnkFile" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad")+ DataBinder.Eval(Container, "DataItem.Filename") %>'
-                                                                                                        Text='<%# DataBinder.Eval(Container, "DataItem.Filename") %>' Target="_blank">
-                                                                                                    </asp:HyperLink>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateColumn>
-                                                                                            <asp:TemplateColumn HeaderText="Vorschau (75x75)">
-                                                                                                <ItemTemplate>
-                                                                                                    <table id="Table13" cellspacing="1" cellpadding="1" border="0">
-                                                                                                        <tr>
-                                                                                                            <td>
-                                                                                                                <asp:Image ID="Image1" runat="server" Width="75px" Height="75px" BorderColor="Black"
-                                                                                                                    ImageUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") + DataBinder.Eval(Container, "DataItem.Filename") %>'
-                                                                                                                    BorderStyle="Solid" BorderWidth="1px" ToolTip='<%# DataBinder.Eval(Container, "DataItem.Filename") %>'>
-                                                                                                                </asp:Image>
-                                                                                                            </td>
-                                                                                                            <td valign="top">
-                                                                                                                <asp:HyperLink ID="Hyperlink1" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") + DataBinder.Eval(Container, "DataItem.Filename") %>'
-                                                                                                                    ImageUrl="/Portal/Images/lupe.gif" Target="_blank">In Originalgröße anzeigen</asp:HyperLink>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </table>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateColumn>
-                                                                                            <asp:BoundColumn Visible="False" DataField="Filename" SortExpression="Filename" HeaderText="Dateiname">
-                                                                                            </asp:BoundColumn>
-                                                                                            <asp:BoundColumn DataField="Status" HeaderText="Status">
-                                                                                                <ItemStyle Font-Size="XX-Small"></ItemStyle>
-                                                                                            </asp:BoundColumn>
-                                                                                            <asp:TemplateColumn HeaderText="l&#246;schen">
-                                                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                                                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:ImageButton ID="ibtnSRDelete" runat="server" CommandName="Delete" CausesValidation="false"
-                                                                                                        ImageUrl="/Portal/Images/loesch.gif"></asp:ImageButton>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateColumn>
-                                                                                        </Columns>
-                                                                                        <PagerStyle Mode="NumericPages"></PagerStyle>
-                                                                                    </asp:DataGrid>
+                                                                                <div style="height:380px; overflow-y:auto;">
+                                                                                <asp:DataGrid ID="gridServer" runat="server" Width="100%" BackColor="White" BorderColor="Transparent"
+                                                                                    CssClass="tableMain" bodyCSS="tableBody" headerCSS="tableHeader"
+                                                                                    AllowSorting="True" AutoGenerateColumns="False">
+                                                                                    <SelectedItemStyle BackColor="#FFE0C0"></SelectedItemStyle>
+                                                                                    <AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
+                                                                                    <HeaderStyle HorizontalAlign="Left" CssClass="GridTableHead" VerticalAlign="Top">
+                                                                                    </HeaderStyle>
+                                                                                    <Columns>
+                                                                                        <asp:BoundColumn Visible="False" DataField="Serverpfad" SortExpression="Serverpfad"
+                                                                                            HeaderText="Serverpfad"></asp:BoundColumn>
+                                                                                        <asp:BoundColumn Visible="False" DataField="Zeit" SortExpression="Zeit" HeaderText="Erstellt am">
+                                                                                        </asp:BoundColumn>
+                                                                                        <asp:TemplateColumn Visible="False" SortExpression="Filename" HeaderText="Dateiname">
+                                                                                            <ItemTemplate>
+                                                                                                <asp:HyperLink ID="lnkFile" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") &amp; DataBinder.Eval(Container, "DataItem.Filename") %>'
+                                                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.Filename") %>' Target="_blank">
+                                                                                                </asp:HyperLink>
+                                                                                            </ItemTemplate>
+                                                                                        </asp:TemplateColumn>
+                                                                                        <asp:TemplateColumn HeaderText="Vorschau (75x75)">
+                                                                                            <ItemTemplate>
+                                                                                                <table id="Table13" cellspacing="1" cellpadding="1" border="0">
+                                                                                                    <tr>
+                                                                                                        <td>
+                                                                                                            <asp:Image ID="Image1" runat="server" Width="75px" Height="75px" BorderColor="Black"
+                                                                                                                ImageUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") &amp; DataBinder.Eval(Container, "DataItem.Filename") %>'
+                                                                                                                BorderStyle="Solid" BorderWidth="1px" ToolTip='<%# DataBinder.Eval(Container, "DataItem.Filename") %>'>
+                                                                                                            </asp:Image>
+
+
+
+                                                                                                        </td>
+                                                                                                        <td valign="top">
+                                                                                                            <asp:HyperLink ID="Hyperlink1" runat="server" NavigateUrl='<%# DataBinder.Eval(Container, "DataItem.Serverpfad") &amp; DataBinder.Eval(Container, "DataItem.Filename") %>'
+                                                                                                                ImageUrl="/Portal/Images/lupe.gif" Target="_blank">In Originalgröße anzeigen</asp:HyperLink>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            </ItemTemplate>
+                                                                                        </asp:TemplateColumn>
+                                                                                        <asp:BoundColumn Visible="False" DataField="Filename" SortExpression="Filename" HeaderText="Dateiname">
+                                                                                        </asp:BoundColumn>
+                                                                                        <asp:BoundColumn DataField="Status" HeaderText="Status">
+                                                                                            <ItemStyle Font-Size="XX-Small"></ItemStyle>
+                                                                                        </asp:BoundColumn>
+                                                                                        <asp:TemplateColumn HeaderText="l&#246;schen">
+                                                                                            <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                                                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                                                            <ItemTemplate>
+                                                                                                <asp:ImageButton ID="ibtnSRDelete" runat="server" CommandName="Delete" CausesValidation="false"
+                                                                                                    ImageUrl="/Portal/Images/loesch.gif"></asp:ImageButton>
+                                                                                            </ItemTemplate>
+                                                                                        </asp:TemplateColumn>
+                                                                                    </Columns>
+                                                                                    <PagerStyle Mode="NumericPages"></PagerStyle>
+                                                                                </asp:DataGrid>
                                                                                 </div>
-                                                                                <div id="divHelp" runat="server" style="border: solid 1px #0094FF; padding: 5px;"
-                                                                                    visible="false">
-                                                                                    <div style="float: left;">
-                                                                                        <strong>Arbeitsschritte für den Bilderupload:</strong></div>
-                                                                                    <div style="float: right; width: 25%; text-align: right;">
-                                                                                        <asp:LinkButton ID="lbtnClose" runat="server" Text="X" ToolTip="schliessen" Style="color: #0094FF;
-                                                                                            font-weight: bold; text-decoration: none;" />
-                                                                                    </div>
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    1. Markieren Sie einen Auftrag
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    2. Klicken Sie anschließen auf "Durchsuchen" um die Dateien auszuwählen
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    3. Wählen Sie die Dateien aus Ihrem Verzeichnis aus
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    4. Klicken Sie auf den Button "Dateien hochladen"
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    5. Prüfen Sie anhand der Bilder ob diese zum Auftrag gehören<br />
-                                                                                    &nbsp;&nbsp;&nbsp;(Falls Sie die falschen Bilder geladen haben löschen Sie diese
-                                                                                    über den Button<br />
-                                                                                    &nbsp;&nbsp;&nbsp;"alle Dateien entfernen" )
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    6. Klicken Sie auf den Button "Fertig/Beenden"<br />
-                                                                                    <br />
+                                                                                <div id="divHelp" runat="server" style="border: solid 1px #0094FF;padding: 5px;" visible="false">
+                                                                               <div style="float:left;"> <strong>Arbeitsschritte für den Bilderupload:</strong></div>
+                                                                                <div style="float:right;width:25%;text-align: right;">
+                                                                                    <asp:LinkButton ID="lbtnClose" runat="server" 
+                                                                                        Text="X" ToolTip="schliessen"  Style=" color: #0094FF;font-weight: bold; text-decoration: none;" />
+                                                                                </div>
+                                                                                <br /><br />
+                                                                                1. Markieren Sie einen Auftrag
+                                                                                <br /><br />
+                                                                                2. Klicken Sie anschließen auf "Durchsuchen"  um die Dateien auszuwählen
+                                                                                <br /> <br />
+                                                                                3. Wählen Sie die Dateien aus Ihrem Verzeichnis aus
+                                                                                <br /><br />
+                                                                                4. Klicken Sie auf den  Button "Dateien hochladen"
+                                                                                <br /><br />        
+                                                                                5. Prüfen Sie anhand der Bilder ob diese zum Auftrag gehören<br />
+                                                                                &nbsp;&nbsp;&nbsp;(Falls Sie die falschen Bilder geladen haben löschen Sie diese über den Button<br />
+                                                                                &nbsp;&nbsp;&nbsp;"alle Dateien entfernen" )
+                                                                                <br /><br />
+                                                                                6. Klicken Sie auf den Button  "Fertig/Beenden"<br /><br />
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td id="td3" valign="top" nowrap bgcolor="#ffffff" runat="server">
+                                                                               <%--<asp:LinkButton ID="btnShowPics" runat="server" CssClass="StandardButtonTable" 
+                                                                                    Width="220px" Visible="False">&#149;&nbsp;Hochgeladene Bilder anzeigen</asp:LinkButton>--%>
                                                                             </td>
                                                                             <td id="td4" valign="middle" align="left" bgcolor="#ffffff" runat="server">
+                                                                                <%--<asp:LinkButton ID="btnUpload" runat="server" CssClass="StandardButtonTable" 
+                                                                                    Width="220px" Visible="False" OnClick="UploadClick">&#149;&nbsp;Datei(en) hochladen</asp:LinkButton>--%>
                                                                             </td>
                                                                             <td valign="top" align="right" width="100%" bgcolor="#ffffff">
-                                                                                <asp:LinkButton ID="lbDeleteAll" runat="server" OnClick="lbDeleteAll_Click" CssClass="StandardButtonTable"
+                                                                                <asp:LinkButton ID="lbDeleteAll" runat="server" OnClick="lbDeleteAll_Click" CssClass="StandardButtonTable" 
                                                                                     Width="160px" Visible="False">&#149;&nbsp;alle Datei(en) entfernen</asp:LinkButton>
                                                                             </td>
                                                                         </tr>
