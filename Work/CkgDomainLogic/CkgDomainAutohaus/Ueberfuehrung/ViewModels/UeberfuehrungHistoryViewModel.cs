@@ -103,6 +103,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
 
         public void ValidateHistoryAuftragFilter(ref HistoryAuftragFilter filter, Action<Expression<Func<HistoryAuftragFilter, object>>> addModelError)
         {
+            filter.AuftragGeberAdressen = DataService.GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToListOrEmptyList();
             filter.Validate(addModelError);
         }
 
