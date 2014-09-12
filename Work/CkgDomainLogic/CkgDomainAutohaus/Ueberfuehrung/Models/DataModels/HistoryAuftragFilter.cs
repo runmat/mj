@@ -57,7 +57,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         public int SelectedAuftragGeber { get; set; }
 
         [XmlIgnore]
-        static public List<Adresse> AuftragGeberAdressen { get; set; }
+        public List<Adresse> AuftragGeberAdressen { get; set; }
 
 
         // ReSharper restore LocalizableElement

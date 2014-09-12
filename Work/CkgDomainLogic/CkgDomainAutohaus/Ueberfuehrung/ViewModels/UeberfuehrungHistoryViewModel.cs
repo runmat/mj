@@ -41,13 +41,12 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
         public void DataMarkForRefresh()
         {
             HistoryAuftragFilter = new HistoryAuftragFilter
-            {
-                UeberfuehrungsDatumVon = DateTime.Now.AddDays(-30),
-                UeberfuehrungsDatumBis = DateTime.Now.AddDays(0),
-                AuftragsArt = "A",
-            };
-
-            HistoryAuftragFilter.AuftragGeberAdressen = DataService.GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToListOrEmptyList();
+                {
+                    UeberfuehrungsDatumVon = DateTime.Now.AddDays(-30),
+                    UeberfuehrungsDatumBis = DateTime.Now.AddDays(0),
+                    AuftragsArt = "A",
+                    AuftragGeberAdressen = DataService.GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToListOrEmptyList(),
+                };
         }
 
         public List<string> GetImageFileNamesForTour(int tour)
