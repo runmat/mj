@@ -213,6 +213,14 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
+            //new FunctionReflector("Z_DPM_ABWEICH_ABRUFGRUND_02").WriteOrmForExportTableStructures("I_AG", "10062897");
+            //new FunctionReflector("Z_M_Save_ZABWVERSGRUND").WriteOrmForExportTableStructures("IMP_KUNNR", "10062897");
+
+            //new FunctionReflector("Z_M_VERSAUFTR_FEHLERHAFTE").WriteOrmForExportTableStructures("I_KUNNR", "10062897");
+            //new FunctionReflector("Z_M_VERSAUFTR_FEHLERHAFTE_DEL").WriteOrmForExportTableStructures("I_KUNNR", "10062897");
+
+            //new FunctionReflector("Z_DAD_DATEN_EINAUS_REPORT_002").WriteOrmForExportTableStructures("KUNNR", "10062897");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -286,8 +294,11 @@ namespace SapORM
 
             
             //CsiTest();
+            //TargoTest3();
 
-            TargoTest3();
+            //DelageTestUpd();
+            //DelageTestRead();
+            DelageTestReadEinAusgaenge();
 
             Shutdown();
         }
@@ -1360,6 +1371,50 @@ namespace SapORM
                         );
 
             var listCount = list.Count;
+        }
+
+
+        private static void DelageTestUpd()
+        {
+            Z_M_Save_ZABWVERSGRUND.Init(Sap, "IMP_KUNNR", "0010062897".ToSapKunnr());
+
+            Sap.SetImportParameter("IMP_EQUNR", "000000000017923744");
+            Sap.SetImportParameter("IMP_DATAUS", "30.07.2014");
+            Sap.SetImportParameter("IMP_MEMO", "Test XXX asdsa");
+            //Sap.SetImportParameter("IMP_ERLEDIGT", " ");
+            Sap.Execute();
+
+            var res = Sap.ResultCode;
+            var resText = Sap.ResultMessage;
+        }
+
+        private static void DelageTestRead()
+        {
+            Z_DPM_ABWEICH_ABRUFGRUND_02.Init(Sap, "I_AG", "0010062897".ToSapKunnr());
+            Sap.SetImportParameter("I_ABWEICHUNG", "AAG");
+            Sap.Execute();
+
+            var list = Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT.GetExportList(Sap);
+            if (list.Any())
+            {
+                var item = list.First();
+            }
+        }
+
+        private static void DelageTestReadEinAusgaenge()
+        {
+            Z_DAD_DATEN_EINAUS_REPORT_002.Init(Sap, "KUNNR", "0010062897".ToSapKunnr());
+            Sap.SetImportParameter("ACTION", "NEU");
+            Sap.SetImportParameter("ABCKZ", "A");
+            Sap.SetImportParameter("DATANF", DateTime.Parse("01.07.14"));
+            Sap.SetImportParameter("DATEND", DateTime.Parse("10.07.14"));
+            Sap.Execute();
+
+            var list = Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU.GetExportList(Sap);
+            if (list.Any())
+            {
+                var item = list.First();
+            }
         }
 
         #region Chart Table Export
