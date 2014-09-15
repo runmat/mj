@@ -213,7 +213,7 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
-            //new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
+            new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
 
             //CoCTest();
             //TeslaTest();
@@ -291,7 +291,7 @@ namespace SapORM
 
             //TargoTest3();
 
-            TeslaSendungsVerfolgungTest();
+            //TeslaSendungsVerfolgungTest();
 
             Shutdown();
         }

@@ -42,6 +42,8 @@ namespace SapORM.Models
 
 			public string ZZSEND2 { get; set; }
 
+			public string ZZREFNR { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -52,6 +54,7 @@ namespace SapORM.Models
 					ZZKENN = (string)row["ZZKENN"],
 					VDATU = (string.IsNullOrEmpty(row["VDATU"].ToString())) ? null : (DateTime?)row["VDATU"],
 					ZZSEND2 = (string)row["ZZSEND2"],
+					ZZREFNR = (string)row["ZZREFNR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
