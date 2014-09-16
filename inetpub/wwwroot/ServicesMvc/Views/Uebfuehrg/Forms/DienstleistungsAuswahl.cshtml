@@ -51,7 +51,7 @@
 
                 $('#pre-selected-options-@Model.UiIndex').change(function() {
                     var selectedOptions = '';
-                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
+                    $('#dienstleistungen-wrapper-@Model.UiIndex .ms-selection > .ms-list > .ms-selected').each(function () {
                         selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
                     });
 
