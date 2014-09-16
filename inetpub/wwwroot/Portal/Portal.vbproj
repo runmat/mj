@@ -659,6 +659,9 @@
     <Content Include="Start\Selection.aspx" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Styles.css" />
+    <Content Include="ajaxuploader.lic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Customize\AVIS\Handbuch\Handbuch zur Web Anwendung AVIS 022008.pdf" />
     <None Include="Customize\bruehlerbank\HandbuchTreuhand.pdf" />
     <None Include="Web.config">
