@@ -4,27 +4,25 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="../../../PageElements/GridNavigation.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
     <style type="text/css">
-        .GridRowHeight TABLE TR TD        
+        .GridRowHeight TABLE TR TD
         {
-	        height:10px;
-	        padding-top:0px;
-	        padding-bottom:0px;
+            height: 10px;
+            padding-top: 0px;
+            padding-bottom: 0px;
         }
         .Watermark
         {
             color: Gray;
         }
     </style>
-
     <div id="site">
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-            <Triggers>
+            <triggers>
                 <asp:PostBackTrigger ControlID="ibtnUpload" />
                 <asp:PostBackTrigger ControlID="ibtnCreatePDF" />
-            </Triggers>
-            <ContentTemplate>
+            </triggers>
+            <contenttemplate>
                 <div id="content" style="padding-bottom:15px">
                     <div class="divPopupBack" runat="server" visible="false" id="divBackDisabled">
                     </div>
@@ -54,7 +52,7 @@
 
                             </tr>
                             <tr>
-                                <td align="left" colspan="2">
+                                <td align="left">
                                     <asp:GridView ID="grvDL" runat="server" AutoGenerateColumns="False" 
                                         EnableModelValidation="True" ShowHeader="False" Width="100%" CssClass="ListGruendeTable">
 
@@ -80,6 +78,7 @@
 
                                     </asp:GridView>
                                 </td>
+                               
                             </tr>
                             <tr>
                                 <td align="right" colspan="2">
@@ -1197,8 +1196,11 @@
                                                                 <div style="margin-left: 17px">
                                                                     <asp:CheckBoxList ID="chkGruende" runat="server">
                                                                     </asp:CheckBoxList>
+                                                                    <asp:CheckBox runat="server" ID="cbxAufAbmeldungWarten" Text="Auf Abmeldung warten." Visible="False" />
                                                                 </div>
                                                             </td>
+                                                           
+                                                             
                                                         </tr>
                                                         <tr>
                                                             <td class="First" nowrap="nowrap" style="padding-left: 21px;">
@@ -1535,8 +1537,6 @@
 
                         </div>
                     </div>
-                </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
     </div>
+    </ContentTemplate> </asp:UpdatePanel> </div>
 </asp:Content>
