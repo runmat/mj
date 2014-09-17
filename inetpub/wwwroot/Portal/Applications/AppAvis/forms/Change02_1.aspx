@@ -1,8 +1,8 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Change02_1.aspx.vb" Inherits="AppAvis.Change02_1" %>
+
 <%@ Register TagPrefix="DBWC" Namespace="DBauer.Web.UI.WebControls" Assembly="DBauer.Web.UI.WebControls.HierarGrid" %>
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../../../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../../../PageElements/Header.ascx" %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -10,10 +10,8 @@
     <meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
     <meta content="JavaScript" name="vs_defaultClientScript">
     <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
-
     <script language="JavaScript" type="text/javascript" src="../Javascript/Slideup_Down.js"></script>
-
-    <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
+    <uc1:Styles ID="UcStyles" runat="server"></uc1:Styles>
     <style type="text/css">
         div.transbox
         {
@@ -42,17 +40,15 @@
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" name="Form1" method="post" runat="server">
-    
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
-    
-<%--    <input type="hidden" value="" name="Zuldat" />--%>
+    <%--    <input type="hidden" value="" name="Zuldat" />--%>
     <input type="hidden" value="empty" name="PDINummer" />
     <input type="hidden" value="empty" name="NummerInGrid" />
     <table id="Table4" width="100%" align="center">
         <tr>
             <td>
-                <uc1:Header ID="ucHeader" runat="server"></uc1:Header>
+                <uc1:Header ID="UcHeader" runat="server"></uc1:Header>
             </td>
         </tr>
         <tr>
@@ -114,108 +110,117 @@
                                             <tr>
                                                 <td>
                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                                    <ContentTemplate>
-                                                    <table style="width: 100%;">
-                                                        <tr>
-                                                            <td class="BorderLeftBottom" width="100px">
-                                                                <asp:Label ID="Label1" runat="server" Text="Zulassungsdatum:"></asp:Label>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" align="center" width="10px">
-                                                                &nbsp;</td>
-                                                            <td width="75px" class="BorderLeftBottom" valign="middle">
-                                                                <asp:Label ID="lblZulDat" runat="server"  EnableViewState="False" Width="75px"></asp:Label>
-                                                                <input type="hidden"  id="HiddenZuldat" value="" runat="server"  />
-                                                            </td>
-                                                            <td width="38px" class="BorderLeftBottom" valign="baseline">
-                                                                <input type="button" id="Cal1" onclick="DisplayCalender()" style="border: none; background-image: url(../../../Images/calendar_red.jpg);
-                                                                    width: 16px; height: 16px; cursor: hand; position: static;" runat="server" />&nbsp;
-  
-                                                                <asp:ImageButton ID="ibtnDelZulDat" runat="server" 
-                                                                    ImageUrl="../../../Images/loesch.gif" Height="13px" Width="13px" 
-                                                                    ToolTip="Datum entfernen!" ImageAlign="AbsMiddle" />
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label2" runat="server" Text="Zulassungen ges."></asp:Label>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="ZulassungGesamt" runat="server" id="GesamtAnzahl"
-                                                                    readonly="readonly" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                            </td>
-                                                            <td width="100px">
-                                                            </td>
-                                                            <td width="100px" />
-                                                            <td width="15px" align="right" />
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="10px">
-                                                            </td>
-                                                            <td width="75px">
-                                                                <div id="DivCalendar"  style="position:absolute; display:none">
-                                                                    <asp:Calendar ID="calVon" runat="server" BackColor="White" BorderColor="#999999"
-                                                                        CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
-                                                                        <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
-                                                                        <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
-                                                                        <SelectorStyle BackColor="#CCCCCC" />
-                                                                        <WeekendDayStyle BackColor="#FFFFCC" />
-                                                                        <OtherMonthDayStyle ForeColor="#808080" />
-                                                                        <NextPrevStyle VerticalAlign="Bottom" />
-                                                                        <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
-                                                                        <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
-                                                                    </asp:Calendar>
-                                                                </div>
-                                                            </td>
-                                                            <td width="38px">
-                                                                &nbsp;</td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label3" runat="server" Text="aktuelle Auswahl:"></asp:Label>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="Aktuell" runat="server" id="AktuelleAnzahl"
-                                                                    readonly="readonly" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                            </td>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px" />
-                                                            <td width="15px" align="right" />
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="10px">
-                                                            </td>
-                                                            <td width="75px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="38px">
-                                                                &nbsp;</td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label4" runat="server" Text="aktuell Gesamt:"></asp:Label>
-                                                                
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="AktuellGesamt" readonly="readonly" runat="server"
-                                                                    id="AktuelleSumme" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px" />
-                                                            &nbsp;<td width="15px" align="right" />
-                                                        </tr>
-                                                    </table>
-                                                    </ContentTemplate>
+                                                        <ContentTemplate>
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td class="BorderLeftBottom" width="100px">
+                                                                        <asp:DropDownList ID="ddlDatumswahl" runat="server" AutoPostBack="True">
+                                                                            <asp:ListItem Selected="True" Value="1">Zulassungsdatum</asp:ListItem>
+                                                                            <asp:ListItem Value="2">Planzulassungsdatum</asp:ListItem>
+                                                                        </asp:DropDownList>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" align="center" width="10px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="75px" class="BorderLeftBottom" valign="middle">
+                                                                        <asp:Label ID="lblZulDat" runat="server" EnableViewState="False" Width="75px"></asp:Label>
+                                                                        <input type="hidden" id="HiddenZuldat" value="" runat="server" />
+                                                                    </td>
+                                                                    <td width="38px" class="BorderLeftBottom" valign="baseline">
+                                                                        <input type="button" id="Cal1" onclick="DisplayCalender()" style="border: none; background-image: url(../../../Images/calendar_red.jpg);
+                                                                            width: 16px; height: 16px; cursor: hand; position: static;" runat="server" />&nbsp;
+                                                                        <asp:ImageButton ID="ibtnDelZulDat" runat="server" ImageUrl="../../../Images/loesch.gif"
+                                                                            Height="13px" Width="13px" ToolTip="Datum entfernen!" ImageAlign="AbsMiddle" />
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label ID="Label2" runat="server" Text="Zulassungen ges."></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="ZulassungGesamt" runat="server" id="GesamtAnzahl"
+                                                                            readonly="readonly" />
+                                                                    </td>
+                                                                    <td align="center" class="style8">
+                                                                    </td>
+                                                                    <td width="100px">
+                                                                    </td>
+                                                                    <td width="100px" />
+                                                                    <td width="15px" align="right" />
+                                                                </tr>
+                                                                <tr>
+                                                                    <td width="75px" class="BorderLeftBottom" valign="middle">
+                                                                        &nbsp;<asp:Label ID="lblVerarbeitungsdatumBez" runat="server" Text="Verarbeitungsdatum:"></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" align="center" width="10px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom"  width="75px">
+                                                                        <div id="DivCalendar" style="position: absolute; display: none">
+                                                                            <asp:Calendar ID="calVon" runat="server" BackColor="White" BorderColor="#999999"
+                                                                                CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
+                                                                                <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
+                                                                                <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
+                                                                                <SelectorStyle BackColor="#CCCCCC" />
+                                                                                <WeekendDayStyle BackColor="#FFFFCC" />
+                                                                                <OtherMonthDayStyle ForeColor="#808080" />
+                                                                                <NextPrevStyle VerticalAlign="Bottom" />
+                                                                                <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
+                                                                                <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
+                                                                            </asp:Calendar>
+                                                                        </div>
+                                                                        <asp:Label ID="lblVerarbeitungsdat" runat="server" EnableViewState="False" Width="75px"></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="38px">
+                                                                        <input type="button" id="CalVerarbeitungsdatum" onclick="DisplayCalender()" style="border: none;
+                                                                            background-image: url(../../../Images/calendar_red.jpg); width: 16px; height: 16px;
+                                                                            cursor: hand; position: static;" runat="server" />&nbsp;
+                                                                        <asp:ImageButton ID="ibtnDelVerarbeitungsdatum" runat="server" Height="13px" ImageAlign="AbsMiddle"
+                                                                            ImageUrl="../../../Images/loesch.gif" ToolTip="Datum entfernen!" Width="13px" />
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label ID="Label3" runat="server" Text="aktuelle Auswahl:"></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="Aktuell" runat="server" id="AktuelleAnzahl"
+                                                                            readonly="readonly" />
+                                                                    </td>
+                                                                    <td align="center" class="style8">
+                                                                    </td>
+                                                                    <td width="100px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="100px" />
+                                                                    <td width="15px" align="right" />
+                                                                </tr>
+                                                                <tr>
+                                                                    <td width="100px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="10px">
+                                                                    </td>
+                                                                    <td width="75px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="38px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label ID="Label4" runat="server" Text="aktuell Gesamt:"></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="AktuellGesamt" readonly="readonly" runat="server"
+                                                                            id="AktuelleSumme" />
+                                                                    </td>
+                                                                    <td align="center" class="style8">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="100px">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td width="100px" />
+                                                                    &nbsp;<td width="15px" align="right" />
+                                                                </tr>
+                                                            </table>
+                                                        </ContentTemplate>
                                                     </asp:UpdatePanel>
                                                 </td>
                                             </tr>
@@ -233,10 +238,10 @@
                                         &nbsp;<asp:LinkButton ID="lnkCreateExcel2" class="TextLarge" Visible="False" runat="server">Excelformat</asp:LinkButton>
                                     </td>
                                 </tr>
-                                 <tr id="rowSelectionExcel" runat="server">
+                                <tr id="rowSelectionExcel" runat="server">
                                     <td class="TextLarge" valign="center">
-                                        <asp:ImageButton ID="imgbExcel" ImageUrl="~/Images/excel.gif" runat="server"
-                                            Height="16px" Width="16px" ImageAlign="Top" Visible="true"></asp:ImageButton>
+                                        <asp:ImageButton ID="imgbExcel" ImageUrl="~/Images/excel.gif" runat="server" Height="16px"
+                                            Width="16px" ImageAlign="Top" Visible="true"></asp:ImageButton>
                                         &nbsp;<asp:LinkButton ID="lnkExcel" class="TextLarge" Visible="true" runat="server">Excelformat</asp:LinkButton>
                                     </td>
                                 </tr>
@@ -281,7 +286,6 @@
                                                 </asp:BoundColumn>
                                             </Columns>
                                         </DBWC:HierarGrid>
-                                      
                                     </td>
                                 </tr>
                             </table>
@@ -315,8 +319,6 @@
         </tr>
         <input id="SelOpen2" type="hidden" size="1" runat="server" />
     </table>
-
-
     <script language="JavaScript" type="text/javascript">
 		<!--        //
         function DisableControls() {
@@ -484,7 +486,6 @@
  
 		//-->
     </script>
-
     <asp:Literal ID="litAddScript" runat="server"></asp:Literal>
     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
     </form>
