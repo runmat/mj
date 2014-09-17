@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,7 +14,6 @@ using CkgDomainLogic.Ueberfuehrung.ViewModels;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
-using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace AutohausPortalMvc.Controllers
