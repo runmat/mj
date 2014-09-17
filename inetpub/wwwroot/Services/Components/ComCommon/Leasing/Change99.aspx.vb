@@ -7,18 +7,19 @@ Imports System.Runtime.Serialization.Formatters.Binary
 
 Partial Public Class Change99
     Inherits Page
-    Private m_App As App
-    Private m_User As User
-    Private m_Versand As Briefversand
+    Private _mApp As App
+    Private _mUser As User
+    Private _mVersand As Briefversand
 
     Protected WithEvents GridNavigation1 As Services.GridNavigation
     Protected WithEvents GridNavigation2 As Services.GridNavigation
+    Protected WithEvents UpdatePanel1 As UpdatePanel
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        m_User = GetUser(Me)
-        FormAuth(Me, m_User)
+        _mUser = GetUser(Me)
+        FormAuth(Me, _mUser)
         GetAppIDFromQueryString(Me)
-        m_App = New App(m_User)
+        _mApp = New App(_mUser)
         GridNavigation1.setGridElment(GridView1)
         GridNavigation1.setGridTitle("Versandfähige Dokumente")
 
@@ -40,7 +41,7 @@ Partial Public Class Change99
             fillBrieflieferanten()
             chkGruende.Attributes.Add("onclick", "return false;")
         ElseIf Not Session("App_Versand") Is Nothing Then
-            m_Versand = CType(Session("App_Versand"), Briefversand)
+            _mVersand = CType(Session("App_Versand"), Briefversand)
         End If
 
     End Sub
@@ -60,13 +61,13 @@ Partial Public Class Change99
         SetEndASPXAccess(Me)
     End Sub
 
-    Protected Sub ImageButton2_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ImageButton2.Click
+    Protected Sub ImageButton2Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ImageButton2.Click
 
         'GridViews zurücksetzen
-        Dim DummyTable As New DataTable
-        GridView1.DataSource = DummyTable
+        Dim dummyTable As New DataTable
+        GridView1.DataSource = dummyTable
         GridView1.DataBind()
-        GridView2.DataSource = DummyTable
+        GridView2.DataSource = dummyTable
         GridView2.DataBind()
 
 
@@ -98,7 +99,7 @@ Partial Public Class Change99
             Else
                 DoSubmit()
             End If
-            If m_Versand.Fahrzeuge.Rows.Count = 0 AndAlso m_Versand.FahrzeugeFehler.Rows.Count = 0 Then
+            If _mVersand.Fahrzeuge.Rows.Count = 0 AndAlso _mVersand.FahrzeugeFehler.Rows.Count = 0 Then
                 lblErrorDokumente.Text = "Es wurde keine Fahrzeuge gefunden."
             Else
                 cpeAllData.ClientState = True
@@ -111,21 +112,21 @@ Partial Public Class Change99
     End Sub
 
     Private Sub DoSubmit()
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
+        _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
 
-        m_Versand.Fahrgestellnr = txtFahrgestellnummer.Text.Trim
+        _mVersand.Fahrgestellnr = txtFahrgestellnummer.Text.Trim
         If txtKennz.Text.Trim.Length > 0 Then
-            m_Versand.Kennzeichen = txtKennz.Text.Trim.ToUpper
+            _mVersand.Kennzeichen = txtKennz.Text.Trim.ToUpper
         End If
 
-        m_Versand.LVnr = txtLeasingvertragsnummer.Text.Trim
-        m_Versand.ZBIINr = txtZBIINummer.Text.Trim
-        m_Versand.Ref1 = txtReferenznummer1.Text.Trim
-        m_Versand.Ref2 = txtReferenznummer2.Text.Trim
-        m_Versand.EQuiTyp = "B"
+        _mVersand.LVnr = txtLeasingvertragsnummer.Text.Trim
+        _mVersand.Zb2Nr = txtZBIINummer.Text.Trim
+        _mVersand.Ref1 = txtReferenznummer1.Text.Trim
+        _mVersand.Ref2 = txtReferenznummer2.Text.Trim
+        _mVersand.EQuiTyp = "B"
 
         'Erweiterte Selektion
-        With m_Versand
+        With _mVersand
 
             If ddlBrieflieferant.SelectedIndex > 0 Then
                 .BrieflieferantNr = ddlBrieflieferant.SelectedValue
@@ -145,26 +146,26 @@ Partial Public Class Change99
 
         End With
 
-        m_Versand.FILL(Session("AppID").ToString, Session.SessionID.ToString, Me)
+        _mVersand.Fill(Session("AppID").ToString, Session.SessionID.ToString, Me)
 
-        If m_Versand.Status > 0 Then
+        If _mVersand.Status > 0 Then
 
         Else
 
             FillGrid(0)
             FillGridFehler(0)
-            Session("App_Versand") = m_Versand
+            Session("App_Versand") = _mVersand
         End If
 
     End Sub
 
     Private Sub DoSubmit2()
-        m_Versand.EQuiTyp = "B"
-        m_Versand.FILL(Session("AppID").ToString, Session.SessionID.ToString, Me, True)
-        If m_Versand.Status = 0 Then
+        _mVersand.EQuiTyp = "B"
+        _mVersand.Fill(Session("AppID").ToString, Session.SessionID.ToString, Me, True)
+        If _mVersand.Status = 0 Then
             FillGrid(0)
             FillGridFehler(0)
-            Session("App_Versand") = m_Versand
+            Session("App_Versand") = _mVersand
         End If
     End Sub
 
@@ -177,11 +178,11 @@ Partial Public Class Change99
         FillGrid(PageIndex)
     End Sub
 
-    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
+    Private Sub GridNavigation1PageSizeChanged() Handles GridNavigation1.PageSizeChanged
         FillGrid(0)
     End Sub
 
-    Private Sub Gridview1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
+    Private Sub Gridview1Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex, e.SortExpression)
     End Sub
 
@@ -206,7 +207,7 @@ Partial Public Class Change99
 
         CheckGridFahrzeuge()
 
-        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = _mVersand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = ""
 
         If tmpDataView.Count = 0 Then
@@ -270,8 +271,8 @@ Partial Public Class Change99
                 Dim strHistoryLink As String
                 Dim lnkFahrgestellnummer As HyperLink
                 Dim lbl As Label
-                If m_User.Applications.[Select]("AppName = 'Report02'").Length > 0 Then
-                    strHistoryLink = "../../../applications/AppF2/forms/Report02.aspx?AppID=" & m_User.Applications.Select("AppName = 'Report02'")(0)("AppID").ToString() & "&VIN="
+                If _mUser.Applications.[Select]("AppName = 'Report02'").Length > 0 Then
+                    strHistoryLink = "../../../applications/AppF2/forms/Report02.aspx?AppID=" & _mUser.Applications.Select("AppName = 'Report02'")(0)("AppID").ToString() & "&VIN="
                     For Each grdRow As GridViewRow In GridView1.Rows
                         lnkFahrgestellnummer = DirectCast(grdRow.FindControl("lnkHistorie"), HyperLink)
                         lbl = DirectCast(grdRow.FindControl("lblAbmeldedatum"), Label)
@@ -294,7 +295,7 @@ Partial Public Class Change99
                 Dim intAuthorizationID As Int32
                 Dim sFin As String
                 sFin = CType(gridrow.Cells(2).FindControl("lblFahrgestellnummer"), Label).Text
-                m_App.CheckForPendingAuthorization(CInt(Session("AppID")), m_User.Organization.OrganizationId, m_User.CustomerName, sFin, m_User.IsTestUser, strInitiator,
+                _mApp.CheckForPendingAuthorization(CInt(Session("AppID")), _mUser.Organization.OrganizationId, _mUser.CustomerName, sFin, _mUser.IsTestUser, strInitiator,
                                                    intAuthorizationID)
                 If Not strInitiator.Length = 0 Then
                     'Fahrzeug wurde schon mal freigegeben und liegt zur Autorisierung vor
@@ -306,7 +307,7 @@ Partial Public Class Change99
     End Sub
 
     Private Sub FillGridFehler(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-        Dim tmpDataView As DataView = m_Versand.FahrzeugeFehler.DefaultView
+        Dim tmpDataView As DataView = _mVersand.FahrzeugeFehler.DefaultView
         tmpDataView.RowFilter = ""
 
         If tmpDataView.Count = 0 Then
@@ -387,7 +388,7 @@ Partial Public Class Change99
     End Sub
 
     Private Sub FillGridOverView(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = _mVersand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = "Selected = '1'"
 
         If tmpDataView.Count = 0 Then
@@ -446,16 +447,16 @@ Partial Public Class Change99
     End Sub
 
     Private Sub fillBrieflieferanten()
-        If m_Versand Is Nothing Then
-            m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
+        If _mVersand Is Nothing Then
+            _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
         End If
-        If m_Versand.Brieflieferanten Is Nothing Then
+        If _mVersand.Brieflieferanten Is Nothing Then
             hdnField.Value = "1"
             tr_Brieflieferant.Visible = False
             Exit Sub
         End If
 
-        ddlBrieflieferant.DataSource = m_Versand.Brieflieferanten
+        ddlBrieflieferant.DataSource = _mVersand.Brieflieferanten
         ddlBrieflieferant.DataTextField = "Adresse"
         ddlBrieflieferant.DataValueField = "KUNNR"
         ddlBrieflieferant.DataBind()
@@ -465,7 +466,7 @@ Partial Public Class Change99
     Private Sub fillLaenderDLL()
         Dim sprache As String
         'Länder DLL füllen
-        ddlLand.DataSource = m_Versand.Laender
+        ddlLand.DataSource = _mVersand.Laender
         ddlLand.DataTextField = "FullDesc"
         ddlLand.DataValueField = "Land1"
         ddlLand.DataBind()
@@ -493,9 +494,9 @@ Partial Public Class Change99
 
     Private Sub ibtNext_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ibtNext.Click
         If CheckGridFahrzeuge() = True Then
-            If m_Versand.Fahrzeuge.Select("Selected = '1'").Length > 1 Then
+            If _mVersand.Fahrzeuge.Select("Selected = '1'").Length > 1 Then
                 lblMsgHeader.Text = "Ausgewählte Fahrzeuge"
-                litMessage.Text = "Sie haben " & m_Versand.Fahrzeuge.Select("Selected = '1'").Length & " Briefe für den Versand ausgewählt."
+                litMessage.Text = "Sie haben " & _mVersand.Fahrzeuge.Select("Selected = '1'").Length & " Briefe für den Versand ausgewählt."
                 divMessage.Visible = True
                 divBackDisabled.Style.Add("Height", "120%")
                 divBackDisabled.Visible = True
@@ -517,18 +518,18 @@ Partial Public Class Change99
             lbtnAdressdaten.CssClass = "VersandButtonAdresse"
             lblSteps.Text = "Schritt 2 von 4"
             Panel2.CssClass = "StepActive"
-            m_Versand.EqTyp = "B"
-            m_Versand.GetAdressenandZulStellen(Session("AppID").ToString, Session.SessionID.ToString, Me)
-            If m_Versand.Status <> 0 Then
-                lblErrorVersandOpt.Text = m_Versand.Message
+            _mVersand.EqTyp = "B"
+            _mVersand.GetAdressenandZulStellen(Session("AppID").ToString, Session.SessionID.ToString, Me)
+            If _mVersand.Status <> 0 Then
+                lblErrorVersandOpt.Text = _mVersand.Message
             Else
                 fillLaenderDLL()
-                Session("App_Versand") = m_Versand
+                Session("App_Versand") = _mVersand
             End If
-            If Not m_Versand.VersandArt Is Nothing Then
-                If m_Versand.VersandArt = "1" Then
+            If Not _mVersand.VersandArt Is Nothing Then
+                If _mVersand.VersandArt = "1" Then
                     rb_temp.Checked = True
-                ElseIf m_Versand.VersandArt = "2" Then
+                ElseIf _mVersand.VersandArt = "2" Then
                     rb_endg.Checked = True
                 End If
 
@@ -536,13 +537,13 @@ Partial Public Class Change99
             trAdressuche.Visible = False
             trZulStelleSuche.Visible = False
             trFreieAdresse.Visible = False
-            m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
+            _mApp.GetAppAutLevel(_mUser.GroupID, Session("AppID").ToString)
 
             Dim Level() As String
 
-            If String.IsNullOrEmpty(m_App.AutorisierungsLevel) = False Then
+            If String.IsNullOrEmpty(_mApp.AutorisierungsLevel) = False Then
 
-                Level = Split(m_App.AutorisierungsLevel, "|")
+                Level = Split(_mApp.AutorisierungsLevel, "|")
                 Level = Split(Level(0), ",")
 
                 rb_temp.Visible = False
@@ -591,10 +592,10 @@ Partial Public Class Change99
             lblEQUNR = CType(gvRow.Cells(0).FindControl("lblEQUNR"), Label)
             chkAnfordern = CType(gvRow.Cells(1).FindControl("chkAnfordern"), CheckBox)
             If chkAnfordern.Checked = True Then
-                m_Versand.Fahrzeuge.Select("EQUNR = '" + lblEQUNR.Text + "'")(0)("Selected") = "1"
+                _mVersand.Fahrzeuge.Select("EQUNR = '" + lblEQUNR.Text + "'")(0)("Selected") = "1"
             End If
         Next
-        Return m_Versand.Fahrzeuge.Select("Selected = '1'").Any()
+        Return _mVersand.Fahrzeuge.Select("Selected = '1'").Any()
     End Function
 
     Protected Sub ibtnSearchAdresse_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnSearchAdresse.Click
@@ -614,18 +615,18 @@ Partial Public Class Change99
 
         If strFirma.Length + strStrasse.Length + strPlz.Length + strOrt.Length + strReferenz.Length > 0 Then
 
-            m_Versand.sReferenz = strReferenz
-            m_Versand.sName1 = strFirma
-            m_Versand.sName2 = txtName2.Text
-            m_Versand.sStrasse = strStrasse
-            m_Versand.sPLZ = strPlz
-            m_Versand.sOrt = strOrt
+            _mVersand.SReferenz = strReferenz
+            _mVersand.SName1 = strFirma
+            _mVersand.SName2 = txtName2.Text
+            _mVersand.SStrasse = strStrasse
+            _mVersand.SPlz = strPlz
+            _mVersand.SOrt = strOrt
 
 
-            m_Versand.GetAdressen(Session("AppID").ToString, Session.SessionID.ToString, Page)
+            _mVersand.GetAdressen(Session("AppID").ToString, Session.SessionID.ToString, Page)
 
 
-            Dim dv As DataView = m_Versand.Adressen.DefaultView
+            Dim dv As DataView = _mVersand.Adressen.DefaultView
             dv.Sort = "NAME1 asc"
 
             If dv.Count > 0 Then
@@ -708,7 +709,7 @@ Partial Public Class Change99
 
             sQuery = Left(sQuery, sQuery.Length - 4)
 
-            Dim dv As DataView = m_Versand.ZulStellen.DefaultView
+            Dim dv As DataView = _mVersand.ZulStellen.DefaultView
             dv.RowFilter = sQuery
             dv.Sort = "PSTLZ asc"
 
@@ -760,7 +761,7 @@ Partial Public Class Change99
     Protected Sub ibtnNextToOptions_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ibtnNextToOptions.Click
         lblErrorAdressen.Visible = False
         lblErrorAdressen.Text = ""
-        If m_Versand.VersandAdresseText <> String.Empty Then
+        If _mVersand.VersandAdresseText <> String.Empty Then
 
             If rb_endg.Checked = False AndAlso rb_temp.Checked = False Then
                 lblErrorAdressen.Visible = True
@@ -776,43 +777,50 @@ Partial Public Class Change99
             lbtnAdressdaten.Enabled = True
             lblSteps.Text = "Schritt 3 von 4"
             Panel3.CssClass = "StepActive"
-            m_Versand.OptionFlag = "3"
+            _mVersand.OptionFlag = "3"
 
             Dim strVersandart As String = IIf(rb_temp.Checked, "1", "2")
 
-            m_Versand.GetVersandOptions(Session("AppID").ToString, Session.SessionID.ToString, Me)
+            _mVersand.GetVersandOptions(Session("AppID").ToString, Session.SessionID.ToString, Me)
+
 
             'Versandoption "Versand ohne Abmeldung" ggf. rausfiltern, sonst als Inverses "Auf Abmeldung warten" weiter nutzen
             'NewLevel beinhaltet 2 Arrays: Level-Array und Autorisierungsarray(1 zu 1) getrennt durch |
             Dim blnLevel7 As Boolean = False
-            Dim strLevelText = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel")
+            Dim strLevelText = _mUser.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel")
             If Not IsDBNull(strLevelText) AndAlso Not String.IsNullOrEmpty(strLevelText) Then
-                Dim strLevel = Split(m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
+                Dim strLevel = Split(_mUser.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("NewLevel"), "|")(0)
                 Dim levels() As String = strLevel.Split(",")
                 blnLevel7 = levels.Contains("7")
             End If
 
-            Dim updRows As DataRow() = m_Versand.VersandOptionen.Select("EXTGROUP='" & strVersandart & "' AND EAN11 = 'ZZABMELD'")
-            If strVersandart = "1" Or Not blnLevel7 Then
-                For Each updRow In updRows
-                    m_Versand.VersandOptionen.Rows.Remove(updRow)
-                Next
+            Dim updRows As DataRow() = _mVersand.VersandOptionen.Select("EXTGROUP='" & strVersandart & "' AND EAN11 = 'ZZABMELD'")
+
+
+            If blnLevel7 = True AndAlso strVersandart = 2 Then
+                cbxAufAbmeldungWarten.Visible = True
+                _mVersand.AufAbmeldungWarten = _mVersand.VersandOptionen.Select("EXTGROUP='2' AND EAN11 = 'ZZABMELD' AND VW_AG = 'X'").Any()
+                cbxAufAbmeldungWarten.Checked = _mVersand.AufAbmeldungWarten
+                ConfirmNextToOverView.Enabled = _mVersand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
             Else
-                For Each updRow In updRows
-                    updRow("ASKTX") = "Auf Abmeldung warten"
-                    updRow("EAN11") = "ZZABMELD_INVERTED"
-                Next
+                ConfirmNextToOverView.Enabled = False
             End If
 
-            If m_Versand.Status <> 0 Then
+            For Each updRow In updRows
+                _mVersand.VersandOptionen.Rows.Remove(updRow)
+            Next
+
+
+
+            If _mVersand.Status <> 0 Then
                 lblErrorAdressen.Visible = True
-                lblErrorAdressen.Text = m_Versand.Message
+                lblErrorAdressen.Text = _mVersand.Message
             Else
-                Session("App_Versand") = m_Versand
+                Session("App_Versand") = _mVersand
 
-                m_Versand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000'"
+                _mVersand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000'"
 
-                chkListGruende.DataSource = m_Versand.VersandOptionen.DefaultView
+                chkListGruende.DataSource = _mVersand.VersandOptionen.DefaultView
                 chkListGruende.DataValueField = "EAN11"
                 chkListGruende.DataTextField = "ASKTX"
                 chkListGruende.DataBind()
@@ -820,12 +828,12 @@ Partial Public Class Change99
                 grvDL.Columns(2).Visible = True
                 grvDL.Columns(3).Visible = True
 
-                grvDL.DataSource = m_Versand.VersandOptionen.DefaultView
+                grvDL.DataSource = _mVersand.VersandOptionen.DefaultView
                 grvDL.DataBind()
 
-                If m_Versand.VersandOptionen.Select("Selected = '1'").Length > 0 Then
-                    m_Versand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000' AND Selected = '1'"
-                    chkGruende.DataSource = m_Versand.VersandOptionen.DefaultView
+                If _mVersand.VersandOptionen.Select("Selected = '1'").Length > 0 Then
+                    _mVersand.VersandOptionen.DefaultView.RowFilter = "EXTGROUP='" & strVersandart & "' AND INTROW <> '0000000000' AND Selected = '1'"
+                    chkGruende.DataSource = _mVersand.VersandOptionen.DefaultView
                     chkGruende.DataValueField = "EAN11"
                     chkGruende.DataTextField = "ASKTX"
                     chkGruende.DataBind()
@@ -874,13 +882,15 @@ Partial Public Class Change99
                     grvDL.Columns(3).Visible = booInfo
 
                 End If
-                m_Versand.VersandArt = strVersandart
-                ConfirmNextToOverView.Enabled = m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
-                m_Versand.GetAbrufgrund(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                _mVersand.VersandArt = strVersandart
 
-                If m_Versand.Status <> 0 Then
+
+
+                _mVersand.GetAbrufgrund(Session("AppID").ToString, Session.SessionID.ToString, Me)
+
+                If _mVersand.Status <> 0 Then
                     lblErrorAdressen.Visible = True
-                    lblErrorAdressen.Text = m_Versand.Message
+                    lblErrorAdressen.Text = _mVersand.Message
                 Else
                     ddlVersandgrund.Items.Clear()
                     Dim NewItem As New ListItem
@@ -888,7 +898,7 @@ Partial Public Class Change99
                     NewItem.Value = "0"
                     NewItem.Selected = True
                     ddlVersandgrund.Items.Add(NewItem)
-                    For Each dRow As DataRow In m_Versand.Versandgruende.Rows
+                    For Each dRow As DataRow In _mVersand.Versandgruende.Rows
                         NewItem = New ListItem
                         NewItem.Text = dRow("VGRUND_TEXT").ToString
                         NewItem.Value = dRow("ZZVGRUND").ToString
@@ -899,12 +909,12 @@ Partial Public Class Change99
                         ddlVersandgrund.SelectedIndex = 1
                     End If
 
-                    If Not m_Versand.VersandGrund Is Nothing Then
-                        ddlVersandgrund.SelectedValue = m_Versand.VersandGrund
+                    If Not _mVersand.VersandGrund Is Nothing Then
+                        ddlVersandgrund.SelectedValue = _mVersand.VersandGrund
                     End If
 
-                    txtBemerkung.Text = m_Versand.Bemerkung
-                    txtHalter.Text = m_Versand.Halter
+                    txtBemerkung.Text = _mVersand.Bemerkung
+                    txtHalter.Text = _mVersand.Halter
                 End If
             End If
         Else
@@ -919,7 +929,7 @@ Partial Public Class Change99
             lblErrorVersandOpt.Text += "Bitte wählen Sie einen Versandgrund aus!<br />"
             lblErrorVersandOpt.Visible = True
         Else
-            m_Versand.VersandGrund = ddlVersandgrund.SelectedItem.Value
+            _mVersand.VersandGrund = ddlVersandgrund.SelectedItem.Value
 
             Select Case ddlVersandgrund.SelectedItem.Value
                 Case "001", "005"
@@ -931,27 +941,25 @@ Partial Public Class Change99
 
         End If
 
-        m_Versand.Halter = txtHalter.Text
-        m_Versand.Bemerkung = txtBemerkung.Text
+ 
+        _mVersand.Halter = txtHalter.Text
+        _mVersand.Bemerkung = txtBemerkung.Text
 
         Dim bAuswahlNormal As Boolean = False
-        Dim bAufAbmeldungWarten = False
+
         For Each litem As ListItem In chkGruende.Items
             If litem.Selected Then
-                If litem.Value = "ZZABMELD_INVERTED" Then
-                    bAufAbmeldungWarten = True
-                Else
-                    m_Versand.Materialnummer = litem.Value
-                    bAuswahlNormal = True
-                End If
+                _mVersand.Materialnummer = litem.Value
+                bAuswahlNormal = True
+
             End If
         Next
 
         'Nur wenn Versandoption "Auf Abmeldung warten" explizit gewählt ist, kein "Versand ohne Abmeldung"
-        If bAufAbmeldungWarten Then
-            m_Versand.VersohneAbeld = ""
+        If cbxAufAbmeldungWarten.Checked = False Then
+            _mVersand.VersandOhneAbmeldung = "X"
         Else
-            m_Versand.VersohneAbeld = "X"
+            _mVersand.VersandOhneAbmeldung = ""
         End If
 
         If bAuswahlNormal = False Then
@@ -1039,29 +1047,29 @@ Partial Public Class Change99
 
 
             If cbx.Checked = True Then
-                m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + lbl.Text + "'")(0)("Selected") = "1"
+                _mVersand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + lbl.Text + "'")(0)("Selected") = "1"
             Else
-                m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + lbl.Text + "'")(0)("Selected") = "0"
+                _mVersand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "' AND EAN11 = '" + lbl.Text + "'")(0)("Selected") = "0"
             End If
-            m_Versand.VersandOptionen.AcceptChanges()
+            _mVersand.VersandOptionen.AcceptChanges()
         Next
 
         Dim bvalidate As Boolean = True
         lblErrPopUp.Visible = False
 
-        Dim drows() As DataRow = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1'")
+        Dim drows() As DataRow = _mVersand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1'")
         If drows.Length > 0 Then
             For Each dRowSel As DataRow In drows
                 If dRowSel("ALTERNAT").ToString = "X" Then
                     Dim drowsBasis() As DataRow
-                    drowsBasis = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1' AND INTROW='" + dRowSel("ALT_INTROW").ToString + "'")
+                    drowsBasis = _mVersand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1' AND INTROW='" + dRowSel("ALT_INTROW").ToString + "'")
                     If drowsBasis.Length > 0 Then
                         bvalidate = False
                         lblErrPopUp.Visible = True
                         lblErrPopUp.Text = "Die ausgewählte Option """ + dRowSel("ASKTX").ToString + """ steht im Konflikt mit der Option """ + _
                         drowsBasis(0)("ASKTX").ToString + """. Bitte wählen Sie eine Option ab!"
                     Else
-                        drowsBasis = m_Versand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1' AND ALT_INTROW='" + _
+                        drowsBasis = _mVersand.VersandOptionen.Select("EXTGROUP='" + tempEndg + "'  AND Selected = '1' AND ALT_INTROW='" + _
                                                                     dRowSel("ALT_INTROW").ToString + _
                                                                     "' AND Not INTROW = '" + _
                                                                     dRowSel("INTROW").ToString + _
@@ -1080,9 +1088,9 @@ Partial Public Class Change99
         End If
 
         If bvalidate = True Then
-            m_Versand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1'", "EXTGROUP='2'")
-            m_Versand.VersandOptionen.DefaultView.RowFilter += " AND Selected = '1'"
-            chkGruende.DataSource = m_Versand.VersandOptionen.DefaultView
+            _mVersand.VersandOptionen.DefaultView.RowFilter = IIf(rb_temp.Checked, "EXTGROUP='1'", "EXTGROUP='2'")
+            _mVersand.VersandOptionen.DefaultView.RowFilter += " AND Selected = '1'"
+            chkGruende.DataSource = _mVersand.VersandOptionen.DefaultView
             chkGruende.DataValueField = "EAN11"
             chkGruende.DataTextField = "ASKTX"
             chkGruende.DataBind()
@@ -1095,7 +1103,7 @@ Partial Public Class Change99
             divBackDisabled.Visible = False
         End If
 
-        ConfirmNextToOverView.Enabled = m_Versand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
+        'ConfirmNextToOverView.Enabled = _mVersand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
 
     End Sub
 
@@ -1104,9 +1112,9 @@ Partial Public Class Change99
     End Sub
 
     Private Sub AdressChoice()
-        m_Versand.VersandAdresseText = ""
+        _mVersand.VersandAdresseText = ""
         If ddlAdresse.SelectedIndex > 0 Then
-            Dim AdrRow As DataRow = m_Versand.Adressen.Select("IDENT = '" + ddlAdresse.SelectedValue + "'")(0)
+            Dim AdrRow As DataRow = _mVersand.Adressen.Select("IDENT = '" + ddlAdresse.SelectedValue + "'")(0)
 
             lblSucheAdr.Visible = False
 
@@ -1127,26 +1135,26 @@ Partial Public Class Change99
             cpeZulstelle.ClientState = True
             cpeAdressmanuell.ClientState = True
             cpeAdressSuche.ClientState = True
-            m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text
+            _mVersand.VersandAdresseText = lbl_SelAdresseShow.Text
 
             'jetzt immer die komplette Adresse mitgeben
-            m_Versand.VersandAdresse_ZE = String.Empty
+            _mVersand.VersandAdresseZe = String.Empty
             'jetzt Debitornummer (SAPNR) weitergeben
-            m_Versand.VersandAdresse_ZS = AdrRow("SAPNR").ToString
+            _mVersand.VersandAdresseZs = AdrRow("SAPNR").ToString
 
             'Manuelle Adresse
-            m_Versand.Name1 = AdrRow("NAME1").ToString
-            m_Versand.Name2 = AdrRow("NAME2").ToString
-            m_Versand.Street = AdrRow("STREET").ToString
-            m_Versand.HouseNum = AdrRow("HOUSE_NUM1").ToString
-            m_Versand.PostCode = AdrRow("POST_CODE1").ToString
-            m_Versand.City = AdrRow("CITY1").ToString
-            m_Versand.laenderKuerzel = AdrRow("COUNTRY").ToString
+            _mVersand.Name1 = AdrRow("NAME1").ToString
+            _mVersand.Name2 = AdrRow("NAME2").ToString
+            _mVersand.Street = AdrRow("STREET").ToString
+            _mVersand.HouseNum = AdrRow("HOUSE_NUM1").ToString
+            _mVersand.PostCode = AdrRow("POST_CODE1").ToString
+            _mVersand.City = AdrRow("CITY1").ToString
+            _mVersand.LaenderKuerzel = AdrRow("COUNTRY").ToString
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Briefversand.Adressarten.TempSuche
+                _mVersand.Adressart = Briefversand.Adressarten.TempSuche
             Else
-                m_Versand.Adressart = Briefversand.Adressarten.EndSuche
+                _mVersand.Adressart = Briefversand.Adressarten.EndSuche
             End If
         Else
             lblSucheAdr.Visible = True
@@ -1157,8 +1165,8 @@ Partial Public Class Change99
     Protected Sub ibtnSucheGeschSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ibtnSucheGeschSave.Click
 
         If ddlZulStelle.SelectedIndex > 0 Then
-            m_Versand.VersandAdresseText = ""
-            Dim ZulRow As DataRow = m_Versand.ZulStellen.Select("LIFNR = '" + ddlZulStelle.SelectedValue + "'")(0)
+            _mVersand.VersandAdresseText = ""
+            Dim ZulRow As DataRow = _mVersand.ZulStellen.Select("LIFNR = '" + ddlZulStelle.SelectedValue + "'")(0)
 
             lbl_SelAdresseShow.Text = ZulRow("PSTLZ").ToString & " " & ZulRow("ORT01").ToString & " <br /> " & ZulRow("STRAS").ToString
             lbl_SelAdresse.Text = "Zulassungsstelle: "
@@ -1176,47 +1184,47 @@ Partial Public Class Change99
             cpeAdressmanuell.ClientState = True
             cpeAdressSuche.ClientState = True
 
-            m_Versand.VersandAdresse_ZE = ddlZulStelle.SelectedItem.Value      'Versandadresse Nr. (60...)
-            m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text  'Versanddresse (Text...)
+            _mVersand.VersandAdresseZe = ddlZulStelle.SelectedItem.Value      'Versandadresse Nr. (60...)
+            _mVersand.VersandAdresseText = lbl_SelAdresseShow.Text  'Versanddresse (Text...)
 
             'jetzt immer die komplette Adresse mitgeben
-            m_Versand.VersandAdresse_ZS = String.Empty
+            _mVersand.VersandAdresseZs = String.Empty
 
             'Manuelle Adresse nullen
-            m_Versand.Name1 = String.Empty
-            m_Versand.Name2 = String.Empty
-            m_Versand.Street = String.Empty
-            m_Versand.HouseNum = String.Empty
-            m_Versand.PostCode = String.Empty
-            m_Versand.City = String.Empty
-            m_Versand.laenderKuerzel = String.Empty
+            _mVersand.Name1 = String.Empty
+            _mVersand.Name2 = String.Empty
+            _mVersand.Street = String.Empty
+            _mVersand.HouseNum = String.Empty
+            _mVersand.PostCode = String.Empty
+            _mVersand.City = String.Empty
+            _mVersand.LaenderKuerzel = String.Empty
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Briefversand.Adressarten.TempZulassungsstelle
+                _mVersand.Adressart = Briefversand.Adressarten.TempZulassungsstelle
             Else
-                m_Versand.Adressart = Briefversand.Adressarten.EndZulassungsstelle
+                _mVersand.Adressart = Briefversand.Adressarten.EndZulassungsstelle
             End If
 
         End If
     End Sub
 
     Protected Sub ibtnSucheManuellSave_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnSucheManuellSave.Click
-        m_Versand.VersandAdresseText = ""
+        _mVersand.VersandAdresseText = ""
         lblErrorAdrManuell.Text = ""
 
         If txtFirmaManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Name"" eingeben!<br>&nbsp;"
         Else
-            m_Versand.Name1 = txtFirmaManuell.Text.Trim(" "c)
+            _mVersand.Name1 = txtFirmaManuell.Text.Trim(" "c)
         End If
         If txtPlzManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""PLZ"" eingeben!<br>&nbsp;"
         Else
-            If CInt(m_Versand.Laender.Select("Land1='" & ddlLand.SelectedItem.Value & "'")(0)("Lnplz")) > 0 Then
-                If Not CInt(m_Versand.Laender.Select("Land1='" & ddlLand.SelectedItem.Value & "'")(0)("Lnplz")) = txtPlzManuell.Text.Trim(" "c).Length Then
+            If CInt(_mVersand.Laender.Select("Land1='" & ddlLand.SelectedItem.Value & "'")(0)("Lnplz")) > 0 Then
+                If Not CInt(_mVersand.Laender.Select("Land1='" & ddlLand.SelectedItem.Value & "'")(0)("Lnplz")) = txtPlzManuell.Text.Trim(" "c).Length Then
                     lblError.Text = "Postleitzahl hat falsche Länge."
                 Else
-                    m_Versand.PostCode = txtPlzManuell.Text.Trim(" "c)
+                    _mVersand.PostCode = txtPlzManuell.Text.Trim(" "c)
                 End If
             End If
 
@@ -1224,37 +1232,37 @@ Partial Public Class Change99
         If txtOrtManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Ort"" eingeben!<br>"
         Else
-            m_Versand.City = txtOrtManuell.Text.Trim(" "c)
+            _mVersand.City = txtOrtManuell.Text.Trim(" "c)
         End If
         If txtStrasseManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Strasse"" eingeben!<br>"
         Else
-            m_Versand.Street = txtStrasseManuell.Text.Trim(" "c)
+            _mVersand.Street = txtStrasseManuell.Text.Trim(" "c)
         End If
         If txtNrManuell.Text.Trim(" "c).Length = 0 Then
             lblErrorAdrManuell.Text &= "Bitte ""Nummer"" eingeben!<br>"
         Else
-            m_Versand.HouseNum = txtNrManuell.Text.Trim(" "c)
+            _mVersand.HouseNum = txtNrManuell.Text.Trim(" "c)
         End If
-        m_Versand.Name2 = txtName2.Text.Trim(" "c)
+        _mVersand.Name2 = txtName2.Text.Trim(" "c)
         If lblErrorAdrManuell.Text = "" Then
-            m_Versand.laenderKuerzel = ddlLand.SelectedItem.Value
+            _mVersand.LaenderKuerzel = ddlLand.SelectedItem.Value
 
-            lbl_SelAdresseShow.Text = m_Versand.Name1 + ", " + m_Versand.Name2 + " <br /> " + _
-                                      m_Versand.Street + " " + m_Versand.HouseNum + " <br /> " + _
-                                      m_Versand.PostCode + " " + m_Versand.City
+            lbl_SelAdresseShow.Text = _mVersand.Name1 + ", " + _mVersand.Name2 + " <br /> " + _
+                                      _mVersand.Street + " " + _mVersand.HouseNum + " <br /> " + _
+                                      _mVersand.PostCode + " " + _mVersand.City
             lbl_SelAdresse.Text = "Freie Adresse:"
             'SAP-Adresse nullen
-            m_Versand.VersandAdresse_ZS = String.Empty
-            m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text
+            _mVersand.VersandAdresseZs = String.Empty
+            _mVersand.VersandAdresseText = lbl_SelAdresseShow.Text
             'Zulassungsstelle nullen
-            m_Versand.VersandAdresse_ZE = String.Empty
+            _mVersand.VersandAdresseZe = String.Empty
 
 
             If rb_temp.Checked = True Then
-                m_Versand.Adressart = Briefversand.Adressarten.TempManuell
+                _mVersand.Adressart = Briefversand.Adressarten.TempManuell
             Else
-                m_Versand.Adressart = Briefversand.Adressarten.EndManuell
+                _mVersand.Adressart = Briefversand.Adressarten.EndManuell
             End If
 
             trSelAdresse.Visible = True
@@ -1317,18 +1325,18 @@ Partial Public Class Change99
             data2.Visible = False
             GridNavigation2.Visible = False
 
-            If Not m_Versand Is Nothing Then
+            If Not _mVersand Is Nothing Then
 
-                If Not m_Versand.Fahrzeuge Is Nothing Then
-                    If m_Versand.Fahrzeuge.DefaultView.Count > 0 Then
+                If Not _mVersand.Fahrzeuge Is Nothing Then
+                    If _mVersand.Fahrzeuge.DefaultView.Count > 0 Then
                         FillGrid(0)
                     End If
                     cpeAllData.Collapsed = True
                     cpeUpload.Collapsed = True
                 End If
 
-                If Not m_Versand.FahrzeugeFehler Is Nothing Then
-                    If m_Versand.FahrzeugeFehler.DefaultView.Count > 0 Then
+                If Not _mVersand.FahrzeugeFehler Is Nothing Then
+                    If _mVersand.FahrzeugeFehler.DefaultView.Count > 0 Then
                         FillGridFehler(0)
                     End If
                 End If
@@ -1369,23 +1377,23 @@ Partial Public Class Change99
     End Sub
 
     Protected Sub lbtnSend_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSend.Click
-        m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
+        _mApp.GetAppAutLevel(_mUser.GroupID, Session("AppID").ToString)
 
 
 
         'Authorizationright wird von der Autorisierung auf Levelebene übersteuert
         Dim ZurAutorisierung As Boolean = False
-        If String.IsNullOrEmpty(m_App.AutorisierungsLevel) = False Then
+        If String.IsNullOrEmpty(_mApp.AutorisierungsLevel) = False Then
             ZurAutorisierung = Autorisieren()
         Else
-            If m_User.Groups.ItemByID(m_User.GroupID).Authorizationright > 0 Then ZurAutorisierung = True
+            If _mUser.Groups.ItemByID(_mUser.GroupID).Authorizationright > 0 Then ZurAutorisierung = True
         End If
 
         If ZurAutorisierung = True Then
 
-            For Each tmpRow As DataRow In m_Versand.Fahrzeuge.Rows
+            For Each tmpRow As DataRow In _mVersand.Fahrzeuge.Rows
                 If tmpRow("Selected").ToString = "1" Then
-                    Dim logApp As New Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel)
+                    Dim logApp As New Base.Kernel.Logging.Trace(_mApp.Connectionstring, _mApp.SaveLogAccessSAP, _mApp.LogLevel)
                     logApp.CollectDetails("Fahrgestellnr.", CType(tmpRow("Fahrgestellnummer").ToString, Object), True)
                     logApp.CollectDetails("Nummer ZBII", CType(tmpRow("NummerZBII").ToString, Object))
                     logApp.CollectDetails("Leasingnummer", CType(tmpRow("Leasingnummer").ToString, Object))
@@ -1394,21 +1402,21 @@ Partial Public Class Change99
                     logApp.CollectDetails("Versandart", CType(lblVersArtOverviewShow.Text, Object))
                     logApp.CollectDetails("Versandgrund", CType(lblGrundOverviewShow.Text, Object))
                     logApp.CollectDetails("Versandoption", CType(lblOptionsOverViewShow.Text, Object))
-                    logApp.CollectDetails("Sachbearbeiter", CType(m_User.UserName, Object))
+                    logApp.CollectDetails("Sachbearbeiter", CType(_mUser.UserName, Object))
                     logApp.CollectDetails("Bemerkung", CType(txtBemerkung.Text, Object))
                     logApp.CollectDetails("Halter", CType(txtHalter.Text, Object))
 
 
-                    m_Versand.Sachbearbeiter = m_User.UserName
-                    m_Versand.ReferenceforAut = tmpRow("EQUNR").ToString
-                    m_Versand.VersgrundText = lblGrundOverviewShow.Text
-                    m_Versand.Bemerkung = txtBemerkung.Text
-                    m_Versand.Halter = txtHalter.Text
-                    m_Versand.Beauftragungsdatum = Date.Today.ToShortDateString
-                    m_Versand.VersartText = lblVersArtOverviewShow.Text
-                    m_Versand.Briefversand = "1"
-                    m_Versand.SchluesselVersand = ""
-                    m_Versand.OptionFlag = "3"
+                    _mVersand.Sachbearbeiter = _mUser.UserName
+                    _mVersand.ReferenceforAut = tmpRow("EQUNR").ToString
+                    _mVersand.VersgrundText = lblGrundOverviewShow.Text
+                    _mVersand.Bemerkung = txtBemerkung.Text
+                    _mVersand.Halter = txtHalter.Text
+                    _mVersand.Beauftragungsdatum = Date.Today.ToShortDateString
+                    _mVersand.VersartText = lblVersArtOverviewShow.Text
+                    _mVersand.Briefversand = "1"
+                    _mVersand.SchluesselVersand = ""
+                    _mVersand.OptionFlag = "3"
                     Dim DetailArray(1, 2) As Object
                     Dim ms As MemoryStream
                     Dim formatter As BinaryFormatter
@@ -1416,7 +1424,7 @@ Partial Public Class Change99
 
                     ms = New MemoryStream()
                     formatter = New BinaryFormatter()
-                    formatter.Serialize(ms, m_Versand)
+                    formatter.Serialize(ms, _mVersand)
                     b = ms.ToArray
                     ms = New MemoryStream(b)
                     DetailArray(0, 0) = ms
@@ -1427,20 +1435,20 @@ Partial Public Class Change99
                     Dim intAuthorizationID As Int32
 
 
-                    m_App.CheckForPendingAuthorization(CInt(Session("AppID")), m_User.Organization.OrganizationId, m_User.CustomerName, tmpRow("Fahrgestellnummer").ToString,
-                                                       m_User.IsTestUser, strInitiator, intAuthorizationID)
+                    _mApp.CheckForPendingAuthorization(CInt(Session("AppID")), _mUser.Organization.OrganizationId, _mUser.CustomerName, tmpRow("Fahrgestellnummer").ToString,
+                                                       _mUser.IsTestUser, strInitiator, intAuthorizationID)
                     If Not strInitiator.Length = 0 Then
                         tmpRow("Status") = "liegt zur Autorisierung vor"
                     Else
-                        intAuthorizationID = WriteAuthorization(m_App.Connectionstring, CInt(Session("AppID")), m_User.UserName, m_User.Organization.OrganizationId,
-                                                                m_User.CustomerName, tmpRow("Fahrgestellnummer").ToString, "", "", m_User.IsTestUser, DetailArray)
-                        logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, CInt(Session("AppID")),
-                                          m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString,
+                        intAuthorizationID = WriteAuthorization(_mApp.Connectionstring, CInt(Session("AppID")), _mUser.UserName, _mUser.Organization.OrganizationId,
+                                                                _mUser.CustomerName, tmpRow("Fahrgestellnummer").ToString, "", "", _mUser.IsTestUser, DetailArray)
+                        logApp.WriteEntry("APP", _mUser.UserName, Session.SessionID, CInt(Session("AppID")),
+                                          _mUser.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString,
                                           tmpRow("Fahrgestellnummer").ToString, "Briefversand für " & tmpRow("Fahrgestellnummer").ToString & " erfolgreich initiiert.",
-                                          m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, logApp.InputDetails)
+                                          _mUser.CustomerName, _mUser.Customer.CustomerId, _mUser.IsTestUser, 0, logApp.InputDetails)
                     End If
 
-                    Session("App_Versand") = m_Versand
+                    Session("App_Versand") = _mVersand
                     lblErrorAnfordern.Visible = True
                     lbtnSend.Enabled = False
                     lblErrorAnfordern.Text = "Ihre Anforderung liegt zur Autorisierung vor."
@@ -1452,34 +1460,34 @@ Partial Public Class Change99
                     lbtnOverview.Enabled = False
                     lb_zurueck.Visible = True
                     FillGridOverView(0)
-                    Session("App_Versand") = m_Versand
+                    Session("App_Versand") = _mVersand
                 End If
 
             Next
-            m_Versand.AutorisierungText = "mit Autorisierung"
+            _mVersand.AutorisierungText = "mit Autorisierung"
 
-            Session("App_Versand") = m_Versand
+            Session("App_Versand") = _mVersand
 
             ibtnCreatePDF.Visible = True
             lblPDFPrint.Visible = True
 
         Else
-            m_Versand.Briefversand = "1"
-            m_Versand.SchluesselVersand = ""
-            m_Versand.Anfordern(Session("AppID").ToString, Session.SessionID.ToString, Me)
-            If m_Versand.Status <> 0 Then
+            _mVersand.Briefversand = "1"
+            _mVersand.SchluesselVersand = ""
+            _mVersand.Anfordern(Session("AppID").ToString, Session.SessionID.ToString, Me)
+            If _mVersand.Status <> 0 Then
                 lblErrorAnfordern.Visible = True
                 lbtnSend.Enabled = False
-                lblErrorAnfordern.Text = m_Versand.Message
+                lblErrorAnfordern.Text = _mVersand.Message
                 FillGridOverView(0)
             Else
 
-                m_Versand.AutorisierungText = "ohne Autorisierung"
-                m_Versand.VersartText = lblVersArtOverviewShow.Text
-                m_Versand.Sachbearbeiter = m_User.UserName
-                m_Versand.VersgrundText = lblGrundOverviewShow.Text
+                _mVersand.AutorisierungText = "ohne Autorisierung"
+                _mVersand.VersartText = lblVersArtOverviewShow.Text
+                _mVersand.Sachbearbeiter = _mUser.UserName
+                _mVersand.VersgrundText = lblGrundOverviewShow.Text
 
-                Session("App_Versand") = m_Versand
+                Session("App_Versand") = _mVersand
                 lblErrorAnfordern.Visible = True
                 lbtnSend.Enabled = False
                 lblErrorAnfordern.Text = "Ihre Anforderung wurde erfolgreich im System erstellt."
@@ -1499,28 +1507,28 @@ Partial Public Class Change99
                     GridView3.Columns(i).Visible = False
                 Next
             End If
-           
+
         End If
 
     End Sub
 
     Private Sub ResetAdress()
-        m_Versand.VersandAdresseText = String.Empty
+        _mVersand.VersandAdresseText = String.Empty
 
-        m_Versand.VersandAdresse_ZE = String.Empty
-        m_Versand.VersandAdresseText = String.Empty
+        _mVersand.VersandAdresseZe = String.Empty
+        _mVersand.VersandAdresseText = String.Empty
 
         'SAP-Adresse nullen
-        m_Versand.VersandAdresse_ZS = String.Empty
+        _mVersand.VersandAdresseZs = String.Empty
 
         'Manuelle Adresse nullen
-        m_Versand.Name1 = String.Empty
-        m_Versand.Name2 = String.Empty
-        m_Versand.Street = String.Empty
-        m_Versand.HouseNum = String.Empty
-        m_Versand.PostCode = String.Empty
-        m_Versand.City = String.Empty
-        m_Versand.laenderKuerzel = String.Empty
+        _mVersand.Name1 = String.Empty
+        _mVersand.Name2 = String.Empty
+        _mVersand.Street = String.Empty
+        _mVersand.HouseNum = String.Empty
+        _mVersand.PostCode = String.Empty
+        _mVersand.City = String.Empty
+        _mVersand.LaenderKuerzel = String.Empty
 
         ' Partneradressen
         DivAdressSucheHead.Style.Remove("background-color")
@@ -1571,7 +1579,7 @@ Partial Public Class Change99
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
-        m_Versand = Nothing
+        _mVersand = Nothing
         Session("m_Versand") = Nothing
         Response.Redirect("Change99.aspx?AppID=" & Session("AppID").ToString, False)
     End Sub
@@ -1591,8 +1599,8 @@ Partial Public Class Change99
             lblErrorDokumente.Text = "Keine Datei ausgewählt"
             Exit Sub
         End If
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
-        m_Versand.CreateUploadTable()
+        _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
+        _mVersand.CreateUploadTable()
         'Lade Datei
         upload(upFile1.PostedFile)
 
@@ -1606,7 +1614,7 @@ Partial Public Class Change99
                 lblError.Text = ""
                 lblErrorDokumente.Text = ""
                 Dim uploadV As Upload_Validator.Validator = New Upload_Validator.Validator()
-                Dim XLS_CheckTable As DataTable = uploadV.UploadXLSohneModifikation(upFile1.PostedFile, ConfigurationManager.AppSettings("ExcelPath"), m_User, lblError,
+                Dim XLS_CheckTable As DataTable = uploadV.UploadXLSohneModifikation(upFile1.PostedFile, ConfigurationManager.AppSettings("ExcelPath"), _mUser, lblError,
                                                                                     Session("AppID").ToString, Session.SessionID)
                 If uploadV.CheckObZeilenMitMehrAlsEinemWertExistieren(XLS_CheckTable) > -1 Then
                     lblErrorDokumente.Text += "Es gibt Zeilen mit mehr als einem Wert. Bitte korrigieren Sie Ihre Datei!<br>"
@@ -1617,16 +1625,16 @@ Partial Public Class Change99
                 lblErrorDokumente.Text += lblError.Text
                 lblError.Text = ""
 
-                If m_Versand.tblUpload.Rows.Count > 0 Then
-                    m_Versand.EQuiTyp = "B"
-                    m_Versand.FILL(Session("AppID").ToString, Session.SessionID.ToString, Me, True)
-                    If m_Versand.Status > 0 Then
+                If _mVersand.TblUpload.Rows.Count > 0 Then
+                    _mVersand.EQuiTyp = "B"
+                    _mVersand.Fill(Session("AppID").ToString, Session.SessionID.ToString, Me, True)
+                    If _mVersand.Status > 0 Then
                         lblErrorDokumente.Visible = True
-                        lblErrorDokumente.Text += "Fehler beim hochladen der Datei! " & m_Versand.Message
+                        lblErrorDokumente.Text += "Fehler beim hochladen der Datei! " & _mVersand.Message
                     Else
                         FillGrid(0)
                         FillGridFehler(0)
-                        Session("App_Versand") = m_Versand
+                        Session("App_Versand") = _mVersand
                         cpeAllData.ClientState = True
                         cpeUpload.ClientState = True
                     End If
@@ -1692,14 +1700,14 @@ Partial Public Class Change99
 
                 Dim UploadRow As DataRow
 
-                UploadRow = m_Versand.tblUpload.NewRow
+                UploadRow = _mVersand.TblUpload.NewRow
                 UploadRow("CHASSIS_NUM") = Fahrgestellnummer
                 UploadRow("LICENSE_NUM") = Kennzeichen
                 UploadRow("TIDNR") = NummerZB2
                 UploadRow("LIZNR") = LeaseNr
                 UploadRow("ZZREFERENZ1") = Ref1
                 UploadRow("ZZREFERENZ2") = Ref2
-                m_Versand.tblUpload.Rows.Add(UploadRow)
+                _mVersand.TblUpload.Rows.Add(UploadRow)
 
                 Fahrgestellnummer = ""
                 Kennzeichen = ""
@@ -1717,61 +1725,61 @@ Partial Public Class Change99
     End Sub
 
     Private Sub CreateTableUploadKennz(ByVal sKennz() As String)
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
-        m_Versand.CreateUploadTable()
+        _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
+        _mVersand.CreateUploadTable()
 
         Dim UploadRow As DataRow
         For Each Kennzeichen As String In sKennz
-            UploadRow = m_Versand.tblUpload.NewRow
+            UploadRow = _mVersand.TblUpload.NewRow
             UploadRow("CHASSIS_NUM") = ""
             UploadRow("LICENSE_NUM") = Kennzeichen
             UploadRow("TIDNR") = ""
             UploadRow("LIZNR") = ""
             UploadRow("ZZREFERENZ1") = ""
             UploadRow("ZZREFERENZ2") = ""
-            m_Versand.tblUpload.Rows.Add(UploadRow)
+            _mVersand.TblUpload.Rows.Add(UploadRow)
         Next
     End Sub
 
     Private Sub CreateTableUploadBriefNr(ByVal sBriefNr() As String)
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
-        m_Versand.CreateUploadTable()
+        _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
+        _mVersand.CreateUploadTable()
 
         Dim UploadRow As DataRow
         For Each TIDNr As String In sBriefNr
-            UploadRow = m_Versand.tblUpload.NewRow
+            UploadRow = _mVersand.TblUpload.NewRow
             UploadRow("CHASSIS_NUM") = ""
             UploadRow("LICENSE_NUM") = ""
             UploadRow("TIDNR") = TIDNr
             UploadRow("LIZNR") = ""
             UploadRow("ZZREFERENZ1") = ""
             UploadRow("ZZREFERENZ2") = ""
-            m_Versand.tblUpload.Rows.Add(UploadRow)
+            _mVersand.TblUpload.Rows.Add(UploadRow)
         Next
 
 
     End Sub
 
     Private Sub CreateTableUploadVNr(ByVal sVNr() As String)
-        m_Versand = New Briefversand(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
-        m_Versand.CreateUploadTable()
+        _mVersand = New Briefversand(_mUser, _mApp, Session("AppID").ToString, Session.SessionID.ToString, "")
+        _mVersand.CreateUploadTable()
 
         Dim UploadRow As DataRow
         For Each Vertragsnr As String In sVNr
-            UploadRow = m_Versand.tblUpload.NewRow
+            UploadRow = _mVersand.TblUpload.NewRow
             UploadRow("CHASSIS_NUM") = ""
             UploadRow("LICENSE_NUM") = ""
             UploadRow("TIDNR") = ""
             UploadRow("LIZNR") = Vertragsnr
             UploadRow("ZZREFERENZ1") = ""
             UploadRow("ZZREFERENZ2") = ""
-            m_Versand.tblUpload.Rows.Add(UploadRow)
+            _mVersand.TblUpload.Rows.Add(UploadRow)
         Next
     End Sub
 
     Protected Sub rb_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rb_temp.CheckedChanged, rb_endg.CheckedChanged
 
-        m_Versand.VersandGrund = Nothing
+        _mVersand.VersandGrund = Nothing
 
         ResetAdress()
 
@@ -1780,16 +1788,16 @@ Partial Public Class Change99
 
     Private Sub RadioButtonVersandChanged()
 
-        m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
+        _mApp.GetAppAutLevel(_mUser.GroupID, Session("AppID").ToString)
 
-        If String.IsNullOrEmpty(m_App.AutorisierungsLevel) = False Then
+        If String.IsNullOrEmpty(_mApp.AutorisierungsLevel) = False Then
             Dim Level() As String
 
             trAdressuche.Visible = False
             trZulStelleSuche.Visible = False
             trFreieAdresse.Visible = False
 
-            Level = Split(m_App.AutorisierungsLevel, "|")
+            Level = Split(_mApp.AutorisierungsLevel, "|")
             Level = Split(Level(0), ",")
             For i As Integer = 0 To Level.Length - 1
 
@@ -1847,16 +1855,16 @@ Partial Public Class Change99
 
         Dim ZurAutorisierung As Boolean = False
         'Welche Art von Versandadressen wurde ausgewählt?
-        m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
+        _mApp.GetAppAutLevel(_mUser.GroupID, Session("AppID").ToString)
 
         Dim Level() As String
 
-        If String.IsNullOrEmpty(m_App.AutorisierungsLevel) = False Then
+        If String.IsNullOrEmpty(_mApp.AutorisierungsLevel) = False Then
 
-            Level = Split(m_App.AutorisierungsLevel, "|")
+            Level = Split(_mApp.AutorisierungsLevel, "|")
 
             'Beinhaltet das Level die Adressart?
-            If Level(0).Contains(m_Versand.Adressart) Then
+            If Level(0).Contains(_mVersand.Adressart) Then
 
                 'Zugehörige Autorisierungsart aus dem zweiten Array ermitteln
                 Dim arrLevel() As String = Split(Level(0), ",")
@@ -1864,7 +1872,7 @@ Partial Public Class Change99
 
                 For i As Integer = 0 To arrLevel.Length - 1
 
-                    If arrLevel(i) = m_Versand.Adressart Then
+                    If arrLevel(i) = _mVersand.Adressart Then
                         '1 = Autorisierung, 2 = Keine Autorisierung
                         If arrAutorisierung(i) = "1" Then ZurAutorisierung = True : Exit For
 
@@ -1881,24 +1889,24 @@ Partial Public Class Change99
     End Function
 
 #End Region
-   
+
     Protected Sub ibtnCreatePDF_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnCreatePDF.Click
 
-        Dim tmpDataView As DataView = m_Versand.Fahrzeuge.DefaultView
+        Dim tmpDataView As DataView = _mVersand.Fahrzeuge.DefaultView
         tmpDataView.RowFilter = "Selected = '1'"
 
-        Select Case m_Versand.Adressart
+        Select Case _mVersand.Adressart
             Case 1, 4
-                m_Versand.AdressartText = "Adressauswahl"
+                _mVersand.AdressartText = "Adressauswahl"
             Case 2, 5
-                m_Versand.AdressartText = "Zulassungsstellen"
+                _mVersand.AdressartText = "Zulassungsstellen"
             Case 3, 6
-                m_Versand.AdressartText = "manuelle Adresseingabe"
+                _mVersand.AdressartText = "manuelle Adresseingabe"
         End Select
 
-        m_Versand.VersandoptionenText = lblOptionsOverViewShow.Text.Replace("<br />", vbCrLf)
-        m_Versand.VersandAdresseText = m_Versand.VersandAdresseText.Replace(" <br /> ", vbCrLf)
-        m_Versand.FahrzeugePrint = tmpDataView.ToTable
+        _mVersand.VersandoptionenText = lblOptionsOverViewShow.Text.Replace("<br />", vbCrLf)
+        _mVersand.VersandAdresseText = _mVersand.VersandAdresseText.Replace(" <br /> ", vbCrLf)
+        _mVersand.FahrzeugePrint = tmpDataView.ToTable
 
         Dim headTable As New DataTable("Kopf")
 
@@ -1918,30 +1926,30 @@ Partial Public Class Change99
         Dim dr As DataRow = headTable.NewRow
 
         dr("Beauftragungsdatum") = Date.Now().ToShortDateString
-        dr("Sachbearbeiter") = m_Versand.Sachbearbeiter
-        dr("VersartText") = m_Versand.VersartText
-        dr("AdressartText") = m_Versand.AdressartText
-        dr("VersandadresseText") = m_Versand.VersandAdresseText
-        dr("VersgrundText") = m_Versand.VersgrundText
-        dr("Bemerkung") = m_Versand.Bemerkung
-        dr("Halter") = m_Versand.Halter
-        dr("VersandoptionenText") = m_Versand.VersandoptionenText
-        dr("AutorisierungText") = m_Versand.AutorisierungText
+        dr("Sachbearbeiter") = _mVersand.Sachbearbeiter
+        dr("VersartText") = _mVersand.VersartText
+        dr("AdressartText") = _mVersand.AdressartText
+        dr("VersandadresseText") = _mVersand.VersandAdresseText
+        dr("VersgrundText") = _mVersand.VersgrundText
+        dr("Bemerkung") = _mVersand.Bemerkung
+        dr("Halter") = _mVersand.Halter
+        dr("VersandoptionenText") = _mVersand.VersandoptionenText
+        dr("AutorisierungText") = _mVersand.AutorisierungText
 
         headTable.Rows.Add(dr)
         headTable.AcceptChanges()
 
-        m_Versand.FahrzeugePrint.TableName = "Fahrzeuge"
+        _mVersand.FahrzeugePrint.TableName = "Fahrzeuge"
 
         Dim imageHt As New Hashtable()
         Try
-            imageHt.Add("Logo", m_User.Customer.LogoImage)
+            imageHt.Add("Logo", _mUser.Customer.LogoImage)
         Catch ex As Exception
             ' LogoPath am Customer nicht (korrekt) gepflegt - hier: ignorieren
         End Try
 
-        Dim docFactory As New DocumentGeneration.WordDocumentFactory(m_Versand.FahrzeugePrint, imageHt)
-        docFactory.CreateDocumentTable("Versandauftrag_" & m_User.UserName, Page, "\Components\ComCommon\Documents\VersandZB2.doc", headTable)
+        Dim docFactory As New DocumentGeneration.WordDocumentFactory(_mVersand.FahrzeugePrint, imageHt)
+        docFactory.CreateDocumentTable("Versandauftrag_" & _mUser.UserName, Page, "\Components\ComCommon\Documents\VersandZB2.doc", headTable)
 
     End Sub
 
@@ -1953,7 +1961,7 @@ Partial Public Class Change99
 
     Private Sub InApp()
 
-        If m_User.Applications.Select("AppURL = '../Components/ComCommon/Change05s.aspx'").Length > 0 Then
+        If _mUser.Applications.Select("AppURL = '../Components/ComCommon/Change05s.aspx'").Length > 0 Then
             ibtEdit.Visible = True
         End If
 
@@ -1966,12 +1974,12 @@ Partial Public Class Change99
             Dim Ident As String
 
             Ident = ddlAdresse.SelectedValue
-            Name = m_Versand.Adressen.Select("IDENT = '" & Ident & "'")(0)("NAME1").ToString
+            Name = _mVersand.Adressen.Select("IDENT = '" & Ident & "'")(0)("NAME1").ToString
 
             Session.Add("me", Me)
 
-            m_Versand.VersandArt = IIf(rb_temp.Checked, "1", "2")
-            Session("App_Versand") = m_Versand
+            _mVersand.VersandArt = IIf(rb_temp.Checked, "1", "2")
+            Session("App_Versand") = _mVersand
 
             Response.Redirect("../Change05s.aspx?AppID=" & Session("AppID").ToString & "&ident=" & Ident & "&Name=" & Name & "&eqtyp=B")
         Else
@@ -1985,7 +1993,7 @@ Partial Public Class Change99
         Try
             Dim MeControls As Change99 = CType(Session("me"), Change99)
 
-            m_Versand = Session("App_Versand")
+            _mVersand = Session("App_Versand")
 
             lblErrorVersandOpt.Text = ""
 
@@ -1996,10 +2004,10 @@ Partial Public Class Change99
             lblSteps.Text = "Schritt 2 von 4"
             Panel2.CssClass = "StepActive"
 
-            If Not m_Versand.VersandArt Is Nothing Then
-                If m_Versand.VersandArt = "1" Then
+            If Not _mVersand.VersandArt Is Nothing Then
+                If _mVersand.VersandArt = "1" Then
                     rb_temp.Checked = True
-                ElseIf m_Versand.VersandArt = "2" Then
+                ElseIf _mVersand.VersandArt = "2" Then
                     rb_endg.Checked = True
                 End If
 
@@ -2007,13 +2015,13 @@ Partial Public Class Change99
 
             trZulStelleSuche.Visible = False
             trFreieAdresse.Visible = False
-            m_App.GetAppAutLevel(m_User.GroupID, Session("AppID").ToString)
+            _mApp.GetAppAutLevel(_mUser.GroupID, Session("AppID").ToString)
 
             Dim Level() As String
 
-            If String.IsNullOrEmpty(m_App.AutorisierungsLevel) = False Then
+            If String.IsNullOrEmpty(_mApp.AutorisierungsLevel) = False Then
 
-                Level = Split(m_App.AutorisierungsLevel, "|")
+                Level = Split(_mApp.AutorisierungsLevel, "|")
                 Level = Split(Level(0), ",")
 
                 rb_temp.Visible = False
@@ -2061,8 +2069,8 @@ Partial Public Class Change99
             Dim Mode As String = Request.QueryString.Item("mode").ToString
 
             If Mode = "success" Then
-                m_Versand.GetAdressenandZulStellen(Session("AppID").ToString, Session.SessionID.ToString, Me)
-                Session("App_Versand") = m_Versand
+                _mVersand.GetAdressenandZulStellen(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                Session("App_Versand") = _mVersand
                 AdressChoice()
             End If
 
@@ -2099,4 +2107,9 @@ Partial Public Class Change99
         cpeDokuAusgabe.ClientState = Nothing
     End Sub
 
+ 
+    Private Sub cbxAufAbmeldungWarten_CheckedChanged(sender As Object, e As System.EventArgs) Handles cbxAufAbmeldungWarten.CheckedChanged
+        _mVersand.AufAbmeldungWarten = cbxAufAbmeldungWarten.Checked
+        ConfirmNextToOverView.Enabled = _mVersand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
+    End Sub
 End Class

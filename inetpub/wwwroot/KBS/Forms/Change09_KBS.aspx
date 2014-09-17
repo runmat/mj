@@ -164,7 +164,7 @@
 
 
 
-                        <asp:Button ID="MPEDummy" Width="0" Height="0" runat="server" />
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender runat="server" ID="mpeBestellungsCheck" BackgroundCssClass="divProgress"
                             Enabled="true" PopupControlID="BestellungsCheck" TargetControlID="MPEDummy" BehaviorID="BestellCheck">
                         </cc1:ModalPopupExtender>

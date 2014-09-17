@@ -127,6 +127,7 @@
     <Content Include="Forms\Feinstaubplakette.aspx" />
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\ReportLetztePlatinenbestellungen.aspx" />
     <Content Include="Forms\KVPBewertung.aspx" />
     <Content Include="Forms\KVPSelection.aspx" />
     <Content Include="Forms\KVPErfassung.aspx" />
@@ -258,13 +259,6 @@
     </Compile>
     <Compile Include="Forms\Change02_1.aspx.vb">
       <DependentUpon>Change02_1.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
-    </Compile>
-    <Compile Include="Forms\Change03.aspx.designer.vb">
-      <DependentUpon>Change03.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Change03.aspx.vb">
-      <DependentUpon>Change03.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Forms\Change04.aspx.designer.vb">
@@ -413,6 +407,13 @@
     <Compile Include="Forms\InfocenterNeu.aspx.vb">
       <DependentUpon>InfocenterNeu.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportLetztePlatinenbestellungen.aspx.designer.vb">
+      <DependentUpon>ReportLetztePlatinenbestellungen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReportLetztePlatinenbestellungen.aspx.vb">
+      <DependentUpon>ReportLetztePlatinenbestellungen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Forms\KVPBewertung.aspx.designer.vb">
       <DependentUpon>KVPBewertung.aspx</DependentUpon>
@@ -651,7 +652,6 @@
     <Content Include="Forms\Change01.aspx" />
     <Content Include="Forms\Change02.aspx" />
     <Content Include="Forms\Change02_1.aspx" />
-    <Content Include="Forms\Change03.aspx" />
     <Content Include="Forms\Change04.aspx" />
     <Content Include="Forms\Change05.aspx" />
     <Content Include="Forms\Change06.aspx" />

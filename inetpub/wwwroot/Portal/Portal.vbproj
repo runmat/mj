@@ -122,6 +122,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.ASPTypeLibrary">
+      <HintPath>..\..\..\Work\GAC\Interop.ASPTypeLibrary.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.DSOFile">
+      <HintPath>..\..\..\Work\GAC\Interop.DSOFile.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.WMDQryCln">
+      <HintPath>..\..\..\Work\GAC\Interop.WMDQryCln.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.WMDWebLink32Client">
+      <HintPath>..\..\..\Work\GAC\Interop.WMDWebLink32Client.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -643,6 +659,9 @@
     <Content Include="Start\Selection.aspx" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Styles.css" />
+    <Content Include="ajaxuploader.lic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Customize\AVIS\Handbuch\Handbuch zur Web Anwendung AVIS 022008.pdf" />
     <None Include="Customize\bruehlerbank\HandbuchTreuhand.pdf" />
     <None Include="Web.config">
