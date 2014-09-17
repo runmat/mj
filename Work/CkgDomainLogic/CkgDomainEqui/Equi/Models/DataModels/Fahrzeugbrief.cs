@@ -81,5 +81,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [ModelMappingCompareIgnore]
         public bool IsSelected { get; set; }
+
+        [ModelMappingCompareIgnore]
+        public bool IsValid { get; set; }
     }
 }

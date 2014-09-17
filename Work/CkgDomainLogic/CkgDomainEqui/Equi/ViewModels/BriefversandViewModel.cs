@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
@@ -82,6 +83,8 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         [XmlIgnore]
         public List<Fahrzeugbrief> Fahrzeuge { get { return BriefbestandDataService.FahrzeugbriefeZumVersand; } }
+
+        public List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; private set; }
 
         [XmlIgnore]
         public List<Fahrzeugbrief> FahrzeugeFiltered
@@ -413,14 +416,51 @@ namespace CkgDomainLogic.Equi.ViewModels
                 return false;
 
             UploadItems = list;
-            ValidateUploadItems();
+            MergeCsvUploadItems();
 
             return true;
         }
 
-        void ValidateUploadItems()
+        void MergeCsvUploadItems()
         {
-            //BriefVersandDataService.ValidateUploadCocOrders(UploadItems);
+            var fahrzeugeFromUploadItems = UploadItems.Select(uploadItem => new Fahrzeugbrief
+                {
+                    Fahrgestellnummer = uploadItem.FIN,
+                    Kennzeichen = uploadItem.Kennzeichen,
+                    TechnIdentnummer = uploadItem.ZBII,
+                    Vertragsnummer = uploadItem.LizenzNr,
+                    Referenz1 = uploadItem.Referenz1,
+                    Referenz2 = uploadItem.Referenz2,
+                    IsValid = false,
+                }).ToListOrEmptyList();
+
+            fahrzeugeFromUploadItems.ForEach(uploadFahrzeug =>
+                {
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Fahrgestellnummer))
+                        uploadFahrzeug.IsValid = true;
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Kennzeichen))
+                        uploadFahrzeug.IsValid = true;
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.TechnIdentnummer))
+                        uploadFahrzeug.IsValid = true;
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Vertragsnummer))
+                        uploadFahrzeug.IsValid = true;
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Referenz1))
+                        uploadFahrzeug.IsValid = true;
+                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Referenz2))
+                        uploadFahrzeug.IsValid = true;
+                });
+
+
+        }
+
+        bool FahrzeugeImBestandMatchesProperty(Fahrzeugbrief uploadFahrzeug, Expression<Func<Fahrzeugbrief, string>> propertyExpression)
+        {
+            var propertyMethod = propertyExpression.Compile();
+
+            return Fahrzeuge.Any(fahrzeugImBestand =>
+                                 propertyMethod(uploadFahrzeug).IsNotNullOrEmpty() &&
+                                 propertyMethod(fahrzeugImBestand).IsNotNullOrEmpty() &&
+                                 propertyMethod(uploadFahrzeug) == propertyMethod(fahrzeugImBestand));
         }
 
         #endregion    
