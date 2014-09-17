@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Controllers;
@@ -216,12 +219,49 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+
         #region General Address Helpers
 
         [HttpPost]
         public ActionResult UpdateAddressAndGetSummary(int updateAddressid, string addressType)
         {
             return PartialView("Briefversand/Summary", BriefversandViewModel.CreateSummaryModel(false));
+        }
+
+        #endregion
+
+        #region CSV Upload
+
+        [HttpPost]
+        public ActionResult CsvUploadStart(IEnumerable<HttpPostedFileBase> uploadFiles)
+        {
+            // Step 1:  Upload the CSV file
+
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = "Fehler: Keine Datei angegeben!" }, "text/plain");
+
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!BriefversandViewModel.CsvUploadFileSaveForPrefilter(file.FileName, file.SavePostedFile))
+                return Json(new { success = false, message = "Fehler: CSV Datei konnte nicht gespeichert werden!" }, "text/plain");
+
+            return Json(new
+            {
+                success = true,
+                message = "ok",
+                uploadFileName = file.FileName,
+            }, "text/plain");
+        }
+
+        [HttpPost]
+        public ActionResult CsvUploadShowGrid(bool showErrorsOnly)
+        {
+            // Step 2:  Show CSV data in a grid for user validation
+
+            //BriefversandViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
+
+            return new EmptyResult();   // return PartialView("Erfassung/CsvUpload/ValidationGrid", BriefversandViewModel);
         }
 
         #endregion

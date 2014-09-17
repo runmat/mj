@@ -12,6 +12,7 @@ using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 
@@ -120,6 +121,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public string SaveErrorMessage { get; private set; }
 
         public string FahrzeugAuswahlTitleHint { get { return Localize.PleaseChooseOneOrMoreVehicles; } }
+
+        public string CsvUploadFileName { get; private set; }
+        public string CsvUploadServerFileName { get; private set; }
+        public bool UploadItemsSuccessfullyStored { get; set; }
+        public List<FahrzeugCsvUploadEntity> UploadItems { get; private set; }
 
         #endregion
 
@@ -390,5 +396,33 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         #endregion
 
+
+        #region CSV Upload
+
+        public bool CsvUploadFileSaveForPrefilter(string fileName, Func<string, bool> fileSaveAction)
+        {
+            CsvUploadFileName = fileName;
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".csv");
+
+            if (!fileSaveAction(CsvUploadServerFileName))
+                return false;
+
+            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true).ToList();
+            FileService.TryFileDelete(CsvUploadServerFileName);
+            if (list.None())
+                return false;
+
+            UploadItems = list;
+            ValidateUploadItems();
+
+            return true;
+        }
+
+        void ValidateUploadItems()
+        {
+            //BriefVersandDataService.ValidateUploadCocOrders(UploadItems);
+        }
+
+        #endregion    
     }
 }
