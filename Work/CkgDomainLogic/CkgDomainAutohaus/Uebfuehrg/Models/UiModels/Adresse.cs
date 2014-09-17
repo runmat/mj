@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -11,12 +13,29 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 {
     public enum AdressenTyp { FahrtAdresse, RechnungsAdresse }
 
-    public class Adresse : DomainCommon.Models.Adresse 
+    [XmlType(TypeName = "UebfuehrgAdresse")]
+    public class Adresse : DomainCommon.Models.Adresse, IValidatableObject
     {
-        public AdressenTyp AdressTyp { get; set; }
+        private AdressenTyp _adressTyp = AdressenTyp.FahrtAdresse;
+
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
+        public AdressenTyp AdressTyp
+        {
+            get { return _adressTyp; }
+            set { _adressTyp = value; }
+        }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
+        [Required]
         public string Ansprechpartner { get; set; }
+        
+        [LocalizedDisplay(LocalizeConstants.Phone)]
+        [Required]
+        public new string Telefon { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Email)]
+        [EmailAddress]
+        public new string Email { get; set; }
 
         [SelectListText, XmlIgnore]
         public string NameOrt { get { return Ort.IsNullOrEmpty() ? Name1 : String.Format("{0}, {1}", Name1, Ort); } }
@@ -25,10 +44,13 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public DateTime? Datum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
+        [ModelMappingCopyIgnore]
         public string Uhrzeitwunsch { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string UhrzeitwunschOptions { get { return "; 08:00; 09:00; 10:00; 11:00; 12:00; 13:00; 14:00; 15:00; 16:00; 17:00; 18:00"; } }
+        
+        [ModelMappingCopyIgnore]
         public bool UhrzeitwunschAvailable { get; set; }
 
         private string _transportTyp = "";
@@ -36,30 +58,32 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [LocalizedDisplay(LocalizeConstants.TransportType)]
         public string TransportTyp
         {
-            get { return _transportTyp; }
+            get { return _transportTyp;  }
             set { _transportTyp = value; }
         }
         public bool TransportTypAvailable { get; set; }
 
-        [XmlIgnore]
-        public string TransportTypName { get { return GetTransportTypName(TransportTyp, HeaderShort); } }
+        [XmlIgnore, ScriptIgnore]
+        public string TransportTypName { get { return GetTransportTypName(TransportTyp, Header); } }
 
-        [XmlIgnore]
-        public static List<TransportTyp> AlleTransportTypen { get; set; }
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
+        public Func<List<TransportTyp>> GetAlleTransportTypen { get; set; }
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public List<TransportTyp> ValideTransportTypen
         {
             get
             {
+                var alleTransportTypen = GetAlleTransportTypen().CopyAndInsertAtTop(new TransportTyp { ID = "", Name = Localize.TranslateResourceKey(LocalizeConstants.DropdownDefaultOptionPleaseChoose) });
+
                 if (GroupName.IsNullOrEmpty())
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
                 if (SubGroupName.IsNullOrEmpty())
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
 
                 var fahrzeugIndexString = GroupName.Substring(GroupName.Length - 1);
                 int fahrzeugIndex;
                 if (!Int32.TryParse(fahrzeugIndexString, out fahrzeugIndex))
-                    return AlleTransportTypen;
+                    return alleTransportTypen;
 
                 var intelligentFahrzeugMatches = new List<string>
                                                      {
@@ -69,7 +93,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                                                          String.Format("fahrzeug {0}", fahrzeugIndex),
                                                      };
                 var intelligentTransportTypes = new List<TransportTyp>();
-                AlleTransportTypen.ForEach(transportTyp =>
+                alleTransportTypen.ForEach(transportTyp =>
                 {
                     var matchTransportType = intelligentFahrzeugMatches.FirstOrDefault(match => transportTyp.Name.ToLower().Contains(match));
                     if (matchTransportType != null)
@@ -85,21 +109,21 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                             intelligentTransportTypes.RemoveAll(t => t.Name.ToLower().Contains("zusatz"));
                     }
 
-                    if (intelligentTransportTypes.Count() > 1)
-                        // if we have mor than 1 entry, also insert the choosing option ("bitte auswählen")
-                        intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(AlleTransportTypen.First(t => t.ID == ""));
+                    //if (intelligentTransportTypes.Count() > 1)
+                    //    // if we have mor than 1 entry, also insert the choosing option ("bitte auswählen")
+                    //    intelligentTransportTypes = intelligentTransportTypes.CopyAndInsertAtTop(alleTransportTypen.First(t => t.ID == ""));
 
                     return intelligentTransportTypes;
                 }
 
-                return AlleTransportTypen;
+                return alleTransportTypen;
             }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore, ModelMappingCopyIgnore]
         public List<Fahrt> Fahrten { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string FahrzeugBezeichnung
         {
             get { return String.Format("Fahrzeug {0}", Fahrten == null || Fahrten.None() ? "1" : Fahrten.First().FahrzeugIndex); }
@@ -122,9 +146,13 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         /// </summary>
         public string SubTyp { get; set; }
 
+        [ModelMappingCopyIgnore]
         public string Mandant { get; set; }
 
         [XmlIgnore]
+        public string AdresseAsBlock { get { return GetSummaryString().Replace("<br/>", "\r\n"); } }
+
+        [XmlIgnore, ScriptIgnore]
         public string FahrtTitleFromAddressType
         {
             get
@@ -182,15 +210,46 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             return dict;
         }
 
-        public static TransportTyp GetTransportTypModel(string transportTyp)
+        public TransportTyp GetTransportTypModel(string transportTyp)
         {
-            return (AlleTransportTypen == null ? null : AlleTransportTypen.FirstOrDefault(tt => tt.ID == transportTyp));
+            var getAlleTransportTypen = GetAlleTransportTypen;
+            return (getAlleTransportTypen == null ? null : getAlleTransportTypen().FirstOrDefault(tt => tt.ID == transportTyp));
         }
 
-        public static string GetTransportTypName(string transportTyp, string defaultTypName = "")
+        public string GetTransportTypName(string transportTyp, string defaultTypName)
         {
             var transportTypModel = GetTransportTypModel(transportTyp);
-            return transportTypModel == null ? "" : (transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);
+            return (transportTypModel == null || transportTypModel.ID.IsNullOrEmpty() ? defaultTypName : transportTypModel.Name);
         }
+
+        public override string GetSummaryString()
+        {
+            return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
+        }
+
+        static string LandAsFormatted(string land)
+        {
+            return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
+        }
+
+
+
+        #region Route Info
+
+        [XmlIgnore]
+        public string AdresseAsRouteInfo
+        {
+            get { return String.Format("{0}, {1} {2}", StrasseHausNr, PLZ, Ort); }
+        }
+
+        public string StartAdresseAsRouteInfo { get; set; }
+
+        [XmlIgnore]
+        public bool ShowRouteInfo
+        {
+            get { return new[] {"ZIEL", "ZUSATZ"}.Contains(SubGroupName.NotNullOrEmpty().ToUpper()); }
+        }
+
+        #endregion
     }
 }

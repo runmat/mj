@@ -1,10 +1,13 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgViewModel
 
-<h3 class="page-title">@Model.Title  <small>@Model.TitleSmall</small></h3>
+<h3 class="page-title">
+    @Model.Title  
+    <small></small> 
+</h3>
 
 <div class="portlet app-view beauftragung">
     
-    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames)
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, stepTitlesInNewLine:true)
 
     <div id="formWizardTab1" class="hide">
         @Html.PartialOrFormErrorHint("CurrentStepView", Model.FirstStepErrorHint)
@@ -12,4 +15,5 @@
 </div>
 
 @Html.Partial("Partial/Common")
+    
 

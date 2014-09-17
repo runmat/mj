@@ -25,15 +25,22 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         [XmlIgnore]
         public List<Adresse> Adressen
         {
-            get { return DataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList(); }
+            get
+            {
+                DataService.KundennrOverride = KundennrOverride;
+                return DataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList();
+            }
         }
 
         public bool InsertMode { get; set; }
 
+        public string KundennrOverride { get; set; }
 
-        public void DataInit(string adressenKennung)
+
+        public void DataInit(string adressenKennung, string kundennrOverride)
         {
-            AdressenKennung = adressenKennung;
+            AdressenKennung = adressenKennung.ToUpper();
+            DataService.KundennrOverride = KundennrOverride = kundennrOverride;
 
             Adresse.Laender = Laender;
 
@@ -56,6 +63,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void RemoveItem(int id)
         {
+            DataService.KundennrOverride = KundennrOverride;
             DataService.DeleteAdresse(GetItem(id));
             DataMarkForRefresh();
         }
@@ -77,6 +85,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {
+            DataService.KundennrOverride = KundennrOverride;
             var savdItem = DataService.SaveAdresse(item, addModelError);
             DataMarkForRefresh();
             return savdItem;

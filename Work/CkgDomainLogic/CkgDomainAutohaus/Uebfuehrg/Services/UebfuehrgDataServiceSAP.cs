@@ -1,6 +1,8 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
@@ -9,7 +11,10 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using SapORM.Contracts;
 using SapORM.Models;
+using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 using AppModelMappings = CkgDomainLogic.Uebfuehrg.Models.AppModelMappings;
+using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
+
 // ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Uebfuehrg.Services
@@ -61,12 +66,15 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                     var sapItems = Z_M_IMP_AUFTRDAT_007.GT_WEB.GetExportListWithInitExecute(SAP,
                                                                                             "I_KUNNR, I_KENNUNG, I_NAME1, I_PSTLZ, I_ORT01",
                                                                                             AuftragGeberOderKundenNr.ToSapKunnr(),
+                                                                                            //KundenNr.ToSapKunnr(),
                                                                                             type, "*", "*", "*");
                     var webItems = AppModelMappings.Z_M_IMP_AUFTRDAT_007_GT_WEB_To_Adresse.Copy(sapItems).OrderBy(w => w.Name1).ToList();
                     webItems.ForEach(item =>
                                             {
                                                 item.ID = ++id;
                                                 item.AdressTyp = AdressenTyp.FahrtAdresse;
+                                                if (item.Land.IsNullOrEmpty()) 
+                                                    item.Land = "DE";
                                             });
 
                     return webItems;
@@ -96,12 +104,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             TryAddDefaultAddressOption(webItems, "RE");
             TryAddDefaultAddressOption(webItems, "RG");
 
-            var id = 0;
             webItems.ForEach(item =>
-            {
-                item.ID = ++id;
-                item.AdressTyp = AdressenTyp.RechnungsAdresse;
-            });
+                {
+                    item.AdressTyp = AdressenTyp.RechnungsAdresse;
+                    if (item.Land.IsNullOrEmpty())
+                        item.Land = "DE";
+                });
 
             return webItems;
         }
@@ -119,9 +127,63 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             AppSettings = appSettings;
         }
 
-        public List<UeberfuehrungsAuftragsPosition> Save(List<Fahrt> fahrten)
+        public List<UeberfuehrungsAuftragsPosition> Save(RgDaten rgDaten, List<CommonUiModel> stepModels, List<Fahrt> fahrten)
         {
-            return null;
+            var returnList = new List<UeberfuehrungsAuftragsPosition>();
+            var webUser = LogonContext.UserName;  
+            var webUserEmail = "test@test.de";
+
+            if (rgDaten.RgKundenNr.IsNullOrEmpty())
+            {
+                returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungszahler angegeben" });
+                return returnList;
+            }
+            if (rgDaten.ReKundenNr.IsNullOrEmpty())
+            {
+                returnList.Add(new UeberfuehrungsAuftragsPosition { AuftragsNr = "", Bemerkung = "Keine Rechnungsempfänger angegeben", FahrtIndex = "1" });
+                return returnList;
+            }
+
+            var fahrtAdressen = stepModels.OfType<Adresse>().ToList();
+            var i = 0; fahrtAdressen.ForEach(adresse => 
+            { 
+                adresse.FahrtIndexAktuellTmp = (i++).ToString();
+                adresse.KundenNr = "";
+            });
+            var fahrzeuge = stepModels.OfType<Fahrzeug>().ToList();
+            var dienstleistungsAuswahlen = stepModels.OfType<DienstleistungsAuswahl>();
+            var dienstleistungen = dienstleistungsAuswahlen.SelectMany(auswahl => auswahl.GewaehlteDienstleistungen).ToList();
+            var kurzBemerkungen = dienstleistungsAuswahlen.SelectMany(u => u.Bemerkungen.BemerkungAsKurzBemerkungen).ToList();
+
+            var vorgangsNr = SAP.GetExportParameterWithInitExecute("Z_UEB_NEXT_NUMBER_VORGANG_01", "E_VORGANG", "");
+            if (vorgangsNr.IsNullOrEmpty())
+                return returnList;
+
+            fahrten.ForEach(fahrt => fahrt.VorgangsNummer = vorgangsNr);
+
+            SAP.Init("Z_UEB_CREATE_ORDER_01",
+                        "AG, RG, RE, WEB_USER, EMAIL_WEB_USER",
+                        KundenNr.ToSapKunnr(), rgDaten.RgKundenNr.ToSapKunnr(), rgDaten.ReKundenNr.ToSapKunnr(), webUser, webUserEmail);
+
+            var fahrtenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FAHRTEN_To_Fahrt.CopyBack(fahrten).ToList();
+            var adressenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_ADRESSEN_To_Adresse.CopyBack(fahrtAdressen).ToList();
+            var fahrzeugeList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FZG_To_Fahrzeug.CopyBack(fahrzeuge).ToList();
+            var dienstleistungenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_DIENSTLSTGN_To_Dienstleistung.CopyBack(dienstleistungen).ToList();
+            var bemerkungenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_BEM_To_KurzBemerkung.CopyBack(kurzBemerkungen).ToList();
+
+            SAP.ApplyImport(fahrtenList);
+            SAP.ApplyImport(adressenList);
+            SAP.ApplyImport(fahrzeugeList);
+            SAP.ApplyImport(dienstleistungenList);
+            SAP.ApplyImport(bemerkungenList);
+
+            SAP.Execute();
+
+            var sapReturnList = Z_UEB_CREATE_ORDER_01.GT_RET.GetExportList(SAP);
+
+            returnList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_RET_To_UeberfuehrungsAuftrag.Copy(sapReturnList).ToList();
+
+            return returnList;
         }
     }
 }

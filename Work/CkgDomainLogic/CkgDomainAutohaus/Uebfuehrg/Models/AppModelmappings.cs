@@ -81,7 +81,11 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                         { "ASKTX", "Name" },
                         { "TBTWR", "Preis" },
                         { "EAN11", "MaterialNummer" },
-                        { "VW_AG", "SapFlagVwAG" },
+                    }, (sap, business) =>
+                    {
+                        business.IstGewaehlt = (sap.VW_AG.NotNullOrEmpty() == "X");
+
+                        //business.IstGewaehlt = new[] { "1912", "2803" }.Contains(sap.EAN11.NotNullOrEmpty());
                     }));
             }
         }
@@ -222,20 +226,33 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 return EnsureSingleton(() => new ModelMapping<Z_UEB_CREATE_ORDER_01.GT_FZG, Fahrzeug>(
                     new Dictionary<string, string> {
                         { "FAHRZEUG", "FahrzeugIndex" },
-                        { "ZZFAHRZGTYP", "Typ" },
-                        { "ZZKENN", "KennzeichenConverted" },
-                        { "FZGART", "FahrzeugklasseConverted" },
-                        { "ZULGE", "FahrzeugZugelassenConverted" },
-                        { "ZUL_BEI_CK_DAD", "FahrzeugZugelassenDAD" },
-                        { "SOWI", "Bereifung" },
-                        { "ROTKENN", "EmptyString" },
+
+                        { "ZZFAHRG", "FIN" },
+                        { "ZZKENN", "Kennzeichen" },
+                        
+                        { "FZGART", "Fahrzeugklasse" },
+
+                        //{ "FZGART", "Hersteller" },
+                        //{ "ZZFAHRZGTYP", "Modell" },
+
+                        //{ "ZULGE", "FahrzeugZugelassen" },
+                        //{ "ZUL_BEI_CK_DAD", "ZulassungBeauftragt" },
+
                         { "AUGRU", "Fahrzeugwert" },
                         { "ZZREFNR", "Referenznummer" },
-                        { "ZZFAHRG", "FIN" },
+
                         //{ "ERSTZULDAT", "EmptyString" },
-                        { "ZFZGKAT", "EmptyString" },
+                        { "ROTKENN", "EmptyString" },
                         { "EXKUNNR_ZL", "EmptyString" },
-                    }));
+                    }, 
+                    null,
+                    (business, sap) =>
+                        {
+                            sap.ZULGE = (business.FahrzeugZugelassen ? "J" : "N");
+                            sap.ZUL_BEI_CK_DAD = (business.ZulassungBeauftragt ? "J" : "N");
+
+                            sap.ZZFAHRZGTYP = string.Format("{0}, {1}", business.Hersteller, business.Modell).Crop(25);
+                        }));
             }
         }
 
