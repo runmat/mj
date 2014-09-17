@@ -365,7 +365,69 @@
             }
         });
     }
+    
+    function CsvUpload() {
+        $("#fileUpload").trigger("click");
+        return false;
+    }
 
+    function UploadStart(e) {
+
+        // clear only the UI of our Upload Control:
+        //$(this).children(".t-upload-files").remove();
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
+            alert('Bitte nur CSV-Dateien hochladen!');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(false);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        //alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+        SpanAlertError("Message", "Es gab ein Problem beim Speichern Ihrer Datei!", 2000);
+        LoadingHide();
+    }
+
+    function ShowGrid() {
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadShowGrid",
+            data: { showErrorsOnly: false },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+                if (_formWizardForceHideSubmitButton)
+                    FormWizard.ButtonSubmitShow(false);
+            }
+        });
+    }
 </script>
 
 

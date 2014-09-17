@@ -3,11 +3,34 @@
 @{ var gridName = "GridFahrzeugAuswahl"; }
 
 <h4 class="margin-bottom-20">
+    
+    <a href="#" onclick="return CsvUpload()" class="btn tooltips margin-right-10" data-original-title="Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!" data-placement="right"> CSV Upload <i class="icon-upload-alt"></i></a>
+    <span class="hide">
+        @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Multiple(false)
+            .Localizable("de-DE")
+            .Async(async => async
+                                .Save("CsvUploadStart", "Equi")
+                                .SaveField("uploadFiles")
+                                .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                                        .OnUpload("UploadStart")
+                                        .OnSuccess("UploadFinished")
+                                        .OnError("UploadError"))
+          )
+    </span>
+                  
     @Model.FahrzeugAuswahlTitleHint: 
+
     <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
         <i class="icon-check"></i><span class="padding-left-5 bold"></span>
     </span>
 </h4> 
+
+@Html.SpanAlert("Message")
 
 @(Html.Telerik()
     .Grid<Fahrzeugbrief>()
