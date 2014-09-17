@@ -321,13 +321,13 @@
                                                         Enabled="False"></asp:CheckBox>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
-                                            <asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Passwort&#228;nderung">
+                                            <asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Kennwort&#228;nderung">
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             </asp:BoundColumn>
                                             <asp:BoundColumn DataField="LastLogin" SortExpression="LastLogin" HeaderText="letztes Login">
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             </asp:BoundColumn>
-                                            <asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Passwort&lt;br&gt;l&#228;uft nicht ab">
+                                            <asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Kennwort&lt;br&gt;l&#228;uft nicht ab">
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 <ItemTemplate>
                                                     <asp:CheckBox ID="cbxSRPwdNeverExpires" runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "PwdNeverExpires") %>'
@@ -501,7 +501,7 @@
                                                                         Keine Berechtigung
                                                                     </td>
                                                                     <td height="22">
-                                                                        <asp:RadioButton ID="cbxNoCustomerAdmin" runat="server" GroupName="grpFirmenadministration" AutoPostBack="true" />
+                                                                        <asp:RadioButton ID="cbxNoCustomerAdmin" runat="server" Checked="True" GroupName="grpFirmenadministration" AutoPostBack="true"/>
                                                                     </td>
                                                                 </tr>
                                                                 <tr id="trCustomerAdmin2" runat="server">
@@ -590,7 +590,7 @@
                                                                 border="0">
                                                                 <tr>
                                                                     <td height="22">
-                                                                        letzte Passwortänderung:
+                                                                        letzte Kennwortänderung:
                                                                     </td>
                                                                     <td align="left" height="22">
                                                                         <asp:Label ID="lblLastPwdChange" runat="server" CssClass="InfoBoxFlat" Width="160px"></asp:Label>
@@ -598,7 +598,7 @@
                                                                 </tr>
                                                                 <tr id="trPwdNeverExpires" runat="server">
                                                                     <td height="22">
-                                                                        Passwort läuft nie ab:
+                                                                        Kennwort läuft nie ab:
                                                                     </td>
                                                                     <td align="left" height="22">
                                                                         <asp:CheckBox ID="cbxPwdNeverExpires" runat="server"></asp:CheckBox>
@@ -660,7 +660,7 @@
                                                                     </td>
                                                                     <td nowrap="nowrap" align="left" height="22">
                                                                         <asp:TextBox ID="txtPassword" runat="server" Visible="true" Width="160px" TextMode="Password"></asp:TextBox><asp:LinkButton
-                                                                            ID="btnCreatePassword" runat="server" CssClass="StandardButtonTable" Visible="False">Passwort generieren</asp:LinkButton>
+                                                                            ID="btnCreatePassword" runat="server" CssClass="StandardButtonTable" Visible="False">Kennwort generieren</asp:LinkButton>
                                                                     </td>
                                                                 </tr>
                                                                 <tr id="trConfirmPassword" runat="server">
