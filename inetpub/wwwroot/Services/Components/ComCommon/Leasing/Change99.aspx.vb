@@ -957,9 +957,9 @@ Partial Public Class Change99
 
         'Nur wenn Versandoption "Auf Abmeldung warten" explizit gewählt ist, kein "Versand ohne Abmeldung"
         If cbxAufAbmeldungWarten.Checked = False Then
-            _mVersand.VersandOhneAbmeldung = ""
-        Else
             _mVersand.VersandOhneAbmeldung = "X"
+        Else
+            _mVersand.VersandOhneAbmeldung = ""
         End If
 
         If bAuswahlNormal = False Then
