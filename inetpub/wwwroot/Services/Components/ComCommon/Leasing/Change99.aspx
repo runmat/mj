@@ -1196,7 +1196,7 @@
                                                                 <div style="margin-left: 17px">
                                                                     <asp:CheckBoxList ID="chkGruende" runat="server">
                                                                     </asp:CheckBoxList>
-                                                                    <asp:CheckBox runat="server" ID="cbxAufAbmeldungWarten" Text="Auf Abmeldung warten." Visible="False" />
+                                                                    <asp:CheckBox runat="server" ID="cbxAufAbmeldungWarten" Text="Auf Abmeldung warten." Visible="False" AutoPostBack="True" />
                                                                 </div>
                                                             </td>
                                                            

@@ -2108,4 +2108,8 @@ Partial Public Class Change99
     End Sub
 
  
+    Private Sub cbxAufAbmeldungWarten_CheckedChanged(sender As Object, e As System.EventArgs) Handles cbxAufAbmeldungWarten.CheckedChanged
+        _mVersand.AufAbmeldungWarten = cbxAufAbmeldungWarten.Checked
+        ConfirmNextToOverView.Enabled = _mVersand.ShowStilllegungsdatumPopup(Session("AppID").ToString)
+    End Sub
 End Class
