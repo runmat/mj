@@ -209,7 +209,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Das Event wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.EventSuccessfullyDeleted", 1800);
                 //$("#VersEventGrid").data("tGrid").ajaxRequest();
                 FilterGrid("VersEventGrid");
             },
@@ -328,7 +328,7 @@
     }
 
     function VersEventOrtDelete(id) {
-        if (!confirm('Diesen Ort für dieses Event wirklich löschen?'))
+        if (!confirm('@Localize.VersEventConfirmLocationDeletion'))
             return;
 
         $.ajax({
@@ -337,7 +337,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Der Ort für dieses Event wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.VersEventLocationSuccessfullyDeleted", 1800);
                 //$("#VersEventOrtGrid").data("tGrid").ajaxRequest();
                 FilterGrid("VersEventOrtGrid");
 
@@ -456,7 +456,7 @@
     }
 
     function VersEventOrtBoxDelete(id) {
-        if (!confirm('Diese Box für diesen Event-Ort wirklich löschen?'))
+        if (!confirm('@Localize.VersEventConfirmBoxDeletion'))
             return;
 
         $.ajax({
@@ -465,7 +465,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Die Box für diesen Event-Ort wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.VersEventBoxSuccessfullyDeleted", 1800);
                 //$("#VersEventOrtBoxGrid").data("tGrid").ajaxRequest();
                 FilterGrid("VersEventOrtBoxGrid");
             },
@@ -600,7 +600,7 @@
     }
 
     function BoxBlockerTerminDelete(id) {
-        if (!confirm('Diesen Blocker-Termin für diese Box wirklich löschen?'))
+        if (!confirm('@Localize.BlockingAppointmentConfirmBoxDeletion'))
             return;
 
         $.ajax({
@@ -609,7 +609,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Die Box für diesen Event-Ort wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.BlockingAppointmentSuccessfullyDeleted", 1800);
                 //$("#BoxBlockerTermineGrid").data("tGrid").ajaxRequest();
                 FilterGrid("BoxBlockerTermineGrid");
             },

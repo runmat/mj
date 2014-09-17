@@ -26,11 +26,10 @@
                     return;
                 }
 
-                //$('#calendar').removeClass("mobile");
-
                 $('#calendar').fullCalendar('destroy'); // destroy the calendar
-                $('#calendar').fullCalendar({ //re-initialize the calendar
-
+                $('#calendar').fullCalendar(
+                {
+                    //re-initialize the calendar
                     header: { left: 'title', center: '', right: 'prev,next,today,agendaWeek' },
                     defaultView: 'agendaWeek',
                     editable: true,
