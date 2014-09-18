@@ -6,21 +6,64 @@
         @Html.FormValidationSummary()
         
         @Html.HiddenFor(m => m.UiIndex)
+        @Html.HiddenFor(m => m.FahrzeugIndex)
+        @Html.HiddenFor(m => m.AnzahlFahrzeugeGewuenscht)
 
-        @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap medium" })
+        if (Model.FahrzeugIndex == "1")
+        {
+             @Html.FormTemplateControl(Localize.NumberOfVehicles,
+                                       @<text>
+                                            <div class="padding-top-2">
+                                                <span class="margin-left-5 slider-label">1</span>
+                                                <span class="margin-left-40 slider-label">2</span>
+                                            </div>
+                                            <div id="slider" class="slider margin-left-10 bg-green ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false" style="width:52px;">
+                                                <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a>
+                                            </div>
+                                            <style type="text/css">
+                                                .slider-label {
+                                                    font-weight: bold;
+                                                    cursor: pointer;
+                                                }
+                                            </style>
+                                            <script type="text/javascript">
+                                                $("#slider").slider({
+                                                    min: 1,
+                                                    max: 2,
+                                                    value: @(Model.AnzahlFahrzeugeGewuenscht == 1 ? "1" : "2"),
+                                                    slide: function (event, ui) {
+                                                        slideTo(ui.value);
+                                                    }
+                                                });
+                                                $(".slider-label").on("click", function() {
+                                                    var sliderValue = $(this).text();
+                                                    $("#slider").slider('value', sliderValue);
+                                                    slideTo(sliderValue);
+                                                });
 
-        @Html.FormTextBoxFor(m => m.Fahrzeugklasse, new { @class = "m-wrap medium" })
-
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small" })
+                                                function slideTo(value) {
+                                                    LoadingShow();
+                                                    location.replace("Fzg" + value);
+                                                }
+                                            </script>
+                                        </text>, new {@class = "m-wrap"})
+        }
         
+        @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Fahrzeugwert, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Typ, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.ZulassungsauftragAnDAD, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Bereifung, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Hersteller, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Modell, new { @class = "m-wrap medium", col = "right" })
 
-        
+        @Html.FormDropDownListFor(m => m.Fahrzeugklasse, Model.FahrzeugklasseOptions.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.Fahrzeugwert, Model.FahrzeugwertOptions.ToSelectList(), new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormCheckBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">@Localize.VehicleRegisteredAndReady</label></text>)
+        @Html.FormCheckBoxFor(m => m.ZulassungBeauftragt, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.VehiclesLicenseOrdered</label></text>)
+
+        @Html.FormTextBoxFor(m => m.Referenznummer, new { @class = "m-wrap medium" })
+
+                
         @Html.FormRequiredFieldsSummary()
         
         
