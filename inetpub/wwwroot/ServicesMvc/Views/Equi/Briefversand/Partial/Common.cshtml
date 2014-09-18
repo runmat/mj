@@ -178,6 +178,9 @@
 
     function AjaxFormAdressenShowGrid(addressType) {
 
+        //alert(addressType);
+        //return false;
+
         $.ajax(
             {
                 type: "POST",
@@ -279,6 +282,19 @@
     }
 
     function OnColumnReorder_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    
+    function OnDataBound_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ZulassungAdressenAuswahlGrid() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 

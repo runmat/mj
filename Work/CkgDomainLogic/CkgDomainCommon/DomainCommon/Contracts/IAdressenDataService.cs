@@ -13,6 +13,8 @@ namespace CkgDomainLogic.DomainCommon.Contracts
         List<Adresse> ReAdressen { get; }
         Adresse AgAdresse { get; }
 
+        List<Adresse> ZulassungsStellen { get; }
+
 
         void MarkForRefreshAdressen();
 

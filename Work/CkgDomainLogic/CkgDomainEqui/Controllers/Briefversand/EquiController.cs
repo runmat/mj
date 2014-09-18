@@ -96,36 +96,6 @@ namespace ServicesMvc.Controllers
             return PartialView("Briefversand/VersandAdresse", BriefversandViewModel);
         }
 
-        [GridAction]
-        public ActionResult VersandAdressenAjaxBinding()
-        {
-            var items = BriefversandViewModel.VersandAdressenFiltered;
-
-            return View(new GridModel(items));
-        }
-
-        [HttpPost]
-        public ActionResult FilterVersandAdressenAuswahlGrid(string filterValue, string filterColumns)
-        {
-            BriefversandViewModel.FilterVersandAdressen(filterValue, filterColumns);
-
-            return new EmptyResult();
-        }
-
-        [HttpPost]
-        public JsonResult VersandAdresseGetAutoCompleteItems()
-        {
-            return Json(new { items = BriefversandViewModel.VersandAdressenAsAutoCompleteItems });
-        }
-
-        [HttpPost]
-        public ActionResult VersandAdressenShowGrid()
-        {
-            BriefversandViewModel.DataMarkForRefreshVersandAdressenFiltered();
-
-            return PartialView("Briefversand/Partial/VersandAdressenAuswahlGrid");
-        }
-
         [HttpPost]
         public ActionResult VersandAdresseForm(Adresse model)
         {
@@ -153,6 +123,66 @@ namespace ServicesMvc.Controllers
             model.IsValid = ModelState.IsValid;
 
             return PartialView("Briefversand/VersandAdresseForm", model);
+        }
+
+        [GridAction]
+        public ActionResult VersandAdressenAjaxBinding()
+        {
+            var items = BriefversandViewModel.VersandAdressenFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterVersandAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            BriefversandViewModel.FilterVersandAdressen(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult VersandAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = BriefversandViewModel.VersandAdressenAsAutoCompleteItems });
+        }
+
+        [HttpPost]
+        public ActionResult VersandAdressenShowGrid()
+        {
+            BriefversandViewModel.DataMarkForRefreshVersandAndZulassungAdressenFiltered();
+
+            return PartialView("Briefversand/Partial/VersandAdressenAuswahlGrid");
+        }
+
+        [GridAction]
+        public ActionResult ZulassungAdressenAjaxBinding()
+        {
+            var items = BriefversandViewModel.ZulassungAdressenFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterZulassungAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            BriefversandViewModel.FilterZulassungAdressen(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult ZulassungAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = BriefversandViewModel.ZulassungAdressenAsAutoCompleteItems });
+        }
+
+        [HttpPost]
+        public ActionResult ZulassungAdressenShowGrid()
+        {
+            BriefversandViewModel.DataMarkForRefreshVersandAndZulassungAdressenFiltered();
+
+            return PartialView("Briefversand/Partial/ZulassungAdressenAuswahlGrid");
         }
 
         #endregion
@@ -299,6 +329,22 @@ namespace ServicesMvc.Controllers
         {
             var dt = BriefversandViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandAdressen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ZulassungadressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ZulassungsAdressen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ZulassungadressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ZulassungsAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

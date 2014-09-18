@@ -125,9 +125,13 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public string FahrzeugAuswahlTitleHint { get { return Localize.PleaseChooseOneOrMoreVehicles; } }
 
+        [XmlIgnore]
         public string CsvUploadFileName { get; private set; }
+        [XmlIgnore]
         public string CsvUploadServerFileName { get; private set; }
+        [XmlIgnore]
         public bool UploadItemsSuccessfullyStored { get; set; }
+        [XmlIgnore]
         public List<FahrzeugCsvUploadEntity> UploadItems { get; private set; }
 
         #endregion
@@ -172,10 +176,47 @@ namespace CkgDomainLogic.Equi.ViewModels
         public Adresse GetVersandAdresseFromKey(string key)
         {
             int id;
+            Adresse adr = null;
             if (Int32.TryParse(key, out id))
-                return VersandAdressen.FirstOrDefault(v => v.ID == id);
+                adr = VersandAdressen.FirstOrDefault(v => v.ID == id) ?? ZulassungAdressen.FirstOrDefault(v => v.ID == id);
 
-            return VersandAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            if (adr == null)
+                // note: skip "Zulassungsstellen" in "auto select" mode
+                adr = VersandAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+
+            if (adr != null)
+                if (adr.Land.IsNullOrEmpty())
+                    adr.Land = "DE";
+
+            return adr;
+        }
+
+        [XmlIgnore]
+        public List<Adresse> ZulassungAdressen
+        {
+            get { return AdressenDataService.ZulassungsStellen; }
+        }
+
+        [XmlIgnore]
+        public List<string> ZulassungAdressenAsAutoCompleteItems
+        {
+            get { return ZulassungAdressen.Select(a => a.GetAutoSelectString()).ToList(); }
+        }
+
+        [XmlIgnore]
+        public List<Adresse> ZulassungAdressenFiltered
+        {
+            get { return PropertyCacheGet(() => ZulassungAdressen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public Adresse GetZulassungAdresseFromKey(string key)
+        {
+            int id;
+            if (Int32.TryParse(key, out id))
+                return ZulassungAdressen.FirstOrDefault(v => v.ID == id);
+
+            return ZulassungAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
         }
 
         #endregion
@@ -252,7 +293,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             // reset filtered data
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
-            DataMarkForRefreshVersandAdressenFiltered();
+            DataMarkForRefreshVersandAndZulassungAdressenFiltered();
 
             // reset CSV Upload (merged) data
             FahrzeugeMergedWithCsvUpload = null;
@@ -265,9 +306,10 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void DataMarkForRefreshVersandAdressenFiltered()
+        public void DataMarkForRefreshVersandAndZulassungAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
+            PropertyCacheClear(this, m => m.ZulassungAdressenFiltered);
         }
 
         public void DataMarkForRefreshVersandoptionen()
@@ -288,6 +330,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void FilterVersandAdressen(string filterValue, string filterProperties)
         {
             VersandAdressenFiltered = VersandAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterZulassungAdressen(string filterValue, string filterProperties)
+        {
+            ZulassungAdressenFiltered = ZulassungAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         public void TrySelectFahrzeugVIN(string vin)
