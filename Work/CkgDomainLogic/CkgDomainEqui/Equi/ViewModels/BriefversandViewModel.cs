@@ -82,7 +82,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         #region Step "Fahrzeugwahl"
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> Fahrzeuge { get { return BriefbestandDataService.FahrzeugbriefeZumVersand; } }
+        public List<Fahrzeugbrief> Fahrzeuge { get { return FahrzeugeMergedWithCsvUpload ?? BriefbestandDataService.FahrzeugbriefeZumVersand; } }
 
         public List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; private set; }
 
@@ -254,6 +254,9 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
             DataMarkForRefreshVersandAdressenFiltered();
 
+            // reset CSV Upload (merged) data
+            FahrzeugeMergedWithCsvUpload = null;
+
             ParamVins = vins;
             if (ParamVins.IsNotNullOrEmpty())
                 ParamVins.Split(',').ToList().ForEach(vin => TrySelectFahrzeugVIN(vin.Trim()));
@@ -421,8 +424,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             return true;
         }
 
-        void MergeCsvUploadItems()
+        private void MergeCsvUploadItems()
         {
+            FahrzeugeMergedWithCsvUpload = null;
+
+            var mergedList = new List<Fahrzeugbrief>();
             var fahrzeugeFromUploadItems = UploadItems.Select(uploadItem => new Fahrzeugbrief
                 {
                     Fahrgestellnummer = uploadItem.FIN,
@@ -431,36 +437,41 @@ namespace CkgDomainLogic.Equi.ViewModels
                     Vertragsnummer = uploadItem.LizenzNr,
                     Referenz1 = uploadItem.Referenz1,
                     Referenz2 = uploadItem.Referenz2,
-                    IsValid = false,
+                    IsMissing = true,
                 }).ToListOrEmptyList();
 
             fahrzeugeFromUploadItems.ForEach(uploadFahrzeug =>
                 {
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Fahrgestellnummer))
-                        uploadFahrzeug.IsValid = true;
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Kennzeichen))
-                        uploadFahrzeug.IsValid = true;
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.TechnIdentnummer))
-                        uploadFahrzeug.IsValid = true;
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Vertragsnummer))
-                        uploadFahrzeug.IsValid = true;
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Referenz1))
-                        uploadFahrzeug.IsValid = true;
-                    if (FahrzeugeImBestandMatchesProperty(uploadFahrzeug, p => p.Referenz2))
-                        uploadFahrzeug.IsValid = true;
-                });
+                    var fahrzeugImBestand = GetFahrzeugImBestandMatchesPropertiesOf(uploadFahrzeug,
+                                                                                    p => p.Fahrgestellnummer,
+                                                                                    p => p.Kennzeichen,
+                                                                                    p => p.TechnIdentnummer,
+                                                                                    p => p.Vertragsnummer,
+                                                                                    p => p.Referenz1,
+                                                                                    p => p.Referenz2);
+                    mergedList.Add(fahrzeugImBestand ?? uploadFahrzeug);
+                }
+             );
 
-
+            FahrzeugeMergedWithCsvUpload = mergedList;
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
 
-        bool FahrzeugeImBestandMatchesProperty(Fahrzeugbrief uploadFahrzeug, Expression<Func<Fahrzeugbrief, string>> propertyExpression)
+        Fahrzeugbrief GetFahrzeugImBestandMatchesPropertiesOf(Fahrzeugbrief uploadFahrzeug, params Expression<Func<Fahrzeugbrief, string>>[] propertyExpressions)
         {
-            var propertyMethod = propertyExpression.Compile();
+            foreach (var propertyExpression in propertyExpressions)
+            {
+                var propertyMethod = propertyExpression.Compile();
 
-            return Fahrzeuge.Any(fahrzeugImBestand =>
-                                 propertyMethod(uploadFahrzeug).IsNotNullOrEmpty() &&
-                                 propertyMethod(fahrzeugImBestand).IsNotNullOrEmpty() &&
-                                 propertyMethod(uploadFahrzeug) == propertyMethod(fahrzeugImBestand));
+                var fahrzeugImBestandFound = Fahrzeuge.FirstOrDefault(fahrzeugImBestand =>
+                                                                      propertyMethod(uploadFahrzeug).IsNotNullOrEmpty() &&
+                                                                      propertyMethod(fahrzeugImBestand).IsNotNullOrEmpty() &&
+                                                                      propertyMethod(uploadFahrzeug) == propertyMethod(fahrzeugImBestand));
+                if (fahrzeugImBestandFound != null)
+                    return fahrzeugImBestandFound;
+            }
+
+            return null;
         }
 
         #endregion    

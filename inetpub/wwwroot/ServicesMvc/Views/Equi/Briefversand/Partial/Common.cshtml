@@ -335,6 +335,24 @@
         $('.t-no-data td').text(ladeHinweis);
     }
 
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        var isMissing = e.dataItem["IsMissing"];
+
+        if (isMissing)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+
+
+//    $("#" + gridName + " table tbody tr").each(function () {
+//        var tr = $(this);
+//        tr.addClass('t-grid-multi-row-select');
+//        tr.find('td input[type=checkbox]').each(function () {
+//            Grid_FormatMultiRowSelected(tr, this.checked);
+//            $(this).change(function () { Grid_FormatMultiRowSelected(tr, this.checked); });
+//        });
+//    });
+
+
     function OnColumnShowHide_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
@@ -399,7 +417,7 @@
             return;
         }
 
-        ShowGrid(false);
+        FilterGrid("GridFahrzeugAuswahl");
     }
 
     function UploadError(e) {
@@ -408,25 +426,6 @@
         LoadingHide();
     }
 
-    function ShowGrid() {
-        $.ajax({
-            type: "POST",
-            url: "CsvUploadShowGrid",
-            data: { showErrorsOnly: false },
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetTabHtml(2, result);
-                FormPreparePrivateAjax();
-                FormWizard.ButtonNextInvoke();
-                if (_formWizardForceHideSubmitButton)
-                    FormWizard.ButtonSubmitShow(false);
-            }
-        });
-    }
 </script>
 
 

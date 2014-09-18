@@ -39,7 +39,7 @@
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
+            columns.XBound("").ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>").Filterable(false);
             //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
 
             columns.XBound(c => c.Kennzeichen);
@@ -54,7 +54,7 @@
         })
 
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl").OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
 
