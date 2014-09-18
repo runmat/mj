@@ -50,13 +50,13 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
-            int allSelectionCount;
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
             if (vin.IsNullOrEmpty())
-                BriefversandViewModel.SelectFahrzeuge(isChecked, out allSelectionCount, f => !f.IsMissing);
+                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount);
             else
                 BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
-            return Json(new { allSelectionCount });
+            return Json(new { allSelectionCount, allCount, allFoundCount });
         }
 
         #endregion
@@ -233,6 +233,7 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+
         #region CSV Upload
 
         [HttpPost]
@@ -258,13 +259,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult CsvUploadShowGrid(bool showErrorsOnly)
+        public ActionResult CsvUploadReset()
         {
-            // Step 2:  Show CSV data in a grid for user validation
+            BriefversandViewModel.SetFahrzeugeMergedWithCsvUpload(null);
 
-            //BriefversandViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
-
-            return new EmptyResult();   // return PartialView("Erfassung/CsvUpload/ValidationGrid", BriefversandViewModel);
+            return new EmptyResult();   
         }
 
         #endregion

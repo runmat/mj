@@ -310,11 +310,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
-        public void SelectFahrzeuge(bool select, out int allSelectionCount, Predicate<Fahrzeugbrief> filter)
+        public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
             Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+            allCount = Fahrzeuge.Count();
+            allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)
@@ -460,7 +462,12 @@ namespace CkgDomainLogic.Equi.ViewModels
                 }
              );
 
-            FahrzeugeMergedWithCsvUpload = mergedList;
+            SetFahrzeugeMergedWithCsvUpload(mergedList);
+        }
+
+        public void SetFahrzeugeMergedWithCsvUpload(List<Fahrzeugbrief> list)
+        {
+            FahrzeugeMergedWithCsvUpload = list;
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
 

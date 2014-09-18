@@ -385,14 +385,16 @@
         });
     }
 
-    function GridFahrzeugAuswahl_OnAllSelectionChange(cb) {
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
-            data: { id: "", isChecked: cb.is(':checked') },
+            data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
                 FilterGrid("GridFahrzeugAuswahl");
             }
         });
@@ -445,13 +447,28 @@
             return;
         }
 
-        FilterGrid("GridFahrzeugAuswahl");
+        setTimeout(function() { $("#csv-upload-reset").show(); }, 1000);
+        GridFahrzeugAuswahl_OnAllSelectionChange(true);
     }
 
     function UploadError(e) {
         e.preventDefault();
         SpanAlertError("Message", "Es gab ein Problem beim Speichern Ihrer Datei!", 2000);
         LoadingHide();
+    }
+
+    function CsvUploadReset() {
+
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadReset",
+            data: {  },
+            loadingShow: true,
+            success: function (result) {
+                $("#csv-upload-reset").hide();
+                GridFahrzeugAuswahl_OnAllSelectionChange(false);
+            }
+        });
     }
 
 </script>

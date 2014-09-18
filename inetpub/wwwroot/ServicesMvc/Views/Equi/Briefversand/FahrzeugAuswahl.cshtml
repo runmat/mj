@@ -5,6 +5,11 @@
 <h4 class="margin-bottom-20">
     
     <a href="#" onclick="return CsvUpload()" class="btn tooltips margin-right-10" data-original-title="Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!" data-placement="right"> CSV Upload <i class="icon-upload-alt"></i></a>
+    
+    <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
+        <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
+    </button>
+
     <span class="hide">
         @(Html.Telerik().Upload()
             .Name("fileUpload")
@@ -41,7 +46,7 @@
         {
             columns.XBound("")
                 .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>")
-                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this))' />")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
                 .Filterable(false);
 
             columns.XBound(c => c.Kennzeichen);
