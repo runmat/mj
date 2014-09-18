@@ -51,7 +51,10 @@ namespace ServicesMvc.Controllers
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
             int allSelectionCount;
-            BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+            if (vin.IsNullOrEmpty())
+                BriefversandViewModel.SelectFahrzeuge(isChecked, out allSelectionCount, f => !f.IsMissing);
+            else
+                BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
             return Json(new { allSelectionCount });
         }

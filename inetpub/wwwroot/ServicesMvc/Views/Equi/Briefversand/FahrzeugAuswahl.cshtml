@@ -39,8 +39,10 @@
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("").ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>").Filterable(false);
-            //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
+            columns.XBound("")
+                .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this))' />")
+                .Filterable(false);
 
             columns.XBound(c => c.Kennzeichen);
             columns.XBound(c => c.Fahrgestellnummer);

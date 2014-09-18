@@ -310,6 +310,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
+        public void SelectFahrzeuge(bool select, out int allSelectionCount, Predicate<Fahrzeugbrief> filter)
+        {
+            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+        }
+
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)
         {
             var versandAuftrag = new VersandAuftragsAnlage

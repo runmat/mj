@@ -372,6 +372,7 @@
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
                 FormWizard.ActionsShow(count > 0);
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
@@ -383,6 +384,33 @@
             }
         });
     }
+
+    function GridFahrzeugAuswahl_OnAllSelectionChange(cb) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: cb.is(':checked') },
+            loadingShow: true,
+            success: function (result) {
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                FilterGrid("GridFahrzeugAuswahl");
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }    
     
     function CsvUpload() {
         $("#fileUpload").trigger("click");
