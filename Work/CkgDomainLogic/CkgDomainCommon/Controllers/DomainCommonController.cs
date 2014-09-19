@@ -104,9 +104,9 @@ namespace ServicesMvc.Controllers
         #region Adressen Pflege
 
         [CkgApplication]
-        public ActionResult AdressenPflege(string kennung)
+        public ActionResult AdressenPflege(string kennung, string kdnr)
         {
-            AdressenPflegeViewModel.DataInit(kennung ?? "VERSANDADRESSE");
+            AdressenPflegeViewModel.DataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
 
             return View(AdressenPflegeViewModel);
         }

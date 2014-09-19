@@ -70,6 +70,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -95,7 +96,6 @@
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
-    <Compile Include="Controllers\UebfuehrgController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
@@ -168,20 +168,6 @@
     <Compile Include="Strafzettel\Models\AppModelmappings.cs" />
     <Compile Include="Strafzettel\Services\StrafzettelDataServiceSAP.cs" />
     <Compile Include="Strafzettel\ViewModels\StrafzettelViewModel.cs" />
-    <Compile Include="Uebfuehrg\Contracts\IUebfuehrgDataService.cs" />
-    <Compile Include="Uebfuehrg\Models\AppModelMappings.cs" />
-    <Compile Include="Uebfuehrg\Models\CompositeModels\Fahrt.cs" />
-    <Compile Include="Uebfuehrg\Models\DataModels\Dienstleistung.cs" />
-    <Compile Include="Uebfuehrg\Models\DataModels\KurzBemerkung.cs" />
-    <Compile Include="Uebfuehrg\Models\DataModels\TransportTyp.cs" />
-    <Compile Include="Uebfuehrg\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
-    <Compile Include="Uebfuehrg\Models\UiModels\Adresse.cs" />
-    <Compile Include="Uebfuehrg\Models\TrivialModels\Bemerkungen.cs" />
-    <Compile Include="Uebfuehrg\Models\UiModels\DienstleistungsAuswahl.cs" />
-    <Compile Include="Uebfuehrg\Models\UiModels\Fahrzeug.cs" />
-    <Compile Include="Uebfuehrg\Models\UiModels\RgDaten.cs" />
-    <Compile Include="Uebfuehrg\Services\UebfuehrgDataServiceSAP.cs" />
-    <Compile Include="Uebfuehrg\ViewModels\UebfuehrgViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\inetpub\wwwroot\ServicesMvc\PortalMvcTools\PortalMvcTools.csproj">
@@ -221,7 +207,6 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

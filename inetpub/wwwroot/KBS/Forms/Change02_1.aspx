@@ -252,8 +252,8 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                        <asp:Button ID="MPEDummy" Width="0" Height="0" runat="server" />
-                        <asp:Button ID="MPEDummy2" Width="0" Height="0" runat="server" />
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
+                        <asp:Button ID="MPEDummy2" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender runat="server" ID="mpeWareneingangsCheck" BackgroundCssClass="divProgress"
                             Enabled="true" PopupControlID="WareneingangsCheck" TargetControlID="MPEDummy2"
                             CancelControlID="lbWareneingangKorrektur">

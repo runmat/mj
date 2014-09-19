@@ -203,6 +203,42 @@ Partial Public Class Change04
     Protected WithEvents lbAbsenden As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
+    '''lbLetzteBestellungen-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbLetzteBestellungen As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''divLetzteBestellungen-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents divLetzteBestellungen As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblNoDataLetzteBestellungen-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblNoDataLetzteBestellungen As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''gvLetzteBestellungen-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents gvLetzteBestellungen As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
     '''MPEDummy-Steuerelement
     '''</summary>
     '''<remarks>

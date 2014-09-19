@@ -27,7 +27,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 {
     public class VersEventsViewModel : CkgBaseViewModel
     {
-        private const string LanguageKey = "DE";
+        private string _languageKey;
         private const int GutachtenTerminStatusID = 2;
 
         [XmlIgnore]
@@ -51,8 +51,10 @@ namespace CkgDomainLogic.Insurance.ViewModels
         public bool InsertMode { get; set; }
 
 
-        public void DataInit()
+        public void DataInit(string userCulture)
         {
+            _languageKey = (userCulture.IsNullOrEmpty() ? "DE" : userCulture.SubstringTry(0,2).ToUpper());
+
             AlleTermineFetchAllDetails = false;
             VersEventsLoad();
         }
@@ -144,7 +146,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         [XmlIgnore]
         public List<SchadenfallStatusArt> SchadenfallStatusArten
         {
-            get { return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusArtenGet(LanguageKey)); }
+            get { return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusArtenGet(_languageKey)); }
         }
 
         #endregion
@@ -159,7 +161,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
         {
             get
             {
-                return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusWerteGet(LanguageKey));
+                return PropertyCacheGet(() => SchadenDataService.SchadenfallStatusWerteGet(_languageKey));
             }
         }
 

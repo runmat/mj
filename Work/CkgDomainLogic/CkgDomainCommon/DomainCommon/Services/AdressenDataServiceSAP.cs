@@ -22,6 +22,10 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public List<Adresse> ZulassungsStellen { get { return PropertyCacheGet(() => GetZulassungsStellenFromSap()); } }
 
+        public string KundennrOverride { get; set; }
+        public string KundenNr { get { return KundennrOverride ?? LogonContext.KundenNr; } }
+
+
 
         public AdressenDataServiceSAP(ISapDataService sap)
             : base(sap)
@@ -63,7 +67,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             Z_DPM_READ_ZDAD_AUFTR_006.Init(SAP);
             if (kundennrMitgeben)
-                SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+                SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
             if (internalKey.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_POS_KURZTEXT", internalKey);
             if (kennung.IsNotNullOrEmpty())
@@ -87,7 +91,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var sapAdresse = AppModelMappings.MapAdressenToSAP.CopyBack(adresse);
 
             Z_DPM_PFLEGE_ZDAD_AUFTR_006.Init(SAP);
-            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
             var verarbeitungsKennzeichen = deleteOnly ? "D" : insertMode ? "N" : "U";
             SAP.SetImportParameter("I_VERKZ", verarbeitungsKennzeichen);
 
@@ -147,8 +151,8 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<Adresse> GetCustomerAdressen(string addressType)
         {
             SAP.Init("Z_M_PARTNER_AUS_KNVP_LESEN");
-            SAP.SetImportParameter("KUNNR", LogonContext.KundenNr.ToSapKunnr());
-            if (CkgDomainRules.IstKroschkeAutohaus(LogonContext.KundenNr))
+            SAP.SetImportParameter("KUNNR", KundenNr.ToSapKunnr());
+            if (CkgDomainRules.IstKroschkeAutohaus(KundenNr))
                 SAP.SetImportParameter("GRUPPE", GroupName);
             SAP.Execute();
 
