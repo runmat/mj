@@ -1,0 +1,32 @@
+﻿@model CkgDomainLogic.Equi.Models.VersandBeauftragungSelektor 
+
+<div id="divVersandBeauftragungenSuche">
+    @using (Ajax.BeginForm("LoadVersandBeauftragungen", "Equip", null,
+        new MvcAjaxOptions("divVersandBeauftragungenSuche") { OnComplete = "ShowVersandBeauftragungen();" }, new { id = "VersandBeauftragungenForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+
+            @Html.FormRadioButtonListFor(m => m.FilterVersandBeauftragungsTyp, Model.VersandBeauftragungsTypen, new { @class = "m-wrap", col = "left" })
+
+            @Html.FormCheckBoxFor(m => m.FilterAuchNeue, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">Auch neue Beauftragungen</label></text>)
+
+            @Html.FormCheckBoxFor(m => m.FilterFreigabeTreugeberOffen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">Freigabe Treugeber offen</label></text>)
+            
+            @Html.FormCheckBoxFor(m => m.FilterVersandVorbereitungDAD, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">Versandvorbereitung DAD</label></text>)
+            
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
