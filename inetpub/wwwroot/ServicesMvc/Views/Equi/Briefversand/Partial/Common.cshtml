@@ -358,17 +358,6 @@
             $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
     }
 
-
-//    $("#" + gridName + " table tbody tr").each(function () {
-//        var tr = $(this);
-//        tr.addClass('t-grid-multi-row-select');
-//        tr.find('td input[type=checkbox]').each(function () {
-//            Grid_FormatMultiRowSelected(tr, this.checked);
-//            $(this).change(function () { Grid_FormatMultiRowSelected(tr, this.checked); });
-//        });
-//    });
-
-
     function OnColumnShowHide_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
@@ -408,7 +397,10 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
+                var count = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                FormWizard.ActionsShow(count > 0);
+                
                 $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
                 $("#csv-upload-reset > span.all-count").text(result.allCount);
                 FilterGrid("GridFahrzeugAuswahl");
