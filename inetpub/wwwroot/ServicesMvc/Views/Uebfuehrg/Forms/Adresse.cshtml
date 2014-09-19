@@ -1,34 +1,92 @@
-﻿@model CkgDomainLogic.Uebfuehrg.Models.Adresse 
+﻿@using CkgDomainLogic.Uebfuehrg.Models
+@model Adresse 
+@* ReSharper disable AccessToStaticMemberViaDerivedType *@
 
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
+        <div class="form-actions">
+            <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-left-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top"><i class="icon-search margin-right-5"></i> Adressen suchen</a>
+            <a href="#" onclick="return AjaxFormAdresseEmpty(@Model.UiIndex, 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top"><i class="icon-remove margin-right-5"></i> Formular leeren</a>
+            
+            <a target="blank" href="#" onclick="return BingLocationMapShow(@Model.UiIndex)" class="route-info location btn blue tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte (mit Bing-Key)" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
+            @if (Model.ShowRouteInfo)
+            {
+                <a target="blank" href="#" onclick="return BingRouteMapShow(@Model.UiIndex)" class="route-info map btn blue tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (mit Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
+            }
+            
+            <div class="hide">
+                <a target="blank" href="#" class="route-info location btn red tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
+                @if (Model.ShowRouteInfo)
+                {
+                    <a target="blank" href="#" class="route-info map btn red tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (ohne(!) Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
+                }
+            </div>
+        </div>
+
         @Html.HiddenFor(m => m.UiIndex)
 
-        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.Kennung)
         @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.SubTyp)
         @Html.HiddenFor(m => m.TmpSelectionKey)
         @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
-        
+        @Html.HiddenFor(m => m.TransportTypAvailable)
+        @Html.HiddenFor(m => m.UhrzeitwunschAvailable)
+        @Html.HiddenFor(m => m.StartAdresseAsRouteInfo)
+
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+        if (Model.TransportTypAvailable)
+        {
+            @Html.FormDropDownListFor(m => m.TransportTyp, Model.ValideTransportTypen.ToSelectList(), new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.TransportTyp)
+        }
 
-        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
-        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Land, new { @class = "m-wrap medium" })
-
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap large", col = "right" })
         
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap large", col = "right" }) 
+
+        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap large", col = "right" })
+
+        if (Model.UhrzeitwunschAvailable)
+        {
+            @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
+            @Html.FormDropDownListFor(m => m.Uhrzeitwunsch, Model.UhrzeitwunschOptions.ToSelectList(), new { @class = "m-wrap small", col = "right" }) 
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large", col = "right" })
+        }
+
         @Html.FormRequiredFieldsSummary()
         
         
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        
+            if (_modelIsValid && false == @(Model.IsValid.ToString().ToLower()))
+                _modelIsValid = false;
+
+            var uiIndex = @Model.UiIndex;
+            AjaxFormAdressePrepareAutoComplete($("#AjaxForm" + uiIndex + " input[name='Name1']"), "UebfuehrgAdresseGetAutoCompleteItems");
+            AjaxFormAdressePrepareAutoCompleteReset(@Model.UiIndex);
+
+            RouteInfoSurveyAddressTextBoxes(@Model.UiIndex, @Model.ShowRouteInfo.ToString().ToLower(), '@Model.StartAdresseAsRouteInfo');
+
         </script>
     }
+
 </div>

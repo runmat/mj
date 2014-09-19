@@ -62,11 +62,11 @@
         FormInitJQueryExtensions();
     });
 
-    function FormPrepareAjax() {
+    function FormPrepareAjax(id) {
 
         App.init(true);
 
-        FormInitStyles();
+        FormInitStyles(id);
 
         FormPrepareAjaxLayoutPrivate();
     }
@@ -75,11 +75,11 @@
         setTimeout('FormPrepareAjax()', 200);
     }
 
-    function FormInitStyles() {
+    function FormInitStyles(id) {
         
         FormInitValidationErrorStyles();
 
-        FormInitDatePicker();
+        FormInitDatePicker(id);
         //alert("FormDateRangePickerInit");
         FormDateRangePickerInit();
 
@@ -129,9 +129,17 @@
         });
     }
 
-    function FormInitDatePicker() {
-        $(".datepicker").each(function () {
+    function FormInitDatePicker(id) {
+
+        var formIdSelector = "";
+        if (typeof(id) !== 'undefined') {
+            formIdSelector = "#AjaxForm" + id + " ";
+        }
+        //alert(formIdSelector);
+
+        $(formIdSelector + ".datepicker").each(function () {
             var datePicker = $(this);
+            datePicker.children("input").datepicker("destroy");
             datePicker.children("input").datepicker();
             
             datePicker.children(".add-on").click(function () {
@@ -397,12 +405,15 @@
         if (_insideAutoPostcodeCityMapping)
             return;
 
+        var form = tbCity.closest("form");
         if (countryPropertyName != "") {
-            if ($("#" + countryPropertyName).val().toLowerCase() != "de")
+            var countryDropdown = $("#" + form.attr("id") + " select[name='" + countryPropertyName + "']");
+            if (countryDropdown.val().toLowerCase() != "de")
                 return;
         }
         
-        var plz = $("#" + postCodePropertyName);
+        //var plz = $("#" + postCodePropertyName);
+        var plz = $("#" + form.attr("id") + " input[name='" + postCodePropertyName + "']");
         if (plz.val().length != 5)
             return;
 

@@ -281,6 +281,13 @@
     <Compile Include="forms\VorgangStatusaenderung.aspx.designer.cs">
       <DependentUpon>VorgangStatusaenderung.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\Auftragsnachbearbeitung.aspx.cs">
+      <DependentUpon>Auftragsnachbearbeitung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Auftragsnachbearbeitung.aspx.designer.cs">
+      <DependentUpon>Auftragsnachbearbeitung.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\KVPBewertung.aspx.cs">
       <DependentUpon>KVPBewertung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -463,6 +470,7 @@
     <Compile Include="lib\Barabhebung.cs" />
     <Compile Include="lib\clsDisposition.cs" />
     <Compile Include="lib\StatusaenderungVorgang.cs" />
+    <Compile Include="lib\NachbearbeitungAuftrag.cs" />
     <Compile Include="lib\Listen.cs" />
     <Compile Include="lib\Logbuch\Ausgang.cs">
       <SubType>Code</SubType>
@@ -543,6 +551,7 @@
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
+    <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />
     <Content Include="forms\KVPErfassung.aspx" />
     <Content Include="forms\Kundengruppe.aspx" />

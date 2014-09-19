@@ -203,6 +203,24 @@ Partial Public Class Bestellung_Platinen
     Protected WithEvents lbAbsenden As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
+    '''lbParken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbParken As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lbAusparken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbAusparken As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''BestellCheckHidden-Steuerelement
     '''</summary>
     '''<remarks>
@@ -327,6 +345,69 @@ Partial Public Class Bestellung_Platinen
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblMeldung As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''MPEDummy-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents MPEDummy As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''MPEAusparken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents MPEAusparken As Global.AjaxControlToolkit.ModalPopupExtender
+
+    '''<summary>
+    '''Ausparken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Ausparken As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''Table3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Table3 As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''lblErrorAusparken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblErrorAusparken As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''gvAusparken-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents gvAusparken As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
+    '''lbAusparkenClose-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbAusparkenClose As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''ihIsSaving-Steuerelement

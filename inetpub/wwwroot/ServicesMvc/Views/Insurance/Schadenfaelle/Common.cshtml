@@ -218,7 +218,6 @@
     }
     
     function SchadenfallStatusGridOnError(e) {
-        //console.log(e.XMLHttpRequest.responseText.message);
         SpanAlertAjaxError("Message", e.XMLHttpRequest);
         
         e.preventDefault();
@@ -273,7 +272,7 @@
     }
 
     function VorgangDelete(id) {
-        if (!confirm('Diesen Vorgang wirklich löschen?'))
+        if (!confirm('@Localize.ConfirmOccurenceDeletion'))
             return;
 
         $.ajax({
@@ -282,7 +281,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Der Vorgang wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.OccurenceSuccessfullyDeleted", 1800);
                 //$("#SchadenfallGrid").data("tGrid").ajaxRequest();
                 FilterGrid("SchadenfallGrid");
             },
@@ -398,7 +397,7 @@
         $(".nav-tabs a").on("click", function () {
             if (!_tabsEnabled) {
                 var levelName = $(".nav-tabs li.active").text();
-                SpanAlertWarning("Message", "Ein Registerwechsel ist erst wieder möglich sobald Sie sich auf der Hierarchie-Ebene  '" + levelName + "'  befinden.", 4000);
+                SpanAlertWarning("Message", "@Localize.VersEventTabChangeImpossibleHint '" + levelName + "'", 4000);
                 return false;
             }
 
@@ -586,7 +585,7 @@
     }
 
     function TerminSchadenfallDelete(id) {
-        if (!confirm('Diesen Termin wirklich löschen?'))
+        if (!confirm("@Localize.AppointmentConfirmDeletion"))
             return;
 
         $.ajax({
@@ -595,7 +594,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "Der Termin wurde erfolgreich gelöscht!", 1800);
+                SpanAlertSuccess("Message", "@Localize.AppointmentSuccessfullyDeleted", 1800);
                 FilterGrid("TerminSchadenfallGrid");
             },
             error: function (jqXhr) {
@@ -636,7 +635,7 @@
             loadingShow: false,
             success: function (result) {
                 if (result == '') {
-                    SpanAlertWarning("Message", "Terminanlage nicht möglich, denn es steht für diese Box Art kein geeigneter Ort zu Verfügung!", 1800);
+                    SpanAlertWarning("Message", "@Localize.AppointmentCreationImpossibleDueToMissingLocation", 1800);
                     return;
                 }
 
@@ -666,7 +665,7 @@
     var _calendarVisibleCursor = 0;
     var _cachedCalendarAppointmentsDateString = null;
     var _cachedCalendarAppointments = null;
-    var _calendarDayNames = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+    var _calendarDayNames = ["@Localize.Sunday", "@Localize.Monday", "@Localize.Tuesday", "@Localize.Wednesday", "@Localize.Thursday", "@Localize.Friday", "@Localize.Saturday"];
     var _ortZeitStartMoFr = "";
     var _ortZeitEndMoFr = "";
     var _ortZeitStartSa = "";
@@ -970,10 +969,10 @@
 
                     isRTL: false,
                     firstDay: 1,
-                    monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-                    monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                    monthNames: ["@Localize.January", "@Localize.February", "@Localize.March", "@Localize.April", "@Localize.May", "@Localize.June", "@Localize.July", "@Localize.August", "@Localize.September", "@Localize.October", "@Localize.November", "@Localize.December"],
+                    monthNamesShort: ["@Localize.JanuaryShort", "@Localize.FebruaryShort", "@Localize.MarchShort", "@Localize.AprilShort", "@Localize.MayShort", "@Localize.JuneShort", "@Localize.JulyShort", "@Localize.AugustShort", "@Localize.SeptemberShort", "@Localize.OctoberShort", "@Localize.NovemberShort", "@Localize.DecemberShort"],
                     dayNames: _calendarDayNames,
-                    dayNamesShort: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                    dayNamesShort: ["@Localize.SundayShort", "@Localize.MondayShort", "@Localize.TuesdayShort", "@Localize.WednesdayShort", "@Localize.ThursdayShort", "@Localize.FridayShort", "@Localize.SaturdayShort"],
                     buttonText: {
                         prev: "&nbsp;&#9668;&nbsp;",
                         next: "&nbsp;&#9658;&nbsp;",
@@ -987,8 +986,6 @@
                     allDayText: ""
 
                     , events: function (start, end, callback) {
-                        //console.log(start.toString("dd.MM.yyyy") + " - " + end.toString("dd.MM.yyyy"));
-
                         if (_calendarBoxArt == 'RE') {
                             if (_cachedCalendarAppointmentsDateString != null)
                                 callback(GetCachedCalendarAppointmentsForBox(div.data("boxID")));
@@ -1181,7 +1178,7 @@
             $("#TerminUebersichtKalender").slideDown(200);
             CalendarPreparePrivate();
         });
-        console.log("Boxen Termine");
+        //console.log("Boxen Termine");
         BreadcrumbsMoveNext("Boxen Termine");
     }
 

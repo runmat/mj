@@ -15,7 +15,7 @@
         @Html.HiddenFor(m => m.AlleOrganisationen)
     
     
-        @Html.FormDropDownListFor(m => m.SelectedAuftragGeber, HistoryAuftragFilter.AuftragGeberAdressen.ToSelectList(), labelCssClass: "FormLabelNormalW") 
+        @Html.FormDropDownListFor(m => m.SelectedAuftragGeber, Model.AuftragGeberAdressen.ToSelectList(), labelCssClass: "FormLabelNormalW") 
         @Html.FormNewLine()
     
         @Html.FormTextBoxFor(m => m.AuftragsNr, labelCssClass: "FormLabelNormalW", cssClass: "FormTextboxNormalSm") 

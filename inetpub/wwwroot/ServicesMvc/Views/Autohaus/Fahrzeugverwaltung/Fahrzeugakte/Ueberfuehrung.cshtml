@@ -1,0 +1,6 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@model FahrzeugakteViewModel
+
+<div class="form-actions">
+    <a href='@Url.Action("FzgParam", "Uebfuehrg", new { id1 = Model.Fahrzeug.ID })' class='btn margin-right-5'>@Localize.VehicleOverpass</a>
+</div>
