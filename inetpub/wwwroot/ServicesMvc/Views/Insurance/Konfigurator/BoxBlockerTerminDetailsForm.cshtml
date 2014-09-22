@@ -5,7 +5,7 @@
     @using (Ajax.BeginForm("BoxBlockerTerminDetailsFormSave", "Insurance", null,
                            new MvcAjaxOptions("BoxBlockerTerminDetailsDiv") { OnComplete = "BoxBlockerTerminDetailsFormPreparePrivateAjax();" }, new { id = "BoxBlockerTerminForm", @class = "form-horizontal" }))
     {
-        @Html.Hidden("Name", "Blocker Termin bearbeiten")
+        @Html.Hidden("Name", Localize.BlockingAppointmentEdit)
         
         @Html.HiddenFor(m => m.ID)
         @Html.HiddenFor(m => m.VersSchadenfallID)
@@ -17,7 +17,7 @@
         @Html.HiddenFor(m => m.LoeschDatum)
         @Html.HiddenFor(m => m.LoeschUser)
                 
-        @Html.FormTemplateControl("", @<text><i id="BoxBlockerTerminDetailsIcon"></i> Blocker Termin bearbeiten</text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><i id="BoxBlockerTerminDetailsIcon"></i> @Localize.BlockingAppointmentEdit</text>, new { @class = "m-wrap" })
         
         @Html.FormValidationSummary()
 
@@ -52,8 +52,8 @@
 
 
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" onclick="BoxBlockerTerminCloseDetails();" class="btn">Abbrechen</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" onclick="BoxBlockerTerminCloseDetails();" class="btn">@Localize.Cancel</button>
         </div>
 
         
