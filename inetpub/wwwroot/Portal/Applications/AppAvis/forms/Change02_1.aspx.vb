@@ -1,12 +1,15 @@
 ﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
+Imports DBauer.Web.UI.WebControls
 
 Partial Public Class Change02_1
     Inherits Page
 
     Protected WithEvents UcStyles As Portal.PageElements.Styles
     Protected WithEvents UcHeader As Portal.PageElements.Header
+    Protected WithEvents ScriptManager1 As ScriptManager
+    Protected WithEvents UpdatePanel1 As UpdatePanel
 
     Private _mUser As Base.Kernel.Security.User
     Private _mApp As Base.Kernel.Security.App
@@ -43,6 +46,7 @@ Partial Public Class Change02_1
 
             If Not IsPostBack Then
                 _mReport.Show()
+                SetZulassungstypText()
                 FillGrid(-1)
             Else
 
@@ -119,6 +123,8 @@ Partial Public Class Change02_1
         HG1.DataMember = "Carports"
         HG1.DataBind()
 
+        SetZulassungstypText()
+
 
         Dim item As DataGridItem
         Dim cell As TableCell
@@ -173,6 +179,21 @@ Partial Public Class Change02_1
         End If
 
     End Sub
+
+    'Private Sub ChangeHeadertextInHieraGrid(ByVal hGrid As HierarGrid)
+
+    '    For Each col As DataGridColumn In hGrid.Columns
+
+    '        If col.SortExpression = "DatumErstzulassung" Then
+    '            col.HeaderText = GetZulassungstypText()
+    '            Exit For
+    '        End If
+
+    '    Next
+
+    'End Sub
+
+ 
     Private Function CheckInput() As Boolean
         Dim blnReturn As Boolean = False
         Dim datrows() As DataRow
@@ -434,11 +455,26 @@ Partial Public Class Change02_1
     End Sub
     Private Sub InsertScript()
 
-        Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
-        Literal1.Text &= "						  <!-- //" & vbCrLf
-        Literal1.Text &= "							DisplayCalender();" & vbCrLf
-        Literal1.Text &= "						  //-->" & vbCrLf
+        'Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
+        'Literal1.Text &= "						  <!-- //" & vbCrLf
+        'Literal1.Text &= "							DisplayCalender();" & vbCrLf
+        'Literal1.Text &= "						  //-->" & vbCrLf
+        'Literal1.Text &= "						</script>" & vbCrLf
+
+  
+        Literal1.Text = "						<script type=""text/javascript"">" & vbCrLf
+        Literal1.Text &= "						  function displayCalendar() {" & vbCrLf
+        Literal1.Text &= "							var datePicker = document.getElementById('calVon');" & vbCrLf
+        Literal1.Text &= "						  datePicker.style.display = 'block';" & vbCrLf
         Literal1.Text &= "						</script>" & vbCrLf
+
+
+        'Literal2.Text = "						<script language=""Javascript"">" & vbCrLf
+        'Literal2.Text &= "						  <!-- //" & vbCrLf
+        'Literal2.Text &= "							DisplayCalenderVerarbeitungsdatum();" & vbCrLf
+        'Literal2.Text &= "						  //-->" & vbCrLf
+        'Literal2.Text &= "						</script>" & vbCrLf
+
 
     End Sub
 
@@ -612,65 +648,32 @@ Partial Public Class Change02_1
         If CInt(ddlDatumswahl.SelectedValue) = Zulassungstyp.Planzulassungsdatum Then
             boolVisible = True
         Else
-            lblVerarbeitungsdat.Text = ""
+            'lblVerarbeitungsdat.Text = ""
         End If
 
         SetVerarbeitungsDatumVisibility(boolVisible)
 
+        SetZulassungstypText()
+
+        FillGrid(-1)
+
     End Sub
 
     Private Sub SetVerarbeitungsDatumVisibility(ByVal show As Boolean)
-        lblVerarbeitungsdatumBez.Visible = show
-        lblVerarbeitungsdat.Visible = show
-        CalVerarbeitungsdatum.Visible = show
-        ibtnDelVerarbeitungsdatum.Visible = show
-
+        'lblVerarbeitungsdatumBez.Visible = show
+        'lblVerarbeitungsdat.Visible = show
+        'CalVerarbeitungsdatum.Visible = show
+        'ibtnDelVerarbeitungsdatum.Visible = show
 
     End Sub
 
+    Private Sub SetZulassungstypText()
+        _mReport.ZulassungstypText = "Datum <br/> Zulassung"
+
+        If CInt(ddlDatumswahl.SelectedValue) = Zulassungstyp.Planzulassungsdatum Then
+            _mReport.ZulassungstypText = "Datum <br/> Planzulassung"
+        End If
+    End Sub
 
 End Class
-' ************************************************
-' $History: Change02_1.aspx.vb $
-' 
-' *****************  Version 17  *****************
-' User: Fassbenders  Date: 17.03.11   Time: 16:26
-' Updated in $/CKAG/Applications/AppAvis/forms
-' 
-' *****************  Version 16  *****************
-' User: Fassbenders  Date: 7.02.11    Time: 11:57
-' Updated in $/CKAG/Applications/AppAvis/forms
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 10.09.09   Time: 13:15
-' Updated in $/CKAG/Applications/AppAvis/forms
-' 
-' *****************  Version 14  *****************
-' User: Jungj        Date: 23.06.09   Time: 13:30
-' Updated in $/CKAG/Applications/AppAvis/forms
-' ITA 2931 testfertig
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 23.03.09   Time: 8:52
-' Updated in $/CKAG/Applications/AppAvis/forms
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 30.12.08   Time: 15:50
-' Updated in $/CKAG/Applications/AppAvis/forms
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 5.12.08    Time: 9:16
-' Updated in $/CKAG/Applications/AppAvis/forms
-' ITA: 2359
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 3.12.08    Time: 15:24
-' Updated in $/CKAG/Applications/AppAvis/forms
-' ITA: 2359
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 1.12.08    Time: 16:13
-' Updated in $/CKAG/Applications/AppAvis/forms
-' ITA: 2359 & kleinere Anpassungen
-' 
-' ************************************************
+

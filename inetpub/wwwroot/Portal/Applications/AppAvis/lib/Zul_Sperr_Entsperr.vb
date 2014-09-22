@@ -280,6 +280,10 @@ Public Class Zul_Sperr_Entsperr
             m_DezZul = value
         End Set
     End Property
+
+    Public Property ZulassungstypText As String
+
+
 #End Region
 
 #Region " Methods"
@@ -1078,7 +1082,7 @@ Public Class Zul_Sperr_Entsperr
                 .Add("Navigation", System.Type.GetType("System.String"))
                 .Add("Fahrgestellnummer", System.Type.GetType("System.String"))
                 .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Datum Erstzulassung", System.Type.GetType("System.String"))
+                .Add("Datum Zulassung", System.Type.GetType("System.String"))
                 .Add("Datum_zur_Sperre", System.Type.GetType("System.String"))
                 .Add("Sperrvermerk", System.Type.GetType("System.String"))
                 .Add("Ergebnis", System.Type.GetType("System.String"))
@@ -1090,9 +1094,9 @@ Public Class Zul_Sperr_Entsperr
                     rowTemp = m_tblErledigt.NewRow
                     rowTemp("Fahrgestellnummer") = m_tblFahrzeuge.Rows(i)("Fahrgestellnummer")
                     rowTemp("Zulassungsort") = m_tblFahrzeuge.Rows(i)("Zulassungsort")
-                    rowTemp("Datum Erstzulassung") = m_tblFahrzeuge.Rows(i)("DatumErstzulassung")
+                    rowTemp("Datum Zulassung") = m_tblFahrzeuge.Rows(i)("DatumErstzulassung")
                     If IsDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")) Then
-                        rowTemp("Datum Erstzulassung") = CDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")).ToShortDateString
+                        rowTemp("Datum Zulassung") = CDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")).ToShortDateString
                     End If
                     If IsDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")) Then
                         rowTemp("Datum_zur_Sperre") = CDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")).ToShortDateString
@@ -1234,7 +1238,7 @@ Public Class Zul_Sperr_Entsperr
                 .Add("Navigation", System.Type.GetType("System.String"))
                 .Add("Fahrgestellnummer", System.Type.GetType("System.String"))
                 .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Datum Erstzulassung", System.Type.GetType("System.String"))
+                .Add("Datum Zulassung", System.Type.GetType("System.String"))
                 .Add("Datum_zur_Sperre", System.Type.GetType("System.String"))
                 .Add("Sperrvermerk", System.Type.GetType("System.String"))
                 .Add("Ergebnis", System.Type.GetType("System.String"))
@@ -1246,9 +1250,9 @@ Public Class Zul_Sperr_Entsperr
                     rowTemp = m_tblErledigt.NewRow
                     rowTemp("Fahrgestellnummer") = m_tblFahrzeuge.Rows(i)("Fahrgestellnummer")
                     rowTemp("Zulassungsort") = m_tblFahrzeuge.Rows(i)("Zulassungsort")
-                    rowTemp("Datum Erstzulassung") = m_tblFahrzeuge.Rows(i)("DatumErstzulassung")
+                    rowTemp("Datum Zulassung") = m_tblFahrzeuge.Rows(i)("DatumErstzulassung")
                     If IsDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")) Then
-                        rowTemp("Datum Erstzulassung") = CDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")).ToShortDateString
+                        rowTemp("Datum Zulassung") = CDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")).ToShortDateString
                     End If
                     If IsDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")) Then
                         rowTemp("Datum_zur_Sperre") = CDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")).ToShortDateString

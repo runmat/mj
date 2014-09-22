@@ -1,22 +1,27 @@
-﻿Public Partial Class Modell
+﻿Imports DBauer.Web.UI.WebControls
+
+Partial Public Class Modell
     Inherits System.Web.UI.UserControl
     Private objCarports As Zul_Sperr_Entsperr
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
-        Select Case objCarports.Task
-            Case "Zulassen"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False         'Datum ZieCarport
-            Case "Ausgabe"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False
-                HG1.Columns(18).Visible = False
-                HG1.Columns(19).Visible = False
-        End Select
+
+        SetTaskProperties(HG1)
+
+        'Select Case objCarports.Task
+        '    Case "Zulassen"
+        '        HG1.Columns(14).Visible = False         'Bemerkung
+        '        HG1.Columns(15).Visible = False         'Bemerkung Datum 
+        '        HG1.Columns(16).Visible = True          'Datum Erstzulassung
+        '        HG1.Columns(17).Visible = False         'Datum ZieCarport
+        '    Case "Ausgabe"
+        '        HG1.Columns(14).Visible = False         'Bemerkung
+        '        HG1.Columns(15).Visible = False         'Bemerkung Datum 
+        '        HG1.Columns(16).Visible = True          'Datum Erstzulassung
+        '        HG1.Columns(17).Visible = False
+        '        HG1.Columns(18).Visible = False
+        '        HG1.Columns(19).Visible = False
+        'End Select
     End Sub
 
     Private Sub TitleList_DataBind(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.DataBinding
@@ -26,15 +31,32 @@
         HG1.DataSource = ds
         HG1.DataMember = "Modelle"
         HG1.DataBind()
-        'Dim item As DataGridItem
-        'Dim i As Int32 = 0
-        '       For Each item In HG1.Items
-        'HG1.RowExpanded(i) = True
-        'i += 1
-        'ctl = CType(item.Cells(17).FindControl("Textbox3"), TextBox)
-        'ctl.Attributes.Add("onfocus", "doClear(" & ctl.ClientID & ")")
 
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
+
+        SetTaskProperties(HG1)
+
+
+        'Select Case objCarports.Task
+        '    Case "Zulassen"
+        '        HG1.Columns(14).Visible = False         'Bemerkung
+        '        HG1.Columns(15).Visible = False         'Bemerkung Datum 
+        '        HG1.Columns(16).Visible = True          'Datum Erstzulassung
+        '        HG1.Columns(17).Visible = False         'Datum ZieCarport
+        '    Case "Ausgabe"
+        '        HG1.Columns(14).Visible = False         'Bemerkung
+        '        HG1.Columns(15).Visible = False         'Bemerkung Datum 
+        '        HG1.Columns(16).Visible = True          'Datum Erstzulassung
+        '        HG1.Columns(17).Visible = False
+        '        HG1.Columns(18).Visible = False
+        '        HG1.Columns(19).Visible = False
+        'End Select
+    End Sub
+
+    Private Sub SetTaskProperties(ByVal hGrid As hierargrid)
+
+        HG1.Columns(16).HeaderText = objCarports.ZulassungstypText
+
         Select Case objCarports.Task
             Case "Zulassen"
                 HG1.Columns(14).Visible = False         'Bemerkung
@@ -49,8 +71,8 @@
                 HG1.Columns(18).Visible = False
                 HG1.Columns(19).Visible = False
         End Select
-    End Sub
 
+    End Sub
 
     Private Sub HG1_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles HG1.ItemCommand
         Dim i As Integer

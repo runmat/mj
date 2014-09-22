@@ -23,15 +23,6 @@ Partial Public Class Change02_1
     Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''ScriptManager1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-
-    '''<summary>
     '''lblHead-Steuerelement
     '''</summary>
     '''<remarks>
@@ -104,15 +95,6 @@ Partial Public Class Change02_1
     Protected WithEvents lnkKreditlimit As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''UpdatePanel1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
-
-    '''<summary>
     '''ddlDatumswahl-Steuerelement
     '''</summary>
     '''<remarks>
@@ -176,15 +158,6 @@ Partial Public Class Change02_1
     Protected WithEvents GesamtAnzahl As Global.System.Web.UI.HtmlControls.HtmlInputText
 
     '''<summary>
-    '''lblVerarbeitungsdatumBez-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lblVerarbeitungsdatumBez As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''calVon-Steuerelement
     '''</summary>
     '''<remarks>
@@ -194,31 +167,22 @@ Partial Public Class Change02_1
     Protected WithEvents calVon As Global.System.Web.UI.WebControls.Calendar
 
     '''<summary>
-    '''lblVerarbeitungsdat-Steuerelement
+    '''calVerarbeitungsdatum-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lblVerarbeitungsdat As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents calVerarbeitungsdatum As Global.System.Web.UI.WebControls.Calendar
 
     '''<summary>
-    '''CalVerarbeitungsdatum-Steuerelement
+    '''btnCalVerarbeitungsdatum-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents CalVerarbeitungsdatum As Global.System.Web.UI.HtmlControls.HtmlInputButton
-
-    '''<summary>
-    '''ibtnDelVerarbeitungsdatum-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ibtnDelVerarbeitungsdatum As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnCalVerarbeitungsdatum As Global.System.Web.UI.HtmlControls.HtmlInputButton
 
     '''<summary>
     '''Label3-Steuerelement
@@ -363,4 +327,13 @@ Partial Public Class Change02_1
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Literal1 As Global.System.Web.UI.WebControls.Literal
+
+    '''<summary>
+    '''Literal2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Literal2 As Global.System.Web.UI.WebControls.Literal
 End Class
