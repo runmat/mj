@@ -16,6 +16,11 @@ namespace MvcTools.Web
             return SessionHelper.GetSessionObject(key, createFunc);
         }
 
+        public static object GetModel(string key)
+        {
+            return SessionHelper.GetSessionObject(key);
+        }
+
         public static ILogonContext GetCurrentLogonContext()
         {
             return (ILogonContext)SessionHelper.GetSessionObject("LogonContext");

@@ -1,0 +1,29 @@
+﻿@using CkgDomainLogic.CoC.Models
+@{
+    var gridName = "GridCocSendungen";
+}
+
+@(Html.Telerik()
+        .Grid<SendungsAuftrag>()
+    .Name(gridName)
+
+    .XGroup("CocSendungen")
+    .XAjaxDataBinding("SendungenAjaxBinding", "CocSendung")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.AnlageDatum);
+            columns.XBound(c => c.FIN);
+            columns.XBound(c => c.VertragsNr);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.RechnungsNr);
+            columns.XBound(c => c.ZulassungsDatum);
+            columns.XBound(c => c.VersandID);
+            columns.XBound(c => c.VersandIdSurveyLink).ClientTemplate("<# if (data.VersandID != \"\") { #><a target='_blank' class='btn mini tooltips' data-original-title='DHL Sendungsverfolgung' data-placement='right' href='http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&idc=<#= data.VersandID #>'><i class='icon-chevron-right'></i> <i class='icon-truck margin-right-5'></i></a><# } #>");
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ZulassungsDatum).Descending())
+    .XToolBar("CocSendung")
+)
+

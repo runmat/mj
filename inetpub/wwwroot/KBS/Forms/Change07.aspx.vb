@@ -1,4 +1,6 @@
-﻿Imports KBS.KBS_BASE
+﻿Imports System.Globalization
+Imports KBS.KBS_BASE
+Imports System.IO
 
 Partial Public Class Change07
     Inherits Page
@@ -46,6 +48,7 @@ Partial Public Class Change07
         End If
 
         If Not IsPostBack Then
+
             mObjUmlagerung.KostStelle = mObjKasse.Lagerort
             If mObjKasse.KUNNR <> "261030" Then
                 fillDropdown()
@@ -58,6 +61,7 @@ Partial Public Class Change07
             txtKST.Focus()
 
             lbCreatePDF.Attributes.Add("onclick", "window.open('Printpdf.aspx', '_blank', 'left=0,top=0,resizable=YES,scrollbars=YES, menubar=no ');")
+
         End If
 
     End Sub
@@ -67,18 +71,12 @@ Partial Public Class Change07
         If Not mObjUmlagerung.ErrorOccured Then
 
             With mObjUmlagerung
-
-                Dim tmpItem As ListItem
-                Dim i As Int32 = 0
-                ddlArtikel.Items.Clear()
-
-                Do While i < .Artikel.Rows.Count
-                    tmpItem = New ListItem(.Artikel.Rows(i)("MAKTX").ToString, .Artikel.Rows(i)("MATNR").ToString)
-                    ddlArtikel.Items.Add(tmpItem)
-                    i += 1
-                Loop
-
+                ddlArtikel.DataSource = .Artikel
+                ddlArtikel.DataValueField = "MATNR"
+                ddlArtikel.DataTextField = "MAKTX"
+                ddlArtikel.DataBind()
             End With
+
             If Not mObjUmlagerung.Umlagerung Is Nothing Then
                 FillGrid()
             End If
@@ -94,128 +92,70 @@ Partial Public Class Change07
     End Sub
 
     Private Sub doinsert()
-        If txtMenge.Text.Trim(" "c).Length > 0 Then
-            If Not txtMenge.Text = "" Then
-                'wenn dies gefüllt, dann Artikel korrekt
-                With mObjUmlagerung
-                    .CheckKostStelleERP(txtKST.Text.Trim)
-                    If .ErrorOccured Then
-                        lblError.Text = .ErrorMessage
-                        SetFocus(txtKST)
-                        lblKSTText.Visible = False
-                        lblKSTText.Text = ""
-                        Exit Sub
-                    End If
-                    If .KostStelle = txtKST.Text.Trim Then
-                        lblError.Text = "Sie können nicht zu Ihrer eigenen Kostenstelle umlagern!"
-                        SetFocus(txtKST)
-                        Exit Sub
-                    ElseIf .KostStelleNeu = "" Then
-                        .KostStelleNeu = txtKST.Text.Trim
-                    ElseIf .KostStelleNeu <> txtKST.Text.Trim Then
-                        lblError.Text = "Bitte schließen Sie erst die Umlagerung für eine Kostenstelle ab!"
-                        Exit Sub
-                    Else
-                        .KostStelleNeu = txtKST.Text.Trim
-                    End If
+        If Not String.IsNullOrEmpty(txtMenge.Text) Then
+            'wenn dies gefüllt, dann Artikel korrekt
+            With mObjUmlagerung
+                Dim KennzForm As String = ""
+                Dim rows As DataRow() = .Artikel.Select("MATNR='" & ddlArtikel.SelectedValue & "'")
 
-                    lblERDAT.Text = Now.ToShortDateString
-                    Dim KennzForm As String = ""
-                    Dim rows As DataRow() = mObjUmlagerung.Artikel.Select("MATNR='" & ddlArtikel.SelectedValue & "'")
-
-                    If (tdKennzFormShow.Visible = True) Then
-                        KennzForm = ddlKennzform.SelectedItem.Text
-
-                        If .Umlagerung.Select("MATNR='" & ddlArtikel.SelectedValue & "' AND KENNZFORM = '" & KennzForm & "'").Count > 0 Then
-                            lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten!"
-                            Exit Sub
-                        Else
-                            If rows.GetLength(0) > 0 Then
-                                Dim row As DataRow = rows(0)
-                                If Not IsDBNull(row("TEXTPFLICHT")) Then
-                                    If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                        OpenInfotext(CStr(row("MATNR")), txtMenge.Text, "", "", CStr(row("MAKTX")), "", True, KennzForm)
-                                    Else
-                                        .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
-                                    End If
-                                Else
-                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
-                                End If
-                            End If
-
-                            txtMenge.Text = ""
-                            FillGrid()
-                        End If
-                    ElseIf .Umlagerung.Select("MATNR='" & ddlArtikel.SelectedValue & "'").Count = 0 Then
-
-                        If rows.GetLength(0) > 0 Then
-                            Dim row As DataRow = rows(0)
-                            If Not IsDBNull(row("TEXTPFLICHT")) Then
-                                If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                    OpenInfotext(CStr(row("MATNR")), txtMenge.Text, "", "", CStr(row("MAKTX")), "", True, KennzForm)
-                                Else
-                                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
-                                End If
-                            Else
-                                .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", "", KennzForm)
-                            End If
-                        End If
-                        txtMenge.Text = ""
-                        FillGrid()
-                    Else
+                If tdKennzFormShow.Visible Then
+                    KennzForm = ddlKennzform.SelectedItem.Text
+                    If .Umlagerung.Select("MATNR='" & ddlArtikel.SelectedValue & "' AND KENNZFORM = '" & KennzForm & "'").Count > 0 Then
                         lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten!"
+                        Exit Sub
                     End If
+                ElseIf .Umlagerung.Select("MATNR='" & ddlArtikel.SelectedValue & "'").Count > 0 Then
+                    lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten!"
+                    Exit Sub
+                End If
 
-                End With
+                If rows.Length > 0 Then
+                    .insertIntoBestellungen(ddlArtikel.SelectedValue, CInt(txtMenge.Text), ddlArtikel.SelectedItem.Text, "", KennzForm)
 
-                Session("mUmlagerung") = mObjUmlagerung
+                    If Not IsDBNull(rows(0)("TEXTPFLICHT")) AndAlso CChar(rows(0)("TEXTPFLICHT")) = "X"c Then
+                        OpenInfotext(CStr(rows(0)("MATNR")), "", True, KennzForm)
+                    End If
+                End If
 
-            End If
+                txtMenge.Text = ""
+                FillGrid()
+
+            End With
+
+            Session("mUmlagerung") = mObjUmlagerung
+
         Else
             lblError.Text = "Bitte geben sie eine Menge ein"
         End If
-
-
     End Sub
 
     Private Sub OpenInfotext(ByVal MatNr As String, _
-                             ByVal Menge As String, _
                              ByVal Text As String, _
-                             ByVal TextNr As String, _
-                             ByVal MatText As String, _
-                             ByVal EAN As String, _
                              ByVal Pflicht As Boolean, _
                              ByVal sKennzForm As String)
         txtInfotext.Text = Text
-        lblLTextNr.Text = TextNr
         lblMatNr.Text = MatNr
-        lblMenge.Text = Menge
         lblKennzForm.Text = sKennzForm
         If Pflicht Then
             lblPflicht.Text = "true"
         Else
             lblPflicht.Text = "false"
         End If
-        lblArtikelbezeichnungInfo.Text = MatText
-        lblEAN.Text = EAN
 
         MPEInfotext.Show()
     End Sub
 
     Private Sub CloseInfotext()
         txtInfotext.Text = ""
-        lblLTextNr.Text = ""
         lblMatNr.Text = ""
         lblKennzForm.Text = ""
         lblPflicht.Text = ""
-        lblArtikelbezeichnungInfo.Text = ""
-        lblEAN.Text = ""
 
         MPEInfotext.Hide()
         FillGrid()
     End Sub
 
-    Private Sub FillGrid(Optional ByVal strSort As String = "")
+    Private Sub FillGrid()
 
         Dim tmpDataView As New DataView(mObjUmlagerung.Umlagerung)
 
@@ -226,48 +166,9 @@ Partial Public Class Change07
             GridView1.Visible = True
             lblNoData.Visible = False
 
-            Dim strTempSort As String = ""
-            Dim strDirection As String = ""
-
-            If strSort.Trim(" "c).Length > 0 Then
-                strTempSort = strSort.Trim(" "c)
-                If (ViewState("Sort") Is Nothing) OrElse (ViewState("Sort").ToString = strTempSort) Then
-                    If ViewState("Direction") Is Nothing Then
-                        strDirection = "desc"
-                    Else
-                        strDirection = ViewState("Direction").ToString
-                    End If
-                Else
-                    strDirection = "desc"
-                End If
-
-                If strDirection = "asc" Then
-                    strDirection = "desc"
-                Else
-                    strDirection = "asc"
-                End If
-
-                ViewState("Sort") = strTempSort
-                ViewState("Direction") = strDirection
-            Else
-                If Not ViewState("Sort") Is Nothing Then
-                    strTempSort = ViewState("Sort").ToString
-                    If ViewState("Direction") Is Nothing Then
-                        strDirection = "asc"
-                        ViewState("Direction") = strDirection
-                    Else
-                        strDirection = ViewState("Direction").ToString
-                    End If
-                End If
-            End If
-
-            If Not strTempSort.Length = 0 Then
-                tmpDataView.Sort = strTempSort & " " & strDirection
-            End If
-
             GridView1.DataSource = tmpDataView
-
             GridView1.DataBind()
+
             If mObjKasse.KUNNR = "261030" Then
                 GridView1.Columns(3).Visible = False
                 GridView1.Columns(9).Visible = False
@@ -288,16 +189,16 @@ Partial Public Class Change07
 
             GridView2.DataSource = tmpDataView
             GridView2.DataBind()
-        End If
-        If mObjKasse.KUNNR = "261030" Then
-            GridView2.Columns(3).Visible = False
-        End If
+
+            If mObjKasse.KUNNR = "261030" Then
+                GridView2.Columns(3).Visible = False
+            End If
+        End If   
     End Sub
 
     Private Sub doSubmit()
 
-        mObjUmlagerung.BelegNR = ""
-        mObjUmlagerung.ChangeERP(lblERDAT.Text)
+        mObjUmlagerung.ChangeERP()
         If mObjUmlagerung.ErrorOccured Then
             lblBestellMeldung.ForeColor = Drawing.Color.Red
             lblBestellMeldung.Text = "Ihre Umlagerung ist fehlgeschlagen: <br><br> " & mObjUmlagerung.ErrorMessage
@@ -387,16 +288,12 @@ Partial Public Class Change07
             End If
 
             tmpSAPRow("Referenz") = mObjUmlagerung.BelegNR
-            tmpSAPRow("Datum") = lblERDAT.Text
-            If (lblERDAT.Text = String.Empty) Then
-                tmpSAPRow("Datum") = Now.ToShortDateString
-            End If
+            tmpSAPRow("Datum") = DateTime.Today.ToShortDateString()
 
             headTable.Rows.Add(tmpSAPRow)
 
-
             Dim imageHt As New Hashtable()
-            Dim sFilePath As String = mObjUmlagerung.KostStelle & "_" & Replace(Now.ToShortDateString, ".", "") & "_" & Replace(Now.ToShortTimeString, ":", "")
+            Dim sFilePath As String = mObjUmlagerung.KostStelle & "_" & mObjUmlagerung.KostStelleNeu & "_" & Replace(Now.ToShortDateString, ".", "") & "_" & Replace(Now.ToShortTimeString, ":", "")
             mObjUmlagerung.FilePath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & sFilePath & ".pdf"
             Dim docFactory As New DocumentGeneration.WordDocumentFactory(ReportTable, imageHt)
             If mObjKasse.KUNNR = "261030" Then
@@ -424,39 +321,27 @@ Partial Public Class Change07
     End Sub
 
     Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridView1.RowCommand
+        ApplyMengen()
+
         Select Case e.CommandName
+
             Case "entfernen"
                 mObjUmlagerung.Umlagerung.Select("MATNR='" & e.CommandArgument.ToString & "'")(0).Delete()
                 If mObjUmlagerung.Umlagerung.Rows.Count = 0 Then
                     mObjUmlagerung.Umlagerung.Rows.Clear()
                     mObjUmlagerung.KostStelleNeu = ""
                 End If
+
             Case "bearbeiten"
                 Dim TRow As DataRow = mObjUmlagerung.Umlagerung.Select("MATNR='" & e.CommandArgument.ToString & "'")(0)
                 Dim PRow As DataRow = mObjUmlagerung.Artikel.Select("MATNR='" & e.CommandArgument.ToString & "'")(0)
 
-                Dim strMenge As String = ""
                 Dim strLText As String = ""
-                Dim strLTextNr As String = ""
-                Dim strMAKTX As String = ""
-                Dim strEAN As String = ""
                 Dim strKennzForm As String = ""
                 Dim bPflicht As Boolean = False
 
-                If Not IsDBNull(TRow("Menge")) Then
-                    strMenge = CStr(TRow("Menge"))
-                End If
                 If Not IsDBNull(TRow("LTEXT")) Then
                     strLText = CStr(TRow("LTEXT"))
-                End If
-                If Not IsDBNull(TRow("LTEXT_NR")) Then
-                    strLTextNr = CStr(TRow("LTEXT_NR"))
-                End If
-                If Not IsDBNull(PRow("MAKTX")) Then
-                    strMAKTX = CStr(PRow("MAKTX"))
-                End If
-                If Not IsDBNull(TRow("EAN11")) Then
-                    strEAN = CStr(TRow("EAN11"))
                 End If
                 If Not IsDBNull(PRow("TEXTPFLICHT")) Then
                     If CChar(PRow("TEXTPFLICHT")) = "X"c Then
@@ -468,17 +353,20 @@ Partial Public Class Change07
                 If Not IsDBNull(TRow("KENNZFORM")) Then
                     strKennzForm = CStr(TRow("KENNZFORM"))
                 End If
-                OpenInfotext(CStr(TRow("MATNR")), strMenge, strLText, strLTextNr, strMAKTX, strEAN, bPflicht, strKennzForm)
+                OpenInfotext(CStr(TRow("MATNR")), strLText, bPflicht, strKennzForm)
+
             Case "minusMenge"
                 Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & e.CommandArgument)
                 If rows.GetLength(0) > 0 Then
                     rows(0)("Menge") -= 1
                 End If
+
             Case "plusMenge"
                 Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & e.CommandArgument)
                 If rows.GetLength(0) > 0 Then
                     rows(0)("Menge") += 1
                 End If
+
         End Select
 
         Session("mUmlagerung") = mObjUmlagerung
@@ -492,17 +380,22 @@ Partial Public Class Change07
         Else
             If mObjKasse.Werk = "1010" Then
                 Dim dt As DataTable = mObjUmlagerung.GetListeAusparkenERP()
-                Dim dRowParken() As DataRow = dt.Select("LGORT_EMPF = '" + txtKST.Text.Trim + "' AND ERDAT ='" + lblERDAT.Text + "'")
+                Dim dRowParken() As DataRow
+                If Not String.IsNullOrEmpty(mObjUmlagerung.BelegNrParken) Then
+                    dRowParken = dt.Select("LGORT_EMPF = '" & mObjUmlagerung.KostStelleNeu.Trim() & "' AND ERDAT ='" + DateTime.Today.ToShortDateString() + "' AND BELNR <> '" & mObjUmlagerung.BelegNrParken & "'")
+                Else
+                    dRowParken = dt.Select("LGORT_EMPF = '" & mObjUmlagerung.KostStelleNeu.Trim() & "' AND ERDAT ='" + DateTime.Today.ToShortDateString() + "'")
+                End If
 
                 If dRowParken.Length > 0 Then
                     lblError.Text = "Achtung! Sie haben für heute schon eine Umlagerung an die Kst." + mObjUmlagerung.KostStelleNeu + " geparkt. Bitte diese erst ausparken."
                     Exit Sub
                 End If
             End If
+            ApplyMengen()
             FillGrid2()
             mpeBestellungsCheck.Show()
         End If
-
     End Sub
 
     Private Sub lbBestellungOk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBestellungOk.Click
@@ -511,26 +404,14 @@ Partial Public Class Change07
     End Sub
 
     Private Sub txtKST_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtKST.TextChanged
-        If txtKST.Text.Length > 0 Then
-            With mObjUmlagerung
-                .CheckKostStelleERP(txtKST.Text.Trim)
-                If .ErrorOccured Then
-                    lblError.Text = .ErrorMessage
-                    SetFocus(txtKST)
-                    lblKSTText.Visible = False
-                    lblKSTText.Text = ""
+        If Not String.IsNullOrEmpty(txtKST.Text) Then
+            If ApplyKst(True) Then
+                If mObjKasse.KUNNR <> "261030" Then
+                    SetFocus(ddlArtikel)
                 Else
-                    lblKSTText.Visible = True
-                    lblKSTText.Text = .KostText
-                    If mObjKasse.KUNNR <> "261030" Then
-                        SetFocus(ddlArtikel)
-                    Else
-                        SetFocus(txtEAN)
-                    End If
-
+                    SetFocus(txtEAN)
                 End If
-            End With
-
+            End If
         End If
     End Sub
 
@@ -562,65 +443,41 @@ Partial Public Class Change07
     End Sub
 
     Private Sub doinsertEan()
-        If txtMengeEAN.Text.Trim(" "c).Length > 0 Then
-            If Not txtMaterialnummer.Text = "" Then
+        If Not String.IsNullOrEmpty(txtMengeEAN.Text) Then
+            If Not String.IsNullOrEmpty(txtMaterialnummer.Text) Then
                 'wenn dies gefüllt, dann Artikel korrekt
                 With mObjUmlagerung
-                    .CheckKostStelleERP(txtKST.Text.Trim)
-                    If .ErrorOccured Then
-                        lblError.Text = .ErrorMessage
-                        txtKST.Focus()
-                        lblKSTText.Visible = False
-                        lblKSTText.Text = ""
-                        Exit Sub
-                    End If
-                    If .KostStelle = txtKST.Text.Trim Then
-                        lblError.Text = "Sie können nicht zu Ihrer eigenen Kostenstelle umlagern!"
-                        txtKST.Focus()
-                        Exit Sub
-                    ElseIf .KostStelleNeu = "" Then
-                        .KostStelleNeu = txtKST.Text.Trim
-                    ElseIf .KostStelleNeu <> txtKST.Text.Trim Then
-                        lblError.Text = "Bitte schließen Sie erst die Umlagerung für eine Kostenstelle ab!"
-                        Exit Sub
-                    Else
-                        .KostStelleNeu = txtKST.Text.Trim
 
-                    End If
-                    lblERDAT.Text = Now.ToShortDateString
-                    If .Umlagerung.Select("MATNR='" & txtMaterialnummer.Text & "'").Count = 0 Then
-                        Dim KennzForm As String = ""
-
-                        If (tdKennzFormShow.Visible = True) Then
-                            KennzForm = ddlKennzform.SelectedItem.Text
-                        End If
-
-                        If mObjKasse.KUNNR <> "261030" Then
-                            Dim rows As DataRow() = mObjUmlagerung.Artikel.Select("MATNR='" & txtMaterialnummer.Text & "'")
-                            If rows.GetLength(0) > 0 Then
-                                Dim row As DataRow = rows(0)
-                                If Not IsDBNull(row("TEXTPFLICHT")) Then
-                                    If CChar(row("TEXTPFLICHT")) = "X"c Then
-                                        OpenInfotext(CStr(row("MATNR")), txtMengeEAN.Text, "", "", CStr(row("MAKTX")), txtEAN.Text, True, KennzForm)
-                                    Else
-                                        .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
-                                    End If
-                                Else
-                                    .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
-                                End If
-                            End If
-                        Else
-                            .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, "", KennzForm)
-                        End If
-
-                        txtEAN.Text = ""
-                        txtMaterialnummer.Text = ""
-                        txtMengeEAN.Text = ""
-                        lblArtikelbezeichnung.Text = "(wird automatisch ausgefüllt)"
-                        FillGrid()
-                    Else
+                    If .Umlagerung.Select("MATNR='" & txtMaterialnummer.Text & "'").Count > 0 Then
                         lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten"
+                        Exit Sub
                     End If
+
+                    Dim KennzForm As String = ""
+
+                    If (tdKennzFormShow.Visible = True) Then
+                        KennzForm = ddlKennzform.SelectedItem.Text
+                    End If
+
+                    If mObjKasse.KUNNR <> "261030" Then
+                        Dim rows As DataRow() = .Artikel.Select("MATNR='" & txtMaterialnummer.Text & "'")
+
+                        If rows.Length > 0 Then
+                            .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, KennzForm)
+
+                            If Not IsDBNull(rows(0)("TEXTPFLICHT")) AndAlso CChar(rows(0)("TEXTPFLICHT")) = "X"c Then
+                                OpenInfotext(CStr(rows(0)("MATNR")), "", True, KennzForm)
+                            End If
+                        End If
+                    Else
+                        .insertIntoBestellungen(txtMaterialnummer.Text, CInt(txtMengeEAN.Text), lblArtikelbezeichnung.Text, txtEAN.Text, KennzForm)
+                    End If
+
+                    txtEAN.Text = ""
+                    txtMaterialnummer.Text = ""
+                    txtMengeEAN.Text = ""
+                    lblArtikelbezeichnung.Text = "(wird automatisch ausgefüllt)"
+                    FillGrid()
 
                 End With
 
@@ -640,42 +497,51 @@ Partial Public Class Change07
     End Sub
 
     Private Sub lbParken_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbParken.Click
-
         If mObjKasse.Werk = "1010" Then
             Dim dt As DataTable = mObjUmlagerung.GetListeAusparkenERP()
-            Dim dRowParken() As DataRow = dt.Select("LGORT_EMPF = '" + txtKST.Text.Trim + "' AND ERDAT ='" + lblERDAT.Text + "'")
+            Dim dRowParken() As DataRow
+            If Not String.IsNullOrEmpty(mObjUmlagerung.BelegNrParken) Then
+                dRowParken = dt.Select("LGORT_EMPF = '" & mObjUmlagerung.KostStelleNeu.Trim() & "' AND ERDAT ='" + DateTime.Today.ToShortDateString() + "' AND BELNR <> '" & mObjUmlagerung.BelegNrParken & "'")
+            Else
+                dRowParken = dt.Select("LGORT_EMPF = '" & mObjUmlagerung.KostStelleNeu.Trim() & "' AND ERDAT ='" + DateTime.Today.ToShortDateString() + "'")
+            End If
 
             If dRowParken.Length > 0 Then
                 lblError.Text = "Achtung! Sie haben für heute schon eine Umlagerung an die Kst." + mObjUmlagerung.KostStelleNeu + " geparkt. Bitte diese erst ausparken."
                 Exit Sub
             End If
         End If
+        ApplyMengen()
         mObjUmlagerung.ParkenERP()
+        If mObjUmlagerung.ErrorOccured Then
+            lblError.Text = mObjUmlagerung.ErrorMessage
+        End If
         Session("mUmlagerung") = mObjUmlagerung
         FillGrid()
         txtKST.Text = ""
         lblKSTText.Text = ""
-
     End Sub
 
     Private Sub lbInfotextSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbInfotextSave.Click
         lblErrorInfotext.Text = ""
-        If lblPflicht.Text = "true" Then
-            If txtInfotext.Text.TrimStart(",") = "" Then
-                lblErrorInfotext.Text = "Geben Sie einen Text ein!"
-                MPEInfotext.Show()
-                Exit Sub
-            Else
-                mObjUmlagerung.insertIntoBestellungen(lblMatNr.Text, CInt(lblMenge.Text), lblArtikelbezeichnungInfo.Text, lblEAN.Text, lblLTextNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
-            End If
+        If lblPflicht.Text = "true" AndAlso txtInfotext.Text.TrimStart(",") = "" Then
+            lblErrorInfotext.Text = "Geben Sie einen Text ein!"
+            MPEInfotext.Show()
+            Exit Sub
         Else
-            mObjUmlagerung.insertIntoBestellungen(lblMatNr.Text, CInt(lblMenge.Text), lblArtikelbezeichnungInfo.Text, lblEAN.Text, lblLTextNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
+            mObjUmlagerung.updateBestellungInfotext(lblMatNr.Text, txtInfotext.Text.TrimStart(","), lblKennzForm.Text)
         End If
         Session("mUmlagerung") = mObjUmlagerung
         CloseInfotext()
     End Sub
 
     Private Sub lbInfotextClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbInfotextClose.Click
+        lblErrorInfotext.Text = ""
+        If lblPflicht.Text = "true" AndAlso txtInfotext.Text.TrimStart(",") = "" Then
+            lblErrorInfotext.Text = "Geben Sie einen Text ein!"
+            MPEInfotext.Show()
+            Exit Sub
+        End If
         CloseInfotext()
     End Sub
 
@@ -686,30 +552,29 @@ Partial Public Class Change07
 
     Protected Sub gvAusparken_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvAusparken.RowCommand
         Select Case e.CommandName
+
             Case "ausparken"
                 mObjUmlagerung.AusparkenERP(e.CommandArgument)
-                txtKST.Text = mObjUmlagerung.KostStelleNeu
-                mObjUmlagerung.CheckKostStelleERP(txtKST.Text)
-                lblKSTText.Text = mObjUmlagerung.KostText
-                lblERDAT.Text = mObjUmlagerung.ParkDate
+                If mObjUmlagerung.ErrorOccured Then
+                    lblError.Text = mObjUmlagerung.ErrorMessage
+                Else
+                    txtKST.Text = mObjUmlagerung.KostStelleNeu
+                    ApplyKst()
+                End If
+                
             Case "löschen"
                 mObjUmlagerung.GeparktLoeschenERP(e.CommandArgument, "X")
+                If mObjUmlagerung.ErrorOccured Then
+                    lblError.Text = mObjUmlagerung.ErrorMessage
+                End If
                 MPEAusparken.Show()
+
         End Select
         Session("mUmlagerung") = mObjUmlagerung
         FillGrid()
     End Sub
 
-    Protected Sub ibAusparkenTable_Click(ByVal sender As Object, ByVal e As EventArgs)
-        txtKST.Text = mObjUmlagerung.KostStelleNeu
-        FillGrid()
-    End Sub
-
     Private Sub Change07_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
-        If mObjUmlagerung.KostStelle = "" Then
-            mObjUmlagerung.KostStelle = mObjKasse.Lagerort
-        End If
-
         Dim dt As DataTable = mObjUmlagerung.GetListeAusparkenERP()
         If dt.Rows.Count > 0 Then
             lbAusparken.Visible = True
@@ -718,6 +583,16 @@ Partial Public Class Change07
         End If
         gvAusparken.DataSource = dt
         gvAusparken.DataBind()
+
+        Dim dtNachdruck As DataTable = GetListeNachdruck()
+        If dtNachdruck.Rows.Count > 0 Then
+            lbNachdruck.Visible = True
+        Else
+            lbNachdruck.Visible = False
+        End If
+        dtNachdruck.DefaultView.Sort = "Datum DESC"
+        gvNachdruck.DataSource = dtNachdruck.DefaultView
+        gvNachdruck.DataBind()
 
         If mObjKasse.KUNNR <> "261030" Then
             If mObjUmlagerung.Umlagerung.Rows.Count > 0 Then
@@ -765,5 +640,115 @@ Partial Public Class Change07
 
         Session("mUmlagerung") = mObjUmlagerung
     End Sub
+
+    Private Sub ApplyMengen()
+        For Each tmprow As GridViewRow In GridView1.Rows
+            Dim labelMatnr As Label = CType(tmprow.FindControl("lblMatnr"), Label)
+            Dim textMenge As TextBox = CType(tmprow.FindControl("txtMenge"), TextBox)
+
+            Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & labelMatnr.Text)
+            If rows.GetLength(0) > 0 Then
+                If IsNumeric(textMenge.Text) Then
+                    rows(0)("Menge") = Int32.Parse(textMenge.Text)
+                Else
+                    rows(0)("Menge") = 0
+                End If
+            End If
+        Next
+
+        Session("mUmlagerung") = mObjUmlagerung
+    End Sub
+
+    Private Sub lbNachdruck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruck.Click
+        MPENachdruck.Show()
+    End Sub
+
+    Private Sub lbNachdruckClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruckClose.Click
+        MPENachdruck.Hide()
+    End Sub
+
+    Private Function GetListeNachdruck() As DataTable
+        Dim tbl As New DataTable()
+        tbl.Columns.Add("Dateiname", GetType(String))
+        tbl.Columns.Add("EmpfangendeKst", GetType(String))
+        tbl.Columns.Add("Datum", GetType(DateTime))
+
+        Dim verzeichnis As New DirectoryInfo(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung")
+        Dim dateien() As FileInfo = verzeichnis.GetFiles(mObjKasse.Lagerort & "_*")
+        For Each datei In dateien
+            Dim newRow As DataRow = tbl.NewRow()
+            newRow("Dateiname") = datei.Name
+            Dim nameRaw As String = datei.Name.Substring(0, datei.Name.Length - datei.Extension.Length)
+            If nameRaw.Length > 18 Then
+                'Neues Format: Kst_EmpfKst_Datum_Zeit
+                newRow("EmpfangendeKst") = nameRaw.Substring(5, 4)
+                newRow("Datum") = DateTime.ParseExact(nameRaw.Substring(10, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            Else
+                'Altes Format: Kst_Datum_Zeit
+                newRow("EmpfangendeKst") = ""
+                newRow("Datum") = DateTime.ParseExact(nameRaw.Substring(5, 13), "ddMMyyyy_HHmm", CultureInfo.CurrentCulture)
+            End If
+            tbl.Rows.Add(newRow)
+        Next
+
+        Return tbl
+    End Function
+
+    Protected Sub gvNachdruck_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvNachdruck.RowCommand
+        Select Case e.CommandName
+            Case "drucken"
+                ShowBeleg(e.CommandArgument)
+        End Select
+    End Sub
+
+    Private Sub ShowBeleg(ByVal dateiname As String)
+        Session("App_ContentType") = "Application/pdf"
+        Session("App_Filepath") = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Umlagerung\" & dateiname
+        If (Not ClientScript.IsStartupScriptRegistered("Enabled")) Then
+
+            Dim sb As StringBuilder = New StringBuilder()
+            sb.Append("<script type=""text/javascript"">")
+            sb.Append("window.open(""Printpdf.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
+            sb.Append("</script>")
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Enabled", sb.ToString())
+
+        End If
+    End Sub
+
+    Private Function ApplyKst(Optional ByVal skipIfNotChanged As Boolean = False) As Boolean
+        With mObjUmlagerung
+
+            If skipIfNotChanged AndAlso .KostStelleNeu = txtKST.Text.Trim Then
+                'Kst nicht geändert
+                Return True
+            End If
+
+            .CheckKostStelleERP(txtKST.Text.Trim)
+
+            If .ErrorOccured Then
+                lblError.Text = .ErrorMessage
+                lblKSTText.Visible = False
+                lblKSTText.Text = ""
+                SetFocus(txtKST)
+                Return False
+            End If
+
+            lblKSTText.Visible = True
+            lblKSTText.Text = .KostText
+
+            If .KostStelle = txtKST.Text.Trim Then
+                lblError.Text = "Sie können nicht zu Ihrer eigenen Kostenstelle umlagern!"
+                SetFocus(txtKST)
+                Return False
+            Else
+                .KostStelleNeu = txtKST.Text.Trim
+            End If
+
+        End With
+
+        Session("mUmlagerung") = mObjUmlagerung
+
+        Return True
+    End Function
 
 End Class

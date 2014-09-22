@@ -25,6 +25,12 @@ namespace CkgDomainLogic.General.Controllers
             set { base.LogonContext = value; }
         }
 
+        public CkgBaseViewModel MainViewModel
+        {
+            get { return (CkgBaseViewModel)SessionStore.GetModel("MainViewModel"); } 
+            set { SessionStore.SetModel("MainViewModel", value); }
+        }
+
 
         protected string GetDataContextKey<T>()
         {

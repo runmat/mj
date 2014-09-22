@@ -1,6 +1,6 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgViewModel
 
-<h4>Ihre Auswahl: @Model.Title</h4> 
+<h4 class="wizard-header">@Model.GetStepModel().Header</h4> 
 
 @Html.Partial(@Model.StepCurrentFormPartialViewName, @Model.StepCurrentModel)
 

@@ -304,8 +304,6 @@
     <Content Include="GAC\QuickEasy.dll" />
     <Content Include="GAC\SAP.Connector.dll" />
     <Content Include="GAC\WebControls.dll" />
-    <Content Include="GAC\WMDQryCln.dll" />
-    <Content Include="GAC\WMDWebLink32Client.dll" />
     <Content Include="Global.asax" />
     <Content Include="Images\add.png" />
     <Content Include="Images\addfromleft.png" />
