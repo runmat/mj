@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Bestellung_Platinen.aspx.vb"
     Inherits="KBS.Bestellung_Platinen" MasterPageFile="~/KBS.Master" %>
+<%@ Register TagPrefix="cc1" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script language="JavaScript" type="text/javascript" src="../Java/JScript.js"></script>
@@ -223,7 +224,7 @@
                                     <td class="firstLeft active" style="white-space: nowrap;">
                                         <asp:Label ID="lblKst" runat="server" Width="80px">Kostenstelle:</asp:Label>
                                         <asp:TextBox ID="txtKST" runat="server" Enabled="false" AutoPostBack="true" Width="100px"></asp:TextBox>
-                                        <asp:Label ID="lblKSTText" runat="server" TabIndex="0" Visible="false" Style="margin-left: 10px;
+                                        <asp:Label ID="lblKSTText" runat="server" Visible="false" Style="margin-left: 10px;
                                             margin-top: 5px;"></asp:Label>
                                     </td>
                                 </tr>
@@ -316,32 +317,31 @@
                                         <Columns>
                                             <asp:TemplateField Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ARTLIF") %>'></asp:Label>
+                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("ARTLIF") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Topseller" DataField="ARTBEZ" HeaderStyle-Width="315px" />
                                             <asp:TemplateField HeaderText="Bild" Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Image ID="Image1" runat="server" Visible='<%# proofFileExist(DataBinder.Eval(Container, "DataItem.ImageUrl").toString)  %>'
-                                                        ImageUrl='<%# DataBinder.Eval(Container, "DataItem.ImageUrl") %>' Height="28px"
+                                                    <asp:Image ID="Image1" runat="server" Visible='<%# proofFileExist(Eval("ImageUrl").toString)  %>'
+                                                        ImageUrl='<%# Eval("ImageUrl") %>' Height="28px"
                                                         Width="100px" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Stück">
                                                 <ItemTemplate>
                                                     <asp:TextBox MaxLength="6" runat="server" Width="50px" onChange="Javascript:onChangeSetHiddenField();"
-                                                        onFocus="Javascript:this.select();" ID="txtMenge" Text='<%# DataBinder.Eval(Container, "DataItem.MENGE") %>'
-                                                        OnTextChanged="txtMenge_TextChanged"></asp:TextBox>
+                                                        onFocus="Javascript:this.select();" ID="txtMenge" Text='<%# Eval("MENGE") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Verpackungseinheit" DataField="VMEINS" />
                                             <asp:TemplateField HeaderText="Beschreibung">
                                                 <ItemTemplate>
                                                     <asp:TextBox MaxLength="30" runat="server" Width="185px" onFocus="Javascript:this.select();"
-                                                        Visible='<%# Not DataBinder.Eval(Container, "DataItem.ZUSINFO")= "" %>' ID="txtBeschreibung"
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.Beschreibung") %>'></asp:TextBox>
-                                                    <asp:Label ID="Label1" runat="server" Font-Size="9px" Text="*Plichtfeld, max. 30 Zeichen"
-                                                        Visible='<%# Not DataBinder.Eval(Container, "DataItem.ZUSINFO")= "" %>'></asp:Label>
+                                                        Visible='<%# Not Eval("ZUSINFO")= "" %>' ID="txtBeschreibung"
+                                                        Text='<%# Eval("Beschreibung") %>'></asp:TextBox>
+                                                    <asp:Label ID="Label1" runat="server" Font-Size="9px" Text="*Pflichtfeld, max. 30 Zeichen"
+                                                        Visible='<%# Not Eval("ZUSINFO")= "" %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -359,18 +359,18 @@
                                         <Columns>
                                             <asp:TemplateField Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ARTLIF") %>'></asp:Label>
+                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("ARTLIF") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Artikelbezeichnung" DataField="ARTBEZ" HeaderStyle-Width="315px" />
                                             <asp:TemplateField HeaderText="Bild" Visible="false">
                                                 <ItemTemplate>
                                                     <a class="tip" style="text-decoration: none; color: #595959;" href="#">
-                                                        <asp:Image ID="Image2" runat="server" Visible='<%# proofFileExist(DataBinder.Eval(Container, "DataItem.ImageUrl").toString)  %>'
+                                                        <asp:Image ID="Image2" runat="server" Visible='<%# proofFileExist(Eval("ImageUrl").toString)  %>'
                                                             ImageUrl="~/Images/Lupe_01.gif" Height="18px" Width="16px" />
                                                         <span style="width: 215px; background-color: WhiteSmoke; height: auto">
                                                             <div style="border: none; height: auto; width: 200px;">
-                                                                <asp:Image ID="Image1" runat="server" ImageUrl='<%# DataBinder.Eval(Container, "DataItem.ImageUrl") %>'
+                                                                <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("ImageUrl") %>'
                                                                     Height="56px" Width="200px" />
                                                             </div>
                                                         </span></a>
@@ -381,18 +381,17 @@
                                             <asp:TemplateField HeaderText="Stück">
                                                 <ItemTemplate>
                                                     <asp:TextBox onChange="Javascript:onChangeSetHiddenField();" MaxLength="6" runat="server"
-                                                        Width="50px" onFocus="Javascript:this.select();" ID="txtMenge" Text='<%# DataBinder.Eval(Container, "DataItem.Menge") %>'
-                                                        OnTextChanged="txtMenge_TextChanged"></asp:TextBox>
+                                                        Width="50px" onFocus="Javascript:this.select();" ID="txtMenge" Text='<%# Eval("Menge") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Verpackungseinheit" DataField="VMEINS" />
                                             <asp:TemplateField HeaderText="Beschreibung">
                                                 <ItemTemplate>
                                                     <asp:TextBox MaxLength="30" runat="server" Width="185px" onFocus="Javascript:this.select();"
-                                                        Visible='<%# Not DataBinder.Eval(Container, "DataItem.ZUSINFO")= "" %>' ID="txtBeschreibung"
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.Beschreibung") %>'></asp:TextBox>
+                                                        Visible='<%# Not Eval("ZUSINFO")= "" %>' ID="txtBeschreibung"
+                                                        Text='<%# Eval("Beschreibung") %>'></asp:TextBox>
                                                     <asp:Label ID="Label1" runat="server" Font-Size="9px" Text="*Plichtfeld, max. 30 Zeichen"
-                                                        Visible='<%# Not DataBinder.Eval(Container, "DataItem.ZUSINFO")= "" %>'></asp:Label>
+                                                        Visible='<%# Not Eval("ZUSINFO")= "" %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -422,6 +421,10 @@
                         </script>
                         <div id="dataFooter">
                             <asp:LinkButton ID="lbAbsenden" Text="Absenden" Height="16px" Width="78px" runat="server"
+                                CssClass="Tablebutton"></asp:LinkButton>
+                            <asp:LinkButton ID="lbParken" Text="Parken" Height="16px" Width="78px" runat="server"
+                                CssClass="Tablebutton"></asp:LinkButton>
+                            <asp:LinkButton ID="lbAusparken" Text="Ausparken" Height="16px" Width="78px" runat="server"
                                 CssClass="Tablebutton"></asp:LinkButton>
                         </div>
                         <input id="BestellCheckHidden" value="1" runat="server" type="hidden" />
@@ -454,7 +457,7 @@
                                     <Columns>
                                         <asp:TemplateField Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ARTLIF") %>'></asp:Label>
+                                                <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("ARTLIF") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="ARTBEZ" HeaderText="Artikelbezeichnung" />
@@ -481,6 +484,84 @@
                                 <input type="hidden" id="OKClicked" value="0"/>
                             </div>
                         </div>
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
+                        <cc1:ModalPopupExtender runat="server" ID="MPEAusparken" BackgroundCssClass="divProgress"
+                            Enabled="true" PopupControlID="Ausparken" TargetControlID="MPEDummy">
+                        </cc1:ModalPopupExtender>
+                        <asp:Panel ID="Ausparken" HorizontalAlign="Center" runat="server" Style="display: none">
+                            <table cellspacing="0" id="Table3" runat="server" width="50%" bgcolor="white" cellpadding="0"
+                                style="width: 50%; border: solid 1px #646464">
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="firstLeft active">
+                                        geparkte Bestellungen:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="firstLeft active">
+                                        <asp:Label ID="lblErrorAusparken" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="margin-left: 40px">
+                                        <asp:GridView ID="gvAusparken" runat="server" AllowPaging="False" AllowSorting="False"
+                                            AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
+                                            HorizontalAlign="Center" ShowFooter="False" Width="100%">
+                                            <PagerSettings Visible="false" />
+                                            <HeaderStyle CssClass="GridTableHead" />
+                                            <AlternatingRowStyle CssClass="GridTableAlternate" />
+                                            <RowStyle CssClass="ItemStyle" />
+                                            <Columns>
+                                                <asp:BoundField DataField="Lieferant" HeaderText="Lieferant" ItemStyle-Wrap="False" />
+                                                <asp:BoundField DataField="ERDAT" HeaderText="Erfasst" />
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="ibAusparkenTable" runat="server" Text="Ausparken" Height="16px"
+                                                            Width="78px" CssClass="Tablebutton" CommandName="ausparken" CommandArgument='<%# Eval("BSTNR") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton ID="ibAusparkenDelete" runat="server" Width="32" Height="32" ImageUrl="~/Images/RecycleBin.png"
+                                                            CommandArgument='<%# Eval("BSTNR") %>' CommandName="löschen" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:LinkButton ID="lbAusparkenClose" Text="Schließen" Height="16px" Width="78px"
+                                            runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
                     </div>
                     <input type="hidden" id="ihIsSaving" runat="server" value="0"/>
                 </div>

@@ -18,6 +18,8 @@ namespace MvcTools.Models
 
         public int StepCount { get { return StepTitles.Length; } }
 
+        public bool StepTitlesInNewLine { get; set; }
+
 
 
         public string GetTabHref(int i)

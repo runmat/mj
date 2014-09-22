@@ -5,11 +5,9 @@
     .step .formWizardStepDescWrapper {
         display: inline;
     }
-    .step .formWizardStepDescWrapperManySteps {
-        display: block;
-    }
     .step .formWizardStepDesc {
         font-size: 14px!important;
+        margin-bottom: 2px;
     }
     .active .step .formWizardStepDesc {
         font-weight: bold;
@@ -23,7 +21,19 @@
         display: block;
     }
     
+    .new-line {
+        padding-top: 5px!important;     
+    }
     
+    
+    .row-fluid .formWizardStepSpan11 {
+      width: 9.14680851063829%;
+      *width: 9.19361702127659%;
+    }
+    .row-fluid .formWizardStepSpan10 {
+      width: 9.84680851063829%;
+      *width: 9.89361702127659%;
+    }
     .row-fluid .formWizardStepSpan9 {
       width: 11.04680851063829%;
       *width: 11.09361702127659%;
@@ -73,10 +83,6 @@
                 if (!jQuery().bootstrapWizard)
                     return;
 
-                //alert(FormWizard.stepKeys.length);
-                if (FormWizard.stepKeys.length >= 8)
-                    $(".formWizardStepDescWrapper").removeClass("formWizardStepDescWrapper").addClass("formWizardStepDescWrapperManySteps");
-
                 FormWizard.onInitPrivate = onInit;
 
                 this.formWizardInitTabs();
@@ -91,7 +97,8 @@
                         if (index == (total - 1))
                             return false;
 
-                        var tabClickValid = index > clickedIndex;
+                        var tabClickValid = FormWizard.tabClickForwardEnforceValid || (!FormWizard.tabClickDisabled && (index > clickedIndex));
+                        //alert(FormWizard.tabClickDisabled + " - (" + tabClickValid + ")");
                         if (tabClickValid)
                             FormWizard.formWizardNavButtonsShowHide(clickedIndex + 1, total);
                         return tabClickValid;
@@ -211,8 +218,21 @@
                 var tabNumber = this.GetNextTabIndex();
                 
                 this.SetTabHtml(tabNumber, html);
-                try { FormPreparePrivateAjax(); } catch (e) {}
+                try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
                 this.ButtonNextInvoke();
+            },
+
+            SetSummaryTabHtmlAndMoveToSummary: function (html) {
+                var tabNumber = ($('#formWizard').data('bootstrapWizard')).navigationLength();
+                //console.log("* " + tabNumber + " *");
+                
+                this.SetTabHtml(tabNumber, html);
+                try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
+
+                var that = this;
+                that.tabClickForwardEnforceValid = true;
+                $("#formWizardStep_" + (tabNumber)).find("a").trigger("click");
+                setTimeout(function() { that.tabClickForwardEnforceValid = false; }, 500);
             },
 
             GetNextTabKey: function () {
@@ -221,6 +241,10 @@
 
             GetNextTabIndex: function () {
                 return this.getCurrentIndex() + 2;
+            },
+
+            GetCurrentTabIndex: function () {
+                return this.getCurrentIndex() + 1;
             },
 
 
@@ -350,6 +374,10 @@
             },
 
             stepKeys: [ @Model.StepKeysAsJavascript ],
+                
+            tabClickForwardEnforceValid : false,
+
+            tabClickDisabled : false,
 
             buttonHandlersDisabled: false,
 
@@ -361,6 +389,12 @@
                 var button = $('#formWizard').find('.button-' + buttonType);
                 if (button != null)
                     if (show) button.show(); else button.hide();
+            },
+
+            buttonVisible: function (buttonType) {
+                var button = $('#formWizard').find('.button-' + buttonType);
+                if (button != null)
+                    return (button.css("display") != "none");
             },
 
             buttonInvoke: function (buttonType) {
@@ -485,13 +519,20 @@
                                         <li class="@Model.GetStepSpanCssClass()" id="formWizardStep_@Model.GetStepNo(i)">
                                             <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
                                                 <span class="number">@Model.GetStepNo(i)</span>
-                                                <i class="icon-ok"></i>
-                                                <span class="formWizardStepDescWrapper">
-                                                     <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
+                                                <span class="formWizardStepDescWrapper new-line">
+                                                    @if (!Model.StepTitlesInNewLine)
+                                                    {
+                                                        <i class="icon-ok"></i>
+                                                    }
+                                                    <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
+                                                    @if (Model.StepTitlesInNewLine)
+                                                    {
+                                                        <i class="icon-ok"></i>
+                                                    }
                                                 </span>
                                             </a>
                                         </li>
-                                     }
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -511,7 +552,7 @@
                                 <i class="m-icon-swapleft"></i> Zurück 
                             </a>
                             <a href="javascript:;" class="btn green button-next">
-                                Weiter <i class="m-icon-swapright m-icon-white"></i>
+                                <span>Weiter</span> <i class="m-icon-swapright m-icon-white"></i>
                             </a>
                             <a href="javascript:;" class="btn green button-submit">
                                 Absenden <i class="m-icon-swapright m-icon-white"></i>

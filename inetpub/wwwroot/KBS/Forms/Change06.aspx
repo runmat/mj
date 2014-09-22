@@ -69,7 +69,7 @@
                         <div id="dataFooter">
                             <asp:LinkButton ID="lbAbsenden" Text="Absenden" Height="16px" Width="78px" runat="server" CssClass="Tablebutton"/>
                         </div>
-                        <asp:Button ID="MPEDummy1" Width="0" Height="0" runat="server" />
+                        <asp:Button ID="MPEDummy1" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender runat="server" ID="MPEBestellResultat" BackgroundCssClass="divProgress" 
                                             Enabled="true" PopupControlID="BestellResultat" TargetControlID="MPEDummy1"/>
                         
