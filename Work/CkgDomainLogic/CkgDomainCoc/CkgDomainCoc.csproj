@@ -91,6 +91,8 @@
     <Compile Include="CoC\Models\CocBeauftragungMode.cs" />
     <Compile Include="CoC\Models\DruckOptionen.cs" />
     <Compile Include="CoC\Models\FreieZulassung.cs" />
+    <Compile Include="CoC\Models\Sendungen\SendungsAuftragSelektor.cs" />
+    <Compile Include="CoC\Models\Sendungen\SendungsAuftrag.cs" />
     <Compile Include="CoC\Models\Versicherungsdaten.cs" />
     <Compile Include="CoC\Models\ZulassungsDienstleistungen.cs" />
     <Compile Include="CoC\Models\WunschkennzeichenOptionen.cs" />
@@ -109,9 +111,11 @@
     <Compile Include="CoC\ViewModels\CocReportsViewModel.cs" />
     <Compile Include="CoC\ViewModels\CocTypenViewModel.cs" />
     <Compile Include="CoC\ViewModels\CocBeauftragungViewModel.cs" />
+    <Compile Include="CoC\ViewModels\Sendungen\SendungenViewModel.cs" />
     <Compile Include="Controllers\CocController.cs" />
     <Compile Include="Controllers\Erfassung\CocController.cs" />
     <Compile Include="Controllers\CocBeauftragungZulassungController.cs" />
+    <Compile Include="Controllers\CocSendungController.cs" />
     <Compile Include="Controllers\Reports\CocController.cs" />
     <Compile Include="Controllers\Typenverwaltung\CocController.cs" />
     <Compile Include="Controllers\CocBeauftragungController.cs" />
