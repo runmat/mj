@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.audi.de/agis_services/cardocu" xmlns:fault="http://www.audi.de/agis_services/fault" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="cardocu" targetNamespace="http://www.audi.de/agis_services/cardocu">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.audi.de/agis_services/fault" xmlns:tns="http://www.audi.de/agis_services/fault" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:simpleType name="FaultClass">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="technical"/>
+					<xs:enumeration value="security"/>
+					<xs:enumeration value="business"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="FaultLevel">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="E"/>
+					<xs:enumeration value="W"/>
+					<xs:enumeration value="I"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="FaultCode">
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="1000"/>
+					<xs:maxInclusive value="9999"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="Fault">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FaultClass" type="tns:FaultClass"/>
+						<xs:element name="FaultCode" type="tns:FaultCode"/>
+						<xs:element name="FaultLevel" type="tns:FaultLevel"/>
+						<xs:element name="FaultTimestamp" type="xs:string"/>
+						<xs:element name="FaultDescription" type="xs:string"/>
+						<xs:element name="FaultMessage" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+		<xs:schema targetNamespace="http://www.audi.de/agis_services/cardocu" xmlns:tns="http://www.audi.de/agis_services/cardocu" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:simpleType name="SysUser">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="8"/>
+				</xs:restriction>
+			</xs:simpleType>
+            <xs:simpleType name="SysUserForVehicleStatus">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="8"/>
+                </xs:restriction>
+            </xs:simpleType>
+			<xs:simpleType name="NumberPlate">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="10"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="VIN17">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="17"/>
+					<xs:maxLength value="17"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="NameLast">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="60"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="NameFirst">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="60"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="Department">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="60"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="EMail">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="Street">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="60"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="PostalCode">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="10"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="City">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="0"/>
+					<xs:maxLength value="60"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="Country">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="3"/>
+					<xs:maxLength value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+            <xs:simpleType name="OrderID">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="3"/>
+                    <xs:maxLength value="3"/>
+                </xs:restriction>
+            </xs:simpleType>  
+            <xs:simpleType name="CostcenterNumber">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="10"/>
+                    <xs:maxLength value="10"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="DepartmentForVehicleStatus">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="0"/>
+                    <xs:maxLength value="9"/>
+                </xs:restriction>
+            </xs:simpleType>  
+            <xs:simpleType name="Status">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="0"/>
+                    <xs:maxLength value="5"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="SubStatus">
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="0"/>
+                    <xs:maxLength value="5"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:complexType name="StatusAGIS">
+                <xs:sequence>
+                    <xs:element name="Status" type="tns:Status" minOccurs="1"  maxOccurs="1"/>
+                    <xs:element name="SubStatus" type="tns:SubStatus" minOccurs="0"  maxOccurs="1"/>                    
+                </xs:sequence>
+            </xs:complexType>            
+            <xs:complexType name="Costcenter">
+                <xs:sequence>
+                    <xs:element name="Costcenter" type="tns:CostcenterNumber" minOccurs="0"/>
+                    <xs:element name="Department" type="tns:DepartmentForVehicleStatus" minOccurs="0"/>                    
+                </xs:sequence>
+            </xs:complexType>                                
+			<xs:complexType name="DriverInformation">
+				<xs:sequence>
+					<xs:element name="VIN17" type="tns:VIN17"/>
+					<xs:element name="NameLast" type="tns:NameLast" minOccurs="0"/>
+					<xs:element name="NameFirst" type="tns:NameFirst" minOccurs="0"/>
+					<xs:element name="Department" type="tns:Department" minOccurs="0"/>
+					<xs:element name="EMail" type="tns:EMail" minOccurs="0"/>
+					<xs:element name="Street" type="tns:Street" minOccurs="0"/>
+					<xs:element name="PostalCode" type="tns:PostalCode" minOccurs="0"/>
+					<xs:element name="City" type="tns:City" minOccurs="0"/>
+					<xs:element name="Country" type="tns:Country" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="DriverInformationList">
+				<xs:sequence>
+					<xs:element name="DriverInformation" type="tns:DriverInformation" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="GetDriverInformation">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SysUser" type="tns:SysUser"/>
+						<xs:element name="NumberPlate" type="tns:NumberPlate"/>
+						<xs:element name="Date" type="xs:date"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetDriverInformationResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DriverInformationList" type="tns:DriverInformationList"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>            
+            <xs:element name="GetVehicleStatus">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SysUser" type="tns:SysUserForVehicleStatus"/>
+                        <xs:element name="VIN17" type="tns:VIN17"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetVehicleStatusResponse">
+                <xs:complexType>
+                    <xs:sequence>
+    					<xs:element name="VIN17" type="tns:VIN17"/>
+    					<xs:element name="OrderID" type="tns:OrderID"/>
+                        <xs:element name="StatusAGIS" type="tns:StatusAGIS" minOccurs="1"  maxOccurs="1"/>
+    					<xs:element name="VehicleGroup" type="xs:short" minOccurs="0"/>
+    					<xs:element name="Costcenter" type="tns:Costcenter" minOccurs="1"/>				
+				    </xs:sequence>
+                </xs:complexType>
+            </xs:element>            
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="Fault">
+		<wsdl:part name="fault" element="fault:Fault"/>
+	</wsdl:message>
+	<wsdl:message name="DriverRequest">
+		<wsdl:part name="DriverRequestPart" element="tns:GetDriverInformation"/>
+	</wsdl:message>
+	<wsdl:message name="DriverResponse">
+		<wsdl:part name="DriverResponsePart" element="tns:GetDriverInformationResponse"/>
+	</wsdl:message>
+    <wsdl:message name="VehicleRequest">
+        <wsdl:part name="VehicleRequestPart" element="tns:GetVehicleStatus"/>
+    </wsdl:message>
+    <wsdl:message name="VehicleResponse">
+        <wsdl:part name="VehicleResponsePart" element="tns:GetVehicleStatusResponse"/>
+    </wsdl:message>
+	<wsdl:portType name="CarDocuWebServicePort">
+		<wsdl:operation name="GetDriverInformation">
+			<wsdl:input message="tns:DriverRequest"/>
+			<wsdl:output message="tns:DriverResponse"/>
+			<wsdl:fault name="fault" message="tns:Fault"/>
+		</wsdl:operation>
+        <wsdl:operation name="GetVehicleStatus">
+            <wsdl:input message="tns:VehicleRequest"/>
+            <wsdl:output message="tns:VehicleResponse"/>
+            <wsdl:fault name="fault" message="tns:Fault"/>
+        </wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CarDocuWebServiceBinding" type="tns:CarDocuWebServicePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetDriverInformation">
+			<soap:operation soapAction="http://www.audi.de/agis_services/cardocu/getDriverInformation"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault name="fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="GetVehicleStatus">
+            <soap:operation soapAction="http://www.audi.de/agis_services/cardocu/getVehicleStatus"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault">
+                <soap:fault name="fault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>        
+	</wsdl:binding>
+	<wsdl:service name="CarDocuWebService">
+		<wsdl:port name="CarDocuWebServicePort" binding="tns:CarDocuWebServiceBinding">
+			<soap:address location="https://agis.web.audi.vwg/agis/adapter/ws"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

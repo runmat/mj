@@ -15,7 +15,7 @@
         @Html.HiddenFor(m => m.EndDatum)
 
 
-        @Html.FormTemplateControl("", @<text><i id="VersEventDetailsIcon"></i> Event bearbeiten</text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><i id="VersEventDetailsIcon"></i> @Localize.VersEventEdit</text>, new { @class = "m-wrap" })
         
         
         @Html.FormValidationSummary()
@@ -51,8 +51,8 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="button" onclick="$('#VersEventForm').submit()" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" onclick="VersEventCloseDetails();" class="btn">Abbrechen</button>
+            <button type="button" onclick="$('#VersEventForm').submit()" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" onclick="VersEventCloseDetails();" class="btn">@Localize.Cancel</button>
         </div>
     </form>
 </div>

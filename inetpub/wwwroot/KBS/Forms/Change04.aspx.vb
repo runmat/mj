@@ -161,6 +161,24 @@ Partial Public Class Change04
         End If
     End Sub
 
+    Private Sub FillGridLetzteBestellungen()
+
+        Dim tmpDataView As New DataView(mObjZentrallager.LetzteBestellungen)
+        tmpDataView.Sort = "Bestelldatum DESC"
+
+        If tmpDataView.Count = 0 Then
+            gvLetzteBestellungen.Visible = False
+            lblNoDataLetzteBestellungen.Visible = True
+        Else
+            gvLetzteBestellungen.Visible = True
+            lblNoDataLetzteBestellungen.Visible = False
+
+            gvLetzteBestellungen.DataSource = tmpDataView
+            gvLetzteBestellungen.DataBind()
+        End If
+
+    End Sub
+
     Private Sub doSubmit()
         mObjZentrallager.KostStelle = mObjKasse.Lagerort
         mObjZentrallager.SendToKost = txtKST.Text
@@ -247,8 +265,10 @@ Partial Public Class Change04
     End Sub
 
     Protected Sub txtKST_TextChanged(sender As Object, e As EventArgs) Handles txtKST.TextChanged
+        divLetzteBestellungen.Visible = False
+
         If mObjKasse.Master Then
-            If txtKST.Text.Length > 0 Then
+            If Not String.IsNullOrEmpty(txtKST.Text) Then
                 With mObjZentrallager
                     .CheckKostStelleERP(txtKST.Text.Trim)
                     If .E_MESSAGE <> "" Then
@@ -271,7 +291,6 @@ Partial Public Class Change04
                         txtFreitext.Enabled = True
                         lbtFreitextSend.Enabled = True
                         SetFocus(ddlArtikel)
-
                     End If
                 End With
             End If
@@ -284,6 +303,25 @@ Partial Public Class Change04
             lbtnInsert.Enabled = False
             txtFreitext.Enabled = False
             lbtFreitextSend.Enabled = False
+        End If
+    End Sub
+
+    Private Sub lbLetzteBestellungen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbLetzteBestellungen.Click
+        If String.IsNullOrEmpty(txtKST.Text) Then
+            lblError.Text = "Bitte geben Sie eine Kostenstelle an!"
+            Exit Sub
+        End If
+
+        ShowLetzteBestellungen()
+    End Sub
+
+    Private Sub ShowLetzteBestellungen()
+        divLetzteBestellungen.Visible = True
+        mObjZentrallager.FillLetzteBestellungen(txtKST.Text)
+        If mObjZentrallager.E_MESSAGE <> "" AndAlso Not mObjZentrallager.E_SUBRC = "141" Then
+            lblError.Text = "Fehler beim Abrufen der letzten Bestellungen: " & mObjZentrallager.E_MESSAGE
+        Else
+            FillGridLetzteBestellungen()
         End If
     End Sub
 

@@ -4,7 +4,7 @@
 @Html.Partial("Common/StylesScripts")
 @Html.Partial("Schadenfaelle/Common")
 
-<h3 class="page-title" id="headerTitle">Terminübersicht Boxen <small>eines Event Ortes</small></h3>
+<h3 class="page-title" id="headerTitle">@Localize.AppointmentOverallView @Localize.Boxes <small>@Localize.VersEventLocation</small></h3>
 
 <ul class="breadcrumbs event-breadcrumbs">
 	<li><a href="">[Schadenfälle]</a></li>
@@ -30,6 +30,6 @@
 <script src="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.js"></script>
 
 <script type="text/javascript">
-    _breadCrumbInitial = "Event + Ort wählen";
+    _breadCrumbInitial = "@Localize.ChooseEventAndLocation";
     _mode = "terminuebersicht";
 </script>

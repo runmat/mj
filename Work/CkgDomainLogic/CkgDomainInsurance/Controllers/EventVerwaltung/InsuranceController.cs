@@ -16,17 +16,20 @@ namespace ServicesMvc.Controllers
     {
         public VersEventsViewModel EventsViewModel { get { return GetViewModel<VersEventsViewModel>(); } }
 
+        public string UserCulture { get { return SessionHelper.GetSessionValue("UserCulture", "de-DE"); } }
+
+
         [CkgApplication]
         public ActionResult Konfigurator()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
 
             return View(EventsViewModel);
         }
 
         public ActionResult KonfiguratorTest()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
             EventsViewModel.DataInitTest();
 
             return View(EventsViewModel);
@@ -35,7 +38,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Termine()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
             EventsViewModel.AlleTermineFetchAllDetails = true;
 
             return View(EventsViewModel);
@@ -44,7 +47,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult SchadenStatusAlle()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
 
             return View(EventsViewModel);
         }
@@ -52,7 +55,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Schadenverwaltung()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
 
             return View(EventsViewModel);
         }
@@ -60,7 +63,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult TerminUebersichtBoxen()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
 
             return View(EventsViewModel);
         }
@@ -68,7 +71,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Calendar()
         {
-            EventsViewModel.DataInit();
+            EventsViewModel.DataInit(UserCulture);
 
             return View(EventsViewModel);
         }

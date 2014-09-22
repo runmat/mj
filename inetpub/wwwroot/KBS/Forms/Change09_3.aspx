@@ -102,7 +102,7 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                        <asp:Button ID="MPEDummy" Width="0" Height="0" style="display:none" runat="server" />
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender runat="server" ID="mpeCheck" BackgroundCssClass="divProgress"
                             Enabled="true" PopupControlID="PLCheck" TargetControlID="MPEDummy" CancelControlID="lbCancel">
                         </cc1:ModalPopupExtender>
