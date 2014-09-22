@@ -288,7 +288,7 @@ Partial Public Class Change09
             Else
                 sPath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
             End If
-            If files.Length > 0 Then
+            If filesByte.Count > 0 Then
                 File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte))
                 mObjInventur.Filepath = sPath
                 'Session("App_Filepath") = mObjInventur.Filepath
