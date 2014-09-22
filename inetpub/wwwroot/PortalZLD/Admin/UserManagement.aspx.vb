@@ -1,5 +1,4 @@
 ﻿Imports CKG.Base.Kernel.Admin
-Imports CKG.Base.Kernel.Security.Crypto
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Business
@@ -13,16 +12,11 @@ End Structure
 Partial Public Class UserManagement
     Inherits System.Web.UI.Page
 
-    Private objSuche As CKG.Base.Kernel.Common.Search
-
     Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
-    Private Const CONST_LOESCHKENNZEICHEN As String = "X"
 
 #Region " Membervariables "
     Private m_User As User
     Private m_App As App
-    Private m_Rights As DataTable
-    Private m_Districts As DataTable
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -42,9 +36,7 @@ Partial Public Class UserManagement
             End If
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "Page_Load", ex.ToString)
-
             lblError.Text = ex.ToString
-            lblError.Visible = True
         End Try
     End Sub
 
@@ -348,7 +340,6 @@ Partial Public Class UserManagement
             End If
         Else
             lblError.Text = errorText
-            lblError.Visible = True
             Exit Sub
         End If
 
@@ -413,15 +404,6 @@ Partial Public Class UserManagement
             .DataSource = dvUser
             .DataBind()
         End With
-        'If dgSearchResult.Rows.Count >= 15 Then
-        '    Dim ScripText As String
-        '    ScripText = "						<script language=""Javascript"">" & vbCrLf
-        '    ScripText &= "						  <!-- //" & vbCrLf
-        '    ScripText &= "							document.getElementById('data').style.height = '840px';" & vbCrLf
-        '    ScripText &= "						  //-->" & vbCrLf
-        '    ScripText &= "						</script>" & vbCrLf
-        '    Controls.Add(New LiteralControl(ScripText))
-        'End If
 
         If blnNotApproved = True Then
 
@@ -433,8 +415,6 @@ Partial Public Class UserManagement
             For Each Item In dgSearchResult.Rows
 
                 If Item.Cells(17).Text = m_User.UserName Then
-                    lnkButton = New LinkButton()
-
                     lnkButton = Item.Cells(1).Controls(0)
                     strUserText = lnkButton.Text
                     Item.Cells(1).Controls.Clear()
@@ -1059,83 +1039,11 @@ Partial Public Class UserManagement
     End Function
 #End Region
 
-#Region "SAP / BAPI-Aufrufe"
-
-    '-----------
-    'Liest die Distrikte und Berechtigungen aus SAP
-    '-----------
-    Private Sub ReadDistrictsAndRights()
-        Dim Districts As CKG.Base.Kernel.Common.Search
-        Dim SessionID As String = Session.SessionID.ToString
-        Dim AppID As String = "601"
-        Dim i As Integer
-        Dim _customer As New Customer(CInt(ddlCustomer.SelectedItem.Value), m_User.App.Connectionstring)
-        Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
-        Districts = New CKG.Base.Kernel.Common.Search(m_App, _User, SessionID, AppID)
-        i = Districts.Show(txtUserID.Text, Right("0000000000" & _customer.KUNNR, 10))
-
-        m_Rights = Districts.Rights
-        Dim count As Integer = m_Rights.Rows.Count
-        m_Districts = Districts.Districts
-    End Sub
-
-    '-----------
-    'Speichert die Berechtigungen nach SAP
-    '-----------
-    Private Sub SetDistrictRights(ByVal Rights As DataTable)
-        Dim Districts As CKG.Base.Kernel.Common.Search
-        Dim SessionID As String = Session.SessionID.ToString
-        Dim AppID As String = "601"
-        Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
-
-        Districts = New CKG.Base.Kernel.Common.Search(m_App, _User, SessionID, AppID)
-        Districts.Rights = Rights
-        Districts.Change()
-    End Sub
-
-    Private Function Get_Applications(ByVal GroupId As Integer) As ArrayList
-        Dim Connection As New SqlClient.SqlConnection()
-        Dim Command As New SqlClient.SqlCommand()
-        Dim Applications As ArrayList = New ArrayList()
-
-        Try
-            Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
-
-            With Command
-                .Connection = Connection
-                .CommandType = CommandType.Text
-                'Nur Parent-Applikationen lesen
-                .CommandText = "SELECT DISTINCT Application.AppID As AppID, AppName, AppFriendlyName FROM Rights, Application WHERE Rights.GroupID = @GroupID AND Rights.AppID = Application.AppID AND Application.AppParent = 0 ORDER BY AppFriendlyName ASC"
-                .Parameters.AddWithValue("@GroupID", GroupId)
-            End With
-
-            Connection.Open()
-            Dim DataReader As SqlClient.SqlDataReader
-            DataReader = Command.ExecuteReader()
-            Dim Application As Appl
-            While DataReader.Read
-                Application = New Appl()
-                Application.Id = CType(DataReader("AppID"), Integer)
-                Application.Name = DataReader("AppName").ToString
-                Application.FriendlyName = DataReader("AppFriendlyName").ToString
-                Applications.Add(Application)
-            End While
-            Connection.Close()
-        Catch ex As Exception
-            If Connection.State = ConnectionState.Open Then
-                Connection.Close()
-            End If
-            lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-        End Try
-
-        Return Applications
-
-    End Function
+#Region "Domain-User"
 
     Private Sub SetDomainUser(ByVal intUserId As Integer)
         Dim Connection As New SqlClient.SqlConnection()
         Dim Command As New SqlClient.SqlCommand()
-        Dim Applications As ArrayList = New ArrayList()
 
         Try
             Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
@@ -1181,7 +1089,7 @@ Partial Public Class UserManagement
             If Connection.State = ConnectionState.Open Then
                 Connection.Close()
             End If
-            lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
+            lblError.Text = "Es ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
 
     End Sub
@@ -1189,7 +1097,6 @@ Partial Public Class UserManagement
     Private Sub DeleteDomainUser(ByVal intUserId As Integer)
         Dim Connection As New SqlClient.SqlConnection()
         Dim Command As New SqlClient.SqlCommand()
-        Dim Applications As ArrayList = New ArrayList()
 
         Try
             Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
@@ -1217,14 +1124,14 @@ Partial Public Class UserManagement
                 Connection.Close()
             End If
 
-            lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
+            lblError.Text = "Es ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
 
     End Sub
+
     Private Function GetDomainUser(ByVal intUserId As Integer) As String
         Dim Connection As New SqlClient.SqlConnection()
         Dim Command As New SqlClient.SqlCommand()
-        Dim Applications As ArrayList = New ArrayList()
 
         Try
             Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
@@ -1254,134 +1161,7 @@ Partial Public Class UserManagement
                 Connection.Close()
             End If
             Return ""
-            lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
-
-    End Function
-#End Region
-
-#Region "Helper"
-
-    '------------
-    'Liefert einen Filterausdruck für das Rights-DataTable
-    '------------
-    Private Function GetFilterExpression(ByVal kundennr As String, ByVal districtID As String, ByVal groupname As String, ByVal vorbelegung As String, ByVal ApplicationId As String, ByVal ohneGeloeschte As Boolean, ByVal invertDistrikt As Boolean) As String
-
-        'Werte aufbereiten
-        kundennr = Right("0000000000" + kundennr, 10)
-
-        'Ausdruck erstellen
-        Dim needAND As Boolean = False
-
-        Dim res As New System.Text.StringBuilder()
-        If Not kundennr Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" KUNNR = '" + kundennr + "' ")
-            needAND = True
-        End If
-        If Not districtID Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" DISTRIKT ")
-            If invertDistrikt Then
-                res.Append(" <> ")
-            Else
-                res.Append(" = ")
-            End If
-            res.Append(" '" + districtID + "' ")
-            needAND = True
-        End If
-        If Not groupname Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" BENGRP = '" + groupname + "' ") ' groupname=UserID
-            needAND = True
-        End If
-        If Not vorbelegung Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" VORBELEGT = '" + vorbelegung + "' ")
-            needAND = True
-        End If
-        If Not ApplicationId Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" ANWENDUNG = '" + ApplicationId + "' ")
-            needAND = True
-        End If
-        If ohneGeloeschte Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" LOEKZ = '' ")
-            needAND = True
-        End If
-
-        Return res.ToString()
-
-    End Function
-
-    '-----------
-    'Liefert alle Rights-Checkboxes für alle, ein Distrikt oder alle Distrikte außer dem einem
-    '-----------
-    Private Function GetRightsCheckboxes(ByVal ctrls As IEnumerator, ByVal DistriktID As String, ByVal invertDistrikt As Boolean) As CheckBox()
-        Dim cbox As CheckBox
-        Dim row As TableRow
-        Dim cell As TableCell
-        Dim res As New ArrayList()
-        While ctrls.MoveNext
-            If TypeOf ctrls.Current Is TableRow Then
-                row = CType(ctrls.Current, TableRow)
-                If row.HasControls Then
-                    res.AddRange(GetRightsCheckboxes(row.Controls.GetEnumerator(), DistriktID, invertDistrikt))
-                End If
-            End If
-            If TypeOf ctrls.Current Is TableCell Then
-                cell = CType(ctrls.Current, TableCell)
-                If cell.HasControls Then
-                    res.AddRange(GetRightsCheckboxes(cell.Controls.GetEnumerator(), DistriktID, invertDistrikt))
-                End If
-            End If
-            If TypeOf ctrls.Current Is CheckBox Then
-                cbox = CType(ctrls.Current, CheckBox)
-                If Not cbox.Attributes("ApplicationID") Is Nothing Then
-                    'Alle Distrikte ODER (einen distrikt ODER die Invertierung)
-                    If (DistriktID Is Nothing) OrElse (invertDistrikt Xor DistriktID = cbox.Attributes("DistriktId")) Then
-                        res.Add(cbox)
-                    End If
-                End If
-            End If
-        End While
-
-        Return CType(res.ToArray(GetType(CheckBox)), CheckBox())
-
-    End Function
-
-    '-------
-    'Liefert den ausgewählten Radio-Button
-    '-------
-    Private Function GetSelectedDistrictRadioButton(ByVal ctrls As IEnumerator) As RadioButton
-        Dim rdo As RadioButton
-        Dim row As TableRow
-        Dim cell As TableCell
-        While ctrls.MoveNext
-            If TypeOf ctrls.Current Is TableRow Then
-                row = CType(ctrls.Current, TableRow)
-                If row.HasControls Then
-                    Dim res As RadioButton = GetSelectedDistrictRadioButton(row.Controls.GetEnumerator())
-                    If Not res Is Nothing Then Return res
-                End If
-            End If
-            If TypeOf ctrls.Current Is TableCell Then
-                cell = CType(ctrls.Current, TableCell)
-                If cell.HasControls Then
-                    Dim res As RadioButton = GetSelectedDistrictRadioButton(cell.Controls.GetEnumerator())
-                    If Not res Is Nothing Then Return res
-                End If
-            End If
-            If TypeOf ctrls.Current Is RadioButton Then
-                rdo = CType(ctrls.Current, RadioButton)
-                If rdo.Checked Then
-                    Return rdo
-                End If
-            End If
-        End While
-
-        Return Nothing
 
     End Function
 
@@ -1392,12 +1172,12 @@ Partial Public Class UserManagement
             If Not (upFile.PostedFile.FileName = String.Empty) Then
                 Dim fname As String = upFile.PostedFile.FileName
                 If (upFile.PostedFile.ContentLength > CType(System.Configuration.ConfigurationManager.AppSettings("MaxUploadSize"), Integer)) Then
-                    lblError.Text = "Datei '" & Right(fname, fname.Length - fname.LastIndexOf("\") - 1).ToUpper & "' ist zu gross (>300 KB)."
+                    lblErrorSave.Text = "Datei '" & Right(fname, fname.Length - fname.LastIndexOf("\") - 1).ToUpper & "' ist zu gross (>300 KB)."
                     Exit Sub
                 End If
                 '------------------
                 If Right(upFile.PostedFile.FileName.ToUpper, 4) <> ".JPG" Then
-                    lblError.Text = "Es können nur Bilddateien im JPG - Format verarbeitet werden."
+                    lblErrorSave.Text = "Es können nur Bilddateien im JPG - Format verarbeitet werden."
                     Exit Sub
                 End If
 
@@ -1415,7 +1195,7 @@ Partial Public Class UserManagement
                     uFile.SaveAs(fnameNew)
                     info = New System.IO.FileInfo(fnameNew)
                     If Not (info.Exists) Then
-                        lblError.Text = "Fehler beim Speichern."
+                        lblErrorSave.Text = "Fehler beim Speichern."
                     End If
 
                     Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
@@ -1425,7 +1205,7 @@ Partial Public Class UserManagement
                 End If
             End If
         Catch ex As Exception
-            lblError.Text = "Fehler beim Hochladen. (" & ex.ToString & ")"
+            lblErrorSave.Text = "Fehler beim Hochladen. (" & ex.ToString & ")"
         End Try
     End Sub
 
@@ -1444,10 +1224,9 @@ Partial Public Class UserManagement
 
             FillEdit(CInt(txtUserID.Text))
         Catch ex As Exception
-            lblError.Text = "Fehler beim Löschen. (" & ex.ToString & ")"
+            lblErrorSave.Text = "Fehler beim Löschen. (" & ex.ToString & ")"
         End Try
     End Sub
-
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
         SetEndASPXAccess(Me)
@@ -1468,7 +1247,6 @@ Partial Public Class UserManagement
         End If
         BuildExcel()
     End Sub
-
 
 #Region " Events "
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
@@ -1773,7 +1551,7 @@ Partial Public Class UserManagement
 
                         strPwd = txtPassword.Text
                     Else    ' Sonst nach Kundeneinstellungen ein neues Passwort generieren
-                        strPwd = _customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
+                        strPwd = _customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
 
 
                         bInitialPswd = True
@@ -1787,7 +1565,7 @@ Partial Public Class UserManagement
 
                     If Not _User.ChangePasswordNew("", pword, pwordconfirm, m_User.UserName, True, bInitialPswd) Then
                         txtUserID.Text = _User.UserID.ToString
-                        lblError.Text = _User.ErrorMessage
+                        lblErrorSave.Text = _User.ErrorMessage
                     Else
                         blnSuccess = True
                     End If
@@ -1805,7 +1583,7 @@ Partial Public Class UserManagement
 
                 'EmployeeInfos ggf. speichern
             Else
-                lblError.Text = _User.ErrorMessage
+                lblErrorSave.Text = _User.ErrorMessage
             End If
             tblLogParameter = New DataTable
             tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
@@ -1833,7 +1611,7 @@ Partial Public Class UserManagement
                             Dim WrongKey As String = ""
 
                             'Linkschlüssel generieren
-                            LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
+                            LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
 
                             'Passwort generieren
                             'pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
@@ -1845,7 +1623,7 @@ Partial Public Class UserManagement
                             'Mail versenden
                             If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User, False) Then
 
-                                lblError.Text = errorMessage
+                                lblErrorSave.Text = errorMessage
                             Else
                                 'Status auf erfolgreich versandt setzen
                                 _User.UpdateWebUserUploadMailSend(True)
@@ -1881,7 +1659,7 @@ Partial Public Class UserManagement
                     If sendPW Then
                         ' sendPasswordMail prüft Restriktionen fürs senden 
                         If Not _User.SendPasswordMail(strPwd, errorMessage, False) Then
-                            lblError.Text = errorMessage
+                            lblErrorSave.Text = errorMessage
                         End If
                     End If
 
@@ -1892,14 +1670,14 @@ Partial Public Class UserManagement
                         If _User.UserName <> CStr(Session("UsernameStart")) And _User.UserName <> String.Empty And _
                             _User.HighestAdminLevel = AdminLevel.None And Not cbxOrganizationAdmin.Checked Then
                             If Not _User.SendUsernameChangedMail(errorMessage, False) Then
-                                lblError.Text = errorMessage
+                                lblErrorSave.Text = errorMessage
                             End If
                         End If
                         ' Falls Benutzer entsperrt wurde
                         If Not Session("LockedOutStart") Is Nothing Then
                             If _User.Approved And _User.AccountIsLockedOut = False And CBool(Session("LockedOutStart")) = True Then
                                 If Not _User.SendUserUnlockMail(errorMessage, m_User, False) Then
-                                    lblError.Text = errorMessage
+                                    lblErrorSave.Text = errorMessage
                                 End If
                             End If
                         End If
@@ -1910,15 +1688,6 @@ Partial Public Class UserManagement
                 Session("UsernameStart") = Nothing
                 Session("LockedOutStart") = Nothing
 
-                'If _customer.ShowDistrikte AndAlso Session("Changed") = 1 Then
-
-
-                '    ErmitteleRechteAusCheckBoxen(Matrix.Rows.GetEnumerator, m_Rights)
-                '    Dim selectedDistrict As String = GetSelectedDistrict()
-                '    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, True, False)
-                '    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, False, True)
-                '    SetDistrictRights(m_Rights)
-                'End If
             End If
 
         Catch ex As Exception
@@ -1929,7 +1698,7 @@ Partial Public Class UserManagement
                 lblErrorSave.Text &= ": " & ex.InnerException.Message
             End If
             tblLogParameter = New DataTable
-            Log(txtUserID.Text, lblError.Text, tblLogParameter, "ERR")
+            Log(txtUserID.Text, lblErrorSave.Text, tblLogParameter, "ERR")
         End Try
     End Sub
 
@@ -1944,18 +1713,18 @@ Partial Public Class UserManagement
                 lblMessage.Text = "Das Benutzerkonto wurde gelöscht."
                 Search(True, True, , True)
             Else
-                lblError.Text = _User.ErrorMessage
+                lblErrorSave.Text = _User.ErrorMessage
             End If
             Log(_User.UserID.ToString, "User löschen", tblLogParameter)
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "lbtnDelete_Click", ex.ToString)
 
-            lblError.Text = ex.Message
+            lblErrorSave.Text = ex.Message
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
             tblLogParameter = New DataTable
-            Log(txtUserID.Text, lblError.Text, tblLogParameter, "ERR")
+            Log(txtUserID.Text, lblErrorSave.Text, tblLogParameter, "ERR")
         End Try
 
         Session("UsernameStart") = Nothing
@@ -2064,15 +1833,6 @@ Partial Public Class UserManagement
             dvUser = CType(Session("myUserListView"), DataView)
             tableExport = dvUser.Table      'DAD-Admin darf alles sehen
 
-            'If (m_User.Customer.AccountingArea <> -1) Then
-            '    dvUser.RowFilter = "CustomerID = " & m_User.Customer.CustomerId     'Nochmal filtern...Sicht
-            '    'Wenn Zeilen in der Sicht <> Zeilen in Excel, dann Tabelle löschen. Das darf nicht sein!
-            '    If dvUser.Count <> dvUser.Table.Rows.Count Then
-            '        tableExport = Nothing
-            '        lnkExcel.Visible = False
-            '    End If
-            'End If
-
             'Nur Master-Admin darf die Remote-Schlüssel sehen
             If Not m_User.HighestAdminLevel = AdminLevel.Master Then
                 tableExport.Columns.Remove("URLRemoteLoginKey")
@@ -2108,10 +1868,10 @@ Partial Public Class UserManagement
                 Dim WrongKey As String = ""
 
                 'Linkschlüssel generieren
-                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
+                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
 
                 'Passwort generieren
-                pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
+                pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
                 _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True, False)
 
                 'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
@@ -2119,7 +1879,7 @@ Partial Public Class UserManagement
 
                 'Mail versenden
                 If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User, False) Then
-                    lblError.Text = errorMessage
+                    lblErrorSave.Text = errorMessage
                 Else
                     'Status auf erfolgreich versandt setzen
                     _User.UpdateWebUserUploadMailSend(True)
@@ -2131,7 +1891,7 @@ Partial Public Class UserManagement
                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
                         Dim pword As String = ""
                         'Passwort generieren
-                        pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
+                        pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
                         _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True, False)
                         _User.SendPasswordMail(pword, errorMessage, False)
                     End If
@@ -2240,7 +2000,6 @@ Partial Public Class UserManagement
         ' FillDataGrid(False)
         FillDataGrid(lblNotApprovedMode.Visible)
     End Sub
-
 
     Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
 

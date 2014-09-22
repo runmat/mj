@@ -14,7 +14,7 @@
         @Html.HiddenFor(m => m.LoeschDatum)
         @Html.HiddenFor(m => m.LoeschUser)
 
-        @Html.FormTemplateControl("", @<text><div class="form-header"><i class="icon-calendar"></i> <span>Termin Details</span></div></text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><div class="form-header"><i class="icon-calendar"></i> <span>@Localize.AppointmentDetails</span></div></text>, new { @class = "m-wrap" })
         
         
         @Html.FormValidationSummary()
@@ -45,7 +45,7 @@
 
         <div class="form-actions">
             <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" class="btn" onclick="TerminSchadenfallEditDetailsClose(true, false);">Abbrechen</button>
+            <button type="button" class="btn" onclick="TerminSchadenfallEditDetailsClose(true, false);">@Localize.Cancel</button>
         </div>
     
         <script type="text/javascript">

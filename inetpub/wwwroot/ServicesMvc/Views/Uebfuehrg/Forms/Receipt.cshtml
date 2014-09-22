@@ -3,11 +3,25 @@
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
-        <div>Vielen Dank, wie folgt Ihr Beleg!</div>
+        <div id="ReceiptFormActions" class="hide">
+            <a href="DownloadPdf" class="btn blue tooltips" data-original-title="Ihr Vorgang als PDF Datei!" data-placement="top"> PDF Download <i class="icon-download-alt"></i></a>
+        </div>
+
+        <div class="receipt-wrapper-uebfuehrg">
+            
+            <div id="receipt-wait" class="alert warning"><i class="icon-bell"></i> Ihr Auftrag wird bearbeitet, bitte einen Moment Geduld ...</div>
+
+            <div id="receipt-success" class="alert alert-success hide"><i class="icon-ok"></i> Vielen Dank, wir haben Ihren Auftrag erhalten!</div>
+
+            <div id="receipt-error" class="alert alert-error hide"></div>
+            
+        </div>
         
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            setTimeout('SaveAllStart()', 1000);
         
         </script>
     }
