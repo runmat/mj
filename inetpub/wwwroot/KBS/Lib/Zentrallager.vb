@@ -9,6 +9,7 @@ Public Class Zentrallager
     Private mstrFreitext As String
     Private mFreitextSend As Boolean
     Private mstrKostText As String = ""
+    Private mLetzteBestellungen As DataTable
     Dim SAPExc As SAPExecutor.SAPExecutor
 
     Public Property E_SUBRC() As Integer
@@ -86,6 +87,15 @@ Public Class Zentrallager
         End Get
         Set(ByVal value As String)
             mstrKostText = value
+        End Set
+    End Property
+
+    Public Property LetzteBestellungen() As DataTable
+        Get
+            LetzteBestellungen = mLetzteBestellungen
+        End Get
+        Set(ByVal value As DataTable)
+            mLetzteBestellungen = value
         End Set
     End Property
 
@@ -245,6 +255,44 @@ Public Class Zentrallager
         tmpRow("Menge") = Menge
         tmpRow("VMEINS") = VerpackEinheit
         mBestellungen.Rows.Add(tmpRow)
+    End Sub
+
+    Public Sub FillLetzteBestellungen(ByVal kst As String)
+        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+        E_MESSAGE = ""
+        E_SUBRC = 0
+
+        Try
+            If mLetzteBestellungen IsNot Nothing Then
+                mLetzteBestellungen.Clear()
+            End If
+
+            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+
+            dt.Rows.Add(New Object() {"I_KOSTL", False, Right("0000000000" & kst, 10), 10})
+            dt.Rows.Add(New Object() {"GT_LISTE", True})
+
+            SAPExc.ExecuteERP("Z_FIL_EFA_PO_ZENTRALE_LISTE", dt)
+
+            If SAPExc.ErrorOccured AndAlso Not SAPExc.E_SUBRC = "141" Then
+                E_SUBRC = SAPExc.E_SUBRC
+                E_MESSAGE = SAPExc.E_MESSAGE
+            Else
+                Dim retRows As DataRow = dt.Select("Fieldname='GT_LISTE'")(0)
+                If retRows IsNot Nothing Then
+                    Dim tmpDate As DateTime
+                    mLetzteBestellungen = DirectCast(retRows("Data"), DataTable)
+                    mLetzteBestellungen.Columns.Add("Bestelldatum", GetType(DateTime))
+                    For Each row As DataRow In mLetzteBestellungen.Rows
+                        If Not String.IsNullOrEmpty(row("BEDAT").ToString()) AndAlso DateTime.TryParse(row("BEDAT").ToString(), tmpDate) Then
+                            row("Bestelldatum") = tmpDate
+                        End If
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+        End Try
     End Sub
 
 End Class

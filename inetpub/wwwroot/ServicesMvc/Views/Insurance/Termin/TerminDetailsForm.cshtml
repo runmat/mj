@@ -20,7 +20,7 @@
         @Html.HiddenFor(m => m.VersEventID)
         @Html.HiddenFor(m => m.VersOrtID)
 
-        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">Termin bearbeiten</span></text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><i class="icon-edit header-icon"></i><span class="header-text">@Localize.AppointmentEdit</span></text>, new { @class = "m-wrap" })
         
         
         @Html.FormValidationSummary()
@@ -53,8 +53,8 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" class="btn" onclick="TerminCloseDetails();">Abbrechen</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="TerminCloseDetails();">@Localize.Cancel</button>
         </div>
     
         <script type="text/javascript">

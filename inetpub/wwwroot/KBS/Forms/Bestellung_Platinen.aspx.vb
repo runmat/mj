@@ -8,9 +8,12 @@ Public Class Bestellung_Platinen
     Private mObjPlatinen As Platinen
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
         FormAuth(Me)
         lblError.Text = ""
+
         Title = lblHead.Text
+
         If mObjKasse Is Nothing Then
             If Not Session("mKasse") Is Nothing Then
                 mObjKasse = CType(Session("mKasse"), Kasse)
@@ -31,6 +34,7 @@ Public Class Bestellung_Platinen
         If Not IsPostBack Then
 
             mObjPlatinen.SelReiter = "1"
+            mObjPlatinen.KostStelle = mObjKasse.Lagerort
             Session("mPlatinen") = mObjPlatinen
 
             'Wurde schon an SAP übermittelt?
@@ -54,12 +58,13 @@ Public Class Bestellung_Platinen
             Else
                 txtKST.Enabled = False
                 txtKST.Text = mObjKasse.Lagerort
-                fillDropdown()
+                ApplyKst()
             End If
         Else
             If CType(Session("Commited"), Boolean) = True Then
                 Session("SendToSap") = False
                 Session("Commited") = Nothing
+                FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
                 FillGrid(mObjPlatinen.SelReiter)
             End If
 
@@ -119,62 +124,22 @@ Public Class Bestellung_Platinen
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub fillDropdown()
-        mObjPlatinen.KostStelle = mObjKasse.Lagerort
-        If mObjPlatinen.SendToKost <> "" Then
-            mObjPlatinen.getLieferantenERP(mObjPlatinen.SendToKost, mObjKasse.Master, mObjKasse.Firma)
-        Else
-            mObjPlatinen.getLieferantenERP(mObjKasse.Lagerort, mObjKasse.Master, mObjKasse.Firma)
-        End If
+        mObjPlatinen.getLieferantenERP(mObjKasse.Master, mObjKasse.Firma)
 
-        If mObjPlatinen.ErrorOccured = False Then
+        If Not mObjPlatinen.ErrorOccured Then
 
-            With mObjPlatinen
+            ddlLieferant.DataSource = mObjPlatinen.Lieferanten
+            ddlLieferant.DataValueField = "LIFNR"
+            ddlLieferant.DataTextField = "NAME1"
+            ddlLieferant.DataBind()
 
-                Dim tmpItem As ListItem
-                ddlLieferant.DataSource = .Lieferanten
-                Dim i As Int32 = 0
-                ddlLieferant.Items.Clear()
-                .SelLief = 0
-                Do While i < mObjPlatinen.Lieferanten.Rows.Count
-                    tmpItem = New ListItem(.Lieferanten.Rows(i)("NAME1").ToString, .Lieferanten.Rows(i)("LIFNR").ToString)
-                    ddlLieferant.Items.Add(tmpItem)
-                    If .Lieferanten.Rows(i)("HAUPT").ToString = "X" Then
-                        ddlLieferant.Items(ddlLieferant.Items.Count - 1).Selected = True
-                        .SelLief = ddlLieferant.SelectedIndex
-                    End If
+            Dim hauptLiefRows() As DataRow = mObjPlatinen.Lieferanten.Select("HAUPT = 'X'")
+            If hauptLiefRows.Length > 0 Then
+                ddlLieferant.SelectedValue = hauptLiefRows(0)("LIFNR")
+            End If
 
-                    ' # Zusatz Lieferant für Test falls nicht ausreichend Testdaten vorhanden
-                    ' tmpItem = New ListItem(.Lieferanten.Rows(i)("NAME1").ToString & "_Test", .Lieferanten.Rows(i)("LIFNR").ToString & "000")
-                    ' ddlLieferant.Items.Add(tmpItem)
-                    ' #
+            ApplyLieferantennr()
 
-                    i += 1
-                Loop
-                CreateDataDisplay()
-                addButtonHandler()
-                .getOffeneBestellungERP(ddlLieferant.SelectedValue)
-                If Not .ErrorOccured Then
-                    If Not .OffBestellungen Is Nothing Then
-                        If .OffBestellungen.Rows.Count > 0 Then
-                            Dim dRow() As DataRow = .OffBestellungen.Select("BEDAT='" & Now.ToShortDateString & "' AND LIFNR= '" & ddlLieferant.SelectedValue & "'")
-
-                            If dRow.Length > 0 Then
-                                .vorhandeneBest = True
-                                lblError.Text = "ACHTUNG! Bestellung(en) bereits unter gleichem Datum vorhanden"
-                            Else
-                                .vorhandeneBest = False
-                            End If
-                        End If
-                    End If
-                Else
-                    lblError.Text = .ErrorMessage
-                End If
-                If ddlLieferant.SelectedValue = "0000900030" Then ' Bei Utsch max. 7 Stellen
-                    txtLieferscheinnummer.MaxLength = 7
-                Else
-                    txtLieferscheinnummer.MaxLength = 10
-                End If
-            End With
         Else
             lblError.Text = mObjPlatinen.ErrorMessage '"Es konnten keine Lieferanten geladen werden!"
         End If
@@ -188,7 +153,7 @@ Public Class Bestellung_Platinen
     ''' <remarks></remarks>
     Private Sub CreateDataDisplay()
         lblError.Text = ""
-        mObjPlatinen.getArtikelReiterERP(ddlLieferant.SelectedValue)
+        mObjPlatinen.getArtikelReiterERP()
         If Not mObjPlatinen.ErrorOccured Then
 
             tabContainer.Visible = True
@@ -227,11 +192,10 @@ Public Class Bestellung_Platinen
             If Not strSort.Length = 0 Then
                 tmpDataView.Sort = strSort & " asc"
             End If
-
-            GridView1.DataSource = tmpDataView
-
-            GridView1.DataBind()
         End If
+
+        GridView1.DataSource = tmpDataView
+        GridView1.DataBind()
     End Sub
 
     ''' <summary>
@@ -256,11 +220,10 @@ Public Class Bestellung_Platinen
             If Not strSort.Length = 0 Then
                 tmpDataView.Sort = strSort & " asc"
             End If
-
-            GridView3.DataSource = tmpDataView
-
-            GridView3.DataBind()
         End If
+
+        GridView3.DataSource = tmpDataView
+        GridView3.DataBind()
     End Sub
 
     ''' <summary>
@@ -297,36 +260,7 @@ Public Class Bestellung_Platinen
     End Sub
 
     Protected Sub ddlLieferant_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlLieferant.SelectedIndexChanged
-        mObjPlatinen.SelLief = ddlLieferant.SelectedIndex
-        CreateDataDisplay()
-        addButtonHandler()
-        lblError.Text = ""
-        With mObjPlatinen
-            .getOffeneBestellungERP(ddlLieferant.SelectedValue)
-            If Not .ErrorOccured Then
-                If Not .OffBestellungen Is Nothing Then
-                    If .OffBestellungen.Rows.Count > 0 Then
-                        Dim dRow() As DataRow = .OffBestellungen.Select("BEDAT='" & Now.ToShortDateString & "' AND LIFNR= '" & ddlLieferant.SelectedValue & "'")
-
-                        If dRow.Length > 0 Then
-                            .vorhandeneBest = True
-                            lblError.Text = "ACHTUNG! Bestellung(en) bereits unter gleichem Datum vorhanden"""
-                        Else
-                            .vorhandeneBest = False
-                        End If
-                    End If
-                End If
-            Else
-                lblError.Text = .ErrorMessage
-            End If
-        End With
-        If ddlLieferant.SelectedValue = "0000900030" Then ' Bei Utsch max. 7 Stellen
-            txtLieferscheinnummer.MaxLength = 7
-        Else
-            txtLieferscheinnummer.MaxLength = 10
-        End If
-
-        Session("mPlatinen") = mObjPlatinen
+        ApplyLieferantennr()
     End Sub
 
     ''' <summary>
@@ -336,80 +270,31 @@ Public Class Bestellung_Platinen
     ''' <param name="e">EventArguments</param>
     ''' <remarks></remarks>
     Sub LinkButton1_Click(ByVal sender As Object, ByVal e As CommandEventArgs)
-        If CheckGrids() Then
-            Dim ctrl As Control
-            For Each ctrl In tabContainer.Controls
-                If TypeOf ctrl Is LinkButton Then
-                    Dim lnkBut As LinkButton
-                    lnkBut = CType(ctrl, LinkButton)
-                    lnkBut.CssClass = "TabButton"
-                End If
-            Next
-            ctrl = tabContainer.FindControl(e.CommandArgument.ToString)
+        collectGridChanges()
+
+        Dim ctrl As Control
+        For Each ctrl In tabContainer.Controls
             If TypeOf ctrl Is LinkButton Then
                 Dim lnkBut As LinkButton
                 lnkBut = CType(ctrl, LinkButton)
-                lnkBut.CssClass = "TabButtonActive"
+                lnkBut.CssClass = "TabButton"
             End If
-            mObjPlatinen.SelReiter = Left(e.CommandArgument.ToString, 1)
-            Session("mPlatinen") = mObjPlatinen
-            FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
-            FillGrid(mObjPlatinen.SelReiter, "ARTBEZ")
+        Next
+        ctrl = tabContainer.FindControl(e.CommandArgument.ToString)
+        If TypeOf ctrl Is LinkButton Then
+            Dim lnkBut As LinkButton
+            lnkBut = CType(ctrl, LinkButton)
+            lnkBut.CssClass = "TabButtonActive"
         End If
-
-    End Sub
-
-    Protected Sub txtMenge_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        If IsNumeric(CType(sender, TextBox).Text) Then
-            Dim dRow As GridViewRow = CType(CType(sender, TextBox).Parent.Parent, GridViewRow)
-            Dim lblMatnr As Label = CType(dRow.FindControl("lblMatnr"), Label)
-            If CType(sender, TextBox).Text = "0" Then
-                mObjPlatinen.Artikel.Select("ARTLIF='" & lblMatnr.Text & "'")(0)("Menge") = DBNull.Value
-                mObjPlatinen.Artikel.AcceptChanges()
-            Else
-                ' Menge festlegen
-                mObjPlatinen.Artikel.Select("ARTLIF='" & lblMatnr.Text & "'")(0)("Menge") = CInt(CType(sender, TextBox).Text)
-                mObjPlatinen.Artikel.AcceptChanges()
-
-                Dim ArtikelRow As DataRow = mObjPlatinen.Artikel.Select("ARTLIF='" & lblMatnr.Text & "'")(0)
-                If ArtikelRow("ZUSINFO").ToString.ToUpper = "X" Then
-                    If CType(dRow.FindControl("txtBeschreibung"), TextBox).Text.Trim = String.Empty AndAlso CType(dRow.FindControl("txtMenge"), TextBox).Text.Trim <> String.Empty Then
-                        dRow.BackColor = Drawing.ColorTranslator.FromHtml("#D87D7D")
-                        lblError.Text = "Beschreibung ist ein Pflichfeld! Bitte füllen!"
-                        CType(dRow.FindControl("txtBeschreibung"), TextBox).Focus()
-                    Else
-                        ' Wenn Beschreibung gültig dann Änderung speichern
-                        ArtikelRow("Beschreibung") = CType(dRow.FindControl("txtBeschreibung"), TextBox).Text
-                        mObjPlatinen.Artikel.AcceptChanges()
-                    End If
-
-                End If
-                If ArtikelRow("UMREZ").ToString <> "1" Then
-                    If IsNumeric(CType(sender, TextBox).Text) Then
-                        Dim iStueck As Decimal = CDec(CType(sender, TextBox).Text)
-                        Dim iUmrez As Decimal = CDec(ArtikelRow("UMREZ").ToString)
-                        Dim iErgebnis As Decimal = iStueck / iUmrez
-
-                        If iErgebnis.ToString.Contains(",") Then
-                            dRow.BackColor = Drawing.ColorTranslator.FromHtml("#D87D7D")
-                            lblError.Text = "Bestellung so nicht möglich. Bitte Verpackungseinheit beachten!"
-                        End If
-                    End If
-                End If
-            End If
-        ElseIf CType(sender, TextBox).Text = String.Empty Then
-            Dim dRow As GridViewRow = CType(CType(sender, TextBox).Parent.Parent, GridViewRow)
-            Dim lblMatnr As Label = CType(dRow.FindControl("lblMatnr"), Label)
-            mObjPlatinen.Artikel.Select("ARTLIF='" & lblMatnr.Text & "'")(0)("Menge") = DBNull.Value
-            mObjPlatinen.Artikel.AcceptChanges()
-        End If
-
+        mObjPlatinen.SelReiter = Left(e.CommandArgument.ToString, 1)
         Session("mPlatinen") = mObjPlatinen
+        FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
+        FillGrid(mObjPlatinen.SelReiter, "ARTBEZ")
+
     End Sub
 
-    Private Sub lbtnOK_Click(ByVal index As Integer)
+    Private Sub lbtnOK_Click(ByVal lifnr As String)
         CreateDataDisplay()
-        mObjPlatinen.SelLief = index
         Session("mPlatinen") = mObjPlatinen
         ChangeLiefHidden.Value = 1
     End Sub
@@ -420,17 +305,11 @@ Public Class Bestellung_Platinen
     ''' <returns><c>True</c> wenn Gridviews alle gültig</returns>
     ''' <remarks></remarks>
     Private Function CheckGrids() As Boolean
-        Dim bAllOk = False
-
-        If checkGrid(GridView1) AndAlso checkGrid(GridView3) Then
-            bAllOk = True
-        End If
-
-        Return bAllOk
+        Return (checkGrid(GridView1) AndAlso checkGrid(GridView3))
     End Function
 
     ''' <summary>
-    ''' Überprüft Änderungen an den Mengenfeldern im Grid
+    ''' Überprüft ein Grid auf Gültigkeit
     ''' </summary>
     ''' <param name="GridV">Das zu prüfende GridView</param>
     ''' <returns><c>True</c> wenn Gridview gültig</returns>
@@ -441,14 +320,11 @@ Public Class Bestellung_Platinen
         For Each row As GridViewRow In GridV.Rows
             Dim ArtikelRow As DataRow = mObjPlatinen.Artikel.Select("ARTLIF='" & CType(row.FindControl("lblMatnr"), Label).Text & "'")(0)
             If ArtikelRow("ZUSINFO").ToString.ToUpper = "X" Then
-                If CType(row.FindControl("txtBeschreibung"), TextBox).Text.Trim = String.Empty AndAlso CType(row.FindControl("txtMenge"), TextBox).Text.Trim <> String.Empty Then
+                If String.IsNullOrEmpty(CType(row.FindControl("txtBeschreibung"), TextBox).Text) AndAlso Not String.IsNullOrEmpty(CType(row.FindControl("txtMenge"), TextBox).Text) Then
                     row.BackColor = Drawing.ColorTranslator.FromHtml("#D87D7D")
-                    lblError.Text = "Beschreibung ist ein Pflichfeld! Bitte füllen!"
+                    lblError.Text = "Beschreibung ist ein Pflichtfeld! Bitte füllen!"
                     bValid = False
                     CType(row.FindControl("txtBeschreibung"), TextBox).Focus()
-                Else
-                    ArtikelRow("Beschreibung") = CType(row.FindControl("txtBeschreibung"), TextBox).Text
-                    mObjPlatinen.Artikel.AcceptChanges()
                 End If
             End If
             If ArtikelRow("UMREZ").ToString <> "1" Then
@@ -468,20 +344,74 @@ Public Class Bestellung_Platinen
             End If
         Next
 
-        Session("mPlatinen") = mObjPlatinen
-
         Return bValid
     End Function
 
+    ''' <summary>
+    ''' Übernimmt die Datenänderungen mehrerer Grids in die Datencollection
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub collectGridChanges()
+        collectGridChanges(GridView1)
+        collectGridChanges(GridView3)
+    End Sub
+
+    ''' <summary>
+    ''' Übernimmt die Datenänderungen eines Grids in die Datencollection
+    ''' </summary>
+    ''' <param name="GridV">Das zu verarbeitende GridView</param>
+    ''' <remarks></remarks>
+    Private Sub collectGridChanges(GridV As GridView)
+        Dim lblMatnr As Label
+        Dim txtMenge As TextBox
+        Dim txtBeschreibung As TextBox
+
+        For Each row As GridViewRow In GridV.Rows
+            lblMatnr = CType(row.FindControl("lblMatnr"), Label)
+            txtMenge = CType(row.FindControl("txtMenge"), TextBox)
+            txtBeschreibung = CType(row.FindControl("txtBeschreibung"), TextBox)
+
+            Dim ArtikelRow As DataRow = mObjPlatinen.Artikel.Select("ARTLIF='" & lblMatnr.Text & "'")(0)
+            If String.IsNullOrEmpty(txtMenge.Text) OrElse txtMenge.Text = "0" OrElse Not IsNumeric(txtMenge.Text) Then
+                ArtikelRow("Menge") = DBNull.Value
+            Else
+                ArtikelRow("Menge") = Integer.Parse(txtMenge.Text)
+            End If
+            If String.IsNullOrEmpty(txtBeschreibung.Text) Then
+                ArtikelRow("Beschreibung") = DBNull.Value
+            Else
+                ArtikelRow("Beschreibung") = txtBeschreibung.Text
+            End If
+        Next
+
+        mObjPlatinen.Artikel.AcceptChanges()
+        Session("mPlatinen") = mObjPlatinen
+    End Sub
+
     Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
 
-        If mObjPlatinen.Artikel.Select("Menge > 0").Length > 0 Then
-            If CheckGrids() And ProofLieferschein() Then
+        collectGridChanges()
+
+        If mObjPlatinen.Artikel.Select("Menge > 0").Length = 0 Then
+            lblError.Text = "Es wurde für keinen Artikel eine Bestellmenge erfasst."
+        Else
+            Dim dt As DataTable = mObjPlatinen.GetListeAusparkenERP()
+            Dim dRowParken() As DataRow
+            If Not String.IsNullOrEmpty(mObjPlatinen.BestellnummerParken) Then
+                dRowParken = dt.Select("LIFNR = '" & ddlLieferant.SelectedValue & "' AND BSTNR <> '" & mObjPlatinen.BestellnummerParken & "'")
+            Else
+                dRowParken = dt.Select("LIFNR = '" & ddlLieferant.SelectedValue & "'")
+            End If
+
+            If dRowParken.Length > 0 Then
+                lblError.Text = "Achtung! Sie haben schon eine Bestellung für Lieferant " & ddlLieferant.SelectedValue & " geparkt. Bitte diese erst ausparken."
+                Exit Sub
+            End If
+
+            If CheckGrids() AndAlso ProofLieferschein() Then
                 FillGridBestell()
                 BestellCheckHidden.Value = 0
             End If
-        Else
-            lblError.Text = "Es wurde für keinen Artikel eine Bestellmenge erfasst."
         End If
 
     End Sub
@@ -548,35 +478,14 @@ Public Class Bestellung_Platinen
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub doSubmit()
-        '----------------------------------------------------------------------
-        'Methode:      doSubmit
-        'Autor:         ORu
-        'Beschreibung:  je nach SAP status wird hier eine Meldung ausgegeben, im Fehlerfalle bleibt das OBJ bestehen, sonst kill
-        'Erstellt am:   11.02.2010
-        '----------------------------------------------------------------------
         Try
 
             If CType(Session("SendToSap"), Boolean) = False AndAlso Not ihIsSaving.Value = "1" Then
                 ihIsSaving.Value = "1"
-                If chkGeliefert.Checked Then
-                    mObjPlatinen.Geliefert = "X"
-                    mObjPlatinen.Lieferscheinnummer = txtLieferscheinnummer.Text
-                Else
-                    mObjPlatinen.Geliefert = ""
-                    mObjPlatinen.Lieferscheinnummer = ""
-                End If
 
-                If trLiefertermin.Visible Then
-                    If txtLieferdatum.Text <> String.Empty Then
-                        Date.TryParse(txtLieferdatum.Text, mObjPlatinen.Lieferdatum)
-                    Else
-                        Date.TryParse("01.01.1900", mObjPlatinen.Lieferdatum)
-                    End If
-                Else
-                    Date.TryParse("01.01.1900", mObjPlatinen.Lieferdatum)
-                End If
-                mObjPlatinen.SendToKost = txtKST.Text
-                mObjPlatinen.sendOrderToSAPERP(ddlLieferant.SelectedValue, mObjKasse.Master)
+                CollectFormData()
+
+                mObjPlatinen.sendOrderToSAPERP()
                 Session("Commited") = mObjPlatinen.Commited
                 Session("SendToSap") = True
 
@@ -618,12 +527,31 @@ Public Class Bestellung_Platinen
         End Try
     End Sub
 
-    Private Sub responseBack()
-        Response.Redirect("../Selection.aspx")
+    Private Sub CollectFormData()
+        With mObjPlatinen
+            .Lieferantennr = ddlLieferant.SelectedValue
+
+            If chkGeliefert.Checked Then
+                .Geliefert = "X"
+                .Lieferscheinnummer = txtLieferscheinnummer.Text
+            Else
+                .Geliefert = ""
+                .Lieferscheinnummer = ""
+            End If
+
+            Dim tmpDate As DateTime
+            If trLiefertermin.Visible AndAlso Not String.IsNullOrEmpty(txtLieferdatum.Text) AndAlso DateTime.TryParse(txtLieferdatum.Text, tmpDate) Then
+                .Lieferdatum = tmpDate
+            Else
+                .Lieferdatum = Nothing
+            End If
+        End With
+
+        Session("mPlatinen") = mObjPlatinen
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
-        responseBack()
+        Response.Redirect("../Selection.aspx")
     End Sub
    
     Protected Function proofFileExist(ByVal Path As String) As Boolean
@@ -648,52 +576,8 @@ Public Class Bestellung_Platinen
 
     Protected Sub txtKST_TextChanged(sender As Object, e As EventArgs) Handles txtKST.TextChanged
         If mObjKasse.Master Then
-            If txtKST.Text.Length > 0 Then
-                With mObjPlatinen
-                    .CheckKostStelleERP(txtKST.Text.Trim)
-                    chkGeliefert.Checked = False
-                    txtLieferscheinnummer.Text = ""
-                    txtLieferdatum.Text = ""
-                    If .ErrorOccured Then
-                        lblError.Text = .ErrorMessage
-                        SetFocus(txtKST)
-                        lblKSTText.Visible = False
-                        lblKSTText.Text = ""
-                        ddlLieferant.Enabled = False
-                        chkGeliefert.Enabled = False
-                        txtLieferscheinnummer.Enabled = False
-                        GridView1.Enabled = False
-                        GridView3.Enabled = False
-                        For Each ctrl As Control In tabContainer.Controls
-                            If TypeOf ctrl Is LinkButton Then
-                                Dim lnkBut As LinkButton
-                                lnkBut = CType(ctrl, LinkButton)
-                                lnkBut.Enabled = False
-                            End If
-                        Next
-                        lbAbsenden.Enabled = False
-                    Else
-                        lblKSTText.Visible = True
-                        lblKSTText.Text = .KostText
-                        fillDropdown()
-                        ddlLieferant.Enabled = True
-                        chkGeliefert.Enabled = True
-                        txtLieferscheinnummer.Enabled = True
-                        GridView1.Enabled = True
-                        GridView3.Enabled = True
-                        For Each ctrl As Control In tabContainer.Controls
-                            If TypeOf ctrl Is LinkButton Then
-                                Dim lnkBut As LinkButton
-                                lnkBut = CType(ctrl, LinkButton)
-                                lnkBut.Enabled = True
-                            End If
-                        Next
-                        SetFocus(ddlLieferant)
-                        lbAbsenden.Enabled = True
-                    End If
-
-                End With
-                Session("mPlatinen") = mObjPlatinen
+            If Not String.IsNullOrEmpty(txtKST.Text) Then
+                ApplyKst(True)
             End If
         Else
             SetFocus(txtKST)
@@ -713,6 +597,201 @@ Public Class Bestellung_Platinen
             Next
             lbAbsenden.Enabled = False
         End If
+    End Sub
+
+    Private Sub lbAusparken_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAusparken.Click
+        MPEAusparken.Show()
+    End Sub
+
+    Private Sub lbParken_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbParken.Click
+
+        collectGridChanges()
+
+        If mObjPlatinen.Artikel.Select("Menge > 0").Length = 0 Then
+            lblError.Text = "Es wurde für keinen Artikel eine Bestellmenge erfasst."
+            Exit Sub
+        End If
+
+        Dim dt As DataTable = mObjPlatinen.GetListeAusparkenERP()
+        Dim dRowParken() As DataRow
+        If Not String.IsNullOrEmpty(mObjPlatinen.BestellnummerParken) Then
+            dRowParken = dt.Select("LIFNR = '" & ddlLieferant.SelectedValue & "' AND BSTNR <> '" & mObjPlatinen.BestellnummerParken & "'")
+        Else
+            dRowParken = dt.Select("LIFNR = '" & ddlLieferant.SelectedValue & "'")
+        End If
+
+        If dRowParken.Length > 0 Then
+            lblError.Text = "Achtung! Sie haben schon eine Bestellung für Lieferant " & ddlLieferant.SelectedValue & " geparkt. Bitte diese erst ausparken."
+            Exit Sub
+        End If
+
+        CollectFormData()
+
+        mObjPlatinen.ParkenERP(ddlLieferant.SelectedValue)
+        If mObjPlatinen.ErrorOccured Then
+            lblError.Text = mObjPlatinen.ErrorMessage
+        Else
+            chkGeliefert.Checked = False
+            txtLieferscheinnummer.Text = ""
+            txtLieferdatum.Text = ""
+        End If
+        Session("mPlatinen") = mObjPlatinen
+        ChangeLiefHidden.Value = 1
+        Hidden1.Value = ""
+        FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
+        FillGrid(mObjPlatinen.SelReiter)
+
+    End Sub
+
+    Private Sub lbAusparkenClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAusparkenClose.Click
+        MPEAusparken.Hide()
+        FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
+        FillGrid(mObjPlatinen.SelReiter)
+    End Sub
+
+    Protected Sub gvAusparken_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvAusparken.RowCommand
+        Select Case e.CommandName
+
+            Case "ausparken"
+                With mObjPlatinen
+                    .AusparkenERP(e.CommandArgument)
+                    If mObjPlatinen.ErrorOccured Then
+                        lblError.Text = mObjPlatinen.ErrorMessage
+                    Else
+                        If ddlLieferant.Items.FindByValue(.Lieferantennr) IsNot Nothing Then
+                            ddlLieferant.SelectedValue = .Lieferantennr
+                            ApplyLieferantennr()
+                        End If
+                        .GeparktePositionenUebernehmen()
+                        chkGeliefert.Checked = (.Geliefert = "X")
+                        If Not String.IsNullOrEmpty(.Lieferscheinnummer) Then
+                            txtLieferscheinnummer.Text = .Lieferscheinnummer
+                        Else
+                            txtLieferscheinnummer.Text = ""
+                        End If
+                        If .Lieferdatum.HasValue Then
+                            txtLieferdatum.Text = .Lieferdatum.Value.ToShortDateString()
+                        Else
+                            txtLieferdatum.Text = ""
+                        End If
+                    End If
+                End With
+
+            Case "löschen"
+                mObjPlatinen.GeparktLoeschenERP(e.CommandArgument, "X")
+                If mObjPlatinen.ErrorOccured Then
+                    lblError.Text = mObjPlatinen.ErrorMessage
+                End If
+                MPEAusparken.Show()
+
+        End Select
+        Session("mPlatinen") = mObjPlatinen
+        FillGridTopSeller(mObjPlatinen.SelReiter, "SortPos")
+        FillGrid(mObjPlatinen.SelReiter)
+    End Sub
+
+    Private Sub Bestellung_Platinen_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
+        Dim dt As DataTable = mObjPlatinen.GetListeAusparkenERP()
+        If dt.Rows.Count > 0 Then
+            lbAusparken.Visible = True
+        Else
+            lbAusparken.Visible = False
+        End If
+        gvAusparken.DataSource = dt
+        gvAusparken.DataBind()
+    End Sub
+
+    Private Function ApplyKst(Optional ByVal skipIfNotChanged As Boolean = False) As Boolean
+        With mObjPlatinen
+
+            If skipIfNotChanged AndAlso .KostStelle = txtKST.Text.Trim Then
+                'Kst nicht geändert
+                Return True
+            End If
+
+            .CheckKostStelleERP(txtKST.Text.Trim)
+
+            If .ErrorOccured Then
+                lblError.Text = .ErrorMessage
+                lblKSTText.Visible = False
+                lblKSTText.Text = ""
+                ddlLieferant.Enabled = False
+                chkGeliefert.Enabled = False
+                txtLieferscheinnummer.Enabled = False
+                GridView1.Enabled = False
+                GridView3.Enabled = False
+                For Each ctrl As Control In tabContainer.Controls
+                    If TypeOf ctrl Is LinkButton Then
+                        Dim lnkBut As LinkButton
+                        lnkBut = CType(ctrl, LinkButton)
+                        lnkBut.Enabled = False
+                    End If
+                Next
+                lbAbsenden.Enabled = False
+                SetFocus(txtKST)
+                Return False
+            End If
+
+            .KostStelle = txtKST.Text.Trim()
+            lblKSTText.Visible = True
+            lblKSTText.Text = .KostText
+            fillDropdown()
+            ddlLieferant.Enabled = True
+            chkGeliefert.Enabled = True
+            txtLieferscheinnummer.Enabled = True
+            GridView1.Enabled = True
+            GridView3.Enabled = True
+            For Each ctrl As Control In tabContainer.Controls
+                If TypeOf ctrl Is LinkButton Then
+                    Dim lnkBut As LinkButton
+                    lnkBut = CType(ctrl, LinkButton)
+                    lnkBut.Enabled = True
+                End If
+            Next
+            lbAbsenden.Enabled = True
+            SetFocus(ddlLieferant)
+
+        End With
+
+        Session("mPlatinen") = mObjPlatinen
+
+        Return True
+    End Function
+
+    Private Sub ApplyLieferantennr()
+        mObjPlatinen.Lieferantennr = ddlLieferant.SelectedValue
+
+        CreateDataDisplay()
+        addButtonHandler()
+        lblError.Text = ""
+
+        With mObjPlatinen
+            .getOffeneBestellungERP()
+            If Not .ErrorOccured Then
+                If Not .OffBestellungen Is Nothing Then
+                    If .OffBestellungen.Rows.Count > 0 Then
+                        Dim dRow() As DataRow = .OffBestellungen.Select("BEDAT='" & Now.ToShortDateString & "' AND LIFNR= '" & ddlLieferant.SelectedValue & "'")
+
+                        If dRow.Length > 0 Then
+                            .vorhandeneBest = True
+                            lblError.Text = "ACHTUNG! Bestellung(en) bereits unter gleichem Datum vorhanden"""
+                        Else
+                            .vorhandeneBest = False
+                        End If
+                    End If
+                End If
+            Else
+                lblError.Text = .ErrorMessage
+            End If
+        End With
+
+        If ddlLieferant.SelectedValue = "0000900030" Then ' Bei Utsch max. 7 Stellen
+            txtLieferscheinnummer.MaxLength = 7
+        Else
+            txtLieferscheinnummer.MaxLength = 10
+        End If
+
+        Session("mPlatinen") = mObjPlatinen
     End Sub
 
 End Class

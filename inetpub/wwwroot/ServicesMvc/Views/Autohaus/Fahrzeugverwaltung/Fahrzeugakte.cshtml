@@ -16,8 +16,12 @@
             <li class="active"><a href="#tab_1_1" data-toggle="tab">@Localize.Details</a></li>
             <li><a href="#tab_1_2" data-toggle="tab">@Localize.Documents</a></li>
             <li><a href="#tab_1_3" data-toggle="tab">@Localize.Registration</a></li>
+            <li><a href="#tab_1_4" data-toggle="tab">@Localize.Overpass</a></li>
         </ul>
         <div class="tab-content">
+            <div class="tab-pane overflow-x-auto" id="tab_1_4">
+                @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Ueberfuehrung", Model)
+            </div>              
             <div class="tab-pane overflow-x-auto" id="tab_1_3">
                 @Html.Partial("Fahrzeugverwaltung/Fahrzeugakte/Zulassung", Model)
             </div>              

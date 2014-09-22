@@ -213,6 +213,8 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
+            new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -287,7 +289,9 @@ namespace SapORM
             
             //CsiTest();
 
-            TargoTest3();
+            //TargoTest3();
+
+            //TeslaSendungsVerfolgungTest();
 
             Shutdown();
         }
@@ -1361,6 +1365,22 @@ namespace SapORM
 
             var listCount = list.Count;
         }
+
+        static readonly string KunnrTesla = "0010010753";
+
+        static void TeslaSendungsVerfolgungTest()
+        {
+            Z_DPM_GET_ZZSEND2.Init(Sap);
+
+            Sap.SetImportParameter("KUNNR_AG", KunnrTesla.ToSapKunnr());
+            Sap.SetImportParameter("ERDAT_VON", DateTime.Today.AddDays(-30));
+            Sap.SetImportParameter("ERDAT_BIS", DateTime.Today.AddDays(-1));
+
+            var list = Z_DPM_GET_ZZSEND2.GT_WEB.GetExportListWithExecute(Sap);
+
+            var listCount = list.Count;
+        }
+        
 
         #region Chart Table Export
 

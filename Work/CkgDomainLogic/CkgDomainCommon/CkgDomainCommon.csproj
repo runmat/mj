@@ -117,6 +117,7 @@
     <Compile Include="DomainCommon\Contracts\IInfoCenterDataService.cs" />
     <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
+    <Compile Include="DomainCommon\Models\CommonSummary.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
     <Compile Include="DomainCommon\Models\CommonUiModel.cs" />

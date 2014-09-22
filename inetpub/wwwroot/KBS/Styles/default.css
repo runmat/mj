@@ -1865,3 +1865,15 @@ a.tip:hover span
   border-top: solid 1px #595959;
    }
    
+   
+div#content div#innerContentRight div#dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+div#content div#innerContent div#dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
