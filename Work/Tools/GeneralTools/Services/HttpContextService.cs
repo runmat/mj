@@ -33,5 +33,25 @@ namespace GeneralTools.Services
                 portalType = 0;
             }
         }
+
+        public static void TryGetAppIdFromUrlOrSession(out int appID)
+        {
+            // try to obtain "appID"
+            // => .. from Request QueryString
+            var strId = HttpContext.Current.Request["AppID"];
+            if (String.IsNullOrEmpty(strId) && HttpContext.Current.Session != null && HttpContext.Current.Session["AppID"] != null)
+                // => .. or from Session
+                strId = HttpContext.Current.Session["AppID"].ToString();
+
+            int intID;
+            if (!String.IsNullOrEmpty(strId) && Int32.TryParse(strId, out intID))
+            {
+                appID = intID;
+            }
+            else
+            {
+                appID = 0;
+            }
+        }
     }
 }

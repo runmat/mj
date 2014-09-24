@@ -22,6 +22,7 @@ Namespace Common
         Private mExport As DataTable
         Private mClearMe As Boolean = False
         Private mObjMyApplication As CKG.Base.Kernel.Security.App
+        Private mObjMyUser As CKG.Base.Kernel.Security.User
         Private Shared mSourceModuleString As String = ""
 
 #End Region
@@ -100,6 +101,7 @@ Namespace Common
 
         Protected Friend Sub settingCalledSource(ByRef mObjApp As CKG.Base.Kernel.Security.App, ByRef mObjUser As CKG.Base.Kernel.Security.User, ByRef mObjPage As Web.UI.Page)
             mObjMyApplication = mObjApp
+            mObjMyUser = mObjUser
         End Sub
 
         Private Function GenerateANewDataTableCopy(ByVal originalDataTable As DataTable) As DataTable
@@ -462,7 +464,7 @@ Namespace Common
                 Next
 
                 Dim logger As New LogService(String.Empty, String.Empty)
-                logger.LogSapCall(BapiName, String.Empty, Import, Export, True, stoppuhr.Elapsed.TotalSeconds)
+                logger.LogSapCall(BapiName, String.Empty, Import, Export, True, stoppuhr.Elapsed.TotalSeconds, 0, mObjMyUser.UserID, mObjMyUser.Customer.CustomerId, mObjMyUser.Customer.KUNNR, 2)
 
                 Return True
             Catch ex As ERPException
@@ -477,7 +479,7 @@ Namespace Common
                 PreserveStackTrace(ex)
 
                 Dim logger As New LogService(String.Empty, String.Empty)
-                logger.LogSapCall(BapiName, String.Empty, Import, Export, False, callduration)
+                logger.LogSapCall(BapiName, String.Empty, Import, Export, False, callduration, 0, mObjMyUser.UserID, mObjMyUser.Customer.CustomerId, mObjMyUser.Customer.KUNNR, 2)
 
                 If ex.Source.Contains("ERPConnect35") Then
                     If ex.ABAPException.Length > 0 Then
