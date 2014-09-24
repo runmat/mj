@@ -103,6 +103,7 @@ namespace LogMaintenance.Services
             CopyToLogsDb<MpWebUser>(serverType);
             CopyToLogsDb<MpCustomer>(serverType);
             CopyToLogsDb<MpApplicationTranslated>(serverType);
+            CopyCustomerRightsToLogsDb(serverType);
 
             Alert("");
         }
@@ -128,6 +129,23 @@ namespace LogMaintenance.Services
             logsDbContext.SaveChanges();
 
             Alert(string.Format("{0}-Server: Successfully copied data for '{1}' !", serverType, tableName));
+        }
+
+        private static void CopyCustomerRightsToLogsDb(string serverType)
+        {
+            var businessDbContext = CreateBusinessDbContext(serverType);
+            var logsDbContext = CreateLogsDbContext(serverType);
+
+            logsDbContext.Database.ExecuteSqlCommand("DELETE FROM CustomerRights");
+            logsDbContext.SaveChanges();
+
+            var businessData = businessDbContext.Database.SqlQuery<MpCustomerRights>("SELECT * FROM CustomerRights");
+            if (businessData.None())
+                return;
+
+            businessData.ToList().ForEach(m => logsDbContext.Database.ExecuteSqlCommand("INSERT INTO CustomerRights (CustomerID,AppID) VALUES ({0},{1})", m.CustomerID, m.AppID));
+
+            Alert(string.Format("{0}-Server: Successfully copied data for '{1}' !", serverType, "CustomerRights"));
         }
 
         #endregion

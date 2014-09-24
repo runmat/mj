@@ -2379,7 +2379,7 @@
     <Content Include="Views\Autohaus\Zulassung\Receipt.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Summary.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\ZulassungsOptionen.cshtml" />
-    <Content Include="Views\Logs\Partial\Sap\SapImportTables.cshtml" />
+    <Content Include="Views\Logs\Partial\Sap\SapCallContext.cshtml" />
     <Content Include="Views\Equi\Mahnreport.cshtml" />
     <Content Include="Views\Equi\Mahnreport\FahrzeugeMahnGrid.cshtml" />
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
@@ -3856,7 +3856,7 @@
     <Content Include="Views\CoC\Partial\CocDetailsForm.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\Logs\Pv.cshtml" />
+    <Content Include="Views\Logs\PageVisitsDetail.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
     <Content Include="Views\Uebfuehrg\Fzg.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
@@ -3877,6 +3877,9 @@
     <Content Include="Views\Equi\Mahnsperre\MahnsperreGrid.cshtml" />
     <Content Include="Views\Equi\Mahnsperre\MahnsperreSuche.cshtml" />
     <Content Include="Views\Equi\Mahnsperre\Partial\MahnsperreEditForm.cshtml" />
+    <Content Include="Views\Logs\PageVisits.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\DetailGrid.cshtml" />
+    <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItemsDetail.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Grid.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Suche.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung.cshtml" />    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />

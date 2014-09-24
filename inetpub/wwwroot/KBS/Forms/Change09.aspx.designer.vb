@@ -86,56 +86,119 @@ Partial Public Class Change09
     Protected WithEvents lbNachdruck As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''PLCheck-Steuerelement
+    '''PLCheck1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents PLCheck As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents PLCheck1 As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''tblCheck-Steuerelement
+    '''tblCheck1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents tblCheck As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents tblCheck1 As Global.System.Web.UI.HtmlControls.HtmlTable
 
     '''<summary>
-    '''lbOk-Steuerelement
+    '''lbCancel1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lbOk As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents lbCancel1 As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''lbCancel-Steuerelement
+    '''lbTestdruck-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lbCancel As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents lbTestdruck As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''MPEDummy-Steuerelement
+    '''lbOk1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents MPEDummy As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents lbOk1 As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''mpeCheck-Steuerelement
+    '''MPEDummy1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents mpeCheck As Global.AjaxControlToolkit.ModalPopupExtender
+    Protected WithEvents MPEDummy1 As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''mpeCheck1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents mpeCheck1 As Global.AjaxControlToolkit.ModalPopupExtender
+
+    '''<summary>
+    '''PLCheck2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents PLCheck2 As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''tblCheck2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents tblCheck2 As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''lbCancel2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbCancel2 As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lbOk2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbOk2 As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''MPEDummy2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents MPEDummy2 As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''mpeCheck2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents mpeCheck2 As Global.AjaxControlToolkit.ModalPopupExtender
 End Class

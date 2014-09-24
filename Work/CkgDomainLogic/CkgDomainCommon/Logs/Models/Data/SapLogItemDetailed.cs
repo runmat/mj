@@ -13,7 +13,13 @@ namespace CkgDomainLogic.Logs.Models
 
         public string Bapi { get; set; }
 
+        public string ImportParameters { get; set; }
+
         public string ImportTables { get; set; }
+
+        public string ExportParameters { get; set; }
+
+        public string ExportTables { get; set; }
 
 
         //[GridRawHtml, NotMapped]
