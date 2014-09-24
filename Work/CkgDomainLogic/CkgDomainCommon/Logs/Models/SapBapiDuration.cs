@@ -24,6 +24,18 @@ namespace CkgDomainLogic.Logs.Models
         public int LevelAsInt { get { return Int32.Parse(Level.ToString("d")); } }
 
         [SelectListText]
+        public string LevelSelectListText 
+        { 
+            get
+            {
+                if (ThresholdUpFromSeconds > 0)
+                {
+                    return string.Format(Localize.DauerSAPAufruf, ThresholdUpFromSeconds);
+                }
+                return Localize.All;
+            } 
+        }
+
         public string LevelAsString { get { return Localize.TranslateResourceKey(Level.ToString("F")); } }
 
         public string LevelCssClass { get { return "duration-level-" + Level.ToString("F").ToLowerAndHyphens(); } }

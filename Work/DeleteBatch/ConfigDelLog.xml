@@ -1,12 +1,155 @@
-<?xml version="1.0" encoding="utf-8" ?> 
-	<DeleteLogSettings>
-		<!-- SQL Server -->
-		<Connections>
-			<Conns Conn="Data Source=HHSRVW2KBCK019;initial catalog=DADWebApplikationNew;User ID=WebAccess;Password=seE?Anemone;persist security info=true;packet size=4096" /> 
+<?xml version="1.0" encoding="utf-8" ?>
+<DeleteLogSettings>
+    <!-- SQL Server -->
+    <Connections Conn="Data Source=vms012;initial catalog=CKGPortal;User ID=DADWebAccess;Password=seE?Anemone;persist security info=true;packet size=4096" >
+        <!-- QueryString -->
+        <Queries qString="Delete FROM Logstandard where Inserted &lt; GETDATE()-90" />
+        <Queries qString="Delete FROM LogWebAccess where StartTime &lt; GETDATE()-90" />
+        <Queries qString="Delete FROM LogAccessSAP where startTime &lt; GETDATE()-90" />
+        <Queries qString="Delete FROM LogAccessASPX where startZeit &lt; GETDATE()-90" />
+        <Queries qString="Delete FROM LogBounce where BounceTime &lt; GETDATE()-90" />
+        <UserLock qString="
+DECLARE @UserLength int
+DECLARE @CurrentRow int
+DECLARE @ChangeUser int
+DECLARE @ChangeUserCustomer int
+DECLARE @ChangeUserHistoryID int
+DECLARE @Deletetime int
+DECLARE @Locktime int
+DECLARE @Username varChar(50)
 
-		</Connections>
-	<!-- QueryString -->
-		<Queries>
-			<SqlQuery qString="Delete FROM Logstandard	where Inserted < GETDATE()-90" />
-		</Queries>
-	</DeleteLogSettings>
+SET @CurrentRow = 1
+SET @UserLength = (SELECT COUNT(UserID) FROM [WebUser])
+SET @ChangeUser = 1
+
+/* Zeilendurchlauf für alle User, Abbruchbedingung ist die Anzahl durchlaufener Zeilen */
+WHILE (@CurrentRow &lt;= @UserLength) 
+BEGIN
+	/* Ermitteln der UserID des nächsten zu prüfenden Users */
+	DECLARE @UserFound BIT
+	SET @UserFound = 0
+		
+	WHILE(@UserFound != 1)
+	BEGIN
+		IF (SELECT COUNT(UserID) FROM [WebUser] WHERE UserID = @ChangeUser) = 1  
+		BEGIN
+			SET @UserFound = 1
+		END
+		ELSE
+		BEGIN
+			SET @ChangeUser = @ChangeUser + 1
+		END
+	END
+	
+	/* Prüfen ob der Benutzer zu einer Servicegruppe gehört */
+	IF (SELECT [IsServiceGroup] FROM [WebGroup] INNER JOIN [WebMember] ON [WebGroup].[GroupID]=[WebMember].[GroupID] WHERE [WebMember].[UserID] = @ChangeUser) = 0
+	BEGIN
+
+		/* Ermitteln der benötigten Zwischenwerte des aktuellen Datensatzes */
+		SET @ChangeUserHistoryID = (SELECT [UserHistoryID] FROM [WebUser] WHERE [UserID] = @ChangeUser)	
+		SET @ChangeUserCustomer = (SELECT [CustomerID] FROM [WebUser] WHERE [UserID] = @ChangeUser)
+			
+		/* Prüfung bereits gesperrt? Ja/Nein? */
+		DECLARE @ChangeUserGesperrt BIT
+		SET @ChangeUserGesperrt = 0
+	
+		IF (SELECT [AccountIsLockedOut] FROM [WebUser] WHERE [UserID] = @ChangeUser) = 1
+		BEGIN
+			SET @ChangeUserGesperrt = 1
+		END
+	
+		/* Falls nicht gesperrt dann prüfen ob zu sperren */
+		IF @ChangeUserGesperrt = 0
+		BEGIN
+			DECLARE @LastLogin Datetime
+		
+			SET @LastLogin = (SELECT [LastLogin] FROM [WebUser] WHERE [UserID] = @ChangeUser)
+			SET @Locktime = (SELECT [DaysUntilLock] FROM [Customer] WHERE [CustomerID] = @ChangeUserCustomer)		
+			SET @Username = (SELECT [Username] FROM [WebUser] WHERE [UserID] = @ChangeUser)
+		
+			IF @LastLogin is Null
+			BEGIN
+				DECLARE @CreateDate Datetime
+				SET @CreateDate = (SELECT [CreateDate] FROM [WebUser] WHERE [UserID] = @ChangeUser)
+				
+				IF (SELECT(DATEDIFF(DAY,@CreateDate , GetDate()))) >= @Locktime
+				BEGIN
+					UPDATE [WebUser]
+					SET [AccountIsLockedOut] = 1,
+					[LastChangedBy] = '[Admin-Regelprozess]'
+					WHERE [UserID] = @ChangeUser
+		
+					UPDATE [WebUserHistory] 
+					SET 
+						[LastChanged] = Getdate(),
+						[LastChange] = 'Benutzer gesperrt',
+						[LastChangedBy] = '[Admin-Regelprozess]',
+						[AccountIsLockedOut] = 1
+					WHERE [UserHistoryID] = @ChangeUserHistoryID
+
+					/*INSERT INTO [AdminHistory_User]([Username],[SaveType],[Action],[OldValue],[NewValue],[LastChangedBy]) 
+					VALUES (@Username,'UPDATE','Benutzer gesperrt','-','-','[Admin-Regelprozess]')*/
+				END
+            END
+			ELSE IF (SELECT(DATEDIFF(DAY,@LastLogin , GetDate()))) >= @Locktime
+			BEGIN
+				UPDATE [WebUser]
+				SET [AccountIsLockedOut] = 1,
+				[LastChangedBy] = '[Admin-Regelprozess]'
+				WHERE [UserID] = @ChangeUser
+		
+				UPDATE [WebUserHistory]
+				SET 
+					[LastChanged] = Getdate(),
+					[LastChange] = 'Benutzer gesperrt',
+					[LastChangedBy] = '[Admin-Regelprozess]',
+					[AccountIsLockedOut] = 1			
+				WHERE [UserHistoryID] = @ChangeUserHistoryID
+
+				/*INSERT INTO [AdminHistory_User]([Username],[SaveType],[Action],[OldValue],[NewValue],[LastChangedBy]) 
+				VALUES (@Username,'UPDATE','Benutzer gesperrt','-','-','[Admin-Regelprozess]')	*/		
+			END
+		END
+		/* Falls bereits gesperrt dann prüfen ob endgültig zu löschen */
+		ELSE 
+		BEGIN
+			DECLARE @LastChanged Datetime
+			DECLARE @Deleted Bit
+		
+			SET @Username = (SELECT [Username] FROM [WebUser] WHERE [UserID] = @ChangeUser)
+			SET @LastChanged = (SELECT [LastChanged] FROM [WebUserHistory] WHERE [UserHistoryID] = @ChangeUserHistoryID)
+			SET @Deletetime = (SELECT [DaysUntilDelete] FROM [Customer] WHERE [CustomerID] = @ChangeUserCustomer)
+			SET @Deleted = (SELECT [Deleted] FROM [WebUserHistory] WHERE [UserHistoryID] = @ChangeUserHistoryID)
+		
+			IF (SELECT(DATEDIFF(DAY, @LastChanged, GetDate()))) >= @Deletetime AND @Deleted != 1
+			BEGIN
+				DECLARE @LASTCHANGER varchar(50)
+				SET @LASTCHANGER = (SELECT [LastChangedBy] FROM [WebUserHistory] WHERE [UserHistoryID] = @ChangeUserHistoryID)
+				IF @LASTCHANGER LIKE '%[Admin-Regelprozess]%'
+				BEGIN
+					DELETE FROM [WebGroupEmployee] WHERE [WebGroupEmployee].[UserID] = @ChangeUser
+					DELETE FROM [WebMember] WHERE [WebMember].[UserID] = @ChangeUser
+					DELETE FROM [WebUserPwdHistory] WHERE [WebUserPwdHistory].[UserID] = @ChangeUser
+					DELETE FROM [OrganizationMember] WHERE [OrganizationMember].[UserID] = @ChangeUser
+					DELETE FROM [WebUser] WHERE [UserID] = @ChangeUser
+								
+					UPDATE [WebUserHistory]
+					SET [Deleted] = 1, 
+						[DeleteDate] = Getdate(), 
+						[LastChanged] = Getdate(), 
+						[LastChange] = 'Benutzer gelöscht',
+						[LastChangedBy] ='[Admin-Regelprozess]' 
+					WHERE [UserHistoryID] = @ChangeUserHistoryID 
+				
+					INSERT INTO [AdminHistory_User]([Username],[SaveType],[Action],[OldValue],[NewValue],[LastChangedBy]) 
+					VALUES (@Username,'DELETE','Benutzer gelöscht','-','-','[Admin-Regelprozess]')
+				END
+			END
+		END
+	END
+
+	SET @CurrentRow = @CurrentRow + 1
+	SET @ChangeUser = @ChangeUser + 1
+END" />
+    </Connections>
+</DeleteLogSettings>

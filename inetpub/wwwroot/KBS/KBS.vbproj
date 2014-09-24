@@ -317,13 +317,6 @@
       <DependentUpon>Change09_2.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="Forms\Change09_3.aspx.designer.vb">
-      <DependentUpon>Change09_3.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Change09_3.aspx.vb">
-      <DependentUpon>Change09_3.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
-    </Compile>
     <Compile Include="Forms\Change09_KBS.aspx.designer.vb">
       <DependentUpon>Change09_KBS.aspx</DependentUpon>
     </Compile>
@@ -448,13 +441,6 @@
     </Compile>
     <Compile Include="Forms\Printpdf.aspx.vb">
       <DependentUpon>Printpdf.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
-    </Compile>
-    <Compile Include="Forms\PrintPDF2.aspx.designer.vb">
-      <DependentUpon>PrintPDF2.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PrintPDF2.aspx.vb">
-      <DependentUpon>PrintPDF2.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Forms\Report01.aspx.designer.vb">
@@ -660,14 +646,12 @@
     <Content Include="Forms\Change09.aspx" />
     <Content Include="Forms\Change09_1.aspx" />
     <Content Include="Forms\Change09_2.aspx" />
-    <Content Include="Forms\Change09_3.aspx" />
     <Content Include="Forms\Change10.aspx" />
     <Content Include="Forms\Change11.aspx" />
     <Content Include="Forms\Change12.aspx" />
     <Content Include="Forms\Infocenter.aspx" />
     <Content Include="Forms\Infocenter_print.aspx" />
     <Content Include="Forms\Printpdf.aspx" />
-    <Content Include="Forms\PrintPDF2.aspx" />
     <Content Include="Forms\Report01.aspx" />
     <Content Include="Forms\Report01_2.aspx" />
     <Content Include="GAC\AjaxControlToolkit.dll" />

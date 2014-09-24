@@ -176,6 +176,34 @@ namespace GeneralTools.Services
         /// <param name="dauer">Dauer des Aufrufs (Aufbereitung + SAP Aufruf) in Sekunden</param>        
         public void LogSapCall(string bapiName, string logon, DataTable import, DataTable export, bool success, double dauer)
         {
+            PerformLogSapCall(bapiName, logon, import, export, success, dauer);
+        }
+
+        /// <summary>
+        /// SAP Aufrufe loggen. (v.a. für Aufruf aus DynSapProxyObj.CallBapi in der ErpBase)  
+        /// </summary>
+        /// <param name="bapiName"></param>
+        /// <param name="logon"></param>
+        /// <param name="import">Import Parameter und Import Tabellen schreiben</param>
+        /// <param name="export">Export Parameter und die Export-Tabellen Info (Name der Tabelle und Anzahl der Sätze) schriben</param>
+        /// <param name="success"></param>
+        /// <param name="dauer">Dauer des Aufrufs (Aufbereitung + SAP Aufruf) in Sekunden</param>
+        /// <param name="appID"></param>
+        /// <param name="userID"></param>
+        /// <param name="customerID"></param>
+        /// <param name="kunnr"></param>
+        /// <param name="portalType"></param>        
+        public void LogSapCall(string bapiName, string logon, DataTable import, DataTable export, bool success, double dauer, int appID, int userID, int customerID, string kunnr, int portalType)
+        {
+            int intKunnr;
+            if (!Int32.TryParse(kunnr, out intKunnr))
+                intKunnr = 0;
+
+            PerformLogSapCall(bapiName, logon, import, export, success, dauer, appID, userID, customerID, intKunnr, portalType);
+        }
+
+        private void PerformLogSapCall(string bapiName, string logon, DataTable import, DataTable export, bool success, double dauer, int appID = 0, int userID = 0, int customerID = 0, int kunnr = 0, int portalType = 0)
+        {
             var importParams = ((DataTable)import.Select("ElementCode='PARA'")[0][0]);
 
             var importTables = new List<DataTable>();
@@ -195,8 +223,8 @@ namespace GeneralTools.Services
             // Achtung: die Export Tables werden nicht serializiert sondern nur die Namen der Tabellen und die Anzahl der Elemente wird ermittelt
             var exportTablesInfo = new XElement("ExportTables", from table in exportTables select new XElement("ExportTable", new XAttribute("TableName", table.TableName), new XAttribute("RowCount", table.Rows.Count)));
 
-            int appID, userID, customerID, kunnr, portalType;
-            TrySessionGetUserData(out appID, out userID, out customerID, out kunnr, out portalType);
+            if (appID == 0 && userID == 0)
+                TrySessionGetUserData(out appID, out userID, out customerID, out kunnr, out portalType);
 
             var sapLogger = new SapLogger();
             sapLogger.Log(

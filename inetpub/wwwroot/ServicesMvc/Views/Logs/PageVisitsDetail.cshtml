@@ -1,0 +1,72 @@
+﻿@using CkgDomainLogic.Logs.Models
+@model CkgDomainLogic.Logs.ViewModels.LogsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Logs <small>Page Visits Detail</small> </h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/PageVisit/SuchePageVisitLogItemsDetail", Model.PageVisitLogItemDetailSelector)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divDetailGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsPageVisitsDetail");
+
+        PrepareDialogs();
+    }
+    
+    function PrepareDialogs() {
+        $(window).resize(function () {
+            $('.ui-dialog').css({
+                'width': $(window).width(),
+                'left': '0px',
+            });
+            $('.ui-dialog-inner').css({
+                'width': $(window).width()-30,
+                'left': '0px',
+            });
+        }).resize(); //<-- resizes on page ready    
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowPageVisitLogItemsDetailSearchResult(result) {
+        SearchFormHide();
+        $("#divDetailGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsPageVisitsDetail");
+
+        $("#divDetailGrid").slideDown();
+    }
+
+    function OnDataBound_GridLogsPageVisitsDetail() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridLogsPageVisitsDetail() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridLogsPageVisitsDetail() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnRowDataBound_GridLogsPageVisitsDetail(e) {
+    }
+    
+</script>

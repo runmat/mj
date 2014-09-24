@@ -1383,19 +1383,28 @@ Namespace Beauftragung2
                         myProxy.setImportParameter("I_ZULBELN", SapId)
                     End If
 
+                    myProxy.setImportParameter("I_ERNAM", m_objUser.UserName)
+
                     myProxy.callBapi()
 
-                    mSapId = myProxy.getExportParameter("E_ZULBELN")
-                    Dim errorTable As DataTable = myProxy.getExportTable("ET_FEHLER")
-
-                    If errorTable.Rows.Count > 0 Then
-
+                    Dim subrc As String = myProxy.getExportParameter("E_SUBRC")
+                    If subrc <> "0" Then
                         success = False
-                        ErrorText = errorTable.Rows(0)("FEHLERTEXT").ToString
-
+                        ErrorText = myProxy.getExportParameter("E_MESSAGE")
+                        m_intStatus = -5555
+                        m_strMessage = "Fehler beim Speichern.<br>(" & ErrorText & ")"
                     Else
-                        ErrorText = encryptData
-                        success = True
+                        mSapId = myProxy.getExportParameter("E_ZULBELN")
+                        Dim errorTable As DataTable = myProxy.getExportTable("ET_FEHLER")
+
+                        If errorTable.Rows.Count > 0 Then
+                            success = False
+                            ErrorText = errorTable.Rows(0)("FEHLERTEXT").ToString
+
+                        Else
+                            ErrorText = encryptData
+                            success = True
+                        End If
                     End If
 
                 Catch ex As Exception
@@ -1407,7 +1416,7 @@ Namespace Beauftragung2
                             m_strMessage = "Keine Daten."
                         Case Else
                             m_intStatus = -9999
-                            m_strMessage = "Beim Speichern.<br>(" & HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) & ")"
+                            m_strMessage = "Fehler beim Speichern.<br>(" & HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) & ")"
                     End Select
                 Finally
                     m_blnGestartet = False
