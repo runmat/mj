@@ -18,8 +18,6 @@ Public Class Inventur
     Protected mInvTyp As String
     Protected mInvDat As String
     Protected mFilepath As String
-    Protected mFilepathUtsch As String
-    Protected mEndInventur As Boolean
     Protected mstrKunnrUtschFiliale As String
     Dim mHistorie As DataTable
     Dim mHistorieLength As Integer
@@ -35,15 +33,6 @@ Public Class Inventur
         End Get
         Set(ByVal value As String)
             mstrKunnrUtschFiliale = value
-        End Set
-    End Property
-
-    Public Property EndInventur() As Boolean
-        Get
-            Return mEndInventur
-        End Get
-        Set(ByVal Value As Boolean)
-            mEndInventur = Value
         End Set
     End Property
 
@@ -137,15 +126,6 @@ Public Class Inventur
         End Set
     End Property
 
-    Public Property FilepathUtsch() As String
-        Get
-            Return mFilepathUtsch
-        End Get
-        Set(ByVal Value As String)
-            mFilepathUtsch = Value
-        End Set
-    End Property
-
     Public Property InvBelegNr() As String
         Get
             Return mInvBelegNr
@@ -217,7 +197,6 @@ Public Class Inventur
 
     Public Sub New(ByRef Kasse As Kasse)
         mMyKasse = Kasse
-        mEndInventur = False
 
         If mMyKasse.Werk = "1030" Then
             mHistorie = New DataTable()
@@ -483,7 +462,7 @@ Public Class Inventur
                 E_SUBRC = SAPExc.E_SUBRC
                 E_MESSAGE = SAPExc.E_MESSAGE
             End If
-            mEndInventur = False
+
         Catch ex As Exception
             mE_SUBRC = -9999
             mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
