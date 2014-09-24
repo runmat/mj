@@ -11,12 +11,17 @@ using MvcTools.Web;
 
 namespace CkgDomainLogic.Logs.Models
 {
-    public class PageVisitLogItemSelector : Store, IValidatableObject 
+    public class PageVisitLogItemDetailSelector : Store, IValidatableObject 
     {
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateRange DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
+        [LocalizedDisplay(LocalizeConstants.UserName)]
+        public List<string> UserIds { get; set; }
 
+        public static SelectList AllUsers { get; set; }
+        
+        
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public List<int> CustomerIds { get; set; }
 
@@ -29,13 +34,18 @@ namespace CkgDomainLogic.Logs.Models
         public static SelectList AllApplications { get; set; }
 
 
+        [LocalizedDisplay(LocalizeConstants.Portal)]
+        public List<int> PortalTypes { get; set; }
+
+        public SelectList AllPortalTypes { get { return LogConstants.PortalTypes.ToSelectList(); } }
+
+
+
         [LocalizedDisplay(LocalizeConstants.Server)]
         public string LogsConnection { get; set; }
 
         public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod"; } }
 
-        [LocalizedDisplay(LocalizeConstants.OnlyUnusedApplications)]
-        public bool OnlyUnusedApplications { get; set; }
 
         public bool SubmitWithNoDataQuerying { get; set; }
 
@@ -51,25 +61,18 @@ namespace CkgDomainLogic.Logs.Models
 
         public string GetSqlSelectStatement()
         {
-            var tableAttribute = typeof(PageVisitLogItem).GetCustomAttributes(false).OfType<TableAttribute>().FirstOrDefault();
+            var tableAttribute = typeof(PageVisitLogItemDetail).GetCustomAttributes(false).OfType<TableAttribute>().FirstOrDefault();
             if (tableAttribute == null)
                 return "";
 
             var sql = "SELECT * FROM " + tableAttribute.Name;
 
-            sql += CustomerIds.GetSqlMultiselectCondition(sql, "CustomerID");
+            sql += PortalTypes.GetSqlMultiselectCondition(sql, "PortalType");
             sql += AppIds.GetSqlMultiselectCondition(sql, "AppID");
-            sql += DatumRange.GetSqlDateRangeCondition(sql, "Datum");
-
-            return sql;
-        }
-
-        public string GetCustomerApplicationsSqlSelectStatement()
-        {
-            var sql = "SELECT * FROM CustomerApplicationsView";
-
             sql += CustomerIds.GetSqlMultiselectCondition(sql, "CustomerID");
-            sql += AppIds.GetSqlMultiselectCondition(sql, "AppID");
+            sql += UserIds.GetSqlMultiselectCondition(sql, "UserID");
+
+            sql += DatumRange.GetSqlDateRangeCondition(sql, "time_stamp");
 
             return sql;
         }
