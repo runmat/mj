@@ -9,7 +9,6 @@ using CkgDomainLogic.Logs.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
@@ -38,9 +37,16 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Pv()
+        public ActionResult PageVisits()
         {
-            //SapLogItem.StackContextItemTemplate = stackContext => this.RenderPartialViewToString("Partial/Sap/StackContext", stackContext);
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult PageVisitsDetail()
+        {
             ViewModel.DataInit();
 
             return View(ViewModel);
@@ -96,6 +102,43 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public ActionResult LoadPageVisitLogItemsDetail(PageVisitLogItemDetailSelector model)
+        {
+            ModelState.Clear();
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (ViewModel.LoadPageVisitLogItemsDetail(model))
+                    if (ViewModel.PageVisitLogItemsDetailFiltered.None())
+                        ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/PageVisit/SuchePageVisitLogItemsDetail", ViewModel.PageVisitLogItemDetailSelector);
+        }
+
+        [HttpPost]
+        public ActionResult ShowPageVisitLogItemsDetail()
+        {
+            return PartialView("Partial/PageVisit/DetailGrid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult LogsPageVisitsDetailAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.PageVisitLogItemsDetailFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridLogsPageVisitsDetail(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterPageVisitLogItemsDetail(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
         #endregion
 
 
@@ -131,11 +174,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSapImportContext(int sapItemId)
+        public ActionResult GetSapCallContext(int sapItemId)
         {
-            ViewModel.GetSapSapImportTables(sapItemId);
+            ViewModel.GetSapCallContext(sapItemId);
 
-            return PartialView("Partial/Sap/SapImportTables", ViewModel.LastSapImportTables);
+            return PartialView("Partial/Sap/SapCallContext", ViewModel.LastSapCallContext);
         }
 
         [HttpPost]
@@ -204,6 +247,38 @@ namespace ServicesMvc.Controllers
         protected override IEnumerable GetGridExportData()
         {
             return ViewModel.SapLogItemsFiltered;
+        }
+
+        public ActionResult ExportPageVisitLogItemsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportPageVisitLogItemsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportPageVisitLogItemsDetailFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits Detail", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportPageVisitLogItemsDetailFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits Detail", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         public ActionResult ExportWebServiceTrafficLogItemsFilteredExcel(int page, string orderBy, string filterBy)

@@ -16,7 +16,9 @@ namespace CkgDomainLogic.Logs.Contracts
         SapLogItemDetailed GetSapLogItemDetailed(int id);
 
 
-        List<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector);
+        List<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemDetailSelector);
+
+        List<PageVisitLogItemDetail> GetPageVisitLogItemsDetail(PageVisitLogItemDetailSelector pageVisitLogItemSelector);
 
 
         List<WebServiceTrafficLogItem> GetWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector webServiceTrafficLogItemSelector);

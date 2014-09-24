@@ -91,25 +91,25 @@
 
 <script type="text/javascript">
 
-    function ShowSapImportContext(sapItemId) {
+    function ShowSapCallContext(sapItemId) {
 
         $.ajax({
             type: "POST",
-            url: "GetSapImportContext",
+            url: "GetSapCallContext",
             data: { sapItemId: sapItemId },
             loadingShow: true,
             success: function (result) {
 
-                var dialog = $("#SapImportContext").data("tWindow");
-                $("#InnerSapImportContext").html(result);
+                var dialog = $("#SapCallContext").data("tWindow");
+                $("#InnerSapCallContext").html(result);
                 dialog.center().open();
 
                 setTimeout(function () {
-                    $("#SapImportContext").on("click", function (e) {
+                    $("#SapCallContext").on("click", function (e) {
                         if (e.target.tagName.toLowerCase() == "td")
                             return;
                         dialog.close();
-                        $("#SapImportContext").of("click");
+                        $("#SapCallContext").of("click");
                     });
                 }, 1000);
             },
@@ -141,7 +141,7 @@
 
 
 @(Html.Telerik().Window()
-    .Name("SapImportContext")
+    .Name("SapCallContext")
     .Visible(false)
     .Title("SAP Übergabedaten")
     .Modal(true)
@@ -149,7 +149,7 @@
     .Scrollable(true)
     .Height(700)
     .HtmlAttributes(new { @class = "ui-dialog" })
-    .Content(@<text><div id="InnerSapImportContext" class="ui-dialog-inner"></div></text>))
+    .Content(@<text><div id="InnerSapCallContext" class="ui-dialog-inner"></div></text>))
 
 
 @(Html.Telerik().Window()
