@@ -120,6 +120,51 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_PRUEFPUNKTE_01.GT_OUT, Pruefpunkt> Z_DPM_READ_PRUEFPUNKTE_01_GT_OUT_To_Pruefpunkt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_PRUEFPUNKTE_01.GT_OUT, Pruefpunkt>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.PAID = source.PAID;
+                        destination.BucID = source.BUC_ID;
+                        destination.Aktionsname = source.AKTIONSNAME;
+                        destination.PruefpunktID = source.PRUEFPUNKT;
+                        destination.PruefpunktText = source.PRUEFPUNKT_TXT;
+                        destination.Pruefstatus = source.PRUEFP_IO;
+                        destination.Ergebnis = source.PRUEFP_IO_TEXT;
+                        destination.Pruefdatum = source.PRUEDAT;
+                        destination.Bemerkung = source.BEMERKUNG;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_PRUEFSCHRITTE_03.GT_OUT, Pruefschritt> Z_DPM_READ_PRUEFSCHRITTE_03_GT_OUT_To_Pruefschritt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_PRUEFSCHRITTE_03.GT_OUT, Pruefschritt>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.PAID = source.PAID;
+                        destination.BucID = source.BUC_ID;
+                        destination.Aktionsnummer = source.AKTIONSNR;
+                        destination.Aktionsart = source.AKTIONSART;
+                        destination.Aktionsname = source.AKTIONSNAME;
+                        destination.Aktionstext = source.AKTION_TEXT;
+                        destination.Infotext = source.INFOTEXT;
+                        destination.Erledigt = (source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "X");
+                        destination.Pruefdatum = source.PRUEFDAT;
+                        destination.Webuser = source.WEB_USER;
+                    }));
+            }
+        }
+
         #endregion
 
 

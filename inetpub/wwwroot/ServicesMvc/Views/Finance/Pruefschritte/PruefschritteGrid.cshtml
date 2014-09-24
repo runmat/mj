@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinancePruefschritteViewModel 
+
+@{ var gridName = "GridPruefschritte"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="ClosePruefschritteSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Pruefschritt>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("PruefschritteAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Aktionsnummer);
+        columns.XBound(c => c.Aktionsname);
+        columns.XBound(c => c.Aktionstext);
+        columns.XBound(c => c.Infotext);
+        columns.XBound(c => c.Erledigt);
+        columns.XBound(c => c.Pruefdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Webuser);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridPruefschritte"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Aktionsnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportPruefschritteFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportPruefschritteFilteredPDF", "Finance");
+    })
+)

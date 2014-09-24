@@ -123,7 +123,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<BriefbestandDataServiceSAP>().As<IBriefbestandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreDataServiceSAP>().As<IFinanceVersandsperreDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersandsperreReportDataServiceSAP>().As<IFinanceVersandsperreReportDataService>().InstancePerHttpRequest();
-	    builder.RegisterType<FinanceTelefonieReportDataServiceSAP>().As<IFinanceTelefonieReportDataService>().InstancePerHttpRequest();
+	        builder.RegisterType<FinanceTelefonieReportDataServiceSAP>().As<IFinanceTelefonieReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerHttpRequest();
             builder.RegisterType<MahnreportDataServiceSAP>().As<IMahnreportDataService>().InstancePerHttpRequest();
             builder.RegisterType<DatenOhneDokumenteDataServiceSAP>().As<IDatenOhneDokumenteDataService>().InstancePerHttpRequest();
@@ -147,6 +147,9 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<AutohausZulassungDataServiceSAP>().As<IAutohausZulassungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

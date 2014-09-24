@@ -3875,10 +3875,17 @@
     <Content Include="Views\Equi\DokumenteOhneDaten.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Grid.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Suche.cshtml" />
-    <Content Include="Views\CocSendung\Verfolgung.cshtml" />    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
+    <Content Include="Views\CocSendung\Verfolgung.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte\PruefpunkteSuche.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte\PruefpunkteGrid.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte\PruefschritteSuche.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte\PruefschritteGrid.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
