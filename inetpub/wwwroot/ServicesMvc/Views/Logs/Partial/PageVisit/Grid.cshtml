@@ -4,6 +4,7 @@
     var gridName = "GridLogsPageVisits";
 }
 
+
 @(Html.Telerik()
     .Grid<PageVisitLogItem>()
     .Name(gridName)
@@ -11,10 +12,13 @@
     .XAjaxDataBinding("LogsPageVisitsAjaxBinding", "Logs")
     .Columns(columns => columns.XBoundAll())
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridLogsPageVisits"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Datum).Descending())
-    .XToolBar("Logs")
-    .Groupable(g => g.Enabled(false))
-)
+    .XSort(sortOrder => sortOrder.Add(c => c.AppID))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportPageVisitLogItemsFilteredExcel", "Logs");
+        commands.FilteredDataCommand("ExportPageVisitLogItemsFilteredPDF", "Logs");
+    })
+    .Groupable(g => g.Enabled(false)))
 

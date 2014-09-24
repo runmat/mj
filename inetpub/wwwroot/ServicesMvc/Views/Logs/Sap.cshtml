@@ -39,11 +39,11 @@
     function PrepareDialogs() {
         $(window).resize(function () {
             $('.ui-dialog').css({
-                'width': $(window).width(),
+                'width': $(window).width()-30,
                 'left': '0px',
             });
             $('.ui-dialog-inner').css({
-                'width': $(window).width()-30,
+                'width': $(window).width()-60,
                 'left': '0px',
             });
         }).resize(); //<-- resizes on page ready    
