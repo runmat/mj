@@ -15,7 +15,7 @@
 
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
 
-        DG1.Columns(9).HeaderText = objCarports.ZulassungstypText
+        DG1.Columns(9).HeaderText = "Datum <br/> " & objCarports.ArtDerZulassung.ToString()
 
         Select Case objCarports.Task
             Case "Ausgabe"

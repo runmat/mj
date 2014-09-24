@@ -16,7 +16,7 @@
 
 <script language="JavaScript" type="text/javascript">
     function openinfo(url) {
-        fenster = window.open(url, "AVIS", "menubar=0,scrollbars=0,toolbars=0,location=0,directories=0,status=0,width=500,height=200");
+        fenster = window.open(url, "AVIS", "menubar=0,scrollbars=0,toolbars=0,location=0,directories=0,status=0,width=580,height=200");
         fenster.focus();
     }
 </script>
@@ -90,13 +90,26 @@
                                                     <td width="25%">
                                                         <asp:RadioButton ID="rbDez" runat="server" GroupName="Ort" Text="Dezentral:" />
                                                     </td>
-                                                            </tr>
+                                                 </tr>
                                                 </table>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="1">
-                                             &nbsp;
+                                        <td valign="top" colspan="1" >
+                                            <table id="Table1" cellspacing="0" cellpadding="0" width="25%"
+                                                border="0" style="border-color: #dfdfdf; border-style: solid; border-width: 1;">
+                                                <tr>
+                                                    <td>
+                                                        <asp:RadioButton ID="rbZulassung" runat="server" Checked="True" GroupName="ZulArt" Text="Zulassung" AutoPostBack="True" />
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="25%">
+                                                        <asp:RadioButton ID="rbPlanzulassung" runat="server" GroupName="ZulArt" Text="Planzulassung" AutoPostBack="True" />
+                                                    </td>
+                                                 </tr>
+                                                </table>
                                         </td>
                                     </tr>                                     
                                     <tr  runat="server" id="tr_Text" visible="false">
@@ -123,7 +136,7 @@
                                                         <asp:TextBox ID="txtMVANummer" runat="server" MaxLength="8"></asp:TextBox>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="trZulassungsdatum" runat="server">
                                                     <td class="TextLarge" nowrap align="left">
                                                         Zulassungsdatum:
                                                     </td>
@@ -137,12 +150,52 @@
                                                         </cc1:MaskedEditExtender>
                                                         <cc1:MaskedEditValidator ID="mevZulassungsdatum" runat="server" ControlToValidate="txtZulassungsdatum"
                                                             ControlExtender="meeZulassungsdatum" Display="none" IsValidEmpty="True" Enabled="true"
-                                                            EmptyValueMessage="Bitte geben Sie ein gültiges Zulassungsdatum ein" InvalidValueMessage="Bitte geben Sie ein gültiges Zulassungsdatum ein">
-                                                         
-                                                                                                                     
+                                                            EmptyValueMessage="Bitte geben Sie ein gültiges Zulassungsdatum ein" InvalidValueMessage="Bitte geben Sie ein gültiges Zulassungsdatum ein">                                                           
                                                         </cc1:MaskedEditValidator>
                                                         <cc1:ValidatorCalloutExtender Enabled="true" ID="vceZulassungsdatum" Width="350px"
                                                             runat="server" HighlightCssClass="validatorCalloutHighlight" TargetControlID="mevZulassungsdatum">
+                                                        </cc1:ValidatorCalloutExtender>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trPlanzulassungsdatum" runat="server" Visible="False">
+                                                    <td class="TextLarge" nowrap align="left">
+                                                        Datum Planzulassung:
+                                                    </td>
+                                                    <td class="TextLarge">
+                                                        <asp:TextBox ID="txtPlanzulassungsdatum" ToolTip="Datum Planzulassung" runat="server"></asp:TextBox>
+                                                        <cc1:CalendarExtender ID="txtPlanzulassungsdatum_CalendarExtender" runat="server" Format="dd.MM.yyyy"
+                                                            PopupPosition="BottomLeft" Animated="true" Enabled="True" TargetControlID="txtPlanzulassungsdatum">
+                                                        </cc1:CalendarExtender>
+                                                        <cc1:MaskedEditExtender ID="meePlanzulassungsdatum" runat="server" TargetControlID="txtPlanzulassungsdatum"
+                                                            Mask="99/99/9999" MaskType="Date" InputDirection="LeftToRight">
+                                                        </cc1:MaskedEditExtender>
+                                                        <cc1:MaskedEditValidator ID="mevPlanzulassungsdatum" runat="server" ControlToValidate="txtPlanzulassungsdatum"
+                                                            ControlExtender="meePlanzulassungsdatum" Display="none" IsValidEmpty="True" Enabled="true"
+                                                            EmptyValueMessage="Bitte geben Sie ein gültiges Planzulassungsdatum ein" InvalidValueMessage="Bitte geben Sie ein gültiges Planzulassungsdatum ein">                                                           
+                                                        </cc1:MaskedEditValidator>
+                                                        <cc1:ValidatorCalloutExtender Enabled="true" ID="vcePlanzulassungsdatum" Width="350px"
+                                                            runat="server" HighlightCssClass="validatorCalloutHighlight" TargetControlID="mevPlanzulassungsdatum">
+                                                        </cc1:ValidatorCalloutExtender>
+                                                    </td>
+                                                </tr>
+                                                <tr id="trVerarbeitungsdatum" runat="server" Visible="False">
+                                                    <td class="TextLarge" nowrap align="left">
+                                                        Datum Verarbeitung:
+                                                    </td>
+                                                    <td class="TextLarge">
+                                                        <asp:TextBox ID="txtVerarbeitungsdatum" ToolTip="Datum Verarbeitung" runat="server"></asp:TextBox>
+                                                        <cc1:CalendarExtender ID="txtVerarbeitungsdatum_CalendarExtender" runat="server" Format="dd.MM.yyyy"
+                                                            PopupPosition="BottomLeft" Animated="true" Enabled="True" TargetControlID="txtVerarbeitungsdatum">
+                                                        </cc1:CalendarExtender>
+                                                        <cc1:MaskedEditExtender ID="meeVerarbeitungsdatum" runat="server" TargetControlID="txtVerarbeitungsdatum"
+                                                            Mask="99/99/9999" MaskType="Date" InputDirection="LeftToRight">
+                                                        </cc1:MaskedEditExtender>
+                                                        <cc1:MaskedEditValidator ID="mevVerarbeitungsdatum" runat="server" ControlToValidate="txtVerarbeitungsdatum"
+                                                            ControlExtender="meeVerarbeitungsdatum" Display="none" IsValidEmpty="True" Enabled="true"
+                                                            EmptyValueMessage="Bitte geben Sie ein gültiges Verarbeitungsdatum ein" InvalidValueMessage="Bitte geben Sie ein gültiges Verarbeitungsdatum ein">                                                           
+                                                        </cc1:MaskedEditValidator>
+                                                        <cc1:ValidatorCalloutExtender Enabled="true" ID="vceVerarbeitungsdatum" Width="350px"
+                                                            runat="server" HighlightCssClass="validatorCalloutHighlight" TargetControlID="mevVerarbeitungsdatum">
                                                         </cc1:ValidatorCalloutExtender>
                                                     </td>
                                                 </tr>
@@ -168,8 +221,14 @@
                                             <table id="tbl0001" cellspacing="0" cellpadding="5" width="100%" border="0">
                                                 <tr>
                                                     <td class="TextLarge" nowrap align="right">
-                                                        Dateiauswahl <a href="javascript:openinfo('Info01.htm');">
+                                                        <div id="divInfoZulassung" runat="server">
+                                                            Dateiauswahl <a href="javascript:openinfo('Info01.htm');">
                                                             <img src="../../../images/fragezeichen.gif" border="0"></a>:&nbsp;&nbsp;
+                                                        </div>
+                                                        <div id="divInfoPlanzulassung" runat="server" Visible="False">
+                                                            Dateiauswahl <a href="javascript:openinfo('Info01a.htm');">
+                                                            <img src="../../../images/fragezeichen.gif" border="0"></a>:&nbsp;&nbsp;
+                                                        </div>
                                                     </td>
                                                     <td class="TextLarge" width="100%">
                                                         <input id="upFile" type="file" size="49" name="File1" runat="server">&nbsp;

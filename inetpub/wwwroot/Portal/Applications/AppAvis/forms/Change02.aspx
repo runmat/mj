@@ -106,12 +106,14 @@
                                            &nbsp;
                                            <asp:DropDownList ID="ddlZulKreis" runat="server">
                                                                </asp:DropDownList></td></tr> 
-                                      <tr>
-                                        <td >
-                                            &nbsp;</td>
-                                          <td align="right">
-                                            <asp:LinkButton ID="lbtn_Weiter" runat="server" CssClass="ButtonUp"> •&nbsp;Weiter</asp:LinkButton></td>
-                                         </tr>
+                                       <tr height="20px">
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td align="right">
+                                          <asp:LinkButton ID="lbtn_Weiter" runat="server" CssClass="ButtonUp"> •&nbsp;Weiter</asp:LinkButton>
+                                        </td>
+                                       </tr>
                                       </table>
                                     </td>
                                     
@@ -328,7 +330,7 @@
                                 <tr ID="ButtonRow" runat="server" visible="false">
                                     <td valign="top"  class="style1">
                                     <table id="Table5" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                    <tr>
+                                    <tr height="20px">
                                         <td align="left">
                                         <asp:LinkButton ID="cmdCreate" runat="server" CssClass="ButtonUp"> •&nbsp;Suchen</asp:LinkButton>
                                         </td>

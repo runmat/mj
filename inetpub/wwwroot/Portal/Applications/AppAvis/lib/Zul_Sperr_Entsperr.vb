@@ -3,16 +3,12 @@ Option Strict On
 
 Imports System
 Imports CKG.Base.Kernel
-Imports CKG.Base.Business
-Imports CKG.Base.Common
-
 Imports SapORM.Contracts
 
-'#################################################################
-' Klasse für das Zulassen, Sperren und Entsperren von Fahrzeugen
-' Change : Carport Bestände (Change02)
-'#################################################################
-
+''' <summary>
+''' Klasse für das Zulassen, Sperren und Entsperren von Fahrzeugen, Carport Bestände (Change02)
+''' </summary>
+''' <remarks></remarks>
 Public Class Zul_Sperr_Entsperr
     Inherits Base.Business.DatenimportBase
 
@@ -48,14 +44,10 @@ Public Class Zul_Sperr_Entsperr
     Private m_tblAllCarports As DataTable
     Private m_tblModelle As DataTable
     Private m_tblFahrzeuge As DataTable
-    Private m_intErrorCount As Int32
     Private m_strCarportNr As String
-    Private m_strModellCode As String
-    Private m_strFahrgestellnummer As String
     Private m_intLastID As Int32
     Private m_strTask As String
     Private m_intSelectedCars As Int32
-    Private m_blnShowBelegnummer As Boolean
     Private m_tblErledigt As DataTable
     Private m_strFilter As String
     Private m_intFehlerCount As Integer
@@ -281,8 +273,14 @@ Public Class Zul_Sperr_Entsperr
         End Set
     End Property
 
-    Public Property ZulassungstypText As String
+    Public Enum Zulassungstyp
+        Zulassung = 1
+        Planzulassung = 2
+    End Enum
 
+    Public Property ArtDerZulassung As Zulassungstyp
+
+    Public Property Verarbeitungsdatum As String
 
 #End Region
 
@@ -292,23 +290,19 @@ Public Class Zul_Sperr_Entsperr
         MyBase.New(objUser, objApp, strFilename)
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            m_intErrorCount = 0
             m_intLastID = -1
-            m_strModellCode = ""
-            m_strFahrgestellnummer = ""
             m_strCarportNr = ""
             m_intSelectedCars = 0
-            m_blnShowBelegnummer = False
 
             '--- Alle PDIs ------------------------------------------------------
             m_tblAllCarports = New DataTable("AllCarports")
             With m_tblAllCarports.Columns
-                .Add("Carportnr", System.Type.GetType("System.String"))
-                .Add("Carport", System.Type.GetType("System.String"))
-                .Add("Zulassungsf_Fahrzeuge", System.Type.GetType("System.Int32"))
-                .Add("Gesperrte_Fahrzeuge", System.Type.GetType("System.Int32"))
-                .Add("Details", System.Type.GetType("System.Boolean"))
-                .Add("Loaded", System.Type.GetType("System.Boolean"))
+                .Add("Carportnr", Type.GetType("System.String"))
+                .Add("Carport", Type.GetType("System.String"))
+                .Add("Zulassungsf_Fahrzeuge", Type.GetType("System.Int32"))
+                .Add("Gesperrte_Fahrzeuge", Type.GetType("System.Int32"))
+                .Add("Details", Type.GetType("System.Boolean"))
+                .Add("Loaded", Type.GetType("System.Boolean"))
             End With
 
             '--- PDIs -----------------------------------------------------------
@@ -316,72 +310,72 @@ Public Class Zul_Sperr_Entsperr
             m_tblCarports = New DataTable("Carports")
 
             With m_tblCarports.Columns
-                .Add("Carportnr", System.Type.GetType("System.String"))
-                .Add("Carport", System.Type.GetType("System.String"))
-                .Add("Zulassungsf_Fahrzeuge", System.Type.GetType("System.Int32"))
-                .Add("Gesperrte_Fahrzeuge", System.Type.GetType("System.Int32"))
-                .Add("Details", System.Type.GetType("System.Boolean"))
-                .Add("Loaded", System.Type.GetType("System.Boolean"))
+                .Add("Carportnr", Type.GetType("System.String"))
+                .Add("Carport", Type.GetType("System.String"))
+                .Add("Zulassungsf_Fahrzeuge", Type.GetType("System.Int32"))
+                .Add("Gesperrte_Fahrzeuge", Type.GetType("System.Int32"))
+                .Add("Details", Type.GetType("System.Boolean"))
+                .Add("Loaded", Type.GetType("System.Boolean"))
             End With
 
             '--- Modelle ---------------------------------------------------------
             m_tblModelle = New DataTable("Modelle")
 
             With m_tblModelle.Columns
-                .Add("ID", System.Type.GetType("System.Int32"))
-                .Add("Carportnr", System.Type.GetType("System.String"))
-                .Add("Carport", System.Type.GetType("System.String"))
-                .Add("Hersteller_ID_Avis", System.Type.GetType("System.String"))
-                .Add("Herstellername", System.Type.GetType("System.String"))
-                .Add("Typ_ID_Avis", System.Type.GetType("System.String"))
-                .Add("Modellbezeichnung", System.Type.GetType("System.String"))
-                .Add("Reifenart", System.Type.GetType("System.String"))
-                .Add("Liefermonat", System.Type.GetType("System.String"))
-                .Add("Kraftstoffart", System.Type.GetType("System.String"))
-                .Add("Navigation", System.Type.GetType("System.String"))
-                .Add("Farbe", System.Type.GetType("System.String"))
-                .Add("Vermietgruppe", System.Type.GetType("System.String"))
-                .Add("Fahrzeugart", System.Type.GetType("System.String"))
-                .Add("Bezahltkennzeichen", System.Type.GetType("System.Boolean"))
-                .Add("HaendlerId", System.Type.GetType("System.String"))
-                .Add("Haendler_Kurzname", System.Type.GetType("System.String"))
-                .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Einkaufsindikator", System.Type.GetType("System.String"))
-                .Add("DatumErstzulassung", System.Type.GetType("System.DateTime"))
-                .Add("Anzahl_alt", System.Type.GetType("System.Int32"))
-                .Add("Anzahl_neu", System.Type.GetType("System.Int32"))
-                .Add("ZZCARPORT", System.Type.GetType("System.String"))
-                .Add("ZielCarport", System.Type.GetType("System.String"))
-                .Add("Bemerkung", System.Type.GetType("System.String"))
-                .Add("BemerkungDatum", System.Type.GetType("System.DateTime"))
-                .Add("EQUNR", System.Type.GetType("System.String"))
-                .Add("QMNUM", System.Type.GetType("System.String"))
-                .Add("Task", System.Type.GetType("System.String"))
+                .Add("ID", Type.GetType("System.Int32"))
+                .Add("Carportnr", Type.GetType("System.String"))
+                .Add("Carport", Type.GetType("System.String"))
+                .Add("Hersteller_ID_Avis", Type.GetType("System.String"))
+                .Add("Herstellername", Type.GetType("System.String"))
+                .Add("Typ_ID_Avis", Type.GetType("System.String"))
+                .Add("Modellbezeichnung", Type.GetType("System.String"))
+                .Add("Reifenart", Type.GetType("System.String"))
+                .Add("Liefermonat", Type.GetType("System.String"))
+                .Add("Kraftstoffart", Type.GetType("System.String"))
+                .Add("Navigation", Type.GetType("System.String"))
+                .Add("Farbe", Type.GetType("System.String"))
+                .Add("Vermietgruppe", Type.GetType("System.String"))
+                .Add("Fahrzeugart", Type.GetType("System.String"))
+                .Add("Bezahltkennzeichen", Type.GetType("System.Boolean"))
+                .Add("HaendlerId", Type.GetType("System.String"))
+                .Add("Haendler_Kurzname", Type.GetType("System.String"))
+                .Add("Zulassungsort", Type.GetType("System.String"))
+                .Add("Einkaufsindikator", Type.GetType("System.String"))
+                .Add("DatumErstzulassung", Type.GetType("System.DateTime"))
+                .Add("Anzahl_alt", Type.GetType("System.Int32"))
+                .Add("Anzahl_neu", Type.GetType("System.Int32"))
+                .Add("ZZCARPORT", Type.GetType("System.String"))
+                .Add("ZielCarport", Type.GetType("System.String"))
+                .Add("Bemerkung", Type.GetType("System.String"))
+                .Add("BemerkungDatum", Type.GetType("System.DateTime"))
+                .Add("EQUNR", Type.GetType("System.String"))
+                .Add("QMNUM", Type.GetType("System.String"))
+                .Add("Task", Type.GetType("System.String"))
             End With
 
             '--- FAHRZEUGE ---------------------------------------------------------
             m_tblFahrzeuge = New DataTable("Fahrzeuge")
 
             With m_tblFahrzeuge.Columns
-                .Add("Modell_ID", System.Type.GetType("System.Int32"))
-                .Add("Fahrgestellnummer", System.Type.GetType("System.String"))
-                .Add("Eingangsdatum", System.Type.GetType("System.DateTime"))
-                .Add("Ausgewaehlt", System.Type.GetType("System.Boolean"))
-                .Add("DatumErstzulassung", System.Type.GetType("System.DateTime"))
-                .Add("Datum_zur_Sperre", System.Type.GetType("System.String"))
-                .Add("Sperrvermerk", System.Type.GetType("System.String"))
-                .Add("Sperren", System.Type.GetType("System.String"))
-                .Add("ZielCarport", System.Type.GetType("System.String"))
-                .Add("ZZCARPORT", System.Type.GetType("System.String"))
-                .Add("EQUNR", System.Type.GetType("System.String"))
-                .Add("QMNUM", System.Type.GetType("System.String"))
-                .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Reifenart", System.Type.GetType("System.String"))
-                .Add("Verwendungszweck", System.Type.GetType("System.String"))
-                .Add("neuGesperrt", System.Type.GetType("System.String"))
-                .Add("neuEntsperrt", System.Type.GetType("System.String"))
-                .Add("Ergebnis", System.Type.GetType("System.String"))
-                .Add("Owner_Code", System.Type.GetType("System.String"))
+                .Add("Modell_ID", Type.GetType("System.Int32"))
+                .Add("Fahrgestellnummer", Type.GetType("System.String"))
+                .Add("Eingangsdatum", Type.GetType("System.DateTime"))
+                .Add("Ausgewaehlt", Type.GetType("System.Boolean"))
+                .Add("DatumErstzulassung", Type.GetType("System.DateTime"))
+                .Add("Datum_zur_Sperre", Type.GetType("System.String"))
+                .Add("Sperrvermerk", Type.GetType("System.String"))
+                .Add("Sperren", Type.GetType("System.String"))
+                .Add("ZielCarport", Type.GetType("System.String"))
+                .Add("ZZCARPORT", Type.GetType("System.String"))
+                .Add("EQUNR", Type.GetType("System.String"))
+                .Add("QMNUM", Type.GetType("System.String"))
+                .Add("Zulassungsort", Type.GetType("System.String"))
+                .Add("Reifenart", Type.GetType("System.String"))
+                .Add("Verwendungszweck", Type.GetType("System.String"))
+                .Add("neuGesperrt", Type.GetType("System.String"))
+                .Add("neuEntsperrt", Type.GetType("System.String"))
+                .Add("Ergebnis", Type.GetType("System.String"))
+                .Add("Owner_Code", Type.GetType("System.String"))
             End With
 
             m_dsCarPort_Data.Tables.Add(m_tblCarports)
@@ -406,14 +400,12 @@ Public Class Zul_Sperr_Entsperr
         End If
     End Sub
 
-    '----------------------------------------------------------------------
-    ' Methode: Fill
-    ' Autor: O.Rudolph
-    ' Beschreibung: füllen der Selektiondaten(Change02)
-    ' Erstellt am: 18.11.2008
-    ' ITA: 2359
-    '----------------------------------------------------------------------
-
+    ''' <summary>
+    ''' füllen der Selektiondaten(Change02), Erstellt am: 18.11.2008, Autor: O.Rudolph, ITA: 2359
+    ''' </summary>
+    ''' <param name="strAppID"></param>
+    ''' <param name="strSessionID"></param>
+    ''' <remarks></remarks>
     Public Overloads Sub FILL(ByVal strAppID As String, ByVal strSessionID As String)
 
         m_strClassAndMethod = "Zul_Sperr_Entsperr.FILL"
@@ -438,10 +430,8 @@ Public Class Zul_Sperr_Entsperr
             Dim sCarport As String = ""
             dv.Sort = "Carportnr"
             e = 0
-            m_tblResultPDIs = New DataTable
-            m_tblResultPDIs.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultPDIs.Columns.Add("Carport", System.Type.GetType("System.String"))
-            m_tblResultPDIs = FillFirstRow(m_tblResultPDIs, "Carportnr", "Carport")
+
+            m_tblResultPDIs = FillFirstRow("Carportnr", "Carport")
 
             Do While e < dv.Count
                 row = m_tblResultPDIs.NewRow
@@ -457,8 +447,7 @@ Public Class Zul_Sperr_Entsperr
             dv.Sort = "Hersteller_ID_Avis"
             e = 0
             Dim HerrCode As String = ""
-            m_tblHersteller = FillFirstRow(m_tblHersteller, "HerstellerID", "Hersteller_ID_Avis")
-            row = m_tblHersteller.NewRow
+            m_tblHersteller = FillFirstRow("HerstellerID", "Hersteller_ID_Avis")
             Do While e < dv.Count
                 row = m_tblHersteller.NewRow
                 If HerrCode <> dv.Item(e)("Hersteller_ID_Avis").ToString Then
@@ -471,23 +460,22 @@ Public Class Zul_Sperr_Entsperr
                 e = e + 1
             Loop
 
-            m_tblLiefermonat = FillFirstRow(m_tblLiefermonat, "ID", "Liefermonat")
+            m_tblLiefermonat = FillFirstRow("ID", "Liefermonat")
             BoundViews(dv, m_tblLiefermonat, "Liefermonat")
 
-            m_tblBereifung = FillFirstRow(m_tblBereifung, "ID", "REIFENART")
+            m_tblBereifung = FillFirstRow("ID", "REIFENART")
             BoundViews(dv, m_tblBereifung, "REIFENART")
 
-            m_tblGetriebe = FillFirstRow(m_tblGetriebe, "ID", "ANTRIEBSART")
+            m_tblGetriebe = FillFirstRow("ID", "ANTRIEBSART")
             BoundViews(dv, m_tblGetriebe, "ANTRIEBSART")
 
-            m_tblKraftstoff = FillFirstRow(m_tblKraftstoff, "ID", "Kraftstoffart")
+            m_tblKraftstoff = FillFirstRow("ID", "Kraftstoffart")
             BoundViews(dv, m_tblKraftstoff, "Kraftstoffart")
 
-            m_tblNavi = FillFirstRow(m_tblNavi, "ID", "Navigation")
+            m_tblNavi = FillFirstRow("ID", "Navigation")
             dv.Sort = "Navigation"
             e = 0
             Dim sNavi As String = ""
-            row = m_tblNavi.NewRow
             Do While e < dv.Count
                 row = m_tblNavi.NewRow
                 If sNavi <> dv.Item(e)("Navigation").ToString Then
@@ -505,41 +493,40 @@ Public Class Zul_Sperr_Entsperr
                 e = e + 1
             Loop
 
-            m_tblFarbe = FillFirstRow(m_tblFarbe, "ID", "FARBE")
+            m_tblFarbe = FillFirstRow("ID", "FARBE")
             BoundViews(dv, m_tblFarbe, "FARBE")
 
-            m_tblVermiet = FillFirstRow(m_tblVermiet, "ID", "Vermietgruppe")
+            m_tblVermiet = FillFirstRow("ID", "Vermietgruppe")
             BoundViews(dv, m_tblVermiet, "Vermietgruppe")
 
-            m_tblFzgArt = FillFirstRow(m_tblFzgArt, "ID", "Fahrzeugart")
+            m_tblFzgArt = FillFirstRow("ID", "Fahrzeugart")
             BoundViews(dv, m_tblFzgArt, "Fahrzeugart")
 
-            m_tblAufbauArt = FillFirstRow(m_tblAufbauArt, "ID", "AUFBAUART")
+            m_tblAufbauArt = FillFirstRow("ID", "AUFBAUART")
             BoundViews(dv, m_tblAufbauArt, "AUFBAUART")
 
-            m_tblHaendlernr = FillFirstRow(m_tblHaendlernr, "ID", "HaendlerId")
+            m_tblHaendlernr = FillFirstRow("ID", "HaendlerId")
             BoundViews(dv, m_tblHaendlernr, "HaendlerId")
 
-            m_tblHandlername = FillFirstRow(m_tblHandlername, "ID", "Haendler_Kurzname")
+            m_tblHandlername = FillFirstRow("ID", "Haendler_Kurzname")
             BoundViews(dv, m_tblHandlername, "Haendler_Kurzname")
 
-            m_tblEKIndikator = FillFirstRow(m_tblEKIndikator, "ID", "Einkaufsindikator")
+            m_tblEKIndikator = FillFirstRow("ID", "Einkaufsindikator")
             BoundViews(dv, m_tblEKIndikator, "Einkaufsindikator")
 
-            m_tblVerwZweck = FillFirstRow(m_tblVerwZweck, "ID", "VERWENDUNGSZWECK")
+            m_tblVerwZweck = FillFirstRow("ID", "VERWENDUNGSZWECK")
             BoundViews(dv, m_tblVerwZweck, "VERWENDUNGSZWECK")
 
-            m_tblHOwnerCode = FillFirstRow(m_tblHOwnerCode, "ID", "Owner_Code")
+            m_tblHOwnerCode = FillFirstRow("ID", "Owner_Code")
             BoundViews(dv, m_tblHOwnerCode, "Owner_Code")
 
-            m_tblZulKreis = FillFirstRow(m_tblZulKreis, "ID", "ZULASSUNGSORT")
+            m_tblZulKreis = FillFirstRow("ID", "ZULASSUNGSORT")
             BoundViews(dv, m_tblZulKreis, "ZULASSUNGSORT")
 
             dv.Sort = "Datum_zur_Sperre"
             e = 0
             Dim Sperrdate As String = ""
-            m_tblSperrdat = FillFirstRow(m_tblSperrdat, "ID", "Datum_zur_Sperre")
-            row = m_tblSperrdat.NewRow
+            m_tblSperrdat = FillFirstRow("ID", "Datum_zur_Sperre")
             Do While e < dv.Count
                 row = m_tblSperrdat.NewRow
                 If Sperrdate <> dv.Item(e)("Datum_zur_Sperre").ToString AndAlso dv.Item(e)("Datum_zur_Sperre").ToString <> "00000000" Then
@@ -587,14 +574,13 @@ Public Class Zul_Sperr_Entsperr
         Loop
     End Sub
 
-    Private Function FillFirstRow(ByVal Table As DataTable, ByVal ID As String, ByVal ColumnName As String) As DataTable
-        Dim row As DataRow
+    Private Function FillFirstRow(ByVal ID As String, ByVal ColumnName As String) As DataTable
 
-        Table = New DataTable
-        Table.Columns.Add(ID, System.Type.GetType("System.String"))
-        Table.Columns.Add(ColumnName, System.Type.GetType("System.String"))
+        Dim Table As New DataTable
+        Table.Columns.Add(ID, Type.GetType("System.String"))
+        Table.Columns.Add(ColumnName, Type.GetType("System.String"))
 
-        row = Table.NewRow
+        Dim row As DataRow = Table.NewRow
         row(0) = "-1"
         row(1) = "- keine Auswahl -"
         Table.Rows.Add(row)
@@ -602,12 +588,12 @@ Public Class Zul_Sperr_Entsperr
         Return Table
     End Function
 
-    Public Function Filter(ByVal FilterString As String) As Integer
+    Public Function Filter(ByVal fString As String) As Integer
 
         Dim dv As DataView
 
         dv = Result.DefaultView
-        dv.RowFilter = FilterString
+        dv.RowFilter = fString
         If dv.Count > 0 Then
 
             dv.Sort = "Carportnr"
@@ -616,10 +602,8 @@ Public Class Zul_Sperr_Entsperr
             Dim e As Int32
 
             e = 0
-            m_tblResultPDIs = New DataTable
-            m_tblResultPDIs.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultPDIs.Columns.Add("Carport", System.Type.GetType("System.String"))
-            m_tblResultPDIs = FillFirstRow(m_tblResultPDIs, "Carportnr", "Carport")
+
+            m_tblResultPDIs = FillFirstRow("Carportnr", "Carport")
             Dim sCarport As String = ""
             Do While e < dv.Count
                 row = m_tblResultPDIs.NewRow
@@ -635,8 +619,7 @@ Public Class Zul_Sperr_Entsperr
             dv.Sort = "Hersteller_ID_Avis"
             e = 0
             Dim HerrCode As String = ""
-            m_tblHersteller = FillFirstRow(m_tblHersteller, "HerstellerID", "Hersteller_ID_Avis")
-            row = m_tblHersteller.NewRow
+            m_tblHersteller = FillFirstRow("HerstellerID", "Hersteller_ID_Avis")
             Do While e < dv.Count
                 row = m_tblHersteller.NewRow
                 If HerrCode <> dv.Item(e)("Hersteller_ID_Avis").ToString Then
@@ -649,24 +632,22 @@ Public Class Zul_Sperr_Entsperr
                 e = e + 1
             Loop
 
-            m_tblLiefermonat = FillFirstRow(m_tblLiefermonat, "ID", "Liefermonat")
+            m_tblLiefermonat = FillFirstRow("ID", "Liefermonat")
             BoundViews(dv, m_tblLiefermonat, "Liefermonat")
 
-            m_tblBereifung = FillFirstRow(m_tblBereifung, "ID", "REIFENART")
+            m_tblBereifung = FillFirstRow("ID", "REIFENART")
             BoundViews(dv, m_tblBereifung, "REIFENART")
 
-            m_tblGetriebe = FillFirstRow(m_tblGetriebe, "ID", "ANTRIEBSART")
+            m_tblGetriebe = FillFirstRow("ID", "ANTRIEBSART")
             BoundViews(dv, m_tblGetriebe, "ANTRIEBSART")
 
-
-            m_tblKraftstoff = FillFirstRow(m_tblKraftstoff, "ID", "Kraftstoffart")
+            m_tblKraftstoff = FillFirstRow("ID", "Kraftstoffart")
             BoundViews(dv, m_tblKraftstoff, "Kraftstoffart")
 
-            m_tblNavi = FillFirstRow(m_tblNavi, "ID", "Navigation")
+            m_tblNavi = FillFirstRow("ID", "Navigation")
             dv.Sort = "Navigation"
             e = 0
             Dim sNavi As String = ""
-            row = m_tblNavi.NewRow
             Do While e < dv.Count
                 row = m_tblNavi.NewRow
                 If sNavi <> dv.Item(e)("Navigation").ToString Then
@@ -684,41 +665,40 @@ Public Class Zul_Sperr_Entsperr
                 e = e + 1
             Loop
 
-            m_tblFarbe = FillFirstRow(m_tblFarbe, "ID", "FARBE")
+            m_tblFarbe = FillFirstRow("ID", "FARBE")
             BoundViews(dv, m_tblFarbe, "FARBE")
 
-            m_tblVermiet = FillFirstRow(m_tblVermiet, "ID", "Vermietgruppe")
+            m_tblVermiet = FillFirstRow("ID", "Vermietgruppe")
             BoundViews(dv, m_tblVermiet, "Vermietgruppe")
 
-            m_tblFzgArt = FillFirstRow(m_tblFzgArt, "ID", "Fahrzeugart")
+            m_tblFzgArt = FillFirstRow("ID", "Fahrzeugart")
             BoundViews(dv, m_tblFzgArt, "Fahrzeugart")
 
-            m_tblAufbauArt = FillFirstRow(m_tblAufbauArt, "ID", "AUFBAUART")
+            m_tblAufbauArt = FillFirstRow("ID", "AUFBAUART")
             BoundViews(dv, m_tblAufbauArt, "AUFBAUART")
 
-            m_tblHaendlernr = FillFirstRow(m_tblHaendlernr, "ID", "HaendlerId")
+            m_tblHaendlernr = FillFirstRow("ID", "HaendlerId")
             BoundViews(dv, m_tblHaendlernr, "HaendlerId")
 
-            m_tblHandlername = FillFirstRow(m_tblHandlername, "ID", "Haendler_Kurzname")
+            m_tblHandlername = FillFirstRow("ID", "Haendler_Kurzname")
             BoundViews(dv, m_tblHandlername, "Haendler_Kurzname")
 
-            m_tblEKIndikator = FillFirstRow(m_tblEKIndikator, "ID", "Einkaufsindikator")
+            m_tblEKIndikator = FillFirstRow("ID", "Einkaufsindikator")
             BoundViews(dv, m_tblEKIndikator, "Einkaufsindikator")
 
-            m_tblVerwZweck = FillFirstRow(m_tblVerwZweck, "ID", "VERWENDUNGSZWECK")
+            m_tblVerwZweck = FillFirstRow("ID", "VERWENDUNGSZWECK")
             BoundViews(dv, m_tblVerwZweck, "VERWENDUNGSZWECK")
 
-            m_tblHOwnerCode = FillFirstRow(m_tblHOwnerCode, "ID", "Owner_Code")
+            m_tblHOwnerCode = FillFirstRow("ID", "Owner_Code")
             BoundViews(dv, m_tblHOwnerCode, "Owner_Code")
 
-            m_tblZulKreis = FillFirstRow(m_tblZulKreis, "ID", "ZULASSUNGSORT")
+            m_tblZulKreis = FillFirstRow("ID", "ZULASSUNGSORT")
             BoundViews(dv, m_tblZulKreis, "ZULASSUNGSORT")
 
             dv.Sort = "Datum_zur_Sperre"
             e = 0
             Dim Sperrdate As String = ""
-            m_tblSperrdat = FillFirstRow(m_tblSperrdat, "ID", "Datum_zur_Sperre")
-            row = m_tblSperrdat.NewRow
+            m_tblSperrdat = FillFirstRow("ID", "Datum_zur_Sperre")
             Do While e < dv.Count
                 row = m_tblSperrdat.NewRow
                 If Sperrdate <> dv.Item(e)("Datum_zur_Sperre").ToString AndAlso dv.Item(e)("Datum_zur_Sperre").ToString <> "00000000" Then
@@ -740,8 +720,8 @@ Public Class Zul_Sperr_Entsperr
 
         If m_strFilter <> "" Then
             Dim carportrow As DataRow
-            Dim intZul As Int32 = 0
-            Dim intGsp As Int32 = 0
+            Dim intZul As Int32
+            Dim intGsp As Int32
             Dim dv As DataView
             Dim dv2 As DataView
             dv = m_tblResult.DefaultView
@@ -757,8 +737,6 @@ Public Class Zul_Sperr_Entsperr
             Dim sCarport As String = ""
             e = 0
             Do While e < dv.Count
-                intGsp = 0
-                intZul = 0
                 With m_tblCarports
                     If sCarport <> dv.Item(e)("Carportnr").ToString Then
                         carportrow = .NewRow
@@ -849,8 +827,7 @@ Public Class Zul_Sperr_Entsperr
             Dim row As DataRow
             Dim rowCar As DataRow
             Dim rowMod As DataRow
-            Dim oldID As Integer = 0
-            Dim TypID As String = ""
+            Dim TypID As String
             Dim CarportNr As String = ""
             Dim sDate As String
             'Dataview!!!!!!!!!!!'
@@ -907,8 +884,7 @@ Public Class Zul_Sperr_Entsperr
                     Next
                 End If
             Next
-            TypID = ""
-            CarportNr = ""
+
             For Each rowMod In m_tblModelle.Rows
                 TypID = rowMod("Typ_ID_Avis").ToString
                 Dim sTypFilter As String = "AND Typ_ID_Avis='" & TypID & "'"
@@ -942,7 +918,6 @@ Public Class Zul_Sperr_Entsperr
                     rowNewFzg("Reifenart") = rowCar("Reifenart")
                     rowNewFzg("Verwendungszweck") = rowCar("Verwendungszweck")
                     rowNewFzg("Zulassungsort") = rowCar("Zulassungsort")
-                    oldID = m_intLastID
 
                     m_tblFahrzeuge.Rows.Add(rowNewFzg)
                 Next
@@ -973,9 +948,7 @@ Public Class Zul_Sperr_Entsperr
 
     Public Sub SaveData(ByVal strAppID As String, ByVal strSessionID As String)
 
-        Dim TableCars As DataTable
         Dim DatRow As DataRow
-        Dim i As Integer
         Dim sAktion As String = ""
         m_strClassAndMethod = "Zul_Sperr_Entsperr.SaveData"
         m_strAppID = strAppID
@@ -984,12 +957,12 @@ Public Class Zul_Sperr_Entsperr
         m_intFehlerCount = 0
         Try
 
-            TableCars = S.AP.GetImportTableWithInit("Z_M_MASSENZULASSUNG_006.GT_WEB", "I_KUNNR_AG", m_objUser.KUNNR.ToSapKunnr())
+            Dim TableCars As DataTable = S.AP.GetImportTableWithInit("Z_M_MASSENZULASSUNG_006.GT_WEB", "I_KUNNR_AG", m_objUser.KUNNR.ToSapKunnr())
 
             Dim vwTemp As DataView = m_tblFahrzeuge.DefaultView
             vwTemp.RowFilter = "Ausgewaehlt = True"
 
-            For i = 0 To vwTemp.Count - 1
+            For i As Integer = 0 To vwTemp.Count - 1
                 If vwTemp(i)("NeuGesperrt").ToString = "1" Then
                     sAktion = "S"
                 End If
@@ -1035,9 +1008,22 @@ Public Class Zul_Sperr_Entsperr
                 DatRow("QMNUM") = vwTemp(i)("QMNUM").ToString
 
                 If IsDate(vwTemp(i)("DatumErstzulassung").ToString()) Then
-                    DatRow("ZULDAT") = DateTime.Parse(vwTemp(i)("DatumErstzulassung").ToString())
+                    If ArtDerZulassung = Zulassungstyp.Planzulassung Then
+                        DatRow("PLZULDAT") = DateTime.Parse(vwTemp(i)("DatumErstzulassung").ToString())
+                        DatRow("ZULDAT") = DBNull.Value
+                    Else
+                        DatRow("PLZULDAT") = DBNull.Value
+                        DatRow("ZULDAT") = DateTime.Parse(vwTemp(i)("DatumErstzulassung").ToString())
+                    End If
                 Else
+                    DatRow("PLZULDAT") = DBNull.Value
                     DatRow("ZULDAT") = DBNull.Value
+                End If
+
+                If ArtDerZulassung = Zulassungstyp.Planzulassung AndAlso IsDate(Verarbeitungsdatum) Then
+                    DatRow("DURCHFD") = DateTime.Parse(Verarbeitungsdatum)
+                Else
+                    DatRow("DURCHFD") = DBNull.Value
                 End If
 
                 If IsDate(vwTemp(i)("Datum_zur_Sperre").ToString()) Then
@@ -1058,13 +1044,13 @@ Public Class Zul_Sperr_Entsperr
             Dim TableBack As DataTable = S.AP.GetExportTable("GT_WEB")
 
             If TableBack.Rows.Count > 0 Then
-                For i = 0 To TableBack.Rows.Count - 1
+                For i As Integer = 0 To TableBack.Rows.Count - 1
                     Dim strTemp As String = TableBack.Rows(0)("FEHLER").ToString
                     vwTemp(i)("Ergebnis") = strTemp
                     m_intFehlerCount += 1
                 Next
             Else
-                For i = 0 To vwTemp.Count - 1
+                For i As Integer = 0 To vwTemp.Count - 1
                     vwTemp(i)("Ergebnis") = "Daten gesendet!"
                 Next
             End If
@@ -1072,22 +1058,22 @@ Public Class Zul_Sperr_Entsperr
 
             m_tblErledigt = New DataTable
             With m_tblErledigt.Columns
-                .Add("Carportnr", System.Type.GetType("System.String"))
-                .Add("Carport", System.Type.GetType("System.String"))
-                .Add("Herstellername", System.Type.GetType("System.String"))
-                .Add("Typ ID Avis", System.Type.GetType("System.String"))
-                .Add("Modellbezeichnung", System.Type.GetType("System.String"))
-                .Add("Reifenart", System.Type.GetType("System.String"))
-                .Add("Kraftstoffart", System.Type.GetType("System.String"))
-                .Add("Navigation", System.Type.GetType("System.String"))
-                .Add("Fahrgestellnummer", System.Type.GetType("System.String"))
-                .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Datum Zulassung", System.Type.GetType("System.String"))
-                .Add("Datum_zur_Sperre", System.Type.GetType("System.String"))
-                .Add("Sperrvermerk", System.Type.GetType("System.String"))
-                .Add("Ergebnis", System.Type.GetType("System.String"))
+                .Add("Carportnr", Type.GetType("System.String"))
+                .Add("Carport", Type.GetType("System.String"))
+                .Add("Herstellername", Type.GetType("System.String"))
+                .Add("Typ ID Avis", Type.GetType("System.String"))
+                .Add("Modellbezeichnung", Type.GetType("System.String"))
+                .Add("Reifenart", Type.GetType("System.String"))
+                .Add("Kraftstoffart", Type.GetType("System.String"))
+                .Add("Navigation", Type.GetType("System.String"))
+                .Add("Fahrgestellnummer", Type.GetType("System.String"))
+                .Add("Zulassungsort", Type.GetType("System.String"))
+                .Add("Datum Zulassung", Type.GetType("System.String"))
+                .Add("Datum_zur_Sperre", Type.GetType("System.String"))
+                .Add("Sperrvermerk", Type.GetType("System.String"))
+                .Add("Ergebnis", Type.GetType("System.String"))
             End With
-            For i = 0 To m_tblFahrzeuge.Rows.Count - 1
+            For i As Integer = 0 To m_tblFahrzeuge.Rows.Count - 1
                 If CType(m_tblFahrzeuge.Rows(i)("Ausgewaehlt"), Boolean) Then
 
                     Dim rowTemp As DataRow
@@ -1130,160 +1116,6 @@ Public Class Zul_Sperr_Entsperr
             End Select
 
             WriteLogEntry(False, "KUNNR=" & m_objUser.KUNNR & ", " & Replace(m_strMessage, "<br>", " "), m_tblResult, False)
-        Finally
-            m_blnGestartet = False
-        End Try
-    End Sub
-
-    Public Sub SaveDataDez(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
-        Dim TableCars As DataTable
-        Dim DatRow As DataRow
-        Dim i As Integer
-        Dim sAktion As String = ""
-        m_strClassAndMethod = "Zul_Sperr_Entsperr.SaveDataDez"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
-
-        m_intFehlerCount = 0
-        Try
-            Dim vwTemp As DataView = m_tblFahrzeuge.DefaultView
-            vwTemp.RowFilter = "Ausgewaehlt = True"
-
-            m_intStatus = 0
-            m_strMessage = ""
-
-            TableCars = S.AP.GetImportTableWithInit("Z_DPM_DEZ_ZUL_001.GT_WEB", "I_KUNNR_AG", m_objUser.KUNNR.ToSapKunnr())
-
-            For i = 0 To vwTemp.Count - 1
-
-                If vwTemp(i)("NeuGesperrt").ToString = "1" Then
-                    sAktion = "S"
-                End If
-                If vwTemp(i)("NeuEntsperrt").ToString = "1" Then
-                    sAktion = "E"
-                End If
-                If vwTemp(i)("NeuEntsperrt").ToString <> "1" AndAlso vwTemp(i)("NeuGesperrt").ToString <> "1" Then
-                    sAktion = "Z"
-                ElseIf vwTemp(i)("NeuEntsperrt").ToString = "1" AndAlso vwTemp(i)("DatumErstzulassung").ToString <> "" Then
-                    'Erst entsperren dann zulassen!!!!
-                    DatRow = TableCars.NewRow
-                    DatRow("AKTION") = "E"
-                    DatRow("CHASSIS_NUM") = vwTemp(i)("Fahrgestellnummer").ToString
-                    DatRow("LICENSE_NUM") = ""
-                    DatRow("ZULASSUNGSORT") = vwTemp(i)("Zulassungsort").ToString
-                    DatRow("VERWENDUNGSZWECK") = vwTemp(i)("Verwendungszweck").ToString
-                    DatRow("REIFENART") = vwTemp(i)("Reifenart").ToString
-                    DatRow("ZZCARPORT") = vwTemp(i)("ZZCARPORT").ToString
-                    DatRow("EQUNR") = vwTemp(i)("EQUNR").ToString
-                    DatRow("QMNUM") = vwTemp(i)("QMNUM").ToString
-                    If IsDate(vwTemp(i)("Datum_zur_Sperre").ToString) Then
-                        DatRow("DAT_SPERRE") = vwTemp(i)("Datum_zur_Sperre").ToString
-                    End If
-
-                    DatRow("SPERRVERMERK") = vwTemp(i)("Sperrvermerk").ToString
-                    DatRow("WEB_USER") = Left(m_objUser.UserName, 15)
-                    DatRow("FEHLER") = ""
-                    TableCars.Rows.Add(DatRow)
-                    sAktion = "Z"
-                End If
-                DatRow = TableCars.NewRow
-                DatRow("AKTION") = sAktion
-                DatRow("CHASSIS_NUM") = vwTemp(i)("Fahrgestellnummer").ToString
-                DatRow("LICENSE_NUM") = ""
-                DatRow("ZULASSUNGSORT") = vwTemp(i)("Zulassungsort").ToString
-                DatRow("VERWENDUNGSZWECK") = vwTemp(i)("Verwendungszweck").ToString
-                DatRow("REIFENART") = vwTemp(i)("Reifenart").ToString
-                DatRow("ZZCARPORT") = vwTemp(i)("ZZCARPORT").ToString
-                DatRow("EQUNR") = vwTemp(i)("EQUNR").ToString
-                DatRow("QMNUM") = vwTemp(i)("QMNUM").ToString
-
-                DatRow("ZULDAT") = vwTemp(i)("DatumErstzulassung")
-
-                DatRow("DAT_SPERRE") = vwTemp(i)("Datum_zur_Sperre")
-
-                DatRow("SPERRVERMERK") = vwTemp(i)("Sperrvermerk").ToString
-                DatRow("WEB_USER") = Left(m_objUser.UserName, 15)
-                DatRow("FEHLER") = ""
-                TableCars.Rows.Add(DatRow)
-
-            Next
-
-            S.AP.Execute()
-
-            Dim tblTemp As DataTable = S.AP.GetExportTable("GT_WEB")
-
-            Dim TableBack As DataTable = tblTemp
-            If TableBack.Rows.Count > 0 Then
-                For i = 0 To TableBack.Rows.Count - 1
-                    Dim strTemp As String = TableBack.Rows(0)("FEHLER").ToString
-                    vwTemp(i)("Ergebnis") = strTemp
-                    m_intFehlerCount += 1
-                Next
-            Else
-                For i = 0 To vwTemp.Count - 1
-                    vwTemp(i)("Ergebnis") = "Daten gesendet!"
-                Next
-            End If
-            m_strTask = "Ausgabe"
-
-            m_tblErledigt = New DataTable
-            With m_tblErledigt.Columns
-                .Add("Carportnr", System.Type.GetType("System.String"))
-                .Add("Carport", System.Type.GetType("System.String"))
-                .Add("Herstellername", System.Type.GetType("System.String"))
-                .Add("Typ ID Avis", System.Type.GetType("System.String"))
-                .Add("Modellbezeichnung", System.Type.GetType("System.String"))
-                .Add("Reifenart", System.Type.GetType("System.String"))
-                .Add("Kraftstoffart", System.Type.GetType("System.String"))
-                .Add("Navigation", System.Type.GetType("System.String"))
-                .Add("Fahrgestellnummer", System.Type.GetType("System.String"))
-                .Add("Zulassungsort", System.Type.GetType("System.String"))
-                .Add("Datum Zulassung", System.Type.GetType("System.String"))
-                .Add("Datum_zur_Sperre", System.Type.GetType("System.String"))
-                .Add("Sperrvermerk", System.Type.GetType("System.String"))
-                .Add("Ergebnis", System.Type.GetType("System.String"))
-            End With
-            For i = 0 To m_tblFahrzeuge.Rows.Count - 1
-                If CType(m_tblFahrzeuge.Rows(i)("Ausgewaehlt"), Boolean) Then
-
-                    Dim rowTemp As DataRow
-                    rowTemp = m_tblErledigt.NewRow
-                    rowTemp("Fahrgestellnummer") = m_tblFahrzeuge.Rows(i)("Fahrgestellnummer")
-                    rowTemp("Zulassungsort") = m_tblFahrzeuge.Rows(i)("Zulassungsort")
-                    rowTemp("Datum Zulassung") = m_tblFahrzeuge.Rows(i)("DatumErstzulassung")
-                    If IsDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")) Then
-                        rowTemp("Datum Zulassung") = CDate(m_tblFahrzeuge.Rows(i)("DatumErstzulassung")).ToShortDateString
-                    End If
-                    If IsDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")) Then
-                        rowTemp("Datum_zur_Sperre") = CDate(m_tblFahrzeuge.Rows(i)("Datum_zur_Sperre")).ToShortDateString
-                    End If
-                    rowTemp("Sperrvermerk") = m_tblFahrzeuge.Rows(i)("Sperrvermerk")
-                    rowTemp("Ergebnis") = m_tblFahrzeuge.Rows(i)("Ergebnis")
-                    Dim vwTemp2 As DataView = m_tblModelle.DefaultView
-                    vwTemp2.RowFilter = "ID = " & m_tblFahrzeuge.Rows(i)("Modell_ID").ToString
-                    rowTemp("Carportnr") = vwTemp2.Item(0)("Carportnr")
-                    rowTemp("Carport") = vwTemp2.Item(0)("Carport")
-                    rowTemp("Herstellername") = vwTemp2.Item(0)("Herstellername")
-                    rowTemp("Typ ID Avis") = vwTemp2.Item(0)("Typ_ID_Avis")
-                    rowTemp("Modellbezeichnung") = vwTemp2.Item(0)("Modellbezeichnung")
-                    rowTemp("Reifenart") = vwTemp2.Item(0)("Reifenart")
-                    rowTemp("Kraftstoffart") = vwTemp2.Item(0)("Kraftstoffart")
-                    rowTemp("Navigation") = vwTemp2.Item(0)("Navigation")
-                    vwTemp2.RowFilter = ""
-
-                    m_tblErledigt.Rows.Add(rowTemp)
-                End If
-            Next
-
-            WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR & ", I_EING_DAT_BIS=" & m_datEingangsdatumBis.ToShortDateString, m_tblResult, False)
-        Catch ex As Exception
-            m_intStatus = -5555
-            Select Case ex.Message
-                Case "NO_DATA"
-                    m_strMessage = "Keine Ergebnisse für die gewählten Kriterien."
-                Case Else
-                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-            End Select
         Finally
             m_blnGestartet = False
         End Try

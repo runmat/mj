@@ -1,7 +1,5 @@
 ﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Portal.PageElements
-Imports DBauer.Web.UI.WebControls
 
 Partial Public Class Change02_1
     Inherits Page
@@ -17,12 +15,6 @@ Partial Public Class Change02_1
     Private _mBlnDateFormatError As Boolean
     Private _mblnDateErrorMessage As String
     Private _mblnDateError As Boolean
-
-
-    Private Enum Zulassungstyp
-        Zulassungsdatum = 1
-        Planzulassungsdatum = 2
-    End Enum
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         Session("ShowLink") = "False"
@@ -43,10 +35,9 @@ Partial Public Class Change02_1
                 Session("App_Result") = _mReport.Result
             End If
 
-
             If Not IsPostBack Then
                 _mReport.Show()
-                SetZulassungstypText()
+                _mReport.ArtDerZulassung = CType([Enum].Parse(GetType(Zul_Sperr_Entsperr.Zulassungstyp), ddlDatumswahl.SelectedValue), Zul_Sperr_Entsperr.Zulassungstyp)
                 FillGrid(-1)
             Else
 
@@ -75,8 +66,6 @@ Partial Public Class Change02_1
                     _mReport.FilterString = sFilter
                     _mReport.FilterCarports()
 
-
-
                 End If
 
                 If Not Request.Form.Item("PDINummer").ToString = "empty" Then
@@ -88,18 +77,13 @@ Partial Public Class Change02_1
                         lblError.Text = "Beim Laden der Carport-Daten ist ein Fehler aufgetreten.<br>(" & _mReport.Message & ")"
                     End If
                 End If
-                If Not Session("App_ZulDat") Is Nothing Then
-                    lblZulDat.Text = Session("App_ZulDat").ToString
-                End If
                 If blnInputPerformed Then
                     FillGrid(-1)
                 End If
 
             End If
-            'If Not Session("App_NewCount") Is Nothing Then
-            '    AktuelleAnzahl.Value = (CInt(AktuelleAnzahl.Value) + CInt(Session("App_NewCount"))).ToString
-            'End If
-            If SelOpen2.Value = "O" Then insertScript()
+
+            If Not String.IsNullOrEmpty(SelOpen2.Value) Then InsertScript(SelOpen2.Value)
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
@@ -113,6 +97,7 @@ Partial Public Class Change02_1
                 Throw New NotImplementedException("Unexpected child row in TemplateSelection event")
         End Select
     End Sub
+
     Private Sub FillGrid(ByVal intExpand As Int32, Optional ByVal blnSelectedOnly As Boolean = False)
         'bind the DataSet to the HierarGrid
         If blnSelectedOnly Then
@@ -123,8 +108,7 @@ Partial Public Class Change02_1
         HG1.DataMember = "Carports"
         HG1.DataBind()
 
-        SetZulassungstypText()
-
+        _mReport.ArtDerZulassung = CType([Enum].Parse(GetType(Zul_Sperr_Entsperr.Zulassungstyp), ddlDatumswahl.SelectedValue), Zul_Sperr_Entsperr.Zulassungstyp)
 
         Dim item As DataGridItem
         Dim cell As TableCell
@@ -133,23 +117,13 @@ Partial Public Class Change02_1
         Dim intItem As Int32 = 0
 
         For Each item In HG1.Items
-            Dim strPdiNummer As String = item.Cells(1).Text
-            Dim intValidCounter As Int32
-
-            intValidCounter = CInt(item.Cells(4).Text) + CInt(item.Cells(5).Text)
-
-
             Dim blnDetails As Boolean = False
-            Dim blnLoaded As Boolean = False
             cell = item.Cells(1)
             For Each control In cell.Controls
                 If TypeOf control Is CheckBox Then
                     checkbox = CType(control, CheckBox)
                     If checkbox.ID = "chkDetails" And checkbox.Checked Then
                         blnDetails = True
-                    End If
-                    If checkbox.ID = "chkLoaded" And checkbox.Checked Then
-                        blnLoaded = True
                     End If
                 End If
             Next
@@ -159,7 +133,7 @@ Partial Public Class Change02_1
             cell.HorizontalAlign = HorizontalAlign.Center
 
             If Not blnDetails Then
-                Dim image As New System.Web.UI.WebControls.Image()
+                Dim image As New Image()
                 cell.Controls.Add(image)
                 image.ImageUrl = "/Portal/Images/empty.gif"
                 If intExpand = intItem Then
@@ -180,24 +154,10 @@ Partial Public Class Change02_1
 
     End Sub
 
-    'Private Sub ChangeHeadertextInHieraGrid(ByVal hGrid As HierarGrid)
-
-    '    For Each col As DataGridColumn In hGrid.Columns
-
-    '        If col.SortExpression = "DatumErstzulassung" Then
-    '            col.HeaderText = GetZulassungstypText()
-    '            Exit For
-    '        End If
-
-    '    Next
-
-    'End Sub
-
- 
     Private Function CheckInput() As Boolean
-        Dim blnReturn As Boolean = False
+        Dim blnReturn As Boolean
         Dim datrows() As DataRow
-        If IsNothing(_mReport) = True Then
+        If _mReport Is Nothing Then
             _mReport = CType(Session("App_Report"), Zul_Sperr_Entsperr)
         End If
 
@@ -205,20 +165,28 @@ Partial Public Class Change02_1
         _mblnDateError = False
         _mblnDateErrorMessage = ""
 
+        Dim dateVerarbeitung As Date
+        Dim blnVerarbeitungsdatumGesetzt As Boolean = False
+
         Try
-            Dim i As Int32
-            Dim j As Int32
-            For i = 0 To Request.Form.Count - 1
+
+            Dim blnPlanzulassung As Boolean = (_mReport.ArtDerZulassung = Zul_Sperr_Entsperr.Zulassungstyp.Planzulassung)
+
+            _mReport.Verarbeitungsdatum = lblVerarbeitungsdatum.Text
+            If blnPlanzulassung AndAlso Not String.IsNullOrEmpty(_mReport.Verarbeitungsdatum) Then
+                If Not IsDate(_mReport.Verarbeitungsdatum) AndAlso Not IsStandardDate(_mReport.Verarbeitungsdatum) AndAlso Not IsSAPDate(_mReport.Verarbeitungsdatum) Then
+                    _mBlnDateFormatError = True
+                Else
+                    dateVerarbeitung = CType(_mReport.Verarbeitungsdatum, Date)
+                    blnVerarbeitungsdatumGesetzt = True
+                End If
+            End If
+
+            For i As Integer = 0 To Request.Form.Count - 1
                 If InStr(Request.Form.Keys.Item(i), "Fahrgestellnummer_") > 0 Then
                     Dim strFahrgestellNummer As String = (Right(Request.Form.Keys.Item(i), 17))
-                    Dim strAuswahlAlt As String = CStr(Request.Form(i))
                     Dim sperre As String = ""
                     Dim entsperre As String = ""
-                    Dim intPos As Int32 = InStr(strAuswahlAlt, ",")
-                    If intPos > 0 Then
-                        strAuswahlAlt = Left(strAuswahlAlt, intPos - 1)
-                    End If
-                    Dim blnAuswahl_alt As Boolean = CType(strAuswahlAlt, Boolean)
                     Dim blnAuswahlNeu As Boolean = False
                     Dim strDatumErstzulassung As String = ""
                     If i + 1 = Request.Form.Count Then Exit For
@@ -232,12 +200,8 @@ Partial Public Class Change02_1
                             entsperre = datrows(0)("neuEntsperrt").ToString
                         End If
                         If Not sperre = "1" AndAlso Not entsperre = "1" Then
-                            If Not IsDate(strDatumErstzulassung) Then
-                                If Not IsStandardDate(strDatumErstzulassung) Then
-                                    If Not IsSAPDate(strDatumErstzulassung) Then
-                                        _mBlnDateFormatError = True
-                                    End If
-                                End If
+                            If Not IsDate(strDatumErstzulassung) AndAlso Not IsStandardDate(strDatumErstzulassung) AndAlso Not IsSAPDate(strDatumErstzulassung) Then
+                                _mBlnDateFormatError = True
                             End If
 
                             If Not _mBlnDateFormatError Then
@@ -245,40 +209,31 @@ Partial Public Class Change02_1
                                 dateZulassung = CType(strDatumErstzulassung, Date)
 
                                 If dateZulassung.DayOfWeek = DayOfWeek.Saturday OrElse dateZulassung.DayOfWeek = DayOfWeek.Sunday Then
-
                                     _mblnDateError = True
                                     _mblnDateErrorMessage = "Zulassungsdatum fällt auf einen Samstag oder Sonntag."
-                                Else
-                                    If _mReport.DezZul = True Then
-                                        If dateZulassung <= Today.Date Then
-                                            _mblnDateError = True
-                                            _mblnDateErrorMessage = "Das Zulassungsdatum ist unzulässig, das Datum muss in der Zukunft liegen."
-                                        End If
-                                    Else
-                                        If dateZulassung < Today.Date Then
-                                            _mblnDateError = True
-                                            _mblnDateErrorMessage = "Das Zulassungsdatum darf nicht in der Vergangenheit liegen."
-                                        End If
-                                    End If
+
+                                ElseIf _mReport.DezZul AndAlso dateZulassung <= Today.Date Then
+                                    _mblnDateError = True
+                                    _mblnDateErrorMessage = "Das Zulassungsdatum ist unzulässig, das Datum muss in der Zukunft liegen."
+
+                                ElseIf Not _mReport.DezZul AndAlso dateZulassung < Today.Date Then
+                                    _mblnDateError = True
+                                    _mblnDateErrorMessage = "Das Zulassungsdatum darf nicht in der Vergangenheit liegen."
+
+                                ElseIf blnPlanzulassung AndAlso blnVerarbeitungsdatumGesetzt AndAlso dateVerarbeitung >= dateZulassung Then
+                                    _mblnDateError = True
+                                    _mblnDateErrorMessage = "Das Verarbeitungsdatum muss vor dem Zulassungsdatum liegen."
 
                                 End If
-
-
-
-
 
                             End If
 
                         End If
                     End If
-                    blnReturn = True
                     Dim intModellId As Int32
-                    For j = 0 To _mReport.CarPort_Data.Tables("Fahrzeuge").Rows.Count - 1
+                    For j As Integer = 0 To _mReport.CarPort_Data.Tables("Fahrzeuge").Rows.Count - 1
                         If _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("Fahrgestellnummer").ToString = strFahrgestellNummer Then
                             _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("Ausgewaehlt") = blnAuswahlNeu
-                            If IsDate(strDatumErstzulassung) Then
-                                _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("DatumErstzulassung") = CDate(strDatumErstzulassung)
-                            End If
                             If IsDate(strDatumErstzulassung) Then
                                 _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("DatumErstzulassung") = CDate(strDatumErstzulassung)
                             End If
@@ -286,14 +241,14 @@ Partial Public Class Change02_1
 
                         End If
                     Next
-                    For j = 0 To _mReport.CarPort_Data.Tables("Modelle").Rows.Count - 1
+                    For j As Integer = 0 To _mReport.CarPort_Data.Tables("Modelle").Rows.Count - 1
                         If CInt(_mReport.CarPort_Data.Tables("Modelle").Rows(j)("ID")) = intModellId Then
                             If IsDate(strDatumErstzulassung) Then
                                 _mReport.CarPort_Data.Tables("Modelle").Rows(j)("DatumErstzulassung") = CDate(strDatumErstzulassung)
                             End If
                         End If
                     Next
-                    For j = 0 To _mReport.CarPort_Data.Tables("Fahrzeuge").Rows.Count - 1
+                    For j As Integer = 0 To _mReport.CarPort_Data.Tables("Fahrzeuge").Rows.Count - 1
                         If _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("Fahrgestellnummer").ToString = strFahrgestellNummer Then
                             _mReport.CarPort_Data.Tables("Fahrzeuge").Rows(j)("Ausgewaehlt") = blnAuswahlNeu
 
@@ -305,7 +260,6 @@ Partial Public Class Change02_1
             Next
 
             blnReturn = True
-
 
         Catch ex As Exception
             lblError.Text = "Fehler bei der Prüfung der Dateneingaben.<br>(" & ex.Message & ")"
@@ -342,6 +296,7 @@ Partial Public Class Change02_1
             End If
         End If
     End Sub
+
     Private Sub DisableAllInput()
         Dim strTemp As String = "			<script language=""JavaScript"">" & vbCrLf
         strTemp &= "		<!-- //" & vbCrLf
@@ -353,10 +308,9 @@ Partial Public Class Change02_1
     End Sub
 
     Protected Sub CmdAbsendenClick(ByVal sender As Object, ByVal e As EventArgs) Handles cmdAbsenden.Click
-        If IsNothing(_mReport) = True Then
+        If _mReport Is Nothing Then
             _mReport = CType(Session("App_Report"), Zul_Sperr_Entsperr)
         End If
-
 
         lblPageTitle.Text = "Bestätigung der Datenübernahme"
 
@@ -409,7 +363,7 @@ Partial Public Class Change02_1
                 Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & _mUser.UserName
 
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, excelTable, Me.Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, excelTable, Page)
 
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message
@@ -417,7 +371,7 @@ Partial Public Class Change02_1
         End If
     End Sub
 
-    Protected Sub LnkCreateExcelClick(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles lnkCreateExcel.Click
+    Protected Sub LnkCreateExcelClick(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles lnkCreateExcel.Click
         Dim excelTable As DataTable
         If Not (Session("App_Report") Is Nothing) Then
             excelTable = _mReport.Erledigt
@@ -425,7 +379,7 @@ Partial Public Class Change02_1
                 Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & _mUser.UserName
 
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, excelTable, Me.Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, excelTable, Page)
 
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message
@@ -453,106 +407,116 @@ Partial Public Class Change02_1
         lnkCreateExcel.Visible = False
         Response.Redirect("Change02_1.aspx?AppID=" & Session("AppID").ToString)
     End Sub
-    Private Sub InsertScript()
 
-        'Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
-        'Literal1.Text &= "						  <!-- //" & vbCrLf
-        'Literal1.Text &= "							DisplayCalender();" & vbCrLf
-        'Literal1.Text &= "						  //-->" & vbCrLf
-        'Literal1.Text &= "						</script>" & vbCrLf
-
-  
-        Literal1.Text = "						<script type=""text/javascript"">" & vbCrLf
-        Literal1.Text &= "						  function displayCalendar() {" & vbCrLf
-        Literal1.Text &= "							var datePicker = document.getElementById('calVon');" & vbCrLf
-        Literal1.Text &= "						  datePicker.style.display = 'block';" & vbCrLf
-        Literal1.Text &= "						</script>" & vbCrLf
-
-
-        'Literal2.Text = "						<script language=""Javascript"">" & vbCrLf
-        'Literal2.Text &= "						  <!-- //" & vbCrLf
-        'Literal2.Text &= "							DisplayCalenderVerarbeitungsdatum();" & vbCrLf
-        'Literal2.Text &= "						  //-->" & vbCrLf
-        'Literal2.Text &= "						</script>" & vbCrLf
-
-
-    End Sub
-
-    Private Sub CalVonSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles calVon.SelectionChanged
-        If Not (Session("App_Report") Is Nothing) Then
-            _mReport = CType(Session("App_Report"), Zul_Sperr_Entsperr)
-            ZuCount(calVon.SelectedDate)
-        End If
-
-        lblZulDat.Text = calVon.SelectedDate.ToShortDateString
-
-        Dim ctrl As Control
-        Dim obj1 As HtmlInputHidden
-
-        For Each ctrl In Form1.Controls
-            obj1 = CType(ctrl.FindControl("HiddenZuldat"), HtmlInputHidden)
-            If Not obj1 Is Nothing Then
-                obj1.Value = lblZulDat.Text
-            End If
-
-        Next
-
-        Session("App_ZulDat") = calVon.SelectedDate.ToShortDateString
+    Private Sub InsertScript(ByVal divId As String)
         Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
         Literal1.Text &= "						  <!-- //" & vbCrLf
-        Literal1.Text &= "							document.getElementById('DivCalendar').style.display = 'none';" & vbCrLf
+        Literal1.Text &= "							DisplayCalendar('" & divId & "', 'btn" & divId & "');" & vbCrLf
+        Literal1.Text &= "						  //-->" & vbCrLf
+        Literal1.Text &= "						</script>" & vbCrLf
+    End Sub
+
+    Private Sub calZulassungsdatum_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calZulassungsdatum.SelectionChanged
+        If Not (Session("App_Report") Is Nothing) Then
+            _mReport = CType(Session("App_Report"), Zul_Sperr_Entsperr)
+            ZuCount(calZulassungsdatum.SelectedDate)
+        End If
+
+        lblZulassungsdatum.Text = calZulassungsdatum.SelectedDate.ToShortDateString
+        HiddenZulassungsdatum.Value = lblZulassungsdatum.Text
+
+        Session("App_ZulDat") = calZulassungsdatum.SelectedDate.ToShortDateString
+
+        Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
+        Literal1.Text &= "						  <!-- //" & vbCrLf
+        Literal1.Text &= "							document.getElementById('DivCalendarZulassungsdatum').style.display = 'none';" & vbCrLf
         Literal1.Text &= "                          document.Form1.SelOpen2.value = '';" & vbCrLf
         Literal1.Text &= "						  //-->" & vbCrLf
         Literal1.Text &= "						</script>" & vbCrLf
     End Sub
-    Private Sub ZuCount(ByVal datum As Date)
+
+    Private Sub calVerarbeitungsdatum_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calVerarbeitungsdatum.SelectionChanged
+
+        lblVerarbeitungsdatum.Text = calVerarbeitungsdatum.SelectedDate.ToShortDateString
+        HiddenVerarbeitungsdatum.Value = lblVerarbeitungsdatum.Text
+
+        Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
+        Literal1.Text &= "						  <!-- //" & vbCrLf
+        Literal1.Text &= "							document.getElementById('DivCalendarVerarbeitungsdatum').style.display = 'none';" & vbCrLf
+        Literal1.Text &= "                          document.Form1.SelOpen2.value = '';" & vbCrLf
+        Literal1.Text &= "						  //-->" & vbCrLf
+        Literal1.Text &= "						</script>" & vbCrLf
+    End Sub
+
+    Private Sub ZuCount(ByVal datum As Date, Optional ByVal blnResetAnzahl As Boolean = False)
         _mReport.createZulassungCount(CStr(datum))
 
-        If Not _mReport.ZulCount Is Nothing Then
+        If _mReport.ZulCount IsNot Nothing Then
             If _mReport.ZulCount.Rows.Count > 0 Then
                 Dim drResult() As DataRow = _mReport.ZulCount.Select("ZZCARPORT='Gesamt'")
                 GesamtAnzahl.Value = drResult(0)("ZANZAHL").ToString
                 AktuelleSumme.Value = GesamtAnzahl.Value
-                If AktuelleAnzahl.Value = "" Or AktuelleAnzahl.Value = "0" Then
+
+                If blnResetAnzahl Then
                     AktuelleAnzahl.Value = "0"
-                ElseIf CInt(AktuelleAnzahl.Value) > 0 Then
-                    AktuelleSumme.Value = (CInt(AktuelleSumme.Value) + CInt(AktuelleAnzahl.Value)).ToString
+                Else
+                    If AktuelleAnzahl.Value = "" Or AktuelleAnzahl.Value = "0" Then
+                        AktuelleAnzahl.Value = "0"
+                    ElseIf CInt(AktuelleAnzahl.Value) > 0 Then
+                        AktuelleSumme.Value = (CInt(AktuelleSumme.Value) + CInt(AktuelleAnzahl.Value)).ToString
+                    End If
                 End If
+                
             Else
                 GesamtAnzahl.Value = "0"
+
+                If blnResetAnzahl Then
+                    AktuelleAnzahl.Value = "0"
+                    AktuelleSumme.Value = "0"
+                Else
+                    If AktuelleSumme.Value = "" Or AktuelleSumme.Value = "0" Then
+                        AktuelleSumme.Value = "0"
+                    ElseIf CInt(AktuelleAnzahl.Value) > 0 Then
+                        AktuelleSumme.Value = (CInt(AktuelleSumme.Value) + CInt(AktuelleAnzahl.Value)).ToString
+                    End If
+                    If AktuelleAnzahl.Value = "" Or AktuelleAnzahl.Value = "0" Then
+                        AktuelleAnzahl.Value = "0"
+                    End If
+                End If
+            End If
+
+        Else
+            GesamtAnzahl.Value = "0"
+
+            If blnResetAnzahl Then
+                AktuelleAnzahl.Value = "0"
+                AktuelleSumme.Value = "0"
+            Else
                 If AktuelleSumme.Value = "" Or AktuelleSumme.Value = "0" Then
                     AktuelleSumme.Value = "0"
-                ElseIf CInt(AktuelleAnzahl.Value) > 0 Then
-                    AktuelleSumme.Value = (CInt(AktuelleSumme.Value) + CInt(AktuelleAnzahl.Value)).ToString
                 End If
                 If AktuelleAnzahl.Value = "" Or AktuelleAnzahl.Value = "0" Then
                     AktuelleAnzahl.Value = "0"
                 End If
             End If
-        Else
-            GesamtAnzahl.Value = "0"
-            If AktuelleSumme.Value = "" Or AktuelleSumme.Value = "0" Then
-                AktuelleSumme.Value = "0"
-            End If
-            If AktuelleAnzahl.Value = "" Or AktuelleAnzahl.Value = "0" Then
-                AktuelleAnzahl.Value = "0"
-            End If
+            
         End If
     End Sub
 
-    '----------------------------------------------------------------------
-    ' Methode: EnableButton
-    ' Autor: O.Rudolph
-    ' Beschreibung: Zugriff auf Modellebene(Templates/Modell.ascx) & Imagebutton 
-    ''FindControl("DCP")-> Placeholder = immer "DCP" verwenden
-    ''FindControl("Panel_Carport_Modell")-> immer mit "Panel_" + Name der Beziehung der Ebenen
-    ''FindControl("ChildTemplate_Carport_Modell")->immer mit "ChildTemplate_" + Name der Beziehung der Ebenen
-    ''FindControl("HG1") -> Name des Grids
-    ' Erstellt am: 03.12.2008
-    ' ITA: 2359
-    '----------------------------------------------------------------------
-
-
+    ''' <summary>
+    '''----------------------------------------------------------------------
+    ''' Methode: EnableButton
+    ''' Autor: O.Rudolph
+    ''' Beschreibung: Zugriff auf Modellebene(Templates/Modell.ascx) & Imagebutton 
+    ''' FindControl("DCP")-> Placeholder = immer "DCP" verwenden
+    ''' FindControl("Panel_Carport_Modell")-> immer mit "Panel_" + Name der Beziehung der Ebenen
+    ''' FindControl("ChildTemplate_Carport_Modell")->immer mit "ChildTemplate_" + Name der Beziehung der Ebenen
+    ''' FindControl("HG1") -> Name des Grids
+    ''' Erstellt am: 03.12.2008
+    ''' ITA: 2359
+    '''----------------------------------------------------------------------
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub EnableButton()
         Dim item As DataGridItem
         Dim imaBtn As ImageButton
@@ -563,22 +527,26 @@ Partial Public Class Change02_1
             c = CType(item.Cells(1).FindControl("DCP").FindControl("Panel_Carport_Modell"). _
                     FindControl("ChildTemplate_Carport_Modell").FindControl("HG1"),  _
                                 DBauer.Web.UI.WebControls.HierarGrid)
-            Dim j As Integer = 0
+
             imaBtn = CType(c.Items(0).Cells(18).FindControl("Imagebutton1"), ImageButton)
             imaBtn.Enabled = False
             imaBtn.ImageUrl = "../../../images/Confirm_Mini_Grey.GIF"
         Next
     End Sub
 
-    Protected Sub IbtnDelZulDatClick(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnDelZulDat.Click
-        lblZulDat.Text = ""
+    Protected Sub ibtnDelZulassungsdatum_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelZulassungsdatum.Click
+        lblZulassungsdatum.Text = ""
         GesamtAnzahl.Value = "0"
         AktuelleSumme.Value = AktuelleAnzahl.Value
         Session("App_ZulDat") = Nothing
     End Sub
 
-    Protected Sub ImgbExcelClick(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbExcel.Click
-        createSelektionExcel()
+    Protected Sub ibtnDelVerarbeitungsdatum_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelVerarbeitungsdatum.Click
+        lblVerarbeitungsdatum.Text = ""
+    End Sub
+
+    Protected Sub ImgbExcelClick(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbExcel.Click
+        CreateSelektionExcel()
     End Sub
 
     Protected Sub LnkExcelClick(ByVal sender As Object, ByVal e As EventArgs) Handles lnkExcel.Click
@@ -602,8 +570,6 @@ Partial Public Class Change02_1
             .Add("Owner Code", Type.GetType("System.String"))
             .Add("Geplante Lieferung", Type.GetType("System.String"))
         End With
-
-
 
         If Not (Session("App_Report") Is Nothing) Then
             Dim tmpExcelRow As DataRow
@@ -642,37 +608,29 @@ Partial Public Class Change02_1
         End If
     End Sub
 
-
     Protected Sub DdlDatumswahlSelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDatumswahl.SelectedIndexChanged
-        Dim boolVisible As Boolean = False
-        If CInt(ddlDatumswahl.SelectedValue) = Zulassungstyp.Planzulassungsdatum Then
-            boolVisible = True
-        Else
-            'lblVerarbeitungsdat.Text = ""
+
+        _mReport.ArtDerZulassung = CType([Enum].Parse(GetType(Zul_Sperr_Entsperr.Zulassungstyp), ddlDatumswahl.SelectedValue), Zul_Sperr_Entsperr.Zulassungstyp)
+        Dim blnPlanzulassung As Boolean = (_mReport.ArtDerZulassung = Zul_Sperr_Entsperr.Zulassungstyp.Planzulassung)
+
+        If Not (Session("App_Report") Is Nothing) Then
+            _mReport = CType(Session("App_Report"), Zul_Sperr_Entsperr)
+            ZuCount(calZulassungsdatum.SelectedDate, blnPlanzulassung)
         End If
 
-        SetVerarbeitungsDatumVisibility(boolVisible)
+        SetVerarbeitungsDatumVisibility(blnPlanzulassung)
 
-        SetZulassungstypText()
+        If blnPlanzulassung Then lblVerarbeitungsdatum.Text = ""
 
         FillGrid(-1)
 
     End Sub
 
     Private Sub SetVerarbeitungsDatumVisibility(ByVal show As Boolean)
-        'lblVerarbeitungsdatumBez.Visible = show
-        'lblVerarbeitungsdat.Visible = show
-        'CalVerarbeitungsdatum.Visible = show
-        'ibtnDelVerarbeitungsdatum.Visible = show
-
-    End Sub
-
-    Private Sub SetZulassungstypText()
-        _mReport.ZulassungstypText = "Datum <br/> Zulassung"
-
-        If CInt(ddlDatumswahl.SelectedValue) = Zulassungstyp.Planzulassungsdatum Then
-            _mReport.ZulassungstypText = "Datum <br/> Planzulassung"
-        End If
+        lblTitelVerarbeitungsdatum.Visible = show
+        lblVerarbeitungsdatum.Visible = show
+        btnDivCalendarVerarbeitungsdatum.Visible = show
+        ibtnDelVerarbeitungsdatum.Visible = show
     End Sub
 
 End Class

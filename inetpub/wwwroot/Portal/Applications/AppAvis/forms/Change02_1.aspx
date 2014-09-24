@@ -23,10 +23,6 @@
             filter: alpha(opacity=60);
             opacity: 0.6;
         }
-        .style8
-        {
-            width: 176px;
-        }
         .styleInput
         {
             border-style: none;
@@ -114,123 +110,115 @@
                                             <tr>
                                                 <td>
                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                                    <ContentTemplate>
-                                                    <table style="width: 100%;">
-                                                        <tr>
-                                                            <td class="BorderLeftBottom" width="100px">
-                                                                <asp:DropDownList ID="ddlDatumswahl" runat="server" AutoPostBack="True">
-                                                                            <asp:ListItem Selected="True" Value="1">Zulassungsdatum</asp:ListItem>
-                                                                            <asp:ListItem Value="2">Planzulassungsdatum</asp:ListItem>
+                                                        <ContentTemplate>
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td class="BorderLeftBottom" width="100px">
+                                                                        <asp:DropDownList ID="ddlDatumswahl" runat="server" AutoPostBack="True">
+                                                                            <asp:ListItem Selected="True" Value="Zulassung">Zulassungsdatum</asp:ListItem>
+                                                                            <asp:ListItem Value="Planzulassung">Planzulassungsdatum</asp:ListItem>
                                                                         </asp:DropDownList>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" align="center" width="10px">
-                                                                &nbsp;</td>
-                                                            <td width="75px" class="BorderLeftBottom" valign="middle">
-                                                                <asp:Label ID="lblZulDat" runat="server"  EnableViewState="False" Width="75px"></asp:Label>
-                                                                <input type="hidden"  id="HiddenZuldat" value="" runat="server"  />
-                                                            </td>
-                                                            <td width="38px" class="BorderLeftBottom" valign="baseline">
-                                                                <input type="button" id="Cal1" onclick="DisplayCalender()" style="border: none; background-image: url(../../../Images/calendar_red.jpg);
-                                                                    width: 16px; height: 16px; cursor: hand; position: static;" runat="server" />&nbsp;
-  
-                                                                <asp:ImageButton ID="ibtnDelZulDat" runat="server" 
-                                                                    ImageUrl="../../../Images/loesch.gif" Height="13px" Width="13px" 
-                                                                    ToolTip="Datum entfernen!" ImageAlign="AbsMiddle" />
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label2" runat="server" Text="Zulassungen ges."></asp:Label>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="ZulassungGesamt" runat="server" id="GesamtAnzahl"
-                                                                    readonly="readonly" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                            </td>
-                                                            <td width="100px">
-                                                            </td>
-                                                            <td width="100px" />
-                                                            <td width="15px" align="right" />
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="10px">
-                                                            </td>
-                                                            <td width="75px">
-                                                                <div id="DivCalendar"  style="position:absolute; display:none">
-                                                                    <asp:Calendar ID="calVon" runat="server" BackColor="White" BorderColor="#999999"
-                                                                        CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
-                                                                        <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
-                                                                        <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
-                                                                        <SelectorStyle BackColor="#CCCCCC" />
-                                                                        <WeekendDayStyle BackColor="#FFFFCC" />
-                                                                        <OtherMonthDayStyle ForeColor="#808080" />
-                                                                        <NextPrevStyle VerticalAlign="Bottom" />
-                                                                        <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
-                                                                        <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
-                                                                    </asp:Calendar>
-                                                                    <asp:Calendar ID="calVerarbeitungsdatum" runat="server" BackColor="White" BorderColor="#999999"
-                                                                        CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
-                                                                        <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
-                                                                        <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
-                                                                        <SelectorStyle BackColor="#CCCCCC" />
-                                                                        <WeekendDayStyle BackColor="#FFFFCC" />
-                                                                        <OtherMonthDayStyle ForeColor="#808080" />
-                                                                        <NextPrevStyle VerticalAlign="Bottom" />
-                                                                        <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
-                                                                        <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
-                                                                    </asp:Calendar>
-                                                                </div>
-                                                            </td>
-                                                            <td width="38px">
-                                                               <input type="button" id="btnCalVerarbeitungsdatum" onclick="DisplayCalenderVerarbeitungsdatum()" style="border: none; background-image: url(../../../Images/calendar_red.jpg);
-                                                                    width: 16px; height: 16px; cursor: hand; position: static;" runat="server" />&nbsp;</td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label3" runat="server" Text="aktuelle Auswahl:"></asp:Label>
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="Aktuell" runat="server" id="AktuelleAnzahl"
-                                                                    readonly="readonly" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                            </td>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px" />
-                                                            <td width="15px" align="right" />
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="10px">
-                                                            </td>
-                                                            <td width="75px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="38px">
-                                                                &nbsp;</td>
-                                                            <td class="BorderLeftBottom" width="120px">
-                                                                <asp:Label ID="Label4" runat="server" Text="aktuell Gesamt:"></asp:Label>
+                                                                    </td>
+                                                                    <td width="75px" class="BorderLeftBottom" valign="middle">
+                                                                        <asp:Label ID="lblZulassungsdatum" runat="server" Width="75px"/>
+                                                                        <input type="hidden" id="HiddenZulassungsdatum" value="" runat="server" />
+                                                                        <div id="DivCalendarZulassungsdatum" style="position:absolute; display:none">
+                                                                            <asp:Calendar ID="calZulassungsdatum" runat="server" BackColor="White" BorderColor="#999999"
+                                                                                CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
+                                                                                <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
+                                                                                <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
+                                                                                <SelectorStyle BackColor="#CCCCCC" />
+                                                                                <WeekendDayStyle BackColor="#FFFFCC" />
+                                                                                <OtherMonthDayStyle ForeColor="#808080" />
+                                                                                <NextPrevStyle VerticalAlign="Bottom" />
+                                                                                <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
+                                                                                <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
+                                                                            </asp:Calendar>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td width="40px" class="BorderLeftBottom" valign="baseline">
+                                                                        <%--Buttonname muss btn + Divname sein--%>
+                                                                        <input type="button" id="btnDivCalendarZulassungsdatum" onclick='DisplayCalendar("DivCalendarZulassungsdatum")' 
+                                                                            style="border: none; background-image: url(../../../Images/calendar_red.jpg);
+                                                                            width: 16px; height: 16px; cursor: hand; position: static;" runat="server" />
+                                                                        &nbsp;
+                                                                        <asp:ImageButton ID="ibtnDelZulassungsdatum" runat="server" 
+                                                                            ImageUrl="../../../Images/loesch.gif" Height="13px" Width="13px" 
+                                                                            ToolTip="Datum entfernen!" ImageAlign="AbsMiddle" />
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label runat="server" Text="Zulassungen ges."></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="ZulassungGesamt" runat="server" id="GesamtAnzahl"
+                                                                            readonly="readonly" />
+                                                                    </td>
+                                                                    <td>
+                                                                        &nbsp;
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="BorderLeftBottom" width="100px">
+                                                                        <asp:Label runat="server" ID="lblTitelVerarbeitungsdatum" Visible="False">
+                                                                            Verarbeitungsdatum
+                                                                        </asp:Label>
+                                                                    </td>
+                                                                    <td width="75px" class="BorderLeftBottom" valign="middle">
+                                                                        <asp:Label ID="lblVerarbeitungsdatum" runat="server" Width="75px" Visible="False"/>
+                                                                        <input type="hidden" id="HiddenVerarbeitungsdatum" value="" runat="server" />
+                                                                        <div id="DivCalendarVerarbeitungsdatum" style="position:absolute; display:none">
+                                                                            <asp:Calendar ID="calVerarbeitungsdatum" runat="server" BackColor="White" BorderColor="#999999"
+                                                                                CellPadding="1" Font-Names="Verdana" Font-Size="8pt" ForeColor="Black">
+                                                                                <SelectedDayStyle BackColor="#666666" Font-Bold="True" ForeColor="White" />
+                                                                                <TodayDayStyle BackColor="#CCCCCC" ForeColor="Black" />
+                                                                                <SelectorStyle BackColor="#CCCCCC" />
+                                                                                <WeekendDayStyle BackColor="#FFFFCC" />
+                                                                                <OtherMonthDayStyle ForeColor="#808080" />
+                                                                                <NextPrevStyle VerticalAlign="Bottom" />
+                                                                                <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
+                                                                                <TitleStyle BackColor="#999999" Font-Size="7pt" BorderColor="Black" Font-Bold="True" />
+                                                                            </asp:Calendar>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td width="40px" class="BorderLeftBottom" valign="baseline">
+                                                                        <%--Buttonname muss btn + Divname sein--%>
+                                                                        <input type="button" id="btnDivCalendarVerarbeitungsdatum" onclick='DisplayCalendar("DivCalendarVerarbeitungsdatum")' 
+                                                                            style="border: none; background-image: url(../../../Images/calendar_red.jpg);
+                                                                            width: 16px; height: 16px; cursor: hand; position: static;" runat="server" Visible="False"/>
+                                                                        &nbsp;
+                                                                        <asp:ImageButton ID="ibtnDelVerarbeitungsdatum" runat="server" 
+                                                                            ImageUrl="../../../Images/loesch.gif" Height="13px" Width="13px" 
+                                                                            ToolTip="Datum entfernen!" ImageAlign="AbsMiddle" Visible="False"/>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label runat="server" Text="aktuelle Auswahl:"></asp:Label>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="Aktuell" runat="server" id="AktuelleAnzahl"
+                                                                            readonly="readonly" />
+                                                                    </td>
+                                                                    <td>
+                                                                        &nbsp;
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="120px">
+                                                                        <asp:Label runat="server" Text="aktuell Gesamt:"></asp:Label>
                                                                 
-                                                            </td>
-                                                            <td class="BorderLeftBottom" width="25px" align="center">
-                                                                <input type="text" class="styleInput" name="AktuellGesamt" readonly="readonly" runat="server"
-                                                                    id="AktuelleSumme" />
-                                                            </td>
-                                                            <td align="center" class="style8">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px">
-                                                                &nbsp;
-                                                            </td>
-                                                            <td width="100px" />
-                                                            &nbsp;<td width="15px" align="right" />
-                                                        </tr>
-                                                    </table>
-                                                    </ContentTemplate>
+                                                                    </td>
+                                                                    <td class="BorderLeftBottom" width="25px" align="center">
+                                                                        <input type="text" class="styleInput" name="AktuellGesamt" readonly="readonly" runat="server"
+                                                                            id="AktuelleSumme" />
+                                                                    </td>
+                                                                    <td>
+                                                                        &nbsp;
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </ContentTemplate>
                                                     </asp:UpdatePanel>
                                                 </td>
                                             </tr>
@@ -335,17 +323,15 @@
     <script language="JavaScript" type="text/javascript">
 		<!--        //
         function DisableControls() {
-
-            var j;
-            for (var i = 0; i < window.document.Form1.length; ++i) {
+            for (var i = 0; i < window.document.Form1.elements.length; ++i) {
                 if (window.document.Form1.elements[i].type == "checkbox") {
-                    document.getElementById(window.document.Form1.elements[i].name).disabled = true;
+                    window.document.Form1.elements[i].disabled = true;
                 }
                 if (window.document.Form1.elements[i].type == "text") {
-                    document.getElementById(window.document.Form1.elements[i].name).disabled = true;
+                    window.document.Form1.elements[i].disabled = true;
                 }
                 if (window.document.Form1.elements[i].name == "ImageButton1") {
-                    document.getElementById(window.document.Form1.elements[i].name).disabled = true;
+                    window.document.Form1.elements[i].disabled = true;
                 }
             }
         }
@@ -354,119 +340,6 @@
             window.document.Form1.PDINummer.value = PDI;
             window.document.Form1.NummerInGrid.value = Zeile;
         }
-
-        //        function SetValues(ModellID, Task) {
-        //            var j;
-        //            for (var i = 0; i < window.document.Form1.length; ++i)	//Haken suchen, der markiert wurde (Auswahl rechts). j = Spaltenindex.
-        //            {
-        //                if (window.document.Form1.elements[i].name == "Anzahl_alt_" + ModellID) {
-        //                    j = i;
-        //                    break;
-        //                }
-        //            }
-        //            var k = j;
-        //            var Bemerkung = "";
-        //            var BemerkungDatum = ""; 										//Bemerkung Datum
-        //            var DatumErstZulassung = "";
-        //            var ZielPDI = "";
-        //            var Anzahl_alt = Number(window.document.Form1.elements[j].value);
-        //            var Anzahl_neu = Number(window.document.Form1.elements[j + 1].value);
-        //            var count3;
-        //            switch (Task) {
-        //                case "Zulassen":
-        //                    //Zuldatum aus Kalenderauswahl Carportebene oder
-        //                    //Werte aus der Modell - Ebene holen...
-
-        //                    if (window.document.Form1.Zuldat.value != '') {
-        //                        window.document.Form1.elements[j - 1].value = window.document.Form1.Zuldat.value;
-        //                        DatumErstZulassung = window.document.Form1.Zuldat.value;
-        //                    } else {
-        //                    DatumErstZulassung = window.document.Form1.elements[j - 1].value;
-        //                    }
-        //                    //window.document.Form1.elements[j - 1].value;-->DatumErstZulassung aus der Modellebene 
-        //                    break;
-        //                default:
-        //                    Bemerkung = window.document.Form1.elements[j - 1].value;
-        //                    break;
-        //            }
-        //            if (isNaN(Anzahl_neu) == true) {
-        //                alert("Bitte geben Sie einen Zahlenwert für die Anzahl ein.");
-        //            }
-        //            else {
-        //                if (Anzahl_alt < Anzahl_neu) {
-        //                    alert("Der Zahlenwert für die Anzahl ist zu groß.");
-        //                }
-        //                else {
-        //                    if (Anzahl_neu < 0) {
-        //                        alert("Der Zahlenwert für die Anzahl ist zu klein.");
-        //                    }
-        //                    else {
-        //                        j = 0;
-
-        //                        for (i = k; i < window.document.Form1.length; ++i)			//Werte in die Fahrzeugebene übertragen...
-        //                        {
-        //                            if (window.document.Form1.elements[i].value == "Modell_ID_" + ModellID) {
-        //                                if (j < Anzahl_alt) {
-        //                                    if (j < Anzahl_neu) {
-        //                                        if (window.document.Form1.elements[i - 4].value == "") {
-
-        //                                            if (window.document.Form1.elements[i - 1].checked == false) {
-
-        //                                                count3 = Number(document.getElementById("AktuelleAnzahl").value);
-        //                                                count3 = count3 + 1;
-        //                                                document.getElementById("AktuelleAnzahl").value = count3;
-        //                                                count3 = Number(document.getElementById("AktuelleSumme").value);
-        //                                                count3 = count3 + 1;
-        //                                                document.getElementById("AktuelleSumme").value = count3;
-        //                                            }
-        //                                            window.document.Form1.elements[i - 1].checked = true;
-        //                                            switch (Task) {
-        //                                                case "Zulassen":
-        //                                                    window.document.Form1.elements[i - 3].value = DatumErstZulassung;
-        //                  //window.document.Form1.elements[i - 3].value;-->DatumErstZulassung aus der Fahrzeugebene
-        //                                                    break;
-        //                                                default:
-        //                                                    window.document.Form1.elements[i - 3].value = Bemerkung;
-        //                                                    break;
-        //                                            }
-        //                                        }
-        //                                        else {
-        //                                            j = j - 1;
-        //                                        }
-        //                                    }
-        //                                    else {
-        //                                        if (window.document.Form1.elements[i - 1].checked == true) {
-
-        //                                            count3 = Number(document.getElementById("AktuelleAnzahl").value);
-        //                                            count3 = count3 - 1;
-        //                                            document.getElementById("AktuelleAnzahl").value = count3;
-        //                                            count3 = Number(document.getElementById("AktuelleSumme").value);
-        //                                            count3 = count3 - 1;
-        //                                            document.getElementById("AktuelleSumme").value = count3;
-        //                                        }
-        //                                        window.document.Form1.elements[i - 1].checked = false;
-        //                                        switch (Task) {
-        //                                            case "Zulassen":
-        //                                                window.document.Form1.elements[i - 3].value = "";
-        //                                                window.document.Form1.elements[i - 3].disabled = false;
-        //                                            default:
-        //                                                window.document.Form1.elements[i - 3].value = "";
-        //                                        }
-        //                                    }
-        //                                    j = j + 1;
-        //                                }
-        //                                else {
-        //                                    break;
-        //                                }
-        //                            }
-        //                        }
-        //                        document.getElementById("Picture_" + ModellID).src = "/Portal/Images/Confirm_Mini.GIF"
-        //                    }
-        //                }
-        //            }
-        //        }
-
-
 
         function CountChecked(obj, ID) {
             var count;
@@ -480,8 +353,8 @@
                 count2 = Number(document.getElementById("AktuelleSumme").value);
                 count2 = count2 + 1;
                 document.getElementById("AktuelleSumme").value = count2;
-                if (window.document.Form1.HiddenZuldat.value != '') {
-                    ID.value = window.document.Form1.HiddenZuldat.value;
+                if (window.document.Form1.HiddenZulassungsdatum.value != '') {
+                    ID.value = window.document.Form1.HiddenZulassungsdatum.value;
                 }
 
             }
