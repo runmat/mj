@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../../../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../../../PageElements/Header.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="BusyIndicator" Src="../../../PageElements/BusyIndicator.ascx" %>
+
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Input_002_02.aspx.vb"
     Inherits="AppARVAL.Input_002_02" %>
 
@@ -13,7 +13,7 @@
     <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
 </head>
-<body leftmargin="0" topmargin="0">    
+<body leftmargin="0" topmargin="0">
     <form id="Form1" method="post" runat="server">
     <table id="Table4" width="100%" align="center">
         <tr>
@@ -94,7 +94,7 @@
                                 </tr>
                                 <tr>
                                     <td class="TextLarge" valign="top" nowrap colspan="3">
-                                        <hr width="100%" size="1"/>
+                                        <hr width="100%" size="1">
                                     </td>
                                 </tr>
                                 <tr>

@@ -89,6 +89,11 @@ namespace GeneralTools.Log.Services
                 {
                     HttpContextService.TryGetUserDataFromUrlOrSession(out appID, out userID, out customerID, out kunnr, out portalType);
                 }
+                else if (appID == 0)
+                {
+                    // wenn nur die AppID fehlt, nur diese aus dem Context holen
+                    HttpContextService.TryGetAppIdFromUrlOrSession(out appID);
+                }
             }
 
             logEventInfo.Properties["AppID"] = appID;

@@ -127,7 +127,7 @@ Partial Public Class Change101
         End If
 
         m_Versand.LVnr = txtLeasingvertragsnummer.Text.Trim
-        m_Versand.ZBIINr = txtZBIINummer.Text.Trim
+        m_Versand.Zb2Nr = txtZBIINummer.Text.Trim
         m_Versand.Ref1 = txtReferenznummer1.Text.Trim
         m_Versand.Ref2 = txtReferenznummer2.Text.Trim
         m_Versand.EQuiTyp = "B"
@@ -890,7 +890,7 @@ Partial Public Class Change101
 
     Private Sub ibtnNextToOverView_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ibtnNextToOverView.Click
         lblErrorVersandOpt.Text = ""
-        m_Versand.VersohneAbeld = ""
+        m_Versand.VersandOhneAbmeldung = ""
         If ddlVersandgrund.SelectedIndex = 0 Then
             lblErrorVersandOpt.Text += "Bitte wählen Sie einen Versandgrund aus!<br />"
             lblErrorVersandOpt.Visible = True
@@ -914,7 +914,7 @@ Partial Public Class Change101
         For Each litem As ListItem In chkGruende.Items
             If litem.Selected = True Then
                 If litem.Value = "ZZABMELD" Then
-                    m_Versand.VersohneAbeld = "X"
+                    m_Versand.VersandOhneAbmeldung = "X"
 
                 Else
                     m_Versand.Materialnummer = litem.Value
@@ -1092,9 +1092,9 @@ Partial Public Class Change101
             m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text
 
             'jetzt immer die komplette Adresse mitgeben
-            m_Versand.VersandAdresse_ZE = String.Empty
+            m_Versand.VersandAdresseZe = String.Empty
             'jetzt Debitornummer (SAPNR) weitergeben
-            m_Versand.VersandAdresse_ZS = AdrRow("SAPNR").ToString
+            m_Versand.VersandAdresseZs = AdrRow("SAPNR").ToString
 
             'Adresse
             m_Versand.Name1 = AdrRow("NAME1").ToString
@@ -1139,11 +1139,11 @@ Partial Public Class Change101
             cpeAdressmanuell.ClientState = True
             cpeAdressSuche.ClientState = True
 
-            m_Versand.VersandAdresse_ZE = ddlZulStelle.SelectedItem.Value      'Versandadresse Nr. (60...)
+            m_Versand.VersandAdresseZe = ddlZulStelle.SelectedItem.Value      'Versandadresse Nr. (60...)
             m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text  'Versanddresse (Text...)
 
             'jetzt immer die komplette Adresse mitgeben
-            m_Versand.VersandAdresse_ZS = String.Empty
+            m_Versand.VersandAdresseZs = String.Empty
 
             'Adresse
             m_Versand.Name1 = ZulRow("NAME1")
@@ -1216,10 +1216,10 @@ Partial Public Class Change101
                                       m_Versand.PostCode + " " + m_Versand.City
             lbl_SelAdresse.Text = "Freie Adresse:"
             'SAP-Adresse nullen
-            m_Versand.VersandAdresse_ZS = String.Empty
+            m_Versand.VersandAdresseZs = String.Empty
             m_Versand.VersandAdresseText = lbl_SelAdresseShow.Text
             'Zulassungsstelle nullen
-            m_Versand.VersandAdresse_ZE = String.Empty
+            m_Versand.VersandAdresseZe = String.Empty
 
 
             If rb_temp.Checked = True Then
@@ -1472,11 +1472,11 @@ Partial Public Class Change101
     Private Sub ResetAdress()
         m_Versand.VersandAdresseText = String.Empty
 
-        m_Versand.VersandAdresse_ZE = String.Empty
+        m_Versand.VersandAdresseZe = String.Empty
         m_Versand.VersandAdresseText = String.Empty
 
         'SAP-Adresse nullen
-        m_Versand.VersandAdresse_ZS = String.Empty
+        m_Versand.VersandAdresseZs = String.Empty
 
         'Manuelle Adresse nullen
         m_Versand.Name1 = String.Empty

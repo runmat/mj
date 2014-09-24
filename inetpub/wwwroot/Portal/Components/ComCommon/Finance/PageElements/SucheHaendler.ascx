@@ -635,7 +635,7 @@ window.onload=checkInputs;
 <table id="Table3" cellspacing="0" cellpadding="1" width="100%" bgcolor="white">
     <tr id="trHaendlernummer" runat="server" width="100%">
         <td class="TextLarge" height="29" width="150">
-            <asp:Label ID="lbl_HaendlerNummer" runat="server"></asp:Label>
+            <asp:Label ID="lbl_HaendlerNummer" runat="server">lbl_HaendlerNummer</asp:Label>
         </td>
         <td class="TextLarge" width="350" height="29">
             <asp:TextBox ID="txtNummer" runat="server" MaxLength="10" Width="200px"></asp:TextBox>&nbsp;<asp:Label

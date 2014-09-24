@@ -14,15 +14,6 @@ Option Explicit On
 Partial Public Class Change99
 
     '''<summary>
-    '''UpdatePanel1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
-
-    '''<summary>
     '''divBackDisabled-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1803,6 +1794,15 @@ Partial Public Class Change99
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents chkGruende As Global.System.Web.UI.WebControls.CheckBoxList
+
+    '''<summary>
+    '''cbxAufAbmeldungWarten-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cbxAufAbmeldungWarten As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''lbl_Versandopt-Steuerelement

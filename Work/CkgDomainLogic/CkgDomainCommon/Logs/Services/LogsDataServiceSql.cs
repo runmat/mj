@@ -1,4 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -45,7 +47,60 @@ namespace CkgDomainLogic.Logs.Services
 
             var logsDbContext = CreateLogsDbContext();
 
-            var pageVisitLogItems = logsDbContext.GetPageVisitLogItems(pageVisitLogItemSelector);
+            var customerApps = logsDbContext.GetCustomerApplicationsForPageVisits(pageVisitLogItemSelector).ToList();
+            var pageVisits = logsDbContext.GetPageVisitPerCustomerPerDayItems(pageVisitLogItemSelector).ToList();
+
+            var hitlist = new List<PageVisitLogItem>();
+
+            foreach (var item in customerApps)
+            {
+                int intKunnr;
+                if (!Int32.TryParse(item.KUNNR, out intKunnr))
+                    intKunnr = 0;
+
+                if (pageVisitLogItemSelector.OnlyUnusedApplications)
+                {
+                    if (!pageVisits.Any(p => p.CustomerID == item.CustomerID && p.AppID == item.AppID))
+                    {
+                        hitlist.Add(new PageVisitLogItem
+                        {
+                            CustomerID = item.CustomerID,
+                            CustomerName = item.CustomerName,
+                            KUNNR = intKunnr,
+                            AppID = item.AppID,
+                            AppFriendlyName = item.AppFriendlyName,
+                            Hits = 0
+                        });
+                    }
+                }
+                else
+                {
+                    var hitCount = (from p in pageVisits
+                                    where p.CustomerID == item.CustomerID && p.AppID == item.AppID
+                                    select p.Hits).Sum();
+
+                    hitlist.Add(new PageVisitLogItem
+                    {
+                        CustomerID = item.CustomerID,
+                        CustomerName = item.CustomerName,
+                        KUNNR = intKunnr,
+                        AppID = item.AppID,
+                        AppFriendlyName = item.AppFriendlyName,
+                        Hits = hitCount
+                    });
+                }
+            }
+
+            return hitlist;
+        }
+
+        public List<PageVisitLogItemDetail> GetPageVisitLogItemsDetail(PageVisitLogItemDetailSelector pageVisitLogItemDetailSelector)
+        {
+            LogsConnectionString = pageVisitLogItemDetailSelector.LogsConnection;
+
+            var logsDbContext = CreateLogsDbContext();
+
+            var pageVisitLogItems = logsDbContext.GetPageVisitLogItems(pageVisitLogItemDetailSelector);
 
             return pageVisitLogItems.ToList();
         }

@@ -12,114 +12,88 @@
 	</HEAD>
 	<body leftMargin="0" topMargin="0" MS_POSITIONING="FlowLayout">
 		<form id="Form1" method="post" runat="server">
-        <table width="100%" align="center">
-            <tbody>
-                <tr>
-                    <td>
-                        <uc1:Header ID="ucHeader" runat="server"></uc1:Header>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table id="Table0" cellspacing="0" cellpadding="0" width="100%" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="PageNavigation" nowrap colspan="2">
-                                        <asp:Label ID="lblHead" runat="server"></asp:Label><asp:Label ID="lblPageTitle" runat="server"> - Fahrzeugsuche</asp:Label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="TaskTitle" nowrap colspan="2">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">
-                                        <table id="Table2" bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="121"
-                                            border="0">
-                                            <tr>
-                                                <td class="" width="57">
-                                                    <asp:LinkButton ID="cmdSearch" runat="server" CssClass="StandardButton"> &#149;&nbsp;Suchen</asp:LinkButton>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td valign="top">
-                                        <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td valign="top" align="left">
-                                                        <table id="Table1" cellspacing="0" cellpadding="5" width="100%" border="0" bgcolor="white">
-                                                            <tbody>
-                                                                <tr id="tr_Kennzeichen">
-                                                                    <td class="TextLarge" width="150">
-                                                                        <asp:Label ID="lbl_Kennzeichen" runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;
-                                                                    </td>
-                                                                    <td class="TextLarge">
-                                                                        <asp:TextBox ID="txtKennzeichen" runat="server" Width="200px" MaxLength="35"></asp:TextBox>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr id="tr_Kontonummer">
-                                                                    <td class="StandardTableAlternate" width="150">
-                                                                        <asp:Label ID="lbl_Kontonummer" runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;
-                                                                    </td>
-                                                                    <td class="StandardTableAlternate">
-                                                                        <asp:TextBox ID="txtVertragsnummer" runat="server" Width="200px" MaxLength="35"></asp:TextBox>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr id="tr_Fahrgestellnummer">
-                                                                    <td class="TextLarge" width="150">
-                                                                        <asp:Label ID="lbl_Fahrgestellnummer" runat="server"></asp:Label>
-                                                                    </td>
-                                                                    <td class="TextLarge">
-                                                                        <asp:TextBox ID="txtFahrgestellnummer" runat="server" Width="200px" MaxLength="35"></asp:TextBox>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr id="tr_zb2Nummer">
-                                                                    <td class="StandardTableAlternate" width="150">
-                                                                        <asp:Label ID="lbl_zb2Nummer" runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;
-                                                                    </td>
-                                                                    <td class="StandardTableAlternate">
-                                                                        <asp:TextBox ID="txtZB2Nummer" runat="server" Width="200px" MaxLength="35"></asp:TextBox>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <br>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top" width="120">
-                                        &nbsp;
-                                    </td>
-                                    <td valign="top">
-                                        <asp:Label ID="lblError" runat="server" CssClass="TextError" EnableViewState="False"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top" width="120">
-                                        &nbsp;
-                                    </td>
-                                    <td>
-                                        <!--#include File="../../../PageElements/Footer.html" -->
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        </form>
+			<table width="100%" align="center">
+				<TBODY>
+					<tr>
+						<td><uc1:header id="ucHeader" runat="server"></uc1:header></td>
+					</tr>
+					<tr>
+						<td>
+							<TABLE id="Table0" cellSpacing="0" cellPadding="0" width="100%" border="0">
+								<TBODY>
+									<TR>
+										<td class="PageNavigation" noWrap colSpan="2">
+											<asp:label id="lblHead" runat="server"></asp:label><asp:label id="lblPageTitle" runat="server"> - Fahrzeugsuche</asp:label>
+										</td>
+									</TR>
+									<TR>
+										<TD class="TaskTitle" noWrap colSpan="2">&nbsp;</TD>
+									</TR>
+									<tr>
+										<TD vAlign="top">
+											<TABLE id="Table2" borderColor="#ffffff" cellSpacing="0" cellPadding="0" width="121" border="0">
+												<TR>
+													<TD class="" width="57">
+														<asp:linkbutton id="cmdSearch" runat="server" CssClass="StandardButton"> &#149;&nbsp;Suchen</asp:linkbutton></TD>
+												</TR>
+											</TABLE>
+										</TD>
+										<td vAlign="top">
+											<TABLE id="Table3" cellSpacing="0" cellPadding="0" width="100%" border="0">
+												<TBODY>
+													<tr>
+														<td vAlign="top" align="left">
+															<TABLE id="Table1" cellSpacing="0" cellPadding="5" width="100%" border="0" bgColor="white">
+																<TBODY>
+																	<TR id="tr_Kennzeichen">
+																		<TD class="TextLarge" width="150"><asp:Label ID="lbl_Kennzeichen" Runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;</TD>
+																		<TD class="TextLarge"><asp:textbox id="txtKennzeichen" runat="server" Width="200px" MaxLength="35"></asp:textbox></TD>
+																	</TR>
+																	<TR id="tr_Kontonummer">
+																		<TD class="StandardTableAlternate" width="150"><asp:Label ID="lbl_Kontonummer" Runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;</TD>
+																		<TD class="StandardTableAlternate"><asp:textbox id="txtVertragsnummer" runat="server" Width="200px" MaxLength="35"></asp:textbox></TD>
+																	</TR>
+																	<TR id="tr_Fahrgestellnummer">
+																		<TD class="TextLarge" width="150">
+																			<asp:Label ID="lbl_Fahrgestellnummer" Runat="server"></asp:Label></TD>
+																		<TD class="TextLarge">
+																			<asp:textbox id="txtFahrgestellnummer" runat="server" Width="200px" MaxLength="35"></asp:textbox></TD>
+																	</TR>
+																	<TR id="tr_zb2Nummer">
+																		<TD class="StandardTableAlternate" width="150">
+																			<asp:Label ID="lbl_zb2Nummer" Runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;</TD>
+																		<TD class="StandardTableAlternate">
+																			<asp:textbox id="txtZB2Nummer" runat="server" Width="200px" MaxLength="35"></asp:textbox></TD>
+																	</TR>
+																</TBODY>
+															</TABLE>
+															<br>
+														</td>
+													</tr>
+												</TBODY>
+											</TABLE>
+										</td>
+									</tr>
+									<TR>
+										<TD vAlign="top" width="120">&nbsp;</TD>
+										<TD vAlign="top"><asp:label id="lblError" runat="server" CssClass="TextError" EnableViewState="False"></asp:label></TD>
+									</TR>
+									<TR>
+										<TD vAlign="top" width="120">&nbsp;</TD>
+										<td><!--#include File="../../../PageElements/Footer.html" --></td>
+									</TR>
+								</TBODY>
+							</TABLE>
+						</td>
+					</tr>
+				</TBODY>
+			</table>
+		</form>
 		<script language="JavaScript">
 <!-- //
  window.document.Form1.txtVertragsnummer.focus();
 //-->
 		</script>
-        </TR></TBODY></TABLE></TR></TBODY></TABLE></TR></TBODY></TABLE></TR></TBODY></TABLE></FORM>
+		</TR></TBODY></TABLE></TR></TBODY></TABLE></TR></TBODY></TABLE></TR></TBODY></TABLE></FORM>
 	</body>
 </HTML>

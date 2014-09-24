@@ -6,12 +6,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-    <meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR" />
-    <meta content="Visual Basic 7.0" name="CODE_LANGUAGE" />
-    <meta content="JavaScript" name="vs_defaultClientScript" />
-    <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema" />
+    <meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
+    <meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
+    <meta content="JavaScript" name="vs_defaultClientScript">
+    <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
 </head>
+<script language="javascript">
+<!--
+   
+-->
+</script>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
     <table id="Table4" width="100%" align="center">
@@ -39,7 +44,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td valign="middle" width="150">
+                                    <td valign="center" width="150">
                                         <asp:LinkButton ID="lb_Create" runat="server" CssClass="StandardButton"></asp:LinkButton>
                                     </td>
                                 </tr>
@@ -58,35 +63,35 @@
                                     <td valign="top" align="left">
                                         <table id="tblSelektion" cellspacing="0"  runat="server" cellpadding="5" width="100%" border="0" bgcolor="white">
                                             <tr id="tr_AmtlKennzeichen" runat="server">
-                                                <td class="TextLarge" valign="middle" width="150">
+                                                <td class="TextLarge" valign="center" width="150">
                                                     <p>
                                                         <asp:Label ID="lbl_AmtlKennzeichen" runat="server"> lbl_AmtlKennzeichen</asp:Label></p>
                                                 </td>
-                                                <td class="TextLarge" valign="middle">
+                                                <td class="TextLarge" valign="center">
                                                     <asp:TextBox ID="txtAmtlKennzeichen" runat="server"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr id="tr_Fahrgestellnummer" runat="server">
-                                                <td class="TextLarge" valign="middle" width="150">
+                                                <td class="TextLarge" valign="center" width="150">
                                                     <asp:Label ID="lbl_Fahrgestellnummer" runat="server">lbl_Fahrgestellnummer</asp:Label>
                                                 </td>
-                                                <td class="TextLarge" valign="middle">
+                                                <td class="TextLarge" valign="center">
                                                     <asp:TextBox ID="txtFahrgestellnummer" runat="server"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr id="tr_Briefnummer" runat="server">
-                                                <td class="TextLarge" valign="middle" width="150">
+                                                <td class="TextLarge" valign="center" width="150">
                                                     <asp:Label ID="lbl_Briefnummer" runat="server">lbl_Briefnummer</asp:Label>
                                                 </td>
-                                                <td class="TextLarge" valign="middle">
+                                                <td class="TextLarge" valign="center">
                                                     <asp:TextBox ID="txtBriefnummer" runat="server"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr id="tr_Leasingvertragsnr" runat="server">
-                                                <td class="TextLarge" valign="middle" width="150">
+                                                <td class="TextLarge" valign="center" width="150">
                                                     <asp:Label ID="lbl_Leasingvertragsnr" runat="server">lbl_Leasingvertragsnr</asp:Label>
                                                 </td>
-                                                <td class="TextLarge" valign="middle">
+                                                <td class="TextLarge" valign="center">
                                                     <asp:TextBox ID="txtOrdernummer" runat="server"></asp:TextBox>
                                                 </td>
                                             </tr>
@@ -103,9 +108,9 @@
                                             <Columns>
                                                 <asp:BoundField Visible="false" HeaderText="EQUNR" DataField="EQUNR" ReadOnly="true" />
                                                 <asp:TemplateField>
-                                                    <ItemStyle HorizontalAlign="Center" />
+                                                                                            <ItemStyle HorizontalAlign="Center" />
                                                     <ItemTemplate>
-                                                        <asp:LinkButton runat="server" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.EQUNR") %>'
+                                                        <asp:LinkButton runat="server"  CommandArgument='<%# DataBinder.Eval(Container, "DataItem.EQUNR") %>'
                                                             CssClass="StandardButton" CommandName="weiter" Text="Weiter" ID="lbWeiter"> </asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>

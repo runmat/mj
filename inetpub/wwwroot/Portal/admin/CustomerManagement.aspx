@@ -274,7 +274,7 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td height="22">
-                                                                                        Neues Passwort&nbsp;nach n Tagen:
+                                                                                        Neues Kennwort&nbsp;nach n Tagen:
                                                                                     </td>
                                                                                     <td align="right" height="22">
                                                                                         <asp:TextBox ID="txtNewPwdAfterNDays" runat="server" Width="160px" Height="20px">60</asp:TextBox>
@@ -304,7 +304,7 @@
                                                                             <table id="tblPwdRules" cellspacing="0" cellpadding="0" width="100%" border="0">
                                                                                 <tr>
                                                                                     <td align="middle" colspan="2" height="22">
-                                                                                        Passwort-Regeln
+                                                                                        Kennwort-Regeln
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -341,7 +341,7 @@
                                                                                 </tr>
                                                                                 <tr id="trPwdHistoryNEntries" runat="server">
                                                                                     <td height="22">
-                                                                                        Sperre letze n Passwörter:
+                                                                                        Sperre letze n Kennworte:
                                                                                     </td>
                                                                                     <td align="right" height="22">
                                                                                         <asp:TextBox ID="txtPwdHistoryNEntries" runat="server" Width="160px" Height="20px">6</asp:TextBox>
@@ -349,7 +349,7 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td height="22">
-                                                                                        Passwort nicht per Email:
+                                                                                        Kennwort nicht per Email:
                                                                                     </td>
                                                                                     <td align="right" height="22">
                                                                                         <asp:CheckBox ID="cbxPwdDontSendEmail" runat="server" AutoPostBack="true"></asp:CheckBox>
@@ -366,7 +366,7 @@
                                                                                 <tr>
                                                                                     <td height="22">
                                                                                         Geheime Frage<br />
-                                                                                        (Passwort per Email):
+                                                                                        (Kennwort per Email):
                                                                                     </td>
                                                                                     <td align="right" height="22">
                                                                                         <asp:CheckBox ID="cbxForcePasswordQuestion" runat="server"></asp:CheckBox>

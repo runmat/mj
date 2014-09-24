@@ -1,72 +1,71 @@
 ﻿Imports CKG.Base.Business
 Imports CKG.Base.Common
-Imports System.Data.SqlClient
 
 <Serializable()> Public Class Briefversand
     Inherits Base.Business.BankBase
 
-    Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByVal objApp As Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFilename As String)
-        MyBase.New(objUser, objApp, strAppID, strSessionID, strFilename)
+    Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByVal objApp As Base.Kernel.Security.App, ByVal strAppId As String, ByVal strSessionId As String, ByVal strFilename As String)
+        MyBase.New(objUser, objApp, strAppId, strSessionId, strFilename)
     End Sub
 
 #Region " Declarations"
 
-    Private mE_SUBRC As String
-    Private mE_MESSAGE As String
-    Private m_strFahrgestellnr As String
-    Private m_strKennzeichen As String
-    Private m_strZBIINr As String
-    Private m_strLVnr As String
-    Private m_strRef1 As String
-    Private m_strRef2 As String
-    Private m_strVersandArt As String
-    Private m_tblFahrzeuge As DataTable
-    Private m_tblFahrzeugePrint As DataTable
-    Private m_tblFahrzeugeFehler As DataTable
-    Private m_tblZulStellen As DataTable
-    Private m_tblAdressen As DataTable
-    Private m_tblVersandgruende As DataTable
-    Private m_tblVersandOptions As DataTable
-    Private m_kbanr As String 'Zulassungsdienst-Nummer
-    Private m_boolNewAdress As Boolean = False
-    Private m_strAnrede As String
-    Private m_strName1 As String
-    Private m_strName2 As String
-    Private m_strCity As String
-    Private m_strPostcode As String
-    Private m_strStreet As String
-    Private m_strHouseNum As String
-    Private m_tblLaender As DataTable
-    Private m_strLaenderKuerzel As String
-    Private m_material As String
-    Private m_versandadr_ZE As String
-    Private m_versandadr_ZS As String
-    Private m_versandadrtext As String
-    Private m_versgrund As String
-    Private m_versgrundText As String
-    Private m_versartText As String
-    Private strAuftragsstatus As String
-    Private strAuftragsnummer As String
-    Private m_AutLevel As String
-    Private m_tblUpload As DataTable
-    Private m_strReferenceforAut As String
-    Private m_Sachbearbeiter As String
-    Private m_VersohneAbeld As String
-    Private m_tblVersandError As DataTable
-    Private m_EQuiTyp As String
-    Private m_Briefversand As String
-    Private m_SchluesselVersand As String
-    Private m_OptionFlag As String
-    Private mHalter As String
-    Private mBemerkung As String
-    Private mEqTyp As String
-    Private mAdressart As Integer
-    Private mAdressartText As String
-    Private mVersandoptionenText As String
-    Private mAutorisierungText As String
-    Private mBeauftragungsdatum As String
-    Private m_tblStueckliste As DataTable
-    Private m_Brieflieferanten As DataTable
+    Private _mESubrc As String
+    Private _mEMessage As String
+    Private _mStrFahrgestellnr As String
+    Private _mStrKennzeichen As String
+    Private _mStrZbiiNr As String
+    Private _mStrLVnr As String
+    Private _mStrRef1 As String
+    Private _mStrRef2 As String
+    Private _mStrVersandArt As String
+    Private _mTblFahrzeuge As DataTable
+    Private _mTblFahrzeugePrint As DataTable
+    Private _mTblFahrzeugeFehler As DataTable
+    Private _mTblZulStellen As DataTable
+    Private _mTblAdressen As DataTable
+    Private _mTblVersandgruende As DataTable
+    Private _mTblVersandOptions As DataTable
+    Private _mKbanr As String 'Zulassungsdienst-Nummer
+    Private _mBoolNewAdress As Boolean = False
+    Private _mStrAnrede As String
+    Private _mStrName1 As String
+    Private _mStrName2 As String
+    Private _mStrCity As String
+    Private _mStrPostcode As String
+    Private _mStrStreet As String
+    Private _mStrHouseNum As String
+    Private _mTblLaender As DataTable
+    Private _mStrLaenderKuerzel As String
+    Private _mMaterial As String
+    Private _mVersandadrZe As String
+    Private _mVersandadrZs As String
+    Private _mVersandadrtext As String
+    Private _mVersgrund As String
+    Private _mVersgrundText As String
+    Private _mVersartText As String
+    Private _strAuftragsstatus As String
+    Private _strAuftragsnummer As String
+    Private _mAutLevel As String
+    Private _mTblUpload As DataTable
+    Private _mStrReferenceforAut As String
+    Private _mSachbearbeiter As String
+    Private _mVersandOhneAbmeldung As String
+    Private _mTblVersandError As DataTable
+    Private _mEQuiTyp As String
+    Private _mBriefversand As String
+    Private _mSchluesselVersand As String
+    Private _mOptionFlag As String
+    Private _mHalter As String
+    Private _mBemerkung As String
+    Private _mEqTyp As String
+    Private _mAdressart As Integer
+    Private _mAdressartText As String
+    Private _mVersandoptionenText As String
+    Private _mAutorisierungText As String
+    Private _mBeauftragungsdatum As String
+    Private _mTblStueckliste As DataTable
+    Private _mBrieflieferanten As DataTable
 
 #End Region
 
@@ -83,511 +82,510 @@ Imports System.Data.SqlClient
 
     Public Property OptionFlag() As String
         Get
-            Return m_OptionFlag
+            Return _mOptionFlag
         End Get
         Set(ByVal value As String)
-            m_OptionFlag = value
+            _mOptionFlag = value
         End Set
     End Property
 
     Public Property Briefversand() As String
         Get
-            Return m_Briefversand
+            Return _mBriefversand
         End Get
         Set(ByVal value As String)
-            m_Briefversand = value
+            _mBriefversand = value
         End Set
     End Property
 
     Public Property SchluesselVersand() As String
         Get
-            Return m_SchluesselVersand
+            Return _mSchluesselVersand
         End Get
         Set(ByVal value As String)
-            m_SchluesselVersand = value
+            _mSchluesselVersand = value
         End Set
     End Property
 
     Public Property VersartText() As String
         Get
-            Return m_versartText
+            Return _mVersartText
         End Get
         Set(ByVal value As String)
-            m_versartText = value
+            _mVersartText = value
         End Set
     End Property
 
     Public Property VersgrundText() As String
         Get
-            Return m_versgrundText
+            Return _mVersgrundText
         End Get
         Set(ByVal value As String)
-            m_versgrundText = value
+            _mVersgrundText = value
         End Set
     End Property
 
     Public Property ReferenceforAut() As String
         Get
-            Return m_strReferenceforAut
+            Return _mStrReferenceforAut
         End Get
         Set(ByVal value As String)
-            m_strReferenceforAut = value
+            _mStrReferenceforAut = value
         End Set
     End Property
 
     Public Property AutLevel() As String
         Get
-            Return m_AutLevel
+            Return _mAutLevel
         End Get
-        Set(ByVal Value As String)
-            m_AutLevel = Value
+        Set(ByVal value As String)
+            _mAutLevel = value
         End Set
     End Property
 
-    Public Property kbanr() As String
+    Public Property Kbanr() As String
         Get
-            Return m_kbanr
+            Return _mKbanr
         End Get
-        Set(ByVal Value As String)
-            m_kbanr = Value
+        Set(ByVal value As String)
+            _mKbanr = value
         End Set
     End Property
 
-    Public Property neueAdresse() As Boolean
+    Public Property NeueAdresse() As Boolean
         Get
-            Return m_boolNewAdress
+            Return _mBoolNewAdress
         End Get
-        Set(ByVal Value As Boolean)
-            m_boolNewAdress = Value
+        Set(ByVal value As Boolean)
+            _mBoolNewAdress = value
         End Set
 
     End Property
 
     Public Property VersandArt() As String
         Get
-            Return m_strVersandArt
+            Return _mStrVersandArt
         End Get
-        Set(ByVal Value As String)
-            m_strVersandArt = Value
+        Set(ByVal value As String)
+            _mStrVersandArt = value
         End Set
     End Property
 
     Public Property Versandgruende() As DataTable
         Get
-            Return m_tblVersandgruende
+            Return _mTblVersandgruende
         End Get
         Set(ByVal value As DataTable)
-            m_tblVersandgruende = value
+            _mTblVersandgruende = value
         End Set
     End Property
 
     Public Property VersandOptionen() As DataTable
         Get
-            Return m_tblVersandOptions
+            Return _mTblVersandOptions
         End Get
         Set(ByVal value As DataTable)
-            m_tblVersandOptions = value
+            _mTblVersandOptions = value
         End Set
     End Property
 
     Public Property Stueckliste As DataTable
         Get
-            Return m_tblStueckliste
+            Return _mTblStueckliste
         End Get
         Set(value As DataTable)
-            m_tblStueckliste = value
+            _mTblStueckliste = value
         End Set
     End Property
 
     Public Property Adressen() As DataTable
         Get
-            Return m_tblAdressen
+            Return _mTblAdressen
         End Get
         Set(ByVal value As DataTable)
-            m_tblAdressen = value
+            _mTblAdressen = value
         End Set
     End Property
 
     Public Property ZulStellen() As DataTable
         Get
-            Return m_tblZulStellen
+            Return _mTblZulStellen
         End Get
         Set(ByVal value As DataTable)
-            m_tblZulStellen = value
+            _mTblZulStellen = value
         End Set
     End Property
 
     Public ReadOnly Property Laender() As DataTable
         Get
-            If m_tblLaender Is Nothing Then
-                getLaender(New Page)
+            If _mTblLaender Is Nothing Then
+                GetLaender(New Page)
             End If
-            Return m_tblLaender
+            Return _mTblLaender
         End Get
     End Property
 
     Public ReadOnly Property Brieflieferanten() As DataTable
         Get
-            If m_Brieflieferanten Is Nothing Then
-                getBrieflieferanten(New Page)
+            If _mBrieflieferanten Is Nothing Then
+                GetBrieflieferanten(New Page)
             End If
-            Return m_Brieflieferanten
+            Return _mBrieflieferanten
         End Get
     End Property
 
     Public Property Fahrzeuge() As DataTable
         Get
-            Return m_tblFahrzeuge
+            Return _mTblFahrzeuge
         End Get
         Set(ByVal value As DataTable)
-            m_tblFahrzeuge = value
+            _mTblFahrzeuge = value
         End Set
     End Property
 
     Public Property FahrzeugePrint() As DataTable
         Get
-            Return m_tblFahrzeugePrint
+            Return _mTblFahrzeugePrint
         End Get
         Set(ByVal value As DataTable)
-            m_tblFahrzeugePrint = value
+            _mTblFahrzeugePrint = value
         End Set
     End Property
 
     Public Property FahrzeugeFehler() As DataTable
         Get
-            Return m_tblFahrzeugeFehler
+            Return _mTblFahrzeugeFehler
         End Get
         Set(ByVal value As DataTable)
-            m_tblFahrzeugeFehler = value
+            _mTblFahrzeugeFehler = value
         End Set
     End Property
 
-    Public Property E_SUBRC() As String
+    Public Property ESubrc() As String
         Get
-            Return mE_SUBRC
+            Return _mESubrc
         End Get
-        Set(ByVal Value As String)
-            mE_SUBRC = Value
+        Set(ByVal value As String)
+            _mESubrc = value
         End Set
     End Property
 
-    Public Property E_MESSAGE() As String
+    Public Property EMessage() As String
         Get
-            Return mE_MESSAGE
+            Return _mEMessage
         End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
+        Set(ByVal value As String)
+            _mEMessage = value
         End Set
     End Property
 
     Public Property Fahrgestellnr() As String
         Get
-            Return m_strFahrgestellnr
+            Return _mStrFahrgestellnr
         End Get
-        Set(ByVal Value As String)
-            m_strFahrgestellnr = Value
+        Set(ByVal value As String)
+            _mStrFahrgestellnr = value
         End Set
     End Property
 
     Public Property Kennzeichen() As String
         Get
-            Return m_strKennzeichen
+            Return _mStrKennzeichen
         End Get
         Set(ByVal value As String)
-            m_strKennzeichen = value
+            _mStrKennzeichen = value
         End Set
     End Property
 
-    Public Property ZBIINr() As String
+    Public Property Zb2Nr() As String
         Get
-            Return m_strZBIINr
+            Return _mStrZbiiNr
         End Get
         Set(ByVal value As String)
-            m_strZBIINr = value
+            _mStrZbiiNr = value
         End Set
     End Property
 
     Public Property LVnr() As String
         Get
-            Return m_strLVnr
+            Return _mStrLVnr
         End Get
         Set(ByVal value As String)
-            m_strLVnr = value
+            _mStrLVnr = value
         End Set
     End Property
 
     Public Property Ref1() As String
         Get
-            Return m_strRef1
+            Return _mStrRef1
         End Get
         Set(ByVal value As String)
-            m_strRef1 = value
+            _mStrRef1 = value
         End Set
     End Property
 
     Public Property Ref2() As String
         Get
-            Return m_strRef2
+            Return _mStrRef2
         End Get
         Set(ByVal value As String)
-            m_strRef2 = value
+            _mStrRef2 = value
         End Set
     End Property
 
     Public Property Anrede() As String
         Get
-            Return m_strAnrede
+            Return _mStrAnrede
         End Get
-        Set(ByVal Value As String)
-            m_strAnrede = Value
+        Set(ByVal value As String)
+            _mStrAnrede = value
         End Set
 
     End Property
 
     Public Property Name1() As String
         Get
-            Return m_strName1
+            Return _mStrName1
         End Get
-        Set(ByVal Value As String)
-            m_strName1 = Value
+        Set(ByVal value As String)
+            _mStrName1 = value
         End Set
 
     End Property
 
     Public Property Name2() As String
         Get
-            Return m_strName2
+            Return _mStrName2
         End Get
-        Set(ByVal Value As String)
-            m_strName2 = Value
+        Set(ByVal value As String)
+            _mStrName2 = value
         End Set
 
     End Property
 
     Public Property City() As String
         Get
-            Return m_strCity
+            Return _mStrCity
         End Get
-        Set(ByVal Value As String)
-            m_strCity = Value
+        Set(ByVal value As String)
+            _mStrCity = value
         End Set
     End Property
 
     Public Property PostCode() As String
         Get
-            Return m_strPostcode
+            Return _mStrPostcode
         End Get
-        Set(ByVal Value As String)
-            m_strPostcode = Value
+        Set(ByVal value As String)
+            _mStrPostcode = value
         End Set
     End Property
 
     Public Property Street() As String
         Get
-            Return m_strStreet
+            Return _mStrStreet
         End Get
-        Set(ByVal Value As String)
-            m_strStreet = Value
+        Set(ByVal value As String)
+            _mStrStreet = value
         End Set
     End Property
 
     Public Property HouseNum() As String
         Get
-            Return m_strHouseNum
+            Return _mStrHouseNum
         End Get
-        Set(ByVal Value As String)
-            m_strHouseNum = Value
+        Set(ByVal value As String)
+            _mStrHouseNum = value
         End Set
     End Property
 
-    Public Property laenderKuerzel() As String
+    Public Property LaenderKuerzel() As String
         Get
-            Return m_strLaenderKuerzel
+            Return _mStrLaenderKuerzel
         End Get
-        Set(ByVal Value As String)
-            m_strLaenderKuerzel = Value
+        Set(ByVal value As String)
+            _mStrLaenderKuerzel = value
         End Set
 
     End Property
 
     Public Property Materialnummer() As String
         Get
-            Return m_material
+            Return _mMaterial
         End Get
-        Set(ByVal Value As String)
-            m_material = Value
+        Set(ByVal value As String)
+            _mMaterial = value
         End Set
     End Property
 
-    Public Property VersandAdresse_ZE() As String
+    Public Property VersandAdresseZe() As String
         Get
-            Return m_versandadr_ZE
+            Return _mVersandadrZe
         End Get
-        Set(ByVal Value As String)
-            m_versandadr_ZE = Value
+        Set(ByVal value As String)
+            _mVersandadrZe = value
         End Set
     End Property
 
-    Public Property VersandAdresse_ZS() As String
+    Public Property VersandAdresseZs() As String
         Get
-            Return m_versandadr_ZS
+            Return _mVersandadrZs
         End Get
-        Set(ByVal Value As String)
-            m_versandadr_ZS = Value
+        Set(ByVal value As String)
+            _mVersandadrZs = value
         End Set
     End Property
 
     Public Property VersandAdresseText() As String
         Get
-            Return m_versandadrtext
+            Return _mVersandadrtext
         End Get
-        Set(ByVal Value As String)
-            m_versandadrtext = Value
+        Set(ByVal value As String)
+            _mVersandadrtext = value
         End Set
     End Property
 
     Public Property VersandGrund() As String
         Get
-            Return m_versgrund
+            Return _mVersgrund
         End Get
-        Set(ByVal Value As String)
-            m_versgrund = Value
+        Set(ByVal value As String)
+            _mVersgrund = value
         End Set
     End Property
 
     Public Property Auftragsstatus() As String
         Get
-            Return strAuftragsstatus
+            Return _strAuftragsstatus
         End Get
-        Set(ByVal Value As String)
-            strAuftragsstatus = Value
+        Set(ByVal value As String)
+            _strAuftragsstatus = value
         End Set
     End Property
 
     Public Property Auftragsnummer() As String
         Get
-            Return strAuftragsnummer
+            Return _strAuftragsnummer
         End Get
-        Set(ByVal Value As String)
-            strAuftragsnummer = Value
+        Set(ByVal value As String)
+            _strAuftragsnummer = value
         End Set
     End Property
 
     Public Property Sachbearbeiter() As String
         Get
-            Return m_Sachbearbeiter
+            Return _mSachbearbeiter
         End Get
-        Set(ByVal Value As String)
-            m_Sachbearbeiter = Value
+        Set(ByVal value As String)
+            _mSachbearbeiter = value
         End Set
     End Property
 
-    Public Property tblUpload() As DataTable
+    Public Property TblUpload() As DataTable
         Get
-            Return m_tblUpload
+            Return _mTblUpload
         End Get
         Set(ByVal value As DataTable)
-            m_tblUpload = value
+            _mTblUpload = value
         End Set
     End Property
 
-    Public Property VersohneAbeld() As String
+    Public Property VersandOhneAbmeldung() As String
         Get
-            Return m_VersohneAbeld
+            Return _mVersandOhneAbmeldung
         End Get
-        Set(ByVal Value As String)
-            m_VersohneAbeld = Value
+        Set(ByVal value As String)
+            _mVersandOhneAbmeldung = value
         End Set
     End Property
 
     Public Property EQuiTyp() As String
         Get
-            Return m_EQuiTyp
+            Return _mEQuiTyp
         End Get
-        Set(ByVal Value As String)
-            m_EQuiTyp = Value
+        Set(ByVal value As String)
+            _mEQuiTyp = value
         End Set
     End Property
 
     Public Property Halter() As String
         Get
-            Return mHalter
+            Return _mHalter
         End Get
-        Set(ByVal Value As String)
-            mHalter = Value
+        Set(ByVal value As String)
+            _mHalter = value
         End Set
     End Property
 
     Public Property Bemerkung() As String
         Get
-            Return mBemerkung
+            Return _mBemerkung
         End Get
-        Set(ByVal Value As String)
-            mBemerkung = Value
+        Set(ByVal value As String)
+            _mBemerkung = value
         End Set
     End Property
 
     Public Property EqTyp() As String
         Get
-            Return mEqTyp
+            Return _mEqTyp
         End Get
-        Set(ByVal Value As String)
-            mEqTyp = Value
+        Set(ByVal value As String)
+            _mEqTyp = value
         End Set
     End Property
 
     Public Property Adressart() As Integer
         Get
-            Return mAdressart
+            Return _mAdressart
         End Get
-        Set(ByVal Value As Integer)
-            mAdressart = Value
+        Set(ByVal value As Integer)
+            _mAdressart = value
         End Set
     End Property
 
     Public Property AdressartText() As String
         Get
-            Return mAdressartText
+            Return _mAdressartText
         End Get
-        Set(ByVal Value As String)
-            mAdressartText = Value
+        Set(ByVal value As String)
+            _mAdressartText = value
         End Set
     End Property
 
     Public Property VersandoptionenText() As String
         Get
-            Return mVersandoptionenText
+            Return _mVersandoptionenText
         End Get
-        Set(ByVal Value As String)
-            mVersandoptionenText = Value
+        Set(ByVal value As String)
+            _mVersandoptionenText = value
         End Set
     End Property
 
     Public Property AutorisierungText() As String
         Get
-            Return mAutorisierungText
+            Return _mAutorisierungText
         End Get
-        Set(ByVal Value As String)
-            mAutorisierungText = Value
+        Set(ByVal value As String)
+            _mAutorisierungText = value
         End Set
     End Property
 
     Public Property Beauftragungsdatum() As String
         Get
-            Return mBeauftragungsdatum
+            Return _mBeauftragungsdatum
         End Get
-        Set(ByVal Value As String)
-            mBeauftragungsdatum = Value
+        Set(ByVal value As String)
+            _mBeauftragungsdatum = value
         End Set
     End Property
 
-    Public Property sReferenz As String
-    Public Property sName1 As String
-    Public Property sName2 As String
-    Public Property sStrasse As String
-    Public Property sPLZ As String
-    Public Property sOrt As String
-
+    Public Property SReferenz As String
+    Public Property SName1 As String
+    Public Property SName2 As String
+    Public Property SStrasse As String
+    Public Property SPlz As String
+    Public Property SOrt As String
     Public Property BrieflieferantNr As String
     Public Property Restlaufzeit As String
     Public Property AbmeldedatumVon As String
@@ -597,6 +595,7 @@ Imports System.Data.SqlClient
     Public Property Abgemeldet As String
     Public Property ZulassungsdatumVon As String
     Public Property ZulassungsdatumBis As String
+    Public Property AufAbmeldungWarten As Boolean
 
 #End Region
 
@@ -612,26 +611,26 @@ Imports System.Data.SqlClient
 
     End Sub
 
-    Public Overloads Sub FILL(ByVal strAppID As String, _
-                            ByVal strSessionID As String, _
+    Public Overloads Sub Fill(ByVal strAppId As String, _
+                            ByVal strSessionId As String, _
                             ByVal page As Page, _
-                            Optional ByVal Upload As Boolean = False)
+                            Optional ByVal upload As Boolean = False)
         m_strClassAndMethod = "Briefversand.FILL"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_UNANGEF_ALLG_01", m_objApp, m_objUser, page)
 
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
-                myProxy.setImportParameter("I_EQTYP", m_EQuiTyp)
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
+                myProxy.setImportParameter("I_EQTYP", _mEQuiTyp)
 
                 'Erweiterte Selektion
                 myProxy.setImportParameter("I_KUNNR_ZP", BrieflieferantNr)
@@ -645,35 +644,35 @@ Imports System.Data.SqlClient
                 myProxy.setImportParameter("I_ZULASS_DAT_BIS", ZulassungsdatumBis)
 
 
-                Dim SapTable As DataTable = myProxy.getImportTable("GT_IN")
+                Dim sapTable As DataTable = myProxy.getImportTable("GT_IN")
 
-                Dim SapRow As DataRow
+                Dim sapRow As DataRow
 
 
-                If Upload = False Then
+                If upload = False Then
 
-                    If Len(m_strFahrgestellnr & m_strKennzeichen & m_strLVnr & m_strZBIINr & m_strRef1 & m_strRef2) > 0 Then
-                        SapRow = SapTable.NewRow
-                        SapRow("CHASSIS_NUM") = m_strFahrgestellnr
-                        SapRow("LICENSE_NUM") = m_strKennzeichen
-                        SapRow("LIZNR") = m_strLVnr
-                        SapRow("TIDNR") = m_strZBIINr
-                        SapRow("ZZREFERENZ1") = m_strRef1
-                        SapRow("ZZREFERENZ2") = m_strRef2
-                        SapTable.Rows.Add(SapRow)
+                    If Len(_mStrFahrgestellnr & _mStrKennzeichen & _mStrLVnr & _mStrZbiiNr & _mStrRef1 & _mStrRef2) > 0 Then
+                        sapRow = sapTable.NewRow
+                        sapRow("CHASSIS_NUM") = _mStrFahrgestellnr
+                        sapRow("LICENSE_NUM") = _mStrKennzeichen
+                        sapRow("LIZNR") = _mStrLVnr
+                        sapRow("TIDNR") = _mStrZbiiNr
+                        sapRow("ZZREFERENZ1") = _mStrRef1
+                        sapRow("ZZREFERENZ2") = _mStrRef2
+                        sapTable.Rows.Add(sapRow)
                     End If
 
                 Else
                     Dim uploadRow As DataRow
-                    For Each uploadRow In m_tblUpload.Rows
-                        SapRow = SapTable.NewRow
-                        SapRow("CHASSIS_NUM") = uploadRow("CHASSIS_NUM").ToString
-                        SapRow("LICENSE_NUM") = uploadRow("LICENSE_NUM").ToString
-                        SapRow("LIZNR") = uploadRow("LIZNR").ToString
-                        SapRow("TIDNR") = uploadRow("TIDNR").ToString
-                        SapRow("ZZREFERENZ1") = uploadRow("ZZREFERENZ1").ToString
-                        SapRow("ZZREFERENZ2") = uploadRow("ZZREFERENZ2").ToString
-                        SapTable.Rows.Add(SapRow)
+                    For Each uploadRow In _mTblUpload.Rows
+                        sapRow = sapTable.NewRow
+                        sapRow("CHASSIS_NUM") = uploadRow("CHASSIS_NUM").ToString
+                        sapRow("LICENSE_NUM") = uploadRow("LICENSE_NUM").ToString
+                        sapRow("LIZNR") = uploadRow("LIZNR").ToString
+                        sapRow("TIDNR") = uploadRow("TIDNR").ToString
+                        sapRow("ZZREFERENZ1") = uploadRow("ZZREFERENZ1").ToString
+                        sapRow("ZZREFERENZ2") = uploadRow("ZZREFERENZ2").ToString
+                        sapTable.Rows.Add(sapRow)
                     Next
 
                 End If
@@ -727,7 +726,7 @@ Imports System.Data.SqlClient
 
                     End If
 
-                    If strKUNNR = "0010026883" Then
+                    If strKunnr = "0010026883" Then
                         getVertragsdaten(page, rowTemp)
                     End If
 
@@ -735,7 +734,7 @@ Imports System.Data.SqlClient
 
                 Next
 
-                m_tblFahrzeuge = CreateOutPut(tblTemp2, strAppID)
+                _mTblFahrzeuge = CreateOutPut(tblTemp2, strAppId)
 
 
                 Dim tblTemp As DataTable = myProxy.getExportTable("GT_FEHLER")
@@ -761,14 +760,14 @@ Imports System.Data.SqlClient
                         rowTemp("TREUSPERR") = "X"
                     End If
 
-                    If strKUNNR = "0010026883" Then
+                    If strKunnr = "0010026883" Then
                         getVertragsdaten(page, rowTemp)
                     End If
 
                     tblTemp.AcceptChanges()
                 Next
 
-                m_tblFahrzeugeFehler = CreateOutPut(tblTemp, strAppID)
+                _mTblFahrzeugeFehler = CreateOutPut(tblTemp, strAppId)
 
                 WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblResult)
 
@@ -787,74 +786,74 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub GetAdressenandZulStellen(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
+    Public Sub GetAdressenandZulStellen(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetAdressenandZulStellen"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_READ_ADRESSPOOL_01", m_objApp, m_objUser, page)
 
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
                 myProxy.setImportParameter("I_EQTYP", EqTyp)
 
                 myProxy.callBapi()
 
-                Dim SapTableZul As DataTable = myProxy.getExportTable("GT_ZULAST")
-                Dim SapTableAdressen As DataTable = myProxy.getExportTable("GT_ADRS")
+                Dim sapTableZul As DataTable = myProxy.getExportTable("GT_ZULAST")
+                Dim sapTableAdressen As DataTable = myProxy.getExportTable("GT_ADRS")
 
-                Dim SapRow As DataRow
+                Dim sapRow As DataRow
 
-                m_tblZulStellen = SapTableZul.Clone
-                m_tblZulStellen.Columns.Add("DISPLAY", GetType(System.String))
+                _mTblZulStellen = sapTableZul.Clone
+                _mTblZulStellen.Columns.Add("DISPLAY", GetType(System.String))
 
-                SapTableZul.DefaultView.RowFilter = "LIFNR <> ''"
+                sapTableZul.DefaultView.RowFilter = "LIFNR <> ''"
 
-                SapTableZul = SapTableZul.DefaultView.ToTable
+                sapTableZul = sapTableZul.DefaultView.ToTable
 
-                For Each row In SapTableZul.Rows
-                    SapRow = m_tblZulStellen.NewRow
+                For Each row In sapTableZul.Rows
+                    sapRow = _mTblZulStellen.NewRow
 
-                    SapRow("DISPLAY") = row("PSTLZ").ToString & " - " & row("ORT01").ToString & " - " & row("STRAS").ToString
-                    SapRow("LIFNR") = row("LIFNR").ToString
-                    SapRow("ORT01") = row("ORT01").ToString
-                    SapRow("PSTLZ") = row("PSTLZ").ToString
-                    SapRow("STRAS") = row("STRAS").ToString
-                    SapRow("ZKFZKZ") = row("ZKFZKZ").ToString
-                    SapRow("NAME1") = row("NAME1").ToString
-                    SapRow("NAME2") = row("NAME2").ToString
-                    m_tblZulStellen.Rows.Add(SapRow)
+                    sapRow("DISPLAY") = row("PSTLZ").ToString & " - " & row("ORT01").ToString & " - " & row("STRAS").ToString
+                    sapRow("LIFNR") = row("LIFNR").ToString
+                    sapRow("ORT01") = row("ORT01").ToString
+                    sapRow("PSTLZ") = row("PSTLZ").ToString
+                    sapRow("STRAS") = row("STRAS").ToString
+                    sapRow("ZKFZKZ") = row("ZKFZKZ").ToString
+                    sapRow("NAME1") = row("NAME1").ToString
+                    sapRow("NAME2") = row("NAME2").ToString
+                    _mTblZulStellen.Rows.Add(sapRow)
                 Next
 
-                m_tblAdressen = SapTableAdressen.Clone
-                m_tblAdressen.Columns.Add("DISPLAY", GetType(System.String))
+                _mTblAdressen = sapTableAdressen.Clone
+                _mTblAdressen.Columns.Add("DISPLAY", GetType(System.String))
 
-                For Each row In SapTableAdressen.Rows
-                    SapRow = m_tblAdressen.NewRow
-                    SapRow("IDENT") = row("IDENT").ToString
-                    SapRow("DISPLAY") = row("NAME1").ToString & " " & row("NAME2").ToString & " - " & row("STREET").ToString & ", " & row("CITY1").ToString
-                    SapRow("KUNNR") = row("KUNNR").ToString
-                    SapRow("NAME1") = row("NAME1").ToString
-                    SapRow("NAME2") = row("NAME2").ToString
-                    SapRow("STREET") = row("STREET").ToString
-                    SapRow("HOUSE_NUM1") = row("HOUSE_NUM1").ToString
-                    SapRow("POST_CODE1") = row("POST_CODE1").ToString
-                    SapRow("CITY1") = row("CITY1").ToString
-                    SapRow("COUNTRY") = row("COUNTRY").ToString
-                    SapRow("NAME1") = row("NAME1").ToString
-                    SapRow("NAME2") = row("NAME2").ToString
-                    m_tblAdressen.Rows.Add(SapRow)
+                For Each row In sapTableAdressen.Rows
+                    sapRow = _mTblAdressen.NewRow
+                    sapRow("IDENT") = row("IDENT").ToString
+                    sapRow("DISPLAY") = row("NAME1").ToString & " " & row("NAME2").ToString & " - " & row("STREET").ToString & ", " & row("CITY1").ToString
+                    sapRow("KUNNR") = row("KUNNR").ToString
+                    sapRow("NAME1") = row("NAME1").ToString
+                    sapRow("NAME2") = row("NAME2").ToString
+                    sapRow("STREET") = row("STREET").ToString
+                    sapRow("HOUSE_NUM1") = row("HOUSE_NUM1").ToString
+                    sapRow("POST_CODE1") = row("POST_CODE1").ToString
+                    sapRow("CITY1") = row("CITY1").ToString
+                    sapRow("COUNTRY") = row("COUNTRY").ToString
+                    sapRow("NAME1") = row("NAME1").ToString
+                    sapRow("NAME2") = row("NAME2").ToString
+                    _mTblAdressen.Rows.Add(sapRow)
                 Next
 
-                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblAdressen)
-                getLaender(page)
+                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, _mTblAdressen)
+                GetLaender(page)
 
             Catch ex As Exception
                 m_intStatus = -5555
@@ -871,58 +870,58 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub GetAdressen(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
+    Public Sub GetAdressen(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetAdressen"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_READ_ADRESSPOOL_01", m_objApp, m_objUser, page)
 
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
                 myProxy.setImportParameter("I_EQTYP", EqTyp)
-                myProxy.setImportParameter("I_POS_TEXT", sReferenz)
-                myProxy.setImportParameter("I_NAME1", sName1)
-                myProxy.setImportParameter("I_NAME2", sName2)
-                myProxy.setImportParameter("I_STRAS", sStrasse)
-                myProxy.setImportParameter("I_PSTLZ", sPLZ)
-                myProxy.setImportParameter("I_ORT01", sOrt)
+                myProxy.setImportParameter("I_POS_TEXT", SReferenz)
+                myProxy.setImportParameter("I_NAME1", SName1)
+                myProxy.setImportParameter("I_NAME2", SName2)
+                myProxy.setImportParameter("I_STRAS", SStrasse)
+                myProxy.setImportParameter("I_PSTLZ", SPlz)
+                myProxy.setImportParameter("I_ORT01", SOrt)
 
                 myProxy.callBapi()
 
-                Dim SapTableAdressen As DataTable = myProxy.getExportTable("GT_ADRS")
+                Dim sapTableAdressen As DataTable = myProxy.getExportTable("GT_ADRS")
 
-                Dim SapRow As DataRow
+                Dim sapRow As DataRow
 
-                m_tblAdressen = SapTableAdressen.Clone
-                m_tblAdressen.Columns.Add("DISPLAY", GetType(System.String))
+                _mTblAdressen = sapTableAdressen.Clone
+                _mTblAdressen.Columns.Add("DISPLAY", GetType(System.String))
 
-                For Each row In SapTableAdressen.Rows
-                    SapRow = m_tblAdressen.NewRow
-                    SapRow("IDENT") = row("IDENT").ToString
-                    SapRow("DISPLAY") = row("NAME1").ToString & " " & row("NAME2").ToString & " - " & row("STREET").ToString & ", " & row("CITY1").ToString
-                    SapRow("KUNNR") = row("KUNNR").ToString
-                    SapRow("NAME1") = row("NAME1").ToString
-                    SapRow("NAME2") = row("NAME2").ToString
-                    SapRow("STREET") = row("STREET").ToString
-                    SapRow("HOUSE_NUM1") = row("HOUSE_NUM1").ToString
-                    SapRow("POST_CODE1") = row("POST_CODE1").ToString
-                    SapRow("CITY1") = row("CITY1").ToString
-                    SapRow("COUNTRY") = row("COUNTRY").ToString
-                    SapRow("SAPNR") = row("SAPNR").ToString
-                    SapRow("NAME1") = row("NAME1").ToString
-                    SapRow("NAME2") = row("NAME2").ToString
-                    m_tblAdressen.Rows.Add(SapRow)
+                For Each row In sapTableAdressen.Rows
+                    sapRow = _mTblAdressen.NewRow
+                    sapRow("IDENT") = row("IDENT").ToString
+                    sapRow("DISPLAY") = row("NAME1").ToString & " " & row("NAME2").ToString & " - " & row("STREET").ToString & ", " & row("CITY1").ToString
+                    sapRow("KUNNR") = row("KUNNR").ToString
+                    sapRow("NAME1") = row("NAME1").ToString
+                    sapRow("NAME2") = row("NAME2").ToString
+                    sapRow("STREET") = row("STREET").ToString
+                    sapRow("HOUSE_NUM1") = row("HOUSE_NUM1").ToString
+                    sapRow("POST_CODE1") = row("POST_CODE1").ToString
+                    sapRow("CITY1") = row("CITY1").ToString
+                    sapRow("COUNTRY") = row("COUNTRY").ToString
+                    sapRow("SAPNR") = row("SAPNR").ToString
+                    sapRow("NAME1") = row("NAME1").ToString
+                    sapRow("NAME2") = row("NAME2").ToString
+                    _mTblAdressen.Rows.Add(sapRow)
                 Next
 
-                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblAdressen)
+                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, _mTblAdressen)
 
             Catch ex As Exception
                 m_intStatus = -5555
@@ -939,35 +938,35 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub GetAbrufgrund(ByVal strAppID As String, _
-                   ByVal strSessionID As String, _
+    Public Sub GetAbrufgrund(ByVal strAppId As String, _
+                   ByVal strSessionId As String, _
                    ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetAbrufgrund"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_READ_VERS_GRUND_KUN_01", m_objApp, m_objUser, page)
 
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
-                myProxy.setImportParameter("I_ABCKZ", m_strVersandArt)
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
+                myProxy.setImportParameter("I_ABCKZ", _mStrVersandArt)
                 myProxy.setImportParameter("I_GRUPPE", "")
 
 
                 myProxy.callBapi()
 
 
-                m_tblVersandgruende = myProxy.getExportTable("GT_OUT")
+                _mTblVersandgruende = myProxy.getExportTable("GT_OUT")
 
 
-                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblVersandgruende)
+                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, _mTblVersandgruende)
             Catch ex As Exception
                 m_intStatus = -5555
                 Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
@@ -983,18 +982,18 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub GetVersandOptions(ByVal strAppID As String, _
-                       ByVal strSessionID As String, _
+    Public Sub GetVersandOptions(ByVal strAppId As String, _
+                       ByVal strSessionId As String, _
                        ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetVersandOptions"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
@@ -1002,64 +1001,66 @@ Imports System.Data.SqlClient
 
                 myProxy.setImportParameter("I_VWAG", "X")
 
-                Dim SapTable As DataTable = myProxy.getImportTable("GT_IN_AG")
+                Dim sapTable As DataTable = myProxy.getImportTable("GT_IN_AG")
 
-                Dim SapRow As DataRow
+                Dim sapRow As DataRow
 
-                SapRow = SapTable.NewRow
+                sapRow = sapTable.NewRow
 
-                SapRow("AG") = strKUNNR
+                sapRow("AG") = strKunnr
 
-                SapTable.Rows.Add(SapRow)
+                sapTable.Rows.Add(sapRow)
 
-                Dim SapProzess As DataTable = myProxy.getImportTable("GT_IN_PROZESS")
+                Dim sapProzess As DataTable = myProxy.getImportTable("GT_IN_PROZESS")
 
-                Dim RowProz As DataRow
+                Dim rowProz As DataRow
 
-                RowProz = SapProzess.NewRow
+                rowProz = sapProzess.NewRow
 
-                RowProz("SORT1") = m_OptionFlag
+                rowProz("SORT1") = _mOptionFlag
 
-                SapProzess.Rows.Add(RowProz)
+                sapProzess.Rows.Add(rowProz)
 
                 myProxy.callBapi()
 
-                m_tblVersandOptions = myProxy.getExportTable("GT_OUT_DL")
-                m_tblVersandOptions.Columns.Add("Selected", GetType(System.String))
-                m_tblVersandOptions.Columns.Add("Description", GetType(System.String))
-                m_tblVersandOptions.Columns("Description").DefaultValue = ""
+                _mTblVersandOptions = myProxy.getExportTable("GT_OUT_DL")
 
-                m_tblVersandOptions.AcceptChanges()
+ 
+                _mTblVersandOptions.Columns.Add("Selected", GetType(System.String))
+                _mTblVersandOptions.Columns.Add("Description", GetType(System.String))
+                _mTblVersandOptions.Columns("Description").DefaultValue = ""
 
-                For Each dr As DataRow In m_tblVersandOptions.Rows
+                _mTblVersandOptions.AcceptChanges()
+
+                For Each dr As DataRow In _mTblVersandOptions.Rows
                     dr("Description") = ""
                 Next
 
 
-                For Each VersandRow As DataRow In m_tblVersandOptions.Rows
-                    If VersandRow("VW_AG") = "X" Then
-                        VersandRow("Selected") = "1"
+                For Each versandRow As DataRow In _mTblVersandOptions.Rows
+                    If versandRow("VW_AG") = "X" Then
+                        versandRow("Selected") = "1"
                     End If
                 Next
 
 
-                Dim LangTextTable As DataTable = myProxy.getExportTable("GT_OUT_ESLL_LTXT")
+                Dim langTextTable As DataTable = myProxy.getExportTable("GT_OUT_ESLL_LTXT")
 
-                If LangTextTable.Rows.Count > 0 Then
+                If langTextTable.Rows.Count > 0 Then
 
                     Dim strText As String
 
-                    For Each dr As DataRow In m_tblVersandOptions.Rows
+                    For Each dr As DataRow In _mTblVersandOptions.Rows
 
                         strText = ""
 
-                        LangTextTable.DefaultView.RowFilter = "SRVPOS = '" & dr("ASNUM").ToString.PadLeft(18, "0"c) & "'"
+                        langTextTable.DefaultView.RowFilter = "SRVPOS = '" & dr("ASNUM").ToString.PadLeft(18, "0"c) & "'"
 
-                        If LangTextTable.DefaultView.Count > 0 Then
+                        If langTextTable.DefaultView.Count > 0 Then
 
-                            For i = 0 To LangTextTable.DefaultView.Count - 1
+                            For i = 0 To langTextTable.DefaultView.Count - 1
 
-                                strText &= LangTextTable.DefaultView.Item(i)("TDLINE").ToString & " "
+                                strText &= langTextTable.DefaultView.Item(i)("TDLINE").ToString & " "
 
                             Next
 
@@ -1071,7 +1072,7 @@ Imports System.Data.SqlClient
 
                 End If
 
-                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblVersandOptions)
+                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, _mTblVersandOptions)
 
             Catch ex As Exception
                 m_intStatus = -5555
@@ -1088,7 +1089,7 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Private Sub getLaender(ByVal page As Page)
+    Private Sub GetLaender(ByVal page As Page)
         '----------------------------------------------------------------------
         ' Methode: getLaender
         ' Autor: JJU
@@ -1105,13 +1106,13 @@ Imports System.Data.SqlClient
 
             myProxy.callBapi()
 
-            m_tblLaender = myProxy.getExportTable("GT_WEB")
+            _mTblLaender = myProxy.getExportTable("GT_WEB")
 
 
-            m_tblLaender.Columns.Add("Beschreibung", Type.GetType("System.String"))
-            m_tblLaender.Columns.Add("FullDesc", Type.GetType("System.String"))
+            _mTblLaender.Columns.Add("Beschreibung", Type.GetType("System.String"))
+            _mTblLaender.Columns.Add("FullDesc", Type.GetType("System.String"))
             Dim rowTemp As DataRow
-            For Each rowTemp In m_tblLaender.Rows
+            For Each rowTemp In _mTblLaender.Rows
                 If CInt(rowTemp("LNPLZ")) > 0 Then
                     rowTemp("Beschreibung") = CStr(rowTemp("Landx")) & " (" & CStr(CInt(rowTemp("LNPLZ"))) & ")"
                 Else
@@ -1134,42 +1135,42 @@ Imports System.Data.SqlClient
 
     End Sub
 
-    Sub GetStueckliste(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
+    Sub GetStueckliste(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
         m_strClassAndMethod = "Briefversand.GetStueckliste"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
-            Dim strKUNNR = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
                 Dim myProxy = DynSapProxy.getProxy("Z_DPM_READ_EQUI_STL_01", m_objApp, m_objUser, page)
-                myProxy.setImportParameter("I_AG", strKUNNR)
+                myProxy.setImportParameter("I_AG", strKunnr)
                 myProxy.setImportParameter("I_EQTYP", "T")
                 myProxy.setImportParameter("I_STATUS", "L;T;V") ' lagernd, temporär versandt, Versand angefordert
 
-                Dim gt_in = myProxy.getImportTable("GT_IN")
+                Dim gtIn = myProxy.getImportTable("GT_IN")
                 Fahrzeuge.Select("Selected = '1'").ToList().ForEach(Sub(r)
-                                                                        Dim new_r = gt_in.NewRow
-                                                                        new_r("CHASSIS_NUM") = r("Fahrgestellnummer")
-                                                                        new_r("EQUNR") = r("EQUNR")
-                                                                        gt_in.Rows.Add(new_r)
+                                                                        Dim newR = gtIn.NewRow
+                                                                        newR("CHASSIS_NUM") = r("Fahrgestellnummer")
+                                                                        newR("EQUNR") = r("EQUNR")
+                                                                        gtIn.Rows.Add(newR)
                                                                     End Sub)
-                gt_in.AcceptChanges()
+                gtIn.AcceptChanges()
 
                 myProxy.callBapi()
 
-                Dim gt_out = myProxy.getExportTable("GT_OUT")
+                Dim gtOut = myProxy.getExportTable("GT_OUT")
 
                 Dim col = New DataColumn("Selected", GetType(String))
                 col.DefaultValue = String.Empty
-                gt_out.Columns.Add(col)
-                gt_out.AcceptChanges()
-                m_tblStueckliste = gt_out
+                gtOut.Columns.Add(col)
+                gtOut.AcceptChanges()
+                _mTblStueckliste = gtOut
 
-                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblStueckliste)
+                WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, _mTblStueckliste)
             Catch ex As Exception
                 m_intStatus = -5555
                 Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
@@ -1185,7 +1186,7 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Private Sub getBrieflieferanten(ByVal page As Page)
+    Private Sub GetBrieflieferanten(ByVal page As Page)
 
         m_intStatus = 0
         Try
@@ -1196,13 +1197,13 @@ Imports System.Data.SqlClient
 
             myProxy.callBapi()
 
-            m_Brieflieferanten = myProxy.getExportTable("GT_OUT")
+            _mBrieflieferanten = myProxy.getExportTable("GT_OUT")
 
 
-            m_Brieflieferanten.Columns.Add("Adresse", Type.GetType("System.String"))
+            _mBrieflieferanten.Columns.Add("Adresse", Type.GetType("System.String"))
 
             Dim rowTemp As DataRow
-            For Each rowTemp In m_Brieflieferanten.Rows
+            For Each rowTemp In _mBrieflieferanten.Rows
                 rowTemp("Adresse") = rowTemp("NAME1")
 
                 If String.IsNullOrEmpty(rowTemp("NAME2")) = False Then
@@ -1213,16 +1214,16 @@ Imports System.Data.SqlClient
 
             Next
 
-            Dim NewRow As DataRow = m_Brieflieferanten.NewRow
+            Dim newRow As DataRow = _mBrieflieferanten.NewRow
 
-            NewRow("KUNNR") = "0"
-            NewRow("Adresse") = "--- Auswahl ---"
+            newRow("KUNNR") = "0"
+            newRow("Adresse") = "--- Auswahl ---"
 
-            m_Brieflieferanten.Rows.Add(NewRow)
+            _mBrieflieferanten.Rows.Add(newRow)
 
-            m_Brieflieferanten.DefaultView.Sort = "Adresse"
+            _mBrieflieferanten.DefaultView.Sort = "Adresse"
 
-            m_Brieflieferanten = m_Brieflieferanten.DefaultView.ToTable
+            _mBrieflieferanten = _mBrieflieferanten.DefaultView.ToTable
 
 
         Catch ex As Exception
@@ -1238,47 +1239,47 @@ Imports System.Data.SqlClient
 
     End Sub
 
-    Public Sub Anfordern(ByVal strAppID As String, _
-                      ByVal strSessionID As String, _
+    Public Sub Anfordern(ByVal strAppId As String, _
+                      ByVal strSessionId As String, _
                       ByVal page As Page)
         m_strClassAndMethod = "Briefversand.Anfordern"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
                 Dim myProxy = DynSapProxy.getProxy("Z_DPM_FILL_VERSAUFTR", m_objApp, m_objUser, page)
-                myProxy.setImportParameter("KUNNR_AG", strKUNNR)
+                myProxy.setImportParameter("KUNNR_AG", strKunnr)
 
-                Dim SapTable = myProxy.getImportTable("GT_IN")
+                Dim sapTable = myProxy.getImportTable("GT_IN")
 
                 Dim selectedRows = Fahrzeuge.Select("Selected = '1'")
                 If selectedRows.Length > 0 Then
                     For Each Fahrzeugrow In selectedRows
 
-                        If Not m_tblStueckliste Is Nothing Then
+                        If Not _mTblStueckliste Is Nothing Then
 
                             Dim selectedParts = Stueckliste.Select(String.Format("Selected='1' and EQUNR='{0}'", Fahrzeugrow("EQUNR")))
                             If selectedParts.Length > 0 Then
                                 For Each partRow As DataRow In selectedParts
-                                    Dim SapRow As DataRow = SapTable.NewRow
-                                    FillSapRow(SapRow, Fahrzeugrow, strKUNNR, partRow)
-                                    SapTable.Rows.Add(SapRow)
+                                    Dim sapRow As DataRow = sapTable.NewRow
+                                    FillSapRow(sapRow, Fahrzeugrow, strKunnr, partRow)
+                                    sapTable.Rows.Add(sapRow)
                                 Next
                             Else
-                                Dim SapRow As DataRow = SapTable.NewRow
-                                FillSapRow(SapRow, Fahrzeugrow, strKUNNR)
-                                SapTable.Rows.Add(SapRow)
+                                Dim sapRow As DataRow = sapTable.NewRow
+                                FillSapRow(sapRow, Fahrzeugrow, strKunnr)
+                                sapTable.Rows.Add(sapRow)
                             End If
                         Else
-                            Dim SapRow As DataRow = SapTable.NewRow
-                            FillSapRow(SapRow, Fahrzeugrow, strKUNNR)
-                            SapTable.Rows.Add(SapRow)
+                            Dim sapRow As DataRow = sapTable.NewRow
+                            FillSapRow(sapRow, Fahrzeugrow, strKunnr)
+                            sapTable.Rows.Add(sapRow)
 
                         End If
 
@@ -1287,22 +1288,22 @@ Imports System.Data.SqlClient
 
                     myProxy.callBapi()
 
-                    m_tblVersandError = myProxy.getExportTable("GT_ERR")
+                    _mTblVersandError = myProxy.getExportTable("GT_ERR")
 
 
-                    mE_SUBRC = myProxy.getExportParameter("E_SUBRC")
-                    mE_MESSAGE = myProxy.getExportParameter("E_MESSAGE")
+                    _mESubrc = myProxy.getExportParameter("E_SUBRC")
+                    _mEMessage = myProxy.getExportParameter("E_MESSAGE")
 
-                    If IsNumeric(mE_SUBRC) Then
-                        m_intStatus = CInt(mE_SUBRC)
-                        If mE_MESSAGE.Length > 0 Then m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden."
+                    If IsNumeric(_mESubrc) Then
+                        m_intStatus = CInt(_mESubrc)
+                        If _mEMessage.Length > 0 Then m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden."
                     End If
-                    If m_tblVersandError.Rows.Count > 0 Then
+                    If _mTblVersandError.Rows.Count > 0 Then
                         m_strMessage = "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden."
                     End If
 
-                    For Each tmpRow As DataRow In m_tblFahrzeuge.Select("Selected = '1'")
-                        selectedRows = m_tblVersandError.Select("CHASSIS_NUM = '" & tmpRow("Fahrgestellnummer").ToString & "'")
+                    For Each tmpRow As DataRow In _mTblFahrzeuge.Select("Selected = '1'")
+                        selectedRows = _mTblVersandError.Select("CHASSIS_NUM = '" & tmpRow("Fahrgestellnummer").ToString & "'")
                         If selectedRows.Length > 0 Then
                             'tmpRow("Bemerkung") = "Fehler: " & String.Join(", ", selectedRows.Select(Function(r) r("Bemerkung")).ToArray)
                             Dim objArray As Object() = selectedRows.Select(Function(r) r("Bemerkung")).ToArray
@@ -1311,10 +1312,10 @@ Imports System.Data.SqlClient
                                 strArray(i) = CStr(objArray(i))
                             Next
                             tmpRow("Bemerkung") = String.Join(", ", strArray)   '"Fehler: " & 
-                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, _mTblFahrzeuge)
                         Else
                             tmpRow("Bemerkung") = "erfolgreich"
-                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, _mTblFahrzeuge)
                         End If
                     Next
                 Else : Throw New Exception("Keine Fahrzeuge ausgewählt!")
@@ -1338,24 +1339,24 @@ Imports System.Data.SqlClient
         row("ZZKUNNR_AG") = kundennr
         row("LICENSE_NUM") = fzgRow("Kennzeichen").ToString
         row("CHASSIS_NUM") = fzgRow("Fahrgestellnummer").ToString
-        row("ZZBRFVERS") = m_Briefversand
-        row("ZZSCHLVERS") = m_SchluesselVersand
-        row("ZZABMELD") = m_VersohneAbeld
-        row("ABCKZ") = m_strVersandArt
-        row("MATNR") = m_material
-        row("ZZVGRUND") = m_versgrund
+        row("ZZBRFVERS") = _mBriefversand
+        row("ZZSCHLVERS") = _mSchluesselVersand
+        row("ZZABMELD") = _mVersandOhneAbmeldung
+        row("ABCKZ") = _mStrVersandArt
+        row("MATNR") = _mMaterial
+        row("ZZVGRUND") = _mVersgrund
         row("ZZANFDT") = Now.ToShortDateString
-        row("ZZBETREFF") = mBemerkung
-        row("ZZNAME_ZH") = mHalter
+        row("ZZBETREFF") = _mBemerkung
+        row("ZZNAME_ZH") = _mHalter
 
         'PartnerNr
-        row("ZZKUNNR_ZS") = m_versandadr_ZS
+        row("ZZKUNNR_ZS") = _mVersandadrZs
 
         'Zulassungsstelle
-        row("ZZADRNR_ZS") = m_versandadr_ZE
+        row("ZZADRNR_ZS") = _mVersandadrZe
 
         If VersandArt = "1" Then
-            If m_versandadr_ZE.Length > 0 Then
+            If _mVersandadrZe.Length > 0 Then
                 row("ZZ_MAHNA") = "0001"
             Else
                 row("ZZ_MAHNA") = "0002"
@@ -1364,14 +1365,14 @@ Imports System.Data.SqlClient
 
         row("ZZKONZS_ZS") = ""
         ' Freie Adresse
-        row("ZZNAME1_ZS") = m_strName1
-        row("ZZNAME2_ZS") = m_strName2
-        row("ZZSTRAS_ZS") = m_strStreet
-        row("ZZHAUSNR_ZS") = m_strHouseNum
-        row("ZZPSTLZ_ZS") = m_strPostcode
-        row("ZZORT01_ZS") = m_strCity
-        row("COUNTRY_ZS") = m_strLaenderKuerzel
-        row("ZZLAND_ZS") = m_strLaenderKuerzel
+        row("ZZNAME1_ZS") = _mStrName1
+        row("ZZNAME2_ZS") = _mStrName2
+        row("ZZSTRAS_ZS") = _mStrStreet
+        row("ZZHAUSNR_ZS") = _mStrHouseNum
+        row("ZZPSTLZ_ZS") = _mStrPostcode
+        row("ZZORT01_ZS") = _mStrCity
+        row("COUNTRY_ZS") = _mStrLaenderKuerzel
+        row("ZZLAND_ZS") = _mStrLaenderKuerzel
         row("ERNAM") = Left(m_objUser.UserName, 12)
         row("LIZNR") = fzgRow("Leasingnummer").ToString
 
@@ -1380,103 +1381,103 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub AnfordernAusAutorisierung(ByVal strAppID As String, _
-                  ByVal strSessionID As String, _
+    Public Sub AnfordernAusAutorisierung(ByVal strAppId As String, _
+                  ByVal strSessionId As String, _
                   ByVal page As Page)
 
         m_strClassAndMethod = "Briefversand.Anfordern"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_FILL_VERSAUFTR", m_objApp, m_objUser, page)
-                myProxy.setImportParameter("KUNNR_AG", strKUNNR)
-                Dim SapTable As DataTable = myProxy.getImportTable("GT_IN")
+                myProxy.setImportParameter("KUNNR_AG", strKunnr)
+                Dim sapTable As DataTable = myProxy.getImportTable("GT_IN")
 
-                Dim SelectedRow() As DataRow
-                Dim Fahrzeugrow As DataRow
+                Dim selectedRow() As DataRow
+                Dim fahrzeugrow As DataRow
 
-                SelectedRow = m_tblFahrzeuge.Select("Selected = '1' AND EQUNR='" & m_strReferenceforAut & "'")
-                If SelectedRow.Length > 0 Then
-                    For Each Fahrzeugrow In SelectedRow
+                selectedRow = _mTblFahrzeuge.Select("Selected = '1' AND EQUNR='" & _mStrReferenceforAut & "'")
+                If selectedRow.Length > 0 Then
+                    For Each fahrzeugrow In selectedRow
 
-                        Dim SapRow As DataRow = SapTable.NewRow
+                        Dim sapRow As DataRow = sapTable.NewRow
 
-                        SapRow("ZZKUNNR_AG") = strKUNNR
-                        SapRow("LICENSE_NUM") = Fahrzeugrow("Kennzeichen").ToString
-                        SapRow("CHASSIS_NUM") = Fahrzeugrow("Fahrgestellnummer").ToString
-                        SapRow("ZZBRFVERS") = m_Briefversand
-                        SapRow("ZZSCHLVERS") = m_SchluesselVersand
-                        SapRow("ZZABMELD") = m_VersohneAbeld
-                        SapRow("ABCKZ") = m_strVersandArt
-                        SapRow("MATNR") = m_material
-                        SapRow("ZZVGRUND") = m_versgrund
-                        SapRow("ZZANFDT") = Now.ToShortDateString
+                        sapRow("ZZKUNNR_AG") = strKunnr
+                        sapRow("LICENSE_NUM") = fahrzeugrow("Kennzeichen").ToString
+                        sapRow("CHASSIS_NUM") = fahrzeugrow("Fahrgestellnummer").ToString
+                        sapRow("ZZBRFVERS") = _mBriefversand
+                        sapRow("ZZSCHLVERS") = _mSchluesselVersand
+                        sapRow("ZZABMELD") = _mVersandOhneAbmeldung
+                        sapRow("ABCKZ") = _mStrVersandArt
+                        sapRow("MATNR") = _mMaterial
+                        sapRow("ZZVGRUND") = _mVersgrund
+                        sapRow("ZZANFDT") = Now.ToShortDateString
                         'PartnerNr
 
-                        SapRow("ZZKUNNR_ZS") = m_versandadr_ZS
+                        sapRow("ZZKUNNR_ZS") = _mVersandadrZs
 
                         'Zulassungsstelle
-                        SapRow("ZZADRNR_ZS") = m_versandadr_ZE
+                        sapRow("ZZADRNR_ZS") = _mVersandadrZe
 
                         If VersandArt = "1" Then
-                            If m_versandadr_ZE.Length > 0 Then
-                                SapRow("ZZ_MAHNA") = "0001"
+                            If _mVersandadrZe.Length > 0 Then
+                                sapRow("ZZ_MAHNA") = "0001"
                             Else
-                                SapRow("ZZ_MAHNA") = "0002"
+                                sapRow("ZZ_MAHNA") = "0002"
                             End If
                         End If
 
-                        SapRow("ZZKONZS_ZS") = ""
+                        sapRow("ZZKONZS_ZS") = ""
                         ' Freie Adresse
-                        SapRow("ZZNAME1_ZS") = m_strName1
-                        SapRow("ZZNAME2_ZS") = m_strName2
-                        SapRow("ZZSTRAS_ZS") = m_strStreet
-                        SapRow("ZZHAUSNR_ZS") = m_strHouseNum
-                        SapRow("ZZPSTLZ_ZS") = m_strPostcode
-                        SapRow("ZZORT01_ZS") = m_strCity
-                        SapRow("COUNTRY_ZS") = m_strLaenderKuerzel
+                        sapRow("ZZNAME1_ZS") = _mStrName1
+                        sapRow("ZZNAME2_ZS") = _mStrName2
+                        sapRow("ZZSTRAS_ZS") = _mStrStreet
+                        sapRow("ZZHAUSNR_ZS") = _mStrHouseNum
+                        sapRow("ZZPSTLZ_ZS") = _mStrPostcode
+                        sapRow("ZZORT01_ZS") = _mStrCity
+                        sapRow("COUNTRY_ZS") = _mStrLaenderKuerzel
 
-                        SapRow("ERNAM") = Left(m_objUser.UserName, 12)
-                        SapRow("LIZNR") = Fahrzeugrow("Leasingnummer").ToString
+                        sapRow("ERNAM") = Left(m_objUser.UserName, 12)
+                        sapRow("LIZNR") = fahrzeugrow("Leasingnummer").ToString
 
-                        SapTable.Rows.Add(SapRow)
+                        sapTable.Rows.Add(sapRow)
 
                     Next
 
                     myProxy.callBapi()
 
-                    m_tblVersandError = myProxy.getExportTable("GT_ERR")
+                    _mTblVersandError = myProxy.getExportTable("GT_ERR")
 
 
-                    mE_SUBRC = myProxy.getExportParameter("E_SUBRC")
-                    mE_MESSAGE = myProxy.getExportParameter("E_MESSAGE")
-                    If IsNumeric(mE_SUBRC) Then
-                        m_intStatus = CInt(mE_SUBRC)
-                        If mE_MESSAGE.Length > 0 Then m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden."
+                    _mESubrc = myProxy.getExportParameter("E_SUBRC")
+                    _mEMessage = myProxy.getExportParameter("E_MESSAGE")
+                    If IsNumeric(_mESubrc) Then
+                        m_intStatus = CInt(_mESubrc)
+                        If _mEMessage.Length > 0 Then m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden."
                     End If
-                    If m_tblVersandError.Rows.Count > 0 Then
+                    If _mTblVersandError.Rows.Count > 0 Then
                         m_strMessage = "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden."
                     End If
 
 
 
-                    For Each tmpRow As DataRow In m_tblFahrzeuge.Select("Selected = '1' AND EQUNR='" & m_strReferenceforAut & "'")
-                        SelectedRow = m_tblVersandError.Select("CHASSIS_NUM = '" & tmpRow("Fahrgestellnummer").ToString & "'")
-                        If SelectedRow.Length > 0 Then
+                    For Each tmpRow As DataRow In _mTblFahrzeuge.Select("Selected = '1' AND EQUNR='" & _mStrReferenceforAut & "'")
+                        selectedRow = _mTblVersandError.Select("CHASSIS_NUM = '" & tmpRow("Fahrgestellnummer").ToString & "'")
+                        If selectedRow.Length > 0 Then
                             m_intStatus = -2100
-                            m_strMessage = "Fehler: " & SelectedRow(0)("Bemerkung").ToString
-                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, m_tblFahrzeuge)
+                            m_strMessage = "Fehler: " & selectedRow(0)("Bemerkung").ToString
+                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, _mTblFahrzeuge)
                         Else
                             m_strMessage = "Ihre Anforderung wurde erfolgreich in unserem System übernommen."
-                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; FIN = " + tmpRow("Fahrgestellnummer").ToString, _mTblFahrzeuge)
                         End If
                     Next
 
@@ -1499,49 +1500,49 @@ Imports System.Data.SqlClient
         End If
     End Sub
 
-    Public Sub Anfordern2(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
+    Public Sub Anfordern2(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
         m_strClassAndMethod = "Briefversand.Anfordern2"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
                 Dim myProxy = DynSapProxy.getProxy("Z_DPM_IMP_VERS_BEAUFTR_01", m_objApp, m_objUser, page)
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
 
-                Dim SapTable = myProxy.getImportTable("GT_IN")
+                Dim sapTable = myProxy.getImportTable("GT_IN")
 
                 Dim selectedRows = Fahrzeuge.Select("Selected = '1'")
                 If selectedRows.Length > 0 Then
                     For Each Fahrzeugrow In selectedRows
 
-                        Dim SapRow As DataRow = SapTable.NewRow
-                        FillSapRow2(SapRow, Fahrzeugrow)
-                        SapTable.Rows.Add(SapRow)
+                        Dim sapRow As DataRow = sapTable.NewRow
+                        FillSapRow2(sapRow, Fahrzeugrow)
+                        sapTable.Rows.Add(sapRow)
 
                     Next
 
                     myProxy.callBapi()
 
-                    m_tblVersandError = myProxy.getExportTable("GT_OUT")
+                    _mTblVersandError = myProxy.getExportTable("GT_OUT")
 
-                    If m_tblVersandError.Select("ABLAUFSTATUS='FEHLERHAFT'").Length > 0 Then
+                    If _mTblVersandError.Select("ABLAUFSTATUS='FEHLERHAFT'").Length > 0 Then
                         m_strMessage = "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden."
                     End If
 
-                    For Each tmpRow As DataRow In m_tblFahrzeuge.Select("Selected = '1'")
-                        selectedRows = m_tblVersandError.Select("LEISTUNGSIDCMS = '" & tmpRow("Leasingnummer").ToString & "'")
+                    For Each tmpRow As DataRow In _mTblFahrzeuge.Select("Selected = '1'")
+                        selectedRows = _mTblVersandError.Select("LEISTUNGSIDCMS = '" & tmpRow("Leasingnummer").ToString & "'")
                         If selectedRows.Length > 0 AndAlso selectedRows(0)("ABLAUFSTATUS").ToString() = "FEHLERHAFT" Then
                             tmpRow("Bemerkung") = selectedRows(0)("FEHLERART").ToString()
-                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, _mTblFahrzeuge)
                         Else
                             tmpRow("Bemerkung") = "erfolgreich"
-                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, _mTblFahrzeuge)
                         End If
                     Next
                 Else : Throw New Exception("Keine Fahrzeuge ausgewählt!")
@@ -1566,10 +1567,10 @@ Imports System.Data.SqlClient
         row("LEISTUNGSIDCMS") = fzgRow("Leasingnummer").ToString
         row("SICHERHEITSIDCMS") = ""
         row("ZBRIEF") = fzgRow("NummerZBII").ToString
-        row("ANF_ART") = m_strVersandArt
-        row("VERS_ART") = m_material
-        row("VERS_GRUND") = m_versgrund
-        Select Case mAdressart
+        row("ANF_ART") = _mStrVersandArt
+        row("VERS_ART") = _mMaterial
+        row("VERS_GRUND") = _mVersgrund
+        Select Case _mAdressart
             Case 1, 4
                 row("EMPF_ART") = "DRITTE"
             Case 2, 5
@@ -1577,16 +1578,16 @@ Imports System.Data.SqlClient
             Case Else
                 row("EMPF_ART") = ""
         End Select
-        row("NAME_EMPF") = m_strName1
+        row("NAME_EMPF") = _mStrName1
         row("VORNAME_EMPF") = ""
-        row("STRASSE_EMPF") = m_strStreet
-        row("HNR_EMPF") = m_strHouseNum
-        row("PLZ_EMPF") = m_strPostcode
-        row("ORT_EMPF") = m_strCity
-        row("LAND_EMPF") = m_strLaenderKuerzel
+        row("STRASSE_EMPF") = _mStrStreet
+        row("HNR_EMPF") = _mStrHouseNum
+        row("PLZ_EMPF") = _mStrPostcode
+        row("ORT_EMPF") = _mStrCity
+        row("LAND_EMPF") = _mStrLaenderKuerzel
         row("SYSTEMKENNZ") = ""
         row("AUFTRAGGEBERID") = m_objUser.UserName
-        row("NAME_ANSP") = m_strName2
+        row("NAME_ANSP") = _mStrName2
         row("NAME_ANF") = ""
         row("VORNAME_ANF") = ""
         row("STRASSE_ANF") = ""
@@ -1598,87 +1599,87 @@ Imports System.Data.SqlClient
 
     End Sub
 
-    Public Sub AnfordernAusAutorisierung2(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
+    Public Sub AnfordernAusAutorisierung2(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
 
         m_strClassAndMethod = "Briefversand.AnfordernAusAutorisierung2"
-        m_strAppID = strAppID
-        m_strSessionID = strSessionID
+        m_strAppID = strAppId
+        m_strSessionID = strSessionId
         m_intStatus = 0
         m_strMessage = ""
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim strKUNNR As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
+            Dim strKunnr As String = Right("0000000000" & m_objUser.Customer.KUNNR, 10)
 
             Try
 
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_IMP_VERS_BEAUFTR_01", m_objApp, m_objUser, page)
-                myProxy.setImportParameter("I_KUNNR_AG", strKUNNR)
-                Dim SapTable As DataTable = myProxy.getImportTable("GT_IN")
+                myProxy.setImportParameter("I_KUNNR_AG", strKunnr)
+                Dim sapTable As DataTable = myProxy.getImportTable("GT_IN")
 
-                Dim SelectedRow() As DataRow
-                Dim Fahrzeugrow As DataRow
+                Dim selectedRow() As DataRow
+                Dim fahrzeugrow As DataRow
 
-                SelectedRow = m_tblFahrzeuge.Select("Selected = '1' AND EQUNR='" & m_strReferenceforAut & "'")
-                If SelectedRow.Length > 0 Then
-                    For Each Fahrzeugrow In SelectedRow
+                selectedRow = _mTblFahrzeuge.Select("Selected = '1' AND EQUNR='" & _mStrReferenceforAut & "'")
+                If selectedRow.Length > 0 Then
+                    For Each fahrzeugrow In selectedRow
 
-                        Dim SapRow As DataRow = SapTable.NewRow
+                        Dim sapRow As DataRow = sapTable.NewRow
 
-                        SapRow("LEISTUNGSIDCMS") = Fahrzeugrow("Leasingnummer").ToString
-                        SapRow("SICHERHEITSIDCMS") = ""
-                        SapRow("ZBRIEF") = Fahrzeugrow("NummerZBII").ToString
-                        SapRow("ANF_ART") = m_strVersandArt
-                        SapRow("VERS_ART") = m_material
-                        SapRow("VERS_GRUND") = m_versgrund
-                        Select Case mAdressart
+                        sapRow("LEISTUNGSIDCMS") = fahrzeugrow("Leasingnummer").ToString
+                        sapRow("SICHERHEITSIDCMS") = ""
+                        sapRow("ZBRIEF") = fahrzeugrow("NummerZBII").ToString
+                        sapRow("ANF_ART") = _mStrVersandArt
+                        sapRow("VERS_ART") = _mMaterial
+                        sapRow("VERS_GRUND") = _mVersgrund
+                        Select Case _mAdressart
                             Case 1, 4
-                                SapRow("EMPF_ART") = "DRITTE"
+                                sapRow("EMPF_ART") = "DRITTE"
                             Case 2, 5
-                                SapRow("EMPF_ART") = "ZULASSUNGSSTELLE"
+                                sapRow("EMPF_ART") = "ZULASSUNGSSTELLE"
                             Case Else
-                                SapRow("EMPF_ART") = ""
+                                sapRow("EMPF_ART") = ""
                         End Select
-                        SapRow("NAME_EMPF") = m_strName1
-                        SapRow("VORNAME_EMPF") = ""
-                        SapRow("STRASSE_EMPF") = m_strStreet
-                        SapRow("HNR_EMPF") = m_strHouseNum
-                        SapRow("PLZ_EMPF") = m_strPostcode
-                        SapRow("ORT_EMPF") = m_strCity
-                        SapRow("LAND_EMPF") = m_strLaenderKuerzel
-                        SapRow("SYSTEMKENNZ") = ""
-                        SapRow("AUFTRAGGEBERID") = m_objUser.UserName
-                        SapRow("NAME_ANSP") = m_strName2
-                        SapRow("NAME_ANF") = ""
-                        SapRow("VORNAME_ANF") = ""
-                        SapRow("STRASSE_ANF") = ""
-                        SapRow("HNR_ANF") = ""
-                        SapRow("PLZ_ANF") = ""
-                        SapRow("ORT_ANF") = ""
-                        SapRow("LAND_ANF") = ""
-                        SapRow("CLIENTLD") = ""
+                        sapRow("NAME_EMPF") = _mStrName1
+                        sapRow("VORNAME_EMPF") = ""
+                        sapRow("STRASSE_EMPF") = _mStrStreet
+                        sapRow("HNR_EMPF") = _mStrHouseNum
+                        sapRow("PLZ_EMPF") = _mStrPostcode
+                        sapRow("ORT_EMPF") = _mStrCity
+                        sapRow("LAND_EMPF") = _mStrLaenderKuerzel
+                        sapRow("SYSTEMKENNZ") = ""
+                        sapRow("AUFTRAGGEBERID") = m_objUser.UserName
+                        sapRow("NAME_ANSP") = _mStrName2
+                        sapRow("NAME_ANF") = ""
+                        sapRow("VORNAME_ANF") = ""
+                        sapRow("STRASSE_ANF") = ""
+                        sapRow("HNR_ANF") = ""
+                        sapRow("PLZ_ANF") = ""
+                        sapRow("ORT_ANF") = ""
+                        sapRow("LAND_ANF") = ""
+                        sapRow("CLIENTLD") = ""
 
-                        SapTable.Rows.Add(SapRow)
+                        sapTable.Rows.Add(sapRow)
 
                     Next
 
                     myProxy.callBapi()
 
-                    m_tblVersandError = myProxy.getExportTable("GT_OUT")
+                    _mTblVersandError = myProxy.getExportTable("GT_OUT")
 
-                    If m_tblVersandError.Select("ABLAUFSTATUS='FEHLERHAFT'").Length > 0 Then
+                    If _mTblVersandError.Select("ABLAUFSTATUS='FEHLERHAFT'").Length > 0 Then
                         m_strMessage = "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden."
                     End If
 
-                    For Each tmpRow As DataRow In m_tblFahrzeuge.Select("Selected = '1' AND EQUNR='" & m_strReferenceforAut & "'")
-                        SelectedRow = m_tblVersandError.Select("LEISTUNGSIDCMS = '" & tmpRow("Leasingnummer").ToString & "'")
-                        If SelectedRow.Length > 0 AndAlso SelectedRow(0)("ABLAUFSTATUS").ToString() = "FEHLERHAFT" Then
+                    For Each tmpRow As DataRow In _mTblFahrzeuge.Select("Selected = '1' AND EQUNR='" & _mStrReferenceforAut & "'")
+                        selectedRow = _mTblVersandError.Select("LEISTUNGSIDCMS = '" & tmpRow("Leasingnummer").ToString & "'")
+                        If selectedRow.Length > 0 AndAlso selectedRow(0)("ABLAUFSTATUS").ToString() = "FEHLERHAFT" Then
                             m_intStatus = -2100
-                            m_strMessage = "Fehler: " & SelectedRow(0)("FEHLERART").ToString()
-                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, m_tblFahrzeuge)
+                            m_strMessage = "Fehler: " & selectedRow(0)("FEHLERART").ToString()
+                            WriteLogEntry(False, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, _mTblFahrzeuge)
                         Else
                             m_strMessage = "Ihre Anforderung wurde erfolgreich in unserem System übernommen."
-                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, m_tblFahrzeuge)
+                            WriteLogEntry(True, "KUNNR=" + m_objUser.KUNNR + "; LIZNR = " + tmpRow("Leasingnummer").ToString, _mTblFahrzeuge)
                         End If
                     Next
 
@@ -1700,8 +1701,8 @@ Imports System.Data.SqlClient
     End Sub
 
     Public Sub CreateUploadTable()
-        m_tblUpload = New DataTable
-        With m_tblUpload
+        _mTblUpload = New DataTable
+        With _mTblUpload
             .Columns.Add("CHASSIS_NUM", GetType(System.String))
             .Columns.Add("LICENSE_NUM", GetType(System.String))
             .Columns.Add("LIZNR", GetType(System.String))
@@ -1711,7 +1712,7 @@ Imports System.Data.SqlClient
         End With
     End Sub
 
-    Private Sub getVertragsdaten(ByVal page As Page, ByRef row As DataRow)
+    Private Sub GetVertragsdaten(ByVal page As Page, ByRef row As DataRow)
 
         m_intStatus = 0
         Try
@@ -1744,13 +1745,11 @@ Imports System.Data.SqlClient
 
     End Sub
 
-    Public Function ShowStilllegungsdatumPopup(ByVal strAppID As String) As Boolean
-        Dim strWert As String = Base.Kernel.Common.Common.GetApplicationConfigValue("PopupStilllegungsdatumAnzeigen", strAppID, m_objUser.Customer.CustomerId, m_objUser.GroupID)
+    Public Function ShowStilllegungsdatumPopup(ByVal strAppId As String) As Boolean
+        Dim strWert As String = Base.Kernel.Common.Common.GetApplicationConfigValue("PopupStilllegungsdatumAnzeigen", strAppId, m_objUser.Customer.CustomerId, m_objUser.GroupID)
         Dim blnShowPopup = (Not String.IsNullOrEmpty(strWert) AndAlso strWert.ToUpper() = "TRUE")
 
-        Dim blnAufAbmeldungWarten = VersandOptionen.Select("EXTGROUP='" & VersandArt & "' AND EAN11 = 'ZZABMELD_INVERTED' AND Selected = '1'").Any()
-
-        Return (Adressart = Adressarten.EndManuell AndAlso Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any() AndAlso blnShowPopup AndAlso Not blnAufAbmeldungWarten)
+        Return (Fahrzeuge.Select("Selected = '1' AND Abmeldedatum IS NULL").Any() AndAlso blnShowPopup AndAlso Not AufAbmeldungWarten)
     End Function
 
 #End Region
