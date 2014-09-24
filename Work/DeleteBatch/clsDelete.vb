@@ -348,26 +348,39 @@ Public Class clsDelete
         Dim Doc As New XmlDocument()
 
         Try
+            Dim runOnlyOn As String = configurationAppSettings.GetValue("RunUserLockOnlyOn", GetType(System.String))
+            Dim blnRunToday As Boolean = True
+            If Not String.IsNullOrEmpty(runOnlyOn) Then
+                Select Case runOnlyOn
+                    Case "1"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Monday)
+                    Case "2"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Tuesday)
+                    Case "3"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Wednesday)
+                    Case "4"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Thursday)
+                    Case "5"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Friday)
+                    Case "6"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Saturday)
+                    Case "7"
+                        blnRunToday = (Today.DayOfWeek = DayOfWeek.Sunday)
+                End Select
+            End If
+
             Doc.Load("ConfigDelLog.xml")
 
-            Dim Node As XmlNode
-            Dim connNode As XmlNode
-            Dim queryNode As XmlNode
-
-            Node = Doc.DocumentElement
-            connNode = Doc.DocumentElement
-            queryNode = Doc.DocumentElement
-
-            For Each Node In Doc.DocumentElement.ChildNodes
+            For Each Node As XmlNode In Doc.DocumentElement.ChildNodes
                 If Node.Name = "Connections" Then
                     sConn = Node.Attributes.GetNamedItem("Conn").Value
-                    For Each connNode In Node.ChildNodes
+                    For Each connNode As XmlNode In Node.ChildNodes
                         If connNode.Name = "Queries" Then
                             sQuery = connNode.Attributes.GetNamedItem("qString").Value
                             DelLog(sConn, sQuery)
                         ElseIf connNode.Name = "UserLock" Then
                             ' Automatische Benutzersperrung und Löschung
-                            If (Date.Today.DayOfWeek = DayOfWeek.Saturday) Then
+                            If blnRunToday Then
                                 sQuery = connNode.Attributes.GetNamedItem("qString").Value
                                 Regelprozess(sConn, sQuery)
                             Else

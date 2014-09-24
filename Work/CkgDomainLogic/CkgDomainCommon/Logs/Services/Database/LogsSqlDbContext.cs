@@ -27,13 +27,23 @@ namespace CkgDomainLogic.Logs.Services
 
         public SapLogItemDetailed GetSapLogItemDetailed(int id)
         {
-            return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
+            return Database.SqlQuery<SapLogItemDetailed>(string.Format("select Id, ImportParameters, ImportTables, ExportParameters, ExportTables from SapBapi where Id = {0}", id)).FirstOrDefault();
         }
-        
-        
-        public IEnumerable<PageVisitLogItem> GetPageVisitLogItems(PageVisitLogItemSelector pageVisitLogItemSelector)
+
+
+        public IEnumerable<PageVisitLogItemDetail> GetPageVisitLogItems(PageVisitLogItemDetailSelector pageVisitLogItemDetailSelector)
+        {
+            return Database.SqlQuery<PageVisitLogItemDetail>(pageVisitLogItemDetailSelector.GetSqlSelectStatement());
+        }
+
+        public IEnumerable<PageVisitLogItem> GetPageVisitPerCustomerPerDayItems(PageVisitLogItemSelector pageVisitLogItemSelector)
         {
             return Database.SqlQuery<PageVisitLogItem>(pageVisitLogItemSelector.GetSqlSelectStatement());
+        }
+
+        public IEnumerable<CustomerApplication> GetCustomerApplicationsForPageVisits(PageVisitLogItemSelector pageVisitLogItemSelector)
+        {
+            return Database.SqlQuery<CustomerApplication>(pageVisitLogItemSelector.GetCustomerApplicationsSqlSelectStatement());
         }
 
 

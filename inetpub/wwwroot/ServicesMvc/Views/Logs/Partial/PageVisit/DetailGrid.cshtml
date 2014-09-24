@@ -1,0 +1,24 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel
+@using CkgDomainLogic.Logs.Models
+@{
+    var gridName = "GridLogsPageVisitsDetail";
+}
+
+@(Html.Telerik()
+    .Grid<PageVisitLogItemDetail>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("LogsPageVisitsDetailAjaxBinding", "Logs")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Datum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportPageVisitLogItemsDetailFilteredExcel", "Logs");
+        commands.FilteredDataCommand("ExportPageVisitLogItemsDetailFilteredPDF", "Logs");
+    })
+    .Groupable(g => g.Enabled(false))
+)
+

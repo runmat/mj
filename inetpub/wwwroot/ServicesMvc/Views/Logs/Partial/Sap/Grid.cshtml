@@ -11,7 +11,7 @@
     .XAjaxDataBinding("LogsSapAjaxBinding", "Logs")
     .Columns(columns =>
         {
-            columns.Bound(c => c.Dauer).Title("").ClientTemplate("<a href=\"#\" onclick=\"return ShowSapImportContext(<#= data.Id #>);\" class=\"btn gray mini tooltips\" data-original-title=\"SAP Übergabedaten anzeigen ... \" data-placement=\"top\"><i class=\"icon-reorder\"></i></a>");
+            columns.Bound(c => c.Dauer).Title("").ClientTemplate("<a href=\"#\" onclick=\"return ShowSapCallContext(<#= data.Id #>);\" class=\"btn gray mini tooltips\" data-original-title=\"SAP Übergabedaten anzeigen ... \" data-placement=\"top\"><i class=\"icon-reorder\"></i></a>");
             columns.XBoundAll();
         })
     .XAutoColumnConfiguration()
