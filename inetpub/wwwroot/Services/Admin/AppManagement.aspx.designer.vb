@@ -374,6 +374,15 @@ Partial Public Class AppManagement
     Protected WithEvents lnkFieldTranslation As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
+    '''lnkAppConfiguration-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lnkAppConfiguration As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''txtMaxLevel-Steuerelement
     '''</summary>
     '''<remarks>
