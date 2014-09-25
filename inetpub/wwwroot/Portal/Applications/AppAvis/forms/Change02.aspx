@@ -363,7 +363,7 @@
                         <td valign="top" class="style7">
                             </td>
                         <td valign="top" align="left" class="style7">
-                            <asp:Label ID="lblMessage" runat="server" CssClass="TextLarge" EnableViewState="False"></asp:Label>
+                            <asp:Label ID="lblMessage" runat="server" CssClass="TextLarge"></asp:Label>
                         </td>
                     </tr>
                     <tr>

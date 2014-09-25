@@ -353,7 +353,11 @@ Partial Public Class Change02
         Session("App_Report") = m_report
     End Sub
 
-    Protected Sub ddlCarports_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged
+    Protected Sub ddl_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged, ddlHersteller.SelectedIndexChanged, _
+            ddlLiefermonat.SelectedIndexChanged, ddlBereifung.SelectedIndexChanged, ddlGetriebe.SelectedIndexChanged, ddlKraftstoff.SelectedIndexChanged, _
+            ddlNavi.SelectedIndexChanged, ddlFarbe.SelectedIndexChanged, ddlVermiet.SelectedIndexChanged, ddlFzgArt.SelectedIndexChanged, _
+            ddlAufbauArt.SelectedIndexChanged, ddlHaendlernr.SelectedIndexChanged, ddlHaendlername.SelectedIndexChanged, ddlEKIndikator.SelectedIndexChanged, _
+            ddlVerwZweck.SelectedIndexChanged, ddlOwnerCode.SelectedIndexChanged, ddlSperrdat.SelectedIndexChanged
         Setfilter()
     End Sub
 
@@ -365,26 +369,6 @@ Partial Public Class Change02
         Literal1.Text &= "						  //-->" & vbCrLf
         Literal1.Text &= "						</script>" & vbCrLf
 
-    End Sub
-
-    Protected Sub ddlHersteller_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHersteller.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlLiefermonat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlLiefermonat.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlBereifung_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlBereifung.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlGetriebe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlGetriebe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlKraftstoff_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlKraftstoff.SelectedIndexChanged
-        Setfilter()
     End Sub
 
     Private Function proofDropdowns() As String
@@ -515,50 +499,6 @@ Partial Public Class Change02
         End If
         Return sFilter
     End Function
-
-    Protected Sub ddlNavi_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlNavi.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFarbe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFarbe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVermiet_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVermiet.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFzgArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFzgArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlAufbauArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAufbauArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlernr_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlernr.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlername_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlername.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlEKIndikator_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlEKIndikator.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVerwZweck_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVerwZweck.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlOwnerCode_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlOwnerCode.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlSperrdat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlSperrdat.SelectedIndexChanged
-        Setfilter()
-    End Sub
 
 End Class
 ' ************************************************
