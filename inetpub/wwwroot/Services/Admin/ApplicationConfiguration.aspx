@@ -97,17 +97,17 @@
                                                 <asp:Label ID="lblConfigID" runat="server" Text='<%# Eval("ConfigID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField SortExpression="ConfigType" HeaderText="Typ">
+                                        <asp:TemplateField HeaderStyle-Width="40px" SortExpression="ConfigType" HeaderText="Typ">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConfigType" runat="server" Text='<%# Eval("ConfigType") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField SortExpression="ConfigKey" HeaderText="Name">
+                                        <asp:TemplateField HeaderStyle-Width="200px" SortExpression="ConfigKey" HeaderText="Name">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConfigKey" runat="server" Text='<%# Eval("ConfigKey") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField SortExpression="ConfigValue" HeaderText="Wert">
+                                        <asp:TemplateField HeaderStyle-Width="150px" SortExpression="ConfigValue" HeaderText="Wert">
                                             <ItemTemplate>
                                                 <asp:CheckBox runat="server" Checked='<%# Eval("ConfigValue") IsNot Nothing AndAlso Eval("ConfigValue").ToString().ToUpper() = "TRUE" %>' 
                                                     Visible='<%# Eval("ConfigType") = "bool" %>' Enabled="False" />
@@ -115,10 +115,10 @@
                                                     Visible='<%# Eval("ConfigType") = "string" %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField DataField="Description" SortExpression="Description" HeaderText="Beschreibung" />
+                                        <asp:BoundField HeaderStyle-Width="200px" DataField="Description" SortExpression="Description" HeaderText="Beschreibung" />
                                         <asp:ButtonField Text="Anlegen" CausesValidation="False" CommandName="Create" />
                                         <asp:ButtonField Text="Ändern" CausesValidation="False" CommandName="Edit" />
-                                        <asp:ButtonField CommandName="Del" ItemStyle-HorizontalAlign="Center" HeaderText="Löschen"
+                                        <asp:ButtonField HeaderStyle-Width="50px" CommandName="Del" ItemStyle-HorizontalAlign="Center" HeaderText="Löschen"
                                             ButtonType="Image" ImageUrl="../../Images/del.png" />
                                     </Columns>
                                 </asp:GridView>
