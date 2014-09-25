@@ -11,5 +11,7 @@ namespace CkgDomainLogic.Finance.Contracts
         List<Pruefschritt> Pruefschritte { get; }
 
         void MarkForRefreshPruefschritte();
+
+        string PruefschrittErledigen(Pruefschritt ps);
     }
 }

@@ -158,7 +158,7 @@ namespace CkgDomainLogic.Finance.Models
                         destination.Aktionsname = source.AKTIONSNAME;
                         destination.Aktionstext = source.AKTION_TEXT;
                         destination.Infotext = source.INFOTEXT;
-                        destination.Erledigt = (source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "X");
+                        destination.Erledigt = (source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "X" || source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "TRUE");
                         destination.Pruefdatum = source.PRUEFDAT;
                         destination.Webuser = source.WEB_USER;
                     }));
@@ -243,6 +243,25 @@ namespace CkgDomainLogic.Finance.Models
                             destination.EQUNR = source.Equipmentnummer;
                             destination.LIZNR = source.PAID;
                         }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_ERL_PRUEFSCHR_01.GT_DAT, Pruefschritt> Z_DPM_SAVE_ERL_PRUEFSCHR_01_GT_DAT_From_Pruefschritt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_ERL_PRUEFSCHR_01.GT_DAT, Pruefschritt>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.KONTONR = source.Kontonummer;
+                        destination.PAID = source.PAID;
+                        destination.BUC_ID = source.BucID;
+                        destination.AKTIONSNR = source.Aktionsnummer;
+                        destination.ERLEDIGT = (source.Erledigt ? "X" : "");
+                        destination.WEB_USER = source.Webuser;
+                    }));
             }
         }
 

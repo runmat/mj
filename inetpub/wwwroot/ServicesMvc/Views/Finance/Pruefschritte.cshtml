@@ -5,6 +5,8 @@
 
 @section LayoutScript { _controlGroupValidationType = "individual"; }
 
+@Html.SpanAlert("spanAlertPruefschritte")
+
 @Html.Partial("Pruefschritte/PruefschritteSuche", Model.DataService.Suchparameter)
 
 <div id="divPruefschritteGrid"></div>
@@ -69,6 +71,25 @@
         if (typeof (GetGrid()) !== "undefined") {
             GetGrid().ajaxRequest();
         }
+    }
+
+    function PruefschrittErledigen(aktionsnr, bucid) {
+        $.ajax({
+            type: "POST",
+            url: "PruefschrittErledigen",
+            data: { aktionsnr: aktionsnr.toString(), bucid: bucid.toString() },
+            loadingShow: true,
+            success: function (result) {
+                if (result == "OK") {
+                    TryGridRefresh();
+                } else {
+                    SpanAlertWarning("spanAlertPruefschritte", result, 5000);
+                }
+            },
+            error: function (result) {
+                SpanAlertWarning("spanAlertPruefschritte", result.data, 5000);
+            }
+        });
     }
 
 </script>

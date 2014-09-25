@@ -35,6 +35,6 @@ namespace CkgDomainLogic.Finance.Models
         public DateTime? Pruefdatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.WebUser)]
-        public string Webuser { get; set; } 
+        public string Webuser { get; set; }
     }
 }

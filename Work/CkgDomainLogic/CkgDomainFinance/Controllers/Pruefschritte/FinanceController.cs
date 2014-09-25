@@ -50,6 +50,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult PruefschrittErledigen(string aktionsnr, string bucid)
+        {
+            var erg = PruefschritteViewModel.PruefschrittErledigen(aktionsnr, bucid);
+
+            return Json(erg);
+        }
+
+        [HttpPost]
         public ActionResult FilterGridPruefschritte(string filterValue, string filterColumns)
         {
             PruefschritteViewModel.FilterPruefschritte(filterValue, filterColumns);
