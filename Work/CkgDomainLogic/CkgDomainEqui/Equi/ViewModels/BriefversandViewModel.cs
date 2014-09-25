@@ -190,7 +190,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                var configWert = ApplicationConfiguration.GetApplicationConfigValue("", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+                var configWert = ApplicationConfiguration.GetApplicationConfigValue("OptionAufAbmeldungWarten", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
 
                 if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
                     !String.IsNullOrEmpty(configWert) && configWert.ToUpper() == "TRUE")
