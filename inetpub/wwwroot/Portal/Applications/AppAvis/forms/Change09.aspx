@@ -85,7 +85,7 @@
                             <table id="tbl0001" cellspacing="0" cellpadding="5" width="100%" border="0">
                                 <tr>
                                     <td class="TextLarge" nowrap align="right">
-                                        Dateiauswahl <a href="javascript:openinfo('Info3.htm');">
+                                        Dateiauswahl <a href="javascript:openinfo('Info03.htm');">
                                             <img src="../../../images/fragezeichen.gif" border="0" /></a>:&nbsp;&nbsp;
                                     </td>
                                     <td class="TextLarge">
