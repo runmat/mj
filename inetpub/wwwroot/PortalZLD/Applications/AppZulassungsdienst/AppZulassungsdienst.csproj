@@ -274,6 +274,13 @@
     <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
       <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\TaggleicheMeldungDAD.aspx.cs">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\TaggleicheMeldungDAD.aspx.designer.cs">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\VorgangStatusaenderung.aspx.cs">
       <DependentUpon>VorgangStatusaenderung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -469,6 +476,7 @@
     <Compile Include="lib\KomplettZLD.cs" />
     <Compile Include="lib\Barabhebung.cs" />
     <Compile Include="lib\clsDisposition.cs" />
+    <Compile Include="lib\MeldungDAD.cs" />
     <Compile Include="lib\StatusaenderungVorgang.cs" />
     <Compile Include="lib\NachbearbeitungAuftrag.cs" />
     <Compile Include="lib\Listen.cs" />
@@ -550,6 +558,7 @@
     <Content Include="forms\Disposition.aspx" />
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
+    <Content Include="forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
     <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />
