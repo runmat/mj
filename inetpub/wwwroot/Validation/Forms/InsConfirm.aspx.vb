@@ -60,7 +60,7 @@ Public Class InsConfirm
         End If
 
     End Sub
- 
+
 #End Region
 
     Protected Sub cmdConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdConfirm.Click
@@ -85,19 +85,16 @@ Public Class InsConfirm
             If Vermittlernummer <> Left(ValKey, 9) Then
                 lblError.Text = "Die Agenturnummer ist nicht korrekt."
             Else
-                'ToDo Zugriff auf SAP
 
-                Dim Freigabe As New App(True)
 
-                Freigabe.SetFreigabe(Vermittlernummer, Right(ValKey, 6))
+                Dim freigabe As New App()
 
-                If Freigabe.booError = True Then
-                    'lblVermittlernummer.Visible = False
-                    'txtVermittlernummer.Visible = False
-                    'cmdConfirm.Visible = False
-                    lblError.Text = Freigabe.m_Message
+                freigabe.SetFreigabe(Vermittlernummer, Right(ValKey, 6))
+
+                If freigabe.booError = True Then
+                    lblError.Text = freigabe.m_Message
                 Else
-                    lblInfo.Text = Freigabe.m_Message
+                    lblInfo.Text = freigabe.m_Message
                     lblVermittlernummer.Visible = False
                     txtVermittlernummer.Visible = False
                     cmdConfirm.Visible = False
