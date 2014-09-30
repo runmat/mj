@@ -254,13 +254,22 @@ namespace CkgDomainLogic.General.Services
             return dbContext.GetGroupContacts(Customer.CustomerID, GroupName);
         }
 
-        public override void StorePasswordToUser(string userName, string password, bool isTokenPassword)
+        public override void StorePasswordToUser(string userName, string password)
         {
             var dbContext = CreateDbContext(userName);
             if (dbContext.User == null)
                 return;
 
-            dbContext.StorePasswordToUser(userName, password, isTokenPassword);
+            dbContext.StorePasswordToUser(userName, password);
+        }
+
+        public override void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
+        {
+            var dbContext = CreateDbContext(userName);
+            if (dbContext.User == null)
+                return;
+
+            dbContext.StorePasswordRequestKeyToUser(userName, passwordRequestKey);
         }
 
         public override void LogoutUser()

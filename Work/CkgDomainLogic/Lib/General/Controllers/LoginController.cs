@@ -103,7 +103,7 @@ namespace CkgDomainLogic.General.Controllers
 
                     // send e-mail with password reset link
                     if (userEmail.IsNotNullOrEmpty())
-                        ViewModel.TrySendPassordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
+                        ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
 
                     if (ModelState.IsValid)
                     {
@@ -161,7 +161,7 @@ namespace CkgDomainLogic.General.Controllers
                 // change password successful!
                 var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
                     
-                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword, false);
+                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
                 if (LogonContext.User != null)
                     LogonContext.User.Password = encryptedPassword;
 

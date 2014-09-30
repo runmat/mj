@@ -104,12 +104,12 @@ namespace CkgDomainLogic.General.ViewModels
             return true;
         }
 
-        public void TrySendPassordResetEmail(string userName, string userEmail, string url, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        public void TrySendPasswordResetEmail(string userName, string userEmail, string url, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             try
             {
                 var confirmationToken = AppSettings.SecurityService.GenerateToken(userName);
-                LogonContext.StorePasswordToUser(userName, confirmationToken, true);
+                LogonContext.StorePasswordRequestKeyToUser(userName, confirmationToken);
 
                 var confirmationUrl = url.ToLower().Replace("loginform", "changepassword") + "?confirmation=" +
                                       HttpUtility.UrlEncode(confirmationToken);
