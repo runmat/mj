@@ -100,6 +100,7 @@ namespace CkgDomainLogic.General.ViewModels
             TmpCustomer = customer;
 
             ChangePasswordModel.UserName = user.Username;
+            ChangePasswordModel.UserSalutation = user.UserSalutation;
 
             return true;
         }
@@ -110,6 +111,9 @@ namespace CkgDomainLogic.General.ViewModels
             {
                 var confirmationToken = AppSettings.SecurityService.GenerateToken(userName);
                 LogonContext.StorePasswordRequestKeyToUser(userName, confirmationToken);
+                
+                var user = LogonContext.TryGetUserFromUserName(userName);
+                var userSalutation = user == null ? userName : user.UserSalutation;
 
                 var confirmationUrl = url.ToLower().Replace("loginform", "changepassword") + "?confirmation=" +
                                       HttpUtility.UrlEncode(confirmationToken);
@@ -117,7 +121,7 @@ namespace CkgDomainLogic.General.ViewModels
 
                 var subject = string.Format(Localize.LoginPasswordResetEmailSubject, AppSettings.AppOwnerFullName);
                 var body = string.Format("{0}<br /><br />{1}<br /><br /><strong>{2}</strong><br /><br />{3}",
-                                         string.Format(Localize.LoginPasswordResetEmailBody, userName),
+                                         string.Format(Localize.LoginPasswordResetEmailBody, userSalutation),
                                          confirmationLink,
                                          string.Format(Localize.LoginPasswordResetLinkExpirationHint, DateTime.Now.AddMinutes(AppSettings.TokenExpirationMinutes).ToString("dd.MM.yyyy, HH:mm")),
                                          string.Format(Localize.LoginPasswordResetEmailFooter, AppSettings.AppOwnerFullName)

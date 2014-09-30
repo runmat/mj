@@ -17,6 +17,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string Reference { get; set; }
 
+        public string Title { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -34,6 +36,8 @@ namespace CkgDomainLogic.General.Database.Models
         public int FailedLogins { get; set; }
 
         public string PasswordChangeRequestKey { get; set; }
+
+        public string UserSalutation { get { return string.Format("{0} {1}", Title, LastName); } }
 
         
         #region User Security Rules

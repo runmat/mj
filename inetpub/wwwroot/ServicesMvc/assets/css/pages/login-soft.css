@@ -8,13 +8,12 @@ Login page
 }
 
 .login .logo-header {
-    background: url(../../img/bg-white-lock-header.png) repeat 50px 30px;
-    border-bottom: 1px solid #eeeeee;
+    background: url(../../img/bg-white-lock-header.png) repeat-x 0 0;
     margin-top: -20px;
     margin-left: -30px;
     margin-right: -30px;
     padding-bottom: 1px;
-    padding-top: 10px;
+    padding-top: 7px;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -34,7 +33,7 @@ Login page
     color: red;
 }
 .logo.text span.logo-name {
-    color: white;
+    color: #606060;
 }
 
 

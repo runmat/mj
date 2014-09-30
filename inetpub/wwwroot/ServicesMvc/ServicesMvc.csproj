@@ -435,6 +435,7 @@
     </None>
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
+    <Content Include="assets\img\bg-white-lock-header.png" />
     <Content Include="assets\img\flags\ad.png" />
     <Content Include="assets\img\flags\ae.png" />
     <Content Include="assets\img\flags\af.png" />
@@ -2456,6 +2457,7 @@
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Test\ImageUploadPlus.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
+    <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
