@@ -11,9 +11,6 @@
 
 <div class="content">
     @Html.Partial("Partial/Logo") 
-    <div class="language-flags">
-        @Html.Partial("Partial/UserLanguageSwitch", new ViewDataDictionary(ViewData))
-    </div>
     
     @Html.Partial("Partial/MaintenanceHintsLogonDisabled", Model.MaintenanceInfo)
 
@@ -39,10 +36,7 @@
         </script>
     }
     
-    
-    <a href="Impressum" class="footer-link">@Localize.Imprint</a>
-    <a href="Kontakt" class="footer-link">@Localize.Contact</a>
-    <span class="footer-link margin-right-10 no-margin-left">DAD Deutscher Auto Dienst GmbH</span>
+    @Html.Partial("Partial/Footer") 
 </div>
 
 

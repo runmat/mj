@@ -7,6 +7,18 @@ Login page
   background-color: #99AABD !important;
 }
 
+.login .logo-header {
+    background: url(../../img/bg-white-lock-header.png) repeat 50px 30px;
+    border-bottom: 1px solid #eeeeee;
+    margin-top: -20px;
+    margin-left: -30px;
+    margin-right: -30px;
+    padding-bottom: 1px;
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 .login .logo {
   padding: 15px;
   text-align: left;
@@ -85,9 +97,13 @@ Login page
 }
 
 .login .content .form-title {
-  font-weight: 300;
+  font-weight: 600;
   margin-top: 35px;
   margin-bottom: 25px;
+  color: white;
+}
+.login .content .form-title.smaller {
+    font-size: 1.70em!important;
 }
 
 .login .content .form-actions {

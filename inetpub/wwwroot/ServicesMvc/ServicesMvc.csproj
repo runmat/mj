@@ -4132,10 +4132,12 @@
     <Content Include="Views\Shared\Partial\MaintenanceHintsInformationToConfirm.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Grid.cshtml" />
     <Content Include="Views\CocSendung\Verfolgung\Suche.cshtml" />
-    <Content Include="Views\CocSendung\Verfolgung.cshtml" />    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
+    <Content Include="Views\CocSendung\Verfolgung.cshtml" />
+    <Content Include="Views\Uebfuehrg\Forms\DienstleistungsAuswahl.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
+    <Content Include="Views\Login\Partial\Footer.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
