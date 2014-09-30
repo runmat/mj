@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Services;
 using MvcTools.Web;
 using CkgDomainLogic.General.Contracts;
@@ -176,12 +177,16 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult PasswordPrecheck(string password)
         {
-            var localizedPasswordValidationErrorMessages = ViewModel.ValidatePasswordAgainstRules(password);
+            List<string> localizedPasswordValidationErrorMessages;
+            List<string> localizedPasswordRuleMessages;
+
+            ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
 
             return Json(new
                             {
                                 passwordRuleCount = ViewModel.PasswordRuleCount, 
-                                localizedPasswordValidationErrorMessages
+                                localizedPasswordValidationErrorMessages,
+                                localizedPasswordRuleMessages
                             });
         }
     }

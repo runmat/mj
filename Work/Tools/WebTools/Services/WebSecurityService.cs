@@ -46,36 +46,59 @@ namespace WebTools.Services
             return (DateTime.Now - tokenDateTime).TotalMinutes < tokenExpirationMinutes;
         }
 
-        public bool ValidatePassword(string password, IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, ILocalizationService localizationService, out List<string> localizedValidationErrorMessages, out int passwordRuleCount)
+        public bool ValidatePassword(string password, IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, ILocalizationService localizationService,
+                                    out List<string> localizedValidationErrorMessages, out List<string> localizedPasswordRuleMessages, out int passwordRuleCount)
         {
             localizedValidationErrorMessages = new List<string>();
+            localizedPasswordRuleMessages = new List<string>();
             passwordRuleCount = 0;
 
             if (passwordSecurityRuleDataProvider == null || localizationService == null)
                 throw new Exception("WebSecurityService.ValidatePassword needs valid parameters for IPasswordSecurityRuleDataProvider + ILocalizationService");
 
+            var message = localizationService.TranslateResourceKey("PasswordShouldNotBeEmpty");
+            localizedPasswordRuleMessages.Add(message);
             if (password.IsNullOrEmpty())
             {
                 password = "";
-                localizedValidationErrorMessages.Add(localizationService.TranslateResourceKey("PasswordShouldNotBeEmpty"));
+                localizedValidationErrorMessages.Add(message);
             }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinLength > 0 ? 1 : 0;
-            if (password.Length < passwordSecurityRuleDataProvider.PasswordMinLength)
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinLength, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinLength > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinLength, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (password.Length < passwordSecurityRuleDataProvider.PasswordMinLength)
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinNumericChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsNumericChar, passwordSecurityRuleDataProvider.PasswordMinNumericChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinNumericChars, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinNumericChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinNumericChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsNumericChar, passwordSecurityRuleDataProvider.PasswordMinNumericChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinCapitalChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsAlphaCapitalChar, passwordSecurityRuleDataProvider.PasswordMinCapitalChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinCapitalChars, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinCapitalChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinCapitalChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsAlphaCapitalChar, passwordSecurityRuleDataProvider.PasswordMinCapitalChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinSpecialChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsSpecialChar, passwordSecurityRuleDataProvider.PasswordMinSpecialChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinSpecialChars, passwordSecurityRuleDataProvider, localizationService));
-
+            if (passwordSecurityRuleDataProvider.PasswordMinSpecialChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinSpecialChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsSpecialChar, passwordSecurityRuleDataProvider.PasswordMinSpecialChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
             return localizedValidationErrorMessages.None();
         }
 

@@ -47,17 +47,16 @@ namespace CkgDomainLogic.General.ViewModels
 
         public void ValidatePasswordModelAgainstRules(Action<string, string> addModelError)
         {
-            var validatePasswordModelAgainstRules = ValidatePasswordAgainstRules(ChangePasswordModel.Password);
-            if (validatePasswordModelAgainstRules.Any())
-                addModelError("Password", string.Join("; ", validatePasswordModelAgainstRules));
+            List<string> localizedPasswordValidationErrorMessages;
+            List<string> localizedPasswordRuleMessages;
+            ValidatePasswordAgainstRules(ChangePasswordModel.Password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
+            if (localizedPasswordValidationErrorMessages.Any())
+                addModelError("Password", string.Join("; ", localizedPasswordValidationErrorMessages));
         }
 
-        public List<string> ValidatePasswordAgainstRules(string password)
+        public void ValidatePasswordAgainstRules(string password, out List<string> localizedPasswordValidationErrorMessages, out List<string> localizedPasswordRuleMessages)
         {
-            List<string> localizedPasswordValidationErrorMessages;
-            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(), LocalizationService, out localizedPasswordValidationErrorMessages, out _passwordRuleCount);
-
-            return localizedPasswordValidationErrorMessages;
+            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(), LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
         }
 
         private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider()
