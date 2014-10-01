@@ -79,6 +79,7 @@ Public Class UploadTransportbeauftragung
                     tmpNewRow("CHASSIS_NUM") = tmpRow(0).ToString()
                     tmpNewRow("EX_KUNNR") = tmpRow(1).ToString()
                     tmpNewRow("BEAUFDAT") = tmpRow(2).ToString()
+                    tmpNewRow("KUNPDI") = tmpRow(3).ToString()
                     tmpNewRow("SPEDITION") = tmpRow(3).ToString()
                     m_tblUploadTable.Rows.Add(tmpNewRow)
                 End If

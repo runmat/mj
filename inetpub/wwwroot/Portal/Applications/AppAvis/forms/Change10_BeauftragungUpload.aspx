@@ -79,7 +79,7 @@
                     <table cellspacing="0" cellpadding="5" width="100%" bgcolor="white" border="0">
                         <tr>
                             <td colspan="1" align="left" class="TaskTitle">
-                                  <asp:Label ID="lbl_Info" Text="Bereitmeldung-Excel-Datei-Auswahl" runat="server"></asp:Label>
+                                  <asp:Label ID="lbl_Info" Text="Transportbeauftragung-Excel-Datei-Auswahl" runat="server"></asp:Label>
                             </td>
                         </tr>
                         <tr>
@@ -124,8 +124,8 @@
                                     <Columns>
                                         <asp:BoundField DataField="CHASSIS_NUM" HeaderText="Fahrgestellnummer" />
                                         <asp:BoundField DataField="EX_KUNNR" HeaderText="Stationscode" />
-                                        <asp:BoundField DataField="BEAUFDAT" HeaderText="Stationscode" />
-                                        <asp:BoundField DataField="SPEDITION" HeaderText="Stationscode" />
+                                        <asp:BoundField DataField="BEAUFDAT" HeaderText="Anlieferungsdatum" DataFormatString="{0:dd.MM.yyyy}" />
+                                        <asp:BoundField DataField="SPEDITION" HeaderText="Spediteur" />
                                         <asp:TemplateField HeaderText="Status" ItemStyle-Wrap="False" ItemStyle-VerticalAlign="Middle">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblMessage" Font-Bold = "true" Text ='<%# Eval("BEMERKUNG") %>' runat="server" />

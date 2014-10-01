@@ -167,7 +167,7 @@ Partial Public Class Change10_BeauftragungUpload
                     Dim tmpStr As String = tmpLabel.Text
 
                     If Not String.IsNullOrEmpty(tmpStr) Then
-                        If tmpStr = "Status " & Chr(34) & "Bereit" & Chr(34) & " gebucht." Then
+                        If tmpStr = "Fahrzeug wurde zugelassen" Then
                             tmpLabel.ForeColor = Color.Green
                         Else
                             tmpLabel.ForeColor = Color.Red
@@ -200,9 +200,13 @@ Partial Public Class Change10_BeauftragungUpload
                 Dim Newrow As DataRow = tblExcel.NewRow
                 Newrow("Fahrgestellnummer") = Row("CHASSIS_NUM").ToString()
                 Newrow("Stationscode") = Row("EX_KUNNR").ToString()
-                Newrow("Anlieferungsdatum") = Row("BEAUFDAT").ToString()
-                Newrow("Spediteur") = Row("SPEDITEUR").ToString()
-                Newrow("Status") = Row("RET_BEM")
+                If IsDate(Row("BEAUFDAT").ToString()) Then
+                    Newrow("Anlieferungsdatum") = CDate(Row("BEAUFDAT").ToString()).ToShortDateString()
+                Else
+                    Newrow("Anlieferungsdatum") = Row("BEAUFDAT").ToString()
+                End If
+                Newrow("Spediteur") = Row("SPEDITION").ToString()
+                Newrow("Status") = Row("BEMERKUNG")
                 tblExcel.Rows.Add(Newrow)
             Next
 
