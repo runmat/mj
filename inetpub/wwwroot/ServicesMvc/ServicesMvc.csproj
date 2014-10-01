@@ -448,6 +448,7 @@
     <Content Include="Content\fileupload\jquery.fileupload.css" />
     <Content Include="Content\fileupload\style.css" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Images\BriefversandCsvTemplate.png" />
     <Content Include="Images\CarGateCsvTemplate.png" />
     <Content Include="Images\fahrer\1.png" />
     <Content Include="Images\fahrer\10.png" />
@@ -3886,6 +3887,7 @@
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

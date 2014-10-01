@@ -107,6 +107,23 @@
         span.html("CSV Upload <i class='icon-upload-alt margin-left-5'></i>");
     }
 
+    function AjaxCsvTemplateShow() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "CsvTemplate",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#CsvTemplateHint").data("tWindow");
+                    $("#CsvTemplateHintDetail").html(result);
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+    
     function AjaxFormVersandartOptionenComplete() {
         FormPrepareAjax();
 

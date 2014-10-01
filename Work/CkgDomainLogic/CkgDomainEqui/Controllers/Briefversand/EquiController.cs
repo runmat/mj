@@ -296,6 +296,11 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();   
         }
 
+        public ActionResult CsvTemplate()
+        {
+            return PartialView("Briefversand/Partial/CsvTemplate");
+        }
+
         #endregion
 
 

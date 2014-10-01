@@ -34,6 +34,8 @@
     <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
         <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
     </button>
+
+    <a href="#" onclick="return AjaxCsvTemplateShow()" class="btn white tooltips margin-left-20" data-original-title="@Localize.HLA_CsvSaveFileHintVisibleTitle" data-placement="right">@Localize.HLA_CsvSaveFileHintVisibleTitleShort <i class="icon-table margin-left-5"></i></a>
 </h4>
 
 <h4>
@@ -79,3 +81,16 @@
             commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "Equi").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
         })
 )
+
+
+@(Html.Telerik().Window()
+    .Name("CsvTemplateHint")
+    .Visible(false)
+    .Title("CSV Upload")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(600)
+    .Height(300)
+    .Content(@<text><div id="CsvTemplateHintDetail" class="margin-left-15 margin-right-15"></div></text>))
+
