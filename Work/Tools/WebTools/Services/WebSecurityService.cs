@@ -18,16 +18,6 @@ namespace WebTools.Services
             return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "sha1");
         }
 
-        private static string GetTokenContent(string content)
-        {
-            return string.Format("{0}~{1}", content, DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-        }
-
-        public string GenerateToken(string content)
-        {
-            return CryptoMd5.Encrypt(GetTokenContent(content));
-        }
-
         public bool ValidatePasswordResetToken(string token, int tokenExpirationMinutes)
         {
             var clearTextToken = CryptoMd5.Decrypt(token);

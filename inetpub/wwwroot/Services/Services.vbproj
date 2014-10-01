@@ -1310,7 +1310,7 @@
       <Project>{C97E0F34-A91A-4F38-B792-73C4FC680A29}</Project>
       <Name>ErpBaseMvc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Work\Tools\WebTools35\WebTools35.csproj">
+    <ProjectReference Include="..\..\..\work\Tools\WebTools35\WebTools35.csproj">
       <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
       <Name>WebTools35</Name>
     </ProjectReference>

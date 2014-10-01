@@ -8,6 +8,7 @@ using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
+using WebTools.Services;
 
 namespace CkgDomainLogic.General.ViewModels
 {
@@ -109,7 +110,7 @@ namespace CkgDomainLogic.General.ViewModels
         {
             try
             {
-                var confirmationToken = AppSettings.SecurityService.GenerateToken(userName);
+                var confirmationToken = UserSecurityService.GenerateToken(userName);
                 LogonContext.StorePasswordRequestKeyToUser(userName, confirmationToken);
                 
                 var user = LogonContext.TryGetUserFromUserName(userName);

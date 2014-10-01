@@ -7,8 +7,6 @@ namespace GeneralTools.Contracts
     {
         string EncryptPassword(string password);
 
-        string GenerateToken(string content);
-
         bool ValidatePassword(string password, IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, ILocalizationService localizationService,
                                 out List<string> localizedValidationErrorMessages, out List<string> localizedPasswordRuleMessages, out int passwordRuleCount);
 
