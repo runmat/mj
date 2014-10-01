@@ -2,31 +2,38 @@
 @using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridFahrzeugAuswahl"; }
 
+<style type="text/css">
+
+.file-upload-wrapper-div {
+    display: inline!important;
+}    
+.file-upload {
+    font-size: 0.8em;
+    font-weight: 500;
+}
+</style>
+
 <h4 class="margin-bottom-20">
     
-    <a href="#" onclick="return CsvUpload()" class="btn tooltips margin-right-10" data-original-title="Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!" data-placement="right"> CSV Upload <i class="icon-upload-alt"></i></a>
-    
+    @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Multiple(false)
+            .Localizable("de-DE")
+            .Async(async => async
+                                .Save("CsvUploadStart", "Equi")
+                                .SaveField("uploadFiles")
+                                .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                                        .OnUpload("UploadStart")
+                                        .OnSuccess("UploadFinished")
+                                        .OnError("UploadError"))
+            )
+
     <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
         <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
     </button>
-
-    <span class="hide">
-        @(Html.Telerik().Upload()
-              .Name("fileUpload")
-              .Multiple(false)
-              .Localizable("de-DE")
-              .Async(async => async
-                                  .Save("CsvUploadStart", "Equi")
-                                  .SaveField("uploadFiles")
-                                  .AutoUpload(true))
-              .Multiple(false)
-              .ShowFileList(false)
-              .ClientEvents(events => events
-                                          .OnUpload("UploadStart")
-                                          .OnSuccess("UploadFinished")
-                                          .OnError("UploadError"))
-              )
-    </span>
 </h4>
 
 <h4>

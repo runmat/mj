@@ -11,6 +11,8 @@
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
 
         try { MultiSelectPreparePrivate(); } catch (e) { }
+
+        InitCsvUploadButton();
     };
 
     function FormPreparePrivateAjax() {
@@ -89,6 +91,20 @@
     function FahrzeugAuswahl() {
         AjaxRequestNextStep();
         return false;
+    }
+
+    function InitCsvUploadButton() {
+        $(".t-upload").addClass("file-upload-wrapper-div");
+        $(".t-dropzone").addClass("file-upload-wrapper-div");
+        $(".t-dropzone em").html("");
+
+        var wrapperButton = $(".t-upload-button");
+        wrapperButton.css("width", 120);
+        wrapperButton.attr("title", "Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!");
+        
+        var span = $(".t-upload-button span");
+        span.addClass("file-upload tooltips");
+        span.html("CSV Upload <i class='icon-upload-alt margin-left-5'></i>");
     }
 
     function AjaxFormVersandartOptionenComplete() {
@@ -422,11 +438,6 @@
         $.uniform.update($("#uncheckAllRecords"));
     }    
     
-    function CsvUpload() {
-        $("#fileUpload").trigger("click");
-        return false;
-    }
-
     function UploadStart(e) {
 
         // clear only the UI of our Upload Control:
