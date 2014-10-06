@@ -82,13 +82,13 @@
                                                 border="0" style="border-color: #dfdfdf; border-style: solid; border-width: 1;">
                                                 <tr>
                                                     <td>
-                                                        <asp:RadioButton ID="rbWI" runat="server" Checked="True" GroupName="Ort" Text="WI" />
+                                                        <asp:RadioButton ID="rbWI" runat="server" Checked="True" GroupName="Ort" Text="WI" AutoPostBack="True" />
                                                     </td>
 
                                                 </tr>
                                                 <tr>
                                                     <td width="25%">
-                                                        <asp:RadioButton ID="rbDez" runat="server" GroupName="Ort" Text="Dezentral:" />
+                                                        <asp:RadioButton ID="rbDez" runat="server" GroupName="Ort" Text="Dezentral:" AutoPostBack="True" />
                                                     </td>
                                                  </tr>
                                                 </table>

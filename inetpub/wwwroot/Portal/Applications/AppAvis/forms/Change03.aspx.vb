@@ -259,6 +259,21 @@ Partial Public Class Change03
         SetEndASPXAccess(Me)
     End Sub
 
+    Protected Sub rbWIDez_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles rbWI.CheckedChanged, rbDez.CheckedChanged
+        If rbWI.Checked Then
+            rbPlanzulassung.Enabled = True
+        Else
+            rbPlanzulassung.Checked = False
+            rbZulassung.Checked = True
+            rbPlanzulassung.Enabled = False
+            trZulassungsdatum.Visible = True
+            trPlanzulassungsdatum.Visible = False
+            trVerarbeitungsdatum.Visible = False
+            divInfoZulassung.Visible = True
+            divInfoPlanzulassung.Visible = False
+        End If
+    End Sub
+
     Protected Sub ZulArt_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles rbZulassung.CheckedChanged, rbPlanzulassung.CheckedChanged
         If rbPlanzulassung.Checked Then
             trZulassungsdatum.Visible = False
