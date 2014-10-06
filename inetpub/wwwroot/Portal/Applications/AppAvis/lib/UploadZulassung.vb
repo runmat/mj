@@ -83,7 +83,15 @@ Public Class UploadZulassung
                     mSAPTabelleZulassung.Clear()
                 End If
 
-                For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
+                Dim tmpRows() As DataRow
+
+                If ArtDerZulassung = Zulassungstyp.Planzulassung Then
+                    tmpRows = ZulassungsTabelle.Select()
+                Else
+                    tmpRows = ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
+                End If
+
+                For Each tmpRow As DataRow In tmpRows
                     Dim tmpSAPRow As DataRow = mSAPTabelle.Select("CHASSIS_NUM='" & tmpRow("Fahrgestellnummer").ToString & "'")(0)
 
                     Dim tmpNewRowZulassung As DataRow = mSAPTabelleZulassung.NewRow
@@ -117,7 +125,7 @@ Public Class UploadZulassung
 
                 'nur fehlerhafte sätze wurden zurückgeliefert
                 'jetzt müssen alle stadien die wirklich übertragen worden waren, ermal den status ok bekommen
-                For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
+                For Each tmpRow As DataRow In tmpRows
                     tmpRow("STATUS") = "Zulassung erfolgreich beauftragt."
                 Next
 
