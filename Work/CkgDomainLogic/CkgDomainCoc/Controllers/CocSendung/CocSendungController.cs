@@ -53,15 +53,5 @@ namespace ServicesMvc.Controllers
         {
             return PartialView("Verfolgung/Grid", ViewModel);
         }
-
-
-        #region grid data export
-
-        protected override IEnumerable GetGridExportData()
-        {
-            return ViewModel.SendungenFiltered;
-        }
-
-        #endregion
     }
 }

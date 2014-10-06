@@ -274,19 +274,19 @@ namespace CkgDomainLogic.CoC.Services
 
         public List<SendungsAuftrag> GetSendungsAuftraegeId(SendungsAuftragIdSelektor model)
         {
-            return CoCAppModelMappings.Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeId(model)).ToList();
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeId(model)).ToList();
         }
 
-        private IEnumerable<Z_DPM_GET_ZZSEND2.GT_WEB> GetSapSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeId(SendungsAuftragIdSelektor model)
         {
-            Z_DPM_GET_ZZSEND2.Init(SAP);
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
 
-            SAP.SetImportParameter("KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             if (model.DatumRange.IsSelected)
             {
-                SAP.SetImportParameter("ERDAT_VON", model.DatumRange.StartDate);
-                SAP.SetImportParameter("ERDAT_BIS", model.DatumRange.EndDate);
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRange.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRange.EndDate);
             }
 
             if (model.FilterNurMitSendungsNummer)
@@ -294,7 +294,28 @@ namespace CkgDomainLogic.CoC.Services
 
             SAP.Execute();
 
-            return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
+
+        #endregion
+
+
+        #region Sendungsaufträge, nach Docs
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeDocs(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
         }
 
         #endregion

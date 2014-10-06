@@ -294,7 +294,7 @@ namespace SapORM
 
             //TargoTest3();
 
-            //TeslaSendungsVerfolgungTest();
+            TeslaSendungsVerfolgungTest2();
 
             Shutdown();
         }
@@ -1380,6 +1380,19 @@ namespace SapORM
             Sap.SetImportParameter("ERDAT_BIS", DateTime.Today.AddDays(-1));
 
             var list = Z_DPM_GET_ZZSEND2.GT_WEB.GetExportListWithExecute(Sap);
+
+            var listCount = list.Count;
+        }
+
+        static void TeslaSendungsVerfolgungTest2()
+        {
+            Z_DPM_READ_SENDTAB_03.Init(Sap);
+
+            Sap.SetImportParameter("I_AG", KunnrTesla.ToSapKunnr());
+            //Sap.SetImportParameter("I_ZZLSDAT_VON", DateTime.Today.AddDays(-120));
+            //Sap.SetImportParameter("I_ZZLSDAT_BIS", DateTime.Today.AddDays(30));
+
+            var list = Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportListWithExecute(Sap);
 
             var listCount = list.Count;
         }

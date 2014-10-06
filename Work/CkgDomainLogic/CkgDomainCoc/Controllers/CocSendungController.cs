@@ -25,5 +25,15 @@ namespace ServicesMvc.Controllers
         {
             InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService);
         }
+
+
+        #region grid data export
+
+        protected override IEnumerable GetGridExportData()
+        {
+            return ViewModel.FilteredObjectsCurrent();
+        }
+
+        #endregion            
     }
 }

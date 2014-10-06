@@ -1,0 +1,26 @@
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragDocsSelektor
+
+<div Docs="divSendungenDocsSuche">
+    @using (Ajax.BeginForm("LoadSendungenDocs", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenDocsSuche") { OnComplete = "ShowCocSendungenDocs();" }, new { Docs = "SendungenDocsForm" }))
+    {   
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+           
+            @Html.FormCheckBoxFor(m => m.FilterTestNurMitSendungsNummer, new { @class = "m-wrap" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValDocs = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

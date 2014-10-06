@@ -5,27 +5,74 @@
 @Html.IeWarning(8)
 @Html.SpanAlert("Message")
 
+<div class="tabbable tabbable-custom margin-top-20">
+    <ul class="nav nav-tabs">
+        @*Anzeigereihenfolge umgedreht*@
+        <li class="active"><a href="#" id="tabIds" data-toggle="tab">Suche nach Sendungs-ID</a></li>
+        <li><a href="#" id="tabDocs" data-toggle="tab">Suche nach Dokumentendaten</a></li>
+    </ul>
+</div>
+
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("VerfolgungMulti/Suche", Model.SendungsAuftragIdSelektor)
+    <div id="searchBoxIds" class="divIds">
+        @Html.Partial("VerfolgungMulti/Id/Suche", Model.SendungsAuftragIdSelektor)
+    </div>
+    <div id="searchBoxDocs" class="divDocs hide">
+        @Html.Partial("VerfolgungMulti/Docs/Suche", Model.SendungsAuftragDocsSelektor)
+    </div>
 }
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>
+    <div id="searchResultIds" class="divIds hide">
+        <div id="divGridId"></div>
+    </div>
+    <div id="searchResultDocs" class="divDocs">
+        <div id="divGridDocs"></div>
+    </div>
 }
+
+<style type="text/css">
+    .tabbable-custom {
+        margin-bottom: 0!important;
+    }
+</style>
 
 <script type="text/javascript">
 
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        InitTabs();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
     }
-    
+
+    function InitTabs() {
+        $("ul.nav-tabs li a").click(function () {
+            var hrefId = $(this).attr("id");
+
+            SearchResultsHide();
+            SearchFormShow();
+
+            if (hrefId == "tabIds") {
+                $(".divDocs").hide();
+                $(".divIds").show();
+            }
+            if (hrefId == "tabDocs") {
+                $(".divIds").hide();
+                $(".divDocs").show();
+            }
+            return true;
+        });
+    }
+
+
+    // <Suche nach ID>
+
     function ShowCocSendungenId() {
 
         FormPreparePrivateAjax();
@@ -46,15 +93,15 @@
             }
         });
     }
-    
+
     function ShowCocSendungenIdSearchResult(result) {
         SearchFormHide();
-        $("#divGrid").html(result);
+        $("#divGridId").html(result);
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridCocSendungenId");
 
-        $("#divGrid").slideDown();
+        $("#divGridId").slideDown();
     }
 
 
@@ -66,7 +113,7 @@
         // prepare multi row selection
         App.initUniform();
     }
-    
+
     function OnColumnShowHide_GridCocSendungenId() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
@@ -74,5 +121,61 @@
     function OnColumnReorder_GridCocSendungenId() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
+
+    // </Suche nach ID>
+
+
+    // <Suche nach Docs>
+
+    function ShowCocSendungenDocs() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenDocs",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenDocsSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenDocsSearchResult(result) {
+        SearchFormHide();
+        $("#divGridDocs").html(result);
+
+        // move our Grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenDocs");
+
+        $("#divGridDocs").slideDown();
+    }
+
+
+    function OnDataBound_GridCocSendungenDocs() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenDocs() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCocSendungenDocs() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach Docs>
 
 </script>

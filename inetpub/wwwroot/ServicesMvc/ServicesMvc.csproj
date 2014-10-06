@@ -3884,8 +3884,10 @@
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti.cshtml" />
-    <Content Include="Views\CocSendung\VerfolgungMulti\Grid.cshtml" />
-    <Content Include="Views\CocSendung\VerfolgungMulti\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Id\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Id\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
