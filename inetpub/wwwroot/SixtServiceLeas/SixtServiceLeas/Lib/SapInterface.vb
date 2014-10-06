@@ -21,21 +21,23 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If Len(Trim(.Auftragsgrund)) = 0 Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.Auftragsgrund) Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
                         dr("AUFGRUND") = .Auftragsgrund
-                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
                         dr("AEKNZ") = .Aenderungskennzeichen
                         dr("CHASSIS_NUM") = .FahrzeugIdent
-                        If Len(Trim(.Datum_Zulassung_Vorgabe)) = 0 Then Throw New Exception("Datum_Zulassung_Vorgabe: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Datum_Zulassung_Vorgabe) Then Throw New Exception("Datum_Zulassung_Vorgabe: Pflichtfeld enthaelt keinen Wert.")
                         If Not IsDate(.Datum_Zulassung_Vorgabe) Then Throw New Exception("Datum_Zulassung_Vorgabe: Falsches Format.")
                         dr("ZDATUMZULASSUNG") = DateTime.Parse(.Datum_Zulassung_Vorgabe)
                         dr("TIDNR") = .Briefnummer
-                        If Len(Trim(.Referenz1)) = 0 Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Referenz1) Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
                         dr("REFERENZ1") = .Referenz1
                         dr("REFERENZ_2") = .Referenz2
-                        If Len(Trim(.Versandart)) = 0 Then Throw New Exception("Versandart: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Versandart) Then Throw New Exception("Versandart: Pflichtfeld enthaelt keinen Wert.")
                         dr("VERSART") = .Versandart
-                        If Len(Trim(.Zul_Kreis)) = 0 Then Throw New Exception("Zul_Kreis: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Zul_Kreis) Then Throw New Exception("Zul_Kreis: Pflichtfeld enthaelt keinen Wert.")
                         dr("ZULKREIS") = .Zul_Kreis
                         dr("WKENNZ_V1") = .WKZ
                         dr("WKENNZ_V2") = .WKZ_2
@@ -53,7 +55,7 @@ Public Class SapInterface
                         dr("PLZ_VSN") = .Vnehmer_PLZ
                         dr("ORT_VSN") = .Vnehmer_Ort
                         dr("LAND_VSN") = .Vnehmer_Land
-                        If Len(Trim(.eVB_Nummer)) = 0 Then Throw New Exception("eVB_Nummer: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.eVB_Nummer) Then Throw New Exception("eVB_Nummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.eVB_Nummer)) <> 7 Then Throw New Exception("eVB_Nummer: Pflichtfeld nicht 7stellig.")
                         dr("EVB_NUMMER") = .eVB_Nummer
                         If IsDate(.eVB_gueltig_bis) Then
@@ -63,37 +65,37 @@ Public Class SapInterface
                         If IsDate(.eVB_gueltig_von) Then
                             dr("EVB_GUELTIG_VON") = DateTime.Parse(.eVB_gueltig_von)
                         End If
-                        If Len(Trim(.ZulAuf)) = 0 Then Throw New Exception("ZulAuf: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.ZulAuf) Then Throw New Exception("ZulAuf: Pflichtfeld enthaelt keinen Wert.")
                         dr("ZULAUF") = .ZulAuf
-                        If Len(Trim(.Halter_Code)) = 0 Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Code) Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("HALTER") = .Halter_Code
-                        If Len(Trim(.Halter_Name1)) = 0 Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Name1) Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_HA") = .Halter_Name1
                         dr("NAME2_HA") = .Halter_Name2
-                        If Len(Trim(.Halter_Strasse)) = 0 Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Strasse) Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_HA") = .Halter_Strasse
                         dr("HAUSNR_HA") = .Halter_Hausnummer
-                        If Len(Trim(.Halter_PLZ)) = 0 Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_PLZ) Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Halter_PLZ)) <> 5 Then Throw New Exception("Halter_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_HA") = .Halter_PLZ
-                        If Len(Trim(.Halter_Ort)) = 0 Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Ort) Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_HA") = .Halter_Ort
                         dr("LAND_HA") = .Halter_Land
-                        If Len(Trim(.Empf_SuS_Code)) = 0 Then Throw New Exception("Empf_SuS_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Code) Then Throw New Exception("Empf_SuS_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_SUS") = .Empf_SuS_Code
-                        If Len(Trim(.Empf_SuS_Name1)) = 0 Then Throw New Exception("Empf_SuS_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Name1) Then Throw New Exception("Empf_SuS_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_SUS") = .Empf_SuS_Name1
                         dr("NAME2_SUS") = .Empf_SuS_Name2
-                        If Len(Trim(.Empf_SuS_Strasse)) = 0 Then Throw New Exception("Empf_SuS_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Strasse) Then Throw New Exception("Empf_SuS_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_SUS") = .Empf_SuS_Strasse
                         dr("HAUSNR_SUS") = .Empf_SuS_Hausnummer
-                        If Len(Trim(.Empf_SuS_PLZ)) = 0 Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_PLZ) Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Empf_SuS_PLZ)) <> 5 Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_SUS") = .Empf_SuS_PLZ
-                        If Len(Trim(.Empf_SuS_Ort)) = 0 Then Throw New Exception("Empf_SuS_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Ort) Then Throw New Exception("Empf_SuS_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_SUS") = .Empf_SuS_Ort
                         dr("LAND_SUS") = .Empf_SuS_Land
-                        If Len(Trim(.Empf_Brief_Code)) = 0 Then Throw New Exception("Empf_Brief_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Brief_Code) Then Throw New Exception("Empf_Brief_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_BRIEF") = .Empf_Brief_Code
                         If .Empf_Brief_Code = "1" Then
                             dr("NAME1_BF") = "DAD Deutscher Auto Dienst GmbH"
@@ -104,16 +106,16 @@ Public Class SapInterface
                             dr("ORT_BF") = "Ahrensburg"
                             dr("LAND_BF") = "DE"
                         Else
-                            If Len(Trim(.Empf_Brief_Name1)) = 0 Then Throw New Exception("Empf_Brief_Name1: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Name1) Then Throw New Exception("Empf_Brief_Name1: Pflichtfeld enthaelt keinen Wert.")
                             dr("NAME1_BF") = .Empf_Brief_Name1
                             dr("NAME2_BF") = .Empf_Brief_Name2
-                            If Len(Trim(.Empf_Brief_Strasse)) = 0 Then Throw New Exception("Empf_Brief_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Strasse) Then Throw New Exception("Empf_Brief_Strasse: Pflichtfeld enthaelt keinen Wert.")
                             dr("STRASSE_BF") = .Empf_Brief_Strasse
                             dr("HAUSNR_BF") = .Empf_Brief_Hausnummer
-                            If Len(Trim(.Empf_Brief_PLZ)) = 0 Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_PLZ) Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld enthaelt keinen Wert.")
                             If Len(Trim(.Empf_Brief_PLZ)) <> 5 Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld nicht 5stellig.")
                             dr("PSTLZ_BF") = .Empf_Brief_PLZ
-                            If Len(Trim(.Empf_Brief_Ort)) = 0 Then Throw New Exception("Empf_Brief_Ort: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Ort) Then Throw New Exception("Empf_Brief_Ort: Pflichtfeld enthaelt keinen Wert.")
                             dr("ORT_BF") = .Empf_Brief_Ort
                             dr("LAND_BF") = .Empf_Brief_Land
                         End If
@@ -179,21 +181,23 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If Len(Trim(.Auftragsgrund)) = 0 Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.Auftragsgrund) Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
                         dr("AUFGRUND") = .Auftragsgrund
-                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
                         dr("AEKNZ") = .Aenderungskennzeichen
                         dr("CHASSIS_NUM") = .FahrzeugIdent
-                        If Len(Trim(.Datum_Durchfuehrung)) = 0 Then Throw New Exception("Datum_Durchfuehrung: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Datum_Durchfuehrung) Then Throw New Exception("Datum_Durchfuehrung: Pflichtfeld enthaelt keinen Wert.")
                         If Not IsDate(.Datum_Durchfuehrung) Then Throw New Exception("Datum_Durchfuehrung: Falsches Format.")
                         dr("ZDATUMZULASSUNG") = DateTime.Parse(.Datum_Durchfuehrung)
                         dr("TIDNR") = .Briefnummer
-                        If Len(Trim(.Referenz1)) = 0 Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Referenz1) Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
                         dr("REFERENZ1") = .Referenz1
                         dr("REFERENZ_2") = .Referenz2
-                        If Len(Trim(.Versandart)) = 0 Then Throw New Exception("Versandart: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Versandart) Then Throw New Exception("Versandart: Pflichtfeld enthaelt keinen Wert.")
                         dr("VERSART") = .Versandart
-                        If Len(Trim(.Zul_Kreis)) = 0 Then Throw New Exception("Zul_Kreis: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Zul_Kreis) Then Throw New Exception("Zul_Kreis: Pflichtfeld enthaelt keinen Wert.")
                         dr("ZULKREIS") = .Zul_Kreis
                         dr("WKENNZ_V1") = .WKZ
                         dr("WKENNZ_V2") = .WKZ_2
@@ -203,7 +207,7 @@ Public Class SapInterface
                         dr("FEINSTAUB") = .Feinstaub
                         dr("VERSTRAEGER") = .Versicherungstraeger
                         dr("VERSMAKLER") = .Versicherungsmakler
-                        If Len(Trim(.eVB_Nummer)) = 0 Then Throw New Exception("eVB_Nummer: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.eVB_Nummer) Then Throw New Exception("eVB_Nummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.eVB_Nummer)) <> 7 Then Throw New Exception("eVB_Nummer: Pflichtfeld nicht 7stellig.")
                         dr("EVB_NUMMER") = .eVB_Nummer
                         If IsDate(.eVB_gueltig_bis) Then
@@ -213,37 +217,37 @@ Public Class SapInterface
                         If IsDate(.eVB_gueltig_von) Then
                             dr("EVB_GUELTIG_VON") = DateTime.Parse(.eVB_gueltig_von)
                         End If
-                        If Len(Trim(.ZulAuf)) = 0 Then Throw New Exception("ZulAuf: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.ZulAuf) Then Throw New Exception("ZulAuf: Pflichtfeld enthaelt keinen Wert.")
                         dr("ZULAUF") = .ZulAuf
-                        If Len(Trim(.Halter_Code)) = 0 Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Code) Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("HALTER") = .Halter_Code
-                        If Len(Trim(.Halter_Name1)) = 0 Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Name1) Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_HA") = .Halter_Name1
                         dr("NAME2_HA") = .Halter_Name2
-                        If Len(Trim(.Halter_Strasse)) = 0 Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Strasse) Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_HA") = .Halter_Strasse
                         dr("HAUSNR_HA") = .Halter_Hausnummer
-                        If Len(Trim(.Halter_PLZ)) = 0 Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_PLZ) Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Halter_PLZ)) <> 5 Then Throw New Exception("Halter_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_HA") = .Halter_PLZ
-                        If Len(Trim(.Halter_Ort)) = 0 Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Ort) Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_HA") = .Halter_Ort
                         dr("LAND_HA") = .Halter_Land
-                        If Len(Trim(.Empf_SuS_Code)) = 0 Then Throw New Exception("Empf_SuS_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Code) Then Throw New Exception("Empf_SuS_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_SUS") = .Empf_SuS_Code
-                        If Len(Trim(.Empf_SuS_Name1)) = 0 Then Throw New Exception("Empf_SuS_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Name1) Then Throw New Exception("Empf_SuS_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_SUS") = .Empf_SuS_Name1
                         dr("NAME2_SUS") = .Empf_SuS_Name2
-                        If Len(Trim(.Empf_SuS_Strasse)) = 0 Then Throw New Exception("Empf_SuS_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Strasse) Then Throw New Exception("Empf_SuS_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_SUS") = .Empf_SuS_Strasse
                         dr("HAUSNR_SUS") = .Empf_SuS_Hausnummer
-                        If Len(Trim(.Empf_SuS_PLZ)) = 0 Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_PLZ) Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Empf_SuS_PLZ)) <> 5 Then Throw New Exception("Empf_SuS_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_SUS") = .Empf_SuS_PLZ
-                        If Len(Trim(.Empf_SuS_Ort)) = 0 Then Throw New Exception("Empf_SuS_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_SuS_Ort) Then Throw New Exception("Empf_SuS_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_SUS") = .Empf_SuS_Ort
                         dr("LAND_SUS") = .Empf_SuS_Land
-                        If Len(Trim(.Empf_Brief_Code)) = 0 Then Throw New Exception("Empf_Brief_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Brief_Code) Then Throw New Exception("Empf_Brief_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_BRIEF") = .Empf_Brief_Code
                         If .Empf_Brief_Code = "1" Then
                             dr("NAME1_BF") = "DAD Deutscher Auto Dienst GmbH"
@@ -254,16 +258,16 @@ Public Class SapInterface
                             dr("ORT_BF") = "Ahrensburg"
                             dr("LAND_BF") = "DE"
                         Else
-                            If Len(Trim(.Empf_Brief_Name1)) = 0 Then Throw New Exception("Empf_Brief_Name1: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Name1) Then Throw New Exception("Empf_Brief_Name1: Pflichtfeld enthaelt keinen Wert.")
                             dr("NAME1_BF") = .Empf_Brief_Name1
                             dr("NAME2_BF") = .Empf_Brief_Name2
-                            If Len(Trim(.Empf_Brief_Strasse)) = 0 Then Throw New Exception("Empf_Brief_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Strasse) Then Throw New Exception("Empf_Brief_Strasse: Pflichtfeld enthaelt keinen Wert.")
                             dr("STRASSE_BF") = .Empf_Brief_Strasse
                             dr("HAUSNR_BF") = .Empf_Brief_Hausnummer
-                            If Len(Trim(.Empf_Brief_PLZ)) = 0 Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_PLZ) Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld enthaelt keinen Wert.")
                             If Len(Trim(.Empf_Brief_PLZ)) <> 5 Then Throw New Exception("Empf_Brief_PLZ: Pflichtfeld nicht 5stellig.")
                             dr("PSTLZ_BF") = .Empf_Brief_PLZ
-                            If Len(Trim(.Empf_Brief_Ort)) = 0 Then Throw New Exception("Empf_Brief_Ort: Pflichtfeld enthaelt keinen Wert.")
+                            If String.IsNullOrEmpty(.Empf_Brief_Ort) Then Throw New Exception("Empf_Brief_Ort: Pflichtfeld enthaelt keinen Wert.")
                             dr("ORT_BF") = .Empf_Brief_Ort
                             dr("LAND_BF") = .Empf_Brief_Land
                         End If
@@ -329,26 +333,28 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
+                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
                         dr("AUFGRUND") = "EVE"
-                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
                         dr("AEKNZ") = .Aenderungskennzeichen
                         dr("WKENNZ_V1") = .Akt_Kennzeichen
-                        If Len(Trim(.FahrzeugIdent)) = 0 Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.FahrzeugIdent) Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.FahrzeugIdent)) <> 17 Then Throw New Exception("Fahrgestellnummer: Feld ist nicht 17stellig. ")
                         dr("CHASSIS_NUM") = .FahrzeugIdent
-                        If Len(Trim(.Referenznummer)) = 0 Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Referenznummer) Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
                         dr("REFERENZ1") = .Referenznummer
-                        If Len(Trim(.Haendler_Code)) = 0 Then Throw New Exception("Haendler_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Haendler_Code) Then Throw New Exception("Haendler_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_BRIEF") = .Haendler_Code
-                        If Len(Trim(.Empf_Name1)) = 0 Then Throw New Exception("Empf_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Name1) Then Throw New Exception("Empf_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_BF") = .Empf_Name1
                         dr("NAME2_BF") = .Empf_Name2
-                        If Len(Trim(.Empf_Strasse)) = 0 Then Throw New Exception("Empf_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Strasse) Then Throw New Exception("Empf_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_BF") = .Empf_Strasse
                         dr("HAUSNR_BF") = .Empf_Hausnummer
-                        If Len(Trim(.Empf_PLZ)) = 0 Then Throw New Exception("Empf_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_PLZ) Then Throw New Exception("Empf_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Empf_PLZ)) <> 5 Then Throw New Exception("Empf_PLZ: Pflichtfeld nicht 5stellig.")
-                        If Len(Trim(.Empf_Ort)) = 0 Then Throw New Exception("Empf_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Ort) Then Throw New Exception("Empf_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("PSTLZ_BF") = .Empf_PLZ
                         dr("ORT_BF") = .Empf_Ort
                         dr("LAND_BF") = .Empf_Land
@@ -415,47 +421,49 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
+                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
                         If Not .Versandgrund = String.Empty AndAlso Not .Versandgrund = "12" Then
                             dr("AUFGRUND") = "TVE_" & .Versandgrund
                         Else
                             dr("AUFGRUND") = "TVE"
                         End If
-                        If Len(Trim(.Aenderungskennzeichen)) = 0 Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
                         dr("AEKNZ") = .Aenderungskennzeichen
                         dr("WKENNZ_V1") = .Akt_Kennzeichen
-                        If Len(Trim(.FahrzeugIdent)) = 0 Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.FahrzeugIdent) Then Throw New Exception("Fahrgestellnummer: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.FahrzeugIdent)) <> 17 Then Throw New Exception("Fahrgestellnummer: Feld ist nicht 17stellig.")
                         dr("CHASSIS_NUM") = .FahrzeugIdent
                         dr("TIDNR") = .Briefnummer
-                        If Len(Trim(.Referenznummer)) = 0 Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Referenznummer) Then Throw New Exception("Referenz1: Pflichtfeld enthaelt keinen Wert.")
                         dr("REFERENZ1") = .Referenznummer
                         dr("BEMERKUNG") = .Bemerkung
-                        If Len(Trim(.Halter_Code)) = 0 Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Code) Then Throw New Exception("Halter_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("HALTER") = .Halter_Code
-                        If Len(Trim(.Halter_Name1)) = 0 Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Name1) Then Throw New Exception("Halter_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_HA") = .Halter_Name1
                         dr("NAME2_HA") = .Halter_Name2
-                        If Len(Trim(.Halter_Strasse)) = 0 Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Strasse) Then Throw New Exception("Halter_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_HA") = .Halter_Strasse
                         dr("HAUSNR_HA") = .Halter_Hausnummer
-                        If Len(Trim(.Halter_PLZ)) = 0 Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_PLZ) Then Throw New Exception("Halter_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Halter_PLZ)) <> 5 Then Throw New Exception("Halter_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_HA") = .Halter_PLZ
-                        If Len(Trim(.Halter_Ort)) = 0 Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Halter_Ort) Then Throw New Exception("Halter_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_HA") = .Halter_Ort
                         dr("LAND_HA") = .Halter_Land
-                        If Len(Trim(.Haendler_Code)) = 0 Then Throw New Exception("Haendler_Code: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Haendler_Code) Then Throw New Exception("Haendler_Code: Pflichtfeld enthaelt keinen Wert.")
                         dr("EMPF_BRIEF") = .Haendler_Code
-                        If Len(Trim(.Empf_Name1)) = 0 Then Throw New Exception("Empf_Name1: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Name1) Then Throw New Exception("Empf_Name1: Pflichtfeld enthaelt keinen Wert.")
                         dr("NAME1_BF") = .Empf_Name1
                         dr("NAME2_BF") = .Empf_Name2
-                        If Len(Trim(.Empf_Strasse)) = 0 Then Throw New Exception("Empf_Strasse: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Strasse) Then Throw New Exception("Empf_Strasse: Pflichtfeld enthaelt keinen Wert.")
                         dr("STRASSE_BF") = .Empf_Strasse
                         dr("HAUSNR_BF") = .Empf_Hausnummer
-                        If Len(Trim(.Empf_PLZ)) = 0 Then Throw New Exception("Empf_PLZ: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_PLZ) Then Throw New Exception("Empf_PLZ: Pflichtfeld enthaelt keinen Wert.")
                         If Len(Trim(.Empf_PLZ)) <> 5 Then Throw New Exception("Empf_PLZ: Pflichtfeld nicht 5stellig.")
                         dr("PSTLZ_BF") = .Empf_PLZ
-                        If Len(Trim(.Empf_Ort)) = 0 Then Throw New Exception("Empf_Ort: Pflichtfeld enthaelt keinen Wert.")
+                        If String.IsNullOrEmpty(.Empf_Ort) Then Throw New Exception("Empf_Ort: Pflichtfeld enthaelt keinen Wert.")
                         dr("ORT_BF") = .Empf_Ort
                         dr("LAND_BF") = .Empf_Land
                         dr("VERSART") = .Zustellart
@@ -607,6 +615,60 @@ Public Class SapInterface
             End Select
 
         End Try
+    End Function
+
+    Public Function InsertStatus(ByVal meldungen As Statusmeldungen) As Errors
+        Dim StatErrors As New Errors()
+
+        Try
+            Dim objS As New S()
+
+            Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_QMMA_SET_ZZUEBER_001.GT_IN")
+
+            For Each item As Statusmeldung In meldungen
+                With item
+                    Try
+                        Dim dr As DataRow = impTable.NewRow()
+
+                        If String.IsNullOrEmpty(.Meldungsnummer) Then Throw New Exception("Meldungsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("QMNUM") = .Meldungsnummer
+                        If String.IsNullOrEmpty(.Status) Then Throw New Exception("Status: Pflichtfeld enthaelt keinen Wert.")
+                        dr("MNCOD") = .Status
+
+                        impTable.Rows.Add(dr)
+
+                    Catch InnerEx As Exception
+                        Dim tmpStatErr As New _Error()
+
+                        tmpStatErr.id = .Meldungsnummer
+                        tmpStatErr.message = InnerEx.Message
+                        StatErrors.Add(tmpStatErr)
+
+                    End Try
+                End With
+            Next
+
+            Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+            logService.LogWebServiceTraffic("SAP-Input", GetTableAsString(impTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            Dim errTable As DataTable = objS.AP.GetExportTableWithExecute("GT_ERR")
+
+            logService.LogWebServiceTraffic("SAP-Output", GetTableAsString(errTable), ConfigurationManager.AppSettings("LogTableName"))
+
+            If errTable IsNot Nothing Then
+                For Each dRow As DataRow In errTable.Rows
+                    Dim tmpStatErr As New _Error()
+                    tmpStatErr.id = ""
+                    tmpStatErr.message = dRow("Text").ToString
+                    StatErrors.Add(tmpStatErr)
+                Next
+            End If
+
+        Catch ex As Exception
+            Throw New Exception("WMInsertStatus, Fehler beim Import:  " & ex.Message)
+        End Try
+
+        Return StatErrors
     End Function
 
     Private Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String

@@ -124,6 +124,8 @@
     </Compile>
     <Compile Include="Lib\Error.vb" />
     <Compile Include="Lib\Errors.vb" />
+    <Compile Include="Lib\Statusmeldung.vb" />
+    <Compile Include="Lib\Statusmeldungen.vb" />
     <Compile Include="Lib\ResponseFilterStream.vb" />
     <Compile Include="Lib\RequestLoggingModule.vb" />
     <Compile Include="Lib\Sap.vb" />

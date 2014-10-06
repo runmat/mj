@@ -140,13 +140,11 @@ Public Class ServiceData
                 Throw New Exception("WMGetFreisetzung_Status, User oder Password nicht korrekt.")
             End If
 
-            Dim SetData As SapInterface
-            SetData = New SapInterface()
+            Dim SetData As New SapInterface()
             strXml = SetData.WMGetFreisetzungStatus()
 
         Catch ex As Exception
             Try
-                'Error in das Eventlog schreiben
                 EventLog.WriteEntry("SixtServiceLeas", "WMGetFreisetzung_Status: " & ex.Message, EventLogEntryType.Warning)
             Catch
                 'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
@@ -156,6 +154,32 @@ Public Class ServiceData
         End Try
 
         Return strXml
+    End Function
+
+    <WebMethod()> Public Function WMInsertStatus(ByVal User As String, ByVal Password As String, ByVal Statusmeldungen As Statusmeldungen) As Errors
+        Dim StatErrors As New Errors()
+
+        Try
+
+            'Login überprüfen
+            If Not CheckLogin(User, Password) Then
+                Throw New Exception("WMInsertStatus, User oder Password nicht korrekt.")
+            End If
+
+            Dim SetData As New SapInterface()
+            StatErrors = SetData.InsertStatus(Statusmeldungen)
+
+        Catch ex As Exception
+            Try
+                EventLog.WriteEntry("SixtServiceLeas", "WMInsertStatus: " & ex.Message, EventLogEntryType.Warning)
+            Catch
+                'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+            End Try
+
+            Throw
+        End Try
+
+        Return StatErrors
     End Function
 
     Public Sub New()

@@ -1,6 +1,7 @@
 ﻿Public Class VehicleRegistrationEndgVers
 
     Public Mandant As String
+    Public Sixt_Auftragsnummer As String
     Public Aenderungskennzeichen As String
     Public Akt_Kennzeichen As String
     Public FahrzeugIdent As String
