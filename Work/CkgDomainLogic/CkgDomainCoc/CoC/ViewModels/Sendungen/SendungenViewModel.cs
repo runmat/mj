@@ -18,8 +18,10 @@ namespace CkgDomainLogic.CoC.ViewModels
     {
         [XmlIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
-        
-        
+
+
+        #region Sendungen
+
         public SendungsAuftragSelektor SendungsAuftragSelektor
         {
             get { return PropertyCacheGet(() => new SendungsAuftragSelektor()); }
@@ -60,5 +62,55 @@ namespace CkgDomainLogic.CoC.ViewModels
         {
             SendungenFiltered = Sendungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+        #endregion
+
+
+        public void DataMarkForRefreshMulti()
+        {
+            PropertyCacheClear(this, m => m.SendungenIdFiltered);
+            PropertyCacheClear(this, m => m.SendungsAuftragIdSelektor);
+        }
+
+
+        #region Sendungen, Suche nach ID
+
+        public SendungsAuftragIdSelektor SendungsAuftragIdSelektor
+        {
+            get { return PropertyCacheGet(() => new SendungsAuftragIdSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<SendungsAuftrag> SendungenId
+        {
+            get { return PropertyCacheGet(() => new List<SendungsAuftrag>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<SendungsAuftrag> SendungenIdFiltered
+        {
+            get { return PropertyCacheGet(() => SendungenId); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void LoadSendungenId(SendungsAuftragIdSelektor model, Action<string, string> addModelError)
+        {
+            SendungenId = DataService.GetSendungsAuftraegeId(model);
+
+            if (SendungenId.None())
+                addModelError("", Localize.NoDataFound);
+
+            DataMarkForRefresh();
+        }
+
+        public void FilterSendungenId(string filterValue, string filterProperties)
+        {
+            SendungenIdFiltered = SendungenId.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        #endregion
+
     }
 }

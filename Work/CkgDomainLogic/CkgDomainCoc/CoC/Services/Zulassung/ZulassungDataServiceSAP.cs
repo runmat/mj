@@ -266,6 +266,37 @@ namespace CkgDomainLogic.CoC.Services
 
             return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
         }
+
+        #endregion        
+        
+
+        #region Sendungsaufträge, nach ID
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_GET_ZZSEND2_GT_WEB_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeId(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_GET_ZZSEND2.GT_WEB> GetSapSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            Z_DPM_GET_ZZSEND2.Init(SAP);
+
+            SAP.SetImportParameter("KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.DatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("ERDAT_VON", model.DatumRange.StartDate);
+                SAP.SetImportParameter("ERDAT_BIS", model.DatumRange.EndDate);
+            }
+
+            if (model.FilterNurMitSendungsNummer)
+                SAP.SetImportParameter("CHECK_SEND2", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
+        }
+
         #endregion
     }
 }

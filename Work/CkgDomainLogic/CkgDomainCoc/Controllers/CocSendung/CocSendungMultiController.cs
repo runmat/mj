@@ -18,10 +18,13 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult VerfolgungMulti()
         {
-            ViewModel.DataMarkForRefresh();
+            ViewModel.DataMarkForRefreshMulti();
 
             return View(ViewModel);
         }
+
+
+        #region Sendungen, Suche nach ID
 
         [GridAction]
         public ActionResult SendungenIdAjaxBinding()
@@ -38,14 +41,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadSendungenId(SendungsAuftragSelektor model)
+        public ActionResult LoadSendungenId(SendungsAuftragIdSelektor model)
         {
-            ViewModel.SendungsAuftragSelektor = model;
+            ViewModel.SendungsAuftragIdSelektor = model;
 
             if (ModelState.IsValid)
-                ViewModel.LoadSendungen(model, ModelState.AddModelError);
+                ViewModel.LoadSendungenId(model, ModelState.AddModelError);
 
-            return PartialView("VerfolgungMulti/Suche", ViewModel.SendungsAuftragSelektor);
+            return PartialView("VerfolgungMulti/Suche", ViewModel.SendungsAuftragIdSelektor);
         }
 
         [HttpPost]
@@ -53,5 +56,8 @@ namespace ServicesMvc.Controllers
         {
             return PartialView("VerfolgungMulti/Grid", ViewModel);
         }
+
+        #endregion
+
     }
 }

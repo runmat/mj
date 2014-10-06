@@ -30,5 +30,17 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants.ShippingSurvey)]
         [GridExportIgnore]
         public string VersandIdSurveyLink { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        public string Referenz { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string StatusText { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
+        public string VersandAdresseAsText { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Shipping)]
+        public string VersandWeg { get; set; }
     }
 }

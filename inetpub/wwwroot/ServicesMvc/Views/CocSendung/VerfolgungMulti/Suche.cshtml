@@ -1,8 +1,8 @@
-﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragSelektor
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragIdSelektor
 
-<div id="divSendungenSuche">
-    @using (Ajax.BeginForm("LoadSendungen", "CocSendung", null,
-        new MvcAjaxOptions("divSendungenSuche") { OnComplete = "ShowCocSendungen();" }, new { id = "SendungenForm" }))
+<div id="divSendungenIdSuche">
+    @using (Ajax.BeginForm("LoadSendungenId", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenIdSuche") { OnComplete = "ShowCocSendungenId();" }, new { id = "SendungenIdForm" }))
     {   
         <div class="form-horizontal" id="searchForm">
             

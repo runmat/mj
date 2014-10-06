@@ -7,7 +7,7 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("VerfolgungMulti/Suche", Model.SendungsAuftragSelektor)
+    @Html.Partial("VerfolgungMulti/Suche", Model.SendungsAuftragIdSelektor)
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -26,20 +26,20 @@
         FormPrepareAjax();
     }
     
-    function ShowCocSendungen() {
+    function ShowCocSendungenId() {
 
         FormPreparePrivateAjax();
 
         $.ajax({
             type: "POST",
-            url: "ShowSendungen",
+            url: "ShowSendungenId",
             loadingShow: false,
             success: function (result) {
 
                 SearchResultsTryHide();
 
                 if (_modelStateValid) {
-                    ShowCocSendungenSearchResult(result);
+                    ShowCocSendungenIdSearchResult(result);
                 }
 
                 LoadingHide();
@@ -47,7 +47,7 @@
         });
     }
     
-    function ShowCocSendungenSearchResult(result) {
+    function ShowCocSendungenIdSearchResult(result) {
         SearchFormHide();
         $("#divGrid").html(result);
 
