@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data;
 
 namespace AppRemarketing.lib
@@ -23,6 +21,12 @@ namespace AppRemarketing.lib
         public DateTime? ZBAusgang { get; private set; }
         public DateTime? SchlAusgang { get; private set; }
         public string UPEPreis { get; private set; }
+        public DateTime? VertragswidrigkeitDate { get; private set; }
+        public string VertragswidrigkeitArt { get; private set; }
+        public DateTime? TuevRueckmeldung { get; private set; }
+        public DateTime? TuevManuellBeauftragt { get; private set; }
+        public DateTime? MietfzgAbrechnungsdatum { get; private set; }
+        public DateTime? MietfzgRueckkaufrechnung { get; private set; }
 
         public static HistorieUebersicht Parse(DataTable gt_daten, DataTable gt_daten2, DataTable gt_addr_b, DataTable gt_guta, DataTable gt_leb_t, DataTable gt_leb_b, DataTable gt_schaden, DataTable gt_belas, DataTable gt_rechng)
         {
@@ -42,6 +46,12 @@ namespace AppRemarketing.lib
                 result.SchlEingang = Helper.GetDate(row["EGZWSLDAT"]);
                 result.ZBEingang = Helper.GetDate(row["EGZB2DAT"]);
                 result.Vermarktung = Helper.ParseCell<int>(row["EREIGNIS"]) != 0;
+                result.VertragswidrigkeitDate = Helper.GetDate(row["DAT_VERT_WID"]);
+                result.VertragswidrigkeitArt = Helper.ParseCell<string>(row["ART_VERT_WID"]);
+                result.TuevRueckmeldung = Helper.GetDate(row["DAT_TUEV_BEAUF_RUECK"]);
+                result.TuevManuellBeauftragt = Helper.GetDate(row["DAT_TUEV_BEAUF"]);
+                result.MietfzgAbrechnungsdatum = Helper.GetDate(row["DAT_ABRECHNUNG"]);
+                result.MietfzgRueckkaufrechnung = Helper.GetDate(row["RUECK_DAT"]);
             }
 
             row = gt_daten2.Rows.Cast<DataRow>().FirstOrDefault();
