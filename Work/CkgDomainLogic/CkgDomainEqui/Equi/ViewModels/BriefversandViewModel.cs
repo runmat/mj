@@ -112,7 +112,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public List<VersandGrund> VersandGruendeList { get { return BriefVersandDataService.GetVersandgruende(VersandartOptionen.IstEndgueltigerVersand); } }
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).ToList(); } }
+        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return FahrzeugeFiltered.Where(c => c.IsSelected).ToList(); } }
 
         [XmlIgnore]
         public string SelectedFahrzeugeAsString
