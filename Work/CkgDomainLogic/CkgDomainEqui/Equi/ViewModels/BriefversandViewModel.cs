@@ -115,7 +115,16 @@ namespace CkgDomainLogic.Equi.ViewModels
         public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).ToList(); } }
 
         [XmlIgnore]
-        public string SelectedFahrzeugeAsString { get { return string.Join(", ", SelectedFahrzeuge.Select(c => c.Fahrgestellnummer)); } }
+        public string SelectedFahrzeugeAsString
+        {
+            get
+            {
+                if (SelectedFahrzeuge.Count > 10)
+                    return string.Format("{0} Fahrzeug{1}", SelectedFahrzeuge.Count, SelectedFahrzeuge.Count == 1 ? "" : "e");
+
+                return string.Join(", ", SelectedFahrzeuge.Select(c => c.Fahrgestellnummer));
+            }
+        }
 
         [XmlIgnore]
         private string PrevSelectedFahrzeugeAsString { get; set; }
