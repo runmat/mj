@@ -1648,7 +1648,7 @@ Imports CKG.Base.Common
                         sapRow("ORT_EMPF") = _mStrCity
                         sapRow("LAND_EMPF") = _mStrLaenderKuerzel
                         sapRow("SYSTEMKENNZ") = ""
-                        sapRow("AUFTRAGGEBERID") = m_objUser.UserName
+                        sapRow("AUFTRAGGEBERID") = _mSachbearbeiter
                         sapRow("NAME_ANSP") = _mStrName2
                         sapRow("NAME_ANF") = ""
                         sapRow("VORNAME_ANF") = ""
@@ -1658,6 +1658,7 @@ Imports CKG.Base.Common
                         sapRow("ORT_ANF") = ""
                         sapRow("LAND_ANF") = ""
                         sapRow("CLIENTLD") = ""
+                        sapRow("USER_AUTOR") = m_objUser.UserName
 
                         sapTable.Rows.Add(sapRow)
 
