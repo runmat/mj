@@ -1420,8 +1420,10 @@ Imports CKG.Base.Common
                         sapRow("MATNR") = _mMaterial
                         sapRow("ZZVGRUND") = _mVersgrund
                         sapRow("ZZANFDT") = Now.ToShortDateString
-                        'PartnerNr
+                        sapRow("ZZBETREFF") = _mBemerkung
+                        sapRow("ZZNAME_ZH") = _mHalter
 
+                        'PartnerNr
                         sapRow("ZZKUNNR_ZS") = _mVersandadrZs
 
                         'Zulassungsstelle
