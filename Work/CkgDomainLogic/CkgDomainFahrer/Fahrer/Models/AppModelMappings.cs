@@ -37,6 +37,9 @@ namespace CkgDomainLogic.Fahrer.Models
                                 case "U": 
                                     business.BelegungsTyp = FahrerTagBelegungsTyp.Urlaub; 
                                     break;
+                                case "I":
+                                    business.BelegungsTyp = FahrerTagBelegungsTyp.EingeschraenktVerfuegbar;
+                                    break;
                                 case "0": 
                                     business.BelegungsTyp = FahrerTagBelegungsTyp.NichtVerfuegbar; 
                                     break;
@@ -179,6 +182,9 @@ namespace CkgDomainLogic.Fahrer.Models
                                     break;
                                 case FahrerTagBelegungsTyp.Krank:
                                     sap.ANZ_FAHRER = "K";
+                                    break;
+                                case FahrerTagBelegungsTyp.EingeschraenktVerfuegbar:
+                                    sap.ANZ_FAHRER = "I";
                                     break;
                                 case FahrerTagBelegungsTyp.NichtVerfuegbar:
                                     sap.ANZ_FAHRER = "0";
