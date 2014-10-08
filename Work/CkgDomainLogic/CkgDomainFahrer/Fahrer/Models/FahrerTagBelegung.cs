@@ -2,7 +2,7 @@
 
 namespace CkgDomainLogic.Fahrer.Models
 {
-    public enum FahrerTagBelegungsTyp { Leer = 0, Verfuegbar = 1, NichtVerfuegbar = 2, Urlaub = 3, Krank = 4 };
+    public enum FahrerTagBelegungsTyp { Leer = 0, Verfuegbar = 1, EingeschraenktVerfuegbar = 2, NichtVerfuegbar = 3, Urlaub = 4, Krank = 5 };
 
     public class FahrerTagBelegung
     {
