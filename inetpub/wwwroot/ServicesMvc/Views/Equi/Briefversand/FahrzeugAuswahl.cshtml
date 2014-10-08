@@ -2,12 +2,50 @@
 @using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridFahrzeugAuswahl"; }
 
+<style type="text/css">
+
+.file-upload-wrapper-div {
+    display: inline!important;
+}    
+.file-upload {
+    font-size: 0.8em;
+    font-weight: 500;
+}
+</style>
+
 <h4 class="margin-bottom-20">
+    
+    @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Multiple(false)
+            .Localizable("de-DE")
+            .Async(async => async
+                                .Save("CsvUploadStart", "Equi")
+                                .SaveField("uploadFiles")
+                                .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                                        .OnUpload("UploadStart")
+                                        .OnSuccess("UploadFinished")
+                                        .OnError("UploadError"))
+            )
+
+    <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
+        <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
+    </button>
+
+    <a href="#" onclick="return AjaxCsvTemplateShow()" class="btn white tooltips margin-left-20" data-original-title="@Localize.HLA_CsvSaveFileHintVisibleTitle" data-placement="right">@Localize.HLA_CsvSaveFileHintVisibleTitleShort <i class="icon-table margin-left-5"></i></a>
+</h4>
+
+<h4>
     @Model.FahrzeugAuswahlTitleHint: 
     <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
         <i class="icon-check"></i><span class="padding-left-5 bold"></span>
     </span>
 </h4> 
+
+@Html.SpanAlert("Message")
 
 @(Html.Telerik()
     .Grid<Fahrzeugbrief>()
@@ -16,8 +54,10 @@
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
-            //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
+            columns.XBound("")
+                .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                .Filterable(false);
 
             columns.XBound(c => c.Kennzeichen);
             columns.XBound(c => c.Fahrgestellnummer);
@@ -31,7 +71,7 @@
         })
 
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl").OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
 
@@ -41,3 +81,16 @@
             commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "Equi").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
         })
 )
+
+
+@(Html.Telerik().Window()
+    .Name("CsvTemplateHint")
+    .Visible(false)
+    .Title("CSV Upload")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(600)
+    .Height(300)
+    .Content(@<text><div id="CsvTemplateHintDetail" class="margin-left-15 margin-right-15"></div></text>))
+

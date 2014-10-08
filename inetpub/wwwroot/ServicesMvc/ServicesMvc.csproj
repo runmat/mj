@@ -380,10 +380,6 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Models\FahrerTagBelegung.cs" />
-    <Compile Include="Models\TestFilterModel2.cs" />
-    <Compile Include="Models\TestFilterModel.cs" />
-    <Compile Include="ViewModels\TestViewModel.cs" />
     <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -698,6 +694,7 @@
     <Content Include="Content\fileupload\jquery.fileupload.css" />
     <Content Include="Content\fileupload\style.css" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Images\BriefversandCsvTemplate.png" />
     <Content Include="Images\CarGateCsvTemplate.png" />
     <Content Include="Images\fahrer\1.png" />
     <Content Include="Images\fahrer\10.png" />
@@ -2410,7 +2407,6 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
-    <Compile Include="ViewModels\Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2444,18 +2440,13 @@
     <Content Include="Views\Leasing\Klaerfaelle\AnzeigeDatenPuGDetails.cshtml" />
     <Content Include="Views\CoC\Partial\DuplicateVinConfirmationMode.cshtml" />
     <Content Include="Views\CocBeauftragung\Beauftragung.cshtml" />
-    <Content Include="Views\Test\Partial\TestFormOld.cshtml" />
-    <Content Include="Views\Test\Partial\TestForm2.cshtml" />
     <Content Include="Views\Leasing\CsvUpload.cshtml" />
     <Content Include="Views\Leasing\CsvUpload\FileUpload.cshtml" />
     <Content Include="Views\Leasing\CsvUpload\ValidationGrid.cshtml" />
     <Content Include="Views\Leasing\CsvUpload\Receipt.cshtml" />
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
-    <Content Include="Views\Test\Partial\TestFormKnockout.cshtml" />
-    <Content Include="Views\Test\ImageUpload.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
-    <Content Include="Views\Test\ImageUploadPlus.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
@@ -2466,7 +2457,6 @@
     </None>
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
-    <Content Include="Views\Test\DatePicker.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
     <Content Include="Views\Shared\Partial\BrowserWarnings\IeWarning.cshtml" />
     <Content Include="Views\Fahrer\Meldung.cshtml" />
@@ -2603,6 +2593,7 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\FahrzeugeGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Dokumente.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Uebersicht.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Zulassung.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Scripts.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\DocCategoriesGrid.cshtml" />
@@ -2613,6 +2604,7 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Dokumente\FahrzeugakteDocsGrid.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Uebersicht\FahrzeugDetails.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\Zulassung\BeauftragteZulassungenGrid.cshtml" />
+    <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Partial\FahrzeugCreate.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlay.cshtml" />
     <Content Include="Views\Autohaus\Zulassung\Partial\AdresseOverlayForm.cshtml" />
@@ -4139,6 +4131,8 @@
     <Content Include="Views\Uebfuehrg\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Login\Partial\Footer.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
@@ -4940,8 +4934,6 @@
     <Content Include="Views\Shared\Partial\UserLanguageSwitch.cshtml" />
     <Content Include="Views\Leasing\Abmeldung\AbzumeldendeFzgGrid.cshtml" />
     <Content Include="Views\Leasing\BeauftragungAbmeldung.cshtml" />
-    <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Test\Partial\TestFormDatePicker.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\DateRangePickerOrg.cshtml" />
     <Content Include="Views\Document\Edit.cshtml" />
     <Content Include="Views\Archive\OptischesArchiv.cshtml" />
