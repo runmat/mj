@@ -664,6 +664,12 @@ div.t-window {
 .t-grid-selected-alt {
     background-color: #d0f0c6!important;
 }
+.t-grid-error {
+    background-color: #ffeeee!important;
+}
+.t-grid-error-alt {
+    background-color: #f6e6e6!important;
+}
 .t-grid-multi-row-select {
     cursor: pointer!important;
     background-color: #fff;
@@ -1160,4 +1166,8 @@ i.dienstleistung-gewaehlt {
 
 .font-bold {
     font-weight: bold;
+}
+
+div.controls-width-400 .controls {
+    width: 400px;
 }
