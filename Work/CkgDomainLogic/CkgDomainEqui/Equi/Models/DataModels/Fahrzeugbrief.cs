@@ -35,7 +35,7 @@ namespace CkgDomainLogic.Equi.Models
         public string Standort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Location)]
-        public string StandortText { get { return ((!String.IsNullOrEmpty(AbcKennzeichen) && AbcKennzeichen == "1") ? Localize.TempDispatchedSing : "DAD"); } }
+        public string StandortText { get { return (IsMissing ? Localize.NoDataFound : (!String.IsNullOrEmpty(AbcKennzeichen) && AbcKennzeichen == "1") ? Localize.TempDispatchedSing : "DAD"); } }
 
         [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
         public string Versandgrund { get; set; }
@@ -81,5 +81,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [ModelMappingCompareIgnore]
         public bool IsSelected { get; set; }
+
+        [ModelMappingCompareIgnore]
+        public bool IsMissing { get; set; }
     }
 }
