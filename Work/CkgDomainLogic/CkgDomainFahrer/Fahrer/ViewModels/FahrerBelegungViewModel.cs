@@ -31,9 +31,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             get
             {
-                return string.Format("{0},{1};{2},{3};{4},{5};{6},{7};{8},{9}",
+                return string.Format("{0},{1};{2},{3};{4},{5};{6},{7};{8},{9};{10},{11}",
                                         FahrerTagBelegungsTyp.Leer.ToString("d"), "k. A.",
                                         FahrerTagBelegungsTyp.Verfuegbar.ToString("d"), "Verfügbar",
+                                        FahrerTagBelegungsTyp.EingeschraenktVerfuegbar.ToString("d"), "Eingeschränkt verfügbar",
                                         FahrerTagBelegungsTyp.NichtVerfuegbar.ToString("d"), "Nicht verfügbar",
                                         FahrerTagBelegungsTyp.Urlaub.ToString("d"), "Urlaub",
                                         FahrerTagBelegungsTyp.Krank.ToString("d"), "Krank"

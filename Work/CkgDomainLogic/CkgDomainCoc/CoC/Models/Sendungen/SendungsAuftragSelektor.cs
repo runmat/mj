@@ -14,6 +14,10 @@ namespace CkgDomainLogic.CoC.Models
         }
 
         [LocalizedDisplay(LocalizeConstants._blank)]
-        public bool FilterNurMitSendungsNummer { get; set; }
+        public bool FilterNurMitSendungsNummer
+        {
+            get { return PropertyCacheGet(() => true); }
+            set { PropertyCacheSet(value); }
+        }
     }
 }
