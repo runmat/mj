@@ -33,7 +33,7 @@ namespace CkgDomainLogic.Fahrer.Models
         public bool AuftragIstAbgelehnt { get { return FahrerStatus.NotNullOrEmpty() == "NO"; } }
 
         [GridHidden]
-        public bool AuftragIstAngenommnen { get { return FahrerStatus.NotNullOrEmpty() == "OK"; } }
+        public bool AuftragIstAngenommen { get { return FahrerStatus.NotNullOrEmpty() == "OK"; } }
 
 
         [LocalizedDisplay(LocalizeConstants.PostcodeStart)]
