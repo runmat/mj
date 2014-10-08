@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable ConvertClosureToMethodGroup
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Contracts;
@@ -19,9 +20,11 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<Adresse> ReAdressen { get { return PropertyCacheGet(() => GetCustomerAdressen("RE")); } }
         public Adresse AgAdresse { get { return PropertyCacheGet(() => GetCustomerAdressen("AG").FirstOrDefault()); } }
 
-        public string KundennrOverride { get; set; }
+        public List<Adresse> ZulassungsStellen { get { return PropertyCacheGet(() => GetZulassungsStellenFromSap()); } }
 
+        public string KundennrOverride { get; set; }
         public string KundenNr { get { return KundennrOverride ?? LogonContext.KundenNr; } }
+
 
 
         public AdressenDataServiceSAP(ISapDataService sap)
@@ -47,6 +50,17 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             StoreToSap(adresse, null, true);
             Adressen.RemoveAll(c => c.ID == adresse.ID);
+        }
+
+        public List<Adresse> GetZulassungsStellenFromSap()
+        {
+            Z_DPM_READ_ADRESSPOOL_01.Init(SAP);
+            SAP.SetImportParameter("I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_EQTYP", "B");
+
+            var sapList = Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_READ_ADRESSPOOL_01_GT_ZULAST__To__Adresse.Copy(sapList).Where(a => a.Typ.IsNotNullOrEmpty()).ToList();
         }
 
         public List<Adresse> LoadFromSap(string internalKey = null, string kennung = null, bool kundennrMitgeben = true)
