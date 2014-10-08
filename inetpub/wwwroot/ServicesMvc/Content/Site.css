@@ -239,3 +239,21 @@ body {
 .tab-content .t-grid {
     overflow: auto;
 }
+
+/* Smarthone device width */
+@media (max-width: 550px) 
+{
+    .t-grid table { zoom: 1.0; }
+}    
+
+/* Tablet device width */
+@media (min-width: 551px) and (max-width: 1200px) 
+{
+    .t-grid table { zoom: 1.2; }
+}   
+    
+/* Workstation device width */
+@media (min-width: 1201px) 
+{
+    .t-grid table { zoom: 1.0; }
+}   
