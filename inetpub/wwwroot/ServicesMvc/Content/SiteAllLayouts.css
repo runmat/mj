@@ -1167,3 +1167,7 @@ i.dienstleistung-gewaehlt {
 .font-bold {
     font-weight: bold;
 }
+
+div.controls-width-400 .controls {
+    width: 400px;
+}
