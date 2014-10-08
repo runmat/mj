@@ -289,8 +289,14 @@ namespace CkgDomainLogic.CoC.Services
                 SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRange.EndDate);
             }
 
-            if (model.FilterNurMitSendungsNummer)
-                SAP.SetImportParameter("CHECK_SEND2", "X");
+            if (model.Referenz.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_POOLNR", model.Referenz);
+
+            if (model.SendungsID.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_TRACK", model.SendungsID);
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
 
             SAP.Execute();
 
@@ -312,6 +318,24 @@ namespace CkgDomainLogic.CoC.Services
             Z_DPM_READ_SENDTAB_03.Init(SAP);
 
             SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.FahrgestellNummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_CHASSIS_NUM", model.FahrgestellNummer);
+
+            if (model.ZBIINummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZBRIEF", model.ZBIINummer);
+
+            if (model.VertragsNummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZREFNR", model.VertragsNummer);
+
+            if (model.Kennzeichen.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZKENN", model.Kennzeichen);
+
+            if (model.SendungsID.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_TRACK", model.SendungsID);
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
 
             SAP.Execute();
 

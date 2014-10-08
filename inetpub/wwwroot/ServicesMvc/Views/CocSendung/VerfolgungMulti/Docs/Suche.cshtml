@@ -1,15 +1,25 @@
 ﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragDocsSelektor
 
-<div Docs="divSendungenDocsSuche">
+<div id="divSendungenDocsSuche">
     @using (Ajax.BeginForm("LoadSendungenDocs", "CocSendung", null,
-        new MvcAjaxOptions("divSendungenDocsSuche") { OnComplete = "ShowCocSendungenDocs();" }, new { Docs = "SendungenDocsForm" }))
+        new MvcAjaxOptions("divSendungenDocsSuche") { OnComplete = "ShowCocSendungenDocs();" }, new { id = "SendungenFormDocs" }))
     {   
-        <div class="form-horizontal" id="searchForm">
+        <div class="form-horizontal" id="searchFormDocs">
             
             @Html.FormValidationSummary()
             
            
-            @Html.FormCheckBoxFor(m => m.FilterTestNurMitSendungsNummer, new { @class = "m-wrap" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
+            @Html.FormTextBoxFor(m => m.FahrgestellNummer, new { @class = "m-wrap", col = "left" })
+
+            @Html.FormTextBoxFor(m => m.ZBIINummer, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.VertragsNummer, new { @class = "m-wrap", col = "left" })
+
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.SendungsID, new { @class = "m-wrap", col = "left" })
+
+            @Html.FormCheckBoxFor(m => m.NurMitSendungsID, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
 
 
             @*@Html.FormRequiredFieldsSummary()*@
@@ -20,7 +30,7 @@
         </div>  
         
         <script type="text/javascript">
-            _modelStateValDocs = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
         </script>
     }
 </div>

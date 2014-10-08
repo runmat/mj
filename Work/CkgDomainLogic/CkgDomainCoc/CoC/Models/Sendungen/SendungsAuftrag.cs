@@ -42,5 +42,11 @@ namespace CkgDomainLogic.CoC.Models
 
         [LocalizedDisplay(LocalizeConstants.Shipping)]
         public string VersandWeg { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        public string PoolNummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants._ZBIINr)]
+        public string Fahrzeugbrief { get; set; }
     }
 }

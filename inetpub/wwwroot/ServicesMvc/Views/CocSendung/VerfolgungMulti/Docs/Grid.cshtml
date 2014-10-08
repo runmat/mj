@@ -11,13 +11,14 @@
     .XAjaxDataBinding("SendungenDocsAjaxBinding", "CocSendung")
     .Columns(columns =>
         {
-            columns.XBound(c => c.StatusText);
-            columns.XBound(c => c.FIN);
-            columns.XBound(c => c.VertragsNr);
-            columns.XBound(c => c.Kennzeichen);
-            columns.XBound(c => c.RechnungsNr);
-            columns.XBound(c => c.ZulassungsDatum);
             columns.XBound(c => c.VersandID);
+            columns.XBound(c => c.VersandWeg);
+            columns.XBound(c => c.ZulassungsDatum);
+            columns.XBound(c => c.FIN);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Fahrzeugbrief);
+            columns.XBound(c => c.VertragsNr);
+            columns.XBound(c => c.StatusText);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

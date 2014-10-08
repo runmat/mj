@@ -82,6 +82,9 @@ namespace CkgDomainLogic.CoC.ViewModels
         {
             PropertyCacheClear(this, m => m.SendungenIdFiltered);
             PropertyCacheClear(this, m => m.SendungsAuftragIdSelektor);
+            
+            PropertyCacheClear(this, m => m.SendungenDocsFiltered);
+            PropertyCacheClear(this, m => m.SendungsAuftragDocsSelektor);
         }
 
 
@@ -113,6 +116,7 @@ namespace CkgDomainLogic.CoC.ViewModels
 
         public void LoadSendungenId(SendungsAuftragIdSelektor model, Action<string, string> addModelError)
         {
+            PropertyCacheClear(this, m => m.SendungenIdFiltered);
             SendungenId = DataService.GetSendungsAuftraegeId(model);
 
             if (SendungenId.None())
@@ -157,6 +161,7 @@ namespace CkgDomainLogic.CoC.ViewModels
 
         public void LoadSendungenDocs(SendungsAuftragDocsSelektor model, Action<string, string> addModelError)
         {
+            PropertyCacheClear(this, m => m.SendungenDocsFiltered);
             SendungenDocs = DataService.GetSendungsAuftraegeDocs(model);
 
             if (SendungenDocs.None())

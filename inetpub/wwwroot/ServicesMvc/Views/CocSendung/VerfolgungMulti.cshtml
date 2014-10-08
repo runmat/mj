@@ -7,9 +7,8 @@
 
 <div class="tabbable tabbable-custom margin-top-20">
     <ul class="nav nav-tabs">
-        @*Anzeigereihenfolge umgedreht*@
-        <li class="active"><a href="#" id="tabIds" data-toggle="tab">Suche nach Sendungs-ID</a></li>
-        <li><a href="#" id="tabDocs" data-toggle="tab">Suche nach Dokumentendaten</a></li>
+        <li class="active"><a href="#" id="tabIds" data-toggle="tab">Nach Sendungs-ID</a></li>
+        <li><a href="#" id="tabDocs" data-toggle="tab">Nach Dokumentendaten</a></li>
     </ul>
 </div>
 
@@ -25,17 +24,25 @@
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="searchResultIds" class="divIds hide">
+    <div id="searchResultIds" class="divIds">
         <div id="divGridId"></div>
     </div>
-    <div id="searchResultDocs" class="divDocs">
+    <div id="searchResultDocs" class="divDocs hide">
         <div id="divGridDocs"></div>
     </div>
 }
 
 <style type="text/css">
     .tabbable-custom {
+        margin-top: 25px!important;
         margin-bottom: 0!important;
+        border-bottom: 0!important;
+    }
+    .form-horizontal {
+        padding-top: 10px;
+    }
+    i.icon-search {
+        color: black!important;
     }
 </style>
 
