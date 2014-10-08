@@ -171,7 +171,11 @@ namespace AppRemarketing.forms
                 rgGrid1.Rebind();
                 //Setzen der DataSource geschieht durch das NeedDataSource-Event
 
-                if (!IsAV())
+                if (IsAV())
+                {
+                    rgGrid1.MasterTableView.GetColumn("Storno").Visible = false;
+                }
+                else
                 {
                     rgGrid1.MasterTableView.GetColumn("Bearbeiten").Visible = false;
                 }
