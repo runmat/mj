@@ -11,6 +11,8 @@
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
 
         try { MultiSelectPreparePrivate(); } catch (e) { }
+
+        InitCsvUploadButton();
     };
 
     function FormPreparePrivateAjax() {
@@ -91,6 +93,37 @@
         return false;
     }
 
+    function InitCsvUploadButton() {
+        $(".t-upload").addClass("file-upload-wrapper-div");
+        $(".t-dropzone").addClass("file-upload-wrapper-div");
+        $(".t-dropzone em").html("");
+
+        var wrapperButton = $(".t-upload-button");
+        wrapperButton.css("width", 120);
+        wrapperButton.attr("title", "Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!");
+        
+        var span = $(".t-upload-button span");
+        span.addClass("file-upload tooltips");
+        span.html("CSV Upload <i class='icon-upload-alt margin-left-5'></i>");
+    }
+
+    function AjaxCsvTemplateShow() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "CsvTemplate",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    var detailWindow = $("#CsvTemplateHint").data("tWindow");
+                    $("#CsvTemplateHintDetail").html(result);
+                    detailWindow.center().open();
+                }
+            });
+
+        return false;
+    }
+    
     function AjaxFormVersandartOptionenComplete() {
         FormPrepareAjax();
 
@@ -177,6 +210,9 @@
     }
 
     function AjaxFormAdressenShowGrid(addressType) {
+
+        //alert(addressType);
+        //return false;
 
         $.ajax(
             {
@@ -281,6 +317,19 @@
     function OnColumnReorder_VersandAdressenAuswahlGrid() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
+    
+    function OnDataBound_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
 
     //    
     // </Versandadressen>
@@ -335,6 +384,13 @@
         $('.t-no-data td').text(ladeHinweis);
     }
 
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        var isMissing = e.dataItem["IsMissing"];
+
+        if (isMissing)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+
     function OnColumnShowHide_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
@@ -354,6 +410,7 @@
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
                 FormWizard.ActionsShow(count > 0);
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
@@ -362,6 +419,90 @@
 
                 $("#FahrzeugAuswahlCount").removeClass('hide');
                 $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                FormWizard.ActionsShow(count > 0);
+                
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridFahrzeugAuswahl");
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }    
+    
+    function UploadStart(e) {
+
+        // clear only the UI of our Upload Control:
+        //$(this).children(".t-upload-files").remove();
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
+            alert('Bitte nur CSV-Dateien hochladen!');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        setTimeout(function() { $("#csv-upload-reset").show(); }, 1000);
+        GridFahrzeugAuswahl_OnAllSelectionChange(true);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        SpanAlertError("Message", "Es gab ein Problem beim Speichern Ihrer Datei!", 2000);
+        LoadingHide();
+    }
+
+    function CsvUploadReset() {
+
+        $.ajax({
+            type: "POST",
+            url: "CsvUploadReset",
+            data: {  },
+            loadingShow: true,
+            success: function (result) {
+                $("#csv-upload-reset").hide();
+                GridFahrzeugAuswahl_OnAllSelectionChange(false);
             }
         });
     }
