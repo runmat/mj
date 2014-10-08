@@ -1,5 +1,5 @@
-﻿@using ServicesMvc.Models
-@model CkgDomainLogic.Fahrer.ViewModels.FahrerBelegungViewModel
+﻿@using CkgDomainLogic.Fahrer.ViewModels
+@model FahrerBelegungViewModel
 
 <div id="divFahrerMeldungForm">
     @using (Ajax.BeginForm("FahrerMeldungFormSave", "Fahrer", null, new MvcAjaxOptions("divFahrerMeldungForm") { OnComplete = "FahrerMeldungFormComplete();" }, htmlAttributes: new { @class = "form-horizontal form-row-stripped", id = "ajaxForm" }))
@@ -9,12 +9,14 @@
         <button id="setDts" type="button" class="btn hide" onclick="TestSetselectedBelegungen();">Set Dates</button>
         <button id="calcDim" type="button" class="btn hide" onclick="TestCalcDimensions();"></button>
 
-        @Html.FormRadioButtonListFor(m => m.BelegungsTypAsInt, TestFilterModel2.BelegungsTypen)
+        <div class="controls-width-400">
+            @Html.FormRadioButtonListFor(m => m.BelegungsTypAsInt, FahrerBelegungViewModel.BelegungsTypen)
+        </div>
 
         @Html.FormTextBoxFor(m => m.FahrerAnzahl, new { @class = "m-wrap xsmall", data_min = "1", data_max = "9", @readonly = "readonly" },
                              postControlHtml: @<text>
                                                     <a class="btn btn-plus-minus margin-left-15" href="#" onclick="return incrementFahrer('Up');"><i class="icon-plus"></i></a> 
-                                                    <a class="btn btn-plus-minus" href="#" onclick="return incrementFahrer('Down');"><i class="icon-minus"></i></a> 
+                                                    <a class="btn btn-plus-minus margin-left-15" href="#" onclick="return incrementFahrer('Down');"><i class="icon-minus"></i></a> 
                                                 </text>)
         
         <div class="control-group">
@@ -91,7 +93,7 @@
                 //$("div.radio > span").not('.checked').parents("label.radio").removeClass().addClass("radio");
                 
                 // set the checked radio button
-                var belegungsCssClasses = new Array("verfuegbar", "nichtverfuegbar", "urlaub", "krank");
+                var belegungsCssClasses = new Array("verfuegbar", "eingeschraenktverfuegbar", "nichtverfuegbar", "urlaub", "krank");
                 for (var i=0; i<=belegungsCssClasses.length; i++)
                     $("span input[value=" + (i+1) + "]").parents("label.radio").addClass("radio-" + belegungsCssClasses[i]);
             }
@@ -130,6 +132,7 @@
                             if (cssClass == "") 
                                 return [true, ""];
                             tooltip = cssClass.replace(/nichtverfuegbar/g, 'nicht verfuegbar').replace(/ue/g, 'ü');
+                            tooltip = cssClass.replace(/eingeschraenktverfuegbar/g, 'eingeschraenkt verfuegbar').replace(/ae/g, 'ä').replace(/ue/g, 'ü');
                             
                             return [true, "date-selected date-" + cssClass, tooltip];
                         }
@@ -218,9 +221,10 @@
 
                 switch (belegungsType) {
                     case 1: return "verfuegbar";
-                    case 2: return "nichtverfuegbar";
-                    case 3: return "urlaub";
-                    case 4: return "krank";
+                    case 2: return "eingeschraenktverfuegbar";
+                    case 3: return "nichtverfuegbar";
+                    case 4: return "urlaub";
+                    case 5: return "krank";
                 }
 
                 return "";
