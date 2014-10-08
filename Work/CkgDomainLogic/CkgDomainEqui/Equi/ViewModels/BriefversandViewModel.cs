@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
@@ -12,6 +13,7 @@ using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 
@@ -80,7 +82,9 @@ namespace CkgDomainLogic.Equi.ViewModels
         #region Step "Fahrzeugwahl"
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> Fahrzeuge { get { return BriefbestandDataService.FahrzeugbriefeZumVersand; } }
+        public List<Fahrzeugbrief> Fahrzeuge { get { return FahrzeugeMergedWithCsvUpload ?? BriefbestandDataService.FahrzeugbriefeZumVersand; } }
+
+        public List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; private set; }
 
         [XmlIgnore]
         public List<Fahrzeugbrief> FahrzeugeFiltered
@@ -108,10 +112,19 @@ namespace CkgDomainLogic.Equi.ViewModels
         public List<VersandGrund> VersandGruendeList { get { return BriefVersandDataService.GetVersandgruende(VersandartOptionen.IstEndgueltigerVersand); } }
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).ToList(); } }
+        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return FahrzeugeFiltered.Where(c => c.IsSelected).ToList(); } }
 
         [XmlIgnore]
-        public string SelectedFahrzeugeAsString { get { return string.Join(", ", SelectedFahrzeuge.Select(c => c.Fahrgestellnummer)); } }
+        public string SelectedFahrzeugeAsString
+        {
+            get
+            {
+                if (SelectedFahrzeuge.Count > 10)
+                    return string.Format("{0} Fahrzeug{1}", SelectedFahrzeuge.Count, SelectedFahrzeuge.Count == 1 ? "" : "e");
+
+                return string.Join(", ", SelectedFahrzeuge.Select(c => c.Fahrgestellnummer));
+            }
+        }
 
         [XmlIgnore]
         private string PrevSelectedFahrzeugeAsString { get; set; }
@@ -120,6 +133,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         public string SaveErrorMessage { get; private set; }
 
         public string FahrzeugAuswahlTitleHint { get { return Localize.PleaseChooseOneOrMoreVehicles; } }
+
+        [XmlIgnore]
+        public string CsvUploadFileName { get; private set; }
+        [XmlIgnore]
+        public string CsvUploadServerFileName { get; private set; }
+        [XmlIgnore]
+        public bool UploadItemsSuccessfullyStored { get; set; }
+        [XmlIgnore]
+        public List<FahrzeugCsvUploadEntity> UploadItems { get; private set; }
 
         #endregion
 
@@ -163,10 +185,47 @@ namespace CkgDomainLogic.Equi.ViewModels
         public Adresse GetVersandAdresseFromKey(string key)
         {
             int id;
+            Adresse adr = null;
             if (Int32.TryParse(key, out id))
-                return VersandAdressen.FirstOrDefault(v => v.ID == id);
+                adr = VersandAdressen.FirstOrDefault(v => v.ID == id) ?? ZulassungAdressen.FirstOrDefault(v => v.ID == id);
 
-            return VersandAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            if (adr == null)
+                // note: skip "Zulassungsstellen" in "auto select" mode
+                adr = VersandAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+
+            if (adr != null)
+                if (adr.Land.IsNullOrEmpty())
+                    adr.Land = "DE";
+
+            return adr;
+        }
+
+        [XmlIgnore]
+        public List<Adresse> ZulassungAdressen
+        {
+            get { return AdressenDataService.ZulassungsStellen; }
+        }
+
+        [XmlIgnore]
+        public List<string> ZulassungAdressenAsAutoCompleteItems
+        {
+            get { return ZulassungAdressen.Select(a => a.GetAutoSelectString()).ToList(); }
+        }
+
+        [XmlIgnore]
+        public List<Adresse> ZulassungAdressenFiltered
+        {
+            get { return PropertyCacheGet(() => ZulassungAdressen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public Adresse GetZulassungAdresseFromKey(string key)
+        {
+            int id;
+            if (Int32.TryParse(key, out id))
+                return ZulassungAdressen.FirstOrDefault(v => v.ID == id);
+
+            return ZulassungAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
         }
 
         #endregion
@@ -245,7 +304,10 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             // reset filtered data
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
-            DataMarkForRefreshVersandAdressenFiltered();
+            DataMarkForRefreshVersandAndZulassungAdressenFiltered();
+
+            // reset CSV Upload (merged) data
+            FahrzeugeMergedWithCsvUpload = null;
 
             ParamVins = vins;
             if (ParamVins.IsNotNullOrEmpty())
@@ -255,9 +317,10 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void DataMarkForRefreshVersandAdressenFiltered()
+        public void DataMarkForRefreshVersandAndZulassungAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
+            PropertyCacheClear(this, m => m.ZulassungAdressenFiltered);
         }
 
         public void DataMarkForRefreshVersandoptionen()
@@ -280,6 +343,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             VersandAdressenFiltered = VersandAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+        public void FilterZulassungAdressen(string filterValue, string filterProperties)
+        {
+            ZulassungAdressenFiltered = ZulassungAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
         public void TrySelectFahrzeugVIN(string vin)
         {
             var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer.NotNullOrEmpty().ToLower() == vin.NotNullOrEmpty().ToLower());
@@ -292,12 +360,21 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+            var fzg = FahrzeugeFiltered.FirstOrDefault(f => f.Fahrgestellnummer == vin);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+            allSelectionCount = FahrzeugeFiltered.Count(c => c.IsSelected);
+        }
+
+        public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {
+            FahrzeugeFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = FahrzeugeFiltered.Count(c => c.IsSelected);
+            allCount = FahrzeugeFiltered.Count();
+            allFoundCount = FahrzeugeFiltered.Count(c => !c.IsMissing);
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)
@@ -392,5 +469,83 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         #endregion
 
+
+        #region CSV Upload
+
+        public bool CsvUploadFileSaveForPrefilter(string fileName, Func<string, bool> fileSaveAction)
+        {
+            CsvUploadFileName = fileName;
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".csv");
+
+            if (!fileSaveAction(CsvUploadServerFileName))
+                return false;
+
+            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true).ToList();
+            FileService.TryFileDelete(CsvUploadServerFileName);
+            if (list.None())
+                return false;
+
+            UploadItems = list;
+            MergeCsvUploadItems();
+
+            return true;
+        }
+
+        private void MergeCsvUploadItems()
+        {
+            FahrzeugeMergedWithCsvUpload = null;
+
+            var mergedList = new List<Fahrzeugbrief>();
+            var fahrzeugeFromUploadItems = UploadItems.Select(uploadItem => new Fahrzeugbrief
+                {
+                    Fahrgestellnummer = uploadItem.FIN,
+                    Kennzeichen = uploadItem.Kennzeichen,
+                    TechnIdentnummer = uploadItem.ZBII,
+                    Vertragsnummer = uploadItem.LizenzNr,
+                    Referenz1 = uploadItem.Referenz1,
+                    Referenz2 = uploadItem.Referenz2,
+                    IsMissing = true,
+                }).ToListOrEmptyList();
+
+            fahrzeugeFromUploadItems.ForEach(uploadFahrzeug =>
+                {
+                    var fahrzeugImBestand = GetFahrzeugImBestandMatchesPropertiesOf(uploadFahrzeug,
+                                                                                    p => p.Fahrgestellnummer,
+                                                                                    p => p.Kennzeichen,
+                                                                                    p => p.TechnIdentnummer,
+                                                                                    p => p.Vertragsnummer,
+                                                                                    p => p.Referenz1,
+                                                                                    p => p.Referenz2);
+                    mergedList.Add(fahrzeugImBestand ?? uploadFahrzeug);
+                }
+             );
+
+            SetFahrzeugeMergedWithCsvUpload(mergedList);
+        }
+
+        public void SetFahrzeugeMergedWithCsvUpload(List<Fahrzeugbrief> list)
+        {
+            FahrzeugeMergedWithCsvUpload = list;
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+        }
+
+        Fahrzeugbrief GetFahrzeugImBestandMatchesPropertiesOf(Fahrzeugbrief uploadFahrzeug, params Expression<Func<Fahrzeugbrief, string>>[] propertyExpressions)
+        {
+            foreach (var propertyExpression in propertyExpressions)
+            {
+                var propertyMethod = propertyExpression.Compile();
+
+                var fahrzeugImBestandFound = Fahrzeuge.FirstOrDefault(fahrzeugImBestand =>
+                                                                      propertyMethod(uploadFahrzeug).IsNotNullOrEmpty() &&
+                                                                      propertyMethod(fahrzeugImBestand).IsNotNullOrEmpty() &&
+                                                                      propertyMethod(uploadFahrzeug) == propertyMethod(fahrzeugImBestand));
+                if (fahrzeugImBestandFound != null)
+                    return fahrzeugImBestandFound;
+            }
+
+            return null;
+        }
+
+        #endregion    
     }
 }

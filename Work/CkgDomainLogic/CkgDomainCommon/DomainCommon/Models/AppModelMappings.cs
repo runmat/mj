@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+using System.Collections.Generic;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
@@ -122,6 +123,33 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      {
                                                          //destination.STRAS = AddressService.FormatStreetAndHouseNo(source);
                                                      }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST, Adresse> Z_DPM_READ_ADRESSPOOL_01_GT_ZULAST__To__Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST, Adresse>(
+                    new Dictionary<string, string>(),
+
+                    // Init Copy  (from SAP)
+                    (sap, business) =>
+                    {
+                        business.ID = CreateNewID();
+
+                        business.Name1 = sap.NAME1;
+                        business.Name2 = sap.NAME2;
+                        business.Strasse = sap.STRAS;
+                        business.HausNr = "";
+                        business.PLZ = sap.PSTLZ;
+                        business.Ort = sap.ORT01;
+                        business.Land = "DE";
+                        business.Typ = sap.LIFNR;
+
+                        business.Kennung = "ZULASSUNG";
+                    }
+                 ));
             }
         }
 
