@@ -8,7 +8,7 @@ function FormDateRangePickerInit() {
     });
 }
 
-function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunction, onDateRangeChangeFunction) {
+function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunction, onDateRangeChangeFunction, dateRangeGroupsToExclude) {
 
     var checkbox = $("input[name='" + dateRangeProperty + ".IsSelected']");
     var dateStartControl = $("input[name='" + dateRangeProperty + ".StartDate']");
@@ -48,18 +48,39 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
         $(wrapperId).toggleClass('hide', !$(this).is(':checked'));
     });
 
+    var ranges = {
+        'Heute': ['today', 'today', ''],
+        'Gestern': ['yesterday', 'yesterday', 'past'],
+        'Letzte 7 Tage': [Date.today().add({ days: -7 }), 'today', 'past'],
+        'Letzte 30 Tage': [Date.today().add({ days: -30 }), 'today', 'past'],
+        'Dieser Monat': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth(), ''],
+        'Nächste 30 Tage': ['today', Date.today().add({ days: 30 }), 'future'],
+        'Nächster Monat': [Date.today().add({ months: 1 }).moveToFirstDayOfMonth(), Date.today().add({ months: 1 }).moveToLastDayOfMonth(), 'future'],
+        'Letzter Monat': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 }), 'past'],
+        'Letzte 3 Monate': [Date.today().moveToFirstDayOfMonth().add({ months: -3 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 }), 'past'],
+        'Dieses Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear()), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear()), "dd.MM.yyyy"), ''],
+        'Letztes Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), 'past|far-past']
+    };
+
+    var rangesToSelect = {};
+    if (typeof (dateRangeGroupsToExclude) !== 'undefined') {
+
+        var dateRangeArrayToExclude = dateRangeGroupsToExclude.split(',');
+        
+        for (var i = 0; i < dateRangeArrayToExclude.length; i++)
+            if (dateRangeArrayToExclude[i].substr(0, 1) == "!")
+                dateRangeArrayToExclude[i] = dateRangeArrayToExclude[i].substr(1, 99);
+
+        for (var range in ranges) {
+            var excludeOption = ranges[range][2];
+            //alert(range + ' - ' + excludeOption);
+            //rangesToSelect.push(range);
+            console.log(ranges[range]);
+        }
+    }
+
     $(rangePickerId).daterangepicker({
-        ranges: {
-            'Heute': ['today', 'today'],
-            'Gestern': ['yesterday', 'yesterday'],
-            'Letzte 7 Tage': [Date.today().add({ days: -7 }), 'today'],
-            'Letzte 30 Tage': [Date.today().add({ days: -30 }), 'today'],
-            'Dieser Monat': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-            'Nächster Monat': [Date.today().add({ months: 1 }).moveToFirstDayOfMonth(), Date.today().add({ months: 1 }).moveToLastDayOfMonth()],
-            'Letzter Monat': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })],
-            'Letzte 3 Monate': [Date.today().moveToFirstDayOfMonth().add({ months: -3 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })],
-            'Letztes Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear() - 1), "dd.MM.yyyy")]
-        },
+        ranges: rangesToSelect,
         opens: 'right',
         format: dateFormat,
         separator: ' - ',

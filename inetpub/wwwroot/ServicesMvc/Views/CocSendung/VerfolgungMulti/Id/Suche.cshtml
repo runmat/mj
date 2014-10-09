@@ -8,7 +8,7 @@
             @Html.FormValidationSummary()
             
            
-            @Html.FormDateRangePickerFor(m => m.DatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { col = "left" }, new[] { "!far-past", "!future" })
 
             @Html.FormTextBoxFor(m => m.SendungsID, new { @class = "m-wrap", col = "right" })
 
