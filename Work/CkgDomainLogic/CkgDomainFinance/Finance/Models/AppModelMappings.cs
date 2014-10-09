@@ -120,6 +120,35 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_STL_MAHNUNGEN_01.GT_OUT, Mahnung> Z_DPM_READ_STL_MAHNUNGEN_01_GT_OUT_To_Mahnung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_STL_MAHNUNGEN_01.GT_OUT, Mahnung>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.CIN = source.CIN;
+                        destination.PAID = source.PAID;
+                        destination.Vertragsart = source.ZVERT_ART;
+                        destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                        destination.Materialtext = source.MAKTX;
+                        destination.Mahnstufe = source.ZZMAHNS;
+                        destination.LetzteMahnungAm = source.MAHNDAT;
+                        destination.NaechsteMahnungAm = source.NEXT_MAHNDAT;
+                        destination.Mahnsperre = (source.ZZMANSP.NotNullOrEmpty() == "X");
+                        destination.MahnsperreBis = source.ZZMANSP_DATBI;
+                        destination.Name1 = source.NAME1;
+                        destination.Name2 = source.NAME2;
+                        destination.Strasse = source.STREET;
+                        destination.Hausnummer = source.HOUSE_NUM1;
+                        destination.Postleitzahl = source.POST_CODE1;
+                        destination.Ort = source.CITY1;
+                    }));
+            }
+        }
+
         #endregion
 
 
