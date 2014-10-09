@@ -1,6 +1,7 @@
 ﻿using System;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.CoC.Models
 {
@@ -27,15 +28,14 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants.ContractNo)]
         public string VertragsNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ShippingSurvey)]
-        [GridExportIgnore]
-        public string VersandIdSurveyLink { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
         public string Referenz { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string StatusText { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Delivered)]
+        public bool StatusAusgeliefert { get { return StatusText.NotNullOrEmpty().ToLower() == "ausgeliefert"; } }
 
         [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
         public string VersandAdresseAsText { get; set; }
@@ -48,5 +48,23 @@ namespace CkgDomainLogic.CoC.Models
 
         [LocalizedDisplay(LocalizeConstants._ZBIINr)]
         public string Fahrzeugbrief { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingSurvey)]
+        [GridExportIgnore]
+        public string VersandIdSurveyLink
+        {
+            get
+            {
+                var keySuffixArray = VersandWeg.NotNullOrEmpty().Split(' ').ToArrayOrEmptyArray();
+                var keySuffix = (keySuffixArray.Length > 1 ? keySuffixArray[0] : VersandWeg.NotNullOrEmpty()).ToUpper();
+                var key = string.Format("SendungsverfolgungExternUrl_{0}", keySuffix);
+
+                var surveyLink = ApplicationConfiguration.GetApplicationConfigValue(key, "1", 1);
+                if (surveyLink.IsNullOrEmpty())
+                    return "#";
+
+                return string.Format(surveyLink, VersandID);
+            }
+        }
     }
 }

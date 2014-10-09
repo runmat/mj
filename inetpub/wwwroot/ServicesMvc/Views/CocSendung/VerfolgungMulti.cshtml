@@ -41,9 +41,6 @@
     .form-horizontal {
         padding-top: 10px;
     }
-    i.icon-search {
-        color: black!important;
-    }
 </style>
 
 <script type="text/javascript">
@@ -77,6 +74,16 @@
         });
     }
 
+    function OnRowDataBound_GridCocSendungen(e) {
+        var statusText = e.dataItem["StatusText"].toLowerCase();
+
+        var tr = $(e.row);
+        var classSuffix = tr.hasClass("t-alt") ? "-alt" : "";
+
+        if (statusText == "ausgeliefert")
+            tr.addClass("t-grid-selected" + classSuffix);
+    }
+    
 
     // <Suche nach ID>
 
