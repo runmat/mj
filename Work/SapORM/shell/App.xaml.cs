@@ -215,6 +215,10 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_READ_ADRESSPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10062897");
 
+            //Mahnstop setzen
+            //new FunctionReflector("Z_DPM_READ_MAHN_EQSTL_02").WriteOrmForExportTableStructures("I_AG", "10026883");
+            //new FunctionReflector("Z_DPM_SAVE_MAHN_EQSTL_01").WriteOrmForExportTableStructures("I_AG, I_USER", "10026883", "carltvolks2");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -289,7 +293,7 @@ namespace SapORM
             
             //CsiTest();
 
-            TargoTest3();
+            //TargoTest3();
 
             Shutdown();
         }
