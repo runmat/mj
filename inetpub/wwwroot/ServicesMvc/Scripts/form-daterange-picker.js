@@ -32,17 +32,12 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
         return;
     }
 
-    //    alert(dateStartControl.val().split(' ')[0]);
     var formDateRangeStart = Date.parseExact(dateStartControl.val().split(' ')[0], dateFormatExact);
-    //alert(formDateRangeStart);
     var formDateRangeEnd = Date.parseExact(dateEndControl.val().split(' ')[0], dateFormatExact);
-    //alert(dateEndControl.val().split(' ')[0]);
     $(rangePickerId + ' span').html(formDateRangeStart.toString(dateFormat) + ' - ' + formDateRangeEnd.toString(dateFormat));
-    //alert(dateStartControl.val() + "    -     " + formDateRangeStart);
 
 
     checkbox.change(function () {
-        //alert('change');
         if (onUseDateRangeChangeFunction != null && typeof (onUseDateRangeChangeFunction) !== 'undefined')
             onUseDateRangeChangeFunction($(this), formDateRangeStart, formDateRangeEnd);
         $(wrapperId).toggleClass('hide', !$(this).is(':checked'));
@@ -64,21 +59,17 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
 
     var rangesToSelect = {};
     if (typeof (dateRangeGroupsToExclude) !== 'undefined') {
-
         var dateRangeArrayToExclude = dateRangeGroupsToExclude.split(',');
 
+        // removing the "NOT" operator("!") from the beginning
         for (var i = 0; i < dateRangeArrayToExclude.length; i++)
             if (dateRangeArrayToExclude[i].substr(0, 1) == "!")
                 dateRangeArrayToExclude[i] = dateRangeArrayToExclude[i].substr(1, 99);
 
-        //for (i = 0; i < dateRangeArrayToExclude.length; i++)
-        //    alert(dateRangeArrayToExclude[i]);
-
         for (var range in ranges) {
             var excludeOption = ranges[range][2];
             if ($.grep(dateRangeArrayToExclude, function (elem) {
-                //alert(excludeOption);
-                return elem == excludeOption;
+                return excludeOption.indexOf(elem) >= 0;
             }).length == 0)
                 rangesToSelect[range] = ranges[range];
         }
