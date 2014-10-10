@@ -3877,6 +3877,10 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\MahnstopGrid.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\MahnstopSuche.cshtml" />
+    <Content Include="Views\Finance\Mahnstop.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\Partial\MahnstopEditForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
