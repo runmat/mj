@@ -6,6 +6,8 @@ namespace CkgDomainLogic.Equi.Contracts
 {
     public interface IBriefbestandDataService : ICkgGeneralDataService
     {
+        #region Briefbestand
+
         FahrzeugbriefFilter DatenFilter { get; set; }
 
         List<Fahrzeugbrief> FahrzeugbriefeBestand { get; }
@@ -13,5 +15,17 @@ namespace CkgDomainLogic.Equi.Contracts
         List<Fahrzeugbrief> FahrzeugbriefeZumVersand { get; }
 
         void MarkForRefreshFahrzeugbriefe();
+
+        #endregion
+
+
+
+        #region VersandBeauftragungen
+
+        List<Fahrzeugbrief> GetVersandBeauftragungen(VersandBeauftragungSelektor model);
+
+        string DeleteVersandBeauftragungen(string fin);
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -79,7 +80,35 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Reference2)]
         public string Referenz2 { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Memo)]
+        public string Memo { get; set; }
+
+
+        public bool BriefVersand { get; set; }
+
+        public bool SchluesselVersand { get; set; }
+
+
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterAdresse { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        [GridRawHtml]
+        public IHtmlString HalterAdresseAsHtml { get { return new HtmlString(HalterAdresse == null ? "" : HalterAdresse.Replace(",", "<br />")); } }
+
+
+        [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
+        public string VersandAdresse { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
+        [GridRawHtml]
+        public IHtmlString VersandAdresseAsHtml { get { return new HtmlString(VersandAdresse == null ? "" : VersandAdresse.Replace(",", "<br />")); } }
+
+
         [ModelMappingCompareIgnore]
         public bool IsSelected { get; set; }
+
+        [ModelMappingCompareIgnore]
+        public bool MarkForDelete { get; set; }
     }
 }
