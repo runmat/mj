@@ -26,6 +26,17 @@ namespace CkgDomainLogic.General.ViewModels
             get { return _passwordRuleCount; }
         }
 
+        private string _sslCertificateHtml;
+        public string SslCertificateHtml
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_sslCertificateHtml))
+                    _sslCertificateHtml = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate");
+
+                return _sslCertificateHtml;
+            }
+        }
 
         public LoginModel LoginModel { get { return PropertyCacheGet(() => new LoginModel()); } set { PropertyCacheSet(value); } }
 
