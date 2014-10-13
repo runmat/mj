@@ -217,27 +217,7 @@ Partial Public Class Login
 
     Private Sub displaySecurityCertificate()
         Try
-            Using conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-                conn.Open()
-
-                Dim command As SqlClient.SqlCommand = conn.CreateCommand()
-
-                command.CommandText = "SELECT value FROM Config" & _
-                    " WHERE context = @context AND [key] = @key"
-
-                command.Parameters.AddWithValue("@context", "Login")
-                command.Parameters.AddWithValue("@key", "SecurityCertificate")
-
-                Dim wert As Object = command.ExecuteScalar()
-
-                If wert IsNot Nothing Then
-                    Dim strHtmlString As String = wert.ToString()
-                    divSicherheitszertifikat.InnerHtml = strHtmlString
-                End If
-
-                conn.Close()
-            End Using
-
+            divSicherheitszertifikat.InnerHtml = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate")
         Catch
         End Try
     End Sub
