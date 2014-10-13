@@ -15,6 +15,8 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 
         string KundennrOverride { get; set; }
 
+        List<Adresse> ZulassungsStellen { get; }
+
 
         void MarkForRefreshAdressen();
 
