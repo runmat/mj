@@ -57,8 +57,9 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
         'Letztes Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), 'past|far-past']
     };
 
-    var rangesToSelect = {};
-    if (typeof (dateRangeGroupsToExclude) !== 'undefined') {
+    var rangesToSelect = ranges;
+    if (typeof (dateRangeGroupsToExclude) !== 'undefined' && dateRangeGroupsToExclude != '') {
+        rangesToSelect = {};
         var dateRangeArrayToExclude = dateRangeGroupsToExclude.split(',');
 
         // removing the "NOT" operator("!") from the beginning
