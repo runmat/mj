@@ -54,12 +54,6 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowSslCertificate()
-        {
-            return Content(ViewModel.SslCertificateHtml);
-        }
-
-        [HttpPost]
         public ActionResult LoginForm(LoginModel model)
         {
             if (model.ModeCaptchaReset)

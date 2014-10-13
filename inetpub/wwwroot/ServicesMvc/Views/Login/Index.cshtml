@@ -24,7 +24,6 @@
 
             function FormPreparePrivate() {
                 Login.init();
-                ShowSslCertificateAjax();
             };
 
             function FormPreparePrivateAjax() {
@@ -34,20 +33,11 @@
             function AjaxFormLoginComplete() {
                 FormPreparePrivateAjax();
             }
-
-            function ShowSslCertificateAjax() {
-                $.ajax({
-                    type: "POST",
-                    url: "ShowSslCertificate",
-                    success: function (result) {
-                        $("#divSslCertificate").html(result);
-                    }
-                });
-            }
         </script>
     }
-    
-    <div id="divSslCertificate" class="margin-bottom-15"></div>
+    @Html.Raw(Model.SslCertificateHtml)
+
+    <div class="space15"></div>
 
     @Html.Partial("Partial/Footer") 
 </div>
