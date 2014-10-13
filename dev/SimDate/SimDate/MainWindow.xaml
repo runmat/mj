@@ -1,0 +1,23 @@
+﻿<Window x:Class="SimDate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" WindowStartupLocation="CenterScreen"
+        Title="Sim Date" SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <Calendar x:Name="Calendar" Style="{StaticResource BigCalendar}" HorizontalAlignment="Center" Margin="5" />
+        <Separator Height="1" Margin="5"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5,0,5,0">
+            <TextBlock>Ab</TextBlock>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb07" Checked="RbFromTimeOnChecked">07:00</RadioButton>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb09" Checked="RbFromTimeOnChecked">09:00</RadioButton>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb11" Checked="RbFromTimeOnChecked">11:00</RadioButton>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb14" Checked="RbFromTimeOnChecked">14:00</RadioButton>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb16" Checked="RbFromTimeOnChecked">16:00</RadioButton>
+            <RadioButton Margin="10,0,0,0" GroupName="FromTime" Name="rb18" Checked="RbFromTimeOnChecked" IsChecked="True">18:00</RadioButton>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="SetDate" Content="Set" Width="80" Margin="5" Click="SetDateClick" />
+            <Button x:Name="RestoreDate" Content="Restore" Width="80" Margin="5" Click="RestoreDateClick"/>
+        </StackPanel>
+        <TextBlock x:Name="DatumText" Margin="5" Foreground="Red" HorizontalAlignment="Center" />
+    </StackPanel>
+</Window>
