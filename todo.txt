@@ -1,0 +1,9 @@
+
+
+*******************************
+
+git rebase -i HEAD~8
+git commit --amend --no-edit --date=
+git rebase --continue
+
+*******************************
