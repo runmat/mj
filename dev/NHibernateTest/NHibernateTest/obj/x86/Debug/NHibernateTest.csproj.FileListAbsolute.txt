@@ -12,3 +12,6 @@ C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\NHibernateTest\NHibernate
 C:\Users\JenzenM\Documents\mj\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.exe.config
 C:\Users\JenzenM\Documents\mj\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.exe
 C:\Users\JenzenM\Documents\mj\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.pdb
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.exe.config
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.exe
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.pdb
