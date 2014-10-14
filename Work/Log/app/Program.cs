@@ -26,6 +26,9 @@ namespace LogMaintenance
 
             success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);
+            
+            var now = DateTime.Now.Date;
+            success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, "Prod", now.AddYears(-2), now.AddYears(-1), now.AddMonths(-4));
         }
     }
 }

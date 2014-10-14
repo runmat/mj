@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
@@ -75,6 +76,56 @@ namespace LogMaintenance.Services
 
                 Alert(string.Format("\r\n***   Table '{0}' finished ;-)   ***\r\n", sqlMaintenanceTable.DestTableName));
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Die Log DB soll in regelmäßigen Abständen von alteren Inhalten und Datensätze bereinigt werden
+        /// - Page-Visits: 2 Jahre
+        /// - BAPI-Aufrufe mit den entsprechenden Laufzeiten: 1 Jahr
+        /// - BAPI-Aufrufe mit kompletten Data-Context (welcher User hat welche Daten an SAP übergeben): 4 Monate
+        /// </summary>
+        /// <param name="infoMessageAction">Output für Nachrichten</param>
+        /// <param name="serverType">Prod|Test|Dev</param>
+        /// <param name="pageVisitExpirydate">Nachrichten älter als das Datum werden gelöscht</param>
+        /// <param name="sapBapiExpiryDate">Nachrichten älter als das Datum werden gelöscht</param>
+        /// <param name="sapBapiDataExpiryDate">DataContext, ImportParameters, ImportTables, werden gelöscht in SAP Logs wenn Nachricht älter als das Datum</param>
+        /// <returns></returns>
+        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string serverType, DateTime pageVisitExpirydate, DateTime sapBapiExpiryDate, DateTime sapBapiDataExpiryDate)
+        {
+            if (serverType.IsNullOrEmpty())
+            {
+                infoMessageAction.Invoke("Löschen von alten PageVisit Einträgen: Kein Server Type (prod, test, dev) angegeben, Operation wird abgebrochen");
+                return false;                
+            }
+
+            var logsDbContext = CreateLogsDbContext(serverType);
+            
+            // Ich habe keinen neuen Step in PageVisit.xml eingetragen: habe keine Möglichkeit gefunden zu parametrisieren...
+            // SQL_SAFE_UPDATES, MySql Globale Server Variable wird ausgesetzt (== 0) während der Operation, da sonst die Operation fehlschlägt
+            var deleteExpiredPageVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM pagevisit WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", pageVisitExpirydate.Date.ToString("yyyy-MM-dd"));
+            var deleteExpiredBapiVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM sapbapi WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiExpiryDate.Date.ToString("yyyy-MM-dd"));
+            var deleteExpiredBapiData = string.Format("SET SQL_SAFE_UPDATES = 0;UPDATE sapbapi SET ImportParameters = '', ImportTables = '', DataContext ='' WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiDataExpiryDate.Date.ToString("yyyy-MM-dd"));
+
+            var commands = new List<string>
+                {
+                    deleteExpiredPageVisits,
+                    deleteExpiredBapiVisits,
+                    deleteExpiredBapiData
+                };
+
+            commands.ForEach(x =>
+                {
+                    try
+                    {
+                        logsDbContext.Database.ExecuteSqlCommand(x, new object[0]);
+                    }
+                    catch (Exception e)
+                    {
+                        infoMessageAction.Invoke(string.Format(@"Folgender Befehl schlug fehl\r\n\{0}\r\nFehlermeldung ist {1}",x, e.Message));
+                    }
+                });
 
             return true;
         }
@@ -156,7 +207,8 @@ namespace LogMaintenance.Services
         private static MultiDbPlatformContext CreateLogsDbContext(string serverType)
         {
             var logsConnectionString = string.Format("Logs{0}", serverType);
-            return new MultiDbPlatformContext(logsConnectionString);
+            var multiDbPlatformContext = new MultiDbPlatformContext(logsConnectionString);
+            return multiDbPlatformContext;
         }
 
         private static MultiDbPlatformContext CreateBusinessDbContext(string serverType)
