@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Report16.aspx.vb" Inherits="AppF2.Report16"
     MasterPageFile="../MasterPage/AppMaster.Master" %>
 
-<%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="/Services/PageElements/GridNavigation.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -182,8 +181,6 @@
                                     <UpdatedControls>
                                         <telerik:AjaxUpdatedControl ControlID="rgTelefon" LoadingPanelID="RadAjaxLoadingPanel1" />
                                         <telerik:AjaxUpdatedControl ControlID="RadWindowManager1" />
-                                        <%-- <telerik:AjaxUpdatedControl ControlID="lblError" />--%>
-                                        <%--<telerik:AjaxUpdatedControl ControlID="lblNoData" />--%>
                                     </UpdatedControls>
                                 </telerik:AjaxSetting>
                             </AjaxSettings>
