@@ -21,8 +21,8 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
-                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.SixtAuftragsnummer) Then Throw New Exception("SixtAuftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .SixtAuftragsnummer
                         If String.IsNullOrEmpty(.Auftragsgrund) Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
                         dr("AUFGRUND") = .Auftragsgrund
                         If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
@@ -181,8 +181,8 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
-                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.SixtAuftragsnummer) Then Throw New Exception("SixtAuftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .SixtAuftragsnummer
                         If String.IsNullOrEmpty(.Auftragsgrund) Then Throw New Exception("Auftragsgrund: Pflichtfeld enthaelt keinen Wert.")
                         dr("AUFGRUND") = .Auftragsgrund
                         If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
@@ -333,8 +333,8 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
-                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.SixtAuftragsnummer) Then Throw New Exception("SixtAuftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .SixtAuftragsnummer
                         dr("AUFGRUND") = "EVE"
                         If String.IsNullOrEmpty(.Aenderungskennzeichen) Then Throw New Exception("Änderungskennzeichen: Pflichtfeld enthaelt keinen Wert.")
                         dr("AEKNZ") = .Aenderungskennzeichen
@@ -421,8 +421,8 @@ Public Class SapInterface
                         dr("KUNMANDT") = .Mandant
                         dr("MANDT") = ""
                         dr("KUNNR_AG") = ""
-                        If String.IsNullOrEmpty(.Sixt_Auftragsnummer) Then Throw New Exception("Sixt_Auftragsnummer: Pflichtfeld enthaelt keinen Wert.")
-                        dr("SIXTAUFNR") = .Sixt_Auftragsnummer
+                        If String.IsNullOrEmpty(.SixtAuftragsnummer) Then Throw New Exception("SixtAuftragsnummer: Pflichtfeld enthaelt keinen Wert.")
+                        dr("SIXTAUFNR") = .SixtAuftragsnummer
                         If Not .Versandgrund = String.Empty AndAlso Not .Versandgrund = "12" Then
                             dr("AUFGRUND") = "TVE_" & .Versandgrund
                         Else
