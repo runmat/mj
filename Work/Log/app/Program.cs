@@ -39,7 +39,10 @@ namespace LogMaintenance
             var bapiDataExpiryMonthsAgo = int.Parse(ConfigurationManager.AppSettings["SapBapiMonthsOldToClearData"]);
             var bapiDataExpiryDate = now.AddMonths(bapiDataExpiryMonthsAgo);
 
-            success = BusinessDataCopyService.MaintenanceLogsDb("Prod", pageVisitExpiryDate, sapBapiExpiryDate, bapiDataExpiryDate);
+            var elmahExpiryMonthsAgo = int.Parse(ConfigurationManager.AppSettings["ElmahMonthsOldToClearData"]);
+            var elmahExpiryDate = now.AddMonths(elmahExpiryMonthsAgo);
+
+            success = BusinessDataCopyService.DeleteExpiredLogMessages("Prod", pageVisitExpiryDate, sapBapiExpiryDate, bapiDataExpiryDate, elmahExpiryDate);
             if (!success) Environment.Exit(-1);
         }
     }
