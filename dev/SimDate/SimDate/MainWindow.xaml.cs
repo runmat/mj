@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Calendar = System.Windows.Controls.Calendar;
 
 namespace SimDate
@@ -22,6 +24,7 @@ namespace SimDate
         private readonly int _ticksSinceSystemStart;
 
         private float _fromTime;
+        private string _savedDatumText;
 
         public MainWindow()
         {
@@ -56,11 +59,24 @@ namespace SimDate
             var ticksNow = Environment.TickCount;
             var dateTime = _startTime.AddMilliseconds(ticksNow - _ticksSinceSystemStart);
 
-            SetSystemTime(dateTime);
+            SetSystemTime(dateTime, true);
         }
 
-        private void SetSystemTime(DateTime dateTime)
+        private void SetSystemTime(DateTime dateTime, bool forceSetTime = false)
         {
+            if (!forceSetTime && dateTime > _startTime)
+            {
+                _savedDatumText = DatumText.Text;
+                DatumText.Text = "Future times are not supported.";
+                DatumText.Background = Brushes.Yellow;
+                DelayExecution(TimeSpan.FromSeconds(1), () =>
+                {
+                    DatumText.Text = _savedDatumText;
+                    DatumText.Background = Brushes.Transparent;
+                });
+                return;
+            }
+
             DatumText.Text = string.Format("{0:ddd, dd.MM.yyyy HH:mm:ss}", dateTime);
 
             var st = new SystemTime();
@@ -100,6 +116,20 @@ namespace SimDate
 
             var rbFromTime = radioButton.Name.Substring(2);
             _fromTime = Convert.ToInt32(rbFromTime);
+        }
+
+        public static void DelayExecution(TimeSpan delay, Action action)
+        {
+            Timer timer = null;
+            var context = SynchronizationContext.Current;
+
+            timer = new Timer(
+                ignore =>
+                {
+                    if (timer != null) timer.Dispose();
+
+                    context.Post(ignore2 => action(), null);
+                }, null, delay, TimeSpan.FromMilliseconds(-1));
         }
     }
 }
