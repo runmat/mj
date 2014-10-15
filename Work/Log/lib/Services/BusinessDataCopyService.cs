@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Elmah;
@@ -11,7 +10,6 @@ using GeneralTools.Log.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using LogMaintenance.Models;
-using MySql.Data.MySqlClient;
 
 namespace LogMaintenance.Services
 {
@@ -26,11 +24,7 @@ namespace LogMaintenance.Services
         {
             _infoMessageAction = infoMessageAction;
 
-            foreach (var xmlFileName in Directory.GetFiles(appDataFilePath))
-                if (!MaintenanceLogsDbForServer("Prod", xmlFileName))
-                    return false;
-
-            return true;
+            return Directory.GetFiles(appDataFilePath).All(xmlFileName => MaintenanceLogsDbForServer("Prod", xmlFileName));
         }
 
         private static bool MaintenanceLogsDbForServer(string serverType, string appDataFileName)
@@ -44,8 +38,6 @@ namespace LogMaintenance.Services
             var sqlMaintenanceTables = XmlService.XmlTryDeserializeFromFile<DbMaintenanceTable[]>(appDataFileName);
             foreach (var sqlMaintenanceTable in sqlMaintenanceTables)
             {
-                Alert(string.Format("\r\n***  Refreshing content of table '{0}'  ***", sqlMaintenanceTable.DestTableName));
-
                 foreach (var sqlMaintenanceStep in sqlMaintenanceTable.Steps)
                 {
                     Alert(sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Description.Trim()));
@@ -56,27 +48,14 @@ namespace LogMaintenance.Services
 
                     foreach (var multiSqlStep in multiSqlSteps)
                     {
-                        try
+                        var sql = sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep);
+                        var success = ExecuteSqlCommand(logsDbContext, sql, new object[0]);
+                        if (!success && !sqlMaintenanceStep.IgnoreSqlException)
                         {
-                            var sql = sqlMaintenanceTable.PrepareStatement(sqlMaintenanceStep.Sql, multiSqlStep);
-                            var stopWatch = Stopwatch.StartNew();
-                            logsDbContext.Database.ExecuteSqlCommand(sql);
-                            stopWatch.Stop();
-                            Alert(string.Format("(Dauer: {0:00}:{1:00})", stopWatch.Elapsed.Minutes, stopWatch.Elapsed.Seconds));
-                        }
-                        catch (MySqlException e)
-                        {
-                            if (!sqlMaintenanceStep.IgnoreSqlException)
-                            {
-                                Alert(string.Format("\r\nA MySql Error has occured:\r\n>> {0} <<\r\nAborting !!!\r\n", e.Message));
-                                return false;
-                            }
-
+                            return false;
                         }
                     }
                 }
-
-                Alert(string.Format("\r\n***   Table '{0}' finished ;-)   ***\r\n", sqlMaintenanceTable.DestTableName));
             }
 
             return true;
