@@ -18,14 +18,9 @@ Partial Public Class AppMaster
         Dim bc As HttpBrowserCapabilities
         bc = Request.Browser
 
-
-        If Not IsPostBack Then
-            If HttpContext.Current.Request.UserAgent IsNot Nothing AndAlso HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10") Then
-                Me.Head1.Controls.AddAt(0, New LiteralControl("<META content=""IE=9,chrome=1"" http-equiv=""X-UA-Compatible"">"))
-            End If
-
+        If HttpContext.Current.Request.UserAgent IsNot Nothing AndAlso HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10") Then
+            Me.Head1.Controls.AddAt(0, New LiteralControl("<META content=""IE=9,chrome=1"" http-equiv=""X-UA-Compatible"">"))
         End If
-
 
         'Aktuelles Jahr ins Copyright setzen.
         lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString)
