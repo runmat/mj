@@ -13,9 +13,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportAuswertung_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
-        private bool isExcelExportConfigured;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
 
         /// <summary>
@@ -40,8 +39,6 @@ namespace AppZulassungsdienst.forms
 
                 if (!IsPostBack)
                 {
-                    //Common.TranslateTelerikColumns(rgGrid1);
-
                     Fillgrid();
                 }
             }
@@ -52,12 +49,12 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -132,10 +129,6 @@ namespace AppZulassungsdienst.forms
                     // nach Dienstleistung
                     rgGrid1.MasterTableView.GroupByExpressions.Add("MAKTX Dienstleistung GROUP BY MAKTX");
                     break;
-                default:
-                    // Übersicht
-                    // keine Gruppierung
-                    break;
             }
         }
 
@@ -169,7 +162,7 @@ namespace AppZulassungsdienst.forms
                         {
                             objListe.Filename = Barqnr + ".pdf";
                         }
-                        String FilePath = "";
+                        String FilePath;
                         if (m_User.IsTestUser)
                         { 
                             FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename; 
@@ -197,7 +190,7 @@ namespace AppZulassungsdienst.forms
             {
                 GridGroupFooterItem groupFooter = (GridGroupFooterItem)e.Item;
                 GridGroupHeaderItem groupHeader = rgGrid1.MasterTableView.GetItems(GridItemType.GroupHeader)
-                    .Where(i => i.GroupIndex == groupFooter.GroupIndex).First() as GridGroupHeaderItem;
+                    .First(i => i.GroupIndex == groupFooter.GroupIndex) as GridGroupHeaderItem;
 
                 // Default-Gruppenfooter-Farbe (falls von den u.g. Bedingungen keine zutreffen)
                 groupFooter.BackColor = System.Drawing.Color.FromArgb(250, 255, 191);
@@ -277,8 +270,6 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void PerformExcelExport()
         {
-            bool found;
-
             DataTable tblTemp = objListe.Auswertung.Copy();
 
             // Spalten entfernen, die nicht exportiert werden sollen/können
@@ -287,7 +278,7 @@ namespace AppZulassungsdienst.forms
             // Spalten analog zur Anzeige ausblenden/umbenennen
             for (int i = tblTemp.Columns.Count - 1; i >= 0; i--)
             {
-                found = false;
+                bool found = false;
 
                 foreach (GridColumn cCol in rgGrid1.Columns)
                 {
@@ -349,7 +340,7 @@ namespace AppZulassungsdienst.forms
             }
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
             excelFactory.CreateDocumentAndSendAsResponse(filename, dvExport.ToTable(), this.Page, false, @"Applications\AppZulassungsdienst\Documents\Vorlage_Auswertung.xls", 0, 0);
         }
 

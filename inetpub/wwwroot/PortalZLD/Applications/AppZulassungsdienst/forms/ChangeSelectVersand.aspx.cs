@@ -11,8 +11,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ChangeSelectVersand : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
 
@@ -107,7 +107,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// <summary>
         /// Kundenauswahl in der DropDown geändert.
         /// </summary>
         /// <param name="sender">object</param>
@@ -131,8 +130,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
+                DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
                 tmpDView.Sort = "NAME1";
                 ddlKunnr.DataSource = tmpDView;
                 ddlKunnr.DataValueField = "KUNNR";
@@ -149,7 +147,6 @@ namespace AppZulassungsdienst.forms
                 objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objNacherf.Status == 0)
                 {
-                    tmpDView = new DataView();
                     tmpDView = objCommon.tblStvaStamm.DefaultView;
                     tmpDView.Sort = "KREISTEXT";
                     ddlStVa.DataSource = tmpDView;
@@ -162,9 +159,7 @@ namespace AppZulassungsdienst.forms
                 else
                 {
                     lblError.Text = objNacherf.Message;
-                    return;
                 }
-
             }
         }
 

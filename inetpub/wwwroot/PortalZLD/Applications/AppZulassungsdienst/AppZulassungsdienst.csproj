@@ -274,6 +274,13 @@
     <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
       <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\PrintDialogSofortabrechnung.aspx.cs">
+      <DependentUpon>PrintDialogSofortabrechnung.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\PrintDialogSofortabrechnung.aspx.designer.cs">
+      <DependentUpon>PrintDialogSofortabrechnung.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\VorgangStatusaenderung.aspx.cs">
       <DependentUpon>VorgangStatusaenderung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -550,6 +557,7 @@
     <Content Include="forms\Disposition.aspx" />
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
+    <Content Include="forms\PrintDialogSofortabrechnung.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
     <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />
@@ -664,7 +672,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
+      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

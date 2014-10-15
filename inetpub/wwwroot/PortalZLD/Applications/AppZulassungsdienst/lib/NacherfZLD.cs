@@ -705,6 +705,14 @@ namespace AppZulassungsdienst.lib
             set;
         }
         /// <summary>
+        /// Selektion bzw. Modus "Sofortabrechnung" 
+        /// </summary>
+        public bool SelSofortabrechnung
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Selektion bzw. Modus "Nacherfassung durchzuf. Vers.zul. -> Bearbeitung" 
         /// </summary>
         public bool SelEditDurchzufVersZul
@@ -851,6 +859,9 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+        /// <summary>
+        /// Adressdaten für die Rücksendung v. Dokumenten
+        /// </summary>
         public String PLZRueck
         {
             get;
@@ -957,6 +968,11 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+        public bool SofortabrechnungErledigt
+        {
+            get;
+            set;
+        }
         public string Infotext
         {
             get;
@@ -1023,13 +1039,16 @@ namespace AppZulassungsdienst.lib
                 m_blnGestartet = true;
                 try
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_EXPORT_NACHERF", ref m_objApp, ref m_objUser, ref page);
+                    var bapiName = "Z_ZLD_EXPORT_NACHERF";
 
+                    if (SelSofortabrechnung)
+                        bapiName = "Z_ZLD_EXPORT_SOFORT_ABRECHNUNG";
+
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
+                    
                     myProxy.setImportParameter("I_KUNNR", mSelKunde);
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
                     myProxy.setImportParameter("I_VKORG", VKORG);
-                    myProxy.setImportParameter("I_KREISKZ", mSelKreis);
-                    myProxy.setImportParameter("I_MATNR", mSelMatnr);
+                    myProxy.setImportParameter("I_VKBUR", VKBUR);
                     myProxy.setImportParameter("I_ZZZLDAT", mSelDatum);
 
                     if (mSelID.Length > 0)
@@ -1041,20 +1060,26 @@ namespace AppZulassungsdienst.lib
                         myProxy.setImportParameter("I_ZULBELN", "");
                     }
 
-                    myProxy.setImportParameter("I_BLTYP", SelStatus);
-                    myProxy.setImportParameter("I_DZLD_VKBUR", DZVKBUR);
-
-                    if (SelLief != "0" && SelLief != "")
-                    {
-                        myProxy.setImportParameter("I_LIFNR", SelLief);
-                    }
-
                     myProxy.setImportParameter("I_FLIEGER", ZLDCommon.BoolToX(SelFlieger));
-                    myProxy.setImportParameter("I_AH_ANNAHME", ZLDCommon.BoolToX(SelAnnahmeAH));
 
-                    if (!String.IsNullOrEmpty(SelGroupTourID))
+                    if (!SelSofortabrechnung)
                     {
-                        myProxy.setImportParameter("I_GRUPPE", SelGroupTourID.PadLeft(10, '0'));
+                        myProxy.setImportParameter("I_KREISKZ", mSelKreis);
+                        myProxy.setImportParameter("I_MATNR", mSelMatnr);
+                        myProxy.setImportParameter("I_BLTYP", SelStatus);
+                        myProxy.setImportParameter("I_DZLD_VKBUR", DZVKBUR);
+
+                        if (SelLief != "0" && SelLief != "")
+                        {
+                            myProxy.setImportParameter("I_LIFNR", SelLief);
+                        }
+
+                        myProxy.setImportParameter("I_AH_ANNAHME", ZLDCommon.BoolToX(SelAnnahmeAH));
+
+                        if (!String.IsNullOrEmpty(SelGroupTourID))
+                        {
+                            myProxy.setImportParameter("I_GRUPPE", SelGroupTourID.PadLeft(10, '0'));
+                        }
                     }
 
                     myProxy.callBapi();
@@ -1173,10 +1198,9 @@ namespace AppZulassungsdienst.lib
         /// <param name="page"></param>
         /// <param name="tblKundenStamm">Kundentabellen</param>
         /// <param name="tblMaterialStamm">Materialstammtabelle</param>
-        /// <param name="Status"></param>
         /// <returns></returns>
         public Int32 getSAPAHVersand(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblKundenStamm,
-                                    DataTable tblMaterialStamm, ref String Status)
+                                    DataTable tblMaterialStamm)
         {
             Int32 returnvalue = 0;
 
@@ -1476,8 +1500,7 @@ namespace AppZulassungsdienst.lib
             {
                 foreach (DataRow dRow in tblSap.Rows)
                 {
-
-                    String OhneSteuer;
+                    String ohneSt;
                     var tblKopf = new ZLDKopfTabelle();
 
                     Int32.TryParse(dRow["ZULBELN"].ToString(), out id_sap);
@@ -1528,6 +1551,7 @@ namespace AppZulassungsdienst.lib
                     tblKopf.WunschKZ2 = dRow["WU_KENNZ2"].ToString();
                     tblKopf.WunschKZ3 = dRow["WU_KENNZ3"].ToString();
                     tblKopf.OhneGruenenVersSchein = dRow["O_G_VERSSCHEIN"].ToString();
+                    tblKopf.SofortabrechnungErledigt = ZLDCommon.XToBool(dRow["SOFORT_ABR_ERL"].ToString());
                     tblKopf.Reserviert = ZLDCommon.XToBool(dRow["RESERVKENN_JN"].ToString());
                     tblKopf.ReserviertKennz = dRow["RESERVKENN"].ToString();
                     tblKopf.Feinstaub = ZLDCommon.XToBool(dRow["FEINSTAUBAMT"].ToString());
@@ -1709,8 +1733,7 @@ namespace AppZulassungsdienst.lib
                     ZLD_DataContext.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
                     ZLD_DataContext.SubmitChanges();
                     id_Kopf = tblKopf.id;
-                    OhneSteuer = tblKopf.OhneSteuer;
-
+                    ohneSt = tblKopf.OhneSteuer;
 
                     ZLD_DataContext.Connection.Close();
 
@@ -1746,7 +1769,7 @@ namespace AppZulassungsdienst.lib
                                 tmpPos.Preis_Amt = dPreis;
 
                                 tmpPos.PosLoesch = "";
-                                if (OhneSteuer == "X")
+                                if (ohneSt == "X")
                                 {
                                     tmpPos.GebMatnr = drow["GebMatnr"].ToString();
                                     tmpPos.GebMatbez = drow["GebMatbez"].ToString();
@@ -1960,13 +1983,10 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
             }
         }
@@ -1981,13 +2001,13 @@ namespace AppZulassungsdienst.lib
         /// <param name="Steuern"></param>
         /// <param name="PreisKZ"></param>
         /// <param name="KennzAbc"></param>
-        /// <param name="Bar"></param>
-        /// <param name="EC"></param>
+        /// <param name="blnBar"></param>
+        /// <param name="blnEC"></param>
         /// <param name="Griddate"></param>
         /// <param name="GebAmt"></param>
         public void UpdateDB_GridData(Int32 IDRecordset, Int32 IDPos, Decimal Preis,
                             Decimal Gebuehr, Decimal Steuern, Decimal PreisKZ,
-                            String KennzAbc, Boolean Bar, Boolean EC, String Griddate, Decimal GebAmt)
+                            String KennzAbc, Boolean blnBar, Boolean blnEC, String Griddate, Decimal GebAmt)
         {
             var ZLD_DataContext = new ZLDTableClassesDataContext();
 
@@ -2008,13 +2028,13 @@ namespace AppZulassungsdienst.lib
                     tblKopf.Steuer = Steuern;
                     if (tblKopf.Vorgang != "VZ" && tblKopf.Vorgang != "VE")
                     {
-                        if (Bar)
+                        if (blnBar)
                         {
                             tblKopf.Bar = true;
                             tblKopf.EC = false;
                             tblKopf.RE = false;
                         }
-                        else if (EC)
+                        else if (blnEC)
                         {
                             tblKopf.EC = true;
                             tblKopf.Bar = false;
@@ -2098,17 +2118,12 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
-
             }
-
         }
 
         /// <summary>
@@ -2119,11 +2134,11 @@ namespace AppZulassungsdienst.lib
         /// <param name="IDPos"></param>
         /// <param name="Gebuehr"></param>
         /// <param name="KennzAbc"></param>
-        /// <param name="Bar"></param>
-        /// <param name="EC"></param>
+        /// <param name="blnBar"></param>
+        /// <param name="blnEC"></param>
         /// <param name="Griddate"></param>
         /// <param name="DLBezeichnung"></param>
-        public void UpdateDB_GridDataGeb(Int32 IDRecordset, Int32 IDPos, Decimal Gebuehr, String KennzAbc, Boolean Bar, Boolean EC, String Griddate, String DLBezeichnung)
+        public void UpdateDB_GridDataGeb(Int32 IDRecordset, Int32 IDPos, Decimal Gebuehr, String KennzAbc, Boolean blnBar, Boolean blnEC, String Griddate, String DLBezeichnung)
         {
             var ZLD_DataContext = new ZLDTableClassesDataContext();
 
@@ -2141,13 +2156,13 @@ namespace AppZulassungsdienst.lib
 
                 if (IDPos == 10)
                 {
-                    if (Bar)
+                    if (blnBar)
                     {
                         tblKopf.Bar = true;
                         tblKopf.EC = false;
                         tblKopf.RE = false;
                     }
-                    else if (EC)
+                    else if (blnEC)
                     {
                         tblKopf.EC = true;
                         tblKopf.Bar = false;
@@ -2218,13 +2233,10 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
             }
         }
@@ -2319,13 +2331,10 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
             }
         }
@@ -2358,17 +2367,12 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
-
             }
-
         }
 
         /// <summary>
@@ -2399,13 +2403,10 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
             }
         }
@@ -2449,6 +2450,7 @@ namespace AppZulassungsdienst.lib
                 tblKopf.WunschKZ2 = WunschKZ2;
                 tblKopf.WunschKZ3 = WunschKZ3;
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
 
                 tblKopf.Reserviert = mReserviert;
                 tblKopf.Feinstaub = mFeinstaub;
@@ -2536,9 +2538,10 @@ namespace AppZulassungsdienst.lib
                     {
                         foreach (DataRow drow in tblPositionen.Rows)
                         {
+                            var idpos = (Int32) drow["id_pos"];
 
                             var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                          where p.id_Kopf == id_Kopf && p.id_pos == (Int32)drow["id_pos"]
+                                          where p.id_Kopf == id_Kopf && p.id_pos == idpos
                                           select p);
                             if (tblPos.Any())
                             {
@@ -2620,7 +2623,7 @@ namespace AppZulassungsdienst.lib
                                 var tblPosNew = new ZLDPositionsTabelle
                                     {
                                         id_Kopf = id_Kopf,
-                                        id_pos = (Int32)drow["id_pos"],
+                                        id_pos = idpos,
                                         Matnr = drow["Matnr"].ToString().PadLeft(18, '0')
                                     };
 
@@ -2752,10 +2755,12 @@ namespace AppZulassungsdienst.lib
 
                         foreach (DataRow drow in tblPositionen.Rows)
                         {
+                            var idpos = (Int32) drow["id_pos"];
 
                             var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                          where p.id_Kopf == id_Kopf && p.id_pos == (Int32)drow["id_pos"]
+                                          where p.id_Kopf == id_Kopf && p.id_pos == idpos
                                           select p);
+
                             if (tblPos.Any())
                             {
                                 foreach (var PosRow in tblPos)
@@ -2763,7 +2768,7 @@ namespace AppZulassungsdienst.lib
                                     if (PosRow.id_Kopf == id_Kopf)
                                     {
                                         PosRow.id_Kopf = id_Kopf;
-                                        PosRow.id_pos = (Int32)drow["id_pos"];
+                                        PosRow.id_pos = idpos;
                                         PosRow.Matnr = drow["Matnr"].ToString().PadLeft(18, '0');
                                         
                                         iMenge = 1;
@@ -2809,7 +2814,7 @@ namespace AppZulassungsdienst.lib
                                 var tblPosNew = new ZLDPositionsTabelle
                                     {
                                         id_Kopf = id_Kopf,
-                                        id_pos = (Int32) drow["id_pos"],
+                                        id_pos = idpos,
                                         Matnr = drow["Matnr"].ToString().PadLeft(18, '0')
                                     };
                                 
@@ -2993,6 +2998,7 @@ namespace AppZulassungsdienst.lib
                 WunschKZ2 = dRow["WunschKZ2"].ToString();
                 WunschKZ3 = dRow["WunschKZ3"].ToString();
                 OhneGruenenVersSchein = ZLDCommon.XToBool(dRow["OhneGruenenVersSchein"].ToString());
+                SofortabrechnungErledigt = (dRow["SofortabrechnungErledigt"] != null && (Boolean)dRow["SofortabrechnungErledigt"]);
                 mReserviert = (dRow["Reserviert"] != null && (Boolean)dRow["Reserviert"]);
                 mReserviertKennz = dRow["ReserviertKennz"].ToString();
                 mFeinstaub = (dRow["Feinstaub"] != null && (Boolean)dRow["Feinstaub"]);
@@ -3210,7 +3216,12 @@ namespace AppZulassungsdienst.lib
 
                 try
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_IMP_NACHERF", ref m_objApp, ref m_objUser, ref page);
+                    var bapiName = "Z_ZLD_IMP_NACHERF";
+
+                    if (SelSofortabrechnung)
+                        bapiName = "Z_ZLD_IMPORT_SOFORT_ABRECHNUNG";
+
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
 
                     DataTable importAuftrag = myProxy.getImportTable("GT_IMP_BAK");
 
@@ -3235,7 +3246,12 @@ namespace AppZulassungsdienst.lib
                                                select k).Single();
                                 DataRow importAuftrRow = importAuftrag.NewRow();
 
-                                insertDatatoSAPTable(tblKopf, ref importAuftrRow, tblStvaStamm, "Save");
+                                var aktion = "Save";
+
+                                if (SelSofortabrechnung)
+                                    aktion = "Update";
+
+                                insertDatatoSAPTable(tblKopf, ref importAuftrRow, tblStvaStamm, aktion);
 
                                 DataRow importRow;
                                 //----------------
@@ -3408,21 +3424,24 @@ namespace AppZulassungsdienst.lib
                     {
                         myProxy.callBapi();
 
-                        tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
-                        tblBarquittungen = myProxy.getExportTable("GT_BARQ");
-                        
-                        if (tblErrors.Rows.Count > 0)
+                        if (!SelSofortabrechnung)
                         {
-                            m_intStatus = -9999;
+                            tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+                            tblBarquittungen = myProxy.getExportTable("GT_BARQ");
 
-                            foreach (DataRow rowError in tblErrors.Rows)
+                            if (tblErrors.Rows.Count > 0)
                             {
-                                Int32 id_sap;
-                                Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
-                                DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap);
-                                if (rowListe.Length > 0)
+                                m_intStatus = -9999;
+
+                                foreach (DataRow rowError in tblErrors.Rows)
                                 {
-                                    rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
+                                    Int32 idsap;
+                                    Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
+                                    DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                                    if (rowListe.Length > 0)
+                                    {
+                                        rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
+                                    }
                                 }
                             }
                         }
@@ -3504,6 +3523,7 @@ namespace AppZulassungsdienst.lib
             importAuftrRow["WU_KENNZ2"] = tblKopf.WunschKZ2;
             importAuftrRow["WU_KENNZ3"] = tblKopf.WunschKZ3;
             importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
+            importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
 
             importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
             importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -3566,7 +3586,7 @@ namespace AppZulassungsdienst.lib
                 // Im Modus "AnnahmeAH" den KSTATUS nicht in SAP auf "B" setzen (hier wird nur beim Absenden in SAP gespeichert). 
                 // Für die Nacherfassung dieser Vorgänge darf der KSTATUS initial auch nicht B sein, weil der Vorgang dort
                 // sonst schon als bearbeitet angezeigt wird
-                if (SelAnnahmeAH)
+                if (SelAnnahmeAH || SelSofortabrechnung)
                 {
                     importAuftrRow["KSTATUS"] = "O";
                 }
@@ -3750,6 +3770,7 @@ namespace AppZulassungsdienst.lib
                                 importAuftrRow["WU_KENNZ2"] = tblKopf.WunschKZ2;
                                 importAuftrRow["WU_KENNZ3"] = tblKopf.WunschKZ3;
                                 importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
+                                importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
 
                                 importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
                                 importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -3926,9 +3947,9 @@ namespace AppZulassungsdienst.lib
                            
                             foreach (DataRow rowError in tblErrors.Rows)
                             {
-                                Int32 id_sap;
-                                Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
-                                DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap);
+                                Int32 idsap;
+                                Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
+                                DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
                                 if (rowListe.Length > 0)
                                 {
                                     rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4237,11 +4258,11 @@ namespace AppZulassungsdienst.lib
                        
                         foreach (DataRow rowError in tblErrors.Rows)
                         {
-                            Int32 id_sap;
-                            Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
+                            Int32 idsap;
+                            Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
                             Int32 id_Pos;
                             Int32.TryParse(rowError["ZULPOSNR"].ToString(), out id_Pos);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap);
+                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4529,11 +4550,11 @@ namespace AppZulassungsdienst.lib
                      
                         foreach (DataRow rowError in tblErrors.Rows)
                         {
-                            Int32 id_sap;
-                            Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
+                            Int32 idsap;
+                            Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
                             Int32 id_Pos;
                             Int32.TryParse(rowError["ZULPOSNR"].ToString(), out id_Pos);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap);
+                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4664,6 +4685,7 @@ namespace AppZulassungsdienst.lib
                         importAuftrRow["WU_KENNZ2"] = SaveRow["WU_KENNZ2"];
                         importAuftrRow["WU_KENNZ3"] = SaveRow["WU_KENNZ3"];
                         importAuftrRow["O_G_VERSSCHEIN"] = SaveRow["O_G_VERSSCHEIN"];
+                        importAuftrRow["SOFORT_ABR_ERL"] = SaveRow["SOFORT_ABR_ERL"];
                         importAuftrRow["RESERVKENN_JN"] = SaveRow["RESERVKENN_JN"];
                         importAuftrRow["RESERVKENN"] = SaveRow["RESERVKENN"];
                         importAuftrRow["FEINSTAUBAMT"] = SaveRow["FEINSTAUBAMT"];
@@ -4838,9 +4860,9 @@ namespace AppZulassungsdienst.lib
                       
                         foreach (DataRow rowError in tblErrors.Rows)
                         {
-                            Int32 id_sap;
-                            Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap);
+                            Int32 idsap;
+                            Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
+                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -5058,6 +5080,7 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["WU_KENNZ2"] = WunschKZ2;
                     importAuftrRow["WU_KENNZ3"] = WunschKZ3;
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                    importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["RESERVKENN"] = ReserviertKennz;
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
@@ -5189,13 +5212,10 @@ namespace AppZulassungsdienst.lib
                 {
                     m_blnGestartet = false;
 
-                    if (ZLD_DataContext != null)
+                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                     {
-                        if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                        {
-                            ZLD_DataContext.Connection.Close();
-                            ZLD_DataContext.Dispose();
-                        }
+                        ZLD_DataContext.Connection.Close();
+                        ZLD_DataContext.Dispose();
                     }
                 }
             }
@@ -5208,11 +5228,11 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         /// <param name="strAppId">AppID</param>
         /// <param name="strSessionId">SessionID</param>
-        /// <param name="tblPositionen">Neue Positionen</param>
+        /// <param name="tblPos">Neue Positionen</param>
         /// <param name="page">ChangeZLDNach.aspx</param>
         /// <param name="tblStvaStamm">Stammtabelle StVa</param>
         /// <param name="tblMaterialStamm">Stammtabelle Material</param>
-        public void GetPreiseNewPositionen(String strAppId, String strSessionId, System.Web.UI.Page page, DataTable tblPositionen,
+        public void GetPreiseNewPositionen(String strAppId, String strSessionId, System.Web.UI.Page page, DataTable tblPos,
                                                             DataTable tblStvaStamm, DataTable tblMaterialStamm)
         {
             m_strClassAndMethod = "NacherfZLD.GetPreiseNewPositionen";
@@ -5260,11 +5280,12 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["WU_KENNZ2"] = WunschKZ2;
                     importAuftrRow["WU_KENNZ3"] = WunschKZ3;
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                    importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
 
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
                     
-                    DataRow[] tblPosCount = tblPositionen.Select("id_Kopf = " + KopfID);
+                    DataRow[] tblPosCount = tblPos.Select("id_Kopf = " + KopfID);
                     Int32 ROWCOUNT = 10;
                     int posCount = 1;
 
@@ -5548,13 +5569,10 @@ namespace AppZulassungsdienst.lib
             }
             finally
             {
-                if (ZLD_DataContext != null)
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
                 {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
                 }
             }
             return strRel;
@@ -5608,24 +5626,13 @@ namespace AppZulassungsdienst.lib
         }
 
         /// <summary>
-        /// Kombiniert die Materialbezeichnung mit einem Mengenwert Gesamtlänge 40 Zeichen
-        /// </summary>
-        /// <param name="bezeichnung">Materialbezeichnung</param>
-        /// <param name="menge">Menge</param>
-        /// <returns>Kombiniertet String</returns>
-        private string CombineBezeichnungMenge(string bezeichnung, int menge)
-        {
-            return CombineBezeichnungMenge(bezeichnung, menge, 40);
-        }
-
-        /// <summary>
         /// Kombiniert die Materialbezeichnung mit einem Mengenwert
         /// </summary>
         /// <param name="bezeichnung">Materialbezeichnung</param>
         /// <param name="menge">Menge</param>
-        /// <param name="max">Maximale Länge des Strings</param>
+        /// <param name="max">Maximale Länge des Strings (default: 40 Zeichen)</param>
         /// <returns>Kombiniertet String</returns>
-        private string CombineBezeichnungMenge(string bezeichnung, int menge, int max)
+        private string CombineBezeichnungMenge(string bezeichnung, int menge, int max = 40)
         {
             var strMengeAddon = " x" + menge.ToString();
 

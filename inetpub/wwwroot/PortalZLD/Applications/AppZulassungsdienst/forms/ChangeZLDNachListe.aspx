@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChangeZLDNachListe.aspx.cs" Inherits="AppZulassungsdienst.forms.ChangeZLDNachListe" MasterPageFile="../MasterPage/Big.Master" %>
 <%@ Register src="/PortalZLD/PageElements/GridNavigation.ascx" tagname="GridNavigation" tagprefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI"  TagPrefix="telerik" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 	<script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
@@ -31,7 +32,12 @@
               $('#ctl00_ContentPlaceHolder1_cmdSend').click(function () {
                   $('#dialog').dialog('open');
               });
-          });</script>
+          });
+
+          function OnClientClose(oWnd, args) {
+
+          }
+      </script>
 	<div id="site">
 		<div id="content">
 			<div id="navigationSubmenu">
@@ -515,5 +521,12 @@
 			</div>
 			</div>
 	</div>
-
+    <telerik:RadWindowManager ID="RadWindowManager1" ShowContentDuringLoad="false" VisibleStatusbar="false"
+        ReloadOnShow="true" runat="server" VisibleOnPageLoad="false" Modal="true" EnableShadow="true">
+        <Windows>
+            <telerik:RadWindow ID="RadWindow1" Title="Sofortabrechnung herunterladen" runat="server" Behaviors="Resize, Move" OnClientClose="OnClientClose"
+                NavigateUrl="PrintDialogSofortabrechnung.aspx" Width="550" Height="300" Modal="true" >
+            </telerik:RadWindow>
+        </Windows>
+    </telerik:RadWindowManager>
 </asp:Content>

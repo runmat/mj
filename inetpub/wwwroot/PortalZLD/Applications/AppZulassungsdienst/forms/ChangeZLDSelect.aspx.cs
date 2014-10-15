@@ -39,6 +39,7 @@ namespace AppZulassungsdienst.forms
             }
 
             bool ModusNeueAHVorgaenge = (Request.QueryString["A"] != null);
+            bool ModusSofortabrechnung = (Request.QueryString["S"] != null);
 
             if (Session["objCommon"] == null)
             {
@@ -67,8 +68,7 @@ namespace AppZulassungsdienst.forms
                     objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
                 }
             }
-            BackfromList = false;
-            if (Request.QueryString["B"] != null) { BackfromList = true; }
+            BackfromList = (Request.QueryString["B"] != null);
 
             if (!IsPostBack)
             {
@@ -104,6 +104,7 @@ namespace AppZulassungsdienst.forms
                 Session["SucheValue"] = null;
                 Session["Rowfilter"] = null;
                 objNacherf.SelAnnahmeAH = ModusNeueAHVorgaenge;
+                objNacherf.SelSofortabrechnung = ModusSofortabrechnung;
                 fillForm();
                 ShowHideControls();
                 Session["objNacherf"] = objNacherf;
@@ -143,14 +144,28 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dienstleistungsauswahl in der DropDown geändert.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void ddlDienst_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtMatnr.Text = ddlDienst.SelectedValue;
+        }
+
+        /// <summary>
         /// Füllen der Dropdowns. Zuweisen der Javascript-Funktionen
         /// </summary>
         private void fillForm()
         {
             try
             {
-                DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+                DataView tmpDView = new DataView(objCommon.tblKundenStamm);
                 tmpDView.Sort = "NAME1";
+                if (objNacherf.SelSofortabrechnung)
+                {
+                    tmpDView.RowFilter = "SOFORT_ABR = 'X' OR KUNNR = '0'";
+                }
                 ddlKunnr.DataSource = tmpDView;
                 ddlKunnr.DataValueField = "KUNNR";
                 ddlKunnr.DataTextField = "NAME1";
@@ -208,19 +223,10 @@ namespace AppZulassungsdienst.forms
         {
             trKundengruppe.Visible = objNacherf.SelAnnahmeAH;
             trTour.Visible = objNacherf.SelAnnahmeAH;
-            trDienstleistung.Visible = !objNacherf.SelAnnahmeAH;
-            trVorgang.Visible = !objNacherf.SelAnnahmeAH;
+            trStva.Visible = !objNacherf.SelSofortabrechnung;
+            trDienstleistung.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
             trFlieger.Visible = !objNacherf.SelAnnahmeAH;
-        }
-
-        /// <summary>
-        /// Dienstleistungsauswahl in der DropDown geändert.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void ddlDienst_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtMatnr.Text = ddlDienst.SelectedValue;
         }
 
         /// <summary>
@@ -234,12 +240,12 @@ namespace AppZulassungsdienst.forms
         {
             lblError.Text = "";
             objNacherf = (NacherfZLD)Session["objNacherf"];
-            if (objNacherf.SelDatum.Length == 0 && objNacherf.SelID.Length == 0 && chkFlieger.Checked == false && objNacherf.SelAnnahmeAH == false)
+            if (String.IsNullOrEmpty(objNacherf.SelDatum) && String.IsNullOrEmpty(objNacherf.SelID) && !chkFlieger.Checked && !objNacherf.SelAnnahmeAH)
             {
                 lblError.Text = "Bitte geben Sie das Zulassungsdatum ein!";
                 return;
             }
-            if ((objNacherf.SelDatum.Length > 0) && (ihDatumIstWerktag.Value == "false"))
+            if ((!String.IsNullOrEmpty(objNacherf.SelDatum)) && (ihDatumIstWerktag.Value == "false"))
             {
                 lblError.Text = "Bitte wählen Sie einen Werktag für das Zulassungsdatum aus!";
                 return;

@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ChangeZLDNach : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
         Boolean BackfromList;
@@ -33,8 +33,8 @@ namespace AppZulassungsdienst.forms
             m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            BackfromList = false;
-            if (Request.QueryString["B"] != null) { BackfromList = true; }
+
+            BackfromList = (Request.QueryString["B"] != null);
 
             if (m_User.Reference.Trim(' ').Length == 0)
             {
@@ -167,7 +167,7 @@ namespace AppZulassungsdienst.forms
 
             Session["tblDienst"] = tblData;
                 
-            DataView tmpDView = new DataView();
+            DataView tmpDView;
             if (objNacherf.Vorgang.StartsWith("A"))
             {
                 objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
@@ -196,7 +196,6 @@ namespace AppZulassungsdienst.forms
 
             if (objNacherf.Status == 0)
             {
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblStvaStamm.DefaultView;
                 tmpDView.Sort = "KREISTEXT";
                 ddlStVa.DataSource = tmpDView;
@@ -218,7 +217,7 @@ namespace AppZulassungsdienst.forms
             }
 
             // Wenn Seite in besonderem Modus aufgerufen, dann best. Felder sperren
-            if (objNacherf.SelAnnahmeAH || objNacherf.SelEditDurchzufVersZul)
+            if (objNacherf.SelAnnahmeAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
             {
                 disableEingabefelder();
             }
@@ -320,7 +319,7 @@ namespace AppZulassungsdienst.forms
             tblData.Columns.Add("OldValue", typeof(String));
             tblData.Columns.Add("Menge", typeof(String));
             tblData.Columns.Add("DLBezeichnung", typeof(String));
-            Int16 PosCount = 1;
+
             foreach (DataRow dRow in objNacherf.Positionen.Rows)
             {
                 if (dRow["id_Kopf"].ToString() == IDKopf && dRow["WebMTArt"].ToString() == "D")
@@ -360,11 +359,9 @@ namespace AppZulassungsdienst.forms
                         tblRow["DLBezeichnung"] = "";
                     }
                     tblData.Rows.Add(tblRow);
-                    PosCount++; 
                 }
             }
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "Not PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -376,8 +373,7 @@ namespace AppZulassungsdienst.forms
             }
             GridViewRow gridRow = GridView1.Rows[0];
             TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
 
             tmpDView.RowFilter = "Matnr = " + txtHauptPos.Text;
             tmpDView.Sort = "Matnr";
@@ -427,7 +423,6 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Fügt dem im Gridview vorhanden Ctrls Javascript-Funktionen hinzu.
         /// </summary>
-        /// <param name="txtBox">Control</param>
         private void addButtonAttr(DataTable tblData)
         {
             objNacherf = (NacherfZLD)Session["objNacherf"];
@@ -449,10 +444,8 @@ namespace AppZulassungsdienst.forms
                 lblOldMatnr = (Label)gvRow.FindControl("lblOldMatnr");
                 txtMenge = (TextBox)gvRow.FindControl("txtMenge");
                 txtMenge.Style["display"] = "none";
-                String temp = "<%=" + ddl.ClientID + "%>";
 
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblMaterialStamm.DefaultView;
+                DataView tmpDataView = objCommon.tblMaterialStamm.DefaultView;
                 tmpDataView.Sort = "MAKTX";
                 ddl.DataSource = tmpDataView;
                 ddl.DataValueField = "MATNR";
@@ -537,6 +530,7 @@ namespace AppZulassungsdienst.forms
         /// Auswahl Barkunde == chkBar.Checked = true
         /// Auswahl Pauschalkunde = Label Pauschal.Visible = true
         /// Auswahl CPD-Kunde = clearen der Bank.- und Adressfelder
+        /// </summary>
         private void TableToJSArrayBarkunde()
         {
             System.Text.StringBuilder javaScript = new System.Text.StringBuilder();
@@ -607,7 +601,6 @@ namespace AppZulassungsdienst.forms
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
                 DropDownList ddl;
-                Label lblID_POS;
                 TextBox txtMenge;
 
                 ddl = (DropDownList)gvRow.FindControl("ddlItems");
@@ -704,19 +697,14 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Validation Zulassungsdatum
         /// </summary>
-        /// <returns>false bei Falscheingabe</returns>
-        private Boolean checkDate()
+        private void checkDate()
         {
-            Boolean bReturn = true;
-            String ZDat="";
-
-            ZDat = ZLDCommon.toShortDateStr(txtZulDate.Text);
+            String ZDat = ZLDCommon.toShortDateStr(txtZulDate.Text);
             if (ZDat != String.Empty)
             {
                 if (ZLDCommon.IsDate(ZDat) == false)
                 {
                     lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    bReturn = false;
                 }
                 else
                 {
@@ -735,7 +723,6 @@ namespace AppZulassungsdienst.forms
                     if (DateNew < tagesdatum)
                     {
                         lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
-                        bReturn = false;
                     }
                     else
                     {
@@ -744,13 +731,11 @@ namespace AppZulassungsdienst.forms
                         if (DateNew > tagesdatum)
                         {
                             lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
-                            bReturn = false;
                         }
                     }
                     if (ihDatumIstWerktag.Value == "false")
                     {
                         lblError.Text = "Bitte wählen Sie einen Werktag für das Zulassungsdatum aus!";
-                        bReturn = false;
                     }
                 }
             }
@@ -759,11 +744,8 @@ namespace AppZulassungsdienst.forms
                 if (objNacherf.Vorgang!="NV")
                 {
                     lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    bReturn = false;
                 }
             }
-
-            return bReturn;
         }
 
         /// <summary>
@@ -915,7 +897,7 @@ namespace AppZulassungsdienst.forms
                     if (itemRow["LOEKZ"].ToString() == "X")
                     { tblRow["PosLoesch"] = "L"; }
                     // Z - siehe oben ++++++++
-                    decimal dPreis = 0;
+                    decimal dPreis;
                     if (decimal.TryParse(itemRow["PREIS_C"].ToString(), out dPreis))
                     {
                         tblRow["Preis"] = dPreis;
@@ -941,7 +923,7 @@ namespace AppZulassungsdienst.forms
                     }
                     else if (tblRow["WEBMTART"].ToString() == "G")
                     {
-                        decimal dGebAmtPreis = 0;
+                        decimal dGebAmtPreis;
                         if (decimal.TryParse(itemRow["GEB_AMT_C"].ToString(), out dGebAmtPreis))
                         {
                             tblRow["GebPreis"] = 0;
@@ -961,9 +943,9 @@ namespace AppZulassungsdienst.forms
                                                                 "' AND WEBMTART = 'K'");
                     if (SelRow.Length == 1)
                     {
-                        Decimal Preis = 0;
                         if (ZLDCommon.IsDecimal(SelRow[0]["PREIS_C"].ToString()))
                         {
+                            Decimal Preis;
                             Decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out Preis);
                             objNacherf.PreisKennz = Preis;
                             txtPreisKennz.Text = SelRow[0]["PREIS_C"].ToString().Trim();
@@ -1041,8 +1023,7 @@ namespace AppZulassungsdienst.forms
                     tblData.Rows.Add(tblRow);
                 }
             }
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "NOT PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -1065,8 +1046,6 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
             bool blnSonstigeDLOffen = false;
 
             lblError.Text = "";
@@ -1074,8 +1053,8 @@ namespace AppZulassungsdienst.forms
 
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if ((ddl.SelectedValue == CONST_IDSONSTIGEDL) && ((String.IsNullOrEmpty(lblDLBezeichnung.Text)) || (lblDLBezeichnung.Text == "Sonstige Dienstleistung")))
                 {
                     blnSonstigeDLOffen = true;
@@ -1106,13 +1085,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
-
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if (ddl.SelectedValue == CONST_IDSONSTIGEDL)
                 {
                     lblDLBezeichnung.Text = dlgErfassungDLBez.DLBezeichnung;
@@ -1168,7 +1144,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 objNacherf.Bemerkung = txtBemerk.Text;
-                Decimal Preis = 0;
+                Decimal Preis;
                 if (ZLDCommon.IsDecimal(txtPreisKennz.Text))
                 {
                     Decimal.TryParse(txtPreisKennz.Text, out Preis);
@@ -1206,11 +1182,16 @@ namespace AppZulassungsdienst.forms
                             objNacherf.OhneSteuer = KundeRow[0]["OHNEUST"].ToString();
                         }
 
-                        Boolean bnoError = false;
+                        Boolean bnoError;
                         proofCPD();
                         if (chkCPD.Checked)
-                        { bnoError = proofBankDataCPD(); }
-                        else { bnoError = proofBankDatawithoutCPD(); }
+                        {
+                            bnoError = proofBankDataCPD();
+                        }
+                        else
+                        {
+                            bnoError = proofBankDatawithoutCPD();
+                        }
                         if (bnoError)
                         {
                             UpdateKundeBank();
@@ -1229,11 +1210,16 @@ namespace AppZulassungsdienst.forms
                     }
                     else
                     {
-                        Boolean bnoError = false;
+                        Boolean bnoError;
                         proofCPD();
                         if (chkCPD.Checked)
-                        { bnoError = proofBankDataCPD(); }
-                        else { bnoError = proofBankDatawithoutCPD(); }
+                        {
+                            bnoError = proofBankDataCPD();
+                        }
+                        else
+                        {
+                            bnoError = proofBankDatawithoutCPD();
+                        }
                         if (bnoError == false)
                         {
                             lbtnBank_Click(this, new EventArgs());
@@ -1337,8 +1323,8 @@ namespace AppZulassungsdienst.forms
             objNacherf = (NacherfZLD)Session["objNacherf"];
             DataTable tblData = (DataTable)Session["tblDienst"];
             proofDienstGrid(ref tblData);
-            Int32 NewPosID = 0;
-            Int32 NewPosIDData = 0;
+            Int32 NewPosID;
+            Int32 NewPosIDData;
             Int32.TryParse(objNacherf.Positionen.Rows[objNacherf.Positionen.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosIDData);
 
@@ -1366,8 +1352,7 @@ namespace AppZulassungsdienst.forms
             tblData.Rows.Add(tblRow);
 
             Session["tblDienst"] = tblData;
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "Not PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -1428,7 +1413,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
-                Decimal Preis = 0;
+                Decimal Preis;
                 if (ZLDCommon.IsDecimal(txtBox.Text))
                 {
                     Decimal.TryParse(txtBox.Text, out Preis);
@@ -2008,8 +1993,7 @@ namespace AppZulassungsdienst.forms
                     }
 
                     Session["tblDienst"] = tblData;
-                    DataView tmpDataView = new DataView();
-                    tmpDataView = tblData.DefaultView;
+                    DataView tmpDataView = tblData.DefaultView;
                     tmpDataView.RowFilter = "Not PosLoesch = 'L'";
                     GridView1.DataSource = tmpDataView;
                     GridView1.DataBind();
@@ -2031,7 +2015,7 @@ namespace AppZulassungsdienst.forms
         protected void GridView1_DataBound(object sender, EventArgs e)
         {
             // Wenn Seite in besonderem Modus aufgerufen, dann best. Grid-Felder sperren
-            if (objNacherf.SelAnnahmeAH || objNacherf.SelEditDurchzufVersZul)
+            if (objNacherf.SelAnnahmeAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
             {
                 disableGridfelder();
             }
@@ -2081,7 +2065,7 @@ namespace AppZulassungsdienst.forms
 
                 txtPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
                 txtGebPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
-                txtGebAmt.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
+                txtGebAmt.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelEditDurchzufVersZul);
             }
         }
 
@@ -2171,7 +2155,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="NewPosTable">Tabelle mit neuen Positionen </param>
         private void NewPosOhneGebMat(DataRow dRow, ref DataTable NewPosTable)
         {         
-            Int32 NewPosID = 0;
+            Int32 NewPosID;
             if (NewPosTable.Rows.Count == 0)
             {
                 NewPosTable = objNacherf.Positionen.Clone();
@@ -2231,11 +2215,6 @@ namespace AppZulassungsdienst.forms
         /// <param name="NewPosTable">Tabelle mit Positionen</param>
         private void NewHauptPosition(DataRow dRow, ref DataTable NewPosTable)
         {
-            String GebMatnr = "";
-            String GebMatbez = "";
-            String GebMatnrSt = "";
-            String GebMatBezSt = "";
-
             Int32 NewPosID = 10, NewUePosID = 10;
             DataRow NewRow = NewPosTable.NewRow();
             NewRow["id_Kopf"] = objNacherf.KopfID;
@@ -2253,10 +2232,10 @@ namespace AppZulassungsdienst.forms
             NewRow["Preis_Amt"] = dRow["GebAmt"];
             NewRow["PosLoesch"] = dRow["PosLoesch"];
             NewRow["SDRelevant"] = dRow["SdRelevant"];
-            GebMatnr = "";
-            GebMatbez = "";
-            GebMatnrSt = "";
-            GebMatBezSt = "";
+            String GebMatnr = "";
+            String GebMatbez = "";
+            String GebMatnrSt = "";
+            String GebMatBezSt = "";
             String Kennzmat = "";
 
             DataRow[] MatRow = objCommon.tblMaterialStamm.Select("Matnr = '" + dRow["Value"].ToString() + "'");
@@ -2314,7 +2293,7 @@ namespace AppZulassungsdienst.forms
                     NewRow["id_Kopf"] = objNacherf.KopfID;
                     NewRow["UEPOS"] = NewUePosID;
                     NewRow["id_pos"] = NewPosID + 10;
-                    NewRow["PosLoesch"] = dRow["PosLoesch"]; ;
+                    NewRow["PosLoesch"] = dRow["PosLoesch"];
                     NewRow["GebMatnr"] = "";
                     NewRow["GebMatbez"] = "";
                     NewRow["GebMatnrSt"] = "";
@@ -2515,7 +2494,6 @@ namespace AppZulassungsdienst.forms
                     String GebMatbez = "";
                     String GebMatnrSt = "";
                     String GebMatBezSt = "";
-                    String tmpKennzmat = "";
                     DataRow[] SelRow = objNacherf.Positionen.Select("id_pos = " + (Int32)dRow["ID_POS"]);
 
                     if (SelRow.Length == 1)
@@ -2544,7 +2522,6 @@ namespace AppZulassungsdienst.forms
                                 GebMatbez = MatRow[0]["GMAKTX"].ToString();
                                 GebMatnrSt = MatRow[0]["GBAUST"].ToString();
                                 GebMatBezSt = MatRow[0]["GUMAKTX"].ToString();
-                                tmpKennzmat = MatRow[0]["KENNZMAT"].ToString();
                             }
                             SelRow[0]["Preis"] = dRow["Preis"];
                             SelRow[0]["GebPreis"] = dRow["GebPreis"];
@@ -2598,7 +2575,7 @@ namespace AppZulassungsdienst.forms
                                     SelRow[0]["Menge"] = 2;
                                     if (ZLDCommon.IsNumeric(dRow["Menge"].ToString()))
                                     {
-                                        Int32 CalcMenge = 0;
+                                        Int32 CalcMenge;
                                         Int32.TryParse(dRow["Menge"].ToString(), out CalcMenge);
                                         SelRow[0]["Menge"] = (CalcMenge * 2).ToString();
                                     }
@@ -2618,8 +2595,6 @@ namespace AppZulassungsdienst.forms
                                 SelRow[0]["Preis"] = objNacherf.Steuer;
                                 SelRow[0]["SDRelevant"] = dRow["SdRelevant"];
                                 SelRow[0]["Preis_Amt"] = dRow["GebAmt"];
-                                //if (objNacherf.Steuer == 0)
-                                //{ SelRow[0]["PosLoesch"] = "L"; }
                             }
                         }
                     }
@@ -2632,11 +2607,9 @@ namespace AppZulassungsdienst.forms
                         else
                         {
                             DataTable NewPositionen = objNacherf.Positionen.Clone();
-                            Int32 NewPosID = 0;
                             DataRow NewRow = NewPositionen.NewRow();
                             NewRow["id_Kopf"] = objNacherf.KopfID;
                             NewRow["id_pos"] = (Int32)dRow["ID_POS"];
-                            NewPosID = (Int32)dRow["ID_POS"]; ;
                             NewRow["UEPOS"] = 0;
                             NewRow["WEBMTART"] = "D";
                             NewRow["Menge"] = "1";
@@ -2652,11 +2625,6 @@ namespace AppZulassungsdienst.forms
                             NewRow["SDRelevant"] = dRow["SdRelevant"];
                             NewRow["Preis_Amt"] = 0;
                             NewRow["Preis_Amt_Add"] = 0;
-                            GebMatnr = "";
-                            GebMatbez = "";
-                            GebMatnrSt = "";
-                            GebMatBezSt = "";
-                            String Kennzmat = "";
 
                             DataRow[] MatRow = objCommon.tblMaterialStamm.Select("Matnr = '" + dRow["Value"].ToString() + "'");
                             if (MatRow.Length == 1)
@@ -2665,11 +2633,6 @@ namespace AppZulassungsdienst.forms
                                 NewRow["GebMatbez"] = MatRow[0]["GMAKTX"].ToString();
                                 NewRow["GebMatnrSt"] = MatRow[0]["GBAUST"].ToString();
                                 NewRow["GebMatBezSt"] = MatRow[0]["GUMAKTX"].ToString();
-                                GebMatnr = MatRow[0]["GEBMAT"].ToString();
-                                GebMatbez = MatRow[0]["GMAKTX"].ToString();
-                                GebMatnrSt = MatRow[0]["GBAUST"].ToString();
-                                GebMatBezSt = MatRow[0]["GUMAKTX"].ToString();
-                                Kennzmat = MatRow[0]["KENNZMAT"].ToString();
                                 if (MatRow[0]["GEBMAT"].ToString().Length > 0)
                                 {
                                     NewRow["GebMatPflicht"] = "X";
@@ -2697,7 +2660,7 @@ namespace AppZulassungsdienst.forms
         private void AddKenzMaterial()
         {
             String kennzmat = "";
-            Int32 newPosId = 0;
+            Int32 newPosId;
             Int32.TryParse(objNacherf.Positionen.Rows[objNacherf.Positionen.Rows.Count - 1]["ID_POS"].ToString(), out newPosId);
             DataRow[] selRow = objNacherf.Positionen.Select("id_pos = 10");
             DataRow[] matRow = objCommon.tblMaterialStamm.Select("Matnr = '" + selRow[0]["Matnr"].ToString() + "'");
@@ -2759,11 +2722,6 @@ namespace AppZulassungsdienst.forms
             {
                 if (dRow["Value"].ToString() != "0")
                 {
-                    String GebMatnr = "";
-                    String GebMatbez = "";
-                    String GebMatnrSt = "";
-                    String GebMatBezSt = "";
-                    String tmpKennzmat = "";
                     DataRow[] SelRow = objNacherf.Positionen.Select("id_pos = " + (Int32)dRow["ID_POS"]);
                     if (SelRow.Length == 1)
                     {
@@ -2792,11 +2750,6 @@ namespace AppZulassungsdienst.forms
                                 SelRow[0]["GebMatbez"] = MatRow[0]["GMAKTX"].ToString();
                                 SelRow[0]["GebMatnrSt"] = MatRow[0]["GBAUST"].ToString();
                                 SelRow[0]["GebMatBezSt"] = MatRow[0]["GUMAKTX"].ToString();
-                                GebMatnr = MatRow[0]["GEBMAT"].ToString();
-                                GebMatbez = MatRow[0]["GMAKTX"].ToString();
-                                GebMatnrSt = MatRow[0]["GBAUST"].ToString();
-                                GebMatBezSt = MatRow[0]["GUMAKTX"].ToString();
-                                tmpKennzmat = MatRow[0]["KENNZMAT"].ToString();
                             }
                             SelRow[0]["Preis"] = dRow["Preis"];
                             SelRow[0]["GebPreis"] = dRow["GebPreis"];
@@ -2831,7 +2784,7 @@ namespace AppZulassungsdienst.forms
                                     SelRow[0]["Menge"] = 2;
                                     if (ZLDCommon.IsNumeric(dRow["Menge"].ToString())) 
                                     {
-                                        Int32 CalcMenge = 0;
+                                        Int32 CalcMenge;
                                         Int32.TryParse(dRow["Menge"].ToString(), out CalcMenge);
                                         SelRow[0]["Menge"] = (CalcMenge * 2).ToString();
                                     }
@@ -2850,8 +2803,6 @@ namespace AppZulassungsdienst.forms
                                 SelRow[0]["Preis"] = objNacherf.Steuer;
                                 SelRow[0]["SDRelevant"] = dRow["SdRelevant"];
                                 SelRow[0]["Preis_Amt"] = dRow["GebAmt"];
-                                //if (objNacherf.Steuer == 0)
-                                //{ SelRow[0]["PosLoesch"] = "L"; }
                             }
                         }
                     }
@@ -2865,11 +2816,9 @@ namespace AppZulassungsdienst.forms
                         {
                             // Preisfindung einbauen
                             DataTable NewPositionen = objNacherf.Positionen.Clone();
-                            Int32 NewPosID = 0;
                             DataRow NewRow = NewPositionen.NewRow();
                             NewRow["id_Kopf"] = objNacherf.KopfID;
                             NewRow["id_pos"] = (Int32)dRow["ID_POS"];
-                            NewPosID = (Int32)dRow["ID_POS"]; ;
                             NewRow["UEPOS"] = 0;
                             NewRow["WEBMTART"] = "D";
                             String[] sMateriel = dRow["Text"].ToString().Split('~');
@@ -2917,7 +2866,6 @@ namespace AppZulassungsdienst.forms
                 }
             }
             return differentMatnr;
-        
         }
 
         /// <summary>
@@ -3089,8 +3037,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "NOT PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -3108,12 +3055,12 @@ namespace AppZulassungsdienst.forms
         /// Kennzeichenpreis enablen wenn es sich um einen Pauschalkunden handelt oder kein Kennzeichenmaterial zum
         /// Material hinterlegt ist.
         /// </summary>
-        /// <param name="Pauschal">Pauschalkunde</param>
+        /// <param name="pauschalKunde">Pauschalkunde</param>
         /// <param name="Matnr">Materialnr.</param>
         /// <returns>Enable/Disable von txtPreisKennz</returns>
-        protected bool proofPauschMat(String Pauschal, String Matnr)
+        protected bool proofPauschMat(String pauschalKunde, String Matnr)
         {
-            bool bReturn = (Pauschal != "X");
+            bool bReturn = (pauschalKunde != "X");
 
             DataRow[] MatRow = objCommon.tblMaterialStamm.Select("MATNR='" + Matnr.TrimStart('0') + "'");
             if (MatRow.Length == 1)
@@ -3192,8 +3139,8 @@ namespace AppZulassungsdienst.forms
             objNacherf = (NacherfZLD)Session["objNacherf"];
             DataTable tblData = (DataTable)Session["tblDienst"];
             proofDienstGrid(ref tblData);
-            Int32 NewPosID = 0;
-            Int32 NewPosIDData = 0;
+            Int32 NewPosID;
+            Int32 NewPosIDData;
             Int32.TryParse(objNacherf.Positionen.Rows[objNacherf.Positionen.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosIDData);
 

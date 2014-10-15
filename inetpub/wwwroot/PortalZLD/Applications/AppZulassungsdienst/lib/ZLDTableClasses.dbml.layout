@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 24.75" name="ZLDTableClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 25" name="ZLDTableClasses">
   <DataContextMoniker Name="/ZLDTableClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="d455a3b0-0000-40f6-8a03-7dbd13afbc5c" absoluteBounds="2.375, 4.625, 2, 2.7324039713541666">
@@ -14,20 +14,20 @@
         <elementListCompartment Id="63fc3575-0804-4b5a-8992-9d09668f0941" absoluteBounds="4.015, 1.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1c8a98c5-3812-4120-babf-b9e76fcb827b" absoluteBounds="5.375, 4.5, 2, 20.039532877604167">
+    <classShape Id="1c8a98c5-3812-4120-babf-b9e76fcb827b" absoluteBounds="5.375, 4.5, 2, 20.231834309895834">
       <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDKopfTabelle" />
       <nestedChildShapes>
-        <elementListCompartment Id="17dda154-1d6e-4c11-ad8a-26c9b831a142" absoluteBounds="5.39, 4.96, 1.9700000000000002, 19.479532877604164" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="17dda154-1d6e-4c11-ad8a-26c9b831a142" absoluteBounds="5.39, 4.96, 1.9700000000000002, 19.671834309895832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.375 : 5.99120198567708); (4.375 : 5.99120198567708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.375 : 5.99120198567708); (4.375 : 5.99120198567708)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDKopfTabelle/ZLDKopfTabelle_ZLDBankverbindung" />
       <nodes>
         <classShapeMoniker Id="1c8a98c5-3812-4120-babf-b9e76fcb827b" />
         <classShapeMoniker Id="d455a3b0-0000-40f6-8a03-7dbd13afbc5c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.6875 : 4.5); (5.6875 : 3.6651025390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.6875 : 4.5); (5.6875 : 3.6651025390625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDKopfTabelle/ZLDKopfTabelle_ZLDKundenadresse" />
       <nodes>
         <classShapeMoniker Id="1c8a98c5-3812-4120-babf-b9e76fcb827b" />
@@ -40,7 +40,7 @@
         <elementListCompartment Id="a1e22915-cd42-40c4-9bc0-59ae088ad42e" absoluteBounds="8.765, 4.71, 1.9700000000000002, 5.4415283203125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.375 : 7.37576416015625); (8.75 : 7.37576416015625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.375 : 7.37576416015625); (8.75 : 7.37576416015625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDKopfTabelle/ZLDKopfTabelle_ZLDPositionsTabelle" />
       <nodes>
         <classShapeMoniker Id="1c8a98c5-3812-4120-babf-b9e76fcb827b" />
