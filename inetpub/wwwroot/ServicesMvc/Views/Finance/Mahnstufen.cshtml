@@ -1,0 +1,74 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceMahnstufenViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Finance_MahnstufenTempVersand <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("Mahnstufen/MahnungenSuche", Model.DataService.Suchparameter)
+
+<div id="divMahnungenGrid"></div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridMahnungen").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridMahnungenItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridMahnungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridMahnungen() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridMahnungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridMahnungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowMahnungenSearchResult(result) {
+        $("#btnBackToSearch").show();
+        $("#divMahnungenSuche").slideUp();
+        $("#divMahnungenGrid").slideDown();
+        $("#divMahnungenGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridMahnungen");
+    }
+
+    function CloseMahnungenSearchResult() {
+        $("#btnBackToSearch").hide();
+        $("#divMahnungenGrid").slideUp(function () { $("#divMahnungenSuche").delay(200).slideDown(); window.scrollTo(0, 0); });
+        FormPreparePrivateAjax();
+    }
+
+    function TryGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+
+</script>
