@@ -215,6 +215,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_READ_ADRESSPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10062897");
 
+            //new FunctionReflector("Z_DPM_READ_STL_MAHNUNGEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -289,7 +291,7 @@ namespace SapORM
             
             //CsiTest();
 
-            TargoTest3();
+            //TargoTest3();
 
             Shutdown();
         }

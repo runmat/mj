@@ -3812,7 +3812,6 @@
     <Content Include="Scripts\2012.2.607\telerik.treeview.min.js" />
     <Content Include="Scripts\2012.2.607\telerik.upload.min.js" />
     <Content Include="Scripts\2012.2.607\telerik.window.min.js" />
-    <Content Include="Scripts\Helper.js" />
     <Content Include="Scripts\IE7\json.js" />
     <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -3877,6 +3876,9 @@
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
+    <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
+    <Content Include="Views\Finance\Mahnstufen\MahnungenSuche.cshtml" />
+    <Content Include="Views\Finance\Mahnstufen.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
