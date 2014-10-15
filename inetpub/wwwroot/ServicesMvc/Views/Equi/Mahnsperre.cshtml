@@ -1,0 +1,235 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model MahnsperreViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_MahnsperreTempVersand <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.SpanAlert("spanAlertMahnsperre")
+
+@Html.Partial("Mahnsperre/MahnsperreSuche", Model.DataService.Suchparameter)
+
+<div id="divMahnsperreEquisGrid"></div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+    var selectedItemsMahnsperre;
+
+    function InitGridSelectionPersister() {
+        // Selektion merken (wichtig bei Paging etc.)
+        $('#GridMahnsperreEquis').on('change', ':checkbox[name=cbxCheckRow]', function(e) {
+            var cbx = $(this);
+            var grid = $('#GridMahnsperreEquis').data("tGrid");
+            var dItem = grid.dataItem(cbx.closest('tr'));
+            var dataId = dItem.FahrgestellNr + "|" + dItem.KomponentenID + "|" + dItem.StuecklistenPosKnotenNr;
+            if (cbx.is(':checked')) {
+                selectedItemsMahnsperre.push(dataId);
+            } else {
+                selectedItemsMahnsperre = $.grep(selectedItemsMahnsperre, function(item, index) {
+                    return item != dataId;
+                });
+            }
+        });
+    }
+    
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridMahnsperreEquis");
+        selectedItemsMahnsperre = [];
+        InitGridSelectionPersister();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridMahnsperreEquis").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridMahnsperreEquisItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridMahnsperreEquis() {
+        // Selektion rekonstruieren
+        $('#GridMahnsperreEquis :checkbox[name=cbxCheckRow]').each(function () {
+            var cbx = $(this);
+            var dItem = $('#GridMahnsperreEquis').data("tGrid").dataItem(cbx.closest('tr'));
+            var dataId = dItem.FahrgestellNr + "|" + dItem.KomponentenID + "|" + dItem.StuecklistenPosKnotenNr;
+            cbx.attr('checked', jQuery.inArray(dataId, selectedItemsMahnsperre) > -1);
+        });
+
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridMahnsperreEquis() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridMahnsperreEquis() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridMahnsperreEquis() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    
+    function GridMahnsperreEquis_SelectAll() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "MahnsperreEquisSelectAll",
+            loadingShow: true,
+            success: function (data) {
+                var items = JSON.parse(data);
+                
+                items.forEach(function(strItem) {
+                    if (jQuery.inArray(strItem, selectedItemsMahnsperre) < 0) {
+                        selectedItemsMahnsperre.push(strItem);
+                    }
+                });
+
+                GridRefresh();
+                FormPreparePrivateAjax();
+            },
+        });
+
+        return false;
+    }
+
+    function ShowMahnsperreSearchResult(result) {
+        $("#divMahnsperreSuche").slideUp();
+        $("#divMahnsperreEquisGrid").slideDown();
+        $("#btnBackToSearch").show();
+        ApplyMahnsperreEquisGridPartialView(result);
+        
+        // Initial sollen alle Datensätze selektiert sein
+        GridMahnsperreEquis_SelectAll();
+    }
+
+    function ApplyMahnsperreEquisGridPartialView(result) {
+        $("#divMahnsperreEquisGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridMahnsperreEquis");
+        InitGridSelectionPersister();
+        FormPreparePrivateAjax();
+    }
+    
+    function CloseMahnsperreSearchResult() {
+        $("#btnBackToSearch").hide();
+        $("#divMahnsperreEquisGrid").slideUp(function () { $("#divMahnsperreSuche").delay(200).slideDown(); window.scrollTo(0, 0); });
+        FormPreparePrivateAjax();
+    }
+    
+    function MahnsperreEditFormFormPreparePrivate() {
+        FormPrepareAjax();
+    }
+
+    function EditMahnsperre(neueSperre) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "BeginEditMahnsperre",
+                loadingShow: true,
+                data: { selectedItems: JSON.stringify(selectedItemsMahnsperre) },
+                success: function (result) {
+                    ApplyMahnsperreEquisGridPartialView(result);
+                    if (_modelStateValid == 'true') {
+                        AjaxFormMahnsperreEdit(neueSperre);
+                    }
+                },
+                error: function (result) {
+                    alert(result.data);
+                    SpanAlertWarning("spanAlertMahnsperre", result.data, 5000);
+                }
+            });
+
+        return false;
+    }
+    
+    function DeleteMahnsperre() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "DeleteMahnsperre",
+                loadingShow: true,
+                data: { selectedItems: JSON.stringify(selectedItemsMahnsperre) },
+                success: function (result) {
+                    ApplyMahnsperreEquisGridPartialView(result);
+                },
+                error: function (result) {
+                    SpanAlertWarning("spanAlertMahnsperre", result.data, 5000);
+                }
+            });
+
+        return false;
+    }
+    
+    function AjaxFormMahnsperreEdit(neueSperre) {
+        var url;
+        if (neueSperre) {
+            url = "MahnsperreCreate";
+        } else {
+            url = "MahnsperreEdit";
+        }
+        
+        $.ajax(
+            {
+                type: "POST",
+                url: url,
+                loadingShow: true,
+                success: function (result) {
+                    AjaxFormMahnsperreEditShow(result);
+                }
+            });
+
+        return false;
+    }
+    
+    function AjaxFormMahnsperreEditShow(result) {
+        var detailWindow = $("#MahnsperreBearbeiten").data("tWindow");
+        $("#InnerMahnsperreBearbeiten").html(result);
+        detailWindow.center().open();
+        MahnsperreEditFormFormPreparePrivate();
+    }
+    
+    function AjaxFormMahnsperreEditComplete() {
+        AjaxFormMahnsperreEditClose();
+            
+        $.ajax(
+        {
+            type: "POST",
+            url: "MahnsperreEditComplete",
+            loadingShow: true,
+            success: function (result) {
+                ApplyMahnsperreEquisGridPartialView(result);
+            },
+            error: function (result) {
+                SpanAlertWarning("spanAlertMahnsperre", result.data, 5000);
+            }
+        });
+    }
+
+    function AjaxFormMahnsperreEditClose() {
+        $("#MahnsperreBearbeiten").data("tWindow").close();
+    }
+
+</script>
+
+@(Html.Telerik().Window()
+    .Name("MahnsperreBearbeiten")
+    .Visible(false)
+    .Title(Localize.DunningBlock)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(500)
+    .Height(175)
+    .Content(@<text><div id="InnerMahnsperreBearbeiten"></div></text>)
+)

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
@@ -15,12 +12,11 @@ using System.Configuration;
 
 namespace AppRemarketing.forms
 {
-    public partial class Report24 : System.Web.UI.Page
+    public partial class Report24 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private bool isExcelExportConfigured1;
-        private bool isExcelExportConfigured2;
         private Belastungsanzeigen m_Report;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -40,23 +36,19 @@ namespace AppRemarketing.forms
                 if (!IsPostBack)
                 {
                     Common.TranslateTelerikColumns(rgGrid1);
-                    Common.TranslateTelerikColumns(rgGrid2);
 
                     var persister = new GridSettingsPersister(rgGrid1, GridSettingsType.All);
                     Session["rgGrid1_original"] = persister.LoadForUser(m_User, (string)Session["AppID"], GridSettingsType.All.ToString());
-                    persister = new GridSettingsPersister(rgGrid2, GridSettingsType.All);
-                    Session["rgGrid2_original"] = persister.LoadForUser(m_User, (string)Session["AppID"], GridSettingsType.All.ToString());
 
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
+                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName + ".xls";
                     Session["RechnungMietfahrzeuge"] = null;
 
-                    m_Report = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
+                    m_Report = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, strFileName);
                     Session.Add("RechnungMietfahrzeuge", m_Report);
                     m_Report.SessionID = this.Session.SessionID;
                     m_Report.AppID = (string)Session["AppID"];
                     FillDate();
                     FillVermieter();
-                   
                 }
                 else
                 {
@@ -76,12 +68,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -114,25 +106,24 @@ namespace AppRemarketing.forms
                         lblError.Text = "Datum von ist größer als Datum bis.";
                         return;
                     }
-                    System.TimeSpan diffResult = DateTo.Subtract(DateFrom);
                 }
             }
 
             m_Report.AVNR = "";
             if (IsAV())
             {
-                m_Report.AVNR = m_User.Groups[0].GroupName.ToString();
+                m_Report.AVNR = m_User.Groups[0].GroupName;
             }
-            else if (m_User.Groups[0].GroupName.ToString().Substring(0, 2) == "VW")
+            else if (m_User.Groups[0].GroupName.Substring(0, 2) == "VW")
             {
-                m_Report.AVNR = (string)ddlVermieter.SelectedValue;
+                m_Report.AVNR = ddlVermieter.SelectedValue;
             }
             if (m_Report.AVNR == "")
             {
                 lblError.Text = "Gruppe nicht eindeutig!";
                 return;
             }
-            m_Report.AuswahlStatus = (string)ddlStatus.SelectedValue;
+            m_Report.AuswahlStatus = ddlStatus.SelectedValue;
 
             m_Report.DatumVon = txtDatumVon.Text;
             m_Report.DatumBis = txtDatumBis.Text;
@@ -142,7 +133,7 @@ namespace AppRemarketing.forms
             m_Report.Rechnungsnummer = txtRechnungsnummer.Text;
             m_Report.Vertragsjahr = txtVertragsjahr.Text;
 
-            m_Report.ShowRechnungMietfahrzeuge((string)Session["AppID"], (string)Session.SessionID, this);
+            m_Report.ShowRechnungMietfahrzeuge((string)Session["AppID"], Session.SessionID, this);
 
             if (m_Report.Status == 0)
             {
@@ -157,8 +148,6 @@ namespace AppRemarketing.forms
 
         private void Fillgrid()
         {
-            rgGrid2.Visible = false;
-
             if (m_Report.Result.Rows.Count == 0)
             {
                 SearchMode();
@@ -171,9 +160,9 @@ namespace AppRemarketing.forms
                 rgGrid1.Rebind();
                 //Setzen der DataSource geschieht durch das NeedDataSource-Event
 
-                if (!IsAV())
+                if (IsAV())
                 {
-                    rgGrid1.MasterTableView.GetColumn("Bearbeiten").Visible = false;
+                    rgGrid1.MasterTableView.GetColumn("Storno").Visible = false;
                 }
             }
         }
@@ -199,34 +188,6 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Fillgrid2()
-        {
-            if (m_Report.Belastungen.Rows.Count == 0)
-            {
-                SearchMode();
-                lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
-            }
-            else
-            {
-                SearchMode(false);
-
-                rgGrid2.Rebind();
-                //Setzen der DataSource geschieht durch das NeedDataSource-Event
-            }
-        }
-
-        protected void rgGrid2_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        {
-            if (m_Report.Belastungen != null)
-            {
-                rgGrid2.DataSource = m_Report.Belastungen.DefaultView;
-            }
-            else
-            {
-                rgGrid2.DataSource = null;
-            }
-        }
-
         protected void NewSearch_Click(object sender, ImageClickEventArgs e)
         {
             SearchMode();
@@ -239,10 +200,10 @@ namespace AppRemarketing.forms
 
         private void FillVermieter()
         {
-            Fahrzeugbestand mVermieter = new Fahrzeugbestand(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
-            m_Report = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
+            Fahrzeugbestand mVermieter = new Fahrzeugbestand(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
+            m_Report = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
 
-            mVermieter.getVermieter((string)Session["AppID"], (string)Session.SessionID, this);
+            mVermieter.getVermieter((string)Session["AppID"], Session.SessionID, this);
 
             if (mVermieter.Status > 0)
             {
@@ -275,14 +236,10 @@ namespace AppRemarketing.forms
 
         private bool IsAV()
         {
-            if (m_User.Groups[0].GroupName.ToString().Substring(0, 2) == "AV")
-            {
+            if (m_User.Groups[0].GroupName.Substring(0, 2) == "AV")
                 return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         private void FillDate()
@@ -297,19 +254,12 @@ namespace AppRemarketing.forms
             Response.Redirect("/Services/(S(" + Session.SessionID + "))/Start/Selection.aspx");
         }
 
-        protected void lbtnBack_Click(object sender, EventArgs e)
-        {
-            rgGrid1.Visible = true;
-            rgGrid2.Visible = false;
-            lbtnBack.Visible = false;
-        }
-
         protected void btnOKStorno_Click(object sender, EventArgs e)
         {
             m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
             m_Report.Rechnungsnummer = lblRechnr.Text;
 
-            m_Report.StornoRechnung((string)Session["AppID"], (string)Session.SessionID, this.Page, txtStornotext.Text);
+            m_Report.StornoRechnung((string)Session["AppID"], Session.SessionID, this.Page, txtStornotext.Text);
             
             if (m_Report.Status == 0)
             {
@@ -335,7 +285,7 @@ namespace AppRemarketing.forms
         {
             // Nach Storno Grid-Daten aktualisieren
             m_Report.Rechnungsnummer = "";
-            m_Report.ShowRechnungMietfahrzeuge((string)Session["AppID"], (string)Session.SessionID, this);
+            m_Report.ShowRechnungMietfahrzeuge((string)Session["AppID"], Session.SessionID, this);
 
             if (m_Report.Status == 0)
             {
@@ -350,11 +300,6 @@ namespace AppRemarketing.forms
         }
 
         protected void Button1_Click(object sender, EventArgs e)
-        {
-            mpeBemerkung.Show();
-        }
-
-        protected void Button2_Click(object sender, EventArgs e)
         {
             mpeStorno.Show();
         }
@@ -376,10 +321,10 @@ namespace AppRemarketing.forms
 
                 var rbutton_parent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
                 rbutton_parent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
                 rbutton_parent.Controls.AddAt(1, resetLayoutButton);
             }
         }
@@ -415,37 +360,6 @@ namespace AppRemarketing.forms
                     persister.LoadSettings(settings);
 
                     Fillgrid();
-                    break;
-
-                case "Info":
-                    m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
-                    m_Report.Rechnungsnummer = e.CommandArgument.ToString();
-
-                    m_Report.ShowBelastungsanzeigen((string)Session["AppID"], (string)Session.SessionID, this);
-
-                    if (m_Report.Belastungen.Rows.Count > 0)
-                    {
-                        rgGrid1.Visible = false;
-
-                        Fillgrid2();
-
-                        rgGrid2.Visible = true;
-                        lbtnBack.Visible = true;
-                    }
-                    break;
-
-                case "Bemerkung":
-                    m_Report = (Belastungsanzeigen)Session["RechnungMietfahrzeuge"];
-                    m_Report.Rechnungsnummer = e.CommandArgument.ToString();
-
-                    m_Report.ShowBemerkung((string)Session["AppID"], (string)Session.SessionID, this);
-
-                    if (m_Report.TableBemerkungen.Rows.Count > 0)
-                    {
-                        lblBemerkung.Text = m_Report.TableBemerkungen.Rows[0]["KTEXT"].ToString();
-                    }
-
-                    mpeBemerkung.Show();
                     break;
 
                 case "PDF":
@@ -505,38 +419,9 @@ namespace AppRemarketing.forms
             }
         }
 
-        protected void rgGrid2_ItemCommand(object sender, GridCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case RadGrid.ExportToExcelCommandName:
-                    var eSettings = rgGrid2.ExportSettings;
-                    eSettings.ExportOnlyData = true;
-                    eSettings.FileName = string.Format("Belastungsanzeigen_{0:yyyyMMdd}", DateTime.Now);
-                    eSettings.HideStructureColumns = true;
-                    eSettings.IgnorePaging = true;
-                    eSettings.OpenInNewWindow = true;
-                    // hide non display columns from excel export
-                    var nonDisplayColumns = rgGrid2.MasterTableView.Columns.OfType<GridEditableColumn>().Where(c => !c.Display).Select(c => c.UniqueName).ToArray();
-                    foreach (var col in nonDisplayColumns)
-                    {
-                        rgGrid2.Columns.FindByUniqueName(col).Visible = false;
-                    }
-                    rgGrid2.Rebind();
-                    rgGrid2.MasterTableView.ExportToExcel();
-                    break;
-
-            }
-        }
-
         protected void rgGrid1_ExcelMLExportRowCreated(object sender, GridExportExcelMLRowCreatedArgs e)
         {
             Helper.radGridExcelMLExportRowCreated(ref isExcelExportConfigured1, ref e);
-        }
-
-        protected void rgGrid2_ExcelMLExportRowCreated(object sender, GridExportExcelMLRowCreatedArgs e)
-        {
-            Helper.radGridExcelMLExportRowCreated(ref isExcelExportConfigured2, ref e);
         }
 
         protected void rgGrid_ExcelMLExportStylesCreated(object sender, GridExportExcelMLStyleCreatedArgs e)
