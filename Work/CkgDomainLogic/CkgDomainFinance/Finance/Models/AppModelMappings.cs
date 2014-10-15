@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -120,6 +121,100 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_STL_MAHNUNGEN_01.GT_OUT, Mahnung> Z_DPM_READ_STL_MAHNUNGEN_01_GT_OUT_To_Mahnung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_STL_MAHNUNGEN_01.GT_OUT, Mahnung>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.CIN = source.CIN;
+                        destination.PAID = source.PAID;
+                        destination.Vertragsart = source.ZVERT_ART;
+                        destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                        destination.Materialtext = source.MAKTX;
+                        destination.Mahnstufe = source.ZZMAHNS;
+                        destination.LetzteMahnungAm = source.MAHNDAT;
+                        destination.NaechsteMahnungAm = source.NEXT_MAHNDAT;
+                        destination.Mahnsperre = (source.ZZMANSP.NotNullOrEmpty() == "X");
+                        destination.MahnsperreBis = source.ZZMANSP_DATBI;
+                        destination.Name1 = source.NAME1;
+                        destination.Name2 = source.NAME2;
+                        destination.Strasse = source.STREET;
+                        destination.Hausnummer = source.HOUSE_NUM1;
+                        destination.Postleitzahl = source.POST_CODE1;
+                        destination.Ort = source.CITY1;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT, Mahnstop> Z_DPM_READ_MAHN_EQSTL_02_GT_OUT_To_Mahnstop
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT, Mahnstop>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                        {
+                            destination.EquiNr = source.EQUNR;
+                            destination.MaterialNr = source.MATNR;
+                            destination.PAID = source.CHASSIS_NUM;
+                            destination.Kontonummer = source.KONTONR;
+                            destination.Dokument = source.MAKTX;
+                            destination.Mahnsperre = source.MAHNSP_GES_AM.HasValue;
+                            destination.MahnstopBis = source.MAHNDATUM_AB;
+                            destination.Bemerkung = source.BEM;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_PRUEFPUNKTE_01.GT_OUT, Pruefpunkt> Z_DPM_READ_PRUEFPUNKTE_01_GT_OUT_To_Pruefpunkt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_PRUEFPUNKTE_01.GT_OUT, Pruefpunkt>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.PAID = source.PAID;
+                        destination.BucID = source.BUC_ID;
+                        destination.Aktionsname = source.AKTIONSNAME;
+                        destination.PruefpunktID = source.PRUEFPUNKT;
+                        destination.PruefpunktText = source.PRUEFPUNKT_TXT;
+                        destination.Pruefstatus = source.PRUEFP_IO;
+                        destination.Ergebnis = source.PRUEFP_IO_TEXT;
+                        destination.Pruefdatum = source.PRUEDAT;
+                        destination.Bemerkung = source.BEMERKUNG;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_PRUEFSCHRITTE_03.GT_OUT, Pruefschritt> Z_DPM_READ_PRUEFSCHRITTE_03_GT_OUT_To_Pruefschritt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_PRUEFSCHRITTE_03.GT_OUT, Pruefschritt>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.PAID = source.PAID;
+                        destination.BucID = source.BUC_ID;
+                        destination.Aktionsnummer = source.AKTIONSNR;
+                        destination.Aktionsart = source.AKTIONSART;
+                        destination.Aktionsname = source.AKTIONSNAME;
+                        destination.Aktionstext = source.AKTION_TEXT;
+                        destination.Infotext = source.INFOTEXT;
+                        destination.Erledigt = (source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "X" || source.ERLEDIGT.NotNullOrEmpty().ToUpper() == "TRUE");
+                        destination.Pruefdatum = source.PRUEFDAT;
+                        destination.Webuser = source.WEB_USER;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -198,6 +293,49 @@ namespace CkgDomainLogic.Finance.Models
                             destination.EQUNR = source.Equipmentnummer;
                             destination.LIZNR = source.PAID;
                         }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_MAHN_EQSTL_01.GT_IN, Mahnstop> Z_DPM_SAVE_MAHN_EQSTL_01_GT_IN_From_Mahnstop
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_MAHN_EQSTL_01.GT_IN, Mahnstop>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                        {
+                            destination.EQUNR = source.EquiNr;
+                            destination.CHASSIS_NUM = source.PAID;
+                            destination.MATNR = source.MaterialNr;
+                            destination.MAHNSP_SETZEN = (source.Mahnsperre ? "X" : "");
+                            destination.MAHNSP_ENTF = (source.Mahnsperre ? "" : "X");
+                            destination.MAHNDATUM_AB = source.MahnstopBis;
+                            destination.MAHNDATUM_AB_ENTF = (source.MahnstopBis.HasValue ? "" : "X");
+                            destination.BEM = source.Bemerkung;
+                            destination.BEM_ENTF = (String.IsNullOrEmpty(source.Bemerkung) ? "X" : "");
+                            destination.CIN = source.CIN;
+                            destination.KONTONR = source.Kontonummer;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_ERL_PRUEFSCHR_01.GT_DAT, Pruefschritt> Z_DPM_SAVE_ERL_PRUEFSCHR_01_GT_DAT_From_Pruefschritt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_ERL_PRUEFSCHR_01.GT_DAT, Pruefschritt>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.KONTONR = source.Kontonummer;
+                        destination.PAID = source.PAID;
+                        destination.BUC_ID = source.BucID;
+                        destination.AKTIONSNR = source.Aktionsnummer;
+                        destination.ERLEDIGT = (source.Erledigt ? "X" : "");
+                        destination.WEB_USER = source.Webuser;
+                    }));
             }
         }
 

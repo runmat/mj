@@ -1,0 +1,46 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model MahnungSuchparameter
+
+<div id="divMahnungenSuche">
+    @using (Ajax.BeginForm("LoadMahnungen", "Finance", null,
+        new MvcAjaxOptions("divMahnungenSuche") { OnComplete = "ShowMahnungen();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            
+            @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap" })
+            @Html.FormDateRangePickerFor(m => m.VersanddatumRange, new { @class = "m-wrap" })
+            @Html.FormDatePickerFor(m => m.Mahndatum, new { @class = "m-wrap" })
+            @Html.FormTextBoxFor(m => m.Mahnstufe, new { @class = "xsmall m-wrap", maxlength = 1,  @onkeypress = "return NumbersOnly(false);" })
+            @Html.FormCheckBoxFor(m => m.Mahnsperre)
+           
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowMahnungen() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowMahnungen",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowMahnungenSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>

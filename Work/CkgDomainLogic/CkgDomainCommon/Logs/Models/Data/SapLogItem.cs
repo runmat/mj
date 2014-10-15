@@ -25,6 +25,7 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string CustomerName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.DurationSec)]
         public double? Dauer { get; set; }
 
         [GridResponsiveVisible(GridResponsive.Workstation)]
