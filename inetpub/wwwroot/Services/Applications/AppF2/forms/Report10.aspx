@@ -498,16 +498,16 @@
                                                   <td style="text-align: left; padding: 4px; border: 1px solid black;">
                                                     <%# Eval("Datum")%>
                                                   </td>
-                                                  <td style="text-align: right; padding: 4px; border: 1px solid black;">
+                                                  <td style="text-align: left; padding: 4px; border: 1px solid black;">
                                                     <%# Eval("User")%>
                                                   </td>
-                                                  <td style="text-align: right; padding: 4px; border: 1px solid black;">
+                                                  <td style="text-align: left; padding: 4px; border: 1px solid black;">
                                                     <%# Eval("Herkunft")%>
                                                   </td>
-                                                  <td style="text-align: right; padding: 4px; border: 1px solid black;">
+                                                  <td style="text-align: left; padding: 4px; border: 1px solid black;">
                                                     <%# Eval("Gespraechspartner")%>
                                                   </td>
-                                                  <td style="text-align: right; padding: 4px; border: 1px solid black;">
+                                                  <td style="text-align: left; padding: 4px; border: 1px solid black;">
                                                     <%# Eval("Notiz")%>
                                                   </td>
                                                 </tr>

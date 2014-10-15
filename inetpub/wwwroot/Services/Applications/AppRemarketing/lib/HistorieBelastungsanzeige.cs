@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data;
 
 namespace AppRemarketing.lib
@@ -17,6 +15,11 @@ namespace AppRemarketing.lib
         public string Status { get; private set; }
         public string SchadRechNo { get; private set; }
         public DateTime? SchadRechDate { get; private set; }
+        public string WiderspruchText { get; private set; }
+        public DateTime? WiderspruchDate { get; private set; }
+        public string BlockadeText { get; private set; }
+        public DateTime? BlockadeDate { get; private set; }
+        public string BlockadeUser { get; private set; }
 
         public static HistorieBelastungsanzeige Parse(DataTable gt_belas)
         {
@@ -34,6 +37,12 @@ namespace AppRemarketing.lib
                 result.Status = Helper.ParseCell<string>(row["STATUS_TEXT"]);
                 result.SchadRechNo = Helper.ParseCell<string>(row["RENNR"]);
                 result.SchadRechDate = Helper.GetDate(row["REDAT"]);
+                result.WiderspruchText = Helper.ParseCell<string>(row["REKLM"]);
+                result.WiderspruchDate = Helper.GetDate(row["WIDDAT"]);
+                result.BlockadeText = Helper.ParseCell<string>(row["BLOCKTEXT"]);
+                result.BlockadeDate = Helper.GetDate(row["BLOCKTEXT"]);
+                result.BlockadeUser = Helper.ParseCell<string>(row["BLOCKUSER"]);
+
                 return result;
             }
             return null;
