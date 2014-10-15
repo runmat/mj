@@ -162,7 +162,9 @@ namespace LogMaintenance.Services
             var businessDbContext = CreateBusinessDbContext(serverType);
             var logsDbContext = CreateLogsDbContext(serverType);
 
-            logsDbContext.Database.ExecuteSqlCommand("delete from " + tableName);
+            var sql = string.Concat("delete from ", tableName);
+            ExecuteSqlCommand(logsDbContext, sql, new object[0]); //  Fehler werden geschrieben via ELMAH
+
             logsDbContext.SaveChanges();
 
             var businessData = businessDbContext.GetData<T>(tableName);
@@ -180,14 +182,14 @@ namespace LogMaintenance.Services
             var businessDbContext = CreateBusinessDbContext(serverType);
             var logsDbContext = CreateLogsDbContext(serverType);
 
-            logsDbContext.Database.ExecuteSqlCommand("DELETE FROM CustomerRights");
+            ExecuteSqlCommand(logsDbContext, "DELETE FROM CustomerRights", new object[0]);
             logsDbContext.SaveChanges();
 
             var businessData = businessDbContext.Database.SqlQuery<MpCustomerRights>("SELECT * FROM CustomerRights");
             if (businessData.None())
                 return;
 
-            businessData.ToList().ForEach(m => logsDbContext.Database.ExecuteSqlCommand("INSERT INTO CustomerRights (CustomerID,AppID) VALUES ({0},{1})", m.CustomerID, m.AppID));
+            businessData.ToList().ForEach(m => ExecuteSqlCommand(logsDbContext, "INSERT INTO CustomerRights (CustomerID,AppID) VALUES ({0},{1})", m.CustomerID, m.AppID));
 
             Alert(string.Format("{0}-Server: Successfully copied data for '{1}' !", serverType, "CustomerRights"));
         }
