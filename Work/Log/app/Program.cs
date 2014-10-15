@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Reflection;
 using LogMaintenance.Services;
@@ -19,16 +20,27 @@ namespace LogMaintenance
 
         static void Main()
         {
-            bool success;
+            var success = false;
 
             success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
             if (!success) Environment.Exit(-1);
 
             success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);
-            
+
             var now = DateTime.Now.Date;
-            success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, "Prod", now.AddYears(-2), now.AddYears(-1), now.AddMonths(-4));
+
+            var pageVisitExpiryMonthsAgo = int.Parse(ConfigurationManager.AppSettings["PageVisitMonthsOldToDelete"]) ;
+            var pageVisitExpiryDate = now.AddMonths(pageVisitExpiryMonthsAgo);
+
+            var sapBapiExpiryMonthsAgo = int.Parse(ConfigurationManager.AppSettings["SapBapiMonthsOldToDelete"]);
+            var sapBapiExpiryDate = now.AddMonths(sapBapiExpiryMonthsAgo);
+
+            var bapiDataExpiryMonthsAgo = int.Parse(ConfigurationManager.AppSettings["SapBapiMonthsOldToClearData"]);
+            var bapiDataExpiryDate = now.AddMonths(bapiDataExpiryMonthsAgo);
+
+            success = BusinessDataCopyService.MaintenanceLogsDb("Prod", pageVisitExpiryDate, sapBapiExpiryDate, bapiDataExpiryDate);
+            if (!success) Environment.Exit(-1);
         }
     }
 }

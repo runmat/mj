@@ -5,7 +5,9 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Elmah;
 using GeneralTools.Log.Models.MultiPlatform;
+using GeneralTools.Log.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using LogMaintenance.Models;
@@ -82,27 +84,14 @@ namespace LogMaintenance.Services
 
         /// <summary>
         /// Die Log DB soll in regelmäßigen Abständen von alteren Inhalten und Datensätze bereinigt werden
-        /// - Page-Visits: 2 Jahre
-        /// - BAPI-Aufrufe mit den entsprechenden Laufzeiten: 1 Jahr
-        /// - BAPI-Aufrufe mit kompletten Data-Context (welcher User hat welche Daten an SAP übergeben): 4 Monate
         /// </summary>
-        /// <param name="infoMessageAction">Output für Nachrichten</param>
         /// <param name="serverType">Prod|Test|Dev</param>
-        /// <param name="pageVisitExpirydate">Nachrichten älter als das Datum werden gelöscht</param>
-        /// <param name="sapBapiExpiryDate">Nachrichten älter als das Datum werden gelöscht</param>
+        /// <param name="pageVisitExpirydate">PageVisist Nachrichten älter als das Datum werden gelöscht</param>
+        /// <param name="sapBapiExpiryDate">SAP BAPI Nachrichten älter als das Datum werden gelöscht</param>
         /// <param name="sapBapiDataExpiryDate">DataContext, ImportParameters, ImportTables, werden gelöscht in SAP Logs wenn Nachricht älter als das Datum</param>
-        /// <returns></returns>
-        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string serverType, DateTime pageVisitExpirydate, DateTime sapBapiExpiryDate, DateTime sapBapiDataExpiryDate)
+        /// <returns>Ist eine Operation fehlgeschlagen?</returns>
+        public static bool MaintenanceLogsDb(string serverType, DateTime pageVisitExpirydate, DateTime sapBapiExpiryDate, DateTime sapBapiDataExpiryDate)
         {
-            if (serverType.IsNullOrEmpty())
-            {
-                infoMessageAction.Invoke("Löschen von alten PageVisit Einträgen: Kein Server Type (prod, test, dev) angegeben, Operation wird abgebrochen");
-                return false;                
-            }
-
-            var logsDbContext = CreateLogsDbContext(serverType);
-            
-            // Ich habe keinen neuen Step in PageVisit.xml eingetragen: habe keine Möglichkeit gefunden zu parametrisieren...
             // SQL_SAFE_UPDATES, MySql Globale Server Variable wird ausgesetzt (== 0) während der Operation, da sonst die Operation fehlschlägt
             var deleteExpiredPageVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM pagevisit WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", pageVisitExpirydate.Date.ToString("yyyy-MM-dd"));
             var deleteExpiredBapiVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM sapbapi WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiExpiryDate.Date.ToString("yyyy-MM-dd"));
@@ -115,19 +104,44 @@ namespace LogMaintenance.Services
                     deleteExpiredBapiData
                 };
 
-            commands.ForEach(x =>
-                {
-                    try
-                    {
-                        logsDbContext.Database.ExecuteSqlCommand(x, new object[0]);
-                    }
-                    catch (Exception e)
-                    {
-                        infoMessageAction.Invoke(string.Format(@"Folgender Befehl schlug fehl\r\n\{0}\r\nFehlermeldung ist {1}",x, e.Message));
-                    }
-                });
+            var status = from command in commands
+                         let result = ExecuteSqlCommand(CreateLogsDbContext(serverType), command, new object[0])
+                         select result;
 
-            return true;
+            return status.All(x => x);
+        }
+
+        /// <summary>
+        /// Führt einen SQL Befehl aus mit Hilfe des angegebenen DB Contexts
+        /// Fehler werden direkt an ELMAH weitergeleitet
+        /// </summary>
+        /// <param name="multiDbPlatformContext">Geladener DB Context</param>
+        /// <param name="sql">SQL Befehl</param>
+        /// <param name="parameters">Parameter</param>
+        /// <returns>Ist der Befehl erfolgreich ausgeführt werden, Anzahl der AffectedRows wird nicht berücksichtigt</returns>
+        private static bool ExecuteSqlCommand(MultiDbPlatformContext multiDbPlatformContext, string sql, params object[] parameters)
+        {
+            try
+            {
+                multiDbPlatformContext.Database.ExecuteSqlCommand(sql, parameters);
+                return true;
+            }
+            catch (Exception e)
+            {
+                var elmahLogger = new ElmahLogger();
+                var elmahError = new Error(e);
+                elmahLogger.Log("LogMaintainance",
+                    elmahError.HostName,
+                    elmahError.Type,
+                    elmahError.Source,
+                    elmahError.Message,
+                    elmahError.User,
+                    ErrorXml.EncodeString(elmahError),
+                    elmahError.StatusCode,
+                    elmahError.Time
+                    );
+                return false;
+            }
         }
 
         #endregion
