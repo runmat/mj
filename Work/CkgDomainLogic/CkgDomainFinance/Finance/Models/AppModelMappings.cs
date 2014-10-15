@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -149,6 +150,26 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT, Mahnstop> Z_DPM_READ_MAHN_EQSTL_02_GT_OUT_To_Mahnstop
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT, Mahnstop>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                        {
+                            destination.EquiNr = source.EQUNR;
+                            destination.MaterialNr = source.MATNR;
+                            destination.PAID = source.CHASSIS_NUM;
+                            destination.Kontonummer = source.KONTONR;
+                            destination.Dokument = source.MAKTX;
+                            destination.Mahnsperre = source.MAHNSP_GES_AM.HasValue;
+                            destination.MahnstopBis = source.MAHNDATUM_AB;
+                            destination.Bemerkung = source.BEM;
+                        }));
+            }
+        }
+
         #endregion
 
 
@@ -226,6 +247,30 @@ namespace CkgDomainLogic.Finance.Models
                         {
                             destination.EQUNR = source.Equipmentnummer;
                             destination.LIZNR = source.PAID;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_MAHN_EQSTL_01.GT_IN, Mahnstop> Z_DPM_SAVE_MAHN_EQSTL_01_GT_IN_From_Mahnstop
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_MAHN_EQSTL_01.GT_IN, Mahnstop>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                        {
+                            destination.EQUNR = source.EquiNr;
+                            destination.CHASSIS_NUM = source.PAID;
+                            destination.MATNR = source.MaterialNr;
+                            destination.MAHNSP_SETZEN = (source.Mahnsperre ? "X" : "");
+                            destination.MAHNSP_ENTF = (source.Mahnsperre ? "" : "X");
+                            destination.MAHNDATUM_AB = source.MahnstopBis;
+                            destination.MAHNDATUM_AB_ENTF = (source.MahnstopBis.HasValue ? "" : "X");
+                            destination.BEM = source.Bemerkung;
+                            destination.BEM_ENTF = (String.IsNullOrEmpty(source.Bemerkung) ? "X" : "");
+                            destination.CIN = source.CIN;
+                            destination.KONTONR = source.Kontonummer;
                         }));
             }
         }

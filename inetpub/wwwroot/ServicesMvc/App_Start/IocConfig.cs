@@ -131,6 +131,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<HalterabweichungenDataServiceSAP>().As<IHalterabweichungenDataService>().InstancePerHttpRequest();
             builder.RegisterType<DokumenteOhneDatenDataServiceSAP>().As<IDokumenteOhneDatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceMahnstufenDataServiceSAP>().As<IFinanceMahnstufenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceMahnstopDataServiceSAP>().As<IFinanceMahnstopDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
             builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();

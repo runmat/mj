@@ -3879,6 +3879,10 @@
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenSuche.cshtml" />
     <Content Include="Views\Finance\Mahnstufen.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\MahnstopGrid.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\MahnstopSuche.cshtml" />
+    <Content Include="Views\Finance\Mahnstop.cshtml" />
+    <Content Include="Views\Finance\Mahnstop\Partial\MahnstopEditForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
