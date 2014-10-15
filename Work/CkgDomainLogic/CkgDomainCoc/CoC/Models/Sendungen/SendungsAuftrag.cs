@@ -22,6 +22,9 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? ZulassungsDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.ShippingDate)]
+        public DateTime? VersandDatum { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ShippingID)]
         public string VersandID { get; set; }
 

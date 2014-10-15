@@ -443,7 +443,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.FIN = s.ZZFAHRG;
                         d.Kennzeichen = s.ZZKENN;
                         d.RechnungsNr = s.VBELN;
-                        d.ZulassungsDatum = s.VDATU;
+                        d.VersandDatum = s.VDATU;
                         d.VersandID = s.ZZSEND2;
                         d.VertragsNr = s.ZZREFNR;
                     }));
@@ -462,7 +462,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.Fahrzeugbrief = s.ZZBRIEF;
                         d.Kennzeichen = s.ZZKENN;
                         d.RechnungsNr = s.VBELN;
-                        d.ZulassungsDatum = s.ZZLSDAT;
+                        d.VersandDatum = s.ZZLSDAT;
                         d.VersandID = s.ZZTRACK;
                         d.VertragsNr = s.ZZREFNR;
                         d.Referenz = s.POOLNR;
