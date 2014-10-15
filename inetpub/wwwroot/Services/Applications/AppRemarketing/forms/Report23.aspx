@@ -186,16 +186,14 @@
                                                         <HeaderStyle Width="80px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("HALTED").ToString()) %>'>
-                                                            </asp:Label>
+                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("HALTED").ToString()) %>' />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn DataField="AKT_HALTED" SortExpression="AKT_HALTED" GroupByExpression="AKT_HALTED GROUP BY AKT_HALTED" >
                                                         <HeaderStyle Width="120px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("AKT_HALTED").ToString()) %>'>
-                                                            </asp:Label>
+                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("AKT_HALTED").ToString()) %>' />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="RUEDAT" SortExpression="RUEDAT" DataFormatString="{0:d}" >
@@ -205,8 +203,7 @@
                                                         <HeaderStyle Width="85px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("TAGE_UEBERF").ToString()) %>'>
-                                                            </asp:Label>
+                                                            <asp:Label runat="server" Text='<%# Int32.Parse(Eval("TAGE_UEBERF").ToString()) %>' />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="EREIGNIS" SortExpression="EREIGNIS" >
@@ -215,6 +212,9 @@
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="VERTRAGSJAHR" SortExpression="VERTRAGSJAHR" >
                                                         <HeaderStyle Width="80px" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MIETFZG" SortExpression="MIETFZG" >
+                                                        <HeaderStyle Width="100px" />
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
