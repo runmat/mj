@@ -444,6 +444,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.Kennzeichen = s.ZZKENN;
                         d.RechnungsNr = s.VBELN;
                         d.VersandDatum = s.VDATU;
+                        d.ZulassungsDatum = s.VDATU;
                         d.VersandID = s.ZZSEND2;
                         d.VertragsNr = s.ZZREFNR;
                     }));

@@ -16,7 +16,7 @@ namespace ServicesMvc.Controllers
     public partial class CocSendungController 
     {
         [CkgApplication]
-        public ActionResult VerfolgungMulti()
+        public ActionResult MultiVerfolgung()
         {
             ViewModel.DataMarkForRefreshMulti();
 
