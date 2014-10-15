@@ -19,12 +19,18 @@ namespace CkgDomainLogic.Equi.Contracts
         #endregion
 
 
-
         #region VersandBeauftragungen
 
         List<Fahrzeugbrief> GetVersandBeauftragungen(VersandBeauftragungSelektor model);
 
         string DeleteVersandBeauftragungen(string fin);
+
+        #endregion
+
+
+        #region ZBII Ein- und Ausgaenge
+
+        List<Fahrzeugbrief> GetEinAusgaenge(EinAusgangSelektor model);
 
         #endregion
     }

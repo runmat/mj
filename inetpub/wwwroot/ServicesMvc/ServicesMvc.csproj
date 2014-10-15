@@ -3876,6 +3876,9 @@
     <Content Include="Views\Equip\VersandBeauftragungen.cshtml" />
     <Content Include="Views\Equip\VersandBeauftragungen\Grid.cshtml" />
     <Content Include="Views\Equip\VersandBeauftragungen\Suche.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge\Grid.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

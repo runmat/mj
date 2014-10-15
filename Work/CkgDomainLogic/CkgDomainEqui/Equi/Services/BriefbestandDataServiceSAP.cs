@@ -84,7 +84,7 @@ namespace CkgDomainLogic.Equi.Services
 
             if (model.FilterVersandBeauftragungsTyp == "OnlyZBII")
                 briefe = briefe.Where(brief => brief.BriefVersand);
-            
+
             if (model.FilterVersandBeauftragungsTyp == "OnlyKeys")
                 briefe = briefe.Where(brief => brief.SchluesselVersand);
 
@@ -94,18 +94,18 @@ namespace CkgDomainLogic.Equi.Services
         private IEnumerable<Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB> GetSapVersandBeauftragungen(VersandBeauftragungSelektor model)
         {
             Z_M_VERSAUFTR_FEHLERHAFTE.Init(SAP);
-            
+
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
             if (model.FilterAuchNeue)
                 SAP.SetImportParameter("I_BEAUFTR", "X");
-            
+
             if (model.FilterVersandVorbereitungDAD)
                 SAP.SetImportParameter("FLAG_VERS", "X");
-            
+
             if (model.FilterFreigabeTreugeberOffen)
                 SAP.SetImportParameter("FLAG_VERS_SPERR", "X");
-            
+
             SAP.Execute();
 
             return Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB.GetExportList(SAP);
@@ -141,7 +141,40 @@ namespace CkgDomainLogic.Equi.Services
 
             return error;
         }
-    }
 
-    #endregion
+        #endregion
+
+
+        #region ZBII Ein- und Ausgaenge
+
+        public List<Fahrzeugbrief> GetEinAusgaenge(EinAusgangSelektor model)
+        {
+            return AppModelMappings.Z_DAD_DATEN_EINAUS_REPORT_002_EINNEU_To_Fahrzeugbrief.Copy(GetSapEinAusgaenge(model)).ToList();
+        }
+
+        private IEnumerable<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU> GetSapEinAusgaenge(EinAusgangSelektor model)
+        {
+            Z_DAD_DATEN_EINAUS_REPORT_002.Init(SAP);
+
+            SAP.SetImportParameter("KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.SetImportParameter("ACTION", model.FilterEinAusgangsTyp == "Inputs" ? "NEU" : "AUS");
+
+            SAP.SetImportParameter("ABCKZ", "A");
+            if (model.FilterEinAusgangsTyp == "Outputs")
+                SAP.SetImportParameter("ABCKZ", model.FilterAusgangsTyp == "Final" ? "2" : model.FilterAusgangsTyp == "Temporary" ? "1" : "A");
+
+            if (model.DatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("DATANF", model.DatumRange.StartDate);
+                SAP.SetImportParameter("DATEND", model.DatumRange.EndDate);
+            }
+
+            SAP.Execute();
+
+            return Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU.GetExportList(SAP);
+        }
+
+        #endregion
+    }
 }

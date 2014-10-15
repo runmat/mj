@@ -414,6 +414,20 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        static public ModelMapping<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU, Fahrzeugbrief> Z_DAD_DATEN_EINAUS_REPORT_002_EINNEU_To_Fahrzeugbrief
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU, Fahrzeugbrief>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                    }));
+            }
+        }
+
         #endregion
 
 

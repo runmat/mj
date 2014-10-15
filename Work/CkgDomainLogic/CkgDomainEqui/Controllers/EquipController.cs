@@ -17,6 +17,7 @@ namespace ServicesMvc.Controllers
         {
             InitViewModel(VersandAbweichungenViewModel, appSettings, logonContext, abweichungenDataService);
             InitViewModel(VersandBeauftragungenViewModel, appSettings, logonContext, briefbestandDataService);
+            InitViewModel(EinAusgaengeViewModel, appSettings, logonContext, briefbestandDataService);
         }
 
 
@@ -27,7 +28,13 @@ namespace ServicesMvc.Controllers
             if (MainViewModel is VersandBeauftragungenViewModel)
                 return VersandBeauftragungenViewModel.VersandBeauftragungenFiltered;
 
-            return VersandAbweichungenViewModel.VersandAbweichungenFiltered;
+            if (MainViewModel is EinAusgaengeViewModel)
+                return EinAusgaengeViewModel.EinAusgaengeFiltered;
+
+            if (MainViewModel is VersandAbweichungenViewModel)
+                return VersandAbweichungenViewModel.VersandAbweichungenFiltered;
+
+            return null;
         }
 
         #endregion   
