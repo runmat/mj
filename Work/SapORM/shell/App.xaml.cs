@@ -213,10 +213,23 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
-            //new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
-            //new FunctionReflector("Z_DPM_READ_SENDTAB_03").WriteOrmForExportTableStructures("I_AG", "0010010753");
+            //Mahnsperre
+            //new FunctionReflector("Z_DPM_READ_TEMP_VERS_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_EQTYP, I_CHASSIS_NUM", "10026883", "B", "11111111111111111");
+            //new FunctionReflector("Z_DPM_CHANGE_MAHNSP_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_QMNAM", "10026883", "CARLM");
 
-            
+            new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
+            //new FunctionReflector("Z_DPM_READ_ADRESSPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10062897");
+
+            //new FunctionReflector("Z_DPM_READ_STL_MAHNUNGEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+
+            //Mahnstop setzen
+            //new FunctionReflector("Z_DPM_READ_MAHN_EQSTL_02").WriteOrmForExportTableStructures("I_AG", "10026883");
+            //new FunctionReflector("Z_DPM_SAVE_MAHN_EQSTL_01").WriteOrmForExportTableStructures("I_AG, I_USER", "10026883", "carltvolks2");
+
+            //Webbearbeitung Prüfschritte
+            //new FunctionReflector("Z_DPM_READ_PRUEFPUNKTE_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+            //new FunctionReflector("Z_DPM_READ_PRUEFSCHRITTE_03").WriteOrmForExportTableStructures("I_KUNNR_AG, I_PAID", "10026883", "0000000000000000");
+            //new FunctionReflector("Z_DPM_SAVE_ERL_PRUEFSCHR_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
 
             //CoCTest();
             //TeslaTest();
@@ -293,8 +306,6 @@ namespace SapORM
             //CsiTest();
 
             //TargoTest3();
-
-            TeslaSendungsVerfolgungTest2();
 
             Shutdown();
         }
@@ -1368,35 +1379,6 @@ namespace SapORM
 
             var listCount = list.Count;
         }
-
-        static readonly string KunnrTesla = "0010010753";
-
-        static void TeslaSendungsVerfolgungTest()
-        {
-            Z_DPM_GET_ZZSEND2.Init(Sap);
-
-            Sap.SetImportParameter("KUNNR_AG", KunnrTesla.ToSapKunnr());
-            Sap.SetImportParameter("ERDAT_VON", DateTime.Today.AddDays(-30));
-            Sap.SetImportParameter("ERDAT_BIS", DateTime.Today.AddDays(-1));
-
-            var list = Z_DPM_GET_ZZSEND2.GT_WEB.GetExportListWithExecute(Sap);
-
-            var listCount = list.Count;
-        }
-
-        static void TeslaSendungsVerfolgungTest2()
-        {
-            Z_DPM_READ_SENDTAB_03.Init(Sap);
-
-            Sap.SetImportParameter("I_AG", KunnrTesla.ToSapKunnr());
-            //Sap.SetImportParameter("I_ZZLSDAT_VON", DateTime.Today.AddDays(-120));
-            //Sap.SetImportParameter("I_ZZLSDAT_BIS", DateTime.Today.AddDays(30));
-
-            var list = Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportListWithExecute(Sap);
-
-            var listCount = list.Count;
-        }
-        
 
         #region Chart Table Export
 

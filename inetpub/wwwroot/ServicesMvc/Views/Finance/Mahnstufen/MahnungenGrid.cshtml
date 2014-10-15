@@ -1,0 +1,45 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceMahnstufenViewModel 
+
+@{ var gridName = "GridMahnungen"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseMahnungenSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Mahnung>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("MahnungenAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Materialtext);
+        columns.XBound(c => c.Mahnstufe);
+        columns.XBound(c => c.LetzteMahnungAm).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.NaechsteMahnungAm).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Mahnsperre);
+        columns.XBound(c => c.MahnsperreBis).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Name1);
+        columns.XBound(c => c.Name2);
+        columns.XBound(c => c.Strasse);
+        columns.XBound(c => c.Hausnummer);
+        columns.XBound(c => c.Postleitzahl);
+        columns.XBound(c => c.Ort);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnungen"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kontonummer).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportMahnungenFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportMahnungenFilteredPDF", "Finance");
+    })
+)
