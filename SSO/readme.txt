@@ -47,3 +47,4 @@ Ansichtsseiten.
 
 Denkbar wären auch zeitlich begrenzte Anwendungen, mit mehreren Menüpunkten.
 Diese werden dem User über einen Link - mit einem Schlüssel im Suffix - zur Verfügung gestellt.
+
