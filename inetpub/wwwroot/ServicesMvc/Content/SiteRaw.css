@@ -37,6 +37,9 @@ input.m-wrap,select.m-wrap {
 input.m-wrap {
     height: 11px!important;
 }
+input[type="checkbox"].m-wrap {
+    height: 19px!important;
+}
 select.m-wrap {
     height: 26px!important;
 }

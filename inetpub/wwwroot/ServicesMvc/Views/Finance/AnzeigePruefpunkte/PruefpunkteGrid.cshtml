@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceAnzeigePruefpunkteViewModel 
+
+@{ var gridName = "GridPruefpunkte"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="ClosePruefpunkteSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Pruefpunkt>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("PruefpunkteAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Aktionsname);
+        columns.XBound(c => c.PruefpunktText);
+        columns.XBound(c => c.Ergebnis);
+        columns.XBound(c => c.Pruefdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Bemerkung);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridPruefpunkte"))
+    .XPageSize(10)
+    .Sortable(s => s.Enabled(true))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportPruefpunkteFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportPruefpunkteFilteredPDF", "Finance");
+    })
+)
