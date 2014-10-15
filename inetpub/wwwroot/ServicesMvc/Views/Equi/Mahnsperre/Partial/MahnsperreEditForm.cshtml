@@ -1,0 +1,40 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model MahnsperreEdit
+
+<div id="DivMahnsperreEdit" class="margin-top-20">
+    @using (Ajax.BeginForm("MahnsperreEditForm", "Equi", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivMahnsperreEdit", OnComplete = "AjaxFormMahnsperreEditComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "MahnsperreEditAjaxForm" }))
+    {
+        @Html.HiddenFor(m => m.Modus)
+        @Html.HiddenFor(m => m.Mahnsperre)
+
+        <h4 class="margin-bottom-25">
+            @if (Model.Modus == MahnsperreEditMode.Create)
+            {
+                @Localize.DunningBlockCreate
+            }
+            else
+            {
+                @Localize.DunningBlockEdit
+            }
+        </h4>
+
+        @Html.FormValidationSummary()
+
+        //<div class="margin-left-50">
+            @Html.FormDatePickerFor(m => m.MahnsperreBis, new { @class = "m-wrap small margin-left-50" })
+        //</div>
+
+        <div class="space20"></div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormMahnsperreEditClose();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = '@Model.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>

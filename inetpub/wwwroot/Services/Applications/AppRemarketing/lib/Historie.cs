@@ -44,15 +44,12 @@ namespace AppRemarketing.lib
 
         #endregion
 
-
-
         public Historie(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         {
 
 
         }
-
 
         public void GetHistData(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
@@ -77,10 +74,7 @@ namespace AppRemarketing.lib
                 Versand = myProxy.getExportTable("GT_VERS");
                 var lebb = myProxy.getExportTable("GT_LEB_B");
                 var lebt = myProxy.getExportTable("GT_LEB_T");
-                var qmma = myProxy.getExportTable("GT_QMMA_B");
-                var qmel = myProxy.getExportTable("GT_QMEL_B");
                 var addr = myProxy.getExportTable("GT_ADDR_B");
-                var equi = myProxy.getExportTable("GT_EQUI_B");
                 var belas = myProxy.getExportTable("GT_BELAS");
                 var rechng = myProxy.getExportTable("GT_RECHNG");
                 var schaden = myProxy.getExportTable("GT_SCHADEN");
@@ -110,7 +104,7 @@ namespace AppRemarketing.lib
                         rechngRow!=null?rechngRow["RENNR"].ToString():string.Empty,
                         belas.Rows.Count>0);
 
-                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult, false);
+                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
             catch (Exception ex)
             {
@@ -126,25 +120,7 @@ namespace AppRemarketing.lib
 
                         break;
                 }
-
-
             }
-
         }
-
-        //private void DumpTable(DataTable table)
-        //{
-        //    if (table == null) { System.Diagnostics.Trace.WriteLine("table==null"); return; }
-        //    if (!string.IsNullOrEmpty(table.TableName))
-        //        System.Diagnostics.Trace.WriteLine(table.TableName);
-        //    else
-        //        System.Diagnostics.Trace.WriteLine("table - no name");
-        //    var columNames = table.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray();
-        //    System.Diagnostics.Trace.WriteLine(string.Join(";", columNames));
-        //    foreach (DataRow row in table.Rows)
-        //    {
-        //        System.Diagnostics.Trace.WriteLine(string.Join(";", columNames.Select(n => row[n].ToString()).ToArray()));
-        //    }
-        //}
     }
 }

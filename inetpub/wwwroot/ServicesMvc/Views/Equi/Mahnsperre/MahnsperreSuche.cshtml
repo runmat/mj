@@ -1,0 +1,49 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model MahnsperreSuchparameter
+
+<div id="divMahnsperreSuche">
+    @using (Ajax.BeginForm("LoadMahnsperreEquis", "Equi", null,
+        new MvcAjaxOptions("divMahnsperreSuche") { OnComplete = "ShowMahnsperreEquis();" }, new { id = "MahnsperreEquisForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+            
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap uppercase" })
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowMahnsperreEquis() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowMahnsperreEquis",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowMahnsperreSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>
