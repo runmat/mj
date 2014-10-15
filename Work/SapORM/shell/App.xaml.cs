@@ -213,6 +213,11 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
+            //Mahnsperre
+            //new FunctionReflector("Z_DPM_READ_TEMP_VERS_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_EQTYP, I_CHASSIS_NUM", "10026883", "B", "11111111111111111");
+            //new FunctionReflector("Z_DPM_CHANGE_MAHNSP_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_QMNAM", "10026883", "CARLM");
+
+            new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
             //new FunctionReflector("Z_DPM_READ_ADRESSPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10062897");
 
             //new FunctionReflector("Z_DPM_READ_STL_MAHNUNGEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
