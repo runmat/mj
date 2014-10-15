@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceMahnstopViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridMahnstops"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseMahnstopsSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Mahnstop>()
+    .Name(gridName)
+    .XGroup("GridMahnstops")
+    .XAjaxDataBinding("MahnstopsAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.PAID).Width(100).Title("").Filterable(false).Sortable(false).Visible(Model.EditMode)
+            .ClientTemplate(
+                "<button onclick='EditMahnstop(\"<#= data.PAID #>\",\"<#= data.EquiNr #>\",\"<#= data.MaterialNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+            )
+        ;
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.EquiNr).Visible(false);
+        columns.XBound(c => c.MaterialNr).Visible(false);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.Dokument);
+        columns.XBound(c => c.Mahnsperre);
+        columns.XBound(c => c.MahnstopBis).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Bemerkung);
+        columns.XBound(c => c.IsEdited).Visible(false);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnstops"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.PAID).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportMahnstopsFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportMahnstopsFilteredPDF", "Finance");
+    })
+)
+
+<div class="form-horizontal">
+    <div class="form-actions">
+        <button type="button" class="btn green @(@Model.EditMode ? "" : "hide") " onclick="SaveMahnstops();">@Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>
+

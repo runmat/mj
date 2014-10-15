@@ -102,6 +102,22 @@
                                 <td><%# string.Format("{0:####}", Uebersicht.Vertragsjahr) %>&nbsp;</td>
                             </tr>
                             <tr>
+                                <td class="First">Datum Vertragswidrigkeit</td>
+                                <td><%# string.Format("{0:dd.MM.yyyy}", Uebersicht.VertragswidrigkeitDate) %>&nbsp;</td>
+                                <td class="First">Art Vertragswidrigkeit</td>
+                                <td><%# Uebersicht.VertragswidrigkeitArt %>&nbsp;</td>
+                                <td class="First">TÜV Rückmeldung</td>
+                                <td><%# string.Format("{0:dd.MM.yyyy}", Uebersicht.TuevRueckmeldung) %>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="First">Mietfahrzeug Abrechnungsdatum</td>
+                                <td><%# string.Format("{0:dd.MM.yyyy}", Uebersicht.MietfzgAbrechnungsdatum) %>&nbsp;</td>
+                                <td class="First">Mietfahrzeug Rückkaufrechnung erstellt</td>
+                                <td><%# string.Format("{0:dd.MM.yyyy}", Uebersicht.MietfzgRueckkaufrechnung) %>&nbsp;</td>
+                                <td class="First">TÜV manuell beauftragt</td>
+                                <td><%# string.Format("{0:dd.MM.yyyy}", Uebersicht.TuevManuellBeauftragt) %>&nbsp;</td>
+                            </tr>
+                            <tr>
                                 <td colspan="6" style="background-color: #9C9C9C">
                                     <asp:Label Font-Bold="True" ForeColor="White" ID="Label24" 
                                         runat="server">Belastungsanzeige</asp:Label>
@@ -109,27 +125,43 @@
                             </tr>
                             <tr>
                                 <td class="First">Laufende Nr.</td>
-                                <td ><%# Belastungsanzeige!=null?Belastungsanzeige.LfdNo:"&nbsp;" %></td>
+                                <td><%# Belastungsanzeige!=null?Belastungsanzeige.LfdNo:"&nbsp;" %></td>
                                 <td class="First">Erstellungsdatum</td>
-                                <td ><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.Date) : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.Date) : "&nbsp;"%></td>
                                 <td  class="First">Summe</td>
-                                <td ><%# Belastungsanzeige != null ? string.Format("{0:c}", Belastungsanzeige.Sum) : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? string.Format("{0:c}", Belastungsanzeige.Sum) : "&nbsp;"%></td>
                             </tr>
                             <tr>
                                 <td class="First">Gutachter</td>
-                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.Gutachter : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? Belastungsanzeige.Gutachter : "&nbsp;"%></td>
                                 <td class="First">Gutachten-ID</td>
-                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.GutachtenId : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? Belastungsanzeige.GutachtenId : "&nbsp;"%></td>
                                 <td  class="First">KM-Stand</td>
-                                <td ><%# Belastungsanzeige != null ? string.Format("{0:#,###}", Belastungsanzeige.KM) : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? string.Format("{0:#,###}", Belastungsanzeige.KM) : "&nbsp;"%></td>
                             </tr>
                             <tr>
                                 <td class="First">Status Belastungsanzeige</td>
-                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.Status : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? Belastungsanzeige.Status : "&nbsp;"%></td>
                                 <td class="First">Schadenrechnungsnr.</td>
-                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.SchadRechNo : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? Belastungsanzeige.SchadRechNo : "&nbsp;"%></td>
                                 <td  class="First">Datum Schadenrg.</td>
-                                <td ><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.SchadRechDate) : "&nbsp;"%></td>
+                                <td><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.SchadRechDate) : "&nbsp;"%></td>
+                            </tr>
+                            <tr>
+                                <td class="First">Widerspruch-Text</td>
+                                <td><%# Belastungsanzeige != null ? Belastungsanzeige.WiderspruchText : "&nbsp;"%></td>
+                                <td class="First">Widerspruch-Datum</td>
+                                <td><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.WiderspruchDate) : "&nbsp;"%></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="First">Blockade-Text</td>
+                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.BlockadeText : "&nbsp;"%></td>
+                                <td class="First">Blockade-Datum</td>
+                                <td ><%# Belastungsanzeige != null ? string.Format("{0:dd.MM.yyyy}", Belastungsanzeige.BlockadeDate) : "&nbsp;"%></td>
+                                <td  class="First">Blockade-User</td>
+                                <td ><%# Belastungsanzeige != null ? Belastungsanzeige.BlockadeUser : "&nbsp;"%></td>
                             </tr>
                              <tr>
                                 <td colspan="6" style="background-color: #9C9C9C">

@@ -84,7 +84,8 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public List<Fahrzeugbrief> Fahrzeuge { get { return FahrzeugeMergedWithCsvUpload ?? BriefbestandDataService.FahrzeugbriefeZumVersand; } }
 
-        public List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; private set; }
+        [XmlIgnore]
+        private List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; set; }
 
         [XmlIgnore]
         public List<Fahrzeugbrief> FahrzeugeFiltered

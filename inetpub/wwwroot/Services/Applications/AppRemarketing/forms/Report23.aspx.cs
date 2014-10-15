@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
 
 namespace AppRemarketing.forms
 {
-    public partial class Report23 : System.Web.UI.Page
+    public partial class Report23 : Page
     {
         private User m_User;
         private App m_App;
@@ -50,6 +46,11 @@ namespace AppRemarketing.forms
 
                 m_Report = Session["UeberfHaltedauer"] as UeberfHaltedauer ?? new UeberfHaltedauer();
                 Session["UeberfHaltedauer"] = m_Report;
+
+                if (IsAV())
+                {
+                    tr_Vermieter.Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -57,12 +58,20 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private bool IsAV()
+        {
+            if (m_User.Groups[0].GroupName.Substring(0, 2) == "AV")
+                return true;
+
+            return false;
+        }
+
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -82,9 +91,24 @@ namespace AppRemarketing.forms
                 return;
             }
 
+            var avnr = "";
+            if (IsAV())
+            {
+                avnr = m_User.Groups[0].GroupName;
+            }
+            else if (m_User.Groups[0].GroupName.Substring(0, 2) == "VW")
+            {
+                avnr = ddlVermieter.SelectedValue;
+            }
+            if (String.IsNullOrEmpty(avnr))
+            {
+                lblError.Text = "Gruppe nicht eindeutig!";
+                return;
+            }
+
             try
             {
-                m_Report.Search(m_User, m_App, this, txtFin.Text, txtKennzeichen.Text, txtInventarnr.Text, ddlVermieter.SelectedValue, von.Value, bis.Value);
+                m_Report.Search(m_User, m_App, this, txtFin.Text, txtKennzeichen.Text, txtInventarnr.Text, avnr, von.Value, bis.Value);
             }
             catch (Exception ex)
             {
@@ -164,10 +188,10 @@ namespace AppRemarketing.forms
 
                 var rbutton_parent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
                 rbutton_parent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
                 rbutton_parent.Controls.AddAt(1, resetLayoutButton);
             }
         }
