@@ -201,17 +201,6 @@
                                                                 ToolTip="Rechnung stornieren" CommandArgument='<%# Eval("RENNR") %>' />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
-                                                    <telerik:GridTemplateColumn Groupable="false" UniqueName="Bearbeiten" >
-                                                        <HeaderStyle Width="15px" />
-                                                        <ItemTemplate>
-                                                            <asp:ImageButton ID="ibtnEdit" runat="server" Visible='<%# (Eval("STATUS")).ToString()== "Rechnung" %>'
-                                                                CommandName="Info" ImageUrl="/services/images/info.gif"
-                                                                ToolTip="Belastungsanzeigen anzeigen." CommandArgument='<%# Eval("RENNR") %>' />
-                                                            <asp:ImageButton ID="ibtBemerkung" runat="server" Visible='<%# (Eval("STATUS")).ToString()!= "Rechnung" %>'
-                                                                CommandName="Bemerkung" ImageUrl="/services/images/comment.png"
-                                                                ToolTip="Bemerkungstext anzeigen." CommandArgument='<%# Eval("RENNR") %>' />
-                                                        </ItemTemplate>
-                                                    </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="NAME1" SortExpression="NAME1" >
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />
@@ -249,94 +238,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div style="width: 100%; max-width: 909px">        
-                                        <telerik:RadGrid ID="rgGrid2" Visible="false" runat="server" PageSize="15" AllowSorting="True" 
-                                            AutoGenerateColumns="False" GridLines="None" Culture="de-DE" EnableHeaderContextMenu="true" 
-                                            OnExcelMLExportRowCreated="rgGrid2_ExcelMLExportRowCreated" 
-                                            OnExcelMLExportStylesCreated="rgGrid_ExcelMLExportStylesCreated" 
-                                            OnItemCommand="rgGrid2_ItemCommand" OnItemCreated="rgGrid_ItemCreated" 
-                                            OnNeedDataSource="rgGrid2_NeedDataSource" ShowGroupPanel="True" >
-                                            <ExportSettings HideStructureColumns="true" >
-                                                <Excel Format="ExcelML" />
-                                            </ExportSettings>
-                                            <ClientSettings AllowColumnsReorder="true" AllowKeyboardNavigation="true" AllowDragToGroup="true">
-                                                <Scrolling ScrollHeight="480px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="2" />
-                                                <Resizing AllowColumnResize="True" ClipCellContentOnResize="False" />
-                                            </ClientSettings>
-                                            <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="true" 
-                                                CommandItemDisplay="Top"  >
-                                                <PagerStyle Mode="NextPrevAndNumeric" ></PagerStyle>
-                                                <CommandItemSettings ShowExportToExcelButton="true" ShowAddNewRecordButton="false"
-                                                    ExportToExcelText="Excel herunterladen">
-                                                </CommandItemSettings>
-                                                <SortExpressions>
-                                                    <telerik:GridSortExpression FieldName="FIN" SortOrder="Ascending" />
-                                                </SortExpressions>
-                                                <HeaderStyle ForeColor="White" />
-                                                <Columns>
-                                                    <telerik:GridBoundColumn DataField="REDAT" SortExpression="REDAT" DataFormatString="{0:d}" >
-                                                        <HeaderStyle Width="105px" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="FIN" SortExpression="FIN" >
-                                                        <HeaderStyle Width="140px" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="KENNZEICHEN" SortExpression="KENNZEICHEN" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle Wrap="false" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="KMSTAND" SortExpression="KMSTAND" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="KMWRT" SortExpression="KMWRT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="OPWRT" SortExpression="OPWRT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="FBOPT" SortExpression="FBOPT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="FLWRT" SortExpression="FLWRT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="RPWRT" SortExpression="RPWRT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="UWWRT" SortExpression="UWWRT" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="MAEWERT_AV" SortExpression="MAEWERT_AV" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="MINWERT_AV" SortExpression="MINWERT_AV" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="SUMME" SortExpression="SUMME" DataFormatString="{0:c}" >
-                                                        <HeaderStyle Width="85px" />
-                                                        <ItemStyle HorizontalAlign="Right" />
-                                                    </telerik:GridBoundColumn>
-                                                </Columns>
-                                            </MasterTableView>
-                                        </telerik:RadGrid>
-                                    </div>
-                                </td>
-                            </tr>
                         </table>
-                    </div>
-                    <div style="float: right; width: 100%; text-align: right; padding-top: 15px">
-                        <asp:LinkButton ID="lbtnBack" runat="server" CssClass="Tablebutton" Width="78px"
-                            OnClick="lbtnBack_Click" Visible="false">» Zurück </asp:LinkButton>
                     </div>
                     <div id="dataFooter">
                         <asp:Literal id="Literal1" runat="server"></asp:Literal>
@@ -345,41 +247,6 @@
                 <div>
                     <asp:Button ID="btnFake" runat="server" Text="Fake" Style="display: none" />
                     <asp:Button ID="Button1" runat="server" Text="BUTTON" OnClick="Button1_Click" Visible="False" />
-                    <cc1:ModalPopupExtender ID="mpeBemerkung" runat="server" TargetControlID="btnFake"
-                        PopupControlID="mbBemerkung" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancelBemerkung"
-                        X="450" Y="200">
-                    </cc1:ModalPopupExtender>
-                    <asp:Panel ID="mbBemerkung" runat="server" Width="500px" Height="180px" BackColor="#F4F7FC" style="display:none">
-                        <div style="padding-left: 110px; padding-bottom: 5px; padding-top: 7px; background-color: #64759E;
-                            height: 17px;">
-                            <asp:Label ID="lblAdressMessage" runat="server" Text="Bemerkungstext "
-                                Font-Bold="True" ForeColor="white"></asp:Label>
-                        </div>
-                        <div style="padding-left: 10px; padding-top: 15px; margin-bottom: 10px; padding-bottom: 10px;height:70px">
-                            <table>
-                                <tbody>
-                                    
-                                    <tr>
-                                        <td style="color: #4C4C4C; font-weight: bold; width: 90px">
-                                            Bemerkung:
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="lblBemerkung" runat="server"></asp:Label>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <table width="100%" style="text-align: center">
-                            <tr>
-                                <td align="center">
-                                    <asp:Button ID="btnCancelBemerkung" runat="server" Text="OK" CssClass="TablebuttonLarge"
-                                        Font-Bold="true" Width="90px" Height="25px" Style="vertical-align: middle" />
-                                </td>
-                            </tr>
-                        </table>
-                    </asp:Panel>
-                    <asp:Button ID="Button2" runat="server" Text="BUTTON" OnClick="Button2_Click" Visible="False" />
                     <cc1:ModalPopupExtender ID="mpeStorno" runat="server" TargetControlID="btnFake"
                         PopupControlID="mbStorno" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancelStorno"
                         X="450" Y="200">

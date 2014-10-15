@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinancePruefschritteViewModel 
+
+@{ var gridName = "GridPruefschritte"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="ClosePruefschritteSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+<div class="form-horizontal">
+    @Html.FormTextBlockFor(m => m.Kontonummer, new { @class = "m-wrap" })
+    @Html.FormTextBlockFor(m => m.PAID, new { @class = "m-wrap" })
+</div>
+
+@(Html.Telerik()
+    .Grid<Pruefschritt>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("PruefschritteAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Aktionsnummer);
+        columns.XBound(c => c.Aktionsname);
+        columns.XBound(c => c.Aktionstext);
+        columns.XBound(c => c.Infotext);
+        columns.XBound(c => c.Erledigt);
+        columns.XBound(c => c.Pruefdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Webuser);
+        columns.Bound("Aktionsnummer").ClientTemplate(
+            "<button onclick='PruefschrittErledigen(\"<#= data.Aktionsnummer #>\", \"<#= data.BucID #>\");' <# if (data.Erledigt) { #> disabled <# } #> class='btn mini gray tooltips' " +
+            "data-original-title='" + Localize.CompleteCheckStep + "' data-placement='left'><i class='halflings-icon white ok'></i></button>"
+        ).Title("").Sortable(false).Filterable(false);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridPruefschritte"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Aktionsnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportPruefschritteFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportPruefschritteFilteredPDF", "Finance");
+    })
+)
