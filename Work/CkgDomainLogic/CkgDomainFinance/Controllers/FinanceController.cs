@@ -18,7 +18,8 @@ namespace ServicesMvc.Controllers
             IFinanceGebuehrenauslageDataService gebuehrenauslageDataService, IFinanceBewertungDataService bewertungDataService, 
             IFinanceVersandsperreDataService versandsperreDataService, IFinanceVersandsperreReportDataService versandsperreReportDataService, 
             IFinanceTelefonieReportDataService telefonieReportDataService, IFinanceMahnstufenDataService mahnstufenDataService, 
-            IFinanceMahnstopDataService mahnstopDataService)
+            IFinanceMahnstopDataService mahnstopDataService, IFinanceAnzeigePruefpunkteDataService anzeigePruefpunkteDataService, 
+            IFinancePruefschritteDataService pruefschritteDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(AktivcheckViewModel, appSettings, logonContext, aktivcheckDataService);
@@ -29,6 +30,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(TelefonieReportViewModel, appSettings, logonContext, telefonieReportDataService);
             InitViewModel(MahnstufenViewModel, appSettings, logonContext, mahnstufenDataService);
             InitViewModel(MahnstopViewModel, appSettings, logonContext, mahnstopDataService);
+            InitViewModel(AnzeigePruefpunkteViewModel, appSettings, logonContext, anzeigePruefpunkteDataService);
+            InitViewModel(PruefschritteViewModel, appSettings, logonContext, pruefschritteDataService);
         }
 
         public ActionResult Index(string un, string appID)

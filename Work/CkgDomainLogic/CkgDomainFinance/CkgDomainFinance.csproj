@@ -65,11 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Aktivcheck\FinanceController.cs" />
+    <Compile Include="Controllers\AnzeigePruefpunkte\FinanceController.cs" />
     <Compile Include="Controllers\Bewertung\FinanceController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\Gebuehrenauslage\FinanceController.cs" />
     <Compile Include="Controllers\Mahnstufen\FinanceController.cs" />
     <Compile Include="Controllers\Mahnstop\FinanceController.cs" />
+    <Compile Include="Controllers\Pruefschritte\FinanceController.cs" />
     <Compile Include="Controllers\TelefonieReport\FinanceController.cs" />
     <Compile Include="Controllers\VersandsperreReport\FinanceController.cs" />
     <Compile Include="Controllers\Versandsperre\FinanceController.cs" />
@@ -81,11 +83,15 @@
     <Compile Include="Finance\Contracts\IFinanceTelefonieReportDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceMahnstufenDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceMahnstopDataService.cs" />
+    <Compile Include="Finance\Contracts\IFinanceAnzeigePruefpunkteDataService.cs" />
+    <Compile Include="Finance\Contracts\IFinancePruefschritteDataService.cs" />
     <Compile Include="Finance\Models\AppModelMappings.cs" />
     <Compile Include="Finance\Models\DataModels\AktivcheckTreffer.cs" />
     <Compile Include="Finance\Models\DataModels\Auftrag.cs" />
     <Compile Include="Finance\Models\DataModels\Mahnung.cs" />
     <Compile Include="Finance\Models\DataModels\Mahnstop.cs" />
+    <Compile Include="Finance\Models\DataModels\Pruefschritt.cs" />
+    <Compile Include="Finance\Models\DataModels\Pruefpunkt.cs" />
     <Compile Include="Finance\Models\DataModels\TelefoniedatenItem.cs" />
     <Compile Include="Finance\Models\DataModels\VorgangVersandsperre.cs" />
     <Compile Include="Finance\Models\DataModels\VorgangBewertung.cs" />
@@ -96,6 +102,8 @@
     <Compile Include="Finance\Models\UIModels\MahnungSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\MahnstopEdit.cs" />
     <Compile Include="Finance\Models\UIModels\MahnstopSuchparameter.cs" />
+    <Compile Include="Finance\Models\UIModels\PruefschrittSuchparameter.cs" />
+    <Compile Include="Finance\Models\UIModels\PruefpunktSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\TelefoniedatenSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\VorgangVersandsperreSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\VorgangSucheErfassungsart.cs" />
@@ -108,6 +116,8 @@
     <Compile Include="Finance\Services\FinanceTelefonieReportDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceMahnstufenDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceMahnstopDataServiceSAP.cs" />
+    <Compile Include="Finance\Services\FinanceAnzeigePruefpunkteDataServiceSAP.cs" />
+    <Compile Include="Finance\Services\FinancePruefschritteDataServiceSAP.cs" />
     <Compile Include="Finance\ViewModels\FinanceAktivcheckViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceGebuehrenauslageViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceBewertungViewModel.cs" />
@@ -116,6 +126,8 @@
     <Compile Include="Finance\ViewModels\FinanceTelefonieReportViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceMahnstufenViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceMahnstopViewModel.cs" />
+    <Compile Include="Finance\ViewModels\FinanceAnzeigePruefpunkteViewModel.cs" />
+    <Compile Include="Finance\ViewModels\FinancePruefschritteViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

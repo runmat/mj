@@ -3878,6 +3878,12 @@
     <Content Include="Views\Uebfuehrg\Partial\AdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Forms\SummaryStepDataEditLink.cshtml" />
     <Content Include="Views\Autohaus\Fahrzeugverwaltung\Fahrzeugakte\Ueberfuehrung.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte\PruefpunkteSuche.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte\PruefpunkteGrid.cshtml" />
+    <Content Include="Views\Finance\AnzeigePruefpunkte.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte\PruefschritteSuche.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte\PruefschritteGrid.cshtml" />
+    <Content Include="Views\Finance\Pruefschritte.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
