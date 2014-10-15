@@ -91,8 +91,33 @@ namespace LogMaintenance.Services
             return status.All(x => x);
         }
 
-        #endregion
+        public static bool CreateElmahShortcutLandingpage(string serverType, string path)
+        {
+            const string html = "<html>\r\n\t<body>\r\n\t\t<table>\r\n{0}\r\n\t\t</table>\r\n\t</body></html>";
+            const string tableRow = "\t\t\t<tr>\r\n\t\t\t\t<td>{0}</td>\r\n\t\t\t\t<td>{1}</td>\r\n\t\t\t\t<td>{2}</td>\r\n\t\t\t</tr>";
+            const string testurl = "<a href=\"/elmahviewer/Test/elmah.axd?app={0}\">Test</a>";
+            const string produrl = "<a href=\"/elmahviewer/Prod/elmah.axd?app={0}\">Prod</a>";
 
+            var logsDbContext = CreateLogsDbContext(serverType);
+            ((IObjectContextAdapter)logsDbContext).ObjectContext.CommandTimeout = 3600;
+            var apps = logsDbContext.Database.SqlQuery<string>("SELECT Distinct application FROM elmah_error");
+
+            var q = (from app in apps
+                     let testlink = string.Format(testurl, System.Net.WebUtility.HtmlEncode(app))
+                     let prodlink = string.Format(produrl, System.Net.WebUtility.HtmlEncode(app))
+                     let row = string.Format(tableRow, app, testlink, prodlink)
+                     select string.Concat(row, Environment.NewLine)).Aggregate(string.Concat);
+
+            var htmlready = string.Format(html, q);
+
+            var pathOfIndexHtml = Path.Combine(path, "Index.html");
+
+            File.WriteAllText(pathOfIndexHtml, htmlready);
+
+            return true;
+        }
+
+        #endregion
 
         #region CopyToLogsDB
 
@@ -164,6 +189,7 @@ namespace LogMaintenance.Services
         {
             var logsConnectionString = string.Format("Logs{0}", serverType);
             var multiDbPlatformContext = new MultiDbPlatformContext(logsConnectionString);
+            ((IObjectContextAdapter)multiDbPlatformContext).ObjectContext.CommandTimeout = 3600;
             return multiDbPlatformContext;
         }
 

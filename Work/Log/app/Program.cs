@@ -44,6 +44,11 @@ namespace LogMaintenance
 
             success = BusinessDataCopyService.DeleteExpiredLogMessages("Prod", pageVisitExpiryDate, sapBapiExpiryDate, bapiDataExpiryDate, elmahExpiryDate);
             if (!success) Environment.Exit(-1);
+
+            var pathToElmahViewer = ConfigurationManager.AppSettings["ElmahViewerInstallationFolder"];
+
+            success = BusinessDataCopyService.CreateElmahShortcutLandingpage("Prod", pathToElmahViewer);
+            if (!success) Environment.Exit(-1);
         }
     }
 }
