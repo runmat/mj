@@ -3424,7 +3424,11 @@ namespace AppZulassungsdienst.lib
                     {
                         myProxy.callBapi();
 
-                        if (!SelSofortabrechnung)
+                        if (SelSofortabrechnung)
+                        {
+                            m_intStatus = -9999; //Status muss <> 0 sein für weitere Verarbeitung
+                        }
+                        else
                         {
                             tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
                             tblBarquittungen = myProxy.getExportTable("GT_BARQ");
