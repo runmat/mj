@@ -45,9 +45,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.VersandBeauftragungSelektor);
         }
 
-        public void LoadVersandBeauftragungen(VersandBeauftragungSelektor model)
+        public void LoadVersandBeauftragungen(VersandBeauftragungSelektor model, Action<string, string> addModelError)
         {
             VersandBeauftragungen = DataService.GetVersandBeauftragungen(model);
+
+            if (VersandBeauftragungen.None())
+                addModelError("", Localize.NoDataFound);
+
             DataMarkForRefresh();
         }
 

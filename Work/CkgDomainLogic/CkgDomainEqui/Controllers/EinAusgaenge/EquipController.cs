@@ -39,7 +39,7 @@ namespace ServicesMvc.Controllers
             EinAusgaengeViewModel.EinAusgangSelektor = model;
 
             if (ModelState.IsValid)
-                EinAusgaengeViewModel.LoadEinAusgaenge(model);
+                EinAusgaengeViewModel.LoadEinAusgaenge(model, ModelState.AddModelError);
 
             return PartialView("EinAusgaenge/Suche", EinAusgaengeViewModel.EinAusgangSelektor);
         }

@@ -62,7 +62,7 @@ namespace ServicesMvc.Controllers
             VersandBeauftragungenViewModel.VersandBeauftragungSelektor = model;
 
             if (ModelState.IsValid)
-                VersandBeauftragungenViewModel.LoadVersandBeauftragungen(model);
+                VersandBeauftragungenViewModel.LoadVersandBeauftragungen(model, ModelState.AddModelError);
 
             return PartialView("VersandBeauftragungen/Suche", VersandBeauftragungenViewModel.VersandBeauftragungSelektor);
         }

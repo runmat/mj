@@ -45,9 +45,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.VersandAbweichungSelektor);
         }
 
-        public void LoadVersandAbweichungen()
+        public void LoadVersandAbweichungen(Action<string, string> addModelError)
         {
             VersandAbweichungen = DataService.VersandAbweichungen;
+
+            if (VersandAbweichungen.None())
+                addModelError("", Localize.NoDataFound);
+
             DataMarkForRefresh();
         }
 
@@ -86,7 +90,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                 return;
             }
 
-            LoadVersandAbweichungen();
+            LoadVersandAbweichungen(addModelError);
             DataMarkForRefresh();
         }
 

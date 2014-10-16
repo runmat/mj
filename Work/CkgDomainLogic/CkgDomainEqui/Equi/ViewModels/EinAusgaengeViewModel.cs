@@ -44,9 +44,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.EinAusgangSelektor);
         }
 
-        public void LoadEinAusgaenge(EinAusgangSelektor model)
+        public void LoadEinAusgaenge(EinAusgangSelektor model, Action<string, string> addModelError)
         {
             EinAusgaenge = DataService.GetEinAusgaenge(model);
+
+            if (EinAusgaenge.None())
+                addModelError("", Localize.NoDataFound);
+
             DataMarkForRefresh();
         }
 

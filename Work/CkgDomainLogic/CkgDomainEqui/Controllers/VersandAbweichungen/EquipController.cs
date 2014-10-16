@@ -42,7 +42,7 @@ namespace ServicesMvc.Controllers
             VersandAbweichungenViewModel.VersandAbweichungSelektor = model;
 
             if (ModelState.IsValid)
-                VersandAbweichungenViewModel.LoadVersandAbweichungen();
+                VersandAbweichungenViewModel.LoadVersandAbweichungen(ModelState.AddModelError);
 
             return PartialView("VersandAbweichungen/Suche", VersandAbweichungenViewModel.VersandAbweichungSelektor);
         }
