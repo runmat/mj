@@ -213,13 +213,23 @@ namespace SapORM
             //Dokumente ohne Daten
             //new FunctionReflector("Z_DPM_DOKUMENT_OHNE_DAT_01").WriteOrmForExportTableStructures("I_AG", "10062897");
 
-            //new FunctionReflector("Z_DPM_ABWEICH_ABRUFGRUND_02").WriteOrmForExportTableStructures("I_AG", "10062897");
-            //new FunctionReflector("Z_M_Save_ZABWVERSGRUND").WriteOrmForExportTableStructures("IMP_KUNNR", "10062897");
+            //Mahnsperre
+            //new FunctionReflector("Z_DPM_READ_TEMP_VERS_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_EQTYP, I_CHASSIS_NUM", "10026883", "B", "11111111111111111");
+            //new FunctionReflector("Z_DPM_CHANGE_MAHNSP_EQUI_01").WriteOrmForExportTableStructures("I_AG, I_QMNAM", "10026883", "CARLM");
 
-            //new FunctionReflector("Z_M_VERSAUFTR_FEHLERHAFTE").WriteOrmForExportTableStructures("I_KUNNR", "10062897");
-            //new FunctionReflector("Z_M_VERSAUFTR_FEHLERHAFTE_DEL").WriteOrmForExportTableStructures("I_KUNNR", "10062897");
+            new FunctionReflector("Z_DPM_GET_ZZSEND2").WriteOrmForExportTableStructures("KUNNR_AG", "0010010753");
+            //new FunctionReflector("Z_DPM_READ_ADRESSPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10062897");
 
-            //new FunctionReflector("Z_DAD_DATEN_EINAUS_REPORT_002").WriteOrmForExportTableStructures("KUNNR", "10062897");
+            //new FunctionReflector("Z_DPM_READ_STL_MAHNUNGEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+
+            //Mahnstop setzen
+            //new FunctionReflector("Z_DPM_READ_MAHN_EQSTL_02").WriteOrmForExportTableStructures("I_AG", "10026883");
+            //new FunctionReflector("Z_DPM_SAVE_MAHN_EQSTL_01").WriteOrmForExportTableStructures("I_AG, I_USER", "10026883", "carltvolks2");
+
+            //Webbearbeitung Prüfschritte
+            //new FunctionReflector("Z_DPM_READ_PRUEFPUNKTE_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+            //new FunctionReflector("Z_DPM_READ_PRUEFSCHRITTE_03").WriteOrmForExportTableStructures("I_KUNNR_AG, I_PAID", "10026883", "0000000000000000");
+            //new FunctionReflector("Z_DPM_SAVE_ERL_PRUEFSCHR_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
 
             //CoCTest();
             //TeslaTest();
@@ -294,11 +304,8 @@ namespace SapORM
 
             
             //CsiTest();
-            //TargoTest3();
 
-            //DelageTestUpd();
-            //DelageTestRead();
-            DelageTestReadEinAusgaenge();
+            //TargoTest3();
 
             Shutdown();
         }
@@ -1371,50 +1378,6 @@ namespace SapORM
                         );
 
             var listCount = list.Count;
-        }
-
-
-        private static void DelageTestUpd()
-        {
-            Z_M_Save_ZABWVERSGRUND.Init(Sap, "IMP_KUNNR", "0010062897".ToSapKunnr());
-
-            Sap.SetImportParameter("IMP_EQUNR", "000000000017923744");
-            Sap.SetImportParameter("IMP_DATAUS", "30.07.2014");
-            Sap.SetImportParameter("IMP_MEMO", "Test XXX asdsa");
-            //Sap.SetImportParameter("IMP_ERLEDIGT", " ");
-            Sap.Execute();
-
-            var res = Sap.ResultCode;
-            var resText = Sap.ResultMessage;
-        }
-
-        private static void DelageTestRead()
-        {
-            Z_DPM_ABWEICH_ABRUFGRUND_02.Init(Sap, "I_AG", "0010062897".ToSapKunnr());
-            Sap.SetImportParameter("I_ABWEICHUNG", "AAG");
-            Sap.Execute();
-
-            var list = Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT.GetExportList(Sap);
-            if (list.Any())
-            {
-                var item = list.First();
-            }
-        }
-
-        private static void DelageTestReadEinAusgaenge()
-        {
-            Z_DAD_DATEN_EINAUS_REPORT_002.Init(Sap, "KUNNR", "0010062897".ToSapKunnr());
-            Sap.SetImportParameter("ACTION", "NEU");
-            Sap.SetImportParameter("ABCKZ", "A");
-            Sap.SetImportParameter("DATANF", DateTime.Parse("01.07.14"));
-            Sap.SetImportParameter("DATEND", DateTime.Parse("10.07.14"));
-            Sap.Execute();
-
-            var list = Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU.GetExportList(Sap);
-            if (list.Any())
-            {
-                var item = list.First();
-            }
         }
 
         #region Chart Table Export
