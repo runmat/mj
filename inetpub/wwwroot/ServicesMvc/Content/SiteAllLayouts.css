@@ -106,6 +106,9 @@ textarea.m-wrap {
 }
 
 
+.padding-top-2 {
+    padding-top: 2px;
+}
 .padding-top-3 {
     padding-top: 3px;
 }
@@ -291,6 +294,9 @@ textarea.m-wrap {
     vertical-align: middle;
 }
 
+.formWizardStepDescWrapper {
+    white-space: nowrap;
+}
 .form-wizard .step span.formWizardStepDesc {
     font-size: 0.8em;
     vertical-align: middle;
@@ -657,6 +663,12 @@ div.t-window {
 }
 .t-grid-selected-alt {
     background-color: #d0f0c6!important;
+}
+.t-grid-error {
+    background-color: #ffeeee!important;
+}
+.t-grid-error-alt {
+    background-color: #f6e6e6!important;
 }
 .t-grid-multi-row-select {
     cursor: pointer!important;
@@ -1111,3 +1123,56 @@ i.pdf-export
     font-style: italic;
 
 .t-grid-filter { display: none; }.t-grid-filter { display: none; }
+}
+
+
+/* <Dienstleistungs Auswahl> */
+.dienstleistungen-wrapper {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+    
+.ms-container {
+    width: 800px;
+}
+    
+.dienstleistungen-header {
+    padding: 4px;
+    width: 800px;
+}
+.dienstleistungen-header .header-left {
+    width: 438px;
+    display: inline-block;
+}
+.dienstleistungen-header .header-right {
+}
+    
+i.dienstleistung-gewaehlt {
+    float: left;
+    margin-right: 10px;
+    font-size: 1.2em;
+    color: #468847!important;
+}
+.ms-list li i.icon-ok {
+    float: left;
+    margin-left: 0px;
+} 
+    
+.ms-selection li {
+    background-color: #dff0d8!important;
+    color: #468847!important;
+    font-weight: bold;
+}
+.ms-selection li.ms-hover {
+    background-color: #cfe0c8!important;
+    color: #468847!important;
+}
+/* </Dienstleistungs Auswahl> */
+
+.font-bold {
+    font-weight: bold;
+}
+
+div.controls-width-400 .controls {
+    width: 400px;
+}

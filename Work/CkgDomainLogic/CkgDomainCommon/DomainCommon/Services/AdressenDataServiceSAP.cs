@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable ConvertClosureToMethodGroup
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Contracts;
@@ -18,6 +19,12 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<Adresse> RgAdressen { get { return PropertyCacheGet(() => GetCustomerAdressen("RG")); } }
         public List<Adresse> ReAdressen { get { return PropertyCacheGet(() => GetCustomerAdressen("RE")); } }
         public Adresse AgAdresse { get { return PropertyCacheGet(() => GetCustomerAdressen("AG").FirstOrDefault()); } }
+
+        public List<Adresse> ZulassungsStellen { get { return PropertyCacheGet(() => GetZulassungsStellenFromSap()); } }
+
+        public string KundennrOverride { get; set; }
+        public string KundenNr { get { return KundennrOverride ?? LogonContext.KundenNr; } }
+
 
 
         public AdressenDataServiceSAP(ISapDataService sap)
@@ -45,11 +52,22 @@ namespace CkgDomainLogic.DomainCommon.Services
             Adressen.RemoveAll(c => c.ID == adresse.ID);
         }
 
+        public List<Adresse> GetZulassungsStellenFromSap()
+        {
+            Z_DPM_READ_ADRESSPOOL_01.Init(SAP);
+            SAP.SetImportParameter("I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_EQTYP", "B");
+
+            var sapList = Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_READ_ADRESSPOOL_01_GT_ZULAST__To__Adresse.Copy(sapList).Where(a => a.Typ.IsNotNullOrEmpty()).ToList();
+        }
+
         public List<Adresse> LoadFromSap(string internalKey = null, string kennung = null, bool kundennrMitgeben = true)
         {
             Z_DPM_READ_ZDAD_AUFTR_006.Init(SAP);
             if (kundennrMitgeben)
-                SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+                SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
             if (internalKey.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_POS_KURZTEXT", internalKey);
             if (kennung.IsNotNullOrEmpty())
@@ -73,7 +91,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var sapAdresse = AppModelMappings.MapAdressenToSAP.CopyBack(adresse);
 
             Z_DPM_PFLEGE_ZDAD_AUFTR_006.Init(SAP);
-            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
             var verarbeitungsKennzeichen = deleteOnly ? "D" : insertMode ? "N" : "U";
             SAP.SetImportParameter("I_VERKZ", verarbeitungsKennzeichen);
 
@@ -133,8 +151,8 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<Adresse> GetCustomerAdressen(string addressType)
         {
             SAP.Init("Z_M_PARTNER_AUS_KNVP_LESEN");
-            SAP.SetImportParameter("KUNNR", LogonContext.KundenNr.ToSapKunnr());
-            if (CkgDomainRules.IstKroschkeAutohaus(LogonContext.KundenNr))
+            SAP.SetImportParameter("KUNNR", KundenNr.ToSapKunnr());
+            if (CkgDomainRules.IstKroschkeAutohaus(KundenNr))
                 SAP.SetImportParameter("GRUPPE", GroupName);
             SAP.Execute();
 

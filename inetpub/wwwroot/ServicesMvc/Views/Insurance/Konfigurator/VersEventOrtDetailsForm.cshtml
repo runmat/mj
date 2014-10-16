@@ -12,7 +12,7 @@
         @Html.HiddenFor(m => m.LoeschUser)
         
         
-        @Html.FormTemplateControl("", @<text><i id="VersEventOrtDetailsIcon"></i> Ort bearbeiten</text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl("", @<text><i id="VersEventOrtDetailsIcon"></i> @Localize.VersEventLocationEdit</text>, new { @class = "m-wrap" })
 
                 
         @Html.FormValidationSummary()
@@ -49,8 +49,8 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="button" onclick="$('#VersEventOrtForm').submit();" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" onclick="VersEventOrtCloseDetails();" class="btn">Abbrechen</button>
+            <button type="button" onclick="$('#VersEventOrtForm').submit();" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" onclick="VersEventOrtCloseDetails();" class="btn">@Localize.Cancel</button>
         </div>
     </form>
 </div>

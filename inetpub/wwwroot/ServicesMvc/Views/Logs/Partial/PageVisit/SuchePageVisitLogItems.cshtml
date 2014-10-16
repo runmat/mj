@@ -15,11 +15,10 @@
             @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
             @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.PortalTypes, Model.AllPortalTypes, new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "right" })
+            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormCheckBoxFor(m => m.OnlyUnusedApplications, new { @class = "m-wrap", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemSelector.AllCustomers, new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormMultiSelectListFor(m => m.UserIds, PageVisitLogItemSelector.AllUsers, new { @class = "m-wrap chosen", col = "right" })
+            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemSelector.AllCustomers, new { @class = "m-wrap chosen" })
 
 
             <div class="form-actions">
@@ -41,7 +40,6 @@
     function ResetFilter() {
         ClearChosenMultiSelect("#AppIds");
         ClearChosenMultiSelect("#CustomerIds");
-        ClearChosenMultiSelect("#UserIds");
 
         $("#SubmitWithNoDataQuerying").val(true);
         $("#PageVisitLogItemsForm").submit();

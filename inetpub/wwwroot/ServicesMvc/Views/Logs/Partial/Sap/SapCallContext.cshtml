@@ -1,0 +1,74 @@
+﻿@model CkgDomainLogic.Logs.Models.SapCallContext 
+
+@if (Model == null)
+{
+   <div>(keine SAP-Kontextdaten verfügbar)</div>
+}
+else
+{
+    <div class="sap-tables-context">
+    
+        <h4>Import-Parameter</h4>
+        <div>
+            @if (Model.ImportParameters != null)
+            {
+                var dataTable = Model.ImportParameters;
+
+                <div class="table-content">
+                    @Html.Telerik().Grid(dataTable).Name(dataTable.TableName)
+                </div>
+            }
+        </div>
+        
+        <div class="space20"></div>
+
+        <h4>Import-Tabellen</h4>
+        <div>
+            @if (Model.ImportTables != null)
+            {
+                for (var i = 0; i < Model.ImportTables.Length; i++)
+                {
+                    var dataTable = Model.ImportTables[i];
+
+                    <div class="table-header"><strong>@dataTable.TableName</strong></div>
+                    <div class="table-content">
+                        @Html.Telerik().Grid(dataTable).Name(dataTable.TableName)
+                    </div>
+                }
+            }
+        </div>
+        
+        <div class="space20"></div>
+        
+        <h4>Export-Parameter</h4>
+        <div>
+            @if (Model.ExportParameters != null)
+            {
+                var dataTable = Model.ExportParameters;
+
+                <div class="table-content">
+                    @Html.Telerik().Grid(dataTable).Name(dataTable.TableName)
+                </div>
+            }
+        </div>
+        
+        <div class="space20"></div>
+
+        <h4>Export-Tabellen</h4>
+        <div>
+            @if (Model.ExportTables != null)
+            {
+                for (var i = 0; i < Model.ExportTables.Length; i++)
+                {
+                    var dataTable = Model.ExportTables[i];
+
+                    <div class="table-header"><strong>@dataTable.TableName</strong></div>
+                    <div class="table-content">
+                        Datensätze: @dataTable.RowCount
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+}

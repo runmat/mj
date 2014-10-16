@@ -1,82 +1,82 @@
-<%@ Page Language="vb" AutoEventWireup="false" Codebehind="Change03_2.aspx.vb" Inherits="CKG.Components.ComCommon.Change03_2" %>
 <%@ Register TagPrefix="uc1" TagName="Styles" Src="../../PageElements/Styles.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="Header" Src="../../PageElements/Header.ascx" %>
+<%@ Page Language="vb" AutoEventWireup="false" Codebehind="Change03_2.aspx.vb" Inherits="CKG.Components.ComCommon.Change03_2" %>
 <%@ Register TagPrefix="uc1" TagName="Kopfdaten" Src="../../PageElements/Kopfdaten.ascx" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//Dtd HTML 4.0 transitional//EN">
-<html>
-	<head>
-		<meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR"/>
-		<meta content="Visual Basic 7.0" name="CODE_LANGUAGE"/>
-		<meta content="JavaScript" name="vs_defaultClientScript"/>
-		<meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema"/>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+		<meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
+		<meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
+		<meta content="JavaScript" name="vs_defaultClientScript">
+		<meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
 		<uc1:styles id="ucStyles" runat="server"></uc1:styles>
-	</head>
-	<body leftmargin="0" topmargin="0" MS_POSITIONING="FlowLayout">
+	</HEAD>
+	<body leftMargin="0" topMargin="0" MS_POSITIONING="FlowLayout">
 		<form id="Form1" method="post" runat="server">
-			<table cellspacing="0" cellpadding="2" width="100%" align="center">
+			<table cellSpacing="0" cellPadding="2" width="100%" align="center">
 				<tr>
 					<td><uc1:header id="ucHeader" runat="server"></uc1:header></td>
 				</tr>
 				<tr>
 					<td>
-						<table id="table1" cellspacing="0" cellpadding="0" width="100%" border="0">
+						<TABLE id="Table1" cellSpacing="0" cellPadding="0" width="100%" border="0">
+							<TR>
+								<td class="PageNavigation" colSpan="2"><asp:label id="lblHead" runat="server"></asp:label></td>
+							</TR>
 							<tr>
-								<td class="PageNavigation" colspan="2"><asp:label id="lblHead" runat="server"></asp:label></td>
-							</tr>
-							<tr>
-								<td valign="top" width="120">
-									<table id="table2" bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="120" border="0">
-										<tr>
-											<td class="TaskTitle">&nbsp;</td>
-										</tr>
-										<tr>
-											<td valign="center" width="150"><asp:linkbutton id="lb_Confirm" runat="server" CssClass="StandardButton"> lb_Confirm</asp:linkbutton></td>
-										</tr>
-										<tr>
-											<td valign="center" width="150"><asp:linkbutton id="lb_Back" runat="server" CssClass="StandardButton"> lb_Back</asp:linkbutton></td>
-										</tr>
-									</table>
-								</td>
-								<td valign="top">
-									<table id="table6" cellspacing="0" cellpadding="0" width="100%" border="0">
-										<tr>
-											<td class="TaskTitle" valign="top"><asp:linkbutton id="lnkCreateExcel" runat="server">Excelformat</asp:linkbutton>&nbsp;</td>
-										</tr>
-									</table>
-									<table id="table5" cellspacing="0" cellpadding="0" width="100%" border="0">
-										<tr>
-											<td valign="top" align="left" colspan="3" height="41">
-												<table cellspacing="0" cellpadding="0" width="100%" border="0">
-													<tr>
-														<td class="LabelExtraLarge" align="left" width="618" height="9"><asp:label id="lblNoData" runat="server" Visible="False" Font-Bold="true"></asp:label></td>
-														<td "nowrap" align="right" height="9">&nbsp;</td>
-													</tr>
+								<TD vAlign="top" width="120">
+									<TABLE id="Table2" borderColor="#ffffff" cellSpacing="0" cellPadding="0" width="120" border="0">
+										<TR>
+											<TD class="TaskTitle">&nbsp;</TD>
+										</TR>
+										<TR>
+											<TD vAlign="center" width="150"><asp:linkbutton id="lb_Confirm" runat="server" CssClass="StandardButton"> lb_Confirm</asp:linkbutton></TD>
+										</TR>
+										<TR>
+											<TD vAlign="center" width="150"><asp:linkbutton id="lb_Back" runat="server" CssClass="StandardButton"> lb_Back</asp:linkbutton></TD>
+										</TR>
+									</TABLE>
+								</TD>
+								<td vAlign="top">
+									<TABLE id="Table6" cellSpacing="0" cellPadding="0" width="100%" border="0">
+										<TR>
+											<TD class="TaskTitle" vAlign="top"><asp:linkbutton id="lnkCreateExcel" runat="server">Excelformat</asp:linkbutton>&nbsp;</TD>
+										</TR>
+									</TABLE>
+									<TABLE id="Table5" cellSpacing="0" cellPadding="0" width="100%" border="0">
+										<TR>
+											<TD vAlign="top" align="left" colSpan="3" height="41">
+												<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+													<TR>
+														<TD class="LabelExtraLarge" align="left" width="618" height="9"><asp:label id="lblNoData" runat="server" Visible="False" Font-Bold="True"></asp:label>
+														<TD noWrap align="right" height="9">&nbsp;</TD>
+													</TR>
 												</table>
 												<asp:label id="lblError" runat="server" CssClass="TextError" EnableViewState="False"></asp:label><br>
-												&nbsp;<br/>
-												<table id="tbl0001" cellspacing="0" cellpadding="5" border="0">
-													<tr id="tr_Auftrag" runat="server">
-														<td class="TextLarge" valign="top" noWrap align="right"><asp:label id="lbl_Auftrag" runat="server">lbl_Auftrag</asp:label>&nbsp;</td>
-														<td class="TextLarge"><asp:literal id="litAuftragShow" runat="server"></asp:literal></td>
-													</tr>
-													<tr id="tr_Haendler" runat="server">
-														<td class="TextLarge" valign="top" noWrap align="right"><asp:label id="lbl_Haendler" runat="server">lbl_Haendler</asp:label>&nbsp;</td>
-														<td class="TextLarge"><asp:literal id="litHaendlerShow" runat="server"></asp:literal></td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-										<tr>
-											<td valign="top" align="left" colspan="3"><asp:datagrid id="DataGrid1" runat="server" Width="100%" BackColor="White" PageSize="50" headerCSS="tableHeader" bodyCSS="tableBody" cssclass="tableMain" bodyHeight="400" AllowSorting="true" AllowPaging="true" AutoGenerateColumns="False">
-													<AlternatingItemStyle CssClass="GridtableAlternate"></AlternatingItemStyle>
-													<HeaderStyle Wrap="False" CssClass="GridtableHead"></HeaderStyle>
+												&nbsp;<br>
+												<TABLE id="tbl0001" cellSpacing="0" cellPadding="5" border="0">
+													<TR id="tr_Auftrag" runat="server">
+														<TD class="TextLarge" vAlign="top" noWrap align="right"><asp:label id="lbl_Auftrag" runat="server">lbl_Auftrag</asp:label>&nbsp;</TD>
+														<TD class="TextLarge"><asp:literal id="litAuftragShow" runat="server"></asp:literal></TD>
+													</TR>
+													<TR id="tr_Haendler" runat="server">
+														<TD class="TextLarge" vAlign="top" noWrap align="right"><asp:label id="lbl_Haendler" runat="server">lbl_Haendler</asp:label>&nbsp;</TD>
+														<TD class="TextLarge"><asp:literal id="litHaendlerShow" runat="server"></asp:literal></TD>
+													</TR>
+												</TABLE>
+											</TD>
+										</TR>
+										<TR>
+											<TD vAlign="top" align="left" colSpan="3"><asp:datagrid id="DataGrid1" runat="server" Width="100%" BackColor="White" PageSize="50" headerCSS="tableHeader" bodyCSS="tableBody" cssclass="tableMain" bodyHeight="400" AllowSorting="True" AllowPaging="True" AutoGenerateColumns="False">
+													<AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
+													<HeaderStyle Wrap="False" CssClass="GridTableHead"></HeaderStyle>
 													<Columns>
 														<asp:TemplateColumn SortExpression="Art" HeaderText="col_Art">
 															<HeaderTemplate>
 																<asp:LinkButton id="col_Art" runat="server" CommandArgument="Art" CommandName="Sort">col_Art</asp:LinkButton>
 															</HeaderTemplate>
 															<ItemTemplate>
-																<asp:Label id="lblPruefungsart" runat="server" NAME="LabelPruefungsart" Text='<%# DataBinder.Eval(Container, "DataItem.Art") %>'>
+																<asp:Label id=lblPruefungsart runat="server" NAME="LabelPruefungsart" Text='<%# DataBinder.Eval(Container, "DataItem.Art") %>'>
 																</asp:Label>
 															</ItemTemplate>
 														</asp:TemplateColumn>
@@ -162,20 +162,20 @@
 															</ItemTemplate>
 														</asp:TemplateColumn>
 													</Columns>
-													<PagerStyle NextPageText="n&#228;chste&amp;gt;" Font-Size="12pt" Font-Bold="true" PrevPageText="&amp;lt;vorherige" HorizontalAlign="Left" Position="Top" Wrap="False" Mode="NumericPages"></PagerStyle>
-												</asp:datagrid></td>
-										</tr>
-									</table>
+													<PagerStyle NextPageText="n&#228;chste&amp;gt;" Font-Size="12pt" Font-Bold="True" PrevPageText="&amp;lt;vorherige" HorizontalAlign="Left" Position="Top" Wrap="False" Mode="NumericPages"></PagerStyle>
+												</asp:datagrid></TD>
+										</TR>
+									</TABLE>
 								</td>
 							</tr>
-							<tr>
-								<td width="120">&nbsp;</td>
-								<td></td>
-							</tr>
-						</table>
+							<TR>
+								<TD width="120">&nbsp;</TD>
+								<TD></TD>
+							</TR>
+						</TABLE>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</body>
-</html>
+</HTML>

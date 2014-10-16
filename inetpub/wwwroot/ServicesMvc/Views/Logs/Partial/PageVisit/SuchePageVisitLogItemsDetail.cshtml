@@ -1,0 +1,83 @@
+﻿@using CkgDomainLogic.Logs.Models
+@model PageVisitLogItemDetailSelector
+
+<div id="divPageVisitLogItemsDetailSuche">
+    @using (Ajax.BeginForm("LoadPageVisitLogItemsDetail", "Logs", null,
+        new MvcAjaxOptions("divPageVisitLogItemsDetailSuche") { OnComplete = "ShowPageVisitLogItemsDetail();" }, new { id = "PageVisitLogItemsDetailForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.HiddenFor(m => m.SubmitWithNoDataQuerying)
+
+            @Html.FormValidationSummary()
+
+
+            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormMultiSelectListFor(m => m.PortalTypes, Model.AllPortalTypes, new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemDetailSelector.AllApplications, new { @class = "m-wrap chosen", col = "right" })
+
+            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemDetailSelector.AllCustomers, new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.UserIds, PageVisitLogItemDetailSelector.AllUsers, new { @class = "m-wrap chosen", col = "right" })
+
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    $(":radio[value^=Logs]").click(function () { ResetFilter(); });
+
+    function ResetFilter() {
+        ClearChosenMultiSelect("#AppIds");
+        ClearChosenMultiSelect("#CustomerIds");
+        ClearChosenMultiSelect("#UserIds");
+
+        $("#SubmitWithNoDataQuerying").val(true);
+        $("#PageVisitLogItemsDetailForm").submit();
+    }
+    
+    function ClearChosenMultiSelect(id) {
+        $(id).val('');
+        $(id).parent().find('.chzn-container li.search-choice').remove();
+    }
+
+    function ShowPageVisitLogItemsDetail() {
+
+        FormPreparePrivateAjax();
+
+        if ($("#SubmitWithNoDataQuerying").val() == "True") {
+            $("#SubmitWithNoDataQuerying").val(false);
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ShowPageVisitLogItemsDetail",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowPageVisitLogItemsDetailSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+                InitDateRangePicker();
+            }
+        });
+    }
+
+</script>

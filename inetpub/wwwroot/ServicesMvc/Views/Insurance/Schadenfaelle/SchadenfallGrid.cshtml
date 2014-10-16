@@ -14,15 +14,9 @@
               {
                   columns.XBound(c => c.ID).Title("").Filterable(false).Sortable(false)
                       .ClientTemplate(
-                            //"<button onclick='VorgangSelect(\"<#= data.ID #>\");' class='btn mini blue tooltips' data-original-title='" + Localize.OccurrenceSelect + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
-                            //+ "&nbsp;" +
                             "<button onclick='VorgangEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.OccurrenceEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                            //+ "&nbsp;" +
-                            //"<button onclick='VorgangDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.OccurrenceDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
                       )
                       .HeaderTemplate(
-                            //"<button onclick='VorgangSelectCancel();' class='btn mini red tooltips' data-original-title='" + Localize.Cancel + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></button>"
-                            //+ "&nbsp;" +
                             "<button onclick='VorgangCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.OccurrenceCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
 
                       ); 

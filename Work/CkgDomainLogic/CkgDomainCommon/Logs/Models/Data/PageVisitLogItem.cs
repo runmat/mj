@@ -1,20 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using GeneralTools.Log.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Logs.Models
 {
-    [Table("PageVisitView")]
+    [Table("PageVisitsPerCustomerPerDayView")]
     public class PageVisitLogItem
     {
-        [LocalizedDisplay(LocalizeConstants.Date)]
-        [NotMapped]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yy HH:mm}")]
-        public DateTime Datum { get { return time_stamp; } }
-        
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         [NotMapped]
         [GridResponsiveVisible(GridResponsive.Workstation)]
@@ -30,14 +24,8 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Application)]
         public string AppFriendlyName { get; set; }
 
-        [GridResponsiveVisible(GridResponsive.Workstation)]
-        public int? UserID { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.UserName)]
-        public string UserName { get; set; }
-
-        [NotMapped]
-        public string Portal { get { return LogConstants.PortalTypes.TryGetValue(PortalType.GetValueOrDefault()); } }
+        [LocalizedDisplay(LocalizeConstants.Hits)]
+        public int Hits { get; set; }
 
 
         #region Grid Hidden
@@ -50,13 +38,11 @@ namespace CkgDomainLogic.Logs.Models
         [GridHidden]
         public int? CustomerID { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Date)]
         [GridHidden]
-        public int? PortalType { get; set; }
+        public DateTime Datum { get; set; }
 
         // ReSharper disable InconsistentNaming
-        [GridHidden]
-        public DateTime time_stamp { get; set; }
-
         [GridHidden]
         public int? KUNNR { get; set; }
         // ReSharper restore InconsistentNaming

@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <DeleteOrder>
-	<Paths Path="C:\Inetpub\wwwroot\StartApplication\Bilder\View\" MitUnterverzeichnis="Nein" DaysBack="10">
-		<Patterns Pattern="*.jpg"/>
-	</Paths>
-	<Paths Path="C:\Inetpub\wwwroot\StartApplication\temp\" MitUnterverzeichnis="Ja" DaysBack="10">
-		<Patterns Pattern="*.XLS"/>
-		<Patterns Pattern="*.PDF"/>
-	</Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\Bilder\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="30">
+        <Patterns Pattern="*.jpg"/>
+        <Patterns Pattern="*.PDF"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\Bilder\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="2">
+        <Patterns Pattern="*.XLS"/>
+        <Patterns Pattern="*.CSV"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\Bilder\View\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="90">
+        <Patterns Pattern="*.jpg"/>
+        <Patterns Pattern="*.XLS"/>
+        <Patterns Pattern="*.PDF"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\Bilder\backup\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="14">
+        <Patterns Pattern="*.jpg"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\temp\" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="60">
+        <Patterns Pattern="*.PDF"/>
+        <Patterns Pattern="*.TIF"/>
+        <Patterns Pattern="*.TXT"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\temp\Excel" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="2">
+        <Patterns Pattern="*.HTM"/>
+        <Patterns Pattern="*.CSV"/>
+        <Patterns Pattern="*.PDF"/>
+        <Patterns Pattern="*.XLS"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\temp\Excel" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="30">
+        <Patterns Pattern="*.TXT"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\temp\Pictures" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="10">
+        <Patterns Pattern="*.PDF"/>
+        <Patterns Pattern="*.TIF"/>
+        <Patterns Pattern="*.TXT"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\Portal\temp\" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="2">
+        <Patterns Pattern="*.XLS"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\services\temp\" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="2">
+        <Patterns Pattern="*.XLS"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\services\temp\Excel" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="2">
+        <Patterns Pattern="*.XLSX"/>
+        <Patterns Pattern="*.JPG"/>
+        <Patterns Pattern="*.PDF"/>
+        <Patterns Pattern="*.XLS"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\services\bilder\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="7">
+        <Patterns Pattern="*.XLS"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\services\Components\ComCommon\logistik\Dokumente\TempDoc\" MitUnterverzeichnis="Ja" MitOrdner="Nein" DaysBack="7">
+        <Patterns Pattern="*.PDF"/>
+    </Paths>
+    <Paths Path="F:\Inetpub\wwwroot\services\bilder\view\" MitUnterverzeichnis="Nein" MitOrdner="Nein" DaysBack="1">
+        <Patterns Pattern="*.PDF"/>
+        <Patterns Pattern="*.jpg"/>
+    </Paths>
 </DeleteOrder>

@@ -102,10 +102,10 @@
 																		</asp:CheckBox>
 																	</ItemTemplate>
 																</asp:TemplateColumn>
-																<asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Passwort&#228;nderung" DataFormatString="{0:dd.MM.yy}">
+																<asp:BoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="letzte&lt;br&gt;Kennwort&#228;nderung" DataFormatString="{0:dd.MM.yy}">
 																	<ItemStyle HorizontalAlign="Center"></ItemStyle>
 																</asp:BoundColumn>
-																<asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Passwort&lt;br&gt;l&#228;uft nicht ab">
+																<asp:TemplateColumn SortExpression="PwdNeverExpires" HeaderText="Kennwort&lt;br&gt;l&#228;uft nicht ab">
 																	<ItemStyle HorizontalAlign="Center"></ItemStyle>
 																	<ItemTemplate>
 																		<asp:CheckBox id=cbxSRPwdNeverExpires runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "PwdNeverExpires") %>' Enabled="False">
@@ -239,11 +239,11 @@
 																<TD vAlign="top" align="right">
 																	<TABLE id="tblRight" cellSpacing="2" cellPadding="0" width="345" bgColor="white" border="0">
 																		<TR>
-																			<TD height="22">letzte Passwortänderung:</TD>
+																			<TD height="22">letzte Kennwortänderung:</TD>
 																			<TD align="right" height="22"><asp:label id="lblLastPwdChange" runat="server" CssClass="InfoBoxFlat" Width="160px"></asp:label></TD>
 																		</TR>
 																		<TR id="trPwdNeverExpires" runat="server">
-																			<TD height="22">Passwort läuft nie ab:</TD>
+																			<TD height="22">Kennwort läuft nie ab:</TD>
 																			<TD align="left" height="22"><asp:checkbox id="cbxPwdNeverExpires" runat="server"></asp:checkbox></TD>
 																		</TR>
 																		<TR>
@@ -276,7 +276,7 @@
 																		</TR>
 																		<TR id="trPassword" runat="server">
 																			<TD height="22">Passwort:</TD>
-																			<TD noWrap align="left" height="22"><asp:textbox id="txtPassword" runat="server" Visible="true" Width="160px" TextMode="Password"></asp:textbox><asp:linkbutton id="btnCreatePassword" runat="server" CssClass="StandardButtonTable" Visible="False">Passwort generieren</asp:linkbutton></TD>
+																			<TD noWrap align="left" height="22"><asp:textbox id="txtPassword" runat="server" Visible="true" Width="160px" TextMode="Password"></asp:textbox><asp:linkbutton id="btnCreatePassword" runat="server" CssClass="StandardButtonTable" Visible="False">Kennwort generieren</asp:linkbutton></TD>
 																		</TR>
 																		<TR id="trConfirmPassword" runat="server">
 																			<TD height="22">Passwort bestätigen:</TD>

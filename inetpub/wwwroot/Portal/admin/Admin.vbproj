@@ -43,7 +43,7 @@
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Admin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -62,7 +62,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DocumentationFile>CKG.Admin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -86,17 +86,16 @@
   <ItemGroup>
     <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GAC\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="BusyBoxDotNet, Version=0.2.1.1366, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\gac\BusyBoxDotNet.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\BusyBoxDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=1.5.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
-    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -133,18 +132,24 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Portal.vbproj">
       <Project>{30A2EB24-1053-4213-A502-DC1534F4D73E}</Project>
       <Name>Portal</Name>
     </ProjectReference>
     <Reference Include="Telerik.Web.Design, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GAC\Telerik.Web.Design.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\Telerik.Web.Design.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.UI">
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.UI.Skins">
+    <Reference Include="Telerik.Web.UI.Skins, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Work\GAC\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -247,7 +252,6 @@
     </Compile>
     <Compile Include="BapiOverView.aspx.vb">
       <DependentUpon>BapiOverView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ColumnTranslation.aspx.vb">
       <DependentUpon>ColumnTranslation.aspx</DependentUpon>
@@ -262,7 +266,6 @@
     </Compile>
     <Compile Include="CustomerManagement.aspx.vb">
       <DependentUpon>CustomerManagement.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DatenarchivierungDAD.aspx.designer.vb">
       <DependentUpon>DatenarchivierungDAD.aspx</DependentUpon>
@@ -444,14 +447,12 @@
     </Compile>
     <Compile Include="SapORMTest.aspx.vb">
       <DependentUpon>SapORMTest.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="ShowBapis.aspx.designer.vb">
       <DependentUpon>ShowBapis.aspx</DependentUpon>
     </Compile>
     <Compile Include="ShowBapis.aspx.vb">
       <DependentUpon>ShowBapis.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SingleUserHistory.aspx.vb">
       <DependentUpon>SingleUserHistory.aspx</DependentUpon>
@@ -488,7 +489,6 @@
     </Compile>
     <Compile Include="UpdateUpdateDB.aspx.vb">
       <DependentUpon>UpdateUpdateDB.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserHistory.aspx.vb">
       <DependentUpon>UserHistory.aspx</DependentUpon>
@@ -698,8 +698,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* ..\..\bin\</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
