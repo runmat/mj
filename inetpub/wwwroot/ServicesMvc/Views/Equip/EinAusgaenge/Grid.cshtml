@@ -11,9 +11,9 @@
     .XAjaxDataBinding("EinAusgaengeAjaxBinding", "Equip")
     .Columns(columns =>
         {
-            columns.Bound(c => c.Vertragsnummer);
-            columns.Bound(c => c.Kennzeichen);
-            columns.Bound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Vertragsnummer);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Fahrgestellnummer);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

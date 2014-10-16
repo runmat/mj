@@ -11,19 +11,19 @@
     .XAjaxDataBinding("VersandAbweichungenAjaxBinding", "Equip")
     .Columns(columns =>
         {
-            columns.Bound(c => c.Equipmentnummer).Title("").Filterable(false).Sortable(false)
+            columns.XBound(c => c.Equipmentnummer).Title("").Filterable(false).Sortable(false)
                 .ClientTemplate(
                     "<button onclick='GridVersandAbweichungenEditMemo(\"<#= data.Equipmentnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
                     "<button onclick='GridVersandAbweichungenSaveAsErledigt(\"<#= data.Equipmentnummer #>\");' class='btn mini gray tooltips margin-left-5' data-original-title='" + Localize.MarkAsCompleted + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
                 );
-            columns.Bound(c => c.Vertragsnummer);
-            columns.Bound(c => c.Fahrgestellnummer).Filterable(false).Sortable(false)
+            columns.XBound(c => c.Vertragsnummer);
+            columns.XBound(c => c.Fahrgestellnummer).Filterable(false).Sortable(false)
                 .ClientTemplate(
                     "<a class='tooltips' href='../Equi/FahrzeugAkte/<#= data.FIN #>' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='icon-caret-right'></i> <#= data.FIN #></a>"
                 );
-            columns.Bound(c => c.Memo);
-            columns.Bound(c => c.Eingangsdatum);
-            columns.Bound(c => c.Versanddatum);
+            columns.XBound(c => c.Memo);
+            columns.XBound(c => c.Eingangsdatum);
+            columns.XBound(c => c.Versanddatum);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
