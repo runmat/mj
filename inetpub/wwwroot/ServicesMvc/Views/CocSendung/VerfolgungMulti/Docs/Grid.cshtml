@@ -25,7 +25,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridCocSendungen"))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.ZulassungsDatum).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.VersandDatum).Descending())
     .XToolBar("CocSendung")
 )
 
