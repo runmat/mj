@@ -237,13 +237,16 @@ Public Class Change10_Beauftragung_2
     Private Sub FillSpediteure()
         Dim tblSpedi As DataTable = _mTransportbeauftragung.tblSpediteure
 
-        tblSpedi.Columns.Add("NameKombi")
+        If Not tblSpedi.Columns.Contains("NameKombi") Then
+            tblSpedi.Columns.Add("NameKombi")
+        End If
 
         For Each row As DataRow In tblSpedi.Rows
             row("NameKombi") = row("KUNPDI").ToString() + " - " + row("NAME1").ToString()
         Next
 
-        Dim dvSpedi As DataView = tblSpedi.DefaultView
+        Dim dvSpedi As DataView = New DataView(tblSpedi)
+        dvSpedi.RowFilter = "KUNPDI = '" & _mTransportbeauftragung.strFilterCarport & "' OR NOT SUBSTRING(KUNPDI,1,1) IN (0,1,2,3,4,5,6,7,8,9)"
         dvSpedi.Sort = "KUNPDI"
         rcbSpediteur.DataSource = dvSpedi
         rcbSpediteur.DataValueField = "KUNPDI"
