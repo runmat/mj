@@ -7,6 +7,11 @@ Namespace Kernel.Security
     <Serializable()> Public Class User
         REM § Enthält Daten eines einzelnen Benutzers.
 
+        Public Enum PasswordMailMode
+            Neu
+            Zuruecksetzen
+        End Enum
+
 #Region " Membervariables "
         Private m_strConnectionstring As String
 
@@ -36,7 +41,6 @@ Namespace Kernel.Security
         Private m_app As App
         Private m_customer As Customer
         Private m_organization As Organization
-        Private m_blnOrganizationAdmin As Boolean
         Private m_dtmLastLogin As DateTime
         Private m_mail As String = ""  'Emailadresse
         Private m_telephone As String = ""
@@ -64,14 +68,17 @@ Namespace Kernel.Security
 #End Region
 
 #Region " Constructor "
+
         Public Sub New()
             m_blnDoubleLoginTry = False
             m_strConnectionstring = ConfigurationManager.AppSettings("Connectionstring")
             m_intGroupID = 0
         End Sub
+
         Public Sub New(ByVal intUserId As Integer, ByVal strConnectionString As String)
             Me.New(intUserId, New SqlClient.SqlConnection(strConnectionString))
         End Sub
+
         Public Sub New(ByVal intUserId As Integer, ByVal cn As SqlClient.SqlConnection)
             m_blnDoubleLoginTry = False
             m_strConnectionstring = cn.ConnectionString
@@ -80,6 +87,7 @@ Namespace Kernel.Security
             End If
             GetUserDataFromId(intUserId, cn)
         End Sub
+
         Public Sub New(ByVal intUserId As Integer)
             m_blnDoubleLoginTry = False
             m_strConnectionstring = ConfigurationManager.AppSettings("Connectionstring")
@@ -89,6 +97,7 @@ Namespace Kernel.Security
             End If
             GetUserDataFromId(intUserId, cn)
         End Sub
+
         Public Sub New( _
                        ByVal intUserId As Integer, _
                        ByVal strUserName As String, _
@@ -130,7 +139,6 @@ Namespace Kernel.Security
             m_groups = New Groups(Me, m_strConnectionstring)
             'Organization
             m_organization = New Organization(-1, m_strConnectionstring, intUserId)
-            m_blnOrganizationAdmin = blnOrganizationAdmin
             'Angelegt von
             m_strCreatedBy = strCreatedBy
             '
@@ -181,7 +189,6 @@ Namespace Kernel.Security
             m_groups = New Groups(Me, m_strConnectionstring)
             'Organization
             m_organization = New Organization(-1, m_strConnectionstring, intUserId)
-            m_blnOrganizationAdmin = blnOrganizationAdmin
             'Angelegt von
             m_strCreatedBy = strCreatedBy
             '
@@ -193,6 +200,7 @@ Namespace Kernel.Security
             m_blnMatrixfilled = blnMatrixfilled
             m_ValidFrom = strValidFrom
         End Sub
+
 #End Region
 
 #Region " Properties "
@@ -404,12 +412,14 @@ Namespace Kernel.Security
                 Return m_blnAccountIsLockedOut
             End Get
         End Property
+
         Public ReadOnly Property AccountIsLockedBy() As String
             Get
 
                 Return m_strAccountIsLockedBy
             End Get
         End Property
+
         Public ReadOnly Property Matrixfilled() As Boolean
             Get
                 Return m_blnMatrixfilled
@@ -557,6 +567,7 @@ Namespace Kernel.Security
 #End Region
 
 #Region " Functions "
+
         Public Function GetTranslations(ByVal sBrowserLanguage As String, ByVal sAppURL As String) As DataTable
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Dim tblReturn As New DataTable()
@@ -602,6 +613,7 @@ Namespace Kernel.Security
 
             Return tblReturn
         End Function
+
         Public Function GetTranslations(ByVal sBrowserLanguage As String, ByVal sAppURL As String, ByVal ZLD As String) As DataTable
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Dim tblReturn As New DataTable()
@@ -648,17 +660,6 @@ Namespace Kernel.Security
             End Try
 
             Return tblReturn
-        End Function
-        Private Function GetFailedLogins(ByVal strUserName As String, ByVal cn As SqlClient.SqlConnection) As Integer
-            Try
-                Dim cmdGetLogins As New SqlClient.SqlCommand("SELECT FailedLogins " & _
-                                                             "FROM WebUser " & _
-                                                             "WHERE Username=@Username", cn)
-                cmdGetLogins.Parameters.AddWithValue("@Username", strUserName)
-                Return CInt(cmdGetLogins.ExecuteScalar)
-            Catch ex As Exception
-                Throw New Exception("Konnte die Anzahl der fehlgeschlagenen Anmeldungen nicht aus der Datenbank lesen!", ex)
-            End Try
         End Function
 
         Public Sub SetEmployeePicture(ByVal blnPicture As Boolean, ByVal strChangeUser As String)
@@ -1230,9 +1231,7 @@ Namespace Kernel.Security
             End Try
             Return blnReturn
         End Function
-        '-------
-        'Sperrung durch
-        '-------
+
         Private Function GetHistoryInfos(ByVal objUser As Kernel.Security.User) As String
 
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1262,6 +1261,7 @@ Namespace Kernel.Security
                 End If
             End Try
         End Function
+
         Public Function RequestNewPassword(ByVal strAnswer As String) As Integer
             Dim intReturn As Integer = -9999
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1288,17 +1288,7 @@ Namespace Kernel.Security
                 If intTemp = 1 Then
                     'Antwort war richtig
 
-                    'Passwort erzeugen und mailen!
-                    'Dim strTemp As String = m_customer.CustomerPasswordRules.CreateNewPasswort(m_strErrorMessage)
-                    If m_strErrorMessage.Length = 0 Then
-                        'If Not ChangePassword("", strTemp, strTemp, m_strUsername, True) Then
-                        'Throw New System.Exception(m_strErrorMessage)
-                        'Else
-                        If Not SendPasswordResetMail(m_strErrorMessage) Then
-                            Throw New System.Exception(m_strErrorMessage)
-                        End If
-                        'End If
-                    Else
+                    If Not SendPasswordResetMail(m_strErrorMessage, PasswordMailMode.Zuruecksetzen) Then
                         Throw New System.Exception(m_strErrorMessage)
                     End If
 
@@ -1609,6 +1599,7 @@ Namespace Kernel.Security
 
             Return blnReturn
         End Function
+
         Private Function GetGroups(ByVal cn As SqlClient.SqlConnection) As Boolean
             Dim blnReturn As Boolean
 
@@ -1716,103 +1707,6 @@ Namespace Kernel.Security
             End Try
         End Sub
 
-        'Wert für InitialPassword vorgeben
-        Public Function ChangePasswordNew(ByVal strOldPwd As String, ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
-                                        ByVal strChangeUser As String, ByVal blnAdmin As Boolean, ByVal blnInitialPswd As Boolean) As Boolean
-
-            Return DoChangePasswordNew(strOldPwd, strNewPwd, strNewPwdConfirm, strChangeUser, blnAdmin, blnInitialPswd)
-
-        End Function
-
-        'Wert für InitialPassword aus PasswordHistory ziehen
-        Public Function ChangePasswordNew(ByVal strOldPwd As String, ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
-                                        ByVal strChangeUser As String, ByVal blnAdmin As Boolean) As Boolean
-
-            Using cn As New SqlClient.SqlConnection(m_strConnectionstring)
-                cn.Open()
-                m_blnInitialPassword = GetPasswordHistory(cn)
-                cn.Close()
-            End Using
-
-            Return DoChangePasswordNew(strOldPwd, strNewPwd, strNewPwdConfirm, strChangeUser, blnAdmin, m_blnInitialPassword)
-
-        End Function
-
-        Private Function DoChangePasswordNew(ByVal strOldPwd As String, ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
-                                        ByVal strChangeUser As String, ByVal blnAdmin As Boolean, Optional ByVal blnInitialPswd As Boolean = False) As Boolean
-            Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
-            cn.Open()
-            If blnAdmin OrElse VerifyPassword(strOldPwd, cn) Then
-                If blnAdmin OrElse (Not strOldPwd = String.Empty) Then
-                    If Not strNewPwd = String.Empty Then
-                        If Not strOldPwd = strNewPwd Then
-                            If strNewPwd = strNewPwdConfirm Then
-                                If m_customer.CustomerPasswordRules.PasswordIsValid(strNewPwd) Then
-                                    If CheckPasswordHistory(strNewPwd, cn) Then
-                                        Try
-                                            Dim cmdUpdate As New SqlClient.SqlCommand("UPDATE WebUser " & _
-                                                                                      "SET Password=@Password, LastPwdChange=@LastPwdChange, LastLogin=@LastLogin, LastChangedBy=@ChangeUser " & _
-                                                                                      "WHERE UserID=@UserID", cn)
-                                            Dim tmpLastPwdChange As Date
-                                            With cmdUpdate.Parameters
-                                                .AddWithValue("@UserID", m_intUserId)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
-                                                If blnAdmin Then
-                                                    .AddWithValue("@LastPwdChange", CDate("03.02.1963"))
-                                                    tmpLastPwdChange = CDate("03.02.1963")
-                                                Else
-                                                    tmpLastPwdChange = Now
-                                                    .AddWithValue("@LastPwdChange", tmpLastPwdChange)
-                                                End If
-                                                .AddWithValue("@LastLogin", tmpLastPwdChange)
-                                                .AddWithValue("@ChangeUser", strChangeUser)
-                                            End With
-                                            cmdUpdate.ExecuteNonQuery()
-
-                                            cmdUpdate = New SqlClient.SqlCommand("UPDATE WebUserHistory " & _
-                                                                                     "SET Password=@Password, LastPwdChange=@LastPwdChange,LastChanged=Getdate(),LastChange='Passwort geändert',LastChangedBy=@ChangeUser " & _
-                                                                                     "WHERE (UserHistoryID=@UserHistoryID)", cn)
-                                            With cmdUpdate.Parameters
-                                                .AddWithValue("@UserHistoryID", m_intUserHistoryID)
-                                                .AddWithValue("@LastPwdChange", tmpLastPwdChange)
-                                                .AddWithValue("@ChangeUser", strChangeUser)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
-                                            End With
-                                            cmdUpdate.ExecuteNonQuery()
-                                            SavePasswordHistory(strNewPwd, tmpLastPwdChange, cn, blnInitialPswd)
-                                            Return True
-                                        Catch ex As Exception
-                                            Throw New Exception("Fehler beim Ändern des Passworts: " & ex.Message, ex)
-                                        Finally
-                                            If cn.State <> ConnectionState.Closed Then
-                                                cn.Close()
-                                            End If
-                                        End Try
-                                    Else
-                                        m_strErrorMessage = String.Format("Dieses Passwort kann nicht wiederverwendet werden. Die letzten {0} Passwörter eines Benutzers sind für eine nochmalige Verwendung gesperrt.", m_customer.CustomerPasswordRules.PasswordHistoryEntries)
-                                    End If
-                                Else
-                                    m_strErrorMessage = m_customer.CustomerPasswordRules.ErrorMessage
-                                End If
-                            Else
-                                m_strErrorMessage = "Das neue Passwort und die Passwortbestätigung müssen einander entsprechen."
-                            End If
-                        Else
-                            m_strErrorMessage = "Das alte und das neue Passwort dürfen nicht gleich sein."
-                        End If
-                    Else
-                        m_strErrorMessage = "Leere Zeichenfolge ist nicht erlaubt!"
-                    End If
-                Else
-                    m_strErrorMessage = "Sie müssen Ihr altes Passwort angeben!"
-                End If
-            ElseIf strOldPwd.Length <> strOldPwd.Trim.Length Then
-                m_strErrorMessage = "Überprüfen Sie Ihr altes Passwort! Leerzeichen nicht erlaubt!"
-            Else
-                m_strErrorMessage = ""
-            End If
-            Return False
-        End Function
         Public Function ChangePassword(ByVal strOldPwd As String, ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
                                 ByVal strChangeUser As String, Optional ByVal blnAdmin As Boolean = False) As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1964,10 +1858,10 @@ Namespace Kernel.Security
             Return False
         End Function
 
-        Public Function SendPasswordResetMail(ByRef errorMessage As String) As Boolean
+        Public Function SendPasswordResetMail(ByRef errMsg As String, ByVal modus As PasswordMailMode) As Boolean
 
-            If (m_mail = String.Empty) Then
-                errorMessage = "Keine Mailadresse angegeben. Neues Passwort konnte nicht versendet werden."
+            If String.IsNullOrEmpty(m_mail) Then
+                errMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
                 Return False
             End If
 
@@ -1976,7 +1870,7 @@ Namespace Kernel.Security
 
             Dim portalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
             If portalLink = String.Empty Then
-                portalLink = "https://sgw.kroschke.de/ServicesMvc/"
+                Throw New Exception("Kein Login-Link konfiguriert!")
             End If
             'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
             portalLink = portalLink.ToLower()
@@ -1988,16 +1882,18 @@ Namespace Kernel.Security
             Dim action As String = "ChangePassword"
             Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
 
+            Dim verb As String = IIf(modus = PasswordMailMode.Neu, "Generieren", "Zurücksetzen").ToString()
+
             Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
             Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-            Dim subject As String = "Link zum Zurücksetzen Ihres Passworts"
+            Dim subject As String = String.Format("Link zum {0} Ihres Passworts", verb)
             Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
             Dim textBuilder As New Text.StringBuilder()
             With textBuilder
                 .AppendLine(String.Format("Guten Tag {0},", userSalutation))
                 .Append(Environment.NewLine)
                 .Append(Environment.NewLine)
-                .AppendLine("bitte nutzen Sie diesen Link zum Zurücksetzen Ihres Kennworts:")
+                .AppendLine(String.Format("bitte nutzen Sie diesen Link zum {0} Ihres Kennworts:", verb))
                 .Append(Environment.NewLine)
                 .AppendLine(confirmationUrl)
                 .Append(Environment.NewLine)
@@ -2009,46 +1905,6 @@ Namespace Kernel.Security
             Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
             client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
 
-        End Function
-
-        Private Function SendPasswordMail(ByVal password As String, ByRef errorMessage As String, Optional ByVal blnSendPasswordAnyway As Boolean = False) As Boolean
-            Try
-                If (Not m_customer.CustomerPasswordRules.DontSendEmail) Or blnSendPasswordAnyway Then
-                    If (m_mail <> String.Empty) Then
-                        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-                        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-                        Dim subject As String = "Ihr persönliches Passwort"
-                        Dim textBuilder As New Text.StringBuilder()
-                        With textBuilder
-                            .AppendLine("Guten Tag,")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Ihr persönliches Passwort für den Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst lautet:")
-                            .Append(Environment.NewLine)
-                            .AppendLine("<<" & password.Trim() & ">>")
-                            .AppendLine("(Ohne '<<' und '>>'. Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Passwort sowie Ihrem Benutzernamen können Sie nun das Login vornehmen.")
-                            .AppendLine("Wir müssen Sie bitten, Ihr Passwort nach der ersten Anmeldung aus Sicherheitsgründen zu ändern.")
-                            .AppendLine("Bitte bewahren Sie Ihren Benutzernamen sowie Ihr Online-Passwort an einem sicheren Platz auf und geben Sie Ihre Zugangsdaten nicht an Dritte weiter.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit freundlichen Grüßen")
-                            .AppendLine("Christoph Kroschke GmbH /")
-                            .AppendLine("Deutscher Auto Dienst GmbH")
-                        End With
-
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-                        client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
-
-                        Return True
-                    Else
-                        errorMessage = "Keine Mailadresse angegeben. Neues Passwort konnte nicht versendet werden."
-                        Return False
-                    End If
-                End If
-            Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
-                Return False
-            End Try
         End Function
 
         Public Function SendUsernameMail(ByRef errorMessage As String, ByVal Reapproved As Boolean, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
@@ -2070,7 +1926,7 @@ Namespace Kernel.Security
                             .Append(Environment.NewLine)
                             .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
-                            .AppendLine("Hinweis!: Das persönliche Passwort erhalten Sie in einer separaten E-mail.")
+                            .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
                             .AppendLine("Christoph Kroschke GmbH /")
@@ -2112,7 +1968,7 @@ Namespace Kernel.Security
                             .Append(Environment.NewLine)
                             .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
-                            .AppendLine("Hinweis!: Das persönliche Passwort erhalten Sie in einer separaten E-mail.")
+                            .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
                             .AppendLine("Christoph Kroschke GmbH /")
@@ -2173,15 +2029,10 @@ Namespace Kernel.Security
                             .AppendLine("Ihr Benutzername lautet:")
                             .AppendLine(m_strUsername.Trim)
                             .Append(Environment.NewLine)
-                            .AppendFormat("Sofern Sie der korrekte Empfänger ({0} {1}) dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und das Portal nutzen zu können. Nach der Bestätigung erhalten Sie das Passwort per Mail.", m_firstname, m_lastname)
+                            .AppendFormat("Sofern Sie der korrekte Empfänger ({0} {1}) dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und das Portal nutzen zu können. Nach der Bestätigung erhalten Sie einen Link zur Passwortgenerierung per Mail.", m_firstname, m_lastname)
                             .Append(Environment.NewLine)
                             .AppendLine(sValidationLink & Goodlink)
                             .Append(Environment.NewLine)
-                            '.AppendLine("Sofern Sie nicht der korrekte Empfänger dieser Mail sind, klicken Sie bitte auf den folgenden Link:")
-                            '.AppendLine(sValidationLink & BadLink)
-                            '.AppendLine("oder melden Sie sich telefonisch bei Ihrem Web-Administrator.")
-                            '.Append(Environment.NewLine)
-                            '.Append(Environment.NewLine)
                             .AppendLine("Für Rückfragen zur Anmeldung stehen wir Ihnen jederzeit gern zur Verfügung.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
@@ -2239,7 +2090,7 @@ Namespace Kernel.Security
                             .Append(Environment.NewLine)
                             .AppendLine("soeben wurde in unserem Webportal für Ihren Account ein neues Passwort angefordert.")
                             .Append(Environment.NewLine)
-                            .AppendLine("Sofern Sie diese Anforderung vorgenommen haben, klicken Sie bitte auf folgenden Link, um den Passwortversand zu bestätigen:")
+                            .AppendLine("Sofern Sie diese Anforderung vorgenommen haben, klicken Sie bitte auf folgenden Link, um den Versand der Passwortmail zu bestätigen:")
                             .Append(Environment.NewLine)
                             .AppendLine(PortalLink & "?pwreqkey=" & pwdGenKey)
                             .Append(Environment.NewLine)
@@ -2306,14 +2157,6 @@ Namespace Kernel.Security
 
         End Sub
 
-        ''' <summary>
-        ''' Prüft ob der Benutzer den kompletten Validationsprozess durchlaufen hat.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
-
-
         Public Function CheckValidationConfirmed() As Boolean
             Dim blnConfirmed As Boolean = False
 
@@ -2349,13 +2192,6 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        ''' <summary>
-        ''' Prüft ob ein Benutzer den kompletten Validationsprozess durchlaufen hat.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
-
         Public Shared Function CheckValidationConfirmed(ByVal UserID As String, ByVal Connectionstring As String) As Boolean
             Dim blnConfirmed As Boolean = False
 
@@ -2390,13 +2226,6 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        ''' <summary>
-        ''' Prüft ob eine EMail mit Benutzerdaten für den Validationsprozess versendet wurde.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
-
         Public Function CheckValidationMailsend() As Boolean
             Dim blnConfirmed As Boolean = False
 
@@ -2430,13 +2259,6 @@ Namespace Kernel.Security
 
             Return blnConfirmed
         End Function
-
-        ''' <summary>
-        ''' Prüft ob eine EMail mit Benutzerdaten für den Validationsprozess versendet wurde.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
 
         Public Shared Function CheckValidationMailsend(ByVal UserID As String, ByVal Connectionstring As String) As Boolean
             Dim blnConfirmed As Boolean = False
@@ -2989,6 +2811,7 @@ Namespace Kernel.Security
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime)
             SetLastLogin(dtmLastLogin, m_strConnectionstring)
         End Sub
+
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime, ByVal strConnectionString As String)
             If strConnectionString = "" Then
                 Throw New Exception("Fehler beim Setzen des Datums des letzen Logins: Kein ConnectionString vorhanden!")
@@ -2996,6 +2819,7 @@ Namespace Kernel.Security
             End If
             SetLastLogin(dtmLastLogin, New SqlClient.SqlConnection(strConnectionString))
         End Sub
+
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime, ByVal cn As SqlClient.SqlConnection)
             Try
                 If cn.State = ConnectionState.Closed Then
@@ -3203,7 +3027,6 @@ Namespace Kernel.Security
 
 #End Region
 
-
     End Class
 
     Public Enum AdminLevel
@@ -3214,204 +3037,3 @@ Namespace Kernel.Security
         None = 0
     End Enum
 End Namespace
-
-' ************************************************
-' $History: User.vb $
-' 
-' *****************  Version 25  *****************
-' User: Rudolpho     Date: 22.03.11   Time: 14:50
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 24  *****************
-' User: Rudolpho     Date: 9.09.10    Time: 11:57
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 23  *****************
-' User: Rudolpho     Date: 8.09.10    Time: 12:30
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 22  *****************
-' User: Rudolpho     Date: 7.09.10    Time: 16:07
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 21  *****************
-' User: Rudolpho     Date: 7.09.10    Time: 14:17
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 20  *****************
-' User: Rudolpho     Date: 7.09.10    Time: 10:57
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 19  *****************
-' User: Rudolpho     Date: 6.09.10    Time: 17:23
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 18  *****************
-' User: Rudolpho     Date: 19.07.10   Time: 17:54
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 28.06.10   Time: 9:50
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 16  *****************
-' User: Rudolpho     Date: 16.06.10   Time: 15:33
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 8.06.10    Time: 10:49
-' Updated in $/CKAG/Base/Kernel/Security
-' ITA: 3825
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 7.06.10    Time: 11:22
-' Updated in $/CKAG/Base/Kernel/Security
-' ITA: 3824(HBr)
-' 
-' *****************  Version 13  *****************
-' User: Fassbenders  Date: 31.03.10   Time: 16:58
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 7.10.09    Time: 14:52
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 1.09.09    Time: 13:19
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 10  *****************
-' User: Fassbenders  Date: 17.04.09   Time: 16:59
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 1.12.08    Time: 16:12
-' Updated in $/CKAG/Base/Kernel/Security
-' Bugfix: Doppelte Anmeldung nach Paßwortfrage
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 27.11.08   Time: 13:01
-' Updated in $/CKAG/Base/Kernel/Security
-' Bugfix: Doppelte Anmeldung nach Paßwortfrage
-' 
-' *****************  Version 7  *****************
-' User: Hartmannu    Date: 11.09.08   Time: 17:47
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 6  *****************
-' User: Hartmannu    Date: 10.09.08   Time: 17:28
-' Updated in $/CKAG/Base/Kernel/Security
-' ITA 2027 - Anzeige der erweiterten Benutzerhistorie
-' 
-' *****************  Version 5  *****************
-' User: Hartmannu    Date: 10.09.08   Time: 9:31
-' Updated in $/CKAG/Base/Kernel/Security
-' ITA 2027 (Erweiterung Historie)
-' 
-' *****************  Version 4  *****************
-' User: Hartmannu    Date: 10.09.08   Time: 9:07
-' Updated in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 3  *****************
-' User: Hartmannu    Date: 9.09.08    Time: 13:42
-' Updated in $/CKAG/Base/Kernel/Security
-' ITA 2152 und 2158
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 11.04.08   Time: 11:57
-' Updated in $/CKAG/Base/Kernel/Security
-' Migration OR
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 3.04.08    Time: 16:42
-' Created in $/CKAG/Base/Kernel/Security
-' 
-' *****************  Version 32  *****************
-' User: Rudolpho     Date: 5.02.08    Time: 13:46
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ORU 20080205: von UHa einfügte Abfrage für Testzwecke???  entfernt
-' 
-' *****************  Version 31  *****************
-' User: Uha          Date: 21.01.08   Time: 18:09
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1644: Ermöglicht Login nur mit IP und festgelegtem Benutzer
-' 
-' *****************  Version 30  *****************
-' User: Uha          Date: 8.01.08    Time: 11:44
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1508: Aufruf von SetLoggedOn auch für Benutzer, deren Firmen
-' Mehrfachlogin erlauben
-' 
-' *****************  Version 29  *****************
-' User: Rudolpho     Date: 6.12.07    Time: 12:47
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA:1440
-' 
-' *****************  Version 28  *****************
-' User: Jungj        Date: 12.11.07   Time: 14:56
-' Updated in $/CKG/Base/Base/Kernel/Security
-' 
-' *****************  Version 27  *****************
-' User: Rudolpho     Date: 2.11.07    Time: 15:16
-' Updated in $/CKG/Base/Base/Kernel/Security
-' Loginfehler(Sprung auf leere Loginseite) nach Falschanmeldung behoben!
-' 
-' *****************  Version 26  *****************
-' User: Uha          Date: 27.09.07   Time: 10:27
-' Updated in $/CKG/Base/Base/Kernel/Security
-' Controlnamen für Feldübersetzungen geändert
-' 
-' *****************  Version 25  *****************
-' User: Fassbenders  Date: 20.09.07   Time: 15:22
-' Updated in $/CKG/Base/Base/Kernel/Security
-' 
-' *****************  Version 24  *****************
-' User: Uha          Date: 19.09.07   Time: 13:19
-' Updated in $/CKG/Base/Base/Kernel/Security
-'  ITA 1261: Testfähige Version
-' 
-' *****************  Version 23  *****************
-' User: Uha          Date: 10.09.07   Time: 13:23
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1280: Bugfix III; ITA 1263: Testversion Translation
-' 
-' *****************  Version 22  *****************
-' User: Uha          Date: 30.08.07   Time: 18:44
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1280: Bugfix II
-' 
-' *****************  Version 21  *****************
-' User: Uha          Date: 30.08.07   Time: 15:17
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1280: Bugfix
-' 
-' *****************  Version 20  *****************
-' User: Uha          Date: 30.08.07   Time: 12:36
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1280: Paßwortversand im Web auf Benutzerwunsch
-' 
-' *****************  Version 19  *****************
-' User: Uha          Date: 7.08.07    Time: 14:23
-' Updated in $/CKG/Base/Base/Kernel/Security
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 18  *****************
-' User: Uha          Date: 2.07.07    Time: 15:39
-' Updated in $/CKG/Base/Base/Kernel/Security
-' Verbindung ASPX-Logging mit BAPI-Logging
-' 
-' *****************  Version 17  *****************
-' User: Uha          Date: 31.05.07   Time: 11:41
-' Updated in $/CKG/Base/Base/Kernel/Security
-' ITA 1077 - Login bei bereits aktiver Anmeldung ermöglichen
-' 
-' *****************  Version 16  *****************
-' User: Uha          Date: 15.05.07   Time: 15:29
-' Updated in $/CKG/Base/Base/Kernel/Security
-' Änderungen aus StartApplication vom 11.05.2007
-' 
-' *****************  Version 15  *****************
-' User: Uha          Date: 3.05.07    Time: 12:35
-' Updated in $/CKG/Base/Base/Kernel/Security
-' 
-' ************************************************

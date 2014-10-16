@@ -541,16 +541,13 @@ Partial Public Class Login
                 If m_User.CheckNewPasswordRequestKeyValid(Request.QueryString("pwreqkey")) Then
                     If Not String.IsNullOrEmpty(m_User.UserName) Then
                         txtUsername.Text = m_User.UserName
-                        'Neues Passwort generieren und per Mail verschicken
                         Dim errMsg As String = ""
-                        'Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
                         If String.IsNullOrEmpty(errMsg) Then
-                            'm_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
-                            If m_User.SendPasswordResetMail(errMsg) Then
-                                lblError.Text = "Das Passwort wurde an die hinterlegte Adresse versandt."
+                            If m_User.SendPasswordResetMail(errMsg, Security.User.PasswordMailMode.Zuruecksetzen) Then
+                                lblError.Text = "Die Passwort-Mail wurde an die hinterlegte Adresse versandt."
                                 m_User.SetNewPasswordRequestSentAndUnlockAccount()
                             Else
-                                lblError.Text = "Fehler beim Versenden des neuen Passwortes: " & errMsg
+                                lblError.Text = "Fehler beim Versenden der Passwort-Mail: " & errMsg
                             End If
                         Else
                             lblError.Text = errMsg
