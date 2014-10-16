@@ -42,9 +42,10 @@ Webanwendungen.
 werden
 
 - Social Media (Login via Facebook, Google+ etc.): sinnvoll oder nicht?
-Zeitlich begrenzte Zugriffe auf Downloadressourcen (Protokolle, Bilder etc.), Eingabeseiten,
+
+- Zeitlich begrenzte Zugriffe auf Downloadressourcen (Protokolle, Bilder etc.), Eingabeseiten,
 Ansichtsseiten.
 
-Denkbar wären auch zeitlich begrenzte Anwendungen, mit mehreren Menüpunkten.
+- Denkbar wären auch zeitlich begrenzte Anwendungen, mit mehreren Menüpunkten.
 Diese werden dem User über einen Link - mit einem Schlüssel im Suffix - zur Verfügung gestellt.
 
