@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -24,8 +25,17 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.MaterialText)]
         public string Materialtext { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Document)]
+        public string Dokument { get { return Materialtext; } }
+
         [LocalizedDisplay(LocalizeConstants.DunningLevel)]
         public string Mahnstufe { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DunningProcedure)]
+        public string Mahnverfahren { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DunningProcedure)]
+        public string MahnverfahrenText { get { return (Mahnverfahren == "BST1" ? Localize.Approved : Localize.ApprovedWithRestrictions); } }
 
         [LocalizedDisplay(LocalizeConstants.LastDunOn)]
         public DateTime? LetzteMahnungAm { get; set; }

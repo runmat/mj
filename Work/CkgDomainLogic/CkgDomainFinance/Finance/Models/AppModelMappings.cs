@@ -215,6 +215,29 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_EXP_MAHN_ERSTEINGANG.GT_WEB, Mahnung> Z_DPM_EXP_MAHN_ERSTEINGANG_GT_WEB_To_Mahnung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_EXP_MAHN_ERSTEINGANG.GT_WEB, Mahnung>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kontonummer = source.KONTONR;
+                        destination.CIN = source.CIN;
+                        destination.PAID = source.PAID;
+                        destination.Vertragsart = source.ZVERT_ART;
+                        destination.Materialtext = source.MAKTX;
+                        destination.Mahnstufe = source.ZZMAHNS;
+                        destination.Mahnverfahren = source.ZZ_MAHNA;
+                        destination.Mahnsperre = (source.MANSP.NotNullOrEmpty() == "X");
+                        destination.MahnsperreBis = source.MASPB;
+                        destination.LetzteMahnungAm = source.MADAT;
+                        destination.NaechsteMahnungAm = source.MNDAT;
+                    }));
+            }
+        }
+
         #endregion
 
 
