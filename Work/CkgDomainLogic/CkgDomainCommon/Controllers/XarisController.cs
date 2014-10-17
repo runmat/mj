@@ -33,6 +33,9 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.DataInit();
 
+            if (LogonContext.MvcEnforceRawLayout)
+                return RedirectPermanent(ViewModel.XarisUrl);
+
             return View(ViewModel);
         }
     }
