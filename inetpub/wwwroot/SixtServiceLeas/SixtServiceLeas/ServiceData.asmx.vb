@@ -150,14 +150,13 @@ Public Class ServiceData
                 'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
             End Try
 
-            Throw
         End Try
 
         Return strXml
     End Function
 
-    <WebMethod()> Public Function WMInsertStatus(ByVal User As String, ByVal Password As String, ByVal Statusmeldungen As Statusmeldungen) As Errors
-        Dim StatErrors As New Errors()
+    <WebMethod()> Public Function WMInsertStatus(ByVal User As String, ByVal Password As String, ByVal VehicleRegistrations As VehicleRegs_Status) As Errors
+        Dim VehErrors As New Errors()
 
         Try
 
@@ -167,7 +166,7 @@ Public Class ServiceData
             End If
 
             Dim SetData As New SapInterface()
-            StatErrors = SetData.InsertStatus(Statusmeldungen)
+            VehErrors = SetData.InsertStatus(VehicleRegistrations)
 
         Catch ex As Exception
             Try
@@ -176,10 +175,9 @@ Public Class ServiceData
                 'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
             End Try
 
-            Throw
         End Try
 
-        Return StatErrors
+        Return VehErrors
     End Function
 
     Public Sub New()

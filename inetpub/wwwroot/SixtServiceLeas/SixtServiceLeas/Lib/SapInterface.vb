@@ -12,6 +12,16 @@ Public Class SapInterface
 
             Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
+            If VehicleRegistrations Is Nothing Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "VehicleRegistrations: Request enthaelt ungueltige Daten."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
+
             For Each item As VehicleRegistrationZul In VehicleRegistrations
                 With item
                     Try
@@ -172,6 +182,16 @@ Public Class SapInterface
 
             Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
+            If VehicleRegistrations Is Nothing Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "VehicleRegistrations: Request enthaelt ungueltige Daten."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
+
             For Each item As VehicleRegistrationSonst In VehicleRegistrations
                 With item
                     Try
@@ -324,6 +344,16 @@ Public Class SapInterface
 
             Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
 
+            If VehicleRegistrations Is Nothing Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "VehicleRegistrations: Request enthaelt ungueltige Daten."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
+
             For Each item As VehicleRegistrationEndgVers In VehicleRegistrations
                 With item
                     Try
@@ -411,6 +441,16 @@ Public Class SapInterface
             Dim objS As New S()
 
             Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_SERVICE_AUFTR_001.GT_WEB", "I_KUNNR", strKUNNR)
+
+            If VehicleRegistrations Is Nothing Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "VehicleRegistrations: Request enthaelt ungueltige Daten."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
 
             For Each item As VehicleRegistrationTempVers In VehicleRegistrations
                 With item
@@ -617,32 +657,42 @@ Public Class SapInterface
         End Try
     End Function
 
-    Public Function InsertStatus(ByVal meldungen As Statusmeldungen) As Errors
-        Dim StatErrors As New Errors()
+    Public Function InsertStatus(ByVal VehicleRegistrations As VehicleRegs_Status) As Errors
+        Dim VehErrors As New Errors()
 
         Try
             Dim objS As New S()
 
             Dim impTable As DataTable = objS.AP.GetImportTableWithInit("Z_M_IMP_QMMA_SET_ZZUEBER_001.GT_IN")
 
-            For Each item As Statusmeldung In meldungen
+            If VehicleRegistrations Is Nothing Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "VehicleRegistrations: Request enthaelt ungueltige Daten."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
+
+            For Each item As VehicleRegistrationStatus In VehicleRegistrations
                 With item
                     Try
                         Dim dr As DataRow = impTable.NewRow()
 
-                        If String.IsNullOrEmpty(.Meldungsnummer) Then Throw New Exception("Meldungsnummer: Pflichtfeld enthaelt keinen Wert.")
-                        dr("QMNUM") = .Meldungsnummer
-                        If String.IsNullOrEmpty(.Status) Then Throw New Exception("Status: Pflichtfeld enthaelt keinen Wert.")
-                        dr("MNCOD") = .Status
+                        If String.IsNullOrEmpty(.StatusNr) Then Throw New Exception("StatusNr: Pflichtfeld enthaelt keinen Wert.")
+                        dr("QMNUM") = .StatusNr
+                        If String.IsNullOrEmpty(.Sart) Then Throw New Exception("Sart: Pflichtfeld enthaelt keinen Wert.")
+                        dr("MNCOD") = .Sart
 
                         impTable.Rows.Add(dr)
 
                     Catch InnerEx As Exception
-                        Dim tmpStatErr As New _Error()
+                        Dim VehRegErr As New _Error()
 
-                        tmpStatErr.id = .Meldungsnummer
-                        tmpStatErr.message = InnerEx.Message
-                        StatErrors.Add(tmpStatErr)
+                        VehRegErr.id = .StatusNr
+                        VehRegErr.message = InnerEx.Message
+                        VehErrors.Add(VehRegErr)
 
                     End Try
                 End With
@@ -657,10 +707,10 @@ Public Class SapInterface
 
             If errTable IsNot Nothing Then
                 For Each dRow As DataRow In errTable.Rows
-                    Dim tmpStatErr As New _Error()
-                    tmpStatErr.id = ""
-                    tmpStatErr.message = dRow("Text").ToString
-                    StatErrors.Add(tmpStatErr)
+                    Dim VehRegErr As New _Error()
+                    VehRegErr.id = ""
+                    VehRegErr.message = dRow("Text").ToString
+                    VehErrors.Add(VehRegErr)
                 Next
             End If
 
@@ -668,7 +718,7 @@ Public Class SapInterface
             Throw New Exception("WMInsertStatus, Fehler beim Import:  " & ex.Message)
         End Try
 
-        Return StatErrors
+        Return VehErrors
     End Function
 
     Private Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String
