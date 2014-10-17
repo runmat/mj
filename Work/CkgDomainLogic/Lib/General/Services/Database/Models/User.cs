@@ -33,6 +33,8 @@ namespace CkgDomainLogic.General.Database.Models
         
         public int FailedLogins { get; set; }
 
+        public string UrlRemoteLoginKey { get; set; }
+
         
         #region User Security Rules
 

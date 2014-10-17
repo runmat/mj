@@ -3893,6 +3893,7 @@
     <Content Include="Views\Finance\Mahnstop\MahnstopSuche.cshtml" />
     <Content Include="Views\Finance\Mahnstop.cshtml" />
     <Content Include="Views\Finance\Mahnstop\Partial\MahnstopEditForm.cshtml" />
+    <Content Include="Views\Xaris\Index.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
