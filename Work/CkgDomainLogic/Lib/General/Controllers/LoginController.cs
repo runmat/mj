@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Services;
 using MvcTools.Web;
 using CkgDomainLogic.General.Contracts;
@@ -27,9 +28,24 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult Index()
         {
+            if (LogonContext != null)
+                LogonContext.MvcEnforceRawLayout = false;
+
             CaptchaGenerate();
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Kontakt()
+        {
+            return View();
+        }
+
+        [CkgApplication]
+        public ActionResult Impressum()
+        {
+            return View();
         }
 
         static void CaptchaGenerate()
@@ -66,6 +82,8 @@ namespace CkgDomainLogic.General.Controllers
 
             if (ModelState.IsValid)
             {
+                model.MaintenanceInfo = ViewModel.MaintenanceInfo;
+
                 if (!model.ModePasswordReset)
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
@@ -84,7 +102,8 @@ namespace CkgDomainLogic.General.Controllers
                         return new EmptyResult();
 
                     // send e-mail with password reset link
-                    ViewModel.TrySendPassordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
+                    if (userEmail.IsNotNullOrEmpty())
+                        ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
 
                     if (ModelState.IsValid)
                     {
@@ -142,7 +161,7 @@ namespace CkgDomainLogic.General.Controllers
                 // change password successful!
                 var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
                     
-                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword, false);
+                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
                 if (LogonContext.User != null)
                     LogonContext.User.Password = encryptedPassword;
 
@@ -158,12 +177,16 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult PasswordPrecheck(string password)
         {
-            var localizedPasswordValidationErrorMessages = ViewModel.ValidatePasswordAgainstRules(password);
+            List<string> localizedPasswordValidationErrorMessages;
+            List<string> localizedPasswordRuleMessages;
+
+            ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
 
             return Json(new
                             {
                                 passwordRuleCount = ViewModel.PasswordRuleCount, 
-                                localizedPasswordValidationErrorMessages
+                                localizedPasswordValidationErrorMessages,
+                                localizedPasswordRuleMessages
                             });
         }
     }

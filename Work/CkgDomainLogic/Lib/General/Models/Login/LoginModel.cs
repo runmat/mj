@@ -27,6 +27,8 @@ namespace CkgDomainLogic.General.Models
         [LocalizedDisplay(LocalizeConstants.CaptchaTextToValidate)]
         public string CaptchaText { get; set; }
 
+        public MaintenanceResult MaintenanceInfo { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

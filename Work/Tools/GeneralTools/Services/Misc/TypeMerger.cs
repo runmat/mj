@@ -408,7 +408,7 @@ namespace GeneralTools.Services
         }
 
         /// <summary>
-        /// Define fields based on the list of PropertyDescriptors
+        /// Define fields CKG.Based on the list of PropertyDescriptors
         /// </summary>
         private static FieldBuilder[] BuildFields(TypeBuilder typeBuilder, PropertyDescriptor[] pdc)
         {

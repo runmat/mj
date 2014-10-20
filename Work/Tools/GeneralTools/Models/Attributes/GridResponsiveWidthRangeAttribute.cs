@@ -11,7 +11,7 @@ namespace GeneralTools.Models
         public string CssClassName { get { return Visibility.ToString("F").ToLowerAndHyphens(); } }
 
         /// <summary>
-        /// Responsive Grid Column visibility based on css media tags
+        /// Responsive Grid Column visibility CKG.Based on css media tags
         /// </summary>
         /// <param name="visibility">Smartphone, Tablet or Workstation</param>
         public GridResponsiveVisibleAttribute(GridResponsive visibility)

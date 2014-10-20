@@ -2,7 +2,7 @@
 
 <div id="DivLogin">
     @using (Ajax.BeginForm("LoginForm", "Login", null,
-                           new MvcAjaxOptions { UpdateTargetId = "DivLogin", OnComplete = "AjaxFormLoginComplete();" }, 
+                           new MvcAjaxOptions { UpdateTargetId = "DivLogin", OnComplete = "AjaxFormLoginComplete();" },
                            new { @class = "no-loading-indicator form-vertical login-form", id = "AjaxFormLogin" }))
     {
         @Html.HiddenFor(m => m.ModePasswordReset)
@@ -15,9 +15,24 @@
 
                  @if (Model.IsValid)
                  {
-                     <div class="alert alert-info">
+                     <div id="login-loader" class="alert alert-info hide">
                          @Html.Win8Loader() @Localize.LoginInProcess 
                      </div>
+                     
+                     if (Model.MaintenanceInfo != null && Model.MaintenanceInfo.MessagesToConfirmAvailable)
+                     {
+                         <div id="login-messages-to-confirm" class="alert alert-info no-padding">
+                             <div class="padding-10">
+                                @Html.Partial("Partial/MaintenanceHintsInformationToConfirm", Model.MaintenanceInfo)
+
+                                <div class="form-actions no-bottom-margin">
+                                    <button onclick="RedirectFromLoginPage();" class="btn blue pull-right">
+                                        <i class="icon-chevron-right m-icon-white"></i> @Localize.LoginUnderstoodLoginNow
+                                    </button>            
+                                </div>
+                             </div>
+                         </div>
+                     }
                  }
                  else
                  {
@@ -27,13 +42,12 @@
 
                      <div class="form-actions">
                          <button type="submit" class="btn blue pull-right">
-                             Login <i class="m-icon-swapright m-icon-white"></i>
+                             <i class="icon-chevron-right m-icon-white"></i> Login
                          </button>            
                      </div>
 
                      <div class="forget-password">
-                         <h4>@Localize.PasswordForgottenQuestion</h4>
-                         <p>@Localize.PasswordResetLinkHintStart <a href="javascript:RequestSwitchMode(true);" id="forget-password">@Localize.PasswordResetLinkHintEnd</a></p>
+                         <h4><a href="javascript:RequestSwitchMode(true);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.PasswordForgottenQuestion</a></h4>
                      </div>
                  }
              </div>
@@ -42,7 +56,7 @@
         if (Model.ModePasswordReset)
         {
             <div id="passworResetDiv">
-                <h3 class="form-title">@Localize.PasswordReset</h3>
+                <h3 class="form-title smaller">@Localize.PasswordRequestNew</h3>
 
                 @if (Model.IsValid)
                 {
@@ -53,7 +67,7 @@
                 }
                 else
                 {
-                    @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-envelope")
+                    @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-user")
 
                     <div class="captcha-wrapper">
                         <img src="~/Shared/Captcha?id=@Guid.NewGuid()" alt="captcha" class="captcha-image" />
@@ -66,34 +80,42 @@
                     
                     <div class="form-actions">
                         <button type="submit" class="btn blue pull-right">
-                            @Localize.PasswordReset <i class="m-icon-swapright m-icon-white"></i>
+                            <i class="icon-chevron-right m-icon-white"></i> @Localize.PasswordRequestNew 
                         </button>            
                     </div>
                 }
 
                 <div class="forget-password margin-top-10">
-                    <p>@Localize.LoginToYourAccountLinkHintStart <a href="javascript:RequestSwitchMode(false);" id="forget-password">@Localize.LoginToYourAccountLinkHintEnd</a></p>
+                    <h4><a href="javascript:RequestSwitchMode(false);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.Login</a></h4>
                 </div>
             </div>
         }
-
+        
         <script type="text/javascript">
 
             _modePasswordReset = @Model.ModePasswordReset.ToString().ToLower();
             _modeCaptchaReset = @Model.ModeCaptchaReset.ToString().ToLower();
             _modelIsValid = @Model.IsValid.ToString().ToLower();
+            _modelMessagesToConfirmAvailable = @((Model.MaintenanceInfo != null && Model.MaintenanceInfo.MessagesToConfirmAvailable).ToString().ToLower());
 
             if (!_modeCaptchaReset)
                 AutoFocusDelayed('UserName');
             $("#ModeCaptchaReset").val(false);
-
+            
             if (_modelIsValid) {
                 if (!_modePasswordReset && !_modeCaptchaReset) {
-                    var redirectUrl = unescape('@Model.RedirectUrl');
-                    redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
-                    //alert(redirectUrl);
-                    location.replace(redirectUrl);
+                    if (!_modelMessagesToConfirmAvailable) {
+                        RedirectFromLoginPage();
+                    }
                 }
+            }
+            
+            function RedirectFromLoginPage() {
+                $("#login-messages-to-confirm").hide();
+                $("#login-loader").show();
+                var redirectUrl = unescape('@Model.RedirectUrl');
+                redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
+                location.replace(redirectUrl);
             }
 
             function RequestSwitchMode(modeResetPassword) {
@@ -106,6 +128,6 @@
                 $("#AjaxFormLogin").submit();
                 return false;
             }
-        </script>
+        </script>    
     }
 </div>
