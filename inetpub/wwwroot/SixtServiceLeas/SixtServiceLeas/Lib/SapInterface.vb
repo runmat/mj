@@ -138,7 +138,7 @@ Public Class SapInterface
                     Catch InnerEx As Exception
                         Dim VehRegErr As New _Error()
 
-                        VehRegErr.id = .Referenz1
+                        VehRegErr.id = .Referenz1 & ";" & .SixtAuftragsnummer
                         VehRegErr.message = InnerEx.Message
                         VehErrors.Add(VehRegErr)
 
@@ -300,7 +300,7 @@ Public Class SapInterface
                     Catch InnerEx As Exception
                         Dim VehRegErr As New _Error()
 
-                        VehRegErr.id = .Referenz1
+                        VehRegErr.id = .Referenz1 & ";" & .SixtAuftragsnummer
                         VehRegErr.message = InnerEx.Message
                         VehErrors.Add(VehRegErr)
 
@@ -398,7 +398,7 @@ Public Class SapInterface
                     Catch InnerEx As Exception
                         Dim VehRegErr As New _Error()
 
-                        VehRegErr.id = .Referenznummer
+                        VehRegErr.id = .Referenznummer & ";" & .SixtAuftragsnummer
                         VehRegErr.message = InnerEx.Message
                         VehErrors.Add(VehRegErr)
 
@@ -516,7 +516,7 @@ Public Class SapInterface
                     Catch InnerEx As Exception
                         Dim VehRegErr As New _Error()
 
-                        VehRegErr.id = .Referenznummer
+                        VehRegErr.id = .Referenznummer & ";" & .SixtAuftragsnummer
                         VehRegErr.message = InnerEx.Message
                         VehErrors.Add(VehRegErr)
 
@@ -607,28 +607,30 @@ Public Class SapInterface
 
             For Each dRow As DataRow In datRows
                 Dim newRow As DataRow = tmpTable.NewRow()
+
                 Select Case dRow("ZFCODE").ToString
                     Case "001"
-                        newRow("id") = dRow("REFERENZ1").ToString
+                        newRow("id") = dRow("REFERENZ1").ToString & ";" & dRow("SIXTAUFNR").ToString
                         newRow("Message") = "Es existiert kein Datensatz zu diesem Vertrag - keine Datenänderung /-löschung"
                         tmpTable.Rows.Add(newRow)
                     Case "002"
-                        newRow("id") = dRow("REFERENZ1").ToString
+                        newRow("id") = dRow("REFERENZ1").ToString & ";" & dRow("SIXTAUFNR").ToString
                         newRow("Message") = "Zum Vertrag existiert noch ein unerledigter Datensatz mit gleichem Auftragsgrund - keine Datenübernahme"
                         tmpTable.Rows.Add(newRow)
                     Case "003"
-                        newRow("id") = dRow("REFERENZ1").ToString
+                        newRow("id") = dRow("REFERENZ1").ToString & ";" & dRow("SIXTAUFNR").ToString
                         newRow("Message") = "Änderungskennzeichen unbekannt - keine Datenübernahme"
                         tmpTable.Rows.Add(newRow)
                     Case "008"
-                        newRow("id") = dRow("REFERENZ1").ToString
+                        newRow("id") = dRow("REFERENZ1").ToString & ";" & dRow("SIXTAUFNR").ToString
                         newRow("Message") = "Fehler bei Insert  - keine Datenübernahme"
                         tmpTable.Rows.Add(newRow)
                     Case "009"
-                        newRow("id") = dRow("REFERENZ1").ToString
+                        newRow("id") = dRow("REFERENZ1").ToString & ";" & dRow("SIXTAUFNR").ToString
                         newRow("Message") = "Auftrag kann nicht mehr storniert werden"
                         tmpTable.Rows.Add(newRow)
                 End Select
+
             Next
         End If
 
