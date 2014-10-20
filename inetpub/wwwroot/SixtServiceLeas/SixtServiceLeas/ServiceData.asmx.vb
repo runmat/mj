@@ -13,7 +13,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_Zul, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_Zul: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -38,7 +44,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_SonstDL, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_SonstDL: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -63,7 +75,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_EndgVers, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_EndgVers: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -88,7 +106,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_TempVers, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_TempVers: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -137,7 +161,7 @@ Public Class ServiceData
 
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMGetFreisetzung_Status, User oder Password nicht korrekt.")
+                Return "WMGetFreisetzung_Status: User oder Password nicht korrekt."
             End If
 
             Dim SetData As New SapInterface()
@@ -162,7 +186,13 @@ Public Class ServiceData
 
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertStatus, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertStatus: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
