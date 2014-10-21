@@ -4119,6 +4119,16 @@
     <Content Include="Views\Equi\Mahnsperre\MahnsperreGrid.cshtml" />
     <Content Include="Views\Equi\Mahnsperre\MahnsperreSuche.cshtml" />
     <Content Include="Views\Equi\Mahnsperre\Partial\MahnsperreEditForm.cshtml" />
+    <Content Include="Views\Equip\VersandAbweichungen.cshtml" />
+    <Content Include="Views\Equip\VersandAbweichungen\Grid.cshtml" />
+    <Content Include="Views\Equip\VersandAbweichungen\MemoEditForm.cshtml" />
+    <Content Include="Views\Equip\VersandAbweichungen\Suche.cshtml" />
+    <Content Include="Views\Equip\VersandBeauftragungen.cshtml" />
+    <Content Include="Views\Equip\VersandBeauftragungen\Grid.cshtml" />
+    <Content Include="Views\Equip\VersandBeauftragungen\Suche.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge\Grid.cshtml" />
+    <Content Include="Views\Equip\EinAusgaenge\Suche.cshtml" />
     <Content Include="Views\Logs\PageVisits.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\DetailGrid.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItemsDetail.cshtml" />

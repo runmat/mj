@@ -799,6 +799,9 @@ span.m-wrap {
     min-height: 20px;
     border: 0px solid #f0f0f0;
 }
+span.m-wrap.font-normal { font-weight: normal!important; }
+.font-bold { font-weight: bold; }
+
 .checker.disabled {
     display: block;
     padding-top: 7px;
@@ -1121,6 +1124,8 @@ i.pdf-export
 }
 .fontItalic {
     font-style: italic;
+
+.t-grid-filter { display: none; }.t-grid-filter { display: none; }
 }
 
 
