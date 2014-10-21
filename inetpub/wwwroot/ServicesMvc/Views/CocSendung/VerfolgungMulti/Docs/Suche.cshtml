@@ -9,7 +9,7 @@
             @Html.FormValidationSummary()
             
            
-            @Html.FormDateRangePickerFor(m => m.DatumRange, new { col = "left" }, new[] { "!far-past", "!future" })
+            @Html.FormDateRangePickerFor(m => m.DatumRangeDocs, new { col = "left" }, new[] { "!far-past", "!future" })
 
             @Html.FormCheckBoxFor(m => m.NurMitSendungsID, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
 

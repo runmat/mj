@@ -283,10 +283,10 @@ namespace CkgDomainLogic.CoC.Services
 
             SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if (model.DatumRange.IsSelected)
+            if (model.DatumRangeIds.IsSelected)
             {
-                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRange.StartDate);
-                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRange.EndDate);
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRangeIds.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRangeIds.EndDate);
             }
 
             SAP.SetImportParameter("I_CHECK_TRACK", "X");
@@ -312,10 +312,10 @@ namespace CkgDomainLogic.CoC.Services
 
             SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if (model.DatumRange.IsSelected)
+            if (model.DatumRangeDocs.IsSelected)
             {
-                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRange.StartDate);
-                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRange.EndDate);
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRangeDocs.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRangeDocs.EndDate);
             }
 
             if (model.NurMitSendungsID)
