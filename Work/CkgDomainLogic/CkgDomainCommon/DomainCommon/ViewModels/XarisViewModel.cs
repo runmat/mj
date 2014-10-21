@@ -21,9 +21,11 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         private static string ExpirationToken { get { return UserSecurityService.UrlRemoteEncryptHourAndDate(); } }
 
-        private static string XarisRootUrl { get { return ConfigurationManager.AppSettings["XarisInventorySystemUrl"]; } }
+        private static string XarisRootUrl { get { return ConfigurationManager.AppSettings["XarisSepiaRootUrl"]; } }
 
-        public string XarisUrl { get { return string.Format("{0}/?ra={1}&rb={2}", XarisRootUrl, UserNameHashed, ExpirationToken); } }
+        private static string XarisAppRelativeUrl { get { return ConfigurationManager.AppSettings["XarisSepiaRelativeUrl"]; } }
+
+        public string XarisUrl { get { return string.Format("{0}{1}?ra={2}&rb={3}", XarisRootUrl, XarisAppRelativeUrl, UserNameHashed, ExpirationToken); } }
 
 
         public void DataInit()
