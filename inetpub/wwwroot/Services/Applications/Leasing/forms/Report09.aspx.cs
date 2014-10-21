@@ -274,7 +274,6 @@ namespace Leasing.forms
                 lblPerso.Text = dRows[0]["PERSO"].ToString();
                 lblGewerbe.Text = dRows[0]["GEWERBE"].ToString();
                 lblEinzug.Text = dRows[0]["EINZUG"].ToString();
-                lblKarte.Text = dRows[0]["KARTE"].ToString();
                 lblVollst.Text = dRows[0]["VOLLST"].ToString();
       
 
