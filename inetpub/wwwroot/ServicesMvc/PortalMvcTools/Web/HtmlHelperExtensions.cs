@@ -599,7 +599,7 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormDateRangePickerFor<TModel>(this HtmlHelper<TModel> html,
                                                                 Expression<Func<TModel, DateRange>> dateRangeExpression,
-                                                                object controlHtmlAttributes = null)
+                                                                object controlHtmlAttributes = null, string[] dateRangeGroupsToExclude = null)
         {
             //var dateRangeValue = (bool)GetPropertyValue(typeof(TModel), html.ViewData.Model, dateRangeExpression);
             var dateRangePropertyName = dateRangeExpression.GetPropertyName();
@@ -612,11 +612,8 @@ namespace PortalMvcTools.Web
                 ControlHtmlEndDate = html.Hidden(dateRangePropertyName + ".EndDate", null, controlHtmlAttributes),
                 IconCssClass = null,
 
-                //UseDateRangeValue = useDateRangeValue,
                 DateRangeProperty = dateRangePropertyName,
-
-                //DateRangeStart = dateRangeStartValue,
-                //DateRangeEnd = dateRangeEndValue,
+                DateRangeGroupsToExclude = dateRangeGroupsToExclude,
             };
 
             var innerHtml = html.Partial("Partial/FormControls/Form/DateRangePicker", innerModel);

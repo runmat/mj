@@ -4151,6 +4151,11 @@
     <Content Include="Views\Finance\Pruefschritte\PruefschritteGrid.cshtml" />
     <Content Include="Views\Finance\Pruefschritte.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\ZulassungAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\CocSendung\MultiVerfolgung.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Id\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Id\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Suche.cshtml" />
     <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Login\Partial\Footer.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />

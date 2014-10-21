@@ -67,7 +67,7 @@
         }
 
         if (hasOptions) {
-            if(typeof options.locale == 'object') {
+            if (typeof options.locale == 'object') {
                 $.each(localeObject, function (property, value) {
                     localeObject[property] = options.locale[property] || value;
                 });
@@ -81,11 +81,11 @@
                   '<div class="range_inputs">' +
                     '<div>' +
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
-                      '<input class="m-wrap input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                      '<input class="m-wrap input-mini datepicker" type="text" name="daterangepicker_start"/>' +
                     '</div>' +
                     '<div>' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
-                      '<input class="m-wrap input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                      '<input class="m-wrap input-mini datepicker" type="text" name="daterangepicker_end"/>' +
                     '</div>' +
                     '<button class="btn " disabled="disabled">' + this.locale.applyLabel + '</button>' +
                   '</div>' +
@@ -95,6 +95,8 @@
         this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
         this.container = $(DRPTemplate).appendTo(this.parentEl);
+
+        //setTimeout(function() { $(".datepicker").datepicker(); }, 1000);
 
         if (hasOptions) {
 
@@ -153,8 +155,7 @@
                     // If the end of the range is before the minimum (if min is set) OR
                     // the start of the range is after the max (also if set) don't display this
                     // range option.
-                    if ((this.minDate && end < this.minDate) || (this.maxDate && start > this.maxDate))
-                    {
+                    if ((this.minDate && end < this.minDate) || (this.maxDate && start > this.maxDate)) {
                         continue;
                     }
 
@@ -240,6 +241,10 @@
         this.updateView();
         this.updateCalendars();
 
+        this.container.find('input[name=daterangepicker_start]').change(function () {
+            //alert($(this).val());
+            this.startDate = $(this).val();
+        });
     };
 
     DateRangePicker.prototype = {
@@ -248,7 +253,7 @@
 
         mousedown: function (e) {
             e.stopPropagation();
-            e.preventDefault();
+            //e.preventDefault();
         },
 
         updateView: function () {
@@ -485,32 +490,28 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-            
+
             // add empty cell for week number
             if (this.showWeekNumbers)
                 html += '<th></th>';
-            
-            if (!minDate || minDate < calendar[1][1])
-            {
+
+            if (!minDate || minDate < calendar[1][1]) {
                 html += '<th class="prev available"><i class="icon-angle-left"></i></th>';
             }
-            else
-            {
-                 html += '<th></th>';
+            else {
+                html += '<th></th>';
             }
             html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
-            if (!maxDate || maxDate > calendar[1][1])
-            {
+            if (!maxDate || maxDate > calendar[1][1]) {
                 html += '<th class="next available"><i class="icon-angle-right"></i></th>';
             }
-            else
-            {
-                 html += '<th></th>';
+            else {
+                html += '<th></th>';
             }
 
             html += '</tr>';
             html += '<tr>';
-            
+
             // add week number label
             if (this.showWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
@@ -525,27 +526,25 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
-                
+
                 // add week number
                 if (this.showWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
-                
+
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
 
                     // Normalise the time so the comparison won't fail
-                    selected.setHours(0,0,0,0);
+                    selected.setHours(0, 0, 0, 0);
 
-                    if ( (minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate))
-                    {
+                    if ((minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate)) {
                         cname = 'off disabled';
                     }
-                    else if (calendar[row][col].equals(selected))
-                    {
+                    else if (calendar[row][col].equals(selected)) {
                         cname += 'active';
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
@@ -562,12 +561,12 @@
     };
 
     $.fn.daterangepicker = function (options, cb) {
-      this.each(function() {
-        var el = $(this);
-        if (!el.data('daterangepicker'))
-          el.data('daterangepicker', new DateRangePicker(el, options, cb));
-      });
-      return this;
+        this.each(function () {
+            var el = $(this);
+            if (!el.data('daterangepicker'))
+                el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        });
+        return this;
     };
 
 } (window.jQuery);

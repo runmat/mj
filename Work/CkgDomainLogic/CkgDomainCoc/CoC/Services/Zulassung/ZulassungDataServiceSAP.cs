@@ -266,6 +266,82 @@ namespace CkgDomainLogic.CoC.Services
 
             return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
         }
+
+        #endregion        
+        
+
+        #region Sendungsaufträge, nach ID
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeId(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.DatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRange.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRange.EndDate);
+            }
+
+            if (model.Referenz.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_POOLNR", model.Referenz);
+
+            if (model.SendungsID.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_TRACK", model.SendungsID);
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
+
+        #endregion
+
+
+        #region Sendungsaufträge, nach Docs
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeDocs(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.FahrgestellNummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_CHASSIS_NUM", model.FahrgestellNummer);
+
+            if (model.ZBIINummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZBRIEF", model.ZBIINummer);
+
+            if (model.VertragsNummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZREFNR", model.VertragsNummer);
+
+            if (model.Kennzeichen.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZKENN", model.Kennzeichen);
+
+            if (model.SendungsID.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_TRACK", model.SendungsID);
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
+
         #endregion
     }
 }
