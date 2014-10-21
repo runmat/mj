@@ -80,10 +80,6 @@ Partial Public Class Change03_2
         End If
     End Sub
 
-    Private Sub cmdContinue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Response.Redirect("Change03_3.aspx?AppID=" & CStr(Session("AppID")))
-    End Sub
-
     Private Sub cmdSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSearch.Click
         Dim row As DataRow
         Dim resultTable As New DataTable()
@@ -181,10 +177,6 @@ Partial Public Class Change03_2
             Session("objZulassung") = objZulassung
             FillGrid(0)
         End If
-    End Sub
-
-    Private Sub cmdNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        txtLeasingnummerErfassung.Text = ""
     End Sub
 
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
