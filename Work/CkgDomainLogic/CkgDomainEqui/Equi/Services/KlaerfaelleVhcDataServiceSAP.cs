@@ -25,7 +25,7 @@ namespace CkgDomainLogic.Equi.Services
 
         private IEnumerable<KlaerfallVhc> LoadKlaerfaelleVhcFromSap()
         {
-            var sapList = Z_M_VHC_KLAERFAELLE_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KONZS", LogonContext.KundenNr.ToSapKunnr());
+            var sapList = Z_M_VHC_KLAERFAELLE_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KONZS, I_VKORG", LogonContext.KundenNr.ToSapKunnr(), "1510");
 
             return AppModelMappings.Z_M_VHC_KLAERFAELLE_001_GT_WEB_To_KlaerfallVhc.Copy(sapList);
         }
