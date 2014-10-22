@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.BodyCssClass = "login";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+@Html.Partial("Partial/Common") 
+
+<div class="content">
+    @Html.Partial("Partial/Logo") 
+    
+    <h3 class="page-title">@Localize.Contact </h3>
+
+    @Html.Partial("Partial/Kontakt")
+
+    <div class="forget-password">
+        <h4><a href="~/Login/Index" id="forget-password"> <i class="icon-chevron-right"></i> @Localize.Login</a></h4>
+    </div>
+
+    @Html.Partial("Partial/Footer") 
+</div>

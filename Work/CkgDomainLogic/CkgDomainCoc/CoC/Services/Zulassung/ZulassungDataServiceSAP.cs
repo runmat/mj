@@ -266,6 +266,67 @@ namespace CkgDomainLogic.CoC.Services
 
             return Z_DPM_GET_ZZSEND2.GT_WEB.GetExportList(SAP);
         }
+
+        #endregion        
+        
+
+        #region Sendungsaufträge, nach ID
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeId(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeId(SendungsAuftragIdSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.DatumRangeIds.IsSelected)
+            {
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRangeIds.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRangeIds.EndDate);
+            }
+
+            SAP.SetImportParameter("I_CHECK_TRACK", "X");
+            SAP.SetImportParameter("I_POOLGROUP", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
+
+        #endregion
+
+
+        #region Sendungsaufträge, nach Docs
+
+        public List<SendungsAuftrag> GetSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(GetSapSendungsAuftraegeDocs(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.DatumRangeDocs.IsSelected)
+            {
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.DatumRangeDocs.StartDate);
+                SAP.SetImportParameter("I_ZZLSDAT_BIS", model.DatumRangeDocs.EndDate);
+            }
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
+
         #endregion
     }
 }

@@ -299,10 +299,8 @@
                                             <asp:Label ID="lblKUNNR_SAP" runat="server" Visible="False"></asp:Label>
                                         </td>
                                         <td class="CellStyle">
-                                            Versich.Bestätigung:
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblKarte" runat="server"></asp:Label>
                                         </td>
                                         <td width="150">
                                             &nbsp;

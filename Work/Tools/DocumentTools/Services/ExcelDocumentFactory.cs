@@ -192,7 +192,6 @@ namespace DocumentTools.Services
         {
             var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet, doAlternatingRowStyle);
 
-            //xlsDoc.Workbook.Worksheets[0].PageSetup.Orientation = PageOrientationType.Landscape;
             if (landscapeOrientation)
                 foreach (Aspose.Cells.Worksheet sheet in xlsDoc.Workbook.Worksheets)
                     sheet.PageSetup.Orientation = Aspose.Cells.PageOrientationType.Landscape;
@@ -203,19 +202,6 @@ namespace DocumentTools.Services
             pdfDoc.BindXML(ms, null);
 
             pdfDoc.Save(reportName + ".pdf", Aspose.Pdf.SaveType.OpenInAcrobat, HttpContext.Current.Response);
-
-            //
-            // Datei muss physikalisch gespeichert werden, damit die Bilddateien mit nach PDF konvertiert werden
-            //var tmpFilename = ConfigurationManager.AppSettings["ExcelPath"] + Guid.NewGuid() + ".xml";
-            //xlsDoc.Workbook.Save(tmpFilename, Aspose.Cells.FileFormatType.AsposePdf);
-
-            //var xmlDoc = new XmlDocument();
-            //xmlDoc.Load(tmpFilename);
-            //var pdfDoc = new Aspose.Pdf.Pdf { IsImagesInXmlDeleteNeeded = false, IsLandscape = landscapeOrientation };
-            //pdfDoc.BindXML(tmpFilename, null);
-            //File.Delete(tmpFilename);
-
-            //pdfDoc.Save(reportName + ".pdf", Aspose.Pdf.SaveType.OpenInAcrobat, httpResponse);
         }
 
         private static Aspose.Cells.WorkbookDesigner CreateDocument(DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle =true)
@@ -248,7 +234,7 @@ namespace DocumentTools.Services
 
         static void FillWorkbookDynamically(Aspose.Cells.Workbook wb, DataTable data, int colOffSet , int rowOffSet , bool doAlternatingRowStyle)
         {
-            var columnIndex = colOffSet;
+            var columnIndex = colOffSet; 
 
             var headerColor = System.Drawing.Color.LightGray;
             var alternateColor = System.Drawing.Color.FromArgb(245, 245, 245);
@@ -274,7 +260,7 @@ namespace DocumentTools.Services
                 foreach (DataRow row in data.Rows)
                 {
                     var cell = sheet.Cells[rowIndex, columnIndex];
-                    cell.PutValue(row[dc]);
+                    cell.PutValue(FormatCellForExport(dc.DataType, row[dc]));
                     if (dc.DataType == typeof(DateTime))
                         cell.Style.Custom = "dd.MM.yyyy";
                     if (new[] { typeof(Int32), typeof(Int64), typeof(Int16) }.Contains(dc.DataType))
@@ -295,6 +281,19 @@ namespace DocumentTools.Services
                 }
                 columnIndex ++;
             }
+        }
+
+        static object FormatCellForExport(Type type, object o)
+        {
+            if (type != typeof(string))
+                return o;
+
+            var s = (string)o;
+            s = s.Replace("<br>", " ");
+            s = s.Replace("<br/>", " ");
+            s = s.Replace("<br />", " ");
+
+            return s;
         }
 
         #endregion

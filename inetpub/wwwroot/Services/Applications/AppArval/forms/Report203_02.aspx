@@ -92,7 +92,6 @@
                                     Versicherungsbes.:
                                     </td>
                                     <td>
-                                    <asp:Label ID="lblKarte" runat="server"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr><td colspan="6"><asp:Label BackColor="#9BD4BE" runat="server" Width="100%" Height="1px"></asp:Label></td></tr>

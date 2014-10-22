@@ -11,47 +11,47 @@ namespace ServicesMvc.Controllers
     /// </summary>
     public partial class EquiController  
     {
-        public HalterabweichungenViewModel HalterabweichungenViewModel { get { return GetViewModel<HalterabweichungenViewModel>(); } }
+        public HalterAbweichungenViewModel HalterAbweichungenViewModel { get { return GetViewModel<HalterAbweichungenViewModel>(); } }
 
         [CkgApplication]
         public ActionResult Halterabweichungen()
         {
-            HalterabweichungenViewModel.LoadHalterabweichungen(ModelState);
+            HalterAbweichungenViewModel.LoadHalterabweichungen(ModelState);
 
-            return View(HalterabweichungenViewModel);
+            return View(HalterAbweichungenViewModel);
         }
 
         [GridAction]
         public ActionResult HalterabweichungenAjaxBinding()
         {
-            return View(new GridModel(HalterabweichungenViewModel.GridItems));
+            return View(new GridModel(HalterAbweichungenViewModel.GridItems));
         }
 
         [HttpPost]
         public ActionResult HalterabweichungenSelectAll()
         {
-            return Json(HalterabweichungenViewModel.GetFahrgestellnummern(), "text/plain");
+            return Json(HalterAbweichungenViewModel.GetFahrgestellnummern(), "text/plain");
         }
 
         [HttpPost]
         public ActionResult SaveHalterabweichungen(string selectedItems)
         {
-            HalterabweichungenViewModel.SaveHalterabweichungen(selectedItems, ModelState);
+            HalterAbweichungenViewModel.SaveHalterabweichungen(selectedItems, ModelState);
 
-            return PartialView("Halterabweichungen/HalterabweichungenGrid", HalterabweichungenViewModel);
+            return PartialView("Halterabweichungen/HalterabweichungenGrid", HalterAbweichungenViewModel);
         }
 
         [HttpPost]
         public ActionResult FilterGridHalterabweichungen(string filterValue, string filterColumns)
         {
-            HalterabweichungenViewModel.FilterHalterabweichungen(filterValue, filterColumns);
+            HalterAbweichungenViewModel.FilterHalterabweichungen(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
         public ActionResult ExportHalterabweichungenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = HalterabweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Halterabweichungen", dt);
 
             return new EmptyResult();
@@ -59,7 +59,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportHalterabweichungenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = HalterabweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Halterabweichungen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
