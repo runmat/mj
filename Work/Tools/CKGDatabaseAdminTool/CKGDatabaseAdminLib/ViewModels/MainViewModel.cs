@@ -38,6 +38,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _applicationBapiViewModel = value; SendPropertyChanged("ApplicationBapiViewModel"); }
         }
 
+        private BapiApplicationViewModel _bapiApplicationViewModel;
+        public BapiApplicationViewModel BapiApplicationViewModel
+        {
+            get { return _bapiApplicationViewModel; }
+            set { _bapiApplicationViewModel = value; SendPropertyChanged("BapiApplicationViewModel"); }
+        }
+
         private ApplicationCopyViewModel _applicationCopyViewModel;
         public ApplicationCopyViewModel ApplicationCopyViewModel
         {
@@ -137,6 +144,7 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
             ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
+            BapiApplicationViewModel = new BapiApplicationViewModel(this);
             ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
             FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
             BapiCheckViewModel = new BapiCheckViewModel(this);
