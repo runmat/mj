@@ -290,6 +290,7 @@ namespace CkgDomainLogic.CoC.Services
             }
 
             SAP.SetImportParameter("I_CHECK_TRACK", "X");
+            SAP.SetImportParameter("I_POOLGROUP", "X");
 
             SAP.Execute();
 

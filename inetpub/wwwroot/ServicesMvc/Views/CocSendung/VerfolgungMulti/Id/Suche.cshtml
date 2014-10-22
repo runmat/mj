@@ -8,7 +8,7 @@
             @Html.FormValidationSummary()
             
            
-            @Html.FormDateRangePickerFor(m => m.DatumRangeIds, new[] { "!far-past", "!future" })
+            @Html.FormDateRangePickerFor(m => m.DatumRangeIds, null, new[] { "!far-past", "!future" })
 
 
             @*@Html.FormRequiredFieldsSummary()*@
