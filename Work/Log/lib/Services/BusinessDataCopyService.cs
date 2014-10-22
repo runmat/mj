@@ -91,6 +91,27 @@ namespace LogMaintenance.Services
             return status.All(x => x);
         }
 
+        public static bool OptimizeTables(string serverType)
+        {
+            const string sapBapi = "sapbapi;";
+            const string elmah = "elmah_error;";
+            const string pageVisit = "pagevisit;";
+            const string optimizeTable = "OPTIMIZE TABLE {0}";
+
+            var commands = new List<string>
+                {
+                    string.Format(optimizeTable, sapBapi),
+                    string.Format(optimizeTable, elmah),
+                    string.Format(optimizeTable, pageVisit)
+                };
+
+            var status = from command in commands
+                         let result = ExecuteSqlCommand(CreateLogsDbContext(serverType), command, new object[0])
+                         select result;
+
+            return status.All(x => x);
+        }
+
         public static bool CreateElmahShortcutLandingpage(string serverType, string path)
         {
             const string html = "<html>\r\n\t<body>\r\n\t\t<table>\r\n{0}\r\n\t\t</table>\r\n\t</body></html>";
