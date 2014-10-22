@@ -600,6 +600,10 @@ Partial Public Class Login
         If Not (Request.UrlReferrer Is Nothing) Then
             urlReferrer = Request.UrlReferrer.ToString()
         End If
+        Dim requestReturnUrl As String = ""
+        If Not (Request("ReturnUrl") Is Nothing) Then
+            requestReturnUrl = Request("ReturnUrl").ToString()
+        End If
         Dim url As String = ""
         If Not (Request.Url Is Nothing) Then
             url = Request.Url.ToString()
@@ -607,7 +611,7 @@ Partial Public Class Login
 
         Dim userIsEmpty As Boolean = (Session("objUser") Is Nothing)
         Dim urlReferrerIsValid As Boolean = (urlReferrer <> "")
-        Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx"))
+        Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx") And Not requestReturnUrl.ToLower().Contains("servicesmvc"))
         Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
