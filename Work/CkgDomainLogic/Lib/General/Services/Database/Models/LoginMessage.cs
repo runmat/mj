@@ -45,7 +45,7 @@ namespace CkgDomainLogic.General.Database.Models
 
         // ReSharper restore InconsistentNaming
 
-        static string ConvertMessage(string message)
+        public static string ConvertMessage(string message)
         {
             message = message.NotNullOrEmpty();
             message = message.Replace("{", "<");

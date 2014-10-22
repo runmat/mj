@@ -30,6 +30,9 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string MvcSelectionType { get; set; }
 
+        public string SelfAdministrationInfo { get; set; }
+        public string SelfAdministrationContact { get; set; }
+
 
         #region Password Settings
 
@@ -47,6 +50,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         [Obsolete]
         public int NewPwdAfterNDays { get; set; }
+
+        public bool PwdDontSendEmail { get; set; }
 
 
         #region Interface IPasswordSecurityRuleDataProvider

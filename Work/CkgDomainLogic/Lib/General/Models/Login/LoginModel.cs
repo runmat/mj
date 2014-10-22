@@ -18,6 +18,8 @@ namespace CkgDomainLogic.General.Models
 
         public bool ModePasswordReset { get; set; }
 
+        public string PasswordResetCustomerAdminInfo { get; set; }
+
         public bool ModeCaptchaReset { get; set; }
 
         public bool IsValid { get; set; }

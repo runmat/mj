@@ -60,10 +60,20 @@
 
                 @if (Model.IsValid)
                 {
-                     <div class="alert alert-success">
-                         <i class="icon-envelope margin-right-5"></i>
-                         @Localize.PasswordResetLinkEmailWasSent
-                     </div>
+                    if (Model.PasswordResetCustomerAdminInfo.IsNotNullOrEmpty())
+                    {
+                        <div class="alert alert-warning">
+                            <i class="icon-info margin-right-5"></i>
+                            @(new HtmlString(Model.PasswordResetCustomerAdminInfo))
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <i class="icon-envelope margin-right-5"></i>
+                            @Localize.PasswordResetLinkEmailWasSent
+                        </div>
+                    }
                 }
                 else
                 {
