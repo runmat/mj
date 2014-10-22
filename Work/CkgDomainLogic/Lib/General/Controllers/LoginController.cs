@@ -102,11 +102,14 @@ namespace CkgDomainLogic.General.Controllers
                         return new EmptyResult();
 
                     // send e-mail with password reset link
-                    if (userEmail.IsNotNullOrEmpty())
+                    var passwordResetCustomerAdminInfo = ViewModel.TryGetPasswordResetCustomerAdminInfo(storedUserName);
+                    var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
+                    if (userEmail.IsNotNullOrEmpty() && mailSendValid)
                         ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
 
                     if (ModelState.IsValid)
                     {
+                        model.PasswordResetCustomerAdminInfo = passwordResetCustomerAdminInfo;
                         model.EmailForPasswordReset = userEmail;
                         SetViewModel<LoginViewModel>(null);
                     }
