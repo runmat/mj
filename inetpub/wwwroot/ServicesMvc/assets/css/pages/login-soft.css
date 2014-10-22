@@ -7,30 +7,59 @@ Login page
   background-color: #99AABD !important;
 }
 
+.login .logo-header {
+    background: url(../../img/bg-white-lock-header.png) repeat-x 0 0;
+    margin-top: -20px;
+    margin-left: -30px;
+    margin-right: -30px;
+    padding-bottom: 1px;
+    padding-top: 7px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 .login .logo {
-  width: 247px;
-  margin: 0 auto;   
-  margin-top:60px;
   padding: 15px;
-  text-align: center;
+  text-align: left;
 }  
+.logo.text {
+    padding: 5px;
+    padding-left: 0;
+    font-size: 14pt;
+    font-weight: normal;
+    white-space: nowrap;
+}
+.logo.text span.logo-title {
+    color: red;
+}
+.logo.text span.logo-name {
+    color: #606060;
+}
 
 
 .login .content {
   background: url(../../img/bg-white-lock.png) repeat;
   width: 291px;
   margin: 0 auto; 
+  margin-top:60px;
   margin-bottom: 0px;
   padding: 30px;  
   padding-top: 20px;  
   padding-bottom: 15px;  
 }
+  
+.login .content .language-flags {
+    margin-top: -25px;
+    margin-bottom: 10px;
+    margin-left: 240px;
+}
 
 .login .content h3 {
-  color: #eee;
+    color: #eee;
+    font-size: 1.8em;
 }
 .login .content h4  {
-  color: #eee;
+    color: #eee;
 }
 
 .login .content p,
@@ -67,8 +96,13 @@ Login page
 }
 
 .login .content .form-title {
-  font-weight: 300;
+  font-weight: 600;
+  margin-top: 35px;
   margin-bottom: 25px;
+  color: white;
+}
+.login .content .form-title.smaller {
+    font-size: 1.70em!important;
 }
 
 .login .content .form-actions {
@@ -103,7 +137,8 @@ Login page
 }
 
 .login .content .forget-password {
-  margin-top: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .login .content .create-account {
@@ -177,9 +212,41 @@ input.m-wrap, select.m-wrap {
     padding: 2px;
 }
 
-  
-.login .content .language-flags {
-    margin-top: -10px;
-    margin-bottom: 10px;
-    margin-left: 240px;
+
+#forget-password {
+    color: white!important;    
+}
+#forget-password i.icon-chevron-right {
+    font-size: 0.85em;
+}
+
+.footer-link {
+    float: right;
+    font-size: 0.8em;
+    color: #dfdfdf;
+    display: block;
+    line-height: 20px;
+    margin-top: -5px;
+    margin-left: 10px;
+}
+
+.language-menu {
+    display: block;
+    margin-bottom: 0;
+    padding-left: 40px;
+    width: 35px;
+}
+.dropdown-menu {
+    min-width: 45px;
+}
+.dropdown a {
+    padding-left: 5px;
+}
+
+
+.no-top-margin {
+  margin-top: 0 !important;
+}
+.no-bottom-margin {
+  margin-bottom: 0 !important;
 }

@@ -1,0 +1,195 @@
+﻿@model CkgDomainLogic.CoC.ViewModels.SendungenViewModel
+
+<h3 class="page-title" id="headerTitle">Sendungsverfolgung <small>Report</small></h3>
+
+@Html.IeWarning(8)
+@Html.SpanAlert("Message")
+
+<div class="tabbable tabbable-custom margin-top-20">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#" id="tabIds" data-toggle="tab">Nach Sendungs-ID</a></li>
+        <li><a href="#" id="tabDocs" data-toggle="tab">Nach Dokumentendaten</a></li>
+    </ul>
+</div>
+
+@using (Html.FormSearchBox())
+{
+    <div id="searchBoxIds" class="divIds">
+        @Html.Partial("VerfolgungMulti/Id/Suche", Model.SendungsAuftragIdSelektor)
+    </div>
+    <div id="searchBoxDocs" class="divDocs hide">
+        @Html.Partial("VerfolgungMulti/Docs/Suche", Model.SendungsAuftragDocsSelektor)
+    </div>
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="searchResultIds" class="divIds">
+        <div id="divGridId"></div>
+    </div>
+    <div id="searchResultDocs" class="divDocs hide">
+        <div id="divGridDocs"></div>
+    </div>
+}
+
+<style type="text/css">
+    .tabbable-custom {
+        margin-top: 25px!important;
+        margin-bottom: 0!important;
+        border-bottom: 0!important;
+    }
+    .form-horizontal {
+        padding-top: 10px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        InitTabs();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function InitTabs() {
+        $("ul.nav-tabs li a").click(function () {
+            var hrefId = $(this).attr("id");
+
+            SearchResultsHide();
+            SearchFormShow();
+
+            if (hrefId == "tabIds") {
+                $(".divDocs").hide();
+                $(".divIds").show();
+            }
+            if (hrefId == "tabDocs") {
+                $(".divIds").hide();
+                $(".divDocs").show();
+            }
+            return true;
+        });
+    }
+
+    function OnRowDataBound_GridCocSendungen(e) {
+        var statusText = e.dataItem["StatusText"].toLowerCase();
+
+        var tr = $(e.row);
+        var classSuffix = tr.hasClass("t-alt") ? "-alt" : "";
+
+        if (statusText == "ausgeliefert")
+            tr.addClass("t-grid-selected" + classSuffix);
+    }
+    
+
+    // <Suche nach ID>
+
+    function ShowCocSendungenId() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenId",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenIdSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenIdSearchResult(result) {
+        SearchFormHide();
+        $("#divGridId").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenId");
+
+        $("#divGridId").slideDown();
+    }
+
+
+    function OnDataBound_GridCocSendungenId() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenId() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCocSendungenId() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach ID>
+
+
+    // <Suche nach Docs>
+
+    function ShowCocSendungenDocs() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenDocs",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenDocsSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenDocsSearchResult(result) {
+        SearchFormHide();
+        $("#divGridDocs").html(result);
+
+        // move our Grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenDocs");
+
+        $("#divGridDocs").slideDown();
+    }
+
+
+    function OnDataBound_GridCocSendungenDocs() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenDocs() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCocSendungenDocs() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach Docs>
+
+</script>

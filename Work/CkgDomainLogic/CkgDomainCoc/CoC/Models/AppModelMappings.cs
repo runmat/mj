@@ -1,6 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 using System;
 using System.Collections.Generic;
+using System.Web;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -438,15 +439,40 @@ namespace CkgDomainLogic.CoC.Models
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_GET_ZZSEND2.GT_WEB, SendungsAuftrag>(
                     new Dictionary<string, string>()
                     , (s, d) =>
-                        {
-                            d.AnlageDatum = s.ERDAT;
-                            d.FIN = s.ZZFAHRG;
-                            d.Kennzeichen = s.ZZKENN;
-                            d.RechnungsNr = s.VBELN;
-                            d.ZulassungsDatum = s.VDATU;
-                            d.VersandID = s.ZZSEND2;
-                            d.VertragsNr = s.ZZREFNR;
-                        }));
+                    {
+                        d.AnlageDatum = s.ERDAT;
+                        d.FIN = s.ZZFAHRG;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.RechnungsNr = s.VBELN;
+                        d.VersandDatum = s.VDATU;
+                        d.ZulassungsDatum = s.VDATU;
+                        d.VersandID = s.ZZSEND2;
+                        d.VertragsNr = s.ZZREFNR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_SENDTAB_03.GT_OUT, SendungsAuftrag> Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_SENDTAB_03.GT_OUT, SendungsAuftrag>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FIN = s.ZZFAHRG;
+                        d.Fahrzeugbrief = s.ZZBRIEF;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.RechnungsNr = s.VBELN;
+                        d.VersandDatum = s.ZZLSDAT;
+                        d.VersandID = s.ZZTRACK;
+                        d.VertragsNr = s.ZZREFNR;
+                        d.Referenz = s.POOLNR;
+                        d.StatusText = s.STATUS_CODE.NotNullOrEmpty();
+                        d.VersandWeg = s.VERSANDWEG;
+                        d.PoolNummer = s.POOLNR;
+                        d.VersandAdresseAsText = string.Format("{0} {1}<br />{2} {3}<br />{4} {5}", s.NAME1, s.NAME2, s.STRAS, s.HSNM1, s.PSTLZ, s.CITY1);
+                    }));
             }
         }
 

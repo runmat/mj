@@ -12,10 +12,10 @@ using System.Linq;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
-    public class HalterabweichungenViewModel : CkgBaseViewModel
+    public class HalterAbweichungenViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IHalterabweichungenDataService DataService { get { return CacheGet<IHalterabweichungenDataService>(); } }
+        public IAbweichungenDataService DataService { get { return CacheGet<IAbweichungenDataService>(); } }
 
         [XmlIgnore]
         public List<Halterabweichung> Halterabweichungen { get { return DataService.Halterabweichungen; } }
@@ -35,13 +35,9 @@ namespace CkgDomainLogic.Equi.ViewModels
             get
             {
                 if (EditMode)
-                {
                     return HalterabweichungenFiltered;
-                }
-                else
-                {
-                    return SelektierteHalterabweichungen;
-                }
+
+                return SelektierteHalterabweichungen;
             }
         }
 
