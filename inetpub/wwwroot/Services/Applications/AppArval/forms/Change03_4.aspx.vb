@@ -298,79 +298,6 @@ Partial Public Class Change03_4
             NewLiteral.Text = strTemp
             item.Cells(item.Cells.Count - 1).Controls.Add(NewLiteral)
 
-            'Dim NewLiteral As New Literal()
-
-            'NewLiteral.Text = "</TD></TR><TR><TD></TD><TD colspan=""" & item.Cells.Count - 2 & """>"
-            'item.Cells(item.Cells.Count - 1).Controls.Add(NewLiteral)
-
-            'Dim textBoxName As New TextBox()        'Name
-            'Dim labelName As New Label()
-            'textBoxName.Width = New Unit(200)
-            'labelName.Text = "&nbsp;&nbsp;Name :"
-            'textBoxName.ID = item.Cells(0).Text & ".name"
-            'textBoxName.Text = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("HaendlerName1").ToString
-
-            'Dim textBoxStr As New TextBox()         'Strasse
-            'Dim labelStr As New Label()
-            'textBoxStr.Width = New Unit(200)
-            'labelStr.Text = "&nbsp;Strasse :"
-            'textBoxStr.ID = item.Cells(0).Text & ".str"
-            'textBoxStr.Text = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("HaendlerStr").ToString
-
-            'Dim textBoxNr As New TextBox()         'Nr
-            'Dim labelNr As New Label()
-            'textBoxNr.Width = New Unit(30)
-            'labelNr.Text = "&nbsp;Nr. :"
-            'textBoxNr.ID = item.Cells(0).Text & ".nr"
-            'textBoxNr.Text = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("HaendlerNr").ToString
-
-            'Dim textBoxPlz As New TextBox()         'Plz
-            'Dim labelPlz As New Label()
-            'textBoxPlz.Width = New Unit(50)
-            'labelPlz.Text = "&nbsp;Plz :"
-            'textBoxPlz.ID = item.Cells(0).Text & ".plz"
-            'textBoxPlz.Text = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("HaendlerPlz").ToString
-
-            'Dim textBoxOrt As New TextBox()         'ort
-            'Dim labelOrt As New Label()
-            'textBoxOrt.Width = New Unit(100)
-            'labelOrt.Text = "&nbsp;Ort :"
-            'textBoxOrt.ID = item.Cells(0).Text & ".ort"
-            'textBoxOrt.Text = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("HaendlerOrt").ToString
-
-            'Dim newItem As DataGridItem
-            'Dim newCell As TableCell
-            'Dim labelTitle As New Label()
-            'Dim cbx As New CheckBox()       'Auswahl abw. Halteradresse
-            'Dim checked As String
-
-            'cbx.Text = "Abweichende Versandadresse Schein & Schilder:"
-            'cbx.ID = item.Cells(0).Text & ".cbx"
-            'cbx.Checked = False
-            'cbx.TextAlign = TextAlign.Right
-
-            'checked = objZulassung.Result.Select("EquipmentNummer='" & item.Cells(0).Text & "'")(0)("Versandadresse").ToString
-            'If (checked = "X") Then
-            '    cbx.Checked = True
-            'End If
-
-            'Dim break As New Literal()
-            'break.Text = "<br>"
-
-            'item.Cells(item.Cells.Count - 1).Controls.Add(cbx)
-
-            'item.Cells(item.Cells.Count - 1).Controls.Add(break)
-
-            'item.Cells(item.Cells.Count - 1).Controls.Add(labelName)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(textBoxName)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(labelStr)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(textBoxStr)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(labelNr)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(textBoxNr)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(labelPlz)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(textBoxPlz)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(labelOrt)
-            'item.Cells(item.Cells.Count - 1).Controls.Add(textBoxOrt)
         Next
     End Sub
 
@@ -400,10 +327,6 @@ Partial Public Class Change03_4
         End If
     End Sub
 
-    Private Sub btnPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Response.Redirect("Change03_4.aspx?AppID=" & Session("AppID").ToString)
-    End Sub
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
@@ -412,39 +335,3 @@ Partial Public Class Change03_4
         SetEndASPXAccess(Me)
     End Sub
 End Class
-
-' ************************************************
-' $History: Change03_4.aspx.vb $
-' 
-' *****************  Version 2  *****************
-' User: Jungj        Date: 16.04.09   Time: 17:06
-' Updated in $/CKAG2/Applications/AppArval/forms
-' 
-' *****************  Version 3  *****************
-' User: Rudolpho     Date: 25.08.08   Time: 17:11
-' Updated in $/CKAG/Applications/apparval/Forms
-' ITA: 1859
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 16.04.08   Time: 11:53
-' Updated in $/CKAG/Applications/apparval/Forms
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 4.04.08    Time: 16:18
-' Created in $/CKAG/Applications/apparval/Forms
-' 
-' *****************  Version 8  *****************
-' User: Uha          Date: 2.07.07    Time: 10:05
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Forms
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 7  *****************
-' User: Uha          Date: 6.03.07    Time: 15:30
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Forms
-' GetAppIDFromQueryString(Me) hinzugefügt
-' 
-' *****************  Version 6  *****************
-' User: Uha          Date: 6.03.07    Time: 14:48
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Forms
-' 
-' ************************************************
