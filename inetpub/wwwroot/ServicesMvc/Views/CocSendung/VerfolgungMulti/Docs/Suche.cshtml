@@ -9,15 +9,7 @@
             @Html.FormValidationSummary()
             
            
-            @Html.FormTextBoxFor(m => m.FahrgestellNummer, new { @class = "m-wrap", col = "left" })
-
-            @Html.FormTextBoxFor(m => m.ZBIINummer, new { @class = "m-wrap", col = "right" })
-
-            @Html.FormTextBoxFor(m => m.VertragsNummer, new { @class = "m-wrap", col = "left" })
-
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
-
-            @Html.FormTextBoxFor(m => m.SendungsID, new { @class = "m-wrap", col = "left" })
+            @Html.FormDateRangePickerFor(m => m.DatumRangeDocs, new { col = "left" }, new[] { "!far-past", "!future" })
 
             @Html.FormCheckBoxFor(m => m.NurMitSendungsID, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
 

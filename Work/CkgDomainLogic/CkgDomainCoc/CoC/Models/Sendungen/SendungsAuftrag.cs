@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -22,7 +23,7 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? ZulassungsDatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ShippingDate)]
+        [LocalizedDisplay(LocalizeConstants.Date)]
         public DateTime? VersandDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ShippingID)]
@@ -41,6 +42,7 @@ namespace CkgDomainLogic.CoC.Models
         public bool StatusAusgeliefert { get { return StatusText.NotNullOrEmpty().ToLower() == "ausgeliefert"; } }
 
         [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
+        [GridRawHtmlButForceGridExport]
         public string VersandAdresseAsText { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Shipping)]
