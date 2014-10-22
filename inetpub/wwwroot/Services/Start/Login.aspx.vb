@@ -217,27 +217,7 @@ Partial Public Class Login
 
     Private Sub displaySecurityCertificate()
         Try
-            Using conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-                conn.Open()
-
-                Dim command As SqlClient.SqlCommand = conn.CreateCommand()
-
-                command.CommandText = "SELECT value FROM Config" & _
-                    " WHERE context = @context AND [key] = @key"
-
-                command.Parameters.AddWithValue("@context", "Login")
-                command.Parameters.AddWithValue("@key", "SecurityCertificate")
-
-                Dim wert As Object = command.ExecuteScalar()
-
-                If wert IsNot Nothing Then
-                    Dim strHtmlString As String = wert.ToString()
-                    divSicherheitszertifikat.InnerHtml = strHtmlString
-                End If
-
-                conn.Close()
-            End Using
-
+            divSicherheitszertifikat.InnerHtml = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate")
         Catch
         End Try
     End Sub
@@ -341,48 +321,10 @@ Partial Public Class Login
                     Exit Sub
                 End If
 
-                m_User.SetLastLogin(Now)
-                Session("objUser") = m_User
 
-                If m_User.Customer.LoginLinkID <> 0 AndAlso m_User.Customer.LoginLinkID <> 2 Then
-                    'Ein doppeltes Login wird dadurch ohnehin nicht verhindert
-                    m_User.DoubleLoginTry = False
-                End If
 
-                If m_User.DoubleLoginTry Then
-                    Me.StandardLogin.Visible = False
-                    Me.DoubleLogin2.Visible = True
-                Else
-
-                    'User korrekt authentifiziert
-                    If m_User.Customer.LoginLinkID <> 0 Then ''AndAlso m_User.Customer.LoginLinkID <> 2 Then
-
-                        If (Not Request.QueryString("portal") Is Nothing AndAlso Not Request.QueryString("portal") Is String.Empty) Then
-                            If (Not m_User.Customer.AccountingArea = -1 AndAlso Not Request.QueryString("portal") = False) Then
-                                SetRedirect()
-                            End If
-                        Else
-                            ' Services Check
-                            Dim urlLink = DbGetStringValue(String.Format("select isnull(Text,'') from WebUserUploadLoginLink where ID = {0}", m_User.Customer.LoginLinkID))
-
-                            If (Not urlLink Is Nothing AndAlso Not urlLink.ToLower().Contains("/services/start/")) Then
-                                SetRedirect()
-                            End If
-                        End If
-
-                    End If
-
-                    'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
-                    RedirectFromLoginPage(m_User)
-
-                    'zur späteren Benutzung (iframe)
-                    'FormsAuthentication.SetAuthCookie(m_User.UserID.ToString, False)
-                    'Response.Write("<script language='javascript'>")
-                    'Response.Write("window.open('Selection.aspx' ,'Zoic','width=600, height=400,toobar=yes,addressbar=yes,menubar=yes,scrollbars=yes,resizable=yes');")
-                    'Response.Write("window.location.href ='Login.aspx';")
-                    'Response.Write("<" + "/" + "script" + ">")
-
-                End If
+                'User korrekt authentifiziert
+                SaveAndRedirectUser(txtUsername.Text, txtPassword.Text)
             Else
                 '############################################################
                 'Error-Property bei User-Objekt einfügen und hier darstellen
@@ -460,6 +402,40 @@ Partial Public Class Login
         End Try
     End Sub
 
+    Private Sub SaveAndRedirectUser(userName As String, password As String)
+        m_User.SetLastLogin(Now)
+        Session("objUser") = m_User
+
+        If m_User.Customer.LoginLinkID <> 0 AndAlso m_User.Customer.LoginLinkID <> 2 Then
+            'Ein doppeltes Login wird dadurch ohnehin nicht verhindert
+            m_User.DoubleLoginTry = False
+        End If
+
+        If m_User.DoubleLoginTry Then
+            Me.StandardLogin.Visible = False
+            Me.DoubleLogin2.Visible = True
+        Else
+            If m_User.Customer.LoginLinkID <> 0 Then ''AndAlso m_User.Customer.LoginLinkID <> 2 Then
+
+                If (Not Request.QueryString("portal") Is Nothing AndAlso Not Request.QueryString("portal") Is String.Empty) Then
+                    If (Not m_User.Customer.AccountingArea = -1 AndAlso Not Request.QueryString("portal") = False) Then
+                        SetRedirect(userName, password)
+                    End If
+                Else
+                    ' Services Check
+                    Dim urlLink = DbGetStringValue(String.Format("select isnull(Text,'') from WebUserUploadLoginLink where ID = {0}", m_User.Customer.LoginLinkID))
+
+                    If (Not urlLink Is Nothing AndAlso Not urlLink.ToLower().Contains("/services/start/")) Then
+                        SetRedirect(userName, password)
+                    End If
+                End If
+
+            End If
+
+            RedirectFromLoginPage(m_User)
+        End If
+    End Sub
+
     Private Sub cmdBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBack.Click
         Response.Redirect(BouncePage(Me), True)
     End Sub
@@ -530,7 +506,6 @@ Partial Public Class Login
 
     Private Sub Login_PreLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreLoad
 
-
         If Not Me.Session("objUser") Is Nothing Then
             m_User = CType(Session("objUser"), Base.Kernel.Security.User)
             If Not (m_User.LoggedOn And m_User.DoubleLoginTry) Then
@@ -568,10 +543,10 @@ Partial Public Class Login
                         txtUsername.Text = m_User.UserName
                         'Neues Passwort generieren und per Mail verschicken
                         Dim errMsg As String = ""
-                        Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
+                        'Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
                         If String.IsNullOrEmpty(errMsg) Then
-                            m_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
-                            If m_User.SendPasswordMail(newPwd, errMsg) Then
+                            'm_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
+                            If m_User.SendPasswordResetMail(errMsg) Then
                                 lblError.Text = "Das Passwort wurde an die hinterlegte Adresse versandt."
                                 m_User.SetNewPasswordRequestSentAndUnlockAccount()
                             Else
@@ -621,6 +596,27 @@ Partial Public Class Login
 
         End If
 
+        Dim urlReferrer As String = ""
+        If Not (Request.UrlReferrer Is Nothing) Then
+            urlReferrer = Request.UrlReferrer.ToString()
+        End If
+        Dim requestReturnUrl As String = ""
+        If Not (Request("ReturnUrl") Is Nothing) Then
+            requestReturnUrl = Request("ReturnUrl").ToString()
+        End If
+        Dim url As String = ""
+        If Not (Request.Url Is Nothing) Then
+            url = Request.Url.ToString()
+        End If
+
+        Dim userIsEmpty As Boolean = (Session("objUser") Is Nothing)
+        Dim urlReferrerIsValid As Boolean = (urlReferrer <> "")
+        Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx") And Not requestReturnUrl.ToLower().Contains("servicesmvc"))
+        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
+
+        If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
+            Response.Redirect("/ServicesMvc/Login/Index")
+        End If
     End Sub
 
     Function UrlRemoteUserProcessLogin() As Boolean
@@ -628,9 +624,9 @@ Partial Public Class Login
         UrlRemoteUserTryLogin(remoteUserName, remoteUserPwdHashed)
 
         If (Not String.IsNullOrEmpty(remoteUserName)) Then
-            If m_User.Login(remoteUserName, remoteUserPwdHashed, "", False) Then
-                'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
-                RedirectFromLoginPage(m_User)
+            If m_User.Login(remoteUserName, remoteUserPwdHashed, Session.SessionID.ToString, False) Then
+                'RedirectFromLoginPage(m_User)
+                SaveAndRedirectUser(remoteUserName, remoteUserPwdHashed)
             Else
                 lblError.Text = "URL Remote-Login fehlgeschlagen! " & "<br>(" & m_User.ErrorMessage & ")"
                 cmdLogin.Enabled = False
@@ -644,6 +640,10 @@ Partial Public Class Login
     Sub UrlRemoteUserTryLogin(ByRef userName As String, ByRef userPwd As String)
 
         If (IsPostBack) Then Return
+
+        If (UrlRemoteUserTryLoginFromMvc(userName, userPwd)) Then
+            Return
+        End If
 
         If (Request.QueryString("ra") Is Nothing) Then Return
         If (Request.QueryString("rb") Is Nothing) Then Return
@@ -673,6 +673,33 @@ Partial Public Class Login
             Session("UrlRemoteLogin_LogoutUrl") = HttpUtility.UrlDecode(Request.QueryString("logouturl").ToString)
         End If
     End Sub
+
+    Function UrlRemoteUserTryLoginFromMvc(ByRef userName As String, ByRef userPwd As String)
+
+        If (Request.QueryString("unm") Is Nothing) Then Return False
+
+        Dim un As String = Request.QueryString("unm").ToString
+        un = un.Replace(" ", "%2b")
+        Dim unDecoded As String = CryptoMd5.DecryptFromUrlEncoded(un)
+
+        Dim ar = Split(unDecoded, "_")
+        If (ar(0).ToString.ToLower() <> "frommvc") Then Return False
+
+        Dim userId As Integer = Int32.Parse(ar(1))
+        Dim loginDateTime As DateTime = DateTime.Parse(ar(2).Replace("-", " "))
+        Dim differenceToNow As TimeSpan = loginDateTime - DateTime.Now
+
+        If (Math.Abs(differenceToNow.TotalMinutes) > 2) Then Return False
+
+        userName = DbGetStringValue(String.Format("select isnull(Username,'') from WebUser where UserID = {0}", userId))
+        userPwd = DbGetStringValue(String.Format("select isnull(Password,'') from WebUser where UserID = {0}", userId))
+
+        If (userName Is Nothing Or userName = "") Then Return False
+        If (userPwd Is Nothing Or userPwd = "") Then Return False
+
+        Return True
+    End Function
+
 
     Function UrlRemoteHashedDateIsValid(strHashedDate As String) As Boolean
 
@@ -712,6 +739,10 @@ Partial Public Class Login
     End Function
 
     Private Sub SetRedirect()
+        SetRedirect(txtUsername.Text, txtPassword.Text)
+    End Sub
+
+    Private Sub SetRedirect(userName As String, password As String)
 
         Dim TempTable As DataTable = LoadLoginLinks()
         Dim LoginLink As String = TempTable.Select("ID = " & m_User.Customer.LoginLinkID)(0)("Text")
@@ -729,16 +760,18 @@ Partial Public Class Login
         'LoginLink = Replace(LoginLink, ar(2).ToString, "localhost")
 #End If
 
-
         m_User.SetLoggedOn(m_User.UserName, False, "")
 
-        'If (m_User.UserName.ToLower = "gundulbert" Or Right(m_User.UserName.ToLower, 6) = "jenzen" Or Right(m_User.UserName.ToLower, 7) = "testmj2") Then
-        '    LoginLink = LoginLink.Replace("https://sgw.kroschke.de", "http://localhost")
-        '    LoginLink = LoginLink.Replace("https://sgwt.kroschke.de", "http://localhost")
-        'End If
+        If (LoginLink.Contains("://")) Then
+            Dim loginLink2 As String = LoginLink.Substring(LoginLink.IndexOf("://", 0, StringComparison.InvariantCultureIgnoreCase) + 3)
+            If (loginLink2.Contains("/")) Then
+                LoginLink = loginLink2.Substring(loginLink2.IndexOf("/", 0, StringComparison.InvariantCultureIgnoreCase))
+            End If
+        End If
 
+        Dim qs As String = Request.QueryString.ToString()
 
-        Dim EncrUserLink As String = EncrData(txtUsername.Text & "|" & txtPassword.Text)
+        Dim EncrUserLink As String = EncrData(userName & "|" & password)
         EncrUserLink = Replace(EncrUserLink, "+", "-")
         EncrUserLink = Replace(EncrUserLink, "/", "_")
         Dim redirectLink As String = String.Format("{0}?ReUser={1}", LoginLink, EncrUserLink)

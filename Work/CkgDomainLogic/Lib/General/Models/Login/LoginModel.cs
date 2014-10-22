@@ -18,6 +18,8 @@ namespace CkgDomainLogic.General.Models
 
         public bool ModePasswordReset { get; set; }
 
+        public string PasswordResetCustomerAdminInfo { get; set; }
+
         public bool ModeCaptchaReset { get; set; }
 
         public bool IsValid { get; set; }
@@ -26,6 +28,8 @@ namespace CkgDomainLogic.General.Models
 
         [LocalizedDisplay(LocalizeConstants.CaptchaTextToValidate)]
         public string CaptchaText { get; set; }
+
+        public MaintenanceResult MaintenanceInfo { get; set; }
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

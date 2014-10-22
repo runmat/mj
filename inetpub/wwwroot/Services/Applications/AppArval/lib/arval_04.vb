@@ -53,10 +53,6 @@ Public Class Arval_04
         MyBase.New(objUser, objApp, strFilename)
     End Sub
 
-    'Public Overloads Overrides Sub Fill()
-    '    Fill(m_strAppID, m_strSessionID, m_strHaendlerNr, m_datAbmeldedatumVon, m_datAbmeldedatumBis)
-    'End Sub
-
     Public Overloads Sub FILL(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page, ByVal strHalterNr As String, ByVal vollst As String)
         m_strClassAndMethod = "Arval_04.FILL"
         m_strAppID = strAppID
@@ -65,15 +61,10 @@ Public Class Arval_04
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            'Dim objSAP As New SAPProxy_ARVAL.SAPProxy_ARVAL()
-            'objSAP.Connection = New SAP.Connector.SAPConnection(m_objSAPDestination)
-            'objSAP.Connection.Open()
-
             Dim intID As Int32 = -1
 
             Try
                 Dim proxy = DynSapProxy.getProxy("Z_M_Zuldokumente_Arval", m_objApp, m_objUser, Page)
-                'Dim SAPTable As New SAPProxy_ARVAL.ZDAD_M_WEB_ARVAL_ZULDOKUTable()
 
                 proxy.setImportParameter("I_AG", Right("0000000000" & m_objUser.KUNNR, 10))
                 proxy.setImportParameter("I_UNVOLLSTAENDIG", vollst)
@@ -137,10 +128,6 @@ Public Class Arval_04
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            'Dim objSAP As New SAPProxy_ARVAL.SAPProxy_ARVAL()
-            'objSAP.Connection = New SAP.Connector.SAPConnection(m_objSAPDestination)
-            'objSAP.Connection.Open()
-
             Dim intID As Int32 = -1
 
             Try
@@ -151,7 +138,6 @@ Public Class Arval_04
                 proxy.setImportParameter("I_EVB_VON", m_strEVBvon)
                 proxy.setImportParameter("I_HALTER", Right("0000000000" & strHalterNr, 10))
                 proxy.setImportParameter("I_KUNNR", Right("0000000000" & m_objUser.KUNNR, 10))
-                proxy.setImportParameter("I_STANDORT", "")
 
                 intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_M_Zuldokumente_Evb", strAppID, strSessionID, m_objUser.CurrentLogAccessASPXID)
 
@@ -186,37 +172,3 @@ Public Class Arval_04
     End Sub
 #End Region
 End Class
-
-' ************************************************
-' $History: arval_04.vb $
-' 
-' *****************  Version 1  *****************
-' User: Jungj        Date: 9.06.09    Time: 17:22
-' Created in $/CKAG2/Applications/AppArval/lib
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 16.04.08   Time: 11:53
-' Updated in $/CKAG/Applications/apparval/Lib
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 4.04.08    Time: 16:18
-' Created in $/CKAG/Applications/apparval/Lib
-' 
-' *****************  Version 6  *****************
-' User: Rudolpho     Date: 19.03.08   Time: 14:35
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Lib
-' 
-' *****************  Version 5  *****************
-' User: Rudolpho     Date: 10.03.08   Time: 10:15
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Lib
-' 
-' *****************  Version 4  *****************
-' User: Uha          Date: 2.07.07    Time: 16:18
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Lib
-' Verbindung ASPX-Logging mit BAPI-Logging
-' 
-' *****************  Version 3  *****************
-' User: Uha          Date: 6.03.07    Time: 14:48
-' Updated in $/CKG/Applications/AppARVAL/AppARVALWeb/Lib
-' 
-' ************************************************

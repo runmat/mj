@@ -47,10 +47,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebTools35, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GAC\WebTools35.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MVC.cs" />
@@ -60,6 +56,10 @@
     <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools35\WebTools35.csproj">
+      <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
+      <Name>WebTools35</Name>
     </ProjectReference>
     <ProjectReference Include="..\Base.vbproj">
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
