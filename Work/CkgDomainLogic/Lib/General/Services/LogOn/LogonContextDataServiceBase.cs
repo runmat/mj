@@ -295,7 +295,11 @@ namespace CkgDomainLogic.General.Services
             return new List<Contact>();
         }
 
-        public virtual void StorePasswordToUser(string userName, string password, bool isTokenPassword)
+        public virtual void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
+        {
+        }
+
+        public virtual void StorePasswordToUser(string userName, string password)
         {
         }
 

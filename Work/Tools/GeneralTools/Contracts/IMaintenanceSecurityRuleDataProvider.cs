@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeneralTools.Contracts
+﻿namespace GeneralTools.Contracts
 {
     public interface IMaintenanceSecurityRuleDataProvider
     {
@@ -8,14 +6,14 @@ namespace GeneralTools.Contracts
 
         string MaintenanceText { get; }
 
-        DateTime MaintenanceStartDateTime { get; }
-
-        DateTime MaintenanceEndDateTime { get; }
-
-        bool MaintenanceLoginDisabled { get; }
-
         bool MaintenanceOnTestSystem { get; }
 
         bool MaintenanceOnProdSystem { get; }
+
+        bool MaintenanceLoginDisabled { get; }
+
+        bool MaintenanceShow { get; }
+
+        bool MaintenanceShowAndLetConfirmMessageAfterLogin { get; }
     }
 }

@@ -173,7 +173,6 @@ namespace CKG.Components.Zulassung.UserControls
                 this.cbxPerso.Checked = dokumente.Perso;
                 this.cbxGewerbe.Checked = dokumente.Gewerbe;
                 this.cbxEinzug.Checked = dokumente.Einzug;
-                this.cbxKarte.Checked = dokumente.Karte;
                 this.cbxVollst.Checked = dokumente.Vollst;
             }
 
