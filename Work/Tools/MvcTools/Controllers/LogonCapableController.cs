@@ -285,12 +285,22 @@ namespace MvcTools.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult UserSwitchCulture()
+        public ActionResult UserSwitchCulture(string language)
         {
-            var culture = SessionHelper.GetSessionValue("UserCulture", "de-DE").NotNullOrEmpty();
-
-            // switch session culture, actually only switch between DE and EN
-            SessionHelper.SetSessionValue("UserCulture", culture == "de-DE" ? "en-US" : "de-DE");
+            var culture = "de-DE";
+            switch (language.NotNullOrEmpty().ToUpper())
+            {
+                case "DE":
+                    culture = "de-DE";
+                    break;
+                case "EN":
+                    culture = "en-US";
+                    break;
+                case "FR":
+                    culture = "fr-FR";
+                    break;
+            }
+            SessionHelper.SetSessionValue("UserCulture", culture);
             
             return new EmptyResult();
         }

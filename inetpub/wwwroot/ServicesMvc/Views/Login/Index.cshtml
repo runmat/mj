@@ -7,13 +7,10 @@
 
 
 @Html.Partial("Partial/Common") 
-@Html.Partial("Partial/Logo") 
 
 
 <div class="content">
-    <div class="language-flags">
-        @Html.Partial("Partial/UserLanguageSwitch", new ViewDataDictionary(ViewData))
-    </div>
+    @Html.Partial("Partial/Logo") 
     
     @Html.Partial("Partial/MaintenanceHintsLogonDisabled", Model.MaintenanceInfo)
 
@@ -38,10 +35,13 @@
             }
         </script>
     }
+    @Html.Raw(Model.SslCertificateHtml)
 
+    <div class="space15"></div>
+
+    @Html.Partial("Partial/Footer") 
 </div>
 
 
 @Html.Partial("Partial/Scripts") 
-
 
