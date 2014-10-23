@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model MahnungVorErsteingangSuchparameter
+
+<div id="divMahnungenVorErsteingangSuche">
+    @using (Ajax.BeginForm("LoadMahnungenVorErsteingang", "Finance", null,
+        new MvcAjaxOptions("divMahnungenVorErsteingangSuche") { OnComplete = "ShowMahnungenVorErsteingang();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            
+            @Html.FormRadioButtonListFor(m => m.Vertragsart, Model.AuswahlVertragsart.ToSelectList())
+            @Html.FormCheckBoxListFor(Localize.DunningLevel, m => m.Mahnstufe1, m => m.Mahnstufe2, m => m.Mahnstufe3)
+            @Html.FormCheckBoxFor(m => m.MahnsperreGesetzt)
+           
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowMahnungenVorErsteingang() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowMahnungenVorErsteingang",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowMahnungenVorErsteingangSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>

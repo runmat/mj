@@ -35,15 +35,15 @@ namespace WebTools.Services
 
         #region Decryption
 
-        //public static string DecryptFromUrlEncoded(string stringUrlEncodedToDecrypt)
-        //{
-        //    return DecryptFromUrlEncoded(stringUrlEncodedToDecrypt, PasswordForInternalUseOnly);
-        //}
+        public static string DecryptFromUrlEncoded(string stringUrlEncodedToDecrypt)
+        {
+            return DecryptFromUrlEncoded(stringUrlEncodedToDecrypt, PasswordForInternalUseOnly);
+        }
 
-        //public static string DecryptFromUrlEncoded(string stringUrlEncodedToDecrypt, string password)
-        //{
-        //    return Decrypt(HttpUtility.UrlDecode(stringUrlEncodedToDecrypt), password);
-        //}
+        public static string DecryptFromUrlEncoded(string stringUrlEncodedToDecrypt, string password)
+        {
+            return Decrypt(HttpUtility.UrlDecode(stringUrlEncodedToDecrypt), password);
+        }
 
         public static string Decrypt(string stringUrlEncodedToDecrypt)
         {

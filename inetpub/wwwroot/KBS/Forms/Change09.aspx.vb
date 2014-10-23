@@ -240,14 +240,15 @@ Partial Public Class Change09
             Dim sPath As String
             Dim filesByte As New List(Of Byte())()
 
-            For Each sFile As String In files
-                filesByte.Add(File.ReadAllBytes(sFile))
-            Next
+            'Seiten der Utsch-Inventur sollen am Anfang des Dokuments stehen
             If bKonsiPrint = True Then
                 For Each sFile As String In filesUtsch
                     filesByte.Add(File.ReadAllBytes(sFile))
                 Next
             End If
+            For Each sFile As String In files
+                filesByte.Add(File.ReadAllBytes(sFile))
+            Next
 
             If blnTestdruck Then
                 sPath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\TestInventur.pdf"

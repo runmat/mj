@@ -271,7 +271,7 @@ namespace Telerik.Web.Mvc.UI
                 column.HtmlAttributes(new { @class = responsiveCssClass }).HeaderHtmlAttributes(new { @class = responsiveCssClass });
             }
 
-            if (typeof (TModel).GetAttributeFrom<GridRawHtmlAttribute>(propertyName) != null)
+            if (typeof(TModel).GetAttributeFrom<GridRawHtmlAttribute>(propertyName) != null || typeof(TModel).GetAttributeFrom<GridRawHtmlButForceGridExportAttribute>(propertyName) != null)
                 column.Encoded(false);
 
             return column.Format(columnFormat);

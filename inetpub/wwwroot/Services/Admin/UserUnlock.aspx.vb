@@ -825,9 +825,9 @@ Partial Public Class UserUnlock
 
                 If (pword <> String.Empty) Then 'Nur bei Passwortänderung
                     Dim errorMessage As String = ""
-                    If Not _User.SendPasswordMail(pword, errorMessage) Then
-                        lblError.Text = errorMessage
-                    End If
+                    'If Not _User.SendPasswordResetMail(pword, errorMessage) Then
+                    '   lblError.Text = errorMessage
+                    'End If
                 End If
             End If
 

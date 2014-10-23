@@ -8,7 +8,7 @@
         <span>@Model.ControlHtml @Model.InlineDisplayNameHtml</span>
     </label>
     
-    <div id="wrapper-date-range-@Model.DateRangeProperty" class="FormDateRangePicker hide" data-init="FormDateRangePickerPrepare('@Model.DateRangeProperty')">
+    <div id="wrapper-date-range-@Model.DateRangeProperty" class="FormDateRangePicker hide" data-init="FormDateRangePickerPrepare('@Model.DateRangeProperty', null, null, '@Model.DateRangeGroupsToExclude.JoinIfNotNull(",")')">
         <span  id="rangePicker-date-range-@Model.DateRangeProperty" class="btn">
             &nbsp;<i class="icon-calendar"></i>
             &nbsp;<span class=""></span> 
