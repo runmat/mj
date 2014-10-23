@@ -543,10 +543,10 @@ Partial Public Class Login
                         txtUsername.Text = m_User.UserName
                         'Neues Passwort generieren und per Mail verschicken
                         Dim errMsg As String = ""
-                        'Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
+                        Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
                         If String.IsNullOrEmpty(errMsg) Then
-                            'm_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
-                            If m_User.SendPasswordResetMail(errMsg) Then
+                            m_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
+                            If m_User.SendPasswordMail(newPwd, errMsg) Then
                                 lblError.Text = "Das Passwort wurde an die hinterlegte Adresse versandt."
                                 m_User.SetNewPasswordRequestSentAndUnlockAccount()
                             Else
