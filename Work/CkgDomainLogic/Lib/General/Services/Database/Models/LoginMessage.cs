@@ -7,53 +7,45 @@ using GeneralTools.Models;
 
 namespace CkgDomainLogic.General.Database.Models
 {
-    [Table("LoginMessage")]
-    public class LoginMessage : IMaintenanceSecurityRuleDataProvider 
+    [Table("LoginUserMessage")]
+    public class LoginUserMessage : IMaintenanceSecurityRuleDataProvider 
     {
         // ReSharper disable InconsistentNaming
         
         [Key]
         public int ID { get; set; }
 
-        public DateTime? creationDate { get; set; }
+        public DateTime? Created { get; set; }
 
-        public DateTime? activeDateFrom { get; set; }
+        public DateTime? ShowMessageFrom { get; set; }
 
-        public DateTime? activeDateTo { get; set; }
+        public DateTime? ShowMessageTo { get; set; }
 
-        public DateTime? activeTimeFrom { get; set; }
+        public DateTime? LockLoginFrom { get; set; }
 
-        public DateTime? activeTimeTo { get; set; }
+        public DateTime? LockLoginTo { get; set; }
 
-        private string _messageText;
-        public string messageText
+        private string _message;
+        public string Message
         {
-            get { return _messageText; }
-            set { _messageText = ConvertMessage(value); }
+            get { return _message; }
+            set { _message = ConvertMessage(value); }
         }
 
-        private string _titleText;
-        public string titleText
+        private string _title;
+        public string Title
         {
-            get { return _titleText; }
-            set { _titleText = ConvertMessage(value); }
+            get { return _title; }
+            set { _title = ConvertMessage(value); }
         }
 
-        public int? messageColor { get; set; }
+        public bool LockForTest { get; set; }
 
-        public bool? active { get; set; }
-
-        public string enableLogin { get; set; }
-
-        public bool? onlyTEST { get; set; }
-
-        public bool? onlyPROD { get; set; }
-
-        public bool? PortalLoginDisabled { get; set; }
+        public bool LockForProd { get; set; }
 
         // ReSharper restore InconsistentNaming
 
-        static string ConvertMessage(string message)
+        public static string ConvertMessage(string message)
         {
             message = message.NotNullOrEmpty();
             message = message.Replace("{", "<");
@@ -67,21 +59,22 @@ namespace CkgDomainLogic.General.Database.Models
 
         #region Maintenance Login Messages
 
-        public string MaintenanceTitle { get { return titleText; } }
+        public string MaintenanceTitle { get { return Title; } }
 
-        public string MaintenanceText { get { return messageText; } }
+        public string MaintenanceText { get { return Message; } }
 
-        public DateTime MaintenanceStartDateTime { get { return activeDateFrom.GetValueOrDefault().Add(new TimeSpan(activeTimeFrom.GetValueOrDefault().Hour, activeTimeFrom.GetValueOrDefault().Minute, 0)); } }
+        public bool MaintenanceLoginDisabled { get { return DateTime.Now >= LockLoginFrom.GetValueOrDefault() && DateTime.Now <= LockLoginTo.GetValueOrDefault().AddMinutes(1); } }
 
-        public DateTime MaintenanceEndDateTime { get { return activeDateTo.GetValueOrDefault().Add(new TimeSpan(activeTimeTo.GetValueOrDefault().Hour, activeTimeTo.GetValueOrDefault().Minute, 0)); } }
+        public bool MaintenanceShow { get { return DateTime.Now >= ShowMessageFrom.GetValueOrDefault() && DateTime.Now <= ShowMessageTo.GetValueOrDefault().AddMinutes(1); } }  
 
-        // ToDo: Check "enableLogin" Flag for customers, etc (see Services App)    
+        public bool MaintenanceOnTestSystem { get { return LockForTest; } }
 
-        public bool MaintenanceLoginDisabled { get { return PortalLoginDisabled.GetValueOrDefault(); } }  
+        public bool MaintenanceOnProdSystem { get { return LockForProd; } }
 
-        public bool MaintenanceOnTestSystem { get { return onlyTEST.GetValueOrDefault(); } }
-
-        public bool MaintenanceOnProdSystem { get { return onlyPROD.GetValueOrDefault(); } }
+        public bool MaintenanceShowAndLetConfirmMessageAfterLogin
+        {
+            get { return MaintenanceShow && !(Title.NotNullOrEmpty().ToLower().Contains("dies ist der testserver")); }
+        }
 
         #endregion
     }

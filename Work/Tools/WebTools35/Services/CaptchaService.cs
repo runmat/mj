@@ -19,9 +19,9 @@ namespace WebTools.Services
         {
             var bitmap = new Bitmap(_width, 65, PixelFormat.Format32bppArgb);
             var g = Graphics.FromImage(bitmap);
-            var fontColor = new SolidBrush(Color.FromArgb(255, 255, 255));
+            var fontColor = new SolidBrush(Color.FromArgb(120, 120, 120));
             var counter = 0;
-            g.Clear(Color.FromArgb(50, 255, 255, 255));
+            g.Clear(Color.FromArgb(120, 255, 255, 255));
 
             var rand = new Random();
             for (var i = 0; i < captchaText.Length; i++)

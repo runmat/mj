@@ -1,0 +1,51 @@
+﻿@model CkgDomainLogic.Equi.Models.EinAusgangSelektor 
+
+<div id="divEinAusgaengeSuche">
+    @using (Ajax.BeginForm("LoadEinAusgaenge", "Equip", null,
+        new MvcAjaxOptions("divEinAusgaengeSuche") { OnComplete = "ShowEinAusgaenge();" }, new { id = "EinAusgaengeForm" }))
+    {   
+        <style type="text/css">
+            .FormDateRangePickerCheckBox { display: none; }
+        </style>
+        
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+
+            @Html.FormRadioButtonListFor(m => m.FilterEinAusgangsTyp, Model.EinAusgangssTypen, new { @class = "m-wrap", col = "left" })
+
+            @Html.FormRadioButtonListFor(m => m.FilterAusgangsTyp, Model.AusgangssTypen, new { @class = "m-wrap", col = "right" })
+           
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new {})
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            $(":radio[value=Inputs]").click(function() { ShowHideAusgangsTypenRadiobuttons(true); });
+            $(":radio[value=Outputs]").click(function() { ShowHideAusgangsTypenRadiobuttons(true); });
+
+            ShowHideAusgangsTypenRadiobuttons(false);
+            
+
+            function ShowHideAusgangsTypenRadiobuttons(useAnimation) {
+                var isOutput =  $(":radio[value=Outputs]").is(":checked");
+                var outputRadioGroupControlDiv = $(":radio[value=Temporary]").closest(".control-group");
+
+                if (useAnimation) {
+                    outputRadioGroupControlDiv.animate({ opacity: isOutput ? 1 : 0 }, 500);
+                } else {
+                    outputRadioGroupControlDiv.css("opacity", isOutput ? 1 : 0);
+                }
+            }
+        </script>
+    }
+</div>
