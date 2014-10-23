@@ -235,6 +235,8 @@ namespace SapORM
             //new FunctionReflector("Z_M_VHC_ZBII_BESTAND_001").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_VHC_KLAERFAELLE_001").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_DPM_EXP_MAHN_ERSTEINGANG").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();

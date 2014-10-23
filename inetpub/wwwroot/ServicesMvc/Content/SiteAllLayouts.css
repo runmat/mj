@@ -164,6 +164,9 @@ textarea.m-wrap {
 .no-top-margin {
   margin-top: 0 !important;
 }
+.no-bottom-margin {
+  margin-bottom: 0 !important;
+}
 
 .margin-bottom-5 {
     margin-bottom: 5px;
@@ -796,6 +799,9 @@ span.m-wrap {
     min-height: 20px;
     border: 0px solid #f0f0f0;
 }
+span.m-wrap.font-normal { font-weight: normal!important; }
+.font-bold { font-weight: bold; }
+
 .checker.disabled {
     display: block;
     padding-top: 7px;
@@ -1118,6 +1124,8 @@ i.pdf-export
 }
 .fontItalic {
     font-style: italic;
+
+.t-grid-filter { display: none; }.t-grid-filter { display: none; }
 }
 
 

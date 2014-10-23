@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+using System.Collections.Generic;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -9,9 +10,7 @@ namespace CkgDomainLogic.Equi.Models
     {
         #region Load from Repository
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_OUT, EquiGrunddaten> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_OUT_To_GrunddatenEqui
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -55,9 +54,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_ZIELORT, Zielort> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_ZIELORT_To_Zielort
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -68,9 +65,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_BETRIEB, Betriebsnummer> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_BETRIEB_To_Betriebsnummer
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -81,9 +76,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_FIN_17, Fahrgestellnummer> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_FIN_17_To_Fahrgestellnummer
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -94,9 +87,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_FIN_10, Fahrgestellnummer10> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_FIN_10_To_Fahrgestellnummer10
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -107,9 +98,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_STORT, Standort> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_To_Standort
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -120,9 +109,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_WEB, EquiHistorie> Z_M_BRIEFLEBENSLAUF_001_GT_WEB_To_EquiHistorie
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -169,9 +156,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_QMEL, EquiMeldungsdaten> Z_M_BRIEFLEBENSLAUF_001_GT_QMEL_To_EquiMeldungsdaten
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -193,9 +178,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_M_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_M_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -227,9 +210,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_BRIEFBESTAND_001.GT_DATEN, Fahrzeugbrief> Z_DPM_BRIEFBESTAND_001_GT_DATEN_To_Fahrzeugbrief
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -256,9 +237,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_READ_EQUI_MAHN_01.GT_OUT, EquiMahn> Z_DPM_READ_EQUI_MAHN_01_GT_OUT_To_EquiMahn
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -281,9 +260,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_DAT_OHNE_DOKUMENT_01.GT_OUT, DatenOhneDokumente> Z_DPM_DAT_OHNE_DOKUMENT_01_GT_OUT_To_DatenOhneDokumente
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -307,9 +284,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_BRIEFBESTAND_002.GT_DATEN, FahrzeugbriefErweitert> Z_DPM_BRIEFBESTAND_002_GT_DATEN_To_FahrzeugbriefErweitert
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -346,9 +321,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_DAT_MIT_ABW_ZH_01.GT_OUT, Halterabweichung> Z_DPM_DAT_MIT_ABW_ZH_01_GT_OUT_To_Halterabweichung
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -376,9 +349,7 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_DOKUMENT_OHNE_DAT_01.GT_OUT, DokumentOhneDaten> Z_DPM_DOKUMENT_OHNE_DAT_01_GT_OUT_To_DokumentOhneDaten
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -471,14 +442,69 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT, Fahrzeugbrief> Z_DPM_ABWEICH_ABRUFGRUND_02_GT_OUT_To_Fahrzeugbrief
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT, Fahrzeugbrief>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Memo = s.MEMO;
+                        d.Eingangsdatum = s.DATEIN;
+                        d.Versanddatum = s.DATAUS;
+                        d.Kennzeichen = s.LICENSE_NUM;
+
+                        d.HalterAdresse = new[] { s.ZH_ALT_NAME1, s.ZH_ALT_NAME2, s.ZH_ALT_NAME3, s.ZH_ALT_STREET, string.Format("{0} {1}", s.ZH_ALT_POST_CODE1, s.ZH_ALT_CITY1) }
+                            .JoinIfNotNull(", ");
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB, Fahrzeugbrief> Z_M_VERSAUFTR_FEHLERHAFTE_GT_WEB_To_Fahrzeugbrief
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB, Fahrzeugbrief>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+
+                        d.BriefVersand = (s.ZZBRFVERS.IsNotNullOrEmpty() && s.ZZBRFVERS.NotNullOrEmpty() != "0");
+                        d.SchluesselVersand = (s.ZZSCHLVERS.IsNotNullOrEmpty() && s.ZZSCHLVERS.NotNullOrEmpty() != "0");
+
+                        d.VersandAdresse = new[] { s.ZZNAME1_ZS, s.ZZNAME2_ZS, s.ZZSTRAS_ZS, string.Format("{0} {1}", s.ZZPSTLZ_ZS, s.ZZORT01_ZS) }
+                            .JoinIfNotNull(", ");
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU, Fahrzeugbrief> Z_DAD_DATEN_EINAUS_REPORT_002_EINNEU_To_Fahrzeugbrief
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU, Fahrzeugbrief>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Vertragsnummer = s.LIZNR;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                    }));
+            }
+        }
+
         #endregion
 
 
         #region Save to Repository
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_MARK_DAT_OHNE_DOKUM_01.GT_DAT, DatenOhneDokumente> Z_DPM_MARK_DAT_OHNE_DOKUM_01_GT_DAT_From_DatenOhneDokumente
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -493,6 +519,7 @@ namespace CkgDomainLogic.Equi.Models
                     }));
             }
         }
+
         static public ModelMapping<Z_DPM_SET_ZH_ABW_ERL_01.GT_TAB, Halterabweichung> Z_DPM_SET_ZH_ABW_ERL_01_GT_TAB_From_Halterabweichung
         {
             get

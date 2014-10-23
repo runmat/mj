@@ -36,11 +36,6 @@ namespace CkgDomainLogic.Finance.Models
         {
             if (VersanddatumRange.IsSelected && VersanddatumRange.StartDate.HasValue && VersanddatumRange.EndDate.HasValue && VersanddatumRange.StartDate.Value > VersanddatumRange.EndDate.Value)
                 yield return new ValidationResult(Localize.DateRangeInvalid, new[] { "VersanddatumRange" });
-
-            if (String.IsNullOrEmpty(Fahrgestellnummer) && !VersanddatumRange.IsSelected && !Mahndatum.HasValue)
-            {
-                yield return new ValidationResult(Localize.AtLeastOneSearchCriterionRequired);
-            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace ServicesMvc.Controllers
         public override string DataContextKey { get { return "EquiViewModel"; } }
 
 
+
         public EquiController(
             IAppSettings appSettings, 
             ILogonContextDataService logonContext, 
@@ -23,7 +24,7 @@ namespace ServicesMvc.Controllers
             IMahnreportDataService mahnreportDataService,
             IDatenOhneDokumenteDataService datenOhneDokumenteDataService, 
             IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, 
-            IHalterabweichungenDataService halterabweichungenDataService, 
+            IAbweichungenDataService abweichungenDataService, 
             IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, 
             IMahnsperreDataService mahnsperreDataService, 
             IBriefbestandVhcDataService briefbestandVhcDataService, 
@@ -37,7 +38,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnreportViewModel, appSettings, logonContext, mahnreportDataService);
             InitViewModel(DatenOhneDokumenteViewModel, appSettings, logonContext, datenOhneDokumenteDataService);
             InitViewModel(ErweiterterBriefbestandViewModel, appSettings, logonContext, erweiterterBriefbestandDataService);
-            InitViewModel(HalterabweichungenViewModel, appSettings, logonContext, halterabweichungenDataService);
+            InitViewModel(HalterAbweichungenViewModel, appSettings, logonContext, abweichungenDataService);
             InitViewModel(DokumenteOhneDatenViewModel, appSettings, logonContext, dokumenteOhneDatenDataService);
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);

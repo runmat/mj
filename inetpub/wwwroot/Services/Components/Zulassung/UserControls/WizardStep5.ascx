@@ -298,7 +298,7 @@
                                 <tr>
                                     <td><asp:CheckBox ID="cbxGewerbe" runat="server" Enabled="false" Text="Gewerbeanmeld." Font-Bold="true" /></td>
                                     <td><asp:CheckBox ID="cbxEinzug" runat="server" Enabled="false" Text="Einzugserm." Font-Bold="true" /></td>
-                                    <td><asp:CheckBox ID="cbxKarte" runat="server" Enabled="false" Text="Versich.Bestätigung" Font-Bold="true" /></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3"><asp:CheckBox ID="cbxVollst" runat="server" Enabled="false" Text="Vollst." Font-Bold="true" /></td>
