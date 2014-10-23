@@ -1,0 +1,41 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceMahnungenVorErsteingangViewModel 
+
+@{ var gridName = "GridMahnungenVorErsteingang"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseMahnungenVorErsteingangSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Mahnung>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("MahnungenVorErsteingangAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.Dokument);
+        columns.XBound(c => c.Mahnstufe);
+        columns.XBound(c => c.MahnsperreBis).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Mahnverfahren).ClientTemplate(
+                "<label class='tooltips' data-original-title='<#= data.MahnverfahrenText #>' data-placement='left'><#= data.Mahnverfahren #></label>"
+            )
+        ;
+        columns.XBound(c => c.LetzteMahnungAm).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.NaechsteMahnungAm).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnungenVorErsteingang"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kontonummer))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportMahnungenVorErsteingangFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportMahnungenVorErsteingangFilteredPDF", "Finance");
+    })
+)

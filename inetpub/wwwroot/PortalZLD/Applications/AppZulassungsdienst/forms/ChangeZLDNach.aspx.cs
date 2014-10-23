@@ -1182,25 +1182,32 @@ namespace AppZulassungsdienst.forms
                             objNacherf.OhneSteuer = KundeRow[0]["OHNEUST"].ToString();
                         }
 
-                        Boolean bnoError;
                         proofCPD();
+                        Boolean bnoError = ProofBank();
+
+                        if (bnoError)
+                        {
                         if (chkCPD.Checked)
-                        {
-                            bnoError = proofBankDataCPD();
-                        }
-                        else
-                        {
-                            bnoError = proofBankDatawithoutCPD();
-                        }
+                            {
+                                bnoError = proofBankDataCPD();
+                            }
+                            else
+                            {
+                                bnoError = proofBankDatawithoutCPD();
+                            }
+
                         if (bnoError)
                         {
                             UpdateKundeBank();
                         }
-                        else
+                        }
+
+                        if (!bnoError)
                         {
                             lbtnBank_Click(this, new EventArgs());
                             return;
                         }
+
                         if (!objNacherf.SelAnnahmeAH)
                         {
                             lblError.Text = "Kunde geändert! Klicken Sie bitte auf 'Preis Finden'!";
@@ -1210,22 +1217,31 @@ namespace AppZulassungsdienst.forms
                     }
                     else
                     {
-                        Boolean bnoError;
                         proofCPD();
+                        Boolean bnoError = ProofBank();
+
+                        if (bnoError)
+                        {
                         if (chkCPD.Checked)
                         {
-                            bnoError = proofBankDataCPD();
+                                bnoError = proofBankDataCPD();
+                            }
+                            else
+                            {
+                                bnoError = proofBankDatawithoutCPD();
+                            }
+
+                            if (bnoError)
+                            {
+                                UpdateKundeBank();
+                            }
                         }
-                        else
-                        {
-                            bnoError = proofBankDatawithoutCPD();
-                        }
-                        if (bnoError == false)
+
+                        if (!bnoError)
                         {
                             lbtnBank_Click(this, new EventArgs());
                             return;
                         }
-                        UpdateKundeBank();
                     }
                 }
 

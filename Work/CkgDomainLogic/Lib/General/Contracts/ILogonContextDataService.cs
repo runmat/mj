@@ -70,7 +70,8 @@ namespace CkgDomainLogic.General.Contracts
         List<Contact> TryGetGroupContacts(int customerID, string groupName);
         List<Contact> TryGetGroupContacts();
 
-        void StorePasswordToUser(string userName, string password, bool isTokenPassword);
+        void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey);
+        void StorePasswordToUser(string userName, string password);
 
         bool ValidatePassword(string password, User storedUser);
 

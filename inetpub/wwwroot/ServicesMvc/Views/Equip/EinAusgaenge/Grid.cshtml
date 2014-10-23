@@ -1,0 +1,24 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{
+    var gridName = "GridEinAusgaenge";
+}
+
+@(Html.Telerik()
+    .Grid<Fahrzeugbrief>()
+    .Name(gridName)
+
+    .XGroup("EinAusgaenge")
+    .XAjaxDataBinding("EinAusgaengeAjaxBinding", "Equip")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Vertragsnummer);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Fahrgestellnummer);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Equipmentnummer).Descending())
+    .XToolBar("Equip")
+)
+
