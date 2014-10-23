@@ -1,0 +1,25 @@
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragIdSelektor
+
+<div id="divSendungenIdSuche">
+    @using (Ajax.BeginForm("LoadSendungenId", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenIdSuche") { OnComplete = "ShowCocSendungenId();" }, new { id = "SendungenFormIds" }))
+    {   
+        <div class="form-horizontal" id="searchFormIds">
+            @Html.FormValidationSummary()
+            
+           
+            @Html.FormDateRangePickerFor(m => m.DatumRangeIds, null, new[] { "!far-past", "!future" })
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

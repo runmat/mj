@@ -1,0 +1,79 @@
+﻿@model CkgDomainLogic.Equi.ViewModels.EinAusgaengeViewModel
+
+<h3 class="page-title" id="headerTitle">ZBII <small>Ein- und Ausgänge</small></h3>
+
+@Html.IeWarning(8)
+@Html.SpanAlert("Message")
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("EinAusgaenge/Suche", Model.EinAusgangSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divGridMemoDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    function ShowEinAusgaenge() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowEinAusgaenge",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowEinAusgaengeSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+    
+    function ShowEinAusgaengeSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridEinAusgaenge");
+
+        $("#divGrid").slideDown();
+    }
+
+
+    function OnDataBound_GridEinAusgaenge() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+    
+    function OnColumnShowHide_GridEinAusgaenge() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridEinAusgaenge() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
