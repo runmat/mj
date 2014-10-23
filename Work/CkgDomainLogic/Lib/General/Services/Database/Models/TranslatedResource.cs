@@ -30,6 +30,10 @@ namespace CkgDomainLogic.General.Database.Models
         public string de_at { get; set; }
         public string de_at_kurz { get; set; }
 
+        public string fr { get; set; }
+        public string fr_kurz { get; set; }
+
+
         public void MergeTranslatedResourceCustom(TranslatedResourceCustom translatedResourceCustom)
         {
             if (!string.IsNullOrEmpty(translatedResourceCustom.en))

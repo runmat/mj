@@ -639,6 +639,10 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\work\Tools\WebTools35\WebTools35.csproj">
+      <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
+      <Name>WebTools35</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services.vbproj">
       <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
       <Name>Services</Name>

@@ -11,6 +11,8 @@ namespace CkgDomainLogic.General.Models
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
 
+        public string UserSalutation { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.PasswordNew)]
         [Required]
         public string Password { get; set; }

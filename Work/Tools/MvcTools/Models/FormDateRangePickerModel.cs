@@ -9,5 +9,7 @@ namespace MvcTools.Models
         public MvcHtmlString ControlHtmlStartDate { get; set; }
 
         public MvcHtmlString ControlHtmlEndDate { get; set; }
+
+        public string[] DateRangeGroupsToExclude { get; set; }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model MaintenanceResult
+
+<div class="alert">
+    @foreach (var maintenanceMessage in Model.AvailableMessagesToConfirm)
+    {
+        <div class="maintenance-hint">
+            @if (maintenanceMessage.Title.IsNotNullOrEmpty())
+            {
+                <strong><i class="icon-bell margin-right-5"></i> @maintenanceMessage.Title.ToHtml()</strong><br/><br/>
+            }
+            @maintenanceMessage.Message.ToHtml()
+        </div>
+    }
+</div>
