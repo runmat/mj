@@ -1,0 +1,74 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceMahnungenVorErsteingangViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Finance_MahnungenVorErsteingang <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("MahnungenVorErsteingang/MahnungenVorErsteingangSuche", Model.DataService.Suchparameter)
+
+<div id="divMahnungenVorErsteingangGrid"></div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridMahnungenVorErsteingang").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridMahnungenVorErsteingangItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridMahnungenVorErsteingang() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridMahnungenVorErsteingang() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridMahnungenVorErsteingang() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridMahnungenVorErsteingang() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowMahnungenVorErsteingangSearchResult(result) {
+        $("#btnBackToSearch").show();
+        $("#divMahnungenVorErsteingangSuche").slideUp();
+        $("#divMahnungenVorErsteingangGrid").slideDown();
+        $("#divMahnungenVorErsteingangGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridMahnungenVorErsteingang");
+    }
+
+    function CloseMahnungenVorErsteingangSearchResult() {
+        $("#btnBackToSearch").hide();
+        $("#divMahnungenVorErsteingangGrid").slideUp(function () { $("#divMahnungenVorErsteingangSuche").delay(200).slideDown(); window.scrollTo(0, 0); });
+        FormPreparePrivateAjax();
+    }
+
+    function TryGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+
+</script>

@@ -8,6 +8,7 @@ using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using WebTools.Services;
 
 namespace CkgDomainLogic.General.ViewModels
@@ -68,17 +69,17 @@ namespace CkgDomainLogic.General.ViewModels
 
         public void ValidatePasswordAgainstRules(string password, out List<string> localizedPasswordValidationErrorMessages, out List<string> localizedPasswordRuleMessages)
         {
-            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(), LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
+            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(ChangePasswordModel.UserName), LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
         }
 
-        private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider()
+        private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider(string userName)
         {
             var provider = LogonContext.Customer;
             if (provider != null)
                 return provider;
             
             var lc = LogonContext;
-            lc.LogonUser(ChangePasswordModel.UserName);
+            lc.LogonUser(userName);
             provider = lc.Customer;
 
             return provider;
@@ -115,6 +116,15 @@ namespace CkgDomainLogic.General.ViewModels
             ChangePasswordModel.UserSalutation = user.UserSalutation;
 
             return true;
+        }
+
+        public string TryGetPasswordResetCustomerAdminInfo(string userName)
+        {
+            var customer = GetPasswordSecurityRuleDataProvider(userName) as Customer;
+            if (customer != null && customer.PwdDontSendEmail && customer.SelfAdministrationContact.IsNotNullOrEmpty())
+                return LoginUserMessage.ConvertMessage(customer.SelfAdministrationContact);
+
+            return "";
         }
 
         public void TrySendPasswordResetEmail(string userName, string userEmail, string url, Action<Expression<Func<LoginModel, object>>, string> addModelError)
