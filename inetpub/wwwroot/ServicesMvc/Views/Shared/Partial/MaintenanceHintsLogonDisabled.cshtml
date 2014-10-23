@@ -7,13 +7,13 @@
         {
             <div class="maintenance-hint">
                 <div class="maintenance-hint-active-title">
-                    <div class="header">@Localize.Note:</div> @Localize.LoginDisabledGenerally
+                    <div class="header">@Localize.LoginDisabledGenerally</div> 
                 </div> 
                 <br />
 
                 @if (maintenanceMessage.Title.IsNotNullOrEmpty())
                 {
-                    <strong>@maintenanceMessage.Title.ToHtml()</strong><br/>
+                    <strong><i class="icon-bell margin-right-5"></i> @maintenanceMessage.Title.ToHtml()</strong><br/><br/>
                 }
                 @maintenanceMessage.Message.ToHtml() 
             </div>

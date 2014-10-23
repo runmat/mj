@@ -1,11 +1,5 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
+﻿using System;
 using GeneralTools.Models;
-// ReSharper restore RedundantUsingDirective
 
 namespace WebTools.Services
 {
@@ -79,5 +73,16 @@ namespace WebTools.Services
         }
 
         #endregion
+
+
+        private static string GetTokenContent(string content)
+        {
+            return string.Format("{0}~{1}", content, DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+        }
+
+        public static string GenerateToken(string content)
+        {
+            return CryptoMd5.Encrypt(GetTokenContent(content));
+        }
     }
 }

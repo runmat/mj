@@ -1,0 +1,134 @@
+﻿@model CkgDomainLogic.Equi.ViewModels.VersandAbweichungenViewModel
+
+<h3 class="page-title" id="headerTitle">Versand <small>Abweichungen</small></h3>
+
+@Html.IeWarning(8)
+@Html.SpanAlert("Message")
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("VersandAbweichungen/Suche")
+    }
+</div>
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divGridMemoDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        $("#VersandAbweichungenForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    function ShowVersandAbweichungen() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowVersandAbweichungen",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowVersandAbweichungenSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+    
+    function ShowVersandAbweichungenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridVersandAbweichungen");
+
+        $("#divGrid").slideDown();
+    }
+
+    function GridVersandAbweichungenEditMemo(id) {
+        $.ajax({
+            type: "POST",
+            url: "VersandAbweichungMemoEditFormShow",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                GridVersandAbweichungenMemoEditDetails(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+    function GridVersandAbweichungenSaveAsErledigt(id) {
+        if (!confirm("@Localize.MarkAsCompletedConfirm"))
+            return;
+        
+        $.ajax({
+            type: "POST",
+            url: "VersandAbweichungSaveAsErledigt",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "@Localize.MarkAsCompletedSuccessful", 1000);
+                FilterGrid("GridVersandAbweichungen");
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+    
+    function GridVersandAbweichungenMemoEditDetails(result) {
+        $("#divGridMemoDetails").html(result);
+        $("#divGrid").slideUp();
+        $("#divGridMemoDetails").slideDown();
+        FormPrepareAjax();
+    }
+    
+    function GridVersandAbweichungenMemoFormPrepareAjax() {
+        FormPrepareAjax();
+
+        if (_modelStateValid) {
+            FilterGrid("GridVersandAbweichungen");
+            SpanAlertSuccess("Message", "@Localize.SaveSuccessful", 1000);
+            GridVersandAbweichungenMemoCloseDetails();
+        }
+    }
+
+    function GridVersandAbweichungenMemoCloseDetails() {
+        $("#divGridMemoDetails").slideUp();
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridVersandAbweichungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridVersandAbweichungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridVersandAbweichungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
