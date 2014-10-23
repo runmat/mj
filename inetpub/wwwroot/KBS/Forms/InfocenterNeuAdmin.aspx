@@ -30,8 +30,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="dataQueryFooter">
-                            &nbsp; <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                        <div>
+                            <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                         </div>
                         <div id="Result" runat="Server">
                             <div id="data" runat="server">
