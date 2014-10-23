@@ -32,12 +32,12 @@
                         </div>
                         <div id="Result" runat="Server">
                             <div id="data" runat="server">
-                                <telerik:RadGrid ID="rgDokumente" runat="server" PageSize="10" AllowPaging="true" AllowSorting="true" 
+                                <telerik:RadGrid ID="rgDokumente" runat="server" PageSize="10" AllowPaging="false" AllowSorting="true" 
                                     AutoGenerateColumns="False" GridLines="None" Skin="Default">
                                     <PagerStyle Mode="NumericPages"></PagerStyle>
                                     <ItemStyle CssClass="ItemStyle" />
                                     <AlternatingItemStyle CssClass="ItemStyle" />
-                                    <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Fixed" GroupsDefaultExpanded="true">
+                                    <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Fixed" GroupsDefaultExpanded="false">
                                         <SortExpressions>
                                             <telerik:GridSortExpression FieldName="DocTypeName" SortOrder="Ascending" />
                                             <telerik:GridSortExpression FieldName="LastEdited" SortOrder="Descending" />
