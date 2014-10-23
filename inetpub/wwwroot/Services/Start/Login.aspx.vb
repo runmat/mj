@@ -521,14 +521,14 @@ Partial Public Class Login
 
         If (UrlRemoteUserProcessLogin()) Then Return
 
-
+        Dim redirectOccurred As Boolean = False
         litAlert.Text = ""
         txtUsername.Focus()
         Page.Title = "Anmeldung"
         If Not IsPostBack Then
             If Not CheckUniqueSessionID() Then
                 Response.Redirect(BouncePage(Me), True)
-
+                redirectOccurred = True
             End If
             displaySecurityCertificate()
             displayMessages()
@@ -585,6 +585,7 @@ Partial Public Class Login
                         If m_User.Login(strIpStandardUser, Session.SessionID.ToString) Then
                             'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                             RedirectFromLoginPage(m_User)
+                            redirectOccurred = True
                         Else
                             lblError.Text = strIpError & "<br>(" & m_User.ErrorMessage & ")"
                             cmdLogin.Enabled = False
@@ -594,6 +595,10 @@ Partial Public Class Login
 
             End If
 
+        End If
+
+        If (redirectOccurred) Then
+            Return
         End If
 
         Dim urlReferrer As String = ""
