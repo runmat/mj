@@ -38,13 +38,10 @@
                             </h1>
                             <span id="arealnkSuche" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuche" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchFilterArea();" style="display: none">Suche</a>
                             <span id="arealnkSuchergebnis" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuchergebnis" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchResultArea();" style="display: none">Suchergebnis</a>
-                            <%-- ihExpandStatus...Area enthält jeweils den Sollwert für den nächsten Seitenzustand, ihNewExpandStatus...Area den aktuellen --%>
+                            <%-- ih... enthält jeweils den Sollwert für den nächsten Seitenzustand --%>
                             <input id="ihExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
-                            <input id="ihNewExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
                             <input id="ihExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
                             <input id="ihExpandStatusInputArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandStatusInputArea" type="hidden" runat="server" value="0"/>
                         </div>
                         <asp:Panel ID="DivSearch" DefaultButton="btnEmpty" runat="server" style="display: none">
                             <div id="TableQuery">
@@ -920,9 +917,6 @@
                 $("#<%= Result.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").hide();
                 $("#<%= DivSearch.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
                 $("#<%= txtFilterUserName.ClientID %>").setCaretPos(2);
             }
             else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
@@ -933,9 +927,6 @@
                 $("#<%= DivSearch.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").hide();
                 $("#<%= Result.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
             }
             else {
                 $("#arealnkSuche").show();
@@ -945,9 +936,6 @@
                 $("#<%= DivSearch.ClientID %>").hide();
                 $("#<%= Result.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "1");
             }
         }
 
