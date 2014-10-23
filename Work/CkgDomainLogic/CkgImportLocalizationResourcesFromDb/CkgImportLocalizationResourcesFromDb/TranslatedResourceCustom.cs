@@ -32,5 +32,9 @@ namespace CkgImportLocalizationResourcesFromDb
         public string de_ch { get; set; }
 
         public string de_ch_kurz { get; set; }
+
+        public string fr { get; set; }
+
+        public string fr_kurz { get; set; }
     }
 }

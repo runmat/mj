@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Models;
 using GeneralTools.Models;
@@ -12,7 +11,7 @@ using System.Linq;
 
 namespace CkgDomainLogic.Finance.ViewModels
 {
-    public class FinanceVersandsperreViewModel : CkgBaseViewModel
+    public class FinanceVersandsperreViewModel : FinanceViewModelBase
     {
         [XmlIgnore]
         public IFinanceVersandsperreDataService DataService { get { return CacheGet<IFinanceVersandsperreDataService>(); } }
@@ -72,27 +71,10 @@ namespace CkgDomainLogic.Finance.ViewModels
 
         public void FillVertragsarten()
         {
-            var vertragsArten = new List<string>();
+            DataService.Suchparameter.AuswahlVertragsart = GetVertragsarten();
 
-            var myLogonContext = (LogonContext as LogonContextDataServiceDadServices);
-            if (myLogonContext != null)
-            {
-                if ((myLogonContext.Organization != null) && (!String.IsNullOrEmpty(myLogonContext.Organization.OrganizationName)))
-                {
-                    var vArten = myLogonContext.Organization.OrganizationName.Split('+');
-                    Array.Sort(vArten);
-                    foreach (var vArt in vArten)
-                    {
-                        vertragsArten.Add(vArt.Trim());
-                    }
-                }
-            }
-
-            DataService.Suchparameter.AuswahlVertragsart = vertragsArten;
-            if ((String.IsNullOrEmpty(DataService.Suchparameter.Vertragsart)) && (vertragsArten.Count > 0))
-            {
-                DataService.Suchparameter.Vertragsart = vertragsArten[0];
-            }
+            if ((String.IsNullOrEmpty(DataService.Suchparameter.Vertragsart)) && (DataService.Suchparameter.AuswahlVertragsart.Count > 0))
+                DataService.Suchparameter.Vertragsart = DataService.Suchparameter.AuswahlVertragsart[0];
         }
 
         public void SaveVersandsperren(string selectedItems, ModelStateDictionary state)

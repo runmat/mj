@@ -13,7 +13,7 @@ using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
 {
-    public class CocSendungController : CkgDomainController 
+    public partial class CocSendungController : CkgDomainController 
     {
         public override sealed string DataContextKey { get { return GetDataContextKey<SendungenViewModel>(); } }
 
@@ -26,53 +26,14 @@ namespace ServicesMvc.Controllers
             InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService);
         }
 
-        [CkgApplication]
-        public ActionResult Verfolgung()
-        {
-            ViewModel.DataMarkForRefresh();
-
-            return View(ViewModel);
-        }
-
-        [GridAction]
-        public ActionResult SendungenAjaxBinding()
-        {
-            return View(new GridModel(ViewModel.SendungenFiltered));
-        }
-
-        [HttpPost]
-        public ActionResult FilterGridCocSendungen(string filterValue, string filterColumns)
-        {
-            ViewModel.FilterSendungen(filterValue, filterColumns);
-
-            return new EmptyResult();
-        }
-
-        [HttpPost]
-        public ActionResult LoadSendungen(SendungsAuftragSelektor model)
-        {
-            ViewModel.SendungsAuftragSelektor = model;
-
-            if (ModelState.IsValid)
-                ViewModel.LoadSendungen(model, ModelState.AddModelError);
-
-            return PartialView("Verfolgung/Suche", ViewModel.SendungsAuftragSelektor);
-        }
-
-        [HttpPost]
-        public ActionResult ShowSendungen()
-        {
-            return PartialView("Verfolgung/Grid", ViewModel);
-        }
-
 
         #region grid data export
 
         protected override IEnumerable GetGridExportData()
         {
-            return ViewModel.SendungenFiltered;
+            return ViewModel.FilteredObjectsCurrent();
         }
 
-        #endregion
+        #endregion            
     }
 }

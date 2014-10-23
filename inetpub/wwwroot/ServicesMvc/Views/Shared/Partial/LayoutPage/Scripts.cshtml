@@ -456,15 +456,17 @@
         });
     }
     
-    function UserSwitchCulture() {
+    function UserSwitchCulture(language) {
         $.ajax({
             type: "POST",
             url: "/ServicesMvc/DomainCommon/UserSwitchCulture",
-            data: {  },
+            data: { language: language  },
             success: function (result) {
                 location.reload();
             }
         });
+
+        return false;
     }
     
     function ChangePassword() {

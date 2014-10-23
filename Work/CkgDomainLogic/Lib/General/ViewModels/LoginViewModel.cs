@@ -8,6 +8,8 @@ using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
+using WebTools.Services;
 
 namespace CkgDomainLogic.General.ViewModels
 {
@@ -25,6 +27,17 @@ namespace CkgDomainLogic.General.ViewModels
             get { return _passwordRuleCount; }
         }
 
+        private string _sslCertificateHtml;
+        public string SslCertificateHtml
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_sslCertificateHtml))
+                    _sslCertificateHtml = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate");
+
+                return _sslCertificateHtml;
+            }
+        }
 
         public LoginModel LoginModel { get { return PropertyCacheGet(() => new LoginModel()); } set { PropertyCacheSet(value); } }
 
@@ -47,27 +60,26 @@ namespace CkgDomainLogic.General.ViewModels
 
         public void ValidatePasswordModelAgainstRules(Action<string, string> addModelError)
         {
-            var validatePasswordModelAgainstRules = ValidatePasswordAgainstRules(ChangePasswordModel.Password);
-            if (validatePasswordModelAgainstRules.Any())
-                addModelError("Password", string.Join("; ", validatePasswordModelAgainstRules));
-        }
-
-        public List<string> ValidatePasswordAgainstRules(string password)
-        {
             List<string> localizedPasswordValidationErrorMessages;
-            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(), LocalizationService, out localizedPasswordValidationErrorMessages, out _passwordRuleCount);
-
-            return localizedPasswordValidationErrorMessages;
+            List<string> localizedPasswordRuleMessages;
+            ValidatePasswordAgainstRules(ChangePasswordModel.Password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
+            if (localizedPasswordValidationErrorMessages.Any())
+                addModelError("Password", string.Join("; ", localizedPasswordValidationErrorMessages));
         }
 
-        private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider()
+        public void ValidatePasswordAgainstRules(string password, out List<string> localizedPasswordValidationErrorMessages, out List<string> localizedPasswordRuleMessages)
+        {
+            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(ChangePasswordModel.UserName), LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
+        }
+
+        private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider(string userName)
         {
             var provider = LogonContext.Customer;
             if (provider != null)
                 return provider;
             
             var lc = LogonContext;
-            lc.LogonUser(ChangePasswordModel.UserName);
+            lc.LogonUser(userName);
             provider = lc.Customer;
 
             return provider;
@@ -101,16 +113,29 @@ namespace CkgDomainLogic.General.ViewModels
             TmpCustomer = customer;
 
             ChangePasswordModel.UserName = user.Username;
+            ChangePasswordModel.UserSalutation = user.UserSalutation;
 
             return true;
         }
 
-        public void TrySendPassordResetEmail(string userName, string userEmail, string url, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        public string TryGetPasswordResetCustomerAdminInfo(string userName)
+        {
+            var customer = GetPasswordSecurityRuleDataProvider(userName) as Customer;
+            if (customer != null && customer.PwdDontSendEmail && customer.SelfAdministrationContact.IsNotNullOrEmpty())
+                return LoginUserMessage.ConvertMessage(customer.SelfAdministrationContact);
+
+            return "";
+        }
+
+        public void TrySendPasswordResetEmail(string userName, string userEmail, string url, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             try
             {
-                var confirmationToken = AppSettings.SecurityService.GenerateToken(userName);
-                LogonContext.StorePasswordToUser(userName, confirmationToken, true);
+                var confirmationToken = UserSecurityService.GenerateToken(userName);
+                LogonContext.StorePasswordRequestKeyToUser(userName, confirmationToken);
+                
+                var user = LogonContext.TryGetUserFromUserName(userName);
+                var userSalutation = user == null ? userName : user.UserSalutation;
 
                 var confirmationUrl = url.ToLower().Replace("loginform", "changepassword") + "?confirmation=" +
                                       HttpUtility.UrlEncode(confirmationToken);
@@ -118,7 +143,7 @@ namespace CkgDomainLogic.General.ViewModels
 
                 var subject = string.Format(Localize.LoginPasswordResetEmailSubject, AppSettings.AppOwnerFullName);
                 var body = string.Format("{0}<br /><br />{1}<br /><br /><strong>{2}</strong><br /><br />{3}",
-                                         string.Format(Localize.LoginPasswordResetEmailBody, userName),
+                                         string.Format(Localize.LoginPasswordResetEmailBody, userSalutation),
                                          confirmationLink,
                                          string.Format(Localize.LoginPasswordResetLinkExpirationHint, DateTime.Now.AddMinutes(AppSettings.TokenExpirationMinutes).ToString("dd.MM.yyyy, HH:mm")),
                                          string.Format(Localize.LoginPasswordResetEmailFooter, AppSettings.AppOwnerFullName)
