@@ -1,12 +1,24 @@
 ﻿@{ 
-    var userCultureToSwitch = SessionHelper.GetSessionValue("UserCulture", "de-DE").NotNullOrEmpty() == "de-DE" ? "EN" : "DE";
-    var userCultureFlag1Class = "EN-disabled";
-    var userCultureFlag2Class = "DE";
-    if (userCultureToSwitch != "DE")
-    {
-        userCultureFlag1Class = "DE-disabled";
-        userCultureFlag2Class = "EN";
-    }
+    var culture = SessionHelper.GetSessionValue("UserCulture", "de-DE").NotNullOrEmpty();
+    var languageImage = culture.SubstringTry(0, 2).ToLower() + ".png";
 }
 
-<a href="javascript:UserSwitchCulture()"><i class="@ViewBag.HeaderIconCssClass"></i> <span class="user-culture-flag @userCultureFlag1Class"></span><span class="user-culture-flag @userCultureFlag2Class"></span></a>
+<style type="text/css">
+    .header .nav > li.dropdown .dropdown-toggle.language {
+        padding: 9px 4px 10px 4px;
+    }
+</style>
+
+<ul class="nav language-menu">
+    <li class="dropdown language">
+	    <a href="#" class="dropdown-toggle language" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+	    <img alt="" src="~/assets/img/flags/@languageImage" />
+	    <i class="icon-angle-down"></i>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href="#" onclick="return UserSwitchCulture('DE');"><img alt="" src="~/assets/img/flags/de.png" /> </a></li>
+		    <li><a href="#" onclick="return UserSwitchCulture('EN');"><img alt="" src="~/assets/img/flags/en.png" /> </a></li>
+		    <li><a href="#" onclick="return UserSwitchCulture('FR');"><img alt="" src="~/assets/img/flags/fr.png" /> </a></li>
+	    </ul>
+    </li>
+</ul>

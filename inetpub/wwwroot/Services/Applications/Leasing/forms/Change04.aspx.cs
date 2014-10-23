@@ -18,7 +18,6 @@ namespace Leasing.forms
 
         private LP_01 m_report;
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
@@ -38,7 +37,6 @@ namespace Leasing.forms
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
         }
-
 
         private void GridView1_PageIndexChanged(Int32 pageindex)
         {
@@ -141,7 +139,6 @@ namespace Leasing.forms
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
 
-
             }
         }
 
@@ -156,13 +153,10 @@ namespace Leasing.forms
             Common.SetEndASPXAccess(this);
         }
 
-
-
         protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
         {
             Fillgrid(GridView1.PageIndex, e.SortExpression);
         }
-
 
         protected void lnkCreateExcel1_Click(object sender, EventArgs e)
         {
@@ -171,8 +165,6 @@ namespace Leasing.forms
             DataTable tblTemp = (DataTable)Session["ResultVorhDokumente"];
 
             DataTable NewTable = new DataTable();
-
-
 
             NewTable.Columns.Add("Halter", typeof(System.String));
             NewTable.Columns.Add("HOrt", typeof(System.String));
@@ -209,13 +201,13 @@ namespace Leasing.forms
                 NewRow["Gewerbeanmeld."] = dr["GEWERBE"];
                 NewRow["Einzugserm."] = dr["EINZUG"];
                 NewRow["Versich_Bestätigung"] = dr["KARTE"];
-                NewRow["Datum Vollmacht"] = dr["VOLLMACHT"];
+                NewRow["Datum Vollmacht"] = dr["VOLLMACHT_VON"];
                 NewRow["EVB Nummer"] = dr["EVB_NUM"];
                 NewRow["gültig ab"] = dr["EVB_VON"];
                 NewRow["gültig bis"] = dr["EVB_BIS"];
                 NewRow["Bemerkung"] = dr["BEMERKUNG"];
-                NewRow["RegDat"] = dr["HREGDAT"];
-                NewRow["Neue Vollmacht"] = dr["DATNEUVM"];
+                NewRow["RegDat"] = dr["HREGDAT_VON"];
+                NewRow["Neue Vollmacht"] = dr["VOLLMACHT_BIS"];
                 NewRow["KUNNR"] = dr["KUNNR_SAP"];
                 NewRow["Vollst."] = dr["VOLLST"];
 
@@ -228,7 +220,6 @@ namespace Leasing.forms
             excelFactory.CreateDocumentAndSendAsResponse(filename, NewTable, this.Page, false, null, 0, 0);
 
         }
-
 
         protected void NewSearch_Click(object sender, ImageClickEventArgs e)
         {
@@ -254,7 +245,6 @@ namespace Leasing.forms
             Fillgrid(GridView1.PageIndex, "");
         }
 
-
         protected void lbCreate_Click(object sender, EventArgs e)
         {
             m_report = new LP_01(ref m_User, m_App, "");
@@ -262,10 +252,6 @@ namespace Leasing.forms
 
             m_report.Vollst = rbArt.SelectedValue;
             m_report.Haltername = txtHaltername.Text;
-
-
-
-
 
             m_report.FillVorZulassungen((string)Session["AppID"], (string)Session.SessionID, this.Page);
 
@@ -281,8 +267,6 @@ namespace Leasing.forms
                 Session["ResultVorhDokumente"] = m_report.Result;
                 Fillgrid(0, "");
             }
-
-
         }
 
         protected void lbBack_Click(object sender, EventArgs e)
@@ -310,13 +294,12 @@ namespace Leasing.forms
                 lblPerso.Text = dRows[0]["PERSO"].ToString();
                 lblGewerbe.Text = dRows[0]["GEWERBE"].ToString();
                 lblEinzug.Text = dRows[0]["EINZUG"].ToString();
-                lblKarte.Text = dRows[0]["KARTE"].ToString();
                 lblVollst.Text = dRows[0]["VOLLST"].ToString();
 
 
-                lblDateVollm.Text = CutDate(dRows[0]["VOLLMACHT"].ToString());
-                lbl_DateGew.Text = CutDate(dRows[0]["HREGDAT"].ToString());
-                lblVollmRegDate.Text = CutDate(dRows[0]["DATNEUVM"].ToString());
+                lblDateVollm.Text = CutDate(dRows[0]["VOLLMACHT_VON"].ToString());
+                lbl_DateGew.Text = CutDate(dRows[0]["HREGDAT_VON"].ToString());
+                lblVollmRegDate.Text = CutDate(dRows[0]["VOLLMACHT_BIS"].ToString());
                 lblBemerk.Text = dRows[0]["BEMERKUNG"].ToString();
                 txt_NummerEVB.Text = dRows[0]["EVB_NUM"].ToString();
                 txtDatumvon.Text = dRows[0]["EVB_VON"].ToString();
@@ -326,16 +309,11 @@ namespace Leasing.forms
                 divChange.Visible = true;
                 Result.Visible = false;
 
-
-
             }
         }
 
-
         string CutDate(string sDate)
         {
-
-
             if (sDate.Length > 10)
             {
 
@@ -345,7 +323,6 @@ namespace Leasing.forms
             {
                 return "";
             }
-
         }
 
         protected void lbCancel_Click(object sender, EventArgs e)
@@ -428,14 +405,7 @@ namespace Leasing.forms
 
             }
 
-
-
-
-
         }
-
-
-
 
     }
 }

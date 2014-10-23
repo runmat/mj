@@ -749,9 +749,6 @@ namespace Leasing.lib
                         row["KARTE"] = "X";
                     }
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -800,8 +797,6 @@ namespace Leasing.lib
                 myProxy.setImportParameter("I_EVB_BIS", DatumBis);
 
                 myProxy.callBapi();
-
-
             }
             catch (Exception ex)
             {
@@ -847,13 +842,7 @@ namespace Leasing.lib
                             break;
                     }
                 }
-                
-
-
             }
         }
-
-
-
     }
 }

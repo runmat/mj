@@ -18,16 +18,6 @@ namespace WebTools.Services
             return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "sha1");
         }
 
-        private static string GetTokenContent(string content)
-        {
-            return string.Format("{0}~{1}", content, DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-        }
-
-        public string GenerateToken(string content)
-        {
-            return CryptoMd5.Encrypt(GetTokenContent(content));
-        }
-
         public bool ValidatePasswordResetToken(string token, int tokenExpirationMinutes)
         {
             var clearTextToken = CryptoMd5.Decrypt(token);
@@ -46,36 +36,59 @@ namespace WebTools.Services
             return (DateTime.Now - tokenDateTime).TotalMinutes < tokenExpirationMinutes;
         }
 
-        public bool ValidatePassword(string password, IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, ILocalizationService localizationService, out List<string> localizedValidationErrorMessages, out int passwordRuleCount)
+        public bool ValidatePassword(string password, IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, ILocalizationService localizationService,
+                                    out List<string> localizedValidationErrorMessages, out List<string> localizedPasswordRuleMessages, out int passwordRuleCount)
         {
             localizedValidationErrorMessages = new List<string>();
+            localizedPasswordRuleMessages = new List<string>();
             passwordRuleCount = 0;
 
             if (passwordSecurityRuleDataProvider == null || localizationService == null)
                 throw new Exception("WebSecurityService.ValidatePassword needs valid parameters for IPasswordSecurityRuleDataProvider + ILocalizationService");
 
+            var message = localizationService.TranslateResourceKey("PasswordShouldNotBeEmpty");
+            localizedPasswordRuleMessages.Add(message);
             if (password.IsNullOrEmpty())
             {
                 password = "";
-                localizedValidationErrorMessages.Add(localizationService.TranslateResourceKey("PasswordShouldNotBeEmpty"));
+                localizedValidationErrorMessages.Add(message);
             }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinLength > 0 ? 1 : 0;
-            if (password.Length < passwordSecurityRuleDataProvider.PasswordMinLength)
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinLength, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinLength > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinLength, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (password.Length < passwordSecurityRuleDataProvider.PasswordMinLength)
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinNumericChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsNumericChar, passwordSecurityRuleDataProvider.PasswordMinNumericChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinNumericChars, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinNumericChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinNumericChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsNumericChar, passwordSecurityRuleDataProvider.PasswordMinNumericChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinCapitalChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsAlphaCapitalChar, passwordSecurityRuleDataProvider.PasswordMinCapitalChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinCapitalChars, passwordSecurityRuleDataProvider, localizationService));
+            if (passwordSecurityRuleDataProvider.PasswordMinCapitalChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinCapitalChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsAlphaCapitalChar, passwordSecurityRuleDataProvider.PasswordMinCapitalChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
 
-            passwordRuleCount += passwordSecurityRuleDataProvider.PasswordMinSpecialChars > 0 ? 1 : 0;
-            if (!ContainsAtLeast(password, IsSpecialChar, passwordSecurityRuleDataProvider.PasswordMinSpecialChars))
-                localizedValidationErrorMessages.Add(GetPropertyResourceString(p => p.PasswordMinSpecialChars, passwordSecurityRuleDataProvider, localizationService));
-
+            if (passwordSecurityRuleDataProvider.PasswordMinSpecialChars > 0)
+            {
+                passwordRuleCount++;
+                message = GetPropertyResourceString(p => p.PasswordMinSpecialChars, passwordSecurityRuleDataProvider, localizationService);
+                localizedPasswordRuleMessages.Add(message);
+                if (!ContainsAtLeast(password, IsSpecialChar, passwordSecurityRuleDataProvider.PasswordMinSpecialChars))
+                    localizedValidationErrorMessages.Add(message);
+            }
             return localizedValidationErrorMessages.None();
         }
 
@@ -89,15 +102,15 @@ namespace WebTools.Services
             if (maintenanceMessages == null)
                 return new MaintenanceResult();
 
-            var now = DateTime.Now;
             var result = new MaintenanceResult
                              {
                                  Messages = maintenanceMessages.Select(message => new MaintenanceMessage
                                      {
-                                         IsComing = now < message.MaintenanceStartDateTime,
-                                         IsActive = now >= message.MaintenanceStartDateTime && now <= message.MaintenanceEndDateTime,
                                          Title = message.MaintenanceTitle,
                                          Message = message.MaintenanceText,
+
+                                         IsActive = message.MaintenanceShow,
+                                         IsActiveAndLetConfirmMessageAfterLogin = message.MaintenanceShowAndLetConfirmMessageAfterLogin,
                                          LogonDisabledCore = message.MaintenanceLoginDisabled,
                                      }).ToList()
                              };
