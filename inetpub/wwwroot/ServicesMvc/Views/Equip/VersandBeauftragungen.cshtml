@@ -1,0 +1,142 @@
+﻿@model CkgDomainLogic.Equi.ViewModels.VersandBeauftragungenViewModel
+
+<h3 class="page-title" id="headerTitle">Offene <small>Versandaufträge</small></h3>
+
+@Html.IeWarning(8)
+@Html.SpanAlert("Message")
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("VersandBeauftragungen/Suche", Model.VersandBeauftragungSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divGridMemoDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        //$("#VersandBeauftragungenForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    function ShowVersandBeauftragungen() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowVersandBeauftragungen",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowVersandBeauftragungenSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+    
+    function ShowVersandBeauftragungenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridVersandBeauftragungen");
+
+        $("#divGrid").slideDown();
+    }
+
+
+    function GridVersandBeauftragungen_OnSelectionChange(cb) {
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "VersandBeauftragungenSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                GridVersandBeauftragungen_MultiSelectUpdate(result.allSelectionCount);
+            }
+        });
+    }
+    
+    function GridVersandBeauftragungen_OnAllSelectionChange(cb) {
+        $.ajax({
+            type: "POST",
+            url: "VersandBeauftragungenSelectionChanged",
+            data: { id: "", isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                GridVersandBeauftragungen_MultiSelectUpdate(result.allSelectionCount);
+                FilterGrid("GridVersandBeauftragungen");
+            }
+        });
+    }
+
+    function GridVersandBeauftragungen_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#VersandBeauftragungenSelectedCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#VersandBeauftragungenSelectedCount").removeClass('hide');
+        $("#VersandBeauftragungenSelectedCount > span").html('Sie haben ' + count + ' ' + (count == 1 ? 'Datensatz' : 'Datensätze') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+    
+    function GridVersandBeauftragungen_DeleteSelectedRecords() {
+        if (!confirm("Wollen Sie die ausgewählten Datensätze wirklich löschen?"))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "VersandBeauftragungenDeleteSelectedRecords",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertSuccess("Message", "Die ausgewählte Datensätze wurden erfolgreich gelöscht!", 2000);
+                $("#uncheckAllRecords").trigger("click");
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }
+
+
+    function OnDataBound_GridVersandBeauftragungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridVersandBeauftragungen");
+    }
+    
+    function OnColumnShowHide_GridVersandBeauftragungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridVersandBeauftragungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

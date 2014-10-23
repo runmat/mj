@@ -97,7 +97,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Impressum()
         {
-            return View(CkgCommonViewModel);
+            return View();
         }
 
 

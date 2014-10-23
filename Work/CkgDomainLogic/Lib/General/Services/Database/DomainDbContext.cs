@@ -33,9 +33,9 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<ColumnTranslationsMvc> ColumnTranslations { get; set; }
 
-        public DbSet<LoginMessage> LoginMessages { get; set; }
+        public DbSet<LoginUserMessage> LoginMessages { get; set; }
 
-        public List<LoginMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList().Where(message => message.active.GetValueOrDefault()).ToListOrEmptyList(); } }
+        public List<LoginUserMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList().ToListOrEmptyList(); } }
 
         private User _user;
         public User User
@@ -54,9 +54,9 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<string>("select mail from vwWebUser inner join WebUserInfo on vwWebUser.UserID = WebUserInfo.id_user where Username = {0}", userName).FirstOrDefault();
         }
 
-        public User GetUserFromPasswordToken(string password)
+        public User GetUserFromPasswordToken(string passwordRequestKey)
         {
-            return Database.SqlQuery<User>("select * from vwWebUser where Password = {0}", password).FirstOrDefault();
+            return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();
         }
 
         public User GetUser(string userName)
@@ -236,18 +236,23 @@ namespace CkgDomainLogic.General.Database.Services
             Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = 0 WHERE Username = {0}", userName);
         }
 
-        public void StorePasswordToUser(string userName, string password, bool isTokenPassword)
+        public void StorePasswordToUser(string userName, string password)
         {
             if (User != null)
                 User.Password = password;
 
             Database.ExecuteSqlCommand("UPDATE WebUser SET Password = {0} WHERE Username = {1}", password, userName);
-            if (!isTokenPassword)
-            {
-                Database.ExecuteSqlCommand("UPDATE WebUser SET LastPwdChange = getdate() WHERE Username = {0}", userName);
-                Database.ExecuteSqlCommand("insert into WebUserPwdHistory (UserID, Password, DateOfChange, InitialPwd) select wu.UserID, {0}, getdate(), 0 from WebUser wu where wu.Username = {1}", password, userName);
-            }
+            Database.ExecuteSqlCommand("UPDATE WebUser SET LastPwdChange = getdate() WHERE Username = {0}", userName);
+            Database.ExecuteSqlCommand("insert into WebUserPwdHistory (UserID, Password, DateOfChange, InitialPwd) select wu.UserID, {0}, getdate(), 0 from WebUser wu where wu.Username = {1}", password, userName);
             FailedLoginsResetAndSave(userName);
+        }
+
+        public void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
+        {
+            if (User != null)
+                User.Password = passwordRequestKey;
+
+            Database.ExecuteSqlCommand("UPDATE WebUser SET PasswordChangeRequestKey = {0} WHERE Username = {1}", passwordRequestKey, userName);
         }
 
         public bool TryChangePassword(string oldPassword, string newPassword)

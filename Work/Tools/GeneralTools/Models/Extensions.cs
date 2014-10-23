@@ -25,7 +25,7 @@ namespace GeneralTools.Models
 
         public static List<TSource> ToListOrEmptyList<TSource>(this IEnumerable<TSource> source)
         {
-            return source.Any() ? source.ToList() : new List<TSource>();
+            return (source != null && source.Any()) ? source.ToList() : new List<TSource>();
         }
 
         //public static TValue FirstOrDefault<TSource, TValue>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Expression<Func<TSource, TValue>> defaultExpression) 

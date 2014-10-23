@@ -10,54 +10,53 @@ Public Class Report203_02
     Private m_User As Base.Kernel.Security.User
     Private m_objTable As DataTable
 
-    Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
-    Protected WithEvents lnkFahrzeugsuche As System.Web.UI.WebControls.HyperLink
-    Protected WithEvents Label10 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label37 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label23 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label1 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label2 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblHalter As System.Web.UI.WebControls.Label
-    Protected WithEvents lblHOrt As System.Web.UI.WebControls.Label
-    Protected WithEvents lblPerso As System.Web.UI.WebControls.Label
-    Protected WithEvents lblGewerbe As System.Web.UI.WebControls.Label
-    Protected WithEvents lblEinzug As System.Web.UI.WebControls.Label
-    Protected WithEvents Label4 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblVollst As System.Web.UI.WebControls.Label
-    Protected WithEvents Label12 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label18 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label27 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label7 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label8 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label24 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label26 As System.Web.UI.WebControls.Label
-    Protected WithEvents btnSave As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lblDateVollm As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_DateGew As System.Web.UI.WebControls.Label
-    Protected WithEvents lblVollmRegDate As System.Web.UI.WebControls.Label
-    Protected WithEvents txt_NummerEVB As System.Web.UI.WebControls.TextBox
-    Protected WithEvents txtDatumvon As System.Web.UI.WebControls.TextBox
-    Protected WithEvents txtDatumbis As System.Web.UI.WebControls.TextBox
-    Protected WithEvents lblBemerk As System.Web.UI.WebControls.Label
-    Protected WithEvents Label38 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblKunnr As System.Web.UI.WebControls.Label
-    Protected WithEvents Label22 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblVollmacht As System.Web.UI.WebControls.Label
-    Protected WithEvents Label21 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblRegister As System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageTitle As Label
+    Protected WithEvents lnkFahrzeugsuche As HyperLink
+    Protected WithEvents Label10 As Label
+    Protected WithEvents Label37 As Label
+    Protected WithEvents Label23 As Label
+    Protected WithEvents Label1 As Label
+    Protected WithEvents Label2 As Label
+    Protected WithEvents lblHalter As Label
+    Protected WithEvents lblHOrt As Label
+    Protected WithEvents lblPerso As Label
+    Protected WithEvents lblGewerbe As Label
+    Protected WithEvents lblEinzug As Label
+    Protected WithEvents Label4 As Label
+    Protected WithEvents lblVollst As Label
+    Protected WithEvents Label12 As Label
+    Protected WithEvents Label18 As Label
+    Protected WithEvents Label27 As Label
+    Protected WithEvents Label7 As Label
+    Protected WithEvents Label8 As Label
+    Protected WithEvents Label24 As Label
+    Protected WithEvents Label26 As Label
+    Protected WithEvents btnSave As LinkButton
+    Protected WithEvents lblDateVollm As Label
+    Protected WithEvents lbl_DateGew As Label
+    Protected WithEvents lblVollmRegDate As Label
+    Protected WithEvents txt_NummerEVB As TextBox
+    Protected WithEvents txtDatumvon As TextBox
+    Protected WithEvents txtDatumbis As TextBox
+    Protected WithEvents lblBemerk As Label
+    Protected WithEvents Label38 As Label
+    Protected WithEvents lblKunnr As Label
+    Protected WithEvents Label22 As Label
+    Protected WithEvents lblVollmacht As Label
+    Protected WithEvents Label21 As Label
+    Protected WithEvents lblRegister As Label
     Protected WithEvents Tr5 As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents Label3 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblKarte As System.Web.UI.WebControls.Label
-    Protected WithEvents calBis As System.Web.UI.WebControls.Calendar
-    Protected WithEvents calVon As System.Web.UI.WebControls.Calendar
-    Protected WithEvents btnCal1 As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents btnCal2 As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lblKUNNR_SAP As System.Web.UI.WebControls.Label
-    Protected WithEvents lblEVB As System.Web.UI.WebControls.Label
-    Protected WithEvents lblvon As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBis As System.Web.UI.WebControls.Label
-    Protected WithEvents lblDateForm1 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblDateForm2 As System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
+    Protected WithEvents calBis As Calendar
+    Protected WithEvents calVon As Calendar
+    Protected WithEvents btnCal1 As LinkButton
+    Protected WithEvents btnCal2 As LinkButton
+    Protected WithEvents lblKUNNR_SAP As Label
+    Protected WithEvents lblEVB As Label
+    Protected WithEvents lblvon As Label
+    Protected WithEvents lblBis As Label
+    Protected WithEvents lblDateForm1 As Label
+    Protected WithEvents lblDateForm2 As Label
 
 #Region " Vom Web Form Designer generierter Code "
 
@@ -115,7 +114,6 @@ Public Class Report203_02
             lblPerso.Text = dRows(0)("Personalausweis").ToString
             lblGewerbe.Text = dRows(0)("Gewerbeanmeld").ToString
             lblEinzug.Text = dRows(0)("Einzugserm").ToString
-            lblKarte.Text = dRows(0)("Versich_Bestätigung").ToString
             lblVollst.Text = dRows(0)("Vollst").ToString
 
 
