@@ -14,12 +14,20 @@ namespace ServicesMvc.Controllers
     {
         public override string DataContextKey { get { return GetDataContextKey<FinanceAktivcheckViewModel>(); } }
 
-        public FinanceController(IAppSettings appSettings, ILogonContextDataService logonContext, IFinanceAktivcheckDataService aktivcheckDataService, 
-            IFinanceGebuehrenauslageDataService gebuehrenauslageDataService, IFinanceBewertungDataService bewertungDataService, 
-            IFinanceVersandsperreDataService versandsperreDataService, IFinanceVersandsperreReportDataService versandsperreReportDataService, 
-            IFinanceTelefonieReportDataService telefonieReportDataService, IFinanceMahnstufenDataService mahnstufenDataService, 
-            IFinanceMahnstopDataService mahnstopDataService, IFinanceAnzeigePruefpunkteDataService anzeigePruefpunkteDataService, 
-            IFinancePruefschritteDataService pruefschritteDataService)
+        public FinanceController(
+            IAppSettings appSettings,
+            ILogonContextDataService logonContext,
+            IFinanceAktivcheckDataService aktivcheckDataService,
+            IFinanceGebuehrenauslageDataService gebuehrenauslageDataService,
+            IFinanceBewertungDataService bewertungDataService, 
+            IFinanceVersandsperreDataService versandsperreDataService,
+            IFinanceVersandsperreReportDataService versandsperreReportDataService, 
+            IFinanceTelefonieReportDataService telefonieReportDataService,
+            IFinanceMahnstufenDataService mahnstufenDataService, 
+            IFinanceMahnstopDataService mahnstopDataService,
+            IFinanceAnzeigePruefpunkteDataService anzeigePruefpunkteDataService, 
+            IFinancePruefschritteDataService pruefschritteDataService,
+            IFinanceMahnungenVorErsteingangDataService mahnungenVorErsteingangDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(AktivcheckViewModel, appSettings, logonContext, aktivcheckDataService);
@@ -32,6 +40,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnstopViewModel, appSettings, logonContext, mahnstopDataService);
             InitViewModel(AnzeigePruefpunkteViewModel, appSettings, logonContext, anzeigePruefpunkteDataService);
             InitViewModel(PruefschritteViewModel, appSettings, logonContext, pruefschritteDataService);
+            InitViewModel(MahnungenVorErsteingangViewModel, appSettings, logonContext, mahnungenVorErsteingangDataService);
         }
 
         public ActionResult Index(string un, string appID)

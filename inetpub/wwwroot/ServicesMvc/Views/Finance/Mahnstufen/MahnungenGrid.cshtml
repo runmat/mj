@@ -36,7 +36,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridMahnungen"))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Kontonummer).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.Kontonummer))
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportMahnungenFilteredExcel", "Finance");
