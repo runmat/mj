@@ -811,7 +811,7 @@ namespace CKG.Components.Zulassung.DAL
             {
                 string bapiName;
 
-                if (strKUNNR == "000010026226")
+                if (strKUNNR == "0010026226")
                 {
                     bapiName = "Z_DPM_WEB_ZULA_ANF_CKPT_01";
                 }
