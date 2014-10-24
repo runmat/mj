@@ -1,12 +1,57 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.XarisViewModel
 
 <script type="text/javascript">
+
     function FormPreparePrivate() {
+        
+        $("body").css("overflow-y", "hidden");
+
+        $(window).resize(function () {
+            //alert("x");
+            onResize();
+        });
+        onResize();
+
+        //var xarisUrl = '@Model.XarisUrl';
+        var xarisUrl = 'http://www.n-tv.de';
+        var ifr = document.getElementById('ifrMvcApp');
+        ifr.src = xarisUrl;
     }
+
+    function isIeAndVersion() {
+        var myNav = navigator.userAgent.toLowerCase();
+        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : 9999;
+    }
+
+    function getBodyWidth() {
+        var p = $(".body-container");
+        var pWidth = parseInt(p.css("width"), 10);
+        return pWidth + 10;
+    }
+
+    function getWindowHeight() {
+        var height = 0;
+        if (isIeAndVersion() < 10)
+            height = window.document.clientHeight;
+        else
+            height = window.document.documentElement.clientHeight;
+
+        return height - 130;
+    }
+
+    function onResize() {
+        var ifr = document.getElementById('ifrMvcApp');
+        ifr.width = getBodyWidth();
+
+        var height = getWindowHeight();
+        ifr.height = height - 20;
+        //$(".page-sidebar").css("min-height", height);
+    }
+
 </script>
 
 <h5 class="margin-top-40">
     <a href="@Model.XarisUrl">@Model.XarisUrl</a>
 </h5>
 
-<iframe frameborder="0" width="800" height="500" src="@Model.XarisUrl"></iframe>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src=""></iframe>
