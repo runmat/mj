@@ -382,21 +382,48 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.GridView GridView2;
         
         /// <summary>
-        /// RadWindowManager1-Steuerelement
+        /// MPEDummy2-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadWindowManager RadWindowManager1;
+        protected global::System.Web.UI.WebControls.Button MPEDummy2;
         
         /// <summary>
-        /// RadWindow1-Steuerelement
+        /// MPESofortabrechnungen-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadWindow RadWindow1;
+        protected global::AjaxControlToolkit.ModalPopupExtender MPESofortabrechnungen;
+        
+        /// <summary>
+        /// pnlPrintSofortabrechnungen-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlPrintSofortabrechnungen;
+        
+        /// <summary>
+        /// cmdClose2-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdClose2;
+        
+        /// <summary>
+        /// GridView3-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView3;
     }
 }

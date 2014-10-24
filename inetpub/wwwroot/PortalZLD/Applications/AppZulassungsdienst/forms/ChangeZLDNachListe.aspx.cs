@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
 using System.Data;
+using SmartSoft.PdfLibrary;
+using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.forms
 {
@@ -16,7 +19,7 @@ namespace AppZulassungsdienst.forms
     {
         private User m_User;
         private App m_App;
-        private NacherfZLD objNacherf;
+        protected NacherfZLD objNacherf;
         private ZLDCommon objCommon;
 
         /// <summary>
@@ -297,17 +300,14 @@ namespace AppZulassungsdienst.forms
             }
 
             // Je nach Modus angezeigte Gridspalten und Controls anpassen
+            tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleEC.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleBar.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleRE.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+
             if (objNacherf.SelAnnahmeAH)
             {
-                tblGebuehr.Visible = false;
-                cmdalleEC.Visible = false;
-                cmdalleBar.Visible = false;
-                cmdalleRE.Visible = false;
                 cmdOK.Text = "» alle annehmen";
-            }
-            else if (objNacherf.SelSofortabrechnung)
-            {
-                tblGebuehr.Visible = false;
             }
             GridView1.Columns[10].Visible = !objNacherf.SelAnnahmeAH;
             GridView1.Columns[11].Visible = !objNacherf.SelAnnahmeAH;
@@ -1798,13 +1798,51 @@ namespace AppZulassungsdienst.forms
                     if (m_User.Groups[0].Authorizationright == 1 && GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
                     if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = false; }
 
-                    if (objNacherf.SelSofortabrechnung)
+                    if (objNacherf.SelSofortabrechnung && !String.IsNullOrEmpty(objNacherf.SofortabrechnungVerzeichnis))
                     {
-                        //TODO: PDFs anzeigen!!!
+                        DataTable showTable = new DataTable();
+                        showTable.Columns.Add("FILENAME", typeof(String));
+                        showTable.Columns.Add("Path", typeof(String));
+
+                        String NetworkPath;
+                        if (m_User.IsTestUser)
+                        {
+                            NetworkPath = "\\\\192.168.10.96\\test\\portal\\sofortabrechnung\\";
+                        }
+                        else
+                        {
+                            NetworkPath = "\\\\192.168.10.96\\prod\\portal\\sofortabrechnung\\";
+                        }
+
+                        List<byte[]> filesByte = new List<byte[]>();
+
+                        String FolderName = objNacherf.SofortabrechnungVerzeichnis.TrimStart('/');
+
+                        if (Directory.Exists(NetworkPath + FolderName))
+                        {
+                            var files = Directory.GetFiles(NetworkPath + FolderName + "\\", "*.pdf");
+                            foreach (string sFile in files)
+                            {
+                                filesByte.Add(File.ReadAllBytes(sFile));
+                            }
+
+                            string TargetFileName = "Sofortabrechnung_" + FolderName + ".pdf";
+                            string sPath = NetworkPath + FolderName + "\\" + TargetFileName;
+                            // Mergen der einzelnen PDF´s in ein großes PDF
+                            File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, true));
+                            DataRow PrintRow = showTable.NewRow();
+                            PrintRow["FILENAME"] = TargetFileName;
+                            PrintRow["Path"] = sPath;
+                            showTable.Rows.Add(PrintRow);
+                        }
+
+                        GridView3.DataSource = showTable;
+                        GridView3.DataBind();
+                        MPESofortabrechnungen.Show();
                     }
                     else if (objNacherf.tblBarquittungen.Rows.Count > 0)
                     {
-                        if (objNacherf.tblBarquittungen.Columns.Contains("Filename") == false)
+                        if (!objNacherf.tblBarquittungen.Columns.Contains("Filename"))
                         {
                             objNacherf.tblBarquittungen.Columns.Add("Filename", typeof(String));
                             objNacherf.tblBarquittungen.Columns.Add("Path", typeof(String));
@@ -2165,6 +2203,16 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Sofortabrechnungsdialog schließen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdClose2_Click(object sender, EventArgs e)
+        {
+            MPESofortabrechnungen.Hide();
+        }
+
+        /// <summary>
         /// Barquittung drucken.
         /// </summary>
         /// <param name="sender"></param>
@@ -2177,6 +2225,22 @@ namespace AppZulassungsdienst.forms
                 Session["App_Filepath"] = e.CommandArgument;
                 ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
                 MPEBarquittungen.Show();
+            }
+        }
+
+        /// <summary>
+        /// Sofortabrechnung drucken.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView3_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Print")
+            {
+                Session["App_ContentType"] = "Application/pdf";
+                Session["App_Filepath"] = e.CommandArgument;
+                ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                MPESofortabrechnungen.Show();
             }
         }
 

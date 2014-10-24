@@ -679,6 +679,14 @@ namespace AppZulassungsdienst.lib
             set;
         }
         /// <summary>
+        /// Verzeichnis der Sofortabrechnungen
+        /// </summary>
+        public string SofortabrechnungVerzeichnis
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Vorgänge ohne bestimmtes Zul. bzw. Durchführungsdatum
         /// </summary>
         public bool bFlieger
@@ -971,6 +979,11 @@ namespace AppZulassungsdienst.lib
         public bool SofortabrechnungErledigt
         {
             get;
+            set;
+        }
+        public string SofortabrechnungPfad
+        {
+            get; 
             set;
         }
         public string Infotext
@@ -1552,6 +1565,7 @@ namespace AppZulassungsdienst.lib
                     tblKopf.WunschKZ3 = dRow["WU_KENNZ3"].ToString();
                     tblKopf.OhneGruenenVersSchein = dRow["O_G_VERSSCHEIN"].ToString();
                     tblKopf.SofortabrechnungErledigt = ZLDCommon.XToBool(dRow["SOFORT_ABR_ERL"].ToString());
+                    tblKopf.SofortabrechnungPfad = dRow["SA_PFAD"].ToString();
                     tblKopf.Reserviert = ZLDCommon.XToBool(dRow["RESERVKENN_JN"].ToString());
                     tblKopf.ReserviertKennz = dRow["RESERVKENN"].ToString();
                     tblKopf.Feinstaub = ZLDCommon.XToBool(dRow["FEINSTAUBAMT"].ToString());
@@ -2451,6 +2465,7 @@ namespace AppZulassungsdienst.lib
                 tblKopf.WunschKZ3 = WunschKZ3;
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                 tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
+                tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
 
                 tblKopf.Reserviert = mReserviert;
                 tblKopf.Feinstaub = mFeinstaub;
@@ -2999,6 +3014,7 @@ namespace AppZulassungsdienst.lib
                 WunschKZ3 = dRow["WunschKZ3"].ToString();
                 OhneGruenenVersSchein = ZLDCommon.XToBool(dRow["OhneGruenenVersSchein"].ToString());
                 SofortabrechnungErledigt = (dRow["SofortabrechnungErledigt"] != null && (Boolean)dRow["SofortabrechnungErledigt"]);
+                SofortabrechnungPfad = dRow["SofortabrechnungPfad"].ToString();
                 mReserviert = (dRow["Reserviert"] != null && (Boolean)dRow["Reserviert"]);
                 mReserviertKennz = dRow["ReserviertKennz"].ToString();
                 mFeinstaub = (dRow["Feinstaub"] != null && (Boolean)dRow["Feinstaub"]);
@@ -3424,30 +3440,36 @@ namespace AppZulassungsdienst.lib
                     {
                         myProxy.callBapi();
 
+                        tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+
+                        if (tblErrors.Rows.Count > 0)
+                        {
+                            m_intStatus = -9999;
+
+                            foreach (DataRow rowError in tblErrors.Rows)
+                            {
+                                Int32 idsap;
+                                Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
+                                DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                                if (rowListe.Length > 0)
+                                {
+                                    rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
+                                }
+                            }
+                        }
+                        else if (SelSofortabrechnung)
+                        {
+                            // Beim Sofortabrechnungs-Bapi erscheinen fehlerfreie Vorgänge nicht in der Fehlertabelle, deshalb hier Status <> 0 setzen
+                            m_intStatus = -9999;
+                        }
+
                         if (SelSofortabrechnung)
                         {
-                            m_intStatus = -9999; //Status muss <> 0 sein für weitere Verarbeitung
+                            SofortabrechnungVerzeichnis = myProxy.getExportParameter("G_SA_PFAD");
                         }
                         else
                         {
-                            tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
                             tblBarquittungen = myProxy.getExportTable("GT_BARQ");
-
-                            if (tblErrors.Rows.Count > 0)
-                            {
-                                m_intStatus = -9999;
-
-                                foreach (DataRow rowError in tblErrors.Rows)
-                                {
-                                    Int32 idsap;
-                                    Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
-                                    DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
-                                    if (rowListe.Length > 0)
-                                    {
-                                        rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
-                                    }
-                                }
-                            }
                         }
                     }
                     else
@@ -3528,6 +3550,7 @@ namespace AppZulassungsdienst.lib
             importAuftrRow["WU_KENNZ3"] = tblKopf.WunschKZ3;
             importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
             importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
+            importAuftrRow["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
 
             importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
             importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -3775,6 +3798,7 @@ namespace AppZulassungsdienst.lib
                                 importAuftrRow["WU_KENNZ3"] = tblKopf.WunschKZ3;
                                 importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
                                 importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
+                                importAuftrRow["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
 
                                 importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
                                 importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -4690,6 +4714,7 @@ namespace AppZulassungsdienst.lib
                         importAuftrRow["WU_KENNZ3"] = SaveRow["WU_KENNZ3"];
                         importAuftrRow["O_G_VERSSCHEIN"] = SaveRow["O_G_VERSSCHEIN"];
                         importAuftrRow["SOFORT_ABR_ERL"] = SaveRow["SOFORT_ABR_ERL"];
+                        importAuftrRow["SA_PFAD"] = SaveRow["SA_PFAD"];
                         importAuftrRow["RESERVKENN_JN"] = SaveRow["RESERVKENN_JN"];
                         importAuftrRow["RESERVKENN"] = SaveRow["RESERVKENN"];
                         importAuftrRow["FEINSTAUBAMT"] = SaveRow["FEINSTAUBAMT"];
@@ -5085,6 +5110,7 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["WU_KENNZ3"] = WunschKZ3;
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
+                    importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["RESERVKENN"] = ReserviertKennz;
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
@@ -5285,6 +5311,7 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["WU_KENNZ3"] = WunschKZ3;
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
+                    importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
 
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);

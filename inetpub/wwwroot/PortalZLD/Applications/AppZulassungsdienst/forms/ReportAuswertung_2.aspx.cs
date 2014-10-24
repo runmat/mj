@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Linq;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -139,19 +140,20 @@ namespace AppZulassungsdienst.forms
 
         protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
         {
-            switch (e.CommandName)
-            {
-                case "Print":
-                    DataRow[] RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
-                    if (RowTemp.Length > 0) 
-                    {
-                        String Barqnr, EasyID;
-                        Barqnr = RowTemp[0]["BARQ_NR"].ToString();
-                        EasyID = RowTemp[0]["OBJECT_ID"].ToString();
+            String FilePath;
+            DataRow[] RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
 
-                        if (EasyID.Length > 0)
+            if (RowTemp.Length > 0)
+            {
+                switch (e.CommandName)
+                {
+                    case "PrintBarquittung":
+                        String Barqnr = RowTemp[0]["BARQ_NR"].ToString();
+                        String EasyID = RowTemp[0]["OBJECT_ID"].ToString();
+
+                        if (!String.IsNullOrEmpty(EasyID))
                         {
-                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr,EasyID);
+                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr, EasyID);
                             if (objListe.Status != 0)
                             {
                                 lblError.Text = objListe.Message;
@@ -162,14 +164,13 @@ namespace AppZulassungsdienst.forms
                         {
                             objListe.Filename = Barqnr + ".pdf";
                         }
-                        String FilePath;
                         if (m_User.IsTestUser)
-                        { 
-                            FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename; 
+                        {
+                            FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename;
                         }
-                        else 
-                        { 
-                            FilePath = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + objListe.Filename; 
+                        else
+                        {
+                            FilePath = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + objListe.Filename;
                         }
                         Session["App_ContentType"] = "Application/pdf";
                         Session["App_Filepath"] = FilePath;
@@ -178,9 +179,29 @@ namespace AppZulassungsdienst.forms
                             Session["App_FileDelete"] = "X";
                         }
                         ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-                    }
-                    break;
+                        break;
 
+                    case "PrintSofortabrechnung":
+                        objListe.Filename = RowTemp[0]["SA_PFAD"].ToString().TrimStart('/').Replace('/', '\\');
+
+                        if (m_User.IsTestUser)
+                        {
+                            FilePath = "\\\\192.168.10.96\\test\\portal\\sofortabrechnung\\" + objListe.Filename;
+                        }
+                        else
+                        {
+                            FilePath = "\\\\192.168.10.96\\prod\\portal\\sofortabrechnung\\" + objListe.Filename;
+                        }
+
+                        if (File.Exists(FilePath))
+                        {
+                            Session["App_ContentType"] = "Application/pdf";
+                            Session["App_Filepath"] = FilePath;
+
+                            ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                        }
+                        break;
+                }
             }
         }
 

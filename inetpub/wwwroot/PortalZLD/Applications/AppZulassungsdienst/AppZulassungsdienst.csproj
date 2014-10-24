@@ -34,7 +34,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\AppZulassungsdienst.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -273,13 +274,6 @@
     </Compile>
     <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
       <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="forms\PrintDialogSofortabrechnung.aspx.cs">
-      <DependentUpon>PrintDialogSofortabrechnung.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="forms\PrintDialogSofortabrechnung.aspx.designer.cs">
-      <DependentUpon>PrintDialogSofortabrechnung.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\VorgangStatusaenderung.aspx.cs">
       <DependentUpon>VorgangStatusaenderung.aspx</DependentUpon>
@@ -557,7 +551,6 @@
     <Content Include="forms\Disposition.aspx" />
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
-    <Content Include="forms\PrintDialogSofortabrechnung.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
     <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />

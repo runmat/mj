@@ -517,6 +517,11 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+        public string SofortabrechnungPfad
+        {
+            get; 
+            set;
+        }
 		#endregion
 
 		#region "Methods"
@@ -812,6 +817,7 @@ namespace AppZulassungsdienst.lib
                     tblKopf.WunschKZ3 = WunschKZ3;
                     tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
+				    tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
                     tblKopf.Reserviert = mReserviert;
                     tblKopf.ReserviertKennz = mReserviertKennz;
                     tblKopf.Feinstaub = mFeinstaub;
@@ -1076,6 +1082,7 @@ namespace AppZulassungsdienst.lib
                 tblKopf.WunschKZ3 = WunschKZ3;
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                 tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
+			    tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
 				tblKopf.Reserviert = mReserviert;
 				tblKopf.ReserviertKennz = mReserviertKennz;
 				tblKopf.Feinstaub = mFeinstaub;
@@ -1384,6 +1391,7 @@ namespace AppZulassungsdienst.lib
                 WunschKZ3 = KopfTabelle.Rows[0]["WunschKZ3"].ToString();
                 OhneGruenenVersSchein = ZLDCommon.XToBool(KopfTabelle.Rows[0]["OhneGruenenVersSchein"].ToString());
                 SofortabrechnungErledigt = (Boolean)KopfTabelle.Rows[0]["SofortabrechnungErledigt"];
+			    SofortabrechnungPfad = KopfTabelle.Rows[0]["SofortabrechnungPfad"].ToString();
 				mReserviert = (Boolean)KopfTabelle.Rows[0]["Reserviert"];
 				mReserviertKennz = KopfTabelle.Rows[0]["ReserviertKennz"].ToString();
 				mFeinstaub = (Boolean)KopfTabelle.Rows[0]["Feinstaub"];
@@ -1604,6 +1612,7 @@ namespace AppZulassungsdienst.lib
 							importRowAuftrag["WU_KENNZ3"] = tblKopf.WunschKZ3;
 							importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
                             importRowAuftrag["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
+                            importRowAuftrag["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
 							importRowAuftrag["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
 							importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;
 							importRowAuftrag["FEINSTAUBAMT"] = ZLDCommon.BoolToX(tblKopf.Feinstaub);
@@ -2010,6 +2019,7 @@ namespace AppZulassungsdienst.lib
                         importRowAuftrag["WU_KENNZ3"] = WunschKZ3;
                         importRowAuftrag["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                         importRowAuftrag["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
+                        importRowAuftrag["SA_PFAD"] = SofortabrechnungPfad;
 						importRowAuftrag["RESERVKENN"] = ReserviertKennz;
                         importRowAuftrag["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
 						if (ZulDate.Length > 0) { importRowAuftrag["ZZZLDAT"] = ZulDate; }

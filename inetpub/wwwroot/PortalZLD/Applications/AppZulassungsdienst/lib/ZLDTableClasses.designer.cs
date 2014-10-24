@@ -929,6 +929,8 @@ namespace AppZulassungsdienst.lib
 		
 		private System.Nullable<bool> _SofortabrechnungErledigt;
 		
+		private string _SofortabrechnungPfad;
+		
 		private EntitySet<ZLDBankverbindung> _ZLDBankverbindung;
 		
 		private EntitySet<ZLDKundenadresse> _ZLDKundenadresse;
@@ -1141,6 +1143,8 @@ namespace AppZulassungsdienst.lib
     partial void OnONLINE_VGChanged();
     partial void OnSofortabrechnungErledigtChanging(System.Nullable<bool> value);
     partial void OnSofortabrechnungErledigtChanged();
+    partial void OnSofortabrechnungPfadChanging(string value);
+    partial void OnSofortabrechnungPfadChanged();
     #endregion
 		
 		public ZLDKopfTabelle()
@@ -3167,6 +3171,26 @@ namespace AppZulassungsdienst.lib
 					this._SofortabrechnungErledigt = value;
 					this.SendPropertyChanged("SofortabrechnungErledigt");
 					this.OnSofortabrechnungErledigtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SofortabrechnungPfad", DbType="NVarChar(30)")]
+		public string SofortabrechnungPfad
+		{
+			get
+			{
+				return this._SofortabrechnungPfad;
+			}
+			set
+			{
+				if ((this._SofortabrechnungPfad != value))
+				{
+					this.OnSofortabrechnungPfadChanging(value);
+					this.SendPropertyChanging();
+					this._SofortabrechnungPfad = value;
+					this.SendPropertyChanged("SofortabrechnungPfad");
+					this.OnSofortabrechnungPfadChanged();
 				}
 			}
 		}
