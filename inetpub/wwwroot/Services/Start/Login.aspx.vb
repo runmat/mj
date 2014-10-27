@@ -620,9 +620,30 @@ Partial Public Class Login
         Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
+            Try
+                Dim dtStart As DateTime = New DateTime(2014, 10, 27)
+                If (DateTime.Now > dtStart.AddDays(4)) Then
+                    Dim info As String = String.Format("urlReferrer: {0} ; " +
+                                                       "requestReturnUrl: {1} ; " +
+                                                       "urlReferrerIsServicesLogin: {2} ; " +
+                                                       "urlIsNewDadPortalLink: {3} ; " +
+                                                       "url: {4} ; " +
+                                                       "IP-Address: {5} ; ",
+                                                       urlReferrer, requestReturnUrl, urlReferrerIsServicesLogin, urlIsNewDadPortalLink, url, Request.UserHostAddress)
+                    Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+                    logService.LogInfo(Nothing, info)
+                End If
+            Catch
+            End Try
+
             Response.Redirect("/ServicesMvc/Login/Index")
         End If
     End Sub
+
+    Private Function DoTemporaryTimeLimitedLogging(info As String)
+
+
+    End Function
 
     Function UrlRemoteUserProcessLogin() As Boolean
         Dim remoteUserName As String = "", remoteUserPwdHashed As String = ""
