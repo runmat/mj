@@ -1829,7 +1829,7 @@ namespace AppZulassungsdienst.forms
                             string TargetFileName = "Sofortabrechnung_" + FolderName + ".pdf";
                             string sPath = NetworkPath + FolderName + "\\" + TargetFileName;
                             // Mergen der einzelnen PDF´s in ein großes PDF
-                            File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, true));
+                            File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, false));
                             DataRow PrintRow = showTable.NewRow();
                             PrintRow["FILENAME"] = TargetFileName;
                             PrintRow["Path"] = sPath;
