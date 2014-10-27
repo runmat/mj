@@ -630,7 +630,7 @@ Partial Public Class Login
                                                        "url: {4} ; " +
                                                        "IP-Address: {5} ; ",
                                                        urlReferrer, requestReturnUrl, urlReferrerIsServicesLogin, urlIsNewDadPortalLink, url, Request.UserHostAddress)
-                    Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService(String.Empty, String.Empty)
+                    Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService("Services-Login", "c:\tmp\Log-IpAddress.log")
                     logService.LogInfo(Nothing, info)
                 End If
             Catch
