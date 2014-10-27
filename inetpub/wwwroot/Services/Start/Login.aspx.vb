@@ -506,13 +506,14 @@ Partial Public Class Login
 
     Private Sub Login_PreLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreLoad
 
+        Dim redirectOccurred As Boolean = False
         If Not Me.Session("objUser") Is Nothing Then
             m_User = CType(Session("objUser"), Base.Kernel.Security.User)
             If Not (m_User.LoggedOn And m_User.DoubleLoginTry) Then
                 If Me.User.Identity.IsAuthenticated = False Then
                     If trPasswortVergessen.Visible = False Then
                         Response.Redirect(BouncePage(Me), True)
-
+                        redirectOccurred = True
                     End If
                 End If
             End If
@@ -521,7 +522,6 @@ Partial Public Class Login
 
         If (UrlRemoteUserProcessLogin()) Then Return
 
-        Dim redirectOccurred As Boolean = False
         litAlert.Text = ""
         txtUsername.Focus()
         Page.Title = "Anmeldung"
@@ -565,7 +565,7 @@ Partial Public Class Login
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)
-
+                redirectOccurred = True
             End If
             Dim intRestrictedCustomerId As Integer = CheckRestrictedIP()
             If intRestrictedCustomerId > -1 Then
