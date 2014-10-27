@@ -622,7 +622,7 @@ Partial Public Class Login
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
             Try
                 Dim dtStart As DateTime = New DateTime(2014, 10, 27)
-                If (DateTime.Now > dtStart.AddDays(4)) Then
+                If (DateTime.Now <= dtStart.AddDays(5)) Then
                     Dim info As String = String.Format("urlReferrer: {0} ; " +
                                                        "requestReturnUrl: {1} ; " +
                                                        "urlReferrerIsServicesLogin: {2} ; " +
