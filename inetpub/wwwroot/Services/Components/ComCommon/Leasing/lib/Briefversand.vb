@@ -1599,7 +1599,7 @@ Imports CKG.Base.Common
 
     End Sub
 
-    Public Sub AnfordernAusAutorisierung2(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page)
+    Public Sub AnfordernAusAutorisierung2(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page, ByVal autUser As String)
 
         m_strClassAndMethod = "Briefversand.AnfordernAusAutorisierung2"
         m_strAppID = strAppId
@@ -1658,7 +1658,7 @@ Imports CKG.Base.Common
                         sapRow("ORT_ANF") = ""
                         sapRow("LAND_ANF") = ""
                         sapRow("CLIENTLD") = ""
-                        sapRow("USER_AUTOR") = m_objUser.UserName
+                        sapRow("USER_AUTOR") = autUser
 
                         sapTable.Rows.Add(sapRow)
 
