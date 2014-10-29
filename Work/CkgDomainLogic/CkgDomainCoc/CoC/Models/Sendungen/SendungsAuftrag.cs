@@ -48,6 +48,8 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants.Shipping)]
         public string VersandWeg { get; set; }
 
+        public string VersandKey { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
         public string PoolNummer { get; set; }
 
@@ -60,8 +62,7 @@ namespace CkgDomainLogic.CoC.Models
         {
             get
             {
-                var keySuffixArray = VersandWeg.NotNullOrEmpty().Split(' ').ToArrayOrEmptyArray();
-                var keySuffix = (keySuffixArray.Length > 1 ? keySuffixArray[0] : VersandWeg.NotNullOrEmpty()).ToUpper();
+                var keySuffix = VersandKey.NotNullOrEmpty().ToUpper();
                 var key = string.Format("SendungsverfolgungExternUrl_{0}", keySuffix);
 
                 var surveyLink = ApplicationConfiguration.GetApplicationConfigValue(key, "1", 1);
