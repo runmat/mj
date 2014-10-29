@@ -87,6 +87,21 @@
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
+                                <tr id="tr_Auswahl" runat="server" class="formquery" >
+                                    <td class="firstLeft active">
+                                        Auswahl:
+                                    </td>
+                                    <td class="firstLeft active" style="width: 100%">
+                                        <span>
+                                            <asp:RadioButton ID="rbAlle" runat="server" 
+                                              Checked="True" Text="Alle" GroupName="Auswahl" Width="70px" />
+                                            <asp:RadioButton ID="rbMietfahrzeuge" runat="server" 
+                                                Text="Mietfahrzeuge" GroupName="Auswahl" Width="110px" />
+                                            <asp:RadioButton ID="rbBuyBack" runat="server" Text="BuyBack" 
+                                                GroupName="Auswahl" Width="100px" />
+                                        </span>
+                                    </td>
+                                </tr> 
                                 <tr id="tr_DatumVon" runat="server" class="formquery">
                                     <td class="firstLeft active" nowrap="nowrap">
                                         <asp:Label ID="lbl_DatumVon" runat="server">Zulassungsdatum von:</asp:Label>
