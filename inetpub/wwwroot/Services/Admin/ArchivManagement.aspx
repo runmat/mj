@@ -32,13 +32,10 @@
                             </h1>
                             <span id="arealnkSuche" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuche" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchFilterArea();" style="display: none">Suche</a>
                             <span id="arealnkSuchergebnis" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuchergebnis" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchResultArea();" style="display: none">Suchergebnis</a>
-                            <%-- ihExpandStatus...Area enthält jeweils den Sollwert für den nächsten Seitenzustand, ihNewExpandStatus...Area den aktuellen --%>
+                            <%-- ih... enthält jeweils den Sollwert für den nächsten Seitenzustand --%>
                             <input id="ihExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
-                            <input id="ihNewExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
                             <input id="ihExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
                             <input id="ihExpandStatusInputArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandStatusInputArea" type="hidden" runat="server" value="0"/>
                         </div>
                              <asp:Panel ID="DivSearch1" runat="server" DefaultButton="btnEmpty" style="display: none">
                               <div id="TableQuery">
@@ -267,64 +264,56 @@
                 </div>
             </div>
          </div>
- <script type="text/javascript">
+     </div>
+     <script type="text/javascript">
 
-     function CheckCollapseExpandStatus() {
-         if ($("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value") == "1") {
-             $("#arealnkSuche").hide();
-             $("#lnkSuche").hide();
-             $("#arealnkSuchergebnis").hide();
-             $("#lnkSuchergebnis").hide();
-             $("#<%= Result.ClientID %>").hide();
-             $("#<%= Input.ClientID %>").hide();
-             $("#<%= DivSearch1.ClientID %>").show();
-             $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-             $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-             $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
+         function CheckCollapseExpandStatus() {
+             if ($("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value") == "1") {
+                 $("#arealnkSuche").hide();
+                 $("#lnkSuche").hide();
+                 $("#arealnkSuchergebnis").hide();
+                 $("#lnkSuchergebnis").hide();
+                 $("#<%= Result.ClientID %>").hide();
+                 $("#<%= Input.ClientID %>").hide();
+                 $("#<%= DivSearch1.ClientID %>").show();
+             }
+             else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
+                 $("#arealnkSuchergebnis").hide();
+                 $("#lnkSuchergebnis").hide();
+                 $("#arealnkSuche").show();
+                 $("#lnkSuche").show();
+                 $("#<%= DivSearch1.ClientID %>").hide();
+                 $("#<%= Input.ClientID %>").hide();
+                 $("#<%= Result.ClientID %>").show();
+             }
+             else {
+                 $("#arealnkSuche").show();
+                 $("#lnkSuche").show();
+                 $("#arealnkSuchergebnis").show();
+                 $("#lnkSuchergebnis").show();
+                 $("#<%= DivSearch1.ClientID %>").hide();
+                 $("#<%= Result.ClientID %>").hide();
+                 $("#<%= Input.ClientID %>").show();
+             }
          }
-         else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
-             $("#arealnkSuchergebnis").hide();
-             $("#lnkSuchergebnis").hide();
-             $("#arealnkSuche").show();
-             $("#lnkSuche").show();
-             $("#<%= DivSearch1.ClientID %>").hide();
-             $("#<%= Input.ClientID %>").hide();
-             $("#<%= Result.ClientID %>").show();
-             $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-             $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-             $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
+
+         function showSearchFilterArea() {
+             $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
+             $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
+             $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
+             CheckCollapseExpandStatus();
          }
-         else {
-             $("#arealnkSuche").show();
-             $("#lnkSuche").show();
-             $("#arealnkSuchergebnis").show();
-             $("#lnkSuchergebnis").show();
-             $("#<%= DivSearch1.ClientID %>").hide();
-             $("#<%= Result.ClientID %>").hide();
-             $("#<%= Input.ClientID %>").show();
-             $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-             $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-             $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "1");
+
+         function showSearchResultArea() {
+             $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
+             $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
+             $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
+             CheckCollapseExpandStatus();
          }
-     }
 
-     function showSearchFilterArea() {
-         $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-         $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-         $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
-         CheckCollapseExpandStatus();
-     }
-
-     function showSearchResultArea() {
-         $("#<%= ihExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-         $("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-         $("#<%= ihExpandstatusInputArea.ClientID %>").attr("value", "0");
-         CheckCollapseExpandStatus();
-     }
-
-     $(function () {
-         CheckCollapseExpandStatus();
-     }); 
+         $(function () {
+             CheckCollapseExpandStatus();
+         }); 
         
     </script>
 </asp:Content>
