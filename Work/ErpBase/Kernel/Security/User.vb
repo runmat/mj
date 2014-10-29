@@ -716,24 +716,6 @@ Namespace Kernel.Security
             End Try
         End Sub
 
-        Public Sub GetCurrentSessionID(ByVal strUserName As String)
-            Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(m_strConnectionstring)
-            Try
-                cn.Open()
-                Dim cmdGetCurrentSessionID As New SqlClient.SqlCommand("SELECT SessionID FROM WebUser " & _
-                                                             "WHERE Username=@Username", cn)
-                cmdGetCurrentSessionID.Parameters.AddWithValue("@Username", strUserName)
-                m_strSessionID = cmdGetCurrentSessionID.ExecuteScalar.ToString
-                m_blnLoggedOn = True
-            Catch ex As Exception
-                Throw New Exception("Session-ID des Benutzers konnte nicht ermittelt werden.", ex)
-            Finally
-                If cn.State <> ConnectionState.Closed Then
-                    cn.Close()
-                End If
-            End Try
-        End Sub
-
         Private Sub LockOutAccount(ByVal strUserName As String, ByVal cn As SqlClient.SqlConnection, ByVal strChangeUser As String)
             Try
                 If cn.State = ConnectionState.Closed Then
