@@ -144,12 +144,13 @@
                                                             <asp:Label runat="server" ID="lblDatum" Text='<%# Eval("DAT_HC_AUSG") %>'>
                                                             </asp:Label>
                                                             <asp:TextBox ID="txtDatum" runat="server" Visible="False" 
-                                                                Text='<%# Eval("DAT_HC_AUSG") %>'>
+                                                                Text='<%# Eval("DAT_HC_AUSG") %>' 
+                                                                BorderColor="Red" Width="90px" BorderWidth="1px">
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="ZBEM" SortExpression="ZBEM" Visible="false" UniqueName="Bemerkung" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="200px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="ID" SortExpression="ID" Visible="false" UniqueName="ID" >
