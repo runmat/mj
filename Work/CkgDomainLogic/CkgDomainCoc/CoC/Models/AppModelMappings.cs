@@ -470,6 +470,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.Referenz = s.POOLNR;
                         d.StatusText = s.STATUS_CODE.NotNullOrEmpty();
                         d.VersandWeg = s.VERSANDWEG;
+                        d.VersandKey = s.VERSANDVALUE;
                         d.PoolNummer = s.POOLNR;
                         d.VersandAdresseAsText = string.Format("{0} {1}<br />{2} {3}, {4} {5}", s.NAME1, s.NAME2, s.STRAS, s.HSNM1, s.PSTLZ, s.CITY1);
                     }));
