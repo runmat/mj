@@ -325,6 +325,9 @@
                                                     <telerik:GridBoundColumn DataField="RENNR" SortExpression="RENNR" >
                                                         <HeaderStyle Width="128px" />
                                                     </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="FLAG_MIETFZG" UniqueName="FLAG_MIETFZG" >
+                                                        <HeaderStyle Width="100px" />
+                                                    </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="STATU" UniqueName="STATU" Visible="false">
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
