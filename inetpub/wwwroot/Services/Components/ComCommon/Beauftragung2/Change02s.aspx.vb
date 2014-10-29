@@ -33,7 +33,7 @@ Namespace Beauftragung2
 
 #Region "Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Init
             Try
                 m_User = GetUser(Me)
                 FormAuth(Me, m_User)
@@ -60,10 +60,22 @@ Namespace Beauftragung2
                     Session("mBeauftragung2") = mBeauftragung
                 End If
 
+                InitLargeDropdowns()
+                InitJava()
+
+            Catch ex As Exception
+                lblError.Text = "Beim Initialisieren der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
+            End Try
+        End Sub
+
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+            Try
                 InitControls()
 
                 If Not IsPostBack Then
-                    InitPage()
+                    InitSmallDropdowns()
+                    InitZusatzDLCheckboxlist()
+                    RestoreSelectedValues()
 
                     If m_User.Reference.Length <> 8 Then
                         lblError.Text = "Kundenreferenz nicht korrekt."
@@ -1205,15 +1217,11 @@ Namespace Beauftragung2
             End With
         End Sub
 
-        Private Sub InitDropdowns()
-
-            'Kunde füllen
-            ddlKunde.Items.Clear()
-            ddlKunde.Items.Add(New ListItem("- Keine Auswahl -", "0"))
-            For Each dRow As DataRow In mBeauftragung.Kunden.Rows
-                ddlKunde.Items.Add(New ListItem(dRow("NAME1").ToString(), dRow("KUNNR").ToString().TrimStart("0"c)))
-            Next
-            ddlKunde.SelectedValue = "0"
+        ''' <summary>
+        ''' Dropdowns mit geringen Datenmengen (mit ViewState)
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub InitSmallDropdowns()
 
             'Stva füllen (+ Default-Wert setzen)
             Dim defaultStva As String = "0"
@@ -1257,6 +1265,38 @@ Namespace Beauftragung2
             For Each dRow As DataRow In mBeauftragung.Farben.Rows
                 ddlFarbe.Items.Add(New ListItem(dRow("DOMVALUE_L").ToString() & " - " & dRow("DDTEXT").ToString(), dRow("DOMVALUE_L").ToString()))
             Next
+
+        End Sub
+
+        ''' <summary>
+        ''' Dropdowns mit großen Datenmengen (ohne ViewState)
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub InitLargeDropdowns()
+
+            'Kunde füllen
+            ddlKunde.Items.Clear()
+            ddlKunde.Items.Add(New ListItem("- Keine Auswahl -", "0"))
+            For Each dRow As DataRow In mBeauftragung.Kunden.Rows
+                ddlKunde.Items.Add(New ListItem(dRow("NAME1").ToString(), dRow("KUNNR").ToString().TrimStart("0"c)))
+            Next
+
+        End Sub
+
+        Private Sub SetDefaultStva()
+
+            'Stva Default-Wert setzen
+            Dim defaultStva As String = "0"
+            For Each dRow As DataRow In mBeauftragung.Kreise.Rows
+                If dRow("ZDEFAULT").ToString() = "X" Then
+                    defaultStva = dRow("ZKFZKZ").ToString()
+                    txtStva.Text = defaultStva
+                    ddlStva.SelectedValue = defaultStva
+                    Exit For
+                End If
+            Next
+
+            ApplyNewStva()
 
         End Sub
 
@@ -2043,13 +2083,6 @@ Namespace Beauftragung2
             End Select
         End Sub
 
-        Private Sub InitPage()
-            InitDropdowns()
-            InitZusatzDLCheckboxlist()
-            InitJava()
-            RestoreSelectedValues()
-        End Sub
-
         Private Sub RestoreSelectedValues()
             If Not String.IsNullOrEmpty(mBeauftragung.Kundennr) Then
                 ddlKunde.SelectedValue = mBeauftragung.Kundennr
@@ -2627,220 +2660,3 @@ Namespace Beauftragung2
     End Class
 
 End Namespace
-
-' ************************************************
-' $History: Change02s.aspx.vb $
-' 
-' *****************  Version 53  *****************
-' User: Fassbenders  Date: 12.05.11   Time: 15:02
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 52  *****************
-' User: Fassbenders  Date: 11.05.11   Time: 16:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 51  *****************
-' User: Fassbenders  Date: 11.05.11   Time: 13:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 50  *****************
-' User: Fassbenders  Date: 10.05.11   Time: 17:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 49  *****************
-' User: Fassbenders  Date: 9.05.11    Time: 19:25
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 48  *****************
-' User: Fassbenders  Date: 6.05.11    Time: 14:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 47  *****************
-' User: Dittbernerc  Date: 5.05.11    Time: 15:24
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 46  *****************
-' User: Dittbernerc  Date: 21.04.11   Time: 11:36
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 45  *****************
-' User: Fassbenders  Date: 12.04.11   Time: 11:32
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 44  *****************
-' User: Dittbernerc  Date: 8.04.11    Time: 14:45
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 43  *****************
-' User: Fassbenders  Date: 24.02.11   Time: 9:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 42  *****************
-' User: Fassbenders  Date: 17.02.11   Time: 13:25
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 41  *****************
-' User: Fassbenders  Date: 15.02.11   Time: 17:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 40  *****************
-' User: Fassbenders  Date: 15.02.11   Time: 10:00
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 39  *****************
-' User: Fassbenders  Date: 31.01.11   Time: 15:15
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 38  *****************
-' User: Fassbenders  Date: 31.01.11   Time: 8:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 37  *****************
-' User: Fassbenders  Date: 19.01.11   Time: 13:39
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 36  *****************
-' User: Fassbenders  Date: 12.01.11   Time: 14:50
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 35  *****************
-' User: Fassbenders  Date: 10.01.11   Time: 15:07
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 34  *****************
-' User: Fassbenders  Date: 21.12.10   Time: 13:51
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 33  *****************
-' User: Fassbenders  Date: 25.10.10   Time: 9:50
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 32  *****************
-' User: Fassbenders  Date: 4.10.10    Time: 15:08
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 31  *****************
-' User: Fassbenders  Date: 10.06.10   Time: 15:04
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 30  *****************
-' User: Fassbenders  Date: 4.05.10    Time: 16:58
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 29  *****************
-' User: Fassbenders  Date: 4.05.10    Time: 16:07
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 28  *****************
-' User: Fassbenders  Date: 4.05.10    Time: 10:31
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 27  *****************
-' User: Fassbenders  Date: 3.05.10    Time: 15:42
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 26  *****************
-' User: Fassbenders  Date: 5.03.10    Time: 13:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 25  *****************
-' User: Fassbenders  Date: 1.03.10    Time: 17:14
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 24  *****************
-' User: Fassbenders  Date: 1.03.10    Time: 16:27
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 23  *****************
-' User: Fassbenders  Date: 28.02.10   Time: 19:49
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 22  *****************
-' User: Fassbenders  Date: 26.02.10   Time: 16:45
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 21  *****************
-' User: Fassbenders  Date: 26.02.10   Time: 14:43
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 20  *****************
-' User: Fassbenders  Date: 26.02.10   Time: 13:39
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 19  *****************
-' User: Fassbenders  Date: 23.02.10   Time: 18:46
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 18  *****************
-' User: Fassbenders  Date: 19.02.10   Time: 17:01
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 17  *****************
-' User: Fassbenders  Date: 18.02.10   Time: 10:47
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 16  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 16:30
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 15  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 15:24
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 14  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 13:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 13  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 10:19
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 12  *****************
-' User: Martinp      Date: 16.02.10   Time: 16:07
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 11  *****************
-' User: Fassbenders  Date: 16.02.10   Time: 12:58
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 10  *****************
-' User: Fassbenders  Date: 16.02.10   Time: 8:31
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 9  *****************
-' User: Fassbenders  Date: 4.02.10    Time: 11:56
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 8  *****************
-' User: Fassbenders  Date: 3.02.10    Time: 19:33
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 7  *****************
-' User: Fassbenders  Date: 2.02.10    Time: 17:21
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 6  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 11:01
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 9.12.09    Time: 17:37
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 7.12.09    Time: 12:42
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 3  *****************
-' User: Fassbenders  Date: 2.12.09    Time: 17:36
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 2.12.09    Time: 14:21
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 1.12.09    Time: 11:27
-' Created in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' ITA: 3264
-' 
