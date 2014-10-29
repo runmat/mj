@@ -1596,6 +1596,7 @@ Imports CKG.Base.Common
         row("ORT_ANF") = ""
         row("LAND_ANF") = ""
         row("CLIENTLD") = ""
+        row("INFO_ANF") = _mHalter & ", " & _mBemerkung
 
     End Sub
 
@@ -1659,6 +1660,7 @@ Imports CKG.Base.Common
                         sapRow("LAND_ANF") = ""
                         sapRow("CLIENTLD") = ""
                         sapRow("USER_AUTOR") = autUser
+                        sapRow("INFO_ANF") = _mHalter & ", " & _mBemerkung
 
                         sapTable.Rows.Add(sapRow)
 
