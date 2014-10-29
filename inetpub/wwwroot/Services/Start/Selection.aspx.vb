@@ -165,12 +165,6 @@ Partial Public Class Selection
                 End Try
             End If
 
-            If Not (m_User.SessionID = Session.SessionID.ToString) Then
-                If Not m_User.Customer.AllowMultipleLogin Then
-                    Response.Redirect(ConfigurationManager.AppSettings("Exit") & "?DoubleLogin=True")
-                End If
-            End If
-
             m_App = New Security.App(m_User)
 
             If m_User.PasswordExpired And Not m_User.InitialPassword = True Then
