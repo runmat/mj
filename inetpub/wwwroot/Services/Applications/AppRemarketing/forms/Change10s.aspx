@@ -27,7 +27,7 @@
                         }
                     }
                     function openinfo(url) {
-                        fenster = window.open(url, "Uploadstruktur", "menubar=0,scrollbars=0,toolbars=0,location=0,directories=0,status=0,width=750,height=400");
+                        fenster = window.open(url, "Uploadstruktur", "menubar=0,scrollbars=0,toolbars=0,location=0,directories=0,status=0,width=800,height=400");
                         fenster.focus();
                     }
                 </script>
@@ -117,7 +117,7 @@
                                                 <HeaderStyle ForeColor="White" />
                                                 <Columns>
                                                     <telerik:GridTemplateColumn DataField="FAHRGNR" SortExpression="FAHRGNR" Groupable="false">
-                                                        <HeaderStyle Width="120px" />
+                                                        <HeaderStyle Width="165px" />
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblFahrgestellnummer" Text='<%# Eval("FAHRGNR") %>'>
                                                             </asp:Label>
@@ -128,7 +128,7 @@
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn DataField="KENNZ" SortExpression="KENNZ" Groupable="false">
-                                                        <HeaderStyle Width="120px" />
+                                                        <HeaderStyle Width="105px" />
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblKennzeichen" Text='<%# Eval("KENNZ") %>'>
                                                             </asp:Label>
@@ -139,35 +139,45 @@
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" Groupable="false">
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="85px" />
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblDatum" Text='<%# Eval("HCEINGDAT") %>'>
                                                             </asp:Label>
                                                             <asp:TextBox ID="txtDatum" runat="server" Visible="False" 
-                                                                Text='<%# Eval("HCEINGDAT") %>'>
+                                                                Text='<%# Eval("HCEINGDAT") %>' 
+                                                                BorderColor="Red" Width="80px" BorderWidth="1px">
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGTIM" SortExpression="HCEINGTIM" DataFormatString="{0:d}" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="60px" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="HCORT" SortExpression="HCORT" >
-                                                        <HeaderStyle Width="100px" />
+                                                    <telerik:GridTemplateColumn DataField="HCORT" SortExpression="HCORT" Groupable="False">
+                                                        <HeaderStyle Width="90px" />
                                                         <ItemStyle Wrap="false" />
-                                                    </telerik:GridBoundColumn>
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblHCOrt" Text='<%# Eval("KMSTAND") %>'>
+                                                            </asp:Label>
+                                                            <asp:TextBox ID="txtHCOrt" runat="server" Visible="False" 
+                                                                Text='<%# Eval("HCORT") %>' 
+                                                                BorderColor="Red" Width="75px" BorderWidth="1px">
+                                                            </asp:TextBox>
+                                                        </ItemTemplate>
+                                                    </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn DataField="KMSTAND" SortExpression="KMSTAND" Groupable="false">
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="80px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblKMSTAND" Text='<%# Eval("KMSTAND") %>'>
                                                             </asp:Label>
                                                             <asp:TextBox ID="txtKM" runat="server" Visible="False" 
-                                                                Text='<%# Eval("KMSTAND") %>'>
+                                                                Text='<%# Eval("KMSTAND") %>' 
+                                                                BorderColor="Red" Width="75px" BorderWidth="1px">
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="ZBEM" SortExpression="ZBEM" Visible="false" UniqueName="Bemerkung" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="150px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="ID" SortExpression="ID" Visible="false" UniqueName="ID" >

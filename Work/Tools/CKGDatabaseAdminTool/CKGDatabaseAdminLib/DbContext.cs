@@ -15,6 +15,8 @@ namespace CKGDatabaseAdminLib
 
         public string CurrentAppURL { get; set; }
 
+        public int? CurrentBapiId { get; set; }
+
         public DatabaseContext(string connectionString) : base(connectionString) { }
 
         public DbSet<LoginUserMessage> LoginUserMessages { get; set; }
@@ -74,6 +76,17 @@ namespace CKGDatabaseAdminLib
             {
                 Database.ExecuteSqlCommand("DELETE FROM ApplicationBapi WHERE ApplicationID = {0} AND BapiID = {1}", CurrentAppId.Value, bapiId);
             }
+        }
+
+        public DbSqlQuery<ApplicationInfo> GetApplicationsForBapi()
+        {
+            var query = "SELECT a.* FROM Application a, ApplicationBapi ab WHERE ab.ApplicationId = a.AppId";
+            if (CurrentBapiId.HasValue)
+            {
+                query += " AND ab.BapiId = " + CurrentBapiId.Value.ToString();
+            }
+            query += " ORDER BY a.AppId";
+            return Applications.SqlQuery(query);
         }
 
         public DbSet<Bapi2Report4CsvExport> Bapi2Report4CsvExportItemsRaw { get; set; }

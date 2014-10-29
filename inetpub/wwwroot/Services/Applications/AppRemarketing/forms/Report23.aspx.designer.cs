@@ -157,6 +157,42 @@ namespace AppRemarketing.forms {
         protected global::System.Web.UI.WebControls.DropDownList ddlVermieter;
         
         /// <summary>
+        /// tr_Auswahl-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr_Auswahl;
+        
+        /// <summary>
+        /// rbAlle-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbAlle;
+        
+        /// <summary>
+        /// rbMietfahrzeuge-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbMietfahrzeuge;
+        
+        /// <summary>
+        /// rbBuyBack-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbBuyBack;
+        
+        /// <summary>
         /// tr_DatumVon-Steuerelement
         /// </summary>
         /// <remarks>
