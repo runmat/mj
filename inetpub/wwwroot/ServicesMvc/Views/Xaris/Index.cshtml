@@ -7,15 +7,9 @@
         $("body").css("overflow-y", "hidden");
 
         $(window).resize(function () {
-            //alert("x");
             onResize();
         });
         onResize();
-
-        //var xarisUrl = '@Model.XarisUrl';
-        var xarisUrl = 'http://www.n-tv.de';
-        var ifr = document.getElementById('ifrMvcApp');
-        ifr.src = xarisUrl;
     }
 
     function isIeAndVersion() {
@@ -54,4 +48,4 @@
     <a href="@Model.XarisUrl">@Model.XarisUrl</a>
 </h5>
 
-<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src=""></iframe>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src="@Model.XarisUrl"></iframe>
