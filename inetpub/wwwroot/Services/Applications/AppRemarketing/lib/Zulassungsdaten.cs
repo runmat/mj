@@ -402,7 +402,7 @@ namespace AppRemarketing.lib
 
                 DataTable ImpTable;
 
-                if (Edit == false)
+                if (!Edit)
                 {
                     ImpTable = tblUpload;
 
@@ -417,11 +417,7 @@ namespace AppRemarketing.lib
                         newRow["BESCHREIBUNG"] = dr[2];
 
                         tblTmp.Rows.Add(newRow);
-
                     }
-
-
-
                 }
                 else
                 {
@@ -431,22 +427,15 @@ namespace AppRemarketing.lib
                     {
                         newRow = tblTmp.NewRow();
 
-                        newRow["FAHRGNR"] = dr[0];
-                        newRow["KENNZ"] = dr[1];
-                        newRow["PREIS"] = dr[2];
-                        newRow["SCHAD_DAT"] = dr[3];
-                        newRow["BESCHREIBUNG"] = dr[4];
+                        newRow["FAHRGNR"] = dr["Fahrgestellnummer"];
+                        newRow["KENNZ"] = dr["Kennzeichen"];
+                        newRow["PREIS"] = dr["Betrag"];
+                        newRow["SCHAD_DAT"] = dr["Schadensdatum"];
+                        newRow["BESCHREIBUNG"] = dr["Beschreibung"];
 
                         tblTmp.Rows.Add(newRow);
-
                     }
-
-
                 }
-
-
-                
-
 
                 myProxy.callBapi();
 
@@ -457,22 +446,27 @@ namespace AppRemarketing.lib
                     m_tblError.Columns["FAHRGNR"].ColumnName = "Fahrgestellnummer";
                     m_tblError.Columns["KENNZ"].ColumnName = "Kennzeichen";
                     m_tblError.Columns["PREIS"].ColumnName = "Betrag";
-                    m_tblError.Columns["SCHAD_DAT"].ColumnName = "Schadensdatum";
                     m_tblError.Columns["BESCHREIBUNG"].ColumnName = "Beschreibung";
                     m_tblError.Columns.Add("ID", typeof(int));
+                    m_tblError.Columns.Add("Schadensdatum", typeof(string));
                     m_tblError.AcceptChanges();
                 }
 
                 for (int i = 0; i < m_tblError.Rows.Count; i++)
                 {
                     m_tblError.Rows[i]["ID"] = i;
+                    DateTime datum;
+                    if (m_tblError.Rows[i]["SCHAD_DAT"] != null && DateTime.TryParse(m_tblError.Rows[i]["SCHAD_DAT"].ToString(), out datum))
+                    {
+                        m_tblError.Rows[i]["Schadensdatum"] = datum.ToShortDateString();
+                    }
+                    else
+                    {
+                        m_tblError.Rows[i]["Schadensdatum"] = "";
+                    }
                 }
 
-
-
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -485,10 +479,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
-
         }
 
         #endregion

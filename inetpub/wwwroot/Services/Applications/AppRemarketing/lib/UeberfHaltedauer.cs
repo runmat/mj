@@ -13,7 +13,7 @@ namespace AppRemarketing.lib
 
         public DataTable Result { get; private set; }
 
-        public void Search(User user, App app, Page page, string fin, string kennz, string invent, string avnr, DateTime von, DateTime bis)
+        public void Search(User user, App app, Page page, string fin, string kennz, string invent, string avnr, DateTime von, DateTime bis, string selektionMietFzg)
         {
             DataTable result;
             try
@@ -30,6 +30,7 @@ namespace AppRemarketing.lib
                 if (!string.IsNullOrEmpty(avnr) && avnr!="00") myProxy.setImportParameter("I_AVNR", avnr);
                 myProxy.setImportParameter("I_DAT_VON", von.ToShortDateString());
                 myProxy.setImportParameter("I_DAT_BIS", bis.ToShortDateString());
+                myProxy.setImportParameter("I_MIETFZG", selektionMietFzg);
 
                 myProxy.callBapi();
 
