@@ -1,7 +1,5 @@
 Imports System.Configuration
 Imports System.Web.Mail
-Imports System.Web
-Imports WebTools.Services
 
 Namespace Kernel.Security
     <Serializable()> Public Class User
@@ -1290,6 +1288,9 @@ Namespace Kernel.Security
 
                     If Not SendPasswordResetMail(m_strErrorMessage, PasswordMailMode.Zuruecksetzen) Then
                         Throw New System.Exception(m_strErrorMessage)
+                        Else
+                            If Not SendPasswordMail(strTemp, m_strErrorMessage, True) Then
+                                Throw New System.Exception(m_strErrorMessage)
                     End If
 
                     'Fehlerhafte Logins zurücksetzen
@@ -1914,7 +1915,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
 
                         With textBuilder
                             .AppendLine("Guten Tag,")
@@ -1956,7 +1957,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzername wurde geändert"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
@@ -1966,7 +1967,7 @@ Namespace Kernel.Security
                             .AppendLine(m_strUsername.Trim())
                             .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
+                            .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
                             .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
@@ -1997,7 +1998,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
 
                         Dim Portallink As String = LoadLoginLinks(PortalLinkID)
 
@@ -2070,7 +2071,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihre Passwortanforderung"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
@@ -2122,23 +2123,6 @@ Namespace Kernel.Security
                 Return False
             End Try
         End Function
-
-        Public Sub UpdateWebUserPasswordChangeRequestKey(key As String)
-            Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
-            cn.Open()
-
-            Dim cmdUpdate As New SqlClient.SqlCommand("UPDATE WebUser SET PasswordChangeRequestKey=@key where UserID=" & m_intUserId, cn)
-
-            With cmdUpdate.Parameters
-                .AddWithValue("@UserID", UserID)
-                .AddWithValue("@key", key)
-            End With
-            cmdUpdate.ExecuteNonQuery()
-
-            cn.Close()
-            cn.Dispose()
-
-        End Sub
 
         Public Sub UpdateWebUserUploadMailSend(ByVal isSend As Boolean)
             Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
@@ -2301,7 +2285,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzerkonto wurde entsperrt"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
