@@ -113,15 +113,6 @@ Partial Public Class CustomerManagement
     Protected WithEvents ihExpandstatusSearchFilterArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
-    '''ihNewExpandstatusSearchFilterArea-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ihNewExpandstatusSearchFilterArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
-    '''<summary>
     '''ihExpandstatusSearchResultArea-Steuerelement
     '''</summary>
     '''<remarks>
@@ -131,15 +122,6 @@ Partial Public Class CustomerManagement
     Protected WithEvents ihExpandstatusSearchResultArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
-    '''ihNewExpandstatusSearchResultArea-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ihNewExpandstatusSearchResultArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
-    '''<summary>
     '''ihExpandStatusInputArea-Steuerelement
     '''</summary>
     '''<remarks>
@@ -147,15 +129,6 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents ihExpandStatusInputArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
-    '''<summary>
-    '''ihNewExpandStatusInputArea-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ihNewExpandStatusInputArea As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
     '''DivSearch1-Steuerelement

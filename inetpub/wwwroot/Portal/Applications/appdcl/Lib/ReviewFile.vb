@@ -33,14 +33,27 @@ Public Class ReviewFile
             Return Path.GetFileName(SourceFile)
         End Get
     End Property
+
+    Public ReadOnly Property Extension As String
+        Get
+            Return Path.GetExtension(SourceFile)
+        End Get
+    End Property
 #End Region
     
     Public Shared Function FindUploadedFiles(ByVal folder As String, ByVal backupFolder As String, ByVal serverFolder As String, ByVal images As Boolean,
                                              Optional ByVal auftragsNummer As Nullable(Of Integer) = Nothing, Optional ByVal fahrer As Nullable(Of Integer) = Nothing,
                                              Optional ByVal fahrt As Nullable(Of Integer) = Nothing,
                                              Optional ByVal index As Nullable(Of Integer) = Nothing) As List(Of ReviewFile)
-        Dim pattern = Create(images, auftragsNummer, fahrer, fahrt)
-        Dim files = Directory.GetFiles(folder, pattern)
+        Dim files As List(Of String)
+        Dim pattern = Create(auftragsNummer, fahrer, fahrt)
+        If images Then
+            pattern &= ".*"
+            files = Directory.GetFiles(folder, pattern).Where(Function(f) f.ToUpper.EndsWith(FileExtensionsImage(0)) OrElse f.ToUpper.EndsWith(FileExtensionsImage(1)) OrElse f.ToUpper.EndsWith(FileExtensionsImage(2)) OrElse f.ToUpper.EndsWith(FileExtensionsImage(3))).ToList()
+        Else
+            pattern &= FileExtensionPdf
+            files = Directory.GetFiles(folder, pattern).ToList()
+        End If
         Return files _
             .Select(Function(fileName) New ReviewFile(fileName, backupFolder, serverFolder)) _
             .ToList()
@@ -59,8 +72,8 @@ Public Class ReviewFile
         If BackupFileExists Then File.Delete(BackupFile)
     End Sub
 
-    Public Sub MoveTo(ByVal folder As String, ByVal backupFolder As String, ByVal auftrag As ReviewAuftrag)
-        Dim destFile = NextFilename(folder, IsImage, auftrag.AuftragsNummer, auftrag.FahrerID, auftrag.Fahrt)
+    Public Sub MoveTo(ByVal folder As String, ByVal extension As String, ByVal backupFolder As String, ByVal auftrag As ReviewAuftrag)
+        Dim destFile = NextFilename(folder, extension, auftrag.AuftragsNummer, auftrag.FahrerID, auftrag.Fahrt)
         If SourceFileExists Then
             File.Move(SourceFile, destFile)
         End If
@@ -89,11 +102,11 @@ Public Class ReviewFile
         End If
     End Sub
 
-    Private Function CreateThumbnail(ByVal sourcefile As String, ByVal thumbfile As String, Optional ByVal width As Integer = 75,
+    Private Function CreateThumbnail(ByVal srcfile As String, ByVal thumbfile As String, Optional ByVal width As Integer = 75,
                                      Optional ByVal height As Integer = 75) As Boolean
-        If Not File.Exists(sourcefile) Then Return False
+        If Not File.Exists(srcfile) Then Return False
 
-        Dim sourceStream = File.OpenRead(sourcefile)
+        Dim sourceStream = File.OpenRead(srcfile)
         Dim sourceImage = Image.FromStream(sourceStream)
         Dim destImage = New Bitmap(width, height)
 

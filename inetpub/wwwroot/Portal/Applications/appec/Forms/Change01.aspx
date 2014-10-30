@@ -231,6 +231,12 @@
 														<TD class="ButtonRowBackground" vAlign="middle"></TD>
 														<TD class="ButtonRowBackground" vAlign="middle" colSpan="4"></TD>
 													</TR>
+                                                    <tr>
+                                                        <TD vAlign="middle"></TD>
+                                                        <TD vAlign="middle" colSpan="6">
+                                                            <asp:CheckBox runat="server" ID="cbxKeepData" Text="Eingaben für nächsten Vorgang merken" Checked="True"/>
+                                                        </TD>
+                                                    </tr>
 													<TR>
 														<TD vAlign="middle"></TD>
 														<TD vAlign="middle"><asp:dropdownlist id="ddlModellHidden" runat="server" EnableViewState="True" Enabled="False" Width="0px"></asp:dropdownlist></TD>
