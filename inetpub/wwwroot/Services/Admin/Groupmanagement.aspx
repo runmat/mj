@@ -33,13 +33,14 @@
                             </h1>
                             <span id="arealnkSuche" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuche" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchFilterArea();" style="display: none">Suche</a>
                             <span id="arealnkSuchergebnis" class="AdminMgmtNav" style="display: none">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span><a id="lnkSuchergebnis" class="AdminMgmtNavLink" href="javascript:void(0)" onclick="showSearchResultArea();" style="display: none">Suchergebnis</a>
-                            <%-- ihExpandStatus...Area enthält jeweils den Sollwert für den nächsten Seitenzustand, ihNewExpandStatus...Area den aktuellen --%>
+                            <%-- ih... enthält jeweils den Sollwert für den nächsten Seitenzustand --%>
                             <input id="ihExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
-                            <input id="ihNewExpandstatusSearchFilterArea" type="hidden" runat="server" value="1"/>
                             <input id="ihExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandstatusSearchResultArea" type="hidden" runat="server" value="0"/>
                             <input id="ihExpandStatusInputArea" type="hidden" runat="server" value="0"/>
-                            <input id="ihNewExpandStatusInputArea" type="hidden" runat="server" value="0"/>
+                            <input id="ihExpandStatusArchive" type="hidden" runat="server" value="0"/>
+                            <input id="ihExpandStatusAbrufgruendeEndg" type="hidden" runat="server" value="0"/>
+                            <input id="ihExpandStatusAbrufgruendeTemp" type="hidden" runat="server" value="0"/>
+                            <input id="ihExpandStatusMeldung" type="hidden" runat="server" value="0"/>
                         </div>
                         <asp:Panel ID="DivSearch1" runat="server" DefaultButton="btnEmpty" style="display: none">
                             <div id="TableQuery">
@@ -560,159 +561,179 @@
                                                 </tr>
                                                 <tr id="trArchiv" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
-                                                        <div class="formqueryHeader">
+                                                        <div class="formqueryHeader" style="margin-bottom: 5px">
                                                             <span>Archive</span>
+                                                            <div style="float: right; margin: 3px">
+                                                                <input type="image" src="/Services/Images/queryArrow.gif" onclick='return toggleArchiveVisibility();' />
+                                                            </div>
                                                         </div>
-                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
-                                                            border="0">
-                                                            <tr class="formquery">
-                                                                <td class="firstLeft active" width="35%">
-                                                                    nicht zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstArchivUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150px"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignArchiv" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
-                                                                        ToolTip="Zuweisen" Height="37px" Width="37px" />
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
-                                                                            ToolTip="Entfernen" Height="37px" Width="37px" /></span>
-                                                                </td>
-                                                                <td class="active" width="35%">
-                                                                    zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstArchivAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <div id="divArchiv" style="display: none">
+                                                            <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
+                                                                border="0">
+                                                                <tr class="formquery">
+                                                                    <td class="firstLeft active" width="35%">
+                                                                        nicht zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstArchivUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150px"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 55px"></span>
+                                                                        <asp:ImageButton ID="btnAssignArchiv" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
+                                                                            ToolTip="Zuweisen" Height="37px" Width="37px" />
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 30px">
+                                                                            <asp:ImageButton ID="btnUnAssignArchiv" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
+                                                                                ToolTip="Entfernen" Height="37px" Width="37px" /></span>
+                                                                    </td>
+                                                                    <td class="active" width="35%">
+                                                                        zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstArchivAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr id="trAbrufgruendeEndg" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
-                                                        <div class="formqueryHeader">
+                                                        <div class="formqueryHeader" style="margin-bottom: 5px">
                                                             <span>Abrufgründe endgültig</span>
+                                                            <div style="float: right; margin: 3px">
+                                                                <input type="image" src="/Services/Images/queryArrow.gif" onclick='return toggleAbrufgruendeEndgVisibility();' />
+                                                            </div>
                                                         </div>
-                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
-                                                            border="0">
-                                                            <tr class="formquery">
-                                                                <td class="firstLeft active" width="35%">
-                                                                    nicht zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstAbrufgruendeEndgUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150px"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
-                                                                        ToolTip="Zuweisen" Height="37px" Width="37px" />
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
-                                                                            ToolTip="Entfernen" Height="37px" Width="37px" /></span>
-                                                                </td>
-                                                                <td class="active" width="35%">
-                                                                    zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstAbrufgruendeEndgAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <div id="divAbrufgruendeEndg" style="display: none">
+                                                            <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
+                                                                border="0">
+                                                                <tr class="formquery">
+                                                                    <td class="firstLeft active" width="35%">
+                                                                        nicht zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstAbrufgruendeEndgUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150px"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 55px"></span>
+                                                                        <asp:ImageButton ID="btnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
+                                                                            ToolTip="Zuweisen" Height="37px" Width="37px" />
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 30px">
+                                                                            <asp:ImageButton ID="btnUnAssignAbrufgruendeEndg" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
+                                                                                ToolTip="Entfernen" Height="37px" Width="37px" /></span>
+                                                                    </td>
+                                                                    <td class="active" width="35%">
+                                                                        zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstAbrufgruendeEndgAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr id="trAbrufgruendeTemp" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
-                                                        <div class="formqueryHeader">
+                                                        <div class="formqueryHeader" style="margin-bottom: 5px">
                                                             <span>Abrufgründe temporär</span>
+                                                            <div style="float: right; margin: 3px">
+                                                                <input type="image" src="/Services/Images/queryArrow.gif" onclick='return toggleAbrufgruendeTempVisibility();' />
+                                                            </div>
                                                         </div>
-                                                        <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
-                                                            border="0">
-                                                            <tr class="formquery">
-                                                                <td class="firstLeft active" width="35%">
-                                                                    nicht zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstAbrufgruendeTempUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150px"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 55px"></span>
-                                                                    <asp:ImageButton ID="btnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
-                                                                        ToolTip="Zuweisen" Height="37px" Width="37px" />
-                                                                </td>
-                                                                <td class="active" width="15%">
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <p>
-                                                                        &nbsp;</p>
-                                                                    <span style="padding-left: 30px">
-                                                                        <asp:ImageButton ID="btnUnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
-                                                                            ToolTip="Entfernen" Height="37px" Width="37px" /></span>
-                                                                </td>
-                                                                <td class="active" width="35%">
-                                                                    zugewiesen
-                                                                    <p>
-                                                                        <asp:ListBox ID="lstAbrufgruendeTempAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
-                                                                            Width="300px" Height="150"></asp:ListBox>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <div id="divAbrufgruendeTemp" style="display: none">
+                                                            <table cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF"
+                                                                border="0">
+                                                                <tr class="formquery">
+                                                                    <td class="firstLeft active" width="35%">
+                                                                        nicht zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstAbrufgruendeTempUnAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150px"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 55px"></span>
+                                                                        <asp:ImageButton ID="btnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_vor_01.jpg"
+                                                                            ToolTip="Zuweisen" Height="37px" Width="37px" />
+                                                                    </td>
+                                                                    <td class="active" width="15%">
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <p>
+                                                                            &nbsp;</p>
+                                                                        <span style="padding-left: 30px">
+                                                                            <asp:ImageButton ID="btnUnAssignAbrufgruendeTemp" runat="server" ImageUrl="/Services/Images/Pfeil_zurueck_01.jpg"
+                                                                                ToolTip="Entfernen" Height="37px" Width="37px" /></span>
+                                                                    </td>
+                                                                    <td class="active" width="35%">
+                                                                        zugewiesen
+                                                                        <p>
+                                                                            <asp:ListBox ID="lstAbrufgruendeTempAssigned" runat="server" SelectionMode="Multiple" CssClass="InputTextbox"
+                                                                                Width="300px" Height="150"></asp:ListBox>
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </td>
                                                 </tr>
-                                                <tr class="formquery" id="trMeldung" runat="server">
+                                                <tr id="trMeldung" runat="server">
                                                     <td class="InfoBoxFlat" valign="top" align="left">
-                                                        <div class="formqueryHeader">
+                                                        <div class="formqueryHeader" style="margin-bottom: 5px">
                                                             <span>Startmeldung</span>
+                                                            <div style="float: right; margin: 3px">
+                                                                <input type="image" src="/Services/Images/queryArrow.gif" onclick='return toggleMeldungVisibility();' />
+                                                            </div>
                                                         </div>
-                                                        <table id="tblMeldung" cellspacing="0" cellpadding="0" border="0" style="border-color: #FFFFFF">
-                                                            <tr>
-                                                                <td class="firstLeft active" valign="top" width="60%">
-                                                                    <div>
-                                                                        Häufigkeit der Startmeldungsanzeige (pro Benutzer):
-                                                                        <asp:TextBox ID="txtMaxReadMessageCount" runat="server" Width="40px" MaxLength="2"
-                                                                            CssClass="InputTextbox"></asp:TextBox></div>
-                                                                    <br />
-                                                                    <asp:Label Font-Size="Medium" ID="lblInfo" runat="server" CssClass="TextError" />
-                                                                    <asp:TextBox ID="txtMessageOld" runat="server" Visible="False" MaxLength="500" TextMode="MultiLine"></asp:TextBox>
-                                                                </td>
-                                                                <td class="firstLeft active" valign="top">
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <div id="divMeldung" style="display: none">
+                                                            <table id="tblMeldung" cellspacing="0" cellpadding="0" border="0" style="border-color: #FFFFFF">
+                                                                <tr>
+                                                                    <td class="firstLeft active" valign="top" width="60%">
+                                                                        <div>
+                                                                            Häufigkeit der Startmeldungsanzeige (pro Benutzer):
+                                                                            <asp:TextBox ID="txtMaxReadMessageCount" runat="server" Width="40px" MaxLength="2"
+                                                                                CssClass="InputTextbox"></asp:TextBox></div>
+                                                                        <br />
+                                                                        <asp:Label Font-Size="Medium" ID="lblInfo" runat="server" CssClass="TextError" />
+                                                                        <asp:TextBox ID="txtMessageOld" runat="server" Visible="False" MaxLength="500" TextMode="MultiLine"></asp:TextBox>
+                                                                    </td>
+                                                                    <td class="firstLeft active" valign="top">
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="trMeldungEditor" style="display: none">
                                                     <td class="firstLeft">
                                                         <%-- Aus der eigentlichen Zeile herausgezogen da Styles sonst überschrieben werden--%>
                                                         <telerik:RadEditor ID="radMessage" runat="server" Width="600px" Height="300px" ToolsFile="Templates/RadEditToolsLimited.xml"
@@ -758,9 +779,6 @@
                 $("#<%= Result.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").hide();
                 $("#<%= DivSearch1.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "1");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
             }
             else if ($("#<%= ihExpandstatusSearchResultArea.ClientID %>").attr("value") == "1") {
                 $("#arealnkSuchergebnis").hide();
@@ -770,9 +788,6 @@
                 $("#<%= DivSearch1.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").hide();
                 $("#<%= Result.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "1");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "0");
             }
             else {
                 $("#arealnkSuche").show();
@@ -782,9 +797,31 @@
                 $("#<%= DivSearch1.ClientID %>").hide();
                 $("#<%= Result.ClientID %>").hide();
                 $("#<%= Input.ClientID %>").show();
-                $("#<%= ihNewExpandstatusSearchFilterArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusSearchResultArea.ClientID %>").attr("value", "0");
-                $("#<%= ihNewExpandstatusInputArea.ClientID %>").attr("value", "1");
+            }
+        }
+
+        function CheckInputCollapseExpandStatus() {
+            if ($("#<%= ihExpandStatusArchive.ClientID %>").attr("value") == "1") {
+                $("#divArchiv").show();
+            } else {
+                $("#divArchiv").hide();
+            }
+            if ($("#<%= ihExpandStatusAbrufgruendeEndg.ClientID %>").attr("value") == "1") {
+                $("#divAbrufgruendeEndg").show();
+            } else {
+                $("#divAbrufgruendeEndg").hide();
+            }
+            if ($("#<%= ihExpandStatusAbrufgruendeTemp.ClientID %>").attr("value") == "1") {
+                $("#divAbrufgruendeTemp").show();
+            } else {
+                $("#divAbrufgruendeTemp").hide();
+            }
+            if ($("#<%= ihExpandStatusMeldung.ClientID %>").attr("value") == "1") {
+                $("#divMeldung").show();
+                $("#trMeldungEditor").show();
+            } else {
+                $("#divMeldung").hide();
+                $("#trMeldungEditor").hide();
             }
         }
 
@@ -802,8 +839,44 @@
             CheckCollapseExpandStatus();
         }
 
+        function toggleArchiveVisibility() {
+            toggleHiddenFieldValue($("#<%= ihExpandStatusArchive.ClientID %>"));
+            CheckInputCollapseExpandStatus();
+            return false;
+        }
+
+        function toggleAbrufgruendeEndgVisibility() {
+            toggleHiddenFieldValue($("#<%= ihExpandStatusAbrufgruendeEndg.ClientID %>"));
+            CheckInputCollapseExpandStatus();
+            return false;
+        }
+
+        function toggleAbrufgruendeTempVisibility() {
+            toggleHiddenFieldValue($("#<%= ihExpandStatusAbrufgruendeTemp.ClientID %>"));
+            CheckInputCollapseExpandStatus();
+            return false;
+        }
+
+        function toggleMeldungVisibility() {
+            toggleHiddenFieldValue($("#<%= ihExpandStatusMeldung.ClientID %>"));
+            CheckInputCollapseExpandStatus();
+            return false;
+        }
+
+        function toggleHiddenFieldValue(hiddenField) {
+            if (hiddenField.attr("value") == "1") {
+                hiddenField.attr("value", "0");
+            } else {
+                hiddenField.attr("value", "1");
+            }
+        }
+
         $(function () {
             CheckCollapseExpandStatus();
+            
+            if ($("#<%= ihExpandstatusInputArea.ClientID %>").attr("value") == "1") {
+                CheckInputCollapseExpandStatus();
+            }
         }); 
         
     </script>
