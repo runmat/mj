@@ -1643,13 +1643,13 @@ namespace AppZulassungsdienst.forms
                 DataRow dataRow = objCommon.tblKundenStamm.Rows[i];
 
                 javaScript.Append(" [ ");
-                javaScript.Append("'" + dataRow[2].ToString().Trim() + "'");// Kundennummer
+                javaScript.Append("'" + dataRow["KUNNR"].ToString().Trim() + "'");// Kundennummer
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[dataRow.Table.Columns.Count - 2].ToString().Trim() + "'");//Barkunde
+                javaScript.Append("'" + dataRow["BARKUNDE"].ToString().Trim() + "'");//Barkunde
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[9].ToString().Trim() + "'");//Pauschalkunde
+                javaScript.Append("'" + dataRow["ZZPAUSCHAL"].ToString().Trim() + "'");//Pauschalkunde
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[11].ToString().Trim() + "'");//CPD-Kunde
+                javaScript.Append("'" + dataRow["XCPDK"].ToString().Trim() + "'");//CPD-Kunde
                 javaScript.Append(" ]");
 
                 if ((i + 1) == objCommon.tblKundenStamm.Rows.Count)
