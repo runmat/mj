@@ -125,6 +125,7 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_EXP_DAT_RUECKL_02").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_DPM_FILL_VERSAUFTR").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_DPM_READ_SENDTAB_03").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_DPM_CD_ABM_STATUS_TXT").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_DPM_CD_ABM_HIST").WriteOrmForExportTableStructures("I_FIN", "X");

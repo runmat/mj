@@ -1,12 +1,8 @@
-Imports CKG.Base.Kernel
 Imports CKG.Portal.PageElements
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Base.Business
-Imports CKG.EasyAccess
 Imports System.IO
 Imports System.Linq
 Imports System.Collections.Generic
-Imports System.Web.UI
 
 <CLSCompliant(False)> Partial Class _Report02
     Inherits System.Web.UI.Page
@@ -53,10 +49,6 @@ Imports System.Web.UI
             Else
                 lblMsg.Text = String.Empty
             End If
-            'If Not IsPostBack Then
-            '    loadData()
-            '    loadForm()
-            'End If
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
@@ -169,7 +161,7 @@ Imports System.Web.UI
         Dim backupFolder = New DirectoryInfo(ConfigurationManager.AppSettings("UploadpathLocalBackup"))
         For Each file In moveFiles
             Try
-                file.MoveTo(folder.FullName, backupFolder.FullName, destAuftrag)
+                file.MoveTo(folder.FullName, file.Extension, backupFolder.FullName, destAuftrag)
             Catch ex As Exception
                 lblError.Text = ex.ToString
                 lblError.Visible = True
@@ -206,34 +198,6 @@ Imports System.Web.UI
             End If
             movePanel.Visible = True
         End If
-    End Sub
-
-    Private Sub cbxFinished_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        'Handles cbxFinished.CheckedChanged
-
-
-
-        'Dim table As DataTable
-        'Dim row As DataRow
-        'Dim auftrag As String
-        'Dim tour As String
-
-        'table = CType(Session("Serverfiles"), DataTable)
-        'auftrag = getAuftragsNr()
-        'tour = getTourNr()
-
-        'For Each row In table.Rows
-        '    If (CType(row("Auftrag"), String) = auftrag) And (CType(row("Tour"), String) = tour) Then
-        '        If (cbxFinished.Checked) Then
-        '            row("Save") = "X"
-        '        Else
-        '            row("Save") = ""
-        '        End If
-        '    End If
-        'Next
-        'table.AcceptChanges()
-        'Session("Serverfiles") = table
-        'fillView()
     End Sub
 
     Protected Sub GridServerRowDeleting(ByVal source As Object, ByVal e As GridViewDeleteEventArgs)
@@ -328,22 +292,6 @@ Imports System.Web.UI
         btnBack.Visible = finished
     End Sub
 
-    'Private Sub showResult()
-    '    Dim table As DataTable
-    '    Dim row As DataRow
-    '    Dim str As String = ""
-
-    '    table = CType(Session("Serverfiles"), DataTable)
-    '    For Each row In table.Rows
-    '        If (row("Save").ToString = "X") Then
-    '            str &= row("Status") & ";"
-    '        End If
-    '    Next
-    '    str = str.Replace("\", "'")
-    '    lblOpen.Text = "<script language=""Javascript"">window.open(""_Report022.aspx?USER=" & m_User.UserName & "&PAR=" & str & """, ""Übertragungsprotokoll"", ""width=640,height=480,left=0,top=0,scrollbars=YES"");location.replace(""../../../Start/Selection.aspx"");</script>"
-    'End Sub
-
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
@@ -352,56 +300,3 @@ Imports System.Web.UI
         SetEndASPXAccess(Me)
     End Sub
 End Class
-
-' ************************************************
-' $History: _Report02.aspx.vb $
-' 
-' *****************  Version 6  *****************
-' User: Rudolpho     Date: 4.02.10    Time: 14:38
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA: 2918
-' 
-' *****************  Version 5  *****************
-' User: Rudolpho     Date: 30.04.09   Time: 9:25
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA: 2837
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 13.01.09   Time: 11:07
-' Updated in $/CKAG/Applications/appdcl/Forms
-' fehlerbehandlung eingeführt
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 12.01.09   Time: 15:13
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA 2528
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 18.06.08   Time: 13:46
-' Updated in $/CKAG/Applications/appdcl/Forms
-' Nicht verwendete Variablen gelöscht.
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 7.04.08    Time: 13:00
-' Created in $/CKAG/Applications/appdcl/Forms
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 9.08.07    Time: 11:39
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Bugfix: Fehlerbehandlung  _Report02.aspx Methode Fillddl eingefügt
-' 
-' *****************  Version 9  *****************
-' User: Uha          Date: 26.06.07   Time: 11:44
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Methodenaufruf korrigiert (AppDCL, _Report02.aspx.vb)
-' 
-' *****************  Version 8  *****************
-' User: Uha          Date: 21.06.07   Time: 12:36
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 7  *****************
-' User: Uha          Date: 7.03.07    Time: 10:26
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' 
-' ************************************************

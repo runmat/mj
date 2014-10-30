@@ -10,15 +10,15 @@
 
         if (!Model.ModePasswordReset)
         {
-             <div id="loginDiv">
+            <div id="login-loader" class="alert alert-info margin-top-30 hide">
+                @Html.Win8Loader() @Localize.LoginInProcess 
+            </div>
+        
+            <div id="loginDiv">
                  <h3 class="form-title">@Localize.LoginToYourAccount</h3>
 
                  @if (Model.IsValid)
                  {
-                     <div id="login-loader" class="alert alert-info hide">
-                         @Html.Win8Loader() @Localize.LoginInProcess 
-                     </div>
-                     
                      if (Model.MaintenanceInfo != null && Model.MaintenanceInfo.MessagesToConfirmAvailable)
                      {
                          <div id="login-messages-to-confirm" class="alert alert-info no-padding">
@@ -50,7 +50,7 @@
                          <h4><a href="javascript:RequestSwitchMode(true);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.PasswordForgottenQuestion</a></h4>
                      </div>
                  }
-             </div>
+            </div>
         }
 
         if (Model.ModePasswordReset)
@@ -121,10 +121,12 @@
             }
             
             function RedirectFromLoginPage() {
-                $("#login-messages-to-confirm").hide();
-                $("#login-loader").show();
                 var redirectUrl = unescape('@Model.RedirectUrl');
                 redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
+
+                $("#loginDiv").html("");
+                $("#loginDiv").hide();
+                $("#login-loader").show();
                 location.replace(redirectUrl);
             }
 
