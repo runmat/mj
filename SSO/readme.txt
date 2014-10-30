@@ -1,12 +1,12 @@
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-- Fußnote für (Web-SSO oder ) Enterprise-SSO
+OK - Fußnote für (Web-SSO oder ) Enterprise-SSO
 
-- Grafiken für 
-  1. Social Media SSO 
-  2. Authentifizierungsverfahren
-  3. Multi-Faktor (Handy, Push-Tan
+OK- Grafiken für 
+OK  1. Social Media SSO 
+OK  2. Authentifizierungsverfahren
+OK  3. Multi-Faktor (Handy, Push-Tan)
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
