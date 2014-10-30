@@ -42,7 +42,7 @@ Public Class MeldungDAD
         ClearErrorState()
 
         Try
-            S.AP.Init("Z_ZLD_FIND_DAD_SD_ORDER", "I_VKORG", "1510")
+            S.AP.Init("Z_ZLD_FIND_DAD_SD_ORDER", "I_VKORG, I_VKBUR", "1510", Kostenstelle)
 
             If Not String.IsNullOrEmpty(IDSuche) Then
                 S.AP.SetImportParameter("I_VBELN", IDSuche.PadLeft(10, "0"c))
@@ -65,7 +65,7 @@ Public Class MeldungDAD
                 Frachtbriefnummer = row("ZZSEND2").ToString()
                 Fahrgestellnummer = row("ZZFAHRG").ToString()
                 Briefnummer = row("ZZBRIEF").ToString()
-                'TODO: Zulassungsdatum aus SD-Auftrag?
+                Zulassungsdatum = row("VDATU").ToString()
                 Kennzeichen = row("ZZKENN").ToString()
             Else
                 RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
@@ -75,6 +75,17 @@ Public Class MeldungDAD
             RaiseError("9999", ex.Message)
         End Try
     End Sub
+
+    Public Sub ClearFields()
+        ID = ""
+        Bestellnummer = ""
+        Frachtbriefnummer = ""
+        Fahrgestellnummer = ""
+        Briefnummer = ""
+        Zulassungsdatum = ""
+        Kennzeichen = ""
+    End Sub
+
 
     ''' <summary>
     ''' Vorgang speichern. Bapi: Z_ZLD_SAVE_TAGGLEICHE_MELDUNG

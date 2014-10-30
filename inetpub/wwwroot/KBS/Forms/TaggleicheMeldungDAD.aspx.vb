@@ -57,8 +57,8 @@ Partial Public Class TaggleicheMeldungDAD
         End If
 
         objMeldungDAD.IDSuche = txtBarcode.Text.Trim()
-        objMeldungDAD.FahrgestellnummerSuche = txtFahrgestellnummer.Text.Trim()
-        objMeldungDAD.BriefnummerSuche = txtBriefnummer.Text.Trim()
+        objMeldungDAD.FahrgestellnummerSuche = txtFahrgestellnummer.Text.Trim().ToUpper()
+        objMeldungDAD.BriefnummerSuche = txtBriefnummer.Text.Trim().ToUpper()
 
         objMeldungDAD.LoadVorgang()
 
@@ -165,6 +165,10 @@ Partial Public Class TaggleicheMeldungDAD
                 Panel2.Visible = False
                 cmdSend.Visible = False
                 Panel1.Visible = True
+                objMeldungDAD.ClearFields()
+                txtBarcode.Text = ""
+                txtFahrgestellnummer.Text = ""
+                txtBriefnummer.Text = ""
                 trFrachtbriefnummer.Visible = False
                 cmdCreate.Visible = True
             End If

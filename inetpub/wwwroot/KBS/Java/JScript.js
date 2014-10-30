@@ -36,7 +36,7 @@ function numbersonly(e, decimal) {
     else if ((("0123456789").indexOf(keychar) > -1)) {
         return true;
     }
-    else if (decimal && (keychar == ".")) {
+    else if (decimal && ((keychar == ".") || (keychar == ","))) {
         return true;
     }
     else
