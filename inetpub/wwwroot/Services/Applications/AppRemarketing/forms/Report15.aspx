@@ -113,6 +113,7 @@
                                     </td>
                                     <td class="firstLeft active">
                                         <asp:DropDownList ID="ddlStatus" runat="server" Width="200px">
+                                            <asp:ListItem Value="5" Selected="True">alle</asp:ListItem>
                                             <asp:ListItem Value="1">unerledigte Vorgänge</asp:ListItem>
                                             <asp:ListItem Value="2">Frist verlängert</asp:ListItem>
                                         </asp:DropDownList>
