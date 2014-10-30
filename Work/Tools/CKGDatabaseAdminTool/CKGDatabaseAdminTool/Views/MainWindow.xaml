@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type ViewModels:ApplicationBapiViewModel}">
             <uc:ucManageApplicationBapis/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:BapiApplicationViewModel}">
+            <uc:ucReportBapiApplications/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModels:ApplicationCopyViewModel}">
             <uc:ucCopyApplications/>
         </DataTemplate>
@@ -33,7 +36,7 @@
     <DockPanel>
         <DockPanel.Resources>
             <Style TargetType="{x:Type fl:Button}">
-                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="Margin" Value="0,1"/>
             </Style>
         </DockPanel.Resources>
 
@@ -47,6 +50,7 @@
 
                 <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
                     <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
+                    <fl:Button DataContext="{Binding BapiApplicationViewModel}" Size="Middle" Command="{Binding CommandReportBapiApplications}" Header="BAPI-Verwendung" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
                 </fl:RibbonGroupBox>
 

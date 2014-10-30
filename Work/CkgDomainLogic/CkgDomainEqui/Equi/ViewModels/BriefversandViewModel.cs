@@ -113,7 +113,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public List<VersandGrund> VersandGruendeList { get { return BriefVersandDataService.GetVersandgruende(VersandartOptionen.IstEndgueltigerVersand); } }
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return FahrzeugeFiltered.Where(c => c.IsSelected).ToList(); } }
+        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).ToList(); } }
 
         [XmlIgnore]
         public string SelectedFahrzeugeAsString
@@ -359,21 +359,21 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = FahrzeugeFiltered.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+            var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = FahrzeugeFiltered.Count(c => c.IsSelected);
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
         public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            FahrzeugeFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
-            allSelectionCount = FahrzeugeFiltered.Count(c => c.IsSelected);
-            allCount = FahrzeugeFiltered.Count();
-            allFoundCount = FahrzeugeFiltered.Count(c => !c.IsMissing);
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+            allCount = Fahrzeuge.Count();
+            allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)

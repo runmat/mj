@@ -106,6 +106,12 @@ namespace AppRemarketing.forms
 
             if (ddlStatus.SelectedValue != "00")
             {
+                if (ddlStatus.SelectedValue == "5" && String.IsNullOrEmpty(m_Report.Kennzeichen) && String.IsNullOrEmpty(m_Report.Fahrgestellnummer))
+                {
+                    lblError.Text = "Bei Status-Selektion 'alle' muss ein Kennzeichen oder eine Fahrgestellnummer angegeben werden!";
+                    return;
+                }
+
                 m_Report.AuswahlStatus = ddlStatus.SelectedValue;
             }
             else
