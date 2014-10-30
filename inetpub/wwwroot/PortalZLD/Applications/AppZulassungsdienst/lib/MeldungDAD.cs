@@ -11,6 +11,8 @@ namespace AppZulassungsdienst.lib
     {
         #region "Properties"
 
+        public string VkBur { get; set; }
+
         public string IDSuche { get; set; }
 
         public string FahrgestellnummerSuche { get; set; }
@@ -49,6 +51,21 @@ namespace AppZulassungsdienst.lib
                                       string strFilename)
             : base(ref objUser, objApp, strFilename)
         {
+            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
+            {
+                if (objUser.Reference.Length > 4)
+                {
+                    VkBur = objUser.Reference.Substring(4);
+                }
+                else
+                {
+                    VkBur = "";
+                }
+            }
+            else
+            {
+                VkBur = "";
+            }
         }
 
         /// <summary>
@@ -74,6 +91,7 @@ namespace AppZulassungsdienst.lib
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_FIND_DAD_SD_ORDER", ref m_objApp, ref m_objUser, ref page);
                   
                     myProxy.setImportParameter("I_VKORG", "1510");
+                    myProxy.setImportParameter("I_VKBUR", VkBur);
 
                     if (!String.IsNullOrEmpty(IDSuche))
                     {
@@ -107,7 +125,7 @@ namespace AppZulassungsdienst.lib
                         Frachtbriefnummer = row["ZZSEND2"].ToString();
                         Fahrgestellnummer = row["ZZFAHRG"].ToString();
                         Briefnummer = row["ZZBRIEF"].ToString();
-                        //TODO: Zulassungsdatum aus SD-Auftrag?
+                        Zulassungsdatum = row["VDATU"].ToString();
                         Kennzeichen = row["ZZKENN"].ToString();
                     }
                 }
@@ -123,6 +141,17 @@ namespace AppZulassungsdienst.lib
                 }
                 finally { m_blnGestartet = false; }
             }
+        }
+
+        public void ClearFields()
+        {
+            ID = "";
+            Bestellnummer = "";
+            Frachtbriefnummer = "";
+            Fahrgestellnummer = "";
+            Briefnummer = "";
+            Zulassungsdatum = "";
+            Kennzeichen = "";
         }
 
         /// <summary>

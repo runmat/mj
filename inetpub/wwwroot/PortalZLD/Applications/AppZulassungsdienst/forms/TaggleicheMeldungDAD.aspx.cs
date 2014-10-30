@@ -95,8 +95,8 @@ namespace AppZulassungsdienst.forms
             }
 
             objMeldungDAD.IDSuche = txtBarcode.Text.Trim();
-            objMeldungDAD.FahrgestellnummerSuche = txtFahrgestellnummer.Text.Trim();
-            objMeldungDAD.BriefnummerSuche = txtBriefnummer.Text.Trim();
+            objMeldungDAD.FahrgestellnummerSuche = txtFahrgestellnummer.Text.Trim().ToUpper();
+            objMeldungDAD.BriefnummerSuche = txtBriefnummer.Text.Trim().ToUpper();
 
             objMeldungDAD.LoadVorgang(Session["AppID"].ToString(), Session.SessionID, this);
 
@@ -233,6 +233,10 @@ namespace AppZulassungsdienst.forms
                     Panel2.Visible = false;
                     cmdSend.Visible = false;
                     Panel1.Visible = true;
+                    objMeldungDAD.ClearFields();
+                    txtBarcode.Text = "";
+                    txtFahrgestellnummer.Text = "";
+                    txtBriefnummer.Text = "";
                     trFrachtbriefnummer.Visible = false;
                     cmdCreate.Visible = true;
                 }
