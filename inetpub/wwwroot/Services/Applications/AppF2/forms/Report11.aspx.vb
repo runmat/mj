@@ -1,76 +1,84 @@
 ﻿Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Kernel.Security
-Imports CKG.Base.Business
 Imports System.IO
 
 Public Class Report11
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Declarations"
-    Private m_App As App
+
     Private m_User As User
+
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
         GetAppIDFromQueryString(Me)
 
-        m_App = New App(m_User)
-
         lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
 
-
         If IsPostBack = False Then
-            GetFile()
+            GetFiles()
         End If
-
-
-
     End Sub
 
-    Private Sub GetFile()
-        Dim fileSourcePath As String
-
+    Private Sub GetFiles()
         Try
-
-            fileSourcePath = CType(ConfigurationManager.AppSettings("DownloadPathTargoRetail"), String)
+            Dim fileSourcePath As String = ConfigurationManager.AppSettings("DownloadPathTargoRetail")
 
             Dim DirInfo As New DirectoryInfo(fileSourcePath)
             Dim files() As FileInfo = DirInfo.GetFiles("*.csv")
 
-            If files.Length = 0 Then
-                lblError.Text = "Es wurde keine Datei bereitgestellt."
-            ElseIf files.Length > 1 Then
-                lblError.Text = "Verzeichnis enthält mehr als eine Datei."
-            Else
-                'hplExcel.Text = "Controllingdatei"
-                lbtDownload.CommandArgument = fileSourcePath & "\" & files(0).Name
-                lbtDownload.Visible = True
+            If files.Length > 0 Then
+                For Each fi As FileInfo In files
+
+                    If fi.Name.StartsWith("CONTROLLINGDATEI_ASF", StringComparison.InvariantCultureIgnoreCase) Then
+                        lbtDownloadASF.CommandArgument = fileSourcePath & "\" & fi.Name
+
+                    ElseIf fi.Name.StartsWith("CONTROLLINGDATEI_EKF", StringComparison.InvariantCultureIgnoreCase) Then
+                        lbtDownloadEKF.CommandArgument = fileSourcePath & "\" & fi.Name
+
+                    ElseIf fi.Name.StartsWith("CONTROLLINGDATEI_OAK", StringComparison.InvariantCultureIgnoreCase) Then
+                        lbtDownloadOAK.CommandArgument = fileSourcePath & "\" & fi.Name
+
+                    End If
+
+                Next
             End If
 
+            'ASF
+            Dim blnASF As Boolean = Not String.IsNullOrEmpty(lbtDownloadASF.CommandArgument)
+            lbtDownloadASF.Visible = blnASF
+            lblErrorASF.Text = IIf(blnASF, "", "Es wurde keine ASF-Datei bereitgestellt.")
+            'EKF
+            Dim blnEKF As Boolean = Not String.IsNullOrEmpty(lbtDownloadEKF.CommandArgument)
+            lbtDownloadEKF.Visible = blnEKF
+            lblErrorEKF.Text = IIf(blnEKF, "", "Es wurde keine EKF-Datei bereitgestellt.")
+            'OAK
+            Dim blnOAK As Boolean = Not String.IsNullOrEmpty(lbtDownloadOAK.CommandArgument)
+            lbtDownloadOAK.Visible = blnOAK
+            lblErrorOAK.Text = IIf(blnOAK, "", "Es wurde keine OAK-Datei bereitgestellt.")
 
         Catch ex As Exception
-            lblError.Text = "Fehler beim Abrufen der Datei."
+            lblError.Text = "Fehler beim Abrufen der Datei(en)."
         End Try
-
 
     End Sub
 
+    Protected Sub lbtDownload_Click(sender As Object, e As EventArgs) Handles lbtDownloadASF.Click, lbtDownloadEKF.Click, lbtDownloadOAK.Click
 
-    Protected Sub lbtDownload_Click(sender As Object, e As EventArgs) Handles lbtDownload.Click
+        Dim downloadFile As New FileInfo(CType(sender, LinkButton).CommandArgument)
 
-        Dim downloadFile As FileInfo = New FileInfo(lbtDownload.CommandArgument)
-        HttpContext.Current.Response.Clear()
-        HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", downloadFile.Name))
-        HttpContext.Current.Response.AddHeader("Content-Length", downloadFile.Length.ToString())
-        HttpContext.Current.Response.ContentType = "application/octet-stream"
-        HttpContext.Current.Response.WriteFile(downloadFile.FullName)
-        HttpContext.Current.Response.End()
+        With HttpContext.Current.Response
+            .Clear()
+            .AddHeader("Content-Disposition", String.Format("attachment; filename={0}", downloadFile.Name))
+            .AddHeader("Content-Length", downloadFile.Length.ToString())
+            .ContentType = "application/octet-stream"
+            .WriteFile(downloadFile.FullName)
+            .End()
+        End With
 
-
-
-  
     End Sub
 
     Protected Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click

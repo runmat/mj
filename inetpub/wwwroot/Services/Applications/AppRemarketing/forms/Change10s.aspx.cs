@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
@@ -16,10 +13,10 @@ using System.Data.OleDb;
 
 namespace AppRemarketing.forms
 {
-    public partial class Change10s : System.Web.UI.Page
+    public partial class Change10s : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private bool isExcelExportConfigured;
         private HC m_Report;
         private DataTable tblData;
@@ -53,12 +50,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -85,7 +82,7 @@ namespace AppRemarketing.forms
                 return;
             }
 
-            m_Report = new HC(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
+            m_Report = new HC(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
 
             m_Report.tblUpload = new DataTable();
 
@@ -231,6 +228,8 @@ namespace AppRemarketing.forms
                 item.FindControl("lblKennzeichen").Visible = false;
                 item.FindControl("txtDatum").Visible = true;
                 item.FindControl("lblDatum").Visible = false;
+                item.FindControl("txtHCOrt").Visible = true;
+                item.FindControl("lblHCOrt").Visible = false;
                 item.FindControl("txtKM").Visible = true;
                 item.FindControl("lblKMSTAND").Visible = false;
             }
@@ -240,10 +239,21 @@ namespace AppRemarketing.forms
         {
             foreach (GridDataItem gdi in rgGrid1.Items)
             {
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["FAHRGNR"] = ((TextBox)gdi.FindControl("txtFin")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["KENNZ"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["HCEINGDAT"] = ((TextBox)gdi.FindControl("txtDatum")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["KMSTAND"] = ((TextBox)gdi.FindControl("txtKM")).Text;
+                var id = gdi["ID"].Text;
+
+                if (id != "&nbsp;")
+                {
+                    var errorRows = m_Report.tblError.Select("ID = " + gdi["ID"].Text);
+
+                    if (errorRows.Length > 0)
+                    {
+                        errorRows[0]["FAHRGNR"] = ((TextBox)gdi.FindControl("txtFin")).Text;
+                        errorRows[0]["KENNZ"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
+                        errorRows[0]["HCEINGDAT"] = ((TextBox)gdi.FindControl("txtDatum")).Text;
+                        errorRows[0]["HCORT"] = ((TextBox)gdi.FindControl("txtHCOrt")).Text;
+                        errorRows[0]["KMSTAND"] = ((TextBox)gdi.FindControl("txtKM")).Text;
+                    }
+                }
             }
 
             Session["Vorschaeden"] = m_Report;
@@ -283,10 +293,8 @@ namespace AppRemarketing.forms
                 //Lade Datei
                 return getData(upFile.PostedFile);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private DataTable getData(System.Web.HttpPostedFile uFile)
@@ -352,7 +360,6 @@ namespace AppRemarketing.forms
             } OleDbConnection objConn = new OleDbConnection(sConnectionString);
             objConn.Open();
 
-            DataTable schemaTable = null;
             object[] tmpObj = {
 		                        null,
 		                        null,
@@ -360,7 +367,7 @@ namespace AppRemarketing.forms
 		                        "Table"
 	                          };
 
-            schemaTable = objConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, tmpObj);
+            DataTable schemaTable = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, tmpObj);
 
             foreach (DataRow sheet in schemaTable.Rows)
             {
@@ -413,7 +420,6 @@ namespace AppRemarketing.forms
                 Session["HCUpload"] = m_Report;
 
                 Fillgrid();
-
             }
             else
             {
@@ -441,10 +447,10 @@ namespace AppRemarketing.forms
 
                 var rbutton_parent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
                 rbutton_parent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
                 rbutton_parent.Controls.AddAt(1, resetLayoutButton);
             }
         }

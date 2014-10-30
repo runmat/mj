@@ -303,7 +303,7 @@ Imports System.IO
         End If
     End Sub
 
-   Protected Sub lbDeleteAll_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub lbDeleteAll_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim status As String = ""
         For Each GridRow As DataGridItem In gridServer.Items
 
@@ -427,7 +427,7 @@ Imports System.IO
 
             Try
                 Dim mvcFile = Uploader1.GetUploadedFile(f.Id)
-                Dim fileDestination = ReviewFilename.NextFilename(destination.FullName, True, auftrag, fahrerID, fahrt)
+                Dim fileDestination = ReviewFilename.NextFilename(destination.FullName, ".JPG", auftrag, fahrerID, fahrt)
                 ' Nur den Ordnernamen im Pfad austauschen, damit Bild und Backup den selben Dateinamen haben
                 Dim fileBackupDestination = fileDestination.Replace(destination.FullName, destinationBackup.FullName)
 
@@ -467,81 +467,3 @@ Imports System.IO
     End Sub
 
 End Class
-
-' ************************************************
-' $History: _Report01.aspx.vb $
-' 
-' *****************  Version 6  *****************
-' User: Rudolpho     Date: 15.11.10   Time: 9:50
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA: 4232
-' 
-' *****************  Version 5  *****************
-' User: Rudolpho     Date: 4.11.10    Time: 14:17
-' Updated in $/CKAG/Applications/appdcl/Forms
-' 
-' *****************  Version 4  *****************
-' User: Rudolpho     Date: 3.11.10    Time: 11:38
-' Updated in $/CKAG/Applications/appdcl/Forms
-' 
-' *****************  Version 3  *****************
-' User: Rudolpho     Date: 4.02.10    Time: 14:38
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA: 2918
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 30.04.09   Time: 9:25
-' Updated in $/CKAG/Applications/appdcl/Forms
-' ITA: 2837
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 7.04.08    Time: 13:00
-' Created in $/CKAG/Applications/appdcl/Forms
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 8.08.07    Time: 9:55
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 2.08.07    Time: 14:52
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Bugfix: beim enfernen der Bilder aus der Auswahlliste fehler behoben.
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 1.08.07    Time: 14:46
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Fehler Upload fotos gefixt _Report01.aspx
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 27.07.07   Time: 8:20
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 25.07.07   Time: 7:45
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' ITA: 1058
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 21.06.07   Time: 13:18
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Bugfix: Vorschau hochgeladener  Bilder
-' 
-' *****************  Version 9  *****************
-' User: Uha          Date: 21.06.07   Time: 12:36
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 18.06.07   Time: 13:43
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' 
-' *****************  Version 7  *****************
-' User: Uha          Date: 12.03.07   Time: 16:04
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' Imagepfade von Customize auf Image-Ordner korrigiert
-' 
-' *****************  Version 6  *****************
-' User: Uha          Date: 7.03.07    Time: 10:26
-' Updated in $/CKG/Applications/AppDCL/AppDCLWeb/Forms
-' 
-' ************************************************

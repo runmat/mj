@@ -62,6 +62,8 @@ namespace SapORM.Models
 
 			public string CITY1 { get; set; }
 
+			public string VERSANDVALUE { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -82,6 +84,7 @@ namespace SapORM.Models
 					HSNM1 = (string)row["HSNM1"],
 					PSTLZ = (string)row["PSTLZ"],
 					CITY1 = (string)row["CITY1"],
+					VERSANDVALUE = (string)row["VERSANDVALUE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

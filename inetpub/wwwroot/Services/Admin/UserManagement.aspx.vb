@@ -2182,15 +2182,15 @@ Partial Public Class UserManagement
 
                     ' Wenn Passwortänderung
                     If Not (strPwd = String.Empty) Then
-                        'Dim pword As String = strPwd
-                        'Dim pwordconfirm As String = strPwd
+                        Dim pword As String = strPwd
+                        Dim pwordconfirm As String = strPwd
 
-                        'If Not _User.ChangePasswordNew("", pword, pwordconfirm, m_User.UserName, True, bInitialPswd) Then
-                        '   txtUserID.Text = _User.UserID.ToString
-                        'lblError.Text = _User.ErrorMessage
-                        'Else
-                        blnSuccess = True
-                        'End If
+                        If Not _User.ChangePasswordNew("", pword, pwordconfirm, m_User.UserName, True, bInitialPswd) Then
+                            txtUserID.Text = _User.UserID.ToString
+                            lblError.Text = _User.ErrorMessage
+                        Else
+                            blnSuccess = True
+                        End If
                     Else
                         blnSuccess = True
                     End If
@@ -2242,8 +2242,8 @@ Partial Public Class UserManagement
                                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
-                                        '_User.ChangePasswordNew("", strPwd, strPwd, "Freigabeprozess - " + m_User.UserName, True, bInitialPswd)
-                                        _User.SendPasswordResetMail(errorMessage)
+                                        _User.ChangePasswordNew("", strPwd, strPwd, "Freigabeprozess - " + m_User.UserName, True, bInitialPswd)
+                                        _User.SendPasswordMail(strPwd, errorMessage, False)
                                     End If
                                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
                                     _User.SendUsernameMail(errorMessage, False, False)
@@ -2267,7 +2267,7 @@ Partial Public Class UserManagement
 
                         If sendPW Then
                             ' sendPasswordMail prüft Restriktionen fürs senden 
-                            If Not _User.SendPasswordResetMail(errorMessage) Then
+                            If Not _User.SendPasswordMail(strPwd, errorMessage, False) Then
                                 lblError.Text = errorMessage
                             End If
                         End If
@@ -2445,7 +2445,7 @@ Partial Public Class UserManagement
                 errorMessage = String.Empty
                 pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
                 If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-                '_User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
+                _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
 
                 'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
                 InsertIntoWebUserUpload(_User.UserID, pword, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
@@ -2463,14 +2463,14 @@ Partial Public Class UserManagement
                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
-                        'Dim pword As String = ""
+                        Dim pword As String = ""
                         'Passwort generieren
                         errorMessage = String.Empty
-                        'pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
+                        pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
                         If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-                        '_User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
+                        _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
                         errorMessage = String.Empty
-                        _User.SendPasswordResetMail(errorMessage)
+                        _User.SendPasswordMail(pword, errorMessage, False)
                         If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
                     End If
                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
