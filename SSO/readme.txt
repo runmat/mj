@@ -1,4 +1,36 @@
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+- Fußnote für (Web-SSO oder ) Enterprise-SSO
+
+- Grafiken für 
+  1. Social Media SSO 
+  2. Authentifizierungsverfahren
+  3. Multi-Faktor (Handy, Push-Tan
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - Übersicht "Was haben wir schon" / "Was könnne wir gebrauchen"
 
 - Externe Anbieter?  Externe Software kaufen / mieten?
