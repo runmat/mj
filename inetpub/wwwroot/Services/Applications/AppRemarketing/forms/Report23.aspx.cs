@@ -106,11 +106,25 @@ namespace AppRemarketing.forms
                 return;
             }
 
+            var selektionMietFzg = "";
+            if (rbMietfahrzeuge.Checked)
+            {
+                selektionMietFzg = "M";
+            }
+            else if (rbBuyBack.Checked)
+            {
+                selektionMietFzg = "B";
+            }
+            else
+            {
+                selektionMietFzg = "A";
+            }
+
             try
             {
-                m_Report.Search(m_User, m_App, this, txtFin.Text, txtKennzeichen.Text, txtInventarnr.Text, avnr, von.Value, bis.Value);
+                m_Report.Search(m_User, m_App, this, txtFin.Text, txtKennzeichen.Text, txtInventarnr.Text, avnr, von.Value, bis.Value, selektionMietFzg);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }
