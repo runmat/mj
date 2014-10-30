@@ -809,7 +809,18 @@ namespace CKG.Components.Zulassung.DAL
 
             try
             {
-                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_WEB_ZULASSUNG_01", ref m_objApp, ref m_objUser, ref page);
+                string bapiName;
+
+                if (strKUNNR == "0010026226")
+                {
+                    bapiName = "Z_DPM_WEB_ZULA_ANF_CKPT_01";
+                }
+                else
+                {
+                    bapiName = "Z_DPM_WEB_ZULASSUNG_01";
+                }
+
+                DynSapProxyObj myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
                 myProxy.setImportParameter("AG", strKUNNR);
                 myProxy.setImportParameter("WEB_USER", m_objUser.UserName);
 

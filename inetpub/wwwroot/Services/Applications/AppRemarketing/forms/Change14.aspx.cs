@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
@@ -16,10 +13,10 @@ using System.Data.OleDb;
 
 namespace AppRemarketing.forms
 {
-    public partial class Change14 : System.Web.UI.Page
+    public partial class Change14 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private bool isExcelExportConfigured;
         private HC m_Report;
         private DataTable tblData;
@@ -53,12 +50,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -223,9 +220,19 @@ namespace AppRemarketing.forms
         {
             foreach (GridDataItem gdi in rgGrid1.Items)
             {
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["FAHRGNR"] = ((TextBox)gdi.FindControl("txtFin")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["KENNZ"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["DAT_HC_AUSG"] = ((TextBox)gdi.FindControl("txtDatum")).Text;
+                var id = gdi["ID"].Text;
+
+                if (id != "&nbsp;")
+                {
+                    var errorRows = m_Report.tblError.Select("ID = " + gdi["ID"].Text);
+
+                    if (errorRows.Length > 0)
+                    {
+                        errorRows[0]["FAHRGNR"] = ((TextBox)gdi.FindControl("txtFin")).Text;
+                        errorRows[0]["KENNZ"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
+                        errorRows[0]["DAT_HC_AUSG"] = ((TextBox)gdi.FindControl("txtDatum")).Text;
+                    }
+                }
             }
 
             Session["HCAusgangUpload"] = m_Report;
@@ -266,10 +273,8 @@ namespace AppRemarketing.forms
                 //Lade Datei
                 return getData(upFile.PostedFile);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private DataTable getData(System.Web.HttpPostedFile uFile)

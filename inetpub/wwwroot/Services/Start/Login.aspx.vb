@@ -506,13 +506,14 @@ Partial Public Class Login
 
     Private Sub Login_PreLoad(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreLoad
 
+        Dim redirectOccurred As Boolean = False
         If Not Me.Session("objUser") Is Nothing Then
             m_User = CType(Session("objUser"), Base.Kernel.Security.User)
             If Not (m_User.LoggedOn And m_User.DoubleLoginTry) Then
                 If Me.User.Identity.IsAuthenticated = False Then
                     If trPasswortVergessen.Visible = False Then
                         Response.Redirect(BouncePage(Me), True)
-
+                        redirectOccurred = True
                     End If
                 End If
             End If
@@ -521,14 +522,13 @@ Partial Public Class Login
 
         If (UrlRemoteUserProcessLogin()) Then Return
 
-
         litAlert.Text = ""
         txtUsername.Focus()
         Page.Title = "Anmeldung"
         If Not IsPostBack Then
             If Not CheckUniqueSessionID() Then
                 Response.Redirect(BouncePage(Me), True)
-
+                redirectOccurred = True
             End If
             displaySecurityCertificate()
             displayMessages()
@@ -543,10 +543,10 @@ Partial Public Class Login
                         txtUsername.Text = m_User.UserName
                         'Neues Passwort generieren und per Mail verschicken
                         Dim errMsg As String = ""
-                        'Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
+                        Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
                         If String.IsNullOrEmpty(errMsg) Then
-                            'm_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
-                            If m_User.SendPasswordResetMail(errMsg) Then
+                            m_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
+                            If m_User.SendPasswordMail(newPwd, errMsg) Then
                                 lblError.Text = "Das Passwort wurde an die hinterlegte Adresse versandt."
                                 m_User.SetNewPasswordRequestSentAndUnlockAccount()
                             Else
@@ -565,7 +565,7 @@ Partial Public Class Login
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)
-
+                redirectOccurred = True
             End If
             Dim intRestrictedCustomerId As Integer = CheckRestrictedIP()
             If intRestrictedCustomerId > -1 Then
@@ -585,6 +585,7 @@ Partial Public Class Login
                         If m_User.Login(strIpStandardUser, Session.SessionID.ToString) Then
                             'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                             RedirectFromLoginPage(m_User)
+                            redirectOccurred = True
                         Else
                             lblError.Text = strIpError & "<br>(" & m_User.ErrorMessage & ")"
                             cmdLogin.Enabled = False
@@ -594,6 +595,10 @@ Partial Public Class Login
 
             End If
 
+        End If
+
+        If (redirectOccurred) Then
+            Return
         End If
 
         Dim urlReferrer As String = ""
@@ -615,9 +620,30 @@ Partial Public Class Login
         Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
+            Try
+                Dim dtStart As DateTime = New DateTime(2014, 10, 27)
+                If (DateTime.Now <= dtStart.AddDays(5)) Then
+                    Dim info As String = String.Format("urlReferrer: {0} ; " +
+                                                       "requestReturnUrl: {1} ; " +
+                                                       "urlReferrerIsServicesLogin: {2} ; " +
+                                                       "urlIsNewDadPortalLink: {3} ; " +
+                                                       "url: {4} ; " +
+                                                       "IP-Address: {5} ; ",
+                                                       urlReferrer, requestReturnUrl, urlReferrerIsServicesLogin, urlIsNewDadPortalLink, url, Request.UserHostAddress)
+                    Dim logService As GeneralTools.Services.LogService = New GeneralTools.Services.LogService("Services-Login", "c:\tmp\Log-IpAddress.log")
+                    logService.LogInfo(Nothing, info)
+                End If
+            Catch
+            End Try
+
             Response.Redirect("/ServicesMvc/Login/Index")
         End If
     End Sub
+
+    Private Function DoTemporaryTimeLimitedLogging(info As String)
+
+
+    End Function
 
     Function UrlRemoteUserProcessLogin() As Boolean
         Dim remoteUserName As String = "", remoteUserPwdHashed As String = ""

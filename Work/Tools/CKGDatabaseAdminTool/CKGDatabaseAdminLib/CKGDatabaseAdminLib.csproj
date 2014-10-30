@@ -75,6 +75,7 @@
     <Compile Include="Contracts\IBapi2Report4CsvExportDataService.cs" />
     <Compile Include="Contracts\IBapiCheckDataService.cs" />
     <Compile Include="Contracts\IGitBranchInfoDataService.cs" />
+    <Compile Include="Contracts\IBapiApplicationDataService.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="Models\BapiCheckAbweichung.cs" />
     <Compile Include="Models\DbModels\Application.cs">
@@ -97,12 +98,14 @@
     <Compile Include="Services\Bapi2Report4CsvExportDataServiceSql.cs" />
     <Compile Include="Services\BapiCheckDataService.cs" />
     <Compile Include="Services\GitBranchInfoDataServiceSql.cs" />
+    <Compile Include="Services\BapiApplicationDataServiceSql.cs" />
     <Compile Include="Services\LoginUserMessageDataServiceSql.cs" />
     <Compile Include="ViewModels\ChildViewModels\ApplicationBapiViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\FieldTranslationCopyViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\ApplicationCopyViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\BapiCheckViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\GitBranchInfoViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\BapiApplicationViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\LoginUserMessageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
