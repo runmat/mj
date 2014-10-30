@@ -122,6 +122,12 @@ namespace SapORM.Models
 
 			public string TREUGEBER_VERS { get; set; }
 
+			public string KREDITBETRAG { get; set; }
+
+			public string INKASSO { get; set; }
+
+			public string HAENDLER_NR { get; set; }
+
 			public string COUNTRY_ZS { get; set; }
 
 			public string MENGE { get; set; }
@@ -176,6 +182,9 @@ namespace SapORM.Models
 					VERSDAT_MIN = (string.IsNullOrEmpty(row["VERSDAT_MIN"].ToString())) ? null : (DateTime?)row["VERSDAT_MIN"],
 					VERS_NACH_ZUL = (string)row["VERS_NACH_ZUL"],
 					TREUGEBER_VERS = (string)row["TREUGEBER_VERS"],
+					KREDITBETRAG = (string)row["KREDITBETRAG"],
+					INKASSO = (string)row["INKASSO"],
+					HAENDLER_NR = (string)row["HAENDLER_NR"],
 					COUNTRY_ZS = (string)row["COUNTRY_ZS"],
 					MENGE = (string)row["MENGE"],
 

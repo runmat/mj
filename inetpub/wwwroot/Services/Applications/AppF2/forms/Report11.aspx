@@ -1,8 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Report11.aspx.vb" Inherits="AppF2.Report11"
     MasterPageFile="../MasterPage/AppMaster.Master" %>
 
-<%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="/Services/PageElements/GridNavigation.ascx" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="site">
         <div id="content">
@@ -22,7 +20,7 @@
                             <tbody>
                                 <tr>
                                     <td class="active">
-                                        Laden Sie hier Ihre Datei herunter:
+                                        Laden Sie hier Ihre Dateien herunter:
                                     </td>
                                     <td align="right">
                                         <div id="queryImage">
@@ -39,25 +37,48 @@
                                 <tbody>
                                     <tr class="formquery">
                                         <td class="firstLeft active" colspan="3">
-                                            <asp:Label ID="lblNoData" runat="server" Font-Bold="True" Visible="False" EnableViewState="False"></asp:Label>
+                                            <asp:Label ID="lblError" runat="server" CssClass="TextError" Font-Bold="True" EnableViewState="False" />
                                         </td>
                                     </tr>
-                                   
                                     <tr class="formquery" style="padding-bottom:20px;">
-                                        <td class="firstLeft active" style="white-space:nowrap;vertical-align:middle" 
-                                           >
+                                        <td class="firstLeft active" style="white-space:nowrap;vertical-align:middle">
                                             <img src="../../../Images/Blatt_08.jpg" alt="CSV-Datei herunterladen" />
                                         </td>
                                         <td style="white-space:nowrap;vertical-align:middle" >
-                                            &nbsp; Datei-Download:
+                                            &nbsp; Datei-Download ASF:
                                         </td>
                                         <td class="firstLeft active" style="width: 100%; padding-left: 10px; vertical-align: middle">
-                                            <asp:LinkButton ID="lbtDownload" runat="server" Visible="false" 
-                                                Text="Controllingdatei" style="font-size:12px;font-family:Verdana;text-decoration:underline;font-weight:bold;"></asp:LinkButton>
-                                            <asp:Label ID="lblError" runat="server" CssClass="TextError" EnableViewState="False"></asp:Label>
+                                            <asp:LinkButton ID="lbtDownloadASF" runat="server" Visible="false" 
+                                                Text="Controllingdatei ASF" style="font-size:12px;font-family:Verdana;text-decoration:underline;font-weight:bold;" />
+                                            <asp:Label ID="lblErrorASF" runat="server" CssClass="TextError" EnableViewState="False" />
                                         </td>
                                     </tr>
-                                    
+                                    <tr class="formquery" style="padding-bottom:20px;">
+                                        <td class="firstLeft active" style="white-space:nowrap;vertical-align:middle">
+                                            <img src="../../../Images/Blatt_08.jpg" alt="CSV-Datei herunterladen" />
+                                        </td>
+                                        <td style="white-space:nowrap;vertical-align:middle" >
+                                            &nbsp; Datei-Download EKF:
+                                        </td>
+                                        <td class="firstLeft active" style="width: 100%; padding-left: 10px; vertical-align: middle">
+                                            <asp:LinkButton ID="lbtDownloadEKF" runat="server" Visible="false" 
+                                                Text="Controllingdatei EKF" style="font-size:12px;font-family:Verdana;text-decoration:underline;font-weight:bold;" />
+                                            <asp:Label ID="lblErrorEKF" runat="server" CssClass="TextError" EnableViewState="False" />
+                                        </td>
+                                    </tr>
+                                    <tr class="formquery" style="padding-bottom:20px;">
+                                        <td class="firstLeft active" style="white-space:nowrap;vertical-align:middle">
+                                            <img src="../../../Images/Blatt_08.jpg" alt="CSV-Datei herunterladen" />
+                                        </td>
+                                        <td style="white-space:nowrap;vertical-align:middle" >
+                                            &nbsp; Datei-Download OAK:
+                                        </td>
+                                        <td class="firstLeft active" style="width: 100%; padding-left: 10px; vertical-align: middle">
+                                            <asp:LinkButton ID="lbtDownloadOAK" runat="server" Visible="false" 
+                                                Text="Controllingdatei OAK" style="font-size:12px;font-family:Verdana;text-decoration:underline;font-weight:bold;" />
+                                            <asp:Label ID="lblErrorOAK" runat="server" CssClass="TextError" EnableViewState="False" />
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div id="Queryfooter" runat="server" style="background-color: #dfdfdf; height: 22px;">

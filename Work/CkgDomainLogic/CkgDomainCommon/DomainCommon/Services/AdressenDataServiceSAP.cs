@@ -121,8 +121,11 @@ namespace CkgDomainLogic.DomainCommon.Services
             {
                 var savedID = adresse.ID;
                 Adresse savedAdresse;
-                if (insertMode)
-                {
+
+                //if (!insertMode)
+                //    savedAdresse = LoadFromSap(adresse.InternalKey).FirstOrDefault();
+                //else
+                //{
                     MarkForRefreshAdressen();
                     // need to use our web private key here (InternalKey2), 
                     // because we don't know the public key (InternalKey) our data store (SAP) generated
@@ -131,9 +134,7 @@ namespace CkgDomainLogic.DomainCommon.Services
                     if (savedAdresse != null)
                         // As long we are in insert mode, let's transfer the public key from our data store (SAP) to our origin item:
                         adresse.InternalKey = savedAdresse.InternalKey;
-                }
-                else
-                    savedAdresse = LoadFromSap(adresse.InternalKey).FirstOrDefault();
+                //}
 
                 if (savedAdresse != null)
                     savedAdresse.ID = savedID;

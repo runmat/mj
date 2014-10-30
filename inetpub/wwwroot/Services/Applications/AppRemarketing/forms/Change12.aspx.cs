@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
 
 namespace AppRemarketing.forms
 {
-    public partial class Change12 : System.Web.UI.Page
+    public partial class Change12 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private bool isExcelExportConfigured;
         private Carport m_Report;
         private Belastungsanzeigen m_Nachbelastung;
@@ -42,15 +39,15 @@ namespace AppRemarketing.forms
                     var persister = new GridSettingsPersister(rgGrid1, GridSettingsType.All);
                     Session["rgGrid1_original"] = persister.LoadForUser(m_User, (string)Session["AppID"], GridSettingsType.All.ToString());
 
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
+                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName + ".xls";
 
                     // String strFileName; // = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls";
-                    m_Report = new Carport(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
+                    m_Report = new Carport(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, strFileName);
                     Session.Add("Dropdowns", m_Report);
                     m_Report.SessionID = this.Session.SessionID;
                     m_Report.AppID = (string)Session["AppID"];
 
-                    m_Nachbelastung = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
+                    m_Nachbelastung = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, strFileName);
                     Session.Add("Nachbelastung", m_Nachbelastung);
                     m_Nachbelastung.SessionID = this.Session.SessionID;
                     m_Nachbelastung.AppID = (string)Session["AppID"];
@@ -78,12 +75,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -123,8 +120,8 @@ namespace AppRemarketing.forms
             }
 
             m_Nachbelastung.CarportNr = ddlHC.SelectedValue;
-            m_Nachbelastung.AVNR = (string)ddlVermieter.SelectedValue;
-            m_Nachbelastung.Gutachter = (string)ddlGutachter.SelectedValue;
+            m_Nachbelastung.AVNR = ddlVermieter.SelectedValue;
+            m_Nachbelastung.Gutachter = ddlGutachter.SelectedValue;
             m_Nachbelastung.Kennzeichen = txtKennzeichen.Text;
             m_Nachbelastung.Fahrgestellnummer = txtFahrgestellnummer.Text;
             m_Nachbelastung.Rechnungsnummer = txtRechnungsnummer.Text;
@@ -132,7 +129,7 @@ namespace AppRemarketing.forms
             m_Nachbelastung.DatumVon = txtDatumVon.Text;
             m_Nachbelastung.DatumBis = txtDatumBis.Text;
 
-            m_Nachbelastung.ShowNachbelastung((string)Session["AppID"], (string)Session.SessionID, this);
+            m_Nachbelastung.ShowNachbelastung((string)Session["AppID"], Session.SessionID, this);
 
             if (m_Nachbelastung.Status != 0)
             {
@@ -200,9 +197,9 @@ namespace AppRemarketing.forms
 
         private void FillHC()
         {
-            HC mHC = new HC(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
+            HC mHC = new HC(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
 
-            mHC.getHC((string)Session["AppID"], (string)Session.SessionID, this);
+            mHC.getHC((string)Session["AppID"], Session.SessionID, this);
 
             if (mHC.Status > 0)
             {
@@ -305,7 +302,7 @@ namespace AppRemarketing.forms
                 if (txtBemerkung.Text.Length == 0)
                 {
                     lblSaveInfo.Visible = true;
-                    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
+                    lblSaveInfo.ForeColor = System.Drawing.Color.Red;
                     lblSaveInfo.Text = "Bitte geben Sie eine Bemerkung ein.";
                     ModalPopupExtender2.Show();
                     return;
@@ -401,7 +398,7 @@ namespace AppRemarketing.forms
                 else
                 {
                     lblSaveInfo.Visible = true;
-                    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
+                    lblSaveInfo.ForeColor = System.Drawing.Color.Red;
                     lblSaveInfo.Text = m_Nachbelastung.Message;
                     ModalPopupExtender2.Show();
                 }
@@ -432,10 +429,10 @@ namespace AppRemarketing.forms
 
                 var rbutton_parent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
                 rbutton_parent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
                 rbutton_parent.Controls.AddAt(1, resetLayoutButton);
             }
         }
@@ -476,6 +473,7 @@ namespace AppRemarketing.forms
                 case "Gutschrift":
                     lblFin.Text = e.CommandArgument.ToString().Split('|')[0].ToString();
                     lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1].ToString();
+                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2].ToString();
                     lblAdressMessage.Text = "Gutschrift";
                     trEmpfaenger.Visible = false;
                     txtBetrag.Text = "";
@@ -490,6 +488,7 @@ namespace AppRemarketing.forms
                 case "Nachbelastung":
                     lblFin.Text = e.CommandArgument.ToString().Split('|')[0].ToString();
                     lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1].ToString();
+                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2].ToString();
                     lblAdressMessage.Text = "Nachbelastung";
                     trEmpfaenger.Visible = true;
                     txtBetrag.Text = "";
