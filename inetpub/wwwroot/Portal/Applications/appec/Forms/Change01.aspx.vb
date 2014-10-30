@@ -1,11 +1,9 @@
-Imports CKG.Base.Business
-Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
 Imports System.Data.OleDb
 
 Public Class Change01
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region " Vom Web Form Designer generierter Code "
 
@@ -14,7 +12,7 @@ Public Class Change01
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
         'CODEGEN: Diese Methode ist für den Web Form-Designer erforderlich
         'Verwenden Sie nicht den Code-Editor zur Bearbeitung.
         InitializeComponent()
@@ -28,67 +26,68 @@ Public Class Change01
     Private m_App As Base.Kernel.Security.App
 
     Protected WithEvents ucHeader As Header
-    Protected WithEvents lblHead As System.Web.UI.WebControls.Label
-    Protected WithEvents lblSuccess As System.Web.UI.WebControls.Label
-    Protected WithEvents txtModelId As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image1 As System.Web.UI.WebControls.Image
-    Protected WithEvents txtSippcode As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image2 As System.Web.UI.WebControls.Image
-    Protected WithEvents ddlHersteller As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents txtBatchId As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image4 As System.Web.UI.WebControls.Image
-    Protected WithEvents Label1 As System.Web.UI.WebControls.Label
-    Protected WithEvents txtModell As System.Web.UI.WebControls.TextBox
-    Protected WithEvents txtDatEinsteuerung As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image6 As System.Web.UI.WebControls.Image
-    Protected WithEvents txtAnzahlFahrzeuge As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image7 As System.Web.UI.WebControls.Image
-    Protected WithEvents txtUnitNrVon As System.Web.UI.WebControls.TextBox
-    Protected WithEvents txtUnitNrBis As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image8 As System.Web.UI.WebControls.Image
-    Protected WithEvents txtLaufzeit As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image9 As System.Web.UI.WebControls.Image
-    Protected WithEvents cbxLaufz As System.Web.UI.WebControls.CheckBox
-    Protected WithEvents txtBemerkung As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image12 As System.Web.UI.WebControls.Image
-    Protected WithEvents txtAuftragsnummerVon As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Image3 As System.Web.UI.WebControls.Image
-    Protected WithEvents ddlVerwendung As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents rbLKW As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbPKW As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbJ1 As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbN1 As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbJ2 As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbN2 As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents cmdCreate As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents cmdReset As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lblError As System.Web.UI.WebControls.Label
-    Protected WithEvents txtAuftragsnummerBis As System.Web.UI.WebControls.TextBox
-    Protected WithEvents txtHerstellerHidden As System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents lblHead As Label
+    Protected WithEvents lblSuccess As Label
+    Protected WithEvents txtModelId As TextBox
+    Protected WithEvents Image1 As Image
+    Protected WithEvents txtSippcode As TextBox
+    Protected WithEvents Image2 As Image
+    Protected WithEvents ddlHersteller As DropDownList
+    Protected WithEvents txtBatchId As TextBox
+    Protected WithEvents Image4 As Image
+    Protected WithEvents Label1 As Label
+    Protected WithEvents txtModell As TextBox
+    Protected WithEvents txtDatEinsteuerung As TextBox
+    Protected WithEvents Image6 As Image
+    Protected WithEvents txtAnzahlFahrzeuge As TextBox
+    Protected WithEvents Image7 As Image
+    Protected WithEvents txtUnitNrVon As TextBox
+    Protected WithEvents txtUnitNrBis As TextBox
+    Protected WithEvents Image8 As Image
+    Protected WithEvents txtLaufzeit As TextBox
+    Protected WithEvents Image9 As Image
+    Protected WithEvents cbxLaufz As CheckBox
+    Protected WithEvents txtBemerkung As TextBox
+    Protected WithEvents Image12 As Image
+    Protected WithEvents txtAuftragsnummerVon As TextBox
+    Protected WithEvents Image3 As Image
+    Protected WithEvents ddlVerwendung As DropDownList
+    Protected WithEvents rbLKW As RadioButton
+    Protected WithEvents rbPKW As RadioButton
+    Protected WithEvents rbJ1 As RadioButton
+    Protected WithEvents rbN1 As RadioButton
+    Protected WithEvents rbJ2 As RadioButton
+    Protected WithEvents rbN2 As RadioButton
+    Protected WithEvents cmdCreate As LinkButton
+    Protected WithEvents cmdReset As LinkButton
+    Protected WithEvents lblError As Label
+    Protected WithEvents txtAuftragsnummerBis As TextBox
+    Protected WithEvents txtHerstellerHidden As HtmlInputHidden
     Protected WithEvents ucStyles As Styles
-    Protected WithEvents Image5 As System.Web.UI.WebControls.Image
-    Protected WithEvents ddlModellHidden As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents btnFinished As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents txtHerstellerBezeichnungHidden As System.Web.UI.HtmlControls.HtmlInputHidden
-    Protected WithEvents ddlModellZuHersteller As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents ddlModellZuSipp As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents ddlModellZuLaufzeit As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents ddlModellZuLaufzeitbindung As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents txtTest As System.Web.UI.WebControls.TextBox
-    Protected WithEvents rbLeasingNein As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbLeasingJa As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbJAnhaenger As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rbNAnhaenger As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents ddlKennzeichenserie1 As System.Web.UI.WebControls.DropDownList
-    Protected WithEvents upFileUnitNr As Global.System.Web.UI.HtmlControls.HtmlInputFile
+    Protected WithEvents Image5 As Image
+    Protected WithEvents ddlModellHidden As DropDownList
+    Protected WithEvents btnFinished As LinkButton
+    Protected WithEvents txtHerstellerBezeichnungHidden As HtmlInputHidden
+    Protected WithEvents ddlModellZuHersteller As DropDownList
+    Protected WithEvents ddlModellZuSipp As DropDownList
+    Protected WithEvents ddlModellZuLaufzeit As DropDownList
+    Protected WithEvents ddlModellZuLaufzeitbindung As DropDownList
+    Protected WithEvents txtTest As TextBox
+    Protected WithEvents rbLeasingNein As RadioButton
+    Protected WithEvents rbLeasingJa As RadioButton
+    Protected WithEvents rbJAnhaenger As RadioButton
+    Protected WithEvents rbNAnhaenger As RadioButton
+    Protected WithEvents ddlKennzeichenserie1 As DropDownList
+    Protected WithEvents upFileUnitNr As HtmlInputFile
     Private objBatch As ec_01
-    Protected WithEvents rb_NaviJa As System.Web.UI.WebControls.RadioButton
-    Protected WithEvents rb_NaviNein As System.Web.UI.WebControls.RadioButton
-    Private objChange As AppEC.change_01
+    Protected WithEvents rb_NaviJa As RadioButton
+    Protected WithEvents rb_NaviNein As RadioButton
+    Private objChange As change_01
+    Protected WithEvents cbxKeepData As CheckBox
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Session("ShowLink") = "False"
         m_User = GetUser(Me)
         ucHeader.InitUser(m_User)
@@ -214,7 +213,7 @@ Public Class Change01
         Session.Add("objSuche", objSuche)
     End Sub
 
-    Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCreate.Click
+    Private Sub cmdCreate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCreate.Click
         Dim status As Boolean
         Dim uploadUnitnummern As Boolean
         CheckInput(status, uploadUnitnummern)
@@ -226,10 +225,9 @@ Public Class Change01
     Private Sub CheckInput(ByRef status As Boolean, ByRef uploadUnitnummern As Boolean)
         Dim patternNumeric As String = "[^0-9]"
         Dim patternAlphaNumeric As String = "[^a-zA-Z0-9]"
-        Dim patternAlpha As String = "[^a-zA-Z]"
         Dim patternDate As String = "^(01|02|03|04|05|06|07|08|09|10|11|12)\.[1-9][0-9][0-9][0-9]"
 
-        Dim regEx As System.Text.RegularExpressions.Regex
+        Dim regEx As Text.RegularExpressions.Regex
         Dim strModelId As String
         Dim strModellBezeichnung As String
         Dim strSippcode As String
@@ -256,7 +254,7 @@ Public Class Change01
             status = False
             Exit Sub
         End If
-        regEx = New System.Text.RegularExpressions.Regex(patternAlphaNumeric)
+        regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
         If (regEx.IsMatch(strModelId)) Then
             lblError.Text = "Model-Id ungültig."
             status = False
@@ -279,7 +277,7 @@ Public Class Change01
             status = False
             Exit Sub
         End If
-        regEx = New System.Text.RegularExpressions.Regex(patternAlphaNumeric)
+        regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
         If (regEx.IsMatch(strSippcode)) Then
             lblError.Text = "SIPP-Code ungültig."
             status = False
@@ -294,7 +292,7 @@ Public Class Change01
             status = False
             Exit Sub
         End If
-        regEx = New System.Text.RegularExpressions.Regex(patternNumeric)
+        regEx = New Text.RegularExpressions.Regex(patternNumeric)
         If (regEx.IsMatch(strBatchId)) Then
             lblError.Text = "Batch-Id ungültig."
             status = False
@@ -310,7 +308,7 @@ Public Class Change01
             Exit Sub
         End If
 
-        regEx = New System.Text.RegularExpressions.Regex(patternDate)
+        regEx = New Text.RegularExpressions.Regex(patternDate)
         If Not (regEx.IsMatch(strDatEinsteuerung)) Then
             lblError.Text = "Datum Einsteuerung ungültig."
             status = False
@@ -326,7 +324,7 @@ Public Class Change01
             Exit Sub
         End If
 
-        regEx = New System.Text.RegularExpressions.Regex(patternNumeric)
+        regEx = New Text.RegularExpressions.Regex(patternNumeric)
         If regEx.IsMatch(strAnzahl) Then
             lblError.Text = "Anzahl Fahrzeuge ungültig."
             status = False
@@ -342,7 +340,7 @@ Public Class Change01
             Exit Sub
         End If
 
-        regEx = New System.Text.RegularExpressions.Regex(patternNumeric)
+        regEx = New Text.RegularExpressions.Regex(patternNumeric)
 
         If regEx.IsMatch(strLaufzeit) Then
             lblError.Text = "Laufzeit ungültig."
@@ -374,7 +372,7 @@ Public Class Change01
                 Exit Sub
             End If
 
-            regEx = New System.Text.RegularExpressions.Regex(patternNumeric)
+            regEx = New Text.RegularExpressions.Regex(patternNumeric)
 
             If regEx.IsMatch(strUnitVon) Then
                 lblError.Text = "Unit-Nr. (von) ungültig."
@@ -400,11 +398,11 @@ Public Class Change01
 
     End Sub
 
-    Private Sub upload(ByVal uFile As System.Web.HttpPostedFile)
+    Private Sub upload(ByVal uFile As HttpPostedFile)
 
         Dim filepath As String = ConfigurationManager.AppSettings("ExcelPath")
         Dim filename As String = ""
-        Dim info As System.IO.FileInfo
+        Dim info As IO.FileInfo
 
         'Dateiname: User_yyyyMMddhhmmss.xls
         If Right(upFileUnitNr.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
@@ -417,14 +415,14 @@ Public Class Change01
         Try
             If Not (uFile Is Nothing) Then
                 uFile.SaveAs(ConfigurationManager.AppSettings("ExcelPath") & filename)
-                info = New System.IO.FileInfo(filepath & filename)
+                info = New IO.FileInfo(filepath & filename)
                 If Not (info.Exists) Then
                     lblError.Text = "Fehler beim Speichern."
                     Exit Sub
                 End If
 
                 'Datei gespeichert -> Auswertung (ohne Spaltenheader)
-                Dim sConnectionString As String = ""
+                Dim sConnectionString As String
                 If Right(upFileUnitNr.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
                     sConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
                      "Data Source=" & filepath & filename & ";" & _
@@ -441,7 +439,7 @@ Public Class Change01
 
                 Dim schemaTable As DataTable
                 Dim tmpObj() As Object = {Nothing, Nothing, Nothing, "Table"}
-                schemaTable = objConn.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, tmpObj)
+                schemaTable = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, tmpObj)
 
                 For Each sheet As DataRow In schemaTable.Rows
                     Dim tableName As String = sheet("Table_Name").ToString
@@ -479,12 +477,9 @@ Public Class Change01
 
     Private Sub fillKennzeichenserie()
 
+        objChange = New change_01(m_User, m_App, Session("AppID").ToString, Session.SessionID, "")
 
-        objChange = New AppEC.change_01(m_User, m_App, Session("AppID").ToString, Me.Session.SessionID, "")
-
-        Dim row As DataRow = objChange.PKennzeichenSerie.NewRow
-
-        For Each row In objChange.PKennzeichenSerie.Rows
+        For Each row As DataRow In objChange.PKennzeichenSerie.Rows
             Dim item As New ListItem(row.Item("Serie"), row.Item("ID"))
             ddlKennzeichenserie1.Items.Add(item)
         Next
@@ -601,7 +596,7 @@ Public Class Change01
 
         If objBatch.Selection < 0 Then  'Neuer Datensatz
             objBatch.addNewRow()
-            clearControls(False)
+            clearControls(Not cbxKeepData.Checked)
         Else                            'Vorhandener Datensatz, nur aktualisieren
             objBatch.updateExistingRow(status)
             If (status <> String.Empty) Then
@@ -615,7 +610,7 @@ Public Class Change01
         Dim row As DataRow
 
         For Each row In objBatch.ResultTable.Rows
-            If (TypeOf (row("Status")) Is System.DBNull) OrElse (CType(row("Status"), String) <> "Gespeichert.") Then  'Nur die noch nicht abgesendeten Vorgänge...
+            If (TypeOf (row("Status")) Is DBNull) OrElse (CType(row("Status"), String) <> "Gespeichert.") Then  'Nur die noch nicht abgesendeten Vorgänge...
                 objBatch.saveData(Session("AppID").ToString, Session.SessionID, row, Me)
                 If (objBatch.Status = 0) Then
                     row("Status") = "Gespeichert."
@@ -632,7 +627,7 @@ Public Class Change01
 
     End Sub
 
-    Private Sub btnFinished_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFinished.Click
+    Private Sub btnFinished_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFinished.Click
         If objBatch.ResultTable.Rows.Count = 0 Then
             lblError.Text = "Es wurden noch keine Daten erfasst."
             Exit Sub
@@ -640,83 +635,15 @@ Public Class Change01
         Response.Redirect("Change01_2.aspx?AppID=" & Session("AppID").ToString)
     End Sub
 
-    Private Sub cmdReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdReset.Click
+    Private Sub cmdReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdReset.Click
         clearControls()
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 End Class
-
-' ************************************************
-' $History: Change01.aspx.vb $
-' 
-' *****************  Version 8  *****************
-' User: Fassbenders  Date: 3.05.11    Time: 14:55
-' Updated in $/CKAG/Applications/appec/Forms
-' 
-' *****************  Version 7  *****************
-' User: Fassbenders  Date: 11.04.11   Time: 14:49
-' Updated in $/CKAG/Applications/appec/Forms
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 8.07.09    Time: 16:24
-' Updated in $/CKAG/Applications/appec/Forms
-' nachbesserung dyproxy umstellung
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 25.06.09   Time: 16:04
-' Updated in $/CKAG/Applications/appec/Forms
-' ITA 2918 Z_M_Herstellergroup, Z_M_EC_AVM_BATCH_update,
-' Z_M_EC_AVM_HERST_VWZWECK_MODID, Z_M_EC_AVM_BATCH_INSERT,
-' Z_M_EC_AVM_BATCH_ANSICHT
-' 
-' *****************  Version 4  *****************
-' User: Rudolpho     Date: 17.06.09   Time: 8:47
-' Updated in $/CKAG/Applications/appec/Forms
-' Warnungen entfernt!
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 17.04.08   Time: 11:44
-' Updated in $/CKAG/Applications/appec/Forms
-' Migrationsfehler bei ModelBezeichnungs TextBox beseitigt
-' 
-' *****************  Version 2  *****************
-' User: Jungj        Date: 16.04.08   Time: 11:52
-' Updated in $/CKAG/Applications/appec/Forms
-' 
-' *****************  Version 16  *****************
-' User: Jungj        Date: 7.04.08    Time: 13:26
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' ITA 1818
-' 
-' *****************  Version 15  *****************
-' User: Jungj        Date: 29.01.08   Time: 9:50
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' ITA 1655 Done
-' 
-' *****************  Version 14  *****************
-' User: Jungj        Date: 28.01.08   Time: 15:09
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' Funktioniert nicht! ITA 1655
-' 
-' *****************  Version 13  *****************
-' User: Uha          Date: 2.07.07    Time: 12:29
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 12  *****************
-' User: Uha          Date: 22.05.07   Time: 13:31
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' Nacharbeiten + Bereinigungen
-' 
-' *****************  Version 11  *****************
-' User: Uha          Date: 7.03.07    Time: 11:02
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Forms
-' 
-' ************************************************
