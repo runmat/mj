@@ -28,6 +28,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public string XarisUrl { get { return string.Format("{0}{1}&ra={2}&rb={3}", XarisRootUrl, XarisAppRelativeUrl, UserNameHashed, ExpirationToken); } }
 
 
+        private static string UserNameHashed2ForTest { get { return "10cb949b-d992-49e9-8bf0-96d602bc97ef"; } }
+        public string XarisUrl2ForTest { get { return string.Format("{0}{1}&ra={2}&rb={3}", XarisRootUrl, XarisAppRelativeUrl, UserNameHashed2ForTest, ExpirationToken); } }
+
+        private static string UserNameHashed3ForTest { get { return "4302c052-850c-4aae-a80b-b80e9addcf31"; } }
+        public string XarisUrl3ForTest { get { return string.Format("{0}{1}&ra={2}&rb={3}", XarisRootUrl, XarisAppRelativeUrl, UserNameHashed3ForTest, ExpirationToken); } }
+
+
         public void DataInit()
         {
         }
