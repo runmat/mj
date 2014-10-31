@@ -1,6 +1,8 @@
-﻿namespace SepiaSyncLib.Models
+﻿using System;
+
+namespace SepiaSyncLib.Models
 {
-    public class WebUser
+    public class WebUserSepiaAccess
     {
         public virtual int UserID { get; protected set; }
 
@@ -15,5 +17,9 @@
         public virtual bool Approved { get; set; }
 
         public virtual bool AccountIsLockedOut { get; set; }
+
+        public virtual DateTime? LastChangeDate { get; set; }
+
+        public virtual DateTime? SepiaSyncDate { get; set; }
     }
 }

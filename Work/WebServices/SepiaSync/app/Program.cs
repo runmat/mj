@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SepiaSyncLib.Services;
 
 namespace SepiaSync
@@ -10,10 +7,8 @@ namespace SepiaSync
     {
         static void Main()
         {
-            using (var repository = new SqlDbRepository())
-            {
-                repository.Action();
-            }
+            if (!SepiaSyncService.SyncUsersToSepia())
+                Environment.Exit(-1);
         }
     }
 }
