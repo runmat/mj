@@ -20,13 +20,7 @@ namespace AppZulassungsdienst.forms
 
 #region "Events"
 
-        /// <summary>
-        /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
-        /// Form füllen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -52,12 +46,16 @@ namespace AppZulassungsdienst.forms
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-
             }
-            
-            if (IsPostBack != true)
+
+            InitLargeDropdowns();
+            SetJavaFunctions();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
             {
-                //Int32 id = 0;
                 if (Request.QueryString["id"] != null)
                 {
                     IDKopf = Request.QueryString["id"];
@@ -68,7 +66,6 @@ namespace AppZulassungsdienst.forms
                     {
                         if (objNacherf.AHVersandKopf.Rows.Count == 1)
                         {
-
                             fillForm(objNacherf.AHVersandKopf.Rows[0]);
                         }
                     }
@@ -454,6 +451,20 @@ namespace AppZulassungsdienst.forms
 #region "Methods and Functions"
 
         /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //StVa
+            DataView tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        /// <summary>
         /// Eingabefelder mit den Daten aus den Tabellen füllen.
         /// </summary>
         /// <param name="RowKopf">Zeile Kopftabelle</param>
@@ -549,26 +560,16 @@ namespace AppZulassungsdienst.forms
             tmpDView = new DataView();
             tmpDView = objCommon.tblAHKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
-            //tmpDView.RowFilter = "INAKTIV <> 'X'";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
             ddlKunnr.DataTextField = "NAME1";
             ddlKunnr.DataBind();
             ddlKunnr.SelectedValue = RowKopf["KUNNR"].ToString().TrimStart('0');
             txtKunnr.Text = RowKopf["KUNNR"].ToString().TrimStart('0');
-            tmpDView = new DataView();
-            tmpDView = objCommon.tblStvaStamm.DefaultView;
-            tmpDView.Sort = "KREISTEXT";
-            ddlStVa.DataSource = tmpDView;
-            ddlStVa.DataValueField = "KREISKZ";
-            ddlStVa.DataTextField = "KREISTEXT";
-            ddlStVa.DataBind();
-            ddlStVa.SelectedValue = RowKopf["KREISKZ"].ToString();
 
+            ddlStVa.SelectedValue = RowKopf["KREISKZ"].ToString();
             txtStVa.Text = RowKopf["KREISKZ"].ToString();
 
-            SetJavaFunctions();
-            
              if (objNacherf.AHVersandAdresse != null && objNacherf.AHVersandAdresse.Rows.Count == 1)
              {
                  txtName1.Text = objNacherf.AHVersandAdresse.Rows[0]["LI_NAME1"].ToString();

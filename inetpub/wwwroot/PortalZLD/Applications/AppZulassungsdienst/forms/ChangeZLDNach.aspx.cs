@@ -20,27 +20,19 @@ namespace AppZulassungsdienst.forms
         String IDKopf;
         private const string CONST_IDSONSTIGEDL = "570";
 
-        /// <summary>
-        /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden. 
-        /// Datensatz für die Eingabe laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
             m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            BackfromList = false;
-            if (Request.QueryString["B"] != null) { BackfromList = true; }
-
+            
             if (m_User.Reference.Trim(' ').Length == 0)
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
-            }        
+            }
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
@@ -55,6 +47,17 @@ namespace AppZulassungsdienst.forms
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
+
+            objNacherf = (NacherfZLD)Session["objNacherf"];
+
+            InitLargeDropdowns();
+            InitJava();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            BackfromList = (Request.QueryString["B"] != null);
+
             if (!IsPostBack)
             {
                 if (!BackfromList)
@@ -69,7 +72,6 @@ namespace AppZulassungsdienst.forms
                     else
                     { lblError.Text = "Fehler beim Laden des Vorganges!"; }
 
-                    objNacherf = (NacherfZLD)Session["objNacherf"];
                     if (ZLDCommon.IsNumeric(IDKopf))
                     {
                         Int32.TryParse(IDKopf, out id);
@@ -83,8 +85,53 @@ namespace AppZulassungsdienst.forms
                     else { lblError.Text = "Fehlerbeim Laden des Vorganges!"; }
                 }
             }
-         }
+        }
         
+        /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            DataView tmpDView;
+            if (objNacherf.Vorgang.StartsWith("A"))
+            {
+                objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
+                tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            }
+            else
+            {
+                tmpDView = objCommon.tblKundenStamm.DefaultView;
+            }
+
+            tmpDView.Sort = "NAME1";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+
+            //StVa
+            tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ", 'X')");
+            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ", 'X')");
+            txtStVa.Attributes.Add("onkeyup", "DisableButton(" + cmdCreate.ClientID + ");FilterSTVA(this.value," + ddlStVa.ClientID + ", null)");
+            txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + ", null)");
+            ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + ", null)");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+        }
+
         /// <summary>
         /// Füllt die Form mit geladenen Stammdaten
         /// verknüpft Texboxen und DropDowns mit JS-Funktionen
@@ -166,48 +213,15 @@ namespace AppZulassungsdienst.forms
             addButtonAttr(tblData);
 
             Session["tblDienst"] = tblData;
-                
-            DataView tmpDView = new DataView();
-            if (objNacherf.Vorgang.StartsWith("A"))
-            {
-                objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
-                tmpDView = objCommon.tblAHKundenStamm.DefaultView;
-            }
-            else 
-            {
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-            }
-                
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
-            ddlKunnr.DataBind();
+
             txtKunnr.Text = objNacherf.Kunnr;
             hfKunnr.Value = objNacherf.Kunnr;
             ddlKunnr.SelectedValue = objNacherf.Kunnr;
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ", 'X')");
-            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ", 'X')");
-            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+            
             TableToJSArrayBarkunde();
 
             if (objNacherf.Status == 0)
             {
-                tmpDView = new DataView();
-                tmpDView = objCommon.tblStvaStamm.DefaultView;
-                tmpDView.Sort = "KREISTEXT";
-                ddlStVa.DataSource = tmpDView;
-                ddlStVa.DataValueField = "KREISKZ";
-                ddlStVa.DataTextField = "KREISTEXT";
-                ddlStVa.DataBind();
-                ddlStVa.SelectedValue = "0";
-                txtStVa.Attributes.Add("onkeyup", "DisableButton(" + cmdCreate.ClientID + ");FilterSTVA(this.value," + ddlStVa.ClientID + ", null)");
-                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + ", null)");
-                ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + ", null)");
-
                 TableToJSArray();
                 Session["objNacherf"] = objNacherf;
             }

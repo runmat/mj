@@ -17,12 +17,7 @@ namespace AppZulassungsdienst.forms
         private ZLDCommon objCommon;
         Boolean BackfromList;
 
-        /// <summary>
-        /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -38,15 +33,13 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            bool ModusNeueAHVorgaenge = (Request.QueryString["A"] != null);
-
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App)
-                    {
-                        VKBUR = m_User.Reference.Substring(4, 4),
-                        VKORG = m_User.Reference.Substring(0, 4)
-                    };
+                {
+                    VKBUR = m_User.Reference.Substring(4, 4),
+                    VKORG = m_User.Reference.Substring(0, 4)
+                };
                 objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
                 objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
                 objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "K");
@@ -67,8 +60,15 @@ namespace AppZulassungsdienst.forms
                     objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
                 }
             }
-            BackfromList = false;
-            if (Request.QueryString["B"] != null) { BackfromList = true; }
+
+            InitLargeDropdowns();
+            InitJava();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            bool ModusNeueAHVorgaenge = (Request.QueryString["A"] != null);
+            BackfromList = (Request.QueryString["B"] != null);
 
             if (!IsPostBack)
             {
@@ -143,32 +143,55 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+            tmpDView.Sort = "NAME1";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+
+            //StVa
+            tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+            txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+            txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+            txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
+            txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+        }
+
+        /// <summary>
         /// Füllen der Dropdowns. Zuweisen der Javascript-Funktionen
         /// </summary>
         private void fillForm()
         {
             try
             {
-                DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-                tmpDView.Sort = "NAME1";
-                ddlKunnr.DataSource = tmpDView;
-                ddlKunnr.DataValueField = "KUNNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-                ddlKunnr.SelectedValue = "0";
-                txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-                txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-
-                tmpDView = objCommon.tblMaterialStamm.DefaultView;
+                DataView tmpDView = objCommon.tblMaterialStamm.DefaultView;
                 tmpDView.Sort = "MAKTX";
                 ddlDienst.DataSource = tmpDView;
                 ddlDienst.DataValueField = "MATNR";
                 ddlDienst.DataTextField = "MAKTX";
                 ddlDienst.DataBind();
                 ddlDienst.SelectedValue = "0";
-                txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
-                txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
-
+                
                 ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
                 ddlGruppe.DataValueField = "GRUPPE";
                 ddlGruppe.DataTextField = "BEZEI";
@@ -180,20 +203,6 @@ namespace AppZulassungsdienst.forms
                 ddlTour.DataTextField = "BEZEI";
                 ddlTour.DataBind();
                 ddlTour.SelectedValue = "0";
-
-                tmpDView = objCommon.tblStvaStamm.DefaultView;
-                tmpDView.Sort = "KREISTEXT";
-                ddlStVa.DataSource = tmpDView;
-                ddlStVa.DataValueField = "KREISKZ";
-                ddlStVa.DataTextField = "KREISTEXT";
-                ddlStVa.DataBind();
-                ddlStVa.SelectedValue = "0";
-                txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-
-                lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
             }
             catch (Exception ex)
             {

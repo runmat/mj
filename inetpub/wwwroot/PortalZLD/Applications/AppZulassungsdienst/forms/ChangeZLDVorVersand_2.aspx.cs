@@ -21,6 +21,7 @@ namespace AppZulassungsdienst.forms
         private VoerfZLD objVorerf;
         private ZLDCommon objCommon;
         private Report99 objSuche;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
         /// Form füllen.
@@ -65,6 +66,7 @@ namespace AppZulassungsdienst.forms
                 }
              }
         }
+
         /// <summary>
         /// Geforderte Zulassungsunterlagen des Amtes selektieren und checkboxes füllen.
         /// </summary>
@@ -124,6 +126,7 @@ namespace AppZulassungsdienst.forms
                 }
 
         }
+
         /// <summary>
         /// Geforderte Zulassungsunterlagen des Amte den checkboxes zuweisen.
         /// </summary>
@@ -146,6 +149,7 @@ namespace AppZulassungsdienst.forms
             }
         
         }
+
         /// <summary>
         /// Form mit den bereits vorhandenen Daten füllen.
         /// </summary>
@@ -189,6 +193,7 @@ namespace AppZulassungsdienst.forms
 
             InitializeAdressen();
         }
+
         /// <summary>
         /// Selektieren der zuständigen Zulassungsdienste.
         /// </summary>
@@ -217,6 +222,7 @@ namespace AppZulassungsdienst.forms
             divBackDisabled.Visible = true;
                 
         }
+
         /// <summary>
         /// Senden des Vorganges an SAP. PDF-Erstellung Auftrag/Vorgang.
         /// </summary>
@@ -292,6 +298,7 @@ namespace AppZulassungsdienst.forms
                 Sendmail();
             }
         }
+
         /// <summary>
         /// Prüfen ob Felder für das PDF gefüllt sind.
         /// </summary>
@@ -339,6 +346,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Bitte ergänzen Sie die rot markierten Felder!";
             }
         }
+
         /// <summary>
         /// Fehlerstyle der Controls entfernen.
         /// </summary>
@@ -353,6 +361,7 @@ namespace AppZulassungsdienst.forms
             txtFrei2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             txtFrei3.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
         }
+
         /// <summary>
         /// Tabellenspalten für die PDF-Generierung erstellen.
         /// </summary>
@@ -467,6 +476,7 @@ namespace AppZulassungsdienst.forms
 
 
         }
+
         /// <summary>
         /// Tabellenwerte für die PDF-Generierung einfügen.
         /// </summary>
@@ -628,6 +638,7 @@ namespace AppZulassungsdienst.forms
             }
             return tblWordData;
         }
+
         /// <summary>
         /// Anzeige der Daten des Zulassungsdiensten/ ext. Diensleister
         /// </summary>
@@ -638,6 +649,7 @@ namespace AppZulassungsdienst.forms
                     divOptions.Visible = false;
                     divBackDisabled.Visible = false;
         }
+
         /// <summary>
         /// Zurück zum Eingabedialog Seite 1 um den aktuellen zu ändern/überprüfen.
         /// </summary>
@@ -647,6 +659,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("ChangeZLDVorVersand.aspx?AppID=" + Session["AppID"].ToString() + "&New=false");
         }
+
         /// <summary>
         /// Zurück zur Eingabedialog Seite 1 um einen neuen Vorgang anzulegen.
         /// </summary>
@@ -656,6 +669,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("ChangeZLDVorVersand.aspx?AppID=" + Session["AppID"].ToString() + "&New=true");
         }
+
         /// <summary>
         /// E-Mail an die durchführenden Zulassungsdienst generieren und senden.
         /// </summary>
@@ -727,6 +741,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -755,6 +770,7 @@ namespace AppZulassungsdienst.forms
             }
 
          }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -782,6 +798,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -809,6 +826,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -836,6 +854,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -863,6 +882,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -890,6 +910,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -917,6 +938,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -944,6 +966,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -971,6 +994,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -998,6 +1022,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1025,6 +1050,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1052,6 +1078,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1079,6 +1106,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1106,6 +1134,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Öffnen des Eingabedialogs Adresse Hinsendung.
         /// </summary>
@@ -1119,6 +1148,7 @@ namespace AppZulassungsdienst.forms
                                     "unblockDialog('AdresseHin');", true);
 
         }
+
         /// <summary>
         /// Refresh der Adresse der Hinsendung.
         /// </summary>
@@ -1128,6 +1158,7 @@ namespace AppZulassungsdienst.forms
         {
 
         }
+
         /// <summary>
         /// Schliessen des Eingabedialogs Adresse Hinsendung.
         /// </summary>
@@ -1137,6 +1168,7 @@ namespace AppZulassungsdienst.forms
         {
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('AdresseHin');", true);
         }
+
         /// <summary>
         /// Refresh der Adresse der Rücksendung.
         /// </summary>
@@ -1146,6 +1178,7 @@ namespace AppZulassungsdienst.forms
         {
             
         }
+
         /// <summary>
         /// Schliessen der Eingabedialogs Adresse Rücksendung.
         /// </summary>
@@ -1162,6 +1195,7 @@ namespace AppZulassungsdienst.forms
                 ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
             }
         }
+
         /// <summary>
         /// Öffnen des Eingabedialogs Adresse Rücksendung
         /// </summary>
@@ -1175,6 +1209,7 @@ namespace AppZulassungsdienst.forms
                                     "unblockDialog('');", true);
 
         }
+
         /// <summary>
         /// Klassen-Eigenschaften initialisieren(Adressen).
         /// </summary>
@@ -1198,6 +1233,7 @@ namespace AppZulassungsdienst.forms
             objVorerf.PLZ2Rueck = "";
             objVorerf.Ort2Rueck = "";
         }
+
         /// <summary>
         /// Speichern der Adressdaten Hinsendung in den Klasseneigenschaften.
         /// </summary>
@@ -1224,6 +1260,7 @@ namespace AppZulassungsdienst.forms
             Session["objVorVersand"] = objVorerf;
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('AdresseHin');", true);
         }
+
         /// <summary>
         /// Validierung Adressdaten Hinsendung.
         /// </summary>
@@ -1262,6 +1299,7 @@ namespace AppZulassungsdienst.forms
             
             return bError; 
         }
+
         /// <summary>
         /// Speichern der Adressdaten Rücksendung in den Klasseneigenschaften.
         /// </summary>
@@ -1310,6 +1348,7 @@ namespace AppZulassungsdienst.forms
             Session["objVorVersand"] = objVorerf;
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
         }
+
         /// <summary>
         /// Validierung Adressdaten1 Rücksendung.
         /// </summary>
@@ -1351,6 +1390,7 @@ namespace AppZulassungsdienst.forms
 
             return bError;
         }
+
         /// <summary>
         /// Validierung Adressdaten2 Rücksendung.
         /// </summary>
@@ -1391,6 +1431,7 @@ namespace AppZulassungsdienst.forms
             }
             return bError;
         }
+
         /// <summary>
         /// Clearen der Felder und Klasseneigenschaften der Hinsendung.
         /// </summary>
@@ -1415,6 +1456,7 @@ namespace AppZulassungsdienst.forms
             txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             Session["objVorVersand"] = objVorerf;
         }
+
         /// <summary>
         /// Clearen der Felder und Klasseneigenschaften der Rücksendung.
         /// </summary>

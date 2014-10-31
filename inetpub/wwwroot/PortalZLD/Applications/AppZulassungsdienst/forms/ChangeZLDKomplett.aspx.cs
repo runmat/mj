@@ -24,22 +24,14 @@ namespace AppZulassungsdienst.forms
 
         #region Events
 
-        /// <summary>
-        /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden. 
-        /// Datensatz für die Eingabe laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
             m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            _backfromList = false;
 
-            if (Request.QueryString["B"] != null) { _backfromList = true; }
             if (m_User.Reference.Trim(' ').Length == 0)
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
@@ -59,6 +51,15 @@ namespace AppZulassungsdienst.forms
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
+
+            InitLargeDropdowns();
+            InitJava();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            _backfromList = Request.QueryString["B"] != null;
+
             if (!IsPostBack)
             {
                 if (_backfromList)
@@ -1391,6 +1392,43 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+            tmpDView.Sort = "NAME1";
+            tmpDView.RowFilter = "INAKTIV <> 'X'";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+
+            //StVa
+            tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ")");
+            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ")");
+            txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
+            txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
+            ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+            txtReferenz2.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$GridView1$ctl02$txtSearch.select();");
+        }
+
+        /// <summary>
         /// Füllt die Form mit geladenen Stammdaten
         /// verknüpft Texboxen und DropDowns mit JS-Funktionen
         /// Initialisiert die interne Dienstleistungstabelle
@@ -1492,23 +1530,6 @@ namespace AppZulassungsdienst.forms
 
                 Session["tblDienst"] = tblData;
 
-                // Kundenstamm 
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-                tmpDView.Sort = "NAME1";
-                tmpDView.RowFilter = "INAKTIV <> 'X'";
-                ddlKunnr.DataSource = tmpDView;
-                ddlKunnr.DataValueField = "KUNNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-                ddlKunnr.SelectedValue = "0";
-                txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-                txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ")");
-                ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ")");
-                lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
-                txtReferenz2.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$GridView1$ctl02$txtSearch.select();");
                 // Aufbau des javascript-Arrays für Barkunden, Pauschalkunden, CPD-Kunden für Javasript-Funktion "SetDDLValuewithBarkunde"
                 // Auswahl Barkunde == chkBar checked
                 // Auswahl Pauschalkunde = Label Pauschal.Value = Pauschalkunde
@@ -1518,17 +1539,6 @@ namespace AppZulassungsdienst.forms
                 if (objKompletterf.Status == 0)
                 {   // Javascript-Funktionen anhängen (helper.js)
                     Session["tblDienst"] = tblData;
-                    tmpDView = new DataView();
-                    tmpDView = objCommon.tblStvaStamm.DefaultView;
-                    tmpDView.Sort = "KREISTEXT";
-                    ddlStVa.DataSource = tmpDView;
-                    ddlStVa.DataValueField = "KREISKZ";
-                    ddlStVa.DataTextField = "KREISTEXT";
-                    ddlStVa.DataBind();
-                    ddlStVa.SelectedValue = "0";
-                    txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
-                    txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
-                    ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
 
                     // Aufbau des javascript-Arrays für Zulassungskreise wie HH1, HH2 .. 
                     // Dabei soll bei der Auswahl von z.B. HH1 im Kennzeichen Teil1(txtKennz1) HH stehen
