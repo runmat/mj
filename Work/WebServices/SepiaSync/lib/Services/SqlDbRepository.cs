@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
-using NHibernate.Criterion;
 using SepiaSyncLib.Models;
 
 namespace SepiaSyncLib.Services
@@ -14,8 +12,6 @@ namespace SepiaSyncLib.Services
     {
         private readonly ISessionFactory _sessionFactory;
         private readonly ISession _session;
-
-        private IList<WebUserSepiaAccess> _users;
 
 
         public SqlDbRepository()
@@ -62,7 +58,7 @@ namespace SepiaSyncLib.Services
                            .BuildSessionFactory();
         }
 
-        public void Save<T>(T item)
+        private void Save<T>(T item)
         {
             using (_session.BeginTransaction())
             {
@@ -71,7 +67,7 @@ namespace SepiaSyncLib.Services
             }
         }
 
-        public IList<T> RetrieveAll<T>()
+        private IList<T> RetrieveAll<T>()
         {
             // Retrieve all objects of the type passed in
             var targetObjects = _session.CreateCriteria(typeof (T));
@@ -79,20 +75,6 @@ namespace SepiaSyncLib.Services
 
             return itemList;
         }
-
-        public IList<T> RetrieveEquals<T>(string propertyName, object propertyValue)
-        {
-            // Create a criteria object with the specified criteria
-            var criteria = _session.CreateCriteria(typeof (T));
-            criteria.Add(Restrictions.Eq(propertyName, propertyValue));
-
-            // Get the matching objects
-            var matchingObjects = criteria.List<T>();
-
-            // Set return value
-            return matchingObjects;
-        }
-
 
         #endregion
     }
