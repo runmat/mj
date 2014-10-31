@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elmah" >
+      <HintPath>..\..\GAC\Elmah.dll</HintPath>      
+    </Reference>  
     <Reference Include="EntityFramework">
       <HintPath>..\..\GAC\EntityFramework\EntityFramework.dll</HintPath>
     </Reference>
