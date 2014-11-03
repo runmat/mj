@@ -441,18 +441,14 @@ Partial Public Class Login
         MessageLabel.Text = ""
         trHelpCenter.Visible = False
         If Not String.IsNullOrEmpty(txtConfirmEmail.Text) AndAlso txtConfirmEmail.Text.ToUpper() = m_User.Email.ToUpper() Then
-            If m_User.CheckNewPasswordRequestAllowed() Then
-                Dim strErg As String = ""
-                If m_User.SendNewPasswordRequestConfirmMail(strErg) Then
-                    lblError.Text = "Eine Bestätigungs-EMail wurde an die hinterlegte Adresse versandt."
-                Else
-                    lblError.Text = strErg
-                    trHelpCenter.Visible = True
-                End If
+
+            Dim errorMessage As String = ""
+            If m_User.SendPasswordResetMail(errorMessage, Security.User.PasswordMailMode.Zuruecksetzen) Then
+                m_User.UnlockAccount()
             Else
-                lblError.Text = "Sie haben bereits ein neues Kennwort angefordert."
-                trHelpCenter.Visible = True
+                lblError.Text = "Es ist ein Fehler aufgetreten: " & errorMessage
             End If
+
         Else
             lblError.Text = "Die Email-Adresse stimmt nicht mit der hinterlegten Adresse überein."
         End If
@@ -519,29 +515,7 @@ Partial Public Class Login
             Me.DoubleLogin2.Visible = False
             Session("CaptchaGen1") = GenerateRandomCode()
             Session("CaptchaGen2") = GenerateRandomCode()
-            'Prüfe ggf. den Key zur Passwortneugenerierung (Link wurde per Mail an User gesendet)
-            If Not String.IsNullOrEmpty(Request.QueryString("pwreqkey")) Then
-                If m_User.CheckNewPasswordRequestKeyValid(Request.QueryString("pwreqkey")) Then
-                    If Not String.IsNullOrEmpty(m_User.UserName) Then
-                        txtUsername.Text = m_User.UserName
-                        Dim errMsg As String = ""
-                        If String.IsNullOrEmpty(errMsg) Then
-                            If m_User.SendPasswordResetMail(errMsg, Security.User.PasswordMailMode.Zuruecksetzen) Then
-                                lblError.Text = "Die Passwort-Mail wurde an die hinterlegte Adresse versandt."
-                                m_User.SetNewPasswordRequestSentAndUnlockAccount()
-                            Else
-                                lblError.Text = "Fehler beim Versenden der Passwort-Mail: " & errMsg
-                            End If
-                        Else
-                            lblError.Text = errMsg
-                        End If
-                    Else
-                        lblError.Text = "Fehler: User konnte nicht ermittelt werden"
-                    End If
-                Else
-                    lblError.Text = "Fehler: Der Link ist nicht (mehr) gültig oder wurde bereits zur Generierung eines neuen Passwortes verwendet."
-                End If
-            End If
+            
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)

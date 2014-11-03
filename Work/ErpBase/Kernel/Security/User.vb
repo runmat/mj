@@ -1047,7 +1047,6 @@ Namespace Kernel.Security
                 'Nachbereitung
                 SetFailedLogins(m_strUsername, 0, cn, m_strUsername)
                 m_intFailedLogins = 0
-                RemoveNewPasswordRequestKey()
             Catch ex As Exception
                 blnReturn = False
                 m_strErrorMessage = ex.Message
@@ -1219,7 +1218,6 @@ Namespace Kernel.Security
                 'Nachbereitung
                 SetFailedLogins(m_strUsername, 0, cn, m_strUsername)
                 m_intFailedLogins = 0
-                RemoveNewPasswordRequestKey()
             Catch ex As Exception
                 blnReturn = False
                 m_strErrorMessage = ex.Message
@@ -2056,73 +2054,6 @@ Namespace Kernel.Security
             End Try
         End Function
 
-        Public Function SendNewPasswordRequestConfirmMail(ByRef errorMsg As String) As Boolean
-            Try
-                If Not m_customer.CustomerPasswordRules.DontSendEmail Then
-                    If (m_mail <> String.Empty) Then
-
-                        Dim pwdGenKey As String = Guid.NewGuid.ToString()
-                        If Not SetNewPasswordRequestKey(pwdGenKey) Then
-                            errorMsg = "Fehler beim Speichern des erzeugten Link-Keys in der Datenbank"
-                            Return False
-                        End If
-
-                        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-                        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-                        Dim subject As String = "Ihre Passwortanforderung"
-                        Dim textBuilder As New Text.StringBuilder()
-                        Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
-
-                        If PortalLink = String.Empty Then
-                            PortalLink = "https://sgw.kroschke.de/Services/Start/Login.aspx"
-                        Else
-                            'Anmeldung erfolgt immer über das Services-Login
-                            PortalLink = PortalLink.ToLower()
-                            PortalLink = PortalLink.Replace("/portal/", "/services/")
-                        End If
-
-                        With textBuilder
-                            If String.IsNullOrEmpty(m_firstname) AndAlso String.IsNullOrEmpty(m_lastname) Then
-                                .AppendLine("Sehr geehrte(r) " & m_strUsername & ",")
-                            Else
-                                .AppendLine("Sehr geehrte(r) " & m_title & " " & m_firstname & " " & m_lastname & ",")
-                            End If
-                            .Append(Environment.NewLine)
-                            .AppendLine("soeben wurde in unserem Webportal für Ihren Account ein neues Passwort angefordert.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Sofern Sie diese Anforderung vorgenommen haben, klicken Sie bitte auf folgenden Link, um den Versand der Passwortmail zu bestätigen:")
-                            .Append(Environment.NewLine)
-                            .AppendLine(PortalLink & "?pwreqkey=" & pwdGenKey)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Sollten Sie diese Anforderung nicht vorgenommen haben, ignorieren Sie diese Mail.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Vielen Dank.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Administration des DAD Deutscher Auto Dienst und der Kroschke Gruppe")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Bitte antworten Sie nicht auf diese Mail.")
-                            .Append(Environment.NewLine)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Für Rückfragen nutzen Sie bitte Web-Administrator@dad.de")
-
-                        End With
-
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-                        client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
-
-                        Return True
-                    Else
-                        errorMsg = "Keine Mailadresse angegeben. Mail konnte nicht versendet werden."
-                        Return False
-                    End If
-                End If
-
-            Catch ex As Exception
-                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
-                Return False
-            End Try
-        End Function
-
         Public Sub UpdateWebUserPasswordChangeRequestKey(key As String)
             Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
             cn.Open()
@@ -2866,69 +2797,12 @@ Namespace Kernel.Security
             End Try
         End Function
 
-        Public Function CheckNewPasswordRequestAllowed() As Boolean
-            Dim blnAllowed As Boolean = False
-
+        Public Sub UnlockAccount()
             Try
                 Using connection As New SqlClient.SqlConnection(m_strConnectionstring)
-
-                    Dim command As New SqlClient.SqlCommand("SELECT UserID FROM PasswordRequestKeys WHERE UserID = @UserID", connection)
-
-                    command.Parameters.AddWithValue("@UserID", m_intUserId)
-
                     connection.Open()
 
-                    Dim reader As SqlClient.SqlDataReader = command.ExecuteReader()
-
-                    ' keine weitere Anforderung zulässig, wenn bereits ein Eintrag in Tabelle "PasswordRequestKeys" vorhanden
-                    If Not reader.HasRows Then
-                        blnAllowed = True
-                    End If
-
-                    reader.Close()
-                    connection.Close()
-
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-
-            Return blnAllowed
-        End Function
-
-        Public Function CheckNewPasswordRequestKeyValid(ByVal requestKey As System.String) As Boolean
-
-            Dim blnAllowed As Boolean = False
-            Dim intUserid As Integer = -1
-
-            Try
-                Using connection As New SqlClient.SqlConnection(m_strConnectionstring)
-                    Dim command As New SqlClient.SqlCommand("SELECT UserID FROM PasswordRequestKeys WHERE PwdRequestKey = @PwdRequestKey AND ISNULL(PwdSent, 0) = @PwdSent AND KeyCreationTime > @KeyCreationTime", connection)
-
-                    command.Parameters.AddWithValue("@PwdRequestKey", requestKey)
-                    command.Parameters.AddWithValue("@PwdSent", 0)
-                    command.Parameters.AddWithValue("@KeyCreationTime", Now.AddDays(-1))
-
-                    connection.Open()
-
-                    Dim reader As SqlClient.SqlDataReader = command.ExecuteReader()
-
-                    ' Neues Passwort darf nur generiert/versendet werden, wenn noch nicht versandt und Key noch nicht zu alt
-                    If reader.HasRows Then
-                        blnAllowed = True
-                        While reader.Read()
-                            intUserid = CInt(reader.GetValue(0))
-                            Exit While
-                        End While
-                    End If
-
-                    reader.Close()
-
-                    ' Userdaten ermitteln
-                    If blnAllowed Then
-                        GetUserDataFromId(intUserid, connection)
-                    End If
+                    UnlockAccount(m_strUsername, connection, "System")
 
                     connection.Close()
                 End Using
@@ -2937,93 +2811,7 @@ Namespace Kernel.Security
 
             End Try
 
-            Return blnAllowed
-        End Function
-
-        Public Function SetNewPasswordRequestKey(ByVal strKey As String) As Boolean
-            Dim blnOk As Boolean = False
-
-            Try
-                Using connection As New SqlClient.SqlConnection(m_strConnectionstring)
-                    Dim command As New SqlClient.SqlCommand("INSERT INTO PasswordRequestKeys (UserID,PwdRequestKey,KeyCreationTime,PwdSent) VALUES (@UserID,@PwdRequestKey,@KeyCreationTime,@PwdSent)", connection)
-
-                    command.Parameters.AddWithValue("@UserID", m_intUserId)
-                    command.Parameters.AddWithValue("@PwdRequestKey", strKey)
-                    command.Parameters.AddWithValue("@KeyCreationTime", Now)
-                    command.Parameters.AddWithValue("@PwdSent", 0)
-
-                    connection.Open()
-
-                    If command.ExecuteNonQuery() > 0 Then
-                        blnOk = True
-                    End If
-
-                    connection.Close()
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-
-            Return blnOk
-
-        End Function
-
-        Public Function RemoveNewPasswordRequestKey() As Boolean
-            Dim blnOk As Boolean = False
-
-            Try
-                Using connection As New SqlClient.SqlConnection(m_strConnectionstring)
-                    Dim command As New SqlClient.SqlCommand("DELETE FROM PasswordRequestKeys WHERE UserID = @UserID", connection)
-
-                    command.Parameters.AddWithValue("@UserID", m_intUserId)
-
-                    connection.Open()
-
-                    command.ExecuteNonQuery()
-
-                    connection.Close()
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-
-            Return blnOk
-
-        End Function
-
-        Public Function SetNewPasswordRequestSentAndUnlockAccount() As Boolean
-            Dim blnOk As Boolean = False
-
-            Try
-                Using connection As New SqlClient.SqlConnection(m_strConnectionstring)
-                    Dim command As New SqlClient.SqlCommand("UPDATE PasswordRequestKeys SET PwdSent = @PwdSent WHERE UserID = @UserID", connection)
-
-                    command.Parameters.AddWithValue("@PwdSent", 1)
-                    command.Parameters.AddWithValue("@UserID", m_intUserId)
-
-                    connection.Open()
-
-                    If command.ExecuteNonQuery() > 0 Then
-                        blnOk = True
-                    End If
-
-                    If blnOk Then
-                        'Account entsperren
-                        UnlockAccount(m_strUsername, connection, "System")
-                    End If
-
-                    connection.Close()
-                End Using
-
-            Catch ex As Exception
-
-            End Try
-
-            Return blnOk
-
-        End Function
+        End Sub
 
 #End Region
 
