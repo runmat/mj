@@ -1,5 +1,7 @@
 Imports System.Configuration
-Imports System.Web.Mail
+Imports System.Web
+Imports WebTools.Services
+
 
 Namespace Kernel.Security
     <Serializable()> Public Class User
@@ -913,7 +915,7 @@ Namespace Kernel.Security
 
                 'Eingabe-Parameter ueberpruefen
                 If Not (Len(strUsername) > 0) Then
-                    Throw New System.Exception("Keine gültigen Anmeldedaten eingegeben!")
+                    Throw New Exception("Keine gültigen Anmeldedaten eingegeben!")
                 End If
 
                 'Prerequisits
@@ -960,7 +962,7 @@ Namespace Kernel.Security
                 blnReturn = GetUserData(cmdUser, cn)
 
                 If Not blnReturn Then
-                    Throw New System.Exception(m_strErrorMessage)
+                    Throw New Exception(m_strErrorMessage)
                 End If
 
                 'Anmeldestatus pruefen
@@ -971,9 +973,9 @@ Namespace Kernel.Security
                             SetFailedLogins(strUsername, m_intFailedLogins + 1, cn, strUsername)
                             m_intFailedLogins += 1
                             If m_mail.Length > 0 And m_customer.ForcePasswordQuestion And m_intQuestionID > -1 Then
-                                Throw New System.Exception("4174")
+                                Throw New Exception("4174")
                             Else
-                                Throw New System.Exception("")
+                                Throw New Exception("")
                             End If
                         Else
                             If m_blnAccountIsLockedOut Then
@@ -990,10 +992,10 @@ Namespace Kernel.Security
                                 m_blnAccountIsLockedOut = True
                                 m_strAccountIsLockedBy = "Now"
                             End If
-                            Throw New System.Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                            Throw New Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                         End If
                     Else
-                        Throw New System.Exception("")
+                        Throw New Exception("")
                     End If
                 Else
                     GetEmail(m_intUserId, blnReturn)
@@ -1001,7 +1003,7 @@ Namespace Kernel.Security
 
                 'Auf Freigabe des Accounts prüfen
                 If Not m_approved Then
-                    Throw New System.Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Auf Sperrung des Accounts pruefen
@@ -1014,14 +1016,14 @@ Namespace Kernel.Security
                     Else
                         m_strAccountIsLockedBy = "Admin"
                     End If
-                    Throw New System.Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Gibt es eine Datumsbeschränkung
                 If Not m_ValidFrom Is DBNull.Value Then
                     If m_ValidFrom.Length > 0 AndAlso IsDate(m_ValidFrom) = True Then
                         If CDate(m_ValidFrom) >= Date.Now Then
-                            Throw New System.Exception("Das Benutzerkonto steht Ihnen ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
+                            Throw New Exception("Das Benutzerkonto steht Ihnen ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
                         End If
                     End If
                 End If
@@ -1031,7 +1033,7 @@ Namespace Kernel.Security
                 If Not m_customer.AllowMultipleLogin Then
                     If m_blnLoggedOn Then
                         m_blnDoubleLoginTry = True
-                        'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
+                        'Throw New Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
                         SetLoggedOn(strUsername, True, strSessionID)
                     End If
@@ -1067,11 +1069,11 @@ Namespace Kernel.Security
 
                 'Eingabe-Parameter ueberpruefen
                 If Not (Len(strUsername) > 0 And Len(strPassword) > 0) Then
-                    Throw New System.Exception("Keine gültigen Anmeldedaten eingegeben!")
+                    Throw New Exception("Keine gültigen Anmeldedaten eingegeben!")
                 End If
                 'Passwort mit Leerzeichen
                 If strPassword.Length <> strPassword.Trim.Length Then
-                    Throw New System.Exception("Überprüfen Sie Ihr Passwort! Leerzeichen nicht erlaubt!")
+                    Throw New Exception("Überprüfen Sie Ihr Passwort! Leerzeichen nicht erlaubt!")
                 End If
 
                 'Prerequisits
@@ -1131,7 +1133,7 @@ Namespace Kernel.Security
 
                 '-- ORU 20080205: von UHa einfügt für Testzwecke??? und vergessen zu entfernen
                 'If Not blnReturn Then 
-                '    Throw New System.Exception(m_strErrorMessage)
+                '    Throw New Exception(m_strErrorMessage)
                 'End If
 
                 'Anmeldestatus pruefen
@@ -1142,9 +1144,9 @@ Namespace Kernel.Security
                             SetFailedLogins(strUsername, m_intFailedLogins + 1, cn, strUsername)
                             m_intFailedLogins += 1
                             If m_mail.Length > 0 And m_customer.ForcePasswordQuestion And m_intQuestionID > -1 Then
-                                Throw New System.Exception("4174")
+                                Throw New Exception("4174")
                             Else
-                                Throw New System.Exception("9999")
+                                Throw New Exception("9999")
                             End If
                         Else
                             If m_blnAccountIsLockedOut Then
@@ -1161,11 +1163,11 @@ Namespace Kernel.Security
                                 m_blnAccountIsLockedOut = True
                                 m_strAccountIsLockedBy = "Now"
                             End If
-                            Throw New System.Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                            Throw New Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
 
                         End If
                     Else
-                        Throw New System.Exception("")
+                        Throw New Exception("")
                     End If
                 Else
                     GetEmail(m_intUserId, blnReturn)
@@ -1173,7 +1175,7 @@ Namespace Kernel.Security
 
                 'Auf Freigabe des Accounts prüfen
                 If Not m_approved Then
-                    Throw New System.Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Auf Sperrung des Accounts pruefen
@@ -1186,14 +1188,14 @@ Namespace Kernel.Security
                     Else
                         m_strAccountIsLockedBy = "Admin"
                     End If
-                    Throw New System.Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Gibt es eine Datumsbeschränkung
                 If Not m_ValidFrom Is DBNull.Value Then
                     If m_ValidFrom.Length > 0 AndAlso IsDate(m_ValidFrom) = True Then
                         If CDate(m_ValidFrom) >= Date.Now Then
-                            Throw New System.Exception("Das Benutzerkonto steht Ihnen erst ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
+                            Throw New Exception("Das Benutzerkonto steht Ihnen erst ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
                         End If
                     End If
                 End If
@@ -1203,7 +1205,7 @@ Namespace Kernel.Security
                 If Not m_customer.AllowMultipleLogin Then
                     If m_blnLoggedOn Then
                         m_blnDoubleLoginTry = True
-                        'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
+                        'Throw New Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
                         SetLoggedOn(strUsername, True, strSessionID)
                     End If
@@ -1287,10 +1289,7 @@ Namespace Kernel.Security
                     'Antwort war richtig
 
                     If Not SendPasswordResetMail(m_strErrorMessage, PasswordMailMode.Zuruecksetzen) Then
-                        Throw New System.Exception(m_strErrorMessage)
-                        Else
-                            If Not SendPasswordMail(strTemp, m_strErrorMessage, True) Then
-                                Throw New System.Exception(m_strErrorMessage)
+                        Throw New Exception(m_strErrorMessage)
                     End If
 
                     'Fehlerhafte Logins zurücksetzen
@@ -1304,7 +1303,7 @@ Namespace Kernel.Security
                     intTemp = m_customer.CustomerLoginRules.LockedAfterNLogins - m_intFailedLogins
                     If intTemp <= 0 Then
                         LockOutAccount(m_strUsername, cn, m_strUsername)
-                        Throw New System.Exception("Die Daten wurden mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                        Throw New Exception("Die Daten wurden mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                     Else
                         intReturn = intTemp
                     End If
@@ -1327,7 +1326,7 @@ Namespace Kernel.Security
             Try
                 'Eingabe-Parameter ueberpruefen
                 If strUserName = String.Empty Then
-                    Throw New System.Exception("Kein gültiger Benutzername!")
+                    Throw New Exception("Kein gültiger Benutzername!")
                 End If
 
                 'Prerequisits
@@ -1385,7 +1384,7 @@ Namespace Kernel.Security
             Try
                 'Eingabe-Parameter ueberpruefen
                 If intUserId = 0 Then
-                    Throw New System.Exception("Keine gültige Benutzer-ID!")
+                    Throw New Exception("Keine gültige Benutzer-ID!")
                 End If
 
                 'Prerequisits
@@ -1861,61 +1860,63 @@ Namespace Kernel.Security
 
         Public Function SendPasswordResetMail(ByRef errMsg As String, ByVal modus As PasswordMailMode) As Boolean
 
-            If String.IsNullOrEmpty(m_mail) Then
-                errMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
-                Return False
+            If Not m_customer.CustomerUsernameRules.DontSendEmail Then
+                If String.IsNullOrEmpty(m_mail) Then
+                    errMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
+                    Return False
+                End If
+
+                Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
+                UpdateWebUserPasswordChangeRequestKey(confirmationToken)
+
+                Dim portalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
+                If portalLink = String.Empty Then
+                    Throw New Exception("Kein Login-Link konfiguriert!")
+                End If
+                'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
+                portalLink = portalLink.ToLower()
+                portalLink = portalLink.Replace("/start/login.aspx", "/")
+                portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
+                portalLink = portalLink.Replace("/services/", "/servicesmvc/")
+
+                Dim controller As String = "Login"
+                Dim action As String = "ChangePassword"
+                Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
+
+                Dim verb As String = IIf(modus = PasswordMailMode.Neu, "Generieren", "Zurücksetzen").ToString()
+
+                Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
+                Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
+                Dim subject As String = String.Format("Link zum {0} Ihres Passworts", verb)
+                Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                Dim textBuilder As New Text.StringBuilder()
+                With textBuilder
+                    .AppendLine(String.Format("Guten Tag {0},", userSalutation))
+                    .Append(Environment.NewLine)
+                    .Append(Environment.NewLine)
+                    .AppendLine(String.Format("bitte nutzen Sie diesen Link zum {0} Ihres Kennworts:", verb))
+                    .Append(Environment.NewLine)
+                    .AppendLine(confirmationUrl)
+                    .Append(Environment.NewLine)
+                    .Append(Environment.NewLine)
+                    .AppendLine("Mit freundlichen Grüßen")
+                    .AppendLine("Deutscher Auto Dienst GmbH")
+                End With
+
+                Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
             End If
-
-            Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
-            UpdateWebUserPasswordChangeRequestKey(confirmationToken)
-
-            Dim portalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
-            If portalLink = String.Empty Then
-                Throw New Exception("Kein Login-Link konfiguriert!")
-            End If
-            'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
-            portalLink = portalLink.ToLower()
-            portalLink = portalLink.Replace("/start/login.aspx", "/")
-            portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
-            portalLink = portalLink.Replace("/services/", "/servicesmvc/")
-
-            Dim controller As String = "Login"
-            Dim action As String = "ChangePassword"
-            Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
-
-            Dim verb As String = IIf(modus = PasswordMailMode.Neu, "Generieren", "Zurücksetzen").ToString()
-
-            Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-            Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-            Dim subject As String = String.Format("Link zum {0} Ihres Passworts", verb)
-            Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
-            Dim textBuilder As New Text.StringBuilder()
-            With textBuilder
-                .AppendLine(String.Format("Guten Tag {0},", userSalutation))
-                .Append(Environment.NewLine)
-                .Append(Environment.NewLine)
-                .AppendLine(String.Format("bitte nutzen Sie diesen Link zum {0} Ihres Kennworts:", verb))
-                .Append(Environment.NewLine)
-                .AppendLine(confirmationUrl)
-                .Append(Environment.NewLine)
-                .Append(Environment.NewLine)
-                .AppendLine("Mit freundlichen Grüßen")
-                .AppendLine("Deutscher Auto Dienst GmbH")
-            End With
-
-            Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-            client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
 
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMessage As String, ByVal Reapproved As Boolean, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal Reapproved As Boolean) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
 
                         With textBuilder
                             .AppendLine("Guten Tag,")
@@ -1925,7 +1926,7 @@ Namespace Kernel.Security
                             .AppendLine(m_strUsername.Trim())
                             .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
+                            .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
                             .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
@@ -1940,24 +1941,24 @@ Namespace Kernel.Security
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
 
-        Public Function SendUsernameChangedMail(ByRef errorMessage As String, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameChangedMail(ByRef errorMsg As String) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzername wurde geändert"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
@@ -1967,7 +1968,7 @@ Namespace Kernel.Security
                             .AppendLine(m_strUsername.Trim())
                             .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
+                            .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
                             .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
@@ -1981,97 +1982,95 @@ Namespace Kernel.Security
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMessage As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
-                    If (m_mail <> String.Empty) Then
-                        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-                        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-                        Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
 
-                        Dim Portallink As String = LoadLoginLinks(PortalLinkID)
-
-                        If Portallink = String.Empty Then
-                            Portallink = "https://sgw.kroschke.de/Services"
-                        End If
-
-                        ' Bsp.: "https://sgw.kroschke.de[/]Services/Start/Login.aspx" --> Das richtige Trennzeichen [] suchen, um den aktuellen Server auszulesen
-                        Dim iSplitindex As Integer = 0
-                        For i As Integer = 0 To 2
-                            iSplitindex = Portallink.IndexOf("/", iSplitindex)
-                            iSplitindex += 1
-                        Next
-
-                        Dim sServer As String = Portallink.Remove(iSplitindex - 1)
-                        Dim sValidationLink As String = sServer & "/Validation/Forms/Confirmation.aspx?key="
-
-
-                        With textBuilder
-                            .AppendFormat("Sehr geehrte(r) {0} {1} {2},", m_title, m_firstname, m_lastname)
-                            .Append(Environment.NewLine)
-                            .Append(Environment.NewLine)
-                            .AppendLine("mit dieser Email übersenden wir Ihnen die Zugangsdaten zum Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst GmbH. ")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Bitte speichern Sie sich folgenden Link in Ihrem Internetbrowser ab:")
-                            .Append(Environment.NewLine)
-                            .AppendLine(Portallink)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Ihr Benutzername lautet:")
-                            .AppendLine(m_strUsername.Trim)
-                            .Append(Environment.NewLine)
-                            .AppendFormat("Sofern Sie der korrekte Empfänger ({0} {1}) dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und das Portal nutzen zu können. Nach der Bestätigung erhalten Sie einen Link zur Passwortgenerierung per Mail.", m_firstname, m_lastname)
-                            .Append(Environment.NewLine)
-                            .AppendLine(sValidationLink & Goodlink)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Für Rückfragen zur Anmeldung stehen wir Ihnen jederzeit gern zur Verfügung.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit freundlichen Grüßen")
-                            .Append(Environment.NewLine)
-                            .AppendFormat("Web-Administration, {0} {1}", currentUser.FirstName, currentUser.LastName)
-
-                        End With
-
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-                        client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
-
-                        Return True
-                    Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                    If String.IsNullOrEmpty(m_mail) Then
+                        errorMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
                         Return False
                     End If
+
+                    Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
+                    UpdateWebUserPasswordChangeRequestKey(confirmationToken)
+
+                    Dim portalLinkOrig As String = LoadLoginLinks(m_customer.LoginLinkID)
+                    If portalLinkOrig = String.Empty Then
+                        Throw New Exception("Kein Login-Link konfiguriert!")
+                    End If
+                    'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
+                    Dim portalLink As String = portalLinkOrig.ToLower()
+                    portalLink = portalLink.Replace("/start/login.aspx", "/")
+                    portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
+                    portalLink = portalLink.Replace("/services/", "/servicesmvc/")
+
+                    Dim controller As String = "Login"
+                    Dim action As String = "ChangePassword"
+                    Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
+
+                    Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
+                    Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
+                    Dim subject As String = "Ihr persönlicher Benutzername"
+                    Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                    Dim textBuilder As New Text.StringBuilder()
+                    With textBuilder
+                        .AppendLine(String.Format("Guten Tag {0},", userSalutation))
+                        .Append(Environment.NewLine)
+                        .Append(Environment.NewLine)
+                        .AppendLine("mit dieser Email übersenden wir Ihnen die Zugangsdaten zum Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst GmbH. ")
+                        .Append(Environment.NewLine)
+                        .AppendLine("Bitte speichern Sie sich folgenden Link in Ihrem Internetbrowser ab:")
+                        .Append(Environment.NewLine)
+                        .AppendLine(portalLinkOrig)
+                        .Append(Environment.NewLine)
+                        .AppendLine("Ihr Benutzername lautet:")
+                        .AppendLine(m_strUsername.Trim)
+                        .Append(Environment.NewLine)
+                        .AppendFormat("Sofern Sie der korrekte Empfänger ({0} {1}) dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und ein neues Kennwort zu generieren.", FirstName, LastName)
+                        .Append(Environment.NewLine)
+                        .AppendLine(confirmationUrl)
+                        .Append(Environment.NewLine)
+                        .Append(Environment.NewLine)
+                        .AppendLine("Mit freundlichen Grüßen")
+                        .AppendLine("Deutscher Auto Dienst GmbH")
+                    End With
+
+                    Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                    client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
+
+                    Return True
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
 
-        Public Function SendNewPasswordRequestConfirmMail(ByRef errorMessage As String) As Boolean
+        Public Function SendNewPasswordRequestConfirmMail(ByRef errorMsg As String) As Boolean
             Try
                 If Not m_customer.CustomerPasswordRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
 
                         Dim pwdGenKey As String = Guid.NewGuid.ToString()
                         If Not SetNewPasswordRequestKey(pwdGenKey) Then
-                            errorMessage = "Fehler beim Speichern des erzeugten Link-Keys in der Datenbank"
+                            errorMsg = "Fehler beim Speichern des erzeugten Link-Keys in der Datenbank"
                             Return False
                         End If
 
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihre Passwortanforderung"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
@@ -2113,16 +2112,33 @@ Namespace Kernel.Security
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Mail konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Mail konnte nicht versendet werden."
                         Return False
                     End If
                 End If
 
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
+
+        Public Sub UpdateWebUserPasswordChangeRequestKey(key As String)
+            Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
+            cn.Open()
+
+            Dim cmdUpdate As New SqlClient.SqlCommand("UPDATE WebUser SET PasswordChangeRequestKey=@key where UserID=" & m_intUserId, cn)
+
+            With cmdUpdate.Parameters
+                .AddWithValue("@UserID", UserID)
+                .AddWithValue("@key", key)
+            End With
+            cmdUpdate.ExecuteNonQuery()
+
+            cn.Close()
+            cn.Dispose()
+
+        End Sub
 
         Public Sub UpdateWebUserUploadMailSend(ByVal isSend As Boolean)
             Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
@@ -2278,14 +2294,14 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        Public Function SendUserUnlockMail(ByRef errorMessage As String, currentUser As User, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUserUnlockMail(ByRef errorMsg As String, currentUser As User) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzerkonto wurde entsperrt"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
@@ -2328,12 +2344,12 @@ Namespace Kernel.Security
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Entsperr-Email konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Entsperr-Email konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function

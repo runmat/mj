@@ -76,22 +76,6 @@ Namespace Kernel.Security
 #End Region
 
 #Region " Properties "
-        'Public ReadOnly Property IsGroupAdmin() As Boolean
-        '    Get
-        '        If InnerList.BinarySearch(True, New AdminComparer()) < 0 Then
-        '            Return False
-        '        End If
-        '        Return True
-
-        '        'Dim gr As Group
-        '        'For Each gr In Me
-        '        '    If gr.IsGroupAdmin Then
-        '        '        Return True
-        '        '    End If
-        '        'Next
-        '        'Return False
-        '    End Get
-        'End Property
 
         Public ReadOnly Property OrganizationAdmin() As Boolean
             Get
@@ -122,12 +106,6 @@ Namespace Kernel.Security
                 Return m_strOrganizationName
             End Get
         End Property
-
-        'Public ReadOnly Property UserId() As Integer
-        '    Get
-        '        Return m_intUserId
-        '    End Get
-        'End Property
 
         Public ReadOnly Property CustomerId() As Integer
             Get

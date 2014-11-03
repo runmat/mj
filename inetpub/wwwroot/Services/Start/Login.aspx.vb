@@ -15,8 +15,6 @@ Partial Public Class Login
 
     Private m_User As New User()
     Private m_App As Base.Kernel.Security.App
-    Private cke As Integer
-    Private ckp As Integer
     Private random As New Random
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -341,21 +339,6 @@ Partial Public Class Login
                         trPasswortVergessen.Visible = True
                         trHelpCenter.Visible = False
                     Else
-                        'If m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "User" Then ' Gleich weiter zur Ensperrung!
-                        '    If m_User.Email.Length > 0 And m_User.Customer.ForcePasswordQuestion And m_User.QuestionID > -1 Then
-                        '        System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
-                        '    Else
-                        '        lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
-                        '        trPasswortVergessen.Visible = True
-                        '        trHelpCenter.Visible = False
-                        '        lnkPasswortVergessen_Click(sender, e)
-                        '    End If
-                        'ElseIf m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "Now" Then ' gerade gesperrt? Sperrung anzeigen!
-                        '    lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
-                        '    trPasswortVergessen.Visible = True
-                        '    trHelpCenter.Visible = False
-                        '    lnkPasswortVergessen.Text = "Entsperren"
-
                         ' Wenn User sich selbst gesperrt hat oder vom Regelprozess gesperrt wurde -> Anzeige Kundenadmin-Kontakt oder Passwortneuanforderung
                         If m_User.AccountIsLockedOut AndAlso (m_User.AccountIsLockedBy = "User" OrElse m_User.AccountIsLockedBy = "Now" OrElse m_User.AccountIsLockedBy = "Regelprozess") Then
 
@@ -637,11 +620,6 @@ Partial Public Class Login
         End If
     End Sub
 
-    Private Function DoTemporaryTimeLimitedLogging(info As String)
-
-
-    End Function
-
     Function UrlRemoteUserProcessLogin() As Boolean
         Dim remoteUserName As String = "", remoteUserPwdHashed As String = ""
         UrlRemoteUserTryLogin(remoteUserName, remoteUserPwdHashed)
@@ -722,7 +700,6 @@ Partial Public Class Login
 
         Return True
     End Function
-
 
     Function UrlRemoteHashedDateIsValid(strHashedDate As String) As Boolean
 
@@ -861,6 +838,7 @@ Partial Public Class Login
         Me.CodeNumberTextBox.Text = ""
         GenerateCaptcha()
     End Sub
+
     Private Function validateHelpData() As Boolean
         MessageLabel.Text = ""
         Dim breturn As Boolean = False
@@ -949,6 +927,7 @@ Partial Public Class Login
         str &= vbCrLf & "AUF DIESE MAIL NICHT ANTWORTEN."
         SendMailToDAD(str)
     End Sub
+
     Private Sub SendMailToDAD(ByVal message As String)
 
         Try
@@ -1033,7 +1012,6 @@ Partial Public Class Login
         Return EncText
     End Function
 
-
     Private Function DbGetStringValue(sql As String) As String
         Dim result As Object
         Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -1081,7 +1059,6 @@ Partial Public Class Login
 
     End Function
 
-
     Public Sub RedirectFromLoginPage(webUser As User)
         If (webUser.Customer.MvcLayoutAsWebFormsInline Or Not webUser.Customer.HasMvcApplicationsOnly) Then
             FormsAuthentication.RedirectFromLoginPage(webUser.UserID.ToString, False)
@@ -1090,31 +1067,5 @@ Partial Public Class Login
             Response.Redirect(servicesMvsRootUrl)
         End If
     End Sub
-
-    'Public Function psEncrypt(ByVal sInputVal As String) As String
-
-    '    Dim loCryptoClass As New TripleDESCryptoServiceProvider
-    '    Dim loCryptoProvider As New MD5CryptoServiceProvider
-    '    Dim lbtBuffer() As Byte
-
-    '    Try
-    '        lbtBuffer = System.Text.Encoding.ASCII.GetBytes(sInputVal)
-    '        loCryptoClass.Key = loCryptoProvider.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey))
-    '        loCryptoClass.IV = lbtVector
-    '        sInputVal = Convert.ToBase64String(loCryptoClass.CreateEncryptor().TransformFinalBlock(lbtBuffer, 0, lbtBuffer.Length()))
-    '        psEncrypt = sInputVal
-    '    Catch ex As CryptographicException
-    '        Throw ex
-    '    Catch ex As FormatException
-    '        Throw ex
-    '    Catch ex As Exception
-    '        Throw ex
-    '    Finally
-    '        loCryptoClass.Clear()
-    '        loCryptoProvider.Clear()
-    '        loCryptoClass = Nothing
-    '        loCryptoProvider = Nothing
-    '    End Try
-    'End Function
 
 End Class
