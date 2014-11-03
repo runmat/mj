@@ -1905,6 +1905,8 @@ Namespace Kernel.Security
                 client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
             End If
 
+            Return True
+
         End Function
 
         Public Function SendUsernameMail(ByRef errorMsg As String, ByVal Reapproved As Boolean) As Boolean
