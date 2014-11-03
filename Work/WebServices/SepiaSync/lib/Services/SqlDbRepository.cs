@@ -31,16 +31,24 @@ namespace SepiaSyncLib.Services
         {
             return RetrieveAll<WebUserSepiaAccess>();
         }
-        
-        public bool SetSepiaSyncDateForUser(WebUserSepiaAccess user)
+
+        public void SetSepiaSyncDateForUser(WebUserSepiaAccess user)
         {
             using (_session.BeginTransaction())
             {
                 user.SepiaSyncDate = DateTime.Now;
+                user.SepiaSyncStatus = "OK";
                 Save(user);
             }
+        }
 
-            return true;
+        public void SetSepiaSyncStatusForUser(WebUserSepiaAccess user, string status)
+        {
+            using (_session.BeginTransaction())
+            {
+                user.SepiaSyncStatus = status;
+                Save(user);
+            }
         }
 
 

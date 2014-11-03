@@ -21,5 +21,7 @@ namespace SepiaSyncLib.Models
         public virtual DateTime? LastChangeDate { get; set; }
 
         public virtual DateTime? SepiaSyncDate { get; set; }
+
+        public virtual string SepiaSyncStatus { get; set; }
     }
 }

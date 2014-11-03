@@ -33,6 +33,8 @@ namespace SepiaSyncLib.Services
                     {
                         if (InvokeSepiaSyncHttpRequest(user))
                             repository.SetSepiaSyncDateForUser(user);
+                        else
+                            repository.SetSepiaSyncStatusForUser(user, "error");
                     });
             }
             catch 
@@ -45,37 +47,44 @@ namespace SepiaSyncLib.Services
 
         static bool InvokeSepiaSyncHttpRequest(WebUserSepiaAccess user)
         {
-            var sepiaSyncUrl = string.Format(XarisSepiaUserSyncUrl, 
-                                                user.UrlRemoteLoginKey, 
-                                                ExpirationToken, 
-                                                HttpUtility.UrlEncode(user.Username), 
-                                                HttpUtility.UrlEncode(user.LastName.IsNotNullOrEmpty() ? user.LastName : user.Username), 
-                                                HttpUtility.UrlEncode(user.FirstName));
+            try
+            {
+                var sepiaSyncUrl = string.Format(XarisSepiaUserSyncUrl, 
+                                                    user.UrlRemoteLoginKey, 
+                                                    ExpirationToken, 
+                                                    HttpUtility.UrlEncode(user.Username), 
+                                                    HttpUtility.UrlEncode(user.LastName.IsNotNullOrEmpty() ? user.LastName : user.Username), 
+                                                    HttpUtility.UrlEncode(user.FirstName));
 
 
-            // Create a request for the URL. 
-            var request = WebRequest.Create(sepiaSyncUrl);
-            // If required by the server, set the credentials.
-            request.Credentials = CredentialCache.DefaultCredentials;
-            // Get the response.
-            var response = request.GetResponse();
-            // Display the status.
-            // Get the stream containing content returned by the server.
-            var dataStream = response.GetResponseStream();
-            if (dataStream == null)
+                // Create a request for the URL. 
+                var request = WebRequest.Create(sepiaSyncUrl);
+                // If required by the server, set the credentials.
+                request.Credentials = CredentialCache.DefaultCredentials;
+                // Get the response.
+                var response = request.GetResponse();
+                // Display the status.
+                // Get the stream containing content returned by the server.
+                var dataStream = response.GetResponseStream();
+                if (dataStream == null)
+                    return false;
+
+                // Open the stream using a StreamReader for easy access.
+                var reader = new StreamReader(dataStream);
+                // Read the content.
+                var responseFromServer = reader.ReadToEnd();
+                // Display the content.
+                // Clean up the streams and the response.
+                reader.Close();
+                response.Close();
+
+                var validResponse = responseFromServer.NotNullOrEmpty().ToUpper().SubstringTry(0, 2);
+                return validResponse == "OK";
+            }
+            catch
+            {
                 return false;
-
-            // Open the stream using a StreamReader for easy access.
-            var reader = new StreamReader(dataStream);
-            // Read the content.
-            var responseFromServer = reader.ReadToEnd();
-            // Display the content.
-            // Clean up the streams and the response.
-            reader.Close();
-            response.Close();
-
-            var validResponse = responseFromServer.NotNullOrEmpty().ToUpper().SubstringTry(0, 2);
-            return validResponse == "OK";
+            }
         }
     }
 }
