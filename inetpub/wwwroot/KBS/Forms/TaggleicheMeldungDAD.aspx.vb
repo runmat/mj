@@ -144,7 +144,7 @@ Partial Public Class TaggleicheMeldungDAD
             End If
             objMeldungDAD.Kennzeichen = txtKennz1.Text.ToUpper() & "-" & txtKennz2.Text.ToUpper()
 
-            If String.IsNullOrEmpty(txtGebuehr.Text) OrElse Not Common.IsDecimal(txtGebuehr.Text.Trim()) Then
+            If Not String.IsNullOrEmpty(txtGebuehr.Text) AndAlso Not Common.IsDecimal(txtGebuehr.Text.Trim()) Then
                 lblError.Text = "Bitte geben Sie einen Zahlenwert für die Gebühr ein."
                 Exit Sub
             End If

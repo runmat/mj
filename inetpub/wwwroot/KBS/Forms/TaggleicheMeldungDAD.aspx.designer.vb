@@ -77,6 +77,15 @@ Partial Public Class TaggleicheMeldungDAD
     Protected WithEvents tab1 As Global.System.Web.UI.HtmlControls.HtmlTable
 
     '''<summary>
+    '''trBarcode-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trBarcode As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
     '''txtBarcode-Steuerelement
     '''</summary>
     '''<remarks>
