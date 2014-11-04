@@ -108,7 +108,7 @@ namespace LogMaintenance
             var elmahMontsAgoToDelete =
                 ConfigurationManager.AppSettings.AllKeys.Contains(elmahMonthsOldToClearDataSettingName)
                     ? int.Parse(ConfigurationManager.AppSettings[elmahMonthsOldToClearDataSettingName])
-                    : int.Parse(ElmahMonthsOldToClearDataDefault);
+                    : int.Parse(ConfigurationManager.AppSettings[ElmahMonthsOldToClearDataDefault]);
 
             var elmahExpiryDate = now.AddMonths(elmahMontsAgoToDelete);
 
