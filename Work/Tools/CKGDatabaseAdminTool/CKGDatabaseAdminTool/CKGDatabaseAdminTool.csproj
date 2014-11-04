@@ -68,6 +68,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucReportBapiApplications.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ucCheckBapis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,6 +125,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucReportBapiApplications.xaml.cs">
+      <DependentUpon>ucReportBapiApplications.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucCheckBapis.xaml.cs">
       <DependentUpon>ucCheckBapis.xaml</DependentUpon>
     </Compile>

@@ -217,9 +217,17 @@
                                                         <HeaderStyle Width="80px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="Schadensdatum" SortExpression="Schadensdatum" DataFormatString="{0:d}" >
+                                                    <telerik:GridTemplateColumn DataField="Schadensdatum" SortExpression="Schadensdatum" >
                                                         <HeaderStyle Width="105px" />
-                                                    </telerik:GridBoundColumn>
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblSchadensdatum" Text='<%# Eval("Schadensdatum") %>'>
+                                                            </asp:Label>
+                                                            <asp:TextBox ID="txtSchadensdatum" runat="server" Visible="False" 
+                                                                Text='<%# Eval("Schadensdatum") %>' 
+                                                                BorderColor="Red" Width="100px" BorderWidth="1px">
+                                                            </asp:TextBox>
+                                                        </ItemTemplate>
+                                                    </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="ZBEM" SortExpression="ZBEM" Visible="false" UniqueName="Bemerkung" >
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />

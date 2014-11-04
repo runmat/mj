@@ -68,7 +68,7 @@
             });
             
             function Init() {
-                $("#FahrerAnzahl").spinner({min : 1, max : 10}).removeClass("ui-spinner-input");
+                $("#FahrerAnzahl").spinner({min : 1, max : 25}).removeClass("ui-spinner-input");
 
                 ShowHideFahrerAnzahl(model.BelegungsTyp, false);
                 $("input[name=BelegungsTypAsInt]").on("click", function() {

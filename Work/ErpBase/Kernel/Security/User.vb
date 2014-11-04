@@ -1,7 +1,5 @@
 Imports System.Configuration
 Imports System.Web.Mail
-Imports System.Web
-Imports WebTools.Services
 
 Namespace Kernel.Security
     <Serializable()> Public Class User
@@ -965,9 +963,9 @@ Namespace Kernel.Security
                     Else
                         Throw New System.Exception("")
                     End If
-                Else
-                    GetEmail(m_intUserId, blnReturn)
-                End If
+                    Else
+                        GetEmail(m_intUserId, blnReturn)
+                    End If
 
                 'Auf Freigabe des Accounts prüfen
                 If Not m_approved Then
@@ -1258,15 +1256,15 @@ Namespace Kernel.Security
                     'Antwort war richtig
 
                     'Passwort erzeugen und mailen!
-                    'Dim strTemp As String = m_customer.CustomerPasswordRules.CreateNewPasswort(m_strErrorMessage)
+                    Dim strTemp As String = m_customer.CustomerPasswordRules.CreateNewPasswort(m_strErrorMessage)
                     If m_strErrorMessage.Length = 0 Then
-                        'If Not ChangePassword("", strTemp, strTemp, m_strUsername, True) Then
-                        'Throw New System.Exception(m_strErrorMessage)
-                        'Else
-                        If Not SendPasswordResetMail(m_strErrorMessage) Then
+                        If Not ChangePassword("", strTemp, strTemp, m_strUsername, True) Then
                             Throw New System.Exception(m_strErrorMessage)
+                        Else
+                            If Not SendPasswordMail(strTemp, m_strErrorMessage, True) Then
+                                Throw New System.Exception(m_strErrorMessage)
+                            End If
                         End If
-                        'End If
                     Else
                         Throw New System.Exception(m_strErrorMessage)
                     End If
@@ -1933,61 +1931,14 @@ Namespace Kernel.Security
             Return False
         End Function
 
-        Public Function SendPasswordResetMail(ByRef errorMessage As String) As Boolean
-
-            If (m_mail = String.Empty) Then
-                errorMessage = "Keine Mailadresse angegeben. Neues Passwort konnte nicht versendet werden."
-                Return False
-            End If
-
-            Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
-            UpdateWebUserPasswordChangeRequestKey(confirmationToken)
-
-            Dim portalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
-            If portalLink = String.Empty Then
-                portalLink = "https://sgw.kroschke.de/ServicesMvc/"
-            End If
-            'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
-            portalLink = portalLink.ToLower()
-            portalLink = portalLink.Replace("/start/login.aspx", "/")
-            portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
-            portalLink = portalLink.Replace("/services/", "/servicesmvc/")
-
-            Dim controller As String = "Login"
-            Dim action As String = "ChangePassword"
-            Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
-
-            Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-            Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-            Dim subject As String = "Link zum Zurücksetzen Ihres Passworts"
-            Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
-            Dim textBuilder As New Text.StringBuilder()
-            With textBuilder
-                .AppendLine(String.Format("Guten Tag {0},", userSalutation))
-                .Append(Environment.NewLine)
-                .Append(Environment.NewLine)
-                .AppendLine("bitte nutzen Sie diesen Link zum Zurücksetzen Ihres Kennworts:")
-                .Append(Environment.NewLine)
-                .AppendLine(confirmationUrl)
-                .Append(Environment.NewLine)
-                .Append(Environment.NewLine)
-                .AppendLine("Mit freundlichen Grüßen")
-                .AppendLine("Deutscher Auto Dienst GmbH")
-            End With
-
-            Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-            client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
-
-        End Function
-
-        Private Function SendPasswordMail(ByVal password As String, ByRef errorMessage As String, Optional ByVal blnSendPasswordAnyway As Boolean = False) As Boolean
+        Public Function SendPasswordMail(ByVal password As String, ByRef errorMessage As String, Optional ByVal blnSendPasswordAnyway As Boolean = False) As Boolean
             Try
                 If (Not m_customer.CustomerPasswordRules.DontSendEmail) Or blnSendPasswordAnyway Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönliches Passwort"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
@@ -2027,7 +1978,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
 
                         With textBuilder
                             .AppendLine("Guten Tag,")
@@ -2069,7 +2020,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzername wurde geändert"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
@@ -2079,7 +2030,7 @@ Namespace Kernel.Security
                             .AppendLine(m_strUsername.Trim())
                             .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
+                            .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
                             .AppendLine("Hinweis!: Das persönliche Passwort erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
@@ -2110,7 +2061,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
 
                         Dim Portallink As String = LoadLoginLinks(PortalLinkID)
 
@@ -2188,7 +2139,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihre Passwortanforderung"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
@@ -2240,23 +2191,6 @@ Namespace Kernel.Security
                 Return False
             End Try
         End Function
-
-        Public Sub UpdateWebUserPasswordChangeRequestKey(key As String)
-            Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
-            cn.Open()
-
-            Dim cmdUpdate As New SqlClient.SqlCommand("UPDATE WebUser SET PasswordChangeRequestKey=@key where UserID=" & m_intUserId, cn)
-
-            With cmdUpdate.Parameters
-                .AddWithValue("@UserID", UserID)
-                .AddWithValue("@key", key)
-            End With
-            cmdUpdate.ExecuteNonQuery()
-
-            cn.Close()
-            cn.Dispose()
-
-        End Sub
 
         Public Sub UpdateWebUserUploadMailSend(ByVal isSend As Boolean)
             Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
@@ -2448,7 +2382,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzerkonto wurde entsperrt"
-                        Dim textBuilder As New Text.StringBuilder()
+                        Dim textBuilder As New System.Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
