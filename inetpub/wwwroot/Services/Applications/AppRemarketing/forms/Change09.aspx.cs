@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 using AppRemarketing.lib;
@@ -16,10 +13,10 @@ using System.Data.OleDb;
 
 namespace AppRemarketing.forms
 {
-    public partial class Change09 : System.Web.UI.Page
+    public partial class Change09 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private bool isExcelExportConfigured;
         private ZulassungsdatenPublic m_Report;
         private DataTable tblData;
@@ -51,14 +48,19 @@ namespace AppRemarketing.forms
             {
                 m_Report = (ZulassungsdatenPublic)Session["Vorschaeden"];
             }
+            else
+            {
+                m_Report = new ZulassungsdatenPublic(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
+                Session["Vorschaeden"] = m_Report;
+            }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -85,8 +87,6 @@ namespace AppRemarketing.forms
                 return;
             }
 
-            m_Report = new ZulassungsdatenPublic(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
-
             m_Report.tblUpload = new DataTable();
 
             m_Report.tblUpload.Columns.Add("Fahrgestellnummer", typeof(string));
@@ -98,9 +98,7 @@ namespace AppRemarketing.forms
 
             m_Report.tblUpload.AcceptChanges();
 
-            DataRow newRow;
             Boolean Error = false;
-            DateTime DummyDate;
 
             foreach (DataRow dr in tmpTable.Rows)
             {
@@ -118,13 +116,14 @@ namespace AppRemarketing.forms
                     return;
                 }
 
-                newRow = m_Report.tblUpload.NewRow();
+                DataRow newRow = m_Report.tblUpload.NewRow();
 
                 newRow["Fahrgestellnummer"] = dr[0];
                 newRow["Kennzeichen"] = dr[1];
                 newRow["Beschreibung"] = dr[2];
                 newRow["Betrag"] = dr[3];
 
+                DateTime DummyDate;
                 if ((DateTime.TryParse(dr[4].ToString(), out DummyDate)))
                 {
                     newRow["Schadensdatum"] = Convert.ToDateTime(dr[4]).ToShortDateString();
@@ -216,6 +215,8 @@ namespace AppRemarketing.forms
                 item.FindControl("lblFahrgestellnummer").Visible = false;
                 item.FindControl("txtKennzeichen").Visible = true;
                 item.FindControl("lblKennzeichen").Visible = false;
+                item.FindControl("txtSchadensdatum").Visible = true;
+                item.FindControl("lblSchadensdatum").Visible = false;
             }
         }
 
@@ -225,6 +226,7 @@ namespace AppRemarketing.forms
             {
                 m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Fahrgestellnummer"] = ((TextBox)gdi.FindControl("txtFin")).Text;
                 m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Kennzeichen"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
+                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Schadensdatum"] = ((TextBox)gdi.FindControl("txtSchadensdatum")).Text;
             }
 
             Session["Vorschaeden"] = m_Report;
@@ -267,10 +269,8 @@ namespace AppRemarketing.forms
                 //Lade Datei
                 return getData(upFile.PostedFile);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private DataTable getData(System.Web.HttpPostedFile uFile)
@@ -280,27 +280,24 @@ namespace AppRemarketing.forms
             try
             {
                 string filepath = ConfigurationManager.AppSettings["ExcelPath"];
-                string filename = null;
-                System.IO.FileInfo info = null;
-
-                filename = uFile.FileName;
+                string filename = uFile.FileName;
 
                 //Dateiname: User_yyyyMMddhhmmss.xls
                 if (filename.ToUpper().Substring(filename.Length - 4) == ".XLS")
                 {
-                    filename = m_User.UserName + "_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+                    filename = m_User.UserName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
                 }
                 else if (uFile.FileName.ToUpper().Substring(uFile.FileName.Length - 5) == ".XLSX")
                 {
-                    filename = m_User.UserName + "_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+                    filename = m_User.UserName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
 
                 }
 
-                if ((uFile != null))
+                if (uFile != null)
                 {
                     uFile.SaveAs(ConfigurationManager.AppSettings["ExcelPath"] + filename);
                     uFile = null;
-                    info = new System.IO.FileInfo(filepath + filename);
+                    System.IO.FileInfo info = new System.IO.FileInfo(filepath + filename);
                     if (!(info.Exists))
                     {
                         tmpTable = null;
@@ -337,7 +334,6 @@ namespace AppRemarketing.forms
             } OleDbConnection objConn = new OleDbConnection(sConnectionString);
             objConn.Open();
 
-            DataTable schemaTable = null;
             object[] tmpObj = {
 		                        null,
 		                        null,
@@ -345,7 +341,7 @@ namespace AppRemarketing.forms
 		                        "Table"
 	                          };
 
-            schemaTable = objConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, tmpObj);
+            DataTable schemaTable = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, tmpObj);
 
             foreach (DataRow sheet in schemaTable.Rows)
             {
@@ -396,7 +392,7 @@ namespace AppRemarketing.forms
 
                 m_Report.tblUpload.AcceptChanges();
 
-                DataRow newRow = m_Report.tblUpload.NewRow(); ;
+                DataRow newRow = m_Report.tblUpload.NewRow();
 
                 newRow["Fahrgestellnummer"] = txtFin.Text;
                 newRow["Kennzeichen"] = txtKennzeichen.Text;
@@ -406,18 +402,15 @@ namespace AppRemarketing.forms
                     lblError.Text = rfvBeschreibung.Text = "Die max. Länge von 255 Zeichen wurde überschritten.";
                     return;
                 }
-                else
-                {
-                    newRow["Beschreibung"] = txtBeschreibung.Text;
-                }
 
+                newRow["Beschreibung"] = txtBeschreibung.Text;
                 newRow["Betrag"] = txtPreis.Text;
                 newRow["Schadensdatum"] = txtDatum.Text;
 
                 m_Report.tblUpload.Rows.Add(newRow);
             }
 
-            m_Report.setVorschaeden((string)Session["AppID"], (string)Session.SessionID, this);
+            m_Report.setVorschaeden((string)Session["AppID"], Session.SessionID, this);
 
             if (m_Report.tblError.Rows.Count > 0)
             {
@@ -429,6 +422,7 @@ namespace AppRemarketing.forms
                 else
                 {
                     lblError.Text = "Der Datensatz konnte nicht verarbeitet werden. Bitte korrigieren Sie Ihre Eingaben.";
+                    lblError.Text += "\n" + m_Report.tblError.Rows[0]["ZBEM"];
                     m_Report.Edit = false;
                 }
 
@@ -491,10 +485,10 @@ namespace AppRemarketing.forms
 
                 var rbutton_parent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
                 rbutton_parent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
                 rbutton_parent.Controls.AddAt(1, resetLayoutButton);
             }
         }

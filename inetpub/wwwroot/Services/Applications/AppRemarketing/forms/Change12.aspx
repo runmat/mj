@@ -209,19 +209,20 @@
                                                     <telerik:GridTemplateColumn Groupable="false" >
                                                         <HeaderStyle Width="75px" />
                                                         <ItemTemplate>
-                                                            <asp:LinkButton ID="lbtnGutschrift" runat="server" Height="16px" Width="70px" Style="background-image: url(/services/images/button.jpg);
-                                                                text-align: center; vertical-align: middle; font-weight: bold; padding-top: 2px"
-                                                                Text="Gutschrift" CommandName="Gutschrift" CommandArgument='<%# Eval("FIN") + "|" + Eval("RENNR") %>'></asp:LinkButton>
+                                                            <asp:LinkButton ID="lbtnGutschrift" runat="server" Height="20px" Width="78px" Style="background-image: url(/services/images/button.jpg);
+                                                                text-align: center; vertical-align: middle; font-weight: bold"
+                                                                Text="Gutschrift" CommandName="Gutschrift" 
+                                                                CommandArgument='<%# Eval("FIN") + "|" + Eval("RENNR") + "|" + Eval("SUMME") %>'></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn Groupable="false" >
                                                         <HeaderStyle Width="95px" />
                                                         <ItemTemplate>
-                                                            <asp:LinkButton ID="lbtnNachbelastung" runat="server" Height="16px" Width="90px"
-                                                                Style="background-image: url(/services/images/buttonXLarge.jpg); text-align: center;
-                                                                vertical-align: middle; font-weight: bold; padding-top: 2px" Text="Nachbelastung"
+                                                            <asp:LinkButton ID="lbtnNachbelastung" runat="server" Height="20px" Width="100px"
+                                                                Style="background-image: url(/services/images/buttonMiddle.jpg); text-align: center;
+                                                                vertical-align: middle; font-weight: bold" Text="Nachbelastung"
                                                                 CommandName="Nachbelastung" 
-                                                                CommandArgument='<%# Eval("FIN") + "|" + Eval("RENNR") %>'></asp:LinkButton>
+                                                                CommandArgument='<%# Eval("FIN") + "|" + Eval("RENNR") + "|" + Eval("SUMME") %>'></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="FIN" SortExpression="FIN" >
@@ -266,7 +267,7 @@
                         PopupControlID="mb" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancel"
                         X="450" Y="200">
                     </cc1:ModalPopupExtender>
-                    <asp:Panel ID="mb" runat="server" Width="520px" Height="300px"
+                    <asp:Panel ID="mb" runat="server" Width="520px" Height="320px"
                         BackColor="#E7E7E7" style="display:none">
                         <div class="Titlebar">
                             <asp:Label ID="lblAdressMessage" runat="server"
@@ -276,18 +277,25 @@
                         
                             <table>
                                 <tbody>
-                                <tr>
-                                    <td style="color:#4C4C4C;font-weight:bold;width:90px;height:25px">
-                                        Rechnungsnummer:</td>
-                                    <td>
-                                        <asp:Label ID="lblRechnr" runat="server" Font-Bold="True" ForeColor="#4C4C4C"></asp:Label>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td style="color:#4C4C4C;font-weight:bold;width:90px;height:25px">
+                                            Rechnungsnummer:</td>
+                                        <td>
+                                            <asp:Label ID="lblRechnr" runat="server" Font-Bold="True" ForeColor="#4C4C4C"></asp:Label>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td style="color:#4C4C4C;font-weight:bold;width:90px;height:25px">
                                             Fahrgestellnummer:</td>
                                         <td>
                                             <asp:Label ID="lblFin" runat="server" Font-Bold="True" ForeColor="#4C4C4C"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color:#4C4C4C;font-weight:bold;width:90px;height:25px">
+                                            Summe Belastungsanzeige:</td>
+                                        <td>
+                                            <asp:Label ID="lblSumme" runat="server" Font-Bold="True" ForeColor="#4C4C4C"></asp:Label> &#8364;
                                         </td>
                                     </tr>
                                     <tr>
@@ -301,15 +309,15 @@
                                             </cc1:FilteredTextBoxExtender>
                                         </td>
                                     </tr>
-                                <tr>
-                                    <td style="color:#4C4C4C;font-weight:bold;width:90px;vertical-align: top">
-                                        Bemerkung:
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtBemerkung" runat="server" MaxLength="200" Width="350px" 
-                                            TextMode="MultiLine" Height="52px"></asp:TextBox>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td style="color:#4C4C4C;font-weight:bold;width:90px;vertical-align: top">
+                                            Bemerkung:
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtBemerkung" runat="server" MaxLength="200" Width="350px" 
+                                                TextMode="MultiLine" Height="52px"></asp:TextBox>
+                                        </td>
+                                    </tr>
                                     <tr id="trEmpfaenger" runat="server" visible="false">
                                         <td style="color:#4C4C4C;font-weight:bold;width:90px">
                                             Empfänger:</td>
