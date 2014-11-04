@@ -207,7 +207,7 @@ namespace AppZulassungsdienst.forms
                 }
                 objMeldungDAD.Kennzeichen = txtKennz1.Text.ToUpper() + "-" + txtKennz2.Text.ToUpper();
 
-                if (String.IsNullOrEmpty(txtGebuehr.Text) || !ZLDCommon.IsDecimal(txtGebuehr.Text.Trim()))
+                if (!String.IsNullOrEmpty(txtGebuehr.Text) && !ZLDCommon.IsDecimal(txtGebuehr.Text.Trim()))
                 {
                     lblError.Text = "Bitte geben Sie einen Zahlenwert für die Gebühr ein.";
                     return;

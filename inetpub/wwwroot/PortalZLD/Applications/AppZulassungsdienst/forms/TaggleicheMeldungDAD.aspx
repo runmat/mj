@@ -49,7 +49,7 @@
                                 <div id="TableQuery" style="margin-bottom: 10px">
                                     <table id="tab1" runat="server" cellpadding="0" cellspacing="0">
                                         <tbody>
-                                            <tr class="formquery">
+                                            <tr ID="trBarcode" class="formquery" runat="server" Visible="False">
                                                 <td class="firstLeft active" >
                                                     <asp:Label runat="server" Height="16px">DAD-Auftrag: Barcode</asp:Label>
                                                 </td>
@@ -173,7 +173,7 @@
                                         </tr>
                                         <tr class="formquery" style="height: 32px">
                                             <td class="firstLeft active" style="width: 150px">
-                                                <asp:Label runat="server">Gebühr*:</asp:Label>
+                                                <asp:Label runat="server">Gebühr:</asp:Label>
                                             </td>
                                             <td colspan="2">
                                                 <asp:TextBox ID="txtGebuehr" CssClass="TextBoxNormal" Width="75px" runat="server"
