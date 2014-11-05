@@ -104,12 +104,12 @@ namespace GeneralTools.Log.Services
 
             logEventInfo.Properties["Anmeldename"] = anmeldeName;
             logEventInfo.Properties["Bapi"] = bapi;
-            logEventInfo.Properties["ImportParameters"] = importParameter;
-            logEventInfo.Properties["ImportTables"] = importTable;
+            logEventInfo.Properties["ImportParameters"] = XmlService.XmlSerializeToStringCompressed(importParameter);
+            logEventInfo.Properties["ImportTables"] = XmlService.XmlSerializeToStringCompressed(importTable);
             logEventInfo.Properties["Status"] = status;
             logEventInfo.Properties["Dauer"] = Convert.ToDecimal(dauer);
-            logEventInfo.Properties["ExportParameters"] = exportParamter;
-            logEventInfo.Properties["ExportTables"] = exportTable;
+            logEventInfo.Properties["ExportParameters"] = XmlService.XmlSerializeToStringCompressed(exportParamter);
+            logEventInfo.Properties["ExportTables"] = XmlService.XmlSerializeToStringCompressed(exportTable);
 
             if (HttpContext.Current != null)
             {
