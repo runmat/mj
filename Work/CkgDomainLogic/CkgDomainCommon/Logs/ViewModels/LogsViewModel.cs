@@ -182,9 +182,56 @@ namespace CkgDomainLogic.Logs.ViewModels
         {
             var sapLogItemDetailed = DataService.GetSapLogItemDetailed(id);
 
-            //var strExpTables = (sapLogItemDetailed.ExportTables == null ? null : sapLogItemDetailed.ExportTables.Replace("<ExportTables>", "").Replace("</ExportTables>", "").Trim('\r', '\n'));
+            DataTable impParams = null;
+            if (sapLogItemDetailed.ImportParameters != null)
+            {
+                try
+                {
+                    impParams = XmlService.XmlTryDeserializeCompressedString<DataTable>(sapLogItemDetailed.ImportParameters);
+                }
+                catch (Exception)
+                {
+                    impParams = XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ImportParameters);
+                }                
+            }
 
-            var strExpTables = sapLogItemDetailed.ExportTables;
+            DataTable[] impTables = null;
+            if (sapLogItemDetailed.ImportTables != null)
+            {
+                try
+                {
+                    impTables = XmlService.XmlTryDeserializeCompressedString<DataTable[]>(sapLogItemDetailed.ImportTables);
+                }
+                catch (Exception)
+                {
+                    impTables = XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables);
+                }
+            }
+
+            DataTable expParams = null;
+            if (sapLogItemDetailed.ExportParameters != null)
+            {
+                try
+                {
+                    expParams = XmlService.XmlTryDeserializeCompressedString<DataTable>(sapLogItemDetailed.ExportParameters);
+                }
+                catch (Exception)
+                {
+                    expParams = XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ExportParameters);
+                }
+            }
+
+            string strExpTables;
+
+            // Habe ich einen Base64 encoded String?, sonst nehme ich den Wert aus der DB
+            try
+            {
+                strExpTables = XmlService.DecompressString(sapLogItemDetailed.ExportTables);
+            }
+            catch (Exception)
+            {
+                strExpTables = sapLogItemDetailed.ExportTables;
+            }
 
             var expTables = new List<ExportTable>();
             if (strExpTables != null)
@@ -205,9 +252,9 @@ namespace CkgDomainLogic.Logs.ViewModels
 
             LastSapCallContext = new SapCallContext
                 {
-                    ImportParameters = (sapLogItemDetailed.ImportParameters == null ? null : XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ImportParameters)),
-                    ImportTables = (sapLogItemDetailed.ImportTables == null ? null : XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables)),
-                    ExportParameters = (sapLogItemDetailed.ExportParameters == null ? null : XmlService.XmlDeserializeFromString<DataTable>(sapLogItemDetailed.ExportParameters)),
+                    ImportParameters = impParams,
+                    ImportTables = impTables,
+                    ExportParameters = expParams,
                     ExportTables = (expTables.Count == 0 ? null : expTables.ToArray())
                 };
         }
@@ -220,8 +267,6 @@ namespace CkgDomainLogic.Logs.ViewModels
         {
             if (SapLogItemSelector.LogsConnection != newSapLogItemSelector.LogsConnection)
             {
-                // Logs connection changed ==> reset filters that depend on server specifiy keys (app ids, user ids, customer ids, etc)
-
                 DataService.LogsConnectionString = newSapLogItemSelector.LogsConnection;
                 SapLogItemSelector = newSapLogItemSelector;
 
