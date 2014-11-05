@@ -207,10 +207,7 @@ Partial Public Class UserUnlock
     Private Sub FillDataGrid(ByVal strSort)
         trSearchResult.Visible = True
 
-        Dim _context As HttpContext = HttpContext.Current
         Dim dvUser As DataView
-        'If Not _context.Cache("myUserListView") Is Nothing Then
-        '    dvUser = CType(_context.Cache("myUserListView"), DataView)
         If Not Session("myUserListView") Is Nothing Then
             dvUser = CType(Session("myUserListView"), DataView)
         Else
@@ -226,7 +223,6 @@ Partial Public Class UserUnlock
                                                    -1, _
                                                    m_User.Customer.AccountingArea)
             dvUser = dtUser.DefaultView
-            '_context.Cache.Insert("myUserListView", dvUser, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
             Session("myUserListView") = dvUser
         End If
 
@@ -474,8 +470,6 @@ Partial Public Class UserUnlock
         ClearEdit()
         SearchMode()
         If blnClearCache Then
-            'Dim _context As HttpContext = HttpContext.Current
-            '_context.Cache.Remove("myUserListView")
             Session.Remove("myUserListView")
         End If
         If blnResetSelectedIndex Then dgSearchResult.SelectedIndex = -1

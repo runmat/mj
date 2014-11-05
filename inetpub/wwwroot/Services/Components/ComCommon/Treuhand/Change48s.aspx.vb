@@ -20,6 +20,7 @@ Namespace Treuhand
 #End Region
 
 #Region "Events"
+
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             m_User = GetUser(Me) ' füllen Form.Session("objUser"), rückgabe eines UserObjekte
             FormAuth(Me, m_User)
@@ -47,6 +48,7 @@ Namespace Treuhand
                 End If
             End If
         End Sub
+
         Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
             SetEndASPXAccess(Me)
             HelpProcedures.FixedGridViewCols(GridView1)
@@ -56,8 +58,6 @@ Namespace Treuhand
         Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
             SetEndASPXAccess(Me)
         End Sub
-
- 
 
         Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
             If e.CommandName = "Autorisieren" Or e.CommandName = "Loeschen" Then
@@ -167,7 +167,6 @@ Namespace Treuhand
             FillGrid(0, m_User.Organization.OrganizationId.ToString)
         End Sub
 
-
         Protected Sub cmdSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdSave.Click
             Dim dt As New DataTable()
             Dim strTemp As String = "0"
@@ -177,15 +176,20 @@ Namespace Treuhand
                 strTemp = "1"
             End If
             sDitriktOrganisation = m_User.Organization.OrganizationId.ToString
-            Dim da As New SqlClient.SqlDataAdapter( _
-              "SELECT * FROM vwAuthorization" & _
+
+            Dim cmdText As String = "SELECT * FROM vwAuthorization" & _
               " WHERE (NOT (InitializedBy='" & m_User.UserName & "'))" & _
               " AND (NOT (AuthorizationLevel<" & m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AuthorizationLevel").ToString & "))" & _
-              " AND (OrganizationID=" & sDitriktOrganisation & ")" & _
               " AND (TestUser=" & strTemp & ")" & _
-              " AND (BatchAuthorization=1)" & _
-              " ORDER BY InitializedWhen", _
-              m_App.Connectionstring)
+              " AND (BatchAuthorization=1)"
+
+            If Not m_User.Organization.AllOrganizations Then
+                cmdText &= " AND (OrganizationID=" & sDitriktOrganisation & ")"
+            End If
+
+            cmdText &= " ORDER BY InitializedWhen"
+
+            Dim da As New SqlClient.SqlDataAdapter(cmdText, m_App.Connectionstring)
 
             da.Fill(dt)
             dt.Columns.Add("Ergebnis", System.Type.GetType("System.String"))
@@ -367,12 +371,15 @@ Namespace Treuhand
             cmdSave.Visible = False
 
         End Sub
+
         Protected Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
             Response.Redirect("../../../Start/Selection.aspx", False)
         End Sub
+
 #End Region
 
 #Region "Methods"
+
         Private Sub FillGrid0(ByRef tblData As DataTable, ByRef dgShow As GridView, ByVal intPageIndex As Int32, ByVal strSort As String)
             m_intLineCount = 0
             If tblData.Rows.Count = 0 Then
@@ -465,15 +472,19 @@ Namespace Treuhand
             If m_User.IsTestUser Then
                 strTemp = "1"
             End If
-            Dim da As New SqlClient.SqlDataAdapter( _
-              "SELECT * FROM vwAuthorization" & _
+
+            Dim cmdText As String = "SELECT * FROM vwAuthorization" & _
               " WHERE (NOT (InitializedBy='" & m_User.UserName & "'))" & _
               " AND (NOT (AuthorizationLevel<" & m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AuthorizationLevel").ToString & "))" & _
-              " AND (OrganizationID=" & sDitriktOrganisation & ")" & _
-              " AND (TestUser=" & strTemp & ")" & _
-              " ORDER BY InitializedWhen", _
-              m_App.Connectionstring)
+              " AND (TestUser=" & strTemp & ")"
 
+            If Not m_User.Organization.AllOrganizations Then
+                cmdText &= " AND (OrganizationID=" & sDitriktOrganisation & ")"
+            End If
+
+            cmdText &= " ORDER BY InitializedWhen"
+
+            Dim da As New SqlClient.SqlDataAdapter(cmdText, m_App.Connectionstring)
 
             da.Fill(dt)
 
@@ -495,11 +506,9 @@ Namespace Treuhand
         Private Sub WriteLog(ByVal strMessage As String, ByVal strHaendler As String, Optional ByVal strType As String = "APP")
             logApp.WriteEntry(strType, m_User.UserName, Session.SessionID, CInt(Session("AppID")), m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString, Right(strHaendler, 5), strMessage, m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 10)
         End Sub
-       
+
 #End Region
 
-  
     End Class
-
 
 End Namespace
