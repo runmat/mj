@@ -9,7 +9,6 @@ Partial Public Class ForbiddenUserNameManagement
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -187,8 +186,6 @@ Partial Public Class ForbiddenUserNameManagement
         trSearchResult.Visible = True
         Dim dvForbiddenUserName As DataView
 
-        'If Not m_context.Cache("myForbiddenUserNameListView") Is Nothing Then
-        '    dvForbiddenUserName = CType(m_context.Cache("myForbiddenUserNameListView"), DataView)
         If Not Session("myForbiddenUserNameListView") Is Nothing Then
             dvForbiddenUserName = CType(Session("myForbiddenUserNameListView"), DataView)
 
@@ -199,7 +196,6 @@ Partial Public Class ForbiddenUserNameManagement
 
             dtForbiddenUserName = New ForbiddenUserNameList(txtFilterForbiddenUserNameName.Text, cn)
             dvForbiddenUserName = dtForbiddenUserName.DefaultView
-            'm_context.Cache.Insert("myForbiddenUserNameListView", dvForbiddenUserName, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
             Session("myForbiddenUserNameListView") = dvForbiddenUserName
         End If
         dvForbiddenUserName.Sort = strSort
@@ -296,7 +292,6 @@ Partial Public Class ForbiddenUserNameManagement
     Private Sub Search(Optional ByVal blnRefillDataGrid As Boolean = False, Optional ByVal blnResetSelectedIndex As Boolean = False, Optional ByVal blnResetPageIndex As Boolean = False, Optional ByVal blnClearCache As Boolean = False)
         ClearEdit()
         If blnClearCache Then
-            'm_context.Cache.Remove("myForbiddenUserNameListView")
             Session.Remove("myForbiddenUserNameListView")
         End If
         If blnResetSelectedIndex Then dgSearchResult.SelectedIndex = -1
