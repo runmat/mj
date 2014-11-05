@@ -13,7 +13,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_Zul, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_Zul: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -38,7 +44,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_SonstDL, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_SonstDL: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -63,7 +75,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_EndgVers, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_EndgVers: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -88,7 +106,13 @@ Public Class ServiceData
         Try
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMInsertFreisetzung_TempVers, User oder Password nicht korrekt.")
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertFreisetzung_TempVers: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
             End If
 
             Dim SetData As New SapInterface()
@@ -137,25 +161,53 @@ Public Class ServiceData
 
             'Login überprüfen
             If Not CheckLogin(User, Password) Then
-                Throw New Exception("WMGetFreisetzung_Status, User oder Password nicht korrekt.")
+                Return "WMGetFreisetzung_Status: User oder Password nicht korrekt."
             End If
 
-            Dim SetData As SapInterface
-            SetData = New SapInterface()
+            Dim SetData As New SapInterface()
             strXml = SetData.WMGetFreisetzungStatus()
 
         Catch ex As Exception
             Try
-                'Error in das Eventlog schreiben
                 EventLog.WriteEntry("SixtServiceLeas", "WMGetFreisetzung_Status: " & ex.Message, EventLogEntryType.Warning)
             Catch
                 'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
             End Try
 
-            Throw
         End Try
 
         Return strXml
+    End Function
+
+    <WebMethod()> Public Function WMInsertStatus(ByVal User As String, ByVal Password As String, ByVal VehicleRegistrations As VehicleRegs_Status) As Errors
+        Dim VehErrors As New Errors()
+
+        Try
+
+            'Login überprüfen
+            If Not CheckLogin(User, Password) Then
+                Dim VehRegErr As New _Error()
+
+                VehRegErr.id = ""
+                VehRegErr.message = "WMInsertStatus: User oder Password nicht korrekt."
+                VehErrors.Add(VehRegErr)
+
+                Return VehErrors
+            End If
+
+            Dim SetData As New SapInterface()
+            VehErrors = SetData.InsertStatus(VehicleRegistrations)
+
+        Catch ex As Exception
+            Try
+                EventLog.WriteEntry("SixtServiceLeas", "WMInsertStatus: " & ex.Message, EventLogEntryType.Warning)
+            Catch
+                'Fehlgeschlagener Eventlog-Eintrag darf nicht zum Abbruch der Anwendung führen
+            End Try
+
+        End Try
+
+        Return VehErrors
     End Function
 
     Public Sub New()
