@@ -343,7 +343,6 @@ Partial Public Class UserManagement
 
     Private Sub FillDataGrid(ByVal blnNotApproved As Boolean, ByVal strSort As String, Optional ByVal rebind As Boolean = True, Optional ByVal blnWithoutLoadingData As Boolean = False)
 
-        'Dim _context As HttpContext = HttpContext.Current
         Dim dvUser As DataView
 
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)

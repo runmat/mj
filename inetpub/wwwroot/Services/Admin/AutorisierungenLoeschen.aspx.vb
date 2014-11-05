@@ -7,7 +7,6 @@ Partial Public Class AutorisierungenLoeschen
 #Region " Membervariables "
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -49,8 +48,6 @@ Partial Public Class AutorisierungenLoeschen
         trSearchResult.Visible = True
         Dim dvZV As DataView
 
-        'If Not m_context.Cache("myAutorisierungenLoeschenListView") Is Nothing Then
-        '    dvZV = CType(m_context.Cache("myAutorisierungenLoeschenListView"), DataView)
         If Not Session("myAutorisierungenLoeschenListView") Is Nothing Then
             dvZV = CType(Session("myAutorisierungenLoeschenListView"), DataView)
         Else
@@ -64,7 +61,6 @@ Partial Public Class AutorisierungenLoeschen
                 daApp.Fill(dtAutorisierungenLoeschenList)
 
                 dvZV = dtAutorisierungenLoeschenList.DefaultView
-                'm_context.Cache.Insert("myAutorisierungenLoeschenListView", dvZV, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
                 Session("myAutorisierungenLoeschenListView") = dvZV
             Finally
                 If cn.State <> ConnectionState.Closed Then
@@ -165,7 +161,6 @@ Partial Public Class AutorisierungenLoeschen
 
     Private Sub Search(Optional ByVal blnRefillDataGrid As Boolean = False, Optional ByVal blnResetSelectedIndex As Boolean = False, Optional ByVal blnResetPageIndex As Boolean = False, Optional ByVal blnClearCache As Boolean = False)
         If blnClearCache Then
-            'm_context.Cache.Remove("myAutorisierungenLoeschenListView")
             Session.Remove("myAutorisierungenLoeschenListView")
         End If
         If blnResetSelectedIndex Then dgSearchResult.SelectedIndex = -1
