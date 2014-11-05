@@ -58,8 +58,6 @@ Partial Public Class Translation_Start
     End Sub
     Private Sub FillDataGrid(ByVal strSort As String)
 
-        'If Not mcontext.Cache("myAppListView") Is Nothing Then
-        '    dvApplication = CType(mcontext.Cache("myAppListView"), DataView)
         If Not Session("myAppListView") Is Nothing Then
             dvApplication = CType(Session("myAppListView"), DataView)
         Else
@@ -90,7 +88,6 @@ Partial Public Class Translation_Start
                                                 txtFilterAppFriendlyName.Text)
 
             dvApplication = dtApplication.DefaultView
-            'mcontext.Cache.Insert("myAppListView", dvApplication, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
             Session("myAppListView") = dvApplication
         Finally
             If cn.State <> ConnectionState.Closed Then
