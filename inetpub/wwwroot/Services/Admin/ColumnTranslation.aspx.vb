@@ -21,7 +21,6 @@ Partial Public Class ColumnTranslation
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -105,8 +104,6 @@ Partial Public Class ColumnTranslation
 
         Dim dvColumnTranslation As DataView
 
-        'If Not m_context.Cache("myColListView") Is Nothing Then
-        '    dvColumnTranslation = CType(m_context.Cache("myColListView"), DataView)
         If Not Session("myColListView") Is Nothing Then
             dvColumnTranslation = CType(Session("myColListView"), DataView)
         Else
@@ -118,7 +115,6 @@ Partial Public Class ColumnTranslation
                 dtColumnTranslation = New Kernel.ColumnTranslationList(CInt(txtAppID.Text), _
                                                                             cn)
                 dvColumnTranslation = dtColumnTranslation.DefaultView
-                'm_context.Cache.Insert("myColListView", dvColumnTranslation, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
                 Session("myColListView") = dvColumnTranslation
             Finally
                 If cn.State <> ConnectionState.Closed Then
@@ -255,7 +251,6 @@ Partial Public Class ColumnTranslation
     Private Sub Search(Optional ByVal blnRefillDataGrid As Boolean = False, Optional ByVal blnResetSelectedIndex As Boolean = False, Optional ByVal blnResetPageIndex As Boolean = False, Optional ByVal blnClearCache As Boolean = False)
         ClearEdit()
         If blnClearCache Then
-            ' m_context.Cache.Remove("myColListView")
             Session.Remove("myColListView")
         End If
         If blnResetSelectedIndex Then dgSearchResult.SelectedIndex = -1
