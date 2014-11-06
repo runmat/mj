@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using Aspose.Pdf;
 using DocumentTools.Services;
+using GeneralTools.Services;
 using Loader;
 using System.Linq;
 using ToolboxLibrary;
@@ -12,10 +16,12 @@ namespace AsposeTest
         static void Main(string[] args)
         {
             //TestAsposeWordImageReplace();
-            //TestAsposePdf();
 
             TestDeserializeObjects();
         }
+
+
+        #region Winword Image Replace
 
         static void TestAsposeWordImageReplace()
         {
@@ -47,40 +53,14 @@ namespace AsposeTest
             pdfDoc.Save(Path.Combine(path, dstPdf));
         }
 
-        static void TestAsposePdf()
-        {
-            var docFactory = new PdfDocumentFactory();
+        #endregion
 
-            var path = @"..\..\docs\";
-            var dstPdf = "TestPdf.pdf";
 
-            var pdf = new Aspose.Pdf.Pdf();
-
-            var sec = pdf.Sections.Add();
-            sec.BackgroundImageFile = Path.Combine(path, @"img\ship.png");
-
-            var text = new Aspose.Pdf.Text("main text kdsksdj hrfksdj hkdsjhr ksdjfh kjsf hkjsdhfkds jhfkd jshfkdsfkjdshf dskjfhdksj hdskjfhdsk j\r\nXXXX")
-            {
-                Left = 1,
-                Top = 1,
-                PositioningType = PositioningType.PageRelative
-            };
-            sec.Paragraphs.Add(text);
-
-            var text2 = new Aspose.Pdf.Text("TEXT 2\r\nkmdfnkjsdfkj")
-            {
-                Left = 1,
-                Top = 10,
-                PositioningType = PositioningType.PageRelative
-            };
-            sec.Paragraphs.Add(text2);
-
-            pdf.Save(Path.Combine(path, dstPdf));
-        }
+        #region Create PDF from XML form
 
         static void TestDeserializeObjects()
         {
-            var xmlFileName = @"test.xml";
+            var xmlFileName = @"..\..\..\..\DesignerHosting\Shell\bin\Debug\test.xml";
 
             var loader = new BasicHostLoader(xmlFileName);
             loader.PerformLoad();
@@ -88,6 +68,42 @@ namespace AsposeTest
             var form = loader.PdfForm;
             var image = form.BackgroundImage;
             var labels = form.Controls.OfType<PdfLabel>().ToList();
+
+            var tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var tmpFileName = Path.Combine(tempFolder, "pdfBackground.jpg");
+            image.Save(tmpFileName, ImageFormat.Jpeg);
+
+            CreatePdfFromForm(tmpFileName, labels);
+
+            FileService.TryFileDelete(tmpFileName);
         }
+
+        private static void CreatePdfFromForm(string backgroundImageFileName, IList<PdfLabel> labels)
+        {
+            var docFactory = new PdfDocumentFactory();
+
+            var path = @"..\..\docs\";
+            var dstPdf = "Form.pdf";
+
+            var pdf = new Aspose.Pdf.Pdf();
+
+            var sec = pdf.Sections.Add();
+            sec.BackgroundImageFile = backgroundImageFileName;
+
+            foreach (var label in labels)
+            {
+                var text = new Aspose.Pdf.Text(string.Format("[{0}]", label.Text))
+                {
+                    Left = label.Left,
+                    Top = label.Top,
+                    PositioningType = PositioningType.PageRelative
+                };
+                sec.Paragraphs.Add(text);
+            }
+
+            pdf.Save(Path.Combine(path, dstPdf));
+        }
+
+        #endregion
     }
 }

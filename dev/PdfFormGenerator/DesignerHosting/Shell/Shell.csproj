@@ -11,8 +11,8 @@
     </StartupObject>
     <RootNamespace>Shell</RootNamespace>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>Shell</AssemblyName>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <AssemblyName>CkgPdfDesigner</AssemblyName>
+    <ApplicationIcon>ckg-pdf-designer.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <Content Include="ckg-pdf-designer.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainShell.resx">

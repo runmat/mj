@@ -554,7 +554,7 @@ namespace Shell
 
         private void abMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Designer Hosting sample. Whidbey ROCKS!");
+            MessageBox.Show("CKG PDF Designer, (c) 2014-15 Christoph Kroschke GmbH");
         }
 
         private class Strings

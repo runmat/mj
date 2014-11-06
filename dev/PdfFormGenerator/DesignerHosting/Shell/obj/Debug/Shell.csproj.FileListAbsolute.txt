@@ -32,11 +32,6 @@ C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Shell\bin\Debug\ToolWindow
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Shell\obj\Debug\Shell.csprojResolveAssemblyReference.cache
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Shell\obj\Debug\Shell.MainShell.resources
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Shell\obj\Debug\Shell.csproj.GenerateResource.Cache
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Shell.exe.config
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.exe
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.pdb
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Shell.exe
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Shell.pdb
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Host.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Loader.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Toolbox.dll
@@ -49,3 +44,8 @@ C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Deb
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.csprojResolveAssemblyReference.cache
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.MainShell.resources
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.csproj.GenerateResource.Cache
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\CkgPdfDesigner.exe.config
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\CkgPdfDesigner.exe
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\CkgPdfDesigner.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.exe
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.pdb

@@ -29,6 +29,7 @@ namespace Shell
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainShell));
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
             this.newMenuItem = new System.Windows.Forms.MenuItem();
@@ -72,12 +73,12 @@ namespace Shell
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.Toolbox = new ToolboxLibrary.Toolbox();
+            this.propertyGrid1 = new Shell.MyPropertyGrid();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.OutputWindow = new ToolWindows.OutputWindow();
             this.toolbox1 = new ToolboxLibrary.Toolbox();
             this.toolbox2 = new ToolboxLibrary.Toolbox();
-            this.propertyGrid1 = new Shell.MyPropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -361,9 +362,9 @@ namespace Shell
             // 
             // StatusBar
             // 
-            this.StatusBar.Location = new System.Drawing.Point(0, 84);
+            this.StatusBar.Location = new System.Drawing.Point(0, 625);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(1096, 22);
+            this.StatusBar.Size = new System.Drawing.Size(1050, 22);
             this.StatusBar.TabIndex = 1;
             this.StatusBar.Text = "Ready";
             // 
@@ -377,7 +378,7 @@ namespace Shell
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1096, 84);
+            this.splitContainer1.Size = new System.Drawing.Size(1050, 625);
             this.splitContainer1.SplitterDistance = 160;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -394,8 +395,8 @@ namespace Shell
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(1096, 84);
-            this.splitContainer2.SplitterDistance = 249;
+            this.splitContainer2.Size = new System.Drawing.Size(1050, 625);
+            this.splitContainer2.SplitterDistance = 237;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
@@ -412,8 +413,8 @@ namespace Shell
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.propertyGrid1);
-            this.splitContainer3.Size = new System.Drawing.Size(249, 84);
-            this.splitContainer3.SplitterDistance = 25;
+            this.splitContainer3.Size = new System.Drawing.Size(237, 625);
+            this.splitContainer3.SplitterDistance = 185;
             this.splitContainer3.TabIndex = 0;
             // 
             // Toolbox
@@ -424,8 +425,17 @@ namespace Shell
             this.Toolbox.Location = new System.Drawing.Point(0, 0);
             this.Toolbox.Name = "Toolbox";
             this.Toolbox.SelectedCategory = null;
-            this.Toolbox.Size = new System.Drawing.Size(249, 25);
+            this.Toolbox.Size = new System.Drawing.Size(237, 185);
             this.Toolbox.TabIndex = 1;
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.propertyGrid1.Size = new System.Drawing.Size(237, 436);
+            this.propertyGrid1.TabIndex = 0;
             // 
             // splitContainer4
             // 
@@ -442,8 +452,8 @@ namespace Shell
             // 
             this.splitContainer4.Panel2.Controls.Add(this.OutputWindow);
             this.splitContainer4.Panel2Collapsed = true;
-            this.splitContainer4.Size = new System.Drawing.Size(843, 84);
-            this.splitContainer4.SplitterDistance = 370;
+            this.splitContainer4.Size = new System.Drawing.Size(809, 625);
+            this.splitContainer4.SplitterDistance = 59;
             this.splitContainer4.TabIndex = 1;
             // 
             // tabControl1
@@ -452,7 +462,7 @@ namespace Shell
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(843, 84);
+            this.tabControl1.Size = new System.Drawing.Size(809, 625);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -484,25 +494,17 @@ namespace Shell
             this.toolbox2.Size = new System.Drawing.Size(127, 283);
             this.toolbox2.TabIndex = 0;
             // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid1.Size = new System.Drawing.Size(249, 55);
-            this.propertyGrid1.TabIndex = 0;
-            // 
             // MainShell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1096, 106);
+            this.ClientSize = new System.Drawing.Size(1050, 647);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.StatusBar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
             this.Name = "MainShell";
-            this.Text = "Shell (DesignerHosting Sample)";
+            this.Text = "CKG PDF Designer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

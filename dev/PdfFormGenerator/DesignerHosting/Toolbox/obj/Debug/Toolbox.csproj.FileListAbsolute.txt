@@ -10,3 +10,9 @@ C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\ToolboxL
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\bin\Debug\Toolbox.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\bin\Debug\Toolbox.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\ToolboxLibrary.Toolbox.resources
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb
