@@ -366,7 +366,7 @@ Namespace Kernel
                         For Each dr In dt.Rows
                             cmd = New SqlClient.SqlCommand()
                             cmd.Connection = cn
-                            cmd.CommandText = "INSERT INTO CustomerRights VALUES (@CustomerID,@AppID)"
+                            cmd.CommandText = "INSERT INTO CustomerRights (CustomerID,AppID) VALUES (@CustomerID,@AppID)"
                             cmd.Parameters.AddWithValue("@CustomerID", CInt(dr("CustomerID")))
                             cmd.Parameters.AddWithValue("@AppID", intAppID)
                             cmd.ExecuteNonQuery()

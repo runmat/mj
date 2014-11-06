@@ -91,7 +91,7 @@ Partial Public Class Change101Aut
     Protected Sub cmdSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdSave.Click
         If Not Session("m_Versand") Is Nothing Then
             m_Versand = CType(Session("m_Versand"), Briefversand)
-            m_Versand.AnfordernAusAutorisierung2(Session("AppID").ToString, Session.SessionID.ToString, Page)
+            m_Versand.AnfordernAusAutorisierung2(Session("AppID").ToString, Session.SessionID.ToString, Page, m_User.UserName)
             If m_Versand.Status <> 0 Then
                 lblError.Text = m_Versand.Message
             Else
