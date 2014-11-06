@@ -4,17 +4,259 @@ Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Services
 
 Partial Public Class AppManagement
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As GridNavigation
+#End Region
 
+#Region " Events "
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
+        ' Hier Benutzercode zur Seiteninitialisierung einfügen
+        m_User = GetUser(Me)
+        AdminAuth(Me, m_User, AdminLevel.Master)
+        GridNavigation1.setGridElment(dgSearchResult)
+        Try
+            m_App = New App(m_User)
+            lblHead.Text = "Anwendungen"
+
+            lblError.Text = ""
+            lblMessage.Text = ""
+
+            If Not IsPostBack Then
+                If Not Session("App_EditID") Is Nothing Then
+                    txtAppID.Text = CStr(Session("App_EditID"))
+                    FillForm()
+                    EditEditMode(CInt(txtAppID.Text))
+                Else
+                    FillForm()
+                    Dim strAppID As String = CStr(Request.QueryString("AppID"))
+                    If Not strAppID = String.Empty Then
+                        EditEditMode(CInt(strAppID))
+                    End If
+                End If
+
+            End If
+
+
+        Catch ex As Exception
+            lblError.Text = ex.ToString
+            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "PageLoad", lblError.Text)
+        End Try
+    End Sub
+
+    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
+        Search(True, True)
+    End Sub
+
+    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNew.Click
+        SearchMode(False)
+        ClearEdit()
+    End Sub
+
+    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Try
+            If String.IsNullOrEmpty(txtAppName.Text) Then
+                lblError.Text = "Bitte geben Sie einen Anwendungsnamen an!"
+                Exit Sub
+            End If
+
+            'Default-Reihenfolge für App ohne Menüeintrag, falls Reihenfolge-Feld nicht gefüllt
+            If Not cbxAppInMenu.Checked And String.IsNullOrEmpty(txtAppRank.Text) Then
+                txtAppRank.Text = "99"
+            End If
+
+            Dim conn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+
+            cn.Open()
+            Dim intAppId As Integer = CInt(txtAppID.Text)
+            Dim strLogMsg As String = "Anwendung anlegen"
+            If Not (intAppId = -1) Then
+                strLogMsg = "Anwendung ändern"
+            End If
+            Dim _App As New Kernel.Application(intAppId, _
+                                                txtAppName.Text, _
+                                                txtAppFriendlyName.Text, _
+                                                ddlAppType.SelectedItem.Value.ToString, _
+                                                txtAppURL.Text, _
+                                                cbxAppInMenu.Checked, _
+                                                txtAppComment.Text, _
+                                                CInt(ddlAppParent.SelectedItem.Value.ToString), _
+                                                CInt(txtAppRank.Text), _
+                                                CInt(ddlAuthorizationlevel.SelectedItem.Value.ToString), cbxBatchAuthorization.Checked, _
+                                                ddlAppTechType.SelectedValue, _
+                                                txtAppDescription.Text, _
+                                                CInt(txtMaxLevel.Text), CInt(txtMaxLevelsPerGroup.Text))
+            Dim typ As Boolean
+            _App.Save(cn, typ)
+
+            'Save Parameters
+            _App.SaveParams(conn, txtAppParam.Text, typ)
+
+            'Save Zuordnungen, falls es sich um ein Child handelt
+            _App.ReAssign(conn, _App.AppId, CInt(ddlAppParent.SelectedItem.Value.ToString))
+            Dim tblLogParameter As DataTable = SetNewLogParameters()
+            Log(_App.AppId.ToString, strLogMsg, tblLogParameter)
+            FillAppParent(cn)
+            Search(True, True, , True)
+
+
+            lblMessage.Text = "Die Änderungen wurden gespeichert."
+        Catch ex As Exception
+            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "lbtnSave_Click", ex.ToString)
+            lblError.Text = ex.Message
+            If Not ex.InnerException Is Nothing Then
+                lblError.Text &= ": " & ex.InnerException.Message
+            End If
+            Log(txtAppID.Text, lblError.Text, New DataTable(), "ERR")
+        Finally
+            If cn.State <> ConnectionState.Closed Then
+                cn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
+        Dim tblLogParameter As DataTable
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Try
+            Dim _app As New Kernel.Application(CInt(txtAppID.Text))
+
+            cn.Open()
+            tblLogParameter = SetOldLogParameters(_app.AppId)
+            If Not _app.HasChildren(cn) Then
+                _app.Delete(cn)
+                Log(_app.AppId.ToString, "Anwendung löschen", tblLogParameter)
+                FillAppParent(cn)
+                Search(True, True, True, True)
+                lblMessage.Text = "Die Anwendung wurde gelöscht."
+            Else
+                lblMessage.Text = "Die Anwendung kann nicht gelöscht werden, da ihr noch Unteranwendungen zugeordnet sind."
+            End If
+        Catch ex As Exception
+            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "lbtnDelete_Click", ex.ToString)
+            lblError.Text = ex.Message
+            If Not ex.InnerException Is Nothing Then
+                lblError.Text &= ": " & ex.InnerException.Message
+            End If
+            tblLogParameter = New DataTable
+            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
+        Finally
+            If cn.State <> ConnectionState.Closed Then
+                cn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub lnkColumnTranslation_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkColumnTranslation.Click
+        Dim strAppID As String
+        Dim strRetAppID As String = txtAppID.Text
+        If CInt(ddlAppParent.SelectedItem.Value) < 1 Then
+            strAppID = txtAppID.Text
+        Else
+            strAppID = ddlAppParent.SelectedItem.Value
+        End If
+        Session("App_EditID") = strAppID
+        Session.Add("AppName", txtAppName.Text)
+        Response.Redirect("ColumnTranslation.aspx?AppID=" & strAppID & "&RetAppID=" & strRetAppID)
+    End Sub
+
+    Private Sub lnkAppConfiguration_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkAppConfiguration.Click
+        Dim strAppID As String
+        Dim strRetAppID As String = txtAppID.Text
+        If CInt(ddlAppParent.SelectedItem.Value) < 1 Then
+            strAppID = txtAppID.Text
+        Else
+            strAppID = ddlAppParent.SelectedItem.Value
+        End If
+        Session("App_EditID") = strAppID
+        Session.Add("AppName", txtAppName.Text)
+        Response.Redirect("ApplicationConfiguration.aspx?AppID=" & strAppID & "&RetAppID=" & strRetAppID)
+    End Sub
+
+    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSuche.Click
+        Search(True, True, True, True)
+        If dgSearchResult.Rows.Count = 0 Then
+            lblError.Text = "Keine Datensätze gefunden."
+        End If
+    End Sub
+
+    Private Sub lnkFieldTranslation_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkFieldTranslation.Click
+        Dim strAppURL As String
+        Dim strRetAppID As String = txtAppID.Text
+
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Try
+            cn.Open()
+            Dim _App As New Kernel.Application(CInt(txtAppID.Text), cn)
+            strAppURL = _App.AppURL.ToString
+            Session("App_EditID") = strRetAppID
+            Session.Add("AppName", txtAppName.Text)
+            Response.Redirect("FieldTranslation.aspx?AppURL=" & strAppURL & "&RetAppID=" & strRetAppID)
+        Finally
+            If cn.State <> ConnectionState.Closed Then
+                cn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
+        dgSearchResult.PageIndex = PageIndex
+        FillDataGrid()
+    End Sub
+
+    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
+        FillDataGrid()
+    End Sub
+
+    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
+
+        If e.CommandName = "Edit" Then
+            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim row As GridViewRow = dgSearchResult.Rows(index)
+            EditEditMode(CInt(row.Cells(0).Text))
+            dgSearchResult.SelectedIndex = row.RowIndex
+        ElseIf e.CommandName = "Del" Then
+            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim row As GridViewRow = dgSearchResult.Rows(index)
+            EditDeleteMode(CInt(row.Cells(0).Text))
+            dgSearchResult.SelectedIndex = row.RowIndex
+        End If
+    End Sub
+
+    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
+
+    End Sub
+
+    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles dgSearchResult.Sorting
+        Dim strSort As String = e.SortExpression
+        If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
+            strSort &= " DESC"
+        End If
+        ViewState("ResultSort") = strSort
+        FillDataGrid(strSort)
+    End Sub
+
+    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnEmpty.Click
+        btnSuche_Click(sender, e)
+    End Sub
+
+    Private Sub ddlAppParent_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAppParent.PreRender
+        For Each item As ListItem In ddlAppParent.Items
+            item.Attributes.Add("title", item.Text)
+        Next
+    End Sub
 
 #End Region
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         FillAppParent(cn)
@@ -170,7 +412,7 @@ Partial Public Class AppManagement
             ddlAuthorizationlevel.Items.FindByValue(_App.Authorizationlevel.ToString).Selected = True
             txtAppRank.Text = _App.AppRank.ToString
             txtSchwellwert.Text = _App.AppSchwellwert
-            txtAppParam.Text = CType(_App.AppParam, String)
+            txtAppParam.Text = _App.AppParam
             txtMaxLevel.Text = _App.MaxLevel.ToString
             txtMaxLevelsPerGroup.Text = _App.MaxLevelsPerGroup.ToString
 
@@ -207,29 +449,29 @@ Partial Public Class AppManagement
             strBackColor = "LightGray"
         End If
         txtAppID.Enabled = Not blnLock
-        txtAppID.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppID.BackColor = Drawing.Color.FromName(strBackColor)
         txtAppName.Enabled = Not blnLock
-        txtAppName.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppName.BackColor = Drawing.Color.FromName(strBackColor)
         txtAppFriendlyName.Enabled = Not blnLock
-        txtAppFriendlyName.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppFriendlyName.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAppType.Enabled = Not blnLock
-        ddlAppType.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAppType.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAppTechType.Enabled = Not blnLock
-        ddlAppTechType.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAppTechType.BackColor = Drawing.Color.FromName(strBackColor)
         txtAppURL.Enabled = Not blnLock
-        txtAppURL.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppURL.BackColor = Drawing.Color.FromName(strBackColor)
         cbxAppInMenu.Enabled = Not blnLock
         cbxBatchAuthorization.Enabled = Not blnLock
         txtAppComment.Enabled = Not blnLock
-        txtAppComment.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppComment.BackColor = Drawing.Color.FromName(strBackColor)
         txtAppDescription.Enabled = Not blnLock
-        txtAppDescription.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppDescription.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAppParent.Enabled = Not blnLock
-        ddlAppParent.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAppParent.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAuthorizationlevel.Enabled = Not blnLock
-        ddlAuthorizationlevel.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAuthorizationlevel.BackColor = Drawing.Color.FromName(strBackColor)
         txtAppRank.Enabled = Not blnLock
-        txtAppRank.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppRank.BackColor = Drawing.Color.FromName(strBackColor)
     End Sub
 
     Private Sub CustomerAdminMode()
@@ -350,7 +592,7 @@ Partial Public Class AppManagement
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "SetOldLogParameters", ex.ToString)
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -387,7 +629,7 @@ Partial Public Class AppManagement
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "SetNewLogParameters", ex.ToString)
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -401,248 +643,21 @@ Partial Public Class AppManagement
     Private Function CreateLogTableStructure() As DataTable
         Dim tblPar As New DataTable()
         With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendungs-Name", System.Type.GetType("System.String"))
-            .Columns.Add("Freundlicher Name", System.Type.GetType("System.String"))
-            .Columns.Add("Typ", System.Type.GetType("System.String"))
-            .Columns.Add("URL", System.Type.GetType("System.String"))
-            .Columns.Add("in Menü", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Kommentar", System.Type.GetType("System.String"))
-            .Columns.Add("Gehört zu", System.Type.GetType("System.String"))
-            .Columns.Add("Autorisierungslevel", System.Type.GetType("System.String"))
-            .Columns.Add("Sammelautorisierung", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Rang", System.Type.GetType("System.String"))
+            .Columns.Add("Status", Type.GetType("System.String"))
+            .Columns.Add("Anwendungs-Name", Type.GetType("System.String"))
+            .Columns.Add("Freundlicher Name", Type.GetType("System.String"))
+            .Columns.Add("Typ", Type.GetType("System.String"))
+            .Columns.Add("URL", Type.GetType("System.String"))
+            .Columns.Add("in Menü", Type.GetType("System.Boolean"))
+            .Columns.Add("Kommentar", Type.GetType("System.String"))
+            .Columns.Add("Gehört zu", Type.GetType("System.String"))
+            .Columns.Add("Autorisierungslevel", Type.GetType("System.String"))
+            .Columns.Add("Sammelautorisierung", Type.GetType("System.Boolean"))
+            .Columns.Add("Rang", Type.GetType("System.String"))
         End With
         Return tblPar
     End Function
+
 #End Region
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        ' Hier Benutzercode zur Seiteninitialisierung einfügen
-        m_User = GetUser(Me)
-        AdminAuth(Me, m_User, AdminLevel.Master)
-        GridNavigation1.setGridElment(dgSearchResult)
-        Try
-            m_App = New App(m_User)
-            lblHead.Text = "Anwendungen"
-
-            lblError.Text = ""
-            lblMessage.Text = ""
-
-            If Not IsPostBack Then
-                If Not Session("App_EditID") Is Nothing Then
-                    txtAppID.Text = CStr(Session("App_EditID"))
-                    FillForm()
-                    EditEditMode(CInt(txtAppID.Text))
-                Else
-                    FillForm()
-                    Dim strAppID As String = CStr(Request.QueryString("AppID"))
-                    If Not strAppID = String.Empty Then
-                        EditEditMode(CInt(strAppID))
-                    End If
-                End If
-
-            End If
-
-
-        Catch ex As Exception
-            lblError.Text = ex.ToString
-            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "PageLoad", lblError.Text)
-        End Try
-    End Sub
-
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
-        Search(True, True)
-    End Sub
-
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNew.Click
-        SearchMode(False)
-        ClearEdit()
-    End Sub
-
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-            If String.IsNullOrEmpty(txtAppName.Text) Then
-                lblError.Text = "Bitte geben Sie einen Anwendungsnamen an!"
-                Exit Sub
-            End If
-
-            'Default-Reihenfolge für App ohne Menüeintrag, falls Reihenfolge-Feld nicht gefüllt
-            If Not cbxAppInMenu.Checked And String.IsNullOrEmpty(txtAppRank.Text) Then
-                txtAppRank.Text = "99"
-            End If
-
-            Dim conn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-
-            cn.Open()
-            Dim intAppId As Integer = CInt(txtAppID.Text)
-            Dim strLogMsg As String = "Anwendung anlegen"
-            If Not (intAppId = -1) Then
-                strLogMsg = "Anwendung ändern"
-                tblLogParameter = SetOldLogParameters(intAppId)
-            End If
-            Dim _App As New Kernel.Application(intAppId, _
-                                                txtAppName.Text, _
-                                                txtAppFriendlyName.Text, _
-                                                ddlAppType.SelectedItem.Value.ToString, _
-                                                txtAppURL.Text, _
-                                                cbxAppInMenu.Checked, _
-                                                txtAppComment.Text, _
-                                                CInt(ddlAppParent.SelectedItem.Value.ToString), _
-                                                CInt(txtAppRank.Text), _
-                                                CInt(ddlAuthorizationlevel.SelectedItem.Value.ToString), cbxBatchAuthorization.Checked, _
-                                                ddlAppTechType.SelectedValue, _
-                                                txtAppDescription.Text, _
-                                                CInt(txtMaxLevel.Text), CInt(txtMaxLevelsPerGroup.Text))
-            Dim typ As Boolean
-            _App.Save(cn, typ)
-
-            'Save Parameters
-            _App.SaveParams(conn, txtAppParam.Text, typ)
-
-            'Save Zuordnungen, falls es sich um ein Child handelt
-            _App.ReAssign(conn, _App.AppId, CInt(ddlAppParent.SelectedItem.Value.ToString))
-            tblLogParameter = SetNewLogParameters()
-            Log(_App.AppId.ToString, strLogMsg, tblLogParameter)
-            FillAppParent(cn)
-            Search(True, True, , True)
-
-
-            lblMessage.Text = "Die Änderungen wurden gespeichert."
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "lbtnSave_Click", ex.ToString)
-            lblError.Text = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                lblError.Text &= ": " & ex.InnerException.Message
-            End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Sub
-
-    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-            Dim _app As New Kernel.Application(CInt(txtAppID.Text))
-
-            cn.Open()
-            tblLogParameter = SetOldLogParameters(_app.AppId)
-            If Not _app.HasChildren(cn) Then
-                _app.Delete(cn)
-                Log(_app.AppId.ToString, "Anwendung löschen", tblLogParameter)
-                FillAppParent(cn)
-                Search(True, True, True, True)
-                lblMessage.Text = "Die Anwendung wurde gelöscht."
-            Else
-                lblMessage.Text = "Die Anwendung kann nicht gelöscht werden, da ihr noch Unteranwendungen zugeordnet sind."
-            End If
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "lbtnDelete_Click", ex.ToString)
-            lblError.Text = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                lblError.Text &= ": " & ex.InnerException.Message
-            End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Sub
-
-    Private Sub lnkColumnTranslation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkColumnTranslation.Click
-        Dim strAppID As String
-        Dim strRetAppID As String = txtAppID.Text
-        If CInt(ddlAppParent.SelectedItem.Value) < 1 Then
-            strAppID = txtAppID.Text
-        Else
-            strAppID = ddlAppParent.SelectedItem.Value
-        End If
-        Session("App_EditID") = strAppID
-        Session.Add("AppName", txtAppName.Text)
-        Response.Redirect("ColumnTranslation.aspx?AppID=" & strAppID & "&RetAppID=" & strRetAppID)
-    End Sub
-
-    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-        Search(True, True, True, True)
-        If dgSearchResult.Rows.Count = 0 Then
-            lblError.Text = "Keine Datensätze gefunden."
-        End If
-    End Sub
-
-    Private Sub lnkFieldTranslation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkFieldTranslation.Click
-        Dim strAppURL As String
-        Dim strRetAppID As String = txtAppID.Text
-
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-            cn.Open()
-            Dim _App As New Kernel.Application(CInt(txtAppID.Text), cn)
-            strAppURL = _App.AppURL.ToString
-            Session("App_EditID") = strRetAppID
-            Session.Add("AppName", txtAppName.Text)
-            Response.Redirect("FieldTranslation.aspx?AppURL=" & strAppURL & "&RetAppID=" & strRetAppID)
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Sub
-
-    Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
-        dgSearchResult.PageIndex = PageIndex
-        FillDataGrid()
-    End Sub
-
-    Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
-        FillDataGrid()
-    End Sub
-
-    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
-
-        If e.CommandName = "Edit" Then
-            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-            Dim row As GridViewRow = dgSearchResult.Rows(index)
-            EditEditMode(CInt(row.Cells(0).Text))
-            dgSearchResult.SelectedIndex = row.RowIndex
-        ElseIf e.CommandName = "Del" Then
-            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-            Dim row As GridViewRow = dgSearchResult.Rows(index)
-            EditDeleteMode(CInt(row.Cells(0).Text))
-            dgSearchResult.SelectedIndex = row.RowIndex
-        End If
-    End Sub
-
-    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
-
-    End Sub
-
-    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
-        Dim strSort As String = e.SortExpression
-        If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
-            strSort &= " DESC"
-        End If
-        ViewState("ResultSort") = strSort
-        FillDataGrid(strSort)
-    End Sub
-
-    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEmpty.Click
-        btnSuche_Click(sender, e)
-    End Sub
-
-    Private Sub ddlAppParent_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlAppParent.PreRender
-        For Each item As ListItem In ddlAppParent.Items
-            item.Attributes.Add("title", item.Text)
-        Next
-    End Sub
 
 End Class
