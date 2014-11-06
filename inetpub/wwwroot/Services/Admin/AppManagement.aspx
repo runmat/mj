@@ -247,7 +247,7 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr class="formquery">
-                                                                            <td height="22" align="center" class="firstLeft active">
+                                                                            <td class="firstLeft active">
                                                                                 <asp:LinkButton ID="lnkColumnTranslation" runat="server" CssClass="LinksVerwaltung">Spaltenübersetzungen&nbsp;» </asp:LinkButton>
                                                                             </td>
                                                                             <td class="active">
@@ -257,6 +257,14 @@
                                                                         <tr class="formquery">
                                                                             <td class="firstLeft active">
                                                                                 <asp:LinkButton ID="lnkFieldTranslation" runat="server" CssClass="LinksVerwaltung">Feldübersetzungen&nbsp;» </asp:LinkButton>
+                                                                            </td>
+                                                                            <td class="active">
+                                                                                &nbsp;
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="formquery">
+                                                                            <td class="firstLeft active">
+                                                                                <asp:LinkButton ID="lnkAppConfiguration" runat="server" CssClass="LinksVerwaltung">Anwendungseinstellungen&nbsp;» </asp:LinkButton>
                                                                             </td>
                                                                             <td class="active">
                                                                                 &nbsp;
@@ -361,6 +369,14 @@
                                                                 </td>
                                                                 <td align="left" class="active">
                                                                     <asp:TextBox ID="txtSchwellwert" runat="server" MaxLength="2" Width="30px"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td nowrap="nowrap" class="active">
+                                                                    
+                                                                </td>
+                                                                <td align="left" class="active">
+                                                                    
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">
