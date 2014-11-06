@@ -181,10 +181,11 @@ Namespace Treuhand
               " WHERE (NOT (InitializedBy='" & m_User.UserName & "'))" & _
               " AND (NOT (AuthorizationLevel<" & m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AuthorizationLevel").ToString & "))" & _
               " AND (TestUser=" & strTemp & ")" & _
-              " AND (CustomerReference=" & m_User.CustomerName & ")" & _
               " AND (BatchAuthorization=1)"
 
-            If Not m_User.Organization.AllOrganizations Then
+            If m_User.Organization.AllOrganizations Then
+                cmdText &= " AND (OrganizationID IN (SELECT OrganizationId FROM Organization WHERE CustomerId=" & m_User.Customer.CustomerId & "))"
+            Else
                 cmdText &= " AND (OrganizationID=" & sDitriktOrganisation & ")"
             End If
 
@@ -477,10 +478,11 @@ Namespace Treuhand
             Dim cmdText As String = "SELECT * FROM vwAuthorization" & _
               " WHERE (NOT (InitializedBy='" & m_User.UserName & "'))" & _
               " AND (NOT (AuthorizationLevel<" & m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AuthorizationLevel").ToString & "))" & _
-              " AND (TestUser=" & strTemp & ")" & _
-              " AND (CustomerReference=" & m_User.CustomerName & ")"
+              " AND (TestUser=" & strTemp & ")"
 
-            If Not m_User.Organization.AllOrganizations Then
+            If m_User.Organization.AllOrganizations Then
+                cmdText &= " AND (OrganizationID IN (SELECT OrganizationId FROM Organization WHERE CustomerId=" & m_User.Customer.CustomerId & "))"
+            Else
                 cmdText &= " AND (OrganizationID=" & sDitriktOrganisation & ")"
             End If
 
