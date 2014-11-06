@@ -237,6 +237,20 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Kernel\AbrufgrundAssignments.vb" />
+    <Compile Include="ApplicationConfiguration.aspx.designer.vb">
+      <DependentUpon>ApplicationConfiguration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationConfiguration.aspx.vb">
+      <DependentUpon>ApplicationConfiguration.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Kernel\AppConfigurationList.Designer.vb">
+      <DependentUpon>AppConfigurationList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\AppConfigurationList.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kernel\AppConfiguration.vb" />
     <Compile Include="lib\ShowBapisClass.vb" />
     <Compile Include="Bapi2Report.aspx.designer.vb">
       <DependentUpon>Bapi2Report.aspx</DependentUpon>
@@ -580,6 +594,7 @@
     <Content Include="jve_ZugriffsHistorie.aspx" />
     <Content Include="Bapi2Report.aspx" />
     <Content Include="JahresArchivManagement.aspx" />
+    <Content Include="ApplicationConfiguration.aspx" />
     <Content Include="RightsOverview.aspx" />
     <Content Include="LogSchwellwert.aspx" />
     <Content Include="LogViewer.aspx" />
