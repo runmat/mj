@@ -367,6 +367,17 @@ namespace AppRemarketing.forms
                 {
                     tblTemp.Rows[i].Delete();
                 }
+                else
+                {
+                    for (int j = 0; j < tblTemp.Rows[i].ItemArray.Length; j++)
+                    {
+                        var strWert = tblTemp.Rows[i][j].ToString();
+                        if (strWert.StartsWith(" ") || strWert.EndsWith(" "))
+                        {
+                            tblTemp.Rows[i][j] = strWert.Trim();
+                        }
+                    }
+                }
             }
 
             tblTemp.AcceptChanges();
