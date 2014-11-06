@@ -21,7 +21,6 @@ Partial Public Class FieldTranslation
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -144,8 +143,8 @@ Partial Public Class FieldTranslation
         Result.Visible = True 'tabellenZeile die DataGrid beinhaltet auf anzeigen JJ2007.11.12
         Dim dvFieldTranslation As DataView
 
-        If Not m_context.Cache("myColListView") Is Nothing Then
-            dvFieldTranslation = CType(m_context.Cache("myColListView"), DataView) 'wenn Cach oBjekt myColListView vorhanden Grid aus dieser Quelle Füllen JJ2007.11.12
+        If Session("myColListView") IsNot Nothing Then
+            dvFieldTranslation = CType(Session("myColListView"), DataView)
         Else
             Dim dtFieldTranslation As Kernel.FieldTranslationList
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
@@ -154,7 +153,6 @@ Partial Public Class FieldTranslation
 
                 dtFieldTranslation = New Kernel.FieldTranslationList(lblAppURL.Text, CInt(ddlCustomer.SelectedItem.Value), CInt(ddlLanguage.SelectedItem.Value), cn)
                 dvFieldTranslation = dtFieldTranslation.DefaultView
-                'm_context.Cache.Insert("myColListView", dvFieldTranslation, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero) 'catch OBjekt myColListView erzeugen, und mit DefaulDataview füllen? JJ2007.11.12
                 Session("myColListView") = dvFieldTranslation
             Finally
                 If cn.State <> ConnectionState.Closed Then
@@ -400,7 +398,6 @@ Partial Public Class FieldTranslation
         'bei Initalload sind Parameter False,True,True,True
         ClearEdit(blnClearDdlSelection) 'setzt editfelder Initialwerte z.B. ausgewählt ist Label, übersetzungsfelder Leer, der Übergabeparameter dient dazu ob die Dropdownlisten auch auf Initial gestellt werden sollen(Firma1) JJ2007.11.12 
         If blnClearCache Then 'löscht ein Cache Objekt mit dem key "myColListView", weiß noch nicht für was das gut ist, JJ2007.11.12
-            ' m_context.Cache.Remove("myColListView")
             Session.Remove("myColListView")
         End If
         If blnResetSelectedIndex Then dgSearchResult.SelectedIndex = -1 'wenn True keine Auswahl des SelectedIndex des datagrids JJ2007.11.12
