@@ -1,0 +1,14 @@
+﻿@using System.Web.Mvc.Html
+@using MvcTools
+@using MvcTools.Web
+@model MvcTools.Models.ContentEntity 
+
+@Html.Once("EditableContent_Once", @<text>@Html.Partial("EditableContent_Once")</text>)
+
+<img id="editableContentImage_@(Model.ID)" src="/Shared/Images/help.png" alt="" class="show-tooltip" 
+     @if (MvcSettings.CurrentUserIsEditor)
+     {
+         @<text>onclick = "ShowEditableContentEditor('@Model.ID')" style = "cursor: pointer"</text>;
+     }
+     />
+<span id="editableContentText_@(Model.ID)" class="show-tooltip-text">@Html.Raw(@Model.Text)</span>

@@ -1,0 +1,12 @@
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\bin\Debug\Toolbox.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\bin\Debug\Toolbox.pdb
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\obj\Debug\ToolboxLibrary.Toolbox.resources
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\bin\Debug\Toolbox.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\bin\Debug\Toolbox.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\ToolboxLibrary.Toolbox.resources
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb

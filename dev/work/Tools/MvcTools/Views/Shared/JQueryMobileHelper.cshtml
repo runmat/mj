@@ -1,0 +1,110 @@
+﻿<script type="text/javascript">
+
+    // Enthält allg. Hilfsfunktionen für JQuery Mobile (JQM) Anwendungen
+
+    // Blendet den JQM-BusyIndicator ein
+    function ShowBusyIndicator() {
+        $.mobile.loading('show');
+    }
+
+    // Blendet den JQM-BusyIndicator wieder aus
+    function HideBusyIndicator() {
+        $.mobile.loading('hide');
+    }
+
+    // UI-Refresh für eine Listenelement, aufzurufen nach clientseitiger ListItem-Änderung
+    function RefreshListUI(listid) {
+        var lst = $("#" + listid);
+        lst.listview('refresh');
+    }
+
+    // UI-Refresh für eine Listenelement, aufzurufen nach clientseitiger ListItem-Änderung
+    function RefreshTableUI(tableid) {
+        var tbl = $("#" + tableid);
+        tbl.table('refresh');
+    }
+
+    // UI-Refresh für eine Select-Auswahlliste, aufzurufen nach clientseitiger Options-Änderung
+    function RefreshSelectUI(selectid) {
+        var sel = $("#" + selectid);
+        sel.selectmenu('refresh');
+    }
+
+    // UI-Refresh für eine Checkbox, aufzurufen nach clientseitiger Auswahl-Änderung
+    function RefreshCheckboxUI(checkid) {
+        $("#" + checkid).checkboxradio('refresh');
+    }
+
+    // UI-Refresh für eine Radiobutton-Gruppe, aufzurufen nach clientseitiger Auswahl-Änderung
+    function RefreshRadiobuttonUI(radioname) {
+        $("input[name=" + radioname + "]").checkboxradio('refresh');
+    }
+
+    // UI-Refresh für die im angegebenen Container/DIV enthaltenen Controls (z.B. Radiobuttons in einer Table-Zelle)
+    function RefreshNestedControlsUI(containerid) {
+        $("#" + containerid).trigger('create');
+    }
+
+    // Auswahl der angegebenen Select-Option (ggf. inkl. UI-Refresh)
+    function SetDropdownValue(dropdownid, wert, withUIRefresh) {
+        var ddl = $("#" + dropdownid);
+        ddl.val(wert).attr('selected', true).siblings('option').removeAttr('selected');
+        if (withUIRefresh == true) {
+            RefreshSelectUI(dropdownid);
+        }
+    }
+
+    // Ermitteln der aktuell ausgwählten Select-Option
+    function GetDropdownValue(dropdownid) {
+        return $("#" + dropdownid + " option:selected").val();
+    }
+
+    // Setzen des angegebenen Wertes der Checkbox (ggf. inkl. UI-Refresh)
+    function SetCheckboxValue(checkid, checked, withUIRefresh) {
+        $("#" + checkid).attr('checked', checked);
+        if (withUIRefresh == true) {
+            RefreshCheckboxUI(checkid);
+        }
+    }
+
+    // Setzen des angegebenen Wertes in der Radiobutton-Gruppe (ggf. inkl. UI-Refresh)
+    function SetRadiobuttonValue(radioid, wert, withUIRefresh) {
+        if (wert == "") {
+            $("input[name=" + radioid + "]:checked").attr('checked', false);
+        } else {
+            $("input[name=" + radioid + "][value=" + wert + "]").attr('checked', true);
+        }
+        if (withUIRefresh == true) {
+            RefreshRadiobuttonUI(radioid);
+        }
+    }
+
+    // Ermitteln des gewählten Wertes der Checkbox
+    function GetCheckboxValue(checkid) {
+        return ($("#" + checkid).attr('checked') == "checked");
+    }
+
+    // Ermitteln des gewählten Wertes der Radiobutton-Gruppe
+    function GetRadiobuttonValue(radioid) {
+        return $("input[name=" + radioid + "]:checked").val();
+    }
+
+    // Input vom Typ "button" enablen (inkl. UI-Refresh)
+    function EnableButton(buttonid) {
+        var btn = $("input[type=button][id=" + buttonid + "]");
+        if (btn.hasClass("ui-btn-hidden")) {
+            btn.button('enable');
+            btn.button('refresh');
+        }
+    }
+
+    // Input vom Typ "button" disablen (inkl. UI-Refresh)
+    function DisableButton(buttonid) {
+        var btn = $("input[type=button][id=" + buttonid + "]");
+        if (btn.hasClass("ui-btn-hidden")) {
+            btn.button('disable');
+            btn.button('refresh');
+        }
+    }
+
+ </script>

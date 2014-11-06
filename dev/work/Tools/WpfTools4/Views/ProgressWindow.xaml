@@ -1,0 +1,48 @@
+﻿<Window x:Class="WpfTools4.ProgressWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:userControls="clr-namespace:WpfTools4.UserControls"
+    SizeToContent="Height"
+    Width="400"
+    WindowStyle="None"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    Topmost="True"
+    Name="Window">
+    <Border BorderThickness="3" BorderBrush="Gray" MinWidth="350" Padding="20,10,20,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="42"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Path=Header, ElementName=Window, Mode=OneWay}" FontWeight="Bold" />
+            </StackPanel>
+        
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5,0,10">
+                <userControls:ucBusyCircle Visibility="{Binding Path=BusyCircleVisible, ElementName=Window, Mode=OneWay}" Margin="0,8,15,8" />
+
+                <TextBlock FontSize="12" Text="{Binding Path=Details, ElementName=Window, Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,0,0" />
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" 
+                            Visibility="{Binding Path=ProgressInfoVisible, ElementName=Window, Mode=OneWay}" 
+                            VerticalAlignment="Center" Margin="0,0,0,0" >
+                    <TextBlock FontSize="12" Margin="5,0,0,0" Text="{Binding Path=Current, ElementName=Window, Mode=OneWay}" />
+                    <TextBlock FontSize="12" Margin="5,0,5,0" Text="/" />
+                    <TextBlock FontSize="12" Text="{Binding Path=Total, ElementName=Window, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding Path=ProgressInfoVisible, ElementName=Window, Mode=OneWay}">
+                <ProgressBar Width="380" Height="20" Value="{Binding Path=Current, ElementName=Window, Mode=OneWay}" Minimum="0" 
+                             Maximum="{Binding Path=Total, ElementName=Window, Mode=OneWay}" />
+            </StackPanel>
+            
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="6,10,6,6">
+                <Button Width="100" Height="26" Click="CancelClick">Abbrechen</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

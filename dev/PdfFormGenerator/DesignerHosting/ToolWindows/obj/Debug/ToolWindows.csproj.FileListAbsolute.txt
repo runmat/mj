@@ -1,0 +1,15 @@
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.pdb
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.OutputWindow.resources
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.SolutionExplorer.resources
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csproj.GenerateResource.Cache
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.OutputWindow.resources
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.SolutionExplorer.resources
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csproj.GenerateResource.Cache
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csprojResolveAssemblyReference.cache

@@ -1,0 +1,11 @@
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Loader\bin\Debug\Loader.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Loader\bin\Debug\Loader.pdb
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Loader\obj\Debug\Loader.dll
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Loader\obj\Debug\Loader.pdb
+C:\Users\JenzenM\AppData\Local\Temp\DesignerHosting\Loader\bin\Debug\GraphLibrary.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\bin\Debug\Loader.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\bin\Debug\Loader.pdb
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\bin\Debug\GraphLibrary.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\obj\Debug\Loader.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\obj\Debug\Loader.dll
+C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Loader\obj\Debug\Loader.pdb

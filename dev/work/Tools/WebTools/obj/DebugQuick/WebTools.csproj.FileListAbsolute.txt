@@ -1,0 +1,5 @@
+C:\dev\work\GAC\WebTools.dll
+C:\dev\work\GAC\WebTools.pdb
+C:\dev\work\Tools\WebTools\obj\DebugQuick\WebTools.csprojResolveAssemblyReference.cache
+C:\dev\work\Tools\WebTools\obj\DebugQuick\WebTools.dll
+C:\dev\work\Tools\WebTools\obj\DebugQuick\WebTools.pdb

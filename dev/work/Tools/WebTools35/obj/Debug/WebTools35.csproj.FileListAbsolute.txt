@@ -1,0 +1,5 @@
+C:\dev\work\GAC\WebTools35.dll
+C:\dev\work\GAC\WebTools35.pdb
+C:\dev\work\Tools\WebTools35\obj\Debug\WebTools35.dll
+C:\dev\work\Tools\WebTools35\obj\Debug\WebTools35.pdb
+C:\dev\work\Tools\WebTools35\obj\Debug\WebTools35.csprojResolveAssemblyReference.cache

@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucLoginMessageItemDisplayTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
+             mc:Ignorable="d">
+
+    <Grid Background="#EEEEEE" Margin="0,3">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="Background" Value="#F5F5F5"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="80px"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70px"/>
+            <ColumnDefinition Width="150px"/>
+            <ColumnDefinition Width="75px"/>
+            <ColumnDefinition Width="150px"/>
+            <ColumnDefinition Width="75px"/>
+            <ColumnDefinition Width="150px"/>
+            <ColumnDefinition Width="80px"/>
+            <ColumnDefinition Width="25px"/>
+            <ColumnDefinition Width="200px"/>
+            <ColumnDefinition Width="25px"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0">ID:</Label>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ID}"/>
+        <Label Grid.Row="2" Grid.Column="0">Geändert:</Label>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Created, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
+
+        <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">Meldung anzeigen</Label>
+        <Label Grid.Row="1" Grid.Column="2">von:</Label>
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ShowMessageFrom, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
+        <Label Grid.Row="2" Grid.Column="2">bis:</Label>
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding ShowMessageTo, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
+
+        <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="4" HorizontalAlignment="Center">Login sperren</Label>
+        <Label Grid.Row="1" Grid.Column="4">von:</Label>
+        <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding LockLoginFrom, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
+        <Label Grid.Row="2" Grid.Column="4">bis:</Label>
+        <TextBlock Grid.Row="2" Grid.Column="5" Text="{Binding LockLoginTo, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"/>
+        <Label Grid.Row="1" Grid.Column="6">Prod-User:</Label>
+        <CheckBox Grid.Row="1" Grid.Column="7" IsChecked="{Binding LockForProd}" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="2" Grid.Column="6">Test-User:</Label>
+        <CheckBox Grid.Row="2" Grid.Column="7" IsChecked="{Binding LockForTest}" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Label Grid.Row="3" Grid.Column="0">Titel:</Label>
+        <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Title}" />
+        <Image Grid.Row="3" Grid.Column="9" Width="18px" Source="/CKGDatabaseAdminTool;component/Images/fragezeichen_normal.png">
+            <Image.ToolTip>
+                <uc:ucLoginMessageTooltip/>
+            </Image.ToolTip>
+        </Image>
+
+        <Label Grid.Row="4" Grid.Column="0">Meldung:</Label>
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="8" Text="{Binding Message}" TextWrapping="Wrap" />
+        <Image Grid.Row="4" Grid.Column="9" Width="18px" Source="/CKGDatabaseAdminTool;component/Images/fragezeichen_normal.png">
+            <Image.ToolTip>
+                <uc:ucLoginMessageTooltip/>
+            </Image.ToolTip>
+        </Image>
+
+        <Button Grid.Row="0" Grid.Column="9" ToolTip="Bearbeiten" Command="{Binding DataContext.CommandEditLoginMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
+            <Grid Margin="1">
+                <Image Source="/CKGDatabaseAdminTool;component/Images/EditTableHS.png" />
+            </Grid>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="9" ToolTip="Löschen" Command="{Binding DataContext.CommandDeleteLoginMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type uc:ucManageLoginMessages}}}" CommandParameter="{Binding ID}">
+            <Grid Margin="1">
+                <Image Source="/CKGDatabaseAdminTool;component/Images/del.png" />
+            </Grid>
+        </Button>
+
+    </Grid>
+    
+</UserControl>

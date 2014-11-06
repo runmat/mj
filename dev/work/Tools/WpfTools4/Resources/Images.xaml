@@ -1,0 +1,117 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Image x:Shared="False" x:Key="image/10x10/go" Source="pack://application:,,,/WpfTools4;component/Images/10x10/go.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/level" Source="pack://application:,,,/WpfTools4;component/Images/10x10/level.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/new" Source="pack://application:,,,/WpfTools4;component/Images/10x10/new.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/delete" Source="pack://application:,,,/WpfTools4;component/Images/10x10/delete.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/close" Source="pack://application:,,,/WpfTools4;component/Images/10x10/close.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/edit" Source="pack://application:,,,/WpfTools4;component/Images/10x10/edit.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/excel_small_width" Source="pack://application:,,,/WpfTools4;component/Images/10x10/excel_small_width.png" SnapsToDevicePixels="True" Width="9" Height="16" />
+    <Image x:Shared="False" x:Key="image/10x10/left" Source="pack://application:,,,/WpfTools4;component/Images/10x10/left.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/right" Source="pack://application:,,,/WpfTools4;component/Images/10x10/right.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+    <Image x:Shared="False" x:Key="image/10x10/rotate_180" Source="pack://application:,,,/WpfTools4;component/Images/10x10/rotate_180.png" SnapsToDevicePixels="True" Width="10" Height="10" />
+
+    <Image x:Shared="False" x:Key="image/16x16/collapsed" Source="pack://application:,,,/WpfTools4;component/Images/16x16/collapsed.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/expanded" Source="pack://application:,,,/WpfTools4;component/Images/16x16/expanded.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/ball_red" Source="pack://application:,,,/WpfTools4;component/Images/16x16/ball_red.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/ball_green" Source="pack://application:,,,/WpfTools4;component/Images/16x16/ball_green.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/folder" Source="pack://application:,,,/WpfTools4;component/Images/16x16/folder.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/winword" Source="pack://application:,,,/WpfTools4;component/Images/16x16/winword.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/filter" Source="pack://application:,,,/WpfTools4;component/Images/16x16/filter.png" SnapsToDevicePixels="True" Width="16" Height="16"  />
+    <Image x:Shared="False" x:Key="image/16x16/winword_mailmerge" Source="pack://application:,,,/WpfTools4;component/Images/16x16/winword_mailmerge.png" SnapsToDevicePixels="True" Width="16" Height="16"  />
+    <Image x:Shared="False" x:Key="image/16x16/exit" Source="pack://application:,,,/WpfTools4;component/Images/16x16/exit.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/undo" Source="pack://application:,,,/WpfTools4;component/Images/16x16/undo.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/excel" Source="pack://application:,,,/WpfTools4;component/Images/16x16/excel.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/up_top" Source="pack://application:,,,/WpfTools4;component/Images/16x16/up_top.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/up" Source="pack://application:,,,/WpfTools4;component/Images/16x16/up.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/down" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/down_bottom" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down_bottom.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/refresh" Source="pack://application:,,,/WpfTools4;component/Images/16x16/refresh.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/file_new" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_new.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/file_edit" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_edit.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/file_copy" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_copy.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/file_delete" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_exclude.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/file_rename" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_document.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/folder_new" Source="pack://application:,,,/WpfTools4;component/Images/16x16/folder_new.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/add" Source="pack://application:,,,/WpfTools4;component/Images/16x16/add.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/delete" Source="pack://application:,,,/WpfTools4;component/Images/16x16/delete.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/info" Source="pack://application:,,,/WpfTools4;component/Images/16x16/info.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/save" Source="pack://application:,,,/WpfTools4;component/Images/16x16/save.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/alert" Source="pack://application:,,,/WpfTools4;component/Images/16x16/alert.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/print" Source="pack://application:,,,/WpfTools4;component/Images/16x16/print.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/pdf" Source="pack://application:,,,/WpfTools4;component/Images/16x16/pdf.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/pinned_up" Source="pack://application:,,,/WpfTools4;component/Images/16x16/pinned_up.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/pinned_down" Source="pack://application:,,,/WpfTools4;component/Images/16x16/pinned_down.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/lock" Source="pack://application:,,,/WpfTools4;component/Images/16x16/lock.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/unlock" Source="pack://application:,,,/WpfTools4;component/Images/16x16/unlock.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/gueltig_ab" Source="pack://application:,,,/WpfTools4;component/Images/16x16/gueltig_ab.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/gueltig_bis" Source="pack://application:,,,/WpfTools4;component/Images/16x16/gueltig_bis.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/OK" Source="pack://application:,,,/WpfTools4;component/Images/16x16/OK.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/cancel" Source="pack://application:,,,/WpfTools4;component/Images/16x16/cancel.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/NONE" Source="pack://application:,,,/WpfTools4;component/Images/16x16/NONE.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/Rücksprache_nötig" Source="pack://application:,,,/WpfTools4;component/Images/16x16/Rücksprache_nötig.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/22x22/fax" Source="pack://application:,,,/WpfTools4;component/Images/22x22/fax.png" SnapsToDevicePixels="True" Width="22" Height="22" />
+    <Image x:Shared="False" x:Key="image/22x22/mail" Source="pack://application:,,,/WpfTools4;component/Images/22x22/mail.png" SnapsToDevicePixels="True" Width="22" Height="22" />
+    <Image x:Shared="False" x:Key="image/22x22/telephone" Source="pack://application:,,,/WpfTools4;component/Images/22x22/telephone.png" SnapsToDevicePixels="True" Width="22" Height="22" />
+    <Image x:Shared="False" x:Key="image/22x22/mobilephone" Source="pack://application:,,,/WpfTools4;component/Images/22x22/mobilephone.png" SnapsToDevicePixels="True" Width="22" Height="22" />
+    <Image x:Shared="False" x:Key="image/22x22/infofeld" Source="pack://application:,,,/WpfTools4;component/Images/22x22/infofeld.png" SnapsToDevicePixels="True" Width="24" Height="88" />
+    <Image x:Shared="False" x:Key="image/22x22/infoTL" Source="pack://application:,,,/WpfTools4;component/Images/22x22/infoTL.png" SnapsToDevicePixels="True" Width="24" Height="88" />
+    <Image x:Shared="False" x:Key="image/22x22/address" Source="pack://application:,,,/WpfTools4;component/Images/22x22/address.png" SnapsToDevicePixels="True" Width="22" Height="22" />
+
+    <Image x:Shared="False" x:Key="image/24x24/OK" Source="pack://application:,,,/WpfTools4;component/Images/24x24/OK.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/cancel" Source="pack://application:,,,/WpfTools4;component/Images/24x24/cancel.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/apply" Source="pack://application:,,,/WpfTools4;component/Images/24x24/apply.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/exit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/exit.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/close_window" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/close_window2" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window2.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/internet" Source="pack://application:,,,/WpfTools4;component/Images/24x24/internet.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/email" Source="pack://application:,,,/WpfTools4;component/Images/24x24/email.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/zip" Source="pack://application:,,,/WpfTools4;component/Images/24x24/zip.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+
+    <Image x:Shared="False" x:Key="image/32x32/new" Source="pack://application:,,,/WpfTools4;component/Images/32x32/new.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/explorer" Source="pack://application:,,,/WpfTools4;component/Images/32x32/Explorer.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/mailmerge_start" Source="pack://application:,,,/WpfTools4;component/Images/32x32/mailmerge_start.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/users_copy" Source="pack://application:,,,/WpfTools4;component/Images/32x32/users_copy.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/users_save" Source="pack://application:,,,/WpfTools4;component/Images/32x32/users_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/users_delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/users_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/user_find" Source="pack://application:,,,/WpfTools4;component/Images/32x32/user_find.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/user" Source="pack://application:,,,/WpfTools4;component/Images/32x32/user.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/users" Source="pack://application:,,,/WpfTools4;component/Images/32x32/users.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/doctypes" Source="pack://application:,,,/WpfTools4;component/Images/32x32/doctypes.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/help" Source="pack://application:,,,/WpfTools4;component/Images/32x32/help.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/close_window" Source="pack://application:,,,/WpfTools4;component/Images/32x32/close_window.png" SnapsToDevicePixels="False" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/open" Source="pack://application:,,,/WpfTools4;component/Images/32x32/open.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/user_add" Source="pack://application:,,,/WpfTools4;component/Images/32x32/user_add.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/user_delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/user_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/note" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/note_add" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_add.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/note_delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/note_save" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/pdf" Source="pack://application:,,,/WpfTools4;component/Images/32x32/pdf.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/48x48/excel_add" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_add.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/excel_delete" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_delete.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/excel_edit" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_edit.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/apply" Source="pack://application:,,,/WpfTools4;component/Images/48x48/apply.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/warning" Source="pack://application:,,,/WpfTools4;component/Images/48x48/warning.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/open" Source="pack://application:,,,/WpfTools4;component/Images/48x48/open.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+
+    <Image x:Shared="False" x:Key="image/128x128/settings" Source="pack://application:,,,/WpfTools4;component/Images/128x128/settings.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+    <Image x:Shared="False" x:Key="image/128x128/info" Source="pack://application:,,,/WpfTools4;component/Images/128x128/info.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+    <Image x:Shared="False" x:Key="image/128x128/user" Source="pack://application:,,,/WpfTools4;component/Images/128x128/user.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+    <Image x:Shared="False" x:Key="image/128x128/log_files" Source="pack://application:,,,/WpfTools4;component/Images/128x128/log_files.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+
+    <Image x:Shared="False" x:Key="image/128x128/ok" Source="pack://application:,,,/WpfTools4;component/Images/128x128/ok.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+    <Image x:Shared="False" x:Key="image/128x128/warning" Source="pack://application:,,,/WpfTools4;component/Images/128x128/warning.png" SnapsToDevicePixels="True" Width="128" Height="128" />
+
+</ResourceDictionary>

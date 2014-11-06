@@ -1,0 +1,362 @@
+﻿<script type="text/javascript">
+
+    // Enthält allg. Hilfsfunktionen für JQuery Anwendungen
+
+    // Für die Werktagsermittlung weiter unten
+    var listeFesteFeiertage = [
+      [1, 1],
+      [5, 1],
+      [10, 3],
+      [12, 25],
+      [12, 26]
+    ];
+
+    // Bindet einen Script-Block im Page-Head ein
+    function includeJS(scriptPath) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = scriptPath;
+        $("head").append(script);
+    }
+
+    // Prüft, ob die Datumskomponente des angegebenen timestamps dem heutigen Datum entspricht
+    function IstHeute(zeitstempel) {
+        var jetzt = new Date();
+        if ((jetzt.getFullYear() == zeitstempel.getFullYear()) && (jetzt.getMonth() == zeitstempel.getMonth()) && (jetzt.getDate() == zeitstempel.getDate())) {
+            return true;
+        }
+        return false;
+    }
+
+    // Prüft, ob der verwendete Browser LocalStorage unterstützt
+    function BrowserSupportsLocalStorage() {
+        if (!Modernizr.localstorage) {
+            return false;
+        }
+        return true;
+    }
+
+    // Prüft, ob der verwendete Browser JSON-Strukturen unterstützt
+    function BrowserSupportsJSON() {
+        if (typeof JSON == "undefined") {
+            return false;
+        }
+        return true;
+    }
+
+    // Prüft, ob der verwendete Browser JSON-Strukturen unterstützt, und bindet ggf. 
+    // die JSON-Funktionalität explizit als .js-File ein, wenn im Browser nicht vordefiniert 
+    // (erforderlich bei alten Browsern bzw. im Kompatibilitätsmodus)
+    function EnsureJSONFunctionality() {
+        if (BrowserSupportsJSON() == false) {
+            includeJS("/ZLDMobile/Scripts/json2.js");
+        }
+    }
+
+    // Lädt die Daten zum angegebenen Key aus dem LocalStorage und gibt sie zurück
+    function LoadFromLocalStorage(schluessel) {
+        return JSON.parse(localStorage.getItem(schluessel));
+    }
+
+    // Speichert/ersetzt die übergebenen Daten unter dem angegebenen Key im LocalStorage
+    function SaveInLocalStorage(schluessel, daten) {
+        localStorage.setItem(schluessel, JSON.stringify(daten));
+    }
+
+    // Entfernt die Daten zum angegebenen Key aus dem LocalStorage
+    function RemoveFromLocalStorage(schluessel) {
+        localStorage.removeItem(schluessel);
+    }
+
+    // Compare-Funktion für Sortierung nach Element-values
+    function SortSelectOptionsByValue(a, b) {
+        return (a.value > b.value) ? 1 : -1;
+    }
+
+    // String links mit angegebenem Zeichen auf die gewünschte Gesamtlänge auffüllen
+    function PadLeft(strText, laenge, zeichen) {
+        var erg = strText;
+        for (var i = 0; i < (laenge - strText.length); i++) {
+            erg = zeichen + erg;
+        }
+        return erg;
+    }
+
+    // String recht mit angegebenem Zeichen auf die gewünschte Gesamtlänge auffüllen
+    function PadRight(strText, laenge, zeichen) {
+        var erg = strText;
+        for (var i = 0; i < (laenge - strText.length); i++) {
+            erg = erg + zeichen;
+        }
+        return erg;
+    }
+
+    // Entfernt alle Vorkommen des angegebenen Zeichens vom Ende des Textes
+    function TrimEnd(strText, strZeichen) {
+        var s = strText;
+        while (s.length > 0 && s.substr(s.length - 1, 1) == strZeichen) {
+            s = s.substr(0, s.length - 1);
+        }
+        return s;
+    }
+
+    // Entfernt alle Vorkommen des angegebenen Zeichens vom Beginn des Textes
+    function TrimStart(strText, strZeichen) {
+        var s = strText;
+        while (s.length > 0 && s.substr(0, 1) == strZeichen) {
+            s = s.substr(1);
+        }
+        return s;
+    }
+
+    // Entfernt alle Vorkommen des angegebenen Zeichens vom Beginn und Ende des Textes
+    function TrimText(strText, strZeichen) {
+        return TrimEnd(TrimStart(strText));
+    }
+
+    // Entfernt alle Nullen vom Beginn des Textes
+    function RemoveLeadingZeroes(strText) {
+        var s = strText;
+        while (s.length > 0 && s.substr(0, 1) == "0") {
+            s = s.substr(1);
+        }
+        return s;
+    }
+
+    // Gibt true zurück, wenn der Text den Filtertext enthält, sonst false
+    function ContainsIgnoreCase(strText, strFilter) {
+        return (strText.toUpperCase().indexOf(strFilter.toUpperCase()) >= 0);
+    }
+
+    // Prüft, ob ein Control existiert
+    function ControlExists(controlId) {
+        if ($("#" + controlId).length) {
+            return true;
+        }
+        return false;
+    }
+
+    // Prüft das Kennzeichenformat (je nach Dienstleistungsart bzw. -nummer unterschiedliche Prüfkriterien)
+    function CheckFormatKennzeichen(strKennz, dienstleistung) {
+        var expr;
+
+        switch (dienstleistung) {
+            case "6":
+                // Funkennzeichen
+                // --> keine Prüfung
+                break;
+            case "574":
+                // Dauerkennz. Neuzul.
+                expr = /^[A-ZÄÖÜ]{1,3}-\d{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "592":
+                // Kurzzeitzulassung
+                expr = /^[A-ZÄÖÜ]{1,3}-\d{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "600":
+                // Zollzulassung
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z0-9]{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "605":
+                // Dauerkennz. verl.
+                expr = /^[A-ZÄÖÜ]{1,3}-\d{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "679":
+                // Rotes Heft
+                expr = /^[A-ZÄÖÜ]{1,3}-\d{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            default:
+                // Standard-Kennzeichen
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    // Prüft das Datum (string)
+    function CheckFormatDatum(strDatum) {
+        if (strDatum != null && strDatum != "") {
+            var expr = /^[0-3][0-9].[0-1][0-9].\d{4}$/;
+            if (!expr.test(strDatum)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Prüft, ob das angegebenen Datum (string) vor oder nach dem Referenzdatum (string) liegt, 
+    // gibt 1 (größer), 0 (gleich), -1 (kleiner) oder -2 (Fehler) zurück
+    function VergleicheDatum(strRefDatum, strDatum) {
+        if (CheckFormatDatum(strRefDatum) == false || CheckFormatDatum(strDatum) == false) {
+            return -2;
+        }
+        var datePartsRef = strRefDatum.split(".");
+        var datumRef = new Date(datePartsRef[2], (datePartsRef[1] - 1), datePartsRef[0]);
+        var dateParts = strDatum.split(".");
+        var datum = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+        var jahrRef = datumRef.getFullYear();
+        var monatRef = datumRef.getMonth();
+        var tagRef = datumRef.getDate();
+        var jahr = datum.getFullYear();
+        var monat = datum.getMonth();
+        var tag = datum.getDate();
+        if (jahr == jahrRef) {
+            if (monat == monatRef) {
+                if (tag == tagRef) {
+                    return 0;
+                } else {
+                    if (tag < tagRef) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            } else {
+                if (monat < monatRef) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        } else {
+            if (jahr < jahrRef) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    // div-Operation
+    function berechneDiv(zahl1, zahl2) {
+        if (zahl1 * zahl2 > 0) {
+            return Math.floor(zahl1 / zahl2);
+        }
+        else {
+            return Math.ceil(zahl1 / zahl2);
+        }
+    }
+
+    // Erweiterte Gaußsche Osterformel
+    function berechneOstersonntag(jahr) {
+        var k = berechneDiv(jahr, 100);
+        var m = 15 + berechneDiv(3 * k + 3, 4) - berechneDiv(8 * k + 13, 25);
+        var s = 2 - berechneDiv(3 * k + 3, 4);
+        var a = jahr % 19;
+        var d = (19 * a + m) % 30;
+        var r = berechneDiv(berechneDiv(d + a, 11), 29);
+        var og = 21 + d - r;
+        var sz = 7 - ((jahr + berechneDiv(jahr, 4) + s) % 7);
+        var oe = 7 - ((og - sz) % 7);
+        var os = og + oe;
+        // Monat auch hier wieder 0..11
+        if (os > 31) {
+            return new Date(2013, 3, os - 31);
+        }
+        else {
+            return new Date(2013, 2, os);
+        }
+    }
+
+    // Stellt sicher, dass das angegebene Datum kein Feiertag ist
+    function keinFeiertag(date) {
+        var jahr = date.getFullYear();
+        var monat = date.getMonth();
+        var tag = date.getDate();
+        // statische Feiertage
+        for (i = 0; i < listeFesteFeiertage.length; i++) {
+            // getMonth liefert 0..11, deshalb -1
+            if ((monat == listeFesteFeiertage[i][0] - 1)
+          && (tag == listeFesteFeiertage[i][1])) {
+                return [false, ''];
+            }
+        }
+        // dynamische Feiertage
+        // Ostersonntag
+        var ostersonntag = berechneOstersonntag(jahr);
+        if ((monat == ostersonntag.getMonth())
+          && (tag == ostersonntag.getDate())) {
+            return [false, ''];
+        }
+        // Karfreitag
+        var feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+        feiertag.setDate(ostersonntag.getDate() - 2);
+        if ((monat == feiertag.getMonth())
+          && (tag == feiertag.getDate())) {
+            return [false, ''];
+        }
+        // Ostermontag
+        feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+        feiertag.setDate(ostersonntag.getDate() + 1);
+        if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+            return [false, ''];
+        }
+        // Christi Himmelfahrt
+        feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+        feiertag.setDate(ostersonntag.getDate() + 39);
+        if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+            return [false, ''];
+        }
+        // Pfingstmontag
+        feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+        feiertag.setDate(ostersonntag.getDate() + 50);
+        if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+            return [false, ''];
+        }
+        return [true, ''];
+    }
+
+    // Stellt sicher, dass das angegebene Datum kein Samstag oder Sonntag ist
+    function istKeinWochenende(date) {
+        var wochentag = date.getDay();
+        if ((wochentag == 0) || (wochentag == 6)) {
+            return [false, ''];
+        }
+        return [true, ''];
+    }
+
+    // Werktagsermittlung (verarbeitet Dates oder Texte im Format "TTMMJJ")
+    function nurWerktage(date) {
+        if ((date != null) && (date != "")) {
+            var tempDate;
+            if (date instanceof Date) {
+                tempDate = date;
+            }
+            else {
+                jahr = 2000 + parseInt(date.substring(4, 6), 10);
+                monat = parseInt(date.substring(2, 4), 10) - 1;
+                tag = parseInt(date.substring(0, 2), 10);
+                tempDate = new Date(jahr, monat, tag);
+            }
+            var keinWochenende = istKeinWochenende(tempDate);
+            if (keinWochenende[0]) {
+                return keinFeiertag(tempDate);
+            } else {
+                return keinWochenende;
+            }
+        }
+        return [true, ''];
+    }
+
+ </script>

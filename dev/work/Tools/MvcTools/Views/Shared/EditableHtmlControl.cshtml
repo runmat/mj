@@ -1,0 +1,26 @@
+﻿@using System.Web.Mvc.Html
+@using MvcTools
+@using MvcTools.Web
+@model MvcTools.Models.ContentEntity 
+
+@Html.Once("EditableContent_Once", @<text>@Html.Partial("EditableContent_Once")</text>)
+
+@if (!MvcSettings.CurrentUserIsEditor)
+{
+    @Html.Raw(@Model.Text)<br />
+}
+else
+{
+    <table style="margin: 0;padding: 0;">
+        <tr>
+            <td id="editableContentText_@(Model.ID)" style="vertical-align: top; padding: 0; margin: 0">
+                @Html.Raw(@Model.Text)
+            </td>
+            <td style="vertical-align: top; padding: 0; margin: 0">
+                <img id="editableContentImage_@(Model.ID)" src="/Shared/Images/edit.png" alt="" 
+                    onclick = "ShowEditableContentEditor('@Model.ID')" 
+                    style = "cursor: pointer" />
+            </td>
+        </tr>
+    </table>    
+}

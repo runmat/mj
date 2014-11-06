@@ -1,0 +1,121 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="XpsDocumentViewerAnimatedBase" TargetType="{x:Type DocumentViewer}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="ShowPageBorders" Value="False" />
+        <Setter Property="Width" Value="0" />
+        <Setter Property="Height" Value="0" />
+        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="Zoom" Value="100" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DocumentViewer}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <CheckBox Style="{StaticResource HyperLinkCheckBoxImage}" 
+                                  IsChecked="{Binding IsEnabled, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DocumentViewer}}" 
+                                  Content="{StaticResource image/32x32/close_window}" 
+                                  HorizontalAlignment="Right" Width="32" Height="32" 
+                                  ToolTip="Schließen" />
+                        <Border Grid.Row="1" BorderThickness="2" BorderBrush="Black" Focusable="False" Background="White" Padding="0" Margin="0,0,20,0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" ShadowDepth="10" Opacity="0.5" />
+                            </Border.Effect>
+                            <ScrollViewer CanContentScroll="true" HorizontalScrollBarVisibility="Disabled" x:Name="PART_ContentHost" IsTabStop="true" Padding="0">
+                                <ScrollViewer.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource ControlMediumColor}" Offset="1" />
+                                    </LinearGradientBrush>
+                                </ScrollViewer.Background>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard Duration="0:0:2.0">
+                            <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="1050">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut" Springiness="3" Oscillations="2" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="500">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut" Springiness="3" Oscillations="2" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard Duration="0:0:2.0">
+                            <DoubleAnimation Storyboard.TargetProperty="Width" From="1050" To="0">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn" Springiness="1" Oscillations="1" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetProperty="Height" From="500" To="0">
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn" Springiness="1" Oscillations="1" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="XpsDocumentViewerAnimated" BasedOn="{StaticResource XpsDocumentViewerAnimatedBase}" TargetType="{x:Type DocumentViewer}">
+        <Setter Property="IsEnabled">
+            <Setter.Value>
+                <Binding Path="XpsDocumentVisible" Mode="TwoWay" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Binding Path="XpsDocumentVisibleEnabled" Converter="{StaticResource BooleanVisibilityConverter}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="XpsDocument2ViewerAnimated" BasedOn="{StaticResource XpsDocumentViewerAnimatedBase}" TargetType="{x:Type DocumentViewer}">
+        <Setter Property="IsEnabled">
+            <Setter.Value>
+                <Binding Path="XpsDocument2Visible" Mode="TwoWay" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Binding Path="XpsDocument2VisibleEnabled" Converter="{StaticResource BooleanVisibilityConverter}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="XpsDocumentViewer3Animated" BasedOn="{StaticResource XpsDocumentViewerAnimatedBase}" TargetType="{x:Type DocumentViewer}">
+        <Setter Property="IsEnabled">
+            <Setter.Value>
+                <Binding Path="XpsDocument3Visible" Mode="TwoWay" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Binding Path="XpsDocument3VisibleEnabled" Converter="{StaticResource BooleanVisibilityConverter}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

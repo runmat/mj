@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE073662-9DA7-4B2C-8877-893A044EB157}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MvcTools</RootNamespace>
+    <AssemblyName>MvcTools</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugQuick|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugQuick\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Commons.Web.Mvc.PrecompiledViews, Version=1.0.5.0, Culture=neutral, PublicKeyToken=b66b1a10e1d96b4d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MvcPrecompiledViews\Commons.Web.Mvc.PrecompiledViews.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.WorkflowServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc, Version=2012.2.607.340, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\TelerikMvcExtensions\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\DataContextCapableController.cs" />
+    <Compile Include="Controllers\LayoutFlexibleController.cs" />
+    <Compile Include="Controllers\LogonCapableController.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\EditableContentControlController.cs" />
+    <Compile Include="Controls\HtmlHelperExtensions.cs" />
+    <Compile Include="Data\DataService.cs" />
+    <Compile Include="Data\LinqSqlDataService.cs" />
+    <Compile Include="Data\EfDataService.cs" />
+    <Compile Include="Data\MvcRepository.cs" />
+    <Compile Include="Data\SessionDataHelper.cs" />
+    <Compile Include="Data\XsdSchemaCreator.cs" />
+    <Compile Include="Imaging\DbImageFileCacheService.cs" />
+    <Compile Include="Imaging\Imaging.cs" />
+    <Compile Include="Models\EF\MvcDbContext.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\FormHintModel.cs" />
+    <Compile Include="Models\FormWizardModel.cs" />
+    <Compile Include="Models\FormControlModel.cs" />
+    <Compile Include="Models\FormDateRangePickerModel.cs" />
+    <Compile Include="Models\SimpleFormDateRangePickerModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MvcSettings.cs" />
+    <Compile Include="Models\EF\ContentEntity.cs" />
+    <Compile Include="Data\DataTypes\DecimalExtensions.cs" />
+    <Compile Include="Data\DataTypes\StringExtensions.cs" />
+    <Compile Include="Views\Shared\EditableContent_Once.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContent_Once.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\EditableContent_Once_Editor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContent_Once_Editor.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Error\Index.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Shared\Error.cs">
+      <DependentUpon>Error.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Shared\JQueryHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JQueryHelper.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\JQueryMobileHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JQueryMobileHelper.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Web\Attributes\CustomHandleErrorAttribute.cs" />
+    <Compile Include="Web\HtmlHelperExtensions.cs" />
+    <Compile Include="Web\HttpApplicationExtensions.cs" />
+    <Compile Include="Web\HttpContextExtensions.cs" />
+    <Compile Include="Web\HttpPostedFileBaseExtensions.cs" />
+    <Compile Include="Web\IEnumerableExtensions.cs" />
+    <Compile Include="Web\IWebEditorUserProvider.cs" />
+    <Compile Include="Web\ModelStateExtensions.cs" />
+    <Compile Include="Web\MvcAjaxOptions.cs" />
+    <Compile Include="Web\Json.cs" />
+    <Compile Include="Web\TelerikExtensionsUI.cs" />
+    <Compile Include="Web\ModelBinders\DateTimeModelBinder.cs" />
+    <Compile Include="Web\ModelBinders\DecimalModelBinder.cs" />
+    <Compile Include="Web\ModelBinders\ArrayModelBinder.cs" />
+    <Compile Include="Web\MvcControlerEfModelService.cs" />
+    <Compile Include="Web\MvcControlerLinqSqlModelService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\MvcControllerExtensions.cs" />
+    <Compile Include="Web\MvcTag.cs" />
+    <Compile Include="Web\MvcWrapper.cs" />
+    <Compile Include="Web\SessionStore.cs" />
+    <Compile Include="Web\SessionHelper.cs" />
+    <Compile Include="Web\StringExtensions.cs" />
+    <Compile Include="Web\TelerikExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Images\help.png" />
+    <EmbeddedResource Include="Images\edit.png" />
+    <EmbeddedResource Include="Images\down.png" />
+    <EmbeddedResource Include="Images\up.png" />
+    <EmbeddedResource Include="Scripts\TelerikExtensions.js" />
+    <EmbeddedResource Include="Images\excel.png" />
+    <EmbeddedResource Include="Images\pdf.png" />
+    <EmbeddedResource Include="Styles\TelerikExtensions.css" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Shared\EditableContent_Once.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>EditableContent_Once.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Shared\EditableContent_Once_Editor.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>EditableContent_Once_Editor.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Error\Index.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>Index.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Shared\JQueryHelper.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>JQueryHelper.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Shared\JQueryMobileHelper.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>JQueryMobileHelper.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Shared\Error.cshtml">
+      <Generator>MvcRazorClassGenerator</Generator>
+      <LastGenOutput>Error.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebTools35\WebTools35.csproj">
+      <Project>{772437C2-C72D-4F33-9727-312F8868C94D}</Project>
+      <Name>WebTools35</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

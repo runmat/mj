@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucCopyFieldTranslations"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+    <Grid Margin="5" Background="#EEEEEE">
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type DataGrid}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
+            </Style>
+            <CollectionViewSource x:Key="OtherDbConnections" Source="{Binding DbConnections}" 
+                              Filter="OtherDbConnections_Filter">
+            </CollectionViewSource>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24px"/>
+            <RowDefinition Height="5px"/>
+            <RowDefinition Height="20px"/>
+            <RowDefinition/>
+            <RowDefinition Height="28px"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="165px"/>
+        </Grid.ColumnDefinitions>
+
+        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeBehavior="PreviousAndNext" Width="4" Background="#00FFFFFF" />
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Anwendungen:" FontWeight="Bold" />
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="Feldübersetzungen:" FontWeight="Bold" />
+
+        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ShowOnlyNewApplications}" VerticalAlignment="Center" Margin="2,0">Nur neue</CheckBox>
+        <DataGrid Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Name="dgApplications" ItemsSource="{Binding Applications}" SelectionChanged="dgApplications_OnSelectionChanged" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding AppID}" />
+                <DataGridTemplateColumn Header="Menü" Width="42" SortMemberPath="AppInMenu">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding AppInMenu}" IsEnabled="False" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding AppName}" />
+                <DataGridTextColumn Header="Anzeigename" Binding="{Binding AppFriendlyName}" />
+                <DataGridTextColumn Header="URL" Binding="{Binding AppURL}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Row="2" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding FieldTranslations}" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Feldname" Binding="{Binding FieldName}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell" >
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Feldtyp" Binding="{Binding FieldType}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell" >
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Übersetzung" Binding="{Binding Content}" Width="*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell" >
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <ComboBox Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Source={StaticResource OtherDbConnections}}" SelectedValue="{Binding DestinationDatabase}" />
+        <Button Grid.Row="4" Grid.Column="3" Command="{Binding CommandCopyFieldTranslationsToDestinationDatabase}" Content="Feldübersetzungen kopieren"/>
+
+    </Grid>
+</UserControl>
