@@ -31,6 +31,8 @@ namespace Loader
 			DesignOnlyAttribute.No
 		};
 		private Type rootComponentType;
+
+        public Form PdfForm { get; private set; }
 		
 		#region Constructors
 
@@ -59,15 +61,28 @@ namespace Loader
 
 		#region Overriden methods of BasicDesignerLoader
 
-		// Called by the host when we load a document.
+        public void PerformLoad()
+        {
+            PerformLoad(null);
+        }
+
+
+        // Called by the host when we load a document.
 		protected override void PerformLoad(IDesignerSerializationManager designerSerializationManager)
 		{
-			this.host = this.LoaderHost;
+		    try
+		    {
+		        this.host = this.LoaderHost;
+		    }
+		    catch (InvalidOperationException e)
+		    {
+		        this.host = null;
+		    }
 
-			if (host == null)
-			{
-				throw new ArgumentNullException("BasicHostLoader.BeginLoad: Invalid designerLoaderHost.");
-			}
+		    //if (host == null)
+            //{
+            //    throw new ArgumentNullException("BasicHostLoader.BeginLoad: Invalid designerLoaderHost.");
+            //}
 
 			// The loader will put error messages in here.
 			ArrayList errors = new ArrayList();
@@ -107,19 +122,22 @@ namespace Loader
 			// Listening to event notifications is how a designer "Loader" can also be used
 			// to save data.  If we wanted to integrate this loader with source code control,
 			// we would listen to the "ing" events as well as the "ed" events.
-			IComponentChangeService cs = host.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+		    if (host != null)
+		    {
+		        var cs = host.GetService(typeof (IComponentChangeService)) as IComponentChangeService;
 
-			if (cs != null)
-			{
-				cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
-				cs.ComponentAdded += new ComponentEventHandler(OnComponentAddedRemoved);
-				cs.ComponentRemoved += new ComponentEventHandler(OnComponentAddedRemoved);
-			}
+		        if (cs != null)
+		        {
+		            cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
+		            cs.ComponentAdded += new ComponentEventHandler(OnComponentAddedRemoved);
+		            cs.ComponentRemoved += new ComponentEventHandler(OnComponentAddedRemoved);
+		        }
 
-			// Let the host know we are done loading.
-			host.EndLoad(baseClassName, successful, errors);
+		        // Let the host know we are done loading.
+		        host.EndLoad(baseClassName, successful, errors);
+		    }
 
-			// We've just loaded a document, so you can bet we need to flush changes.
+		    // We've just loaded a document, so you can bet we need to flush changes.
 			dirty = true;
 			unsaved = false;
 		}
@@ -551,7 +569,9 @@ namespace Loader
 
 					if (node.Name.Equals("Object"))
 					{
-						ReadObject(node, errors);
+						var o = ReadObject(node, errors);
+					    if (PdfForm == null)
+					        PdfForm = (Form) o;
 					}
 					else
 					{
@@ -709,14 +729,17 @@ namespace Loader
 
 			if (typeof(IComponent).IsAssignableFrom(type))
 			{
-				if (nameAttr == null)
-				{
-					instance = host.CreateComponent(type);
-				}
-				else
-				{
-					instance = host.CreateComponent(type, nameAttr.Value);
-				}
+			    try
+			    {
+			        if (nameAttr == null)
+			            instance = host.CreateComponent(type);
+			        else
+			            instance = host.CreateComponent(type, nameAttr.Value);
+			    }
+			    catch
+			    {
+			        instance = Activator.CreateInstance(type);
+			    }
 			}
 			else
 			{
@@ -787,6 +810,7 @@ namespace Loader
 
 			return instance;
 		}
+
 		/// Parses the given XML node and sets the resulting property value.
 		private void ReadProperty(XmlNode node, object instance, ArrayList errors)
 		{

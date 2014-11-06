@@ -1,6 +1,9 @@
 ﻿using System.IO;
 using Aspose.Pdf;
 using DocumentTools.Services;
+using Loader;
+using System.Linq;
+using ToolboxLibrary;
 
 namespace AsposeTest
 {
@@ -9,7 +12,9 @@ namespace AsposeTest
         static void Main(string[] args)
         {
             //TestAsposeWordImageReplace();
-            TestAsposePdf();
+            //TestAsposePdf();
+
+            TestDeserializeObjects();
         }
 
         static void TestAsposeWordImageReplace()
@@ -71,6 +76,18 @@ namespace AsposeTest
             sec.Paragraphs.Add(text2);
 
             pdf.Save(Path.Combine(path, dstPdf));
+        }
+
+        static void TestDeserializeObjects()
+        {
+            var xmlFileName = @"test.xml";
+
+            var loader = new BasicHostLoader(xmlFileName);
+            loader.PerformLoad();
+
+            var form = loader.PdfForm;
+            var image = form.BackgroundImage;
+            var labels = form.Controls.OfType<PdfLabel>().ToList();
         }
     }
 }

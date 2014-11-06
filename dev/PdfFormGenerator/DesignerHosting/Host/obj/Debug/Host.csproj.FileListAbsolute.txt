@@ -24,3 +24,16 @@ C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Host\obj\Debug\Host.MyTopL
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Host\obj\Debug\Host.csproj.GenerateResource.Cache
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Host\obj\Debug\Host.dll
 C:\Users\JenzenM\VS-Online\Repos\Test\DesignerHosting\Host\obj\Debug\Host.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Host.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Host.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\GraphLibrary.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Loader.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\ToolWindows.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Loader.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\ToolWindows.pdb
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.HostControl.resources
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.MyTopLevelComponent.resources
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.csproj.GenerateResource.Cache
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.dll
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.pdb
