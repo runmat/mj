@@ -16,3 +16,10 @@ C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\D
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\bin\Debug\Toolbox.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\bin\Debug\Toolbox.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\ToolboxLibrary.Toolbox.resources
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.csproj.GenerateResource.Cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Toolbox\obj\Debug\Toolbox.pdb

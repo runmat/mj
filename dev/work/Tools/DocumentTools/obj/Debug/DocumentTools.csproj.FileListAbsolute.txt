@@ -8,3 +8,8 @@ C:\Users\JenzenM\Documents\mj\dev\work\Tools\DocumentTools\obj\Debug\DocumentToo
 C:\Users\JenzenM\Documents\mj\dev\work\Tools\DocumentTools\obj\Debug\DocumentTools.pdb
 C:\Users\JenzenM\Documents\mj\dev\work\GAC\DocumentTools.dll
 C:\Users\JenzenM\Documents\mj\dev\work\GAC\DocumentTools.pdb
+C:\Users\Matz\Documents\mj\dev\work\GAC\DocumentTools.dll
+C:\Users\Matz\Documents\mj\dev\work\GAC\DocumentTools.pdb
+C:\Users\Matz\Documents\mj\dev\work\Tools\DocumentTools\obj\Debug\DocumentTools.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\work\Tools\DocumentTools\obj\Debug\DocumentTools.dll
+C:\Users\Matz\Documents\mj\dev\work\Tools\DocumentTools\obj\Debug\DocumentTools.pdb

@@ -9,10 +9,6 @@ using System.Windows.Forms.Design;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using Microsoft.Tools.Graphs;
-using Microsoft.Tools.Graphs.Bars;
-using Microsoft.Tools.Graphs.Legends;
-using Microsoft.Tools.Graphs.Pies;
 
 namespace Host
 {
@@ -118,11 +114,6 @@ namespace Host
 
 						Image image = null;
 
-						if (_graphStyle == GraphStype.Pie)
-							image = GetPieGraph();
-						else
-							image = GetBarGraph();
-
 						pe.Graphics.DrawImage(image, this.Bounds);
 					}
 				}
@@ -175,66 +166,6 @@ namespace Host
 				{
 					return (IToolboxService)_rootDesigner.GetService(typeof(IToolboxService));
 				}
-			}
-			private Image GetPieGraph()
-			{
-				RandomUtil ru = new RandomUtil();
-				PieGraph pg = new PieGraph(this.Size);
-
-				pg.Color = Color.White;
-				pg.ColorGradient = Color.Orange; 
-
-				Legend legend = new Legend(this.Width, 70);
-
-				legend.Text = String.Empty;
-				pg.Text = _displayString + " Total: " + _totalComponents.ToString();
-
-				ICollection keys = _componentInfoTable.Keys;
-				IEnumerator ie = keys.GetEnumerator();
-				while (ie.MoveNext())
-				{
-					Type key = (Type)ie.Current;
-					ComponentInfo ci = (ComponentInfo)_componentInfoTable[key];
-
-					PieSlice ps = new PieSlice(ci.Count, ci.Color);
-					pg.Slices.Add(ps);
-
-					LegendEntry le = new LegendEntry(ci.Color, ci.Type.Name.ToString().Trim());
-					legend.LegendEntryCollection.Add(le);
-				}
-
-				return GraphRenderer.DrawGraphAndLegend(pg, legend, this.Size);
-			}
-			private Image GetBarGraph()
-			{
-				RandomUtil ru = new RandomUtil();
-				BarGraph bg = new BarGraph(this.Size);
-
-				bg.Color = Color.White;
-				bg.ColorGradient = Color.Orange;
-
-				Legend legend = new Legend(this.Width, 70);
-
-				legend.Text = String.Empty;
-				bg.Text = _displayString + " Total: " + _totalComponents.ToString();
-
-				ICollection keys = _componentInfoTable.Keys;
-				IEnumerator ie = keys.GetEnumerator();
-
-				while (ie.MoveNext())
-				{
-					Type key = (Type)ie.Current;
-					ComponentInfo ci = (ComponentInfo)_componentInfoTable[key];
-					BarSlice bs = new BarSlice(ci.Count, ci.Color);
-
-					bg.BarSliceCollection.Add(bs);
-
-					LegendEntry le = new LegendEntry(ci.Color, ci.Type.Name.ToString().Trim());
-
-					legend.LegendEntryCollection.Add(le);
-				}
-
-				return GraphRenderer.DrawGraphAndLegend(bg, legend, this.Size);
 			}
 			private class ComponentInfo
 			{

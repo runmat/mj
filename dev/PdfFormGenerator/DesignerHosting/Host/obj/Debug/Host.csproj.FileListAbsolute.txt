@@ -37,3 +37,15 @@ C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debu
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.csproj.GenerateResource.Cache
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.HostControl.resources
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.MyTopLevelComponent.resources
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.csproj.GenerateResource.Cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Host.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Host.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Loader.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\ToolWindows.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Loader.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\ToolWindows.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.pdb

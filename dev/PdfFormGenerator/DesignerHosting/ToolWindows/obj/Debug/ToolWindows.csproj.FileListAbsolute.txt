@@ -21,3 +21,11 @@ C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\o
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csproj.GenerateResource.Cache
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\bin\Debug\ToolWindows.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.OutputWindow.resources
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.SolutionExplorer.resources
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.csproj.GenerateResource.Cache
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\ToolWindows\obj\Debug\ToolWindows.pdb
