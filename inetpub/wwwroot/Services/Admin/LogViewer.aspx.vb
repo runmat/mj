@@ -25,10 +25,8 @@ Public Class LogViewer
 
 #End Region
 
-    Private m_context As HttpContext = HttpContext.Current
     Private m_User As User
     Private m_App As App
-    Private DetailDS As SqlDataSource
 
     Private m_blnShowDetails() As Boolean
     Private m_objTrace As Base.Kernel.Logging.Trace
@@ -55,8 +53,8 @@ Public Class LogViewer
                 trGruppe.Visible = False
                 trOrganisation.Visible = False
             Else
-                If Not m_context.Cache("m_objTrace") Is Nothing Then
-                    m_objTrace = CType(m_context.Cache("m_objTrace"), Base.Kernel.Logging.Trace)
+                If Session("m_objTrace") IsNot Nothing Then
+                    m_objTrace = CType(Session("m_objTrace"), Base.Kernel.Logging.Trace)
                 End If
             End If
 
@@ -386,7 +384,6 @@ Public Class LogViewer
         Result.Visible = True
         rgSearchResult.Visible = True
 
-        Dim _context As HttpContext = HttpContext.Current
         Dim dvUser As DataView
 
         If Not Session("myUserListView") Is Nothing Then
@@ -607,7 +604,7 @@ Public Class LogViewer
         If blnFill Then
             Me.Result.Visible = True
             FillGrid(0)
-            m_context.Cache.Insert("m_objTrace", m_objTrace, New System.Web.Caching.CacheDependency(Server.MapPath("Logviewer.aspx")), DateTime.Now.AddMinutes(20), TimeSpan.Zero)
+            Session("m_objTrace") = m_objTrace
         Else
             Me.Result.Visible = False
             Me.lblError.Text = "Diese Selektion ist nicht auswertbar."

@@ -181,7 +181,6 @@ Public Class UserHistory
     Private Sub FillDataGrid(ByVal strSort As String)
         Result.Visible = True
 
-        Dim _context As HttpContext = HttpContext.Current
         Dim dvUser As DataView
 
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
