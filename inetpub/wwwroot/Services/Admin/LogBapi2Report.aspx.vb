@@ -27,7 +27,6 @@ Partial Public Class LogBapi2Report
 
         Dim dv As DataView = dtCustomers.DefaultView
         dv.Sort = "Customername"
-        ' m_context.Cache.Insert("myCustomerListView", dv, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
         Session.Add("myCustomerListView", dv)
 
         With ddlFilterCustomer
