@@ -9,7 +9,6 @@ Partial Public Class OrganizationManagement
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
