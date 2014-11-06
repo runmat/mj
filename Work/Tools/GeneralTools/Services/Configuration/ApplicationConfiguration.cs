@@ -14,7 +14,7 @@ namespace GeneralTools.Services
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "SELECT * FROM ApplicationConfig " +
-                                  "WHERE AppID = @AppID AND ConfigKey = @ConfigKey AND (CustomerID = @CustomerID OR CustomerID = 0) AND (GroupID = @GroupID OR GroupID = 0)";
+                                  "WHERE AppID = @AppID AND ConfigKey = @ConfigKey AND CustomerID IN (1, @CustomerID) AND GroupID IN (0, @GroupID)";
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@AppID", appID);
                 cmd.Parameters.AddWithValue("@ConfigKey", keyName);
@@ -30,7 +30,7 @@ namespace GeneralTools.Services
                 {
                     var custRows = table.Select("CustomerID = " + customerID);
 
-                    if (customerID != 0 && custRows.Length > 0)
+                    if (customerID > 1 && custRows.Length > 0)
                     {
                         // kundenspezifische Einstellung
                         var grpRows = table.Select("CustomerID = " + customerID + " AND GroupID = " + groupID);
@@ -48,7 +48,7 @@ namespace GeneralTools.Services
                     }
                     else
                     {
-                        // generelle Einstellung (CustomerID 0)
+                        // generelle Einstellung (Firma 1)
                         return table.Rows[0]["ConfigValue"].ToString();
                     }
                 }
