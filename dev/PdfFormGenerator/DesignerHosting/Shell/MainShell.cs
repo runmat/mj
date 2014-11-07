@@ -567,5 +567,9 @@ namespace Shell
             public const string VB = "VB";
         }
 
+        private void tbSave_Click(object sender, EventArgs e)
+        {
+            saveMenuItem_Click(null, null);
+        }
     }
 }

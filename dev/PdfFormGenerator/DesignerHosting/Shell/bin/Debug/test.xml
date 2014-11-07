@@ -101,7 +101,7 @@
       <Property name="Tag" />
       <Property name="Text">ZBII_DATUM</Property>
       <Property name="ForeColor">Red</Property>
-      <Property name="Location">205, 4</Property>
+      <Property name="Location">42, 0</Property>
       <Property name="Name">ZBII_DATUM~1</Property>
       <Property name="Size">95, 16</Property>
     </Object>

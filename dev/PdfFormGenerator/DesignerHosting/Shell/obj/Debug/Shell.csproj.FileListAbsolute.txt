@@ -65,3 +65,4 @@ C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\ToolWindows.pdb
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.exe
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.Properties.Resources.resources

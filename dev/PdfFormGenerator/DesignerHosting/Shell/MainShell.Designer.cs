@@ -72,13 +72,16 @@ namespace Shell
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tbSave = new System.Windows.Forms.ToolStripButton();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.Toolbox = new ToolboxLibrary.Toolbox();
+            this.propertyGrid1 = new Shell.MyPropertyGrid();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.OutputWindow = new ToolWindows.OutputWindow();
             this.toolbox1 = new ToolboxLibrary.Toolbox();
             this.toolbox2 = new ToolboxLibrary.Toolbox();
-            this.propertyGrid1 = new Shell.MyPropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -90,6 +93,11 @@ namespace Shell
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -362,7 +370,7 @@ namespace Shell
             // 
             // StatusBar
             // 
-            this.StatusBar.Location = new System.Drawing.Point(0, 37);
+            this.StatusBar.Location = new System.Drawing.Point(0, 385);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Size = new System.Drawing.Size(1050, 22);
             this.StatusBar.TabIndex = 1;
@@ -378,7 +386,7 @@ namespace Shell
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1050, 37);
+            this.splitContainer1.Size = new System.Drawing.Size(1050, 385);
             this.splitContainer1.SplitterDistance = 160;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -395,27 +403,69 @@ namespace Shell
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(1050, 37);
+            this.splitContainer2.Size = new System.Drawing.Size(1050, 385);
             this.splitContainer2.SplitterDistance = 235;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.IsSplitterFixed = true;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.Toolbox);
+            this.splitContainer3.Panel1.Controls.Add(this.toolStrip1);
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.propertyGrid1);
-            this.splitContainer3.Size = new System.Drawing.Size(235, 37);
-            this.splitContainer3.SplitterDistance = 25;
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer5);
+            this.splitContainer3.Size = new System.Drawing.Size(235, 385);
+            this.splitContainer3.SplitterDistance = 52;
             this.splitContainer3.TabIndex = 0;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tbSave});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(235, 53);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // tbSave
+            // 
+            this.tbSave.AutoSize = false;
+            this.tbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbSave.Image = ((System.Drawing.Image)(resources.GetObject("tbSave.Image")));
+            this.tbSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbSave.Name = "tbSave";
+            this.tbSave.Size = new System.Drawing.Size(50, 50);
+            this.tbSave.Text = "Speichern";
+            this.tbSave.Click += new System.EventHandler(this.tbSave_Click);
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.Toolbox);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.propertyGrid1);
+            this.splitContainer5.Size = new System.Drawing.Size(235, 333);
+            this.splitContainer5.SplitterDistance = 205;
+            this.splitContainer5.TabIndex = 1;
             // 
             // Toolbox
             // 
@@ -425,8 +475,17 @@ namespace Shell
             this.Toolbox.Location = new System.Drawing.Point(0, 0);
             this.Toolbox.Name = "Toolbox";
             this.Toolbox.SelectedCategory = null;
-            this.Toolbox.Size = new System.Drawing.Size(235, 25);
+            this.Toolbox.Size = new System.Drawing.Size(235, 205);
             this.Toolbox.TabIndex = 1;
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.propertyGrid1.Size = new System.Drawing.Size(235, 124);
+            this.propertyGrid1.TabIndex = 0;
             // 
             // splitContainer4
             // 
@@ -443,8 +502,8 @@ namespace Shell
             // 
             this.splitContainer4.Panel2.Controls.Add(this.OutputWindow);
             this.splitContainer4.Panel2Collapsed = true;
-            this.splitContainer4.Size = new System.Drawing.Size(811, 37);
-            this.splitContainer4.SplitterDistance = 59;
+            this.splitContainer4.Size = new System.Drawing.Size(811, 385);
+            this.splitContainer4.SplitterDistance = 25;
             this.splitContainer4.TabIndex = 1;
             // 
             // tabControl1
@@ -453,7 +512,7 @@ namespace Shell
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(811, 58);
+            this.tabControl1.Size = new System.Drawing.Size(811, 385);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
@@ -486,19 +545,10 @@ namespace Shell
             this.toolbox2.Size = new System.Drawing.Size(127, 283);
             this.toolbox2.TabIndex = 0;
             // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid1.Size = new System.Drawing.Size(235, 29);
-            this.propertyGrid1.TabIndex = 0;
-            // 
             // MainShell
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1050, 59);
+            this.ClientSize = new System.Drawing.Size(1050, 407);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.StatusBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -514,9 +564,16 @@ namespace Shell
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
+            this.splitContainer5.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -568,13 +625,16 @@ namespace Shell
         public System.Windows.Forms.StatusBar StatusBar;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TabControl tabControl1;
         private ToolboxLibrary.Toolbox toolbox1;
         private ToolboxLibrary.Toolbox toolbox2;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private ToolWindows.OutputWindow OutputWindow;
-        private MyPropertyGrid propertyGrid1;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.SplitContainer splitContainer5;
         private ToolboxLibrary.Toolbox Toolbox;
+        private MyPropertyGrid propertyGrid1;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton tbSave;
     }
 }
