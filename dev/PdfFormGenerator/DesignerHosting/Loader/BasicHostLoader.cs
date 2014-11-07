@@ -1,3 +1,6 @@
+using System.Linq;
+using ToolboxLibrary;
+
 namespace Loader
 {
 	using System;
@@ -129,8 +132,8 @@ namespace Loader
 		        if (cs != null)
 		        {
 		            cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
-		            cs.ComponentAdded += new ComponentEventHandler(OnComponentAddedRemoved);
-		            cs.ComponentRemoved += new ComponentEventHandler(OnComponentAddedRemoved);
+		            cs.ComponentAdded += new ComponentEventHandler(OnComponentAdded);
+		            cs.ComponentRemoved += new ComponentEventHandler(OnComponentRemoved);
 		        }
 
 		        // Let the host know we are done loading.
@@ -171,8 +174,8 @@ namespace Loader
 			if (cs != null)
 			{
 				cs.ComponentChanged -= new ComponentChangedEventHandler(OnComponentChanged);
-				cs.ComponentAdded -= new ComponentEventHandler(OnComponentAddedRemoved);
-				cs.ComponentRemoved -= new ComponentEventHandler(OnComponentAddedRemoved);
+				cs.ComponentAdded -= new ComponentEventHandler(OnComponentAdded);
+				cs.ComponentRemoved -= new ComponentEventHandler(OnComponentRemoved);
 			}
 		}
 		
@@ -199,14 +202,30 @@ namespace Loader
 			unsaved = true;
 		}
 
-		private void OnComponentAddedRemoved(object sender, ComponentEventArgs ce)
-		{
-		    //var lb = ((Label)host.Container.Components[host.Container.Components.Count - 1]);
-		    //lb.Text = "Matze";
+        private void OnComponentAdded(object sender, ComponentEventArgs ce)
+        {
+            if (ce.Component is PdfLabel)
+            {
+                var newLabel = ce.Component as PdfLabel;
+                var existingLabels = host.Container.Components.OfType<PdfLabel>();
+                if (existingLabels.Any(existingLabel => existingLabel.Text == Toolbox.LastLabelName))
+                {
+                    MessageBox.Show("Feld existiert bereits!");
+                    //ce.Component.Dispose();
+                    host.Container.Remove(newLabel);
+                    return;
+                }
+            }
 
-			dirty = true;
-			unsaved = true;
-		}
+            dirty = true;
+            unsaved = true;
+        }
+
+        private void OnComponentRemoved(object sender, ComponentEventArgs ce)
+        {
+            dirty = true;
+            unsaved = true;
+        }
 
         /// <summary>
         /// This method prompts the user to see if it is OK to dispose this document.  

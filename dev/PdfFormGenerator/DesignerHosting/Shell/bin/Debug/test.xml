@@ -1,5 +1,5 @@
 
-  <Object type="Loader.PdfForm, Loader, Version=1.0.5424.24994, Culture=neutral, PublicKeyToken=null" name="PDF Form" children="Controls">
+  <Object type="Loader.PdfForm, Loader, Version=1.0.5424.27072, Culture=neutral, PublicKeyToken=null" name="PDF Form" children="Controls">
     <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="ZBII_DATUM" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
@@ -17,9 +17,9 @@
       <Property name="Tag" />
       <Property name="Text">ZBII_DATUM</Property>
       <Property name="ForeColor">Red</Property>
-      <Property name="Location">567, 0</Property>
+      <Property name="Location">205, 4</Property>
       <Property name="Name">ZBII_DATUM</Property>
-      <Property name="Size">86, 16</Property>
+      <Property name="Size">95, 16</Property>
     </Object>
     <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="LICENSE_NUM" children="Controls">
       <Property name="AccessibleRole" />
@@ -38,9 +38,9 @@
       <Property name="Tag" />
       <Property name="Text">LICENSE_NUM</Property>
       <Property name="ForeColor">Red</Property>
-      <Property name="Location">417, 0</Property>
+      <Property name="Location">84, 4</Property>
       <Property name="Name">LICENSE_NUM</Property>
-      <Property name="Size">114, 16</Property>
+      <Property name="Size">110, 16</Property>
     </Object>
     <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel9" children="Controls">
       <Property name="AccessibleRole" />
