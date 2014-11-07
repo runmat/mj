@@ -49,3 +49,5 @@ C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\L
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\ToolWindows.pdb
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.dll
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\obj\Debug\Host.pdb
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Toolbox.dll
+C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Host\bin\Debug\Toolbox.pdb

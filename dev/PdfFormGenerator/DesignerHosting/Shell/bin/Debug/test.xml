@@ -1,6 +1,48 @@
 
-  <Object type="Loader.PdfForm, Loader, Version=1.0.5424.24149, Culture=neutral, PublicKeyToken=null" name="PDF Form" children="Controls">
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel9" children="Controls">
+  <Object type="Loader.PdfForm, Loader, Version=1.0.5424.24994, Culture=neutral, PublicKeyToken=null" name="PDF Form" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="ZBII_DATUM" children="Controls">
+      <Property name="AccessibleRole" />
+      <Property name="FlatStyle">Flat</Property>
+      <Property name="Image" />
+      <Property name="ImageIndex">0</Property>
+      <Property name="ImageKey" />
+      <Property name="CausesValidation">False</Property>
+      <Property name="Anchor">None</Property>
+      <Property name="Enabled">False</Property>
+      <Property name="TabIndex">0</Property>
+      <Property name="UseMnemonic">False</Property>
+      <Property name="DataBindings">
+        <Property name="DefaultDataSourceUpdateMode">OnValidation</Property>
+      </Property>
+      <Property name="Tag" />
+      <Property name="Text">ZBII_DATUM</Property>
+      <Property name="ForeColor">Red</Property>
+      <Property name="Location">567, 0</Property>
+      <Property name="Name">ZBII_DATUM</Property>
+      <Property name="Size">86, 16</Property>
+    </Object>
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="LICENSE_NUM" children="Controls">
+      <Property name="AccessibleRole" />
+      <Property name="FlatStyle">Flat</Property>
+      <Property name="Image" />
+      <Property name="ImageIndex">0</Property>
+      <Property name="ImageKey" />
+      <Property name="CausesValidation">False</Property>
+      <Property name="Anchor">None</Property>
+      <Property name="Enabled">False</Property>
+      <Property name="TabIndex">0</Property>
+      <Property name="UseMnemonic">False</Property>
+      <Property name="DataBindings">
+        <Property name="DefaultDataSourceUpdateMode">OnValidation</Property>
+      </Property>
+      <Property name="Tag" />
+      <Property name="Text">LICENSE_NUM</Property>
+      <Property name="ForeColor">Red</Property>
+      <Property name="Location">417, 0</Property>
+      <Property name="Name">LICENSE_NUM</Property>
+      <Property name="Size">114, 16</Property>
+    </Object>
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel9" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -21,7 +63,7 @@
       <Property name="Name">PdfLabel9</Property>
       <Property name="Size">156, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel8" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel8" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -42,7 +84,7 @@
       <Property name="Name">PdfLabel8</Property>
       <Property name="Size">259, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel7" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel7" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -63,7 +105,7 @@
       <Property name="Name">PdfLabel7</Property>
       <Property name="Size">126, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel6" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel6" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -84,7 +126,7 @@
       <Property name="Name">PdfLabel6</Property>
       <Property name="Size">171, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel5" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel5" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -105,7 +147,7 @@
       <Property name="Name">PdfLabel5</Property>
       <Property name="Size">105, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel1" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel1" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -126,7 +168,7 @@
       <Property name="Name">PdfLabel1</Property>
       <Property name="Size">315, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel2" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel2" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -147,7 +189,7 @@
       <Property name="Name">PdfLabel2</Property>
       <Property name="Size">54, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel4" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel4" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />
@@ -168,7 +210,7 @@
       <Property name="Name">PdfLabel4</Property>
       <Property name="Size">187, 16</Property>
     </Object>
-    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5423.30786, Culture=neutral, PublicKeyToken=null" name="PdfLabel3" children="Controls">
+    <Object type="ToolboxLibrary.PdfLabel, Toolbox, Version=1.0.5424.25750, Culture=neutral, PublicKeyToken=null" name="PdfLabel3" children="Controls">
       <Property name="AccessibleRole" />
       <Property name="FlatStyle">Flat</Property>
       <Property name="Image" />

@@ -66,7 +66,7 @@ namespace Shell
                     "ForeColor",
                     "Location",
                     "Size",
-                    "Text",
+                    //"Text",
                     "Visible",
                 };
 

@@ -20,7 +20,9 @@ namespace ToolboxLibrary
 	public class Toolbox : System.Windows.Forms.UserControl, 
 		IToolboxService
 	{
-		/// <summary>
+        public static string LastLabelName { get; set; }
+        
+        /// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -253,6 +255,7 @@ namespace ToolboxLibrary
 
 						// The IToolboxService serializes ToolboxItems by packaging them in DataObjects.
 						DataObject d = tbs.SerializeToolboxItem (tbi) as DataObject;
+					    LastLabelName = tbi.DisplayName;
 
 						try
 						{
@@ -343,7 +346,7 @@ namespace ToolboxLibrary
 		{
 			ListBox list = this.ToolsListBox;
 			System.Drawing.Design.ToolboxItem tbi = (System.Drawing.Design.ToolboxItem)list.Items[selectedIndex];
-			if(tbi.DisplayName != "<Pointer>")
+			if(tbi.DisplayName != " ")
 				return tbi;
 			else
 				return null;

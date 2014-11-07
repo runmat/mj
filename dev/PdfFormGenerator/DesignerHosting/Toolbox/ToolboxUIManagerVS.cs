@@ -16,7 +16,7 @@ namespace ToolboxLibrary
 		{
 			m_toolbox = toolbox;
 			pointer = new System.Drawing.Design.ToolboxItem();
-			pointer.DisplayName = "<Pointer>";
+			pointer.DisplayName = " ";
 			pointer.Bitmap = new System.Drawing.Bitmap(16, 16);
 		}
 		private Toolbox Toolbox
@@ -113,6 +113,7 @@ namespace ToolboxLibrary
 			{
 				Type type = toolboxItem.Type;
 				System.Drawing.Design.ToolboxItem tbi = new System.Drawing.Design.ToolboxItem(type);
+                tbi.DisplayName = toolboxItem.Name;
 				System.Drawing.ToolboxBitmapAttribute tba = TypeDescriptor.GetAttributes(type)[typeof(System.Drawing.ToolboxBitmapAttribute)] as System.Drawing.ToolboxBitmapAttribute;
 
 				if (tba != null)

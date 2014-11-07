@@ -106,9 +106,14 @@ namespace ToolboxLibrary
 				
                 if (toolboxItem.Name.ToLower() == "label")
                 {
+                    toolboxItem = new ToolboxItem();
                     toolboxItem.Type = typeof(PdfLabel);
-                    toolboxItem.Name = "Label";
+                    toolboxItem.Name = "ZBII_DATUM";
+                    toolboxItems.Add(toolboxItem);
 
+                    toolboxItem = new ToolboxItem();
+                    toolboxItem.Type = typeof(PdfLabel);
+                    toolboxItem.Name = "LICENSE_NUM";
                     toolboxItems.Add(toolboxItem);
                 }
 			}
@@ -216,7 +221,7 @@ namespace ToolboxLibrary
 			public const string ToolboxItemCollection = "ToolboxItemCollection";
 			public const string ToolboxItem = "ToolboxItem";
 			public const string Type = "Type";
-			public const string WindowsForms = "Windows Forms";
+			public const string WindowsForms = "Felder";
 			public const string Components = "Components";
 			public const string Data = "Data";
 			public const string UserControls = "User Controls";

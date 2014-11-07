@@ -99,16 +99,16 @@
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
       <Name>Loader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Toolbox\Toolbox.csproj">
+      <Project>{3581f0cd-5b33-40f8-a664-f48d544fe0ef}</Project>
+      <Name>Toolbox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolWindows\ToolWindows.csproj">
       <Project>{03E50888-7D6D-4AB7-9166-0EE80DD8A9CB}</Project>
       <Name>ToolWindows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GraphLibrary, Version=1.0.1389.18615, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\GraphLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />

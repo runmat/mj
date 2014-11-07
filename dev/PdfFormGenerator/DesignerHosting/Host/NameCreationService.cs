@@ -8,6 +8,7 @@ using System.Drawing.Design;
 using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
+using ToolboxLibrary;
 
 namespace Host
 {
@@ -27,6 +28,11 @@ namespace Host
 			int min = Int32.MaxValue;
 			int max = Int32.MinValue;
 			int count = 0;
+
+		    if (type == typeof (PdfLabel))
+		    {
+                return Toolbox.LastLabelName;
+		    }
 
 			for (int i = 0; i < cc.Count; i++)
 			{
