@@ -23,6 +23,9 @@ namespace ToolboxLibrary
 			typeof(System.Windows.Forms.UserControl)
 		};
 
+	    public bool TestIsNotFirst { get; set; }
+
+
 		public ToolboxXmlManager(Toolbox toolbox)
 		{
 			m_toolbox = toolbox;
@@ -115,6 +118,24 @@ namespace ToolboxLibrary
                     toolboxItem.Type = typeof(PdfLabel);
                     toolboxItem.Name = "LICENSE_NUM";
                     toolboxItems.Add(toolboxItem);
+
+                    if (TestIsNotFirst)
+                    {
+                        toolboxItem = new ToolboxItem();
+                        toolboxItem.Type = typeof(PdfLabel);
+                        toolboxItem.Name = "ORDER_NO";
+                        toolboxItems.Add(toolboxItem);
+
+                        toolboxItem = new ToolboxItem();
+                        toolboxItem.Type = typeof(PdfLabel);
+                        toolboxItem.Name = "RG_DATUM";
+                        toolboxItems.Add(toolboxItem);
+
+                        toolboxItem = new ToolboxItem();
+                        toolboxItem.Type = typeof(PdfLabel);
+                        toolboxItem.Name = "CONTRACT_NO";
+                        toolboxItems.Add(toolboxItem);
+                    }
                 }
 			}
 

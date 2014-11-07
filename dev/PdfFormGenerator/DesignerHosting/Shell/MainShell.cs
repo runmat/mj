@@ -37,7 +37,8 @@ namespace Shell
         {
             var currentHostControl = CurrentDocumentsHostControl;
             if (CurrentActiveDocumentLoaderType == LoaderType.BasicDesignerLoader)
-                ((BasicHostLoader)currentHostControl.HostSurface.Loader).PromptDispose();
+                if (!((BasicHostLoader) currentHostControl.HostSurface.Loader).PromptDispose())
+                    e.Cancel = true;
 
             base.OnClosing(e);
         }
@@ -578,6 +579,7 @@ namespace Shell
 
         private void tbSave_Click(object sender, EventArgs e)
         {
+            Toolbox.RefreshToolboxFromXml(true);
             saveMenuItem_Click(null, null);
         }
     }

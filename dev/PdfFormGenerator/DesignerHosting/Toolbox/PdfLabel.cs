@@ -132,7 +132,7 @@ namespace ToolboxLibrary
             ForeColor = Color.Red;
             BackColor = Color.Transparent;
             Height = 16;
-            Width = 389;
+            Width = 100;
             TextAlign = ContentAlignment.TopLeft;
         }
     }

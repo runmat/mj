@@ -89,15 +89,24 @@ namespace ToolboxLibrary
 
 		public void InitializeToolbox()
 		{
-			ToolboxXmlManager toolboxXmlManager = new ToolboxXmlManager(this);
-			Tabs = toolboxXmlManager.PopulateToolboxInfo();
-
-			ToolboxUIManagerVS toolboxUIManagerVS = new ToolboxUIManagerVS(this);
-			toolboxUIManagerVS.FillToolbox();
+		    RefreshToolboxFromXml();
 
 			AddEventHandlers();
 			PrintToolbox();
 		}
+
+	    public void RefreshToolboxFromXml(bool testIsNotFirst = false)
+	    {
+            ToolboxXmlManager toolboxXmlManager = new ToolboxXmlManager(this);
+	        toolboxXmlManager.TestIsNotFirst = testIsNotFirst;
+            Tabs = toolboxXmlManager.PopulateToolboxInfo();
+
+            ToolboxUIManagerVS toolboxUIManagerVS = new ToolboxUIManagerVS(this);
+            if (testIsNotFirst)
+                toolboxUIManagerVS.RefreshToolbox();
+            else
+                toolboxUIManagerVS.FillToolbox();
+        }
 
 		public IDesignerHost DesignerHost
 		{

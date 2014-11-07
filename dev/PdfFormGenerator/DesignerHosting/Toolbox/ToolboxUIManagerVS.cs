@@ -30,9 +30,15 @@ namespace ToolboxLibrary
 		{
 			CreateControls();
 			ConfigureControls();
-			UpdateToolboxItems(Toolbox.Tabs.Count - 1);
+		    RefreshToolbox();
 		}
-		private void CreateControls()
+
+	    public void RefreshToolbox()
+	    {
+            UpdateToolboxItems(Toolbox.Tabs.Count - 1);
+        }
+
+	    private void CreateControls()
 		{
 			Toolbox.Controls.Clear();
 			Toolbox.ToolsListBox = new ListBox();

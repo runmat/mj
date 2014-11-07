@@ -1112,8 +1112,9 @@ namespace Loader
 							}
 							break;
 					}
-					unsaved = false;
-				}
+                    unsaved = false;
+                    dirty = false;
+                }
 			}
 			catch (Exception ex)
 			{
