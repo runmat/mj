@@ -6,6 +6,8 @@ namespace ToolboxLibrary
 {
     public class PdfLabel : Label 
     {
+        private string _name;
+
         #region Designer Hidden Properties
 
         [Browsable(false)]

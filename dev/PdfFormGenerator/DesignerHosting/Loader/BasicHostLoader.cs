@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ToolboxLibrary;
 
 namespace Loader
@@ -23,7 +25,9 @@ namespace Loader
     /// RootComponent and all the components that it hosts.
     /// </summary>
 	public class BasicHostLoader: BasicDesignerLoader
-	{
+    {
+        public const string NameNumberSeparator = "~";
+
 		private IComponent root;
 		private bool dirty = true;
 		private bool unsaved;
@@ -204,16 +208,34 @@ namespace Loader
 
         private void OnComponentAdded(object sender, ComponentEventArgs ce)
         {
+            //if (ce.Component is PdfLabel)
+            //{
+            //    var newLabel = ce.Component as PdfLabel;
+            //    var existingLabels = host.Container.Components.OfType<PdfLabel>();
+            //    if (existingLabels.Any(existingLabel => existingLabel.Name == Toolbox.LastLabelName))
+            //    {
+            //        MessageBox.Show("Feld existiert bereits!");
+            //        //ce.Component.Dispose();
+            //        host.Container.Remove(newLabel);
+            //        return;
+            //    }
+            //}
+
             if (ce.Component is PdfLabel)
             {
                 var newLabel = ce.Component as PdfLabel;
-                var existingLabels = host.Container.Components.OfType<PdfLabel>();
-                if (existingLabels.Any(existingLabel => existingLabel.Text == Toolbox.LastLabelName))
+                var existingLabel =
+                    host.Container.Components.OfType<PdfLabel>().FirstOrDefault(e => e.Name == newLabel.Name);
+                if (existingLabel != null)
                 {
-                    MessageBox.Show("Feld existiert bereits!");
-                    //ce.Component.Dispose();
-                    host.Container.Remove(newLabel);
-                    return;
+                    Task.Factory.StartNew(() => Thread.Sleep(10))
+                        .ContinueWith(t =>
+                    {
+                        
+                        if (existingLabel.Text.Contains(NameNumberSeparator))
+                            existingLabel.Text = existingLabel.Text.Substring(0, existingLabel.Text.IndexOf(NameNumberSeparator, StringComparison.InvariantCulture));
+
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
 

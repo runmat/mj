@@ -8,6 +8,7 @@ using System.Drawing.Design;
 using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Loader;
 using ToolboxLibrary;
 
 namespace Host
@@ -18,67 +19,41 @@ namespace Host
     /// </summary>
 	public class NameCreationService : INameCreationService
 	{
+
+
 		public NameCreationService()
 		{
 		}
 
 		string INameCreationService.CreateName(IContainer container, Type type)
 		{
-			ComponentCollection cc = container.Components;
-			int min = Int32.MaxValue;
-			int max = Int32.MinValue;
-			int count = 0;
+            const string separator = BasicHostLoader.NameNumberSeparator;
+			var cc = container.Components;
+			var max = 0;
+		    var componentName = type.Name;
 
 		    if (type == typeof (PdfLabel))
 		    {
-                return Toolbox.LastLabelName;
+                componentName = Toolbox.LastLabelName;
 		    }
 
-			for (int i = 0; i < cc.Count; i++)
+			for (var i = 0; i < cc.Count; i++)
 			{
-				Component comp = cc[i] as Component;
+				var comp = cc[i] as Component;
 
-				if (comp.GetType() == type)
-				{
-					count++;
+			    if (comp == null || comp.GetType() != type) continue;
+			    
+                var name = comp.Site.Name;
+                if (!name.StartsWith(componentName) || !name.Contains(separator)) continue;
 
-					string name = comp.Site.Name;
-					if(name.StartsWith(type.Name))
-					{
-						try
-						{
-							int value = Int32.Parse(name.Substring(type.Name.Length));
-
-							if (value < min)
-								min = value;
-
-							if (value > max)
-								max = value;
-						}
-                        catch (Exception ex)
-                        {
-                            Trace.WriteLine(ex.ToString());
-                        }
-                    }
-				}
-			}// for
-
-			if (count == 0)
-				return type.Name + "1";
-
-			else if (min > 1)
-			{
-				int j = min - 1;
-
-				return type.Name + j.ToString();
+                var compNumber = Int32.Parse(name.Substring(name.IndexOf(separator, StringComparison.InvariantCulture) + 1));
+			    if (compNumber > max)
+			        max = compNumber;
 			}
-			else 
-			{
-				int j = max + 1;
 
-				return type.Name + j.ToString();
-			}
+            return componentName + separator + (max + 1);
 		}
+
 		bool INameCreationService.IsValidName(string name)
 		{
 			return true;

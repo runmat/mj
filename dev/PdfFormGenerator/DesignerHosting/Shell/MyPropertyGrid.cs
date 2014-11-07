@@ -67,6 +67,7 @@ namespace Shell
                     "Location",
                     "Size",
                     //"Text",
+                    //"Name",
                     "Visible",
                 };
 
