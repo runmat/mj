@@ -73,6 +73,11 @@ namespace Loader
             PerformLoad(null);
         }
 
+        ~BasicHostLoader()
+        {
+            PromptDispose();
+        }
+
 
         // Called by the host when we load a document.
 		protected override void PerformLoad(IDesignerSerializationManager designerSerializationManager)
@@ -145,7 +150,7 @@ namespace Loader
 		    }
 
 		    // We've just loaded a document, so you can bet we need to flush changes.
-			dirty = true;
+			dirty = false;
 			unsaved = false;
 		}
 
@@ -253,7 +258,7 @@ namespace Loader
         /// This method prompts the user to see if it is OK to dispose this document.  
 		/// The prompt only happens if the user has made changes.
         /// </summary>
-        internal bool PromptDispose()
+        public bool PromptDispose()
 		{
 			if (dirty || unsaved)
 			{

@@ -33,6 +33,15 @@ namespace Shell
             CustomInitialize();
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var currentHostControl = CurrentDocumentsHostControl;
+            if (CurrentActiveDocumentLoaderType == LoaderType.BasicDesignerLoader)
+                ((BasicHostLoader)currentHostControl.HostSurface.Loader).PromptDispose();
+
+            base.OnClosing(e);
+        }
+
         /// <summary>
         /// Adds custom services to the HostManager like TGoolbox, PropertyGrid, 
         /// SolutionExplorer.
