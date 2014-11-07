@@ -32,7 +32,7 @@ namespace Loader
 		};
 		private Type rootComponentType;
 
-        public Form PdfForm { get; private set; }
+        public UserControl PdfForm { get; private set; }
 		
 		#region Constructors
 
@@ -571,7 +571,7 @@ namespace Loader
 					{
 						var o = ReadObject(node, errors);
 					    if (PdfForm == null)
-					        PdfForm = (Form) o;
+					        PdfForm = (UserControl) o;
 					}
 					else
 					{

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Loader
 {
-    public class PdfForm : Form
+    public sealed class PdfForm : UserControl
     {
         #region Designer Hidden Properties
 
@@ -23,8 +24,8 @@ namespace Loader
         [Browsable(false)]
         public override Cursor Cursor { get; set; }
 
-        [Browsable(false)]
-        public new FormBorderStyle FormBorderStyle { get { return base.FormBorderStyle; } set { base.FormBorderStyle = value; } }
+        //[Browsable(false)]
+        //public new FormBorderStyle FormBorderStyle { get { return base.FormBorderStyle; } set { base.FormBorderStyle = value; } }
 
         [Browsable(false)]
         public override RightToLeft RightToLeft { get; set; }
@@ -47,11 +48,11 @@ namespace Loader
         [Browsable(false)]
         public override DockStyle Dock { get; set; }
 
-        [Browsable(false)]
-        public override Size MinimumSize { get; set; }
+        //[Browsable(false)]
+        //public override Size MinimumSize { get; set; }
 
-        [Browsable(false)]
-        public override Size MaximumSize { get; set; }
+        //[Browsable(false)]
+        //public override Size MaximumSize { get; set; }
 
         [Browsable(false)]
         public override bool AllowDrop { get; set; }
@@ -80,20 +81,20 @@ namespace Loader
         [Browsable(false)]
         public new bool AutoScroll { get { return base.AutoScroll; } set { base.AutoScroll = value; } }
 
-        [Browsable(false)]
-        public new Padding AutoScrollMargin { get; set; }
+        //[Browsable(false)]
+        //public new Padding AutoScrollMargin { get; set; }
 
-        [Browsable(false)]
-        public new Size AutoScrollMinSize { get; set; }
+        //[Browsable(false)]
+        //public new Size AutoScrollMinSize { get; set; }
 
-        [Browsable(false)]
-        public new  AutoSizeMode AutoSizeMode { get; set; }
+        //[Browsable(false)]
+        //public new  AutoSizeMode AutoSizeMode { get; set; }
 
         [Browsable(false)]
         public new  AutoValidate AutoValidate { get; set; }
 
-        [Browsable(false)]
-        public override sealed ImageLayout BackgroundImageLayout { get { return base.BackgroundImageLayout; } set { base.BackgroundImageLayout = value; } }
+        //[Browsable(false)]
+        //public override sealed ImageLayout BackgroundImageLayout { get { return base.BackgroundImageLayout; } set { base.BackgroundImageLayout = value; } }
 
         [Browsable(false)]
         public new IButtonControl CancelButton { get; set; }
@@ -131,26 +132,26 @@ namespace Loader
         [Browsable(false)]
         public new MenuStrip MainMenuStrip { get; set; }
 
-        [Browsable(false)]
-        public new double Opacity { get { return base.Opacity; } set { base.Opacity = value; } }
+        //[Browsable(false)]
+        //public new double Opacity { get { return base.Opacity; } set { base.Opacity = value; } }
 
-        [Browsable(false)]
-        public override bool RightToLeftLayout { get { return base.RightToLeftLayout; } set { base.RightToLeftLayout = value; } }
+        //[Browsable(false)]
+        //public override bool RightToLeftLayout { get { return base.RightToLeftLayout; } set { base.RightToLeftLayout = value; } }
 
-        [Browsable(false)]
-        public new bool ShowIcon { get { return base.ShowIcon; } set { base.ShowIcon = value; } }
+        //[Browsable(false)]
+        //public new bool ShowIcon { get { return base.ShowIcon; } set { base.ShowIcon = value; } }
 
-        [Browsable(false)]
-        public new bool ShowInTaskbar { get { return base.ShowInTaskbar; } set { base.ShowInTaskbar = value; } }
+        //[Browsable(false)]
+        //public new bool ShowInTaskbar { get { return base.ShowInTaskbar; } set { base.ShowInTaskbar = value; } }
 
-        [Browsable(false)]
-        public new SizeGripStyle SizeGripStyle { get { return base.SizeGripStyle; } set { base.SizeGripStyle = value; } }
+        //[Browsable(false)]
+        //public new SizeGripStyle SizeGripStyle { get { return base.SizeGripStyle; } set { base.SizeGripStyle = value; } }
 
-        [Browsable(false)]
-        public new FormStartPosition StartPosition { get { return base.StartPosition; } set { base.StartPosition = value; } }
+        //[Browsable(false)]
+        //public new FormStartPosition StartPosition { get { return base.StartPosition; } set { base.StartPosition = value; } }
 
-        [Browsable(false)]
-        public new FormWindowState WindowState { get { return base.WindowState; } set { base.WindowState = value; } }
+        //[Browsable(false)]
+        //public new FormWindowState WindowState { get { return base.WindowState; } set { base.WindowState = value; } }
 
         [Browsable(false)]
         public new string Text { get { return base.Text; } set { base.Text = value; } }
@@ -158,11 +159,11 @@ namespace Loader
         [Browsable(false)]
         public new object Tag { get { return base.Tag; } set { base.Tag = value; } }
 
-        [Browsable(false)]
-        public new bool TopMost { get { return base.TopMost; } set { base.TopMost = value; } }
+        //[Browsable(false)]
+        //public new bool TopMost { get { return base.TopMost; } set { base.TopMost = value; } }
 
-        [Browsable(false)]
-        public new Color TransparencyKey { get { return base.TransparencyKey; } set { base.TransparencyKey = value; } }
+        //[Browsable(false)]
+        //public new Color TransparencyKey { get { return base.TransparencyKey; } set { base.TransparencyKey = value; } }
 
         [Browsable(false)]
         public new Point Location { get { return base.Location; } set { base.Location = value; } }
@@ -180,12 +181,20 @@ namespace Loader
 
         #endregion
 
+        protected override void OnBackgroundImageChanged(EventArgs e)
+        {
+            base.OnBackgroundImageChanged(e);
+
+            ClientSize = BackgroundImage.Size;
+        }
 
 
         public PdfForm()
         {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.BackgroundImageLayout = ImageLayout.None;
+            BackColor = Color.LightGray;
+            BackgroundImageLayout = ImageLayout.None;
+            AutoScroll = true;
+            SetAutoSizeMode(AutoSizeMode.GrowOnly);
         }
     }
 }
