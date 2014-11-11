@@ -260,7 +260,7 @@ namespace GeneralTools.Services
             return XmlDeserialize(new StringReader(xmlString), type);
         }
 
-        public static T XmlTryDeserializeFromString<T>(string xmlString) where T : class
+        public static T XmlTryDeserializeFromString<T>(string xmlString) where T : class, new()
         {
             T t;
             try { t = (T) XmlDeserializeFromString(xmlString, typeof (T)); }
@@ -269,7 +269,7 @@ namespace GeneralTools.Services
             return t;
         }
 
-        public static T XmlTryDeserializeCompressedString<T>(string xmlString) where T : class
+        public static T XmlTryDeserializeCompressedString<T>(string xmlString) where T : class, new()
         {
             var decompressed = DecompressString(xmlString);
             var t = XmlTryDeserializeFromString<T>(decompressed);

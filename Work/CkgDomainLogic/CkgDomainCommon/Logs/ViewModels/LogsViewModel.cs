@@ -195,16 +195,16 @@ namespace CkgDomainLogic.Logs.ViewModels
                 }                
             }
 
-            DataTable[] impTables = null;
+            List<DataTable> impTables = null;
             if (sapLogItemDetailed.ImportTables != null)
             {
                 try
                 {
-                    impTables = XmlService.XmlTryDeserializeCompressedString<DataTable[]>(sapLogItemDetailed.ImportTables);
+                    impTables = XmlService.XmlTryDeserializeCompressedString<List<DataTable>>(sapLogItemDetailed.ImportTables);
                 }
                 catch (Exception)
                 {
-                    impTables = XmlService.XmlDeserializeFromString<DataTable[]>(sapLogItemDetailed.ImportTables);
+                    impTables = XmlService.XmlDeserializeFromString<List<DataTable>>(sapLogItemDetailed.ImportTables);
                 }
             }
 
@@ -253,7 +253,7 @@ namespace CkgDomainLogic.Logs.ViewModels
             LastSapCallContext = new SapCallContext
                 {
                     ImportParameters = impParams,
-                    ImportTables = impTables,
+                    ImportTables = impTables.ToArray(),
                     ExportParameters = expParams,
                     ExportTables = (expTables.Count == 0 ? null : expTables.ToArray())
                 };
