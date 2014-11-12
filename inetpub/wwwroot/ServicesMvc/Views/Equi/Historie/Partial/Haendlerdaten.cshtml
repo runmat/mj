@@ -1,0 +1,12 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHaendlerdaten
+
+<form action="#" class="form-horizontal label-width-250">
+
+    @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap" })
+
+    @Html.FormTextAreaFor(m => m.HaendlerAdresse, new { @class = "m-wrap medium", @readonly = "readonly" })
+
+    @Html.FormTextBlockFor(m => m.Finanzierungsart, new { @class = "m-wrap" })
+
+</form>

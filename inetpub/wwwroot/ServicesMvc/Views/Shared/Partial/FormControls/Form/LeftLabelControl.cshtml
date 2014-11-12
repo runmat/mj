@@ -2,13 +2,22 @@
 @model FormControlModel 
 
 
-@if (Model.ColumnMode != Form2ColumnMode.None)
+@if (Model.ColumnMode != FormMultiColumnMode.None)
 {
-    if (Model.ColumnMode == Form2ColumnMode.Left)
+    if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Left3)
     {
         @Html.Raw("<div class=\"row-fluid\">")
     }
-    @Html.Raw("<div class=\"span6\">")
+
+    if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Right)
+    {
+        @Html.Raw("<div class=\"span6\">")
+    }
+
+    if (Model.ColumnMode == FormMultiColumnMode.Left3 || Model.ColumnMode == FormMultiColumnMode.Middle3 || Model.ColumnMode == FormMultiColumnMode.Right3)
+    {
+        @Html.Raw("<div class=\"span4\">")
+    }
 }
 
 <div class="control-group">
@@ -38,10 +47,11 @@
 
 </div>
 
-@if (Model.ColumnMode != Form2ColumnMode.None)
+@if (Model.ColumnMode != FormMultiColumnMode.None)
 {
     @Html.Raw("</div>")
-    if (Model.ColumnMode == Form2ColumnMode.Right)
+
+    if (Model.ColumnMode == FormMultiColumnMode.Right || Model.ColumnMode == FormMultiColumnMode.Right3)
     {
         @Html.Raw("</div>")
     }

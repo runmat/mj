@@ -1,0 +1,21 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model IEnumerable<EquiAktionsdaten>
+
+@(Html.Telerik()
+    .Grid<EquiAktionsdaten>()
+    .Name("GridEquiaktionsdaten")
+    .BindTo(Model)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Aktionscode);
+        columns.XBound(c => c.Vorgang);
+        columns.XBound(c => c.Statusdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Uebermittlungsdatum).Format("{0:dd.MM.yyyy}");
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .XPageSize(10)
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Uebermittlungsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)
