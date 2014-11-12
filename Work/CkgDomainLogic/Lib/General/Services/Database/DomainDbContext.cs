@@ -657,5 +657,19 @@ namespace CkgDomainLogic.General.Database.Services
         }
 
         #endregion
+
+        #region Abrufgruende
+
+        public string GetAbrufgrundBezeichnung(string grundId)
+        {
+            var ergs =
+                Database.SqlQuery<string>(
+                    "SELECT WebBezeichnung FROM CustomerAbrufgruende WHERE CustomerID = {0} AND SAPWert = {1}",
+                    User.CustomerID, grundId).ToList();
+
+            return (ergs.Count > 0 ? ergs[0] : "");
+        }
+
+        #endregion
     }
 }

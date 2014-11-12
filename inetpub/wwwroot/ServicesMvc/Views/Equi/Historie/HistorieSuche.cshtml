@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorieSuchparameter
+
+<div id="divHistorieSuche">
+    @using (Ajax.BeginForm("LoadHistorieEquis", "Equi", null,
+        new MvcAjaxOptions("divHistorieSuche") { OnComplete = "ShowHistorieEquis();" }, new { id = "HistorieEquisForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap uppercase" })
+
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.Search</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            var _anzahlTreffer = @Model.AnzahlTreffer;
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowHistorieEquis() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowHistorieEquis",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowEquiHistorieSearchResult(result);
+                    if (_anzahlTreffer == 1) {
+                        ShowEquiHistorieAjax("");
+                    }
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
