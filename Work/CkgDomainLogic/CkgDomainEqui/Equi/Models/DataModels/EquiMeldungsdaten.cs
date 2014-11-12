@@ -1,96 +1,53 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using GeneralTools.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Equi.Models
 {
-    /// <summary>
-    /// Equi-Meldungsdatensatz
-    /// </summary>
     public class EquiMeldungsdaten
     {
-        [LocalizedDisplay(LocalizeConstants._Meldungsnummer)]
+        [LocalizedDisplay(LocalizeConstants.MessageNo)]
         public string Meldungsnummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Durchfuehrung)]
+        [LocalizedDisplay(LocalizeConstants.ExecutionDate)]
         public DateTime? Durchfuehrungsdatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Erfassungsdatum)]
+        [LocalizedDisplay(LocalizeConstants.AcquisitionDate)]
         public DateTime? Erfassungsdatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Kurztext)]
-        public string Kurztext { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Process)]
+        public string Vorgang { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._BeauftragtDurch)]
+        [LocalizedDisplay(LocalizeConstants.InstructedBy)]
         public string BeauftragtDurch { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandName, 1)]
-        public string VersandName1 { get; set; }
+        public string Name1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandName, 2)]
-        public string VersandName2 { get; set; }
+        public string Name2 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandStrasse)]
-        public string VersandStrasse { get; set; }
+        public string Strasse { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandHausnummer)]
-        public string VersandHausnummer { get; set; }
+        public string Hausnummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandPlz)]
-        public string VersandPlz { get; set; }
+        public string Plz { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VersandOrt)]
-        public string VersandOrt { get; set; }
+        public string Ort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ShippingAddress)]
         public string Versandadresse
         {
             get
             {
-                return VersandName1 + " " + VersandName2
-                       + ((String.IsNullOrEmpty(VersandStrasse) && String.IsNullOrEmpty(VersandHausnummer)) ? ""
-                            : Environment.NewLine + VersandStrasse + " " + VersandHausnummer)
-                       + ((String.IsNullOrEmpty(VersandPlz) && String.IsNullOrEmpty(VersandOrt)) ? ""
-                            : Environment.NewLine + VersandPlz + " " + VersandOrt);
+                return String.Format("{0} {1}" + (String.IsNullOrEmpty(Strasse) && String.IsNullOrEmpty(Hausnummer) ? "" : Environment.NewLine)
+                    + "{2} {3}" + (String.IsNullOrEmpty(Plz) && String.IsNullOrEmpty(Ort) ? "" : Environment.NewLine)
+                    + "{4} {5}",
+                    Name1, Name2,
+                    Strasse, Hausnummer,
+                    Plz, Ort);
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants._Versandart)]
+        [LocalizedDisplay(LocalizeConstants.DispatchType)]
         public string Versandart { get; set; }
-
-        public EquiMeldungsdaten()
-        {
-            this.Meldungsnummer = "";
-            this.Durchfuehrungsdatum = null;
-            this.Erfassungsdatum = null;
-            this.Kurztext = "";
-            this.BeauftragtDurch = "";
-            this.VersandName1 = "";
-            this.VersandName2 = "";
-            this.VersandStrasse = "";
-            this.VersandHausnummer = "";
-            this.VersandPlz = "";
-            this.VersandOrt = "";
-            this.Versandart = "";
-        }
-
-        public EquiMeldungsdaten(string meldungsnr, DateTime? durchfdat, DateTime? erdat, string kurztext, string beauftragtdurch, 
-            string vers_name1, string vers_name2, string vers_strasse, string vers_hausnr, string vers_plz, string vers_ort, string versart)
-        {
-            this.Meldungsnummer = meldungsnr;
-            this.Durchfuehrungsdatum = durchfdat;
-            this.Erfassungsdatum = erdat;
-            this.Kurztext = kurztext;
-            this.BeauftragtDurch = beauftragtdurch;
-            this.VersandName1 = vers_name1;
-            this.VersandName2 = vers_name2;
-            this.VersandStrasse = vers_strasse;
-            this.VersandHausnummer = vers_hausnr;
-            this.VersandPlz = vers_plz;
-            this.VersandOrt = vers_ort;
-            this.Versandart = versart;
-        }
     }
 }
