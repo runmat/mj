@@ -39,7 +39,7 @@ namespace ServicesMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentHistorieViewModel.LoadHistorieInfos(model, ModelState);
+                EquipmentHistorieViewModel.LoadHistorieInfos(ref model, ModelState);
             }
 
             return PartialView("Historie/HistorieSuche", model);

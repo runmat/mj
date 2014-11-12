@@ -48,11 +48,13 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
-        public void LoadHistorieInfos(EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
+        public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
         {
             DataService.Suchparameter = suchparameter;
             DataService.MarkForRefreshHistorieInfos();
             PropertyCacheClear(this, m => m.HistorieInfosFiltered);
+
+            suchparameter.AnzahlTreffer = HistorieInfos.Count;
 
             if (HistorieInfos.Count == 0)
             {
@@ -63,7 +65,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void LoadHistorie(string fin)
         {
             GetCurrentAppID();
-            EquipmentHistorie = DataService.GetEquiHistorie(fin, CurrentAppID);
+
+            if (!String.IsNullOrEmpty(fin))
+            {
+                EquipmentHistorie = DataService.GetEquiHistorie(fin, CurrentAppID);
+            }
+            else if (HistorieInfos.Count == 1)
+            {
+                EquipmentHistorie = DataService.GetEquiHistorie(HistorieInfos[0].Fahrgestellnummer, CurrentAppID);
+            }
         }
 
         public GeneralSummary CreateSummaryModel()

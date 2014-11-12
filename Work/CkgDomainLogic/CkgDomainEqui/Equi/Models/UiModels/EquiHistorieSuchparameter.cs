@@ -21,6 +21,8 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ContractNo)]
         public string VertragsNr { get; set; }
 
+        public int AnzahlTreffer { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if ((String.IsNullOrEmpty(Kennzeichen)) && (String.IsNullOrEmpty(FahrgestellNr)) && (String.IsNullOrEmpty(BriefNr)) && (String.IsNullOrEmpty(VertragsNr)))

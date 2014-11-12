@@ -23,6 +23,7 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            var _anzahlTreffer = @Model.AnzahlTreffer;
         </script>
     }
 </div>
@@ -43,6 +44,9 @@
 
                 if (_modelStateValid) {
                     ShowEquiHistorieSearchResult(result);
+                    if (_anzahlTreffer == 1) {
+                        ShowEquiHistorieAjax("");
+                    }
                 }
 
                 LoadingHide();
