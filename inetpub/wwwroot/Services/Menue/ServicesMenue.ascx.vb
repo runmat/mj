@@ -83,8 +83,21 @@ Partial Public Class ServicesMenue
                         dRow("AppURL") = GetUrlString(dRow("AppURL").ToString(), dRow("AppID").ToString())
                     End If
                     dRow("AppURL") = dRow("AppURL").ToString() & "&cp=" & GetUserContextParams(dRow("AppID").ToString())
-                Next
 
+                    ' BITTE Kommentar VOR DEPLOYMENT ENTFERNEN!
+                    ' --- 12.11.2014 Nasser Brake
+                    ' --- PageVisit soll auf dem Server geloggt werden und nicht auf via JS
+                    ' Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
+                    Dim url As String = dRow("AppURL").ToString()
+
+                    ' Url encoden für die Verwendung als Query Params
+                    url = HttpUtility.UrlEncode(url)
+                    url = Convert.ToBase64String(Encoding.UTF8.GetBytes(url.ToCharArray()))
+
+                    ' Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
+                    dRow("AppURL") = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow("AppID"), "&url=", url)
+
+                Next
 
                 Dim dvAppLinks As DataView = New DataView(appTable)
                 dvAppLinks.RowFilter = "AppType='Report' AND AppInMenu=1"
