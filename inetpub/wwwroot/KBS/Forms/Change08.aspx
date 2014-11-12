@@ -373,7 +373,7 @@
                                     </tr>
                                 </table>
                             </div>
-                        <asp:Button ID="MPEDummy" style="display: none" runat="server" style="display:none" />
+                        <asp:Button ID="MPEDummy" style="display: none" runat="server" />
                         
                         <cc1:ModalPopupExtender runat="server" ID="MPENeukundeResultat" BackgroundCssClass="divProgress"
                             Enabled="true" PopupControlID="NeukundeResultat" TargetControlID="MPEDummy">
@@ -413,7 +413,7 @@
                             </div>
                         </ContentTemplate>
                     </asp:UpdatePanel>
-                                <asp:Button ID="MPEDummy3" style="display: none" runat="server" style="display:none" />
+                                <asp:Button ID="MPEDummy3" style="display: none" runat="server" />
                                 <cc1:ModalPopupExtender runat="server" ID="MPEAusparken" BackgroundCssClass="divProgress"
                                     Enabled="true" PopupControlID="Ausparken" TargetControlID="MPEDummy3">
                                 </cc1:ModalPopupExtender>

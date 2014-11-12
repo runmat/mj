@@ -43,7 +43,7 @@
                                     <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Fixed" GroupsDefaultExpanded="false">
                                         <SortExpressions>
                                             <telerik:GridSortExpression FieldName="DocTypeName" SortOrder="Ascending" />
-                                            <telerik:GridSortExpression FieldName="LastEdited" SortOrder="Descending" />
+                                            <telerik:GridSortExpression FieldName="FileName" SortOrder="Ascending" />
                                         </SortExpressions>
                                         <GroupByExpressions>
                                             <telerik:GridGroupByExpression>
