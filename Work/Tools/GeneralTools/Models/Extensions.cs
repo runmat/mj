@@ -390,6 +390,11 @@ namespace GeneralTools.Models
         {
             return sqlString.NotNullOrEmpty().ToLower().Contains(" where") ? " and" : " where";
         }
+
+        public static bool ToBool(this string stringValue)
+        {
+            return (stringValue.NotNullOrEmpty().ToUpper() == "TRUE");
+        }
     }
 
     public static class ExpressionExtensions
