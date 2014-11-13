@@ -1,4 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
+
+using System;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
@@ -114,45 +116,58 @@ namespace CkgDomainLogic.Equi.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_WEB, EquiHistorie>(
-                    new Dictionary<string, string> {
-                        { "EQUNR", "Equipmentnummer" },
-                        { "ZZKENN", "Kennzeichen" },
-                        { "ZZBRIEF", "Briefnummer" },
-                        { "ZZKENN_OLD", "KennzeichenAlt" },
-                        { "ZZBRIEF_OLD", "BriefnummerAlt" },
-                        { "ZZBRIEF_A", "Briefaufbietung" },
-                        { "ZZFAHRG", "Fahrgestellnummer" },
-                        { "REPLA_DATE", "Erstzulassungsdatum" },
-                        { "EXPIRY_DATE", "Abmeldedatum" },
-                        { "ZZSTATUS_ZUB", "StatusZulassungsfaehig" },
-                        { "ZZSTATUS_ZUL", "StatusZugelassen" },
-                        { "ZZSTATUS_ABG", "StatusAbgemeldet" },
-                        { "ZZSTATUS_BAG", "StatusBeiAbmeldung" },
-                        { "ZZSTATUS_OZU", "StatusOhneZulassung" },
-                        { "ZZAKTSPERRE", "StatusGesperrt" },
-                        { "ZZCOCKZ", "CocVorhanden" },
-                        { "NAME1_VS", "StandortName1" },
-                        { "NAME2_VS", "StandortName2" },
-                        { "STRAS_VS", "StandortStrasse" },
-                        { "HSNR_VS", "StandortHausnummer" },
-                        { "PSTLZ_VS", "StandortPlz" },
-                        { "ORT01_VS", "StandortOrt" },
-                        { "NAME1_ZH", "HalterName1" },
-                        { "NAME2_ZH", "HalterName2" },
-                        { "STRAS_ZH", "HalterStrasse" },
-                        { "HSNR_ZH", "HalterHausnummer" },
-                        { "PSTLZ_ZH", "HalterPlz" },
-                        { "ORT01_ZH", "HalterOrt" },
-                        { "ABCKZ", "AbcKennzeichen" },
-                        { "ZZTMPDT", "Versanddatum" },
-                        { "UDATE", "Ummeldedatum" },
-                        { "ZZHERST_TEXT", "Hersteller" },
-                        { "ZZHANDELSNAME", "Fahrzeugmodell" },
-                        { "ZZHERSTELLER_SCH", "HerstellerSchluessel" },
-                        { "ZZTYP_SCHL", "Typschluessel" },
-                        { "ZZVVS_SCHLUESSEL", "VarianteVersion" },
-                        { "ZZREFERENZ1", "Referenz1" },
-                    }));
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.AbcKennzeichen = s.ABCKZ;
+                            d.Abmeldedatum = s.EXPIRY_DATE;
+                            d.BeideKennzeichenVorhanden = s.SCHILDER_PHY.XToBool();
+                            d.Briefaufbietung = s.ZZBRIEF_A.XToBool();
+                            d.Briefnummer = s.ZZBRIEF;
+                            d.BriefnummerAlt = s.ZZBRIEF_OLD;
+                            d.CarportEingang = s.ZZCARPORT_EING;
+                            d.CheckInAbmeldeauftrag = s.CHECK_IN;
+                            d.CocVorhanden = s.ZZCOCKZ.XToBool();
+                            d.Equipmentnummer = s.EQUNR;
+                            d.Erstzulassungsdatum = s.REPLA_DATE;
+                            d.Fahrgestellnummer = s.ZZFAHRG;
+                            d.Fahrzeugmodell = s.ZZHANDELSNAME;
+                            d.Fahrzeugschein = s.SCHEIN_PHY.XToBool();
+                            d.Finanzierungsart = s.ZZFINART_TXT;
+                            d.HaendlerNr = s.KUNNR_ZF;
+                            d.HalterHausnummer = s.HSNR_ZH;
+                            d.HalterName1 = s.NAME1_ZH;
+                            d.HalterName2 = s.NAME2_ZH;
+                            d.HalterOrt = s.ORT01_ZH;
+                            d.HalterPlz = s.PSTLZ_ZH;
+                            d.HalterStrasse = s.STRAS_ZH;
+                            d.Hersteller = s.ZZHERST_TEXT;
+                            d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
+                            d.Kennzeichen = s.ZZKENN;
+                            d.KennzeichenAlt = s.ZZKENN_OLD;
+                            d.KennzeichenEingang = s.ZZKENN_EING;
+                            d.Ordernummer = s.ZZREF1;
+                            d.Referenz1 = s.ZZREFERENZ1;
+                            d.Referenz2 = s.ZZREFERENZ2;
+                            d.StandortHausnummer = s.HSNR_VS;
+                            d.StandortName1 = s.NAME1_VS;
+                            d.StandortName2 = s.NAME2_VS;
+                            d.StandortOrt = s.ORT01_VS;
+                            d.StandortPlz = s.PSTLZ_VS;
+                            d.StandortStrasse = s.STRAS_VS;
+                            d.StatusAbgemeldet = s.ZZSTATUS_ABG.XToBool();
+                            d.StatusBeiAbmeldung = s.ZZSTATUS_BAG.XToBool();
+                            d.StatusGesperrt = s.ZZAKTSPERRE.XToBool();
+                            d.StatusOhneZulassung = s.ZZSTATUS_OZU.XToBool();
+                            d.StatusZugelassen = s.ZZSTATUS_ZUL.XToBool();
+                            d.StatusZulassungsfaehig = s.ZZSTATUS_ZUB.XToBool();
+                            d.Stilllegung = s.EXPIRY_DATE;
+                            d.TypSchluessel = s.ZZTYP_SCHL;
+                            d.Ummeldedatum = s.UDATE;
+                            d.VarianteVersion = s.ZZVVS_SCHLUESSEL;
+                            d.Versanddatum = s.ZZTMPDT;
+                            d.VersandgrundId = s.ZZVGRUND;
+                        }));
             }
         }
 
@@ -161,20 +176,82 @@ namespace CkgDomainLogic.Equi.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_QMEL, EquiMeldungsdaten>(
-                    new Dictionary<string, string> {
-                        { "QMNUM", "Meldungsnummer" },
-                        { "STRMN", "Durchfuehrungsdatum" },
-                        { "ERDAT", "Erfassungsdatum" },
-                        { "KURZTEXT", "Kurztext" },
-                        { "QMNAM", "BeauftragtDurch" },
-                        { "NAME1_Z5", "VersandName1" },
-                        { "NAME2_Z5", "VersandName2" },
-                        { "STREET_Z5", "VersandStrasse" },
-                        { "HOUSE_NUM1_Z5", "VersandHausnummer" },
-                        { "POST_CODE1_Z5", "VersandPlz" },
-                        { "CITY1_Z5", "VersandOrt" },
-                        { "ZZDIEN1", "Versandart" },
-                    }));
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.BeauftragtDurch = s.QMNAM;
+                            d.Durchfuehrungsdatum = s.STRMN;
+                            d.Erfassungsdatum = s.ERDAT;
+                            d.Vorgang = s.KURZTEXT;
+                            d.Meldungsnummer = s.QMNUM;
+                            d.Hausnummer = s.HOUSE_NUM1_Z5;
+                            d.Name1 = s.NAME1_Z5;
+                            d.Name2 = s.NAME2_Z5;
+                            d.Ort = s.CITY1_Z5;
+                            d.Plz = s.POST_CODE1_Z5;
+                            d.Strasse = s.STREET_Z5;
+                            d.Versandart = s.ZZDIEN1;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_QMMA, EquiAktionsdaten> Z_M_BRIEFLEBENSLAUF_001_GT_QMMA_To_EquiAktionsdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_QMMA, EquiAktionsdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.Aenderungszeit = (String.IsNullOrEmpty(s.AEZEIT) ? "" : String.Format("{0}:{1}", s.AEZEIT.Substring(0, 2), s.AEZEIT.Substring(2, 2)));
+                            d.Aktionscode = s.MNCOD;
+                            d.Meldungsnummer = s.QMNUM;
+                            d.Statusdatum = s.PSTER;
+                            d.Uebermittlungsdatum = s.ZZUEBER;
+                            d.Vorgang = s.MATXT;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_ADDR, EquiHaendlerdaten> Z_M_BRIEFLEBENSLAUF_001_GT_ADDR_To_EquiHaendlerdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_ADDR, EquiHaendlerdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.Hausnummer = s.HOUSE_NUM1;
+                            d.Land = s.COUNTRY;
+                            d.Name1 = s.NAME1;
+                            d.Name2 = s.NAME2;
+                            d.Name3 = s.NAME3;
+                            d.Ort = s.CITY1;
+                            d.Plz = s.POST_CODE1;
+                            d.Strasse = s.STREET;
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_EQUI, EquiHistorieInfo> Z_M_BRIEFLEBENSLAUF_001_GT_EQUI_To_EquiHistorieInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEFLEBENSLAUF_001.GT_EQUI, EquiHistorieInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.AbcKennzeichen = s.ABCKZ;
+                            d.Anlagedatum = s.ERDAT;
+                            d.Briefnummer = s.TIDNR;
+                            d.Equipmentnummer = s.EQUNR;
+                            d.Fahrgestellnummer = s.CHASSIS_NUM;
+                            d.Kennzeichen = s.LICENSE_NUM;
+                            d.Partnernummer = s.EX_KUNNR;
+                            d.Referenznummer = s.ZZREFERENZ1;
+                            d.Versanddatum = s.ZZTMPDT;
+                            d.Vertragsnummer = s.LIZNR;
+                        }));
             }
         }
 
