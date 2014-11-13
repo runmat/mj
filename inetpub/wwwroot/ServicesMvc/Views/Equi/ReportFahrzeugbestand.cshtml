@@ -59,7 +59,7 @@
         $.ajax(
         {
             type: "POST",
-            url: "GetEquiHistorie",
+            url: "GetFahrzeugHistoriePartial",
             loadingShow: true,
             data: { fahrgestellnummer: fin },
             success: function (result) {
@@ -74,9 +74,10 @@
         $("#divEquiHistorie").slideDown();
         $("#btnBackToResult").show();
         setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
     }
 
-    function CloseEquiHistorie() {
+    function CloseEquiHistorieDetail() {
         $("#btnBackToResult").hide();
         $("#divEquiHistorie").slideUp(function () { $("#divEquiGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
         $("#divEquiGrid").slideDown();
