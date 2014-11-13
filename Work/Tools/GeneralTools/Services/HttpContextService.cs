@@ -6,12 +6,14 @@ namespace GeneralTools.Services
 {
     public class HttpContextService
     {
-        public static void TryGetUserDataFromUrlOrSession(out int appID, out int userID, out int customerID, out int kunnr, out int portalType)
+        public static void TryGetUserDataFromUrlOrSession(out int appID, out int userID, out int customerID,
+                                                          out int kunnr, out int portalType)
         {
             // try to obtain "appID, userID, customerID, kunnr, portalType"
             // => .. from Request QueryString
             var cp = HttpContext.Current.Request["cp"];
-            if (String.IsNullOrEmpty(cp) && HttpContext.Current.Session != null && HttpContext.Current.Session["cp"] != null)
+            if (String.IsNullOrEmpty(cp) && HttpContext.Current.Session != null &&
+                HttpContext.Current.Session["cp"] != null)
                 // => .. or from Session
                 cp = HttpContext.Current.Session["cp"].ToString();
 
@@ -39,7 +41,8 @@ namespace GeneralTools.Services
             // try to obtain "appID"
             // => .. from Request QueryString
             var strId = HttpContext.Current.Request["AppID"];
-            if (String.IsNullOrEmpty(strId) && HttpContext.Current.Session != null && HttpContext.Current.Session["AppID"] != null)
+            if (String.IsNullOrEmpty(strId) && HttpContext.Current.Session != null &&
+                HttpContext.Current.Session["AppID"] != null)
                 // => .. or from Session
                 strId = HttpContext.Current.Session["AppID"].ToString();
 
@@ -52,6 +55,16 @@ namespace GeneralTools.Services
             {
                 appID = 0;
             }
+        }
+
+        public static object TryGetValueFromSession(string valueName)
+        {
+            if (HttpContext.Current.Session != null && HttpContext.Current.Session[valueName] != null)
+            {
+                return HttpContext.Current.Session[valueName];
+            }
+
+            return null;
         }
     }
 }

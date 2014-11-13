@@ -19,7 +19,7 @@
             columns.XBound(c => c.Vertragsnummer);
             columns.XBound(c => c.Fahrgestellnummer).Filterable(false).Sortable(false)
                 .ClientTemplate(
-                    "<a class='tooltips' href='../Equi/FahrzeugAkte/<#= data.FIN #>' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='icon-caret-right'></i> <#= data.FIN #></a>"
+                    "<a class='tooltips' href='../Equi/FahrzeugHistorieZurFin/<#= data.FIN #>' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='icon-caret-right'></i> <#= data.FIN #></a>"
                 );
             columns.XBound(c => c.Memo);
             columns.XBound(c => c.Eingangsdatum);
