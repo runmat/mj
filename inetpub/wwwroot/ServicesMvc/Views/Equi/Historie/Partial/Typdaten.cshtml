@@ -1,0 +1,78 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiTypdaten
+
+<style type="text/css">   
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<form action="#" class="form-horizontal label-width-250">
+    
+    <h4 class="form-section">@Localize.GeneralVehicleData</h4>
+
+    @Html.FormTextBlockFor(m => m.Fahrzeugklasse_Aufbau, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Hersteller_HerstSchluessel, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Handelsname_FarbeText, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Genehmigungsdatum_GenehmigungsNr, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Typ_TypSchluessel, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Fabrikname, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Variante_Version, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.AnzahlSitze, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.ZulGesamtgewicht, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Laenge, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Breite, new { @class = "m-wrap" })
+
+    @Html.FormTextBlockFor(m => m.Hoehe, new { @class = "m-wrap" })
+    
+
+    <h4 class="form-section">@Localize.DrivetrainData</h4>
+    
+    @Html.FormTextBlockFor(m => m.Hubraum, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.Leistung_UmdrehungenProMin, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.Hoechstgeschwindigkeit, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.Standgeraeusch_Fahrgeraeusch, new { @class = "m-wrap" })
+    
+
+    <h4 class="form-section">@Localize.Fuel_Tank</h4>
+    
+    @Html.FormTextBlockFor(m => m.Kraftstoffart_Kraftstoffcode, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.FassungsvermoegenTank, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.Co2Emission, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.NationaleEmissionsklasseCode_NationaleEmissionsklasse, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.Abgasrichtlinie, new { @class = "m-wrap" })
+    
+
+    <h4 class="form-section">@Localize.Axles_Tires</h4>
+    
+    @Html.FormTextBlockFor(m => m.AnzahlAchsen, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.AnzahlAntriebsachsen, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.MaxAchslastAchsen123, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.BereifungAchsen123, new { @class = "m-wrap" })
+    
+
+    <h4 class="form-section">@Localize.Comments</h4>
+
+    @Html.FormTextAreaFor(m => m.Bemerkungen, new { @class = "m-wrap", @readonly = "readonly" }, null, 40, 6)
+
+</form>

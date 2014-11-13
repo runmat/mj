@@ -1,30 +1,67 @@
 ﻿@using CkgDomainLogic.Equi.Models
 @model EquiHistorie
 
+<style type="text/css">   
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
 <form action="#" class="form-horizontal">
     
-    <h4 class="form-section">Fahrzeugdaten</h4>
+    <h4 class="form-section">@Localize.VehicleData</h4>
 
-    @Html.FormTextBlockFor(m => m.Hersteller, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.Fahrzeugmodell, new { @class = "m-wrap", col = "right" })
+    @Html.FormTextBlockFor(m => m.Hersteller, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Fahrzeugmodell, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Typdaten.FarbeText, new { @class = "m-wrap", col = "right3" })
 
-    @Html.FormTextBlockFor(m => m.HerstellerSchluessel, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.TypSchluessel, new { @class = "m-wrap", col = "right" })
+    @Html.FormTextBlockFor(m => m.HerstellerSchluessel, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.TypSchluessel, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.VarianteVersion, new { @class = "m-wrap", col = "right3" })
 
-    @Html.FormTextBlockFor(m => m.VarianteVersion, new { @class = "m-wrap" })
 
+    <h4 class="form-section">@Localize.ZB2Data</h4>
 
-    <h4 class="form-section">Briefdaten</h4>
+    @Html.FormTextBlockFor(m => m.Briefnummer, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Erstzulassungsdatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Abmeldedatum, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left3", @disabled = "disabled" })
+    @Html.FormTextAreaFor(m => m.Halter, new { @class = "m-wrap medium", col = "middle3", @readonly = "readonly" })
+    @Html.FormTextAreaFor(m => m.Standort, new { @class = "m-wrap medium", col = "right3", @readonly = "readonly" })
 
-    @Html.FormTextBlockFor(m => m.Briefnummer, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.Referenz1, new { @class = "m-wrap", col = "right" })
+    @Html.FormTextBlockFor(m => m.Versandgrund, new { @class = "m-wrap" })
+    
+    
+    <h4 class="form-section">@Localize.DeRegistrationData</h4>
+    
+    @Html.FormTextBlockFor(m => m.CarportEingang, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.KennzeichenEingang, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.CheckInAbmeldeauftrag, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormCheckBoxFor(m => m.Fahrzeugschein, new { @class = "m-wrap", col = "left3", @disabled = "disabled" })
+    @Html.FormCheckBoxFor(m => m.BeideKennzeichenVorhanden, new { @class = "m-wrap", col = "middle3", @disabled = "disabled" })
+    @Html.FormTextBlockFor(m => m.Stilllegung, new { @class = "m-wrap", col = "right3" })
+    
 
-    @Html.FormTextBlockFor(m => m.Erstzulassungsdatum, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.Abmeldedatum, new { @class = "m-wrap", col = "right" })
+    <h4 class="form-section">@Localize.ChangeData</h4>
 
-    @Html.FormTextBlockFor(m => m.Halter, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.Standort, new { @class = "m-wrap", col = "right" })
+    @Html.FormTextBlockFor(m => m.Ummeldedatum, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.KennzeichenAlt, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.BriefnummerAlt, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormCheckBoxFor(m => m.Briefaufbietung, new { @class = "m-wrap", @disabled = "disabled" })
 
-    @Html.FormTextBlockFor(m => m.CocVorhanden, new { @class = "m-wrap" })
+    
+    <h4 class="form-section">@Localize.References</h4>
+
+    @Html.FormTextBlockFor(m => m.Ordernummer, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Referenz1, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Referenz2, new { @class = "m-wrap", col = "right3" })
+    
+    
+    <h4 class="form-section">@Localize.Comments</h4>
+    
+    @Html.FormTextAreaFor(m => m.Bemerkungen, new { @class = "m-wrap", @readonly = "readonly" }, null, 40, 6)
 
 </form>

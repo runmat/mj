@@ -4187,6 +4187,13 @@
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangSuche.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangGrid.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang.cshtml" />
+    <Content Include="Views\Equi\FahrzeugHistorie.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieSuche.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\Typdaten.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\Haendlerdaten.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\AktionsdatenGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\Pdf.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4916,7 +4923,7 @@
     <Content Include="Views\Equi\Bestand\EquiGrid.cshtml" />
     <Content Include="Views\Shared\Partial\TelerikGridDummy.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\MeldungsdatenGrid.cshtml" />
-    <Content Include="Views\Equi\Historie\Fahrzeughistorie.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieDetail.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\Uebersicht.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\LeftLabelControl.cshtml" />
     <Content Include="Views\CoC\Typenverwaltung\CocTypenFilterMutliple.cshtml" />
@@ -4994,9 +5001,7 @@
     <Content Include="Views\Archive\EasyAccess\EasyAccessGrid.cshtml" />
     <Content Include="Views\Shared\Wrappers\FormSearchBox_Begin.cshtml" />
     <Content Include="Views\Shared\Wrappers\FormSearchBox_End.cshtml" />
-    <Content Include="Views\Equi\FahrzeugAkte.cshtml" />
-    <Content Include="Views\Equi\Historie\Partial\UebersichtOld.cshtml" />
-    <Content Include="Views\Equi\Historie\Partial\Aenderungsdaten.cshtml" />
+    <Content Include="Views\Equi\FahrzeugHistorieZurFin.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\LeftLabel.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportAbmeldungen.cshtml" />
     <Content Include="Views\Fahrzeuge\Abmeldungen\SucheFahrzeuge.cshtml" />
