@@ -19,6 +19,7 @@ namespace AppZulassungsdienst.forms
         Boolean BackfromList;
         String IDKopf;
         private const string CONST_IDSONSTIGEDL = "570";
+        private DataView dvKunden;
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -50,6 +51,10 @@ namespace AppZulassungsdienst.forms
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
 
+            if (dvKunden == null)
+            {
+                InitKundenliste(false);
+            }
             InitLargeDropdowns();
             InitJava();
         }
@@ -79,6 +84,11 @@ namespace AppZulassungsdienst.forms
                     if (id != 0)
                     {
                         objNacherf.LoadDB_ZLDRecordset(id);
+                        if (objNacherf.Vorgang.StartsWith("A"))
+                        {
+                            InitKundenliste(true);
+                            BindDropdownKunde();
+                        }
                         fillForm();
                         SelectValues();
                     }
@@ -87,14 +97,10 @@ namespace AppZulassungsdienst.forms
             }
         }
         
-        /// <summary>
-        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
-        /// </summary>
-        private void InitLargeDropdowns()
+        private void InitKundenliste(bool autohaus)
         {
-            //Kunde
             DataView tmpDView;
-            if (objNacherf.Vorgang.StartsWith("A"))
+            if (autohaus)
             {
                 objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
                 tmpDView = objCommon.tblAHKundenStamm.DefaultView;
@@ -103,15 +109,28 @@ namespace AppZulassungsdienst.forms
             {
                 tmpDView = objCommon.tblKundenStamm.DefaultView;
             }
-
             tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
+            dvKunden = tmpDView;
+        }
+
+        private void BindDropdownKunde()
+        {
+            ddlKunnr.DataSource = dvKunden;
             ddlKunnr.DataValueField = "KUNNR";
             ddlKunnr.DataTextField = "NAME1";
             ddlKunnr.DataBind();
+        }
+
+        /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            BindDropdownKunde();
 
             //StVa
-            tmpDView = objCommon.tblStvaStamm.DefaultView;
+            DataView tmpDView = objCommon.tblStvaStamm.DefaultView;
             tmpDView.Sort = "KREISTEXT";
             ddlStVa.DataSource = tmpDView;
             ddlStVa.DataValueField = "KREISKZ";
