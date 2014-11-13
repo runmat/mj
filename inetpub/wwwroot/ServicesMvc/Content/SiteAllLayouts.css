@@ -267,6 +267,12 @@ textarea.m-wrap {
 .label-width-200 .controls {
     margin-left: 200px !Important;
 }
+.label-width-250 .control-label {
+    width: 250px !Important;
+}
+.label-width-250 .controls {
+    margin-left: 250px !Important;
+}
 
 .uppercase {
     text-transform: uppercase;

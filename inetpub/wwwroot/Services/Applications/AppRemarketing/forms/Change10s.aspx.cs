@@ -381,10 +381,20 @@ namespace AppRemarketing.forms
 
             for (int i = 0; i < tblTemp.Rows.Count; i++)
             {
-
                 if (string.IsNullOrEmpty(tblTemp.Rows[i][0].ToString()))
                 {
                     tblTemp.Rows[i].Delete();
+                }
+                else
+                {
+                    for (int j = 0; j < tblTemp.Rows[i].ItemArray.Length; j++)
+                    {
+                        var strWert = tblTemp.Rows[i][j].ToString();
+                        if (strWert.StartsWith(" ") || strWert.EndsWith(" "))
+                        {
+                            tblTemp.Rows[i][j] = strWert.Trim();
+                        }
+                    }
                 }
             }
 

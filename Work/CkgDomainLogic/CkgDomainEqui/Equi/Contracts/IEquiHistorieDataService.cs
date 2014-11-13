@@ -1,9 +1,16 @@
-﻿using CkgDomainLogic.Equi.Models;
+﻿using System.Collections.Generic;
+using CkgDomainLogic.Equi.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
     public interface IEquiHistorieDataService
     {
-        EquiHistorie GetEquiHistorie(string fahrgestellnummer);
+        EquiHistorieSuchparameter Suchparameter { get; set; }
+
+        List<EquiHistorieInfo> HistorieInfos { get; }
+
+        void MarkForRefreshHistorieInfos();
+
+        EquiHistorie GetEquiHistorie(string fahrgestellnummer, int appId);
     }
 }
