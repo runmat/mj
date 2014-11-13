@@ -1422,7 +1422,13 @@ namespace AppZulassungsdienst.lib
                     Int32.TryParse(row["ZULBELN"].ToString(), out idRecord);
 
                     int KopfCount;
-                    if (blnVersandzulassungen) // Versandzulassungen
+                    if (SelSofortabrechnung)
+                    {
+                        KopfCount = (from k in ZLD_DataContext.ZLDKopfTabelle
+                                     where k.id_sap == idRecord && k.Vorgang == row["BLTYP"].ToString()
+                                     select k).Count();
+                    }
+                    else if (blnVersandzulassungen) // Versandzulassungen
                     {
                         KopfCount = (from k in ZLD_DataContext.ZLDKopfTabelle
                                      where k.id_sap == idRecord && (k.Vorgang == "VZ" || k.Vorgang == "VE" || k.Vorgang == "AV" || k.Vorgang == "AX")
@@ -1950,6 +1956,11 @@ namespace AppZulassungsdienst.lib
         /// <summary>
         /// die im Gridview editierten Daten abspeichern
         /// </summary>
+        /// <param name="IDRecordset"></param>
+        /// <param name="IDPos"></param>
+        /// <param name="KennzAbc"></param>
+        /// <param name="Griddate"></param>
+        /// <param name="Amt"></param>
         public void UpdateDB_GridData(Int32 IDRecordset, Int32 IDPos, String KennzAbc, String Griddate, String Amt)
         {
             var ZLD_DataContext = new ZLDTableClassesDataContext();
@@ -1989,6 +2000,104 @@ namespace AppZulassungsdienst.lib
                 }
 
                 ZLD_DataContext.Connection.Open();
+                ZLD_DataContext.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                RaiseError("-9999", ex.Message);
+            }
+            finally
+            {
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
+                {
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// die im Gridview editierten Daten abspeichern
+        /// </summary>
+        /// <param name="IDRecordset"></param>
+        /// <param name="IDPos"></param>
+        /// <param name="Preis"></param>
+        /// <param name="Gebuehr"></param>
+        /// <param name="PreisKZ"></param>
+        /// <param name="KennzAbc"></param>
+        /// <param name="Griddate"></param>
+        public void UpdateDB_GridData(Int32 IDRecordset, Int32 IDPos, Decimal Preis,
+                            Decimal Gebuehr, Decimal PreisKZ, String KennzAbc, String Griddate)
+        {
+            var ZLD_DataContext = new ZLDTableClassesDataContext();
+
+            ClearError();
+
+            try
+            {
+                var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
+                               where k.id == IDRecordset
+                               select k).Single();
+
+
+                tblKopf.id_user = m_objUser.UserID;
+                tblKopf.username = m_objUser.UserName;
+
+                if (IDPos == 10)
+                {
+                    tblKopf.KennABC = KennzAbc;
+
+                    if (tblKopf.Kennzeichen != tblKopf.KennKZ + "-" + KennzAbc)
+                    {
+                        tblKopf.Prali_Print = false;
+                    }
+                    tblKopf.Kennzeichen = tblKopf.KennKZ + "-" + KennzAbc;
+
+                    Griddate = ZLDCommon.toShortDateStr(Griddate);
+                    if (ZLDCommon.IsDate(Griddate))
+                    {
+                        DateTime tmpDate;
+                        DateTime.TryParse(Griddate, out tmpDate);
+                        tblKopf.Zulassungsdatum = tmpDate;
+                    }
+                }
+
+                ZLD_DataContext.Connection.Open();
+                ZLD_DataContext.SubmitChanges();
+
+
+                var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
+                              where p.id_Kopf == IDRecordset && p.id_pos == IDPos
+                              select p);
+                if (tblPos.Count() == 1)
+                {
+                    foreach (var PosRow in tblPos)
+                    {
+                        PosRow.Preis = Preis;
+                        PosRow.GebPreis = Gebuehr;
+
+                        PosRow.PreisKZ = PreisKZ;
+                    }
+                    ZLD_DataContext.SubmitChanges();
+                }
+
+                tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
+                          where p.id_Kopf == IDRecordset && p.UEPOS == IDPos
+                          select p);
+
+                foreach (var PosRow in tblPos)
+                {
+                    if (PosRow.WebMTArt == "G")
+                    {
+                        PosRow.Preis = Gebuehr;
+                    }
+
+                    if (PosRow.WebMTArt == "K")
+                    {
+                        PosRow.Preis = PreisKZ;
+                    }
+                }
+
                 ZLD_DataContext.SubmitChanges();
             }
             catch (Exception ex)

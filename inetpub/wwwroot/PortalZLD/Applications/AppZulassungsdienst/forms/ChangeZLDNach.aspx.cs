@@ -1121,7 +1121,7 @@ namespace AppZulassungsdienst.forms
                 {
                     objNacherf.Kennzeichen = txtKennz1.Text.ToUpper() + "-" + txtKennz2.Text.ToUpper();
                 }
-                else if (!objNacherf.SelAnnahmeAH)
+                else if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung)
                 {
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein.";
                     return;
