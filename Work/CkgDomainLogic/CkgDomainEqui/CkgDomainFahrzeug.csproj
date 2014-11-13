@@ -121,6 +121,10 @@
     <Compile Include="Equi\Models\DataModels\DatenOhneDokumente.cs" />
     <Compile Include="Equi\Models\DataModels\DokumentOhneDaten.cs" />
     <Compile Include="Equi\Models\DataModels\EinAusgangSelektor.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiTypdaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiAktionsdaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHaendlerdaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieInfo.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Halterabweichung.cs" />
+    <Compile Include="Equi\Models\UIModels\EquiHistorieSuchparameter.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreEdit.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />

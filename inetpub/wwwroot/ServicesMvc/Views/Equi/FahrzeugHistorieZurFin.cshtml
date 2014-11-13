@@ -1,0 +1,21 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model EquiHistorieViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_Fahrzeughistorie<small></small></h3>
+
+<div id="divFahrzeugAkte">
+    @Html.Partial("Historie/HistorieDetail")
+</div>
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>
