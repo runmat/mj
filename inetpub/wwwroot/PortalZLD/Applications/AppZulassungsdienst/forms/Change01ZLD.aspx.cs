@@ -409,7 +409,8 @@ namespace AppZulassungsdienst.forms
                     lblErrorBank.Text = "";
                     pnlBankdaten.Attributes.Remove("style");
                     pnlBankdaten.Attributes.Add("style", "display:none");
-                    Panel1.Visible = true;
+                    Panel1.Attributes.Remove("style");
+                    Panel1.Attributes.Add("style", "display:block");
                     ButtonFooter.Visible = true;
                     txtReferenz1.Focus();
                 } 
@@ -1251,7 +1252,9 @@ namespace AppZulassungsdienst.forms
             txtName1.Focus();        
             pnlBankdaten.Attributes.Remove("style");
             pnlBankdaten.Attributes.Add("style", "display:block");
-            Panel1.Visible = false; ButtonFooter.Visible = false;
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:none");
+            ButtonFooter.Visible = false;
         }
 
         /// <summary>
@@ -1578,7 +1581,8 @@ namespace AppZulassungsdienst.forms
         {
             pnlBankdaten.Attributes.Remove("style");
             pnlBankdaten.Attributes.Add("style", "display:none");
-            Panel1.Visible = true;
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
             ButtonFooter.Visible = true;
         }
 

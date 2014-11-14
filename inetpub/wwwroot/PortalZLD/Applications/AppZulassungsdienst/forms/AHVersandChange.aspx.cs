@@ -138,8 +138,10 @@ namespace AppZulassungsdienst.forms
                 chkCPDEinzug.Checked = false;
                 chkEinzug.Checked = false;
                 chkRechnung.Checked = false;
-                pnlBankdaten.Visible = true;
-                Panel1.Visible = false;
+                pnlBankdaten.Attributes.Remove("style");
+                pnlBankdaten.Attributes.Add("style", "display:block");
+                Panel1.Attributes.Remove("style");
+                Panel1.Attributes.Add("style", "display:none");
                 ButtonFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
                 txtKundebank.Text = ddlKunnr.SelectedItem.Text;
@@ -181,8 +183,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCancelBank_Click(object sender, EventArgs e)
         {
-            pnlBankdaten.Visible = false;
-            Panel1.Visible = true;
+            pnlBankdaten.Attributes.Remove("style");
+            pnlBankdaten.Attributes.Add("style", "display:none");
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
             ButtonFooter.Visible = true;
 
         }
@@ -291,8 +295,10 @@ namespace AppZulassungsdienst.forms
                     }
 
                     lblErrorBank.Text = "";
-                    pnlBankdaten.Visible = false;
-                    Panel1.Visible = true;
+                    pnlBankdaten.Attributes.Remove("style");
+                    pnlBankdaten.Attributes.Add("style", "display:none");
+                    Panel1.Attributes.Remove("style");
+                    Panel1.Attributes.Add("style", "display:block");
                     ButtonFooter.Visible = true;
                 }
             }

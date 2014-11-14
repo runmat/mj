@@ -28,7 +28,7 @@
                         </Triggers>
                         <ContentTemplate>
                             <div id="TableQuery" style="margin-bottom: 10px">
-                                <asp:Panel ID="pnlBankdaten" runat="server" Visible="false">
+                                <asp:Panel ID="pnlBankdaten" runat="server" style="display:none">
                                     <table cellpadding="0" runat="server" id="TableBank" cellspacing="0">
                                         <tr>
                                             <td colspan="3" style="background-color: #dfdfdf; height: 22px; padding-left: 15px">

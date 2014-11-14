@@ -3008,7 +3008,8 @@ namespace AppZulassungsdienst.forms
                     UpdateKundeBank();
                     pnlBankdaten.Attributes.Remove("style");
                     pnlBankdaten.Attributes.Add("style", "display:none");
-                    Panel1.Visible = true;
+                    Panel1.Attributes.Remove("style");
+                    Panel1.Attributes.Add("style", "display:block");
                     dataQueryFooter.Visible = true;
                 }
             }
@@ -3039,7 +3040,8 @@ namespace AppZulassungsdienst.forms
             txtKontoinhaber.Text = objNacherf.Inhaber;
             pnlBankdaten.Attributes.Remove("style");
             pnlBankdaten.Attributes.Add("style", "display:none");
-            Panel1.Visible = true;
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
             dataQueryFooter.Visible = true;
         }
 
@@ -3060,7 +3062,10 @@ namespace AppZulassungsdienst.forms
             {
                 chkCPD.Checked = false;
                 chkCPDEinzug.Checked = false;
-                Panel1.Visible = false;
+                pnlBankdaten.Attributes.Remove("style");
+                pnlBankdaten.Attributes.Add("style", "display:block");
+                Panel1.Attributes.Remove("style");
+                Panel1.Attributes.Add("style", "display:none");
                 dataQueryFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
                 txtKundebank.Text = ddlKunnr.SelectedItem.Text;
@@ -3076,8 +3081,6 @@ namespace AppZulassungsdienst.forms
                     chkRechnung.Checked = objNacherf.Rechnung;
                 }
                 txtName1.Focus();
-                pnlBankdaten.Attributes.Remove("style");
-                pnlBankdaten.Attributes.Add("style", "display:block");
             }
         }
 
