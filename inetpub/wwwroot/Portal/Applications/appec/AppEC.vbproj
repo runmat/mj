@@ -131,10 +131,6 @@
       <DependentUpon>Change01.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Forms\Change01_2.aspx.vb">
-      <DependentUpon>Change01_2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Forms\Change02.aspx.vb">
       <DependentUpon>Change02.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -448,7 +444,6 @@
     <Compile Include="Lib\Monatsreport.vb" />
     <Compile Include="Lib\Unfallmeldung.vb" />
     <Content Include="Forms\Change01.aspx" />
-    <Content Include="Forms\Change01_2.aspx" />
     <Content Include="Forms\Change02.aspx" />
     <Content Include="Forms\Change02_2.aspx" />
     <Content Include="Forms\Change05.aspx" />
@@ -504,10 +499,6 @@
     <Content Include="Forms\scroll.htc" />
     <EmbeddedResource Include="Forms\Change01.aspx.resx">
       <DependentUpon>Change01.aspx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Change01_2.aspx.resx">
-      <DependentUpon>Change01_2.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Change02.aspx.resx">
