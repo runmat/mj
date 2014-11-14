@@ -14,7 +14,7 @@ Public Class KBS_BASE
     Public Const CHANGE08_GLOBALOBJHANDLING As Boolean = True
     Public Const REPORT01_GLOBALOBJHANDLING As Boolean = True
     Public Const CHANGE12_GLOBALOBJHANDLING As Boolean = True
-    Private Shared WithEvents mTimer As New Timers.Timer(3600000) '1 stunde=3600000
+    Private Shared WithEvents mTimer As Timers.Timer
 
     Private Shared m_intGroupID As Int32
     Private Shared m_intUserId As Int32 = -1
@@ -65,7 +65,15 @@ Public Class KBS_BASE
     Public Shared ReadOnly Property IPtoKassen() As DataTable
         Get
             If mIPtoKassen Is Nothing Then
-                mTimer.AutoReset = False
+                If mTimer Is Nothing Then
+                    Dim tmpMinutes As Integer = 60
+                    If IsNumeric(ConfigurationManager.AppSettings("IPDataRefreshTimerMinutes")) Then
+                        tmpMinutes = Int32.Parse(ConfigurationManager.AppSettings("IPDataRefreshTimerMinutes"))
+                    End If
+                    mTimer = New Timers.Timer(60000 * tmpMinutes)
+                    mTimer.AutoReset = False
+                    AddHandler mTimer.Elapsed, AddressOf ClearKassen
+                End If
                 mTimer.Start()
                 mIPtoKassen = New DataTable
                 fillIpToKassenTable()
@@ -79,7 +87,7 @@ Public Class KBS_BASE
 
 #Region "Methods"
 
-    Private Shared Sub ClearKassen() Handles mTimer.Elapsed
+    Private Shared Sub ClearKassen(ByVal sender As Object, ByVal e As Timers.ElapsedEventArgs)
         mIPtoKassen = Nothing
         IPtoKassen.AcceptChanges()
     End Sub
