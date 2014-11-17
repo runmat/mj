@@ -234,9 +234,9 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
                     // Copy to SAP
                     (business, sap) =>
                     {
-                        if (sap.AT_TIM_VON.IsNotNullOrEmpty())
+                        if (sap.AT_TIM_VON.IsNotNullOrEmpty() && sap.AT_TIM_VON.Contains(":"))
                             sap.AT_TIM_VON = sap.AT_TIM_VON.Replace(":", "") + "00";
-                        if (sap.AT_TIM_BIS.IsNotNullOrEmpty())
+                        if (sap.AT_TIM_BIS.IsNotNullOrEmpty() && sap.AT_TIM_BIS.Contains(":"))
                             sap.AT_TIM_BIS = sap.AT_TIM_BIS.Replace(":", "") + "00";
                     }));
             }
