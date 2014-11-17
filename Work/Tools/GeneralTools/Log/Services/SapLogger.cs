@@ -92,7 +92,7 @@ namespace GeneralTools.Log.Services
                 else if (appID == 0)
                 {
                     // wenn nur die AppID fehlt, nur diese aus dem Context holen
-                    HttpContextService.TryGetAppIdFromUrlOrSession(out appID);
+                    appID = HttpContextService.TryGetAppIdFromUrlOrSession();
                 }
             }
 
