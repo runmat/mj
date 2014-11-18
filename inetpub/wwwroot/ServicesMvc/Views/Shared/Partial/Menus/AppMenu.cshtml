@@ -8,27 +8,27 @@
 
     var _appFavoritesEditMode = @((logonContext != null && logonContext.AppFavoritesEditMode).ToString().ToLower()) ;
 
-    function OnMenuItemClick(a, appId, ignoreAppFavoritesEditSwitchOneFavorite) {
-        if (_appFavoritesEditMode) {
-            if (ignoreAppFavoritesEditSwitchOneFavorite)
-                return false;
-            
-            return AppFavoritesEditSwitchOneFavorite(a, appId);
-        }
+//    function OnMenuItemClick(a, appId, ignoreAppFavoritesEditSwitchOneFavorite) {
+//        if (_appFavoritesEditMode) {
+//            if (ignoreAppFavoritesEditSwitchOneFavorite)
+//                return false;
+//            
+//            return AppFavoritesEditSwitchOneFavorite(a, appId);
+//        }
 
-        return LogPageVisit(a, appId);
-    }
+//        return LogPageVisit(a, appId);
+//    }
 
-    function LogPageVisit(a, appId) {
-        
-        var href = $(a).attr("href");
-        var url = '/ServicesMvc/DomainCommon/LogPageVisit?appID=' + appId;
-        $.get(url).always(function () {
-            window.location.href = href;
-        });
+//    function LogPageVisit(a, appId) {
+//        
+//        var href = $(a).attr("href");
+//        var url = '/ServicesMvc/DomainCommon/LogPageVisit?appID=' + appId;
+//        $.get(url).always(function () {
+//            window.location.href = href;
+//        });
 
-        return false;
-    }
+//        return false;
+//    }
 </script>
 
 <li class="@MvcApplication.GetActiveMenuItemCssClass()">
@@ -67,7 +67,7 @@
                 {
                     var appFavoriteClassName = logonContext.AppFavoritesEditMode && menuItem.AppIsMvcFavorite ? "app-favorite" : "";
 		            <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
-		                <a class="@appFavoriteClassName" onclick="return OnMenuItemClick(this, @menuItem.AppID, false);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
+		                <a class="@appFavoriteClassName" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
                     </li>
                 }
 		    </ul>
