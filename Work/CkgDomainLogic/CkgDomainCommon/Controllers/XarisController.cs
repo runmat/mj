@@ -31,8 +31,6 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            ViewModel.DataInit();
-
             if (LogonContext.MvcEnforceRawLayout)
                 return RedirectPermanent(ViewModel.XarisUrl);
 

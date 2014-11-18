@@ -10,6 +10,11 @@
             onResize();
         });
         onResize();
+
+        var url = '@Html.Raw(Model.XarisUrl)';
+        //alert(url);
+        var ifr = document.getElementById('ifrMvcApp');
+        ifr.src = url;
     }
 
     function isIeAndVersion() {
@@ -44,4 +49,4 @@
 
 </script>
 
-<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src="@Model.XarisUrl"></iframe>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src=""></iframe>
