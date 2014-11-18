@@ -1,8 +1,8 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Uebfuehrg.Contracts;
@@ -19,11 +19,41 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         [XmlIgnore]
         public IUebfuehrgDataService DataService { get { return CacheGet<IUebfuehrgDataService>(); } }
 
-        public HistoryAuftragFilter HistoryAuftragFilter { get; set; }
 
-        public List<HistoryAuftrag> HistoryAuftraege { get; set; }
+        public HistoryAuftragSelector HistoryAuftragSelector
+        {
+            get { return PropertyCacheGet(() => new HistoryAuftragSelector()); }
+            set { PropertyCacheSet(value); }
+        }
 
+        [XmlIgnore]
+        public List<HistoryAuftrag> HistoryAuftraege
+        {
+            get { return PropertyCacheGet(() => new List<HistoryAuftrag>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<HistoryAuftrag> HistoryAuftraegeFiltered
+        {
+            get { return PropertyCacheGet(() => HistoryAuftraege); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void LoadHistoryAuftraege()
+        {
+            HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector);
+
+            DataMarkForRefresh();
+        }
+
+        public void FilterHistoryAuftraege(string filterValue, string filterProperties)
+        {
+            HistoryAuftraegeFiltered = HistoryAuftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+        
         public HistoryAuftrag HistoryAuftragCurrent { get; set; }
+
 
         public bool ImageFilesAvailable { get { return ImageFileNames != null && ImageFileNames.Any(); } }
         public bool PdfFilesAvailable { get { return PdfFileNames != null && PdfFileNames.Any(); } }
@@ -38,15 +68,18 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         string DestinationRelativePath { get; set; }
 
 
+        public void DataInit()
+        {
+            DataMarkForRefresh();
+        }
+
         public void DataMarkForRefresh()
         {
-            HistoryAuftragFilter = new HistoryAuftragFilter
-                {
-                    UeberfuehrungsDatumVon = DateTime.Now.AddDays(-30),
-                    UeberfuehrungsDatumBis = DateTime.Now.AddDays(0),
-                    AuftragsArt = "A",
-                    AuftragGeberAdressen = DataService.GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToListOrEmptyList(),
-                };
+            HistoryAuftragSelector = new HistoryAuftragSelector { AuftragsArt = "A" };
+        }
+
+        public void Validate(Action<string, string> addModelError)
+        {
         }
 
         public List<string> GetImageFileNamesForTour(int tour)
@@ -101,22 +134,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             return index;
         }
 
-        public void ValidateHistoryAuftragFilter(ref HistoryAuftragFilter filter, Action<Expression<Func<HistoryAuftragFilter, object>>> addModelError)
-        {
-            filter.AuftragGeberAdressen = DataService.GetRechnungsAdressen().Where(a => a.SubTyp == "RG").ToListOrEmptyList();
-            //filter.Validate(addModelError);
-        }
-
-        public List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragFilter filter)
-        {
-            return HistoryAuftraege = DataService.GetHistoryAuftraege(filter);
-        }
-
-        public List<HistoryAuftrag> GetHistoryAuftraege()
-        {
-            return GetHistoryAuftraege(HistoryAuftragFilter);
-        }
-
         public void PrepareHistoryAuftragsDokumente(string auftragsNr, string fahrt)
         {
             HistoryAuftragCurrent = HistoryAuftraege.FirstOrDefault(a => a.AuftragsNr.ToSapKunnr() == auftragsNr.ToSapKunnr() && a.Fahrt == fahrt);
@@ -141,21 +158,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             // Also copy thumb images at this point
             // Note: Big images and pdf files will be copied only if user clicks on the apropiate thumbnail
             CopyFilesToTempFolder(mask);
-
-
-            //var t1 = GetHistoryTourFromFilename(sourcePdfFiles[0]);
-            //var t2 = GetHistoryTourFromFilename(ImageFileNames[0]);
-            //var t3 = GetHistoryTourFromFilename(sourceJpgThumbFiles[0]);
-
-            //var xxx = PdfFileTours;
-            //var yyy = ImageFileTours;
-
-            //var ggg = GetPdfFileNamesForTour(1);
-            //var gggg = GetPdfFileNamesForTour(2);
-            //var ggggg = GetImageFileNamesForTour(1);
-            //var gggggg = GetImageFileNamesForTour(2);
-
-            //var zzz = Path.Combine(AppSettings.WebViewRelativePath, destinationRelativePath, ImageFileNames[0]).Replace(@"\", "/");
         }
 
         public void CopySingleBigImage(int tour, int singleFileNr)
@@ -187,7 +189,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (HistoryAuftragCurrent == null)
                 return null;
 
-            var auftragGeber = HistoryAuftragFilter.SelectedAuftragGeberAdresse.KundenNr.ToSapKunnr(); //LogonContext.KundenNr.ToSapKunnr()
+            var auftragGeber = LogonContext.KundenNr.ToSapKunnr(); 
             var path = Path.Combine(AppSettings.UploadFilePath, auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView);
             return path;
         }
@@ -230,7 +232,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 return "";
 
             var zipFileNameWithoutExtensions = string.Format("Ueberfuehrungsprotokolle_{0}_Fahrt_{1}", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt);
-            var auftragGeber = HistoryAuftragFilter.SelectedAuftragGeberAdresse.KundenNr.ToSapKunnr(); 
+            var auftragGeber = LogonContext.KundenNr.ToSapKunnr();
 
             var zip = new ZipFile();
 

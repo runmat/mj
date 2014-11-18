@@ -156,7 +156,7 @@
     <Compile Include="Uebfuehrg\Models\UiModels\Adresse.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\DienstleistungsAuswahl.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\Fahrzeug.cs" />
-    <Compile Include="Uebfuehrg\Models\UiModels\HistoryAuftragFilter.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\HistoryAuftragSelector.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\Receipt.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\RgDaten.cs" />
     <Compile Include="Uebfuehrg\Services\ReceiptCreationService.cs" />

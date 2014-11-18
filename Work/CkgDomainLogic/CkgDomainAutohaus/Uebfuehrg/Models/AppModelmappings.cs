@@ -126,6 +126,59 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag> Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag>(
+                    new Dictionary<string, string> {
+                        { "AUFNR", "AuftragsNr" },
+                        { "ERDAT", "AuftragsDatum" },
+                        { "FAHRTNR", "Fahrt" },
+                        { "ZZKENN", "Kennzeichen" },
+                        { "ZzRefnr", "Referenz" },
+                        { "ZZBEZEI", "Typ" },
+                        { "VDATU", "UeberfuehrungsDatum" },
+                        { "wadat_ist", "AbgabeDatum" },
+                        { "FahrtVon", "FahrtVonOrt" },
+                        { "FahrtNach", "FahrtNachOrt" },
+                        { "Gef_Km", "GefahreneKilometer" },
+                        { "KFTEXT", "Klaerfall" },
+                        { "EXTENSION2", "Ansprechpartner" },
+                        { "Telnr_Long", "Telefon" },
+                        { "Smtp_Addr", "Email" },
+                        { "Zzfahrg", "FahrgestellNr" },
+                        { "Kftext", "KlaerFall" },
+                        { "Name1", "Kundenberater" },
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragSelector> Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragSelector
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragSelector>(
+                    new Dictionary<string, string> {
+                        { "Aufnr", "AuftragsNr" },
+                        { "Erdat", "ErfassungsDatumVon" },
+                        { "Erdat_Bis", "ErfassungsDatumBis" },
+                        { "Vdatu", "UeberfuehrungsDatumVon" },
+                        { "Vdatu_Bis", "UeberfuehrungsDatumBis" },
+                        { "Zzrefnr", "Referenz" },
+                        { "Zzkenn", "Kennzeichen" },
+                        { "Kunnr_Ag", "KundenNr" },
+                        { "EX_KUNNR", "KundenReferenz" },
+                        { "Zorgadmin", "AlleOrganisationen" },
+                        { "Wbstk", "AuftragsArt" },
+                    }));
+            }
+        }
+
         #endregion
 
 

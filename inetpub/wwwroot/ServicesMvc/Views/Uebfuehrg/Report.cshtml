@@ -1,0 +1,52 @@
+﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
+
+<h3 class="page-title" id="headerTitle">HistoryAuftrag <small>Report</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/SucheHistoryAuftrag", Model.HistoryAuftragSelector)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divAuftragDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowHistoryAuftragSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridHistoryAuftrag");
+
+        $("#divGrid").slideDown();
+        $("#divAuftragDetails").html('');
+    }
+
+    function OnDataBound_GridHistoryAuftrag() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridHistoryAuftrag() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridHistoryAuftrag() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

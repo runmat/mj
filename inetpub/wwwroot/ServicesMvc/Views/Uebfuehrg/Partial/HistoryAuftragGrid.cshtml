@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Uebfuehrg.Models
+@{
+    var gridName = "GridHistoryAuftrag";
+}
+
+@(Html.Telerik()
+    .Grid<HistoryAuftrag>()
+    .Name(gridName)
+
+    .XGroup("GridHistoryAuftragModel")
+    .XAjaxDataBinding("HistoryAuftraegeAjaxBinding", "Uebfuehrg")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.UeberfuehrungsDatum).Descending())
+    .XToolBar("Uebfuehrg")
+)
+
