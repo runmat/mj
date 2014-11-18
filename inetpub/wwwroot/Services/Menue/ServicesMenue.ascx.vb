@@ -24,32 +24,26 @@ Partial Public Class ServicesMenue
 
         If Not Session("objUser") Is Nothing Then
 
-            'm_User = CType(Session("objUser"), Security.User)
             m_User = ErpBaseMvc.MVC.GetSessionUserObject()
 
-            ' --- 20.5.2014 NB
-            ' --- PageVisitLog verhindern für bestimmte Kunden
-            Dim customersWithoutPageVisitLog As String
-            customersWithoutPageVisitLog = ConfigurationManager.AppSettings("SkipPageVisitLogForCustomerId")
 
-            If String.IsNullOrEmpty(customersWithoutPageVisitLog) = False Then
+            'Dim customersWithoutPageVisitLog As String
+            'customersWithoutPageVisitLog = ConfigurationManager.AppSettings("SkipPageVisitLogForCustomerId")
 
-                Dim listOfCustomersWithoutPageVisitLog() As String
-                listOfCustomersWithoutPageVisitLog = customersWithoutPageVisitLog.Split(CChar(","))
+            'If String.IsNullOrEmpty(customersWithoutPageVisitLog) = False Then
 
-                ' Ich gehe davon aus dass wenn customersWithoutPageVisitLog nicht leer ist dass darin eine Liste von Komma separierten Werten drin ist
-                If listOfCustomersWithoutPageVisitLog.Contains(m_User.Customer.CustomerId.ToString()) Then
-                    ' Script für die Erstellung von Log Nachrichten prueft diesen Wert ab
-                    SkipPageVisitLog.Value = "true"
-                Else
-                    SkipPageVisitLog.Value = "false"
-                End If
-            End If
+            '    Dim listOfCustomersWithoutPageVisitLog() As String
+            '    listOfCustomersWithoutPageVisitLog = customersWithoutPageVisitLog.Split(CChar(","))
 
-            ' --- 20.06.2013, MJE
-            ' --- MVC Integration:
-            ' ---
-            'm_User = GetUser(Me.Page)
+            '    ' Ich gehe davon aus dass wenn customersWithoutPageVisitLog nicht leer ist dass darin eine Liste von Komma separierten Werten drin ist
+            '    If listOfCustomersWithoutPageVisitLog.Contains(m_User.Customer.CustomerId.ToString()) Then
+            '        ' Script für die Erstellung von Log Nachrichten prueft diesen Wert ab
+            '        SkipPageVisitLog.Value = "true"
+            '    Else
+            '        SkipPageVisitLog.Value = "false"
+            '    End If
+            'End If
+
             m_App = New Security.App(m_User)
 
             Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -71,11 +65,6 @@ Partial Public Class ServicesMenue
 
                 Dim appTable As DataTable = m_User.Applications.Copy
 
-
-                ' --- 20.06.2013, MJE
-                ' --- MVC Integration:
-                ' ---
-                'MVC.MvcPrepareDataRowsUrl(appTable, m_User.UserName)
                 For Each dRow As DataRow In appTable.Rows
                     If dRow("AppURL").ToString().ToLower().StartsWith("mvc/") Then
                         dRow("AppURL") = ErpBaseMvc.MVC.MvcPrepareUrl(dRow("AppURL").ToString(), dRow("AppID").ToString(), m_User.UserName)
@@ -84,9 +73,7 @@ Partial Public Class ServicesMenue
                     End If
                     dRow("AppURL") = dRow("AppURL").ToString() & "&cp=" & GetUserContextParams(dRow("AppID").ToString())
 
-                    ' BITTE Kommentar VOR DEPLOYMENT ENTFERNEN!
-                    ' --- 12.11.2014 Nasser Brake
-                    ' --- PageVisit soll auf dem Server geloggt werden und nicht auf via JS
+                    ' PageVisit soll auf dem Server geloggt werden und nicht auf via JS
                     ' Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
                     Dim url As String = dRow("AppURL").ToString()
 
@@ -139,8 +126,6 @@ Partial Public Class ServicesMenue
                     End Try
                 End If
 
-                'GridChange.
-
             Catch ex As Exception
 
             Finally
@@ -166,15 +151,10 @@ Partial Public Class ServicesMenue
         If Left(strAppUrl, 4) = "http" Then
             strAppUrl = (strAppUrl).Replace("../Applications/AppGenerali/forms/", "")
             Return strAppUrl
-            ' Return (strAppUrl).Replace("AppVFS", "AppGenerali")
-
         Else
             strAppUrl = (strAppUrl & "?AppID=" & strAppID & paramlist).Replace("AppVFS", "AppGenerali")
-            '   strAppUrl = (strAppUrl).Replace("../Applications/AppGenerali/forms/", "")
             Return strAppUrl
         End If
-
-
 
     End Function
 

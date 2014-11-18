@@ -14,9 +14,6 @@ Public Class Log
     ''' Please apply changes to all 3 areas (Portal, Services, ServicesMvc)
     ''' </summary>
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-
-        ' BITTE VOR DEPLOYMENT ENTFERNEN!
-        ' --- 12.11.2014 Nasser Brake
         ' Hole die url aus dem query und leite den Anwender dorthin wo er eigentlich hinwollte
         If Request.QueryString.AllKeys.Any(Function(key) key.ToUpper() = "URL") = True Then
             Dim url As String = Request.QueryString("url")

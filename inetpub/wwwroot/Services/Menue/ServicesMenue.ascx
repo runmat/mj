@@ -10,13 +10,7 @@
     
     </div>
         <div id="info">
-            <asp:HiddenField ID="SkipPageVisitLog" runat="server" />
-            <script type="text/javascript">
-                // Diese Variable kann aus allen Java Script Funktionsaufrufe (z.B. LogPageVisit) ausgerufen werden
-                var idOfSkipPageVisitLogInput = '<%= SkipPageVisitLog.ClientID %>';
-            </script>
-
-                <iframe id="HelpShim" src="javascript:''" scrolling="no" frameborder="0" 
+            <iframe id="HelpShim" src="javascript:''" scrolling="no" frameborder="0" 
                 style="position:absolute; top:200px; height:325px; width:460px; left:0; z-index:-1; "></iframe>
             <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" 
                 HorizontalAlign="Center" Height="525px" >
