@@ -292,7 +292,7 @@
 														<td vAlign="middle" noWrap align="left" colspan="2"><asp:textbox id="txtUnitNrBis" runat="server" CssClass="ButtonRowBackground" MaxLength="8"></asp:textbox></td>
 														<td vAlign="top" colspan="2"><FONT color="red"><asp:image id="Image8" runat="server" ToolTip="Numerisch, 8 Stellen" ImageUrl="/Portal/Images/info.gif"></asp:image>&nbsp;*</FONT></td>
 													</tr>
-                                                    <tr>
+                                                    <tr id="trUnitNrUpload" runat="server">
                                                         <td vAlign="middle"></td>
 														<td vAlign="middle">Unit-Nr. Upload:</td>
 														<td vAlign="middle" noWrap colspan="3"><input class="InfoBoxFlat" id="upFileUnitNr" type="file" size="40" name="File1" runat="server" /></td>

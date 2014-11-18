@@ -447,6 +447,12 @@ Public Class ec_01
 
             tblBatche = S.AP.GetExportTableWithExecute("GT_OUT")
 
+            For Each row As DataRow In tblBatche.Rows
+                row("ZANZAHL") = row("ZANZAHL").ToString().TrimStart("0"c)
+                row("ZAUFNR_VON") = row("ZAUFNR_VON").ToString().TrimStart("0"c)
+                row("ZAUFNR_BIS") = row("ZAUFNR_BIS").ToString().TrimStart("0"c)
+            Next
+
         Catch ex As Exception
             Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
                 Case "NO_DATA"
@@ -466,7 +472,7 @@ Public Class ec_01
         m_intStatus = 0
 
         Try
-            S.AP.Init("Z_M_EC_AVM_BATCH_INSERT")
+            S.AP.Init("Z_M_EC_AVM_BATCH_INSERT", "WEB_USER", Left(m_objUser.UserName, 12))
 
             Dim SAPTable As DataTable = S.AP.GetImportTable("ZBATCH_IN")
 
@@ -501,7 +507,6 @@ Public Class ec_01
                 .Item("ZAHK") = IIf(blnAnhaengerkupplung, "X", "")
                 .Item("Zverwendung") = strVerwendungszweck
                 .Item("Zbemerkung") = strBemerkungen
-                .Item("Zernam") = Left(m_objUser.UserName, 12)
             End With
 
             SAPTable.Rows.Add(SAPTableRow)

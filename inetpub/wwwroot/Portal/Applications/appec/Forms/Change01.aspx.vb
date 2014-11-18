@@ -72,6 +72,7 @@ Public Class Change01
     Protected WithEvents txtAnzahlFahrzeuge As TextBox
     Protected WithEvents txtUnitNrVon As TextBox
     Protected WithEvents txtUnitNrBis As TextBox
+    Protected WithEvents trUnitNrUpload As HtmlTableRow
     Protected WithEvents upFileUnitNr As HtmlInputFile
     Protected WithEvents txtLaufzeit As TextBox
     Protected WithEvents cbxLaufz As CheckBox
@@ -556,6 +557,9 @@ Public Class Change01
                 trEditBatch.Visible = True
                 trKeepData.Visible = False
                 txtBatchId.Enabled = False
+                txtUnitNrVon.Enabled = False
+                txtUnitNrBis.Enabled = False
+                trUnitNrUpload.Visible = False
                 cmdReset.Visible = False
 
                 txtModelId.Text = row("ZMODEL_ID").ToString()
