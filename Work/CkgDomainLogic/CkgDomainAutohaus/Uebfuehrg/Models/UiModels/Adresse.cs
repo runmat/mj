@@ -44,14 +44,28 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public DateTime? Datum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
-        [ModelMappingCopyIgnore]
         public string Uhrzeitwunsch { get; set; }
 
-        [XmlIgnore, ScriptIgnore]
-        public string UhrzeitwunschOptions { get { return "; 08:00; 09:00; 10:00; 11:00; 12:00; 13:00; 14:00; 15:00; 16:00; 17:00; 18:00"; } }
-        
         [ModelMappingCopyIgnore]
         public bool UhrzeitwunschAvailable { get; set; }
+
+        [XmlIgnore, ScriptIgnore]
+        public string UhrzeitwunschOptions
+        {
+            get
+            {
+                return
+                    ";" +
+                    "08:00-12:00,Vormittags;" +
+                    "14:00-20:00,Nachmittags;" +
+                    "08:00-10:00,08:00 - 10:00;" +
+                    "10:00-12:00,10:00 - 12:00;" +
+                    "12:00-14:00,12:00 - 14:00;" +
+                    "14:00-16:00,14:00 - 16:00;" +
+                    "16:00-18:00,16:00 - 18:00;" +
+                    "18:00-20:00,18:00 - 20:00";
+            }
+        }
 
         private string _transportTyp = "";
 
