@@ -96,7 +96,7 @@ Namespace Beauftragung2
                         'Nach NPA Info-Label wieder füllen
                         InfoLabelFuellen()
 
-                        tblBasisdaten.Visible = False
+                        tblBasisdaten.Style.Item("display") = "none"
 
                         Exit Sub
                     End If
@@ -182,7 +182,7 @@ Namespace Beauftragung2
 
                 InfoLabelFuellen()
 
-                tblBasisdaten.Visible = False
+                tblBasisdaten.Style.Item("display") = "none"
 
                 'ggf. Daten vom Autohaus-Vorgang übernehmen
                 If mBeauftragung.Autohausvorgang Then
@@ -461,7 +461,8 @@ Namespace Beauftragung2
         End Sub
 
         Private Sub ibtBasisdatenResize_Click(sender As Object, e As ImageClickEventArgs) Handles ibtBasisdatenResize.Click
-            tblBasisdaten.Visible = Not tblBasisdaten.Visible
+            Dim strAlt As String = tblBasisdaten.Style.Item("display")
+            tblBasisdaten.Style.Item("display") = IIf(strAlt = "none", "block", "none")
         End Sub
 
         Protected Sub txtPLZ_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtPLZ.TextChanged
@@ -1081,7 +1082,7 @@ Namespace Beauftragung2
 
             If Not String.IsNullOrEmpty(mBeauftragung.Materialnummer) Then ddlDienstleistung.SelectedValue = mBeauftragung.Materialnummer
             lblHeadInfo.Text = ddlKunde.SelectedItem.Text & " - " & ddlStva.SelectedItem.Text & " - " & ddlDienstleistung.SelectedItem.Text
-            tblBasisdaten.Visible = False
+            tblBasisdaten.Style.Item("display") = "none"
 
             lbtGrunddaten.Visible = mBeauftragung.GrunddatenVisible
             lbtFahrzeugdaten.Visible = mBeauftragung.FahrzeugdatenVisible
