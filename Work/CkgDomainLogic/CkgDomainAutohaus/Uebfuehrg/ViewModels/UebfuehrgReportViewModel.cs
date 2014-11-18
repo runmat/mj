@@ -151,7 +151,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             return index;
         }
 
-        public void PrepareHistoryAuftragsDokumente(string auftragsNr, string fahrt)
+        public void LoadHistoryAuftragDetails(string auftragsNr, string fahrt)
         {
             HistoryAuftragCurrent = HistoryAuftraege.FirstOrDefault(a => a.AuftragsNr.ToSapKunnr() == auftragsNr.ToSapKunnr() && a.Fahrt == fahrt);
 
@@ -159,6 +159,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (auftrag == null)
                 return;
 
+            return;
 
             DestinationRelativePath = string.Format("{0}_{1}", "Temp_", Guid.NewGuid());
             FileService.TryDirectoryCreate(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath));

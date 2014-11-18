@@ -1,6 +1,7 @@
 ﻿@using CkgDomainLogic.Uebfuehrg.Models
 @{
     var gridName = "GridHistoryAuftrag";
+    var historieLink = "<a href='#' class='btn mini tooltips' data-original-title='Auftragsdetails' data-placement='right' onclick='return LoadHistoryAuftragDetails(\"<#= data.AuftragsNr #>\", \"<#= data.Fahrt #>\");'><i class ='icon-chevron-right'></i></a>";
 }
 
 @(Html.Telerik()
@@ -9,7 +10,22 @@
 
     .XGroup("GridHistoryAuftragModel")
     .XAjaxDataBinding("HistoryAuftraegeAjaxBinding", "Uebfuehrg")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns =>
+        {
+            columns.XBound("").ClientTemplate(historieLink);
+            columns.XBound(c => c.AuftragsNr);
+            columns.XBound(c => c.Fahrt);
+            columns.XBound(c => c.AuftragsDatum);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Typ);
+            columns.XBound(c => c.UeberfuehrungsDatum);
+            columns.XBound(c => c.AbgabeDatum);
+            columns.XBound(c => c.FahrtVonOrt);
+            columns.XBound(c => c.FahrtNachOrt);
+            columns.XBound(c => c.GefahreneKilometer);
+            columns.XBound(c => c.Klaerfall);
+            columns.XBound("").ClientTemplate(historieLink.Replace("data-placement='right'", "data-placement='left'"));
+        })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)

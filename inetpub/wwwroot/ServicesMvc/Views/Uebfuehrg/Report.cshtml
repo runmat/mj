@@ -2,16 +2,26 @@
 
 <h3 class="page-title" id="headerTitle">Überführungen <small>Report</small></h3>
 
-@using (Html.FormSearchBox())
-{
-    @Html.Partial("Partial/SucheHistoryAuftrag", Model.HistoryAuftragSelector)
-}
+<style type="text/css">
+    .t-grid-filter { display: none; }
+    a.btn.mini.tooltips {
+        padding-top: 7px!important;
+        padding-bottom: 0!important;
+    }
+</style>
 
-@using (Html.FormSearchResultsGrid())
-{
-    <div id="divGrid"></div>
-    <div id="divAuftragDetails"></div>
-}
+<div id="divSearchAndGrid">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/HistoryAuftragSuche", Model.HistoryAuftragSelector)
+    }
+
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid"></div>
+    }
+</div>
+<div id="divAuftragDetails"></div>
 
 <script type="text/javascript">
 
@@ -34,6 +44,54 @@
         $("#divGrid").slideDown();
         $("#divAuftragDetails").html('');
     }
+    
+    function ShowHistoryAuftraege() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowHistoryAuftraege",
+            loadingShow: true,
+            success: function (result) {
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowHistoryAuftraegeSearchResult(result);
+                }
+                LoadingHide();
+            }
+        });
+    }
+
+    function LoadHistoryAuftragDetails(auftragsNr, fahrt) {
+        $.ajax({
+            type: "POST",
+            url: "LoadHistoryAuftragDetails",
+            loadingShow: true,
+            data: { auftragsNr: auftragsNr, fahrt: fahrt },
+            success: function (result) {
+                ShowHistoryAuftragDetails(result);
+                LoadingHide();
+            }
+        });
+
+        return false;
+    }
+    
+    function ShowHistoryAuftragDetails(result) {
+        $("#divAuftragDetails").html(result);
+        $("#divSearchAndGrid").slideUp();
+        $("#divAuftragDetails").slideDown();
+        FormPrepareAjax();
+    }
+
+    function CloseHistoryAuftragDetails() {
+        $("#divAuftragDetails").slideUp();
+        $("#divSearchAndGrid").slideDown();
+        setTimeout('LoadingHide();', 500);
+    }
+
 
     function OnDataBound_GridHistoryAuftrag() {
         FilteredData_Grid_OnDataBound($(this));

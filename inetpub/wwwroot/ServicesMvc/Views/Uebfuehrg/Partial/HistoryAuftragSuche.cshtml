@@ -22,28 +22,6 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
-            function ShowHistoryAuftraege() {
-
-                FormPreparePrivateAjax();
-
-                $.ajax({
-                    type: "POST",
-                    url: "ShowHistoryAuftraege",
-                    loadingShow: true,
-                    success: function (result) {
-
-                        SearchResultsTryHide();
-
-                        if (_modelStateValid) {
-                            ShowHistoryAuftraegeSearchResult(result);
-                            //return;
-                        }
-
-                        LoadingHide();
-                    }
-                });
-            }
         </script>
     }
 </div>

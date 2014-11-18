@@ -45,7 +45,7 @@ namespace ServicesMvc.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Partial/SucheHistoryAuftrag", ReportViewModel.HistoryAuftragSelector);
+            return PartialView("Partial/HistoryAuftragSuche", ReportViewModel.HistoryAuftragSelector);
         }
 
         [HttpPost]
@@ -59,6 +59,15 @@ namespace ServicesMvc.Controllers
         {
             return View(new GridModel(ReportViewModel.HistoryAuftraegeFiltered));
         }
+
+        [HttpPost]
+        public ActionResult LoadHistoryAuftragDetails(string auftragsNr, string fahrt)
+        {
+            ReportViewModel.LoadHistoryAuftragDetails(auftragsNr, fahrt);
+
+            return PartialView("Partial/HistoryAuftragDetails", ReportViewModel.HistoryAuftragCurrent);
+        }
+
 
         [HttpPost]
         public ActionResult FilterGridHistoryAuftrag(string filterValue, string filterColumns)
