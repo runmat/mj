@@ -1,0 +1,98 @@
+﻿@using CkgDomainLogic.Equi.ViewModels
+@model EquiHistorieViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Equi_Fahrzeughistorie<small></small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Historie/HistorieSuche", Model.DataService.Suchparameter)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divHistorieGrid"></div>
+    <div id="divHistorieDetail"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridEquiHistorieInfos").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridEquiHistorieInfosItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridEquiHistorieInfos() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnLoad_GridEquiHistorieInfos() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridEquiHistorieInfos() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridEquiHistorieInfos() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowEquiHistorieSearchResult(result) {
+        SearchFormHide();
+        $("#divHistorieGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfos");
+
+        $("#divHistorieGrid").slideDown();
+        $("#divHistorieDetail").html('');
+    }
+
+    function ShowEquiHistorieAjax(fin) {
+        LoadingShow();
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetFahrzeugHistoriePartial",
+            loadingShow: true,
+            data: { fahrgestellnummer: fin },
+            success: function (result) {
+                ShowEquiHistorieDetail(result);
+            }
+        });
+    }
+
+    function ShowEquiHistorieDetail(result) {
+        $("#divHistorieDetail").html(result);
+        $("#divHistorieGrid").slideUp();
+        $("#divHistorieDetail").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
+    }
+
+    function CloseEquiHistorieDetail() {
+        $("#btnBackToResult").hide();
+        $("#divHistorieDetail").slideUp(function () { $("#divHistorieGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divHistorieGrid").slideDown();
+    }
+
+</script>

@@ -1,60 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using GeneralTools.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Equi.Models
 {
-    /// <summary>
-    /// Equi-Historie
-    /// </summary>
     public class EquiHistorie
     {
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         public string Equipmentnummer { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        public string Fahrgestellnummer { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
-        public string Briefnummer { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._AltesKennzeichen)]
-        public string KennzeichenAlt { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._AlteBriefnummer)]
-        public string BriefnummerAlt { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._Briefaufbietung)]
-        public bool Briefaufbietung { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._Fahrgestellnummer)]
-        public string Fahrgestellnummer { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._Erstzulassung)]
-        public DateTime? Erstzulassungsdatum { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
-        public DateTime? Abmeldedatum { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._Zulassungsfaehig)]
         public bool StatusZulassungsfaehig { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Zugelassen)]
         public bool StatusZugelassen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Abgemeldet)]
         public bool StatusAbgemeldet { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._BeiAbmeldung)]
         public bool StatusBeiAbmeldung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._OhneZulassung)]
         public bool StatusOhneZulassung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Gesperrt)]
         public bool StatusGesperrt { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
@@ -93,78 +65,11 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants._CocBescheinigungVorhanden)]
-        public bool CocVorhanden { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Location, 1)]
-        public string StandortName1 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Location, 2)]
-        public string StandortName2 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._StandortStrasse)]
-        public string StandortStrasse { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._StandortHausnummer)]
-        public string StandortHausnummer { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._StandortPlz)]
-        public string StandortPlz { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._StandortOrt)]
-        public string StandortOrt { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Location)]
-        public string Standort
-        {
-            get
-            {
-                return StandortName1 + " " + StandortName2
-                    + ((String.IsNullOrEmpty(StandortStrasse) && String.IsNullOrEmpty(StandortHausnummer)) ? ""
-                        : Environment.NewLine + StandortStrasse + " " + StandortHausnummer)
-                    + ((String.IsNullOrEmpty(StandortPlz) && String.IsNullOrEmpty(StandortOrt)) ? ""
-                        : Environment.NewLine + StandortPlz + " " + StandortOrt);
-            }
-        }
-
-        [LocalizedDisplay(LocalizeConstants.CarOwnerName, 1)]
-        public string HalterName1 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CarOwnerName, 2)]
-        public string HalterName2 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._HalterStrasse)]
-        public string HalterStrasse { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._HalterHausnummer)]
-        public string HalterHausnummer { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._HalterPlz)]
-        public string HalterPlz { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants._HalterOrt)]
-        public string HalterOrt { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CarOwner)]
-        public string Halter
-        {
-            get
-            {
-                return HalterName1 + " " + HalterName2
-                    + ((String.IsNullOrEmpty(HalterStrasse) && String.IsNullOrEmpty(HalterHausnummer)) ? ""
-                        : Environment.NewLine + HalterStrasse + " " + HalterHausnummer)
-                    + ((String.IsNullOrEmpty(HalterPlz) && String.IsNullOrEmpty(HalterOrt)) ? ""
-                        : Environment.NewLine + HalterPlz + " " + HalterOrt);
-            }
-        }
-
-        [LocalizedDisplay(LocalizeConstants._AbcKennzeichen)]
         public string AbcKennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Versanddatum)]
         public DateTime? Versanddatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Lagerort)]
+        [LocalizedDisplay(LocalizeConstants.StorageLocation)]
         public string Lagerort
         {
             get
@@ -205,116 +110,280 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants._Ummeldedatum)]
-        public DateTime? Ummeldedatum { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string Hersteller { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Fahrzeugmodell)]
+        [LocalizedDisplay(LocalizeConstants.CarModel)]
         public string Fahrzeugmodell { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._HerstSchluessel)]
+        [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
         public string HerstellerSchluessel { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Typschluessel)]
+        [LocalizedDisplay(LocalizeConstants.TypeKey)]
         public string TypSchluessel { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._VarianteVersion)]
+        [LocalizedDisplay(LocalizeConstants.Variant_Version)]
         public string VarianteVersion { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Ordernummer)]
-        public string Referenz1 { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ZB2No)]
+        public string Briefnummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Meldungsdaten)]
-        public List<EquiMeldungsdaten> Meldungsdaten { get; set; }
+        [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
+        public DateTime? Erstzulassungsdatum { get; set; }
 
-        public EquiHistorie()
+        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        public DateTime? Abmeldedatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        public bool CocVorhanden { get; set; }
+
+        public string HalterName1 { get; set; }
+
+        public string HalterName2 { get; set; }
+
+        public string HalterStrasse { get; set; }
+
+        public string HalterHausnummer { get; set; }
+
+        public string HalterPlz { get; set; }
+
+        public string HalterOrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CarOwner)]
+        public string Halter
         {
-            this.Equipmentnummer = "";
-            this.Kennzeichen = "";
-            this.Briefnummer = "";
-            this.KennzeichenAlt = "";
-            this.BriefnummerAlt = "";
-            this.Briefaufbietung = false;
-            this.Fahrgestellnummer = "";
-            this.Erstzulassungsdatum = null;
-            this.Abmeldedatum = null;
-            this.StatusZulassungsfaehig = false;
-            this.StatusZugelassen = false;
-            this.StatusAbgemeldet = false;
-            this.StatusBeiAbmeldung = false;
-            this.StatusOhneZulassung = false;
-            this.StatusGesperrt = false;
-            this.CocVorhanden = false;
-            this.StandortName1 = "";
-            this.StandortName2 = "";
-            this.StandortStrasse = "";
-            this.StandortHausnummer = "";
-            this.StandortPlz = "";
-            this.StandortOrt = "";
-            this.HalterName1 = "";
-            this.HalterName2 = "";
-            this.HalterStrasse = "";
-            this.HalterHausnummer = "";
-            this.HalterPlz = "";
-            this.HalterOrt = "";
-            this.AbcKennzeichen = "";
-            this.Versanddatum = null;
-            this.Ummeldedatum = null;
-            this.Hersteller = "";
-            this.Fahrzeugmodell = "";
-            this.HerstellerSchluessel = "";
-            this.TypSchluessel = "";
-            this.VarianteVersion = "";
-            this.Referenz1 = "";
-            this.Meldungsdaten = new List<EquiMeldungsdaten>();
+            get
+            {
+                return String.Format("{0} {1}" + (String.IsNullOrEmpty(HalterStrasse) && String.IsNullOrEmpty(HalterHausnummer) ? "" : Environment.NewLine)
+                    + "{2} {3}" + (String.IsNullOrEmpty(HalterPlz) && String.IsNullOrEmpty(HalterOrt) ? "" : Environment.NewLine)
+                    + "{4} {5}",
+                    HalterName1, HalterName2,
+                    HalterStrasse, HalterHausnummer,
+                    HalterPlz, HalterOrt);
+            }
         }
 
-        public EquiHistorie(string equinr, string kennz, string briefnr, string kennzAlt, string briefnrAlt, bool briefaufbietung, string fahrgestellnr, 
-            DateTime? ersetzungsdat, DateTime? abmdat, bool statZulf, bool statZugel, bool statAbg, bool statBeiAbm, bool statOhneZul, bool statGesp, 
-            bool coc, string stoName1, string stoName2, string stoStrasse, string stoHausnr, string stoPlz, string stoOrt, string halterName1, 
-            string halterName2, string halterStrasse, string halterHausnr, string halterPlz, string halterOrt, string abcKennz, DateTime? versdat, 
-            DateTime? ummeldedat, string hersteller, string fzgModell, string herstSchluessel, string typSchluessel, string varVersion, string ref1)
+        public string StandortName1 { get; set; }
+
+        public string StandortName2 { get; set; }
+
+        public string StandortStrasse { get; set; }
+
+        public string StandortHausnummer { get; set; }
+
+        public string StandortPlz { get; set; }
+
+        public string StandortOrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Location)]
+        public string Standort
         {
-            this.Equipmentnummer = equinr;
-            this.Kennzeichen = kennz;
-            this.Briefnummer = briefnr;
-            this.KennzeichenAlt = kennzAlt;
-            this.BriefnummerAlt = briefnrAlt;
-            this.Briefaufbietung = briefaufbietung;
-            this.Fahrgestellnummer = fahrgestellnr;
-            this.Erstzulassungsdatum = ersetzungsdat;
-            this.Abmeldedatum = abmdat;
-            this.StatusZulassungsfaehig = statZulf;
-            this.StatusZugelassen = statZugel;
-            this.StatusAbgemeldet = statAbg;
-            this.StatusBeiAbmeldung = statBeiAbm;
-            this.StatusOhneZulassung = statOhneZul;
-            this.StatusGesperrt = statGesp;
-            this.CocVorhanden = coc;
-            this.StandortName1 = stoName1;
-            this.StandortName2 = stoName2;
-            this.StandortStrasse = stoStrasse;
-            this.StandortHausnummer = stoHausnr;
-            this.StandortPlz = stoPlz;
-            this.StandortOrt = stoOrt;
-            this.HalterName1 = halterName1;
-            this.HalterName2 = halterName2;
-            this.HalterStrasse = halterStrasse;
-            this.HalterHausnummer = halterHausnr;
-            this.HalterPlz = halterPlz;
-            this.HalterOrt = halterOrt;
-            this.AbcKennzeichen = abcKennz;
-            this.Versanddatum = versdat;
-            this.Ummeldedatum = ummeldedat;
-            this.Hersteller = hersteller;
-            this.Fahrzeugmodell = fzgModell;
-            this.HerstellerSchluessel = herstSchluessel;
-            this.TypSchluessel = typSchluessel;
-            this.VarianteVersion = varVersion;
-            this.Referenz1 = "";
-            this.Meldungsdaten = new List<EquiMeldungsdaten>();
+            get
+            {
+                return String.Format("{0} {1}" + (String.IsNullOrEmpty(StandortStrasse) && String.IsNullOrEmpty(StandortHausnummer) ? "" : Environment.NewLine)
+                    + "{2} {3}" + (String.IsNullOrEmpty(StandortPlz) && String.IsNullOrEmpty(StandortOrt) ? "" : Environment.NewLine)
+                    + "{4} {5}",
+                    StandortName1, StandortName2,
+                    StandortStrasse, StandortHausnummer,
+                    StandortPlz, StandortOrt);
+            }
+        }
+
+        public string VersandgrundId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
+        public string Versandgrund { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CarportArrival)]
+        public DateTime? CarportEingang { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicensePlateArrival)]
+        public DateTime? KennzeichenEingang { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CheckInDeregistrationOrder)]
+        public DateTime? CheckInAbmeldeauftrag { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ZB1)]
+        public bool Fahrzeugschein { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BothLicensePlatesAvailable)]
+        public bool BeideKennzeichenVorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DateOfDeactivation)]
+        public DateTime? Stilllegung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ReRegistrationDate)]
+        public DateTime? Ummeldedatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNoOld)]
+        public string KennzeichenAlt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ZB2Mobilisation)]
+        public bool Briefaufbietung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ZB2NoOld)]
+        public string BriefnummerAlt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.OrderNo)]
+        public string Ordernummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        public string Referenz1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        public string Referenz2 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Comments)]
+        public string Bemerkungen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DealerNo)]
+        public string HaendlerNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FinancingType)]
+        public string Finanzierungsart { get; set; }
+
+        public EquiTypdaten Typdaten { get; set; }
+
+        public bool ShowTypdaten { get; set; }
+
+        public List<EquiMeldungsdaten> Meldungen { get; set; }
+
+        public bool ShowMeldungen { get; set; }
+
+        public List<EquiAktionsdaten> Aktionen { get; set; }
+
+        public bool ShowAktionen { get; set; }
+
+        public EquiHaendlerdaten Haendlerdaten { get; set; }
+
+        public bool ShowHaendlerdaten { get; set; }
+
+        public string GetUebersichtSummaryString()
+        {
+            var strText = Localize.VehicleData;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Manufacturer, Hersteller);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CarModel, Fahrzeugmodell);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Color, Typdaten.FarbeText);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ManufacturerKey, HerstellerSchluessel);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.TypeKey, TypSchluessel);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Variant_Version, VarianteVersion);
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += Localize.ZB2Data;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ZB2No, Briefnummer);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.FirstRegistration, Erstzulassungsdatum.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CancellationDate, Abmeldedatum.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CocAvailable, CocVorhanden);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CarOwner, Halter);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Location, Standort);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CauseOfDispatch, Versandgrund);
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += Localize.DeRegistrationData;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CarportArrival, CarportEingang.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.LicensePlateArrival, KennzeichenEingang.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.CheckInDeregistrationOrder, CheckInAbmeldeauftrag.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ZB1, Fahrzeugschein);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.BothLicensePlatesAvailable, BeideKennzeichenVorhanden);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.DateOfDeactivation, Stilllegung.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += Localize.ChangeData;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ReRegistrationDate, Ummeldedatum.NotNullOrEmptyToString());
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.LicenseNoOld, KennzeichenAlt);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ZB2NoOld, BriefnummerAlt);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.ZB2Mobilisation, Briefaufbietung);
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += Localize.References;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.OrderNo, Ordernummer);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Reference1, Referenz1);
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Reference2, Referenz2);
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += Localize.Comments;
+            strText += "<br/>";
+            strText += "<br/>";
+            strText += String.Format("{0}: {1}", Localize.Comments, Bemerkungen);
+
+            return strText;
+        }
+
+        public string GetMeldungenSummaryString()
+        {
+            var strText = Localize.Vita;
+            strText += "<br/>";
+            strText += "<br/>";
+
+            strText += String.Format("{0} {1} {2} {3} {4} {5}",
+                Localize.Process, Localize.ExecutionDate, Localize.ShippingAddress, Localize.AcquisitionDate, Localize.DispatchType, Localize.InstructedBy);
+            strText += "<br/>";
+
+            foreach (var item in Meldungen)
+            {
+                strText += String.Format("{0} {1} {2} {3} {4} {5}",
+                item.Vorgang, item.Durchfuehrungsdatum.NotNullOrEmptyToString(), item.Versandadresse, item.Erfassungsdatum.NotNullOrEmptyToString(), item.Versandart, item.BeauftragtDurch);
+                strText += "<br/>";
+            }
+
+            if (strText.EndsWith("<br/>"))
+                strText = strText.Substring(0, strText.Length - 5);
+
+            return strText;
+        }
+
+        public string GetAktionenSummaryString()
+        {
+            var strText = Localize.Transmission;
+            strText += "<br/>";
+            strText += "<br/>";
+
+            strText += String.Format("{0} {1} {2} {3}",
+                Localize.ActionCode, Localize.Process, Localize.StatusDate, Localize.TransmissionDate);
+            strText += "<br/>";
+
+            foreach (var item in Aktionen)
+            {
+                strText += String.Format("{0} {1} {2} {3}",
+                item.Aktionscode, item.Vorgang, item.Statusdatum.NotNullOrEmptyToString(), item.Uebermittlungsdatum.NotNullOrEmptyToString());
+                strText += "<br/>";
+            }
+
+            if (strText.EndsWith("<br/>"))
+                strText = strText.Substring(0, strText.Length - 5);
+
+            return strText;
         }
     }
 }

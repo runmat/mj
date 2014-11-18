@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace MvcTools.Models
 {
-    public enum Form2ColumnMode { None, Left, Right }
+    public enum FormMultiColumnMode { None, Left, Right, Left3, Middle3, Right3 }
 
     public class FormControlModel
     {
@@ -43,14 +43,33 @@ namespace MvcTools.Models
         /// </summary>
         public IDictionary<string, object> ControlHtmlAttributes { get; set; }
 
-        public Form2ColumnMode ColumnMode
+        public FormMultiColumnMode ColumnMode
         {
             get
             {
                 if (ControlHtmlAttributes == null || !ControlHtmlAttributes.ContainsKey("col"))
-                    return Form2ColumnMode.None;
+                    return FormMultiColumnMode.None;
 
-                return ControlHtmlAttributes["col"].ToString() == "left" ? Form2ColumnMode.Left : Form2ColumnMode.Right;
+                switch (ControlHtmlAttributes["col"].ToString())
+                {
+                    case "left":
+                        return FormMultiColumnMode.Left;
+
+                    case "right":
+                        return FormMultiColumnMode.Right;
+
+                    case "left3":
+                        return FormMultiColumnMode.Left3;
+
+                    case "middle3":
+                        return FormMultiColumnMode.Middle3;
+
+                    case "right3":
+                        return FormMultiColumnMode.Right3;
+
+                    default:
+                        return FormMultiColumnMode.None;
+                }
             }
         }
 
