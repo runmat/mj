@@ -223,9 +223,6 @@ namespace GeneralTools.Services
             // Achtung: die Export Tables werden nicht serializiert sondern nur die Namen der Tabellen und die Anzahl der Elemente wird ermittelt
             var exportTablesInfo = new XElement("ExportTables", from table in exportTables select new XElement("ExportTable", new XAttribute("TableName", table.TableName), new XAttribute("RowCount", table.Rows.Count)));
 
-            if (appID == 0 && userID == 0)
-                TrySessionGetUserData(out appID, out userID, out customerID, out kunnr, out portalType);
-
             var sapLogger = new SapLogger();
             sapLogger.Log(
                 appID, userID, customerID, kunnr, portalType,
@@ -243,8 +240,7 @@ namespace GeneralTools.Services
 
         public void LogPageVisit(int appID, int userID, int customerID, int kunnr, int portalType, string clientIp = null)
         {
-            TrySessionSetUserData(appID, userID, customerID, kunnr, portalType);
-            //TrySessionGetUserData(out appID, out userID, out customerID, out kunnr, out portalType);
+            HttpContextService.TrySessionSetUserData(appID, userID, customerID, kunnr, portalType);
 
             var logger = new PageVisitLogger();
             logger.Log(appID, userID, customerID, kunnr, portalType, clientIp);
@@ -254,50 +250,6 @@ namespace GeneralTools.Services
         {
             var logger = new WebServiceTrafficLogger();
             logger.Log(typ, daten, destinationSqlTable);
-        }
-
-        static void TrySessionSetUserData(int appID, int userID, int customerID, int kunnr, int portalType)
-        {
-            TrySessionSetIntValue("LastAppID", appID);
-            TrySessionSetIntValue("LastUserID", userID);
-            TrySessionSetIntValue("LastCustomerID", customerID);
-            TrySessionSetIntValue("LastKunnr", kunnr);
-            TrySessionSetIntValue("LastPortalType", portalType);
-        }
-
-        static void TrySessionGetUserData(out int appID, out int userID, out int customerID, out int kunnr, out int portalType)
-        {
-            appID = TrySessionGetIntValue("LastAppID");
-            userID = TrySessionGetIntValue("LastUserID");
-            customerID = TrySessionGetIntValue("LastCustomerID");
-            kunnr = TrySessionGetIntValue("LastKunnr");
-            portalType = TrySessionGetIntValue("LastPortalType");
-
-            //portalType = -2;
-            //if (HttpContext.Current == null)
-            //    portalType = -5;
-            //if (HttpContext.Current != null && HttpContext.Current.Session == null)
-            //    portalType = -9;
-        }
-
-        static void TrySessionSetIntValue(string key, int value)
-        {
-            if (HttpContext.Current == null || HttpContext.Current.Session == null)
-                return;
-
-            HttpContext.Current.Session[key] = value;
-        }
-
-        static int TrySessionGetIntValue(string key)
-        {
-            if (HttpContext.Current == null || HttpContext.Current.Session == null)
-                return 0;
-
-            var sValue = HttpContext.Current.Session[key];
-            if (sValue == null)
-                return 0;
-            
-            return sValue.ToString().ToInt(0);
         }
 
         #region LogItemIdsToLinkAsChild
