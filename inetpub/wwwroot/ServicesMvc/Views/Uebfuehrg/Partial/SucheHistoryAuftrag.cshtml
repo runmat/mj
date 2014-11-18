@@ -8,6 +8,8 @@
             
             @Html.FormValidationSummary()
             
+            @Html.HiddenFor(m => m.KundenNr)
+            @Html.HiddenFor(m => m.AuftragsArt)
             
             @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange, new { col = "left" })
             @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "right" })
@@ -20,33 +22,28 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            function ShowHistoryAuftraege() {
+
+                FormPreparePrivateAjax();
+
+                $.ajax({
+                    type: "POST",
+                    url: "ShowHistoryAuftraege",
+                    loadingShow: true,
+                    success: function (result) {
+
+                        SearchResultsTryHide();
+
+                        if (_modelStateValid) {
+                            ShowHistoryAuftraegeSearchResult(result);
+                            //return;
+                        }
+
+                        LoadingHide();
+                    }
+                });
+            }
         </script>
     }
 </div>
-
-
-<script type="text/javascript">
-
-    function ShowHistoryAuftraege() {
-        
-        FormPreparePrivateAjax();
-
-        $.ajax({
-            type: "POST",
-            url: "ShowHistoryAuftraege",
-            loadingShow: true,
-            success: function (result) {
-
-                SearchResultsTryHide();
-
-                if (_modelStateValid) {
-                    ShowHistoryAuftragSearchResult(result);
-                    //return;
-                }
-
-                LoadingHide();
-            }
-        });
-    }
-
-</script>

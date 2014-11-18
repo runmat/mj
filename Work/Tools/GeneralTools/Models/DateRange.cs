@@ -16,8 +16,10 @@ namespace GeneralTools.Models
         {
         }
 
-        public DateRange(DateRangeType dateRangeType)
+        public DateRange(DateRangeType dateRangeType, bool isSelected = false)
         {
+            IsSelected = isSelected;
+
             switch (dateRangeType)
             {
                 case DateRangeType.LastYear:

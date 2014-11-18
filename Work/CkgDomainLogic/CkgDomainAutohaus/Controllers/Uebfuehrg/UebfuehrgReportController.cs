@@ -20,8 +20,6 @@ using System.Linq;
 using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
 
-// ReSharper restore RedundantUsingDirective
-
 namespace ServicesMvc.Controllers
 {
     public partial class UebfuehrgController 
@@ -30,8 +28,9 @@ namespace ServicesMvc.Controllers
         public ActionResult Report()
         {
             ReportViewModel.DataInit();
-            return View();
+            return View(ReportViewModel);
         }
+
         [HttpPost]
         public ActionResult LoadHistoryAuftraege(HistoryAuftragSelector model)
         {

@@ -58,10 +58,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._Klaerfall)]
-        public string KlaerFall { get; set; }
-
-
         public string AuftragsNrWebView { get { return AuftragsNr.ToSapKunnr(); } }
 
         public string AuftragsNrWebViewTrimmed

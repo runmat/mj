@@ -1,6 +1,6 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
 
-<h3 class="page-title" id="headerTitle">HistoryAuftrag <small>Report</small></h3>
+<h3 class="page-title" id="headerTitle">Überführungen <small>Report</small></h3>
 
 @using (Html.FormSearchBox())
 {
@@ -15,7 +15,7 @@
 
 <script type="text/javascript">
 
-    var _modelStateValid = 'false';
+    var _modelStateValid = false;
 
     function FormPreparePrivate() {
     }
@@ -24,7 +24,7 @@
         FormPrepareAjax();
     }
 
-    function ShowHistoryAuftragSearchResult(result) {
+    function ShowHistoryAuftraegeSearchResult(result) {
         SearchFormHide();
         $("#divGrid").html(result);
 

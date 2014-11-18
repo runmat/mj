@@ -13,7 +13,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.UeberfuehrungsDatum).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.AuftragsNr).Descending())
     .XToolBar("Uebfuehrg")
 )
 

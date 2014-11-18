@@ -1,9 +1,9 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
@@ -42,7 +42,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void LoadHistoryAuftraege()
         {
-            HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector);
+            HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector)
+                .OrderByDescending(a => a.AuftragsNr)
+                .ThenBy(a => a.Fahrt).ToList();
 
             DataMarkForRefresh();
         }
@@ -75,11 +77,26 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void DataMarkForRefresh()
         {
-            HistoryAuftragSelector = new HistoryAuftragSelector { AuftragsArt = "A" };
+            HistoryAuftragSelector = new HistoryAuftragSelector
+                {
+                    AuftragsArt = "A",
+                    KundenNr = LogonContext.KundenNr.ToSapKunnr()
+                };
+            
+            PropertyCacheClear(this, m => m.HistoryAuftraegeFiltered);
         }
 
         public void Validate(Action<string, string> addModelError)
         {
+            var selector = HistoryAuftragSelector;
+
+            if (selector.ErfassungsDatumRange.IsSelected &&
+                (selector.ErfassungsDatumRange.EndDate.GetValueOrDefault() - selector.ErfassungsDatumRange.StartDate.GetValueOrDefault()).TotalDays > 95)
+                addModelError("", string.Format(Localize.DateRangeMax3Months, Localize.DateOfReceipt));
+            
+            if (selector.AuftragsDatumRange.IsSelected &&
+                (selector.AuftragsDatumRange.EndDate.GetValueOrDefault() - selector.AuftragsDatumRange.StartDate.GetValueOrDefault()).TotalDays > 95)
+                addModelError("", string.Format(Localize.DateRangeMax3Months, Localize.OrderDate));
         }
 
         public List<string> GetImageFileNamesForTour(int tour)

@@ -165,17 +165,28 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragSelector>(
                     new Dictionary<string, string> {
                         { "Aufnr", "AuftragsNr" },
-                        { "Erdat", "ErfassungsDatumVon" },
-                        { "Erdat_Bis", "ErfassungsDatumBis" },
-                        { "Vdatu", "UeberfuehrungsDatumVon" },
-                        { "Vdatu_Bis", "UeberfuehrungsDatumBis" },
                         { "Zzrefnr", "Referenz" },
                         { "Zzkenn", "Kennzeichen" },
                         { "Kunnr_Ag", "KundenNr" },
                         { "EX_KUNNR", "KundenReferenz" },
                         { "Zorgadmin", "AlleOrganisationen" },
                         { "Wbstk", "AuftragsArt" },
-                    }));
+                    }, (sap, business) =>
+                    {
+                    }, (business, sap) =>
+                        {
+                            if (business.ErfassungsDatumRange.IsSelected)
+                            {
+                                sap.ERDAT = business.ErfassungsDatumRange.StartDate;
+                                sap.ERDAT_BIS = business.ErfassungsDatumRange.EndDate;
+                            }
+
+                            if (business.AuftragsDatumRange.IsSelected)
+                            {
+                                sap.VDATU = business.AuftragsDatumRange.StartDate;
+                                sap.VDATU_BIS = business.AuftragsDatumRange.EndDate;
+                            }
+                        }));
             }
         }
 
