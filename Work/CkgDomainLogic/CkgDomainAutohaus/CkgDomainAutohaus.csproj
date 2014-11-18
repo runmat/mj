@@ -97,6 +97,8 @@
     <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
     <Compile Include="Controllers\AutohausController.cs" />
+    <Compile Include="Controllers\Uebfuehrg\UebfuehrgReportController.cs" />
+    <Compile Include="Controllers\Uebfuehrg\UebfuehrgController.cs" />
     <Compile Include="Controllers\UebfuehrgController.cs" />
     <Compile Include="Controllers\Zulassung\AutohausController.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Uebfuehrg\Models\AppModelmappings.cs" />
     <Compile Include="Uebfuehrg\Models\CompositeModels\Fahrt.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\Dienstleistung.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\HistoryAuftrag.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\KurzBemerkung.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\TransportTyp.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\UeberfuehrungsAuftragsPosition.cs" />
@@ -153,10 +156,12 @@
     <Compile Include="Uebfuehrg\Models\UiModels\Adresse.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\DienstleistungsAuswahl.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\Fahrzeug.cs" />
+    <Compile Include="Uebfuehrg\Models\UiModels\HistoryAuftragFilter.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\Receipt.cs" />
     <Compile Include="Uebfuehrg\Models\UiModels\RgDaten.cs" />
     <Compile Include="Uebfuehrg\Services\ReceiptCreationService.cs" />
     <Compile Include="Uebfuehrg\Services\UebfuehrgDataServiceSAP.cs" />
+    <Compile Include="Uebfuehrg\ViewModels\UebfuehrgReportViewModel.cs" />
     <Compile Include="Uebfuehrg\ViewModels\UebfuehrgViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -24,19 +24,13 @@ using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class UebfuehrgController : CkgDomainController
+    public partial class UebfuehrgController 
     {
-        public override string DataContextKey { get { return "UebfuehrgViewModel"; } }
-
-        public UebfuehrgViewModel ViewModel { get { return GetViewModel<UebfuehrgViewModel>(); } }
-        public UebfuehrgReportViewModel ReportViewModel { get { return GetViewModel<UebfuehrgReportViewModel>(); } }
-
-
-        public UebfuehrgController(IAppSettings appSettings, ILogonContextDataService logonContext, IUebfuehrgDataService uebfuehrgDataService, IFahrzeugverwaltungDataService fahrzeugverwaltungDataService)
-            : base(appSettings, logonContext)
+        [CkgApplication]
+        public ActionResult Report()
         {
-            InitViewModel(ViewModel, appSettings, logonContext, uebfuehrgDataService, fahrzeugverwaltungDataService);
-            InitViewModel(ReportViewModel, appSettings, logonContext, uebfuehrgDataService);
+            ViewModel.DataInit(1);
+            return Fzg();
         }
     }
 }
