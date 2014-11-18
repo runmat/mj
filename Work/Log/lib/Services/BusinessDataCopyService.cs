@@ -71,9 +71,9 @@ namespace LogMaintenance.Services
         public static bool DeleteExpiredLogMessages(string serverType, DateTime pageVisitExpirydate, DateTime sapBapiExpiryDate, DateTime sapBapiDataExpiryDate, DateTime elmahExpiryDate)
         {
             // SQL_SAFE_UPDATES, MySql Globale Server Variable wird ausgesetzt (== 0) während der Operation, da sonst die Operation fehlschlägt
-            var deleteExpiredPageVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM pagevisit WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", pageVisitExpirydate.Date.ToString("yyyy-MM-dd"));
-            var deleteExpiredBapi = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM sapbapi WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiExpiryDate.Date.ToString("yyyy-MM-dd"));
-            var deleteExpiredBapiData = string.Format("SET SQL_SAFE_UPDATES = 0;UPDATE sapbapi SET ImportParameters = '', ImportTables = '', DataContext ='' WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiDataExpiryDate.Date.ToString("yyyy-MM-dd"));
+            var deleteExpiredPageVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM PageVisit WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", pageVisitExpirydate.Date.ToString("yyyy-MM-dd"));
+            var deleteExpiredBapi = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM SapBapi WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiExpiryDate.Date.ToString("yyyy-MM-dd"));
+            var deleteExpiredBapiData = string.Format("SET SQL_SAFE_UPDATES = 0;UPDATE SapBapi SET ImportParameters = '', ImportTables = '', ExportParameters ='', ExportTables = '' WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiDataExpiryDate.Date.ToString("yyyy-MM-dd"));
             var deleteExpiredElmah = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM elmah_error WHERE TimeUtc < '{0}';SET SQL_SAFE_UPDATES = 1;", elmahExpiryDate.Date.ToString("yyyy-MM-dd"));
 
             var commands = new List<string>
