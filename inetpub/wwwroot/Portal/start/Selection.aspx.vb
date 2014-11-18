@@ -4,6 +4,7 @@ Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Kernel.Security
 Imports System.Collections.Generic
+Imports System.Text
 
 Namespace Start
     Public Class Selection
@@ -246,7 +247,6 @@ Namespace Start
 
                     'UH: 23.01.2006
                     'Applikationstypen
-                    'Prüfe, ob SessionId schon in DB existent
                     Dim table As DataTable
                     Dim command As New SqlClient.SqlCommand()
                     Dim blnReturn As Boolean = True
@@ -315,10 +315,6 @@ Namespace Start
 
 
                                 For intRows = 0 To dvAppLinks.Count - 1
-                                    '§§§ JVE 26.01.2006: Anwendungs-Link zusammenbauen (INCL. DER PARAMETER!!!!)
-
-
-
                                     ' --- 18.12.2013, MJE
                                     ' --- MVC Integration:
                                     ' ---
@@ -331,7 +327,13 @@ Namespace Start
 
                                     appUrl = appUrl & "&cp=" & GetUserContextParams(dRow("AppID").ToString())
 
-                                    '-------------------------------------------------------------------------
+                                    ' Url encoden für die Verwendung als Query Params
+                                    appUrl = HttpUtility.UrlEncode(appUrl)
+                                    appUrl = Convert.ToBase64String(Encoding.UTF8.GetBytes(appUrl.ToCharArray()))
+
+                                    ' Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
+                                    appUrl = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow("AppID"), "&url=", appUrl)
+
                                     If blnAlternate Then
                                         litApp.Text &= "<tr class=""MainmenuItemAlternate"">" & vbCrLf
                                     Else
@@ -339,39 +341,12 @@ Namespace Start
                                     End If
                                     blnAlternate = Not blnAlternate
 
-                                    '----------------------
                                     appInMenu = CType(dvAppLinks(intRows)("AppInMenu"), Boolean)
 
-                                    'If appInMenu Then
-                                    '    appPath = m_User.Customer.CustomerStyle.CssPath ' Left(appUrl, appUrl.LastIndexOf("/"))
-                                    '    appPath = Left(appPath, appPath.LastIndexOf("/"))
-                                    '    appPath = Left(appPath, appPath.LastIndexOf("/"))
-                                    '    appType = dvAppLinks(intRows)("AppType").ToString.ToUpper
-
-                                    '    Select Case appType
-                                    '        Case "REPORT"
-                                    '            appSymbol = appPath & "/Images/report.gif"
-                                    '        Case "CHANGE"
-                                    '            appSymbol = appPath & "/Images/change.gif"
-                                    '        Case "HELPDESK"
-                                    '            appSymbol = appPath & "/Images/helpdesk.gif"
-                                    '        Case "ADMIN"
-                                    '            appSymbol = appPath & "/Images/admin.gif"
-                                    '        Case Else
-                                    '            appSymbol = ""
-                                    '    End Select
-                                    'End If
-
-
-                                    '--------------------------------------
                                     appSymbol = "../Images/arrowgrey.gif"
                                     litApp.Text &= "<td><img src=""" & appSymbol & """ border=""0"" /></td>" & vbCrLf
 
-                                    ' 27.02.2014, MJE
-                                    ' Integrate Page Visit Logging
-                                    Dim pageVisitLoggingPart As String = "onclick=""return LogPageVisit('" & CStr(dvAppLinks(intRows)("AppId")) & "', '" & appUrl & "');"""
-
-                                    litApp.Text &= "<td class=""MainmenuItem"" nowrap=""nowrap"">&nbsp;<a " & pageVisitLoggingPart & " href=""" & appUrl & """ target=""_self"">" & CStr(dvAppLinks(intRows)("AppFriendlyName")) & "</a>&nbsp;</td>" & vbCrLf
+                                    litApp.Text &= "<td class=""MainmenuItem"" nowrap=""nowrap"">&nbsp;<a " & " href=""" & appUrl & """ target=""_self"">" & CStr(dvAppLinks(intRows)("AppFriendlyName")) & "</a>&nbsp;</td>" & vbCrLf
                                     '---------------------------------------------
                                     Dim strTemp As String = String.Empty
                                     If Not TypeOf dvAppLinks(intRows)("AppComment") Is DBNull Then
