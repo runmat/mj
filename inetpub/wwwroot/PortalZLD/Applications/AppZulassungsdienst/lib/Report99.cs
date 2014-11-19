@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Dokumentenanforderung der Zulassungstellen.
     /// </summary>
-    public class Report99 : CKG.Base.Business.DatenimportBase
+    public class Report99 : DatenimportBase
     {
         #region "Declarations"
         String strKennzeichen;
@@ -37,6 +37,7 @@ namespace AppZulassungsdienst.lib
         public Report99(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         {}
+
         /// <summary>
         ///  Datenselektion für die Ausgabe der Dokumentenanforderung. Bapi: Z_M_ZGBS_BEN_ZULASSUNGSUNT
         /// </summary>
@@ -66,9 +67,8 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-                    DataTable m_tblResultRaw = new DataTable();
                     m_tblResult = myProxy.getExportTable("GT_WEB");
-                    WriteLogEntry(true, "I_ZKFZKZ=" + strKennzeichen , ref m_tblResult, false);
+                    WriteLogEntry(true, "I_ZKFZKZ=" + strKennzeichen , ref m_tblResult);
                 }
 
                 catch (Exception ex)
@@ -78,18 +78,19 @@ namespace AppZulassungsdienst.lib
                         case "NO_DATA":
                             m_intStatus = -5555;
                             m_strMessage = "Keine Daten gefunden.";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
+                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult);
                             break;
                         default:
                             m_intStatus = -9999;
                             m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
+                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult);
                             break;
                     }
                 }
                 finally { m_blnGestartet = false; }
             }
         }
+
         /// <summary>
         /// Pflegen der Dokumentenanforderung der Zulassungstellen. Bapi: Z_ZLD_IMPORT_ZULUNT
         /// </summary>
@@ -113,8 +114,7 @@ namespace AppZulassungsdienst.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_IMPORT_ZULUNT", ref m_objApp, ref m_objUser, ref page);
 
-                    DataTable tblSap = new DataTable();
-                    tblSap = myProxy.getImportTable("GS_WEB");
+                    DataTable tblSap = myProxy.getImportTable("GS_WEB");
 
 
                     DataRow SapRow = tblSap.NewRow();
@@ -226,7 +226,6 @@ namespace AppZulassungsdienst.lib
                         SapRow["UERS_LAST"] = FormRow["UERS_LAST"].ToString();
                         SapRow["UERS_BEM"] = FormRow["UERS_BEM"].ToString();
 
-
                         SapRow["STVALN"] = FormRow["STVALN"].ToString();
                         SapRow["URL"] = FormRow["URL"].ToString();
                         SapRow["STVALNFORM"] = FormRow["STVALNFORM"].ToString();
@@ -236,8 +235,7 @@ namespace AppZulassungsdienst.lib
                     }
                     myProxy.callBapi();
 
-                    Int32 subrc = 0;
-
+                    Int32 subrc;
                     Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
 
                     String sapMessage;
@@ -258,6 +256,7 @@ namespace AppZulassungsdienst.lib
                 finally { m_blnGestartet = false; }
             }
         }
+
     #endregion
     }
 }

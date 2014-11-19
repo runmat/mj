@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChangeZLDNachListe.aspx.cs" Inherits="AppZulassungsdienst.forms.ChangeZLDNachListe" MasterPageFile="../MasterPage/Big.Master" %>
 <%@ Register src="/PortalZLD/PageElements/GridNavigation.ascx" tagname="GridNavigation" tagprefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI"  TagPrefix="telerik" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 	<script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
@@ -31,7 +32,8 @@
               $('#ctl00_ContentPlaceHolder1_cmdSend').click(function () {
                   $('#dialog').dialog('open');
               });
-          });</script>
+          });
+      </script>
 	<div id="site">
 		<div id="content">
 			<div id="navigationSubmenu">
@@ -387,9 +389,9 @@
                                                         </asp:TemplateField> 
 														<asp:TemplateField >
 															 <ItemTemplate>
-																 <asp:ImageButton ID="ibtnedt" Visible='<%# Eval("toDelete").ToString() != "X" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# Eval("ID") %>'  runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16px" Height="16px" />
-																 <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%#  ((GridViewRow)Container).RowIndex %>'  runat="server" CommandName="Del" ToolTip="Löschen" />
-																 <asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'  runat="server" CommandName="OK" ToolTip='<%# Eval("BEB_STATUS").ToString() == "1" ? "Annehmen" : "OK" %>' />
+																 <asp:ImageButton ID="ibtnedt" Visible='<%# Eval("toDelete").ToString() != "X" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# Eval("ID") %>' runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16px" Height="16px" />
+																 <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="Del" ToolTip="Löschen" Visible='<%# !objNacherf.SelSofortabrechnung %>' />
+																 <asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="OK" ToolTip='<%# Eval("BEB_STATUS").ToString() == "1" ? "Annehmen" : "OK" %>' />
 															</ItemTemplate>
 																<HeaderStyle CssClass="TablePadding" Width="58px" />
 																<ItemStyle CssClass="TablePadding"  Width="58px" />                                                            
@@ -477,11 +479,10 @@
                     <div id="dialog" title="Absenden">
                         Sollen die Aufträge jetzt gesendet werden?
                     </div>
-                     <asp:Button ID="MPEDummy" Width="16px" Height="0" runat="server" Style="display: none" />
+                    <asp:Button ID="MPEDummy" Width="16px" Height="0" runat="server" Style="display: none" />
                     <cc1:ModalPopupExtender runat="server" ID="MPEBarquittungen" BackgroundCssClass="ui-widget-overlay"
                         Enabled="true" PopupControlID="pnlPrintBar" TargetControlID="MPEDummy">
                     </cc1:ModalPopupExtender>
-
                     <asp:Panel ID="pnlPrintBar" runat="server" Style="overflow: auto; height: 300px;
                         width: 400px; display: none;" >
                         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="width: 95%;" >
@@ -497,12 +498,45 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Quittung">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
+                                        <asp:Label runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Aufrufen">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# Eval("Path") %>'
+                                        <asp:ImageButton CommandName="Print" CommandArgument='<%# Eval("Path") %>'
+                                            runat="server" ImageUrl="/PortalZLD/Images/iconPDF.gif" />
+                                    </ItemTemplate>
+                                    <HeaderStyle Width="40px" />
+                                    <ItemStyle Width="40px" />
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </asp:Panel>
+                    <asp:Button ID="MPEDummy2" Width="16px" Height="0" runat="server" Style="display: none" />
+                    <cc1:ModalPopupExtender runat="server" ID="MPESofortabrechnungen" BackgroundCssClass="ui-widget-overlay"
+                        Enabled="true" PopupControlID="pnlPrintSofortabrechnungen" TargetControlID="MPEDummy2">
+                    </cc1:ModalPopupExtender>
+                    <asp:Panel ID="pnlPrintSofortabrechnungen" runat="server" Style="overflow: auto; height: 200px;
+                        width: 400px; display: none;" >
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="width: 95%;" >
+                                                  <asp:LinkButton ID="cmdClose2" runat="server" 
+                            Width="10px" onclick="cmdClose2_Click"  style="float:right" 
+						   >X</asp:LinkButton>  
+                        </div>
+                        <asp:GridView ID="GridView3" GridLines="None" Style="border: 1px solid #dfdfdf; width: 96%;
+                            font-size: 9px; color: #595959" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowCommand="GridView3_RowCommand"
+                            CaptionAlign="Left">
+                            <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
+                            <RowStyle CssClass="ItemStyle" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Sofortabrechnung">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Aufrufen">
+                                    <ItemTemplate>
+                                        <asp:ImageButton CommandName="Print" CommandArgument='<%# Eval("Path") %>'
                                             runat="server" ImageUrl="/PortalZLD/Images/iconPDF.gif" />
                                     </ItemTemplate>
                                     <HeaderStyle Width="40px" />
@@ -515,5 +549,4 @@
 			</div>
 			</div>
 	</div>
-
 </asp:Content>

@@ -11,11 +11,12 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Listenansicht Übersicht offener Versandzulassungen und Rechnungsprüfung.
     /// </summary>
-    public partial class ChangeStatusVersandList : System.Web.UI.Page
+    public partial class ChangeStatusVersandList : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VorVersand objVersandZul;
+
         /// <summary>
         /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
         /// </summary>
@@ -52,8 +53,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = new DataView();
-            tmpDataView = objVersandZul.Liste.DefaultView;
+            DataView tmpDataView = objVersandZul.Liste.DefaultView;
             String strFilter = "";
             tmpDataView.RowFilter = strFilter;
 
@@ -140,11 +140,8 @@ namespace AppZulassungsdienst.forms
                         case ("R"):
                             ddlStatus.SelectedValue = "R";
                             break;
-                        default:
-                           break;
                     }
-                    
-                     
+                                  
                     if (myId.Length > 0)
                     {
                         if (GridView1.DataKeys[item.RowIndex]["ID"].ToString() == myId)
@@ -177,6 +174,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Je nach selektierten Status Spalten ein- und ausblenden.
         /// </summary>
@@ -206,6 +204,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("ChangeStatusVersand.aspx?AppID=" + Session["AppID"].ToString());
         }
+
         /// <summary>
         /// Sortierung nach einer bestimmten Spalte.
         /// </summary>
@@ -215,25 +214,28 @@ namespace AppZulassungsdienst.forms
         {
             Fillgrid(0, e.SortExpression);
         }
+
         /// <summary>
         /// Spaltenüberstzung
         /// </summary>
        /// <param name="sender">object</param>
        /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
 
         }
+
         /// <summary>
         /// Page_Unload-Ereignis.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Genieren der Excel-Datei.
         /// </summary>
@@ -241,14 +243,13 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lnkCreateExcel_Click(object sender, EventArgs e)
         {
-            Control control = new Control();
-            DataTable tblTranslations = new DataTable();
             DataTable tblTemp = objVersandZul.ExcelListe;
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, null, 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
         }
+
         /// <summary>
         /// Setzen des Löschenkennz. im Auftrag.
         /// </summary>
@@ -262,7 +263,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "";
                 Int32 Index;
                 Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                Label ID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                Label lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
                 Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                 Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblLoeschKZ");
                 DropDownList ddStatus = (DropDownList)GridView1.Rows[Index].FindControl("ddlStatus");
@@ -270,13 +271,13 @@ namespace AppZulassungsdienst.forms
                 String Loeschkz = "";
                 if (lblLoeschKZ.Visible)
                 {
-                    objVersandZul.UpdateStatus(Session["AppID"].ToString(), Session.SessionID, this, ID.Text, lblIDPos.Text
+                    objVersandZul.UpdateStatus(Session["AppID"].ToString(), Session.SessionID, this, lblID.Text, lblIDPos.Text
                                                         , ddStatus.SelectedValue, Loeschkz, null);
                 }
                 else
                 {
                     Loeschkz = "X";
-                    objVersandZul.UpdateStatus(Session["AppID"].ToString(), Session.SessionID, this, ID.Text, lblIDPos.Text
+                    objVersandZul.UpdateStatus(Session["AppID"].ToString(), Session.SessionID, this, lblID.Text, lblIDPos.Text
                                                         , ddStatus.SelectedValue,Loeschkz,null);
                 }
 
@@ -291,11 +292,11 @@ namespace AppZulassungsdienst.forms
                     DataRow[] RowsEdit;
                     if (lblIDPos.Text != "10")
                     {
-                        RowsEdit = objVersandZul.Liste.Select("ID=" + ID.Text + " AND ZULPOSNR ='" + lblIDPos.Text + "'");
+                        RowsEdit = objVersandZul.Liste.Select("ID=" + lblID.Text + " AND ZULPOSNR ='" + lblIDPos.Text + "'");
                     }
                     else
                     {
-                        RowsEdit = objVersandZul.Liste.Select("ID=" + ID.Text);
+                        RowsEdit = objVersandZul.Liste.Select("ID=" + lblID.Text);
                     }
 
                     foreach (DataRow Row in RowsEdit)
@@ -307,6 +308,7 @@ namespace AppZulassungsdienst.forms
                 Session["objVersandZul"] = objVersandZul;
             }
         }
+
         /// <summary>
         /// Setzen des Status in SAP(Z_ZLD_CHANGE_VZOZUERL).
         /// </summary>
@@ -328,7 +330,7 @@ namespace AppZulassungsdienst.forms
                 {
                     objVersandZul = (VorVersand)Session["objVersandZul"];
                     lblError.Text = "";
-                    Label ID = (Label)gvRow.FindControl("lblsapID");
+                    Label lblID = (Label)gvRow.FindControl("lblsapID");
                     Label lblIDPos = (Label)gvRow.FindControl("lblid_pos");
                     Label lblLoeschKZ = (Label)gvRow.FindControl("lblLoeschKZ");
                     DropDownList ddStatus = (DropDownList)gvRow.FindControl("ddlStatus");
@@ -341,7 +343,7 @@ namespace AppZulassungsdienst.forms
                     if (ddStatus.Visible) 
                     { 
                         DataRow mNewRow = mTable.NewRow();
-                        mNewRow["ZULBELN"] = ID.Text;
+                        mNewRow["ZULBELN"] = lblID.Text;
                         mNewRow["ZULPOSNR"] = lblIDPos.Text;
                         mNewRow["LOEKZ"] = Loeschkz;
                         mNewRow["STATUS"] = ddStatus.SelectedValue;
@@ -349,16 +351,16 @@ namespace AppZulassungsdienst.forms
 
                         if (ddStatus.SelectedValue == "S")
                         {
-                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + ID.Text + "'");
+                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + lblID.Text + "'");
                             objVersandZul.Liste.Rows.Remove(RowsEdit[0]);
-                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + ID.Text + "'");
+                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + lblID.Text + "'");
                             objVersandZul.ExcelListe.Rows.Remove(RowsEdit[0]);
                         }
                         else
                         {
-                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + ID.Text + "'");
+                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + lblID.Text + "'");
                             RowsEdit[0]["Status"] = ddStatus.SelectedValue;
-                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + ID.Text + "'");
+                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + lblID.Text + "'");
                             RowsEdit[0]["Status"] = ddStatus.SelectedValue;
                     
                         }
@@ -389,7 +391,6 @@ namespace AppZulassungsdienst.forms
 
             }
         }
-
 
     }
 }

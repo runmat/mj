@@ -11,11 +11,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class KVPBewertung : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private KVP mObjKVP;
 
-        protected void Page_Load(object sender, System.EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -53,10 +53,8 @@ namespace AppZulassungsdienst.forms
                 {
                     throw new Exception("Fehler: " + mObjKVP.Message);
                 }
-                else
-                {
-                    LadeBewertungen();
-                }
+
+                LadeBewertungen();
 
                 Session["mObjKVP"] = mObjKVP;
             }

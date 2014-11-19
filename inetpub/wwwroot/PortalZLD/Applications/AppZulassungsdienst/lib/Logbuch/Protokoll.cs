@@ -14,7 +14,7 @@ namespace AppZulassungsdienst.lib.Logbuch
         }
 
         private LogbuchEntry[,] protokoll;
-        private int length = 0;
+        private int length;
         private DataTable dtExport;
         private List<VorgangsartDetails> lstVorgangsarten;
 
@@ -33,7 +33,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 
         internal void addEntry(Side Side, LogbuchEntry eintrag)
         {
-            int index = 0;
+            int index;
 
             if (eintrag.LaufendeNummer == "")
             {
@@ -270,16 +270,8 @@ namespace AppZulassungsdienst.lib.Logbuch
                         }
                     }
 
-
                     // Wenn weder Input noch Output den gesuchten Wert enthalten, dann Exit
-                    if (bIsInput || bIsOutput || bIsInputE || bIsOutputE)
-                    {
-                        bExit = false;
-                    }
-                    else
-                    {
-                        bExit = true;
-                    }
+                    bExit = (!bIsInput && !bIsOutput && !bIsInputE && !bIsOutputE);
                 }
 
                 if (!bExit)

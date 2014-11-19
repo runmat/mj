@@ -10,10 +10,11 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Zulassungsdienstsuche und Lesen von E-Mail-Texten aus der SQL-DB.
     /// </summary>
-    public class ZLD_Suche: CKG.Base.Business.DatenimportBase
+    public class ZLD_Suche: DatenimportBase
     {
 
         #region "Properties"
+
         /// <summary>
         /// Selektionsparameter Zulassungspartner
         /// </summary>
@@ -94,8 +95,11 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+
         #endregion
+
         #region "Methods"
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -105,6 +109,7 @@ namespace AppZulassungsdienst.lib
         public ZLD_Suche(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         {}
+
         /// <summary>
         /// Funktion für die Zulassungsdienstsuche in SAP. Bapi: Z_M_BAPIRDZ
         /// </summary>
@@ -113,7 +118,6 @@ namespace AppZulassungsdienst.lib
         /// <param name="page">Report33ZLD.aspx</param>
         public void Fill(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
-
             m_strClassAndMethod = "ZLD_Suche.Fill";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -139,11 +143,10 @@ namespace AppZulassungsdienst.lib
                     CreateOutPut(ResultRaw, strAppID);
                     m_tblResult.Columns.Add("Details", typeof(String));
 
-
                     foreach (DataRow tmpRow in m_tblResult.Rows)
-	                    {
-                		     tmpRow["Details"] = "Report30ZLD_2.aspx?ID=" + tmpRow["ID"].ToString();
-	                    }
+	                {
+                		    tmpRow["Details"] = "Report30ZLD_2.aspx?ID=" + tmpRow["ID"].ToString();
+	                }
                     m_tblResult.Columns.Remove("ID");
 
                 }
@@ -154,7 +157,7 @@ namespace AppZulassungsdienst.lib
                         default:
                             m_intStatus = -9999;
                             m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            WriteLogEntry(false, "ZKFZKZ=" + Kennzeichen + ", POST_CODE1=" + PLZ + ", NAME1=" + Zulassungspartner + ", REMARK=" + ZulassungspartnerNr + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
+                            WriteLogEntry(false, "ZKFZKZ=" + Kennzeichen + ", POST_CODE1=" + PLZ + ", NAME1=" + Zulassungspartner + ", REMARK=" + ZulassungspartnerNr + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult);
                             break;
                     }
                 }
@@ -175,8 +178,8 @@ namespace AppZulassungsdienst.lib
             MailAdressCC = "";
             MailAdress = "";
             Mailings = new DataTable();
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"];
+            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+
             try
             {
 
@@ -184,50 +187,45 @@ namespace AppZulassungsdienst.lib
                                       "AND Vorgangsnummer Like @Vorgangsnummer " +
                                       "AND Aktiv=1",connection);
 
+                adapter.SelectCommand.Parameters.AddWithValue("@KundenID", m_objUser.Customer.CustomerId);
+                adapter.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", strTempVorgang);
 
+                adapter.Fill(Mailings);
 
-            adapter.SelectCommand.Parameters.AddWithValue("@KundenID", m_objUser.Customer.CustomerId);
-            adapter.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", strTempVorgang);
-
-            adapter.Fill(Mailings);
-
-            if (Mailings.Rows.Count > 0)
-            {
-                foreach (DataRow dRow in Mailings.Rows)
+                if (Mailings.Rows.Count > 0)
                 {
-                    MailBody = dRow["Text"].ToString();
-                    Betreff = dRow["Betreff"].ToString();
-                    Boolean boolCC = false;
-                    Boolean.TryParse(dRow["CC"].ToString(), out boolCC);
-                    if (boolCC)
+                    foreach (DataRow dRow in Mailings.Rows)
                     {
-                        if (MailAdressCC == "")
+                        MailBody = dRow["Text"].ToString();
+                        Betreff = dRow["Betreff"].ToString();
+                        Boolean boolCC;
+                        Boolean.TryParse(dRow["CC"].ToString(), out boolCC);
+                        if (boolCC)
                         {
-                            MailAdressCC = dRow["EmailAdresse"].ToString();
+                            if (MailAdressCC == "")
+                            {
+                                MailAdressCC = dRow["EmailAdresse"].ToString();
+                            }
+                            else
+                            {
+                                MailAdressCC += ";" + dRow["EmailAdresse"].ToString();
+                            }
+                        }
+                        else if (MailAdress == "")
+                        {
+                            MailAdress = dRow["EmailAdresse"].ToString();
                         }
                         else
                         {
-                            MailAdressCC += ";" + dRow["EmailAdresse"].ToString();
+                            MailAdress += ";" + dRow["EmailAdresse"].ToString();
                         }
                     }
-                    else if (MailAdress == "")
-                    {
-                        MailAdress = dRow["EmailAdresse"].ToString();
-                    }
-                    else
-                    {
-                        MailAdress += ";" + dRow["EmailAdresse"].ToString();
-                    }
                 }
-
-
-            }
-            else
-            {
-                m_intStatus = -9999;
-                m_strMessage = "Keine Mailvorlagen für diesen Kunden.";
-            }
-
+                else
+                {
+                    m_intStatus = -9999;
+                    m_strMessage = "Keine Mailvorlagen für diesen Kunden.";
+                }
             }
             catch (Exception ex)
             {
@@ -237,10 +235,7 @@ namespace AppZulassungsdienst.lib
             finally
             {
                 connection.Close();
-
             }
-
-    
         }
         
         #endregion
