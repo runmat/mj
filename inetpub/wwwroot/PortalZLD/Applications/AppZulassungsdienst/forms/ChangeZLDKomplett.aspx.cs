@@ -1619,13 +1619,13 @@ namespace AppZulassungsdienst.forms
                 DataRow dataRow = objCommon.tblKundenStamm.Rows[i];
 
                 javaScript.Append(" [ ");
-                javaScript.Append("'" + dataRow[2].ToString().Trim() + "'");// Kundennummer
+                javaScript.Append("'" + dataRow["KUNNR"].ToString().Trim() + "'");// Kundennummer
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[dataRow.Table.Columns.Count - 2].ToString().Trim() + "'");//Barkunde
+                javaScript.Append("'" + dataRow["BARKUNDE"].ToString().Trim() + "'");//Barkunde
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[9].ToString().Trim() + "'");//Pauschalkunde
+                javaScript.Append("'" + dataRow["ZZPAUSCHAL"].ToString().Trim() + "'");//Pauschalkunde
                 javaScript.Append(",");
-                javaScript.Append("'" + dataRow[11].ToString().Trim() + "'");//CPD-Kunde
+                javaScript.Append("'" + dataRow["XCPDK"].ToString().Trim() + "'");//CPD-Kunde
                 javaScript.Append(" ]");
 
                 if ((i + 1) == objCommon.tblKundenStamm.Rows.Count)
@@ -1648,7 +1648,7 @@ namespace AppZulassungsdienst.forms
             DataRow[] drow = objCommon.tblKundenStamm.Select("KUNNR = '" + ddlKunnr.SelectedValue + "'");
             if (drow.Length == 1)
             {
-                if (drow[0][9].ToString().Trim() == "X")
+                if (drow[0]["ZZPAUSCHAL"].ToString().Trim() == "X")
                 {
                     Pauschal.InnerHtml = "Pauschalkunde";
                 }
@@ -1656,7 +1656,7 @@ namespace AppZulassungsdienst.forms
                 {
                     Pauschal.InnerHtml = "";
                 }
-                if (drow[0][objCommon.tblKundenStamm.Columns.Count - 1].ToString().Trim() == "X")
+                if (drow[0]["BARKUNDE"].ToString().Trim() == "X")
                 {
                     chkBar.Checked = true;
                 }
