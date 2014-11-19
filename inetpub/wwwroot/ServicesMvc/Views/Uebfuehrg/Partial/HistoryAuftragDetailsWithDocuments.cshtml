@@ -1,24 +1,32 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
 
-@Html.Partial("Partial/HistoryAuftragDetails", Model.HistoryAuftragCurrent)
+<div class="row-fluid">
+    <div class="span8">
+        @using (Html.PortletBox("Details", "icon-table"))
+        {
+            @Html.Partial("Partial/HistoryAuftragDetails", Model.HistoryAuftragCurrent)
+        }
+    </div>
 
-<div id="HistoryProtokolle">
-    @if (Model.PdfFilesAvailable)
-    {
-        <h3>Protokolle</h3>
-        <div>
-            <a class="pdf" href="HistoryDownloadPdfFiles">PDF Download</a>
-        </div>
-    }
-
-    @foreach (var tour in Model.ImageFileTours)
-    {
-        <h3>Fotos, Fahrt @tour</h3>
-        <div>
-            @foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
+    <div class="span4" id="HistoryProtokolle">
+        @if (Model.PdfFilesAvailable)
+        {
+            using (Html.PortletBox("Protokolle", "icon-copy", "purple"))
             {
-                <img src="@thumbImageFile" alt="" onclick="ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile));" />
+                <a class="pdf" href="HistoryDownloadPdfFiles">PDF Download</a>
             }
-        </div>
-    }
+        }
+        
+        @foreach (var tour in Model.ImageFileTours)
+        {
+            using (Html.PortletBox("Fotos, Fahrt " + tour, "icon-picture", "blue"))
+            {
+                foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
+                {
+                    <img src="@thumbImageFile" alt="" onclick=" ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile)); " />
+                }
+            }
+        }
+    </div>
 </div>
+

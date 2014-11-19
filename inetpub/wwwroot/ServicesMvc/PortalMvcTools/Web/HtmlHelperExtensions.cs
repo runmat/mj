@@ -13,6 +13,7 @@ using GeneralTools.Services;
 using MvcTools.Models;
 using MvcTools.Web;
 using System.Web.Mvc.Ajax;
+using PortalMvcTools.Models;
 
 namespace PortalMvcTools.Web
 {
@@ -125,6 +126,14 @@ namespace PortalMvcTools.Web
         public static MvcWrapper FormSearchResults(this HtmlHelper html, object model = null)
         {
             return new MvcWrapper(html.ViewContext, "FormSearchResults", model);
+        }
+
+        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey")
+        {
+            return new MvcWrapper(html.ViewContext, "PortletBox", new FormOuterLayerModel
+                {
+                    Header = header, IconCssClass = iconCssClass, PortletCssClass = portletCssClass
+                });
         }
 
         public static MvcHtmlString FormValidationSummaryResponsive(this HtmlHelper html, Func<Exception, IHtmlString> responsiveErrorUrlFunction = null)

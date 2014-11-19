@@ -1,7 +1,5 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
 
-<h3 class="page-title" id="headerTitle">Überführungen <small>Report</small></h3>
-
 <style type="text/css">
     .t-grid-filter { display: none; }
     a.btn.mini.tooltips {
@@ -9,6 +7,11 @@
         padding-bottom: 0!important;
     }
 </style>
+
+<h3 class="page-title" id="headerTitle">
+    <button id="closeHistoryAuftragDetails" onclick="CloseHistoryAuftragDetails();" class='btn mini red margin-right-20 hide'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
+    Überführungen <small>Report</small>
+</h3>
 
 <div id="divSearchAndGrid">
     @using (Html.FormSearchBox())
@@ -83,13 +86,17 @@
         $("#divAuftragDetails").html(result);
         $("#divSearchAndGrid").slideUp();
         $("#divAuftragDetails").slideDown();
+        setTimeout(function() { $("#closeHistoryAuftragDetails").show(); }, 600);
         FormPrepareAjax();
     }
 
     function CloseHistoryAuftragDetails() {
-        $("#divAuftragDetails").slideUp();
-        $("#divSearchAndGrid").slideDown();
-        setTimeout('LoadingHide();', 500);
+        $("#closeHistoryAuftragDetails").hide();
+        setTimeout(function() {
+            $("#divAuftragDetails").slideUp();
+            $("#divSearchAndGrid").slideDown();
+            setTimeout('LoadingHide();', 500);
+        }, 150);
     }
 
 

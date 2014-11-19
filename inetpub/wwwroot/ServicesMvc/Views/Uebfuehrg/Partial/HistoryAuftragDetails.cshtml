@@ -10,9 +10,7 @@
         new MvcAjaxOptions("divHistoryAuftragDetails"), new { id = "HistoryAuftragDetailsForm" }))
     {    
         <div class="form-horizontal" id="dummyForm">
-            
-            <button onclick="CloseHistoryAuftragDetails();" class='btn blue'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
-            
+           
             @Html.FormTextBlockFor(m => m.AuftragsNr, new { @class = "m-wrap" })
 
             @Html.FormTextBlockFor(m => m.AuftragsDatum, new { @class = "m-wrap", col = "left" })
@@ -42,6 +40,3 @@
         </div>  
     }
 </div>
-
-    
-
