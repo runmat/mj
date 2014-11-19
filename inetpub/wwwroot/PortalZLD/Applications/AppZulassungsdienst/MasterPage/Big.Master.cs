@@ -13,14 +13,11 @@ namespace AppZulassungsdienst.MasterPage
         {
 
         }
+
         protected void Page_PreRender(object sender, EventArgs e)
         {
-
-            string strLogoPath = "";
             string strDocuPath = "";
-            string strTitle = null;
-            HttpBrowserCapabilities bc = default(HttpBrowserCapabilities);
-            bc = Request.Browser;
+            HttpBrowserCapabilities bc = Request.Browser;
 
             //Aktuelles Jahr ins Copyright setzen.
             lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString());
@@ -33,7 +30,6 @@ namespace AppZulassungsdienst.MasterPage
                     tdHandbuch.Visible = false;
                     lnkHauptmenue.Text = "Anmeldung";
                     tdChangePasword.Visible = false;
-                    //tdLogout.Visible = False 
                     lblUserName.Visible = false;
                     imgLogo.Visible = false;
 
@@ -66,20 +62,16 @@ namespace AppZulassungsdienst.MasterPage
                 lnkLogout.Visible = true;
                 lnkChangePassword.Visible = true;
 
-                string strCSSLink = "";
+                string strCSSLink;
                 {
                     if (bc.Type == "IE6")
                     {
-
                         strCSSLink = "<link href=\"/PortalZLD/Styles/defaultIE6.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
 
-                        string[] strCSS = null;
                         string strCSSPath = m_User.Customer.CustomerStyle.CssPath;
                         if (strCSSPath.Contains(".css"))
                         {
-
-
-                            strCSS = Regex.Split(strCSSPath, ".css");
+                            string[] strCSS = Regex.Split(strCSSPath, ".css");
 
                             if (strCSS.Length == 2)
                             {
@@ -90,26 +82,8 @@ namespace AppZulassungsdienst.MasterPage
                     }
                     else
                     {
-                        string strtemp = Server.MapPath("~/PortalZLD/Styles/default.css");
                         strCSSLink = "<link href=\"/PortalZLD/Styles/default_Big.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                        switch (m_User.CustomerName)
-                        {
-                            case "Volksfürsorge":
-                                strCSSLink += "<link href=\"/PortalZLD/Customize/Wuerttenbergische/wuerttenb.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "AKF Bank Retail":
-                                strCSSLink += "<link href=\"/PortalZLD/Customize/Akf_Retail/AKFRetail.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "Arval":
-                                strCSSLink += "<link href=\"/PortalZLD/Customize/Arval/Arval.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "Porsche":
-                                strCSSLink += "<link href=\"/PortalZLD/Customize/porsche/porsche.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            default:
-                                strCSSLink += "<link href=\"" + m_User.Customer.CustomerStyle.CssPath + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                        }
+                        strCSSLink += "<link href=\"" + m_User.Customer.CustomerStyle.CssPath + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
                     }
                 }
                 this.Head1.Controls.Add(new LiteralControl(strCSSLink));
@@ -125,8 +99,7 @@ namespace AppZulassungsdienst.MasterPage
                     {
                         case "Startseite":
                             tdHauptmenue.Attributes.Add("class", "active");
-                            tdChangePasword.Attributes.Add("class", "");
-                            //tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", ""); 
                             tdContact.Attributes.Add("class", "");
                             tdImpressum.Attributes.Add("class", "");
                             tdResponsible.Attributes.Add("class", "");
@@ -134,40 +107,35 @@ namespace AppZulassungsdienst.MasterPage
                             break;
                         case "Passwort ändern":
                             tdHauptmenue.Attributes.Add("class", "");
-                            tdChangePasword.Attributes.Add("class", "active");
-                            //tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", "active"); 
                             tdContact.Attributes.Add("class", "");
                             tdImpressum.Attributes.Add("class", "");
                             tdResponsible.Attributes.Add("class", "");
                             break;
                         case "Kontaktseite":
                             tdHauptmenue.Attributes.Add("class", "");
-                            tdChangePasword.Attributes.Add("class", "");
-                            // tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", ""); 
                             tdContact.Attributes.Add("class", "active");
                             tdImpressum.Attributes.Add("class", "");
                             tdResponsible.Attributes.Add("class", "");
                             break;
                         case "Impressum":
                             tdHauptmenue.Attributes.Add("class", "");
-                            tdChangePasword.Attributes.Add("class", "");
-                            //tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", ""); 
                             tdContact.Attributes.Add("class", "");
                             tdImpressum.Attributes.Add("class", "active");
                             tdResponsible.Attributes.Add("class", "");
                             break;
                         case "Ansprechpartner":
                             tdHauptmenue.Attributes.Add("class", "");
-                            tdChangePasword.Attributes.Add("class", "");
-                            //tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", ""); 
                             tdContact.Attributes.Add("class", "");
                             tdImpressum.Attributes.Add("class", "");
                             tdResponsible.Attributes.Add("class", "active");
                             break;
                         default:
                             tdHauptmenue.Attributes.Add("class", "");
-                            tdChangePasword.Attributes.Add("class", "");
-                            //tdLogout.Attributes.Add("class", "") 
+                            tdChangePasword.Attributes.Add("class", ""); 
                             tdContact.Attributes.Add("class", "");
                             tdImpressum.Attributes.Add("class", "");
                             tdResponsible.Attributes.Add("class", "");
@@ -176,6 +144,8 @@ namespace AppZulassungsdienst.MasterPage
 
                     if (this.Page.User.Identity.IsAuthenticated)
                     {
+                        string strTitle;
+
                         if (this.Page.Title == "Startseite")
                         {
                             strTitle = m_User.Customer.CustomerName + " - " + "Startseite";
@@ -184,28 +154,22 @@ namespace AppZulassungsdienst.MasterPage
                         }
                         else if ((Session["AppID"] == null) || (Session["AppID"].ToString() == "0"))
                         {
-
                             this.Page.Title = m_User.Customer.CustomerName;
                         }
                         else
                         {
                             strTitle = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
-
                             this.Page.Title = m_User.Customer.CustomerName + " - " + strTitle;
-
                         }
                     }
                 }
 
                 if (m_User.GroupID > 0)
                 {
-                    strLogoPath = m_User.Organization.LogoPath;
                     strDocuPath = m_User.Groups.get_ItemByID(m_User.GroupID).DocuPath;
 
-
-                    System.Data.SqlClient.SqlConnection cn = default(System.Data.SqlClient.SqlConnection);
-                    cn = new System.Data.SqlClient.SqlConnection(m_User.App.Connectionstring);
+                    System.Data.SqlClient.SqlConnection cn = new System.Data.SqlClient.SqlConnection(m_User.App.Connectionstring);
 
                     CKG.Base.Kernel.Admin.EmployeeList _EmployeeAssigned = new CKG.Base.Kernel.Admin.EmployeeList(m_User.GroupID, m_User.Customer.AccountingArea, cn);
                     _EmployeeAssigned.GetAssigned();
@@ -228,13 +192,7 @@ namespace AppZulassungsdienst.MasterPage
                     tdHandbuch.Visible = true;
                     lnkHandbuch.NavigateUrl = strDocuPath.Replace("Applications/AppZulassungsdienst/", "");
                 }
-
-                if (String.IsNullOrEmpty(strLogoPath))
-                {
-                    strLogoPath = m_User.Customer.CustomerStyle.LogoPath;
-                }
             }
-
         }
     }
 }

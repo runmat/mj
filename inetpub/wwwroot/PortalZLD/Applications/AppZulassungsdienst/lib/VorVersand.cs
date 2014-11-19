@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Versandzulassungen.
     /// </summary>
-	public class VorVersand : CKG.Base.Business.BankBase
+	public class VorVersand : BankBase
 	{
 
 		#region "Properties"
@@ -110,29 +110,34 @@ namespace AppZulassungsdienst.lib
 			get;
 			set;
 		}
+
 		#endregion
+
         /// <summary>
         /// Kontruktor
         /// </summary>
         /// <param name="objUser">Userobjekt</param>
         /// <param name="objApp">Applikationsobjekt</param>
         /// <param name="strAppID">AppID</param>
-        /// /// <param name="strSessionID">SessionID</
+        /// <param name="strSessionID">SessionID</param>
 		public VorVersand(ref CKG.Base.Kernel.Security.User objUser, ref CKG.Base.Kernel.Security.App objApp, String strAppID, String strSessionID)
 			: base(ref objUser, ref objApp, strAppID, strSessionID, "")
 		{}
+
         /// <summary>
         /// Overrides Change() Base.Business.BankBase
         /// </summary>
 		public override void Change() 
 		{ 
 		}
+
         /// <summary>
         /// Overrides Show() Base.Business.BankBase
         /// </summary>
 		public override void Show()
 		{
 		}
+
         /// <summary>
         /// Liefert aus SAP den am nahe gelegensten ZLD oder ext. Dienstleister
         /// nach KreisKZ (Versandzulassunng). Bapi: Z_ZLD_EXPORT_INFOPOOL
@@ -428,6 +433,5 @@ namespace AppZulassungsdienst.lib
 				finally { m_blnGestartet = false; }
 			}
 		}
-
 	}
 }

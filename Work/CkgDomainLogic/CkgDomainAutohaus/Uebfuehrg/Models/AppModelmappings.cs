@@ -146,8 +146,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                         { "TRANSPORTTYP", "TypName" },
                         { "TRANSPORTTYPNR", "TypNr" },
                         { "VDATU", "Datum" },
-                        { "AT_TIM_VON", "Uhrzeit" },
-                        { "AT_TIM_BIS", "EmptyString" },
                         { "KENNZ_ZUS_FAHT", "EmptyString" },
                     },
                     // Copy from SAP
@@ -155,10 +153,11 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                     // Copy to SAP
                     (business, sap) =>
                     {
-                        if (sap.AT_TIM_VON.IsNotNullOrEmpty())
-                            sap.AT_TIM_VON = sap.AT_TIM_VON.Replace(":", "") + "00";
-                        if (sap.AT_TIM_BIS.IsNotNullOrEmpty())
-                            sap.AT_TIM_BIS = sap.AT_TIM_BIS.Replace(":", "") + "00";
+                        if (business.Uhrzeit.IsNotNullOrEmpty())
+                        {
+                            sap.AT_TIM_VON = business.Uhrzeit.SubstringTry(0, 5).Replace(":", "") + "00";
+                            sap.AT_TIM_BIS = business.Uhrzeit.SubstringTry(6, 5).Replace(":", "") + "00";
+                        }
                     }));
             }
         }

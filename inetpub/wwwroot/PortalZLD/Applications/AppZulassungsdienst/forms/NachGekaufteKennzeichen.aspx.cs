@@ -9,8 +9,8 @@ namespace AppZulassungsdienst.forms
 {
     public partial class NachGekaufteKennzeichen : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfassungGekaufteKennzeichen NGK;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace AppZulassungsdienst.forms
         protected void lbNewLine_Click(object sender, EventArgs e)
         {
             DateTime Date;
-            int iMenge = 0;
+            int iMenge;
             double dPreis = 0;
 
             if(txtDatum.Text.Trim().Length == 0 || !DateTime.TryParse(txtDatum.Text,out Date))
@@ -146,8 +146,6 @@ namespace AppZulassungsdienst.forms
                     if (NGK.CheckLangtextNeeded(ddlArtikel.SelectedValue))
                     {
                         OpenInfotext(ddlArtikel.SelectedValue, txtDatum.Text, txtMenge.Text, "", "", row["ARTBEZ"].ToString(), ddlLiefer.SelectedValue,txtLieferscheinnummer.Text, true, txtPreis.Text);
-                                    
-                        //NGK.AddKennzeichen(HelpProcedures.MakeDateSAP(txtDatum.Text), ddlArtikel.SelectedValue.ToString(), row["ARTBEZ"].ToString(), iMenge, ddlLiefer.SelectedValue.ToString(), txtLieferscheinnummer.Text, dPreis,txtInfotext.Text,lblLTextNr.Text);
                     }
                     else 
                     {
@@ -159,7 +157,6 @@ namespace AppZulassungsdienst.forms
                     if (NGK.CheckLangtextNeeded(ddlArtikel.SelectedValue))
                     {
                         OpenInfotext(ddlArtikel.SelectedValue, txtDatum.Text, txtMenge.Text, "", "", row["ARTBEZ"].ToString(), ddlLiefer.SelectedValue, txtLieferscheinnummer.Text, true, "");
-                        //NGK.AddKennzeichen(HelpProcedures.MakeDateSAP(txtDatum.Text), ddlArtikel.SelectedValue.ToString(), row["ARTBEZ"].ToString(), iMenge, ddlLiefer.SelectedValue.ToString(), txtLieferscheinnummer.Text,txtInfotext.Text,lblLTextNr.Text);
                     }
                     else
                     {
@@ -180,18 +177,11 @@ namespace AppZulassungsdienst.forms
         private void ClearInput()
         {
             txtPreis.Text = string.Empty;
-            //txtLieferscheinnummer.Text = string.Empty;
             txtMenge.Text = string.Empty;
         }
 
-        //private string GetLangtext()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         protected void gvArtikel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GridViewCommandEventArgs com = (GridViewCommandEventArgs) e;
             FillGrid(0, "");
         }
 
@@ -266,7 +256,7 @@ namespace AppZulassungsdienst.forms
                     DataRow[] rows = NGK.tblKennzeichen.Select("ArtikelID=" + e.CommandArgument);
                     if (rows.GetLength(0) > 0)
                     {
-                        int iMenge = 0;
+                        int iMenge;
                         int.TryParse(rows[0]["Menge"].ToString(), out iMenge);
                         if (iMenge > 0)
                         {
@@ -279,7 +269,7 @@ namespace AppZulassungsdienst.forms
                     DataRow[] rows2 = NGK.tblKennzeichen.Select("ArtikelID=" + e.CommandArgument);
                     if (rows2.GetLength(0) > 0)
                     {
-                        int iMenge = 0;
+                        int iMenge;
                         int.TryParse(rows2[0]["Menge"].ToString(), out iMenge);
                         if (iMenge > 0)
                         {
@@ -287,8 +277,6 @@ namespace AppZulassungsdienst.forms
                         }
                         FillGrid(0, "");
                     }
-                    break;
-                default:
                     break;
             }
         }
@@ -305,14 +293,7 @@ namespace AppZulassungsdienst.forms
                     MPEInfotext.Show();
                     return;
                 }
-            //    else
-            //    {
-            //        NGK.AddKennzeichen(lblDat.Text, lblMatNr.Text, lblArtikelbezeichnung.Text, int.Parse(lblMenge.Text), lblLieferantenID.Text, lblLieferscheinnummer.Text, double.Parse(lblPreis.Text), txtInfotext.Text.TrimStart(','),lblLTextNr.Text);
-            //    }
-
             }
-            //else
-            //{
             double dPreis;     
             int iMenge;
             if (!double.TryParse(lblPreisBox.Text, out dPreis))
@@ -351,11 +332,10 @@ namespace AppZulassungsdienst.forms
 
         protected void gvArtikel_OnRowDataBound(object sender, GridViewRowEventArgs e)
         { 
-            //e.Row.Cells[7].
+
         }
 
         #endregion
-
 
         #region "Methods and Functions"
 
@@ -413,8 +393,7 @@ namespace AppZulassungsdienst.forms
 
         private void FillGrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = new DataView();
-            tmpDataView = NGK.tblKennzeichen.DefaultView;
+            DataView tmpDataView = NGK.tblKennzeichen.DefaultView;
             String strFilter = "";
 
 
@@ -554,7 +533,6 @@ namespace AppZulassungsdienst.forms
         }
 
         #endregion
-
 
         protected void lbToggleBuchungen_Click(object sender, EventArgs e)
         {

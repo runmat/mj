@@ -11,8 +11,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Barabhebung : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private ZLD_Suche objZLDSuche;
         private clsBarabhebung objBarabhebung;     
 
@@ -174,11 +174,8 @@ namespace AppZulassungsdienst.forms
 
                 objZLDSuche.LeseMailTexte("1");
 
-                String smtpMailSender = "";
-                String smtpMailServer = "";
-
-                smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
-                smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
+                String smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
+                String smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
 
                 String MailText = "Name: " + objBarabhebung.Name + "<br />";
                 MailText += "KSt: " + objBarabhebung.Kostenstelle + "<br />";

@@ -13,10 +13,10 @@ namespace AppZulassungsdienst.forms
     /// Pflege der Dokumentenanforderung der Zulassungsstellen.
     /// Selektion, Ausgabe und Pflege.
     /// </summary>
-    public partial class Change99ZLD : System.Web.UI.Page
+    public partial class Change99ZLD : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Report99 ChangeAnforderungen;
 
         /// <summary>
@@ -42,12 +42,13 @@ namespace AppZulassungsdienst.forms
             }
             txtKennzeichen.Attributes.Add("onkeyup", "FilterKennz(this,event)");
         }
-        private void Page_PreRender(object sender, System.EventArgs e)
+
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -72,7 +73,6 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Bitte ein Ortskennzeichen eingeben.";
             }
         }
-
 
         private void ClearForm()
         {
@@ -133,6 +133,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Controls mit selektierten Daten füllen. 
         /// </summary>
@@ -140,7 +141,6 @@ namespace AppZulassungsdienst.forms
         {
             ChangeAnforderungen = (Report99)(Session["ChangeAnforderungen"]);
 
-            DataRow[] SelectRow;
             DataRow resultRow;
 
             if (ChangeAnforderungen.Result.Rows.Count == 1)
@@ -149,7 +149,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
+                DataRow[]  SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
                 if (SelectRow.Length > 0)
                 {
                     resultRow = SelectRow[0];
@@ -284,12 +284,11 @@ namespace AppZulassungsdienst.forms
 
             if (lblKennz.Text.Trim().Length > 0)
             {
-                DataTable tblData = new DataTable(); ;
-                CreateTable(ref tblData);
+                DataTable tblTemp = new DataTable();
+                CreateTable(ref tblTemp);
 
-                DataRow resultRow = tblData.NewRow();
+                DataRow resultRow = tblTemp.NewRow();
 
-                DataRow[] SelectRow;
                 DataRow OldRow;
 
                 if (ChangeAnforderungen.Result.Rows.Count == 1)
@@ -298,14 +297,14 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
+                    DataRow[] SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
                     OldRow = SelectRow[0];
                 }
                 resultRow["MANDT"] = OldRow["MANDT"];
                 resultRow["ZKBA1"] = OldRow["ZKBA1"];
                 resultRow["ZKBA2"] = OldRow["ZKBA2"];
                 resultRow["AENAM"] = m_User.UserName.PadLeft(12);
-                resultRow["AEDAT"] = System.DateTime.Now.ToShortDateString();
+                resultRow["AEDAT"] = DateTime.Now.ToShortDateString();
 
                 //Privat Zulassung
 
@@ -410,9 +409,9 @@ namespace AppZulassungsdienst.forms
                 resultRow["STVALNFORM"] = txtFormular.Text;
                 resultRow["STVALNGEB"] = txtGeb.Text;
 
-                tblData.Rows.Add(resultRow);
+                tblTemp.Rows.Add(resultRow);
 
-                ChangeAnforderungen.Change(Session["AppID"].ToString(), Session.SessionID, this, tblData);
+                ChangeAnforderungen.Change(Session["AppID"].ToString(), Session.SessionID, this, tblTemp);
 
                 if (ChangeAnforderungen.Status != 0)
                 {
@@ -454,6 +453,7 @@ namespace AppZulassungsdienst.forms
             String sUrl = txtWunsch.Text.Trim();
             ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
         }
+
         /// <summary>
         /// Weiterleitung zur Formulardownloadseite des Verkehrsamtes des selektierten Kreises.         
         /// </summary>
@@ -464,6 +464,7 @@ namespace AppZulassungsdienst.forms
             String sUrl = txtFormular.Text.Trim();
             ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
         }
+
         /// <summary>
         /// Weiterleitung zur Gebührenseite des Verkehrsamtes des selektierten Kreises.         
         /// </summary>
@@ -475,105 +476,103 @@ namespace AppZulassungsdienst.forms
             ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
 
         }
+
         /// <summary>
         /// Tabelle für die Speicherung erstellen.
         /// </summary>
-        /// <param name="tblData">Tabelle Dokumente</param>
-        private void CreateTable(ref DataTable tblData)
+        /// <param name="table">Tabelle Dokumente</param>
+        private void CreateTable(ref DataTable table)
         {
-            
-            tblData.Columns.Add("MANDT", typeof(String));
-            tblData.Columns.Add("ZKBA1", typeof(String));
-            tblData.Columns.Add("ZKBA2", typeof(String));
-            tblData.Columns.Add("AEDAT", typeof(String));
-            tblData.Columns.Add("AENAM", typeof(String));
-            tblData.Columns.Add("PZUL_BRIEF", typeof(String));
-            tblData.Columns.Add("PUMSCHR_BRIEF", typeof(String));
-            tblData.Columns.Add("PUMK_BRIEF", typeof(String));
-            tblData.Columns.Add("PERS_BRIEF", typeof(String));
-            tblData.Columns.Add("UZUL_BRIEF", typeof(String));
-            tblData.Columns.Add("UUMSCHR_BRIEF", typeof(String));
-            tblData.Columns.Add("UUMK_BRIEF", typeof(String));
-            tblData.Columns.Add("UERS_BRIEF", typeof(String));
-            tblData.Columns.Add("PZUL_SCHEIN", typeof(String));
-            tblData.Columns.Add("PUMSCHR_SCHEIN", typeof(String));
-            tblData.Columns.Add("PUMK_SCHEIN", typeof(String));
-            tblData.Columns.Add("PERS_SCHEIN", typeof(String));
-            tblData.Columns.Add("UZUL_SCHEIN", typeof(String));
-            tblData.Columns.Add("UUMSCHR_SCHEIN", typeof(String));
-            tblData.Columns.Add("UUMK_SCHEIN", typeof(String));
-            tblData.Columns.Add("UERS_SCHEIN", typeof(String));
-            tblData.Columns.Add("PZUL_COC", typeof(String));
-            tblData.Columns.Add("PUMSCHR_COC", typeof(String));
-            tblData.Columns.Add("PUMK_COC", typeof(String));
-            tblData.Columns.Add("PERS_COC", typeof(String));
-            tblData.Columns.Add("UZUL_COC", typeof(String));
-            tblData.Columns.Add("UUMSCHR_COC", typeof(String));
-            tblData.Columns.Add("UUMK_COC", typeof(String));
-            tblData.Columns.Add("UERS_COC", typeof(String));
-            tblData.Columns.Add("PZUL_DECK", typeof(String));
-            tblData.Columns.Add("PUMSCHR_DECK", typeof(String));
-            tblData.Columns.Add("PUMK_DECK", typeof(String));
-            tblData.Columns.Add("PERS_DECK", typeof(String));
-            tblData.Columns.Add("UZUL_DECK", typeof(String));
-            tblData.Columns.Add("UUMSCHR_DECK", typeof(String));
-            tblData.Columns.Add("UUMK_DECK", typeof(String));
-            tblData.Columns.Add("UERS_DECK", typeof(String));
-            tblData.Columns.Add("PZUL_VOLLM", typeof(String));
-            tblData.Columns.Add("PUMSCHR_VOLLM", typeof(String));
-            tblData.Columns.Add("PUMK_VOLLM", typeof(String));
-            tblData.Columns.Add("PERS_VOLLM", typeof(String));
-            tblData.Columns.Add("UZUL_VOLLM", typeof(String));
-            tblData.Columns.Add("UUMSCHR_VOLLM", typeof(String));
-            tblData.Columns.Add("UUMK_VOLLM", typeof(String));
-            tblData.Columns.Add("UERS_VOLLM", typeof(String));
-            tblData.Columns.Add("PZUL_AUSW", typeof(String));
-            tblData.Columns.Add("PUMSCHR_AUSW", typeof(String));
-            tblData.Columns.Add("PUMK_AUSW", typeof(String));
-            tblData.Columns.Add("PERS_AUSW", typeof(String));
-            tblData.Columns.Add("UZUL_AUSW", typeof(String));
-            tblData.Columns.Add("UUMSCHR_AUSW", typeof(String));
-            tblData.Columns.Add("UUMK_AUSW", typeof(String));
-            tblData.Columns.Add("UERS_AUSW", typeof(String));
-            tblData.Columns.Add("PZUL_GEWERB", typeof(String));
-            tblData.Columns.Add("PUMSCHR_GEWERB", typeof(String));
-            tblData.Columns.Add("PUMK_GEWERB", typeof(String));
-            tblData.Columns.Add("PERS_GEWERB", typeof(String));
-            tblData.Columns.Add("UZUL_GEWERB", typeof(String));
-            tblData.Columns.Add("UUMSCHR_GEWERB", typeof(String));
-            tblData.Columns.Add("UUMK_GEWERB", typeof(String));
-            tblData.Columns.Add("UERS_GEWERB", typeof(String));
-            tblData.Columns.Add("PZUL_HANDEL", typeof(String));
-            tblData.Columns.Add("PUMSCHR_HANDEL", typeof(String));
-            tblData.Columns.Add("PUMK_HANDEL", typeof(String));
-            tblData.Columns.Add("PERS_HANDEL", typeof(String));
-            tblData.Columns.Add("UZUL_HANDEL", typeof(String));
-            tblData.Columns.Add("UUMSCHR_HANDEL", typeof(String));
-            tblData.Columns.Add("UUMK_HANDEL", typeof(String));
-            tblData.Columns.Add("UERS_HANDEL", typeof(String));
-            tblData.Columns.Add("PZUL_LAST", typeof(String));
-            tblData.Columns.Add("PUMSCHR_LAST", typeof(String));
-            tblData.Columns.Add("PUMK_LAST", typeof(String));
-            tblData.Columns.Add("PERS_LAST", typeof(String));
-            tblData.Columns.Add("UZUL_LAST", typeof(String));
-            tblData.Columns.Add("UUMSCHR_LAST", typeof(String));
-            tblData.Columns.Add("UUMK_LAST", typeof(String));
-            tblData.Columns.Add("UERS_LAST", typeof(String));
-            tblData.Columns.Add("PZUL_BEM", typeof(String));
-            tblData.Columns.Add("PUMSCHR_BEM", typeof(String));
-            tblData.Columns.Add("PUMK_BEM", typeof(String));
-            tblData.Columns.Add("PERS_BEM", typeof(String));
-            tblData.Columns.Add("UZUL_BEM", typeof(String));
-            tblData.Columns.Add("UUMSCHR_BEM", typeof(String));
-            tblData.Columns.Add("UUMK_BEM", typeof(String));
-            tblData.Columns.Add("UERS_BEM", typeof(String));
-            tblData.Columns.Add("ZKFZKZ", typeof(String));
-            tblData.Columns.Add("STVALN", typeof(String));
-            tblData.Columns.Add("STVALNFORM", typeof(String));
-            tblData.Columns.Add("STVALNGEB", typeof(String));
-            tblData.Columns.Add("URL", typeof(String));
-            
+            table.Columns.Add("MANDT", typeof(String));
+            table.Columns.Add("ZKBA1", typeof(String));
+            table.Columns.Add("ZKBA2", typeof(String));
+            table.Columns.Add("AEDAT", typeof(String));
+            table.Columns.Add("AENAM", typeof(String));
+            table.Columns.Add("PZUL_BRIEF", typeof(String));
+            table.Columns.Add("PUMSCHR_BRIEF", typeof(String));
+            table.Columns.Add("PUMK_BRIEF", typeof(String));
+            table.Columns.Add("PERS_BRIEF", typeof(String));
+            table.Columns.Add("UZUL_BRIEF", typeof(String));
+            table.Columns.Add("UUMSCHR_BRIEF", typeof(String));
+            table.Columns.Add("UUMK_BRIEF", typeof(String));
+            table.Columns.Add("UERS_BRIEF", typeof(String));
+            table.Columns.Add("PZUL_SCHEIN", typeof(String));
+            table.Columns.Add("PUMSCHR_SCHEIN", typeof(String));
+            table.Columns.Add("PUMK_SCHEIN", typeof(String));
+            table.Columns.Add("PERS_SCHEIN", typeof(String));
+            table.Columns.Add("UZUL_SCHEIN", typeof(String));
+            table.Columns.Add("UUMSCHR_SCHEIN", typeof(String));
+            table.Columns.Add("UUMK_SCHEIN", typeof(String));
+            table.Columns.Add("UERS_SCHEIN", typeof(String));
+            table.Columns.Add("PZUL_COC", typeof(String));
+            table.Columns.Add("PUMSCHR_COC", typeof(String));
+            table.Columns.Add("PUMK_COC", typeof(String));
+            table.Columns.Add("PERS_COC", typeof(String));
+            table.Columns.Add("UZUL_COC", typeof(String));
+            table.Columns.Add("UUMSCHR_COC", typeof(String));
+            table.Columns.Add("UUMK_COC", typeof(String));
+            table.Columns.Add("UERS_COC", typeof(String));
+            table.Columns.Add("PZUL_DECK", typeof(String));
+            table.Columns.Add("PUMSCHR_DECK", typeof(String));
+            table.Columns.Add("PUMK_DECK", typeof(String));
+            table.Columns.Add("PERS_DECK", typeof(String));
+            table.Columns.Add("UZUL_DECK", typeof(String));
+            table.Columns.Add("UUMSCHR_DECK", typeof(String));
+            table.Columns.Add("UUMK_DECK", typeof(String));
+            table.Columns.Add("UERS_DECK", typeof(String));
+            table.Columns.Add("PZUL_VOLLM", typeof(String));
+            table.Columns.Add("PUMSCHR_VOLLM", typeof(String));
+            table.Columns.Add("PUMK_VOLLM", typeof(String));
+            table.Columns.Add("PERS_VOLLM", typeof(String));
+            table.Columns.Add("UZUL_VOLLM", typeof(String));
+            table.Columns.Add("UUMSCHR_VOLLM", typeof(String));
+            table.Columns.Add("UUMK_VOLLM", typeof(String));
+            table.Columns.Add("UERS_VOLLM", typeof(String));
+            table.Columns.Add("PZUL_AUSW", typeof(String));
+            table.Columns.Add("PUMSCHR_AUSW", typeof(String));
+            table.Columns.Add("PUMK_AUSW", typeof(String));
+            table.Columns.Add("PERS_AUSW", typeof(String));
+            table.Columns.Add("UZUL_AUSW", typeof(String));
+            table.Columns.Add("UUMSCHR_AUSW", typeof(String));
+            table.Columns.Add("UUMK_AUSW", typeof(String));
+            table.Columns.Add("UERS_AUSW", typeof(String));
+            table.Columns.Add("PZUL_GEWERB", typeof(String));
+            table.Columns.Add("PUMSCHR_GEWERB", typeof(String));
+            table.Columns.Add("PUMK_GEWERB", typeof(String));
+            table.Columns.Add("PERS_GEWERB", typeof(String));
+            table.Columns.Add("UZUL_GEWERB", typeof(String));
+            table.Columns.Add("UUMSCHR_GEWERB", typeof(String));
+            table.Columns.Add("UUMK_GEWERB", typeof(String));
+            table.Columns.Add("UERS_GEWERB", typeof(String));
+            table.Columns.Add("PZUL_HANDEL", typeof(String));
+            table.Columns.Add("PUMSCHR_HANDEL", typeof(String));
+            table.Columns.Add("PUMK_HANDEL", typeof(String));
+            table.Columns.Add("PERS_HANDEL", typeof(String));
+            table.Columns.Add("UZUL_HANDEL", typeof(String));
+            table.Columns.Add("UUMSCHR_HANDEL", typeof(String));
+            table.Columns.Add("UUMK_HANDEL", typeof(String));
+            table.Columns.Add("UERS_HANDEL", typeof(String));
+            table.Columns.Add("PZUL_LAST", typeof(String));
+            table.Columns.Add("PUMSCHR_LAST", typeof(String));
+            table.Columns.Add("PUMK_LAST", typeof(String));
+            table.Columns.Add("PERS_LAST", typeof(String));
+            table.Columns.Add("UZUL_LAST", typeof(String));
+            table.Columns.Add("UUMSCHR_LAST", typeof(String));
+            table.Columns.Add("UUMK_LAST", typeof(String));
+            table.Columns.Add("UERS_LAST", typeof(String));
+            table.Columns.Add("PZUL_BEM", typeof(String));
+            table.Columns.Add("PUMSCHR_BEM", typeof(String));
+            table.Columns.Add("PUMK_BEM", typeof(String));
+            table.Columns.Add("PERS_BEM", typeof(String));
+            table.Columns.Add("UZUL_BEM", typeof(String));
+            table.Columns.Add("UUMSCHR_BEM", typeof(String));
+            table.Columns.Add("UUMK_BEM", typeof(String));
+            table.Columns.Add("UERS_BEM", typeof(String));
+            table.Columns.Add("ZKFZKZ", typeof(String));
+            table.Columns.Add("STVALN", typeof(String));
+            table.Columns.Add("STVALNFORM", typeof(String));
+            table.Columns.Add("STVALNGEB", typeof(String));
+            table.Columns.Add("URL", typeof(String));           
         }
-
     }
 }

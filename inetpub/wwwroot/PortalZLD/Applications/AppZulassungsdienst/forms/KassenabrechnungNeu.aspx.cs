@@ -12,11 +12,12 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Anzeige und Pflege der Kassenbestände
     /// </summary>
-    public partial class KassenabrechnungNeu : System.Web.UI.Page
+    public partial class KassenabrechnungNeu : Page
     {
-        private CKG.Base.Kernel.Security.User _mUser;
-        private CKG.Base.Kernel.Security.App _mApp;
+        private User _mUser;
+        private App _mApp;
         private Kassenabrechnung _objKassenabrechnung;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
         /// </summary>
@@ -67,6 +68,7 @@ namespace AppZulassungsdienst.forms
                                                   "SetScrollPos();", true);
             }
         }
+
         /// <summary>
         /// Page_Unload Ereignis. 
         /// </summary>
@@ -76,6 +78,7 @@ namespace AppZulassungsdienst.forms
         {
             Session["objKassenabrechnung"] = _objKassenabrechnung;
         }
+
         /// <summary>
         /// Auf Eingaben im Grid reagieren. Löschen, Splitten und Bestätigen von Barzahlungen der Vorgänge.
         /// Kopfbereich aktualisieren,
@@ -84,15 +87,13 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">GridViewCommandEventArgs</param>
         protected void gvDaten_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            DataTable table;
-
             switch (e.CommandName)
             {
                 case "Del":
                     lblMessage.Text = "";
                     _objKassenabrechnung.DeleteHead2(e.CommandArgument.ToString());
                     // Refresh after Delete
-                    table = _objKassenabrechnung.DocHeads;
+                    DataTable table = _objKassenabrechnung.DocHeads;
                     gvDaten.DataSource = table.DefaultView;
                     gvDaten.DataBind();
                     visibility();
@@ -103,6 +104,7 @@ namespace AppZulassungsdienst.forms
                         lblError.Text = _objKassenabrechnung.ErrorCode;
                     }
                     break;
+
                 case "Split":
                     lblMessage.Text = "";
                     DataRow[] headRow =
@@ -174,6 +176,7 @@ namespace AppZulassungsdienst.forms
                                                             "unblockDialog();", true);
                     }
                     break;
+
                 case "Refresh":
                     if (HeadGridCalculate(e.CommandArgument.ToString()))
                     {
@@ -181,6 +184,7 @@ namespace AppZulassungsdienst.forms
                     }
 
                     break;
+
                 case "Confirm":
                     DataRow[] confirmHeadRow =
                         _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + e.CommandArgument + "'");
@@ -196,6 +200,7 @@ namespace AppZulassungsdienst.forms
                     break;
             }
         }
+
         /// <summary>
         /// Ändern des Geschäftsvorfalles im Grid für Splitten der Vorgänge.
         /// </summary>
@@ -205,7 +210,6 @@ namespace AppZulassungsdienst.forms
         {
             DropDownList ddl = (DropDownList) sender;
             GridViewRow gvRow = (GridViewRow) ddl.Parent.Parent;
-            TextBox txtDebKred = new TextBox();
             TextBox txtBetragBruttoEinnahmen = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
             TextBox txtBetragBruttoAusgaben = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
             TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
@@ -225,7 +229,6 @@ namespace AppZulassungsdienst.forms
                     txtBetragBruttoAusgaben.Focus();
                     break;
             }
-
 
             if (hfStatus.Value == "" || hfStatus.Value == "ZE")
             {
@@ -305,9 +308,9 @@ namespace AppZulassungsdienst.forms
                 txtKreditor.Enabled = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
                 txtKreditor.Visible = txtKreditor.Enabled;
                 txtDebitor.Visible =  txtDebitor.Enabled;
-                if (txtDebitor.Visible == false && txtKreditor.Visible == false)
+                if (!txtDebitor.Visible && !txtKreditor.Visible)
                 {
-                    txtDebitor.Visible=true;
+                    txtDebitor.Visible = true;
                 }
             }
             else
@@ -371,13 +374,6 @@ namespace AppZulassungsdienst.forms
         private bool CheckFormatZuordnungstext(string zuordnungstext, string formattext)
         {
             bool erg = false;
-            string inText = "";
-            int tempint;
-            int jahr;
-            int woche;
-            DateTime tempdate;
-            string[] teileInput;
-            string[] teileFormat;
 
             try
             {
@@ -393,15 +389,18 @@ namespace AppZulassungsdienst.forms
                     }
                     else
                     {
-                        inText = zuordnungstext.Trim(' ');
+                        int tempint;
+                        string inText = zuordnungstext.Trim(' ');
 
                         if (formattext.StartsWith("JJ"))
                         {
-                            teileFormat = formattext.Trim(' ').Split(' ');
-                            teileInput = inText.Split(' ');
+                            string[] teileFormat = formattext.Trim(' ').Split(' ');
+                            string[] teileInput = inText.Split(' ');
 
                             if (teileFormat.Length == teileInput.Length)
                             {
+                                DateTime tempdate;
+
                                 switch (teileFormat[0])
                                 {
                                     case "JJJJMMTT":
@@ -415,6 +414,9 @@ namespace AppZulassungsdienst.forms
                                         break;
 
                                     case "JJJJKW":
+                                        int jahr;
+                                        int woche;
+
                                         if ((teileInput[0].Length == 6) && (Int32.TryParse(teileInput[0].Substring(0, 4), out jahr))
                                             && (Int32.TryParse(teileInput[0].Substring(4, 2), out woche)))
                                         {
@@ -496,7 +498,6 @@ namespace AppZulassungsdienst.forms
         {
             bool blError = false;
             int i = 0;
-            DataRow dr;
 
             foreach (GridViewRow gvRow in gvDaten.Rows)
             {
@@ -511,7 +512,7 @@ namespace AppZulassungsdienst.forms
                     TextBox txtAuftrag = (TextBox) gvRow.FindControl("txtAuftrag");
                     CheckBox chkAuswahl = (CheckBox)gvRow.FindControl("chkAuswahl");
 
-                    dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
+                    DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
                     tblData.Rows[i]["BUKRS"] = _objKassenabrechnung.Buchungskreis;
                     tblData.Rows[i]["TRANSACT_NUMBER"] = ddl.SelectedValue;
@@ -673,6 +674,7 @@ namespace AppZulassungsdienst.forms
             }
             return blError;
         }
+
         /// <summary>
         /// einzelne Zeile im Hauptgrid auf fehlerhafte Eingaben prüfen und korrekte Eingaben in der Vorgangstabelle speichern.
         /// </summary>
@@ -681,7 +683,6 @@ namespace AppZulassungsdienst.forms
         private bool proofVorfallGridRow(ref DataRow gvRow)
         {
             int index = _objKassenabrechnung.DocHeads.Rows.IndexOf(gvRow);
-            DataRow dr;
             GridViewRow gvDatenRow = gvDaten.Rows[index];
             bool blError = false;
 
@@ -694,10 +695,9 @@ namespace AppZulassungsdienst.forms
                 TextBox txtFreitext = (TextBox)gvDatenRow.FindControl("txtFreitext");
                 TextBox txtBarcode = (TextBox)gvDatenRow.FindControl("txtBarcode");
                 TextBox txtAuftrag = (TextBox)gvDatenRow.FindControl("txtAuftrag");
-                ImageButton ImageButton1 = (ImageButton)gvDatenRow.FindControl("ImageButton1");
                 CheckBox chkAuswahl = (CheckBox)gvDatenRow.FindControl("chkAuswahl");
 
-                dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
+                DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
                 gvRow["BUKRS"] = _objKassenabrechnung.Buchungskreis;
                 gvRow["TRANSACT_NUMBER"] = ddl.SelectedValue;
@@ -883,6 +883,7 @@ namespace AppZulassungsdienst.forms
             }
             return blError;
         }
+
         /// <summary>
         /// Gesamtes "Splitgrid" auf fehlerhafte Eingaben prüfen und korrekte Eingaben in der Vorgangstabelle speichern.
         /// </summary>
@@ -890,7 +891,6 @@ namespace AppZulassungsdienst.forms
         private bool proofPosGrid()
         {
             lblPosError.Text = "";
-            DataRow dr;
             bool blError = false;
 
             List<DataRow> listePos =
@@ -905,7 +905,7 @@ namespace AppZulassungsdienst.forms
                 TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
                 Label lblPositionNr = (Label) gvRow.FindControl("lblPositionNr");
 
-                dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
+                DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
                 DataRow t = listePos[i];
                 if (lblPositionNr.Text == t["POSITION_NUMBER"].ToString())
@@ -1046,6 +1046,7 @@ namespace AppZulassungsdienst.forms
 
             return blError;
         }
+
         /// <summary>
         /// Steuerung der Felder für Einnahmen und Ausgaben.
         /// </summary>
@@ -1080,8 +1081,6 @@ namespace AppZulassungsdienst.forms
                 {
                     lblPostNr = (Label)gvRow.FindControl("lblPostingNr");
                 }
-
-                DataRow rowE = tblData.Rows[i];
 
                 DataRow [] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + lblPostNr.Text + "'");
                 String status = rowStatus[0]["Status"].ToString();
@@ -1204,6 +1203,7 @@ namespace AppZulassungsdienst.forms
 
             ShowData(false);
         }
+
         /// <summary>
         /// Aktuelle Woche setzen. Werte im Kopfbereich füllen.
         /// </summary>
@@ -1311,6 +1311,7 @@ namespace AppZulassungsdienst.forms
                lblMessage.Text = "";
                lblError.Text = "";
         }
+
         /// <summary>
         /// Aktuelle Einahmen anzeigen.
         /// </summary>
@@ -1397,6 +1398,7 @@ namespace AppZulassungsdienst.forms
 
             // gvDaten.Columns[11].HeaderText = "Kreditor";          
         }
+
         /// <summary>
         /// Kopfdaten und Vorgangsdaten ein- oder ausblenden.
         /// </summary>
@@ -1442,6 +1444,7 @@ namespace AppZulassungsdienst.forms
             }
             lblMessage.Text = "";
         }
+
         /// <summary>
         /// Startdatum geändert -> formatiert anzeigen.
         /// </summary>
@@ -1453,6 +1456,7 @@ namespace AppZulassungsdienst.forms
             DateTime.TryParse(txtStartDate.Text, out date);
             _objKassenabrechnung.DatumVon = date;
         }
+
         /// <summary>
         /// Endedatum geändert -> formatiert anzeigen.
         /// </summary>
@@ -1464,6 +1468,7 @@ namespace AppZulassungsdienst.forms
             DateTime.TryParse(txtEndDate.Text, out date);
             _objKassenabrechnung.DatumBis = date;
         }
+
         /// <summary>
         /// Speicherfunktion aufrufen.
         /// </summary>
@@ -1473,6 +1478,7 @@ namespace AppZulassungsdienst.forms
         {
             Save();
         }
+
         /// <summary>
         /// Speichern der Vorgänge in SAP. "Ampel" aktualisieren.
         /// </summary>
@@ -1483,75 +1489,74 @@ namespace AppZulassungsdienst.forms
             lblMessage.Text = "";
             lblError.Text = "";
             lblErrorMain.Text = "";
-            Int32 iCount = 0;
-                _objKassenabrechnung.CreateErrorTable();
-                for (int i = 0; i < table.Rows.Count; i++)
-                {
-                    DataRow row = table.Rows[i];
-                    String status = row["Status"].ToString();
-                    Boolean bError = !proofVorfallGridRow(ref row);
-                    if (bError)
-                    {
-                        if (status == "" || status == "ZE")
-                        {
 
-                                AddNewPosForSave(row["POSTING_NUMBER"].ToString(), row);
-                                _objKassenabrechnung.SavePosition2(row["POSTING_NUMBER"].ToString());
-                                if (_objKassenabrechnung.ErrorOccured)
+            _objKassenabrechnung.CreateErrorTable();
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i];
+                String status = row["Status"].ToString();
+                Boolean bError = !proofVorfallGridRow(ref row);
+                if (bError)
+                {
+                    if (status == "" || status == "ZE")
+                    {
+
+                            AddNewPosForSave(row["POSTING_NUMBER"].ToString(), row);
+                            _objKassenabrechnung.SavePosition2(row["POSTING_NUMBER"].ToString());
+                            if (_objKassenabrechnung.ErrorOccured)
+                            {
+                                lblError.Text += _objKassenabrechnung.ErrorMessage;
+                            }
+                            else
+                            {
+                                HeadGridCalculate(row["POSTING_NUMBER"].ToString());
+                                row["Status"] = "ZE";
+                                row["New"] = "0";
+                                row["Auswahl"] = false;
+                                if (row["AStatus"].ToString() == "ZA")
                                 {
-                                    lblError.Text += _objKassenabrechnung.ErrorMessage;
+                                    row["Ampel"] = "/PortalZLD/Images/InfoAuto.gif";
                                 }
                                 else
                                 {
-                                    HeadGridCalculate(row["POSTING_NUMBER"].ToString());
-                                    row["Status"] = "ZE";
-                                    row["New"] = "0";
-                                    row["Auswahl"] = false;
-                                    if (row["AStatus"].ToString() == "ZA")
-                                    {
-                                        row["Ampel"] = "/PortalZLD/Images/InfoAuto.gif";
-                                    }
-                                    else
-                                    {
-                                        row["Ampel"] = "/PortalZLD/Images/onebit_07.png";
-                                    }
-
-
+                                    row["Ampel"] = "/PortalZLD/Images/onebit_07.png";
                                 }
-                        }
-                    }
 
+
+                            }
+                    }
                 }
 
-                table = _objKassenabrechnung.DocHeads;
+            }
 
-                gvDaten.DataSource = table.DefaultView;
-                gvDaten.DataBind();
-                visibility();
-                addButtonAttr(table, gvDaten);
-                lblMessage.Text = "Daten für die Kassenabrechnung gesichert!";
-                if (lblError.Text != "")// Fehler? nochmal prüfen um Details anzeigen zu können
+            table = _objKassenabrechnung.DocHeads;
+
+            gvDaten.DataSource = table.DefaultView;
+            gvDaten.DataBind();
+            visibility();
+            addButtonAttr(table, gvDaten);
+            lblMessage.Text = "Daten für die Kassenabrechnung gesichert!";
+            if (lblError.Text != "")// Fehler? nochmal prüfen um Details anzeigen zu können
+            {
+                for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    for (int i = 0; i < table.Rows.Count; i++)
-                    {
-                        table = _objKassenabrechnung.DocHeads;
-                        DataRow row = table.Rows[i];
-                        proofVorfallGridRow(ref row);
-                    }
-                    lblMessage.Text = "";
+                    table = _objKassenabrechnung.DocHeads;
+                    DataRow row = table.Rows[i];
+                    proofVorfallGridRow(ref row);
                 }
+                lblMessage.Text = "";
+            }
               
-                FillWerte();
+            FillWerte();
 
-                if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
-                {
-                    lblHead.Text = "Kassenabrechnung  - Einnahmen";
-                }
-                else if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Ausgaben)
-                {
-                    lblHead.Text = "Kassenabrechnung  - Ausgaben";
-                }
-
+            if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
+            {
+                lblHead.Text = "Kassenabrechnung  - Einnahmen";
+            }
+            else if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Ausgaben)
+            {
+                lblHead.Text = "Kassenabrechnung  - Ausgaben";
+            }
         }
 
         /// <summary>
@@ -1565,6 +1570,7 @@ namespace AppZulassungsdienst.forms
             lblErrorMain.Text = "";
             ShowData(false);
         }
+
         /// <summary>
         /// Buchen der Vorgänge in SAP. Kopfbereich aktulisieren.
         /// </summary>
@@ -1575,12 +1581,11 @@ namespace AppZulassungsdienst.forms
             lblError.Text = "";
             lblMessage.Text = "";
             lblErrorMain.Text = "";
-            Boolean custError = false;
             DataTable table = _objKassenabrechnung.DocHeads;
             Int32 iCount = 0;
 
-            custError = proofVorfallGrid(ref table, false);
-            if (custError==false)
+            Boolean custError = proofVorfallGrid(ref table, false);
+            if (!custError)
             {
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
@@ -1657,6 +1662,7 @@ namespace AppZulassungsdienst.forms
                 lblHead.Text = "Kassenabrechnung  - Ausgaben";
             }
         }
+
         /// <summary>
         /// Steuerung welche Felder im Hauptgrid(gvDaten) angezeigt werden.
         /// </summary>
@@ -1694,6 +1700,7 @@ namespace AppZulassungsdienst.forms
                     return false;
             }
         }
+
         /// <summary>
         /// Steuerung ob die Checkbox zur Auswahl von Vorgängen angezeigt wird.
         /// </summary>
@@ -1707,6 +1714,7 @@ namespace AppZulassungsdienst.forms
             if (status == "ZE") { return true; } 
             return false;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -1727,6 +1735,7 @@ namespace AppZulassungsdienst.forms
                 _objKassenabrechnung.DocPos.DefaultView.ToTable().Rows[rowIndex]["POSITION_NUMBER"].ToString();
             return posNr == "" && rowIndex != 0;
         }
+
         /// <summary>
         /// Splitten einer Rechnung. Neuer Kopf ohne Position dann muss eine neue Posistion angelegt werden.
         /// </summary>
@@ -1751,6 +1760,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Bei neu angelgten Vorgängen wird zuerst der Kopf angegelegt dann 
         /// müssen die Kopfdaten in eine neue Position eingefügt werden.
@@ -1796,6 +1806,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"]);
         }
+
         /// <summary>
         /// Datum Textbox im Hauptgrid an Javafunktion binden.
         /// </summary>
@@ -1808,6 +1819,7 @@ namespace AppZulassungsdienst.forms
             TextBox txtDatum = (TextBox)e.Row.FindControl("txtDatum");
             txtDatum.Attributes.Add("onfocus", "datePick('#" + txtDatum.ClientID + "')");
         }
+
         /// <summary>
         /// Neu Position im "Splitgrid" einfügen.
         /// </summary>
@@ -1830,6 +1842,7 @@ namespace AppZulassungsdienst.forms
 
             addButtonAttr(posRows.ToTable(), GridView1);
         }
+
         /// <summary>
         /// Neu Positionen im "Splitgrid" in der Tabelle speichern.
         /// </summary>
@@ -1883,6 +1896,7 @@ namespace AppZulassungsdienst.forms
             proofPosGrid();
             Refresh();
         }
+
         /// <summary>
         /// MwSt im SAP berechnen lassen, neu kumulieren und anzeigen.
         /// </summary>
@@ -1917,6 +1931,7 @@ namespace AppZulassungsdienst.forms
             addButtonAttr(_objKassenabrechnung.DocHeads, gvDaten);
             
         }
+
         /// <summary>
         /// Kumulieren der Daten aus dem "Splitgrid".
         /// </summary>
@@ -1994,6 +2009,7 @@ namespace AppZulassungsdienst.forms
         {
             RefreshHeadGrid();
         }
+
         /// <summary>
         /// Splitdialog schliessen und Eingaben übernehmen.
         /// </summary>
@@ -2009,6 +2025,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Posititionen aus dem "Splitgrid" löschen.
         /// </summary>
@@ -2175,13 +2192,12 @@ namespace AppZulassungsdienst.forms
             }
             return bError;
         }
+
         /// <summary>
         /// Sichtbarkeit der Controls im Hauptgrid setzén.
         /// </summary>
         private void visibility()
         {
-            bool blnShowdel3 = false;
-
             Boolean bShowMark = false;
             foreach (GridViewRow gvRow in gvDaten.Rows)
             {
@@ -2198,12 +2214,11 @@ namespace AppZulassungsdienst.forms
                 TextBox txtFreitext = (TextBox)gvRow.FindControl("txtFreitext");
                 TextBox txtAuftrag = (TextBox)gvRow.FindControl("txtAuftrag");
                 TextBox txtBarcode = (TextBox)gvRow.FindControl("txtBarcode");
-                ImageButton imgRefresh3 = (ImageButton)gvRow.FindControl("imgRefresh3");
                 ImageButton imgRefresh2 = (ImageButton)gvRow.FindControl("imgRefresh2");
                 ImageButton ibtnDel = (ImageButton)gvRow.FindControl("ibtnDel");
                 CheckBox chkAuswahl = (CheckBox)gvRow.FindControl("chkAuswahl");
 
-                blnShowdel3 = ShowDel3(lblPostNr.Text);
+                bool blnShowdel3 = ShowDel3(lblPostNr.Text);
 
                 ddl.Visible = blnShowdel3;
                 txtVorfall.Visible = !blnShowdel3;
@@ -2330,6 +2345,7 @@ namespace AppZulassungsdienst.forms
 
             ShowData(false);
         }
+
         /// <summary>
         /// Alle Vorgänge im Hauptgrid zum Speichern markieren.
         /// </summary>

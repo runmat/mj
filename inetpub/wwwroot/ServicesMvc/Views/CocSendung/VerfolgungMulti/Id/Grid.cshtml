@@ -1,4 +1,5 @@
 ﻿@using CkgDomainLogic.CoC.Models
+@model CkgDomainLogic.CoC.ViewModels.SendungenViewModel
 @{
     var gridName = "GridCocSendungenId";
 }
@@ -16,7 +17,7 @@
             columns.XBound(c => c.VersandWeg);
             columns.XBound(c => c.VersandDatum);
             columns.XBound(c => c.VersandAdresseAsText);
-            columns.XBound(c => c.StatusText);
+            columns.XBound(c => c.StatusText).Visible(Model.ShowStatusInGrid);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridCocSendungen"))
