@@ -10,7 +10,7 @@
 namespace AppZulassungsdienst.forms {
     
     
-    public partial class VorgangStatusaenderung {
+    public partial class TaggleicheMeldungDAD {
         
         /// <summary>
         /// lb_zurueck-Steuerelement
@@ -76,22 +76,49 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.HtmlControls.HtmlTable tab1;
         
         /// <summary>
-        /// lblSearchID-Steuerelement
+        /// trBarcode-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSearchID;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trBarcode;
         
         /// <summary>
-        /// txtSearchID-Steuerelement
+        /// txtBarcode-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchID;
+        protected global::System.Web.UI.WebControls.TextBox txtBarcode;
+        
+        /// <summary>
+        /// fteBarcode-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::AjaxControlToolkit.FilteredTextBoxExtender fteBarcode;
+        
+        /// <summary>
+        /// txtFahrgestellnummer-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFahrgestellnummer;
+        
+        /// <summary>
+        /// txtBriefnummer-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBriefnummer;
         
         /// <summary>
         /// btnEmpty-Steuerelement
@@ -139,15 +166,6 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Result;
         
         /// <summary>
-        /// lblID-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblID;
-        
-        /// <summary>
         /// lblIDDisplay-Steuerelement
         /// </summary>
         /// <remarks>
@@ -157,148 +175,130 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblIDDisplay;
         
         /// <summary>
-        /// lblBelegtyp-Steuerelement
+        /// lblBestellnummerDisplay-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBelegtyp;
+        protected global::System.Web.UI.WebControls.Label lblBestellnummerDisplay;
         
         /// <summary>
-        /// lblBelegtypDisplay-Steuerelement
+        /// lblFahrgestellnummerDisplay-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBelegtypDisplay;
+        protected global::System.Web.UI.WebControls.Label lblFahrgestellnummerDisplay;
         
         /// <summary>
-        /// lblZulassungsdatum-Steuerelement
+        /// lblBriefnummerDisplay-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblZulassungsdatum;
+        protected global::System.Web.UI.WebControls.Label lblBriefnummerDisplay;
         
         /// <summary>
-        /// lblZulassungsdatumDisplay-Steuerelement
+        /// txtZulassungsdatum-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblZulassungsdatumDisplay;
+        protected global::System.Web.UI.WebControls.TextBox txtZulassungsdatum;
         
         /// <summary>
-        /// lblKundennummer-Steuerelement
+        /// lbtnGestern-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKundennummer;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnGestern;
         
         /// <summary>
-        /// lblKundennummerDisplay-Steuerelement
+        /// lbtnHeute-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKundennummerDisplay;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnHeute;
         
         /// <summary>
-        /// lblKunde-Steuerelement
+        /// lbtnMorgen-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKunde;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnMorgen;
         
         /// <summary>
-        /// lblKundeDisplay-Steuerelement
+        /// txtKennz1-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKundeDisplay;
+        protected global::System.Web.UI.WebControls.TextBox txtKennz1;
         
         /// <summary>
-        /// lblKreis-Steuerelement
+        /// txtKennz2-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKreis;
+        protected global::System.Web.UI.WebControls.TextBox txtKennz2;
         
         /// <summary>
-        /// lblKreisDisplay-Steuerelement
+        /// txtGebuehr-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKreisDisplay;
+        protected global::System.Web.UI.WebControls.TextBox txtGebuehr;
         
         /// <summary>
-        /// lblKennzeichen-Steuerelement
+        /// cbxAuslieferung-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKennzeichen;
+        protected global::System.Web.UI.WebControls.CheckBox cbxAuslieferung;
         
         /// <summary>
-        /// lblKennzeichenDisplay-Steuerelement
+        /// cmdFrachtbriefnummer-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKennzeichenDisplay;
+        protected global::System.Web.UI.WebControls.LinkButton cmdFrachtbriefnummer;
         
         /// <summary>
-        /// lblBEBStatus-Steuerelement
+        /// trFrachtbriefnummer-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBEBStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trFrachtbriefnummer;
         
         /// <summary>
-        /// lblBEBStatusDisplay-Steuerelement
+        /// txtFrachtbriefnummer-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBEBStatusDisplay;
-        
-        /// <summary>
-        /// lblBEBStatusNeu-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBEBStatusNeu;
-        
-        /// <summary>
-        /// ddlBEBStatus-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBEBStatus;
+        protected global::System.Web.UI.WebControls.TextBox txtFrachtbriefnummer;
         
         /// <summary>
         /// btnEmpty2-Steuerelement
@@ -310,12 +310,21 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.ImageButton btnEmpty2;
         
         /// <summary>
-        /// cmdSave-Steuerelement
+        /// cmdSend-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSave;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSend;
+        
+        /// <summary>
+        /// ihDatumIstWerktag-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden ihDatumIstWerktag;
     }
 }
