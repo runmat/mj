@@ -1,5 +1,16 @@
 ﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
 
+<style type="text/css">
+    .form-horizontal .control-group { margin-bottom: 0!important; }
+    img.fahrer-thumbnail {
+        cursor: pointer;
+        padding: 3px;
+        margin: 5px;
+        border: 1px solid #afafaf;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
 <div class="row-fluid">
     <div class="span8">
         @using (Html.PortletBox("Details", "icon-table"))
@@ -13,7 +24,7 @@
         {
             using (Html.PortletBox("Protokolle", "icon-copy", "purple"))
             {
-                <a class="pdf" href="HistoryDownloadPdfFiles">PDF Download</a>
+                <a href="HistoryDownloadPdfFiles" class="btn grey tooltips" data-original-title="Protokolle als PDF downloaden" data-placement="top"> PDF Download <i class="icon-download-alt margin-left-10"></i></a>
             }
         }
         
@@ -23,7 +34,7 @@
             {
                 foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
                 {
-                    <img src="@thumbImageFile" alt="" onclick=" ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile)); " />
+                    <img class="fahrer-thumbnail" src="@thumbImageFile" alt="" onclick=" ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile)); " />
                 }
             }
         }

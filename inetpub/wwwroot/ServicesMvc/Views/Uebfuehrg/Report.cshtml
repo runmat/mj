@@ -24,7 +24,21 @@
         <div id="divGrid"></div>
     }
 </div>
+
 <div id="divAuftragDetails"></div>
+
+@(Html.Telerik().Window()
+    .Name("HistoryAuftragBigImage")
+    .Width(800)
+    .Height(650)
+    .Visible(false)
+    .Title("Foto Überführungsprotokoll")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(true)
+    .Resizable()
+    .Content(@<text><div id="InnerHistoryAuftragBigImage"></div></text>))
+
 
 <script type="text/javascript">
 
@@ -97,6 +111,37 @@
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
         }, 150);
+    }
+
+    function ShowBigImage(tour, fileNr) {
+        var detailWindow = $("#HistoryAuftragBigImage").data("tWindow");
+        detailWindow.center().open();
+        
+        $.ajax(
+            {
+                type: "POST",
+                data: { tour: tour, fileNr: fileNr },
+                url: "HistoryAuftragShowBigImage",
+                success: function (result) {
+                    //alert(result);
+                    $("#InnerHistoryAuftragBigImage").html(result);
+                    $("#InnerHistoryAuftragBigImage img").css("opacity", "0");
+
+                    setTimeout(function () {
+                        $(".t-window-content").css("width", 800 + "px");
+                        $(".t-window-content").css("height", 650 + "px");
+                        
+                        $("#InnerHistoryAuftragBigImage img").css("opacity", "1");
+                        $("#InnerHistoryAuftragBigImage div").hide();
+
+                        var img = $("#InnerHistoryAuftragBigImage img")[0];
+                        $(".t-window-content").css("width", (img.clientWidth == 0 ? 800 : img.clientWidth) + "px");
+                        $(".t-window-content").css("height", (img.clientHeight == 0 ? 650 : img.clientHeight) + "px");
+                        
+                        detailWindow.center();
+                    }, 500);
+                }
+            });
     }
 
 

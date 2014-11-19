@@ -1,10 +1,6 @@
 ﻿@using CkgDomainLogic.Uebfuehrg.Models
 @model HistoryAuftrag
 
-<style type="text/css">
-    .form-horizontal .control-group { margin-bottom: 0!important; }
-</style>
-
 <div id="divHistoryAuftragDetails">
     @using (Ajax.BeginForm(null, null, null,
         new MvcAjaxOptions("divHistoryAuftragDetails"), new { id = "HistoryAuftragDetailsForm" }))
