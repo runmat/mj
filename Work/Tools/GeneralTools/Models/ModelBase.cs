@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using GeneralTools.Contracts;
 
 namespace GeneralTools.Models
 {
@@ -61,6 +62,8 @@ namespace GeneralTools.Models
                         nullPropertyNames.Add(propertyNames[i]);
                 }
                 else if (val == null)
+                    nullPropertyNames.Add(propertyNames[i]);
+                else if (val is INullable && (val as INullable).IsNull())
                     nullPropertyNames.Add(propertyNames[i]);
 
                 i++;
@@ -132,6 +135,11 @@ namespace GeneralTools.Models
                 return false;
 
             return NotNullCount(entity, properties) > 0;
+        }
+
+        public static bool AtLeastOneRequiredAsGroupPropertiesValid(object entity)
+        {
+            return !AllNull(entity, GetRequiredAsGroupPropertyNameListToCheck(entity));
         }
 
         public static List<string> GetRequiredAsGroupPropertyNameListToCheck(object entity)

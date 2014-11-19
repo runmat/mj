@@ -1,10 +1,11 @@
 ﻿using System;
+using GeneralTools.Contracts;
 
 namespace GeneralTools.Models
 {
     public enum DateRangeType { LastYear, Last3Months, LastMonth, CurrentMonth, Last30Days, Last7Days, Today, Yesterday }
 
-    public class DateRange 
+    public class DateRange : INullable
     {
         public bool IsSelected { get; set; }
 
@@ -62,6 +63,11 @@ namespace GeneralTools.Models
                     EndDate = DateTime.Today.AddDays(-1);
                     break;
             }
+        }
+
+        public bool IsNull()
+        {
+            return !IsSelected;
         }
     }
 }

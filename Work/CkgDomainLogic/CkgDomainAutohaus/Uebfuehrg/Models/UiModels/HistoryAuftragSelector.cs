@@ -7,6 +7,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
     public class HistoryAuftragSelector : Store
     {
         [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]
+        [RequiredAsGroup]
         public DateRange ErfassungsDatumRange 
         { 
             get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months)); } 
@@ -14,6 +15,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.OrderDate)]
+        [RequiredAsGroup]
         public DateRange AuftragsDatumRange
         {
             get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months, true)); } 
@@ -24,6 +26,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [RequiredAsGroup]
         public string AuftragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]

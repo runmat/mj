@@ -14,6 +14,9 @@
             @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange, new { col = "left" })
             @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "right" })
 
+            @Html.FormCheckBoxFor(m => m.AlleOrganisationen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">@Localize._AlleOrganisationen</label></text>)
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap small", col = "right" })
+
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-5'></i>@Localize.SearchAsVerb</button>

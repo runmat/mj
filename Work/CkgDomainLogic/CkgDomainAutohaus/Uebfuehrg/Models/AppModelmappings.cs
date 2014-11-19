@@ -186,6 +186,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                                 sap.VDATU = business.AuftragsDatumRange.StartDate;
                                 sap.VDATU_BIS = business.AuftragsDatumRange.EndDate;
                             }
+
+                            if (business.AuftragsNr.IsNotNullOrEmpty())
+                                sap.AUFNR = business.AuftragsNr;
                         }));
             }
         }

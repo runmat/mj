@@ -97,6 +97,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (selector.AuftragsDatumRange.IsSelected &&
                 (selector.AuftragsDatumRange.EndDate.GetValueOrDefault() - selector.AuftragsDatumRange.StartDate.GetValueOrDefault()).TotalDays > 95)
                 addModelError("", string.Format(Localize.DateRangeMax3Months, Localize.OrderDate));
+
+            if (!ModelBase.AtLeastOneRequiredAsGroupPropertiesValid(selector))
+            {
+                addModelError("", Localize.PleaseChooseAtLeastOneOption);
+            }
         }
 
         public List<string> GetImageFileNamesForTour(int tour)
