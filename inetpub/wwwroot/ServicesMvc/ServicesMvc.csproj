@@ -4194,6 +4194,8 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragSuche.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragGrid.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetails.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsBigImageDialog.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

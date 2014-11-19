@@ -159,8 +159,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (auftrag == null)
                 return;
 
-            return;
-
             DestinationRelativePath = string.Format("{0}_{1}", "Temp_", Guid.NewGuid());
             FileService.TryDirectoryCreate(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath));
 

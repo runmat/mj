@@ -65,7 +65,27 @@ namespace ServicesMvc.Controllers
         {
             ReportViewModel.LoadHistoryAuftragDetails(auftragsNr, fahrt);
 
-            return PartialView("Partial/HistoryAuftragDetails", ReportViewModel.HistoryAuftragCurrent);
+            return PartialView("Partial/HistoryAuftragDetailsWithDocuments", ReportViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult HistoryAuftragShowBigImage(int tour, int fileNr)
+        {
+            ReportViewModel.CopySingleBigImage(tour, fileNr);
+
+            return PartialView("Partial/HistoryAuftragDetailsBigImageDialog", ReportViewModel.GetImageFileNameForIndex(tour, fileNr));
+        }
+
+        public ActionResult HistoryDownloadPdfFiles()
+        {
+            var zipFileName = ReportViewModel.GetPdfFilesAsZip();
+            if (zipFileName.IsNullOrEmpty())
+                return new EmptyResult();
+
+            return new FileContentResult(FileService.GetBytesFromFile(zipFileName), "application/zip")
+            {
+                FileDownloadName = FileService.PathGetFileName(zipFileName)
+            };
         }
 
 

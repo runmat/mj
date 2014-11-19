@@ -1,4 +1,9 @@
-﻿@model CkgDomainLogic.Uebfuehrg.Models.HistoryAuftrag
+﻿@using CkgDomainLogic.Uebfuehrg.Models
+@model HistoryAuftrag
+
+<style type="text/css">
+    .form-horizontal .control-group { margin-bottom: 0!important; }
+</style>
 
 <div id="divHistoryAuftragDetails">
     @using (Ajax.BeginForm(null, null, null,
@@ -8,14 +13,35 @@
             
             <button onclick="CloseHistoryAuftragDetails();" class='btn blue'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
             
-            <h4>
-            @Model.AuftragsNr
-            </h4>
+            @Html.FormTextBlockFor(m => m.AuftragsNr, new { @class = "m-wrap" })
 
-            <h4>
-            @Model.Fahrt
-            </h4>
+            @Html.FormTextBlockFor(m => m.AuftragsDatum, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.AbgabeDatum, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Kundenberater, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Referenz, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Ansprechpartner, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Telefon, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Email, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Typ, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Fahrt, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.FahrtVonOrt, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.FahrtNachOrt, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.GefahreneKilometer, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Klaerfall, new { @class = "m-wrap", col = "right" })
 
         </div>  
     }
 </div>
+
+    
+
