@@ -4158,6 +4158,11 @@ namespace AppZulassungsdienst.lib
                         myProxy.setImportParameter("I_AH_ANNAHME", "X");
                     }
 
+                    if (SelSofortabrechnung)
+                    {
+                        myProxy.setImportParameter("I_SOFORTABRECHNUNG", "X");
+                    }
+
                     DataTable importAuftrag = myProxy.getImportTable("GT_IMP_BAK");
 
                     DataTable importPos = myProxy.getImportTable("GT_IMP_POS_S01");
@@ -4462,6 +4467,11 @@ namespace AppZulassungsdienst.lib
                     if (SelAnnahmeAH)
                     {
                         myProxy.setImportParameter("I_AH_ANNAHME", "X");
+                    }
+
+                    if (SelSofortabrechnung)
+                    {
+                        myProxy.setImportParameter("I_SOFORTABRECHNUNG", "X");
                     }
 
                     DataTable importAuftrag = myProxy.getImportTable("GT_IMP_BAK");
