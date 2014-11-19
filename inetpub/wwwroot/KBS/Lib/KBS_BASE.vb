@@ -16,29 +16,15 @@ Public Class KBS_BASE
     Public Const CHANGE12_GLOBALOBJHANDLING As Boolean = True
     Private Shared WithEvents mTimer As Timers.Timer
 
-    Private Shared m_intGroupID As Int32
     Private Shared m_intUserId As Int32 = -1
-    Private Shared m_bolTestUser As Boolean = False
 
 #Region "Properties"
-
-    Public ReadOnly Property UserID() As Int32
-        Get
-            Return m_intUserId
-        End Get
-    End Property
-
-    Public ReadOnly Property GroupID() As Int32
-        Get
-            Return m_intGroupID
-        End Get
-    End Property
 
     Protected Friend Shared ReadOnly Property SAPConnectionString() As String
         Get
             Dim conStr As String = ""
 
-            If Not m_bolTestUser Then
+            If KBSBase.Common.ProdSAP Then
                 'prod
                 conStr = "ASHOST=" & ConfigurationManager.AppSettings("SAPAppServerHost") & _
                                         ";CLIENT=" & CShort(ConfigurationManager.AppSettings("SAPClient")) & _
@@ -46,7 +32,7 @@ Public Class KBS_BASE
                                         ";USER=" & ConfigurationManager.AppSettings("SAPUsername") & _
                                         ";PASSWD=" & ConfigurationManager.AppSettings("SAPPassword") & _
                                         ";LANG=DE"
-            ElseIf m_bolTestUser Then
+            Else
                 'vm,test,entwicklung
                 conStr = "ASHOST=" & ConfigurationManager.AppSettings("TESTSAPAppServerHost") & _
                                     ";CLIENT=" & CShort(ConfigurationManager.AppSettings("TESTSAPClient")) & _
@@ -54,8 +40,6 @@ Public Class KBS_BASE
                                     ";USER=" & ConfigurationManager.AppSettings("TESTSAPUsername") & _
                                     ";PASSWD=" & ConfigurationManager.AppSettings("TESTSAPPassword") & _
                                     ";LANG=DE"
-            Else
-                Throw New Exception("DynProxy kann SQL-ConnectionString nicht erkennen")
             End If
 
             Return conStr
@@ -174,8 +158,7 @@ Public Class KBS_BASE
                                 Else
                                     Dim StdUser As String = ""
                                     StdUser = GiveIpStandardUser(CInt(tmpkasseObj.KUNNR), tmpkasseObj.Firma)
-                                    GiveGroupIDByUsername(StdUser)
-                                    GiveTestuserByUsername(StdUser)
+                                    GiveUserIDByUsername(StdUser)
                                     tmpkasseObj.SetApps(GetApplications)
                                     Return tmpkasseObj
 
@@ -189,8 +172,7 @@ Public Class KBS_BASE
                 Dim tmpKasse As DataRow = IPtoKassen.Select("IP='" & page.Request.UserHostAddress & "'")(0)
                 Dim StandardUser As String = ""
                 StandardUser = GiveIpStandardUser(CInt(tmpKasse("Kunnr")), tmpKasse("Firma").ToString)
-                GiveGroupIDByUsername(StandardUser)
-                GiveTestuserByUsername(StandardUser)
+                GiveUserIDByUsername(StandardUser)
                 Dim tblApps As DataTable
                 tblApps = GetApplications()
 
@@ -270,7 +252,7 @@ Public Class KBS_BASE
         Return strReturn
     End Function
 
-    Private Shared Sub GiveGroupIDByUsername(ByVal strUsername As String)
+    Private Shared Sub GiveUserIDByUsername(ByVal strUsername As String)
 
         'Ermittele IpStandardUser des Kunden
         Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -279,7 +261,7 @@ Public Class KBS_BASE
         Try
             conn.Open()
 
-            command = New SqlClient.SqlCommand("SELECT dbo.WebUser.UserID, dbo.WebMember.GroupID " & _
+            command = New SqlClient.SqlCommand("SELECT dbo.WebUser.UserID " & _
                                                 "FROM dbo.WebUser INNER JOIN " & _
                                                 "dbo.WebMember ON dbo.WebUser.UserID = dbo.WebMember.UserID " & _
                                                 "WHERE     (dbo.WebUser.Username = '" & strUsername.ToString & "')", _
@@ -293,42 +275,9 @@ Public Class KBS_BASE
             Dim drUser As DataRow
             For Each drUser In dtUser.Rows
                 m_intUserId = CType(drUser("UserID").ToString, Int32)
-                m_intGroupID = CType(drUser("GroupID").ToString, Int32)
             Next
         Catch ex As Exception
             EventLog.WriteEntry("KBS_BASE.GiveGroupIDByUsername(" & strUsername & ") SQL-Zugriff-Fehler", ex.Message)
-        Finally
-            conn.Close()
-            conn.Dispose()
-        End Try
-
-    End Sub
-
-    Private Shared Sub GiveTestuserByUsername(ByVal strUsername As String)
-
-        'Ermittele IpStandardUser des Kunden
-        Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-        Dim command As SqlClient.SqlCommand
-
-        Try
-            conn.Open()
-
-            command = New SqlClient.SqlCommand("SELECT dbo.WebUser.TestUser " & _
-                                                "FROM dbo.WebUser " & _
-                                                "WHERE (dbo.WebUser.Username = '" & strUsername.ToString & "')", _
-                                                conn)
-
-            Dim daUser As New SqlClient.SqlDataAdapter(command)
-            Dim dtUser As New DataTable()
-
-            daUser.Fill(dtUser)
-
-            Dim drUser As DataRow
-            For Each drUser In dtUser.Rows
-                m_bolTestUser = CBool(drUser("TestUser").ToString())
-            Next
-        Catch ex As Exception
-            EventLog.WriteEntry("KBS_BASE.GiveTestuserByUsername(" & strUsername & ") SQL-Zugriff-Fehler", ex.Message)
         Finally
             conn.Close()
             conn.Dispose()
