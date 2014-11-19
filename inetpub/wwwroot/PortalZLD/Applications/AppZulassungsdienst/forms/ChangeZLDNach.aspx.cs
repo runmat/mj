@@ -19,14 +19,9 @@ namespace AppZulassungsdienst.forms
         Boolean BackfromList;
         String IDKopf;
         private const string CONST_IDSONSTIGEDL = "570";
+        private DataView dvKunden;
 
-        /// <summary>
-        /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden. 
-        /// Datensatz für die Eingabe laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -55,6 +50,21 @@ namespace AppZulassungsdienst.forms
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
+
+            objNacherf = (NacherfZLD)Session["objNacherf"];
+
+            if (dvKunden == null)
+            {
+                InitKundenliste(false);
+            }
+            InitLargeDropdowns();
+            InitJava();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            BackfromList = (Request.QueryString["B"] != null);
+
             if (!IsPostBack)
             {
                 if (!BackfromList)
@@ -69,7 +79,6 @@ namespace AppZulassungsdienst.forms
                     else
                     { lblError.Text = "Fehler beim Laden des Vorganges!"; }
 
-                    objNacherf = (NacherfZLD)Session["objNacherf"];
                     if (ZLDCommon.IsNumeric(IDKopf))
                     {
                         Int32.TryParse(IDKopf, out id);
@@ -77,6 +86,11 @@ namespace AppZulassungsdienst.forms
                     if (id != 0)
                     {
                         objNacherf.LoadDB_ZLDRecordset(id);
+                        if (objNacherf.Vorgang.StartsWith("A"))
+                        {
+                            InitKundenliste(true);
+                            BindDropdownKunde();
+                        }
                         fillForm();
                         SelectValues();
                     }
@@ -85,6 +99,60 @@ namespace AppZulassungsdienst.forms
             }
          }
         
+        private void InitKundenliste(bool autohaus)
+        {
+            DataView tmpDView;
+            if (autohaus)
+            {
+                objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
+                tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            }
+            else
+            {
+                tmpDView = objCommon.tblKundenStamm.DefaultView;
+            }
+            tmpDView.Sort = "NAME1";
+            dvKunden = tmpDView;
+        }
+
+        private void BindDropdownKunde()
+        {
+            ddlKunnr.DataSource = dvKunden;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+        }
+
+        /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            BindDropdownKunde();
+
+            //StVa
+            DataView tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ", 'X')");
+            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ", 'X')");
+            txtStVa.Attributes.Add("onkeyup", "DisableButton(" + cmdCreate.ClientID + ");FilterSTVA(this.value," + ddlStVa.ClientID + ", null)");
+            txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + ", null)");
+            ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + ", null)");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+        }
+
         /// <summary>
         /// Füllt die Form mit geladenen Stammdaten
         /// verknüpft Texboxen und DropDowns mit JS-Funktionen
@@ -167,46 +235,14 @@ namespace AppZulassungsdienst.forms
 
             Session["tblDienst"] = tblData;
                 
-            DataView tmpDView;
-            if (objNacherf.Vorgang.StartsWith("A"))
-            {
-                objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
-                tmpDView = objCommon.tblAHKundenStamm.DefaultView;
-            }
-            else 
-            {
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-            }
-                
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
-            ddlKunnr.DataBind();
             txtKunnr.Text = objNacherf.Kunnr;
             hfKunnr.Value = objNacherf.Kunnr;
             ddlKunnr.SelectedValue = objNacherf.Kunnr;
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ", 'X')");
-            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ", 'X')");
-            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+            
             TableToJSArrayBarkunde();
 
             if (objNacherf.Status == 0)
             {
-                tmpDView = objCommon.tblStvaStamm.DefaultView;
-                tmpDView.Sort = "KREISTEXT";
-                ddlStVa.DataSource = tmpDView;
-                ddlStVa.DataValueField = "KREISKZ";
-                ddlStVa.DataTextField = "KREISTEXT";
-                ddlStVa.DataBind();
-                ddlStVa.SelectedValue = "0";
-                txtStVa.Attributes.Add("onkeyup", "DisableButton(" + cmdCreate.ClientID + ");FilterSTVA(this.value," + ddlStVa.ClientID + ", null)");
-                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + ", null)");
-                ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + ", null)");
-
                 TableToJSArray();
                 Session["objNacherf"] = objNacherf;
             }
@@ -2913,7 +2949,8 @@ namespace AppZulassungsdienst.forms
                     UpdateKundeBank();
                     pnlBankdaten.Attributes.Remove("style");
                     pnlBankdaten.Attributes.Add("style", "display:none");
-                    Panel1.Visible = true;
+                    Panel1.Attributes.Remove("style");
+                    Panel1.Attributes.Add("style", "display:block");
                     dataQueryFooter.Visible = true;
                 }
             }
@@ -2944,7 +2981,8 @@ namespace AppZulassungsdienst.forms
             txtKontoinhaber.Text = objNacherf.Inhaber;
             pnlBankdaten.Attributes.Remove("style");
             pnlBankdaten.Attributes.Add("style", "display:none");
-            Panel1.Visible = true;
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
             dataQueryFooter.Visible = true;
         }
 
@@ -2965,7 +3003,10 @@ namespace AppZulassungsdienst.forms
             {
                 chkCPD.Checked = false;
                 chkCPDEinzug.Checked = false;
-                Panel1.Visible = false;
+                pnlBankdaten.Attributes.Remove("style");
+                pnlBankdaten.Attributes.Add("style", "display:block");
+                Panel1.Attributes.Remove("style");
+                Panel1.Attributes.Add("style", "display:none");
                 dataQueryFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
                 txtKundebank.Text = ddlKunnr.SelectedItem.Text;
@@ -2981,8 +3022,6 @@ namespace AppZulassungsdienst.forms
                     chkRechnung.Checked = objNacherf.Rechnung;
                 }
                 txtName1.Focus();
-                pnlBankdaten.Attributes.Remove("style");
-                pnlBankdaten.Attributes.Add("style", "display:block");
             }
         }
 

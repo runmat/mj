@@ -20,13 +20,7 @@ namespace AppZulassungsdienst.forms
 
 #region "Events"
 
-        /// <summary>
-        /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
-        /// Form füllen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -52,12 +46,16 @@ namespace AppZulassungsdienst.forms
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
+            }
 
+            InitLargeDropdowns();
+            SetJavaFunctions();
             }
             
-            if (IsPostBack != true)
+        protected void Page_Load(object sender, EventArgs e)
             {
-                //Int32 id = 0;
+            if (!IsPostBack)
+            {
                 if (Request.QueryString["id"] != null)
                 {
                     IDKopf = Request.QueryString["id"];
@@ -68,7 +66,6 @@ namespace AppZulassungsdienst.forms
                     {
                         if (objNacherf.AHVersandKopf.Rows.Count == 1)
                         {
-
                             fillForm(objNacherf.AHVersandKopf.Rows[0]);
                         }
                     }
@@ -141,8 +138,10 @@ namespace AppZulassungsdienst.forms
                 chkCPDEinzug.Checked = false;
                 chkEinzug.Checked = false;
                 chkRechnung.Checked = false;
-                pnlBankdaten.Visible = true;
-                Panel1.Visible = false;
+                pnlBankdaten.Attributes.Remove("style");
+                pnlBankdaten.Attributes.Add("style", "display:block");
+                Panel1.Attributes.Remove("style");
+                Panel1.Attributes.Add("style", "display:none");
                 ButtonFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
                 txtKundebank.Text = ddlKunnr.SelectedItem.Text;
@@ -184,8 +183,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCancelBank_Click(object sender, EventArgs e)
         {
-            pnlBankdaten.Visible = false;
-            Panel1.Visible = true;
+            pnlBankdaten.Attributes.Remove("style");
+            pnlBankdaten.Attributes.Add("style", "display:none");
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
             ButtonFooter.Visible = true;
 
         }
@@ -293,8 +294,10 @@ namespace AppZulassungsdienst.forms
                     }
 
                     lblErrorBank.Text = "";
-                    pnlBankdaten.Visible = false;
-                    Panel1.Visible = true;
+                    pnlBankdaten.Attributes.Remove("style");
+                    pnlBankdaten.Attributes.Add("style", "display:none");
+                    Panel1.Attributes.Remove("style");
+                    Panel1.Attributes.Add("style", "display:block");
                     ButtonFooter.Visible = true;
                 }
             }
@@ -452,6 +455,20 @@ namespace AppZulassungsdienst.forms
 #region "Methods and Functions"
 
         /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //StVa
+            DataView tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        /// <summary>
         /// Eingabefelder mit den Daten aus den Tabellen füllen.
         /// </summary>
         /// <param name="RowKopf">Zeile Kopftabelle</param>
@@ -549,18 +566,10 @@ namespace AppZulassungsdienst.forms
             ddlKunnr.DataBind();
             ddlKunnr.SelectedValue = RowKopf["KUNNR"].ToString().TrimStart('0');
             txtKunnr.Text = RowKopf["KUNNR"].ToString().TrimStart('0');
-            tmpDView = objCommon.tblStvaStamm.DefaultView;
-            tmpDView.Sort = "KREISTEXT";
-            ddlStVa.DataSource = tmpDView;
-            ddlStVa.DataValueField = "KREISKZ";
-            ddlStVa.DataTextField = "KREISTEXT";
-            ddlStVa.DataBind();
-            ddlStVa.SelectedValue = RowKopf["KREISKZ"].ToString();
 
+            ddlStVa.SelectedValue = RowKopf["KREISKZ"].ToString();
             txtStVa.Text = RowKopf["KREISKZ"].ToString();
 
-            SetJavaFunctions();
-            
              if (objNacherf.AHVersandAdresse != null && objNacherf.AHVersandAdresse.Rows.Count == 1)
              {
                  txtName1.Text = objNacherf.AHVersandAdresse.Rows[0]["LI_NAME1"].ToString();

@@ -5,7 +5,6 @@ using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
 using System.Data;
 
-
 namespace AppZulassungsdienst.forms
 {
     /// <summary>
@@ -18,12 +17,7 @@ namespace AppZulassungsdienst.forms
         private VorVersand objVersandZul;
         private ZLDCommon objCommon;
 
-        /// <summary>
-        /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -37,7 +31,6 @@ namespace AppZulassungsdienst.forms
             }
             if (Session["objCommon"] == null)
             {
-
                 objCommon = new ZLDCommon(ref m_User, m_App);
                 objCommon.VKBUR = m_User.Reference.Substring(4, 4);
                 objCommon.VKORG = m_User.Reference.Substring(0, 4);
@@ -50,13 +43,18 @@ namespace AppZulassungsdienst.forms
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
-            if (IsPostBack != true )
-            {
 
+            InitLargeDropdowns();
+            InitJava();
+        }
+        
+        protected void Page_Load(object sender, EventArgs e)
+            {
+            if (!IsPostBack)
+            {
                 objVersandZul = new VorVersand(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID);
                 objVersandZul.VKBUR = m_User.Reference.Substring(4, 4);
                 objVersandZul.VKORG = m_User.Reference.Substring(0, 4);
-                fillForm();
             }
             else
             {
@@ -71,9 +69,11 @@ namespace AppZulassungsdienst.forms
                 if (rbAuswahl1.Checked) { objVersandZul.SelStatus = "1"; }
                 if (rbAuswahl2.Checked) { objVersandZul.SelStatus = "2"; }
                 if (rbAuswahl3.Checked) { objVersandZul.SelStatus = "3"; }
+            }
+
                 Session["objVersandZul"] = objVersandZul;
             }
-        }
+
 
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kreises. Laden des 
@@ -119,28 +119,31 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Binden der DropDowns an Stammdaten und Javascript-Funktionen.
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
         /// </summary>
-        private void fillForm()
+        private void InitLargeDropdowns()
         {
+            //Kunde
             DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
             ddlKunnr.DataTextField = "NAME1";
             ddlKunnr.DataBind();
-            ddlKunnr.SelectedValue = "0";
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
 
+            //StVa
             tmpDView = objCommon.tblStvaStamm.DefaultView;
             tmpDView.Sort = "KREISTEXT";
             ddlStVa.DataSource = tmpDView;
             ddlStVa.DataValueField = "KREISKZ";
             ddlStVa.DataTextField = "KREISTEXT";
             ddlStVa.DataBind();
-            ddlStVa.SelectedValue = "0";
-            Session["objVersandZul"] = objVersandZul;
+        }
+        
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
         }
         
         /// <summary>

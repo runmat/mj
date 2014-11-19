@@ -15,12 +15,7 @@ namespace AppZulassungsdienst.forms
         private App m_App;
         private ZLDCommon objCommon;
 
-        /// <summary>
-        /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -45,19 +40,12 @@ namespace AppZulassungsdienst.forms
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-
-            }
-            if (IsPostBack != true)
-            {
-                fillForm();
             }
 
-        }
+            fillDropdown();
+            }
 
-        /// <summary>
-        /// Kundenstammtabelle an Dropdown binden.
-        /// </summary>
-        private void fillForm()
+        private void fillDropdown()
         {
             DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
@@ -65,10 +53,8 @@ namespace AppZulassungsdienst.forms
             ddlKunnr.DataValueField = "KUNNR";
             ddlKunnr.DataTextField = "NAME1";
             ddlKunnr.DataBind();
-            ddlKunnr.SelectedValue = "0";
             txtKundeSearch.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
             txtKundeSearch.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-
             ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKundeSearch.ClientID + ")");
         }
 

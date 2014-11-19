@@ -16,19 +16,12 @@ namespace AppZulassungsdienst.forms
         private Listen objListe;
         private ZLDCommon objCommon;
 
-        /// <summary>
-        /// Page_Load Ereignis. Überprüfung ob dem User diese Applikation zugeordnet ist. Evtl. Stammdaten laden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
-
             Common.FormAuth(this, m_User);
 
             m_App = new App(m_User); //erzeugt ein App_objekt 
-
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
@@ -63,6 +56,13 @@ namespace AppZulassungsdienst.forms
                     objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
                 }
             }
+
+            InitLargeDropdowns();
+            InitJava();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
             bool BackFromList = (Request.QueryString["BackFromList"] != null);
 
             if (!IsPostBack)
@@ -117,7 +117,7 @@ namespace AppZulassungsdienst.forms
 
                 Session["objListe"] = objListe;
             }
-            txtKennz.Attributes.Add("onkeyup", "FilterKennz(this,event)");
+            
         }
 
         /// <summary>
@@ -251,6 +251,39 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+            tmpDView.Sort = "NAME1";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+
+            //StVa
+            tmpDView = objCommon.tblStvaStamm.DefaultView;
+            tmpDView.Sort = "KREISTEXT";
+            ddlStVa.DataSource = tmpDView;
+            ddlStVa.DataValueField = "KREISKZ";
+            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+            txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+            txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+            txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
+            txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
+            txtKennz.Attributes.Add("onkeyup", "FilterKennz(this,event)");
+        }
+
+        /// <summary>
         /// Dropdowns mit den Stammdaten füllen.
         /// </summary>
         private void fillForm()
@@ -261,26 +294,15 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = objListe.Message;
                 return;
             }
-
-            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
-            ddlKunnr.DataBind();
-            ddlKunnr.SelectedValue = "0";
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-
-            tmpDView = objCommon.tblMaterialStamm.DefaultView;
+            else
+            {
+                DataView tmpDView = objCommon.tblMaterialStamm.DefaultView;
             tmpDView.Sort = "MAKTX";
             ddlDienst.DataSource = tmpDView;
             ddlDienst.DataValueField = "MATNR";
             ddlDienst.DataTextField = "MAKTX";
             ddlDienst.DataBind();
             ddlDienst.SelectedValue = "0";
-            txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
-            txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
 
             ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
             ddlGruppe.DataValueField = "GRUPPE";
@@ -293,23 +315,6 @@ namespace AppZulassungsdienst.forms
             ddlTour.DataTextField = "BEZEI";
             ddlTour.DataBind();
             ddlTour.SelectedValue = "0";
-
-            if (objListe.Status == 0)
-            {
-                tmpDView = objCommon.tblStvaStamm.DefaultView;
-                tmpDView.Sort = "KREISTEXT";
-                ddlStVa.DataSource = tmpDView;
-                ddlStVa.DataValueField = "KREISKZ";
-                ddlStVa.DataTextField = "KREISTEXT";
-                ddlStVa.DataBind();
-                ddlStVa.SelectedValue = "0";
-                txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-                Session["objListe"] = objListe;
-            }
-            else
-            {
-                lblError.Text = objListe.Message;
             }
         }
     }
