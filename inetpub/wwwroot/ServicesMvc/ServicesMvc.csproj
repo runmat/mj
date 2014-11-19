@@ -4196,8 +4196,8 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetails.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsBigImageDialog.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
-    <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
+    <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
