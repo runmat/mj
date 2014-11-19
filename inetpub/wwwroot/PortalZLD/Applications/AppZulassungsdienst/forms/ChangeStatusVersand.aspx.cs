@@ -11,12 +11,13 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Selektion Übersicht offener Versandzulassungen und Rechnungsprüfung.
     /// </summary>
-    public partial class ChangeStatusVersand : System.Web.UI.Page
+    public partial class ChangeStatusVersand : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VorVersand objVersandZul;
         private ZLDCommon objCommon;
+
         /// <summary>
         /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
         /// </summary>
@@ -73,6 +74,7 @@ namespace AppZulassungsdienst.forms
                 Session["objVersandZul"] = objVersandZul;
             }
         }
+
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kreises. Laden des 
         /// zuständigen ZLD/externen Dienstleiters(Z_ZLD_EXPORT_INFOPOOL).
@@ -105,6 +107,7 @@ namespace AppZulassungsdienst.forms
                 Session["objNacherf"] = objVersandZul;
             }
         }
+
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kunden.
         /// </summary>
@@ -120,8 +123,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void fillForm()
         {
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKundenStamm.DefaultView;
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
@@ -131,8 +133,6 @@ namespace AppZulassungsdienst.forms
             txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
             txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
 
-            /// objVersandZul.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
-            tmpDView = new DataView();
             tmpDView = objCommon.tblStvaStamm.DefaultView;
             tmpDView.Sort = "KREISTEXT";
             ddlStVa.DataSource = tmpDView;
@@ -167,6 +167,7 @@ namespace AppZulassungsdienst.forms
                 Response.Redirect("ChangeStatusVersandList.aspx?AppID=" + Session["AppID"].ToString());
             }
         }
+
         /// <summary>
         /// Enter-Button-Dummy.
         /// </summary>
@@ -176,6 +177,7 @@ namespace AppZulassungsdienst.forms
         {
             cmdCreate_Click(sender, e);
         }
+
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kreises. Laden des 
         /// zuständigen ZLD/externen Dienstleiters(Z_ZLD_EXPORT_INFOPOOL).

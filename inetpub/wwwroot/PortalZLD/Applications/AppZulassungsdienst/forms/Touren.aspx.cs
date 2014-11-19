@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Touren : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private ZLDCommon objCommon;
 
         /// <summary>
@@ -46,10 +46,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                
                 objCommon = (ZLDCommon)Session["objCommon"];
-                
-
             }
             if (IsPostBack != true)
             {
@@ -72,29 +69,25 @@ namespace AppZulassungsdienst.forms
             }
             else if (objCommon.tblGruppeTouren.Rows.Count > 0)
             {
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblGruppeTouren.DefaultView;
+                DataView tmpDataView = objCommon.tblGruppeTouren.DefaultView;
                 tmpDataView.Sort = "GRUPPE";
                 if (tmpDataView.Count == 0)
                 {
                     GridView1.Visible = false;
-
                 }
                 else
                 {
                     GridView1.Visible = true;
                     GridView1.DataSource = tmpDataView;
                     GridView1.DataBind();
-
                 }
             }
             else
             {
                 lblError.Text = "Es sind noch keine Gruppen angelegt!";
             }
-
-
         }
+
         /// <summary>
         /// Kundentabelle der ausgewählten Gruppe laden und anzeigen(Z_ZLD_GET_GRUPPE_KDZU). 
         /// </summary>
@@ -106,12 +99,10 @@ namespace AppZulassungsdienst.forms
             {
                 lblErrorTour.Text = objCommon.Message;
                 GridView2.Visible = false;
-
             }
             else if (objCommon.tblKundeGruppe.Rows.Count > 0)
             {
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblKundeGruppe.DefaultView;
+                DataView tmpDataView = objCommon.tblKundeGruppe.DefaultView;
                 if (tmpDataView.Count == 0)
                 {
                     GridView2.Visible = false;
@@ -127,8 +118,6 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = "Es sind noch keine Zuordnungen angelegt!";
             }
-
-
         }
 
         /// <summary>
@@ -136,9 +125,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void fillDropDown()
         {
-
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKundenStamm.DefaultView;
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
@@ -149,6 +136,7 @@ namespace AppZulassungsdienst.forms
             txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
             ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKunnr.ClientID + ")");
         }
+
         /// <summary>
         /// Neue Gruppe anlegen. Panels für die Eingabe sichtbar machen.
         /// </summary>
@@ -162,6 +150,7 @@ namespace AppZulassungsdienst.forms
             Panel1.Visible = false;
             Panel2.Visible = true;
         }
+
         /// <summary>
         /// Kunden zur Tour hinzufügen(Z_ZLD_SET_GRUPPE_KDZU).
         /// </summary>
@@ -187,9 +176,9 @@ namespace AppZulassungsdienst.forms
                     ddlKunnr.SelectedIndex = 0;
                     txtKunnr.Text = "";
                 }
-
             }
         }
+
         /// <summary>
         /// Neue Tour anlegen( Z_ZLD_SET_GRUPPE).
         /// </summary>
@@ -211,7 +200,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    objCommon.GroupOrTourID = lblTourIDEdit.Text.PadLeft(10, '0'); ;
+                    objCommon.GroupOrTourID = lblTourIDEdit.Text.PadLeft(10, '0');
                     sAction = "C";
                 }
                 objCommon.SetKunden_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T", sAction);
@@ -226,10 +215,9 @@ namespace AppZulassungsdienst.forms
                     Panel1.Visible = false;
                     Panel2.Visible = false;
                 }
-
             }
-
         }
+
         /// <summary>
         /// Löschen, Bearbeiten von Touren und Kunden zur Tour hinzufügen.
         /// </summary>
@@ -237,11 +225,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">GridViewCommandEventArgs</param>
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-
             switch (e.CommandName)
             {
                 case ("Del"):
-                    objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0'); ;
+                    objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
                     objCommon.SetKunden_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T", "D");
                     if (objCommon.Message.Length > 0)
                     {
@@ -255,6 +242,7 @@ namespace AppZulassungsdienst.forms
                         Panel2.Visible = false;
                     }
                     break;
+
                 case ("Insert"):
                     lblTourID.Text = e.CommandArgument.ToString();
                     objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
@@ -265,6 +253,7 @@ namespace AppZulassungsdienst.forms
                     Panel2.Visible = false;
                     Panel1.Visible = true;
                     break;
+
                 case ("Edt"):
                     lblTourIDEdit.Text = e.CommandArgument.ToString();
                     objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
@@ -273,13 +262,9 @@ namespace AppZulassungsdienst.forms
                     Panel1.Visible = false;
                     Panel2.Visible = true;
                     break;
-                default:
-                    break;
             }
-
-
-
         }
+
         /// <summary>
         /// Löschen eines Kunden in einer Tour.
         /// </summary>
@@ -304,10 +289,9 @@ namespace AppZulassungsdienst.forms
                         Panel2.Visible = false;
                     }
                     break;
-                default:
-                    break;
             }
         }
+
         /// <summary>
         /// Bearbeiten einer Tour abbrechen.
         /// </summary>
@@ -319,6 +303,7 @@ namespace AppZulassungsdienst.forms
             Panel1.Visible = false;
             Panel2.Visible = false;
         }
+
         /// <summary>
         /// Zurück zur Startseite.
         /// </summary>

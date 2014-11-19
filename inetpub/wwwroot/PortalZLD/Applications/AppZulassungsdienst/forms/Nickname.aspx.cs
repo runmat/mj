@@ -11,9 +11,10 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Nickname : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private ZLDCommon objCommon;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
         /// </summary>
@@ -52,13 +53,13 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Kundenstammtabelle an Dropdown binden.
         /// </summary>
         private void fillForm()
         {
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKundenStamm.DefaultView;
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
@@ -70,6 +71,7 @@ namespace AppZulassungsdienst.forms
 
             ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKundeSearch.ClientID + ")");
         }
+
         /// <summary>
         /// Nach einem bereits angelegten "nickname" des ausgewählten Kunden suchen(Z_ZLD_GET_NICKNAME).
         /// </summary>
@@ -97,6 +99,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text ="Bitte geben Sie eine Kunndennummer ein!";
             }
         }
+
         /// <summary>
         /// "Nickname" in SAP speichern(Z_ZLD_SET_NICKNAME).
         /// </summary> 
@@ -127,6 +130,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Bitte geben Sie einen Suchbegriff ein!";
             }
         }
+
         /// <summary>
         /// "Nickname" in SAP löschen(Z_ZLD_SET_NICKNAME).
         /// </summary>

@@ -58,8 +58,8 @@ namespace AppZulassungsdienst.lib.Logbuch
         public string VkOrg { get; set; }
         public string VkBur { get; set; }
         public StatusFilter letzterStatus { get; set; }
-        public System.DateTime? Von { get; set; }
-        public System.DateTime? Bis { get; set; }
+        public DateTime? Von { get; set; }
+        public DateTime? Bis { get; set; }
 
         public List<VorgangsartDetails> Vorgangsarten
         {
@@ -229,7 +229,7 @@ namespace AppZulassungsdienst.lib.Logbuch
             return new DataTable();
         }
 
-        public FilialbuchUser LoginUser(string strAppID, string strSessionID, System.Web.UI.Page page, string VkBur, string LoginValue)
+        public FilialbuchUser LoginUser(string strAppID, string strSessionID, System.Web.UI.Page page, string vbur, string LoginValue)
         {
             m_strClassAndMethod = "LogbuchClass.LoginUser";
             m_strAppID = strAppID;
@@ -244,7 +244,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_CONNECT", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
+                    myProxy.setImportParameter("I_VKBUR", vbur);
                     myProxy.setImportParameter("I_BD_NR", LoginValue);
 
                     myProxy.callBapi();
@@ -350,7 +350,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 
 
         public void GetEinträge(string strAppID, string strSessionID, System.Web.UI.Page page, FilialbuchUser FilBuUser,
-            StatusFilter status, string an_kst = null, DateTime? Von = null, DateTime? Bis = null)
+            StatusFilter status, string an_kst = null, DateTime? vonDate = null, DateTime? bisDate = null)
         {
             m_strClassAndMethod = "LogbuchClass.GetEinträge";
             m_strAppID = strAppID;
@@ -362,8 +362,8 @@ namespace AppZulassungsdienst.lib.Logbuch
             {
                 m_blnGestartet = true;
 
-                this.Von = Von;
-                this.Bis = Bis;
+                this.Von = vonDate;
+                this.Bis = bisDate;
                 this.letzterStatus = status;
 
                 string strVon = "";
@@ -371,23 +371,22 @@ namespace AppZulassungsdienst.lib.Logbuch
 
                 if (status == StatusFilter.Alle)
                 {
-                    if (Von == null)
+                    if (vonDate == null)
                     {
                         m_intStatus = 9999;
                         m_strMessage = "Es wurde kein gültiges Von-Datum für die Auswal mitgegeben!";
                         return;
                     }
-                    else if (Bis == null)
+
+                    if (bisDate == null)
                     {
                         m_intStatus = 9999;
                         m_strMessage = "Es wurde kein gültiges Bis-Datum für die Auswal mitgegeben!";
                         return;
                     }
-                    else
-                    {
-                        strVon = ((DateTime)Von).ToShortDateString();
-                        strBis = ((DateTime)Bis).ToShortDateString();
-                    }
+
+                    strVon = ((DateTime)vonDate).ToShortDateString();
+                    strBis = ((DateTime)bisDate).ToShortDateString();
                 }
 
                 try
@@ -516,6 +515,9 @@ namespace AppZulassungsdienst.lib.Logbuch
         /// <summary>
         /// Erstellt einen neuen Filialbucheintrag
         /// </summary>
+        /// <param name="strAppID"></param>
+        /// <param name="strSessionID"></param>
+        /// <param name="page"></param>
         /// <param name="Betreff"></param>
         /// <param name="Text"></param>
         /// <param name="an"></param>
@@ -541,7 +543,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     ltxnr = lsts.InsertString(Text, "MC");
                     if (lsts.E_SUBRC != "0")
                     {
-                        int lstsStatus = 0;
+                        int lstsStatus;
                         Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
                         m_intStatus = lstsStatus;
                         m_strMessage = lsts.E_MESSAGE;
@@ -597,7 +599,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 
         public string GetAntwortToVorgangsart(string vgart)
         {
-            VorgangsartDetails Antwort = lstVorgangsarten.Find((VorgangsartDetails vg) =>
+            VorgangsartDetails Antwort = lstVorgangsarten.Find(vg =>
             {
                 if (vg.Vorgangsart == vgart)
                 {

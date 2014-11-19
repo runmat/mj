@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
 using System.Data;
+using SmartSoft.PdfLibrary;
+using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.forms
 {
     /// <summary>
     /// Nacherfassung Listenansicht.
     /// </summary>
-    public partial class ChangeZLDNachListe : System.Web.UI.Page
+    public partial class ChangeZLDNachListe : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
-        private NacherfZLD objNacherf;
+        private User m_User;
+        private App m_App;
+        protected NacherfZLD objNacherf;
         private ZLDCommon objCommon;
 
         /// <summary>
@@ -48,7 +51,7 @@ namespace AppZulassungsdienst.forms
             //Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
             //Browser Back Problem! Seite wird nicht mehr aus dem Browsercache abgerufen sondern immmer vom Server
             //IsPostback ist nachdem betätigen des BrowserBackButtons immer false
-            //mit Session Variabeln kombinieren um darauf zu reagieren z.B. Session["DatenGesendet"] = true
+            //mit Session Variabeln kombinieren um darauf zu reagieren
 
             if (Session["objCommon"] == null)
             {
@@ -90,8 +93,6 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Visible = false;
                 cmdalleRE.Visible = false;
             }
-
-            
         }
 
         /// <summary>
@@ -103,8 +104,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="Rowfilter">Filterkriterien</param>
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
-            DataView tmpDataView = new DataView();
-            tmpDataView = objNacherf.tblEingabeListe.DefaultView;
+            DataView tmpDataView = objNacherf.tblEingabeListe.DefaultView;
             String strFilter = "";
             if (Rowfilter != null)
             {
@@ -131,7 +131,7 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
-                    trSuche.Visible = !objNacherf.SelAnnahmeAH;
+                    trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     tblGebuehr.Visible = false;
                     ibtnNoFilter.Visible = false;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
@@ -141,7 +141,7 @@ namespace AppZulassungsdienst.forms
             {
                 Result.Visible = true;
                 GridView1.Visible = true;
-                trSuche.Visible = !objNacherf.SelAnnahmeAH;
+                trSuche.Visible = false;
                 Int32 intTempPageIndex = intPageIndex;
                 String strTempSort = "";
                 String strDirection = null;
@@ -216,7 +216,7 @@ namespace AppZulassungsdienst.forms
                         myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
                     }
                     // andere Hintergrundfarbe bei Barkunden
-                    if ((Boolean)objNacherf.tblEingabeListe.Select("ID = " + myId)[0]["Barkunde"] == true)
+                    if ((Boolean)objNacherf.tblEingabeListe.Select("ID = " + myId)[0]["Barkunde"])
                     {
                         row.CssClass = "GridTableBarkunde";
                     }
@@ -235,7 +235,7 @@ namespace AppZulassungsdienst.forms
                     Int32 iMenge = 1;
                     if (ZLDCommon.IsNumeric(hfMenge.Value)) Int32.TryParse(hfMenge.Value, out iMenge);
                     
-                    if ((Boolean)objNacherf.tblEingabeListe.Select("ID = " + myId)[0]["Flieger"] == true && lblid_pos.Text == "10")
+                    if ((Boolean)objNacherf.tblEingabeListe.Select("ID = " + myId)[0]["Flieger"] && lblid_pos.Text == "10")
                     {
                         row.Cells[3].CssClass = "TablePadding Flieger";
                     }
@@ -290,7 +290,7 @@ namespace AppZulassungsdienst.forms
 
                 // Preis Amt bei einigen Filialen ausblenden
                 if (m_User.Groups[0].Authorizationright == 1)
-                {   
+                {
                     GridView1.Columns[12].Visible = false;
                     objNacherf.ShowGebAmt = false;
                     lblGesamtGebAmt.Visible = false;
@@ -299,28 +299,42 @@ namespace AppZulassungsdienst.forms
                 Session["objNacherf"] = objNacherf;
             }
 
-            // Für Modus "Neue AH-Vorgänge" angezeigte Gridspalten und Controls anpassen
+            // Je nach Modus angezeigte Gridspalten und Controls anpassen
+            tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleEC.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleBar.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            cmdalleRE.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+
             if (objNacherf.SelAnnahmeAH)
             {
-                tblGebuehr.Visible = false;
-                cmdalleEC.Visible = false;
-                cmdalleBar.Visible = false;
-                cmdalleRE.Visible = false;
                 cmdOK.Text = "» alle annehmen";
             }
+            // Preis
             GridView1.Columns[10].Visible = !objNacherf.SelAnnahmeAH;
+            // GebPreis
             GridView1.Columns[11].Visible = !objNacherf.SelAnnahmeAH;
-            GridView1.Columns[12].Visible = !objNacherf.SelAnnahmeAH;
-            GridView1.Columns[13].Visible = !objNacherf.SelAnnahmeAH;
+            // Preis_Amt
+            GridView1.Columns[12].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            // Steuer
+            GridView1.Columns[13].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            // Preis KZ
             GridView1.Columns[14].Visible = !objNacherf.SelAnnahmeAH;
+            // Referenz2
             GridView1.Columns[17].Visible = objNacherf.SelAnnahmeAH;
+            // KreisKZ
             GridView1.Columns[18].Visible = objNacherf.SelAnnahmeAH;
+            // Bemerkung
             GridView1.Columns[22].Visible = !objNacherf.SelAnnahmeAH;
+            // Bemerkung AH
             GridView1.Columns[23].Visible = objNacherf.SelAnnahmeAH;
+            // Vorerf-Datum
             GridView1.Columns[24].Visible = objNacherf.SelAnnahmeAH;
-            GridView1.Columns[26].Visible = (!objNacherf.SelAnnahmeAH && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
-            GridView1.Columns[27].Visible = (!objNacherf.SelAnnahmeAH && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
-            GridView1.Columns[28].Visible = (!objNacherf.SelAnnahmeAH && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
+            // EC
+            GridView1.Columns[26].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
+            // Bar
+            GridView1.Columns[27].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
+            // RE
+            GridView1.Columns[28].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
 
             if (objNacherf.Vorgang == "VZ" || objNacherf.Vorgang == "VE" || objNacherf.Vorgang == "AV" || objNacherf.Vorgang == "AX")
             {
@@ -351,7 +365,7 @@ namespace AppZulassungsdienst.forms
             DropDownList ddlPage = (DropDownList)GridNavigation1.FindControl("ddlPageSize");
             if (ddlPage != null)
             {
-                int pageSize = 0;
+                int pageSize;
                 int.TryParse(ddlPage.SelectedValue, out pageSize);
                 objNacherf.ListePageSize = pageSize;
                 objNacherf.ListePageSizeIndex = ddlPage.SelectedIndex;
@@ -389,6 +403,10 @@ namespace AppZulassungsdienst.forms
             if (objNacherf.SelAnnahmeAH)
             {
                 Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&A=true");
+            }
+            else if (objNacherf.SelSofortabrechnung)
+            {
+                Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&S=true");
             }
             else if (objNacherf.Vorgang == "VZ" || objNacherf.Vorgang == "VE" || objNacherf.Vorgang == "AV" || objNacherf.Vorgang == "AX")
             {
@@ -455,8 +473,8 @@ namespace AppZulassungsdienst.forms
                 {
                     if (ZLDCommon.IsDecimal(tmpRow["GebPreis"].ToString()))
                     {
-                        Decimal iTemp = 0;
-                        Decimal iMenge = 1;
+                        Decimal iTemp;
+                        Decimal iMenge;
                         Decimal.TryParse(tmpRow["GebPreis"].ToString(), out iTemp);
                         Decimal.TryParse(tmpRow["Menge"].ToString(), out iMenge);
                         gesamt += iTemp * iMenge;
@@ -500,8 +518,8 @@ namespace AppZulassungsdienst.forms
                     {
                         if (ZLDCommon.IsDecimal(tmpRow["Preis_Amt"].ToString()))
                         {
-                            Decimal iTemp = 0;
-                            Decimal iMenge = 1;
+                            Decimal iTemp;
+                            Decimal iMenge;
                             Decimal.TryParse(tmpRow["Preis_Amt"].ToString(), out iTemp);
                             Decimal.TryParse(tmpRow["Menge"].ToString(), out iMenge);
                             gesamt += iTemp * iMenge;
@@ -584,7 +602,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             try
             {
-                Label ID = (Label)gvRow.FindControl("lblID");
+                Label lblID = (Label)gvRow.FindControl("lblID");
                 Label posID = (Label)gvRow.FindControl("lblid_pos");
                 Label ZulDate = (Label)gvRow.FindControl("lblZulassungsdatum");
                 RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
@@ -592,12 +610,10 @@ namespace AppZulassungsdienst.forms
                 RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
                 Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
                 TextBox ZulDateBox = (TextBox)gvRow.FindControl("txtZulassungsdatum");
-                Label lblGebMatnr = (Label)gvRow.FindControl("lblGebMatnr");
 
-                String SDRelGeb = "";
-                Boolean bBar = false;
-                Boolean bEC = false;
-                Boolean bRE = false;
+                Boolean bBar;
+                Boolean bEC;
+                Boolean bRE;
 
                 Int32 intID = 0;
                 Int32 intPosID = 0;
@@ -617,9 +633,9 @@ namespace AppZulassungsdienst.forms
                     pruefungsrelevant = (((objNacherf.SelAnnahmeAH) && (Loeschkz == "A")) || (Loeschkz == "O"));
                 }
 
-                if (ZLDCommon.IsNumeric(ID.Text))
+                if (ZLDCommon.IsNumeric(lblID.Text))
                 {
-                    Int32.TryParse(ID.Text, out intID);
+                    Int32.TryParse(lblID.Text, out intID);
                 }
 
                 if (ZLDCommon.IsNumeric(posID.Text))
@@ -649,13 +665,11 @@ namespace AppZulassungsdienst.forms
                     {
                         ZulDateBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                        bError = true;
-                        return bError;
+                        return true;
                     }
-                    else if (!checkDate(ZulDateBox))
+                    if (!checkDate(ZulDateBox))
                     {
-                        bError = true;
-                        return bError;
+                        return true;
                     }
                 }
 
@@ -665,8 +679,7 @@ namespace AppZulassungsdienst.forms
                 {
                     ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                    bError = true;
-                    return bError;
+                    return true;
                 }
 
                 TextBox txtBox = (TextBox)gvRow.FindControl("txtPreis");
@@ -691,8 +704,7 @@ namespace AppZulassungsdienst.forms
                     {
                         txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie einen Preis für die markierten Dienstleistungen/Artikel ein!";
-                        bError = true;
-                        return bError;
+                        return true;
                     }
                 }
 
@@ -713,7 +725,8 @@ namespace AppZulassungsdienst.forms
 
                 //ist der Kunde ein Pauschalkunde,  Gebühr und Gebühr Amt unterschiedlich und 
                 //das Gebührenmaterial nicht SD relevant darf der Vorgang nicht abgesendet werden
-                if (m_User.Groups[0].Authorizationright != 1)
+                // Prüfung für "Sofortabrechnung" überspringen
+                if (m_User.Groups[0].Authorizationright != 1 && !objNacherf.SelSofortabrechnung)
                 {
                     DataRow[] RowsPauschal = objNacherf.tblEingabeListe.Select("ID=" + intID);
                     String OhneSteuer = RowsPauschal[0]["OhneSteuer"].ToString();
@@ -736,7 +749,7 @@ namespace AppZulassungsdienst.forms
                                 }
                             }
 
-                            SDRelGeb = objNacherf.GetSDRelevantsGeb(intID, intPosID, gebMat);// ist Gebühr SD relevant?
+                            String SDRelGeb = objNacherf.GetSDRelevantsGeb(intID, intPosID, gebMat);// ist Gebühr SD relevant?
 
                             if (txtBox.Visible && pruefungsrelevant && SDRelGeb != "X")
                             {
@@ -771,7 +784,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 TextBox txtKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
-                if (!objNacherf.SelAnnahmeAH && txtKennzAbc.Text.Length == 0 && pruefungsrelevant && intPosID == 10)
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && txtKennzAbc.Text.Length == 0 && pruefungsrelevant && intPosID == 10)
                 {
                     txtKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
@@ -779,7 +792,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 // Speichern der möglichen Eingabefelder im Grid
-                string zdat = "";
+                string zdat;
                 if (ZulDateBox.Visible)
                 {
                     zdat = ZulDateBox.Text;
@@ -788,9 +801,15 @@ namespace AppZulassungsdienst.forms
                 {
                     zdat = ZulDate.Text;
                 }
+
+                // immer nur die Felder speichern, die man auch im Grid bearbeiten kann
                 if (objNacherf.SelAnnahmeAH)
                 {
                     objNacherf.UpdateDB_GridData(intID, intPosID, txtKennzAbc.Text, zdat, txtAmt.Text);
+                }
+                else if (objNacherf.SelSofortabrechnung)
+                {
+                    objNacherf.UpdateDB_GridData(intID, intPosID, decPreis, decGeb, decPreisKZ, txtKennzAbc.Text, zdat);
                 }
                 else
                 {
@@ -817,8 +836,7 @@ namespace AppZulassungsdienst.forms
                         Row["RE"] = bRE;
                         if (ZulDateBox.Visible)
                         {
-                            String ZDat = "";
-                            ZDat = ZLDCommon.toShortDateStr(ZulDateBox.Text);
+                            String ZDat = ZLDCommon.toShortDateStr(ZulDateBox.Text);
                             if (ZDat != String.Empty)
                             { Row["Zulassungsdatum"] = ZDat; }
                         }
@@ -854,9 +872,7 @@ namespace AppZulassungsdienst.forms
         private Boolean checkDate(TextBox ZulDate)
         {
             Boolean bReturn = true;
-            String ZDat = "";
-
-            ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
+            String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
             if (ZDat != String.Empty)
             {
                 if (ZLDCommon.IsDate(ZDat) == false)
@@ -962,7 +978,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -972,7 +988,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
            Common.SetEndASPXAccess(this);
         }
@@ -1002,17 +1018,24 @@ namespace AppZulassungsdienst.forms
                 if (e.CommandName == "Del")
                 {
                     objNacherf = (NacherfZLD)Session["objNacherf"];
+
+                    if (objNacherf.SelSofortabrechnung)
+                    {
+                        lblError.Text = "Das Löschen von Vorgängen ist in dieser Funktion nicht zulässig!";
+                        return;
+                    }
+
                     lblError.Text = "";
                     Int32 Index;
                     Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                    Label ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                    Label lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                     Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                     Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
 
                     String Loeschkz = "";
                     Int32 IDSatz;
                     Int32 IDPos;
-                    Int32.TryParse(ID.Text, out IDSatz);
+                    Int32.TryParse(lblID.Text, out IDSatz);
                     Int32.TryParse(lblIDPos.Text, out IDPos);
                     if (lblLoeschKZ.Text == "L")
                     {
@@ -1080,7 +1103,7 @@ namespace AppZulassungsdienst.forms
                 {
                     objNacherf = (NacherfZLD)Session["objNacherf"];
 
-                    String lkz = "";
+                    String lkz;
                     if (objNacherf.SelAnnahmeAH)
                     {
                         lkz = "A";
@@ -1094,23 +1117,19 @@ namespace AppZulassungsdienst.forms
                     Int32.TryParse(e.CommandArgument.ToString(), out Index);
                     if (CheckGridRow(GridView1.Rows[Index], "", true)==false) 
                     {
-                        Label ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                        Label lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                         Label IDPosEdit = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                         Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
 
                         Int32 IDSatz;
-                        Int32.TryParse(ID.Text, out IDSatz);
+                        Int32.TryParse(lblID.Text, out IDSatz);
                         if (lblLoeschKZ.Text == "L")
-                        {
                             throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
-                        }
-                        else
+
+                        objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, lkz, 0);
+                        if (objNacherf.SelAnnahmeAH)
                         {
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, lkz, 0);
-                            if (objNacherf.SelAnnahmeAH)
-                            {
-                                objNacherf.SetBEBStatus(IDSatz, "A");
-                            }
+                            objNacherf.SetBEBStatus(IDSatz, "A");
                         }
 
                         if (objNacherf.Status != 0)
@@ -1228,14 +1247,21 @@ namespace AppZulassungsdienst.forms
             LoescheAusEingabeliste("Status = 'OK'");
             
             Fillgrid(0, "", sFilter);
+
+            // Status
             GridView1.Columns[1].Visible = false;
+            // id_sap
             GridView1.Columns[3].Visible = true;
+            // PosLoesch
             GridView1.Columns[4].Visible = true;
+            // Buttons
             GridView1.Columns[25].Visible = true;
 
+            // GebPreis
             if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = true; }
-            if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = true; }
-            if (m_User.Groups[0].Authorizationright == 1 && GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
+            // Preis_Amt
+            if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = (m_User.Groups[0].Authorizationright != 1); }
+            // Steuer
             if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = true; }
 
             if (objNacherf.tblEingabeListe.DefaultView.Count == 0)
@@ -1247,7 +1273,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = false;
                 cmdalleBar.Enabled = false;
                 cmdalleRE.Enabled = false;
-                trSuche.Visible = !objNacherf.SelAnnahmeAH;
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tblGebuehr.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
@@ -1260,8 +1286,8 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                trSuche.Visible = true;
-                tblGebuehr.Visible = !objNacherf.SelAnnahmeAH;
+                trSuche.Visible = false;
+                tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tab1.Visible = true;
             }
 
@@ -1291,17 +1317,24 @@ namespace AppZulassungsdienst.forms
             Session["Rowfilter"] = null;
             Session["SucheValue"] = null;
             Fillgrid(0, "", "");
+
+            // Status
             GridView1.Columns[1].Visible = false;
+            // id_sap
             GridView1.Columns[3].Visible = true;
+            // PosLoesch
             GridView1.Columns[4].Visible = true;
+            // Buttons
             GridView1.Columns[25].Visible = true;
 
+            // GebPreis
             if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = true; }
-            if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = true; }
-            if (m_User.Groups[0].Authorizationright == 1 && GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
+            // Preis_Amt
+            if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = (m_User.Groups[0].Authorizationright != 1); }
+            // Steuer
             if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = true; }
             
-            ibtnSearch.Visible=true;
+            ibtnSearch.Visible = true;
             ibtnNoFilter.Visible = false;
             if (objNacherf.tblEingabeListe.DefaultView.Count == 0)
             {
@@ -1312,7 +1345,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = false;
                 cmdalleBar.Enabled = false;
                 cmdalleRE.Enabled = false;
-                trSuche.Visible = !objNacherf.SelAnnahmeAH;
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tblGebuehr.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
@@ -1325,8 +1358,8 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                trSuche.Visible = true;
-                tblGebuehr.Visible = !objNacherf.SelAnnahmeAH;
+                trSuche.Visible = false;
+                tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tab1.Visible = true;
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
@@ -1342,8 +1375,6 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void cmdSend_Click(object sender, EventArgs e)
         {
-            //objNacherf = (NacherfZLD)Session["objNacherf"];
-
             // Im "Neue AH-Vorgänge"-Modus nur Daten per "Update" in SAP speichern und Grid aktualisieren, 
             // sonst per "Save" in SAP auch SD-Aufträge und Barquittungen erzeugen
             if (objNacherf.SelAnnahmeAH)
@@ -1361,8 +1392,11 @@ namespace AppZulassungsdienst.forms
                 lblGesamtGebRE.Text = "0,00";
                 lblGesamtGeb.Text = "0,00";
 
+                // Status
                 GridView1.Columns[1].Visible = true;
+                // PosLoesch
                 GridView1.Columns[4].Visible = false;
+                // Buttons
                 GridView1.Columns[25].Visible = false;
             }
             else
@@ -1394,7 +1428,7 @@ namespace AppZulassungsdienst.forms
             {
                 DataRow[] rowOK = objNacherf.tblEingabeListe.Select(objNacherf.tblEingabeListe.DefaultView.RowFilter);
 
-                String lkz = "";
+                String lkz;
                 if (objNacherf.SelAnnahmeAH)
                 {
                     lkz = "A";
@@ -1524,8 +1558,8 @@ namespace AppZulassungsdienst.forms
             DataTable tblTemp = CreateExcelTable();
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, null, 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
         }
 
         /// <summary>
@@ -1558,6 +1592,19 @@ namespace AppZulassungsdienst.forms
                 tblTemp.Columns.Add("R/W", typeof(String));
                 tblTemp.Columns.Add("F", typeof(String));
                 tblTemp.Columns.Add("Bemerkung", typeof(String));
+            }
+            else if (objNacherf.SelSofortabrechnung)
+            {
+                tblTemp.Columns.Add("Preis", typeof(String));
+                tblTemp.Columns.Add("Preis KZ", typeof(String));
+                tblTemp.Columns.Add("Zul.-Datum", typeof(String));
+                tblTemp.Columns.Add("Referenz1", typeof(String));
+                tblTemp.Columns.Add("Kennz.", typeof(String));
+                tblTemp.Columns.Add("R/W", typeof(String));
+                tblTemp.Columns.Add("F", typeof(String));
+                tblTemp.Columns.Add("EC", typeof(String));
+                tblTemp.Columns.Add("Bar", typeof(String));
+                tblTemp.Columns.Add("RE", typeof(String));
             }
             else
             {
@@ -1609,6 +1656,14 @@ namespace AppZulassungsdienst.forms
                     NewRow["Amt"] = dRow["KennKZ"].ToString();
                     NewRow["Bemerkung"] = dRow["Bemerkung"].ToString();
                 }
+                else if (objNacherf.SelSofortabrechnung)
+                {
+                    NewRow["Preis"] = dRow["Preis"].ToString();
+                    NewRow["Preis KZ"] = dRow["PreisKZ"].ToString();
+                    NewRow["EC"] = ZLDCommon.BoolToX((Boolean)dRow["EC"]);
+                    NewRow["Bar"] = ZLDCommon.BoolToX((Boolean)dRow["Bar"]);
+                    NewRow["RE"] = ZLDCommon.BoolToX((Boolean)dRow["RE"]);
+                }
                 else
                 {
                     NewRow["Preis"] = dRow["Preis"].ToString();
@@ -1623,7 +1678,7 @@ namespace AppZulassungsdienst.forms
                 tblTemp.Rows.Add(NewRow);
             }
 
-            if (!objNacherf.SelAnnahmeAH)
+            if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung)
             {
                 DataRow GesRow = tblTemp.NewRow();
                 calculateGebuehr();
@@ -1668,7 +1723,7 @@ namespace AppZulassungsdienst.forms
             if (CheckGrid("R") == false)
             {
                 lblError.Text = "";
-                //objNacherf = (NacherfZLD)Session["objNacherf"];
+
                 objNacherf.SaveZLDNacherfassung(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, objCommon.tblMaterialStamm);
                 
                 if (objNacherf.Status != 0)
@@ -1685,40 +1740,49 @@ namespace AppZulassungsdienst.forms
                         return;
                     }
                     lblError.Text = objNacherf.Message;
-                    
-                    DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status <> 'OK' AND Status <>''");
-                    if (rowListe.Length > 0)
+
+                    if (objNacherf.SelSofortabrechnung)
                     {
-                        foreach (DataRow dRow in rowListe) 
-                        {
-                            if (dRow["Status"].ToString().Contains("SD-Auftrag ist bereits angelegt")) 
-                            {
-                                Int32 id;
-                                Int32.TryParse(dRow["ID"].ToString(), out id);
-                                objNacherf.SetAbgerechnet(id);
-                            }
-                        
-                        }
-                        lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
-                        lblMessage.Visible = false;
-                    }
-
-                    rowListe = objNacherf.tblEingabeListe.Select("Status = 'OK'");
-
-                    if (rowListe.Length > 0)
-                    {
-                        foreach (DataRow dRow in rowListe)
-                        {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objNacherf.SetAbgerechnet(id);
-                            //objNacherf.tblEingabeListe.Rows.Remove(dRow);
-                        }
-
                         lblMessage.Visible = true;
                         lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                         lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-                        Session["DatenGesendet"] = true;
+                    }
+                    else
+                    {
+                        DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status <> 'OK' AND Status <>''");
+                        if (rowListe.Length > 0)
+                        {
+                            foreach (DataRow dRow in rowListe)
+                            {
+                                if (dRow["Status"].ToString().Contains("SD-Auftrag ist bereits angelegt"))
+                                {
+                                    Int32 id;
+                                    Int32.TryParse(dRow["ID"].ToString(), out id);
+                                    objNacherf.SetAbgerechnet(id);
+                                }
+                            }
+                            lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                            lblMessage.Visible = false;
+                        }
+
+                        rowListe = objNacherf.tblEingabeListe.Select("Status = 'OK'");
+
+                        if (rowListe.Length > 0)
+                        {
+                            if (!objNacherf.SelSofortabrechnung)
+                            {
+                                foreach (DataRow dRow in rowListe)
+                                {
+                                    Int32 id;
+                                    Int32.TryParse(dRow["ID"].ToString(), out id);
+                                    objNacherf.SetAbgerechnet(id);
+                                }
+                            }
+
+                            lblMessage.Visible = true;
+                            lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
+                            lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
+                        }
                     }
 
                     cmdSend.Enabled = false;
@@ -1733,7 +1797,25 @@ namespace AppZulassungsdienst.forms
                     {
                         strFilter = (String)this.Session["Rowfilter"];
                     }
-                    Fillgrid(0, "", "Status = 'OK' OR Status <> ''");
+
+                    if (!objNacherf.SelSofortabrechnung)
+                    {
+                        Fillgrid(0, "", "Status = 'OK' OR Status <> ''");
+                    }
+                    else
+                    {
+                        // Nach Absenden der Sofortabrechnungen Datensätze wieder aus SQL-DB löschen
+                        DataRow[] gespeicherte = objNacherf.tblEingabeListe.Select("PosLoesch = 'O' OR PosLoesch = 'L'");
+                        foreach (DataRow dRow in gespeicherte)
+                        {
+                            Int32 id;
+                            Int32.TryParse(dRow["ID"].ToString(), out id);
+                            objNacherf.DeleteRecordSet(id);
+                        }
+
+                        Fillgrid(0, "", "PosLoesch = 'O' OR PosLoesch = 'L'");
+                    }              
+
                     lblGesamtGebAmt.Text = "0,00";
                     lblGesamtGebEC.Text = "0,00";
                     lblGesamtGebBar.Text = "0,00";
@@ -1741,20 +1823,71 @@ namespace AppZulassungsdienst.forms
                     lblGesamtGeb.Text = "0,00";
                     Session["Rowfilter"] = strFilter;
                         
+                    // Status
                     GridView1.Columns[1].Visible = true;
+                    // PosLoesch
                     GridView1.Columns[4].Visible = false;
+                    // Buttons
                     GridView1.Columns[25].Visible = false;
+                    // EC
                     GridView1.Columns[26].Visible = false;
+                    // Bar
                     GridView1.Columns[27].Visible = false;
+                    // RE
                     GridView1.Columns[28].Visible = false;
 
+                    // GebPreis
                     if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = false; }
+                    // Preis_Amt
                     if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
-                    if (m_User.Groups[0].Authorizationright == 1 && GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
+                    // Steuer
                     if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = false; }
-                    if (objNacherf.tblBarquittungen.Rows.Count > 0)
+
+                    if (objNacherf.SelSofortabrechnung && !String.IsNullOrEmpty(objNacherf.SofortabrechnungVerzeichnis))
                     {
-                        if (objNacherf.tblBarquittungen.Columns.Contains("Filename") == false)
+                        DataTable showTable = new DataTable();
+                        showTable.Columns.Add("FILENAME", typeof(String));
+                        showTable.Columns.Add("Path", typeof(String));
+
+                        String NetworkPath;
+                        if (m_User.IsTestUser)
+                        {
+                            NetworkPath = "\\\\192.168.10.96\\test\\portal\\sofortabrechnung\\";
+                        }
+                        else
+                        {
+                            NetworkPath = "\\\\192.168.10.96\\prod\\portal\\sofortabrechnung\\";
+                        }
+
+                        List<byte[]> filesByte = new List<byte[]>();
+
+                        String FolderName = objNacherf.SofortabrechnungVerzeichnis.TrimStart('/');
+
+                        if (Directory.Exists(NetworkPath + FolderName))
+                        {
+                            var files = Directory.GetFiles(NetworkPath + FolderName + "\\", "*.pdf");
+                            foreach (string sFile in files)
+                            {
+                                filesByte.Add(File.ReadAllBytes(sFile));
+                            }
+
+                            string TargetFileName = "Sofortabrechnung_" + FolderName + ".pdf";
+                            string sPath = NetworkPath + FolderName + "\\" + TargetFileName;
+                            // Mergen der einzelnen PDF´s in ein großes PDF
+                            File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, false));
+                            DataRow PrintRow = showTable.NewRow();
+                            PrintRow["FILENAME"] = TargetFileName;
+                            PrintRow["Path"] = sPath;
+                            showTable.Rows.Add(PrintRow);
+                        }
+
+                        GridView3.DataSource = showTable;
+                        GridView3.DataBind();
+                        MPESofortabrechnungen.Show();
+                    }
+                    else if (objNacherf.tblBarquittungen.Rows.Count > 0)
+                    {
+                        if (!objNacherf.tblBarquittungen.Columns.Contains("Filename"))
                         {
                             objNacherf.tblBarquittungen.Columns.Add("Filename", typeof(String));
                             objNacherf.tblBarquittungen.Columns.Add("Path", typeof(String));
@@ -1763,7 +1896,7 @@ namespace AppZulassungsdienst.forms
                             {
                                 BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
                                 if (m_User.IsTestUser)
-                                {BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";}
+                                { BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf"; }
                                 else { BarRow["Path"] = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf"; }
                             }
                         }
@@ -1771,6 +1904,7 @@ namespace AppZulassungsdienst.forms
                         GridView2.DataBind();
                         MPEBarquittungen.Show();
                     }
+
                     Session["objNacherf"] = objNacherf;
                 }
             }
@@ -1784,7 +1918,6 @@ namespace AppZulassungsdienst.forms
             if (CheckGrid(rowupdate) == false)
             {
                 lblError.Text = "";
-                //objNacherf = (NacherfZLD)Session["objNacherf"];
 
                 // Für "Neue AH-Vorgänge" vor dem Speichern in SAP eine Preisfindung durchführen 
                 // (v.a. wichtig für Abmeldungen, bei denen man in der Listenansicht das Amt ergänzt/geändert hat)
@@ -1833,13 +1966,20 @@ namespace AppZulassungsdienst.forms
         {
             try
             {
-                //objNacherf = (NacherfZLD)Session["objNacherf"];
-
                 if (objNacherf.SelAnnahmeAH)
                 {
                     Session["Rowfilter"] = null;
 
                     LoescheAusEingabeliste("PosLoesch = 'A' OR PosLoesch = 'L'");
+
+                    lblError.Text = "";
+                    lblMessage.Visible = false;
+                }
+                else if (objNacherf.SelSofortabrechnung)
+                {
+                    Session["Rowfilter"] = null;
+
+                    LoescheAusEingabeliste("PosLoesch = 'O' OR PosLoesch = 'L'");
 
                     lblError.Text = "";
                     lblMessage.Visible = false;
@@ -1896,7 +2036,7 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
-                    trSuche.Visible = !objNacherf.SelAnnahmeAH;
+                    trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     tblGebuehr.Visible = false;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
@@ -1910,37 +2050,31 @@ namespace AppZulassungsdienst.forms
                     cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                     cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
                     trSuche.Visible = false;
-                    tblGebuehr.Visible = !objNacherf.SelAnnahmeAH;
+                    tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     tab1.Visible = true;
                     ddlSuche.SelectedIndex = 0;
                     txtSuche.Text = "";
-                    ibtnSearch.Visible = !objNacherf.SelAnnahmeAH;
+                    ibtnSearch.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     ibtnNoFilter.Visible = false;
                     Fillgrid(0, "", null);
                 }
                 cmdContinue.Visible = false;
 
+                // Status
                 GridView1.Columns[1].Visible = false;
+                // id_sap
                 GridView1.Columns[3].Visible = true;
+                // PosLoesch
                 GridView1.Columns[4].Visible = true;
+                // Buttons
                 GridView1.Columns[25].Visible = true;
 
-                if (GridView1.Columns[11] != null)
-                {
-                    GridView1.Columns[11].Visible = !objNacherf.SelAnnahmeAH;
-                }
-                if (GridView1.Columns[12] != null)
-                {
-                    GridView1.Columns[12].Visible = !objNacherf.SelAnnahmeAH;
-                }
-                if (m_User.Groups[0].Authorizationright == 1 && GridView1.Columns[12] != null)
-                {
-                    GridView1.Columns[12].Visible = false;
-                }
-                if (GridView1.Columns[13] != null)
-                {
-                    GridView1.Columns[13].Visible = !objNacherf.SelAnnahmeAH;
-                }
+                // GebPreis
+                if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = !objNacherf.SelAnnahmeAH; }
+                // Preis_Amt
+                if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && m_User.Groups[0].Authorizationright != 1); }
+                // Steuer
+                if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung); }
             }
             catch (Exception ex)
             {
@@ -2008,7 +2142,6 @@ namespace AppZulassungsdienst.forms
             RadioButton rbBar = (RadioButton)sender;
             GridViewRow gvRow = (GridViewRow)rbBar.Parent.Parent;
             Label lblID = (Label)gvRow.FindControl("lblID");
-            Label lblid_pos = (Label)gvRow.FindControl("lblid_pos");
             DataRow[] RowIDs = objNacherf.tblEingabeListe.Select("ID = " + lblID.Text);
             foreach (DataRow dRow in RowIDs)
             {
@@ -2109,6 +2242,16 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Sofortabrechnungsdialog schließen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdClose2_Click(object sender, EventArgs e)
+        {
+            MPESofortabrechnungen.Hide();
+        }
+
+        /// <summary>
         /// Barquittung drucken.
         /// </summary>
         /// <param name="sender"></param>
@@ -2121,6 +2264,22 @@ namespace AppZulassungsdienst.forms
                 Session["App_Filepath"] = e.CommandArgument;
                 ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
                 MPEBarquittungen.Show();
+            }
+        }
+
+        /// <summary>
+        /// Sofortabrechnung drucken.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView3_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Print")
+            {
+                Session["App_ContentType"] = "Application/pdf";
+                Session["App_Filepath"] = e.CommandArgument;
+                ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                MPESofortabrechnungen.Show();
             }
         }
 
@@ -2163,48 +2322,22 @@ namespace AppZulassungsdienst.forms
 
             if (PosID == 10)
             {
-                if (objNacherf.SelAnnahmeAH)
-                {
-                    bReturn = true;
-                }
-                else
+                if (!objNacherf.SelAnnahmeAH)
                 {
                     switch (Vorgang)
                     {
                         case "NZ":
-                            bReturn = false;
-                            break;
                         case "AN":
-                            bReturn = false;
-                            break;
                         case "AA":
-                            bReturn = false;
-                            break;
                         case "AB":
-                            bReturn = false;
-                            break;
                         case "AG":
-                            bReturn = false;
-                            break;
                         case "AS":
-                            bReturn = false;
-                            break;
                         case "AU":
-                            bReturn = false;
-                            break;
                         case "AF":
-                            bReturn = false;
-                            break;
                         case "AK":
-                            bReturn = false;
-                            break;
                         case "AZ":
-                            bReturn = false;
-                            break;
                         case "ON":
                             bReturn = false;
-                            break;
-                        default:
                             break;
                     }
                 }
@@ -2227,48 +2360,22 @@ namespace AppZulassungsdienst.forms
 
             if (PosID == 10)
             {
-                if (objNacherf.SelAnnahmeAH)
-                {
-                    bReturn = false;
-                }
-                else
+                if (!objNacherf.SelAnnahmeAH)
                 {
                     switch (Vorgang)
                     {
                         case "NZ":
-                            bReturn = true;
-                            break;
                         case "AN":
-                            bReturn = true;
-                            break;
                         case "AA":
-                            bReturn = true;
-                            break;
                         case "AB":
-                            bReturn = true;
-                            break;
                         case "AG":
-                            bReturn = true;
-                            break;
                         case "AS":
-                            bReturn = true;
-                            break;
                         case "AU":
-                            bReturn = true;
-                            break;
                         case "AF":
-                            bReturn = true;
-                            break;
                         case "AK":
-                            bReturn = true;
-                            break;
                         case "AZ":
-                            bReturn = true;
-                            break;
                         case "ON":
                             bReturn = true;
-                            break;
-                        default:
                             break;
                     }
                 }

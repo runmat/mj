@@ -13,8 +13,8 @@ namespace AppZulassungsdienst.forms
     public partial class ChangeZLDKomplett : System.Web.UI.Page
     {
         #region Declarations
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private KomplettZLD objKompletterf;
         private ZLDCommon objCommon;
         Boolean _backfromList;// Flag, ob man von der Eingabeliste kommt
@@ -37,9 +37,9 @@ namespace AppZulassungsdienst.forms
             m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            _backfromList = false;
 
-            if (Request.QueryString["B"] != null) { _backfromList = true; }
+            _backfromList = (Request.QueryString["B"] != null);
+
             if (m_User.Reference.Trim(' ').Length == 0)
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
@@ -101,7 +101,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -111,7 +111,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
             lblError.Text = "";
@@ -130,7 +130,7 @@ namespace AppZulassungsdienst.forms
             proofDienstGrid(ref tblData);
 
             Int32 NewPosID = 0;
-            Int32 NewPosIDData = 0;
+            Int32 NewPosIDData;
             if (objKompletterf.Positionen.Rows.Count > 0)
             {
                 Int32.TryParse(objKompletterf.Positionen.Rows[objKompletterf.Positionen.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
@@ -159,8 +159,7 @@ namespace AppZulassungsdienst.forms
             tblRow["PosLoesch"] = "";
             tblData.Rows.Add(tblRow);
             Session["tblDienst"] = tblData;
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "Not PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataSource = tblData;
@@ -291,8 +290,7 @@ namespace AppZulassungsdienst.forms
                     }
 
                     Session["tblDienst"] = tblData;
-                    DataView tmpDataView = new DataView();
-                    tmpDataView = tblData.DefaultView;
+                    DataView tmpDataView = tblData.DefaultView;
                     tmpDataView.RowFilter = "Not PosLoesch = 'L'";
                     GridView1.DataSource = tmpDataView;
                     GridView1.DataBind();
@@ -354,10 +352,10 @@ namespace AppZulassungsdienst.forms
                 {
                     sUrl = "http://" + sUrl;
                 }
-                String popupBuilder;
+                
                 if (!ClientScript.IsClientScriptBlockRegistered("clientScript"))
                 {
-                    popupBuilder = "<script languange=\"Javascript\">";
+                    String popupBuilder = "<script languange=\"Javascript\">";
                     popupBuilder += "window.open('" + sUrl + "', 'POPUP', 'dependent=yes,location=yes,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no');";
                     popupBuilder += "</script>";
                     ClientScript.RegisterClientScriptBlock(this.GetType(), "POPUP", popupBuilder, false);
@@ -437,14 +435,11 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
-
             bool blnSonstigeDLOffen = false;
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if ((ddl.SelectedValue == CONST_IDSONSTIGEDL) && ((String.IsNullOrEmpty(lblDLBezeichnung.Text)) || (lblDLBezeichnung.Text == "Sonstige Dienstleistung")))
                 {
                     blnSonstigeDLOffen = true;
@@ -470,13 +465,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
-
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if (ddl.SelectedValue == CONST_IDSONSTIGEDL)
                 {
                     lblDLBezeichnung.Text = dlgErfassungDLBez.DLBezeichnung;
@@ -513,8 +505,7 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && txtHauptPos.Text.Length > 0)
             {
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
                 tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
                 tmpDataView.Sort = "Matnr";
                 if (tmpDataView.Count > 0)
@@ -721,7 +712,7 @@ namespace AppZulassungsdienst.forms
             {
                 hfKunnr.Value = txtKunnr.Text;
                 tblData.Rows.Clear();
-                Int16 PosCount = 1;
+
                 // ermittelte Preise ins Dienstleistungsgrid laden
                 foreach (DataRow dRow in objKompletterf.Positionen.Rows)
                 {
@@ -777,15 +768,13 @@ namespace AppZulassungsdienst.forms
                         }
 
                         tblData.Rows.Add(tblRow);
-                        PosCount++;
                     }
                     else if (dRow["id_Kopf"].ToString() == objKompletterf.KopfID.ToString() && dRow["WebMTArt"].ToString() == "K")
                     { txtPreisKennz.Text = dRow["Preis"].ToString(); }
                     else if (dRow["id_Kopf"].ToString() == objKompletterf.KopfID.ToString() && dRow["WebMTArt"].ToString() == "S")
                     { txtSteuer.Text = dRow["Preis"].ToString(); }
                 }
-                DataView tmpDataView = new DataView();
-                tmpDataView = tblData.DefaultView;
+                DataView tmpDataView = tblData.DefaultView;
                 tmpDataView.RowFilter = "Not PosLoesch = 'L'";
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
@@ -836,7 +825,7 @@ namespace AppZulassungsdienst.forms
             if (lblError.Text == "")
             {
                 tblData.Rows.Clear();
-                Int16 PosCount = 1;
+
                 foreach (DataRow dRow in objKompletterf.Positionen.Rows)
                 {
                     if (dRow["WebMTArt"].ToString() == "D")
@@ -876,8 +865,6 @@ namespace AppZulassungsdienst.forms
                         {
                             tblRow["DLBezeichnung"] = "";
                         }
-
-                        PosCount++;
                     }
                     else if (dRow["id_Kopf"].ToString() == objKompletterf.KopfID.ToString() && dRow["WebMTArt"].ToString() == "K")
                     { 
@@ -905,8 +892,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
 
-                DataView tmpDataView = new DataView();
-                tmpDataView = tblData.DefaultView;
+                DataView tmpDataView = tblData.DefaultView;
                 tmpDataView.RowFilter = "NOT PosLoesch = 'L'";
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
@@ -933,7 +919,7 @@ namespace AppZulassungsdienst.forms
             proofDienstGrid(ref tblData);
 
             Int32 NewPosID = 0;
-            Int32 NewPosIDData = 0;
+            Int32 NewPosIDData;
             if (objKompletterf.Positionen.Rows.Count > 0)
             {
                 Int32.TryParse(objKompletterf.Positionen.Rows[objKompletterf.Positionen.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
@@ -1085,7 +1071,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 Session["tblDienst"] = tblData;
-                Decimal Preis = 0;
+                Decimal Preis;
                 if (ZLDCommon.IsDecimal(txtPreisKennz.Text))
                 {
                     Decimal.TryParse(txtPreisKennz.Text, out Preis);
@@ -1105,7 +1091,7 @@ namespace AppZulassungsdienst.forms
                 {
                     objKompletterf.Steuer = 0;
                 }
-                Boolean bnoError = false;
+                Boolean bnoError;
 
                 proofCPDonSave();
                 if (chkCPD.Checked)
@@ -1306,8 +1292,7 @@ namespace AppZulassungsdienst.forms
                     tblData.Rows.Add(tblRow);
                 }
             }
-            DataView tmpDataView = new DataView();
-            tmpDataView = tblData.DefaultView;
+            DataView tmpDataView = tblData.DefaultView;
             tmpDataView.RowFilter = "Not PosLoesch = 'L'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -1322,8 +1307,7 @@ namespace AppZulassungsdienst.forms
                 lblPreisKennz.Visible = false;
                 txtPreisKennz.Visible = false;
                 cmdCreate.Visible = false;
-                cmdNewDLPrice.Visible = false;
-                if (objKompletterf.Positionen.Rows.Count > 0) { cmdNewDLPrice.Visible = true; }
+                cmdNewDLPrice.Visible = (objKompletterf.Positionen.Rows.Count > 0);
             }
             else
             {
@@ -1344,8 +1328,7 @@ namespace AppZulassungsdienst.forms
 
             GridViewRow gridRow = GridView1.Rows[0];
             TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
             tmpDView.RowFilter = "Matnr = " + txtHauptPos.Text;
             tmpDView.Sort = "Matnr";
             if (tmpDView.Count > 0)
@@ -1408,138 +1391,131 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = objKompletterf.Message;
                 return;
             }
+
+            //Positionstablle erstellen(Dienstleistung/Artikel)
+            DataTable tblData = new DataTable();
+            tblData.Columns.Add("Search", typeof(String));
+            tblData.Columns.Add("Value", typeof(String));
+            tblData.Columns.Add("Text", typeof(String));
+            tblData.Columns.Add("Preis", typeof(Decimal));
+            tblData.Columns.Add("GebPreis", typeof(Decimal));
+            tblData.Columns.Add("ID_POS", typeof(Int32));
+            tblData.Columns.Add("NewPos", typeof(String));
+            tblData.Columns.Add("PosLoesch", typeof(String));
+            tblData.Columns.Add("SdRelevant", typeof(String));
+            tblData.Columns.Add("GebMatPflicht", typeof(String));
+            tblData.Columns.Add("GebAmt", typeof(Decimal));
+            tblData.Columns.Add("UPreis", typeof(Decimal));
+            tblData.Columns.Add("Differrenz", typeof(Decimal));
+            tblData.Columns.Add("Konditionstab", typeof(String));
+            tblData.Columns.Add("Konditionsart", typeof(String));
+            tblData.Columns.Add("CALCDAT", typeof(DateTime));
+            tblData.Columns.Add("Menge", typeof(String));
+            tblData.Columns.Add("OldValue", typeof(String));
+            tblData.Columns.Add("DLBezeichnung", typeof(String));
+
+            for (int i = 1; i < 4; i++)
+            {
+                DataRow tblRow = tblData.NewRow();
+
+                tblRow["Search"] = "";
+                tblRow["Value"] = "0";
+                tblRow["OldValue"] = "";
+                tblRow["ID_POS"] = i * 10;
+                tblRow["Preis"] = 0;
+                tblRow["GebPreis"] = 0;
+                tblRow["PosLoesch"] = "";
+                tblRow["NewPos"] = "0";
+                tblRow["SdRelevant"] = "";
+                tblRow["GebMatPflicht"] = "";
+                tblRow["GebAmt"] = 0;
+                tblRow["Menge"] = "";
+                tblRow["DLBezeichnung"] = "";
+
+                tblData.Rows.Add(tblRow);
+            }
+
+            GridView1.DataSource = tblData;
+            GridView1.DataBind();
+            if (objKompletterf.saved == false)
+            {   // Spalten wie Preis, Gebühr, Gebühr Amt, Steuer, Preis Kennz. ausblenden,
+                // erst nachdem Preise gezogen wurden
+                GridView1.Columns[3].Visible = false;
+                GridView1.Columns[4].Visible = false;
+                GridView1.Columns[5].Visible = false;
+                lblSteuer.Visible = false;
+                txtSteuer.Visible = false;
+                lblPreisKennz.Visible = false;
+                txtPreisKennz.Visible = false;
+                cmdCreate.Visible = false;// Speichern/Neu
+                cmdNewDLPrice.Visible = (objKompletterf.Positionen.Rows.Count > 0);
+            }
             else
-            {   //Positionstablle erstellen(Dienstleistung/Artikel)
-                DataTable tblData = new DataTable();
-                tblData.Columns.Add("Search", typeof(String));
-                tblData.Columns.Add("Value", typeof(String));
-                tblData.Columns.Add("Text", typeof(String));
-                tblData.Columns.Add("Preis", typeof(Decimal));
-                tblData.Columns.Add("GebPreis", typeof(Decimal));
-                tblData.Columns.Add("ID_POS", typeof(Int32));
-                tblData.Columns.Add("NewPos", typeof(String));
-                tblData.Columns.Add("PosLoesch", typeof(String));
-                tblData.Columns.Add("SdRelevant", typeof(String));
-                tblData.Columns.Add("GebMatPflicht", typeof(String));
-                tblData.Columns.Add("GebAmt", typeof(Decimal));
-                tblData.Columns.Add("UPreis", typeof(Decimal));
-                tblData.Columns.Add("Differrenz", typeof(Decimal));
-                tblData.Columns.Add("Konditionstab", typeof(String));
-                tblData.Columns.Add("Konditionsart", typeof(String));
-                tblData.Columns.Add("CALCDAT", typeof(DateTime));
-                tblData.Columns.Add("Menge", typeof(String));
-                tblData.Columns.Add("OldValue", typeof(String));
-                tblData.Columns.Add("DLBezeichnung", typeof(String));
-
-                for (int i = 1; i < 4; i++)
+            {
+                GridView1.Columns[3].Visible = true;
+                GridView1.Columns[4].Visible = true;
+                GridView1.Columns[5].Visible = true;
+                if (m_User.Groups[0].Authorizationright == 1)
                 {
-                    DataRow tblRow = tblData.NewRow();
-
-                    tblRow["Search"] = "";
-                    tblRow["Value"] = "0";
-                    tblRow["OldValue"] = "";
-                    tblRow["ID_POS"] = i * 10;
-                    tblRow["Preis"] = 0;
-                    tblRow["GebPreis"] = 0;
-                    tblRow["PosLoesch"] = "";
-                    tblRow["NewPos"] = "0";
-                    tblRow["SdRelevant"] = "";
-                    tblRow["GebMatPflicht"] = "";
-                    tblRow["GebAmt"] = 0;
-                    tblRow["Menge"] = "";
-                    tblRow["DLBezeichnung"] = "";
- 
-                    tblData.Rows.Add(tblRow);
+                    GridView1.Columns[6].Visible = false;
                 }
+                lblSteuer.Visible = true;
+                txtSteuer.Visible = true;
+                lblPreisKennz.Visible = true;
+                txtPreisKennz.Visible = true;
+                cmdCreate.Visible = true;
+                cmdNewDLPrice.Visible = true;
+            }
+            //javascript-Funktionen anhängen im Grid
+            addButtonAttr(tblData);
+            TableToJSArrayMengeErlaubt();
 
-                GridView1.DataSource = tblData;
-                GridView1.DataBind();
-                if (objKompletterf.saved == false)
-                {   // Spalten wie Preis, Gebühr, Gebühr Amt, Steuer, Preis Kennz. ausblenden,
-                    // erst nachdem Preise gezogen wurden
-                    GridView1.Columns[3].Visible = false;
-                    GridView1.Columns[4].Visible = false;
-                    GridView1.Columns[5].Visible = false;
-                    lblSteuer.Visible = false;
-                    txtSteuer.Visible = false;
-                    lblPreisKennz.Visible = false;
-                    txtPreisKennz.Visible = false;
-                    cmdCreate.Visible = false;// Speichern/Neu
-                    cmdNewDLPrice.Visible = false;//Preis ergänzte DL
-                    if (objKompletterf.Positionen.Rows.Count > 0) { cmdNewDLPrice.Visible = true; }
-                }
-                else
-                {
-                    GridView1.Columns[3].Visible = true;
-                    GridView1.Columns[4].Visible = true;
-                    GridView1.Columns[5].Visible = true;
-                    if (m_User.Groups[0].Authorizationright == 1)
-                    {
-                        GridView1.Columns[6].Visible = false;
-                    }
-                    lblSteuer.Visible = true;
-                    txtSteuer.Visible = true;
-                    lblPreisKennz.Visible = true;
-                    txtPreisKennz.Visible = true;
-                    cmdCreate.Visible = true;
-                    cmdNewDLPrice.Visible = true;
-                }
-                //javascript-Funktionen anhängen im Grid
-                addButtonAttr(tblData);
-                TableToJSArrayMengeErlaubt();
-                GridViewRow gridRow = GridView1.Rows[0];
-                TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
+            Session["tblDienst"] = tblData;
 
+            // Kundenstamm 
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+            tmpDView.Sort = "NAME1";
+            tmpDView.RowFilter = "INAKTIV <> 'X'";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+            ddlKunnr.SelectedValue = "0";
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ")");
+            ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ")");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+            txtReferenz2.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$GridView1$ctl02$txtSearch.select();");
+            // Aufbau des javascript-Arrays für Barkunden, Pauschalkunden, CPD-Kunden für Javasript-Funktion "SetDDLValuewithBarkunde"
+            // Auswahl Barkunde == chkBar checked
+            // Auswahl Pauschalkunde = Label Pauschal.Value = Pauschalkunde
+            // Auswahl CPD-Kunde = clearen der Bank.- und Adressfelder
+            TableToJSArrayBarkunde();
+
+            if (objKompletterf.Status == 0)
+            {   // Javascript-Funktionen anhängen (helper.js)
                 Session["tblDienst"] = tblData;
+                tmpDView = objCommon.tblStvaStamm.DefaultView;
+                tmpDView.Sort = "KREISTEXT";
+                ddlStVa.DataSource = tmpDView;
+                ddlStVa.DataValueField = "KREISKZ";
+                ddlStVa.DataTextField = "KREISTEXT";
+                ddlStVa.DataBind();
+                ddlStVa.SelectedValue = "0";
+                txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
+                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
+                ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
 
-                // Kundenstamm 
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-                tmpDView.Sort = "NAME1";
-                tmpDView.RowFilter = "INAKTIV <> 'X'";
-                ddlKunnr.DataSource = tmpDView;
-                ddlKunnr.DataValueField = "KUNNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-                ddlKunnr.SelectedValue = "0";
-                txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-                txtKunnr.Attributes.Add("onblur", "SetDDLValuewithBarkunde(this," + ddlKunnr.ClientID + ", " + chkBar.ClientID + ")");
-                ddlKunnr.Attributes.Add("onchange", "SetDDLValuewithBarkunde(" + txtKunnr.ClientID + "," + ddlKunnr.ClientID + "," + chkBar.ClientID + ")");
-                lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-                lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
-                txtReferenz2.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$GridView1$ctl02$txtSearch.select();");
-                // Aufbau des javascript-Arrays für Barkunden, Pauschalkunden, CPD-Kunden für Javasript-Funktion "SetDDLValuewithBarkunde"
-                // Auswahl Barkunde == chkBar checked
-                // Auswahl Pauschalkunde = Label Pauschal.Value = Pauschalkunde
-                // Auswahl CPD-Kunde = clearen der Bank.- und Adressfelder
-                TableToJSArrayBarkunde();
-
-                if (objKompletterf.Status == 0)
-                {   // Javascript-Funktionen anhängen (helper.js)
-                    Session["tblDienst"] = tblData;
-                    tmpDView = new DataView();
-                    tmpDView = objCommon.tblStvaStamm.DefaultView;
-                    tmpDView.Sort = "KREISTEXT";
-                    ddlStVa.DataSource = tmpDView;
-                    ddlStVa.DataValueField = "KREISKZ";
-                    ddlStVa.DataTextField = "KREISTEXT";
-                    ddlStVa.DataBind();
-                    ddlStVa.SelectedValue = "0";
-                    txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
-                    txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
-                    ddlStVa.Attributes.Add("onchange", "SetDDLValueSTVA(" + txtStVa.ClientID + "," + ddlStVa.ClientID + "," + txtKennz1.ClientID + ")");
-
-                    // Aufbau des javascript-Arrays für Zulassungskreise wie HH1, HH2 .. 
-                    // Dabei soll bei der Auswahl von z.B. HH1 im Kennzeichen Teil1(txtKennz1) HH stehen
-                    TableToJSArray();
-                    Session["objKompletterf"] = objKompletterf;
-                }
-                else
-                {
-                    lblError.Text = objKompletterf.Message;
-                    return;
-                }
+                // Aufbau des javascript-Arrays für Zulassungskreise wie HH1, HH2 .. 
+                // Dabei soll bei der Auswahl von z.B. HH1 im Kennzeichen Teil1(txtKennz1) HH stehen
+                TableToJSArray();
+                Session["objKompletterf"] = objKompletterf;
+            }
+            else
+            {
+                lblError.Text = objKompletterf.Message;
             }
         }
 
@@ -1699,7 +1675,6 @@ namespace AppZulassungsdienst.forms
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
                 DropDownList ddl;
-                Label lblID_POS;
                 TextBox txtMenge;
 
                 ddl = (DropDownList)gvRow.FindControl("ddlItems");
@@ -2247,7 +2222,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
-                Decimal Preis = 0;
+                Decimal Preis;
                 if (ZLDCommon.IsDecimal(txtBox.Text))
                 {
                     Decimal.TryParse(txtBox.Text, out Preis);
@@ -2357,10 +2332,8 @@ namespace AppZulassungsdienst.forms
                 lblOldMatnr = (Label)gvRow.FindControl("lblOldMatnr");
                 txtMenge = (TextBox)gvRow.FindControl("txtMenge");
                 txtMenge.Style["display"] = "none";
-                String temp = "<%=" + ddl.ClientID + "%>";
 
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblMaterialStamm.DefaultView;
+                DataView tmpDataView = objCommon.tblMaterialStamm.DefaultView;
                 tmpDataView.RowFilter = "INAKTIV <> 'X'";
                 tmpDataView.Sort = "MAKTX";
                 ddl.DataSource = tmpDataView;
@@ -2495,7 +2468,6 @@ namespace AppZulassungsdienst.forms
         private void GetDiensleitungDataforPrice(ref DataTable tblData)
         {
             proofDienstGrid(ref tblData);
-            int i = 1;
             objKompletterf.Positionen.Clear();
             foreach (DataRow dRow in tblData.Rows)
             {
@@ -2526,7 +2498,6 @@ namespace AppZulassungsdienst.forms
                         NewRow["KennzMat"] = MatRow[0]["KENNZMAT"].ToString();
                     }
                     objKompletterf.Positionen.Rows.Add(NewRow);
-                    i++;
                 }
             }
         }
@@ -2544,11 +2515,6 @@ namespace AppZulassungsdienst.forms
             {
                 if (dRow["Value"].ToString() != "0")
                 {
-                    String GebMatnr = "";
-                    String GebMatbez = "";
-                    String GebMatnrSt = "";
-                    String GebMatBezSt = "";
-                    String tmpKennzmat = "";
                     DataRow[] SelRow = objKompletterf.Positionen.Select("id_pos = " + (Int32)dRow["ID_POS"]);
                     if (SelRow.Length == 1)
                     {
@@ -2578,11 +2544,6 @@ namespace AppZulassungsdienst.forms
                                 SelRow[0]["GebMatbez"] = MatRow[0]["GMAKTX"].ToString();
                                 SelRow[0]["GebMatnrSt"] = MatRow[0]["GBAUST"].ToString();
                                 SelRow[0]["GebMatBezSt"] = MatRow[0]["GUMAKTX"].ToString();
-                                GebMatnr = MatRow[0]["GEBMAT"].ToString();
-                                GebMatbez = MatRow[0]["GMAKTX"].ToString();
-                                GebMatnrSt = MatRow[0]["GBAUST"].ToString();
-                                GebMatBezSt = MatRow[0]["GUMAKTX"].ToString();
-                                tmpKennzmat = MatRow[0]["KENNZMAT"].ToString();
                             }
                             //Preise einfügen aus internen Dienstleistungstabelle
                             SelRow[0]["Preis"] = dRow["Preis"];
@@ -2642,11 +2603,9 @@ namespace AppZulassungsdienst.forms
                         {
                             // wenn Position nicht vorhanden, Position neu aufbauen
                             DataTable NewPositionen = objKompletterf.Positionen.Clone();
-                            Int32 NewPosID = 0;
                             DataRow NewRow = NewPositionen.NewRow();
                             NewRow["id_Kopf"] = objKompletterf.KopfID;
                             NewRow["id_pos"] = (Int32)dRow["ID_POS"];
-                            NewPosID = (Int32)dRow["ID_POS"]; ;
                             NewRow["UEPOS"] = 0;
                             NewRow["WEBMTART"] = "D";
                             NewRow["Menge"] = dRow["Menge"];
@@ -2826,11 +2785,6 @@ namespace AppZulassungsdienst.forms
         /// <param name="NewPosTable"></param>
         private void NewHauptPosition(DataRow dRow, ref DataTable NewPosTable)
         {
-            String GebMatnr = "";
-            String GebMatbez = "";
-            String GebMatnrSt = "";
-            String GebMatBezSt = "";
-
             Int32 NewPosID = 10, NewUePosID = 10;
             DataRow NewRow = NewPosTable.NewRow();
             NewRow["id_Kopf"] = objKompletterf.KopfID;
@@ -2848,10 +2802,10 @@ namespace AppZulassungsdienst.forms
             NewRow["Preis_Amt"] = dRow["GebAmt"];
             NewRow["PosLoesch"] = dRow["PosLoesch"];
             NewRow["SDRelevant"] = dRow["SdRelevant"];
-            GebMatnr = "";
-            GebMatbez = "";
-            GebMatnrSt = "";
-            GebMatBezSt = "";
+            String GebMatnr = "";
+            String GebMatbez = "";
+            String GebMatnrSt = "";
+            String GebMatBezSt = "";
             String Kennzmat = "";
             // Geb.Material aus der Stammtabelle
             DataRow[] MatRow = objCommon.tblMaterialStamm.Select("Matnr = '" + dRow["Value"].ToString() + "'");
@@ -2934,7 +2888,7 @@ namespace AppZulassungsdienst.forms
                     NewRow["id_Kopf"] = objKompletterf.KopfID;
                     NewRow["UEPOS"] = NewUePosID;
                     NewRow["id_pos"] = NewPosID + 10;
-                    NewRow["PosLoesch"] = dRow["PosLoesch"]; ;
+                    NewRow["PosLoesch"] = dRow["PosLoesch"];
                     NewRow["GebMatnr"] = "";
                     NewRow["GebMatbez"] = "";
                     NewRow["GebMatnrSt"] = "";
@@ -2979,7 +2933,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="NewPosTable"></param>
         private void NewPosOhneGebMat(DataRow dRow, ref DataTable NewPosTable)
         {
-            Int32 NewPosID = 0;
+            Int32 NewPosID;
             if (NewPosTable.Rows.Count == 0)
             {
                 NewPosTable = objKompletterf.Positionen.Clone();
@@ -3036,12 +2990,12 @@ namespace AppZulassungsdienst.forms
         /// es sich um einen Pauschalkunden handelt
         /// oder das ausgewählte Haupmaterial nicht Kennzeichenrelevant ist
         /// </summary>
-        /// <param name="Pauschal"></param>
+        /// <param name="pausch"></param>
         /// <param name="Matnr"></param>
         /// <returns></returns>
-        protected bool proofPauschMat(String Pauschal, String Matnr)
+        protected bool proofPauschMat(String pausch, String Matnr)
         {
-            bool bReturn = (Pauschal != "X");
+            bool bReturn = (pausch != "X");
 
             DataRow[] MatRow = objCommon.tblMaterialStamm.Select("MATNR='" + Matnr.TrimStart('0') + "'");
             if (MatRow.Length == 1)

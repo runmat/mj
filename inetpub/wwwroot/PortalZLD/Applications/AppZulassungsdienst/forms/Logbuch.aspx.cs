@@ -15,7 +15,6 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Logbuch : System.Web.UI.Page
     {
-
         #region "Enumeratoren"
 
         private enum ViewStatus
@@ -28,15 +27,14 @@ namespace AppZulassungsdienst.forms
 
         #endregion
 
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private LogbuchClass mObjFilialbuch;
         private LongStringToSap mObjLongStringToSap;
-        private bool bError;
 
         private ViewStatus curView;
 
-        protected void Page_Load(object sender, System.EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -76,9 +74,6 @@ namespace AppZulassungsdienst.forms
 
                 Title = lblHead.Text;
                 lblKostenstelle.Text = mObjFilialbuch.VkBur;
-                //lblFilialname.Text = ""
-                //lblKW.Text = New PM_Common_Functions.KW_Berechnung().KW(Date.Today).ToString()
-                //lblLFB.Text = mObjFilialbuch.LFB
             }
 
             ViewControl(curView);
@@ -95,27 +90,24 @@ namespace AppZulassungsdienst.forms
                 {
                     throw new Exception(mObjFilialbuch.Status + ": " + mObjFilialbuch.Message);
                 }
-                else
-                {
-                    lblUser.Text = FilBuUser.Bedienername;
-                    switch (FilBuUser.Rolle)
-                    {
-                        case LogbuchClass.Rolle.Zulassungsdienst:
-                        case LogbuchClass.Rolle.Filiale:
-                            curView = ViewStatus.FilialeAufgaben;
-                            FillListAufgaben();
-                            break;
-                        case LogbuchClass.Rolle.Gebietsleiter:
-                            curView = ViewStatus.Gebietsleiter;
-                            FillListProtokoll();
-                            break;
-                        default:
-                            curView = ViewStatus.Unauthenticated;
-                            lblError.Text = "Der Benutzer ist keiner bekannten Rolle zugeordnet!";
-                            break;
-                    }
-                }
 
+                lblUser.Text = FilBuUser.Bedienername;
+                switch (FilBuUser.Rolle)
+                {
+                    case LogbuchClass.Rolle.Zulassungsdienst:
+                    case LogbuchClass.Rolle.Filiale:
+                        curView = ViewStatus.FilialeAufgaben;
+                        FillListAufgaben();
+                        break;
+                    case LogbuchClass.Rolle.Gebietsleiter:
+                        curView = ViewStatus.Gebietsleiter;
+                        FillListProtokoll();
+                        break;
+                    default:
+                        curView = ViewStatus.Unauthenticated;
+                        lblError.Text = "Der Benutzer ist keiner bekannten Rolle zugeordnet!";
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -145,8 +137,6 @@ namespace AppZulassungsdienst.forms
 
         private void FillListProtokoll()
         {
-            DataTable dt;
-
             if (txtDatumVon.Text.Trim() == string.Empty)
             {
                 txtDatumVon.Text = DateTime.Today.AddMonths(-3).ToShortDateString();
@@ -180,6 +170,7 @@ namespace AppZulassungsdienst.forms
                         gvAufgaben.Visible = false;
                         gvProtokollFiliale.Visible = true;
                         gvProtokollGL.Visible = false;
+                        DataTable dt;
 
                         switch (ddlFilterFiliale.SelectedValue)
                         {
@@ -309,7 +300,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="sender">Absender des Ereignisses</param>
         /// <param name="e">EventArgumente</param>
         /// <remarks></remarks>
-        private void Filialbuch_Unload(object sender, System.EventArgs e)
+        private void Filialbuch_Unload(object sender, EventArgs e)
         {
             // aktuellen Objekt-Status sichern
             Session["mObjFilialbuch"] = mObjFilialbuch;
@@ -336,39 +327,6 @@ namespace AppZulassungsdienst.forms
             ShowPopUpNewEntry();
         }
 
-        //protected void lbtFilialbesuch_Click(object sender, EventArgs e)
-        //{
-        //    mObjFilialbuch.NeuerEintrag(Session["AppID"].ToString(), Session.SessionID, this, "Filialbesuch durch Leiter Filialbetrieb",
-        //                                "Filialbesuch durch Leiter Filialbetrieb am " +
-        //                                DateTime.Today.ToShortDateString(), mObjFilialbuch.VkBur, "FILB", "");
-
-        //    if (mObjFilialbuch.Status != 0)
-        //    {
-        //        lblError.Text = mObjFilialbuch.Status + ": " + mObjFilialbuch.Message;
-        //    }
-
-        //    DataTable dt = mObjFilialbuch.Protokoll.CreateTable(EntryStatus.Neu);
-
-        //    for (int i = 0; i < dt.Rows.Count; i++)
-        //    {
-        //        if (dt.Rows[i]["O_ERDAT"].ToString() == DateTime.Today.ToShortDateString())
-        //        {
-        //            if (dt.Rows[i]["O_BETREFF"].ToString() == "Filialbesuch durch Leiter Filialbetrieb")
-        //            {
-        //                mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, i, 
-        //                    EntryStatus.Geschlossen);
-        //            }
-
-        //              if (mObjFilialbuch.Protokoll.Status != 0)
-        //              {
-        //                  lblError.Text = mObjFilialbuch.Protokoll.Status + ": " + mObjFilialbuch.Protokoll.Message;
-        //              }
-        //        }
-        //    }
-
-        //    FillListProtokoll();
-        //}
-
         protected void lbProtokoll_Click(object sender, EventArgs e)
         {
             if (curView == ViewStatus.FilialeAufgaben | curView == ViewStatus.FilialeProtokoll)
@@ -383,7 +341,7 @@ namespace AppZulassungsdienst.forms
             FillListProtokoll();
         }
 
-        protected void lbAufgaben_Click(object sender, System.EventArgs e)
+        protected void lbAufgaben_Click(object sender, EventArgs e)
         {
             curView = ViewStatus.FilialeAufgaben;
             ViewControl(curView);
@@ -484,7 +442,7 @@ namespace AppZulassungsdienst.forms
 
         #region "GridViewEvents"
 
-        protected void gvAufgaben_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+        protected void gvAufgaben_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             SortDirection NewDir;
 
@@ -517,7 +475,6 @@ namespace AppZulassungsdienst.forms
                     FillListAufgaben();
                     break;
                 case "DatumEingangSort":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -530,7 +487,6 @@ namespace AppZulassungsdienst.forms
                     gvAufgaben.Sort("I_DATUM", NewDir);
                     break;
                 case "SortVon":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -548,7 +504,7 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        protected void gvAufgaben_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+        protected void gvAufgaben_Sorting(object sender, GridViewSortEventArgs e)
         {
             DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
             string[] sortparts = e.SortExpression.Split(',');
@@ -576,7 +532,7 @@ namespace AppZulassungsdienst.forms
             gvAufgaben.DataBind();
         }
 
-        protected void gvProtokollFiliale_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+        protected void gvProtokollFiliale_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             SortDirection NewDir;
             string Text;
@@ -632,7 +588,6 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "DatumEingangSort":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -645,7 +600,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollFiliale.Sort("I_DATUM", NewDir);
                     break;
                 case "DatumAusgangSort":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -658,7 +612,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollFiliale.Sort("O_DATUM", NewDir);
                     break;
                 case "SortVon":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -671,7 +624,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollFiliale.Sort("I_VON", NewDir);
                     break;
                 case "SortAn":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -686,7 +638,7 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        protected void gvProtokollFiliale_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+        protected void gvProtokollFiliale_Sorting(object sender, GridViewSortEventArgs e)
         {
             DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
             string[] sortparts = e.SortExpression.Split(',');
@@ -714,7 +666,7 @@ namespace AppZulassungsdienst.forms
             gvProtokollFiliale.DataBind();
         }
 
-        protected void gvProtokollGL_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+        protected void gvProtokollGL_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             SortDirection NewDir;
             string Text;
@@ -770,7 +722,6 @@ namespace AppZulassungsdienst.forms
                     FillListProtokoll();
                     break;
                 case "DatumEingangSort":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -783,7 +734,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollGL.Sort("I_DATUM", NewDir);
                     break;
                 case "DatumAusgangSort":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -796,7 +746,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollGL.Sort("O_DATUM", NewDir);
                     break;
                 case "SortVon":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -809,7 +758,6 @@ namespace AppZulassungsdienst.forms
                     gvProtokollGL.Sort("I_VON", NewDir);
                     break;
                 case "SortAn":
-                    NewDir = default(SortDirection);
                     if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
                     {
                         NewDir = SortDirection.Descending;
@@ -824,7 +772,7 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        protected void gvProtokollGL_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+        protected void gvProtokollGL_Sorting(object sender, GridViewSortEventArgs e)
         {
             DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
             string[] sortparts = e.SortExpression.Split(',');

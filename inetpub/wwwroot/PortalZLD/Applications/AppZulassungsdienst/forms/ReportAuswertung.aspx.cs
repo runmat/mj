@@ -11,8 +11,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportAuswertung : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
         private ZLDCommon objCommon;
 
@@ -261,64 +261,56 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = objListe.Message;
                 return;
             }
+
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
+            tmpDView.Sort = "NAME1";
+            ddlKunnr.DataSource = tmpDView;
+            ddlKunnr.DataValueField = "KUNNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+            ddlKunnr.SelectedValue = "0";
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+
+            tmpDView = objCommon.tblMaterialStamm.DefaultView;
+            tmpDView.Sort = "MAKTX";
+            ddlDienst.DataSource = tmpDView;
+            ddlDienst.DataValueField = "MATNR";
+            ddlDienst.DataTextField = "MAKTX";
+            ddlDienst.DataBind();
+            ddlDienst.SelectedValue = "0";
+            txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
+            txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
+
+            ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
+            ddlGruppe.DataValueField = "GRUPPE";
+            ddlGruppe.DataTextField = "BEZEI";
+            ddlGruppe.DataBind();
+            ddlGruppe.SelectedValue = "0";
+
+            ddlTour.DataSource = objCommon.tblTourenforSelection;
+            ddlTour.DataValueField = "GRUPPE";
+            ddlTour.DataTextField = "BEZEI";
+            ddlTour.DataBind();
+            ddlTour.SelectedValue = "0";
+
+            if (objListe.Status == 0)
+            {
+                tmpDView = objCommon.tblStvaStamm.DefaultView;
+                tmpDView.Sort = "KREISTEXT";
+                ddlStVa.DataSource = tmpDView;
+                ddlStVa.DataValueField = "KREISKZ";
+                ddlStVa.DataTextField = "KREISTEXT";
+                ddlStVa.DataBind();
+                ddlStVa.SelectedValue = "0";
+                txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+                txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
+                Session["objListe"] = objListe;
+            }
             else
             {
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-                tmpDView.Sort = "NAME1";
-                ddlKunnr.DataSource = tmpDView;
-                ddlKunnr.DataValueField = "KUNNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-                ddlKunnr.SelectedValue = "0";
-                txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-                txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-
-                tmpDView = new DataView();
-                tmpDView = objCommon.tblMaterialStamm.DefaultView;
-                tmpDView.Sort = "MAKTX";
-                ddlDienst.DataSource = tmpDView;
-                ddlDienst.DataValueField = "MATNR";
-                ddlDienst.DataTextField = "MAKTX";
-                ddlDienst.DataBind();
-                ddlDienst.SelectedValue = "0";
-                txtMatnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienst.ClientID + ")");
-                txtMatnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlDienst.ClientID + ")");
-
-                ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
-                ddlGruppe.DataValueField = "GRUPPE";
-                ddlGruppe.DataTextField = "BEZEI";
-                ddlGruppe.DataBind();
-                ddlGruppe.SelectedValue = "0";
-
-                ddlTour.DataSource = objCommon.tblTourenforSelection;
-                ddlTour.DataValueField = "GRUPPE";
-                ddlTour.DataTextField = "BEZEI";
-                ddlTour.DataBind();
-                ddlTour.SelectedValue = "0";
-                
-                if (objListe.Status == 0)
-                {
-                    tmpDView = new DataView();
-                    tmpDView = objCommon.tblStvaStamm.DefaultView;
-                    tmpDView.Sort = "KREISTEXT";
-                    ddlStVa.DataSource = tmpDView;
-                    ddlStVa.DataValueField = "KREISKZ";
-                    ddlStVa.DataTextField = "KREISTEXT";
-                    ddlStVa.DataBind();
-                    ddlStVa.SelectedValue = "0";
-                    txtStVa.Attributes.Add("onkeyup", "FilterSTVA(this.value," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-                    txtStVa.Attributes.Add("onblur", "SetDDLValueSTVA(this," + ddlStVa.ClientID + "," + txtStVa.ClientID + ")");
-                    Session["objListe"] = objListe;
-                }
-                else
-                {
-                    lblError.Text = objListe.Message;
-                    return;
-                }
-
+                lblError.Text = objListe.Message;
             }
         }
-
     }
 }

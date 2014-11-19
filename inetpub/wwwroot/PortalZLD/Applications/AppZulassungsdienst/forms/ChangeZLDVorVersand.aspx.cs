@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ChangeZLDVorVersand : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VoerfZLD objVorVersand;
         private ZLDCommon objCommon;
         Boolean _newVersand;
@@ -302,8 +302,7 @@ namespace AppZulassungsdienst.forms
 
             Session["tblDienst"] = tblData;
                      
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
             tmpDView.RowFilter = "Matnr = 598";
             tmpDView.Sort = "Matnr";
             if (tmpDView.Count > 0)
@@ -337,7 +336,6 @@ namespace AppZulassungsdienst.forms
                     if (strAr.Length > 0) { txtKennz1.Text = strAr[0]; }
                 }
             }
-            tmpDView = new DataView();
             tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             tmpDView.RowFilter = "INAKTIV <> 'X'";
@@ -348,7 +346,6 @@ namespace AppZulassungsdienst.forms
             ddlKunnr.SelectedValue = objVorVersand.Kunnr;
             txtKunnr.Text = objVorVersand.Kunnr;
             Session["tblDienst"] = tblData;
-            tmpDView = new DataView();
             tmpDView = objCommon.tblStvaStamm.DefaultView;
             tmpDView.Sort = "KREISTEXT";
             ddlStVa.DataSource = tmpDView;
@@ -410,11 +407,6 @@ namespace AppZulassungsdienst.forms
             GridView1.DataSource = tblData;
             GridView1.DataBind();
             Session["tblDienst"] = tblData;
-            GridViewRow gvRow = GridView1.Rows[0];
-            TextBox txtBox;
-            DropDownList ddl;
-            txtBox = (TextBox)gvRow.FindControl("txtSearch");
-            ddl = (DropDownList)gvRow.FindControl("ddlItems");
 
             addButtonAttr(tblData);
             TableToJSArrayMengeErlaubt();
@@ -433,7 +425,6 @@ namespace AppZulassungsdienst.forms
             if (objVorVersand.Status == 0)
             {
                 Session["tblDienst"] = tblData;
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblStvaStamm.DefaultView;
                 tmpDView.Sort = "KREISTEXT";
                 ddlStVa.DataSource = tmpDView;
@@ -504,6 +495,7 @@ namespace AppZulassungsdienst.forms
         /// in Javascript Array aufbauen mit Flag Menge erlaubt und Kundennummer
         /// um später, je nach Kunnde, das Mengenfeld einblenden zu können
         /// JS-Funktion: FilterItems
+        /// </summary>
         private void TableToJSArrayMengeErlaubt()
         {
             System.Text.StringBuilder javaScript = new System.Text.StringBuilder();
@@ -1014,13 +1006,12 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Validierung Datum
         /// </summary>
-        /// <returns>bei Fehler false</returns
+        /// <returns>bei Fehler false</returns>
         private Boolean checkDate()
         {
             Boolean bReturn = true;
-            String zDat = "";
+            String zDat = ZLDCommon.toShortDateStr(txtZulDate.Text);
 
-            zDat = ZLDCommon.toShortDateStr(txtZulDate.Text);
             if (zDat != String.Empty)
             {
                 if (ZLDCommon.IsDate(zDat) == false)
@@ -1088,7 +1079,7 @@ namespace AppZulassungsdienst.forms
             DataTable tblData = (DataTable)Session["tblDienst"];
             proofDienstGrid(ref tblData);
 
-            Int32 newPosId = 0;
+            Int32 newPosId;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out newPosId);
 
             DataRow tblRow = tblData.NewRow();
@@ -1156,7 +1147,7 @@ namespace AppZulassungsdienst.forms
         /// Eingaben im Gridview1 sammeln und 
         /// updaten der Dienstleistungstabelle 
         /// </summary>
-        /// <param name="tblData">interne Diensteistungstabelle</param
+        /// <param name="tblData">interne Diensteistungstabelle</param>
         private void proofDienstGrid(ref DataTable tblData)
         {
             int i = 0;
@@ -1207,11 +1198,9 @@ namespace AppZulassungsdienst.forms
                 txtBox = (TextBox)gvRow.FindControl("txtSearch");
                 ddl = (DropDownList)gvRow.FindControl("ddlItems");
 
-                String temp = "<%=" + ddl.ClientID + "%>";
                 txtBox.Attributes.Add("onkeyup", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
                 txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblMaterialStamm.DefaultView;
+                DataView tmpDataView = objCommon.tblMaterialStamm.DefaultView;
                 tmpDataView.RowFilter = "INAKTIV <> 'X'";
                 tmpDataView.Sort = "MAKTX";
                 ddl.DataSource = tmpDataView;
@@ -1238,7 +1227,7 @@ namespace AppZulassungsdienst.forms
         /// Weiterleitung auf das zuständige Verkehrsamt, um Kennzeichen zu reservieren.
         /// </summary>
         /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</para
+        /// <param name="e">EventArgs</param>
         protected void lbtnReservierung_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
@@ -1259,10 +1248,10 @@ namespace AppZulassungsdienst.forms
                 {
                     sUrl = "http://" + sUrl;
                 }
-                String popupBuilder;
+
                 if (!ClientScript.IsClientScriptBlockRegistered("clientScript"))
                 {
-                    popupBuilder = "<script languange=\"Javascript\">";
+                    String popupBuilder = "<script languange=\"Javascript\">";
                     popupBuilder += "window.open('" + sUrl + "', 'POPUP', 'dependent=yes,location=yes,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no');";
                     popupBuilder += "</script>";
                     ClientScript.RegisterClientScriptBlock(this.GetType(), "POPUP", popupBuilder, false);
@@ -1332,14 +1321,11 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
-
             bool blnSonstigeDLOffen = false;
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if ((ddl.SelectedValue == CONST_IDSONSTIGEDL) && (String.IsNullOrEmpty(lblDLBezeichnung.Text)))
                 {
                     blnSonstigeDLOffen = true;
@@ -1365,13 +1351,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
         {
-            DropDownList ddl;
-            Label lblDLBezeichnung;
-
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 if (ddl.SelectedValue == CONST_IDSONSTIGEDL)
                 {
                     lblDLBezeichnung.Text = dlgErfassungDLBez.DLBezeichnung;
@@ -1408,7 +1391,6 @@ namespace AppZulassungsdienst.forms
                         objVorVersand.Ref2 = txtReferenz2.Text.ToUpper();
                         DataTable tblData = (DataTable)Session["tblDienst"];
 
-                        int i = 1;
                         objVorVersand.Positionen.Clear();
                         foreach (DataRow dRow in tblData.Rows)
                         {
@@ -1440,7 +1422,6 @@ namespace AppZulassungsdienst.forms
                                     newRow["KennzMat"] = matRow[0]["KENNZMAT"].ToString();
                                 }
                                 objVorVersand.Positionen.Rows.Add(newRow);
-                                i++;
                             }
                         }
                         objVorVersand.KreisKennz = txtStVa.Text;
@@ -1464,9 +1445,8 @@ namespace AppZulassungsdienst.forms
                         objVorVersand.KennzAnzahl = 2;
                         objVorVersand.EinKennz = chkEinKennz.Checked;
 
-                        Boolean bnoError = false;
                         proofCPD();
-                        bnoError = chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD();
+                        Boolean bnoError = chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD();
 
                         if (bnoError)
                         {
@@ -1535,8 +1515,7 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && txtHauptPos.Text.Length > 0)
             {
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
                 tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
                 tmpDataView.Sort = "Matnr";
                 if (tmpDataView.Count > 0)
@@ -1568,7 +1547,7 @@ namespace AppZulassungsdienst.forms
             DataTable tblData = (DataTable)Session["tblDienst"];
             proofDienstGrid(ref tblData);
 
-            Int32 newPosId = 0;
+            Int32 newPosId;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out newPosId);
 
             bool found = false;

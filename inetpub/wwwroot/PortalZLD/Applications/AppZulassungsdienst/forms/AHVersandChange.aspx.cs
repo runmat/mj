@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class AHVersandChange : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
         String IDKopf;
@@ -109,10 +109,10 @@ namespace AppZulassungsdienst.forms
                 {
                     sUrl = "http://" + sUrl;
                 }
-                String popupBuilder;
+
                 if (!ClientScript.IsClientScriptBlockRegistered("clientScript"))
                 {
-                    popupBuilder = "<script languange=\"Javascript\">";
+                    String popupBuilder = "<script languange=\"Javascript\">";
                     popupBuilder += "window.open('" + sUrl + "', 'POPUP', 'dependent=yes,location=yes,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no');";
                     popupBuilder += "</script>";
                     ClientScript.RegisterClientScriptBlock(this.GetType(), "POPUP", popupBuilder, false);
@@ -204,8 +204,7 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && txtHauptPos.Text.Length > 0)
             {
-                DataView tmpDataView = new DataView();
-                tmpDataView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
                 tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
                 tmpDataView.Sort = "Matnr";
                 if (tmpDataView.Count > 0)
@@ -367,10 +366,9 @@ namespace AppZulassungsdienst.forms
                     }
 
                     RowKopf["BEMERKUNG"] = txtBemerk.Text;
- 
-                    Boolean bnoError = false;
+
                     proofCPD();
-                    bnoError = chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD();
+                    Boolean bnoError = chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD();
 
                     if (bnoError)
                     {
@@ -511,13 +509,11 @@ namespace AppZulassungsdienst.forms
 
             // Dropdowns und dazugehörige Textboxen füllen
             
-             DataView tmpDView = new DataView();
-            tmpDView = objNacherf.AHVersandPos.DefaultView;
+             DataView tmpDView = objNacherf.AHVersandPos.DefaultView;
             tmpDView.RowFilter = "WEBMTART='D'";
             GridView1.DataSource = tmpDView;
             GridView1.DataBind();
 
-            tmpDView = new DataView();
             tmpDView = objCommon.tblKennzGroesse.DefaultView;
             tmpDView.RowFilter = "Matnr = 598";
             tmpDView.Sort = "Matnr";
@@ -535,7 +531,6 @@ namespace AppZulassungsdienst.forms
                 ddlKennzForm.Items.Add(liItem);
             }
 
-
             DataRow[] kennzRow = objCommon.tblKennzGroesse.Select("Groesse='" + RowKopf["KENNZFORM"].ToString() + "' AND Matnr='598'");
             if (kennzRow.Length > 0)
             {
@@ -546,17 +541,14 @@ namespace AppZulassungsdienst.forms
 
 
             objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, RowKopf["KUNNR"].ToString());
-            tmpDView = new DataView();
             tmpDView = objCommon.tblAHKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
-            //tmpDView.RowFilter = "INAKTIV <> 'X'";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
             ddlKunnr.DataTextField = "NAME1";
             ddlKunnr.DataBind();
             ddlKunnr.SelectedValue = RowKopf["KUNNR"].ToString().TrimStart('0');
             txtKunnr.Text = RowKopf["KUNNR"].ToString().TrimStart('0');
-            tmpDView = new DataView();
             tmpDView = objCommon.tblStvaStamm.DefaultView;
             tmpDView.Sort = "KREISTEXT";
             ddlStVa.DataSource = tmpDView;
@@ -751,10 +743,8 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Validierung Datum
         /// </summary>
-        /// <returns>bei Fehler false</returns>
-        private Boolean checkDate()
+        private void checkDate()
         {
-            Boolean bReturn = true;
             String ZDat = "";
 
             ZDat = ZLDCommon.toShortDateStr(txtZulDate.Text);
@@ -763,7 +753,6 @@ namespace AppZulassungsdienst.forms
                 if (ZLDCommon.IsDate(ZDat) == false)
                 {
                     lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    bReturn = false;
                 }
                 else
                 {
@@ -771,11 +760,7 @@ namespace AppZulassungsdienst.forms
                     int i = 60;
                     do
                     {
-                        if (tagesdatum.DayOfWeek == DayOfWeek.Saturday || tagesdatum.DayOfWeek == DayOfWeek.Sunday)
-                        {
-
-                        }
-                        else
+                        if (tagesdatum.DayOfWeek != DayOfWeek.Saturday && tagesdatum.DayOfWeek != DayOfWeek.Sunday)
                         {
                             i--;
                         }
@@ -786,7 +771,6 @@ namespace AppZulassungsdienst.forms
                     if (DateNew < tagesdatum)
                     {
                         lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
-                        bReturn = false;
                     }
                     else
                     {
@@ -795,19 +779,14 @@ namespace AppZulassungsdienst.forms
                         if (DateNew > tagesdatum)
                         {
                             lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
-                            bReturn = false;
                         }
                     }
                     if (ihDatumIstWerktag.Value == "false")
                     {
                         lblError.Text = "Bitte wählen Sie einen Werktag für das Zulassungsdatum aus!";
-                        bReturn = false;
                     }
                 }
             }
-
-            return bReturn;
-
         }
 
         /// <summary>
