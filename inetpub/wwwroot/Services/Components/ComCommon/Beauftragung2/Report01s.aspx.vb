@@ -5,7 +5,7 @@ Imports CKG.Base.Kernel
 Namespace Beauftragung2
 
     Partial Public Class Report01s
-        Inherits System.Web.UI.Page
+        Inherits Page
 
 #Region "Declarations"
         Private m_App As App
@@ -16,7 +16,7 @@ Namespace Beauftragung2
 
 #Region "Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Init
             Try
                 m_User = GetUser(Me)
                 FormAuth(Me, m_User)
@@ -35,11 +35,17 @@ Namespace Beauftragung2
                     Session("mBeauftragung2") = mBeauftragung
                 End If
 
-                InitControls()
+                InitLargeDropdowns()
+                InitJava()
 
-                If Not IsPostBack Then
-                    InitPage()
-                End If
+            Catch ex As Exception
+                lblError.Text = "Beim Initialisieren der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
+            End Try
+        End Sub
+
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+            Try
+                InitControls()
 
             Catch ex As Exception
                 lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
@@ -50,7 +56,7 @@ Namespace Beauftragung2
             DoSubmit()
         End Sub
 
-        Private Sub btnDummy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDummy.Click
+        Private Sub btnDummy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDummy.Click
             DoSubmit()
         End Sub
 
@@ -58,11 +64,11 @@ Namespace Beauftragung2
             Response.Redirect("../../../Start/Selection.aspx?AppID=" & Session("AppID").ToString, False)
         End Sub
 
-        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
             SetEndASPXAccess(Me)
         End Sub
 
-        Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+        Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
             SetEndASPXAccess(Me)
         End Sub
 
@@ -81,12 +87,11 @@ Namespace Beauftragung2
             End With
         End Sub
 
-        Private Sub InitPage()
-            InitDropdowns()
-            InitJava()
-        End Sub
-
-        Private Sub InitDropdowns()
+        ''' <summary>
+        ''' Dropdowns mit großen Datenmengen (ohne ViewState!)
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub InitLargeDropdowns()
 
             'Kunde füllen
             ddlKunde.Items.Clear()
@@ -94,7 +99,6 @@ Namespace Beauftragung2
             For Each dRow As DataRow In mBeauftragung.Kunden.Rows
                 ddlKunde.Items.Add(New ListItem(dRow("NAME1").ToString(), dRow("KUNNR").ToString().TrimStart("0"c)))
             Next
-            ddlKunde.SelectedValue = "0"
 
         End Sub
 
@@ -136,7 +140,7 @@ Namespace Beauftragung2
             mBeauftragung.SelZuldatVon = txtZulDatumVon.Text
             mBeauftragung.SelZuldatBis = txtZulDatumBis.Text
 
-            mBeauftragung.FillUebersicht2(Session("AppID").ToString, Session.SessionID.ToString, Me.Page)
+            mBeauftragung.FillUebersicht2(Session("AppID").ToString, Session.SessionID.ToString, Page)
             Session("ResultTable") = mBeauftragung.Result
 
             If Not mBeauftragung.Status = 0 Then
@@ -218,33 +222,3 @@ Namespace Beauftragung2
 
     End Class
 End Namespace
-
-' ************************************************
-' $History: Report01s.aspx.vb $
-' 
-' *****************  Version 6  *****************
-' User: Fassbenders  Date: 4.05.11    Time: 17:15
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 18.06.10   Time: 11:10
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 14.05.10   Time: 11:33
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 3  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 11:01
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 9.12.09    Time: 17:37
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 9.12.09    Time: 14:22
-' Created in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' ITA: 3383
-' 
-
