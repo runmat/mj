@@ -4,33 +4,6 @@
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
 }
 
-<script type="text/javascript">
-
-    var _appFavoritesEditMode = @((logonContext != null && logonContext.AppFavoritesEditMode).ToString().ToLower()) ;
-
-//    function OnMenuItemClick(a, appId, ignoreAppFavoritesEditSwitchOneFavorite) {
-//        if (_appFavoritesEditMode) {
-//            if (ignoreAppFavoritesEditSwitchOneFavorite)
-//                return false;
-//            
-//            return AppFavoritesEditSwitchOneFavorite(a, appId);
-//        }
-
-//        return LogPageVisit(a, appId);
-//    }
-
-//    function LogPageVisit(a, appId) {
-//        
-//        var href = $(a).attr("href");
-//        var url = '/ServicesMvc/DomainCommon/LogPageVisit?appID=' + appId;
-//        $.get(url).always(function () {
-//            window.location.href = href;
-//        });
-
-//        return false;
-//    }
-</script>
-
 <li class="@MvcApplication.GetActiveMenuItemCssClass()">
     <a href="~/">
         <i class="icon-home"></i> 
