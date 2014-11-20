@@ -37,10 +37,16 @@ namespace CarDocu.Models
             get { return _archiveCode; }
             set
             {
+                var preWebServiceFunctionAvailable = WebServiceFunctionAvailable;
+
                 _archiveCode = value;
+                
                 SendPropertyChanged("ArchiveCode");
                 SendPropertyChanged("IconSource");
                 SendPropertyChanged("WebServiceFunctionAvailable");
+
+                if (!WebServiceFunctionAvailable || (WebServiceFunctionAvailable && !preWebServiceFunctionAvailable))
+                    WebServiceFunction = "";
             }
         }
 
@@ -70,7 +76,7 @@ namespace CarDocu.Models
             }
         }
 
-        private string _webServiceFunction = (WebServiceFunctions.FirstOrDefault(i => i.ID == "CARDOCU") ?? WebServiceFunctions.First()).ID;
+        private string _webServiceFunction = (WebServiceFunctions.FirstOrDefault(i => i.ID == "") ?? WebServiceFunctions.First()).ID;
         public string WebServiceFunction
         {
             get { return _webServiceFunction; }
@@ -300,6 +306,10 @@ namespace CarDocu.Models
             {
                 return new List<DocumentTypeWebServiceFunction>
                            {
+                               new DocumentTypeWebServiceFunction
+                                   {
+                                       ID = "", FunctionName = "", FriendlyName = "(Keine Schnittstelle)"
+                                   },
                                new DocumentTypeWebServiceFunction
                                    {
                                        ID = "CARDOCU", FunctionName = "ProcessArchivMeldung", FriendlyName = "CarDocu Strafzettel"

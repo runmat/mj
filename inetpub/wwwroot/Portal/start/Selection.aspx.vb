@@ -106,12 +106,6 @@ Namespace Start
                     End Try
                 End If
 
-                If Not (m_User.SessionID = Session.SessionID.ToString) Then
-                    If Not m_User.Customer.AllowMultipleLogin Then
-                        Response.Redirect(ConfigurationManager.AppSettings("Exit") & "?DoubleLogin=True")
-                    End If
-                End If
-
                 ucHeader.InitUser(m_User)
 
                 m_App = New Security.App(m_User)

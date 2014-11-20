@@ -80,7 +80,7 @@ Public Class Global_asax
 
         Dim m_User As CKG.Base.Kernel.Security.User
         m_User = CType(Session("objUser"), CKG.Base.Kernel.Security.User)
-        m_User.SetLoggedOn(m_User.UserName, False, "")
+        m_User.SetLoggedOn(m_User.UserName, False)
 
 
         If Not HttpContext.Current Is Nothing Then
