@@ -59,7 +59,7 @@
                                                     </td>
                                                     <td class="firstLeft active" style="width: 50%; vertical-align:top; margin-top:3px">
                                                         <asp:DropDownList ID="ddlKunnr" runat="server"  
-                                                            Style="width: auto; position:absolute;" >
+                                                            Style="width: auto; position:absolute;" EnableViewState="False" >
                                                         </asp:DropDownList>
                                                     </td>
                                                     <td class="active" style="width: 10%">

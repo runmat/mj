@@ -457,13 +457,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         private void GetCurrentAppID()
         {
-            var tmpObject = HttpContextService.TryGetValueFromSession("LastAppID");
-            int tmpInt;
-
-            if (tmpObject != null && Int32.TryParse(tmpObject.ToString(), out tmpInt))
-            {
-                CurrentAppID = tmpInt;
-            }
+            CurrentAppID = HttpContextService.TryGetAppIdFromUrlOrSession();
         }
 
         #endregion

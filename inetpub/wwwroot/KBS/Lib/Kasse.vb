@@ -8,7 +8,6 @@ Public Class Kasse
     Private mKunnr As String
     Private mCustomerID As String
     Private mMaster As Boolean
-    Private mTestuser As Boolean = False
     Private Shared m_tblApplications As New DataTable()
 
     Private mObjBestellung As Bestellung
@@ -270,12 +269,6 @@ Public Class Kasse
     Protected Friend ReadOnly Property Master() As Boolean
         Get
             Return mMaster
-        End Get
-    End Property
-
-    Protected Friend ReadOnly Property Testuser() As Boolean
-        Get
-            Return mTestuser
         End Get
     End Property
 

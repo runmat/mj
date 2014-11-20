@@ -133,7 +133,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
             ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt).ToList();
             
             // Get web folder urls for pdf files
-            PdfFileNames = GetTempFolderPathForFiles("{0}*.pdf", fahrt).ToList();
+            PdfFileNames = GetTempFolderPathForFiles("*.pdf", null).ToList();
 
             // Get web folder urls for thumb images
             var mask = "THUMB_{0}*.jpg";
@@ -200,12 +200,16 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
         IEnumerable<string> GetTempFolderPathForFiles(string fileMask, string fahrt)
         {
             var sourcePath = GetSourcePath();
-            var fileNames = FileService.TryDirectoryGetFiles(sourcePath, string.Format(fileMask, HistoryAuftragCurrent.AuftragsNrWebViewTrimmed));
+            var fileNames = FileService.TryDirectoryGetFiles(sourcePath, !fileMask.Contains("{0}") ? fileMask : string.Format(fileMask, HistoryAuftragCurrent.AuftragsNrWebViewTrimmed));
 
-            return fileNames
-                .Where(f => fahrt == GetTourFromFilename(f).ToString())
+            var fileNamesFiltered = fileNames
                 .Select(f => Path.Combine(AppSettings.WebViewRelativePath, DestinationRelativePath, FileService.PathGetFileName(f))
-                .Replace(@"\", "/")).OrderBy(f => f);
+                .Replace(@"\", "/"));
+
+            if (fahrt.IsNotNullOrEmpty())
+                fileNamesFiltered = fileNames.Where(f => fahrt == GetTourFromFilename(f).ToString());
+
+            return fileNamesFiltered.OrderBy(f => f);
         }
 
         public int GetTourFromFilename(string filename)
