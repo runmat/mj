@@ -432,8 +432,8 @@ namespace AppZulassungsdienst.lib
         {
             m_intStatus = 0;
             m_strMessage = "";
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"];
+            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+
             try
             {
                 tblKennzGroesse = new DataTable();
@@ -950,8 +950,8 @@ namespace AppZulassungsdienst.lib
         {
             try
             {
-                Convert.ToInt32(val);
-                return true;
+                int dummy;
+                return Int32.TryParse(val, out dummy);
             }
             catch
             {
@@ -968,8 +968,8 @@ namespace AppZulassungsdienst.lib
         {
             try
             {
-                Convert.ToDecimal(val);
-                return true;
+                decimal dummy;
+                return Decimal.TryParse(val, out dummy);
             }
             catch
             {
@@ -985,14 +985,14 @@ namespace AppZulassungsdienst.lib
         public static bool IsDate(String val)
         {
             bool result;
-            DateTime myDT;
 
             try
             {
+                DateTime myDT;
                 result = DateTime.TryParse(val, out myDT);
 
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
                 result = false;
             }
@@ -1040,13 +1040,13 @@ namespace AppZulassungsdienst.lib
         /// <returns>norm. Datum</returns>
         public static string toShortDateStr(string dat)
         {
-            DateTime datum = default(DateTime);
+            DateTime datum;
 
             try
             {
                 datum = Convert.ToDateTime(dat.Substring(0, 2) + "." + dat.Substring(2, 2) + "." + DateTime.Now.Year.ToString().Substring(0, 2) + dat.Substring(4, 2));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return string.Empty;
             }

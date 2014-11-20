@@ -14,10 +14,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportLieferschein : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Listen objListe; 
         private ZLDCommon objCommon;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
         /// </summary>
@@ -73,6 +74,7 @@ namespace AppZulassungsdienst.forms
             }
             SetAttributes();
         }
+
         /// <summary>
         /// Javascript-Funktionen an Controls binden.
         /// </summary>
@@ -87,6 +89,7 @@ namespace AppZulassungsdienst.forms
             lbtnHeutebis.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDateBis.ClientID + "'); return false;");
             lbtnMorgenbis.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDateBis.ClientID + "'); return false;");
         }
+
         /// <summary>
         /// DropDowns an Stammdatentabellen binden.
         /// </summary>
@@ -107,6 +110,7 @@ namespace AppZulassungsdienst.forms
             ddlTour.SelectedValue = "0";
 
         }
+
         /// <summary>
         /// Funktionsaufruf DoSubmit().
         /// </summary>
@@ -116,6 +120,7 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
         /// <summary>
         /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_LS).
         /// </summary>
@@ -133,29 +138,33 @@ namespace AppZulassungsdienst.forms
             objListe.SelGroupTourID = "";
 
             objListe.KennzeichenVon = txtStVavon.Text.Trim(' ');
-            objListe.KennzeichenBis = txtStVaBis.Text.Trim(' ');;
+            objListe.KennzeichenBis = txtStVaBis.Text.Trim(' ');
 
             if (txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length == 0 && ddlTour.SelectedValue == "0" && ddlGruppe.SelectedValue =="0")
             {
                 lblError.Text = "Bitte geben Sie min. eine Kundenummer ein!";
                 return;
             }
-            else if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlGruppe.SelectedValue != "0"))
+
+            if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlGruppe.SelectedValue != "0"))
             {
                 lblError.Text = "Bitte wählen Sie entweder Gruppe oder Kunde aus!";
                 return;
             }
-            else if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlTour.SelectedValue != "0"))
+
+            if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlTour.SelectedValue != "0"))
             {
                 lblError.Text = "Bitte wählen Sie entweder Tour oder Kunde aus!";
                 return;
             }
-            else if (ddlTour.SelectedValue != "0" && ddlGruppe.SelectedValue != "0")
+
+            if (ddlTour.SelectedValue != "0" && ddlGruppe.SelectedValue != "0")
             {
                 lblError.Text = "Bitte wählen Sie entweder Tour oder Gruppe aus!";
                 return;
             }
-            else if (ddlGruppe.SelectedValue != "0")
+
+            if (ddlGruppe.SelectedValue != "0")
             {
                 objListe.SelGroupTourID = ddlGruppe.SelectedValue;
             }
@@ -164,25 +173,28 @@ namespace AppZulassungsdienst.forms
                 objListe.SelGroupTourID = ddlTour.SelectedValue;
             }
 
-            objListe.KundeVon = txtKunnr.Text.Trim(' '); ;
-            objListe.KundeBis = txtKunnrBis.Text.Trim(' '); ;
+            objListe.KundeVon = txtKunnr.Text.Trim(' ');
+            objListe.KundeBis = txtKunnrBis.Text.Trim(' ');
 
             if (txtZulDate.Text.Trim(' ').Length == 0)
             {
                 lblError.Text = "Bitte geben Sie ein Zulassungsdatum ein!";
                 return;
             }
-            else if (txtZulDate.Text.Trim(' ').Length < 6)
+
+            if (txtZulDate.Text.Trim(' ').Length < 6)
             {
                 lblError.Text = "Bitte geben Sie das Zulassungsdatum 6-stellig ein!";
                 return;
             }
+
             if (txtZulDateBis.Text.Trim(' ').Length > 0 && txtZulDateBis.Text.Trim(' ').Length < 6)
             {
                 lblError.Text = "Bitte geben Sie das Zulassungsdatum bis 6-stellig ein!";
                 return;
             }
-            else if (txtZulDateBis.Text.Trim(' ').Length == 0)
+
+            if (txtZulDateBis.Text.Trim(' ').Length == 0)
             {
                 objListe.ZuldatBis = "";
             }
@@ -221,6 +233,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Einzeilne Lieferscheine zusammenfügen.
         /// </summary>
@@ -276,6 +289,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Aufruf von PrintPDF.aspx zur Anzeige des PDF´s.
         /// </summary>

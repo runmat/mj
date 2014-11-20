@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AppZulassungsdienst.lib
 {
-    public class NacherfassungGekaufteKennzeichen : CKG.Base.Business.DatenimportBase
+    public class NacherfassungGekaufteKennzeichen : DatenimportBase
     {
         private System.Web.UI.Page objPage;
 
@@ -32,15 +32,15 @@ namespace AppZulassungsdienst.lib
 
             tblKennzeichen = new DataTable();
 
-            tblKennzeichen.Columns.Add("Datum",Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("LieferantID", Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("ArtikelID", Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("Lieferscheinnummer", Type.GetType("System.String"));            
-            tblKennzeichen.Columns.Add("Artikel", Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("Menge", Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("Preis", Type.GetType("System.String"));//Type.GetType("System.Double")
-            tblKennzeichen.Columns.Add("LangtextID", Type.GetType("System.String"));
-            tblKennzeichen.Columns.Add("Langtext", Type.GetType("System.String"));
+            tblKennzeichen.Columns.Add("Datum", typeof(string));
+            tblKennzeichen.Columns.Add("LieferantID", typeof(string));
+            tblKennzeichen.Columns.Add("ArtikelID", typeof(string));
+            tblKennzeichen.Columns.Add("Lieferscheinnummer", typeof(string));
+            tblKennzeichen.Columns.Add("Artikel", typeof(string));
+            tblKennzeichen.Columns.Add("Menge", typeof(string));
+            tblKennzeichen.Columns.Add("Preis", typeof(string));
+            tblKennzeichen.Columns.Add("LangtextID", typeof(string));
+            tblKennzeichen.Columns.Add("Langtext", typeof(string));
 
             tblKennzeichen.AcceptChanges();
 
@@ -85,7 +85,7 @@ namespace AppZulassungsdienst.lib
         /// Liefert eine Liste aller Lieferanten zur aktuellen Kostenstelle
         /// </summary>
         /// <returns>Lieferantenliste</returns>
-        private DataTable GetLieferanten()
+        private void GetLieferanten()
         {
             m_strClassAndMethod = "NacherfassungGekaufteKennzeichen.GetLieferanten";
             m_intStatus = 0;
@@ -148,8 +148,6 @@ namespace AppZulassungsdienst.lib
                 }
                 finally { m_blnGestartet = false; }
             }
-
-            return tblLieferanten;
         }
 
         /// <summary>
@@ -324,8 +322,9 @@ namespace AppZulassungsdienst.lib
         /// <param name="LieferantenNr">Lieferantennummer</param>
         /// <param name="Lieferscheinnummer">Lieferscheinnummer</param>
         /// <param name="Langtext">Langtext</param>
+        /// <param name="LangtextID"></param>
         /// <returns>die neu hinzugefügte Zeile</returns>
-        internal DataRow AddKennzeichen(string Datum, string ArtikelID, string Bezeichnung, int Menge, string LieferantenNr, string Lieferscheinnummer, string Langtext,string LangtextID)
+        internal DataRow AddKennzeichen(string Datum, string ArtikelID, string Bezeichnung, int Menge, string LieferantenNr, string Lieferscheinnummer, string Langtext, string LangtextID)
         {
             DataRow NewRow = tblKennzeichen.NewRow();
 
@@ -354,8 +353,9 @@ namespace AppZulassungsdienst.lib
         /// <param name="Lieferscheinnummer">Lieferscheinnummer</param>
         /// <param name="Preis">Preis</param>
         /// <param name="Langtext">Langtext</param>
+        /// <param name="LangtextID"></param>
         /// <returns>die neu hinzugefügte Zeile</returns>
-        internal DataRow AddKennzeichen(string Datum, string ArtikelID, string Bezeichnung, int Menge, string LieferantenNr, string Lieferscheinnummer, double Preis,string Langtext,string LangtextID)
+        internal DataRow AddKennzeichen(string Datum, string ArtikelID, string Bezeichnung, int Menge, string LieferantenNr, string Lieferscheinnummer, double Preis, string Langtext, string LangtextID)
         {
             DataRow NewRow = tblKennzeichen.NewRow();
 
@@ -569,8 +569,6 @@ namespace AppZulassungsdienst.lib
                 DataRow[] rows = tblKennzeichen.Select("Lieferscheinnummer='" + item.Lieferscheinnummer + "'"); //"LieferantID='"+ item.Lieferant +"' AND
                 foreach(DataRow row in rows)
                 {
-                    //DateTime date = null;
-                    //DateTime.TryParse(row["Datum"].ToString(), out date);
                     AuftragObj AufObj = new AuftragObj(item.Lieferant, item.Lieferscheinnummer, row["Datum"].ToString());
                                         
                     bool bAdd = true;
@@ -590,16 +588,14 @@ namespace AppZulassungsdienst.lib
             }            
             
             return strAufträge;
-        }
-                
+        }           
     }
 
     internal struct LieferscheinnummernObj : IComparable<LieferscheinnummernObj>
     {
-       public string Lieferscheinnummer;
+        public string Lieferscheinnummer;
         public string Lieferant;
         
-
         public LieferscheinnummernObj(string strLieferant, string strLieferscheinnummer)
         {
             Lieferant = strLieferant;

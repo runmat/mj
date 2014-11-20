@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
 {
     public partial class Disposition : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private clsDisposition objDispo;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -65,12 +65,12 @@ namespace AppZulassungsdienst.forms
             lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "');__doPostBack('txtZulDate', '');");
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -135,7 +135,7 @@ namespace AppZulassungsdienst.forms
         private bool ApplyZulDate()
         {
             DateTime tmpDatum;
-            if (!DateTime.TryParseExact(txtZulDate.Text, "ddMMyy", System.Globalization.CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDatum))
+            if (!DateTime.TryParseExact(txtZulDate.Text, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDatum))
             {
                 return false;
             }
@@ -147,7 +147,6 @@ namespace AppZulassungsdienst.forms
         private DateTime SkipWeekendsAndHolidays(DateTime datum)
         {
             DateTime tmpdat = datum;
-            DeutscheFeiertageEinesJahres dfej = new DeutscheFeiertageEinesJahres(datum.Year);
 
             for (int i = 0; i < 5; i++)
             {
@@ -212,18 +211,15 @@ namespace AppZulassungsdienst.forms
 
         private void DatenSpeichern(bool senden)
         {
-            Label lbl;
-            DropDownList ddl;
-            DataRow[] dRows;
             int disponierte = 0;
             string nichtDisponierte = "";
 
             // Eingaben aus Grid übernehmen
             foreach (GridViewRow gRow in gvDispositionen.Rows)
             {
-                lbl = (Label)gRow.FindControl("lblAmt");
-                ddl = (DropDownList)gRow.FindControl("ddlFahrer");
-                dRows = objDispo.Dispositionen.Select("AMT = '" + lbl.Text + "'");
+                Label lbl = (Label)gRow.FindControl("lblAmt");
+                DropDownList ddl = (DropDownList)gRow.FindControl("ddlFahrer");
+                DataRow[] dRows = objDispo.Dispositionen.Select("AMT = '" + lbl.Text + "'");
                 if ((dRows.Length > 0) && (ddl.SelectedItem != null))
                 {
                     if (ddl.SelectedItem.Value == "0")

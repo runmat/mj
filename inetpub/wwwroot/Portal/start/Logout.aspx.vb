@@ -51,7 +51,7 @@ Namespace Start
 
             If intPause > -1 Then
                 If (Request.QueryString("DoubleLogin") Is Nothing) OrElse (Not Request.QueryString("DoubleLogin").ToString = "True") Then
-                    m_User.SetLoggedOn(m_User.UserName, False, "")
+                    m_User.SetLoggedOn(m_User.UserName, False)
                 Else
                     intPause = 4000
                     Table1.Visible = True

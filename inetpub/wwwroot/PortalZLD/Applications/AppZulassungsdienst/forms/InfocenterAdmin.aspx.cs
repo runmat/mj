@@ -62,11 +62,6 @@ namespace AppZulassungsdienst.forms
                 cn.Close();
             }
 
-            if (listGroups == null)
-            {
-                return;
-            }
-
             foreach (Group gr in listGroups)
             {
                 lbxDocumentGroups.Items.Add(new ListItem(gr.GroupName, gr.GroupId.ToString()));
@@ -149,23 +144,17 @@ namespace AppZulassungsdienst.forms
 
         protected void lbtnLoeschen_Click(object sender, EventArgs e)
         {
-            CheckBox chkSel;
-            LinkButton lButton;
-            string fName;
-            string fExtension;
-            string sPfad;
-
             foreach (GridDataItem gridRow in rgDokumente.Items)
             {
-                chkSel = (CheckBox)gridRow.FindControl("rb_sel");
+                CheckBox chkSel = (CheckBox)gridRow.FindControl("rb_sel");
                 if ((chkSel != null) && chkSel.Checked)
                 {
-                    lButton = (LinkButton)gridRow.FindControl("lbtDateiOeffnen");
+                    LinkButton lButton = (LinkButton)gridRow.FindControl("lbtDateiOeffnen");
                     if (lButton != null)
                     {
-                        fName = lButton.Text;
-                        fExtension = "." + gridRow["FileType"].Text;
-                        sPfad = fileSourcePath + fName + fExtension;
+                        string fName = lButton.Text;
+                        string fExtension = "." + gridRow["FileType"].Text;
+                        string sPfad = fileSourcePath + fName + fExtension;
 
                         if (File.Exists(sPfad))
                         {
@@ -191,7 +180,7 @@ namespace AppZulassungsdienst.forms
 
         #region Grid
 
-        protected void rgDokumente_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
+        protected void rgDokumente_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
             if (icDocs != null)
             {
@@ -199,16 +188,16 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        protected void rgDokumente_ItemDataBound(object sender, Telerik.Web.UI.GridItemEventArgs e)
+        protected void rgDokumente_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item is Telerik.Web.UI.GridGroupHeaderItem)
+            if (e.Item is GridGroupHeaderItem)
             {
                 if ((icDocs != null) && (icDocs.Documents != null))
                 {
-                    Telerik.Web.UI.GridGroupHeaderItem item = (Telerik.Web.UI.GridGroupHeaderItem)e.Item;
+                    GridGroupHeaderItem item = (GridGroupHeaderItem)e.Item;
                     string strText = item.DataCell.Text.Split(':')[1];
 
-                    int tmpInt = 0;
+                    int tmpInt;
                     if (Int32.TryParse(strText, out tmpInt))
                     {
                         DataRow docType = icDocs.DocumentTypes.Select("documentTypeId=" + tmpInt)[0];
@@ -218,10 +207,10 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        protected void rgDokumente_ItemCommand(object sender, Telerik.Web.UI.GridCommandEventArgs e)
+        protected void rgDokumente_ItemCommand(object sender, GridCommandEventArgs e)
         {
             int index;
-            Telerik.Web.UI.GridDataItem gridRow;
+            GridDataItem gridRow;
             LinkButton lButton;
 
             switch (e.CommandName)
@@ -235,7 +224,6 @@ namespace AppZulassungsdienst.forms
                     {
                         string fName = lButton.Text;
                         string fType = gridRow["FileType"].Text;
-                        string fExtension = "." + fType;
                         string sPfad = fileSourcePath + fName + "." + fType;
 
                         if (File.Exists(sPfad))
@@ -325,12 +313,11 @@ namespace AppZulassungsdienst.forms
 
         protected void ckb_SelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox chkSel;
             bool bChecked = (sender as CheckBox).Checked;
 
             foreach (GridDataItem gridRow in rgDokumente.Items)
             {
-                chkSel = (CheckBox)gridRow["colLoeschen"].FindControl("rb_sel");
+                CheckBox chkSel = (CheckBox)gridRow["colLoeschen"].FindControl("rb_sel");
                 if (chkSel != null)
                 {
                     chkSel.Checked = bChecked;
@@ -352,7 +339,7 @@ namespace AppZulassungsdienst.forms
                     {
                         Directory.CreateDirectory(fileSourcePath);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         lblError.Text = "Dokumentenverzeichnis konnte nicht angelegt werden. Bitte wenden Sie sich an Ihren System-Administrator.";
                         return;
@@ -379,7 +366,6 @@ namespace AppZulassungsdienst.forms
                     default:
                         lblError.Text = "Es können nur Dateien im Format jpg, jpeg, gif, doc, docx, xls, xlsx und pdf hochgeladen werden.";
                         return;
-                        break;
                 }
 
                 // Datei in temp-Verzeichnis zwischenspeichern
@@ -503,7 +489,6 @@ namespace AppZulassungsdienst.forms
         {
             List<int> listeAdd = new List<int>();
             List<int> listeDelete = new List<int>();
-            int anzTreffer;
 
             int documentId = Int32.Parse(ihSelectedDocumentId.Value);
 
@@ -517,7 +502,7 @@ namespace AppZulassungsdienst.forms
             // Gruppenzuordnung abgleichen und ggf. speichern
             foreach (ListItem item in lbxDocumentGroups.Items)
             {
-                anzTreffer = icDocs.DocumentRights.Select("DocumentId=" + documentId + " AND GroupId=" + item.Value).Length;
+                int anzTreffer = icDocs.DocumentRights.Select("DocumentId=" + documentId + " AND GroupId=" + item.Value).Length;
                 if ((item.Selected) && (anzTreffer == 0))
                 {
                     listeAdd.Add(Int32.Parse(item.Value));
@@ -606,8 +591,6 @@ namespace AppZulassungsdienst.forms
 
         protected void lbtnDeleteDocType_Click(object sender, EventArgs e)
         {
-            bool blnSuccess = false;
-
             if (ddlDocTypeSelection.SelectedIndex >= 0)
             {
                 if (ddlDocTypeSelection.SelectedItem.Value == "1")
@@ -616,7 +599,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    blnSuccess = icDocs.DeleteDocumentType(Int32.Parse(ddlDocTypeSelection.SelectedItem.Value));
+                    bool blnSuccess = icDocs.DeleteDocumentType(Int32.Parse(ddlDocTypeSelection.SelectedItem.Value));
 
                     if (blnSuccess)
                     {

@@ -11,10 +11,10 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Kompletterfassung Listenansicht.
     /// </summary>
-    public partial class ChangeZLDKomListe : System.Web.UI.Page
+    public partial class ChangeZLDKomListe : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private KomplettZLD objKompletterf;
         private ZLDCommon objCommon;
 
@@ -136,8 +136,7 @@ namespace AppZulassungsdienst.forms
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objKompletterf.tblEingabeListe.DefaultView;
+            DataView tmpDataView = objKompletterf.tblEingabeListe.DefaultView;
             String strFilter = "";
             if (Rowfilter != null)
             {
@@ -253,11 +252,9 @@ namespace AppZulassungsdienst.forms
                         myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
 
                     }
-                    //String Menge = "1";
-                    if ((Boolean)objKompletterf.tblEingabeListe.Select("ID = " + myId)[0]["Barkunde"] == true)
+                    if ((Boolean)objKompletterf.tblEingabeListe.Select("ID = " + myId)[0]["Barkunde"])
                     {
                        row.CssClass = "GridTableBarkunde";
-                       // Menge = objKompletterf.tblEingabeListe.Select("ID = " + myId)[0]["Menge"].ToString()
                     }
                     TextBox txtGebPreis = (TextBox)row.FindControl("txtGebPreis");
                     HiddenField txtGebPreisOld = (HiddenField)row.FindControl("txtGebPreisOld");
@@ -335,8 +332,8 @@ namespace AppZulassungsdienst.forms
             DropDownList ddlPage = (DropDownList)GridNavigation1.FindControl("ddlPageSize");
             if (ddlPage != null)
             {
-                int pageSize = 0;
-                int.TryParse(ddlPage.SelectedValue, out pageSize );
+                int pageSize;
+                int.TryParse(ddlPage.SelectedValue, out pageSize);
                 objKompletterf.ListePageSize = pageSize;
                 objKompletterf.ListePageSizeIndex = ddlPage.SelectedIndex;
             }
@@ -380,10 +377,10 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Überprüfen des Grids auf Benutzereingaben. 
         /// rowUpdate = "" wenn explizit auf Alle OK , Absenden (Überprüfung der Pflichtfelder erfolgt, Speichern der Eingaben in SQL-Datenbank).
-        /// rowUpdate <> "" bei Seitenwechsel, Alle Bar,  Alle EC, Alle Bar, Excel-Druck, Filter-Buttons (Keine Überprüfung der Pflichtfelder, Speichern der Eingaben in SQL-Datenbank)
+        /// rowUpdate != "" bei Seitenwechsel, Alle Bar,  Alle EC, Alle Bar, Excel-Druck, Filter-Buttons (Keine Überprüfung der Pflichtfelder, Speichern der Eingaben in SQL-Datenbank)
         /// Position nur Überprüfen bei leerem Löschkennzeichen !!
         /// </summary>
-        /// <param name="rowUpdate">Soll gespeichert werden?!</param>
+        /// <param name="RowUpdate">Soll gespeichert werden?!</param>
         /// <returns>true bei Eingabefehler</returns>
         private Boolean CheckGrid(String RowUpdate)
         {
@@ -392,30 +389,26 @@ namespace AppZulassungsdienst.forms
             {
                 foreach (GridViewRow gvRow in GridView1.Rows)
                 {
-                    Label ID = (Label)gvRow.FindControl("lblID");
+                    Label lblID = (Label)gvRow.FindControl("lblID");
                     Label posID = (Label)gvRow.FindControl("lblid_pos");
                     RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
                     RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
                     RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
                     Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
-                    Label lblGebMatnr = (Label)gvRow.FindControl("lblGebMatnr");
                     String Loeschkz = "";
-                    String SDRelGeb = "";
+
                     if (lblLoeschKZ.Text == "L")
                     {
                         Loeschkz = "X";
                     }
                     Int32 intID = 0;
                     Int32 intPosID = 0;
-                    Boolean bBar = false;
-                    Boolean bEC = false;
-                    Boolean bRE = false;
-                    bBar = rb.Checked;
-                    bEC = rbEC.Checked;
-                    bRE = rbRE.Checked;
-                    if (ZLDCommon.IsNumeric(ID.Text))
+                    Boolean bBar = rb.Checked;
+                    Boolean bEC = rbEC.Checked;
+                    Boolean bRE = rbRE.Checked;
+                    if (ZLDCommon.IsNumeric(lblID.Text))
                     {
-                        Int32.TryParse(ID.Text, out intID);
+                        Int32.TryParse(lblID.Text, out intID);
                     }
 
                     if (ZLDCommon.IsNumeric(posID.Text))
@@ -490,7 +483,7 @@ namespace AppZulassungsdienst.forms
                                         gebMat = RowsGebMat[0]["GebMatnrSt"].ToString();
                                     }
                                 }
-                                SDRelGeb = objKompletterf.GetSDRelevantsGeb(intID, intPosID, gebMat);
+                                String SDRelGeb = objKompletterf.GetSDRelevantsGeb(intID, intPosID, gebMat);
                                 if (txtBox.Visible && RowUpdate == "" && Loeschkz != "X" && SDRelGeb != "X")//&& lblOkKZ.Visible
                                 {
                                     txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
@@ -564,7 +557,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
             //HelpProcedures.FixedGridViewCols(GridView1);
@@ -576,7 +569,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -604,13 +597,13 @@ namespace AppZulassungsdienst.forms
                     CheckGrid("Del");
                     lblError.Text = "";
                     Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                    Label ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                    Label lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                     Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                     Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
                     String Loeschkz = "";
                     Int32 IDSatz;
                     Int32 IDPos;
-                    Int32.TryParse(ID.Text, out IDSatz);
+                    Int32.TryParse(lblID.Text, out IDSatz);
                     Int32.TryParse(lblIDPos.Text, out IDPos);
                     if (lblLoeschKZ.Text == "L")
                     {
@@ -674,21 +667,19 @@ namespace AppZulassungsdienst.forms
                     { return; }
                     
                     Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                    Label ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                    Label lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                     Label IDPosEdit = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                     Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
-                    String Loeschkz = "";
+
                     Int32 IDSatz;
-                    Int32.TryParse(ID.Text, out IDSatz);
+                    Int32.TryParse(lblID.Text, out IDSatz);
                     if (lblLoeschKZ.Text == "L")
                     {
                         throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
                     }
-                    else
-                    {
-                        Loeschkz = "O";
-                        objKompletterf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
-                    }
+
+                    String Loeschkz = "O";
+                    objKompletterf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
 
                     if (objKompletterf.Status != 0)
                     {
@@ -740,24 +731,17 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             try
             {
-                Label ID = (Label)gvRow.FindControl("lblID");
+                Label lblID = (Label)gvRow.FindControl("lblID");
                 Label posID = (Label)gvRow.FindControl("lblid_pos");
                 Label ZulDate = (Label)gvRow.FindControl("lblZulassungsdatum");
                 RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
                 RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
                 RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
                 Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
-                Label lblGebMatnr = (Label)gvRow.FindControl("lblGebMatnr");
 
-                Boolean bBar = false;
-                Boolean bEC = false;
-                Boolean bRE = false;
-                String SDRelGeb = "";
-
-                bBar = rb.Checked;
-                bEC = rbEC.Checked;
-                bRE = rbRE.Checked;
-
+                Boolean bBar = rb.Checked;
+                Boolean bEC = rbEC.Checked;
+                Boolean bRE = rbRE.Checked;
 
                 Int32 intID = 0;
                 Int32 intPosID = 0;
@@ -766,9 +750,9 @@ namespace AppZulassungsdienst.forms
                 {
                     Loeschkz = "X";
                 }
-                if (ZLDCommon.IsNumeric(ID.Text))
+                if (ZLDCommon.IsNumeric(lblID.Text))
                 {
-                    Int32.TryParse(ID.Text, out intID);
+                    Int32.TryParse(lblID.Text, out intID);
                 }
 
                 if (ZLDCommon.IsNumeric(posID.Text))
@@ -779,12 +763,8 @@ namespace AppZulassungsdienst.forms
                 {
                     ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                    bError = true;
-                    return bError;
+                    return true;
                 }
-
-
-
 
                 TextBox txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 Decimal decPreis = 0;
@@ -808,8 +788,7 @@ namespace AppZulassungsdienst.forms
                     {
                         txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie einen Preis für die markierten Dienstleistungen/Artikel ein!";
-                        bError = true;
-                        return bError;
+                        return true;
                     }
                 }
 
@@ -852,7 +831,7 @@ namespace AppZulassungsdienst.forms
                                     gebMat = RowsGebMat[0]["GebMatnrSt"].ToString();
                                 }
                             }
-                            SDRelGeb = objKompletterf.GetSDRelevantsGeb(intID, intPosID, gebMat);
+                            String SDRelGeb = objKompletterf.GetSDRelevantsGeb(intID, intPosID, gebMat);
                             if (txtBox.Visible && Loeschkz != "X" && SDRelGeb != "X")//&& lblOkKZ.Visible
                             {
                                 txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
@@ -916,9 +895,7 @@ namespace AppZulassungsdienst.forms
                             row["KennABC"] = txtBox.Text;
                         }
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -971,30 +948,6 @@ namespace AppZulassungsdienst.forms
             catch (Exception ex)
             {
                 lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-            }
-        }
-
-        /// <summary>
-        /// Alle Fehlerstyles im gesamten Grid entfernen.
-        /// </summary>
-        private void ClearGridErrors()
-        {
-            foreach (GridViewRow gvRow in GridView1.Rows)
-            {
-                Label ZulDate = (Label)gvRow.FindControl("lblZulassungsdatum");
-                ZulDate.BackColor = System.Drawing.Color.Empty;
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtPreis");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-                txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-                txtBox = (TextBox)gvRow.FindControl("txtPreis_Amt");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-                txtBox = (TextBox)gvRow.FindControl("txtSteuer");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-                txtBox = (TextBox)gvRow.FindControl("txtPreisKZ");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-                txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             }
         }
 
@@ -1382,8 +1335,8 @@ namespace AppZulassungsdienst.forms
                 {
                     if (ZLDCommon.IsDecimal(tmpRow["GebPreis"].ToString()))
                     {
-                        Decimal iTemp = 0;
-                        Decimal iMenge = 1;
+                        Decimal iTemp;
+                        Decimal iMenge;
                         Decimal.TryParse(tmpRow["Menge"].ToString(), out iMenge);
                         Decimal.TryParse(tmpRow["GebPreis"].ToString(), out iTemp);
                         gesamt += iTemp * iMenge;
@@ -1426,8 +1379,8 @@ namespace AppZulassungsdienst.forms
                     {
                         if (ZLDCommon.IsDecimal(tmpRow["Preis_Amt"].ToString()))
                         {
-                            Decimal iTemp = 0;
-                            Decimal iMenge = 1;
+                            Decimal iTemp;
+                            Decimal iMenge;
                             Decimal.TryParse(tmpRow["Menge"].ToString(), out iMenge);
                             Decimal.TryParse(tmpRow["Preis_Amt"].ToString(), out iTemp);
                             gesamt += iTemp * iMenge;
@@ -1597,7 +1550,6 @@ namespace AppZulassungsdienst.forms
             RadioButton rbBar = (RadioButton)sender;
             GridViewRow gvRow = (GridViewRow)rbBar.Parent.Parent;
             Label lblID = (Label)gvRow.FindControl("lblID");
-            Label lblid_pos = (Label)gvRow.FindControl("lblid_pos");
             DataRow[] RowIDs = objKompletterf.tblEingabeListe.Select("ID = " + lblID.Text);
             foreach (DataRow dRow in RowIDs)
             {
@@ -1711,8 +1663,8 @@ namespace AppZulassungsdienst.forms
             DataTable tblTemp = CreateExcelTable();
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, null, 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
         }
 
         /// <summary>
