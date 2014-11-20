@@ -147,7 +147,7 @@
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField HeaderStyle-Width="8%" HeaderText="Preis" DataField="Preis" ItemStyle-HorizontalAlign="Right" /> <%--DataFormatString="{0:C2}"--%>
+                                                    <asp:BoundField HeaderStyle-Width="8%" HeaderText="Preis" DataField="Preis" ItemStyle-HorizontalAlign="Right" />
                                                     <asp:BoundField HeaderStyle-Width="25%" HeaderText="Infotext" DataField="Langtext"
                                                         Visible="true" />
                                                     <asp:TemplateField Visible="true"  HeaderStyle-Width="5%">

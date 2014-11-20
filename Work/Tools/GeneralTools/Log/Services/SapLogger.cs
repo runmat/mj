@@ -92,7 +92,7 @@ namespace GeneralTools.Log.Services
                 else if (appID == 0)
                 {
                     // wenn nur die AppID fehlt, nur diese aus dem Context holen
-                    HttpContextService.TryGetAppIdFromUrlOrSession(out appID);
+                    appID = HttpContextService.TryGetAppIdFromUrlOrSession();
                 }
             }
 
@@ -104,12 +104,12 @@ namespace GeneralTools.Log.Services
 
             logEventInfo.Properties["Anmeldename"] = anmeldeName;
             logEventInfo.Properties["Bapi"] = bapi;
-            logEventInfo.Properties["ImportParameters"] = importParameter;
-            logEventInfo.Properties["ImportTables"] = importTable;
+            logEventInfo.Properties["ImportParameters"] = XmlService.CompressString(importParameter);
+            logEventInfo.Properties["ImportTables"] = XmlService.CompressString(importTable);
             logEventInfo.Properties["Status"] = status;
             logEventInfo.Properties["Dauer"] = Convert.ToDecimal(dauer);
-            logEventInfo.Properties["ExportParameters"] = exportParamter;
-            logEventInfo.Properties["ExportTables"] = exportTable;
+            logEventInfo.Properties["ExportParameters"] = XmlService.CompressString(exportParamter);
+            logEventInfo.Properties["ExportTables"] = XmlService.CompressString(exportTable);
 
             if (HttpContext.Current != null)
             {

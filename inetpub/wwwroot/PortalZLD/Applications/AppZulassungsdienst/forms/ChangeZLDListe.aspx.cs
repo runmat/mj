@@ -6,13 +6,12 @@ using AppZulassungsdienst.lib;
 using System.Data;
 using CKG.Base.Business;
 
-
 namespace AppZulassungsdienst.forms
 {
     public partial class ChangeZLDListe : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VoerfZLD objVorerf;
         private ZLDCommon objCommon;
 
@@ -71,14 +70,14 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
             HelpProcedures.FixedGridViewCols(gvZuldienst);
 
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -86,8 +85,7 @@ namespace AppZulassungsdienst.forms
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objVorerf.tblEingabeListe.DefaultView;
+            DataView tmpDataView = objVorerf.tblEingabeListe.DefaultView;
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)
@@ -196,13 +194,13 @@ namespace AppZulassungsdienst.forms
                 objVorerf = (VoerfZLD)Session["objVorerf"];
                 Int32 Index;
                 Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                Label ID = (Label)gvZuldienst.Rows[Index].FindControl("lblID");
+                Label lblID = (Label)gvZuldienst.Rows[Index].FindControl("lblID");
                 Label lblLoeschKZ = (Label)gvZuldienst.Rows[Index].FindControl("lblLoeschKZ");
                 Label lblIDPos = (Label)gvZuldienst.Rows[Index].FindControl("lblid_pos");
                 String Loeschkz = "";
                 Int32 IDSatz;
                 Int32 IDPos;
-                Int32.TryParse(ID.Text, out IDSatz);
+                Int32.TryParse(lblID.Text, out IDSatz);
                 Int32.TryParse(lblIDPos.Text, out IDPos);
                 if (lblLoeschKZ.Text == "L")
                 {
@@ -343,7 +341,6 @@ namespace AppZulassungsdienst.forms
                 lblMessage.Visible = true;
                 lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                 lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-               // Tracing();
                 DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = ''");
 
                 if (rowListe.Length > 0)
@@ -363,18 +360,6 @@ namespace AppZulassungsdienst.forms
                 
             }
         }
-
-        //private void Tracing() 
-        //{
-            
-        //    int AppID =0;
-        //    int.TryParse( Session["AppID"].ToString(), out AppID);
-        //    CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
-        //    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, AppID, lblHead.Text, m_User.Reference,
-        //        "Absendung Vorerfassungsliste am " + System.DateTime.Now.ToString() + " erforgreich.", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, objVorerf.tblEingabeListe);
-        
-        //}
-
 
     }
 }

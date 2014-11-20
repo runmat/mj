@@ -15,10 +15,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Umlagerung : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private clsUmlagerung objUmlagerung;
         private DataTable ReportTable;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
         /// </summary>
@@ -59,7 +60,7 @@ namespace AppZulassungsdienst.forms
         /// Anzeige des Filialtextes(Ort).
         /// </summary>
         /// <param name="sender">object</param>
-        /// <param name="e"><EventArgs/param>
+        /// <param name="e">EventArgs</param>
         protected void txtKST_TextChanged(object sender, EventArgs e)
 
         {
@@ -84,6 +85,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Artikel aus SAP laden(Z_FIL_EFA_UML_MAT) und an die DropDowns binden.
         /// </summary>
@@ -92,12 +94,11 @@ namespace AppZulassungsdienst.forms
             objUmlagerung.Show(Session["AppID"].ToString(), Session.SessionID, this);
             if (objUmlagerung.Message == "")
             {
-                ListItem tmpItem;
                 Int32 i = 0;
                 ddlArtikel.Items.Clear();
                 do
                 {
-                    tmpItem = new ListItem(objUmlagerung.tblArtikel.Rows[i]["MAKTX"].ToString(),
+                    ListItem tmpItem = new ListItem(objUmlagerung.tblArtikel.Rows[i]["MAKTX"].ToString(),
                                             objUmlagerung.tblArtikel.Rows[i]["MATNR"].ToString());
                     ddlArtikel.Items.Add(tmpItem);
                     i += 1;
@@ -111,6 +112,7 @@ namespace AppZulassungsdienst.forms
             }
         
         }
+
         /// <summary>
         /// Prüfung ob Umlagerung möglich(Z_FIL_EFA_GET_KOSTL). Prüfen ob eine Textbemerkung Pflicht ist.
         /// Vorgang in die Umlagerungstabelle einfügen bzw, aktulisieren. 
@@ -161,7 +163,7 @@ namespace AppZulassungsdienst.forms
                             return;
                         } 
                         
-                        else if (rows.GetLength(0) > 0)
+                        if (rows.GetLength(0) > 0)
                         {
                             DataRow row = rows[0];
                             if (row["TEXTPFLICHT"] != null)
@@ -210,11 +212,11 @@ namespace AppZulassungsdienst.forms
                 else
                 {
                     lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten!";
-                    return;
                 } 
             }
         
         }
+
         /// <summary>
         /// Binden der eingefügten Artikel an das Gridview1.
         /// </summary>
@@ -222,9 +224,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void FillGrid(Int32 intPageIndex, String strSort)
         {
-
-            DataView tmpDataView = new DataView();
-            tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
+            DataView tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
             String strFilter = "";
  
 
@@ -288,14 +288,13 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Binden der eingefügten Artikel an das Gridview2. Prüfung der Daten durch Benutzer.
         /// </summary>
         private void FillGrid2() 
         {
-
-            DataView tmpDataView = new DataView();
-            tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
+            DataView tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
             if (tmpDataView.Count == 0)
             {
                 GridView2.Visible = false;
@@ -309,6 +308,7 @@ namespace AppZulassungsdienst.forms
                 GridView2.DataBind();
             }
         }
+
         /// <summary>
         /// Funktionsaufruf DoInsert().
         /// </summary>
@@ -318,6 +318,7 @@ namespace AppZulassungsdienst.forms
         {
             DoInsert();
         }
+
         /// <summary>
         /// Artikelübersicht einblenden.
         /// </summary>
@@ -335,6 +336,7 @@ namespace AppZulassungsdienst.forms
                 mpeBestellungsCheck.Show();
             }
         }
+
         /// <summary>
         /// Vom Benutzer geprüfte Daten an SAP üergeben(Z_FIL_EFA_UML_STEP1).
         /// </summary>
@@ -354,9 +356,8 @@ namespace AppZulassungsdienst.forms
             {
                 lblBestellMeldung.ForeColor = System.Drawing.Color.Green;
                 lblBestellMeldung.Text = "Ihre Umlagerung war erfolgreich!";
-               
-                ReportTable = new DataTable();
-                ReportTable.TableName = "Bestellung";
+
+                ReportTable = new DataTable("Bestellung");
                 ReportTable.Columns.Add("Artikel", typeof(String));
                 ReportTable.Columns.Add("Kennzform", typeof(String));
                 ReportTable.Columns.Add("Menge", typeof(String));
@@ -437,6 +438,7 @@ namespace AppZulassungsdienst.forms
             }
         
         }
+
         /// <summary>
         /// Übersicht der abgesendeten Umlagerungen ausdrucken.
         /// </summary>
@@ -446,19 +448,9 @@ namespace AppZulassungsdienst.forms
         {
             Session["App_ContentType"] = "Application/pdf";
 
-
             ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-
-            //if ((!this.ClientScript.IsStartupScriptRegistered("Enabled")))
-            //{
-            //    StringBuilder sb = new StringBuilder();
-            //    sb.Append("<script type=\"text/javascript\\\">");
-            //    sb.Append("window.open(\"Printpdf.aspx\", \"_blank\", \"left=0,top=0,resizable=YES,scrollbars=YES\");");
-            //    sb.Append("</script>");
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Enabled", sb.ToString());
-
-            //}
         }
+
         /// <summary>
         /// Artikel entfernen oder bearbeiten oder Anzahl ändern.
         /// </summary>
@@ -523,7 +515,7 @@ namespace AppZulassungsdienst.forms
                             DataRow[] rows = objUmlagerung.tblUmlagerung.Select("MATNR=" + e.CommandArgument);
                             if (rows.GetLength(0) > 0 )
                             {
-                                int iMenge = 0;
+                                int iMenge;
                                 int.TryParse(rows[0]["Menge"].ToString(), out iMenge);
                                 if (iMenge > 0) 
                                 { 
@@ -536,7 +528,7 @@ namespace AppZulassungsdienst.forms
                              DataRow[]  rows2 = objUmlagerung.tblUmlagerung.Select("MATNR=" + e.CommandArgument);
                              if (rows2.GetLength(0) > 0)
                             {
-                                int iMenge = 0;
+                                int iMenge;
                                 int.TryParse(rows2[0]["Menge"].ToString(), out iMenge);
                                 if (iMenge > 0) 
                                 {
@@ -545,8 +537,6 @@ namespace AppZulassungsdienst.forms
                                 FillGrid(0, "");
                             }
                              break;
-						default:
-							break;
 					}
             
         }
@@ -605,74 +595,70 @@ namespace AppZulassungsdienst.forms
             FillGrid(0, "");
          
          }
+
         /// <summary>
         /// Infotext speichern/aktualisieren.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-         protected void lbInfotextSave_Click(object sender, EventArgs e)
-         {
-             lblErrorInfotext.Text = "";
-             if (lblPflicht.Text == "true")
+        protected void lbInfotextSave_Click(object sender, EventArgs e)
+        {
+            lblErrorInfotext.Text = "";
+            if (lblPflicht.Text == "true")
+            {
+                if (txtInfotext.Text.TrimStart(',') == "")
                 {
-                    if (txtInfotext.Text.TrimStart(',') == "")
-                    {
-                        lblErrorInfotext.Text = "Geben Sie einen Text ein!";
-                        MPEInfotext.Show();
-                        return;
-                    }
-                    else 
-                    {
-                        objUmlagerung.insertIntoBestellungen(lblMatNr.Text, lblMenge.Text, lblArtikelbezeichnungInfo.Text, lblEAN.Text, 
-                                                            lblLTextNr.Text, txtInfotext.Text.TrimStart(','), lblKennzForm.Text);
-            
-                    }        
-        
+                    lblErrorInfotext.Text = "Geben Sie einen Text ein!";
+                    MPEInfotext.Show();
+                    return;
                 }
-                else
-                {
-                    objUmlagerung.insertIntoBestellungen(lblMatNr.Text, lblMenge.Text, lblArtikelbezeichnungInfo.Text, lblEAN.Text,
+
+                objUmlagerung.insertIntoBestellungen(lblMatNr.Text, lblMenge.Text, lblArtikelbezeichnungInfo.Text, lblEAN.Text,
                                                         lblLTextNr.Text, txtInfotext.Text.TrimStart(','), lblKennzForm.Text);
-                }
+            }
+            else
+            {
+                objUmlagerung.insertIntoBestellungen(lblMatNr.Text, lblMenge.Text, lblArtikelbezeichnungInfo.Text, lblEAN.Text,
+                                                    lblLTextNr.Text, txtInfotext.Text.TrimStart(','), lblKennzForm.Text);
+            }
 
-       
-             CloseInfotext();
+            CloseInfotext();
+        }
 
-         }
         /// <summary>
          /// Artikelauswahl bzw. Änderung. Ermitteln der möglichen Kennzeichengrössen zum Umlagerungsartikel(Z_FIL_EFA_UML_MAT_GROESSE).
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-         protected void ddlArtikel_SelectedIndexChanged(object sender, EventArgs e)
-         {
-             lblError.Text = "";
-             objUmlagerung.GetKennzForm(Session["AppID"].ToString(), Session.SessionID, this, ddlArtikel.SelectedValue);
+        protected void ddlArtikel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblError.Text = "";
+            objUmlagerung.GetKennzForm(Session["AppID"].ToString(), Session.SessionID, this, ddlArtikel.SelectedValue);
 
-             if (objUmlagerung.Status != 0 && objUmlagerung.Status != 101)
-             {
-                 tdKennzForm.Visible = false;
-                 tdKennzFormShow.Visible = false;
-                 lblError.Text = objUmlagerung.Message;
+            if (objUmlagerung.Status != 0 && objUmlagerung.Status != 101)
+            {
+                tdKennzForm.Visible = false;
+                tdKennzFormShow.Visible = false;
+                lblError.Text = objUmlagerung.Message;
 
-             }
-             else if (objUmlagerung.Status == 101)
-             {
-                 tdKennzForm.Visible = false;
-                 tdKennzFormShow.Visible = false;
-             }
-             else
-             {
-                 tdKennzForm.Visible = true;
-                 tdKennzFormShow.Visible = true;
-                 ddlKennzform.DataSource = objUmlagerung.tblKennzForm;
-                 ddlKennzform.DataTextField = "KENNZFORM";
-                 ddlKennzform.DataValueField = "VK_MATNR";
-                 ddlKennzform.DataBind();
-                 ListItem ItemDefault;
-                 ItemDefault = ddlKennzform.Items.FindByText("520x114");
-                 if (ItemDefault != null) { ItemDefault.Selected = true; }
-             }
-         }
+            }
+            else if (objUmlagerung.Status == 101)
+            {
+                tdKennzForm.Visible = false;
+                tdKennzFormShow.Visible = false;
+            }
+            else
+            {
+                tdKennzForm.Visible = true;
+                tdKennzFormShow.Visible = true;
+                ddlKennzform.DataSource = objUmlagerung.tblKennzForm;
+                ddlKennzform.DataTextField = "KENNZFORM";
+                ddlKennzform.DataValueField = "VK_MATNR";
+                ddlKennzform.DataBind();
+                ListItem ItemDefault;
+                ItemDefault = ddlKennzform.Items.FindByText("520x114");
+                if (ItemDefault != null) { ItemDefault.Selected = true; }
+            }
+        }
     }
 }
