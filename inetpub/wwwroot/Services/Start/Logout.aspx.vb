@@ -37,13 +37,8 @@ Partial Public Class Logout
         End If
 
         If intPause > -1 Then
-            If (Request.QueryString("DoubleLogin") Is Nothing) OrElse (Not Request.QueryString("DoubleLogin").ToString = "True") Then
-                m_User.SetLoggedOn(m_User.UserName, False, "")
-            Else
-                intPause = 4000
-                Table1.Visible = True
-                FormDiv.Visible = True
-            End If
+            m_User.SetLoggedOn(m_User.UserName, False)
+
             Session.Abandon()
             System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
             Response.Redirect("Bounce.aspx?ReturnUrl=Login.aspx?Logon=open")

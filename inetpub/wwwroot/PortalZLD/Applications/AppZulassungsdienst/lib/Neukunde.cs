@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Neukundenanlage.
     /// </summary>
-    public class Neukunde : CKG.Base.Business.BankBase
+    public class Neukunde : BankBase
     {
         /// <summary>
         /// Ländertabelle aus SAP.
@@ -330,6 +330,7 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -344,16 +345,19 @@ namespace AppZulassungsdienst.lib
         
 
         }
+
         /// <summary>
         /// Overrides Change() Base
         /// </summary>
         public override void Change()
         { }
+
         /// <summary>
         /// Overrides Fill() Base
         /// </summary>
         public override void Show()
         { }
+
         /// <summary>
         /// Stammdaten aus SAP ziehen. Bapi: Z_ALL_DEBI_CHECK_TABLES
         /// </summary>
@@ -545,6 +549,5 @@ namespace AppZulassungsdienst.lib
                 finally { m_blnGestartet = false; }
             }
         }
-
     }
 }

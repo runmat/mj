@@ -10,6 +10,7 @@ using CkgDomainLogic.CoC.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 // ReSharper restore RedundantUsingDirective
 
@@ -20,6 +21,9 @@ namespace CkgDomainLogic.CoC.ViewModels
         [XmlIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
+        public int CurrentAppID { get; set; }
+
+        public bool ShowStatusInGrid { get; set; }
 
         public Func<IEnumerable> FilteredObjectsCurrent
         {
@@ -80,6 +84,10 @@ namespace CkgDomainLogic.CoC.ViewModels
 
         public void DataMarkForRefreshMulti()
         {
+            GetCurrentAppID();
+            var tmpWert = ApplicationConfiguration.GetApplicationConfigValue("SendungsstatusImGridAnzeigen", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+            ShowStatusInGrid = (!String.IsNullOrEmpty(tmpWert) && tmpWert.ToUpper() == "TRUE");
+
             PropertyCacheClear(this, m => m.SendungenIdFiltered);
             PropertyCacheClear(this, m => m.SendungsAuftragIdSelektor);
             
@@ -121,6 +129,8 @@ namespace CkgDomainLogic.CoC.ViewModels
 
             if (SendungenId.None())
                 addModelError("", Localize.NoDataFound);
+            else if (!ShowStatusInGrid)
+                SendungenId.ForEach(x => x.StatusText = "");
 
             DataMarkForRefresh();
         }
@@ -166,6 +176,8 @@ namespace CkgDomainLogic.CoC.ViewModels
 
             if (SendungenDocs.None())
                 addModelError("", Localize.NoDataFound);
+            else if (!ShowStatusInGrid)
+                SendungenDocs.ForEach(x => x.StatusText = "");
 
             DataMarkForRefresh();
         }
@@ -177,5 +189,10 @@ namespace CkgDomainLogic.CoC.ViewModels
 
         #endregion
 
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = HttpContextService.TryGetAppIdFromUrlOrSession();
+        }
     }
 }

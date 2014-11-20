@@ -28,7 +28,7 @@
                         </Triggers>
                         <ContentTemplate>
                             <div id="TableQuery" style="margin-bottom: 10px">
-                                <asp:Panel ID="pnlBankdaten" runat="server" Visible="false">
+                                <asp:Panel ID="pnlBankdaten" runat="server" style="display:none">
                                     <table cellpadding="0" runat="server" id="TableBank" cellspacing="0">
                                         <tr>
                                             <td colspan="3" style="background-color: #dfdfdf; height: 22px; padding-left: 15px">
@@ -272,42 +272,6 @@
                                                     </asp:GridView>
                                                 </td>
                                             </tr>
-<%--                                            <tr class="formquery">
-                                                <td colspan="4">
-                                                    <asp:GridView ID="GridView1" Style="border: none 0px #ffffff" runat="server" AutoGenerateColumns="False"
-                                                        ShowHeader="False" OnRowCommand="GridView1_RowCommand">
-                                                        <Columns>
-                                                            <asp:TemplateField>
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="lblDienst" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Bezeichnung") %>'></asp:Label>
-                                                                </ItemTemplate>
-                                                                <ItemStyle BorderStyle="None" CssClass="firstLeft active" Width="155px" />
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField>
-                                                                <ItemTemplate>
-                                                                    <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" Width="75px"></asp:TextBox>
-                                                                </ItemTemplate>
-                                                                <ItemStyle BorderStyle="None" Width="105px" />
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField>
-                                                                <ItemTemplate>
-                                                                    <asp:DropDownList ID="ddlItems" Style="width: 375px" runat="server">
-                                                                    </asp:DropDownList>
-                                                                </ItemTemplate>
-                                                                <ItemStyle BorderStyle="None" Width="380px" />
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField ItemStyle-BorderStyle="None" ItemStyle-Width="380px">
-                                                                <ItemTemplate>
-                                                                    <asp:ImageButton ID="ibtnDel" CommandName="Del" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
-                                                                        Visible='<%# ((GridViewRow)Container).RowIndex > 0 %>' ImageUrl="/PortalZLD/Images/RecycleBin.png"
-                                                                        Height="16px" Width="16px" runat="server" />
-                                                                </ItemTemplate>
-                                                                <ItemStyle BorderStyle="None" Width="323px" />
-                                                            </asp:TemplateField>
-                                                        </Columns>
-                                                    </asp:GridView>
-                                                </td>
-                                            </tr>--%>
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblStva" runat="server">StVA*:</asp:Label>
@@ -316,7 +280,7 @@
                                                     <asp:TextBox ID="txtStVa" runat="server" CssClass="TextBoxNormal" MaxLength="8" Width="65px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active">
-                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" AutoPostBack="false">
+                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" AutoPostBack="false" EnableViewState="False">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%;">
