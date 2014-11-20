@@ -12,10 +12,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportTagList_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
         protected CKG.PortalZLD.GridNavigation GridNavigation1;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
         /// </summary>
@@ -48,26 +49,29 @@ namespace AppZulassungsdienst.forms
                 Fillgrid(0, "");
             }
         }
+
         /// <summary>
         /// Spaltenübersetzung.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
             //HelpProcedures.FixedGridViewCols(GridView1);
 
         }
+
         /// <summary>
         /// Page_Unload-Ereignis.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Farbe für bereits gedruckte Vorgänge im Grid setzen. Positiongrid initiliasieren für hierarchische Darstellung(FillGrid2).
         /// </summary>
@@ -77,7 +81,6 @@ namespace AppZulassungsdienst.forms
         {
             objListe = (Listen)Session["objListe"];
             GridViewRow row = e.Row;
-            string strSort = string.Empty;
 
             // nicht im header oder footer
             if (row.DataItem == null)
@@ -92,8 +95,7 @@ namespace AppZulassungsdienst.forms
                 e.Row.BackColor =System.Drawing.ColorTranslator.FromHtml( "#EA7272");
             }
             //Find Child GridView control
-            GridView gv = new GridView();
-            gv = (GridView)row.FindControl("GridView2");
+            GridView gv = (GridView)row.FindControl("GridView2");
             System.Web.UI.HtmlControls.HtmlTableCell Cell = (System.Web.UI.HtmlControls.HtmlTableCell)row.FindControl("tdGrid2");
             //Prepare the query for Child GridView by passing 
             //the Customer ID of the parent row
@@ -110,11 +112,8 @@ namespace AppZulassungsdienst.forms
             {
                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#EA7272");
             }
-            DataView tmpDataView = new DataView();
-            tmpDataView = objListe.TagesListe.DefaultView;
-            String RowFilter = "";
 
-            RowFilter = "KreisKZ = '" + ((DataRowView)e.Row.DataItem)["KreisKZ"].ToString().TrimStart('0') + "'";
+            String RowFilter = "KreisKZ = '" + ((DataRowView)e.Row.DataItem)["KreisKZ"].ToString().TrimStart('0') + "'";
             String SKennz =((DataRowView)e.Row.DataItem)["KreisKZ"].ToString().TrimStart('0');
 
             Fillgrid2(gv, RowFilter, 0, "", SKennz);
@@ -125,10 +124,6 @@ namespace AppZulassungsdienst.forms
                 if (lblPrintKZ.Text == "X")
                 { itemRow.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFDB6D"); }
             }
-           
-
-
-
         }
 
         /// <summary>
@@ -138,8 +133,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = new DataView();
-            tmpDataView = objListe.KopfListe.DefaultView;
+            DataView tmpDataView = objListe.KopfListe.DefaultView;
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)
@@ -202,6 +196,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Positionstabelle an das Positionsgrid binden.
         /// </summary>
@@ -213,8 +208,7 @@ namespace AppZulassungsdienst.forms
         private void Fillgrid2(GridView GV, String RowFilter, Int32 intPageIndex, String strSort, String sKennz)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objListe.TagesListe.DefaultView;
+            DataView tmpDataView = objListe.TagesListe.DefaultView;
             tmpDataView.RowFilter = RowFilter;
             ViewState[GV.ClientID + "RowFilter"] = RowFilter;
             if (tmpDataView.Count == 0)
@@ -279,6 +273,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Anzeigen der gewählten Seite des Grids.
         /// </summary>
@@ -288,6 +283,7 @@ namespace AppZulassungsdienst.forms
 
             Fillgrid(pageindex, "");
         }
+
         /// <summary>
         /// Anzeigen der gewählten Anzahl der Datensätze im Grid.
         /// </summary>
@@ -315,6 +311,7 @@ namespace AppZulassungsdienst.forms
         {
             Fillgrid(GridView1.PageIndex, e.SortExpression);
         }
+
         /// <summary>
         /// Zurück zur Selektionsseite
         /// </summary>
@@ -324,6 +321,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("ReportTagList.aspx?AppID=" + Session["AppID"].ToString() + "&B=true");
         }
+
         /// <summary>
         /// Sortierung in einer bestimmten Spalte(Positionsgrid).
         /// </summary>
@@ -336,10 +334,9 @@ namespace AppZulassungsdienst.forms
             {
                 if (gv.Rows.Count > 0)
                 {
-                    String RowFilter = "";
                     GridViewRow ParentRow = (GridViewRow)gv.Parent.Parent.Parent;
                     Label lblKreis = (Label)ParentRow.FindControl("lblKreis");
-                    RowFilter =  (String)this.ViewState[gv.ClientID + "RowFilter"] ;
+                    String RowFilter = (String)this.ViewState[gv.ClientID + "RowFilter"];
                     Fillgrid2(gv, RowFilter, 0, e.SortExpression, lblKreis.Text);
                     foreach (GridViewRow itemRow in gv.Rows)
                     {
@@ -348,10 +345,9 @@ namespace AppZulassungsdienst.forms
                         { itemRow.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFDB6D"); }
                     }
                 }
-
             }
-
         }
+
         /// <summary>
         /// Funktionsaufrug GetPDF().
         /// </summary>
@@ -370,28 +366,5 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        ///// <summary>
-        ///// Aufruf von PrintPDF.aspx zur Anzeige des PDF´s.
-        ///// </summary>
-        //private void GetPDF()
-        //{
-        //    try
-        //    {
-        //        string sPath = null;
-        //        if (m_User.IsTestUser)
-        //        { sPath = "\\\\192.168.10.96\\test\\portal\\zld\\tagesliste\\" + objListe.Filename; }
-        //        else { sPath = "\\\\192.168.10.96\\prod\\portal\\zld\\tagesliste\\" + objListe.Filename; }
-        //        //{ sPath = "\\\\192.168.10.96\\test\\portal\\praegeliste\\" + objListe.Filialname; }
-        //        //else { sPath = "\\\\192.168.10.96\\prod\\portal\\praegeliste\\" + objListe.Filialname; }
-        //        Session["App_ContentType"] = "Application/pdf";
-        //        Session["App_Filepath"] = sPath;
-        //        Session["App_FileDelete"] = "X";
-        //        ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + Ex.Message;
-        //    }
-        //}
     }
 }

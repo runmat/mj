@@ -38,7 +38,6 @@ Namespace Kernel.Security
         Private m_dtmLastLogin As DateTime
         Private m_mail As String = ""  'Emailadresse
         Private m_telephone As String = ""
-        <NonSerialized()> Private m_strSessionID As String
         <NonSerialized()> Private m_strCreatedBy As String
         <NonSerialized()> Private m_blnDoubleLoginTry As Boolean
         <NonSerialized()> Private m_intCurrentLogAccessASPXID As Integer
@@ -300,15 +299,6 @@ Namespace Kernel.Security
             End Get
             Set(ByVal Value As String)
                 m_strAnswerText = Value
-            End Set
-        End Property
-
-        Public Property SessionID() As String
-            Get
-                Return m_strSessionID
-            End Get
-            Set(ByVal Value As String)
-                m_strSessionID = Value
             End Set
         End Property
 
@@ -686,40 +676,19 @@ Namespace Kernel.Security
             End Try
         End Sub
 
-        Public Sub SetLoggedOn(ByVal strUserName As String, ByVal LogonValue As Boolean, ByVal strSessionID As String)
+        Public Sub SetLoggedOn(ByVal strUserName As String, ByVal LogonValue As Boolean)
             Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(m_strConnectionstring)
             Try
                 cn.Open()
                 Dim cmdSetLogins As New SqlClient.SqlCommand("UPDATE WebUser " & _
                                                              "SET LoggedOn=@LoggedOn " & _
-                                                             ",SessionID=@SessionID " & _
                                                              "WHERE Username=@Username", cn)
                 cmdSetLogins.Parameters.AddWithValue("@Username", strUserName)
                 cmdSetLogins.Parameters.AddWithValue("@LoggedOn", LogonValue)
-                cmdSetLogins.Parameters.AddWithValue("@SessionID", strSessionID)
                 cmdSetLogins.ExecuteNonQuery()
                 m_blnLoggedOn = LogonValue
-                m_strSessionID = strSessionID
             Catch ex As Exception
                 Throw New Exception("Login-Status des Benutzers konnte nicht geändert werden.", ex)
-            Finally
-                If cn.State <> ConnectionState.Closed Then
-                    cn.Close()
-                End If
-            End Try
-        End Sub
-
-        Public Sub GetCurrentSessionID(ByVal strUserName As String)
-            Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(m_strConnectionstring)
-            Try
-                cn.Open()
-                Dim cmdGetCurrentSessionID As New SqlClient.SqlCommand("SELECT SessionID FROM WebUser " & _
-                                                             "WHERE Username=@Username", cn)
-                cmdGetCurrentSessionID.Parameters.AddWithValue("@Username", strUserName)
-                m_strSessionID = cmdGetCurrentSessionID.ExecuteScalar.ToString
-                m_blnLoggedOn = True
-            Catch ex As Exception
-                Throw New Exception("Session-ID des Benutzers konnte nicht ermittelt werden.", ex)
             Finally
                 If cn.State <> ConnectionState.Closed Then
                     cn.Close()
@@ -976,10 +945,10 @@ Namespace Kernel.Security
                         m_blnDoubleLoginTry = True
                         'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
-                        SetLoggedOn(strUsername, True, strSessionID)
+                        SetLoggedOn(strUsername, True)
                     End If
                 Else
-                    SetLoggedOn(strUsername, True, strSessionID)
+                    SetLoggedOn(strUsername, True)
                 End If
                 '
 
@@ -1142,10 +1111,10 @@ Namespace Kernel.Security
                         m_blnDoubleLoginTry = True
                         'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
-                        SetLoggedOn(strUsername, True, strSessionID)
+                        SetLoggedOn(strUsername, True)
                     End If
                 Else
-                    SetLoggedOn(strUsername, True, strSessionID)
+                    SetLoggedOn(strUsername, True)
                 End If
                 '
 

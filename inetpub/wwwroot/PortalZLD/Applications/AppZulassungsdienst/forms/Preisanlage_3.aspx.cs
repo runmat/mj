@@ -14,10 +14,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Preisanlage_3 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VoerfZLD objVorerf;
         private ZLDCommon objCommon;
+
         /// <summary>
         ///  Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
         /// </summary>
@@ -59,6 +60,7 @@ namespace AppZulassungsdienst.forms
                 fillForm();
             }
         }
+
         /// <summary>
         /// Daten aufbereiten und Gridview binden.
         /// </summary>
@@ -75,30 +77,25 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = objVorerf.Message;
                 return;
             }
-            else
+
+            DataTable tblData = new DataTable();
+            tblData.Columns.Add("Matnr", typeof(String));
+            tblData.Columns.Add("Maktx", typeof(String));
+            tblData.Columns.Add("Stva1", typeof(String));
+            foreach (DataRow item in objCommon.tblMaterialtextohneMatNr.Rows)
             {
-                DataTable tblData = new DataTable();
-                tblData.Columns.Add("Matnr", typeof(String));
-                tblData.Columns.Add("Maktx", typeof(String));
-                tblData.Columns.Add("Stva1", typeof(String));
-                foreach (DataRow item in objCommon.tblMaterialtextohneMatNr.Rows)
-                {
-                    DataRow tblRow = tblData.NewRow();
-                    tblRow["Matnr"] = item["Matnr"].ToString().TrimStart('0');
-                    tblRow["Maktx"] = item["Maktx"].ToString();
-                    tblRow["Stva1"] = "";
-                    tblData.Rows.Add(tblRow);
-                }
-                Session["tblData"] = tblData;
-                GridView1.DataSource = tblData;
-                GridView1.DataBind();
-
-                TextBox txtStva1 = (TextBox)GridView1.Rows[0].FindControl("txtInput1");
-                txtStva1.Focus();
-
+                DataRow tblRow = tblData.NewRow();
+                tblRow["Matnr"] = item["Matnr"].ToString().TrimStart('0');
+                tblRow["Maktx"] = item["Maktx"].ToString();
+                tblRow["Stva1"] = "";
+                tblData.Rows.Add(tblRow);
             }
+            Session["tblData"] = tblData;
+            GridView1.DataSource = tblData;
+            GridView1.DataBind();
 
-
+            TextBox txtStva1 = (TextBox)GridView1.Rows[0].FindControl("txtInput1");
+            txtStva1.Focus();
         }
 
         /// <summary>
@@ -109,9 +106,8 @@ namespace AppZulassungsdienst.forms
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
             lblMessage.Text="";
-            DataTable tblData = new DataTable();
             ExcelDocumentFactory excel = new ExcelDocumentFactory();
-            String Filename = "Zugriff2_" + objVorerf.NeueKundenNr + "_" + m_User.UserName + "_" + String.Format("{0:yyyyMMdd_HHmmss}", System.DateTime.Now) + ".xls";
+            String Filename = "Zugriff2_" + objVorerf.NeueKundenNr + "_" + m_User.UserName + "_" + String.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now) + ".xls";
             DataTable tblHEAD = new DataTable();
             tblHEAD.Columns.Add("Kunnr", typeof(String));
             tblHEAD.Columns.Add("vkbur", typeof(String));
@@ -124,19 +120,18 @@ namespace AppZulassungsdienst.forms
             tblRowT["vkorg"] = objVorerf.VKORG;
             tblRowT["Zugriff"] = "Zugriff2";
             tblHEAD.Rows.Add(tblRowT);
-            tblData = CreateTableFromGridView();
+            DataTable tblData = CreateTableFromGridView();
             DataSet OutputSet = new DataSet();
             OutputSet.Tables.Add(tblData);
             OutputSet.Tables.Add(tblHEAD);
 
-            excel.CreateDocumentAndWriteToFilesystemTemplate(Filename, OutputSet, this, true, "C:\\inetpub\\wwwroot\\PortalZLD\\Applications\\AppZulassungsdienst\\Documents\\Mappe1.xlt", 0, 2, true);
+            excel.CreateDocumentAndWriteToFilesystemTemplate(Filename, OutputSet, this, true, "C:\\inetpub\\wwwroot\\PortalZLD\\Applications\\AppZulassungsdienst\\Documents\\Mappe1.xlt", 0, 2);
 
            if(Sendmail(ConfigurationManager.AppSettings["ExcelPath"] +  Filename))
            {
                 lblMessage.Text="Preise gesendet!";
            }
-        }
-                   
+        }              
 
         /// <summary>
         /// Daten aus dem Gridview in eine Tabelle schreiben.
@@ -164,6 +159,7 @@ namespace AppZulassungsdienst.forms
             }
             return test;
         }
+
         /// <summary>
         /// Mail mit Anhang an Innendienst senden.
         /// </summary>
@@ -171,8 +167,6 @@ namespace AppZulassungsdienst.forms
         /// <returns>true bei Erfolg, false bei Fehler</returns>
         private Boolean Sendmail(String Filenname)
         {
-            System.Net.Mail.Attachment file; 
-
             try
             {
                 System.Net.Mail.MailMessage Mail;
@@ -180,17 +174,14 @@ namespace AppZulassungsdienst.forms
 
                 objZLDSuche.LeseMailTexte("2");
 
-                String smtpMailSender = "";
-                String smtpMailServer = "";
-
-                smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
-                smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
+                String smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
+                String smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
 
                 String MailText = "Kundennr.: " + objVorerf.NeueKundenNr + "<br />";
                 MailText += "Kunde: " + objVorerf.NeueKundenName + "<br />";
                 MailText += "Filiale: " + objVorerf.VKBUR + "<br /><br />";
-                MailText += "Datum: " + System.DateTime.Now.ToShortDateString() + "<br />";
-                MailText += "Uhrzeit: " + System.DateTime.Now.ToShortDateString() + "<br />";
+                MailText += "Datum: " + DateTime.Now.ToShortDateString() + "<br />";
+                MailText += "Uhrzeit: " + DateTime.Now.ToShortDateString() + "<br />";
                 MailText += "Web-Benutzer: " + m_User.UserName + "<br />";
 
                 String[] Adressen;
@@ -231,7 +222,7 @@ namespace AppZulassungsdienst.forms
 
                 Mail.IsBodyHtml = true;
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient(smtpMailServer);
-                file = new System.Net.Mail.Attachment(Filenname);
+                System.Net.Mail.Attachment file = new System.Net.Mail.Attachment(Filenname);
                 Mail.Attachments.Add(file);
 
                 client.Send(Mail);
@@ -246,6 +237,7 @@ namespace AppZulassungsdienst.forms
 
             }
         }
+
         /// <summary>
         /// Zurück zur Preisanlage Seite1.
         /// </summary>

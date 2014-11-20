@@ -447,8 +447,7 @@ Partial Public Class Login
             SetRedirect()
         End If
 
-        m_User.SetLoggedOn(m_User.UserName, True, Session.SessionID.ToString)
-        m_User.SessionID = Session.SessionID.ToString
+        m_User.SetLoggedOn(m_User.UserName, True)
         Session("objUser") = m_User
         'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
         RedirectFromLoginPage(m_User)
@@ -773,20 +772,7 @@ Partial Public Class Login
         Dim TempTable As DataTable = LoadLoginLinks()
         Dim LoginLink As String = TempTable.Select("ID = " & m_User.Customer.LoginLinkID)(0)("Text")
 
-#If DEBUG Then
-        '
-        ' MJE, 01.02.2013, deactivated senseless "localhost" redirect:
-        '
-        'Zum Debuggen auf dem Prod oder Testserver
-        'Die web.config im Portal ebenfalls umstellen, wenn es sich um einen Portaluser handelt.
-        'Dim ar() As String
-
-        'ar = Split(LoginLink, "/")
-        'LoginLink = Replace(LoginLink, "https", "http")
-        'LoginLink = Replace(LoginLink, ar(2).ToString, "localhost")
-#End If
-
-        m_User.SetLoggedOn(m_User.UserName, False, "")
+        m_User.SetLoggedOn(m_User.UserName, False)
 
         If (LoginLink.Contains("://")) Then
             Dim loginLink2 As String = LoginLink.Substring(LoginLink.IndexOf("://", 0, StringComparison.InvariantCultureIgnoreCase) + 3)

@@ -5,7 +5,6 @@ using CKG.Base.Kernel.Common;
 using System.Data;
 using CKG.Base.Kernel.Security;
 
-
 namespace AppZulassungsdienst.forms
 {
     /// <summary>
@@ -13,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class AHVersandListe : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
 
@@ -59,17 +58,17 @@ namespace AppZulassungsdienst.forms
                 Fillgrid(0, "", null);
             }
         }
+
         /// <summary>
         /// Binden der Rückgabetabelle(objNacherf.AHVersandListe) an das Gridview1.
         /// </summary>
-        /// <param name="intPageIndex"Index der Gridviewseite></param>
+        /// <param name="intPageIndex">Index der Gridviewseite></param>
         /// <param name="strSort">Sortierung nach</param>
         /// <param name="Rowfilter">Filterkriterien</param>
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objNacherf.AHVersandListe.DefaultView;
+            DataView tmpDataView = objNacherf.AHVersandListe.DefaultView;
             String strFilter = "";
             if (Rowfilter != null)
             {
@@ -165,6 +164,7 @@ namespace AppZulassungsdienst.forms
   
             }
         }
+
         /// <summary>
         /// Nach bestimmter Spalte sortieren. 
         /// </summary>
@@ -184,6 +184,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("AHVersandSelect.aspx?AppID=" + Session["AppID"].ToString());
         }
+
         /// <summary>
         /// Auswahl eines Vorganges zum Bearbeiten(AHVersandChange) bzw. Löschen.
         /// </summary>
@@ -200,11 +201,11 @@ namespace AppZulassungsdienst.forms
                 objNacherf = (NacherfZLD)Session["objNacherf"];
                 Int32 Index;
                 Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                Label ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                Label lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                 Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblLoeschKZ");
                 String Loeschkz = "";
                 Int32 IDSatz;
-                Int32.TryParse(ID.Text, out IDSatz);
+                Int32.TryParse(lblID.Text, out IDSatz);
                 if (lblLoeschKZ.Text == "L")
                 {
                     lblLoeschKZ.Text = Loeschkz;
@@ -223,6 +224,7 @@ namespace AppZulassungsdienst.forms
                 Session["objNacherf"] = objNacherf;
             }
         }
+
         /// <summary>
         /// Setzen des Löschkennzeichens der markierten Vorgänge in SAP. Bapi: Z_ZLD_SET_LOEKZ
         /// </summary>
