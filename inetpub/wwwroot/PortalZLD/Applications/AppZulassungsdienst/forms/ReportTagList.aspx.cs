@@ -10,8 +10,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportTagList : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
         Boolean BackfromList;
 
@@ -36,8 +36,9 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
-            BackfromList = false;
-            if (Request.QueryString["B"] != null) { BackfromList = true; }//zurück von der Lisenansicht?
+
+            BackfromList = (Request.QueryString["B"] != null);
+
             if (IsPostBack == false)
             {
                 if (BackfromList)
@@ -51,6 +52,7 @@ namespace AppZulassungsdienst.forms
             }
             SetAttributes();
         }
+
         /// <summary>
         /// Javascript-Funktionen an Controls hängen.
         /// </summary>
@@ -62,6 +64,7 @@ namespace AppZulassungsdienst.forms
             lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
             lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
         }
+
         /// <summary>
         /// Funktionsaufruf DoSubmit().
         /// </summary>
@@ -71,6 +74,7 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
         /// <summary>
         /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_TAGLI).
         /// </summary>

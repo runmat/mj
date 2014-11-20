@@ -49,6 +49,15 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.ImageButton NewSearch;
         
         /// <summary>
+        /// lblError-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblError;
+        
+        /// <summary>
         /// Panel1-Steuerelement
         /// </summary>
         /// <remarks>
@@ -65,24 +74,6 @@ namespace AppZulassungsdienst.forms {
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tab1;
-        
-        /// <summary>
-        /// lblError-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
-        
-        /// <summary>
-        /// lblMessage-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
         /// lblSearchID-Steuerelement

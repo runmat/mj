@@ -12,8 +12,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Neukundenanlage : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Neukunde objNeukunde;
         private ZLDCommon objCommon;
 

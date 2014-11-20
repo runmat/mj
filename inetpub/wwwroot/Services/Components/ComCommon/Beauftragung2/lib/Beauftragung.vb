@@ -1219,7 +1219,7 @@ Namespace Beauftragung2
                     Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
                         'ToDo ErrMessage
                         Case "NO_DATA"
-                            m_strMessage = "Es konnte keine Daten ermittelt werden."
+                            m_strMessage = "Es konnten keine Daten ermittelt werden."
                         Case "NO_INTERVAL"
                             m_strMessage = "Ungültiger Zeitraum."
                         Case Else

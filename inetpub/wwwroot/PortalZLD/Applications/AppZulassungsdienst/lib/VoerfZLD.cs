@@ -11,7 +11,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Vorerfassung und Preisanlage.
     /// </summary>
-	public class VoerfZLD : CKG.Base.Business.DatenimportBase
+	public class VoerfZLD : DatenimportBase
 	{
 		#region "Declarations"
 
@@ -512,6 +512,16 @@ namespace AppZulassungsdienst.lib
             get; 
             set; 
         }
+        public bool SofortabrechnungErledigt
+        {
+            get;
+            set;
+        }
+        public string SofortabrechnungPfad
+        {
+            get; 
+            set;
+        }
 		#endregion
 
 		#region "Methods"
@@ -806,6 +816,8 @@ namespace AppZulassungsdienst.lib
                     tblKopf.WunschKZ2 = WunschKZ2;
                     tblKopf.WunschKZ3 = WunschKZ3;
                     tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                    tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
+				    tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
                     tblKopf.Reserviert = mReserviert;
                     tblKopf.ReserviertKennz = mReserviertKennz;
                     tblKopf.Feinstaub = mFeinstaub;
@@ -1018,14 +1030,11 @@ namespace AppZulassungsdienst.lib
 			}
 			finally
 			{
-				if (ZLD_DataContext != null)
-				{
-					if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-					{
-						ZLD_DataContext.Connection.Close();
-						ZLD_DataContext.Dispose();
-					}
-				}
+                if (ZLD_DataContext.Connection.State == ConnectionState.Open)
+                {
+                    ZLD_DataContext.Connection.Close();
+                    ZLD_DataContext.Dispose();
+                }
 			}
 		}
 
@@ -1072,6 +1081,8 @@ namespace AppZulassungsdienst.lib
                 tblKopf.WunschKZ2 = WunschKZ2;
                 tblKopf.WunschKZ3 = WunschKZ3;
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
+			    tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
 				tblKopf.Reserviert = mReserviert;
 				tblKopf.ReserviertKennz = mReserviertKennz;
 				tblKopf.Feinstaub = mFeinstaub;
@@ -1111,17 +1122,18 @@ namespace AppZulassungsdienst.lib
 					{
 						foreach (DataRow drow in tblPositionen.Rows)
 						{
+						    var idpos = (Int32) drow["id_pos"];
 
 							var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-											where p.id_Kopf == id_Kopf && p.id_pos == (Int32)drow["id_pos"]
+											where p.id_Kopf == id_Kopf && p.id_pos == idpos
 											select p);
-							if (tblPos.Count() > 0)
+							if (tblPos.Any())
 							{
 								foreach (var PosRow in tblPos)
 								{
 
 										PosRow.id_Kopf = id_Kopf;
-										PosRow.id_pos = (Int32)drow["id_pos"];
+                                        PosRow.id_pos = idpos;
                                         PosRow.Menge = drow["Menge"].ToString();
 										PosRow.Matnr = drow["Matnr"].ToString();
 											
@@ -1145,12 +1157,12 @@ namespace AppZulassungsdienst.lib
 								}
 								ZLD_DataContext.SubmitChanges();
 							}
-							else if (tblPos.Count() == 0)
+							else
 							{
 								var tblPosNew = new ZLDPositionsTabelle
 								    {
 								        id_Kopf = id_Kopf,
-								        id_pos = (Int32) drow["id_pos"],
+                                        id_pos = idpos,
 								        Menge = drow["Menge"].ToString(),
 								        Matnr = drow["Matnr"].ToString()
 								    };
@@ -1218,17 +1230,19 @@ namespace AppZulassungsdienst.lib
 
 						foreach (DataRow drow in tblPositionen.Rows)
 						{
+						    var idpos = (Int32) drow["id_pos"];
+
 							var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-											where p.id_Kopf == id_Kopf && p.id_pos == (Int32)drow["id_pos"]
+											where p.id_Kopf == id_Kopf && p.id_pos == idpos
 											select p);
-							if (tblPos.Count() > 0)
+							if (tblPos.Any())
 							{
 								foreach (var PosRow in tblPos)
 								{
 									if (PosRow.id_Kopf == id_Kopf)
 									{
 										PosRow.id_Kopf = id_Kopf;
-										PosRow.id_pos = (Int32)drow["id_pos"];
+                                        PosRow.id_pos = idpos;
 										PosRow.Menge = drow["Menge"].ToString();
 										PosRow.Matnr = drow["Matnr"].ToString();
                                        
@@ -1254,12 +1268,12 @@ namespace AppZulassungsdienst.lib
 								}
 								ZLD_DataContext.SubmitChanges();
 							}
-							else if (tblPos.Count() == 0)
+							else
 							{
 								var tblPosNew = new ZLDPositionsTabelle
 								    {
 								        id_Kopf = id_Kopf,
-								        id_pos = (Int32) drow["id_pos"],
+                                        id_pos = idpos,
 								        Menge = drow["Menge"].ToString(),
 								        Matnr = drow["Matnr"].ToString()
 								    };
@@ -1376,6 +1390,8 @@ namespace AppZulassungsdienst.lib
                 WunschKZ2 = KopfTabelle.Rows[0]["WunschKZ2"].ToString();
                 WunschKZ3 = KopfTabelle.Rows[0]["WunschKZ3"].ToString();
                 OhneGruenenVersSchein = ZLDCommon.XToBool(KopfTabelle.Rows[0]["OhneGruenenVersSchein"].ToString());
+                SofortabrechnungErledigt = (Boolean)KopfTabelle.Rows[0]["SofortabrechnungErledigt"];
+			    SofortabrechnungPfad = KopfTabelle.Rows[0]["SofortabrechnungPfad"].ToString();
 				mReserviert = (Boolean)KopfTabelle.Rows[0]["Reserviert"];
 				mReserviertKennz = KopfTabelle.Rows[0]["ReserviertKennz"].ToString();
 				mFeinstaub = (Boolean)KopfTabelle.Rows[0]["Feinstaub"];
@@ -1590,14 +1606,16 @@ namespace AppZulassungsdienst.lib
 							DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + tblKopf.KreisKZ + "'");
 							importRowAuftrag["KREISBEZ"] = RowStva.Length == 1 ? RowStva[0]["KREISBEZ"]:tblKopf.KreisBez;
                            
-							importRowAuftrag["WUNSCHKENN_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.WunschKenn);
+							importRowAuftrag["WUNSCHKENN_JN"] = ZLDCommon.BoolToX(tblKopf.WunschKenn);
 							importRowAuftrag["ZUSKENNZ"] = tblKopf.ZusatzKZ;
 							importRowAuftrag["WU_KENNZ2"] = tblKopf.WunschKZ2;
 							importRowAuftrag["WU_KENNZ3"] = tblKopf.WunschKZ3;
 							importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
-							importRowAuftrag["RESERVKENN_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.Reserviert);
+                            importRowAuftrag["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
+                            importRowAuftrag["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
+							importRowAuftrag["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
 							importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;
-							importRowAuftrag["FEINSTAUBAMT"] = ZLDCommon.BoolToX((Boolean) tblKopf.Feinstaub);
+							importRowAuftrag["FEINSTAUBAMT"] = ZLDCommon.BoolToX(tblKopf.Feinstaub);
 							importRowAuftrag["ZZZLDAT"] = tblKopf.Zulassungsdatum;
 							importRowAuftrag["ZZKENN"] = tblKopf.Kennzeichen;
                             
@@ -1611,11 +1629,11 @@ namespace AppZulassungsdienst.lib
 							importRowAuftrag["KENNZTYP"] = "";
 							importRowAuftrag["KENNZFORM"] = tblKopf.KennzForm;
 							importRowAuftrag["KENNZANZ"] = "0";
-							importRowAuftrag["EINKENN_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.EinKennz);
+							importRowAuftrag["EINKENN_JN"] = ZLDCommon.BoolToX(tblKopf.EinKennz);
 							importRowAuftrag["BEMERKUNG"] = tblKopf.Bemerkung;
-							importRowAuftrag["EC_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.EC);
-							importRowAuftrag["BAR_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.Bar);
-							importRowAuftrag["RE_JN"] = ZLDCommon.BoolToX((Boolean) tblKopf.RE);
+							importRowAuftrag["EC_JN"] = ZLDCommon.BoolToX(tblKopf.EC);
+							importRowAuftrag["BAR_JN"] = ZLDCommon.BoolToX(tblKopf.Bar);
+							importRowAuftrag["RE_JN"] = ZLDCommon.BoolToX(tblKopf.RE);
 
 							DataRow[] KundeRow = tblKunde.Select("KUNNR='" + tblKopf.kundennr + "'");
 
@@ -1624,9 +1642,9 @@ namespace AppZulassungsdienst.lib
 							    importRowAuftrag["KUNDEBAR_JN"] = KundeRow[0]["BARKUNDE"].ToString();
 							}
 
-							importRowAuftrag["VH_KENNZ_RES"] = ZLDCommon.BoolToX((Boolean) tblKopf.VorhKennzReserv);
-							importRowAuftrag["ZBII_ALT_NEU"] = ZLDCommon.BoolToX((Boolean) tblKopf.ZBII_ALT_NEU);
-							importRowAuftrag["KENNZ_VH"] = ZLDCommon.BoolToX((Boolean) tblKopf.KennzVH);
+							importRowAuftrag["VH_KENNZ_RES"] = ZLDCommon.BoolToX(tblKopf.VorhKennzReserv);
+							importRowAuftrag["ZBII_ALT_NEU"] = ZLDCommon.BoolToX(tblKopf.ZBII_ALT_NEU);
+							importRowAuftrag["KENNZ_VH"] = ZLDCommon.BoolToX(tblKopf.KennzVH);
 							importRowAuftrag["VK_KUERZEL"] = tblKopf.VKKurz;
 							importRowAuftrag["KUNDEN_REF"] = tblKopf.interneRef;
 							importRowAuftrag["KUNDEN_NOTIZ"] = tblKopf.KundenNotiz;
@@ -1816,11 +1834,11 @@ namespace AppZulassungsdienst.lib
 							        }
 							        if (tblBank.EinzugErm != null)
 							        {
-							            importRow["EINZ_JN"] = ZLDCommon.BoolToX((Boolean) tblBank.EinzugErm);
+							            importRow["EINZ_JN"] = ZLDCommon.BoolToX(tblBank.EinzugErm);
 							        }
 							        if (tblBank.Rechnung != null)
 							        {
-							            importRow["RECH_JN"] = ZLDCommon.BoolToX((Boolean) tblBank.Rechnung);
+							            importRow["RECH_JN"] = ZLDCommon.BoolToX(tblBank.Rechnung);
 							        }
 
 							        importBank.Rows.Add(importRow);
@@ -1886,11 +1904,11 @@ namespace AppZulassungsdienst.lib
                            
                             foreach (DataRow rowError in tblErrors.Rows)
                             {
-                                Int32 id_sap;
-                                Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
+                                Int32 idsap;
+                                Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
                                 Int32 id_Pos;
                                 Int32.TryParse(rowError["ZULPOSNR"].ToString(), out id_Pos);
-                                DataRow[] rowListe = tblListe.Select("id_sap=" + id_sap + " AND id_pos =" + id_Pos);
+                                DataRow[] rowListe = tblListe.Select("id_sap=" + idsap + " AND id_pos =" + id_Pos);
                                 if (rowListe.Length == 1)
                                 {
                                     rowListe[0]["Status"] = rowError["ERROR_TEXT"];
@@ -2000,6 +2018,8 @@ namespace AppZulassungsdienst.lib
                         importRowAuftrag["WU_KENNZ2"] = WunschKZ2;
                         importRowAuftrag["WU_KENNZ3"] = WunschKZ3;
                         importRowAuftrag["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
+                        importRowAuftrag["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
+                        importRowAuftrag["SA_PFAD"] = SofortabrechnungPfad;
 						importRowAuftrag["RESERVKENN"] = ReserviertKennz;
                         importRowAuftrag["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
 						if (ZulDate.Length > 0) { importRowAuftrag["ZZZLDAT"] = ZulDate; }
@@ -2374,24 +2394,13 @@ namespace AppZulassungsdienst.lib
 		}
 
         /// <summary>
-        /// Kombiniert die Materialbezeichnung mit einem Mengenwert Gesamtlänge 40 Zeichen
-        /// </summary>
-        /// <param name="bezeichnung">Materialbezeichnung</param>
-        /// <param name="menge">Menge</param>
-        /// <returns>Kombiniertet String</returns>
-        private string CombineBezeichnungMenge(string bezeichnung, int menge)
-        {
-            return CombineBezeichnungMenge(bezeichnung, menge, 40);
-        }
-
-        /// <summary>
         /// Kombiniert die Materialbezeichnung mit einem Mengenwert
         /// </summary>
         /// <param name="bezeichnung">Materialbezeichnung</param>
         /// <param name="menge">Menge</param>
-        /// <param name="max">Maximale Länge des Strings</param>
+        /// <param name="max">Maximale Länge des Strings, default: 40</param>
         /// <returns>Kombiniertet String</returns>
-        private string CombineBezeichnungMenge(string bezeichnung, int menge, int max)
+        private string CombineBezeichnungMenge(string bezeichnung, int menge, int max = 40)
         {
             var strMengeAddon = " x" + menge.ToString();
 

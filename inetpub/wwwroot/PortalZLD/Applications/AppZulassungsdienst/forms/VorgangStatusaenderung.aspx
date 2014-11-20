@@ -35,16 +35,13 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div style="margin-top: 25px">
+                                <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
+                            </div>
                             <asp:Panel ID="Panel1" DefaultButton="btnEmpty" runat="server">
                                 <div id="TableQuery" style="margin-bottom: 10px">
                                     <table id="tab1" runat="server" cellpadding="0" cellspacing="0">
                                         <tbody>
-                                            <tr class="formquery">
-                                                <td class="firstLeft active" colspan="2" width="100%">
-                                                    <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
-                                                    <asp:Label ID="lblMessage" runat="server" Font-Bold="True" Visible="False"></asp:Label>
-                                                </td>
-                                            </tr>
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblSearchID" runat="server">ID:</asp:Label>
