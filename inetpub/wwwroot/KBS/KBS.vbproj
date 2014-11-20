@@ -65,6 +65,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\..\Work\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>GAC\SmartSoft.PdfLibrary.dll</HintPath>
@@ -127,6 +133,7 @@
     <Content Include="Forms\Feinstaubplakette.aspx" />
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="Forms\ReportLetztePlatinenbestellungen.aspx" />
     <Content Include="Forms\KVPBewertung.aspx" />
     <Content Include="Forms\KVPSelection.aspx" />
@@ -150,6 +157,7 @@
     <Content Include="Images\delete01.jpg" />
     <Content Include="Images\email.png" />
     <Content Include="Images\email_go.png" />
+    <Content Include="Images\empty.gif" />
     <Content Include="Images\eye.png" />
     <Content Include="Images\Filter.gif" />
     <Content Include="Images\Gelber Kreis.png" />
@@ -401,6 +409,13 @@
       <DependentUpon>InfocenterNeu.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Forms\TaggleicheMeldungDAD.aspx.designer.vb">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TaggleicheMeldungDAD.aspx.vb">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Forms\ReportLetztePlatinenbestellungen.aspx.designer.vb">
       <DependentUpon>ReportLetztePlatinenbestellungen.aspx</DependentUpon>
     </Compile>
@@ -499,6 +514,7 @@
     <Compile Include="Lib\KVP.vb" />
     <Compile Include="Lib\Logging.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
+    <Compile Include="Lib\MeldungDAD.vb" />
     <Compile Include="Lib\offBestellungen.vb" />
     <Compile Include="Lib\Platinen.vb" />
     <Compile Include="Lib\Retoure.vb" />
@@ -726,6 +742,10 @@
     <ProjectReference Include="..\..\..\Work\CKG\TimeRegistration\TimeRegistration\TimeRegistration.csproj">
       <Project>{D92A9F89-3848-4136-8FF6-39E8EA641BA3}</Project>
       <Name>TimeRegistration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\KBSBase\KBSBase.vbproj">
+      <Project>{61754467-E566-43DC-A8D4-1684994DF069}</Project>
+      <Name>KBSBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>

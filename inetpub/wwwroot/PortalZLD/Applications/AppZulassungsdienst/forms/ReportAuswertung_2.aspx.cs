@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Linq;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -13,9 +14,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportAuswertung_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
-        private bool isExcelExportConfigured;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
 
         /// <summary>
@@ -40,8 +40,6 @@ namespace AppZulassungsdienst.forms
 
                 if (!IsPostBack)
                 {
-                    //Common.TranslateTelerikColumns(rgGrid1);
-
                     Fillgrid();
                 }
             }
@@ -52,12 +50,12 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -132,10 +130,6 @@ namespace AppZulassungsdienst.forms
                     // nach Dienstleistung
                     rgGrid1.MasterTableView.GroupByExpressions.Add("MAKTX Dienstleistung GROUP BY MAKTX");
                     break;
-                default:
-                    // Übersicht
-                    // keine Gruppierung
-                    break;
             }
         }
 
@@ -146,19 +140,20 @@ namespace AppZulassungsdienst.forms
 
         protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
         {
-            switch (e.CommandName)
-            {
-                case "Print":
-                    DataRow[] RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
-                    if (RowTemp.Length > 0) 
-                    {
-                        String Barqnr, EasyID;
-                        Barqnr = RowTemp[0]["BARQ_NR"].ToString();
-                        EasyID = RowTemp[0]["OBJECT_ID"].ToString();
+            String FilePath;
+            DataRow[] RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
 
-                        if (EasyID.Length > 0)
+            if (RowTemp.Length > 0)
+            {
+                switch (e.CommandName)
+                {
+                    case "PrintBarquittung":
+                        String Barqnr = RowTemp[0]["BARQ_NR"].ToString();
+                        String EasyID = RowTemp[0]["OBJECT_ID"].ToString();
+
+                        if (!String.IsNullOrEmpty(EasyID))
                         {
-                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr,EasyID);
+                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr, EasyID);
                             if (objListe.Status != 0)
                             {
                                 lblError.Text = objListe.Message;
@@ -169,14 +164,13 @@ namespace AppZulassungsdienst.forms
                         {
                             objListe.Filename = Barqnr + ".pdf";
                         }
-                        String FilePath = "";
                         if (m_User.IsTestUser)
-                        { 
-                            FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename; 
+                        {
+                            FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename;
                         }
-                        else 
-                        { 
-                            FilePath = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + objListe.Filename; 
+                        else
+                        {
+                            FilePath = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + objListe.Filename;
                         }
                         Session["App_ContentType"] = "Application/pdf";
                         Session["App_Filepath"] = FilePath;
@@ -185,9 +179,29 @@ namespace AppZulassungsdienst.forms
                             Session["App_FileDelete"] = "X";
                         }
                         ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-                    }
-                    break;
+                        break;
 
+                    case "PrintSofortabrechnung":
+                        objListe.Filename = RowTemp[0]["SA_PFAD"].ToString().TrimStart('/').Replace('/', '\\');
+
+                        if (m_User.IsTestUser)
+                        {
+                            FilePath = "\\\\192.168.10.96\\test\\portal\\sofortabrechnung\\" + objListe.Filename;
+                        }
+                        else
+                        {
+                            FilePath = "\\\\192.168.10.96\\prod\\portal\\sofortabrechnung\\" + objListe.Filename;
+                        }
+
+                        if (File.Exists(FilePath))
+                        {
+                            Session["App_ContentType"] = "Application/pdf";
+                            Session["App_Filepath"] = FilePath;
+
+                            ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                        }
+                        break;
+                }
             }
         }
 
@@ -197,7 +211,7 @@ namespace AppZulassungsdienst.forms
             {
                 GridGroupFooterItem groupFooter = (GridGroupFooterItem)e.Item;
                 GridGroupHeaderItem groupHeader = rgGrid1.MasterTableView.GetItems(GridItemType.GroupHeader)
-                    .Where(i => i.GroupIndex == groupFooter.GroupIndex).First() as GridGroupHeaderItem;
+                    .First(i => i.GroupIndex == groupFooter.GroupIndex) as GridGroupHeaderItem;
 
                 // Default-Gruppenfooter-Farbe (falls von den u.g. Bedingungen keine zutreffen)
                 groupFooter.BackColor = System.Drawing.Color.FromArgb(250, 255, 191);
@@ -277,8 +291,6 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void PerformExcelExport()
         {
-            bool found;
-
             DataTable tblTemp = objListe.Auswertung.Copy();
 
             // Spalten entfernen, die nicht exportiert werden sollen/können
@@ -287,7 +299,7 @@ namespace AppZulassungsdienst.forms
             // Spalten analog zur Anzeige ausblenden/umbenennen
             for (int i = tblTemp.Columns.Count - 1; i >= 0; i--)
             {
-                found = false;
+                bool found = false;
 
                 foreach (GridColumn cCol in rgGrid1.Columns)
                 {
@@ -349,7 +361,7 @@ namespace AppZulassungsdienst.forms
             }
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
             excelFactory.CreateDocumentAndSendAsResponse(filename, dvExport.ToTable(), this.Page, false, @"Applications\AppZulassungsdienst\Documents\Vorlage_Auswertung.xls", 0, 0);
         }
 

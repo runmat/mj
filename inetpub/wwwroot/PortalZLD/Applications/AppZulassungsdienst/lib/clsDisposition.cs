@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace AppZulassungsdienst.lib
 {
-    public class clsDisposition : CKG.Base.Business.BankBase
+    public class clsDisposition : BankBase
     {
         public string VkOrg { get; set; }
         public string VkBur { get; set; }
@@ -98,15 +98,13 @@ namespace AppZulassungsdienst.lib
         /// <param name="page"></param>
         public void LoadDispos(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
-            string amt = "";
-
             // Zulassungskreise/Dispositionen aus SAP laden
             LoadDisposFromSap(strAppID, strSessionID, page);
             // Ggf. vorhandene Zuordnungen aus SQL laden und verarbeiten
             Dictionary<string, string> vorhandeneZuordnungen = LoadZuordnungenFromSql();
             foreach (DataRow dRow in Dispositionen.Rows)
             {
-                amt = dRow["AMT"].ToString();
+                string amt = dRow["AMT"].ToString();
                 if (vorhandeneZuordnungen.ContainsKey(amt))
                 {
                     dRow["MOBUSER"] = vorhandeneZuordnungen[amt];
@@ -170,8 +168,7 @@ namespace AppZulassungsdienst.lib
             m_intStatus = 0;
             m_strMessage = String.Empty;
 
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"];
+            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
@@ -237,15 +234,12 @@ namespace AppZulassungsdienst.lib
         {
             m_intStatus = 0;
             m_strMessage = String.Empty;
-            object tmpErg = null;
 
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"];
+            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
                 SqlCommand command = new SqlCommand();
-                SqlDataAdapter adapter = new SqlDataAdapter();
 
                 connection.Open();
                 command.Connection = connection;
@@ -260,7 +254,7 @@ namespace AppZulassungsdienst.lib
                     command.Parameters.AddWithValue("@VkOrg", VkOrg);
                     command.Parameters.AddWithValue("@VkBur", VkBur);
                     command.Parameters.AddWithValue("@Amt", dRow["AMT"].ToString());
-                    tmpErg = command.ExecuteScalar();
+                    object tmpErg = command.ExecuteScalar();
 
                     if (tmpErg == null)
                     {
@@ -298,7 +292,7 @@ namespace AppZulassungsdienst.lib
             m_strSessionID = strSessionID;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-            DataTable tblSAP;
+
             if (m_blnGestartet == false)
             {
                 m_blnGestartet = true;
@@ -310,7 +304,7 @@ namespace AppZulassungsdienst.lib
                     myProxy.setImportParameter("I_VKBUR", VkBur);
                     myProxy.setImportParameter("I_ZZZLDAT", ZulDat);
 
-                    tblSAP = myProxy.getImportTable("GT_VGANZ");
+                    DataTable tblSAP = myProxy.getImportTable("GT_VGANZ");
 
                     foreach (DataRow tmpRow in Dispositionen.Rows)
                     {
@@ -354,13 +348,11 @@ namespace AppZulassungsdienst.lib
             m_intStatus = 0;
             m_strMessage = String.Empty;
 
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"];
+            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
                 SqlCommand command = new SqlCommand();
-                SqlDataAdapter adapter = new SqlDataAdapter();
 
                 connection.Open();
                 command.Connection = connection;
