@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="active" align="left" nowrap="nowrap" style="width: 103%">
                                     <asp:TextBox ID="txtKunnr" runat="server" Width="75px" CssClass="InputSolid" TabIndex="1"></asp:TextBox>
-                                    <asp:DropDownList runat="server" ID="ddlKunde" CssClass="InputSolid" TabIndex="2"/>
+                                    <asp:DropDownList runat="server" ID="ddlKunde" CssClass="InputSolid" TabIndex="2" EnableViewState="False"/>
                                     <asp:Image ID="imgKunde" runat="server" ImageUrl="../../../Images/ok_10.jpg" Height="18px"
                                         Width="18px" Visible="False" />
                                     <asp:Label ID="lblKundeInfo" runat="server" CssClass="TextError"></asp:Label>

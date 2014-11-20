@@ -34,7 +34,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\AppZulassungsdienst.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -274,6 +275,13 @@
     <Compile Include="forms\InfocenterAdmin.aspx.designer.cs">
       <DependentUpon>InfocenterAdmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\TaggleicheMeldungDAD.aspx.cs">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\TaggleicheMeldungDAD.aspx.designer.cs">
+      <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\VorgangStatusaenderung.aspx.cs">
       <DependentUpon>VorgangStatusaenderung.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -469,6 +477,7 @@
     <Compile Include="lib\KomplettZLD.cs" />
     <Compile Include="lib\Barabhebung.cs" />
     <Compile Include="lib\clsDisposition.cs" />
+    <Compile Include="lib\MeldungDAD.cs" />
     <Compile Include="lib\StatusaenderungVorgang.cs" />
     <Compile Include="lib\NachbearbeitungAuftrag.cs" />
     <Compile Include="lib\Listen.cs" />
@@ -550,6 +559,7 @@
     <Content Include="forms\Disposition.aspx" />
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
+    <Content Include="forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
     <Content Include="forms\Auftragsnachbearbeitung.aspx" />
     <Content Include="forms\KVPBewertung.aspx" />
@@ -664,7 +674,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
+      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -12,9 +12,10 @@ namespace AppZulassungsdienst
     /// </summary>
     public partial class Preisanlage : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VoerfZLD objVorerf;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
         /// </summary>
@@ -43,6 +44,7 @@ namespace AppZulassungsdienst
                 objVorerf = (VoerfZLD)Session["objVorerf"];
             }
         }
+
         /// <summary>
         /// Laden neuer angelegter Kunden aus SAP. Z_ZLD_EXPORT_NEW_DEBI.
         /// </summary>
@@ -59,11 +61,8 @@ namespace AppZulassungsdienst
                 lblError.Text = objVorerf.Message;
                 return;
             }
-            else
 
-            {
-                Fillgrid(0, "");
-            }
+            Fillgrid(0, "");
         }
 
         /// <summary>
@@ -74,8 +73,7 @@ namespace AppZulassungsdienst
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objVorerf.tblNeueKunden.DefaultView;
+            DataView tmpDataView = objVorerf.tblNeueKunden.DefaultView;
             String strFilter = "";
             tmpDataView.RowFilter = strFilter;
 
@@ -134,24 +132,27 @@ namespace AppZulassungsdienst
                 GridView1.DataBind();
             }
         }
+
         /// <summary>
         /// Spaltenübersetzung
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Spaltenübersetzung
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Setzen des Preispflege Status("OK"). Weiterleiten an Preiserfassung pro Landkreis("proLandkr").
         /// Weiterleiten an Preiserfassung ohne Landkreis("ohneLandkr").

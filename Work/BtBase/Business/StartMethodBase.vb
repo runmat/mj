@@ -56,7 +56,6 @@ Namespace Business
         Public Sub New(ByRef frmWebForm As Web.UI.Page, ByRef objUser As Base.Kernel.Security.User, ByVal strFileName As String)
             REM § Constructor. Übernimmt WebForm, User und Applikationsobjekt.
             m_objUser = objUser
-            m_strSessionID = objUser.SessionID
             m_objApp = objUser.App
             m_objLogApp = New Base.Kernel.Logging.Trace(m_objApp.Connectionstring, m_objApp.SaveLogAccessSAP, m_objApp.LogLevel)
             m_strFileName = strFileName

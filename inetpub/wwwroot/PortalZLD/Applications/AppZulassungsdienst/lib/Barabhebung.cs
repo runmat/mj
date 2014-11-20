@@ -5,13 +5,8 @@ using CKG.Base.Business;
 
 namespace AppZulassungsdienst.lib
 {
-    public class clsBarabhebung : CKG.Base.Business.BankBase
+    public class clsBarabhebung : BankBase
     {
-        public string Filiale
-        {
-            get;
-            set;
-        }
         public string Name
         {
             get;
@@ -78,7 +73,7 @@ namespace AppZulassungsdienst.lib
             m_strSessionID = strSessionID;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-            DataTable tblSAP;
+
             if (m_blnGestartet == false)
             {
                 m_blnGestartet = true;
@@ -86,7 +81,7 @@ namespace AppZulassungsdienst.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_BARABHEBUNG", ref m_objApp, ref m_objUser, ref page);
 
-                    tblSAP = myProxy.getImportTable("IS_BARABHEBUNG");
+                    DataTable tblSAP = myProxy.getImportTable("IS_BARABHEBUNG");
 
                     DataRow tmpSAPRow = tblSAP.NewRow();
                     tmpSAPRow["VKBUR"] = Kostenstelle;

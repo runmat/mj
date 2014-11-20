@@ -141,7 +141,7 @@
                                                         MaxLength="8" Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%; vertical-align: top; margin-top: 3px">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: auto; position: absolute;">
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: auto; position: absolute;" EnableViewState="False">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
