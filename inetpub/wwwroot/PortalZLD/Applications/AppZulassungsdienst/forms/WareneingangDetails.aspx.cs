@@ -13,8 +13,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class WareneingangDetails : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private clsWareneingang objWareneingang;
 
         /// <summary>
@@ -56,10 +56,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-
-            DataView tmpDataView = new DataView();
-            tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
-
+            DataView tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
 
             if (tmpDataView.Count == 0)
             {
@@ -131,10 +128,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid2(Int32 intPageIndex, String strSort)
         {
-
-            DataView tmpDataView = new DataView();
-            tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
-
+            DataView tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
 
             if (tmpDataView.Count == 0)
             {
@@ -200,11 +194,7 @@ namespace AppZulassungsdienst.forms
                         Label lblLieferMenge = (Label)tmpRow.FindControl("lblLieferMenge");
                         lblLieferMenge.Text = tmpPosition["BestellteMenge"].ToString();
                     }
-
-                
                 }
-
-
             }
         }
 
@@ -215,7 +205,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void chkVollstaendig_CheckedChanged(object sender, EventArgs e)
         {
-            Boolean tmpBool = false;
+            Boolean tmpBool;
             CheckBox check =(CheckBox)sender;
             Label tmpLabel;
             GridViewRow tmpGridRow = (GridViewRow)(check.Parent.Parent);
@@ -230,7 +220,6 @@ namespace AppZulassungsdienst.forms
             {
                 objWareneingang.Bestellpositionen.Select("Bestellposition='" + tmpLabel.Text + "'")[0]["PositionVollstaendig"] = "";
                 tmpBool = true; 
-            
             }
 
             TextBox tmpTextbox;
@@ -244,7 +233,6 @@ namespace AppZulassungsdienst.forms
             tmpRadio = (RadioButton)tmpGridRow.FindControl("rbPositionAbgeschlossenNEIN");
             tmpRadio.Enabled = tmpBool;
             tmpRadio.Checked = false;
-
         }
 
         /// <summary>
@@ -288,9 +276,8 @@ namespace AppZulassungsdienst.forms
             {
                 Label lblEAN = (Label)tmprow.FindControl("lblEAN");
                 DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
-                String tmpMenge = "";
                 HtmlInputHidden tmphidden = (HtmlInputHidden)tmprow.FindControl("txtPositionLieferMenge2");
-                tmpMenge = tmphidden.Value;
+                String tmpMenge = tmphidden.Value;
 
                 if (tmpMenge == "")
                 {
@@ -301,8 +288,7 @@ namespace AppZulassungsdienst.forms
                     tmpPosition["PositionLieferMenge"] = tmpMenge;
                 }
 
-                String sVollAll="";
-                String sVollRowJa="";
+                String sVollAll;
 
                 CheckBox tmpChkBox = (CheckBox)tmprow.FindControl("chkVollstaendig");
                 if (tmpChkBox.Checked)
@@ -313,32 +299,10 @@ namespace AppZulassungsdienst.forms
                 {
                     sVollAll = "0";
                 }
-                RadioButton tmprbJa = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenJA");
-                RadioButton tmprbNein = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN");
-                if (tmprbJa.Checked)
-                {
-                    sVollRowJa = "J";
-                }
-                else
-                {
-                    sVollRowJa = "";
-                    if (tmprbNein.Checked)
-                    {
-                        sVollRowJa = "N";
-                    }
-                    else
-                    {
-                        sVollRowJa = "";
-                    }
-                }
+
                 tmpPosition["PositionVollstaendig"] = sVollAll;
-                if (sVollAll == "X")
-                {
-                    sVollRowJa = "J";
-                }
 
                 objWareneingang.Bestellpositionen.AcceptChanges();
-
             }
         }
 
@@ -455,8 +419,6 @@ namespace AppZulassungsdienst.forms
                 Fillgrid2(0, "");
                 mpeWareneingangsCheck.Show();
             }
-
-
         }
 
         /// <summary>

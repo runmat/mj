@@ -46,7 +46,7 @@
                                                         MaxLength="8" Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%; height: 30px;">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" 
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" EnableViewState="False" 
                                                         OnSelectedIndexChanged="ddlKunnr_SelectedIndexChanged" Style="width: 375px">
                                                     </asp:DropDownList>
                                                 </td>
@@ -61,7 +61,7 @@
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%;">
                                                     <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" AutoPostBack="True"
-                                                       OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged" >
+                                                       OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged" EnableViewState="False" >
                                                     </asp:DropDownList>
                                                 </td>
 

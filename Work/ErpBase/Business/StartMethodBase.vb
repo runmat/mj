@@ -17,7 +17,6 @@ Namespace Business
         Protected m_blnGestartet As Boolean
         Protected m_frmWebForm As System.Web.UI.Page
         Protected m_intAppID As Integer
-        Protected m_strSessionID As String
         Protected m_strAppUrl As String
         Protected m_strFileName As String
         Private Shared m_strAppKey As String = ConfigurationManager.AppSettings("ApplicationKey")
@@ -56,7 +55,6 @@ Namespace Business
         Public Sub New(ByRef frmWebForm As Web.UI.Page, ByRef objUser As Base.Kernel.Security.User, ByVal strFileName As String)
             REM § Constructor. Übernimmt WebForm, User und Applikationsobjekt.
             m_objUser = objUser
-            m_strSessionID = objUser.SessionID
             m_objApp = objUser.App
             m_objLogApp = New Base.Kernel.Logging.Trace(m_objApp.Connectionstring, m_objApp.SaveLogAccessSAP, m_objApp.LogLevel)
             m_strFileName = strFileName
@@ -132,7 +130,7 @@ Namespace Business
                         p_strComment = strComment & " (<a href=""/" & m_strAppKey & "/Temp/Excel/" & m_strFileName & """>Excel</a>)"
                     End If
                 End If
-                m_objLogApp.WriteEntry(p_strType, m_objUser.UserName, m_strSessionID, m_intAppID, m_objUser.Applications.Select("AppID = '" & m_intAppID.ToString & "'")(0)("AppFriendlyName").ToString, "Report", p_strComment, m_objUser.CustomerName, m_objUser.Customer.CustomerId, m_objUser.IsTestUser, 0)
+                m_objLogApp.WriteEntry(p_strType, m_objUser.UserName, String.Empty, m_intAppID, m_objUser.Applications.Select("AppID = '" & m_intAppID.ToString & "'")(0)("AppFriendlyName").ToString, "Report", p_strComment, m_objUser.CustomerName, m_objUser.Customer.CustomerId, m_objUser.IsTestUser, 0)
             Catch ex As Exception
                 m_objApp.WriteErrorText(1, m_objUser.UserName, "DADReports", "WriteLogEntry", ex.ToString)
             End Try

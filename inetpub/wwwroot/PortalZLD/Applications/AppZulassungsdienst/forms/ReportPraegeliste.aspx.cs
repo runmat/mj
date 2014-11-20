@@ -10,9 +10,10 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class ReportPraegeliste : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Listen objListe;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
         /// </summary>
@@ -41,6 +42,7 @@ namespace AppZulassungsdienst.forms
 
             SetAttributes();
         }
+
         /// <summary>
         /// Javascript-Funktionen an Controls binden.
         /// </summary>
@@ -52,6 +54,7 @@ namespace AppZulassungsdienst.forms
             lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
             lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
         }
+
         /// <summary>
         /// Funktionsaufruf DoSubmit().
         /// </summary>
@@ -61,6 +64,7 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
         /// <summary>
         /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_PRALI).
         /// </summary>
@@ -139,34 +143,6 @@ namespace AppZulassungsdienst.forms
             }
 
         }
-
-        ///// <summary>
-        ///// Aufruf von PrintPDF.aspx zur Anzeige des PDF´s.
-        ///// </summary>
-        //private void GetPDF()
-        //{
-        //    try
-        //    {
-        //        string sPath = null;
-        //        if (m_User.IsTestUser)
-        //        { sPath = "\\\\192.168.10.96\\test\\portal\\zld\\praegeliste\\" + objListe.Filename; }
-        //        else { sPath = "\\\\192.168.10.96\\prod\\portal\\zld\\praegeliste\\" + objListe.Filename; }
-        //        //{ sPath = "\\\\192.168.10.96\\test\\portal\\praegeliste\\" + objListe.Filialname; }
-        //        //else { sPath = "\\\\192.168.10.96\\prod\\portal\\praegeliste\\" + objListe.Filialname; }
-        //        Session["App_ContentType"] = "Application/pdf";
-        //        Session["App_Filepath"] = sPath;
-
-        //        ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-        //        Session["App_FileDelete"] = "X";
-        //        // Prägeliste in SQL auf gedruckt setzen
-        //        objListe.setPraliPrint();
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + Ex.Message;
-        //    }
-
-        //}
 
     }
 }
