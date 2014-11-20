@@ -29,7 +29,7 @@ Namespace Business
                     Dim m_Report As TempMahn
 
                     m_Report = New TempMahn(m_objUser, m_objApp, m_strFileName)
-                    m_Report.Fill(m_intAppID.ToString, m_strSessionID)
+                    m_Report.Fill(m_intAppID.ToString)
 
                     If Not m_Report.Status = 0 Then
                         m_strMessage = m_Report.Message

@@ -48,6 +48,8 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         public DataTable tblOffeneStornos { get; private set; }
 
+        public DataTable tblBarquittungen { get; private set; }
+
         #endregion
 
         #region "Methods"
@@ -298,6 +300,7 @@ namespace AppZulassungsdienst.lib
                     if (m_intStatus == 0)
                     {
                         VorgangId = myProxy.getExportParameter("E_ZULBELN_NEU");
+                        tblBarquittungen = myProxy.getExportTable("GT_BARQ");
                     }
                 }
                 catch (Exception ex)
@@ -349,6 +352,7 @@ namespace AppZulassungsdienst.lib
                     myProxy.callBapi();
 
                     var tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+                    tblBarquittungen = myProxy.getExportTable("GT_BARQ");
 
                     if (tblErrors.Rows.Count > 0 && tblErrors.Rows[0]["ERROR_TEXT"].ToString() != "OK")
                     {

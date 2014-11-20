@@ -15,10 +15,10 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Eingabedialog Seite2 Vorerfassuung Versanzulassung erfasst durch Autohaus.
     /// </summary>
-    public partial class AHVersandChange_2 : System.Web.UI.Page
+    public partial class AHVersandChange_2 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
         private Report99 objSuche;
@@ -110,7 +110,6 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                DataRow[] SelectRow;
                 DataRow resultRow;
 
                 if (objSuche.Result.Rows.Count == 1)
@@ -119,7 +118,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    SelectRow = objSuche.Result.Select("Zkba2='00'");
+                    DataRow[] SelectRow = objSuche.Result.Select("Zkba2='00'");
                     if (SelectRow.Length == 1)
                     {
                         resultRow = SelectRow[0];
@@ -141,6 +140,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Geforderte Zulassungsunterlagen des Amte den checkboxes zuweisen.
         /// </summary>
@@ -162,6 +162,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Form mit den bereits vorhandenen Daten füllen.
         /// </summary>
@@ -197,16 +198,12 @@ namespace AppZulassungsdienst.forms
                 cmdCreate.Enabled = false;
                 return;
             }
-            else
-            {
-                //DataView LiefView = objNacherf.BestLieferanten.DefaultView;
-                //LiefView.RowFilter = "KREISKZ = '" + txtZLDLief.Text + "'";
-                ddlKunnr.DataSource = objNacherf.BestLieferanten;
-                ddlKunnr.DataValueField = "LIFNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-                Session["objNacherf"] = objNacherf;
-            }
+
+            ddlKunnr.DataSource = objNacherf.BestLieferanten;
+            ddlKunnr.DataValueField = "LIFNR";
+            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataBind();
+            Session["objNacherf"] = objNacherf;
 
             InitializeAdressen();
         }
@@ -281,18 +278,17 @@ namespace AppZulassungsdienst.forms
             }
 
             Hashtable imageHt = new Hashtable();
-            DataTable tblWordData = new DataTable();
-            tblWordData = CreatePrintTable();
+            DataTable tblWordData = CreatePrintTable();
             imageHt.Add("Logo", m_User.Customer.LogoImage);
             String sFilePath = "C:\\inetpub\\wwwroot\\Portalzld\\temp\\Excel\\" + m_User.UserName + String.Format("{0:ddMMyyhhmmss}", DateTime.Now);
             WordDocumentFactory docFactory = new WordDocumentFactory(tblWordData, imageHt);
             if (objNacherf.DocRueck1.Length > 0)
             {
-                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungAbwAdresse.doc", "", null);
+                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungAbwAdresse.doc");
             }
             else
             {
-                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungDEZ.doc", "", null);
+                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungDEZ.doc");
             }
 
 
@@ -388,6 +384,7 @@ namespace AppZulassungsdienst.forms
             txtFrei2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             txtFrei3.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
         }
+
         /// <summary>
         /// Tabellenspalten für die PDF-Generierung erstellen.
         /// </summary>
@@ -557,7 +554,7 @@ namespace AppZulassungsdienst.forms
             }
             dRow["Zuldat"] = KopfRow["ZZZLDAT"];
             dRow["Bemerkung"] = KopfRow["BEMERKUNG"];
-            dRow["ErfDatum"] = System.DateTime.Now.ToShortDateString();
+            dRow["ErfDatum"] = DateTime.Now.ToShortDateString();
 
             dRow["Anzahl"] = "1";
             dRow["HandRegistOrg"] = chkHandRegist.Items[0].Selected;
@@ -697,6 +694,7 @@ namespace AppZulassungsdienst.forms
             divOptions.Visible = false;
             divBackDisabled.Visible = false;
         }
+
         /// <summary>
         /// Zurück zum Eingabedialog Seite 1.
         /// </summary>
@@ -706,6 +704,7 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("AHVersandChange.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + Request.QueryString["id"] + "&Back=X");
         }
+
         /// <summary>
         /// Zurück zur Listenansicht.
         /// </summary>
@@ -715,13 +714,13 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("AHVersandListe.aspx?AppID=" + Session["AppID"].ToString());
         }
+
         /// <summary>
         /// E-Mail an die durchführenden Zulassungsdienst generieren und senden.
         /// </summary>
         /// <returns>false bei Fehler</returns>
         private Boolean Sendmail()
         {
-
             try
             {
                 String MailAdress = "";
@@ -736,11 +735,8 @@ namespace AppZulassungsdienst.forms
 
                     System.Net.Mail.MailMessage Mail;
 
-                    String smtpMailSender = "";
-                    String smtpMailServer = "";
-
-                    smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
-                    smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
+                    String smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
+                    String smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
 
                     String MailText = "Sehr geehrte Damen und Herren, " + Environment.NewLine + Environment.NewLine;
                     MailText += "hiermit teilen wir Ihnen mit, dass Sie morgen von uns einen Zulassungsvorgang " + Environment.NewLine;
@@ -772,18 +768,14 @@ namespace AppZulassungsdienst.forms
                     Mail.Dispose();
                     return true;
                 }
-                else
-                {
-                    lblError.Text = "Für den zuständigen Zulassungsdienst wurde keine E-Mailadresse hinterlegt. <br /> Bitte informieren Sie den Zulassungsdienst telefonisch! <br />";
-                    return false;
 
-                }
+                lblError.Text = "Für den zuständigen Zulassungsdienst wurde keine E-Mailadresse hinterlegt. <br /> Bitte informieren Sie den Zulassungsdienst telefonisch! <br />";
+                return false;
             }
             catch (Exception ex)
             {
                 lblError.Text = "Fehler beim Senden! " + ex.Message;
                 return false;
-
             }
         }
 
@@ -815,6 +807,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -842,6 +835,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -869,6 +863,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -896,6 +891,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -923,6 +919,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -950,6 +947,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -977,6 +975,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1004,6 +1003,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1031,6 +1031,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1058,6 +1059,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1085,6 +1087,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1112,6 +1115,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1139,6 +1143,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Es darf jeweils nur Orginal oder Kopie bei den Dokumentenanforderungen markiert sein.
         /// </summary>
@@ -1166,6 +1171,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
+
         /// <summary>
         /// Öffnen des Eingabedialogs Adresse Hinsendung.
         /// </summary>
@@ -1179,6 +1185,7 @@ namespace AppZulassungsdienst.forms
                                     "unblockDialog('AdresseHin');", true);
 
         }
+
         /// <summary>
         /// Refresh der Adresse der Hinsendung.
         /// </summary>
@@ -1188,6 +1195,7 @@ namespace AppZulassungsdienst.forms
         {
 
         }
+
         /// <summary>
         /// Schliessen des Eingabedialogs Adresse Hinsendung.
         /// </summary>
@@ -1197,6 +1205,7 @@ namespace AppZulassungsdienst.forms
         {
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('AdresseHin');", true);
         }
+
         /// <summary>
         /// Refresh der Adresse der Rücksendung.
         /// </summary>
@@ -1206,6 +1215,7 @@ namespace AppZulassungsdienst.forms
         {
 
         }
+
         /// <summary>
         /// Schliessen der Eingabedialogs Adresse Rücksendung.
         /// </summary>
@@ -1222,6 +1232,7 @@ namespace AppZulassungsdienst.forms
                 ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
             }
         }
+
         /// <summary>
         /// Öffnen des Eingabedialogs Adresse Rücksendung
         /// </summary>
@@ -1235,6 +1246,7 @@ namespace AppZulassungsdienst.forms
                                     "unblockDialog('');", true);
 
         }
+
         /// <summary>
         /// Klassen-Eigenschaften initialisieren(Adressen).
         /// </summary>
@@ -1374,6 +1386,7 @@ namespace AppZulassungsdienst.forms
             Session["objNacherf"] = objNacherf;
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
         }
+
         /// <summary>
         /// Validierung Adressdaten1 Rücksendung.
         /// </summary>
@@ -1416,6 +1429,7 @@ namespace AppZulassungsdienst.forms
 
             return bError;
         }
+
         /// <summary>
         /// Validierung Adressdaten2 Rücksendung.
         /// </summary>
@@ -1457,6 +1471,7 @@ namespace AppZulassungsdienst.forms
             }
             return bError;
         }
+
         /// <summary>
         /// Clearen der Felder und Klasseneigenschaften der Hinsendung.
         /// </summary>
@@ -1481,6 +1496,7 @@ namespace AppZulassungsdienst.forms
             txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             Session["objNacherf"] = objNacherf;
         }
+
         /// <summary>
         /// Clearen der Felder und Klasseneigenschaften der Rücksendung.
         /// </summary>

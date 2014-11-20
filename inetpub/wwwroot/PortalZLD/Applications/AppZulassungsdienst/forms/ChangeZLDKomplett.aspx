@@ -141,8 +141,6 @@
                                                 <td class="firstLeft active" >
                                                 </td>
                                                 <td class="firstLeft active" colspan="2" style="width: 100%;">
-<%--                                                    <asp:RadioButton ID="rbEinzug" Value="1" Text="Einzugsermächtigung" GroupName="Einzug" runat="server" />
-                                                    <asp:RadioButton ID="rbRechnug"  Value="2"  Text="Rechnung" runat="server" GroupName="Einzug" />--%>
                                                     <asp:CheckBox ID="chkEinzug" runat="server" Text="Einzugsermächtigung" />
                                                     <asp:CheckBox ID="chkRechnung" runat="server" Text="Rechnung" />
                                                 </td>
@@ -256,7 +254,7 @@
                                                         MaxLength="8" Width="75px" TabIndex="2"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%; vertical-align:top; margin-top:3px">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" 
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" EnableViewState="False" 
                                                          Style="width: auto; position:absolute;" TabIndex="3">
                                                     </asp:DropDownList>
                                                     <label  style="float:right; padding-right:35px" runat="server" id="Pauschal" title=""></label>
@@ -290,11 +288,6 @@
                                                     <asp:GridView ID="GridView1" style="border: none;" runat="server" AutoGenerateColumns="False"
                                                         ShowHeader="true" onrowcommand="GridView1_RowCommand" Width="100%" >
                                                         <Columns>
-<%--                                                            <asp:TemplateField Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="lblID_POS" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ID_POS") %>'></asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>--%>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" 
@@ -422,7 +415,7 @@
                                                 </td>
                                                 <td class="firstLeft active" >
                                                     <asp:DropDownList ID="ddlStVa" runat="server"  
-                                                         Style="width: 375px" TabIndex="8">
+                                                         Style="width: 375px" TabIndex="8" EnableViewState="False">
                                                     </asp:DropDownList>
                                                     <asp:LinkButton ID="lbtnReservierung" runat="server" 
                                                         CssClass="TablebuttonMiddle" Height="18px" OnClick="lbtnReservierung_Click" 

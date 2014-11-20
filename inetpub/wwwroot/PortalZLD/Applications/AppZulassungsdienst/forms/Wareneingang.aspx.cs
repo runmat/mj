@@ -11,8 +11,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Wareneingang : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private clsWareneingang objWareneingang;
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             lblBestellungsAnzahl.Text = lbxBestellungen.Items.Count.ToString();
 

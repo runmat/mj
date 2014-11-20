@@ -389,7 +389,6 @@ Namespace Kernel.Common
             Dim _user As User
             If Not Form.Session("objUser") Is Nothing Then
                 _user = CType(Form.Session("objUser"), User)
-                _user.GetCurrentSessionID(_user.UserName)
             Else
                 _user = New User(CInt(Form.User.Identity.Name), ConfigurationManager.AppSettings("Connectionstring"))
                 If _user.FailedLogins = 0 Then

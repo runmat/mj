@@ -45,27 +45,27 @@
                                                     <asp:TextBox ID="txtKunnr" runat="server" onKeyPress="return numbersonly(event, false)"  CssClass="TextBoxNormal" 
                                                         MaxLength="8" Width="75px"></asp:TextBox>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2"  style="width: 100%; vertical-align:top; padding-top:14px">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" 
-                                                        OnSelectedIndexChanged="ddlKunnr_SelectedIndexChanged"  Style="width: auto; position:absolute;">
+                                                <td class="firstLeft active" style="width: 100%; vertical-align:top; padding-top:14px">
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" EnableViewState="False" 
+                                                        OnSelectedIndexChanged="ddlKunnr_SelectedIndexChanged"  Style="width: auto;">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>                                          
                                             <tr class="formquery" id="trKundengruppe" runat="server" visible="false">
                                                 <td class="firstLeft active" >
                                                    <asp:Label ID="lblGruppe" runat="server">Kundengruppe:</asp:Label></td>
-                                                <td class="firstLeft active" colspan="3" >
+                                                <td class="firstLeft active" colspan="2" >
                                                     <asp:DropDownList ID="ddlGruppe" runat="server" Style="width: 375px"></asp:DropDownList>
                                                 </td>
                                             </tr>                                            
                                             <tr class="formquery" id="trTour" runat="server" visible="false">
                                                 <td class="firstLeft active" >
                                                     <asp:Label ID="lblTour" runat="server">Tour:</asp:Label></td>
-                                                <td class="firstLeft active" colspan="3" >
+                                                <td class="firstLeft active" colspan="2" >
                                                    <asp:DropDownList ID="ddlTour" runat="server" Style="width: 375px"></asp:DropDownList>
                                                 </td>
                                             </tr> 
-                                            <tr class="formquery">
+                                            <tr class="formquery" id="trStva" runat="server">
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblStva" runat="server">StVA:</asp:Label>
                                                 </td>
@@ -75,7 +75,7 @@
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%;">
                                                     <asp:DropDownList ID="ddlStVa"  runat="server"  Style="width: 375px" AutoPostBack="True"
-                                                       OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged" >
+                                                       OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged" EnableViewState="False" >
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
@@ -143,7 +143,7 @@
                                                         />
                                                 </td>
                                             </tr> 
-                                                   <tr class="formquery">
+                                            <tr class="formquery">
                                                 <td colspan="3">
 
                                                 </td>

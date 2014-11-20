@@ -294,7 +294,8 @@
                                     MarkFirstMatch="True" 
                                    
                                     OnClientSelectedIndexChanged="ChangeColor"
-                                    ShowMoreResultsBox="True" EnableVirtualScrolling="True" Height="200px" ItemsPerRequest="10" EnableTextSelection="true" >
+                                    ShowMoreResultsBox="True" EnableVirtualScrolling="True" Height="200px" 
+                                                    ItemsPerRequest="10" EnableTextSelection="true" EnableViewState="False" >
                                     <Localization NoMatches="Keine Treffer" ShowMoreFormatString="Eintrag &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; von &lt;b&gt;{1}&lt;/b&gt;" />
                                 </telerik:RadComboBox>
 

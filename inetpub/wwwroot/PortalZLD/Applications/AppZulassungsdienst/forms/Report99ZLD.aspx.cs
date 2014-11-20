@@ -10,11 +10,12 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Selektion Dokumentenanforderung der Zulassungsstellen.
     /// </summary>
-    public partial class Report99ZLD : System.Web.UI.Page
+    public partial class Report99ZLD : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Report99 objSuche;
+
         /// <summary>
         /// Page_Load Ereignis. Überprüfung ob dem User diese Applikation zugeordnet ist.
         /// </summary>
@@ -43,6 +44,7 @@ namespace AppZulassungsdienst.forms
             }
             txtKennzeichen.Attributes.Add("onkeyup", "FilterKennz(this,event)");
         }
+
         /// <summary>
         ///  Aufruf von DoSubmit() wenn txtKennz gefüllt.
         /// </summary>
@@ -76,7 +78,7 @@ namespace AppZulassungsdienst.forms
             lblInfo.Text = "";
             resultRow = objSuche.Result.Rows[0];
             sUrl =  resultRow["STVALN"].ToString();//"http://" +
-            sAmt = sAmt = txtKennzeichen.Text;
+            sAmt = txtKennzeichen.Text;
 
             if (sUrl.Length != 0)
             {
@@ -86,9 +88,9 @@ namespace AppZulassungsdienst.forms
             else
             {
                 lblInfo.Text = "Das Straßenverkehrsamt für das amtliche Kennzeichen " + sAmt + " bietet keine Weblink hierfür an.";
-                    //<br>" +                "Möchten Sie auf die Standardstartseite dies Verkehrsamts wechseln, so klicken Sie bitte auf den Link Amt. ";
             }
         }
+
         /// <summary>
         /// Aufruf von ClickLink("URL"). Wunschkennzeichen reservieren auf der entspr. Seite der Zulassungsstelle.
         /// </summary>
@@ -98,6 +100,7 @@ namespace AppZulassungsdienst.forms
         {
             ClickLink("URL");
         }
+
         /// <summary>
         /// Aufruf von ClickLink("STVALNFORM"). Formulare(Einzugsermächtigung) auf der entspr. Seite der Zulassungsstelle.
         /// </summary>
@@ -107,6 +110,7 @@ namespace AppZulassungsdienst.forms
         {
             ClickLink("STVALNFORM");
         }
+
         /// <summary>
         /// Aufruf von ClickLink("STVALNFORM").Informationen zur Gebührenauslage auf der entspr. Seite der Zulassungsstelle.
         /// </summary>
@@ -223,6 +227,7 @@ namespace AppZulassungsdienst.forms
         cmdAmt.Enabled = false;
 
     }
+
         /// <summary>
         /// SAP- Aufruf(Z_M_ZGBS_BEN_ZULASSUNGSUNT) mit Importparameter Kennzeichen. Bei positiven Ergebnis Aufruf FillGrid().
         /// </summary>
@@ -257,6 +262,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         ///  Füllen der Controls der Seite mit den erhaltenen Daten(objSuche.Result).
         /// </summary>
@@ -264,7 +270,6 @@ namespace AppZulassungsdienst.forms
         {
             objSuche = (Report99)(Session["objSuche"]);
 
-            DataRow [] SelectRow;
             DataRow resultRow ;
 
             if (objSuche.Result.Rows.Count == 1)
@@ -273,7 +278,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                SelectRow = objSuche.Result.Select("Zkba2='00'");
+                DataRow[] SelectRow = objSuche.Result.Select("Zkba2='00'");
                 if (SelectRow.Length > 0)
                 {
                     resultRow = SelectRow[0];
@@ -392,6 +397,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Es konnten keine Dokumentenanforderungen gefunden werden, <br> benutzen Sie bitte die bereitgestellten Links des Zulassungskreises! ";
             } 
         }
+
         /// <summary>
         /// Öffnet ein neues Browserfenster zu den Seiten der Zulassungstelle(Wunschkenzeichen, Gebühren, Formulare). Information aus der Result-Tabelle.
         /// Aufgerufen von cmdWunsch_Click(), cmdFormulare_Click(), cmdGebuehr_Click().
@@ -400,21 +406,18 @@ namespace AppZulassungsdienst.forms
         private void ClickLink(String RowName) 
         {
             objSuche = (Report99)(Session["objSuche"]);
-            String sUrl ;
-            DataRow resultRow ;
-            String sTempUrl;
-            String sAmt ;
+            DataRow resultRow;
+            String sAmt;
             lblInfo.Text = "";
             resultRow = objSuche.Result.Rows[0];
             sAmt = txtKennzeichen.Text;
             if (resultRow[RowName].ToString().Length > 0)
             {
-                sTempUrl = resultRow[RowName].ToString().Substring(0, 7);
+                String sTempUrl = resultRow[RowName].ToString().Substring(0, 7);
                 
-
                 if (sTempUrl.Length != 0)
                 {
-                    sUrl = resultRow[RowName].ToString();
+                    String sUrl = resultRow[RowName].ToString();
                     ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
                 }
                 else
@@ -429,6 +432,7 @@ namespace AppZulassungsdienst.forms
                     "Möchten Sie auf die Standardstartseite dies Verkehrsamts wechseln, so klicken Sie bitte auf den Link Amt. ";
             }
         }
+
         /// <summary>
         /// On Enter Buttondummy.
         /// </summary>

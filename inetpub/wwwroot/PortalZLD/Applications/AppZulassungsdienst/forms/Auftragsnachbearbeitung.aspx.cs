@@ -254,6 +254,22 @@ namespace AppZulassungsdienst.forms
             cmdOffeneStornos.Visible = true;
         }
 
+        protected void cmdClose_Click(object sender, EventArgs e)
+        {
+            MPEBarquittungen.Hide();
+        }
+
+        protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Print")
+            {
+                Session["App_ContentType"] = "Application/pdf";
+                Session["App_Filepath"] = e.CommandArgument;
+                ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                MPEBarquittungen.Show();
+            }
+        }
+
         #endregion
 
         #region Funktionen
@@ -455,50 +471,74 @@ namespace AppZulassungsdienst.forms
                 if (objNachbearbeitung.Status != 0)
                 {
                     lblError.Text = "Fehler beim Stornieren: " + objNachbearbeitung.Message;
+                    return;
+                }
+
+                VorgangInfo.Visible = false;
+                StornoDetails.Visible = false;
+                cmdAbbrechen.Visible = false;
+                cmdStorno.Visible = false;
+
+                var grundRows = objNachbearbeitung.tblStornogruende.Select("STORNOGRUND = '" + objNachbearbeitung.Stornogrund + "'");
+
+                // Ggf. noch neuen Vorgang laden/anzeigen und zur Preisbearbeitung wechseln
+                if (grundRows.Length > 0 && grundRows[0]["PREISE_CHG"].ToString() == "X")
+                {
+                    lblError.Text = "Vorgang erfolgreich angelegt";
+
+                    if (!String.IsNullOrEmpty(objNachbearbeitung.VorgangId))
+                    {
+                        objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
+
+                        Session["objNachbearbeitung"] = objNachbearbeitung;
+
+                        if (objNachbearbeitung.Status != 0)
+                        {
+                            lblError.Text = objNachbearbeitung.Message;
+                        }
+                        else
+                        {
+                            ShowVorgangInfo();
+
+                            trVorgangPositionenDisplay.Visible = false;
+
+                            FillGridPreiseEdit();
+
+                            EditPreise.Visible = true;
+                            cmdAbsenden.Visible = true;
+                        }
+                    }
                 }
                 else
                 {
-                    VorgangInfo.Visible = false;
-                    StornoDetails.Visible = false;
-                    cmdAbbrechen.Visible = false;
-                    cmdStorno.Visible = false;
+                    lblError.Text = "Vorgang erfolgreich storniert";
 
-                    var grundRows = objNachbearbeitung.tblStornogruende.Select("STORNOGRUND = '" + objNachbearbeitung.Stornogrund + "'");
+                    ResetNachbearbeitung(true);
+                }
 
-                    // Ggf. noch neuen Vorgang laden/anzeigen und zur Preisbearbeitung wechseln
-                    if (grundRows.Length > 0 && grundRows[0]["PREISE_CHG"].ToString() == "X")
+                if (objNachbearbeitung.tblBarquittungen.Rows.Count > 0)
+                {
+                    if (!objNachbearbeitung.tblBarquittungen.Columns.Contains("Filename"))
                     {
-                        lblError.Text = "Vorgang erfolgreich angelegt";
+                        objNachbearbeitung.tblBarquittungen.Columns.Add("Filename", typeof(String));
+                        objNachbearbeitung.tblBarquittungen.Columns.Add("Path", typeof(String));
 
-                        if (!String.IsNullOrEmpty(objNachbearbeitung.VorgangId))
+                        foreach (DataRow BarRow in objNachbearbeitung.tblBarquittungen.Rows)
                         {
-                            objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
-
-                            Session["objNachbearbeitung"] = objNachbearbeitung;
-
-                            if (objNachbearbeitung.Status != 0)
+                            BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
+                            if (m_User.IsTestUser)
                             {
-                                lblError.Text = objNachbearbeitung.Message;
+                                BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
                             }
                             else
                             {
-                                ShowVorgangInfo();
-
-                                trVorgangPositionenDisplay.Visible = false;
-
-                                FillGridPreiseEdit();
-
-                                EditPreise.Visible = true;
-                                cmdAbsenden.Visible = true;
+                                BarRow["Path"] = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
                             }
                         }
                     }
-                    else
-                    {
-                        lblError.Text = "Vorgang erfolgreich storniert";
-
-                        ResetNachbearbeitung(true);
-                    }
+                    GridView2.DataSource = objNachbearbeitung.tblBarquittungen;
+                    GridView2.DataBind();
+                    MPEBarquittungen.Show();
                 }
             }
             catch (Exception ex)
@@ -693,6 +733,31 @@ namespace AppZulassungsdienst.forms
                     lblError.Text = "Vorgang erfolgreich storniert";
 
                     ResetNachbearbeitung(true);
+
+                    if (objNachbearbeitung.tblBarquittungen.Rows.Count > 0)
+                    {
+                        if (!objNachbearbeitung.tblBarquittungen.Columns.Contains("Filename"))
+                        {
+                            objNachbearbeitung.tblBarquittungen.Columns.Add("Filename", typeof(String));
+                            objNachbearbeitung.tblBarquittungen.Columns.Add("Path", typeof(String));
+
+                            foreach (DataRow BarRow in objNachbearbeitung.tblBarquittungen.Rows)
+                            {
+                                BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
+                                if (m_User.IsTestUser)
+                                {
+                                    BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
+                                }
+                                else
+                                {
+                                    BarRow["Path"] = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
+                                }
+                            }
+                        }
+                        GridView2.DataSource = objNachbearbeitung.tblBarquittungen;
+                        GridView2.DataBind();
+                        MPEBarquittungen.Show();
+                    }
                 }
             }
             catch (Exception ex)
