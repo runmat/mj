@@ -363,6 +363,40 @@
                                         </tr>
                                     </table>
                                 </asp:Panel>
+                                <asp:Button ID="btnDummy2" Width="16px" Height="0" runat="server" Style="display: none" />
+                                <ajaxToolkit:ModalPopupExtender runat="server" ID="MPEBarquittungen" BackgroundCssClass="ui-widget-overlay"
+                                    Enabled="true" PopupControlID="pnlPrintBar" TargetControlID="btnDummy2">
+                                </ajaxToolkit:ModalPopupExtender>
+
+                                <asp:Panel ID="pnlPrintBar" runat="server" Style="overflow: auto; height: 100px;
+                                    width: 400px; display: none;" >
+                                    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="width: 95%;" >
+                                                              <asp:LinkButton ID="cmdClose" runat="server" 
+                                        Width="10px" onclick="cmdClose_Click"  style="float:right" 
+						               >X</asp:LinkButton>  
+                                    </div>
+                                    <asp:GridView ID="GridView2" GridLines="None" Style="border: 1px solid #dfdfdf; width: 96%;
+                                        font-size: 9px; color: #595959" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowCommand="GridView2_RowCommand"
+                                        CaptionAlign="Left">
+                                        <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
+                                        <RowStyle CssClass="ItemStyle" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Quittung">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Aufrufen">
+                                                <ItemTemplate>
+                                                    <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# Eval("Path") %>'
+                                                        runat="server" ImageUrl="/PortalZLD/Images/iconPDF.gif" />
+                                                </ItemTemplate>
+                                                <HeaderStyle Width="40px" />
+                                                <ItemStyle Width="40px" />
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
                             </div>
                         </ContentTemplate>
                     </asp:UpdatePanel>

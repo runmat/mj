@@ -10,8 +10,9 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Report99ZLD_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
+
         /// <summary>
         /// Page_Load Ereignis.
         /// Überprüfung ob dem User diese Applikation zugeordnet ist.
@@ -26,15 +27,13 @@ namespace AppZulassungsdienst.forms
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
-            String strAppID = String.Empty;
             if (Request.QueryString["AppID"].Length > 0)
             {
-                strAppID = Request.QueryString["AppID"];
-                Session["AppID"] = strAppID;
+                Session["AppID"] = Request.QueryString["AppID"];
                 fillTable();
             }
-            
         }
+
         /// <summary>
         /// Bindet Repeater1 mit den aus dem Ordner "Docs\\Lastschrift" beinhaltenen Dokumente(LinkTable).
         /// </summary>
@@ -42,7 +41,6 @@ namespace AppZulassungsdienst.forms
         {
             System.IO.DirectoryInfo dirInfo;
             System.IO.FileInfo[] fInfo;
-            String trString;
             String path;
             DataTable LinkTable = new DataTable(); 
             LinkTable.Columns.Add("Bundesland", typeof(String));
@@ -51,19 +49,17 @@ namespace AppZulassungsdienst.forms
             path = Request.PhysicalApplicationPath + "Docs\\Lastschrift";
             dirInfo = new System.IO.DirectoryInfo(path);
             fInfo = dirInfo.GetFiles("*.*");
-            trString = String.Empty;
 
             if (fInfo.Length > 0)
-	            {
-                    for (int i = 0; i < fInfo.Length; i++)
-			        { 
-                        DataRow dRow = LinkTable.NewRow();
-                        dRow["Bundesland"] = fInfo[i].Name.Substring(0,fInfo[i].Name.IndexOf("."));
-                        dRow["Pfad"] = path + "\\" + fInfo[i].Name;
-                        LinkTable.Rows.Add(dRow);
-			        }
-            		 
-	            }
+	        {
+                for (int i = 0; i < fInfo.Length; i++)
+			    { 
+                    DataRow dRow = LinkTable.NewRow();
+                    dRow["Bundesland"] = fInfo[i].Name.Substring(0,fInfo[i].Name.IndexOf("."));
+                    dRow["Pfad"] = path + "\\" + fInfo[i].Name;
+                    LinkTable.Rows.Add(dRow);
+			    }	 
+	        }
             Repeater1.DataSource = LinkTable;
             Repeater1.DataBind();
         }

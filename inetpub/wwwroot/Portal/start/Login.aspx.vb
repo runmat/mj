@@ -673,8 +673,7 @@ Public Class Login
 
     Private Sub cmdContinue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdContinue.Click
         m_User.DoubleLoginTry = False
-        m_User.SetLoggedOn(m_User.UserName, True, Session.SessionID.ToString)
-        m_User.SessionID = Session.SessionID.ToString
+        m_User.SetLoggedOn(m_User.UserName, True)
         Session("objUser") = m_User
         System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
     End Sub

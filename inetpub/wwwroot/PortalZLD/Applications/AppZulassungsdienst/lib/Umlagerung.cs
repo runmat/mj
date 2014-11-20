@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für Umlagerungen der Filiale.
     /// </summary>
-    public class clsUmlagerung : CKG.Base.Business.BankBase
+    public class clsUmlagerung : BankBase
     {
         /// <summary>
         /// Tabelle erfasster Umlagerungen.
@@ -74,6 +74,7 @@ namespace AppZulassungsdienst.lib
             get;
             set;
         }
+
         /// <summary>
         /// Konstruktor clsUmlagerung.
         /// </summary>
@@ -97,16 +98,19 @@ namespace AppZulassungsdienst.lib
             tblUmlagerung.Columns.Add("KENNZFORM", typeof(String));
             KostStelleNeu = "";
         }
+
         /// <summary>
         /// Overrides Change() BankBase
         /// </summary>
         public override void Change()
         {}
+
         /// <summary>
         /// Overrides Show() BankBase
         /// </summary>
         public override void Show()
         {}
+
         /// <summary>
         /// Laden der Umlagerungsartikel aus SAP. Bapi: Z_FIL_EFA_UML_MAT
         /// </summary>
@@ -156,6 +160,7 @@ namespace AppZulassungsdienst.lib
                 finally { m_blnGestartet = false; }
             }
         }
+
         /// <summary>
         /// Überprüfen der Kostenstellen ob eine Umlagerung möglich ist. Bapi: Z_FIL_EFA_GET_KOSTL
         /// </summary>
@@ -220,6 +225,7 @@ namespace AppZulassungsdienst.lib
                 finally { m_blnGestartet = false; }
             }
         }
+
         /// <summary>
         /// Übergeben der erfassten Umlagerungen an SAP. 
         /// </summary>
@@ -233,7 +239,7 @@ namespace AppZulassungsdienst.lib
             m_strSessionID = strSessionID;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-            DataTable tblSAP;
+
             if (m_blnGestartet == false)
             {
                 m_blnGestartet = true;
@@ -244,7 +250,7 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.setImportParameter("I_KOSTL_IN", KostStelleNeu);
                     myProxy.setImportParameter("I_KOSTL_OUT", VKBUR);
-                    tblSAP = myProxy.getImportTable("GT_MAT");
+                    DataTable tblSAP = myProxy.getImportTable("GT_MAT");
 
                     foreach (DataRow tmpRow in tblUmlagerung.Rows)
                     {
@@ -270,9 +276,7 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-                    DataTable BelegTable = new DataTable();
-
-                    BelegTable = myProxy.getExportTable("GT_BELNR");
+                    DataTable BelegTable = myProxy.getExportTable("GT_BELNR");
 
                     if (BelegTable.Rows.Count > 0) 
                     {
@@ -301,6 +305,7 @@ namespace AppZulassungsdienst.lib
                 finally { m_blnGestartet = false; }
             }
         }
+
         /// <summary>
         /// Einfügen der Umlagerungsdaten in die Webtabelle.
         /// </summary>
@@ -351,69 +356,6 @@ namespace AppZulassungsdienst.lib
                 tblUmlagerung.Rows.Add(tmpRow);
             }
         }
-        ///// <summary>
-        ///// Laden eines Artikel mittels EAN aus SAP. Bapi: Z_FIL_READ_MATNR_001
-        ///// </summary>
-        ///// <param name="strAppID">AppID</param>
-        ///// <param name="strSessionID">SessionID</param>
-        ///// <param name="page">Umlagerung.aspx</param>
-        ///// <param name="EAN">EAN</param>
-        ///// <param name="Materialnummer">ref Materialnummer</param>
-        ///// <param name="Artikelbezeichnung">ref Artikelbezeichnung</param>
-        //public void getEANFromSAP(String strAppID, String strSessionID, System.Web.UI.Page page, String EAN,
-        //                          ref String Materialnummer, ref String Artikelbezeichnung)
-        //{
-        //    m_strClassAndMethod = "Umlagerung.getEANFromSAP";
-        //    m_strAppID = strAppID;
-        //    m_strSessionID = strSessionID;
-        //    m_intStatus = 0;
-        //    m_strMessage = String.Empty;
-
-        //    if (m_blnGestartet == false)
-        //    {
-        //        m_blnGestartet = true;
-        //        try
-        //        {
-        //            DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FIL_READ_MATNR_001", ref m_objApp, ref m_objUser, ref page);
-
-
-        //            myProxy.setImportParameter("I_KOSTL", VKBUR.PadLeft(10, '0'));
-        //            myProxy.setImportParameter("I_EAN11", EAN);
-
-        //            myProxy.callBapi();
-
-        //            Materialnummer = myProxy.getExportParameter("E_MATNR").ToString();
-        //            Artikelbezeichnung = myProxy.getExportParameter("E_MAKTX").ToString();
-        //            Int32 subrc;
-        //            Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-        //            String sapMessage;
-        //            sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-
-        //            switch (subrc)
-        //            {
-        //                case 103:
-        //                    m_strMessage = "Der Artikel ist nicht mehr bestellbar!";
-        //                    break;
-
-        //                default:
-        //                    m_strMessage = sapMessage;
-        //                    break;
-        //            }
-        //            m_strMessage = sapMessage;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-        //            {
-        //                default:
-        //                    m_intStatus = -9999;
-        //                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-        //                    break;
-        //            }
-        //        }
-        //        finally { m_blnGestartet = false; }
-        //    }
-        //}
 
         /// <summary>
         /// Ermitteln der möglichen Kennzeichengrössen zum Umlagerungsartikel. Bapi: Z_FIL_EFA_UML_MAT_GROESSE
@@ -466,5 +408,4 @@ namespace AppZulassungsdienst.lib
             }
         }
     }
-
 }

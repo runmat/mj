@@ -10,11 +10,11 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class KVPErfassung : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private KVP mObjKVP;
 
-        protected void Page_Load(object sender, System.EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
@@ -52,33 +52,31 @@ namespace AppZulassungsdienst.forms
                 {
                     throw new Exception("Fehler: " + mObjKVP.Message);
                 }
-                else
+
+                txtVorschlagVon.Text = mObjKVP.Benutzername;
+                txtStandort.Text = mObjKVP.Standort;
+                txtVorgesetzter.Text = mObjKVP.Vorgesetzter;
+                txtKST.Text = mObjKVP.Kostenstelle;
+
+                if ((!String.IsNullOrEmpty(mObjKVP.GeparkteKVPId)) && (mObjKVP.GeparkteKVPId.Trim().Length > 0))
                 {
-                    txtVorschlagVon.Text = mObjKVP.Benutzername;
-                    txtStandort.Text = mObjKVP.Standort;
-                    txtVorgesetzter.Text = mObjKVP.Vorgesetzter;
-                    txtKST.Text = mObjKVP.Kostenstelle;
+                    mObjKVP.LoadKVP(mObjKVP.GeparkteKVPId, Session["AppID"].ToString(), Session.SessionID, this);
 
-                    if ((!String.IsNullOrEmpty(mObjKVP.GeparkteKVPId)) && (mObjKVP.GeparkteKVPId.Trim().Length > 0))
+                    if (mObjKVP.HasError)
                     {
-                        mObjKVP.LoadKVP(mObjKVP.GeparkteKVPId, Session["AppID"].ToString(), Session.SessionID, this);
-
-                        if (mObjKVP.HasError)
-                        {
-                            lblError.Text = "Fehler beim KVP-Laden: " + mObjKVP.Message;
-                        }
-                        else
-                        {
-                            txtBeschreibung.Text = mObjKVP.Kurzbeschreibung;
-                            txtSituation.Text = mObjKVP.SituationText;
-                            txtVeraenderung.Text = mObjKVP.VeraenderungText;
-                            txtVorteil.Text = mObjKVP.VorteilText;
-                            btnVerwerfen.Visible = true;
-                        }
+                        lblError.Text = "Fehler beim KVP-Laden: " + mObjKVP.Message;
                     }
-
-                    Session["mObjKVP"] = mObjKVP;
+                    else
+                    {
+                        txtBeschreibung.Text = mObjKVP.Kurzbeschreibung;
+                        txtSituation.Text = mObjKVP.SituationText;
+                        txtVeraenderung.Text = mObjKVP.VeraenderungText;
+                        txtVorteil.Text = mObjKVP.VorteilText;
+                        btnVerwerfen.Visible = true;
+                    }
                 }
+
+                Session["mObjKVP"] = mObjKVP;
             }
             catch (Exception ex)
             {

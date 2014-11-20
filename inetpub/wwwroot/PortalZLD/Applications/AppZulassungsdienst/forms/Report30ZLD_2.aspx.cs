@@ -10,8 +10,8 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Report30ZLD_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         
         /// <summary>
         /// Daten aus der Session ziehen und anzeigen
@@ -61,11 +61,8 @@ namespace AppZulassungsdienst.forms
                         Label15.Text = rows[0]["ZTXT2"].ToString();
                         Label16.Text = rows[0]["ZTXT3"].ToString();
                         Label17.Text = rows[0]["BEMERKUNG"].ToString();
-                    
                     }
-                
                 }
-
             }
             catch (Exception ex)
             {

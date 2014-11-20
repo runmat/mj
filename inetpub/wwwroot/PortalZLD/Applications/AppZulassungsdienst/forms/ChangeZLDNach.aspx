@@ -132,9 +132,6 @@
                                             <td class="firstLeft active">
                                             </td>
                                             <td class="firstLeft active" colspan="2" style="width: 100%;">
-<%--                                                <asp:RadioButton ID="rbEinzug" Value="1" Text="Einzugsermächtigung" GroupName="Einzug"
-                                                    runat="server" />
-                                                <asp:RadioButton ID="rbRechnug" Value="2" Text="Rechnung" runat="server" GroupName="Einzug" />--%>
                                                     <asp:CheckBox ID="chkEinzug" runat="server" Text="Einzugsermächtigung" />
                                                     <asp:CheckBox ID="chkRechnung" runat="server" Text="Rechnung" />
                                             </td>
@@ -237,7 +234,7 @@
                                                         Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%; vertical-align: top; margin-top: 3px">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: auto; position: absolute;">
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: auto; position: absolute;" EnableViewState="False">
                                                     </asp:DropDownList>
                                                     <label style="float: right; padding-right: 35px" runat="server" id="Pauschal" title="">
                                                     </label>
@@ -380,7 +377,7 @@
                                                     <asp:TextBox ID="txtStVa" runat="server" CssClass="TextBoxNormal" MaxLength="8" Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="active" style="width: 100%;">
-                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" 
+                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" EnableViewState="False" 
                                                         AutoPostBack="True" OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
