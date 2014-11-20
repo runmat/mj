@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für die Wareneingangsprüfung.
     /// </summary>
-    public class clsWareneingang : CKG.Base.Business.BankBase
+    public class clsWareneingang : BankBase
     {
         #region "Properties"
 

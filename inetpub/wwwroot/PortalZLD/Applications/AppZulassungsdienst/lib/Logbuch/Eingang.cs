@@ -22,7 +22,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 			this.VON = von;
 		}
 
-        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, string Betreff, string Text)
+        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, string betr, string Text)
 		{
             m_strClassAndMethod = "Eingang.EintragBeantworten";
             m_strAppID = strAppID;
@@ -41,7 +41,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     ltxnr = lsts.InsertString(Text, "MC");
                     if (lsts.E_SUBRC != "0")
                     {
-                        int lstsStatus = 0;
+                        int lstsStatus;
                         Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
                         m_intStatus = lstsStatus;
                         m_strMessage = lsts.E_MESSAGE;
@@ -91,7 +91,7 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
 		}
 
-        public void Rückfrage(string strAppID, string strSessionID, System.Web.UI.Page page, string Betreff, string Text)
+        public void Rückfrage(string strAppID, string strSessionID, System.Web.UI.Page page, string betr, string Text)
 		{
             m_strClassAndMethod = "Eingang.Rückfrage";
             m_strAppID = strAppID;
@@ -110,7 +110,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     ltxnr = lsts.InsertString(Text, "MC");
                     if (lsts.E_SUBRC != "0")
                     {
-                        int lstsStatus = 0;
+                        int lstsStatus;
                         Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
                         m_intStatus = lstsStatus;
                         m_strMessage = lsts.E_MESSAGE;
@@ -126,7 +126,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
                     myProxy.setImportParameter("I_AN", Verfasser);
                     myProxy.setImportParameter("I_LTXNR", ltxnr);
-                    myProxy.setImportParameter("I_BETREFF", Betreff);
+                    myProxy.setImportParameter("I_BETREFF", betr);
                     myProxy.setImportParameter("I_VGART", "FILL");
                     myProxy.setImportParameter("I_ZERLDAT", "");
                     myProxy.setImportParameter("I_VKBUR", m_objUser.Kostenstelle);
@@ -181,7 +181,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     myProxy.setImportParameter("I_LFDNR", LFDNR);
                     myProxy.setImportParameter("I_AN", Empfänger);
                     myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_STATUSE", LogbuchEntry.TranslateEmpfängerStatus(status));
+                    myProxy.setImportParameter("I_STATUSE", TranslateEmpfängerStatus(status));
 
                     myProxy.callBapi();
 

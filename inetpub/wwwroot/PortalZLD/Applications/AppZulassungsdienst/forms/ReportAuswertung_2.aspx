@@ -219,8 +219,16 @@
                                                     <telerik:GridTemplateColumn DataField="BARQ_NR" SortExpression="BARQ_NR" >
                                                         <HeaderStyle Width="25px" />
                                                         <ItemTemplate>
-                                                            <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# Eval("ZULBELN") %>'
+                                                            <asp:ImageButton CommandName="PrintBarquittung" CommandArgument='<%# Eval("ZULBELN") %>'
                                                                 runat="server" ToolTip="Barquittung" Visible='<%# (Eval("BARQ_NR").ToString().Length > 0) %>' 
+                                                                    ImageUrl="/PortalZLD/Images/iconPDF.gif" />
+                                                        </ItemTemplate>
+                                                    </telerik:GridTemplateColumn>
+                                                    <telerik:GridTemplateColumn DataField="SA_PFAD" SortExpression="SA_PFAD" >
+                                                        <HeaderStyle Width="25px" />
+                                                        <ItemTemplate>
+                                                            <asp:ImageButton CommandName="PrintSofortabrechnung" CommandArgument='<%# Eval("ZULBELN") %>'
+                                                                runat="server" ToolTip="Sofortabrechnung" Visible='<%# (Eval("SA_PFAD").ToString().Length > 0) %>' 
                                                                     ImageUrl="/PortalZLD/Images/iconPDF.gif" />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>

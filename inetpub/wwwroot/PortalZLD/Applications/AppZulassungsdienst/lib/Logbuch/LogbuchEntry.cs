@@ -91,7 +91,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 			get { return ANTW_LFDNR; }
 		}
 
-		public EntryStatus Status {
+		public new EntryStatus Status {
 			get { return objSTATUS; }
 		}
 
@@ -113,10 +113,6 @@ namespace AppZulassungsdienst.lib.Logbuch
 
         public int IntStatus {
             get { return m_intStatus; }
-        }
-
-        public string Message {
-            get { return m_strMessage; }
         }
 
 		#endregion
@@ -232,7 +228,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                     myProxy.setImportParameter("I_VORGID", VORGID);
                     myProxy.setImportParameter("I_LFDNR", LFDNR);
                     myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_STATUS", LogbuchEntry.TranslateEntryStatus(Status));
+                    myProxy.setImportParameter("I_STATUS", TranslateEntryStatus(Status));
 
                     myProxy.callBapi();
 
