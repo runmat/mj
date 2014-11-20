@@ -234,6 +234,10 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_EXP_MAHN_ERSTEINGANG").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
 
+            new FunctionReflector("Z_DPM_AH_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+            new FunctionReflector("Z_DPM_AH_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+            new FunctionReflector("Z_DPM_AH_CRE_CHG_FZG_AKT_BEST").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
