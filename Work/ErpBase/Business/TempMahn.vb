@@ -30,15 +30,13 @@ Namespace Business
             Fill(m_strAppID, m_strsessionid)
         End Sub
 
-        Public Overloads Sub FILL(ByVal strAppID As String, ByVal strSessionID As String)
+        Public Overloads Sub FILL(ByVal strAppID As String)
             m_strClassAndMethod = "TempMahn.FILL"
             m_strAppID = strAppID
-            m_strSessionID = strSessionID
             If Not m_blnGestartet Then
                 m_blnGestartet = True
 
 
-                Dim intID As Int32 = -1
                 Dim strKUNNR As String = m_objUser.Reference ' Right("0000000000" & m_objUser.KUNNR, 10)
                 Dim strKNRZE As String = m_strFiliale
                 Dim strKONZS As String = "0000324562"
@@ -46,18 +44,12 @@ Namespace Business
                 Try
                     Dim strVKORG As String = "1510"
 
-                    intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_M_Temporaer_Zu_Mahnen", strAppID, strSessionID, m_objUser.CurrentLogAccessASPXID)
-
                     Dim proxy = DynSapProxy.getProxy("Z_M_TEMPORAER_ZU_MAHNEN", m_objApp, m_objUser, PageHelper.GetCurrentPage())
                     proxy.setImportParameter("I_KNRZE", strKNRZE)
                     proxy.setImportParameter("I_KONZS", strKONZS)
                     proxy.setImportParameter("I_KUNNR", strKUNNR)
                     proxy.setImportParameter("I_VKORG", strVKORG)
                     proxy.callBapi()
-
-                    If intID > -1 Then
-                        m_objLogApp.WriteEndDataAccessSAP(intID, True)
-                    End If
 
                     Dim tblTemp2 As DataTable = proxy.getExportTable("GT_WEB")
 
@@ -85,15 +77,8 @@ Namespace Business
                         Case Else
                             m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                     End Select
-                    If intID > -1 Then
-                        m_objlogApp.WriteEndDataAccessSAP(intID, False, m_strMessage)
-                    End If
                     WriteLogEntry(False, "KNRZE=" & strKNRZE & ", KONZS=" & strKONZS & ", KUNNR=" & strKUNNR & ", " & Replace(m_strMessage, "<br>", " "), m_tblResult, False)
                 Finally
-                    If intID > -1 Then
-                        m_objlogApp.WriteStandardDataAccessSAP(intID)
-                    End If
-
                     m_blnGestartet = False
                 End Try
             End If

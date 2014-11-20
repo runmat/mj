@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
@@ -10,10 +9,10 @@ using System.Data;
 
 namespace AppZulassungsdienst.forms
 {
-    public partial class ChangeZLDNachVersandListe : System.Web.UI.Page
+    public partial class ChangeZLDNachVersandListe : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
         DataTable tblTracing;
@@ -60,14 +59,12 @@ namespace AppZulassungsdienst.forms
 
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
-            DataTable tmpTable = new DataTable();
-            DataView tmpDataView = new DataView();
-            tmpTable = objNacherf.tblEingabeListe;
+            DataTable tmpTable = objNacherf.tblEingabeListe;
             if (!tmpTable.Columns.Contains("DLBezeichnung"))
             {
                 tmpTable.Columns.Add("DLBezeichnung", typeof(String));
             }
-            tmpDataView = tmpTable.DefaultView;
+            DataView tmpDataView = tmpTable.DefaultView;
             String strFilter = "";
             if (Rowfilter != null)
             {
@@ -233,7 +230,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             try
             {
-                Label ID = (Label)gvRow.FindControl("lblID");
+                Label lblID = (Label)gvRow.FindControl("lblID");
                 Label posID = (Label)gvRow.FindControl("lblid_pos");
                 TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
                 Label matnr = (Label)gvRow.FindControl("lblMatnr");
@@ -261,17 +258,14 @@ namespace AppZulassungsdienst.forms
 
                 Int32 intID = 0;
                 Int32 intPosID = 0;
-                Boolean bBar = false;
-                Boolean bEC = false;
-                Boolean bRE = false;
 
-                bBar = rb.Checked;
-                bEC = rbEC.Checked;
-                bRE = rbRE.Checked;
+                Boolean bBar = rb.Checked;
+                Boolean bEC = rbEC.Checked;
+                Boolean bRE = rbRE.Checked;
 
-                if (ZLDCommon.IsNumeric(ID.Text))
+                if (ZLDCommon.IsNumeric(lblID.Text))
                 {
-                    Int32.TryParse(ID.Text, out intID);
+                    Int32.TryParse(lblID.Text, out intID);
                 }
 
                 if (ZLDCommon.IsNumeric(posID.Text))
@@ -284,13 +278,12 @@ namespace AppZulassungsdienst.forms
                     {
                         ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                        bError = true;
-                        return bError;
+                        return true;
                     }
-                    else if (checkDate(ZulDate) == false)
+
+                    if (checkDate(ZulDate) == false)
                     {
-                        bError = true;
-                        return bError;
+                        return true;
                     }
                 }
                 
@@ -298,8 +291,7 @@ namespace AppZulassungsdienst.forms
                 {
                     matbez.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte erfassen Sie für die \"Sonstige Dienstleistung\" einen Beschreibungstext!";
-                    bError = true;
-                    return bError;
+                    return true;
                 }
 
                 TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
@@ -313,31 +305,7 @@ namespace AppZulassungsdienst.forms
 
                 if ((pruefungsrelevant) && (decGeb == 0))
                 {
-                    //
-                    //debug code MJE, 01.10.2013
-                    //
-                    //var allMatnr = "";
-                    //for (var i = 0; i < objCommon.tblMaterialStamm.Rows.Count; i++)
-                    //{
-                    //    var matNr = objCommon.tblMaterialStamm.Rows[i]["MATNR"].ToString();
-                    //    allMatnr += (allMatnr == "" ? "" : ",") + matNr;
-                    //}
-                    //var mx = matnr.Text.TrimStart('0');
-                    //var mxList = allMatnr.Split(',').ToList();
-                    //var xMatNrText = mxList.Select(m => m == matnr.Text.TrimStart('0')).FirstOrDefault();
-
-                    
-                    // bug fix MJE, 01.10.2013:
-                    // Fehler 1: SQL Vergleich einen varchar Datentyps ohne einschließende Hochkommata
-                    // Fehler 2: Materialnummer ohne Trim.Start, also mit führenden Nullen wird verglichen mit getrimmten Materialnummer 
-                    //           Beispiel: "00000000700" = "700"
-                    //           ==> Resulat: Keine Daten gefunden, obwohl Materialnummer vorhanden, ==> "Exception, Fehler beim Speichern der Daten (SQL)"
-                    //DataRow[] matRow = objCommon.tblMaterialStamm.Select("MATNR = " + matnr.Text);
-
-                    // bug fix MJE, 01.10.2013:
-                    // korrigiertes Statement:
                     DataRow[] matRow = objCommon.tblMaterialStamm.Select("MATNR = '" + matnr.Text.TrimStart('0') + "'");
-
 
                     if (matRow.Length == 1)
                     {
@@ -345,8 +313,7 @@ namespace AppZulassungsdienst.forms
                         { 
                             txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                             lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
-                            bError = true;
-                            return bError;                            
+                            return true;                            
                         }                        
                     }
                 }
@@ -375,8 +342,7 @@ namespace AppZulassungsdienst.forms
                         Row["Bar"] = bBar;
                         Row["EC"] = bEC;
                         Row["RE"] = bRE;
-                        String ZDat = "";
-                        ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
+                        String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
                         if (ZDat != String.Empty)
                         { Row["Zulassungsdatum"] = ZDat; }
                         Row["DLBezeichnung"] = lblDLBezeichnung.Text;
@@ -404,9 +370,8 @@ namespace AppZulassungsdienst.forms
         private Boolean checkDate(TextBox ZulDate)
         {
             Boolean bReturn = true;
-            String ZDat = "";
+            String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
 
-            ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
             if (ZDat != String.Empty)
             {
                 if (ZLDCommon.IsDate(ZDat) == false)
@@ -462,14 +427,12 @@ namespace AppZulassungsdienst.forms
 
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
-            //HelpProcedures.FixedGridViewCols(GridView1);
-
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -484,12 +447,10 @@ namespace AppZulassungsdienst.forms
             try
             {
                 Int32 Index;
-                Label ID;
-                Label lblIDPos;
+                Label lblID;
                 Label lblLoeschKZ;
                 String Loeschkz = "";
                 Int32 IDSatz;
-                Int32 IDPos;
                 DataRow[] RowsEdit;
 
                 lblError.Text = "";
@@ -511,11 +472,12 @@ namespace AppZulassungsdienst.forms
                         break;
 
                     case "Del":
-                        ID = (Label)GridView1.Rows[Index].FindControl("lblID");
-                        lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        Int32 IDPos;
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                        Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                         lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
 
-                        Int32.TryParse(ID.Text, out IDSatz);
+                        Int32.TryParse(lblID.Text, out IDSatz);
                         Int32.TryParse(lblIDPos.Text, out IDPos);
                         if (lblLoeschKZ.Text == "L")
                         {
@@ -568,19 +530,17 @@ namespace AppZulassungsdienst.forms
                         if (CheckGridRow(GridView1.Rows[Index], "") == false)
                         {
                             CheckGridRowforTracing(GridView1.Rows[Index]);
-                            ID = (Label)GridView1.Rows[Index].FindControl("lblID");
+                            lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
                             lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
 
-                            Int32.TryParse(ID.Text, out IDSatz);
+                            Int32.TryParse(lblID.Text, out IDSatz);
                             if (lblLoeschKZ.Text == "L")
                             {
                                 throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
                             }
-                            else
-                            {
-                                Loeschkz = "O";
-                                objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
-                            }
+
+                            Loeschkz = "O";
+                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
 
                             if (objNacherf.Status != 0)
                             {
@@ -630,7 +590,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
         {            
-            Int32 rowIndex = 0;
+            Int32 rowIndex;
 
             Int32.TryParse(ihAktuellerDatensatz.Value, out rowIndex);
             GridViewRow gvRow = GridView1.Rows[rowIndex];
@@ -821,15 +781,14 @@ namespace AppZulassungsdienst.forms
             tblTracing.Columns.Add("Gebuehr", typeof(String));
             try
             {
-                Label ID = (Label)gvRow.FindControl("lblID");
+                Label lblID = (Label)gvRow.FindControl("lblID");
                 Label posID = (Label)gvRow.FindControl("lblid_pos");
-                TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
                 Int32 intID = 0;
                 Int32 intPosID = 0;
 
-                if (ZLDCommon.IsNumeric(ID.Text))
+                if (ZLDCommon.IsNumeric(lblID.Text))
                 {
-                    Int32.TryParse(ID.Text, out intID);
+                    Int32.TryParse(lblID.Text, out intID);
                 }
 
                 if (ZLDCommon.IsNumeric(posID.Text))
@@ -853,7 +812,6 @@ namespace AppZulassungsdienst.forms
                 String Kunnr = lblTemp.Text;
                 lblTemp = (Label)gvRow.FindControl("lblMatbez");
                 String Dienstleistung = lblTemp.Text;
-                lblTemp = (Label)gvRow.FindControl("lblKennKZ1");
                 String Kennz1 = txtBox.Text;
                 Boolean Change = false;
                 DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
@@ -903,124 +861,11 @@ namespace AppZulassungsdienst.forms
                 }
                 if (tblTracing.Rows.Count > 0)
                 {
-                    int AppID = 0;
+                    int AppID;
                     int.TryParse(Session["AppID"].ToString(), out AppID);
                     CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
                     logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, AppID, lblHead.Text, m_User.Reference,
-                        "Änderung Nacherfassung am " + System.DateTime.Now.ToString() + ".", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, tblTracing);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-            }
-        }
-
-        private void CheckGridforTracing()
-        {
-            tblTracing = new DataTable();
-            tblTracing.Columns.Add("Wert", typeof(String));
-            tblTracing.Columns.Add("ID", typeof(String));
-            tblTracing.Columns.Add("Kunde", typeof(String));
-            tblTracing.Columns.Add("Kennzeichen", typeof(String));
-            tblTracing.Columns.Add("Dienstleistung", typeof(String));
-            tblTracing.Columns.Add("Gebuehr", typeof(String));
-            try
-            {
-                foreach (GridViewRow gvRow in GridView1.Rows)
-                {
-
-
-                    Label ID = (Label)gvRow.FindControl("lblID");
-                    Label posID = (Label)gvRow.FindControl("lblid_pos");
-                    TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
-
-                    Int32 intID = 0;
-                    Int32 intPosID = 0;
-
-
-                    if (ZLDCommon.IsNumeric(ID.Text))
-                    {
-                        Int32.TryParse(ID.Text, out intID);
-                    }
-
-                    if (ZLDCommon.IsNumeric(posID.Text))
-                    {
-                        Int32.TryParse(posID.Text, out intPosID);
-                    }
-
-                    
-                    TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                    Decimal Geb = 0;
-                    if (ZLDCommon.IsDecimal(txtBox.Text))
-                    {
-                        Decimal.TryParse(txtBox.Text, out Geb);
-                    }
-
-                    Label lblTemp = (Label)gvRow.FindControl("lblKundennr");
-                    String Kundenname = lblTemp.Text;
-                    lblTemp = (Label)gvRow.FindControl("lblKundenname");
-                    String Kunnr = lblTemp.Text;
-                    lblTemp = (Label)gvRow.FindControl("lblMatbez");
-                    String Dienstleistung = lblTemp.Text;
-                    lblTemp = (Label)gvRow.FindControl("lblKennKZ1");
-                    String Kennz1 = lblTemp.Text;
-                    txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-                    String Kennzeichen = txtBox.Text;
-
-                    Boolean Change = false;
-                    DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
-                    foreach (DataRow Row in RowsEdit)
-                    {
-
-                       Decimal OldPreisGeb = 0;
-                       if (ZLDCommon.IsDecimal(Row["GebPreis"].ToString()))
-                        {
-                            Decimal.TryParse(Row["GebPreis"].ToString(), out OldPreisGeb);
-                        }
-                        if (OldPreisGeb != Geb)
-                        {
-                            Change = true;
-                        }
-                        if (Row["KennABC"].ToString() != Kennzeichen)
-                        {
-                            Change = true;
-                        }
-
-                        if (Change)
-                        {
-                            DataRow TracingRow = tblTracing.NewRow();
-                            TracingRow["Wert"] = "alt";
-                            TracingRow["ID"] = intID.ToString();
-                            TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                            TracingRow["Kennzeichen"] = Kennz1 + "-" + Row["KennABC"].ToString();
-                            TracingRow["Dienstleistung"] = Dienstleistung;
-                            TracingRow["Gebuehr"] = String.Format("{0:0.00}", OldPreisGeb);
-
-                            tblTracing.Rows.Add(TracingRow);
-
-                            TracingRow = tblTracing.NewRow();
-                            TracingRow["Wert"] = "neu";
-                            TracingRow["ID"] = intID.ToString();
-                            TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                            TracingRow["Kennzeichen"] = Kennz1 + "-" + Kennzeichen;
-                            TracingRow["Dienstleistung"] = Dienstleistung;
-                            TracingRow["Gebuehr"] = Geb;
-                            tblTracing.Rows.Add(TracingRow);
-
-                        }
-                    }
-
-
-                }
-                if (tblTracing.Rows.Count > 0)
-                {
-                    int AppID = 0;
-                    int.TryParse(Session["AppID"].ToString(), out AppID);
-                    CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
-                    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, AppID, lblHead.Text, m_User.Reference,
-                        "Änderung " + lblHead.Text + " am " + System.DateTime.Now.ToString() + ".", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, tblTracing);
+                        "Änderung Nacherfassung am " + DateTime.Now.ToString() + ".", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, tblTracing);
 
                 }
             }

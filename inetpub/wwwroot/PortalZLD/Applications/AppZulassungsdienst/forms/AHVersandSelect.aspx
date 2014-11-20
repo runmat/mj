@@ -45,7 +45,7 @@
                                                         MaxLength="8" Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%; vertical-align:top; margin-top:3px">
-                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" 
+                                                    <asp:DropDownList ID="ddlKunnr" runat="server" AutoPostBack="True" EnableViewState="False" 
                                                         OnSelectedIndexChanged="ddlKunnr_SelectedIndexChanged"  Style="width: auto; position:absolute;">
                                                     </asp:DropDownList>
                                                 </td>
@@ -57,11 +57,11 @@
                                                 </td>
                                                 <td class="firstLeft active">
                                                     <asp:TextBox ID="txtStVa" runat="server" CssClass="TextBoxNormal" MaxLength="8" 
-                                                        Width="75px" ></asp:TextBox>
+                                                        Width="75px"></asp:TextBox>
                                                 </td>
                                                 <td class="firstLeft active" style="width: 100%;">
-                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" 
-                                                      >
+                                                    <asp:DropDownList ID="ddlStVa" runat="server" Style="width: 375px" EnableViewState="False" 
+                                                    OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged" AutoPostBack="True">
                                                     </asp:DropDownList>
                                                 </td>
 

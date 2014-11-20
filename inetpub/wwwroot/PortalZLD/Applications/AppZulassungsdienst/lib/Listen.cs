@@ -8,7 +8,7 @@ namespace AppZulassungsdienst.lib
     /// <summary>
     /// Klasse für verschiedene Reports (Tagesliste, Prägeliste, Lieferscheine, Auswertung)
     /// </summary>
-    public class Listen: CKG.Base.Business.BankBase
+    public class Listen: BankBase
     {
         #region "Declarations"
         String strKennzeichenVon;
@@ -325,6 +325,7 @@ namespace AppZulassungsdienst.lib
             set;
         }
         #endregion
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -332,22 +333,25 @@ namespace AppZulassungsdienst.lib
         /// <param name="objApp">Applikationsobjekt</param>
         /// <param name="strAppID">AppID</param>
         /// <param name="strSessionID">SessionID</param>
-        /// <param name="strFilename"Filename></param>
+        /// <param name="strFilename"></param>
         public Listen(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, String strAppID, String strSessionID, string strFilename)
             : base(ref objUser,ref objApp, strAppID,  strSessionID, strFilename )
         {}
+
         /// <summary>
         /// Overrides Change
         /// </summary>
         public override void Change()
         {
         }
+
         /// <summary>
         /// Overrides Show
         /// </summary>
         public override void Show()
         {
         }
+
         /// <summary>
         /// Selektion und Druck von Tageslisten. Tageslisten werden von SAP in einem Verzeichnis abgelegt.
         /// Bapi: Z_ZLD_EXPORT_TAGLI
@@ -365,7 +369,6 @@ namespace AppZulassungsdienst.lib
             m_strMessage = String.Empty;
 
             DataTable tblKopf = new DataTable();
-            DataTable tblPosition = new DataTable();
 
             if (m_blnGestartet == false)
             {
@@ -648,9 +651,6 @@ namespace AppZulassungsdienst.lib
             m_intStatus = 0;
             m_strMessage = String.Empty;
 
-            DataTable tblKopf = new DataTable();
-            DataTable tblPosition = new DataTable();
-
             if (m_blnGestartet == false)
                 m_blnGestartet = true;
             try
@@ -681,8 +681,6 @@ namespace AppZulassungsdienst.lib
                 myProxy.callBapi();
 
                 Auswertung = myProxy.getExportTable("GT_LISTE1");
-                //Auswertung = CreateOutPut(Auswertung, strAppID);
-                //Auswertung = CreateAuswertungExcel(Auswertung);
 
                 foreach (DataRow dRow in Auswertung.Rows)
                 {
@@ -745,15 +743,12 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-
                     Int32 subrc;
                     Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc);
                     m_intStatus = subrc;
-                    String sapMessage = "";
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE");
+                    String sapMessage = myProxy.getExportParameter("E_MESSAGE");
                     m_strMessage = sapMessage;
                     Filename = myProxy.getExportParameter("E_FILENAME");
-
 
                 }
                 catch (Exception ex)
@@ -774,67 +769,6 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        ///// <summary>
-        ///// Positionstabelle aufbauen.
-        ///// </summary>
-        ///// <returns>Positionstabelle</returns>
-        //private DataTable CreatePosListe()
-        //{
-        //    DataTable tblTemp = new DataTable();
-        //    tblTemp.Columns.Add("ID", typeof(String));
-        //    tblTemp.Columns.Add("PosID", typeof(String));
-        //    tblTemp.Columns.Add("Kunde", typeof(String));
-        //    tblTemp.Columns.Add("AnzKennz", typeof(String));
-        //    tblTemp.Columns.Add("GroesseKennz", typeof(String));
-        //    tblTemp.Columns.Add("Referenz1", typeof(String));
-        //    tblTemp.Columns.Add("Referenz2", typeof(String));
-        //    tblTemp.Columns.Add("Kennzeichen", typeof(String));
-        //    tblTemp.Columns.Add("ZulDatum", typeof(String));
-        //    tblTemp.Columns.Add("Kreis", typeof(String));
-        //    tblTemp.Columns.Add("KreisKZ", typeof(String));
-        //    tblTemp.Columns.Add("Dienstleistung", typeof(String));
-        //    tblTemp.Columns.Add("RW", typeof(String));
-        //    tblTemp.Columns.Add("RNr", typeof(String));
-        //    tblTemp.Columns.Add("Feinstaub", typeof(String));
-        //    tblTemp.Columns.Add("Geb", typeof(String));
-        //    tblTemp.Columns.Add("Bar", typeof(String));
-        //    tblTemp.Columns.Add("EC", typeof(String));
-        //    tblTemp.Columns.Add("PrintKZ", typeof(String));
-        //    return tblTemp;
-        
-        //}
-        ///// <summary>
-        ///// Kopfliste aufbauen.
-        ///// </summary>
-        ///// <returns>Kopfliste</returns>
-        //private DataTable CreateKopfListe()
-        //{
-        //    DataTable tblTemp = new DataTable();
-        //    tblTemp.Columns.Add("ID", typeof(String));
-        //    tblTemp.Columns.Add("ZLD", typeof(String));
-        //    tblTemp.Columns.Add("ZulDatum", typeof(String));
-        //    tblTemp.Columns.Add("Kreis", typeof(String));
-        //    tblTemp.Columns.Add("AnzKennz", typeof(String));
-        //    tblTemp.Columns.Add("GesGeb", typeof(String));
-        //    tblTemp.Columns.Add("KreisKZ", typeof(String));
-        //    tblTemp.Columns.Add("PrintKZ", typeof(String));
-        //    tblTemp.Columns.Add("Filiale", typeof(String));
-        //    return tblTemp;
-
-        //}
-        ///// <summary>
-        ///// Bemerkungsliste aufbauen.
-        ///// </summary>
-        ///// <returns>Bemerkungsliste</returns>
-        //private DataTable CreateBemerkungsListe()
-        //{
-        //    DataTable tblTemp = new DataTable();
-        //    tblTemp.Columns.Add("ID", typeof(String));
-        //    tblTemp.Columns.Add("Bemerkung", typeof(String));
-
-        //    return tblTemp;
-
-        //}
         /// <summary>
         /// Gesamtliste aufbauen.
         /// </summary>
@@ -847,31 +781,5 @@ namespace AppZulassungsdienst.lib
 
             return tblTemp;
         }
-        ///// <summary>
-        ///// Auswertungsliste für Exceldatei aufbauen.
-        ///// </summary>
-        ///// <param name="tblTemp">Auswertungstabelle</param>
-        ///// <returns>Exceltabelle</returns>
-        //private DataTable CreateAuswertungExcel(DataTable tblTemp)
-        //{
-        //    tblTemp.Columns["Preis"].DataType = typeof(Decimal);
-        //    tblTemp.Columns["Geb"].DataType = typeof(Decimal);
-        //    tblTemp.Columns["PreisKennz"].DataType = typeof(Decimal);
-        //    tblTemp.Columns["Steuer"].DataType = typeof(Decimal);
-
-        //    foreach (DataRow dRow in tblTemp.Rows) 
-        //    {
-        //        String decTemp;
-        //        Decimal dec2;
-        //        Decimal.TryParse(dRow["Preis"].ToString(), out dec2);
-        //        string specifier = "F";
-        //        decTemp = dec2.ToString(specifier);
-        //        dRow["Preis"] =  decTemp;
-            
-        //    }
-
-        //    return tblTemp;
-        //}
-
     }
 }
