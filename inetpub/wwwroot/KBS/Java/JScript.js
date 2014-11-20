@@ -36,7 +36,7 @@ function numbersonly(e, decimal) {
     else if ((("0123456789").indexOf(keychar) > -1)) {
         return true;
     }
-    else if (decimal && (keychar == ".")) {
+    else if (decimal && ((keychar == ".") || (keychar == ","))) {
         return true;
     }
     else
@@ -267,4 +267,189 @@ function CalculateGesamt()
  // Verzögerung für IE7-/IE8-Kompatibilität erforderlich
  function DisableButtonWithDelay(btn) {
      setTimeout(function () { DisableButton(btn); }, 100);
+ }
+
+ // WERKTAGE (FÜR DATEPICKER) ERMITTELN
+
+ listeFesteFeiertage = [
+  [1, 1],
+  [5, 1],
+  [10, 3],
+  [12, 25],
+  [12, 26]
+];
+
+ // div-Operation
+ function berechneDiv(zahl1, zahl2) {
+     if (zahl1 * zahl2 > 0) {
+         return Math.floor(zahl1 / zahl2);
+     }
+     else {
+         return Math.ceil(zahl1 / zahl2);
+     }
+ }
+
+
+ // Erweiterte Gaußsche Osterformel
+ function berechneOstersonntag(jahr) {
+     var k = berechneDiv(jahr, 100);
+     var m = 15 + berechneDiv(3 * k + 3, 4) - berechneDiv(8 * k + 13, 25);
+     var s = 2 - berechneDiv(3 * k + 3, 4);
+     var a = jahr % 19;
+     var d = (19 * a + m) % 30;
+     var r = berechneDiv(berechneDiv(d + a, 11), 29);
+     var og = 21 + d - r;
+     var sz = 7 - ((jahr + berechneDiv(jahr, 4) + s) % 7);
+     var oe = 7 - ((og - sz) % 7);
+     var os = og + oe;
+     // Monat auch hier wieder 0..11
+     if (os > 31) {
+         return new Date(2013, 3, os - 31);
+     }
+     else {
+         return new Date(2013, 2, os);
+     }
+ }
+
+ function keinFeiertag(date) {
+     var jahr = date.getFullYear();
+     var monat = date.getMonth();
+     var tag = date.getDate();
+     // statische Feiertage
+     for (i = 0; i < listeFesteFeiertage.length; i++) {
+         // getMonth liefert 0..11, deshalb -1
+         if ((monat == listeFesteFeiertage[i][0] - 1)
+          && (tag == listeFesteFeiertage[i][1])) {
+             return [false, ''];
+         }
+     }
+     // dynamische Feiertage
+     // Ostersonntag
+     var ostersonntag = berechneOstersonntag(jahr);
+     if ((monat == ostersonntag.getMonth())
+          && (tag == ostersonntag.getDate())) {
+         return [false, ''];
+     }
+     // Karfreitag
+     var feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+     feiertag.setDate(ostersonntag.getDate() - 2);
+     if ((monat == feiertag.getMonth())
+          && (tag == feiertag.getDate())) {
+         return [false, ''];
+     }
+     // Ostermontag
+     feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+     feiertag.setDate(ostersonntag.getDate() + 1);
+     if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+         return [false, ''];
+     }
+     // Christi Himmelfahrt
+     feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+     feiertag.setDate(ostersonntag.getDate() + 39);
+     if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+         return [false, ''];
+     }
+     // Pfingstmontag
+     feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());
+     feiertag.setDate(ostersonntag.getDate() + 50);
+     if ((monat == feiertag.getMonth())
+              && (tag == feiertag.getDate())) {
+         return [false, ''];
+     }
+     return [true, ''];
+ }
+
+ function istKeinWochenende(date) {
+     var wochentag = date.getDay();
+     if ((wochentag == 0) || (wochentag == 6)) {
+         return [false, ''];
+     }
+     return [true, ''];
+ }
+
+ // Werktagsermittlung (mit Datepicker)
+ function nurWerktageDatepicker(date) {
+     var keinWochenende = $.datepicker.noWeekends(date);
+     if (keinWochenende[0]) {
+         return keinFeiertag(date);
+     } else {
+         return keinWochenende;
+     }
+ }
+
+ // Werktagsermittlung (ohne Datepicker, verarbeitet auch Text im Format "TTMMJJ")
+ function nurWerktage(date) {
+     if ((date != null) && (date != "")) {
+         var tempDate;
+         if (date instanceof Date) {
+             tempDate = date;
+         }
+         else {
+             jahr = 2000 + parseInt(date.substring(4, 6), 10);
+             monat = parseInt(date.substring(2, 4), 10) - 1;
+             tag = parseInt(date.substring(0, 2), 10);
+             tempDate = new Date(jahr, monat, tag);
+         }
+         var keinWochenende = istKeinWochenende(tempDate);
+         if (keinWochenende[0]) {
+             return keinFeiertag(tempDate);
+         } else {
+             return keinWochenende;
+         }
+     }
+     return [true, ''];
+ }
+
+ function SetDate(Day, Textbox) {
+
+     var datum = new Date();
+
+     // Heute
+     if (Day == 0) {
+         datum.setDate(datum.getDate());
+         // ggf. Feiertage überspringen
+         while (!keinFeiertag(datum)[0]) {
+             datum.setDate(datum.getDate() + 1);
+         }
+     }
+
+     // Gestern
+     if (Day == -1) {
+         if (datum.getDay() == 1) {
+             datum.setDate(datum.getDate() - 3);
+         }
+         else if (datum.getDay() == 0) {
+             datum.setDate(datum.getDate() - 2);
+         }
+         else {
+             datum.setDate(datum.getDate() - 1);
+         }
+         // ggf. Feiertage überspringen
+         while (!keinFeiertag(datum)[0]) {
+             datum.setDate(datum.getDate() - 1);
+         }
+     }
+
+     // Morgen
+     if (Day == 1) {
+         if (datum.getDay() == 5) {
+             datum.setDate(datum.getDate() + 3);
+         }
+         else if (datum.getDay() == 6) {
+             datum.setDate(datum.getDate() + 2);
+         }
+         else {
+             datum.setDate(datum.getDate() + 1);
+         }
+         // ggf. Feiertage überspringen
+         while (!keinFeiertag(datum)[0]) {
+             datum.setDate(datum.getDate() + 1);
+         }
+     }
+
+     var t;
+     t = document.getElementById(Textbox);
+     t.value = datum.localeFormat('ddMMyy');
  }

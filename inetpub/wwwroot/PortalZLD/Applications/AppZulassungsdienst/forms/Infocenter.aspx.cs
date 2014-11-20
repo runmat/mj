@@ -122,7 +122,7 @@ namespace AppZulassungsdienst.forms
                     Telerik.Web.UI.GridGroupHeaderItem item = (Telerik.Web.UI.GridGroupHeaderItem)e.Item;
                     string strText = item.DataCell.Text.Split(':')[1];
 
-                    int tmpInt = 0;
+                    int tmpInt;
                     if (Int32.TryParse(strText, out tmpInt))
                     {
                         DataRow docType = icDocs.DocumentTypes.Select("documentTypeId=" + tmpInt)[0];
@@ -134,22 +134,17 @@ namespace AppZulassungsdienst.forms
 
         protected void rgDokumente_ItemCommand(object sender, Telerik.Web.UI.GridCommandEventArgs e)
         {
-            int index;
-            Telerik.Web.UI.GridDataItem gridRow;
-            LinkButton lButton;
-
             switch (e.CommandName)
             {
                 case "showDocument":
-                    index = e.Item.ItemIndex;
-                    gridRow = rgDokumente.Items[index];
-                    lButton = (LinkButton)e.Item.FindControl("lbtDateiOeffnen");
+                    int index = e.Item.ItemIndex;
+                    Telerik.Web.UI.GridDataItem gridRow = rgDokumente.Items[index];
+                    LinkButton lButton = (LinkButton)e.Item.FindControl("lbtDateiOeffnen");
 
                     if (lButton != null)
                     {
                         string fName = lButton.Text;
                         string fType = gridRow["FileType"].Text;
-                        string fExtension = "." + fType;
                         string sPfad = fileSourcePath + fName + "." + fType;
 
                         if (File.Exists(sPfad))

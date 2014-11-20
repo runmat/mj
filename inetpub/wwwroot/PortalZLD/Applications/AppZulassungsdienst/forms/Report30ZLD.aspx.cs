@@ -11,12 +11,13 @@ namespace AppZulassungsdienst.forms
     /// <summary>
     /// Zulassungsdienstsuche.
     /// </summary>
-    public partial class Report30ZLD : System.Web.UI.Page
+    public partial class Report30ZLD : Page
     {
         protected CKG.PortalZLD.GridNavigation GridNavigation1;
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private ZLD_Suche objZLDSuche;
+
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Gridviewnavigation initialisieren.
         /// </summary>
@@ -39,12 +40,8 @@ namespace AppZulassungsdienst.forms
             GridNavigation1.PagerChanged += GridView1_PageIndexChanged;
 
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
-
-            if (IsPostBack == false)
-            {
-
-            }
         }
+
         /// <summary>
         /// Funktionsaufruf DoSubmit.
         /// </summary>
@@ -54,6 +51,7 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
         /// <summary>
         /// Sortierung des Grids einer best. Spalte.    
         /// </summary>
@@ -63,24 +61,27 @@ namespace AppZulassungsdienst.forms
         {
             Fillgrid(gvZuldienst.PageIndex, e.SortExpression);
         }
+
         /// <summary>
         /// Spaltenübersetzung
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Spaltenübersetzung
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
+
         /// <summary>
         /// Neuen Seitenindex ausgewählt.
         /// </summary>
@@ -90,6 +91,7 @@ namespace AppZulassungsdienst.forms
 
             Fillgrid(pageindex, "");
         }
+
         /// <summary>
         /// Anzahl der Daten im Gridview geändert. 
         /// </summary>
@@ -107,6 +109,7 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
         /// <summary>
         /// Javascript onclick-Ereigins an lblDetail im Gridview binden.
         /// </summary>
@@ -138,29 +141,22 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lnkCreateExcel_Click(object sender, EventArgs e)
         {
-            Control control = new Control();
-            DataTable tblTranslations = new DataTable();
             DataTable tblTemp = ((DataTable)(Session["ResultTable"])).Copy();
-            string AppURL = null;
-            DataColumn col2 = null;
-            int bVisibility = 0;
-            int i = 0;
-            string sColName = "";
             if (tblTemp.Columns.Contains("Details"))
             {
                 tblTemp.Columns.Remove("Details");
             }
-            AppURL = this.Request.Url.LocalPath.Replace("/PortalZLD", "..");
-            tblTranslations = (DataTable)this.Session[AppURL];
+            string AppURL = this.Request.Url.LocalPath.Replace("/PortalZLD", "..");
+            DataTable tblTranslations = (DataTable)this.Session[AppURL];
             foreach (DataControlField col in gvZuldienst.Columns)
             {
-                for (i = tblTemp.Columns.Count - 1; i >= 0; i += -1)
+                for (int i = tblTemp.Columns.Count - 1; i >= 0; i += -1)
                 {
-                    bVisibility = 0;
-                    col2 = tblTemp.Columns[i];
+                    int bVisibility = 0;
+                    DataColumn col2 = tblTemp.Columns[i];
                     if (col2.ColumnName.ToUpper() == col.SortExpression.ToUpper())
                     {
-                        sColName = Common.TranslateColLbtn(gvZuldienst, tblTranslations, col.HeaderText, ref bVisibility);
+                        string sColName = Common.TranslateColLbtn(gvZuldienst, tblTranslations, col.HeaderText, ref bVisibility);
                         if (bVisibility == 0)
                         {
                             tblTemp.Columns.Remove(col2);
@@ -174,9 +170,10 @@ namespace AppZulassungsdienst.forms
                 tblTemp.AcceptChanges();
             }
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, null, 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
         }
+
         /// <summary>
         /// Tabelle Zulassungsdienste an das Gridview binden.
         /// </summary>
@@ -185,8 +182,7 @@ namespace AppZulassungsdienst.forms
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
 
-            DataView tmpDataView = new DataView();
-            tmpDataView = objZLDSuche.Result.DefaultView;
+            DataView tmpDataView = objZLDSuche.Result.DefaultView;
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)
@@ -288,6 +284,7 @@ namespace AppZulassungsdienst.forms
             }
 
         }
+
         /// <summary>
         /// Neue Suche initialisieren.
         /// </summary>
