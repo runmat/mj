@@ -23,7 +23,7 @@
         setTimeout('$("#GridAdresse .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
     }
 
-    function TryGridRefresh() {
+    function TryAddressGridRefresh() {
         // Refresh grid only
         if (typeof (GetGrid()) !== "undefined") {
             GetGrid().ajaxRequest();
@@ -68,19 +68,6 @@
         });
     }
 
-//    function AddressDuplicate(id) {
-//        $.ajax(
-//        {
-//            type: "POST",
-//            url: "DuplicateAddress",
-//            data: { id: id },
-//            success: function (result) {
-//                _collectionChanged = true;
-//                ShowItemDetails(result);
-//            }
-//        });
-//    }
-
     function AddressNew() {
         $.ajax(
         {
@@ -105,7 +92,7 @@
             data: { id: id },
             loadingShow: true,
             success: function () {
-                TryGridRefresh();
+                TryAddressGridRefresh();
             }
         });
     }
@@ -115,8 +102,6 @@
         GridItemDetailsFormPreparePrivateAjax();
         $("#divGridEditStart").slideUp();
         $("#divGridItemDetails").slideDown();
-
-        if (showCloseButton == null) showCloseButton = true;
     }
 
     function CloseItemDetailsInner() {
@@ -128,7 +113,7 @@
 
     function CloseItemDetails() {
         CloseItemDetailsInner();
-        TryGridRefresh();
+        TryAddressGridRefresh();
     }
 
     var _modelIsValid = false;
@@ -136,7 +121,6 @@
     var _modelIsCocOrder = false;
 
     function GridItemDetailsFormPreparePrivateAjax() {
-        //alert('x');
         FormPrepareAjax();
 
         LoadingHide();
@@ -156,7 +140,7 @@
             url: "Load",
             loadingShow: true,
             success: function (result) {
-                TryGridRefresh();
+                TryAddressGridRefresh();
             }
         });
     }

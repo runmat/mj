@@ -100,7 +100,10 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string GetAutoSelectString()
         {
-            return string.Format("{0}, {1}-{2} {3}", Name1, Land, PLZ, Ort);
+            if (Land.IsNullOrEmpty() && PLZ.IsNullOrEmpty() && Ort.IsNullOrEmpty())
+                return Name1;
+
+            return string.Format("{0}, {1}{2} {3}", Name1, LandAsFormatted(Land), PLZ, Ort);
         }
 
         public string GetPostLabelString()

@@ -40,13 +40,33 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            var kennung = "KÄUFER";
-            var kdnr = LogonContext.KundenNr;
-
             ViewModel.DataInit();
-            AdressenPflegeViewModel.DataInit(kennung, kdnr);
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult K()
+        {
+            AdressenPflegeViewModel.DataInit("KÄUFER", LogonContext.KundenNr);
+
+            return View("TestAdressPflege");
+        }
+
+        [CkgApplication]
+        public ActionResult H()
+        {
+            AdressenPflegeViewModel.DataInit("HALTER", LogonContext.KundenNr);
+
+            return View("TestAdressPflege");
+        }
+
+        [HttpPost]
+        public ActionResult PickPartnerAddress(string partnerKennung)
+        {
+            AdressenPflegeViewModel.DataInit(partnerKennung, LogonContext.KundenNr);
+
+            return PartialView("Partial/PartnerAdressenGrid");
         }
     }
 }

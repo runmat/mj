@@ -1,8 +1,10 @@
 ﻿@using CkgDomainLogic.DomainCommon.Models
 @model Adresse
 
+@{ var currentController = ViewContext.RouteData.GetRequiredString("controller"); }
+
 <div id="@MvcAjaxOptions.AjaxFormContainerName">
-    @using (Ajax.BeginForm("AddressDetailsFormSave", "DomainCommon", null, new MvcAjaxOptions { OnComplete = "GridItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "ajaxForm" }))
+    @using (Ajax.BeginForm("AddressDetailsFormSave", currentController, null, new MvcAjaxOptions { OnComplete = "GridItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "ajaxForm" }))
     {
         @Html.HiddenFor(m => m.ID)
         @Html.HiddenFor(m => m.InternalKey)

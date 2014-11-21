@@ -27,6 +27,19 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             get { return CacheGet<IFahrzeugbestandDataService>(); }
         }
 
+        public Adresse SelectedHalter
+        {
+            get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public Adresse SelectedKaeufer
+        {
+            get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
+            set { PropertyCacheSet(value); }
+        }
+
+
         public void DataInit()
         {
             DataMarkForRefresh();

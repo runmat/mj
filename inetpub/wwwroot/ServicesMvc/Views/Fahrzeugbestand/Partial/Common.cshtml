@@ -16,11 +16,67 @@
         FormPrepareAjax();
     }
 
-    function PickPartnerAddress(partnerArt) {
+    var _dropdownCurrent = null;
+    var _dropdownGridCurrent = null;
+
+    function PickPartnerAddress(partnerKennung) {
+
+        var dropdownThis = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown");
+        if (_dropdownCurrent != null) {
+            if (_dropdownCurrent.attr("id") != dropdownThis.attr("id")) {
+                ClosePartnerAddressGrid("PickPartnerAddress('" + partnerKennung + "')");
+                return false;
+            }
+            ClosePartnerAddressGrid();
+            return false;
+        }
+
+        _dropdownCurrent = dropdownThis;
+        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown-grid");
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddress",
+            data: { partnerKennung: partnerKennung },
+            loadingShow: true,
+            success: function (result) {
+                ShowPartnerAddressGrid(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+
+        return false;
+    }
+    
+    function AddressSelect(id) {
+        //alert(id);
+        ClosePartnerAddressGrid();
+    }
+    
+    function ShowPartnerAddressGrid(result) {
+        _dropdownCurrent.find("i").removeClass("icon-chevron-right").addClass("icon-chevron-down");
+        _dropdownGridCurrent.slideDown("fast");
+
+        _dropdownGridCurrent.html(result);
+        FormPreparePrivateAdressenPflege();
+    }
+
+    function ClosePartnerAddressGrid(postFunction) {
+        _dropdownGridCurrent.slideUp(function () {
+            _dropdownCurrent.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-right");
+            _dropdownCurrent = null;
+            _dropdownGridCurrent.html("");
+            _dropdownGridCurrent = null;
+
+            if (typeof(postFunction) !== "undefined")
+                eval(postFunction);
+            else
+                setTimeout("LoadingHide()", 50);
+        });
         
-
-
-
         return false;
     }
     
