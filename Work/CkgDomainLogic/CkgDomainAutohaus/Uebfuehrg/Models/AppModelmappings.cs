@@ -164,31 +164,35 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragSelector>(
                     new Dictionary<string, string> {
-                        { "Aufnr", "AuftragsNr" },
-                        { "Zzrefnr", "Referenz" },
-                        { "Zzkenn", "Kennzeichen" },
                         { "Kunnr_Ag", "KundenNr" },
                         { "EX_KUNNR", "KundenReferenz" },
                         { "Zorgadmin", "AlleOrganisationen" },
-                        { "Wbstk", "AuftragsArt" },
                     }, (sap, business) =>
                     {
                     }, (business, sap) =>
                         {
-                            if (business.ErfassungsDatumRange.IsSelected)
+                            if (business.UeberfuehrungsDatumRange.IsSelected)
                             {
-                                sap.ERDAT = business.ErfassungsDatumRange.StartDate;
-                                sap.ERDAT_BIS = business.ErfassungsDatumRange.EndDate;
+                                sap.VDATU = business.UeberfuehrungsDatumRange.StartDate;
+                                sap.VDATU_BIS = business.UeberfuehrungsDatumRange.EndDate;
                             }
 
                             if (business.AuftragsDatumRange.IsSelected)
                             {
-                                sap.VDATU = business.AuftragsDatumRange.StartDate;
-                                sap.VDATU_BIS = business.AuftragsDatumRange.EndDate;
+                                sap.ERDAT = business.AuftragsDatumRange.StartDate;
+                                sap.ERDAT_BIS = business.AuftragsDatumRange.EndDate;
                             }
 
                             if (business.AuftragsNr.IsNotNullOrEmpty())
                                 sap.AUFNR = business.AuftragsNr;
+
+                            if (business.Referenz.IsNotNullOrEmpty())
+                                sap.ZZREFNR = business.Referenz;
+
+                            if (business.Kennzeichen.IsNotNullOrEmpty())
+                                sap.ZZKENN = business.Kennzeichen;
+
+                            sap.WBSTK = business.AuftragsArt;
                         }));
             }
         }

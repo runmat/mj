@@ -137,7 +137,7 @@ namespace GeneralTools.Models
             return NotNullCount(entity, properties) > 0;
         }
 
-        public static bool AtLeastOneRequiredAsGroupPropertiesValid(object entity)
+        public static bool AtLeastOneRequiredAsGroupPropertyIsValid(object entity)
         {
             return !AllNull(entity, GetRequiredAsGroupPropertyNameListToCheck(entity));
         }

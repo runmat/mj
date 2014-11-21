@@ -9,13 +9,17 @@
             @Html.FormValidationSummary()
             
             @Html.HiddenFor(m => m.KundenNr)
-            @Html.HiddenFor(m => m.AuftragsArt)
+            @Html.HiddenFor(m => m.KundenReferenz) 
+            @Html.HiddenFor(m => m.AlleOrganisationen)
             
-            @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "right" })
+            @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "left" }, new[] { "!far-past", "!this-year" })
+            @Html.FormDateRangePickerFor(m => m.UeberfuehrungsDatumRange, new { col = "right" }, new[] { "!far-past", "!this-year" })
 
-            @Html.FormCheckBoxFor(m => m.AlleOrganisationen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">@Localize._AlleOrganisationen</label></text>)
-            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap small", col = "right" })
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz, new { @class = "m-wrap small", col = "right" })
+    
+            @Html.FormRadioButtonListFor(m => m.AuftragsArt, Model.AuftragsArtOptions, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
 
 
             <div class="form-actions">

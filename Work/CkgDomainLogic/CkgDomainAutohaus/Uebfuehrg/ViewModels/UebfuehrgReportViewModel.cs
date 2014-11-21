@@ -44,7 +44,10 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         {
             HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector)
                 .OrderByDescending(a => a.AuftragsNr)
-                .ThenBy(a => a.Fahrt).ToList();
+                .ThenBy(a => a.Fahrt)
+                .GroupBy(a => a.AuftragsNr + "-" + a.Fahrt)
+                .Select(grp => grp.First())
+                .ToList();
 
             DataMarkForRefresh();
         }
@@ -72,36 +75,40 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void DataInit()
         {
+            HistoryAuftragSelector = new HistoryAuftragSelector
+            {
+                AuftragsArt = "A",
+                KundenNr = LogonContext.KundenNr.ToSapKunnr()
+            };
+
             DataMarkForRefresh();
         }
 
         public void DataMarkForRefresh()
         {
-            HistoryAuftragSelector = new HistoryAuftragSelector
-                {
-                    AuftragsArt = "A",
-                    KundenNr = LogonContext.KundenNr.ToSapKunnr()
-                };
-            
             PropertyCacheClear(this, m => m.HistoryAuftraegeFiltered);
         }
 
-        public void Validate(Action<string, string> addModelError)
+        public void Validate(Action<string, string> addModelError, out bool dateRangeResetOccurred)
         {
             var selector = HistoryAuftragSelector;
 
-            if (selector.ErfassungsDatumRange.IsSelected &&
-                (selector.ErfassungsDatumRange.EndDate.GetValueOrDefault() - selector.ErfassungsDatumRange.StartDate.GetValueOrDefault()).TotalDays > 95)
+            dateRangeResetOccurred = false;
+            if (selector.AuftragsNr.IsNotNullOrEmpty() || selector.Kennzeichen.IsNotNullOrEmpty() || selector.Referenz.IsNotNullOrEmpty())
+            {
+                dateRangeResetOccurred = true;
+                HistoryAuftragSelector.UeberfuehrungsDatumRange.IsSelected = false;
+                HistoryAuftragSelector.AuftragsDatumRange.IsSelected = false;
+            }
+
+            if (selector.UeberfuehrungsDatumRange.MoreDaysThan(92))
                 addModelError("", string.Format(Localize.DateRangeMax3Months, Localize.DateOfReceipt));
             
-            if (selector.AuftragsDatumRange.IsSelected &&
-                (selector.AuftragsDatumRange.EndDate.GetValueOrDefault() - selector.AuftragsDatumRange.StartDate.GetValueOrDefault()).TotalDays > 95)
+            if (selector.AuftragsDatumRange.MoreDaysThan(92))
                 addModelError("", string.Format(Localize.DateRangeMax3Months, Localize.OrderDate));
 
-            if (!ModelBase.AtLeastOneRequiredAsGroupPropertiesValid(selector))
-            {
+            if (!ModelBase.AtLeastOneRequiredAsGroupPropertyIsValid(selector))
                 addModelError("", Localize.PleaseChooseAtLeastOneOption);
-            }
         }
 
         public List<string> GetImageFileNamesForTour(int tour)

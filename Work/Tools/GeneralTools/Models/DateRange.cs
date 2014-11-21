@@ -69,6 +69,11 @@ namespace GeneralTools.Models
         {
             return !IsSelected;
         }
+
+        public bool MoreDaysThan(int days)
+        {
+            return (IsSelected && (EndDate.GetValueOrDefault() - StartDate.GetValueOrDefault()).TotalDays > days);
+        }
     }
 }
 

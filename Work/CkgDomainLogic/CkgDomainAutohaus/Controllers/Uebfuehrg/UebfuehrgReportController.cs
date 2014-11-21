@@ -36,13 +36,17 @@ namespace ServicesMvc.Controllers
         {
             ReportViewModel.HistoryAuftragSelector = model;
 
-            ReportViewModel.Validate(ModelState.AddModelError);
+            bool dateRangeResetOccurred;
+            ReportViewModel.Validate(ModelState.AddModelError, out dateRangeResetOccurred);
 
             if (ModelState.IsValid)
             {
                 ReportViewModel.LoadHistoryAuftraege();
                 if (ReportViewModel.HistoryAuftraege.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+                else
+                    if (dateRangeResetOccurred)
+                        ModelState.Clear();
             }
 
             return PartialView("Partial/HistoryAuftragSuche", ReportViewModel.HistoryAuftragSelector);
