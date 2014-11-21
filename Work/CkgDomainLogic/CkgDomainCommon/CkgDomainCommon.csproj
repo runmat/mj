@@ -111,28 +111,22 @@
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
-    <Compile Include="DomainCommon\Contracts\IAdressenDataService.cs" />
     <Compile Include="DomainCommon\Contracts\IBriefVersandDataService.cs" />
     <Compile Include="DomainCommon\Contracts\ICustomerDocumentDataService.cs" />
     <Compile Include="DomainCommon\Contracts\IInfoCenterDataService.cs" />
-    <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
-    <Compile Include="DomainCommon\Models\CommonSummary.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
-    <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
     <Compile Include="DomainCommon\Models\VersandAuftragsAnlage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainCommon\Models\VersandAuftragsFehler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainCommon\Services\AdressenDataServiceSAP.cs" />
     <Compile Include="DomainCommon\Services\BriefVersand\BriefVersandDataServiceSAP.cs" />
     <Compile Include="DomainCommon\Services\CustomerDocumentDataService.cs" />
     <Compile Include="DomainCommon\Services\InfoCenterDataService.cs" />
     <Compile Include="DomainCommon\Services\TranslationFormatService.cs" />
-    <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
     <Compile Include="Logs\Contracts\ILogsDataService.cs" />

@@ -4190,6 +4190,9 @@
     <Content Include="Views\Equi\Historie\Partial\Haendlerdaten.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\AktionsdatenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\Pdf.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
+    <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4928,9 +4931,8 @@
     <Content Include="Views\CoC\Erfassung\Manuell\CocOrderSummaryForm.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\SimpleForm\CheckBoxInline.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\SimpleForm\TextBlockInner.cshtml" />
-    <Content Include="Views\DomainCommon\AdressenPflege\AdressenDetailsForm.cshtml" />
-    <Content Include="Views\DomainCommon\AdressenPflege\AdressenGrid.cshtml" />
-    <Content Include="Views\DomainCommon\AdressenPflege\AdresseCommon.cshtml" />
+    <Content Include="Views\Shared\AdressenPflege\AdressenGrid.cshtml" />
+    <Content Include="Views\Shared\AdressenPflege\AdresseCommon.cshtml" />
     <Content Include="Views\DomainCommon\AdressenPflege.cshtml" />
     <Content Include="Views\DomainCommon\Index.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\DateRangePicker.cshtml" />

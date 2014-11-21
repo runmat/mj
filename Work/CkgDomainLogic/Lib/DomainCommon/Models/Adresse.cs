@@ -1,0 +1,122 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
+using GeneralTools.Models;
+using GeneralTools.Resources;
+using GeneralTools.Services;
+
+namespace CkgDomainLogic.DomainCommon.Models
+{
+    public class Adresse : CommonUiModel, IAddressStreetHouseNo, IValidatableObject
+    {
+        [SelectListKey]
+        [ModelMappingCompareIgnore]
+        public string KundenNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Name1)]
+        [Required]
+        public string Name1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Name2)]
+        public string Name2 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Street)]
+        [Required]
+        [GridHidden]
+        public string Strasse { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.HouseNo)]
+        [GridHidden]
+        public string HausNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Street)]
+        [Required]
+        public string StrasseHausNr { get { return AddressService.FormatStreetAndHouseNo(this); } }
+
+        [LocalizedDisplay(LocalizeConstants.PostCode)]
+        [Required]
+        public string PLZ { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.City)]
+        [Required]
+        [AddressPostcodeCityMapping("PLZ", "Land")]
+        public string Ort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Country)]
+        [Required]
+        public string Land { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Phone)]
+        public string Telefon { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Fax)]
+        public string Fax { get; set; }
+
+        [XmlIgnore]
+        static public List<Land> Laender { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Email)]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Recognition)]
+        public string Kennung { get; set; }
+
+        public string Typ { get; set; }
+
+        public int ID { get; set; }
+
+        public int TestInt { get; set; }
+
+        [GridHidden]
+        public bool NoSaveButUiRefreshOnly { get; set; }
+
+        [GridHidden]
+        public bool IsValid { get; set; }
+
+        [GridHidden]
+        public bool InsertModeTmp { get; set; }
+
+        [GridHidden]
+        public string InternalKey { get; set; }
+
+        [GridHidden]
+        public string InternalKey2 { get; set; }
+
+        [GridHidden]
+        public string TmpSelectionKey { get; set; }
+
+        [GridHidden]
+        public bool IsDefaultPartner { get; set; }
+
+        public Adresse SetInsertMode(bool insertMode)
+        {
+            InsertModeTmp = insertMode;
+            return this;
+        }
+
+        public string GetAutoSelectString()
+        {
+            return string.Format("{0}, {1}-{2} {3}", Name1, Land, PLZ, Ort);
+        }
+
+        public string GetPostLabelString()
+        {
+            return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
+        }
+
+        static string LandAsFormatted(string land)
+        {
+            return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Land.NotNullOrEmpty().ToLower() == "de" && PLZ.NotNullOrEmpty().Length != 5)
+                yield return new ValidationResult(Localize.GermanPlzMustHave5Digits, new[] { "PLZ" });
+        }
+    }
+}

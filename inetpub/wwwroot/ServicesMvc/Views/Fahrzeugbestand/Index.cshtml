@@ -1,0 +1,17 @@
+﻿@model CkgDomainLogic.Fahrzeugbestand.ViewModels.FahrzeugbestandViewModel
+
+<h3 class="page-title">Fahrzeugbestand <small></small> </h3>
+
+@Html.Partial("AdressenPflege/AdresseCommon")
+@Html.Partial("Partial/Common")
+
+
+<div class="portlet">
+    <div id="divGridEditStart">
+    
+        @Html.Partial("AdressenPflege/AdressenGrid")
+
+    </div>
+</div>
+
+<div id="divGridItemDetails"></div>

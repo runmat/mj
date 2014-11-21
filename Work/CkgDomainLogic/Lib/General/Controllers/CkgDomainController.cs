@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
@@ -18,6 +20,8 @@ namespace CkgDomainLogic.General.Controllers
     public abstract class CkgDomainController : LogonCapableController
     {
         public IAppSettings AppSettings { get; protected set; }
+
+        public AdressenPflegeViewModel AdressenPflegeViewModel { get { return GetViewModel<AdressenPflegeViewModel>(); } }
 
         public new ILogonContextDataService LogonContext
         {
@@ -199,6 +203,92 @@ namespace CkgDomainLogic.General.Controllers
         protected void AddModelError<T>(Expression<Func<T, object>> expression, string errorMessage)
         {
             ModelState.AddModelError(expression.GetPropertyName(), errorMessage);
+        }
+
+        #endregion
+
+
+        #region Adressen Pflege
+
+        [GridAction]
+        public ActionResult AdressenAjaxBinding()
+        {
+            var items = AdressenPflegeViewModel.AdressenFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridAdresse(string filterValue, string filterColumns)
+        {
+            AdressenPflegeViewModel.FilterVersandAdressen(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult EditAddress(int id)
+        {
+            AdressenPflegeViewModel.InsertMode = false;
+            ModelState.Clear();
+            return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
+        }
+
+        [HttpPost]
+        public ActionResult NewAddress()
+        {
+            AdressenPflegeViewModel.InsertMode = true;
+            ModelState.Clear();
+            return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.NewItem().SetInsertMode(AdressenPflegeViewModel.InsertMode));
+        }
+
+        [HttpPost]
+        public ActionResult DeleteAddress(int id)
+        {
+            AdressenPflegeViewModel.RemoveItem(id);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AddressDetailsFormSave(Adresse model)
+        {
+            // Avoid ModelState clearing on saving 
+            // => because automatic model validation (via data annotations) would be omitted !!!
+            // ModelState.Clear();
+
+            var viewModel = AdressenPflegeViewModel;
+
+            viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (viewModel.InsertMode)
+                    viewModel.AddItem(model);
+
+                model = viewModel.SaveItem(model, ModelState.AddModelError);
+            }
+
+            model.IsValid = ModelState.IsValid;
+            model.InsertModeTmp = viewModel.InsertMode;
+
+            return PartialView("AdressenPflege/AdressenDetailsForm", model);
+        }
+
+        public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Adressen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Adressen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         #endregion

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -28,16 +30,22 @@ namespace ServicesMvc.Controllers
         public FahrzeugbestandViewModel ViewModel { get { return GetViewModel<FahrzeugbestandViewModel>(); } }
 
 
-        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugbestandDataService fahrzeugbestandDataService)
+        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugbestandDataService fahrzeugbestandDataService, IAdressenDataService adressenDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrzeugbestandDataService);
+            InitViewModel(AdressenPflegeViewModel, appSettings, logonContext, adressenDataService);
         }
 
         [CkgApplication]
         public ActionResult Index()
         {
+            var kennung = "KÄUFER";
+            var kdnr = LogonContext.KundenNr;
+
             ViewModel.DataInit();
+            AdressenPflegeViewModel.DataInit(kennung, kdnr);
+
             return View(ViewModel);
         }
     }

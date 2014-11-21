@@ -87,6 +87,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="DomainCommon\Models\Adresse.cs" />
+    <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
+    <Compile Include="DomainCommon\Models\CommonSummary.cs" />
+    <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
@@ -156,6 +162,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Services\AdressenDataServiceSAP.cs" />
     <Compile Include="Services\CkgDomainAppSettings.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />
     <Compile Include="General\Models\DataModels\Land.cs" />
