@@ -4932,7 +4932,6 @@
     <Content Include="Views\DomainCommon\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Views\DomainCommon\AdressenPflege\AdresseCommon.cshtml" />
     <Content Include="Views\DomainCommon\AdressenPflege.cshtml" />
-    <Content Include="Views\DomainCommon\AdressenPflege\AdressenDetailsSimpleForm.cshtml" />
     <Content Include="Views\DomainCommon\Index.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\DateRangePicker.cshtml" />
     <Content Include="Views\CoC\ReportZulassungPdfTest.cshtml" />

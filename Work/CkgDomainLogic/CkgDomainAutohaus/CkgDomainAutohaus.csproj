@@ -92,13 +92,18 @@
     <Compile Include="Common\Models\DataModels\Kundenstammdaten.cs" />
     <Compile Include="Common\Models\DataModels\Materialstammdaten.cs" />
     <Compile Include="Controllers\Fahrzeugakte\AutohausController.cs" />
+    <Compile Include="Fahrzeugbestand\Contracts\IFahrzeugbestandDataService.cs" />
+    <Compile Include="Fahrzeugbestand\Models\AppModelmappings.cs" />
+    <Compile Include="Fahrzeugbestand\Services\FahrzeugbestandDataServiceSAP.cs" />
     <Compile Include="Controllers\Fahrzeugverwaltung\AutohausController.cs" />
     <Compile Include="Controllers\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
     <Compile Include="Controllers\AutohausController.cs" />
+    <Compile Include="Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Controllers\UebfuehrgController.cs" />
     <Compile Include="Controllers\Zulassung\AutohausController.cs" />
+    <Compile Include="Fahrzeugbestand\ViewModels\FahrzeugbestandViewModel.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
     <Compile Include="Common\Models\AppModelMappings.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubReportDataService.cs" />
@@ -193,6 +198,7 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

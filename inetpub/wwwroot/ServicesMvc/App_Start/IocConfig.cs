@@ -16,6 +16,8 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Services;
 using CkgDomainLogic.Fahrer.Contracts;
 using CkgDomainLogic.Fahrer.Services;
+using CkgDomainLogic.Fahrzeugbestand.Contracts;
+using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Services;
 using CkgDomainLogic.Insurance.Contracts;
@@ -151,6 +153,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<AutohausZulassungDataServiceSAP>().As<IAutohausZulassungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugbestandDataServiceSAP>().As<IFahrzeugbestandDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
