@@ -50,5 +50,15 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             //PropertyCacheClear(this, m => m.StepFriendlyNames);
             //RechnungsAdressen = DataService.GetRechnungsAdressen();
         }
+
+        public Adresse PickPartnerAddressFinished(string partnerKennung, Adresse partner)
+        {
+            if (partnerKennung == "HALTER")
+                SelectedHalter = partner;
+            else
+                SelectedKaeufer = partner;
+
+            return partner;
+        }
     }
 }

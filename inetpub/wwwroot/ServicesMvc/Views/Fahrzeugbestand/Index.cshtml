@@ -12,13 +12,13 @@
         {
             @Html.FormTemplateControl("Käufer",
                 @<text>
-                     <a id="k-dropdown" class="btn blue" onclick="return PickPartnerAddress('käufer');"><i class="icon-chevron-right margin-right-10"></i> @Model.SelectedKaeufer.GetAutoSelectString()</a>
+                     <a id="k-dropdown" class="btn blue" onclick="return PickPartnerAddress('käufer');"><i class="icon-chevron-right margin-right-10"></i> <span id="k-dropdown-text">@Model.SelectedKaeufer.GetAutoSelectString()</span></a>
                      <div id="k-dropdown-grid" class="hide grid-dropdown"></div>
                 </text>, new { @class = "m-wrap" })
             
             @Html.FormTemplateControl("Halter",
                 @<text>
-                    <a id="h-dropdown" class="btn blue" onclick="return PickPartnerAddress('halter');"><i class="icon-chevron-right margin-right-10"></i> @Model.SelectedHalter.GetAutoSelectString()</a>
+                    <a id="h-dropdown" class="btn blue" onclick="return PickPartnerAddress('halter');"><i class="icon-chevron-right margin-right-10"></i> <span id="h-dropdown-text">@Model.SelectedHalter.GetAutoSelectString()</span></a>
                     <div id="h-dropdown-grid" class="hide grid-dropdown"></div>
                 </text>, new { @class = "m-wrap" })
         }

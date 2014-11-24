@@ -68,5 +68,17 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/PartnerAdressenGrid");
         }
+
+        [HttpPost]
+        public JsonResult PickPartnerAddressFinished(int id)
+        {
+            var selectedPartner = ViewModel.PickPartnerAddressFinished(AdressenPflegeViewModel.AdressenKennung, AdressenPflegeViewModel.GetItem(id));
+
+            return Json(new
+                {
+                    partnerKennung = AdressenPflegeViewModel.AdressenKennung,
+                    partnerName = selectedPartner.GetAutoSelectString()
+                });
+        }
     }
 }

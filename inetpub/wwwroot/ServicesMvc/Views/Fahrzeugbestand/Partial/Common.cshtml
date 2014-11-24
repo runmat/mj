@@ -53,7 +53,20 @@
     
     function AddressSelect(id) {
         //alert(id);
-        ClosePartnerAddressGrid();
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddressFinished",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                ClosePartnerAddressGrid();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
     }
     
     function ShowPartnerAddressGrid(result) {
