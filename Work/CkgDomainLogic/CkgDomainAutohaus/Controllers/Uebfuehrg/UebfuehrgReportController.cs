@@ -1,4 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -67,7 +69,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistoryAuftragDetails(string auftragsNr, string fahrt)
         {
-            ReportViewModel.LoadHistoryAuftragDetails(auftragsNr, fahrt);
+            ReportViewModel.LoadHistoryAuftragDetails(auftragsNr, fahrt, Server.MapToUrl);
 
             return PartialView("Partial/HistoryAuftragDetailsWithDocuments", ReportViewModel);
         }

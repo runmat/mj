@@ -163,7 +163,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             return index;
         }
 
-        public void LoadHistoryAuftragDetails(string auftragsNr, string fahrt)
+        public void LoadHistoryAuftragDetails(string auftragsNr, string fahrt, Func<string, string> mapToUrlFunction)
         {
             HistoryAuftragCurrent = HistoryAuftraege.FirstOrDefault(a => a.AuftragsNr.ToSapKunnr() == auftragsNr.ToSapKunnr() && a.Fahrt == fahrt);
 
@@ -175,14 +175,14 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             FileService.TryDirectoryCreate(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath));
 
             // Get web folder urls for big images
-            ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt).ToList();
+            ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt, mapToUrlFunction).ToList();
             
             // Get web folder urls for pdf files
-            PdfFileNames = GetTempFolderPathForFiles("{0}*.pdf", fahrt).ToList();
+            PdfFileNames = GetTempFolderPathForFiles("{0}*.pdf", fahrt, mapToUrlFunction).ToList();
 
             // Get web folder urls for thumb images
             var mask = "THUMB_{0}*.jpg";
-            ThumbImageFileNames = GetTempFolderPathForFiles(mask, fahrt).ToList();
+            ThumbImageFileNames = GetTempFolderPathForFiles(mask, fahrt, mapToUrlFunction).ToList();
             // Also copy thumb images at this point
             // Note: Big images and pdf files will be copied only if user clicks on the apropiate thumbnail
             CopyFilesToTempFolder(mask);
@@ -227,15 +227,14 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             return Path.Combine(AppSettings.WebViewAbsolutePath, destinationRelativePath, FileService.PathGetFileName(fileName));
         }
 
-        IEnumerable<string> GetTempFolderPathForFiles(string fileMask, string fahrt)
+        IEnumerable<string> GetTempFolderPathForFiles(string fileMask, string fahrt, Func<string, string> mapToUrlFunction)
         {
             var sourcePath = GetSourcePath();
             var fileNames = FileService.TryDirectoryGetFiles(sourcePath, string.Format(fileMask, HistoryAuftragCurrent.AuftragsNrWebViewTrimmed));
 
             return fileNames
                 .Where(f => fahrt == GetTourFromFilename(f).ToString())
-                .Select(f => Path.Combine(AppSettings.WebViewRelativePath, DestinationRelativePath, FileService.PathGetFileName(f))
-                .Replace(@"\", "/")).OrderBy(f => f);
+                .Select(f => mapToUrlFunction(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath, FileService.PathGetFileName(f)))).OrderBy(f => f);
         }
 
         public int GetTourFromFilename(string filename)
