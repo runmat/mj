@@ -222,6 +222,7 @@
     <EmbeddedResource Include="Resources\DomainCommonResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DomainCommonResources.de-DE.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\DomainCommonResources.resx">
       <SubType>Designer</SubType>

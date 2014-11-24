@@ -14,6 +14,7 @@ namespace CkgDomainLogic.DomainCommon.Models
     {
         [SelectListKey]
         [ModelMappingCompareIgnore]
+        [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Name1)]
@@ -64,6 +65,14 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         [LocalizedDisplay(LocalizeConstants.Recognition)]
         public string Kennung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Remark)]
+        [ModelMappingCompareIgnore]
+        public string Bemerkung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants._blank)]
+        [ModelMappingCompareIgnore]
+        public bool Gewerblich { get; set; }
 
         public string Typ { get; set; }
 

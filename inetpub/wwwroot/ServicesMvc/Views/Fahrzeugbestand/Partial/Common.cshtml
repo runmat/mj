@@ -1,7 +1,33 @@
 ﻿@*@model CkgDomainLogic.Fahrzeugbestand.ViewModels.FahrzeugbestandViewModel*@
 
 <style type="text/css">
-
+    .PartnerAddressSubGrid {
+        margin-left: 0px;
+    }
+    .PartnerAddressSubGrid .t-grid, .PartnerAddressSubGrid .t-grid .t-grid-toolbar {
+        margin: 0!important;
+        padding: 0!important;
+    }
+    .PartnerAddressSubGrid div.grid-toolbar {
+        width: 363px;
+    }
+    .PartnerAddressSubGrid .t-grid-toolbar, .PartnerAddressSubGrid .t-status-text {
+        color: #808080;
+    }
+    .PartnerAddressSubGrid .dataTables_length, .PartnerAddressSubGrid .t-grouping-header {
+        display: none;   
+    }
+    .PartnerAddressSubGrid .dataTables_filter *, .PartnerAddressSubGrid .t-status-text {
+        font-size: 0.9em!important;
+    }
+    .PartnerAddressSubGrid .outer-export-menu button {
+        margin-top: 5px;
+        padding: 2px;
+        font-size: 11px;
+    }
+    .PartnerAddressSubGrid .dataTables_filter input {
+        height: 15px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -52,15 +78,19 @@
     }
     
     function AddressSelect(id) {
-        //alert(id);
-
         $.ajax(
         {
             type: "POST",
             url: "PickPartnerAddressFinished",
             data: { id: id },
-            loadingShow: true,
+            loadingShow: false,
             success: function (result) {
+                console.log(result.partnerKennung);
+                console.log(result.partnerName);
+                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
+                console.log(dropdownTextSpan);
+                dropdownTextSpan.html(result.partnerName);
+
                 ClosePartnerAddressGrid();
             },
             error: function (result) {
@@ -75,6 +105,13 @@
 
         _dropdownGridCurrent.html(result);
         FormPreparePrivateAdressenPflege();
+
+        $("#divGridEditStart").addClass("PartnerAddressSubGrid");
+        $(".grid-column-overall-quick-filter-pick-start").parent().hide();
+
+        setTimeout(function () {
+            $(".grid-column-overall-filter").focus();
+        }, 500);
     }
 
     function ClosePartnerAddressGrid(postFunction) {

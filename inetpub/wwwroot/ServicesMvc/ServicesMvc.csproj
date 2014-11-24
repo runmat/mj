@@ -4192,9 +4192,10 @@
     <Content Include="Views\Equi\Historie\Partial\Pdf.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
-    <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeugbestand\TestAdressPflege.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
