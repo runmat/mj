@@ -27,17 +27,17 @@
                 <a href="HistoryDownloadPdfFiles" class="btn grey tooltips" data-original-title="Protokolle als PDF downloaden" data-placement="top"> PDF Download <i class="icon-download-alt margin-left-10"></i></a>
             }
         }
-        
-        @foreach (var tour in Model.ImageFileTours)
+    </div>
+
+    @foreach (var tour in Model.ImageFileTours)
+    {
+        using (Html.PortletBox("Fotos, Fahrt " + tour, "icon-picture", "blue"))
         {
-            using (Html.PortletBox("Fotos, Fahrt " + tour, "icon-picture", "blue"))
+            foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
             {
-                foreach (var thumbImageFile in Model.GetThumbImageFileNamesForTour(tour))
-                {
-                    <img class="fahrer-thumbnail" src="@thumbImageFile" alt="" onclick=" ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile)); " />
-                }
+                <img class="fahrer-thumbnail" src="@thumbImageFile" alt="" onclick=" ShowBigImage(@tour, @Model.GetIndexFromFilename(thumbImageFile)); " />
             }
         }
-    </div>
+    }
 </div>
 
