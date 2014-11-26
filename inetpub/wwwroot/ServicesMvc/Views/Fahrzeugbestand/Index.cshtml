@@ -1,7 +1,7 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
 @model FahrzeugbestandViewModel
 
-<h3 class="page-title" id="headerTitle">Fahrzeugakte / Bestand <small>Pflege</small></h3>
+<h3 class="page-title" id="headerTitle">Fahrzeugakte + Bestand <small>Pflege</small></h3>
 
 @using (Html.FormSearchBox())
 {
@@ -19,6 +19,9 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        setTimeout(function () {
+            $("#FahrzeugAkteBestandForm").submit();
+        }, 100);
     }
 
     function FormPreparePrivateAjax() {
@@ -56,6 +59,14 @@
 
         $("#divGrid").slideDown();
         $("#divHistorie").html('');
+    }
+
+    function ShowFahrzeugakteAjax(finID) {
+        alert(finID);
+    }
+
+    function FahrzeugCreateAjax() {
+        alert('create...');
     }
 
     function OnDataBound_GridFahrzeugAkteBestand() {
