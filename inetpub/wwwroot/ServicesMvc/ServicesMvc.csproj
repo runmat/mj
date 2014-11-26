@@ -4198,12 +4198,15 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partner.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
     <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeugbestand\TestAdressPflege.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

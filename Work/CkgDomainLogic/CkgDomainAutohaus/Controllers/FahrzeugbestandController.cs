@@ -30,7 +30,7 @@ namespace ServicesMvc.Controllers
         public FahrzeugbestandViewModel ViewModel { get { return GetViewModel<FahrzeugbestandViewModel>(); } }
 
 
-        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugbestandDataService fahrzeugbestandDataService, IAdressenDataService adressenDataService)
+        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugAkteBestandDataService fahrzeugbestandDataService, IAdressenDataService adressenDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrzeugbestandDataService);
@@ -41,9 +41,66 @@ namespace ServicesMvc.Controllers
         public ActionResult Index()
         {
             ViewModel.DataInit();
+            //ViewModel.LoadFahrzeugAkteBestand();
 
             return View(ViewModel);
         }
+
+
+        #region Fahrzeug Akte / Bestand
+
+
+        [HttpPost]
+        public ActionResult LoadFahrzeugAkteBestand(FahrzeugAkteBestandSelektor model)
+        {
+            ViewModel.FahrzeugAkteBestandSelektor = model;
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.LoadFahrzeugAkteBestand();
+                if (ViewModel.FahrzeugeAkteBestand.None())
+                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/FahrzeugAkteBestandSuche", ViewModel.FahrzeugAkteBestandSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowFahrzeugAkteBestand()
+        {
+            return PartialView("Partial/FahrzeugAkteBestandGrid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult FahrzeugAkteBestandAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.FahrzeugeAkteBestandFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrzeugAkteBestand(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFahrzeugeAkteBestand(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+
+        #region Export
+
+        protected override IEnumerable GetGridExportData()
+        {
+            return ViewModel.FahrzeugeAkteBestandFiltered;
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region Partner Adressen
 
         [CkgApplication]
         public ActionResult K()
@@ -72,7 +129,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public JsonResult PickPartnerAddressFinished(int id)
         {
-            var selectedPartner = ViewModel.PickPartnerAddressFinished(AdressenPflegeViewModel.AdressenKennung, AdressenPflegeViewModel.GetItem(id));
+            var selectedPartner = ViewModel.PickPartnerAddressFinished(AdressenPflegeViewModel.AdressenKennung,
+                                                                       AdressenPflegeViewModel.GetItem(id));
 
             return Json(new
                 {
@@ -80,5 +138,7 @@ namespace ServicesMvc.Controllers
                     partnerName = selectedPartner.GetAutoSelectString()
                 });
         }
+
+        #endregion
     }
 }

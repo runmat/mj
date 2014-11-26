@@ -17,7 +17,7 @@ using AppModelMappings = CkgDomainLogic.Fahrzeugbestand.Models.AppModelMappings;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Services
 {
-    public class FahrzeugbestandDataServiceSAP : CkgGeneralDataServiceSAP, IFahrzeugbestandDataService
+    public class FahrzeugAkteBestandDataServiceSAP : CkgGeneralDataServiceSAP, IFahrzeugAkteBestandDataService
     {
         public string KundenNr { get { return LogonContext.KundenNr; } }
 
@@ -26,7 +26,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
         public string AuftragGeberOderKundenNr { get { return AuftragGeber.IsNotNullOrEmpty() ? AuftragGeber : KundenNr; } }
         
 
-        public FahrzeugbestandDataServiceSAP(ISapDataService sap)
+        public FahrzeugAkteBestandDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
         }
@@ -38,11 +38,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
 
         private IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> GetSapFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
         {
-            Z_DPM_READ_SENDTAB_03.Init(SAP);
+            Z_AHP_READ_FZGBESTAND.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-                
-            //SAP.SetImportParameter("I_CHECK_TRACK", "X");
+            if (model.FIN.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_FIN", model.FIN);
 
             SAP.Execute();
 

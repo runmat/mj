@@ -1,14 +1,11 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System.Collections.Generic;
-using CkgDomainLogic.DomainCommon.Models;
+﻿using System.Collections.Generic;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Contracts;
-using GeneralTools.Contracts;
-using GeneralTools.Models;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Contracts
 {
-    public interface IFahrzeugbestandDataService : ICkgGeneralDataService 
+    public interface IFahrzeugAkteBestandDataService : ICkgGeneralDataService
     {
-        //List<Adresse> GetPartnerAdressen();
+        List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model);
     }
 }

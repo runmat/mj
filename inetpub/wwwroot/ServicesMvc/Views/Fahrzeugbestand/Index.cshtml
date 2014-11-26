@@ -1,30 +1,75 @@
-﻿@model CkgDomainLogic.Fahrzeugbestand.ViewModels.FahrzeugbestandViewModel
+﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
+@model FahrzeugbestandViewModel
 
-<h3 class="page-title">Fahrzeugbestand <small></small> </h3>
+<h3 class="page-title" id="headerTitle">Fahrzeugakte / Bestand <small>Pflege</small></h3>
 
-@Html.Partial("AdressenPflege/AdresseCommon")
-@Html.Partial("Partial/Common")
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/FahrzeugAkteBestandSuche", Model.FahrzeugAkteBestandSelektor)
+}
 
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
 
-<div id="main">
-    <div>
-        <div class="form-horizontal">
-            @Html.FormTemplateControl("Käufer",
-                @<text>
-                     <a id="k-dropdown" class="btn blue" onclick="return PickPartnerAddress('käufer');"><i class="icon-chevron-right margin-right-10"></i> <span id="k-dropdown-text">@Model.SelectedKaeufer.GetAutoSelectString()</span></a>
-                     <div id="k-dropdown-grid" class="hide grid-dropdown"></div>
-                </text>, new { @class = "m-wrap" })
-            
-            @Html.FormTemplateControl("Halter",
-                @<text>
-                    <a id="h-dropdown" class="btn blue" onclick="return PickPartnerAddress('halter');"><i class="icon-chevron-right margin-right-10"></i> <span id="h-dropdown-text">@Model.SelectedHalter.GetAutoSelectString()</span></a>
-                    <div id="h-dropdown-grid" class="hide grid-dropdown"></div>
-                </text>, new { @class = "m-wrap" })
-        </div>
-    </div>    
-</div>    
+<script type="text/javascript">
 
-<div id="partner-address-grid">
-</div>
+    var _modelStateValid = 'false';
 
+    function FormPreparePrivate() {
+    }
 
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowFahrzeugAkteBestand() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestand",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowFahrzeugAkteBestandSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowFahrzeugAkteBestandSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAkteBestand");
+
+        $("#divGrid").slideDown();
+        $("#divHistorie").html('');
+    }
+
+    function OnDataBound_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

@@ -153,7 +153,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<AutohausZulassungDataServiceSAP>().As<IAutohausZulassungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
-            builder.RegisterType<FahrzeugbestandDataServiceSAP>().As<IFahrzeugbestandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugAkteBestandDataServiceSAP>().As<IFahrzeugAkteBestandDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();

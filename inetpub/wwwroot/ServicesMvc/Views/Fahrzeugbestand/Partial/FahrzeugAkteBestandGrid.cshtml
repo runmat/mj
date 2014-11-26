@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@{
+    var gridName = "GridFahrzeugAkteBestand";
+}
+
+@(Html.Telerik()
+    .Grid<FahrzeugAkteBestand>()
+    .Name(gridName)
+
+    .XGroup("GridFahrzeugAkteBestandModel")
+    .XAjaxDataBinding("FahrzeugAkteBestandAjaxBinding", "Fahrzeugbestand")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Descending())
+    .XToolBar("Fahrzeugbestand")
+)
+

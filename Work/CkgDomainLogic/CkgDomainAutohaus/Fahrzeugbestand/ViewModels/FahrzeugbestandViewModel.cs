@@ -22,9 +22,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
     public class FahrzeugbestandViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IFahrzeugbestandDataService DataService
+        public IFahrzeugAkteBestandDataService DataService
         {
-            get { return CacheGet<IFahrzeugbestandDataService>(); }
+            get { return CacheGet<IFahrzeugAkteBestandDataService>(); }
         }
 
         public Adresse SelectedHalter
@@ -38,6 +38,25 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
             set { PropertyCacheSet(value); }
         }
+        public FahrzeugAkteBestandSelektor FahrzeugAkteBestandSelektor
+        {
+            get { return PropertyCacheGet(() => new FahrzeugAkteBestandSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<FahrzeugAkteBestand> FahrzeugeAkteBestand
+        {
+            get { return PropertyCacheGet(() => new List<FahrzeugAkteBestand>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<FahrzeugAkteBestand> FahrzeugeAkteBestandFiltered
+        {
+            get { return PropertyCacheGet(() => FahrzeugeAkteBestand); }
+            private set { PropertyCacheSet(value); }
+        }
 
 
         public void DataInit()
@@ -47,8 +66,23 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public void DataMarkForRefresh()
         {
-            //PropertyCacheClear(this, m => m.StepFriendlyNames);
-            //RechnungsAdressen = DataService.GetRechnungsAdressen();
+            PropertyCacheClear(this, m => m.FahrzeugeAkteBestandFiltered);
+        }
+
+        public void LoadFahrzeugAkteBestand()
+        {
+            FahrzeugeAkteBestand = DataService.GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor);
+
+            DataMarkForRefresh();
+        }
+
+        public void Validate(Action<string, string> addModelError)
+        {
+        }
+
+        public void FilterFahrzeugeAkteBestand(string filterValue, string filterProperties)
+        {
+            FahrzeugeAkteBestandFiltered = FahrzeugeAkteBestand.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         public Adresse PickPartnerAddressFinished(string partnerKennung, Adresse partner)
