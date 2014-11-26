@@ -8,7 +8,7 @@
     <ProjectGuid>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CkgDomainAutohaus</RootNamespace>
+    <RootNamespace>CkgDomainLogic</RootNamespace>
     <AssemblyName>CkgDomainAutohaus</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -94,6 +94,8 @@
     <Compile Include="Controllers\Fahrzeugakte\AutohausController.cs" />
     <Compile Include="Fahrzeugbestand\Contracts\IFahrzeugbestandDataService.cs" />
     <Compile Include="Fahrzeugbestand\Models\AppModelmappings.cs" />
+    <Compile Include="Fahrzeugbestand\Models\FahrzeugAkteBestand.cs" />
+    <Compile Include="Fahrzeugbestand\Models\FahrzeugAkteBestandSelektor.cs" />
     <Compile Include="Fahrzeugbestand\Services\FahrzeugbestandDataServiceSAP.cs" />
     <Compile Include="Controllers\Fahrzeugverwaltung\AutohausController.cs" />
     <Compile Include="Controllers\FeinstaubController.cs" />

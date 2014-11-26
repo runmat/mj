@@ -30,5 +30,25 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
             : base(sap)
         {
         }
+
+        public List<FahrzeugAkteBestand> GetSendungsAuftraegeDocs(FahrzeugAkteBestandSelektor model)
+        {
+            return AppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_FahrzeugAkteBestand.Copy(GetSapSendungsAuftraegeDocs(model)).ToList();
+        }
+
+        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeDocs(FahrzeugAkteBestandSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+
+            if (model.NurMitSendungsID)
+                SAP.SetImportParameter("I_CHECK_TRACK", "X");
+
+            SAP.Execute();
+
+            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+        }
     }
 }
