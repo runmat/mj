@@ -13,6 +13,7 @@ using GeneralTools.Services;
 using MvcTools.Models;
 using MvcTools.Web;
 using System.Web.Mvc.Ajax;
+using PortalMvcTools.Models;
 
 namespace PortalMvcTools.Web
 {
@@ -125,6 +126,14 @@ namespace PortalMvcTools.Web
         public static MvcWrapper FormSearchResults(this HtmlHelper html, object model = null)
         {
             return new MvcWrapper(html.ViewContext, "FormSearchResults", model);
+        }
+
+        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey")
+        {
+            return new MvcWrapper(html.ViewContext, "PortletBox", new FormOuterLayerModel
+                {
+                    Header = header, IconCssClass = iconCssClass, PortletCssClass = portletCssClass
+                });
         }
 
         public static MvcHtmlString FormValidationSummaryResponsive(this HtmlHelper html, Func<Exception, IHtmlString> responsiveErrorUrlFunction = null)
@@ -434,6 +443,11 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml);
+        }
+
+        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
+        {
+            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml);
         }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<string> selectList,

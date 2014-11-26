@@ -1,0 +1,38 @@
+﻿@using CkgDomainLogic.Uebfuehrg.Models
+@model HistoryAuftrag
+
+<div id="divHistoryAuftragDetails">
+    @using (Ajax.BeginForm(null, null, null,
+        new MvcAjaxOptions("divHistoryAuftragDetails"), new { id = "HistoryAuftragDetailsForm" }))
+    {    
+        <div class="form-horizontal" id="dummyForm">
+           
+            @Html.FormTextBlockFor(m => m.AuftragsNr, new { @class = "m-wrap" })
+
+            @Html.FormTextBlockFor(m => m.AuftragsDatum, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.AbgabeDatum, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Kundenberater, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Referenz, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Ansprechpartner, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Telefon, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Email, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.Typ, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Fahrt, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.FahrtVonOrt, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.FahrtNachOrt, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBlockFor(m => m.GefahreneKilometer, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.Klaerfall, new { @class = "m-wrap", col = "right" })
+
+        </div>  
+    }
+</div>

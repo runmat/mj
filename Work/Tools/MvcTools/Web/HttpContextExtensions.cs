@@ -30,4 +30,13 @@ namespace MvcTools.Web
             return context.GetRequestInt(key, 0);
         }
     }
+
+    public static class ServerExtensions
+    {
+        public static string MapToUrl(this HttpServerUtilityBase server, string path)
+        {
+            var appPath = server.MapPath("/").ToLower();
+            return string.Format("/{0}", path.ToLower().Replace(appPath, "").Replace(@"\", "/"));
+        }
+    }
 }

@@ -62,17 +62,17 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Web References\de.dat.www.authentication\Reference.cs">
+    <Compile Include="Web References\de.dat.gold.authentication\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Web References\de.dat.www.evaluation\Reference.cs">
+    <Compile Include="Web References\de.dat.gold.evaluation\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Web References\de.dat.www\Reference.cs">
+    <Compile Include="Web References\de.dat.gold\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -90,100 +90,100 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Web References\de.dat.www.authentication\Authentication.wsdl" />
-    <None Include="Web References\de.dat.www.authentication\Authentication.xsd">
+    <None Include="Web References\de.dat.gold.authentication\Authentication.wsdl" />
+    <None Include="Web References\de.dat.gold.authentication\Authentication.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\de.dat.www.authentication\Reference.map">
+    <None Include="Web References\de.dat.gold.authentication\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\Evaluation.wsdl" />
-    <None Include="Web References\de.dat.www.evaluation\Evaluation.xsd">
+    <None Include="Web References\de.dat.gold.evaluation\Evaluation.wsdl" />
+    <None Include="Web References\de.dat.gold.evaluation\Evaluation.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\Evaluation0.xsd">
+    <None Include="Web References\de.dat.gold.evaluation\Evaluation0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\getNewVehicleForecastResponseVXS.datasource">
+    <None Include="Web References\de.dat.gold.evaluation\getNewVehicleForecastResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\getUsedVehicleForecastResponseVXS.datasource">
+    <None Include="Web References\de.dat.gold.evaluation\getUsedVehicleForecastResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\getVehicleApproximateValueResponseVXS.datasource">
+    <None Include="Web References\de.dat.gold.evaluation\getVehicleApproximateValueResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\getVehicleEvaluationResponseVXS.datasource">
+    <None Include="Web References\de.dat.gold.evaluation\getVehicleEvaluationResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\getVehicleTargetDateEvaluationHistoryResponseVXS.datasource">
+    <None Include="Web References\de.dat.gold.evaluation\getVehicleTargetDateEvaluationHistoryResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www.evaluation\Reference.map">
+    <None Include="Web References\de.dat.gold.evaluation\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\de.dat.www\constructionTimePeriod.datasource">
+    <None Include="Web References\de.dat.gold\constructionTimePeriod.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www\daf.datasource">
+    <None Include="Web References\de.dat.gold\getVehicleDataResponseVXS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www\integerStringPair.datasource">
+    <None Include="Web References\de.dat.gold\integerStringPair.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www\Reference.map">
+    <None Include="Web References\de.dat.gold\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\de.dat.www\stringStringPair.datasource">
+    <None Include="Web References\de.dat.gold\stringStringPair.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www\subModelByTextSearchSelectionResponse.datasource">
+    <None Include="Web References\de.dat.gold\subModelByTextSearchSelectionResponse.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\de.dat.www\VehicleSelection.wsdl" />
-    <None Include="Web References\de.dat.www\VehicleSelection.xsd">
+    <None Include="Web References\de.dat.gold\VehicleSelectionService.wsdl" />
+    <None Include="Web References\de.dat.gold\VehicleSelectionService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\de.dat.www\VehicleSelection0.xsd">
+    <None Include="Web References\de.dat.gold\VehicleSelectionService0.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://www.dat.de/FinanceLine/services/Authentication%3fwsdl">
+    <WebReferenceUrl Include="http://gold.dat.de/FinanceLine/services/Authentication%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\de.dat.www.authentication\</RelPath>
-      <UpdateFromURL>http://www.dat.de/FinanceLine/services/Authentication%3fwsdl</UpdateFromURL>
+      <RelPath>Web References\de.dat.gold.authentication\</RelPath>
+      <UpdateFromURL>http://gold.dat.de/FinanceLine/services/Authentication%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_www_authentication_Authentication</CachedSettingsPropName>
+      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_gold_authentication_Authentication</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.dat.de/FinanceLine/services/Evaluation%3fwsdl">
+    <WebReferenceUrl Include="http://gold.dat.de/FinanceLine/services/Evaluation%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\de.dat.www.evaluation\</RelPath>
-      <UpdateFromURL>http://www.dat.de/FinanceLine/services/Evaluation%3fwsdl</UpdateFromURL>
+      <RelPath>Web References\de.dat.gold.evaluation\</RelPath>
+      <UpdateFromURL>http://gold.dat.de/FinanceLine/services/Evaluation%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_www_evaluation_Evaluation</CachedSettingsPropName>
+      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_gold_evaluation_Evaluation</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.dat.de/FinanceLine/services/VehicleSelection%3fwsdl">
+    <WebReferenceUrl Include="http://gold.dat.de/FinanceLine/services/VehicleSelectionService%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\de.dat.www\</RelPath>
-      <UpdateFromURL>http://www.dat.de/FinanceLine/services/VehicleSelection%3fwsdl</UpdateFromURL>
+      <RelPath>Web References\de.dat.gold\</RelPath>
+      <UpdateFromURL>http://gold.dat.de/FinanceLine/services/VehicleSelectionService%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_www_VehicleSelection</CachedSettingsPropName>
+      <CachedSettingsPropName>DAT_BankenLinie_Connector_de_dat_gold_VehicleSelectionService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
