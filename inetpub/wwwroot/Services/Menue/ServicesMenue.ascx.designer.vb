@@ -23,15 +23,6 @@ Partial Public Class ServicesMenue
     Protected WithEvents ibtnInfo As Global.System.Web.UI.WebControls.ImageButton
 
     '''<summary>
-    '''SkipPageVisitLog-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents SkipPageVisitLog As Global.System.Web.UI.WebControls.HiddenField
-
-    '''<summary>
     '''Panel1-Steuerelement
     '''</summary>
     '''<remarks>

@@ -295,6 +295,7 @@ namespace AppZulassungsdienst.forms
 
             // Spalten entfernen, die nicht exportiert werden sollen/können
             tblTemp.Columns.Remove("BARQ_NR");
+            tblTemp.Columns.Remove("SA_PFAD");
 
             // Spalten analog zur Anzeige ausblenden/umbenennen
             for (int i = tblTemp.Columns.Count - 1; i >= 0; i--)

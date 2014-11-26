@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
@@ -30,15 +33,24 @@ namespace ServicesMvc.Controllers
         }
 
 
-        public ActionResult LogPageVisit(string appID)
+        public ActionResult LogPageVisit(string logappid, string url)
         {
-            if (appID.IsNullOrEmpty() || LogonContext == null || LogonContext.User == null || LogonContext.Customer == null)
-                return new EmptyResult();
+            ActionResult result = new EmptyResult();
 
-            var logService = new LogService();
-            logService.LogPageVisit(appID.ToInt(), LogonContext.User.UserID, LogonContext.Customer.CustomerID, LogonContext.Customer.KUNNR.ToInt(), _portalType);
+            if (string.IsNullOrEmpty(url) == false)
+            {
+                var decodedUrl = HttpUtility.UrlDecode(url);
+                var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
+                result = new RedirectResult(mvcReadyUrl);
+            }
 
-            return new EmptyResult();
+            if (!logappid.IsNullOrEmpty() && LogonContext != null && LogonContext.User != null && LogonContext.Customer != null)
+            {
+                var logService = new LogService();
+                logService.LogPageVisit(logappid.ToInt(), LogonContext.User.UserID, LogonContext.Customer.CustomerID, LogonContext.Customer.KUNNR.ToInt(), _portalType);
+            }
+
+            return result;
         }
 
         [HttpPost]

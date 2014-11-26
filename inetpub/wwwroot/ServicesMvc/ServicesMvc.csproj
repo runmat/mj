@@ -4190,6 +4190,14 @@
     <Content Include="Views\Equi\Historie\Partial\Haendlerdaten.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\AktionsdatenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\Pdf.cshtml" />
+    <Content Include="Views\Uebfuehrg\Report.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragSuche.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragGrid.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetails.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsBigImageDialog.cshtml" />
+    <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
+    <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
+    <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
     <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
