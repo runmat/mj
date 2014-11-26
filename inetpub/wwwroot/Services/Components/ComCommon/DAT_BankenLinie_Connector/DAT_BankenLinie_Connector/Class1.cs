@@ -1,26 +1,9 @@
-﻿using DAT_BankenLinie_Connector.de.dat.www.authentication;
+﻿using DAT_BankenLinie_Connector.de.dat.gold.authentication;
 
 namespace DAT_BankenLinie_Connector
 {
     public class Get_Daten
     {
-        //static void Main(string[] args)
-        //{
-        //    string customerNumber = "1321363";
-        //    string userLogin = "gidaflor";
-        //    string signature = "jA0EAwMCdHGL/jscCfZgySrVgZIm3RtHDbJihjsDc+TJnoy0OAZx3Ahmsy48zclYhJJaHCu0ldyY7+Y=";
-
-        //    string ErrorMessage = "";
-        //    string HEP = "";
-        //    string HVP = "";
-        //    int mileage = 150000;
-        //    //string datECode = "1";
-        //    int constructionYear = 2006;
-
-        //    //Get_HEP_HVP(customerNumber, userLogin, signature, mileage, datECode, constructionYear, ref HEP, ref HVP);
-        //    //GetECode(customerNumber, userLogin, signature, mileage, constructionYear, "",  ref ErrorMessage);
-        //}
-
         public static string GetECode(string customerLogin, string customerNumber, string customerSignature, string interfacePartnerNumber, string interfacePartnerSignature, int mileage, int constructionYear, string selectedContainer, ref string ErrorMessage, int[] additionalOptions, int vehicleType, int manufacturer, int baseModel, int subModel)
         {
             string ECode = "";
@@ -29,17 +12,17 @@ namespace DAT_BankenLinie_Connector
                 Authentication vi = new Authentication();
                 string sessionID = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature);
 
-                DAT_BankenLinie_Connector.de.dat.www.VehicleSelection viSelection = new DAT_BankenLinie_Connector.de.dat.www.VehicleSelection();
+                de.dat.gold.VehicleSelectionService viSelection = new de.dat.gold.VehicleSelectionService();
                 viSelection.CookieContainer = vi.CookieContainer;
 
-                DAT_BankenLinie_Connector.de.dat.www.locale localePeriod = new DAT_BankenLinie_Connector.de.dat.www.locale();
+                de.dat.gold.locale localePeriod = new de.dat.gold.locale();
                 localePeriod.country = "DE";
                 localePeriod.datCountryIndicator = "DE";
                 localePeriod.language = "de";
 
-                DAT_BankenLinie_Connector.de.dat.www.subTypeVariantNumberSelectionRequest vsPeriod = new DAT_BankenLinie_Connector.de.dat.www.subTypeVariantNumberSelectionRequest();
+                de.dat.gold.subTypeVariantNumberSelectionRequest vsPeriod = new de.dat.gold.subTypeVariantNumberSelectionRequest();
                 vsPeriod.sessionID = sessionID;
-                vsPeriod.restriction = de.dat.www.releaseRestriction.APPRAISAL;
+                vsPeriod.restriction = de.dat.gold.releaseRestriction.APPRAISAL;
                 vsPeriod.locale = localePeriod;
                 vsPeriod.vehicleType = vehicleType;
                 vsPeriod.manufacturer = manufacturer;
