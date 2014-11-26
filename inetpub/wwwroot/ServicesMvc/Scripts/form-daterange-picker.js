@@ -53,7 +53,7 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
         'Nächster Monat': [Date.today().add({ months: 1 }).moveToFirstDayOfMonth(), Date.today().add({ months: 1 }).moveToLastDayOfMonth(), 'future'],
         'Letzter Monat': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 }), 'past'],
         'Letzte 3 Monate': [Date.today().moveToFirstDayOfMonth().add({ months: -3 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 }), 'past'],
-        'Dieses Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear()), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear()), "dd.MM.yyyy"), ''],
+        'Dieses Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear()), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear()), "dd.MM.yyyy"), 'this-year'],
         'Letztes Jahr': [Date.parseExact("01.01." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), Date.parseExact("31.12." + (Date.today().getFullYear() - 1), "dd.MM.yyyy"), 'past|far-past']
     };
 

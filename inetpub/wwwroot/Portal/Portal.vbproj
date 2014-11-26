@@ -238,10 +238,10 @@
       <DependentUpon>VIMessage.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="Log.aspx.designer.vb">
+    <Compile Include="Start\Log.aspx.designer.vb">
       <DependentUpon>Log.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Log.aspx.vb">
+    <Compile Include="Start\Log.aspx.vb">
       <DependentUpon>Log.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
@@ -632,7 +632,7 @@
     <Content Include="Info\Impressum.aspx" />
     <Content Include="Info\ResponsiblePage.aspx" />
     <Content Include="Info\VIMessage.aspx" />
-    <Content Include="Log.aspx" />
+    <Content Include="Start\Log.aspx" />
     <Content Include="PageElements\BusyIndicator.ascx" />
     <Content Include="PageElements\Datum.htm" />
     <Content Include="PageElements\Footer.html" />
