@@ -14,6 +14,16 @@ Public Class Log
     ''' Please apply changes to all 3 areas (Portal, Services, ServicesMvc)
     ''' </summary>
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        ' Hole die url aus dem query und leite den Anwender dorthin wo er eigentlich hinwollte
+        If Request.QueryString.AllKeys.Any(Function(key) key.ToUpper() = "URL") = True Then
+            Dim url As String = Request.QueryString("url")
+            url = Encoding.UTF8.GetString(Convert.FromBase64String(url))
+            url = HttpUtility.UrlDecode(url)
+            ' durch den Aufruf setzt die Runtime die SessionId
+            url = Response.ApplyAppPathModifier(url)
+            Response.Redirect(url, False) ' False bewirkt dass das Redirect gesetzt wird ohne dass die Ausführung unterbrochen wird.
+        End If
+
         If Request.QueryString.AllKeys.Any(Function(key) key.ToUpper() = "APP-ID") = False Then
             ' Loggen nicht möglich, keine gültige App ID
             Return
