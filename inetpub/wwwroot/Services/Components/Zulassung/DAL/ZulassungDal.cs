@@ -8,6 +8,7 @@ using CKG.Base.Common;
 using System.Web.UI;
 using System.Text;
 using System.ComponentModel;
+using GeneralTools.Services;
 
 namespace CKG.Components.Zulassung.DAL
 {
@@ -809,14 +810,11 @@ namespace CKG.Components.Zulassung.DAL
 
             try
             {
-                string bapiName;
+                string bapiName = ApplicationConfiguration.GetApplicationConfigValue("ZulassungsbeauftragungSpeicherBapi", AppID, m_objUser.Customer.CustomerId);
 
-                if (strKUNNR == "0010026226")
+                if (String.IsNullOrEmpty(bapiName))
                 {
-                    bapiName = "Z_DPM_WEB_ZULA_ANF_CKPT_01";
-                }
-                else
-                {
+                    //default, falls gar nichts konfiguriert wurde
                     bapiName = "Z_DPM_WEB_ZULASSUNG_01";
                 }
 

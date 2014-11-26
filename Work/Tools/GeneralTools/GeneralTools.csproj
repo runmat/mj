@@ -99,6 +99,7 @@
     <Compile Include="Contracts\IUiView.cs" />
     <Compile Include="Contracts\IAttributeWithModelMappingConvert.cs" />
     <Compile Include="Contracts\IUserSecurityRuleDataProvider.cs" />
+    <Compile Include="Contracts\INullable.cs" />
     <Compile Include="Log\Contracts\ISapLogger.cs" />
     <Compile Include="Log\Models\LogConstants.cs" />
     <Compile Include="Log\Services\CkgSessionWrapperException.cs" />
