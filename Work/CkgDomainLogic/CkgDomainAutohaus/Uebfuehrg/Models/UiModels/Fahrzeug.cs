@@ -26,7 +26,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
-        [Kennzeichen]
         public string Kennzeichen
         {
             get { return _kennzeichen; }
