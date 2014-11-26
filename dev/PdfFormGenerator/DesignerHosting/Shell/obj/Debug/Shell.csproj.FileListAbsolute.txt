@@ -36,7 +36,6 @@ C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Deb
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Loader.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Toolbox.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\ToolWindows.dll
-C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\GraphLibrary.dll
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Host.pdb
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Loader.pdb
 C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\Toolbox.pdb
@@ -66,3 +65,4 @@ C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\bin\Debug\
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.exe
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\CkgPdfDesigner.pdb
 C:\Users\Matz\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.Properties.Resources.resources
+C:\Users\JenzenM\Documents\mj\dev\PdfFormGenerator\DesignerHosting\Shell\obj\Debug\Shell.Properties.Resources.resources
