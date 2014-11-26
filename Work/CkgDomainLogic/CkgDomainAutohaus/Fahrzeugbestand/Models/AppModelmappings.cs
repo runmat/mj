@@ -23,7 +23,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                             d.FIN = s.FIN;
                             d.FinID = s.FIN_ID;
                             d.FabrikName = s.ZZFABRIKNAME;
-
+                            d.Halter = s.HALTER;
+                            d.Kaeufer = s.KAEUFER;
                         }));
             }
         }

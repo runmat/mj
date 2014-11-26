@@ -31,24 +31,22 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
         {
         }
 
-        public List<FahrzeugAkteBestand> GetSendungsAuftraegeDocs(FahrzeugAkteBestandSelektor model)
+        public List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
         {
-            return AppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_FahrzeugAkteBestand.Copy(GetSapSendungsAuftraegeDocs(model)).ToList();
+            return AppModelMappings.Z_AHP_READ_FZGBESTAND_GT_WEBOUT_To_FahrzeugAkteBestand.Copy(GetSapFahrzeugeAkteBestand(model)).ToList();
         }
 
-        private IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> GetSapSendungsAuftraegeDocs(FahrzeugAkteBestandSelektor model)
+        private IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> GetSapFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
         {
             Z_DPM_READ_SENDTAB_03.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-
-
-            if (model.NurMitSendungsID)
-                SAP.SetImportParameter("I_CHECK_TRACK", "X");
+                
+            //SAP.SetImportParameter("I_CHECK_TRACK", "X");
 
             SAP.Execute();
 
-            return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
+            return Z_AHP_READ_FZGBESTAND.GT_WEBOUT.GetExportList(SAP);
         }
     }
 }
