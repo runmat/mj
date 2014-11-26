@@ -8,16 +8,16 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_DPM_AH_READ_FZGBESTAND
+	public partial class Z_AHP_READ_FZGBESTAND
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_DPM_AH_READ_FZGBESTAND).Name);
+			sap.Init(typeof(Z_AHP_READ_FZGBESTAND).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_DPM_AH_READ_FZGBESTAND).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_AHP_READ_FZGBESTAND).Name, inputParameterKeys, inputParameterValues);
 		}
 
 		public partial class GT_WEBOUT : IModelMappingApplied
@@ -151,7 +151,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEBOUT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_AH_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToList();
 			}
@@ -181,7 +181,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEBOUT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_AH_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToList();
 			}
@@ -201,12 +201,12 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_AH_READ_FZGBESTAND.GT_WEBOUT> list)
+		public static DataTable ToTable(this IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_AH_READ_FZGBESTAND.GT_WEBOUT> list, DataTable dtDst)
+		public static void Apply(this IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}
