@@ -2,7 +2,7 @@
 
 <div id="divFahrzeugAkteBestandSuche">
     @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
-        new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "ShowFahrzeugAkteBestand();" }, new { id = "FahrzeugAkteBestandForm" }))
+        new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "ShowFahrzeugAkteBestandGrid();" }, new { id = "FahrzeugAkteBestandForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             
@@ -18,7 +18,7 @@
             @*@Html.FormRequiredFieldsSummary()*@
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
         </div>  
         

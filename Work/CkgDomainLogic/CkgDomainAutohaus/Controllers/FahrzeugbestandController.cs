@@ -55,11 +55,11 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.FahrzeugAkteBestandSelektor = model;
 
-            ViewModel.Validate(ModelState.AddModelError);
+            ViewModel.ValidateSearch(ModelState.AddModelError);
 
             if (ModelState.IsValid)
             {
-                ViewModel.LoadFahrzeugAkteBestand();
+                ViewModel.LoadFahrzeuge();
                 if (ViewModel.FahrzeugeAkteBestand.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
@@ -68,7 +68,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowFahrzeugAkteBestand()
+        public ActionResult ShowFahrzeugAkteBestandGrid()
         {
             return PartialView("Partial/FahrzeugAkteBestandGrid", ViewModel);
         }
@@ -85,6 +85,26 @@ namespace ServicesMvc.Controllers
             ViewModel.FilterFahrzeugeAkteBestand(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+
+        [HttpPost]
+        public ActionResult ShowFahrzeugAkteBestandDetails(string finID)
+        {
+            ViewModel.LoadFahrzeugDetails(finID);
+
+            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateFahrzeugDetails(FahrzeugAkteBestand model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView("Partial/FahrzeugAkteBestandDetails", model);
+
+            ViewModel.UpdateFahrzeugDetails(model);
+
+            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }
 
 

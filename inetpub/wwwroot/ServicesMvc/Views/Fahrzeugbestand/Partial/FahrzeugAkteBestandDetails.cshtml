@@ -1,0 +1,41 @@
+﻿@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestand
+
+<div id="divFahrzeugDetailsSuche">
+    @using (Ajax.BeginForm("UpdateFahrzeugDetails", "Fahrzeugbestand", null,
+        new MvcAjaxOptions("divFahrzeugDetailsSuche") { OnComplete = "TryCloseFahrzeugDetails();" }, new { id = "FahrzeugDetailsForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.HiddenFor(m => m.FinID)
+            @Html.HiddenFor(m => m.FIN)
+
+
+            @Html.FormTextBlockFor(m => m.FinID, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBlockFor(m => m.FIN, new { @class = "m-wrap uppercase", col = "right" })
+            
+
+            @* Fahrzeug-Akte *@
+            @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap" })
+
+
+            @* Fahrzeug-Bestand *@
+            @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kaeufer, new { @class = "m-wrap", col = "right" })
+            
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.Save</button>
+                <button type="button" onclick="CloseFahrzeugDetails();" class='btn'><i class='icon-search margin-right-10'></i>@Localize.Cancel</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+

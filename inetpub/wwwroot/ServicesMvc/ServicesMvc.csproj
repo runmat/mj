@@ -4207,6 +4207,7 @@
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

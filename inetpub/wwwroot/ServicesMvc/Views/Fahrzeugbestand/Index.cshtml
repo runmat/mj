@@ -1,18 +1,23 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
 @model FahrzeugbestandViewModel
 
-<h3 class="page-title" id="headerTitle">Fahrzeugakte + Bestand <small>Pflege</small></h3>
+<h3 class="page-title" id="headerTitle">
+    <button id="closeFahrzeugDetails" onclick="CloseFahrzeugDetails();" class='btn mini red margin-right-20 hide'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
+    Fahrzeugakte + Bestand <small>Pflege</small>
+</h3>
 
 @using (Html.FormSearchBox())
 {
     @Html.Partial("Partial/FahrzeugAkteBestandSuche", Model.FahrzeugAkteBestandSelektor)
 }
 
-@using (Html.FormSearchResultsGrid())
-{
-    <div id="divGrid"></div>
-    <div id="divHistorie"></div>
-}
+<div id="divSearchAndGrid">
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid"></div>
+    }
+</div>
+<div id="divFahrzeugDetails"></div>
 
 <script type="text/javascript">
 
@@ -28,13 +33,13 @@
         FormPrepareAjax();
     }
 
-    function ShowFahrzeugAkteBestand() {
+    function ShowFahrzeugAkteBestandGrid() {
 
         FormPreparePrivateAjax();
 
         $.ajax({
             type: "POST",
-            url: "ShowFahrzeugAkteBestand",
+            url: "ShowFahrzeugAkteBestandGrid",
             loadingShow: true,
             success: function (result) {
 
@@ -61,12 +66,49 @@
         $("#divHistorie").html('');
     }
 
-    function ShowFahrzeugakteAjax(finID) {
-        alert(finID);
+    function FahrzeugShowAjax(finID) {
+        FahrzeugShowCreateAjax(finID);
     }
 
     function FahrzeugCreateAjax() {
-        alert('create...');
+        FahrzeugShowCreateAjax(null);
+    }
+    
+    function FahrzeugShowCreateAjax(finID) {
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestandDetails",
+            data: { finID: finID },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugDetails(result);
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowFahrzeugDetails(result) {
+        $("#divFahrzeugDetails").html(result);
+        $("#divSearchAndGrid").slideUp();
+        $("#divFahrzeugDetails").slideDown();
+        setTimeout(function () { $("#CloseFahrzeugDetails").show(); }, 600);
+        FormPrepareAjax();
+    }
+
+    function CloseFahrzeugDetails() {
+        $("#closeFahrzeugDetails").hide();
+        setTimeout(function () {
+            $("#divFahrzeugDetails").slideUp();
+            $("#divSearchAndGrid").slideDown();
+            setTimeout('LoadingHide();', 500);
+        }, 150);
+    }
+
+    function TryCloseFahrzeugDetails() {
+        if (_modelStateValid) {
+            CloseFahrzeugDetails();
+            FilterGrid("GridFahrzeugAkteBestand");
+        }
     }
 
     function OnDataBound_GridFahrzeugAkteBestand() {

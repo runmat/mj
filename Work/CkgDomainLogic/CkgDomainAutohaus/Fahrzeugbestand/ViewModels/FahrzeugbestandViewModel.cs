@@ -38,6 +38,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
             set { PropertyCacheSet(value); }
         }
+
         public FahrzeugAkteBestandSelektor FahrzeugAkteBestandSelektor
         {
             get { return PropertyCacheGet(() => new FahrzeugAkteBestandSelektor()); }
@@ -58,6 +59,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public FahrzeugAkteBestand CurrentFahrzeug { get; set; }
+
 
         public void DataInit()
         {
@@ -69,14 +72,31 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             PropertyCacheClear(this, m => m.FahrzeugeAkteBestandFiltered);
         }
 
-        public void LoadFahrzeugAkteBestand()
+        public void LoadFahrzeuge()
         {
             FahrzeugeAkteBestand = DataService.GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor);
 
             DataMarkForRefresh();
         }
 
-        public void Validate(Action<string, string> addModelError)
+        public void LoadFahrzeugDetails(string finID)
+        {
+            CurrentFahrzeug = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == finID);
+        }
+
+        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model)
+        {
+            var savedModel = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == model.FinID);
+            if (savedModel == null)
+                return;
+
+            ModelMapping.Copy(model, savedModel);
+            CurrentFahrzeug = savedModel;
+
+            DataMarkForRefresh();
+        }
+
+        public void ValidateSearch(Action<string, string> addModelError)
         {
         }
 
