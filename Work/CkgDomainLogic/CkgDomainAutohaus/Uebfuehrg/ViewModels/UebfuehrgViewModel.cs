@@ -123,7 +123,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public List<Fahrt> Fahrten { get; set; }
 
-        public RgDaten RgDaten { get; private set; }
+        public RgDaten RgDaten { get; set; }
 
         public RgDaten RgDatenFromStepModels { get { return (StepModels.FirstOrDefault() is RgDaten) ? (RgDaten)StepModels.First() : RgDaten; } }
 

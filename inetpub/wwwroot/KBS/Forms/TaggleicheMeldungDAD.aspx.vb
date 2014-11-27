@@ -138,7 +138,7 @@ Partial Public Class TaggleicheMeldungDAD
                 Exit Sub
             End If
 
-            If String.IsNullOrEmpty(txtKennz1.Text) AndAlso String.IsNullOrEmpty(txtKennz2.Text) Then
+            If String.IsNullOrEmpty(txtKennz1.Text) OrElse String.IsNullOrEmpty(txtKennz2.Text) Then
                 lblError.Text = "Bitte geben Sie ein vollständiges Kennzeichen ein."
                 Exit Sub
             End If

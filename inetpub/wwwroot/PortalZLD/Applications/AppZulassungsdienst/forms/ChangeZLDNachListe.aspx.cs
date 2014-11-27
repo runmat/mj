@@ -125,15 +125,12 @@ namespace AppZulassungsdienst.forms
                 trSuche.Visible = false;
                 if (strFilter.Length > 0)
                 {
-                    Result.Visible = false;
                     cmdSend.Enabled = false;
                     cmdOK.Enabled = false;
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
-                    trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     tblGebuehr.Visible = false;
-                    ibtnNoFilter.Visible = false;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
             }
@@ -141,7 +138,7 @@ namespace AppZulassungsdienst.forms
             {
                 Result.Visible = true;
                 GridView1.Visible = true;
-                trSuche.Visible = false;
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 Int32 intTempPageIndex = intPageIndex;
                 String strTempSort = "";
                 String strDirection = null;
@@ -1273,7 +1270,6 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = false;
                 cmdalleBar.Enabled = false;
                 cmdalleRE.Enabled = false;
-                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tblGebuehr.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
@@ -1286,12 +1282,10 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                trSuche.Visible = false;
                 tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                tab1.Visible = true;
             }
 
-            trSuche.Visible = true;
+            trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
             ibtnNoFilter.Visible = true;
             Session["objNacherf"] = objNacherf;
         }
@@ -1334,7 +1328,6 @@ namespace AppZulassungsdienst.forms
             // Steuer
             if (GridView1.Columns[13] != null) { GridView1.Columns[13].Visible = true; }
             
-            ibtnSearch.Visible = true;
             ibtnNoFilter.Visible = false;
             if (objNacherf.tblEingabeListe.DefaultView.Count == 0)
             {
@@ -1345,7 +1338,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = false;
                 cmdalleBar.Enabled = false;
                 cmdalleRE.Enabled = false;
-                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+                trSuche.Visible = false;
                 tblGebuehr.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
@@ -1358,9 +1351,8 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                 cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                trSuche.Visible = false;
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                tab1.Visible = true;
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
             }
@@ -1728,7 +1720,6 @@ namespace AppZulassungsdienst.forms
                 
                 if (objNacherf.Status != 0)
                 {
-                    tab1.Visible = true;
                     if (objNacherf.Status == -5555)
                     {
                         lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht in SAP gespeichert werden! " + objNacherf.Message;
@@ -1931,7 +1922,6 @@ namespace AppZulassungsdienst.forms
 
                 if (objNacherf.Status != 0)
                 {
-                    tab1.Visible = true;
                     lblError.Text = objNacherf.Message;
                 }
                 else
@@ -2036,7 +2026,7 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
-                    trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+                    trSuche.Visible = false;
                     tblGebuehr.Visible = false;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
@@ -2049,13 +2039,10 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
                     cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
                     cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                    trSuche.Visible = false;
+                    trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                     tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                    tab1.Visible = true;
                     ddlSuche.SelectedIndex = 0;
                     txtSuche.Text = "";
-                    ibtnSearch.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                    ibtnNoFilter.Visible = false;
                     Fillgrid(0, "", null);
                 }
                 cmdContinue.Visible = false;
