@@ -4208,6 +4208,7 @@
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
+    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

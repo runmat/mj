@@ -13,7 +13,7 @@
         {
             columns.XBound(c => c.FinID).Title("").Filterable(false).Groupable(false).Sortable(false)
                 .ClientTemplate(
-                      "<button onclick='FahrzeugShowAjax(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                      "<button onclick='FahrzeugShowAjax(\"<#= data.FIN #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                 )
                 .HeaderTemplate(
                       "<button onclick='FahrzeugCreateAjax();' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"

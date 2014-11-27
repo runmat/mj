@@ -1,6 +1,10 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
 @model FahrzeugbestandViewModel
 
+<style type="text/css">
+    input[type="text"][readonly="readonly"] { border:0; font-weight: bold; }
+</style>
+
 <h3 class="page-title" id="headerTitle">
     Fahrzeugakte + Bestand <small>Pflege</small>
 </h3>
@@ -65,19 +69,19 @@
         $("#divHistorie").html('');
     }
 
-    function FahrzeugShowAjax(finID) {
-        FahrzeugShowCreateAjax(finID);
+    function FahrzeugShowAjax(fin) {
+        FahrzeugShowCreateAjax(fin);
     }
 
     function FahrzeugCreateAjax() {
         FahrzeugShowCreateAjax(null);
     }
     
-    function FahrzeugShowCreateAjax(finID) {
+    function FahrzeugShowCreateAjax(fin) {
         $.ajax({
             type: "POST",
             url: "ShowFahrzeugAkteBestandDetails",
-            data: { finID: finID },
+            data: { finToLoad: fin },
             loadingShow: true,
             success: function (result) {
                 ShowFahrzeugDetails(result);
@@ -94,12 +98,38 @@
         FormPrepareAjax();
     }
 
+    var _finSearchFahrzeugFinID = '';
+
+    function ShowFahrzeugDetailsComingFromFinSearch(result) {
+        $("#divFahrzeugDetails").html(result);
+        SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
+        FormPrepareAjax();
+    }
+
     function CloseFahrzeugDetails() {
         setTimeout(function () {
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
         }, 150);
+    }
+
+    function FinSearchTryLoadFahrzeugDetails() {
+        if (!_modelStateValid) {
+            FormPrepareAjax();
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestandDetails",
+            data: { finToLoad: "useModelFin" },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugDetailsComingFromFinSearch(result);
+                LoadingHide();
+            }
+        });
     }
 
     function TryCloseFahrzeugDetails() {
@@ -112,14 +142,9 @@
         FormPrepareAjax();
     }
 
-    var _toggleFzgAkte = false;
-    function ToggleFzgAkte() {
-        _toggleFzgAkte = !_toggleFzgAkte;
-        SetFahrzeugakteFormToReadOnly(_toggleFzgAkte);
-    }
-    
     function SetFahrzeugakteFormToReadOnly(readonly) {
         $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
+        $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
     }
 
 

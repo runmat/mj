@@ -41,14 +41,12 @@ namespace ServicesMvc.Controllers
         public ActionResult Index()
         {
             ViewModel.DataInit();
-            //ViewModel.LoadFahrzeugAkteBestand();
 
             return View(ViewModel);
         }
 
 
         #region Fahrzeug Akte / Bestand
-
 
         [HttpPost]
         public ActionResult LoadFahrzeugAkteBestand(FahrzeugAkteBestandSelektor model)
@@ -66,6 +64,47 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/FahrzeugAkteBestandSuche", ViewModel.FahrzeugAkteBestandSelektor);
         }
+
+
+        [HttpPost]
+        public ActionResult FinSearchFormSubmit(FahrzeugAkteBestandSelektor model)
+        {
+            ViewModel.FinSearchSelektor = model;
+            ViewModel.ValidateFinSearch(ModelState.AddModelError);
+            if (!ModelState.IsValid)
+                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", model);
+
+            return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", ViewModel.FinSearchSelektor);
+        }
+
+
+        [HttpPost]
+        public ActionResult ShowFahrzeugAkteBestandDetails(string finToLoad)
+        {
+            if (finToLoad.IsNullOrEmpty() || finToLoad == "null")
+                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", ViewModel.FinSearchSelektor);
+
+            if (finToLoad == "useModelFin")
+                finToLoad = ViewModel.FinSearchSelektor.FIN;
+
+            ViewModel.LoadFahrzeugDetailsUsingFin(finToLoad);
+
+            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateFahrzeugDetails(FahrzeugAkteBestand model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView("Partial/FahrzeugAkteBestandDetails", model);
+
+            ViewModel.UpdateFahrzeugDetails(model, ModelState.AddModelError);
+
+            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
+        }
+
+
+        #region Grid
 
         [HttpPost]
         public ActionResult ShowFahrzeugAkteBestandGrid()
@@ -87,25 +126,7 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-
-        [HttpPost]
-        public ActionResult ShowFahrzeugAkteBestandDetails(string finID)
-        {
-            ViewModel.LoadFahrzeugDetails(finID);
-
-            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
-        }
-
-        [HttpPost]
-        public ActionResult UpdateFahrzeugDetails(FahrzeugAkteBestand model)
-        {
-            if (!ModelState.IsValid)
-                return PartialView("Partial/FahrzeugAkteBestandDetails", model);
-
-            ViewModel.UpdateFahrzeugDetails(model, ModelState.AddModelError);
-
-            return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
-        }
+        #endregion
 
 
         #region Export

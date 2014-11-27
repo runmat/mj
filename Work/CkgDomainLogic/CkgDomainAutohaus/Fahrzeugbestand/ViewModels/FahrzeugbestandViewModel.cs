@@ -45,6 +45,12 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+        public FahrzeugAkteBestandSelektor FinSearchSelektor
+        {
+            get { return PropertyCacheGet(() => new FahrzeugAkteBestandSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
         [XmlIgnore]
         public List<FahrzeugAkteBestand> FahrzeugeAkteBestand
         {
@@ -83,9 +89,17 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         {
         }
 
-        public void LoadFahrzeugDetails(string finID)
+        public void ValidateFinSearch(Action<string, string> addModelError)
         {
-            CurrentFahrzeug = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == finID);
+            if (FinSearchSelektor.FIN.IsNullOrEmpty())
+                addModelError("", Localize.PleaseFillOutForm);
+        }
+
+        public void LoadFahrzeugDetailsUsingFin(string fin)
+        {
+            CurrentFahrzeug =
+                FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == fin)
+                ?? new FahrzeugAkteBestand { FIN = fin };
         }
 
         public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, Action<string, string> addModelError)

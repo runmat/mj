@@ -4,7 +4,7 @@
     @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
         new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "ShowFahrzeugAkteBestandGrid();" }, new { id = "FahrzeugAkteBestandForm" }))
     {    
-        <div class="form-horizontal" id="searchForm">
+        <div class="form-horizontal">
             
             @Html.FormValidationSummary()
 
