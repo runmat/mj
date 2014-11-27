@@ -1,0 +1,16 @@
+﻿@model CkgDomainLogic.KroschkeZulassung.ViewModels.KroschkeZulassungViewModel
+
+<h3 class="page-title">@Localize.Autohaus_Zulassung  <small></small></h3>
+
+<div class="portlet app-view beauftragung">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
+    </div>
+</div>
+
+@Html.Partial("Partial/Common")
+
+

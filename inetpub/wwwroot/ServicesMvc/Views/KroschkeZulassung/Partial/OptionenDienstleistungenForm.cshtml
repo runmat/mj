@@ -1,0 +1,88 @@
+﻿@using CkgDomainLogic.KroschkeZulassung.Models
+@model OptionenDienstleistungen
+
+<div id="DivOptionenDienstleistungen" class="margin-top-20">
+    @using (Ajax.BeginForm("OptionenDienstleistungenForm", "KroschkeZulassung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivOptionenDienstleistungen", OnComplete = "AjaxFormOptionenDienstleistungenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormOptionenDienstleistungen" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        <div class="dienstleistungen-wrapper">
+            
+            @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+
+            <div class="dienstleistungen-header">
+                <span class="header-left">@Localize.AvailableServices</span>
+                <span class="header-right">@Localize.SelectedServices</span>
+            </div>
+
+            <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
+                @foreach (var dl in Model.AvailableDienstleistungen)
+                {
+                    <option value="@dl.ID" @dl.SelectedAsString>@dl.Name</option>
+                }
+            </select>
+        </div>
+        
+        @Html.HiddenFor(m => m.ZulassungsartMatNr)
+        @Html.HiddenFor(m => m.Ist72hVersandzulassung)
+        @Html.HiddenFor(m => m.IstAbmeldung)
+        @Html.HiddenFor(m => m.IstFirmeneigeneZulassung)
+        @Html.HiddenFor(m => m.IstGebrauchtzulassung)
+        @Html.HiddenFor(m => m.IstKurzzeitzulassung)
+        @Html.HiddenFor(m => m.IstNeuzulassung)
+        @Html.HiddenFor(m => m.IstUmkennzeichnung)
+        @Html.HiddenFor(m => m.IstZollzulassung)
+        
+        @Html.FormCheckBoxFor(m => m.NurEinKennzeichen, new { @class = "m-wrap" })
+        
+        @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.KennzeichenGroesseId, OptionenDienstleistungen.KennzeichengroesseList.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.KennzeichenSondergroesse ? "" : "disabled"), col = "right" })
+
+        @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap", col = "left" })
+        <div col="right">
+            @Html.FormDropDownListFor(m => m.SaisonBeginn, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.Saisonkennzeichen ? "" : "disabled") })
+            @Html.FormDropDownListFor(m => m.SaisonEnde, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.Saisonkennzeichen ? "" : "disabled") })
+        </div>
+        
+        @Html.FormCheckBoxFor(m => m.KennzeichenVorhanden, new { @class = "m-wrap", @disabled = (Model.IstGebrauchtzulassung ? "" : "disabled"), col = "left" })
+        @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", @disabled = (Model.IstAbmeldung ? "" : "disabled"), col = "right" })
+        
+        @Html.FormDatePickerFor(m => m.HaltedauerBis, new { @class = "m-wrap", @disabled = (Model.IstFirmeneigeneZulassung ? "" : "disabled"), col = "left" })
+        @Html.FormTextBoxFor(m => m.AltesKennzeichen, new { @class = "m-wrap medium uppercase", @disabled = (Model.IstUmkennzeichnung ? "" : "disabled"), col = "right" })
+        
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+        
+
+        <script type="text/javascript">
+
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            MultiSelectPreparePrivate();
+
+            function MultiSelectPreparePrivate() {
+                $('#pre-selected-options').multiSelect();
+
+                $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
+                    $(this).append('<i class="icon-chevron-right"></i>');
+                });
+                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
+                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
+                    $(this).append('<i class="icon-remove"></i>');
+                });
+                $('#ms-pre-selected-options').removeClass('hide');
+
+                $('#pre-selected-options').change(function() {
+                    var selectedOptions = '';
+                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
+                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
+                    });
+                    $("#GewaehlteDienstleistungenString").val(selectedOptions);
+                });
+            }
+
+        </script>
+    }
+</div>

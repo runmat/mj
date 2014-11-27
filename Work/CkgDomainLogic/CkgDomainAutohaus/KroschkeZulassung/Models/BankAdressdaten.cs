@@ -1,0 +1,92 @@
+﻿using System;
+using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
+using GeneralTools.Resources;
+
+namespace CkgDomainLogic.KroschkeZulassung.Models
+{
+    public class BankAdressdaten
+    {
+        public Adressdaten Rechnungsempfaenger { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DirectDebitMandate)]
+        public bool Einzugsermaechtigung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Invoice)]
+        public bool Rechnung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Cash)]
+        public bool Bar { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.PaymentType)]
+        public string Zahlungsart 
+        {
+            get
+            {
+                return (Einzugsermaechtigung ? "E" : (Rechnung ? "R" : (Bar ? "B" : "")));
+            }
+            set
+            {
+                Einzugsermaechtigung = (value == "E");
+                Rechnung = (value == "R");
+                Bar = (value == "B");
+            }
+        }
+
+        [XmlIgnore]
+        public static string Zahlungsarten { get { return string.Format("E,{0};R,{1};B,{2}", Localize.DirectDebitMandate, Localize.Invoice, Localize.Cash); } }
+
+        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
+        public string Kontoinhaber { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Iban)]
+        public string Iban { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Swift)]
+        public string Swift { get; set; }
+
+        public bool SwiftEditable { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AccountNo)]
+        public string KontoNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BankCode)]
+        public string Bankleitzahl { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CreditInstitution)]
+        public string Geldinstitut { get; set; }
+
+        public BankAdressdaten()
+        {
+            Rechnungsempfaenger = new Adressdaten();
+        }
+
+        public string GetSummaryString()
+        {
+            var s = "";
+
+            if (Rechnungsempfaenger != null && !String.IsNullOrEmpty(Rechnungsempfaenger.Name1))
+            {
+                s += String.Format("{0}: {1}<br/>{2}", Localize.Name, Rechnungsempfaenger.Name1, Rechnungsempfaenger.Name2);
+                s += String.Format("<br/>{0}: {1}", Localize.Street, Rechnungsempfaenger.Strasse);
+                s += String.Format("<br/>{0}: {1} {2}", Localize.City, Rechnungsempfaenger.Plz, Rechnungsempfaenger.Ort);
+
+                if (Einzugsermaechtigung || Rechnung || Bar)
+                {
+                    s += String.Format("<br/>{0}: {1}", Localize.PaymentType, (Einzugsermaechtigung ? Localize.DirectDebitMandate : (Rechnung ? Localize.Invoice : Localize.Cash)));
+                }
+                
+                if (!String.IsNullOrEmpty(Iban))
+                {
+                    s += String.Format("<br/>{0}: {1}", Localize.AccountHolder, Kontoinhaber);
+                    s += String.Format("<br/>{0}: {1}", Localize.Iban, Iban);
+                    s += String.Format("<br/>{0}: {1}", Localize.Swift, Swift);
+                    s += String.Format("<br/>{0}: {1}", Localize.CreditInstitution, Geldinstitut);
+                }
+            }
+
+            return s;
+        }
+    }
+}
