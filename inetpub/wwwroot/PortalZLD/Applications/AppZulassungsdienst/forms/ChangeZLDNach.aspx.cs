@@ -3178,10 +3178,14 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void ddlStVa_SelectedIndexChanged(object sender, EventArgs e)
         {
-            objNacherf = (NacherfZLD)Session["objNacherf"];
-            cmdCreate.Enabled = objNacherf.SelAnnahmeAH;
-            cmdNewDLPrice.Enabled = false;
-            cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+            if (ddlStVa.SelectedItem != null && String.Compare(objNacherf.Kreis, ddlStVa.SelectedItem.Text) != 0)
+            {
+                objNacherf = (NacherfZLD)Session["objNacherf"];
+                objNacherf.Kreis = ddlStVa.SelectedItem.Text;
+                cmdCreate.Enabled = objNacherf.SelAnnahmeAH;
+                cmdNewDLPrice.Enabled = false;
+                cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+            }
         }
 
         /// <summary>

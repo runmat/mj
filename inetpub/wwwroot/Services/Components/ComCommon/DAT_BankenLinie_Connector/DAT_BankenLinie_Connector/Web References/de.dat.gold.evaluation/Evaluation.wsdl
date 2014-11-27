@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://sphinx.dat.de/services/Evaluation" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="Evaluation" targetNamespace="http://sphinx.dat.de/services/Evaluation" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://gold.dat.de:80/FinanceLine/services/Evaluation?xsd=1" namespace="http://www.dat.de/vxs" />
+    </xsd:schema>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://gold.dat.de:80/FinanceLine/services/Evaluation?xsd=2" namespace="http://sphinx.dat.de/services/Evaluation" />
+    </xsd:schema>
+  </types>
+  <message name="getVehicleEvaluation">
+    <part name="parameters" element="tns:getVehicleEvaluation" />
+  </message>
+  <message name="getVehicleEvaluationResponse">
+    <part name="parameters" element="tns:getVehicleEvaluationResponse" />
+  </message>
+  <message name="getVehicleTargetDateEvaluationHistory">
+    <part name="parameters" element="tns:getVehicleTargetDateEvaluationHistory" />
+  </message>
+  <message name="getVehicleTargetDateEvaluationHistoryResponse">
+    <part name="parameters" element="tns:getVehicleTargetDateEvaluationHistoryResponse" />
+  </message>
+  <message name="getNewVehicleForecast">
+    <part name="parameters" element="tns:getNewVehicleForecast" />
+  </message>
+  <message name="getNewVehicleForecastResponse">
+    <part name="parameters" element="tns:getNewVehicleForecastResponse" />
+  </message>
+  <message name="getUsedVehicleForecast">
+    <part name="parameters" element="tns:getUsedVehicleForecast" />
+  </message>
+  <message name="getUsedVehicleForecastResponse">
+    <part name="parameters" element="tns:getUsedVehicleForecastResponse" />
+  </message>
+  <message name="getVehicleApproximateValue">
+    <part name="parameters" element="tns:getVehicleApproximateValue" />
+  </message>
+  <message name="getVehicleApproximateValueResponse">
+    <part name="parameters" element="tns:getVehicleApproximateValueResponse" />
+  </message>
+  <message name="getDataCountriesForVehicleEvaluation">
+    <part name="parameters" element="tns:getDataCountriesForVehicleEvaluation" />
+  </message>
+  <message name="getDataCountriesForVehicleEvaluationResponse">
+    <part name="parameters" element="tns:getDataCountriesForVehicleEvaluationResponse" />
+  </message>
+  <message name="getDataCountriesForNewVehicleForecast">
+    <part name="parameters" element="tns:getDataCountriesForNewVehicleForecast" />
+  </message>
+  <message name="getDataCountriesForNewVehicleForecastResponse">
+    <part name="parameters" element="tns:getDataCountriesForNewVehicleForecastResponse" />
+  </message>
+  <message name="getDataCountriesForUsedVehicleForecast">
+    <part name="parameters" element="tns:getDataCountriesForUsedVehicleForecast" />
+  </message>
+  <message name="getDataCountriesForUsedVehicleForecastResponse">
+    <part name="parameters" element="tns:getDataCountriesForUsedVehicleForecastResponse" />
+  </message>
+  <message name="getDataCountriesForVehicleTargetDateEvaluationHistory">
+    <part name="parameters" element="tns:getDataCountriesForVehicleTargetDateEvaluationHistory" />
+  </message>
+  <message name="getDataCountriesForVehicleTargetDateEvaluationHistoryResponse">
+    <part name="parameters" element="tns:getDataCountriesForVehicleTargetDateEvaluationHistoryResponse" />
+  </message>
+  <message name="getYearMonthsForVehicleTargetDateEvaluationHistory">
+    <part name="parameters" element="tns:getYearMonthsForVehicleTargetDateEvaluationHistory" />
+  </message>
+  <message name="getYearMonthsForVehicleTargetDateEvaluationHistoryResponse">
+    <part name="parameters" element="tns:getYearMonthsForVehicleTargetDateEvaluationHistoryResponse" />
+  </message>
+  <portType name="Evaluation">
+    <operation name="getVehicleEvaluation">
+      <input wsam:Action="getVehicleEvaluation" message="tns:getVehicleEvaluation" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getVehicleEvaluationResponse" message="tns:getVehicleEvaluationResponse" />
+    </operation>
+    <operation name="getVehicleTargetDateEvaluationHistory">
+      <input wsam:Action="getVehicleTargetDateEvaluationHistory" message="tns:getVehicleTargetDateEvaluationHistory" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getVehicleTargetDateEvaluationHistoryResponse" message="tns:getVehicleTargetDateEvaluationHistoryResponse" />
+    </operation>
+    <operation name="getNewVehicleForecast">
+      <input wsam:Action="getNewVehicleForecast" message="tns:getNewVehicleForecast" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getNewVehicleForecastResponse" message="tns:getNewVehicleForecastResponse" />
+    </operation>
+    <operation name="getUsedVehicleForecast">
+      <input wsam:Action="getUsedVehicleForecast" message="tns:getUsedVehicleForecast" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getUsedVehicleForecastResponse" message="tns:getUsedVehicleForecastResponse" />
+    </operation>
+    <operation name="getVehicleApproximateValue">
+      <input wsam:Action="getVehicleApproximateValue" message="tns:getVehicleApproximateValue" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getVehicleApproximateValueResponse" message="tns:getVehicleApproximateValueResponse" />
+    </operation>
+    <operation name="getDataCountriesForVehicleEvaluation">
+      <input wsam:Action="getDataCountriesForVehicleEvaluation" message="tns:getDataCountriesForVehicleEvaluation" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getDataCountriesForVehicleEvaluationResponse" message="tns:getDataCountriesForVehicleEvaluationResponse" />
+    </operation>
+    <operation name="getDataCountriesForNewVehicleForecast">
+      <input wsam:Action="getDataCountriesForNewVehicleForecast" message="tns:getDataCountriesForNewVehicleForecast" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getDataCountriesForNewVehicleForecastResponse" message="tns:getDataCountriesForNewVehicleForecastResponse" />
+    </operation>
+    <operation name="getDataCountriesForUsedVehicleForecast">
+      <input wsam:Action="getDataCountriesForUsedVehicleForecast" message="tns:getDataCountriesForUsedVehicleForecast" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getDataCountriesForUsedVehicleForecastResponse" message="tns:getDataCountriesForUsedVehicleForecastResponse" />
+    </operation>
+    <operation name="getDataCountriesForVehicleTargetDateEvaluationHistory">
+      <input wsam:Action="getDataCountriesForVehicleTargetDateEvaluationHistory" message="tns:getDataCountriesForVehicleTargetDateEvaluationHistory" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getDataCountriesForVehicleTargetDateEvaluationHistoryResponse" message="tns:getDataCountriesForVehicleTargetDateEvaluationHistoryResponse" />
+    </operation>
+    <operation name="getYearMonthsForVehicleTargetDateEvaluationHistory">
+      <input wsam:Action="getYearMonthsForVehicleTargetDateEvaluationHistory" message="tns:getYearMonthsForVehicleTargetDateEvaluationHistory" />
+      <output wsam:Action="http://sphinx.dat.de/services/Evaluation/Evaluation/getYearMonthsForVehicleTargetDateEvaluationHistoryResponse" message="tns:getYearMonthsForVehicleTargetDateEvaluationHistoryResponse" />
+    </operation>
+  </portType>
+  <binding name="EvaluationPortBinding" type="tns:Evaluation">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="getVehicleEvaluation">
+      <soap:operation soapAction="getVehicleEvaluation" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getVehicleTargetDateEvaluationHistory">
+      <soap:operation soapAction="getVehicleTargetDateEvaluationHistory" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getNewVehicleForecast">
+      <soap:operation soapAction="getNewVehicleForecast" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getUsedVehicleForecast">
+      <soap:operation soapAction="getUsedVehicleForecast" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getVehicleApproximateValue">
+      <soap:operation soapAction="getVehicleApproximateValue" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getDataCountriesForVehicleEvaluation">
+      <soap:operation soapAction="getDataCountriesForVehicleEvaluation" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getDataCountriesForNewVehicleForecast">
+      <soap:operation soapAction="getDataCountriesForNewVehicleForecast" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getDataCountriesForUsedVehicleForecast">
+      <soap:operation soapAction="getDataCountriesForUsedVehicleForecast" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getDataCountriesForVehicleTargetDateEvaluationHistory">
+      <soap:operation soapAction="getDataCountriesForVehicleTargetDateEvaluationHistory" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getYearMonthsForVehicleTargetDateEvaluationHistory">
+      <soap:operation soapAction="getYearMonthsForVehicleTargetDateEvaluationHistory" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Evaluation">
+    <port name="EvaluationPort" binding="tns:EvaluationPortBinding">
+      <soap:address location="http://gold.dat.de:80/FinanceLine/services/Evaluation" />
+    </port>
+  </service>
+</definitions>
