@@ -48,7 +48,7 @@ namespace AppZulassungsdienst.forms
             }
 
         protected void Page_Load(object sender, EventArgs e)
-            {
+        {
             if (!IsPostBack)
             {
                 objNacherf = new NacherfZLD(ref m_User, m_App, "VZ");
@@ -68,8 +68,8 @@ namespace AppZulassungsdienst.forms
                 objNacherf.SelLief = ddlLief.SelectedValue;
                 objNacherf.SelMatnr= "";
                 objNacherf.SelDatum = ZLDCommon.toShortDateStr(txtZulDate.Text);
-                Session["objNacherf"] = objNacherf;
             }
+            Session["objNacherf"] = objNacherf;
         }
 
         /// <summary>

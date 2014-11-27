@@ -10,13 +10,7 @@
     
     </div>
         <div id="info">
-            <asp:HiddenField ID="SkipPageVisitLog" runat="server" />
-            <script type="text/javascript">
-                // Diese Variable kann aus allen Java Script Funktionsaufrufe (z.B. LogPageVisit) ausgerufen werden
-                var idOfSkipPageVisitLogInput = '<%= SkipPageVisitLog.ClientID %>';
-            </script>
-
-                <iframe id="HelpShim" src="javascript:''" scrolling="no" frameborder="0" 
+            <iframe id="HelpShim" src="javascript:''" scrolling="no" frameborder="0" 
                 style="position:absolute; top:200px; height:325px; width:460px; left:0; z-index:-1; "></iframe>
             <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" 
                 HorizontalAlign="Center" Height="525px" >
@@ -37,7 +31,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuAdminSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" onclick="return LogPageVisit('<%= row("AppId") %>', '<%= ResolveClientUrl(row("AppUrl").ToString()) %>');" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -55,7 +49,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuChangeSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" onclick="return LogPageVisit('<%= row("AppId") %>', '<%= ResolveClientUrl(row("AppUrl").ToString()) %>');" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -73,7 +67,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuReportSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" onclick="return LogPageVisit('<%= row("AppId") %>', '<%= ResolveClientUrl(row("AppUrl").ToString()) %>');" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -91,7 +85,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuHelpDeskSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" onclick="return LogPageVisit('<%= row("AppId") %>', '<%= ResolveClientUrl(row("AppUrl").ToString()) %>');" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
