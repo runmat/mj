@@ -392,6 +392,10 @@ Partial Public Class Change07
                     Exit Sub
                 End If
             End If
+            If Not CheckFreitexte() Then
+                lblError.Text = "Achtung! Bei mindestens einer Position fehlt der erforderliche Freitext. Bitte erfassen Sie diesen vor dem Absenden."
+                Exit Sub
+            End If
             ApplyMengen()
             FillGrid2()
             mpeBestellungsCheck.Show()
@@ -510,6 +514,10 @@ Partial Public Class Change07
                 lblError.Text = "Achtung! Sie haben für heute schon eine Umlagerung an die Kst." + mObjUmlagerung.KostStelleNeu + " geparkt. Bitte diese erst ausparken."
                 Exit Sub
             End If
+        End If
+        If Not CheckFreitexte() Then
+            lblError.Text = "Achtung! Bei mindestens einer Position fehlt der erforderliche Freitext. Bitte erfassen Sie diesen vor dem Parken."
+            Exit Sub
         End If
         ApplyMengen()
         mObjUmlagerung.ParkenERP()
@@ -646,7 +654,7 @@ Partial Public Class Change07
             Dim labelMatnr As Label = CType(tmprow.FindControl("lblMatnr"), Label)
             Dim textMenge As TextBox = CType(tmprow.FindControl("txtMenge"), TextBox)
 
-            Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR=" & labelMatnr.Text)
+            Dim rows As DataRow() = mObjUmlagerung.Umlagerung.Select("MATNR='" & labelMatnr.Text & "'")
             If rows.GetLength(0) > 0 Then
                 If IsNumeric(textMenge.Text) Then
                     rows(0)("Menge") = Int32.Parse(textMenge.Text)
@@ -658,6 +666,18 @@ Partial Public Class Change07
 
         Session("mUmlagerung") = mObjUmlagerung
     End Sub
+
+    Private Function CheckFreitexte() As Boolean
+        For Each row As DataRow In mObjUmlagerung.Umlagerung.Rows
+            Dim artRows As DataRow() = mObjUmlagerung.Artikel.Select("MATNR='" & row("MATNR") & "'")
+            If artRows.Length > 0 AndAlso Not IsDBNull(artRows(0)("TEXTPFLICHT")) AndAlso CChar(artRows(0)("TEXTPFLICHT")) = "X"c AndAlso (IsDBNull(row("LTEXT")) OrElse String.IsNullOrEmpty(row("LTEXT").ToString())) Then
+                'Erfoderlicher Freitext nicht gefüllt
+                Return False
+            End If
+        Next
+
+        Return True
+    End Function
 
     Private Sub lbNachdruck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbNachdruck.Click
         MPENachdruck.Show()

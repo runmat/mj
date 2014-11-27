@@ -83,28 +83,32 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlStVa_SelectedIndexChanged(object sender, EventArgs e)
         {
-            objVersandZul = (VorVersand)Session["objVersandZul"];
-            txtStVa.Text = ddlStVa.SelectedValue;
-            objVersandZul.SelLief = txtStVa.Text;
-
-            if (objVersandZul.BestLieferanten == null)
-            { objVersandZul.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this); }
-
-
-            if (objVersandZul.Status > 0)
+            if (String.Compare(objVersandZul.SelKreis, ddlStVa.SelectedValue) != 0)
             {
-                ddlLief.Items.Clear();
-                lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
-                Session["objVersandZul"] = objVersandZul;
-            }
-            else
-            {
-                ddlLief.DataSource = objVersandZul.BestLieferanten;
-                ddlLief.DataValueField = "LIFNR";
-                ddlLief.DataTextField = "NAME1";
-                ddlLief.DataBind();
-                ddlLief.SelectedValue = "0";
-                Session["objNacherf"] = objVersandZul;
+                objVersandZul = (VorVersand)Session["objVersandZul"];
+                txtStVa.Text = ddlStVa.SelectedValue;
+                objVersandZul.SelKreis = txtStVa.Text;
+
+                if (objVersandZul.BestLieferanten == null)
+                {
+                    objVersandZul.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this);
+                }
+
+                if (objVersandZul.Status > 0)
+                {
+                    ddlLief.Items.Clear();
+                    lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
+                    Session["objVersandZul"] = objVersandZul;
+                }
+                else
+                {
+                    ddlLief.DataSource = objVersandZul.BestLieferanten;
+                    ddlLief.DataValueField = "LIFNR";
+                    ddlLief.DataTextField = "NAME1";
+                    ddlLief.DataBind();
+                    ddlLief.SelectedValue = "0";
+                    Session["objNacherf"] = objVersandZul;
+                }
             }
         }
 

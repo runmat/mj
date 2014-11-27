@@ -200,7 +200,7 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (String.IsNullOrEmpty(txtKennz1.Text) && String.IsNullOrEmpty(txtKennz2.Text))
+                if (String.IsNullOrEmpty(txtKennz1.Text) || String.IsNullOrEmpty(txtKennz2.Text))
                 {
                     lblError.Text = "Bitte geben Sie ein vollständiges Kennzeichen ein.";
                     return;

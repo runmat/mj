@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.dat.de/FinanceLine/services/VehicleSelection?wsdl" filename="VehicleSelection.wsdl" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.dat.de/FinanceLine/services/VehicleSelection?xsd=2" filename="VehicleSelection.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.dat.de/FinanceLine/services/VehicleSelection?xsd=1" filename="VehicleSelection0.xsd" />
-  </Results>
-</DiscoveryClientResultsFile>
