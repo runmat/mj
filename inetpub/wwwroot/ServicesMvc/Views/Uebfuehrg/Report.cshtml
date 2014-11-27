@@ -1,0 +1,161 @@
+﻿@model CkgDomainLogic.Uebfuehrg.ViewModels.UebfuehrgReportViewModel
+
+<style type="text/css">
+    .t-grid-filter { display: none; }
+    a.btn.mini.tooltips {
+        padding-top: 7px!important;
+        padding-bottom: 0!important;
+    }
+</style>
+
+<h3 class="page-title" id="headerTitle">
+    <button id="closeHistoryAuftragDetails" onclick="CloseHistoryAuftragDetails();" class='btn mini red margin-right-20 hide'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
+    Überführungen <small>Report</small>
+</h3>
+
+<div id="divSearchAndGrid">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/HistoryAuftragSuche", Model.HistoryAuftragSelector)
+    }
+
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid"></div>
+    }
+</div>
+
+<div id="divAuftragDetails"></div>
+
+@(Html.Telerik().Window()
+    .Name("HistoryAuftragBigImage")
+    .Width(800)
+    .Height(650)
+    .Visible(false)
+    .Title("Foto Überführungsprotokoll")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Resizable()
+    .Content(@<text><div id="InnerHistoryAuftragBigImage"></div></text>))
+
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowHistoryAuftraegeSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridHistoryAuftrag");
+
+        $("#divGrid").slideDown();
+        $("#divAuftragDetails").html('');
+    }
+    
+    function ShowHistoryAuftraege() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowHistoryAuftraege",
+            loadingShow: true,
+            success: function (result) {
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowHistoryAuftraegeSearchResult(result);
+                }
+                LoadingHide();
+            }
+        });
+    }
+
+    function LoadHistoryAuftragDetails(auftragsNr, fahrt) {
+        $.ajax({
+            type: "POST",
+            url: "LoadHistoryAuftragDetails",
+            loadingShow: true,
+            data: { auftragsNr: auftragsNr, fahrt: fahrt },
+            success: function (result) {
+                ShowHistoryAuftragDetails(result);
+                LoadingHide();
+            }
+        });
+
+        return false;
+    }
+    
+    function ShowHistoryAuftragDetails(result) {
+        $("#divAuftragDetails").html(result);
+        $("#divSearchAndGrid").slideUp();
+        $("#divAuftragDetails").slideDown();
+        setTimeout(function() { $("#closeHistoryAuftragDetails").show(); }, 600);
+        FormPrepareAjax();
+    }
+
+    function CloseHistoryAuftragDetails() {
+        $("#closeHistoryAuftragDetails").hide();
+        setTimeout(function() {
+            $("#divAuftragDetails").slideUp();
+            $("#divSearchAndGrid").slideDown();
+            setTimeout('LoadingHide();', 500);
+        }, 150);
+    }
+
+    function ShowBigImage(tour, fileNr) {
+        var detailWindow = $("#HistoryAuftragBigImage").data("tWindow");
+        detailWindow.center().open();
+        
+        $.ajax(
+            {
+                type: "POST",
+                data: { tour: tour, fileNr: fileNr },
+                url: "HistoryAuftragShowBigImage",
+                success: function (result) {
+                    $("#InnerHistoryAuftragBigImage").html(result);
+                    $("#InnerHistoryAuftragBigImage img").css("opacity", "0");
+
+                    setTimeout(function () {
+                        $(".t-window-content").css("width", 800 + "px");
+                        $(".t-window-content").css("height", 650 + "px");
+                        
+                        $("#InnerHistoryAuftragBigImage img").css("opacity", "1");
+                        $("#InnerHistoryAuftragBigImage div").hide();
+
+                        var img = $("#InnerHistoryAuftragBigImage img")[0];
+                        $(".t-window-content").css("width", (img.clientWidth == 0 ? 800 : img.clientWidth) + "px");
+                        $(".t-window-content").css("height", (img.clientHeight == 0 ? 650 : img.clientHeight) + "px");
+                        
+                        detailWindow.center();
+                    }, 500);
+                }
+            });
+    }
+
+
+    function OnDataBound_GridHistoryAuftrag() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridHistoryAuftrag() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridHistoryAuftrag() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
