@@ -102,7 +102,7 @@ namespace ServicesMvc.Controllers
             if (!ModelState.IsValid)
                 return PartialView("Partial/FahrzeugAkteBestandDetails", model);
 
-            ViewModel.UpdateFahrzeugDetails(model);
+            ViewModel.UpdateFahrzeugDetails(model, ModelState.AddModelError);
 
             return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }

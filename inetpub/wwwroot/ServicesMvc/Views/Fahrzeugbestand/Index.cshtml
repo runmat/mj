@@ -2,16 +2,15 @@
 @model FahrzeugbestandViewModel
 
 <h3 class="page-title" id="headerTitle">
-    <button id="closeFahrzeugDetails" onclick="CloseFahrzeugDetails();" class='btn mini red margin-right-20 hide'><i class='icon-chevron-left margin-right-5'></i>@Localize.Back</button>
     Fahrzeugakte + Bestand <small>Pflege</small>
 </h3>
 
-@using (Html.FormSearchBox())
-{
-    @Html.Partial("Partial/FahrzeugAkteBestandSuche", Model.FahrzeugAkteBestandSelektor)
-}
-
 <div id="divSearchAndGrid">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/FahrzeugAkteBestandSuche", Model.FahrzeugAkteBestandSelektor)
+    }
+
     @using (Html.FormSearchResultsGrid())
     {
         <div id="divGrid"></div>
@@ -89,14 +88,13 @@
 
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
+        SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
-        setTimeout(function () { $("#CloseFahrzeugDetails").show(); }, 600);
         FormPrepareAjax();
     }
 
     function CloseFahrzeugDetails() {
-        $("#closeFahrzeugDetails").hide();
         setTimeout(function () {
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
@@ -105,11 +103,25 @@
     }
 
     function TryCloseFahrzeugDetails() {
+        SetFahrzeugakteFormToReadOnly(true);
         if (_modelStateValid) {
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");
+            return;
         }
+        FormPrepareAjax();
     }
+
+    var _toggleFzgAkte = false;
+    function ToggleFzgAkte() {
+        _toggleFzgAkte = !_toggleFzgAkte;
+        SetFahrzeugakteFormToReadOnly(_toggleFzgAkte);
+    }
+    
+    function SetFahrzeugakteFormToReadOnly(readonly) {
+        $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
+    }
+
 
     function OnDataBound_GridFahrzeugAkteBestand() {
         FilteredData_Grid_OnDataBound($(this));

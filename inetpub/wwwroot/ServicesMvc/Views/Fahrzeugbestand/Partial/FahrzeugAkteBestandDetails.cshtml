@@ -1,37 +1,46 @@
 ﻿@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestand
 
-<div id="divFahrzeugDetailsSuche">
+<style type="text/css">
+    input[type="text"][readonly="readonly"] { border:0; font-weight: bold; }
+</style>
+
+<div id="divFahrzeugDetails">
     @using (Ajax.BeginForm("UpdateFahrzeugDetails", "Fahrzeugbestand", null,
-        new MvcAjaxOptions("divFahrzeugDetailsSuche") { OnComplete = "TryCloseFahrzeugDetails();" }, new { id = "FahrzeugDetailsForm" }))
+        new MvcAjaxOptions("divFahrzeugDetails") { OnComplete = "TryCloseFahrzeugDetails();" }, new { id = "FahrzeugDetailsForm" }))
     {    
-        <div class="form-horizontal" id="searchForm">
+        @Html.FormValidationSummary()
             
-            @Html.FormValidationSummary()
-            
-            @Html.HiddenFor(m => m.FinID)
-            @Html.HiddenFor(m => m.FIN)
+        @Html.HiddenFor(m => m.FinID)
+        @Html.HiddenFor(m => m.FIN)
 
+        <div class="row-fluid">
+            <div class="span6 form-horizontal" id="fahrzeug-akte">
+                @using (Html.PortletBox(Localize.Autohaus_Fahrzeugakte, "icon-briefcase"))
+                {
+                    @* Fahrzeug-Akte *@
+                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap" })
+                }
+            </div>
 
-            @Html.FormTextBlockFor(m => m.FinID, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBlockFor(m => m.FIN, new { @class = "m-wrap uppercase", col = "right" })
-            
-
-            @* Fahrzeug-Akte *@
-            @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap" })
-
-
-            @* Fahrzeug-Bestand *@
-            @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kaeufer, new { @class = "m-wrap", col = "right" })
-            
+            <div class="span6 form-horizontal" id="fahrzeug-bestand">
+                @using (Html.PortletBox(Localize.InventoryData, "icon-table"))
+                {
+                    @* Fahrzeug-Bestand *@
+                    @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.Kaeufer, new { @class = "m-wrap" })
+                }
+            </div>
 
             @*@Html.FormRequiredFieldsSummary()*@
 
-            <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.Save</button>
-                <button type="button" onclick="CloseFahrzeugDetails();" class='btn'><i class='icon-search margin-right-10'></i>@Localize.Cancel</button>
-            </div>
-        </div>  
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class='btn blue'><i class='icon-ok margin-right-10'></i>@Localize.Save</button>
+            <button type="button" onclick="CloseFahrzeugDetails();" class='btn'><i class='halflings-icon remove margin-right-10'></i>@Localize.Cancel</button>
+
+            <button type="button" onclick="ToggleFzgAkte();" class='hide btn purple margin-left-50'><i class='icon-search margin-right-10'></i>@Localize.Temporary</button>
+        </div>
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();

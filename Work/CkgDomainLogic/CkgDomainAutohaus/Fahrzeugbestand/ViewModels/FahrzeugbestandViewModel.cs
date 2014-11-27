@@ -79,12 +79,16 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             DataMarkForRefresh();
         }
 
+        public void ValidateSearch(Action<string, string> addModelError)
+        {
+        }
+
         public void LoadFahrzeugDetails(string finID)
         {
             CurrentFahrzeug = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == finID);
         }
 
-        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model)
+        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, Action<string, string> addModelError)
         {
             var savedModel = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == model.FinID);
             if (savedModel == null)
@@ -93,11 +97,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             ModelMapping.Copy(model, savedModel);
             CurrentFahrzeug = savedModel;
 
-            DataMarkForRefresh();
-        }
+            var errorMessage = DataService.SaveFahrzeugAkteBestand(savedModel);
+            if (errorMessage.IsNotNullOrEmpty())
+                addModelError("", errorMessage);
 
-        public void ValidateSearch(Action<string, string> addModelError)
-        {
+            DataMarkForRefresh();
         }
 
         public void FilterFahrzeugeAkteBestand(string filterValue, string filterProperties)
