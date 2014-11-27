@@ -1,0 +1,34 @@
+﻿@model CkgDomainLogic.Uebfuehrg.Models.HistoryAuftragSelector
+
+<div id="divHistoryAuftragSuche">
+    @using (Ajax.BeginForm("LoadHistoryAuftraege", "Uebfuehrg", null,
+        new MvcAjaxOptions("divHistoryAuftragSuche") { OnComplete = "ShowHistoryAuftraege();" }, new { id = "HistoryAuftragForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.HiddenFor(m => m.KundenNr)
+            @Html.HiddenFor(m => m.KundenReferenz) 
+            @Html.HiddenFor(m => m.AlleOrganisationen)
+            
+            @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "left" }, new[] { "!far-past", "!this-year" })
+            @Html.FormDateRangePickerFor(m => m.UeberfuehrungsDatumRange, new { col = "right" }, new[] { "!far-past", "!this-year" })
+
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz, new { @class = "m-wrap small", col = "right" })
+    
+            @Html.FormRadioButtonListFor(m => m.AuftragsArt, Model.AuftragsArtOptions, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
+
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-5'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

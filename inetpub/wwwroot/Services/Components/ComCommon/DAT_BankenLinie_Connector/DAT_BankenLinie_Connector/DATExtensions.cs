@@ -1,4 +1,4 @@
-﻿using DAT_BankenLinie_Connector.de.dat.www.authentication;
+﻿using DAT_BankenLinie_Connector.de.dat.gold.authentication;
 
 namespace DAT_BankenLinie_Connector
 {

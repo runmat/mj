@@ -2,13 +2,6 @@
 
 Public Class DATBankenlinieConnector
 
-    'Für Fahrzeugtypen, Hersteller, Modelle, etc
-    'Dim customerNumber As String = "1321363"
-    'Dim interfacePartnerNumber As String = "1321363"
-    'Dim customerLogin As String = "gidaflor"
-    'Dim customerSignature As String = "jA0EAwMCdHGL/jscCfZgySrVgZIm3RtHDbJihjsDc+TJnoy0OAZx3Ahmsy48zclYhJJaHCu0ldyY7+Y="
-    'Dim interfacePartnerSignature As String = "A0EAwMChWUxRDT4NXdgySsSIYH83EOooQ/k5dWKwZU0ly3l5fXv6q2ld2bkCzB4O7cDLki05yQi1J5m"
-
     Private customerNumber As String = ""
     Private customerLogin As String = ""
     Private customerSignature As String = ""
@@ -65,17 +58,17 @@ Public Class DATBankenlinieConnector
     End Sub
 
     Public Function GetDATVersion() As String
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.basicSelectionRequest = New de.dat.www.basicSelectionRequest()
+        Dim vs As de.dat.gold.basicSelectionRequest = New de.dat.gold.basicSelectionRequest()
         vs.sessionID = sessionID
-        vs.restriction = de.dat.www.releaseRestriction.ALL
+        vs.restriction = de.dat.gold.releaseRestriction.ALL
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -90,17 +83,17 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlVehicleTypes_DataTable() As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.basicSelectionRequest = New de.dat.www.basicSelectionRequest()
+        Dim vs As de.dat.gold.basicSelectionRequest = New de.dat.gold.basicSelectionRequest()
         vs.sessionID = sessionID
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -121,8 +114,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getVehicleTypes(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getVehicleTypes(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -136,18 +129,18 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlManufacturers_DataTable(ByVal vehicleType As Integer) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.manufacturerSelectionRequest = New de.dat.www.manufacturerSelectionRequest()
+        Dim vs As de.dat.gold.manufacturerSelectionRequest = New de.dat.gold.manufacturerSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -168,8 +161,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getManufacturers(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getManufacturers(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -213,23 +206,23 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlBaseModels_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.baseModelSelectionRequest = New de.dat.www.baseModelSelectionRequest()
+        Dim vs As de.dat.gold.baseModelSelectionRequest = New de.dat.gold.baseModelSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -250,8 +243,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getBaseModels(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getBaseModels(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -265,24 +258,24 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlSubModels_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subModelSelectionRequest = New de.dat.www.subModelSelectionRequest()
+        Dim vs As de.dat.gold.subModelSelectionRequest = New de.dat.gold.subModelSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -303,8 +296,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getSubModels(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getSubModels(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -318,25 +311,25 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlEngineOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -357,8 +350,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getEngineOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getEngineOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -372,25 +365,25 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlBodyOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -411,8 +404,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getCarBodyOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getCarBodyOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -426,25 +419,25 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlGearingOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -465,8 +458,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getGearingOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getGearingOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -480,25 +473,25 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlEquipmentLineOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -519,8 +512,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getEquipmentLineOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getEquipmentLineOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -535,25 +528,25 @@ Public Class DATBankenlinieConnector
 
     'Transporter & LKW
     Public Function ddlWheelbase_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -574,8 +567,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getWheelBaseOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getWheelBaseOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -590,25 +583,25 @@ Public Class DATBankenlinieConnector
 
     'Transporter 
     Public Function ddlTypeOfDrive_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -629,8 +622,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getTypeOfDriveOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getTypeOfDriveOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -645,25 +638,25 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlConstructionOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -684,8 +677,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getConstructionOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getConstructionOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -700,25 +693,25 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlNumberOfAxleOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -739,8 +732,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getNumberOfAxleOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getNumberOfAxleOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -755,25 +748,25 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlDriversCabOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -794,8 +787,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getDriversCabOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getDriversCabOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -810,25 +803,25 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlGrossVehicleWeightOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -849,8 +842,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getGrossVehicleWeightOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getGrossVehicleWeightOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -865,25 +858,25 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlSuspensionOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.subTypeVariantEquipmentSelectionRequest = New de.dat.www.subTypeVariantEquipmentSelectionRequest()
+        Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
         vs.sessionID = sessionID
         vs.vehicleType = vehicleType
         vs.manufacturer = manufacturer
         vs.baseModel = baseModel
         vs.subModel = subModel
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vs.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vs.constructionTimeToSpecified = True
         End If
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -904,8 +897,8 @@ Public Class DATBankenlinieConnector
 
         Dim table1_Row As DataRow
 
-        Dim bMx() As de.dat.www.integerStringPair = viSelection.getSuspensionOptions(vs)
-        For Each bm As de.dat.www.integerStringPair In bMx
+        Dim bMx() As de.dat.gold.integerStringPair = viSelection.getSuspensionOptions(vs)
+        For Each bm As de.dat.gold.integerStringPair In bMx
             table1_Row = table1.NewRow()
             table1_Row("Key") = bm.key
             table1_Row("Value") = bm.value
@@ -919,22 +912,22 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlContainer_DataTable(ByVal europaCode As String, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim localePeriod As de.dat.www.locale = New de.dat.www.locale()
+        Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
         localePeriod.country = "DE"
         localePeriod.datCountryIndicator = "DE"
         localePeriod.language = "de"
 
-        Dim vsContainer As de.dat.www.priceFocusSelectionRequest = New de.dat.www.priceFocusSelectionRequest()
+        Dim vsContainer As de.dat.gold.priceFocusSelectionRequest = New de.dat.gold.priceFocusSelectionRequest()
         vsContainer.sessionID = sessionID
         vsContainer.datECode = europaCode
         vsContainer.locale = localePeriod
-        vsContainer.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vsContainer.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         If ezJahr > 0 Then
             vsContainer.constructionTimeTo = CalculateConstructionTime(ezMonat, ezJahr)
             vsContainer.constructionTimeToSpecified = True
@@ -955,8 +948,8 @@ Public Class DATBankenlinieConnector
         Dim table1_Row As DataRow
 
         Try
-            Dim bMx() As de.dat.www.stringStringPair = viSelection.getPriceFocusCases(vsContainer)
-            For Each bm As de.dat.www.stringStringPair In bMx
+            Dim bMx() As de.dat.gold.stringStringPair = viSelection.getPriceFocusCases(vsContainer)
+            For Each bm As de.dat.gold.stringStringPair In bMx
                 table1_Row = table1.NewRow()
                 table1_Row("Key") = bm.key
                 table1_Row("Value") = bm.value
@@ -972,18 +965,18 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlConstructionYear_DataTable(ByVal europaCode As String) As DataTable
-        Dim vi As New de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim vs As de.dat.www.priceFocusSelectionRequest = New de.dat.www.priceFocusSelectionRequest()
+        Dim vs As de.dat.gold.priceFocusSelectionRequest = New de.dat.gold.priceFocusSelectionRequest()
         vs.sessionID = sessionID
         vs.datECode = europaCode
-        vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
 
-        Dim locale As de.dat.www.locale = New de.dat.www.locale()
+        Dim locale As de.dat.gold.locale = New de.dat.gold.locale()
         locale.country = "DE"
         locale.datCountryIndicator = "DE"
         locale.language = "de"
@@ -1019,27 +1012,27 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function GetConstructionTimeMin(ByVal europaCode As String, ByVal container As String) As Integer
-        Dim vi As New DAT_BankenLinie_Connector.de.dat.www.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication()
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New DAT_BankenLinie_Connector.de.dat.www.VehicleSelection()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService()
         viSelection.CookieContainer = vi.CookieContainer
 
-        Dim localePeriod As DAT_BankenLinie_Connector.de.dat.www.locale = New DAT_BankenLinie_Connector.de.dat.www.locale()
+        Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
         localePeriod.country = "DE"
         localePeriod.datCountryIndicator = "DE"
         localePeriod.language = "de"
 
-        Dim vsPeriod As DAT_BankenLinie_Connector.de.dat.www.constructionPeriodSelectionRequest = New DAT_BankenLinie_Connector.de.dat.www.constructionPeriodSelectionRequest()
+        Dim vsPeriod As de.dat.gold.constructionPeriodSelectionRequest = New de.dat.gold.constructionPeriodSelectionRequest()
         vsPeriod.sessionID = sessionID
         vsPeriod.datECode = europaCode
-        vsPeriod.restriction = de.dat.www.releaseRestriction.APPRAISAL
+        vsPeriod.restriction = de.dat.gold.releaseRestriction.APPRAISAL
         vsPeriod.locale = localePeriod
         If Not String.IsNullOrEmpty(container) Then
             vsPeriod.container = container
         End If
 
-        Dim ConstPeriod As DAT_BankenLinie_Connector.de.dat.www.constructionTimePeriod = viSelection.getConstructionPeriods(vsPeriod)
+        Dim ConstPeriod As de.dat.gold.constructionTimePeriod = viSelection.getConstructionPeriods(vsPeriod)
 
         vi.doLogout(False, False)
 
@@ -1051,37 +1044,37 @@ Public Class DATBankenlinieConnector
 
         Try
             'Setzen der Container
-            Dim vi As New DAT_BankenLinie_Connector.de.dat.www.authentication.Authentication()
+            Dim vi As New de.dat.gold.authentication.Authentication()
             Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-            Dim viSelection As New DAT_BankenLinie_Connector.de.dat.www.VehicleSelection()
+            Dim viSelection As New de.dat.gold.VehicleSelectionService()
             viSelection.CookieContainer = vi.CookieContainer
 
             Dim iConstructionTime As Integer = CalculateConstructionTime(1, constructionYear)
 
             If minConstructionTime = 0 Then
-                Dim localePeriod As DAT_BankenLinie_Connector.de.dat.www.locale = New DAT_BankenLinie_Connector.de.dat.www.locale()
+                Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
                 localePeriod.country = "DE"
                 localePeriod.datCountryIndicator = "DE"
                 localePeriod.language = "de"
 
-                Dim vsPeriod As DAT_BankenLinie_Connector.de.dat.www.constructionPeriodSelectionRequest = New DAT_BankenLinie_Connector.de.dat.www.constructionPeriodSelectionRequest()
+                Dim vsPeriod As de.dat.gold.constructionPeriodSelectionRequest = New de.dat.gold.constructionPeriodSelectionRequest()
                 vsPeriod.sessionID = sessionID
                 vsPeriod.datECode = europaCode
-                vsPeriod.restriction = de.dat.www.releaseRestriction.APPRAISAL
+                vsPeriod.restriction = de.dat.gold.releaseRestriction.APPRAISAL
                 vsPeriod.locale = localePeriod
                 If Not String.IsNullOrEmpty(container) Then
                     vsPeriod.container = container
                 End If
 
-                Dim ConstPeriod As DAT_BankenLinie_Connector.de.dat.www.constructionTimePeriod = viSelection.getConstructionPeriods(vsPeriod)
+                Dim ConstPeriod As de.dat.gold.constructionTimePeriod = viSelection.getConstructionPeriods(vsPeriod)
                 minConstructionTime = ConstPeriod.constructionTimeMin
             End If
-            
-            Dim viEvaluation As New DAT_BankenLinie_Connector.de.dat.www.evaluation.Evaluation()
+
+            Dim viEvaluation As New de.dat.gold.evaluation.Evaluation()
             viEvaluation.CookieContainer = vi.CookieContainer
 
-            Dim vs As DAT_BankenLinie_Connector.de.dat.www.evaluation.vehicleEvaluationRequest = New DAT_BankenLinie_Connector.de.dat.www.evaluation.vehicleEvaluationRequest()
+            Dim vs As de.dat.gold.evaluation.vehicleEvaluationRequest = New de.dat.gold.evaluation.vehicleEvaluationRequest()
             vs.sessionID = sessionID
             vs.datECode = europaCode
             Try
@@ -1094,9 +1087,9 @@ Public Class DATBankenlinieConnector
             Else
                 vs.constructionTime = iConstructionTime
             End If
-            vs.restriction = de.dat.www.releaseRestriction.APPRAISAL
+            vs.restriction = de.dat.gold.releaseRestriction.APPRAISAL
 
-            Dim locale As DAT_BankenLinie_Connector.de.dat.www.evaluation.locale = New DAT_BankenLinie_Connector.de.dat.www.evaluation.locale()
+            Dim locale As de.dat.gold.evaluation.locale = New de.dat.gold.evaluation.locale()
             locale.country = "DE"
             locale.datCountryIndicator = "DE"
             locale.language = "de"
@@ -1114,7 +1107,7 @@ Public Class DATBankenlinieConnector
             End If
 
             Try
-                Dim bMx As DAT_BankenLinie_Connector.de.dat.www.evaluation.getVehicleEvaluationResponseVXS = viEvaluation.getVehicleEvaluation(vs)
+                Dim bMx As de.dat.gold.evaluation.getVehicleEvaluationResponseVXS = viEvaluation.getVehicleEvaluation(vs)
                 hep = bMx.Dossier(0).Valuation.PurchasePriceGross.Value.ToString()
                 hvp = bMx.Dossier(0).Valuation.SalesPriceGross.Value.ToString()
             Catch e As Exception

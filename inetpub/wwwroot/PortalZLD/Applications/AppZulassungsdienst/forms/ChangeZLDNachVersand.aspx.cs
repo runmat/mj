@@ -45,7 +45,7 @@ namespace AppZulassungsdienst.forms
         }
 
         protected void Page_Load(object sender, EventArgs e)
-            {
+        {
             if (!IsPostBack)
             {
                 objNacherf = new NacherfZLD(ref m_User, m_App, "VZ");
@@ -64,12 +64,11 @@ namespace AppZulassungsdienst.forms
                 objNacherf.Vorgang = "VZ";
             }
 
-                Session["objNacherf"] = objNacherf;
-            }
+            Session["objNacherf"] = objNacherf;
+        }
 
         protected void ddlStVa_SelectedIndexChanged(object sender, EventArgs e)
         {
-            objNacherf = (NacherfZLD)Session["objNacherf"];
             txtStVa.Text = ddlStVa.SelectedValue;
         }
 

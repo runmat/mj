@@ -179,7 +179,7 @@ namespace WebTools.Services
 
         static bool IsSpecialChar(char c)
         {
-            return new[] { '@', '*', '~', '&', '!', '%', '$', '§', '^', '°', '*', '(', ')', '[', ']', '{', '}' }.Contains(c);
+            return new[] { '@', '*', '~', '&', '!', '%', '$', '§', '^', '°', '*', '(', ')', '[', ']', '{', '}', '“', '#', '+', '=', '/', '?' }.Contains(c);
         }
 
         static string GetPropertyResourceString<T>(Expression<Func<T, object>> expression, T model, ILocalizationService localizationService)

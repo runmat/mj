@@ -545,7 +545,6 @@
     <Content Include="JScript\Jquery\MSDropdown\js\jquery.dd.js" />
     <Content Include="JScript\services.js" />
     <Content Include="JScript\overlib_mini.js" />
-    <Content Include="Log.aspx" />
     <Content Include="PageElements\BusyIndicator.ascx" />
     <Content Include="PageElements\OldBusyIndicator.ascx" />
     <Content Include="PageElements\SearchForm\Scripts\TextBoxKeyPressFiltering.js" />
@@ -554,6 +553,7 @@
     <Content Include="PageElements\SearchForm\Scripts\jquery-textbox-selection.js" />
     <Content Include="PageElements\SearchForm\SearchForm.ascx" />
     <Content Include="PageElements\SearchForm\SearchFormTypes.ascx" />
+    <Content Include="Start\Log.aspx" />
     <Content Include="Start\LogonMessage.aspx" />
     <Content Include="Start\Login.aspx" />
     <Content Include="Start\Mvc.aspx" />
@@ -612,13 +612,6 @@
     </Compile>
     <Compile Include="Info\ResponsiblePage.aspx.vb">
       <DependentUpon>ResponsiblePage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Log.aspx.designer.vb">
-      <DependentUpon>Log.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Log.aspx.vb">
-      <DependentUpon>Log.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MasterPage\Design.Master.designer.vb">
@@ -704,6 +697,13 @@
     </Compile>
     <Compile Include="PageElements\SearchForm\SearchFormTypes.ascx.vb">
       <DependentUpon>SearchFormTypes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Start\Log.aspx.designer.vb">
+      <DependentUpon>Log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Start\Log.aspx.vb">
+      <DependentUpon>Log.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Start\LogonMessage.aspx.designer.vb">

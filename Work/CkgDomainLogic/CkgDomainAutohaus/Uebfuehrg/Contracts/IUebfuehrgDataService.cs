@@ -20,5 +20,7 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
         List<UeberfuehrungsAuftragsPosition> Save(RgDaten rgDaten, List<CommonUiModel> stepModels, List<Fahrt> fahrten);
 
         void OnInit(ILogonContext logonContext, IAppSettings appSettings);
+
+        List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragSelector filter);
     }
 }

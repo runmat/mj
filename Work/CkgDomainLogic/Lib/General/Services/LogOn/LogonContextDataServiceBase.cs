@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Web;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
@@ -178,7 +180,7 @@ namespace CkgDomainLogic.General.Services
             if (UserNameEncryptedToUrlEncoded.IsNullOrEmpty())
                 return new HtmlString("#");
 
-            var appUrl = menuItem.AppURL.ToLower();
+            var appUrl = menuItem.AppURL.ToLower(); 
             appUrl = FormatUserEncrytpedUrl(appUrl).ToString();
 
             return new HtmlString(appUrl); // new HtmlString(appUrl.Replace("?", string.Format("?appID={0}&", menuItem.AppID)));
@@ -190,6 +192,11 @@ namespace CkgDomainLogic.General.Services
                 return new HtmlString("#");
 
             url = FormatUrl(url).ToString();
+
+            if (url.Contains("?"))
+            {
+                return new HtmlString(string.Format("{0}&un={1}", url, UserNameEncryptedToUrlEncoded));
+            }
 
             return new HtmlString(string.Format("{0}?un={1}", url, UserNameEncryptedToUrlEncoded));
         }
@@ -351,6 +358,17 @@ namespace CkgDomainLogic.General.Services
                 return;
 
             AppUrl = HttpContext.Current.Request.Url.AbsolutePath;
+        }
+
+        public void RewriteUrlToLogPageVisit(IApplicationUserMenuItem menuItem)
+        {
+            var appId = menuItem.AppID;
+            var url = menuItem.AppURL;
+            var urlUtf8 = Encoding.UTF8.GetString(Encoding.Default.GetBytes(url));
+            var urlEncoded = HttpUtility.UrlEncode(urlUtf8);
+
+            var modifiedUrl = string.Concat("mvc/DomainCommon/LogPageVisit?", "logappid=", appId, "&url=", urlEncoded);
+            menuItem.AppURL = modifiedUrl;
         }
     }
 }
