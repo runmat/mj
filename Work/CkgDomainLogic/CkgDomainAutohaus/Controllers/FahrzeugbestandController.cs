@@ -35,6 +35,7 @@ namespace ServicesMvc.Controllers
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrzeugbestandDataService);
             InitViewModel(AdressenPflegeViewModel, appSettings, logonContext, adressenDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -43,6 +44,19 @@ namespace ServicesMvc.Controllers
             ViewModel.DataInit();
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Partner()
+        {
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+        void InitModelStatics()
+        {
+            FahrzeugAkteBestand.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;
         }
 
 
@@ -176,6 +190,7 @@ namespace ServicesMvc.Controllers
             return Json(new
                 {
                     partnerKennung = AdressenPflegeViewModel.AdressenKennung,
+                    partnerID = selectedPartner.ID,
                     partnerName = selectedPartner.GetAutoSelectString()
                 });
         }

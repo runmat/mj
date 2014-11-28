@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using CkgDomainLogic.Fahrzeugbestand.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -18,6 +21,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
+
+        [NotMapped]
+        public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
 
         #region Fahrzeug Akte

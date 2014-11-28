@@ -4,6 +4,7 @@
 <style type="text/css">
     input[type="text"][readonly="readonly"] { border:0; font-weight: bold; }
 </style>
+@Html.Partial("AdressenPflege/AdresseCommon")
 
 <h3 class="page-title" id="headerTitle">
     Fahrzeugakte + Bestand <small>Pflege</small>
@@ -22,11 +23,26 @@
 </div>
 <div id="divFahrzeugDetails"></div>
 
+@(Html.Telerik().Window()
+    .Name("PartnerDialog")
+    .Width(1000)
+    .Height(500)
+    .Visible(false)
+    .Title("Partner auswählen")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Resizable()
+    .Content(@<text><div id="InnerPartnerDialog"></div></text>))
+    
+
 <script type="text/javascript">
 
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        FormPreparePrivateAdressenPflege();
+
         setTimeout(function () {
             $("#FahrzeugAkteBestandForm").submit();
         }, 100);
@@ -152,6 +168,106 @@
         $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
         $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
     }
+    
+
+    //
+    // <Partner Selection>
+    //
+
+    var _dropdownCurrent = null;
+    var _dropdownGridCurrent = null;
+
+    function PickPartnerAddress(partnerKennung) {
+
+        var dropdownThis = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown");
+        if (_dropdownCurrent != null) {
+            if (_dropdownCurrent.attr("id") != dropdownThis.attr("id")) {
+                ClosePartnerAddressGrid("PickPartnerAddress('" + partnerKennung + "')");
+                return false;
+            }
+            ClosePartnerAddressGrid();
+            return false;
+        }
+
+        _dropdownCurrent = dropdownThis;
+        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown-grid");
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddress",
+            data: { partnerKennung: partnerKennung },
+            loadingShow: true,
+            success: function (result) {
+                ShowPartnerAddressGrid(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+
+        return false;
+    }
+
+    function AddressSelect(id) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddressFinished",
+            data: { id: id },
+            loadingShow: false,
+            success: function (result) {
+                //console.log(result.partnerKennung);
+                //console.log(result.partnerName);
+                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
+                console.log(dropdownTextSpan);
+                dropdownTextSpan.html(result.partnerName);
+                var hiddenFieldName = (result.partnerKennung.toLowerCase().substr(0, 1) == "k" ? "Kaeufer" : "Halter");
+                $("#fahrzeug-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
+
+                ClosePartnerAddressGrid();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowPartnerAddressGrid(result) {
+        _dropdownCurrent.find("i").removeClass("icon-chevron-right").addClass("icon-chevron-down");
+
+        var partnerWindow = $("#PartnerDialog").data("tWindow");
+        $("#InnerPartnerDialog").html(result);
+        FormPreparePrivateAdressenPflege();
+
+        $("#divGridEditStart").addClass("PartnerAddressSubGrid");
+        $(".grid-column-overall-quick-filter-pick-start").parent().hide();
+        partnerWindow.center().open();
+
+        setTimeout(function () {
+            $(".grid-column-overall-filter").focus();
+        }, 500);
+    }
+
+    function ClosePartnerAddressGrid(postFunction) {
+        var partnerWindow = $("#PartnerDialog").data("tWindow");
+        partnerWindow.close();
+
+        _dropdownCurrent.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-right");
+        _dropdownCurrent = null;
+        _dropdownGridCurrent = null;
+
+        if (typeof (postFunction) !== "undefined")
+            eval(postFunction);
+        else
+            setTimeout("LoadingHide()", 50);
+
+        return false;
+    }
+
+    //
+    // </Partner Selection>
+    //
 
 
     function OnDataBound_GridFahrzeugAkteBestand() {
