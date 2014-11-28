@@ -90,15 +90,21 @@
         });
     }
 
+    var _finSearchFahrzeugFinID = '';
+
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
         SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
         FormPrepareAjax();
+        try {
+            setTimeout(function () {
+                $("#FahrzeugDetailsFinSearchForm input[name='FIN']").focus();
+            }, 200);
+        }
+        catch(e){}
     }
-
-    var _finSearchFahrzeugFinID = '';
 
     function ShowFahrzeugDetailsComingFromFinSearch(result) {
         $("#divFahrzeugDetails").html(result);
@@ -133,7 +139,7 @@
     }
 
     function TryCloseFahrzeugDetails() {
-        SetFahrzeugakteFormToReadOnly(true);
+        SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
         if (_modelStateValid) {
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");

@@ -22,7 +22,16 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         {
                             d.FIN = s.FIN;
                             d.FinID = s.FIN_ID;
+
+                            // Fahrzeug Akte
                             d.FabrikName = s.ZZFABRIKNAME;
+                            d.HandelsName= s.ZZHANDELSNAME;
+                            d.HerstellerSchluessel= s.ZZHERSTELLER_SCH;
+                            d.TypSchluessel= s.ZZTYP_SCHL;
+                            d.VvsSchluessel= s.ZZVVS_SCHLUESSEL;
+                            d.VvsPruefZiffer= s.ZZTYP_VVS_PRUEF;
+
+                            // Fahrzeug Bestand
                             d.Halter = s.HALTER;
                             d.Kaeufer = s.KAEUFER;
                         }));

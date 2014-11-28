@@ -95,18 +95,16 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
                 addModelError("", Localize.PleaseFillOutForm);
         }
 
-        public void LoadFahrzeugDetailsUsingFin(string fin)
+        public FahrzeugAkteBestand LoadFahrzeugDetailsUsingFin(string fin)
         {
-            CurrentFahrzeug =
+            return CurrentFahrzeug =
                 FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == fin)
                 ?? new FahrzeugAkteBestand { FIN = fin };
         }
 
         public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, Action<string, string> addModelError)
         {
-            var savedModel = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == model.FinID);
-            if (savedModel == null)
-                return;
+            var savedModel = LoadFahrzeugDetailsUsingFin(model.FIN);
 
             ModelMapping.Copy(model, savedModel);
             CurrentFahrzeug = savedModel;
@@ -115,7 +113,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
 
-            DataMarkForRefresh();
+            if (savedModel.FinID.IsNullOrEmpty())
+                LoadFahrzeuge();
+            else
+                DataMarkForRefresh();
         }
 
         public void FilterFahrzeugeAkteBestand(string filterValue, string filterProperties)

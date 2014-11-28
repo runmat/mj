@@ -92,19 +92,24 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
             return error;
         }
 
-        private static void CreateRowForFahrzeug(List<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP> fzgList, FahrzeugAkteBestand fahrzeugAkteBestand)
+        private static void CreateRowForFahrzeug(List<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP> fzgList, FahrzeugAkteBestand f)
         {
             var sapFahrzeug = new Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP
             {
-                FIN_ID = fahrzeugAkteBestand.FinID,
-                FIN = fahrzeugAkteBestand.FIN,
+                FIN_ID = f.FinID,
+                FIN = f.FIN,
 
                 // Fahrzeug Akte
-                ZZFABRIKNAME = fahrzeugAkteBestand.FabrikName,
+                ZZFABRIKNAME = f.FabrikName,
+                ZZHANDELSNAME = f.HandelsName,
+                ZZTYP_SCHL = f.TypSchluessel,
+                ZZHERSTELLER_SCH = f.HerstellerSchluessel,
+                ZZVVS_SCHLUESSEL = f.VvsSchluessel,
+                ZZTYP_VVS_PRUEF = f.VvsPruefZiffer,
 
                 // Fahrzeug Bestand
-                KAEUFER = fahrzeugAkteBestand.Kaeufer,
-                HALTER = fahrzeugAkteBestand.Halter,
+                KAEUFER = f.Kaeufer,
+                HALTER = f.Halter,
             };
 
             fzgList.Add(sapFahrzeug);

@@ -5,8 +5,14 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 {
     public class FahrzeugAkteBestandSelektor
     {
+        private string _fin;
+
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        public string FIN { get; set; }
+        public string FIN
+        {
+            get { return _fin.NotNullOrEmpty().ToUpper(); }
+            set { _fin = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.FactoryName)]
         public string FabrikName { get; set; }

@@ -14,7 +14,13 @@
                 {
                     @* Fahrzeug-Akte *@
                     @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
+
+                    @Html.FormTextBoxFor(m => m.HerstellerSchluessel, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.VvsPruefZiffer, new { @class = "m-wrap small", maxlength = 1 })
                     @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap" })
                 }
             </div>
 
