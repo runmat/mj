@@ -85,6 +85,17 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             DataMarkForRefresh();
         }
 
+        public void RefreshSelectedKaueferAndHalter(FahrzeugAkteBestand model, Func<List<Adresse>> getHalterAdressen, Func<List<Adresse>> getKaeuferAdressen)
+        {
+            PropertyCacheClear(this, m => m.SelectedHalter);
+            if (model.Halter.IsNotNullOrEmpty())
+                SelectedHalter = getHalterAdressen().FirstOrDefault(a => a.TmpSelectionKey == model.Halter);
+
+            PropertyCacheClear(this, m => m.SelectedKaeufer);
+            if (model.Kaeufer.IsNotNullOrEmpty())
+                SelectedKaeufer = getHalterAdressen().FirstOrDefault(a => a.TmpSelectionKey == model.Kaeufer);
+        }
+
         public void ValidateSearch(Action<string, string> addModelError)
         {
         }
