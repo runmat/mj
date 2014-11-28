@@ -23,30 +23,30 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         #region Fahrzeug Akte
 
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        [MaxLength(5)]
+        [Length(5)]
         [Required]
         public string HerstellerSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
-        [MaxLength(3)]
+        [Length(3)]
         [Required]
         public string TypSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
-        [MaxLength(5)]
+        [Length(5)]
         [Required]
         public string VvsSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
-        [MaxLength(1)]
+        [Length(1)]
         public string VvsPruefZiffer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        [MaxLength(25)]
+        [Length(25)]
         public string FabrikName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TradeName)]
-        [MaxLength(25)]
+        [Length(25)]
         public string HandelsName { get; set; }
 
         #endregion

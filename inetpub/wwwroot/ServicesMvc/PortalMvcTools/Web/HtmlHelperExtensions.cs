@@ -297,6 +297,20 @@ namespace PortalMvcTools.Web
             });
         }
 
+        static object GetMaxLengthAttributes<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes)
+        {
+            var propertyName = expression.GetPropertyName();
+            var property = typeof(TModel).GetProperty(propertyName);
+            if (property == null)
+                return controlHtmlAttributes;
+
+            var maxLengthAttribute = property.GetCustomAttributes(typeof(LengthAttribute), true).OfType<LengthAttribute>().FirstOrDefault();
+            if (maxLengthAttribute == null)
+                return controlHtmlAttributes;
+
+            return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = maxLengthAttribute.Length });
+        }
+
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
@@ -316,6 +330,7 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
+            controlHtmlAttributes = GetMaxLengthAttributes(expression, controlHtmlAttributes);
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
 
             var model = new FormControlModel
