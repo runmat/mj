@@ -46,6 +46,10 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [XmlIgnore]
         static public List<Domaenenfestwert> FahrzeugartList { get; set; }
 
+        public bool IstAnhaenger { get { return (FahrzeugartId.NotNullOrEmpty().Trim() == "3"); } }
+
+        public bool IstMotorrad { get { return (FahrzeugartId.NotNullOrEmpty().Trim() == "5"); } }
+
         [LocalizedDisplay(LocalizeConstants.SellerAbbreviation)]
         public string VerkaeuferKuerzel { get; set; }
 

@@ -26,7 +26,8 @@
             var stepName = FormWizard.GetStepKey(step - 1);
 
             try {
-                $("#" + stepName + "AjaxForm").submit();
+                $("#AjaxForm" + stepName).submit();
+                
                 return false;
             }
             catch (e) {
@@ -39,7 +40,7 @@
         });
 
         FormWizard.OnSubmit(function () {
-            
+
             AjaxRequestNextStep();
 
             return true;
@@ -71,7 +72,7 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
-        });    
+        });
     }
 
     // Rechnungsdaten
@@ -92,6 +93,38 @@
             AjaxRequestNextStep();
             return;
         }
+    }
+
+    function LoadBankdatenAusIban() {
+
+        var iban = $("#Iban").val();
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadBankdatenAusIban",
+                data: { iban: iban },
+                loadingShow: true,
+                success: function (result) {
+                    if (result.Swift == null || result.Swift == '') {
+                        $("#Swift").attr("readonly", false);
+                        $("#Swift").attr("placeholder", "");
+                        $("#Swift").val("");
+                        SpanAlertWarning("bankDataHint", '@Localize.BankDataCouldNotBeRetrievedFromIban.ToJavascriptString()', 1800);
+                        return;
+                    }
+
+                    $("#Swift").val(result.Swift);
+                    $("#Swift").attr("readonly", true);
+                    $("#KontoNr").val(result.KontoNr);
+                    $("#Bankleitzahl").val(result.Bankleitzahl);
+                    $("#Geldinstitut").val(result.Geldinstitut);
+                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+                }
+            });
+
+        return false;
+
     }
 
     // Fahrzeugdaten
@@ -132,7 +165,7 @@
 
     function GridHalterAdresseOnSelect(id) {
         $("#TmpSelectionKey").val(id);
-        $("#HalterAdresseAjaxForm").submit();
+        $("#AjaxFormHalterAdresse").submit();
     }
 
     // Zulassungsdaten
@@ -154,12 +187,12 @@
                 data: {},
                 loadingShow: true,
                 success: function (result) {
-                    if (result.Zulassungskreis == '') {
+                    if (result.kfzKreis == '') {
                         SpanAlertWarning("kfzKreisHint", '@Localize.RegDistrictCouldNotBeRetrievedFromCarOwnerAddr.ToJavascriptString()', 1800);
                         return;
                     }
 
-                    $("#Zulassungskreis").val(result.Zulassungskreis);
+                    $("#Zulassungskreis").val(result.kfzKreis);
                     SpanAlertSuccess("kfzKreisHint", '@Localize.RegDistrictSuccessfullyRetrievedFromCarOwnerAddr.ToJavascriptString()', 1800);
                 }
             });

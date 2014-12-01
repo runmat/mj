@@ -41,12 +41,17 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
         public KroschkeZulassungDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            MarkForRefresh();
         }
 
         public void MarkForRefresh()
         {
-            Zulassung = new Vorgang();
+            Zulassung = new Vorgang
+                {
+                    VkOrg = ((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea.ToString(),
+                    VkBur = ((LogonContextDataServiceBase)LogonContext).Organization.OrganizationReference2,
+                    Vorerfasser = LogonContext.UserName,
+                    VorgangsStatus = "1"
+                };
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Fahrzeugarten);
             PropertyCacheClear(this, m => m.Zulassungsarten);
@@ -61,7 +66,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
             var orgRef = ((LogonContextDataServiceBase) LogonContext).Organization.OrganizationReference;
 
-            SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef));
+            SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
             SAP.SetImportParameter("I_VKORG", ((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea.ToString());
             SAP.SetImportParameter("I_VKBUR", ((LogonContextDataServiceBase)LogonContext).Organization.OrganizationReference2);
             SAP.SetImportParameter("I_SPART", "01");
@@ -71,21 +76,23 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList);
         }
 
-        public string CheckIban()
+        public Bankdaten GetBankdaten(string iban)
         {
-            Z_FI_CONV_IBAN_2_BANK_ACCOUNT.Init(SAP, "I_IBAN", Zulassung.BankAdressdaten.Iban);
+            var erg = new Bankdaten();
+
+            Z_FI_CONV_IBAN_2_BANK_ACCOUNT.Init(SAP, "I_IBAN", iban);
 
             SAP.Execute();
 
-            if (SAP.ResultCode != 0)
-                return Localize.Error + ": " + SAP.ResultMessage;
+            if (SAP.ResultCode == 0)
+            {
+                erg.Swift = SAP.GetExportParameter("E_SWIFT");
+                erg.KontoNr = SAP.GetExportParameter("E_BANK_ACCOUNT");
+                erg.Bankleitzahl = SAP.GetExportParameter("E_BANK_NUMBER");
+                erg.Geldinstitut = SAP.GetExportParameter("E_BANKA");
+            }           
 
-            Zulassung.BankAdressdaten.Geldinstitut = SAP.GetExportParameter("E_BANKA");
-            Zulassung.BankAdressdaten.Bankleitzahl = SAP.GetExportParameter("E_BANK_NUMBER");
-            Zulassung.BankAdressdaten.KontoNr = SAP.GetExportParameter("E_BANK_ACCOUNT");
-            Zulassung.BankAdressdaten.Swift = SAP.GetExportParameter("E_SWIFT");
-
-            return "";
+            return erg;
         }
 
         private IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
@@ -114,16 +121,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                 return Localize.UnableToRetrieveRegistrationDistrictFromSap + ": " + SAP.ResultMessage;
 
             if (sapList.Count > 0)
-            {
-                Zulassung.Zulassungsdaten.Zulassungskreis = sapList[0].ZKFZKZ;
-                Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = sapList[0].ZKREIS;
-            }
-            else
-            {
-                Zulassung.Zulassungsdaten.Zulassungskreis = "";
-                Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = "";
-            }
-            
+                return sapList[0].ZKFZKZ;
+
             return "";
         }
 
@@ -148,7 +147,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return true;
         }
 
-        public string SaveZulassung(bool simulation)
+        public string SaveZulassung(bool saveDataInSap, bool mitKundenformular)
         {
             var blnBelegNrLeer = (String.IsNullOrEmpty(Zulassung.BelegNr) || Zulassung.BelegNr.TrimStart('0').Length == 0);
 
@@ -158,34 +157,48 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
             SAP.SetImportParameter("I_TELNR", ((LogonContextDataServiceBase)LogonContext).UserInfo.Telephone);
+            SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
 
-            if (simulation)
-                SAP.SetImportParameter("I_SIMULATION", "X");
+            if (saveDataInSap)
+                SAP.SetImportParameter("I_SPEICHERN", "X");
+
+            if (mitKundenformular)
+                SAP.SetImportParameter("I_FORMULAR", "X");
 
             var vorgaenge = new List<Vorgang> { Zulassung };
 
             var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(vorgaenge).ToList();
             SAP.ApplyImport(bakList);
 
+            Zulassung.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = Zulassung.BelegNr);
             var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(Zulassung.OptionenDienstleistungen.GewaehlteDienstleistungen).ToList();
             SAP.ApplyImport(posList);
 
-            var adressen = new List<Adressdaten> { Zulassung.BankAdressdaten.Rechnungsempfaenger };
+            if (!String.IsNullOrEmpty(Zulassung.BankAdressdaten.Rechnungsempfaenger.Name1))
+            {
+                Zulassung.BankAdressdaten.Rechnungsempfaenger.BelegNr = Zulassung.BelegNr;
+                var adressen = new List<Adressdaten> { Zulassung.BankAdressdaten.Rechnungsempfaenger };
 
-            var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
-            SAP.ApplyImport(adrsList);
+                var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
+                SAP.ApplyImport(adrsList);
+            }        
 
             SAP.Execute();
 
             if (SAP.ResultCode != 0)
-                return Localize.SaveFailed + ": " + SAP.ResultMessage;
+            {
+                var errString = "";
+                var errList = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_ERROR.GetExportList(SAP);
+                if (errList.Count > 0 && errList.Any(e => e.MESSAGE != "OK"))
+                    errString = String.Join(", ", errList.Select(e => e.MESSAGE));
 
-            var errList = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_ERROR.GetExportList(SAP);
-            if (errList.Count > 0)
-                return errList[0].MESSAGE;
+                return String.Format("{0}: {1}{2}", Localize.SaveFailed, SAP.ResultMessage, (String.IsNullOrEmpty(errString) ? "" : String.Format(" ({0})", errString)));
+            }  
 
-            if (simulation)
+            if (mitKundenformular)
                 Zulassung.KundenformularPdf = SAP.GetExportParameterByte("E_PDF");
+            else
+                Zulassung.KundenformularPdf = null;
 
             return "";
         }

@@ -14,3 +14,19 @@
         </div>
     }
 </div>
+
+<script type="text/javascript">
+
+    // ToDo: Speichern-Button anzeigen, der nur im Summary-Step sichtbar ist
+    //TryInsertSaveButton();
+
+    function TryInsertSaveButton() {
+        var submButton = $(".button-submit:first");
+        
+        if (submButton != null && (submButton.prev().hasClass("button-next") || submButton.prev().hasClass("button-prev"))) {
+            $('<a class="btn green button-save margin-right-5" style="display: inline-block;" href="SaveZulassung"> Speichern <i class="m-icon-swapright m-icon-white"/></a>').insertBefore(submButton);
+        }
+    } 
+
+</script>
+

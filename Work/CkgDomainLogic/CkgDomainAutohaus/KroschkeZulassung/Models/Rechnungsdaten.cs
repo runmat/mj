@@ -38,7 +38,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
             var s = "";
 
             if (Kunde != null)
-                s += String.Format("{0}: {1} {2}", Localize.Customer, Kunde.KundenNr, Kunde.KundenName);
+                s += String.Format("{0}: {1}", Localize.Customer, Kunde.KundenNameNr.Replace(", ", "<br/>"));
 
             return s;
         }

@@ -15,7 +15,11 @@ else
 }
 
 <div id="ReceiptFormActions" class="hide">
-    <a href="SummaryAsPdf" class="btn blue tooltips" data-original-title="Ihr Vorgang als PDF Datei!" data-placement="top"> PDF Download <i class="icon-download-alt"></i></a>
+    <a href="SummaryAsPdf" class="btn blue tooltips" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
+    @if (Model.Zulassung.KundenformularPdf != null)
+    {
+        <a href="KundenformularAsPdf" class="btn blue tooltips margin-left-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
+    }
 </div>
 
 @if (Model.SaveErrorMessage.IsNotNullOrEmpty())

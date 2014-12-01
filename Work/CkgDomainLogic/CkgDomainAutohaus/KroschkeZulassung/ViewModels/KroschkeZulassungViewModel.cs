@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
@@ -59,6 +60,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         public void SetRechnungsdaten(Rechnungsdaten model)
         {
             Zulassung.Rechnungsdaten.KundenNr = model.KundenNr;
+
+            Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
+            Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.Kunde.CpdMitEinzugsermaechtigung;
         }
 
         #endregion
@@ -66,17 +70,37 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Bank-/Adressdaten
 
-        public void SetBankAdressdaten(BankAdressdaten model)
+        public bool SkipBankAdressdaten { get; private set; }
+
+        public void CheckCpd()
+        {
+            SkipBankAdressdaten = !Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
+        }
+
+        public void SetBankAdressdaten(ref BankAdressdaten model)
         {
             Zulassung.BankAdressdaten.Rechnungsempfaenger = model.Rechnungsempfaenger;
             Zulassung.BankAdressdaten.Zahlungsart = model.Zahlungsart;
             Zulassung.BankAdressdaten.Kontoinhaber = model.Kontoinhaber;
-            Zulassung.BankAdressdaten.Iban = model.Iban.ToUpper();
-            Zulassung.BankAdressdaten.Swift = model.Swift.ToUpper();
-            Zulassung.BankAdressdaten.SwiftEditable = model.SwiftEditable;
+            Zulassung.BankAdressdaten.Iban = model.Iban.NotNullOrEmpty().ToUpper();
+
+            if (model.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.BankAdressdaten.Swift = "";
+            else
+                Zulassung.BankAdressdaten.Swift = model.Swift.NotNullOrEmpty().ToUpper();
+
             Zulassung.BankAdressdaten.KontoNr = model.KontoNr;
             Zulassung.BankAdressdaten.Bankleitzahl = model.Bankleitzahl;
-            Zulassung.BankAdressdaten.Geldinstitut = model.Geldinstitut;
+
+            if (model.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.BankAdressdaten.Geldinstitut = "";
+            else
+                Zulassung.BankAdressdaten.Geldinstitut = model.Geldinstitut;
+        }
+
+        public Bankdaten LoadBankdatenAusIban(string iban)
+        {
+            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper());
         }
 
         #endregion
@@ -90,18 +114,24 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         public void SetFahrzeugdaten(Fahrzeugdaten model)
         {
             Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
-            Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr.ToUpper();
-            Zulassung.Fahrzeugdaten.Zb2Nr = model.Zb2Nr.ToUpper();
+            Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().ToUpper();
+            Zulassung.Fahrzeugdaten.Zb2Nr = model.Zb2Nr.NotNullOrEmpty().ToUpper();
             Zulassung.Fahrzeugdaten.FahrzeugartId = model.FahrzeugartId;
             Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
+
+            if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
+                Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
         }
 
         #endregion
 
 
         #region HalterAdresse
+
+        [XmlIgnore]
+        public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
 
         [XmlIgnore]
         public Adresse HalterAdresse
@@ -170,16 +200,18 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         {
             Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;
             Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
-            Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.ToUpper();
+            Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
-            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.ToUpper();
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen.ToUpper();
+            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.Wunschkennzeichen = model.Wunschkennzeichen;
-            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2.ToUpper();
-            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3.ToUpper();
+            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
+            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.KennzeichenReservieren = model.KennzeichenReservieren;
             Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
-            Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;      
+            Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+
+            Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
         }
 
         #endregion
@@ -201,10 +233,26 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.OptionenDienstleistungen.SaisonEnde = model.SaisonEnde;
             Zulassung.OptionenDienstleistungen.Bemerkung = model.Bemerkung;
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = model.ZulassungsartMatNr;
-            Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = model.KennzeichenVorhanden;
-            Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
-            Zulassung.OptionenDienstleistungen.HaltedauerBis = model.HaltedauerBis;
-            Zulassung.OptionenDienstleistungen.AltesKennzeichen = model.AltesKennzeichen.ToUpper();
+
+            if (Zulassung.OptionenDienstleistungen.IstGebrauchtzulassung)
+                Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = model.KennzeichenVorhanden;
+            else
+                Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = false;
+
+            if (Zulassung.OptionenDienstleistungen.IstAbmeldung)
+                Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
+            else
+                Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = false;
+
+            if (Zulassung.OptionenDienstleistungen.IstFirmeneigeneZulassung)
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.HaltedauerBis;
+            else
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
+
+            if (Zulassung.OptionenDienstleistungen.IstUmkennzeichnung)
+                Zulassung.OptionenDienstleistungen.AltesKennzeichen = model.AltesKennzeichen.NotNullOrEmpty().ToUpper();
+            else
+                Zulassung.OptionenDienstleistungen.AltesKennzeichen = "";
         }
 
         #endregion
@@ -218,6 +266,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
             Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
+            Adresse.Laender = LaenderList;
             Zulassungsdaten.MaterialList = Zulassungsarten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
@@ -228,17 +277,18 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(bool simulation)
+        public void Save(bool saveDataInSap)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassung(simulation);
+            SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap, true);
         }
 
         public string BeauftragungBezeichnung
         {
             get
             {
-                return String.Format("{0}, {1}, {2}, {3}",
-                    Zulassung.Rechnungsdaten.Kunde.KundenName,
+                return String.Format("{0}: {1}, {2}, {3}, {4}",
+                    Zulassung.Fahrzeugdaten.AuftragsNr,
+                    Zulassung.Rechnungsdaten.Kunde.KundenNameNr,
                     Zulassung.Zulassungsdaten.Zulassungsart.MaterialText,
                     Zulassung.Halter,
                     Zulassung.Zulassungsdaten.Kennzeichen);
@@ -265,13 +315,6 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
                 Header = Localize.OrderSummaryVehicleRegistration,
                 Items = new ListNotEmpty<GeneralEntity>
                         (
-                            (Zulassung.Fahrzeugdaten.AuftragsNr.IsNullOrEmpty() ? null :
-                                new GeneralEntity
-                                {
-                                    Title = Localize.OrderID,
-                                    Body = Zulassung.Fahrzeugdaten.AuftragsNr,
-                                }),
-
                             SummaryBeauftragungsHeader,
 
                             new GeneralEntity

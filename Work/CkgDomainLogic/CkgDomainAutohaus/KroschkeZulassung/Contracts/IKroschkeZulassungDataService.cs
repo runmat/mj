@@ -21,10 +21,10 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 
         void MarkForRefresh();
 
-        string CheckIban();
+        Bankdaten GetBankdaten(string iban);
 
         string GetZulassungskreis();
 
-        string SaveZulassung(bool simulation);
+        string SaveZulassung(bool saveDataInSap, bool mitKundenformular);
     }
 }

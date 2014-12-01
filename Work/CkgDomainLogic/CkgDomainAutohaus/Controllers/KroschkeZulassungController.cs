@@ -30,13 +30,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(ViewModel, appSettings, logonContext, adressenDataService, zulassungDataService);
         }
 
-        public ActionResult Index()
-        {
-            return RedirectToAction("KroschkeZulassung");
-        }
-        
         [CkgApplication]
-        public ActionResult KroschkeZulassung()
+        public ActionResult Index()
         {
             ViewModel.DataMarkForRefresh();
 
@@ -70,18 +65,25 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult BankAdressdaten()
         {
+            ViewModel.CheckCpd();
+
             return PartialView("Partial/BankAdressdaten", ViewModel);
         }
 
         [HttpPost]
         public ActionResult BankAdressdatenForm(BankAdressdaten model)
         {
-            if (ModelState.IsValid)
-            {
-                ViewModel.SetBankAdressdaten(model);
-            }
+            ViewModel.SetBankAdressdaten(ref model);
 
             return PartialView("Partial/BankAdressdatenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult LoadBankdatenAusIban(string iban)
+        {
+            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
+
+            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
         }
 
         #endregion
@@ -164,7 +166,7 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.DataMarkForRefreshHalterAdressenFiltered();
 
-            return PartialView("KroschkeZulassung/Partial/HalterAdressenAuswahlGrid");
+            return PartialView("Partial/HalterAdressenAuswahlGrid");
         }
 
         public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
@@ -217,6 +219,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult OptionenDienstleistungen()
         {
+            ViewModel.Zulassung.OptionenDienstleistungen.InitDienstleistungen();
+
             return PartialView("Partial/OptionenDienstleistungen", ViewModel);
         }
 
@@ -228,12 +232,30 @@ namespace ServicesMvc.Controllers
                 ViewModel.SetOptionenDienstleistungen(model);
             }
 
+            model.InitDienstleistungen(ViewModel.ZulassungDataService.Zusatzdienstleistungen);
+
             return PartialView("Partial/OptionenDienstleistungenForm", model);
         }
 
         #endregion
 
         #region Summary + Receipt
+
+        [HttpPost]
+        public ActionResult Save()
+        {
+            ViewModel.Save(false);
+
+            return PartialView("Partial/Receipt", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Receipt()
+        {
+            ViewModel.Save(true);
+
+            return PartialView("Partial/Receipt", ViewModel);
+        }
 
         [HttpPost]
         public ActionResult Summary()
@@ -243,7 +265,7 @@ namespace ServicesMvc.Controllers
 
         public FileContentResult SummaryAsPdf()
         {
-            var summaryHtml = this.RenderPartialViewToString("Partial/Partial/SummaryPdf", ViewModel.CreateSummaryModel());
+            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel());
 
             var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
@@ -251,12 +273,11 @@ namespace ServicesMvc.Controllers
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
         }
 
-        [HttpPost]
-        public ActionResult Receipt()
+        public FileContentResult KundenformularAsPdf()
         {
-            ViewModel.Save(false);
+            var formularPdfBytes = ViewModel.Zulassung.KundenformularPdf;
 
-            return PartialView("Partial/Receipt", ViewModel);
+            return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
 
         #endregion   

@@ -40,6 +40,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public DateTime? Zulassungsdatum { get; set; }
 
         [Required]
+        [StringLength(3)]
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string Zulassungskreis { get; set; }
 
@@ -47,10 +48,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public string ZulassungskreisBezeichnung { get; set; }
 
         [Required]
+        [StringLength(7)]
         [LocalizedDisplay(LocalizeConstants.EvbNumber)]
         public string EvbNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedNumberPlate)]

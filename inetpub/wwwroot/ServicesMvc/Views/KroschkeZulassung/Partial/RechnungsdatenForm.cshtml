@@ -9,7 +9,7 @@
         @Html.FormValidationSummary()
         
 
-        @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenList.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenList.ToSelectList(), new { @class = "m-wrap" })
 
                 
         @Html.FormRequiredFieldsSummary()
@@ -18,7 +18,7 @@
         <script type="text/javascript">
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        
+
         </script>
     }
 </div>

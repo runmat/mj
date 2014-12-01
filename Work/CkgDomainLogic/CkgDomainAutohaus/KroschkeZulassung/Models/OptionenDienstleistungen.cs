@@ -49,6 +49,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                 GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
         }
 
+        public string ZulassungsartMatNr { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.OnlyOneLicensePlate)]
         public bool NurEinKennzeichen { get; set; }
 
@@ -56,16 +58,16 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public bool KennzeichenSondergroesse { get; set; }
 
         [DisplayName("")]
-        public int KennzeichenGroesseId { get; set; }
+        public int? KennzeichenGroesseId { get; set; }
 
         public Kennzeichengroesse Kennzeichengroesse
         {
             get
             {
-                if (KennzeichengroesseList == null)
+                if (KennzeichengroesseListForMatNr == null)
                     return new Kennzeichengroesse();
 
-                var option = KennzeichengroesseList.FirstOrDefault(kg => kg.Id == KennzeichenGroesseId);
+                var option = KennzeichengroesseListForMatNr.FirstOrDefault(kg => kg.Id == KennzeichenGroesseId);
                 if (option == null)
                     return new Kennzeichengroesse();
 
@@ -74,7 +76,10 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         }
 
         [XmlIgnore]
-        static public List<Kennzeichengroesse> KennzeichengroesseList { get; set; }
+        public static List<Kennzeichengroesse> KennzeichengroesseList { get; set; }
+
+        [XmlIgnore]
+        public List<Kennzeichengroesse> KennzeichengroesseListForMatNr { get { return KennzeichengroesseList.Where(k => k.MatNr == ZulassungsartMatNr.ToInt()).ToList(); } }
 
         public string KennzeichenGroesseText { get { return (Kennzeichengroesse == null ? "" : Kennzeichengroesse.Groesse); } }
 
@@ -93,15 +98,13 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
-        public string ZulassungsartMatNr { get; set; }
-
         public bool IstNeuzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "593"); } }
 
         public bool IstGebrauchtzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "588"); } }
 
         public bool Ist72hVersandzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "598"); } }
 
-        public bool IstAbmeldung { get { return (ZulassungsartMatNr.TrimStart('0') == "573"); } }
+        public bool IstAbmeldung { get { return (ZulassungsartMatNr.TrimStart('0') == "573" || ZulassungsartMatNr.TrimStart('0') == "584" || ZulassungsartMatNr.TrimStart('0') == "669"); } }
 
         public bool IstUmkennzeichnung { get { return (ZulassungsartMatNr.TrimStart('0') == "596"); } }
 
@@ -129,7 +132,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
             if (GewaehlteDienstleistungen != null)
                 s += String.Join("<br />", GewaehlteDienstleistungen.Select(dienstleistung => dienstleistung.Name));
- 
+
             if (NurEinKennzeichen)
                 s += String.Format("<br/>{0}", Localize.OnlyOneLicensePlate);
 

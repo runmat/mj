@@ -112,7 +112,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.BANKL = s.BankAdressdaten.Bankleitzahl;
 
                             // Fahrzeug
-                            d.ZZLD_REFNR5 = s.Fahrzeugdaten.AuftragsNr;
+                            d.ZZREFNR5 = s.Fahrzeugdaten.AuftragsNr;
                             d.ZZREFNR2 = s.Fahrzeugdaten.FahrgestellNr;
                             d.ZZBRIEFNR = s.Fahrzeugdaten.Zb2Nr;
                             d.FAHRZ_ART = s.Fahrzeugdaten.FahrzeugartId;
@@ -170,6 +170,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                     , null
                     , (s, d) =>
                         {
+                            d.ZULBELN = s.BelegNr;
                             d.NAME1 = s.Name1;
                             d.NAME2 = s.Name2;
                             d.STREET = s.Strasse;

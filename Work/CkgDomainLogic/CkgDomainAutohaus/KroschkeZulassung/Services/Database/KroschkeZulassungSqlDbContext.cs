@@ -15,7 +15,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
         public IEnumerable<Kennzeichengroesse> GetKennzeichengroessen()
         {
-            return Database.SqlQuery<Kennzeichengroesse>("SELECT * FROM KennzeichGroesse ORDER BY Position");
+            return Database.SqlQuery<Kennzeichengroesse>("SELECT * FROM KennzeichGroesse WHERE Groesse IS NOT NULL ORDER BY Groesse");
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

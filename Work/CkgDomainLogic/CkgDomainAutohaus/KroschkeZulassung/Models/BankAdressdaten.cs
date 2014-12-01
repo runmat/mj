@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -6,9 +8,13 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.KroschkeZulassung.Models
 {
-    public class BankAdressdaten
+    public class BankAdressdaten : IValidatableObject 
     {
         public Adressdaten Rechnungsempfaenger { get; set; }
+
+        public bool Cpdkunde { get; set; }
+
+        public bool CpdMitEinzugsermaechtigung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DirectDebitMandate)]
         public bool Einzugsermaechtigung { get; set; }
@@ -46,8 +52,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [LocalizedDisplay(LocalizeConstants.Swift)]
         public string Swift { get; set; }
 
-        public bool SwiftEditable { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.AccountNo)]
         public string KontoNr { get; set; }
 
@@ -57,9 +61,20 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [LocalizedDisplay(LocalizeConstants.CreditInstitution)]
         public string Geldinstitut { get; set; }
 
+        public bool BankdatenVollstaendig { get { return (Iban.IsNotNullOrEmpty() && Swift.IsNotNullOrEmpty() && Kontoinhaber.IsNotNullOrEmpty()); } }
+
         public BankAdressdaten()
         {
             Rechnungsempfaenger = new Adressdaten();
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if ((Cpdkunde || CpdMitEinzugsermaechtigung) && !Rechnungsempfaenger.AdresseVollstaendig)
+                yield return new ValidationResult(Localize.AddressRequired);
+
+            if (CpdMitEinzugsermaechtigung && !BankdatenVollstaendig)
+                yield return new ValidationResult(Localize.BankDataRequired);
         }
 
         public string GetSummaryString()

@@ -4202,7 +4202,7 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
-    <Content Include="Views\KroschkeZulassung\KroschkeZulassung.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Index.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\Common.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\SummaryPdf.cshtml" />

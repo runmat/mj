@@ -9,33 +9,37 @@
         @Html.FormValidationSummary()
         
 
-        <h4 class="form-section">@Localize.DifferentAddress</h4>
+        <h5 class="form-section">@Localize.DifferentAddress</h5>
         
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name1, new { @class = "m-wrap large" })
 
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name2, new { @class = "m-wrap large" })
 
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Strasse, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Strasse, new { @class = "m-wrap large" })
 
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Plz, new { @class = "m-wrap small", col = "left" })
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Ort, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Plz, new { @class = "m-wrap small" })
+
+        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Ort, new { @class = "m-wrap large" }) 
 
         @Html.FormRadioButtonListFor(m => m.Zahlungsart, BankAdressdaten.Zahlungsarten.ToSelectList())
 
         
-        <h4 class="form-section">@Localize.BankData</h4>
+        <h5 class="form-section">@Localize.BankData</h5>
         
         @Html.HiddenFor(m => m.KontoNr)
         @Html.HiddenFor(m => m.Bankleitzahl)
-        @Html.HiddenFor(m => m.SwiftEditable)
         
-        @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap large" })
 
-        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap medium uppercase" })
+        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap large uppercase" },
+                                    postControlHtml: @<text>
+                                                            <a href="#" onclick="return LoadBankdatenAusIban()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadBankDataFromIban</a>
+                                                            @Html.SpanAlert("bankDataHint")
+                                                        </text>)
 
-        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap medium uppercase", placeholder = Localize.WillBeFilledAutomatically, @readonly = (Model.SwiftEditable ? "" : "readonly") })
+        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap large uppercase", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
         
-        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap medium", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap large", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
             
         
         <script type="text/javascript">

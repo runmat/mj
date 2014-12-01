@@ -4,7 +4,7 @@
 <div id="DivOptionenDienstleistungen" class="margin-top-20">
     @using (Ajax.BeginForm("OptionenDienstleistungenForm", "KroschkeZulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivOptionenDienstleistungen", OnComplete = "AjaxFormOptionenDienstleistungenComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormOptionenDienstleistungen" }))
+                    htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormOptionenDienstleistungen" }))
     {
         @Html.FormValidationSummary()
         
@@ -38,20 +38,52 @@
         
         @Html.FormCheckBoxFor(m => m.NurEinKennzeichen, new { @class = "m-wrap" })
         
-        @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap", col = "left" })
-        @Html.FormDropDownListFor(m => m.KennzeichenGroesseId, OptionenDienstleistungen.KennzeichengroesseList.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.KennzeichenSondergroesse ? "" : "disabled"), col = "right" })
+        @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap xsmall" },
+                                    postControlHtml: @<text>
+                                                            @Html.DropDownListFor(m => m.KennzeichenGroesseId, Model.KennzeichengroesseListForMatNr.ToSelectList(), new { @class = "m-wrap small margin-left-50" })
+                                                        </text>)
 
-        @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap", col = "left" })
-        <div col="right">
-            @Html.FormDropDownListFor(m => m.SaisonBeginn, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.Saisonkennzeichen ? "" : "disabled") })
-            @Html.FormDropDownListFor(m => m.SaisonEnde, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap medium", @disabled = (Model.Saisonkennzeichen ? "" : "disabled") })
-        </div>
+        @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap xsmall" },
+                                    postControlHtml: @<text>
+                                                            @Html.DropDownListFor(m => m.SaisonBeginn, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap xsmall margin-left-50" })
+                                                            @Html.DropDownListFor(m => m.SaisonEnde, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap xsmall margin-left-10" })
+                                                        </text>)
         
-        @Html.FormCheckBoxFor(m => m.KennzeichenVorhanden, new { @class = "m-wrap", @disabled = (Model.IstGebrauchtzulassung ? "" : "disabled"), col = "left" })
-        @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", @disabled = (Model.IstAbmeldung ? "" : "disabled"), col = "right" })
-        
-        @Html.FormDatePickerFor(m => m.HaltedauerBis, new { @class = "m-wrap", @disabled = (Model.IstFirmeneigeneZulassung ? "" : "disabled"), col = "left" })
-        @Html.FormTextBoxFor(m => m.AltesKennzeichen, new { @class = "m-wrap medium uppercase", @disabled = (Model.IstUmkennzeichnung ? "" : "disabled"), col = "right" })
+        if (Model.IstGebrauchtzulassung)
+        {
+            @Html.FormCheckBoxFor(m => m.KennzeichenVorhanden, new { @class = "m-wrap" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.KennzeichenVorhanden)
+        }
+
+        if (Model.IstAbmeldung)
+        {
+            @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.VorhandenesKennzeichenReservieren)
+        }
+
+        if (Model.IstFirmeneigeneZulassung)
+        {
+            @Html.FormDatePickerFor(m => m.HaltedauerBis, new { @class = "m-wrap small" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.HaltedauerBis)
+        }
+
+        if (Model.IstUmkennzeichnung)
+        {
+            @Html.FormTextBoxFor(m => m.AltesKennzeichen, new { @class = "m-wrap medium uppercase" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.AltesKennzeichen)
+        }
         
         @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
         

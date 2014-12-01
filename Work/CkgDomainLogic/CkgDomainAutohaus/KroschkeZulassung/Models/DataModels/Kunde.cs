@@ -34,7 +34,17 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         [SelectListText]
         [LocalizedDisplay(LocalizeConstants.Customer)]
-        public string KundenName { get { return String.Format("{0}, {1}, {2}", Name1, Name2, Ort); } }
+        public string KundenNameNr
+        {
+            get
+            {
+                return String.Format("{0} ~ {1}{2}{3}", 
+                    KundenNr.NotNullOrEmpty().TrimStart('0'), 
+                    Name1, 
+                    (String.IsNullOrEmpty(Name2) ? "" : ", " + Name2), 
+                    (String.IsNullOrEmpty(Ort) ? "" : ", " + Ort));
+            }
+        }
 
         public bool Pauschalkunde { get; set; }
 

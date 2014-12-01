@@ -4,7 +4,7 @@
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "KroschkeZulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormZulassungsdaten" }))
+                    htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormZulassungsdaten" }))
     {
         @Html.FormValidationSummary()
 
@@ -21,7 +21,7 @@
                                                             @Html.SpanAlert("kfzKreisHint")
                                                         </text>)
 
-        @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase" })
+        @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
 
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormCheckBoxFor(m => m.KennzeichenReservieren, new { @class = "m-wrap", col = "right" })
