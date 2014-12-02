@@ -133,30 +133,38 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
             ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt).ToList();
             
             // Get web folder urls for pdf files
-            PdfFileNames = GetTempFolderPathForFiles("*.pdf", null).ToList();
+            var availablePdfs = GetTempFolderPathForFiles("*.pdf", null).ToList();
 
+            PdfFileNames = FilterPdfsForUeberfuhrungsauftrag(availablePdfs, auftragsNr, fahrt).ToList();
+            
             // Get web folder urls for thumb images
             var mask = "THUMB_{0}*.jpg";
             ThumbImageFileNames = GetTempFolderPathForFiles(mask, fahrt).ToList();
             // Also copy thumb images at this point
             // Note: Big images and pdf files will be copied only if user clicks on the apropiate thumbnail
             CopyFilesToTempFolder(mask);
-
-
-            //var t1 = GetHistoryTourFromFilename(sourcePdfFiles[0]);
-            //var t2 = GetHistoryTourFromFilename(ImageFileNames[0]);
-            //var t3 = GetHistoryTourFromFilename(sourceJpgThumbFiles[0]);
-
-            //var xxx = PdfFileTours;
-            //var yyy = ImageFileTours;
-
-            //var ggg = GetPdfFileNamesForTour(1);
-            //var gggg = GetPdfFileNamesForTour(2);
-            //var ggggg = GetImageFileNamesForTour(1);
-            //var gggggg = GetImageFileNamesForTour(2);
-
-            //var zzz = Path.Combine(AppSettings.WebViewRelativePath, destinationRelativePath, ImageFileNames[0]).Replace(@"\", "/");
         }
+
+        public IEnumerable<string> FilterPdfsForUeberfuhrungsauftrag(IEnumerable<string> liste, string auftragsnummer, string fahrt)
+        {
+            string fahrtAlt = "XXX"; // Wert für den Fall dass kein unbekannte Daten übergeben wurden
+            string fahrtNeu = "XXX";
+            if (fahrt == "1")
+            {
+                fahrtAlt = "_0001_";
+                fahrtNeu = "_H.pdf";
+            }
+
+            if (fahrt == "2")
+            {
+                fahrtAlt = "_0002_";
+                fahrtNeu = "_R.pdf";
+            }
+
+            return liste.Where(n =>
+                (n.StartsWith(auftragsnummer.TrimStart(new[] { '0' })) && n.Contains(fahrtAlt)) ||
+                (n.Contains(auftragsnummer) && n.EndsWith(fahrtNeu)));
+        } 
 
         public void CopySingleBigImage(int tour, int singleFileNr)
         {
