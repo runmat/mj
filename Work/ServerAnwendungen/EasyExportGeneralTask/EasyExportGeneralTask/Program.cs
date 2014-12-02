@@ -34,6 +34,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "CharterWay_All" };
             //args = new[] { "CharterWay_Single" };
             //args = new[] { "DCBank" };
+            //args = new[] { "DaimlerFleet" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -44,7 +45,7 @@ namespace EasyExportGeneralTask
                 if (readXmlConfiguration(configName))
                 {
                     // Verarbeitung starten (separater STA-Thread erforderlich wg. COM-Library)
-                    System.Threading.Thread workThread = new Thread(doWork);
+                    Thread workThread = new Thread(doWork);
                     workThread.SetApartmentState(ApartmentState.STA);
                     workThread.Start();
                     workThread.Join();
@@ -252,6 +253,14 @@ namespace EasyExportGeneralTask
                     #endregion
                     break;
 
+                case AblaufTyp.DaimlerFleet:
+                    #region DaimlerFleet
+
+                    QueryDaimlerFleet();
+
+                    #endregion
+                    break;
+
                 default:
                     Console.WriteLine("FEHLER: Config-Parameter 'Ablauf' hat keine gültigen Wert");
                     EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Config-Parameter 'Ablauf' hat keine gültigen Wert", EventLogEntryType.Information);
@@ -389,7 +398,6 @@ namespace EasyExportGeneralTask
         /// <param name="blnFehlersaetze"></param>
         private static void QueryAthlon(bool blnFehlersaetze = false)
         {
-            string status = "";
             string queryexpression = "";
             Process sdp;
 
@@ -407,7 +415,7 @@ namespace EasyExportGeneralTask
                 }
 
                 // Fahrzeugpapiere aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameDokumente, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameDokumente, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -551,7 +559,7 @@ namespace EasyExportGeneralTask
 
                                             waitCount++;
                                             // Ressourcen vorübergehend freigeben während Merge-Prozess arbeitet
-                                            System.Threading.Thread.Sleep(2000);
+                                            Thread.Sleep(2000);
                                         }
                                     }
                                 }
@@ -628,7 +636,7 @@ namespace EasyExportGeneralTask
                             }
 
                             waitCount++;
-                            System.Threading.Thread.Sleep(10000);
+                            Thread.Sleep(10000);
                         }
                     }
                 }
@@ -669,7 +677,7 @@ namespace EasyExportGeneralTask
                             }
 
                             waitCount++;
-                            System.Threading.Thread.Sleep(10000);
+                            Thread.Sleep(10000);
                         }
                     }
                 }
@@ -697,7 +705,6 @@ namespace EasyExportGeneralTask
         /// <param name="blnFehlersaetze"></param>
         private static void QueryEuropaService(bool blnFehlersaetze = false)
         {
-            string status = "";
             string queryexpression = "";
 
             try
@@ -716,7 +723,7 @@ namespace EasyExportGeneralTask
                 #region Dokumente aus Archiv(en) holen
 
                 // Dokumente aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -786,7 +793,6 @@ namespace EasyExportGeneralTask
         /// <param name="blnFehlersaetze"></param>
         private static void QueryStarCar(bool blnFehlersaetze = false)
         {
-            string status = "";
             string queryexpression = "";
 
             try
@@ -803,7 +809,7 @@ namespace EasyExportGeneralTask
                 }
 
                 // Dokumente aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -871,7 +877,6 @@ namespace EasyExportGeneralTask
         /// </summary>
         private static void QueryXLeasing()
         {
-            string status = "";
             string queryexpression = "";
 
             try
@@ -888,7 +893,7 @@ namespace EasyExportGeneralTask
                 }
 
                 // Dokumente aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -1186,7 +1191,6 @@ namespace EasyExportGeneralTask
         /// <param name="blnFehlersaetze"></param>
         private static void QueryCharterWay_All(bool blnFehlersaetze = false)
         {
-            string status = "";
             string queryexpression = "";
 
             try
@@ -1203,7 +1207,7 @@ namespace EasyExportGeneralTask
                 }
 
                 // Dokumente aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -1440,10 +1444,8 @@ namespace EasyExportGeneralTask
         /// <summary>
         /// Archivabfrage für DCBank
         /// </summary>
-        /// <param name="blnFehlersaetze"></param>
-        private static void QueryDCBank(bool blnFehlersaetze = false)
+        private static void QueryDCBank()
         {
-            string status = "";
             string queryexpression = "";
 
             try
@@ -1462,7 +1464,7 @@ namespace EasyExportGeneralTask
                 #region Dokumente aus Archiv(en) holen
 
                 // Dokumente aus Archiv holen
-                status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -1471,51 +1473,83 @@ namespace EasyExportGeneralTask
 
                 #endregion
 
-                if (blnFehlersaetze)
-                {
-                    #region Filtern auf alle auf Fehler gelaufenen Dateien
-
-                    result.hitList.Columns.Add("found", typeof(Boolean));
-                    result.hitList.AcceptChanges();
-
-                    if (logCustomer != null)
-                    {
-                        foreach (LogFile file in logCustomer)
-                        {
-                            // Alle Sätze zu einer Fahrgestellnummer finden, da der gesamte Satz neu gezogen werden muss
-                            foreach (DataRow row in result.hitList.Rows)
-                            {
-                                if (row["FAHRGESTELLNUMMER"].ToString() == file.FIN)
-                                {
-                                    row["found"] = true;
-                                }
-                            }
-                        }
-                    }
-
-                    for (int i = 0; i < result.hitList.Rows.Count; i++)
-                    {
-                        if (result.hitList.Rows[i]["found"] is DBNull)
-                        {
-                            result.hitList.Rows[i].Delete();
-                        }
-                    }
-                    result.hitList.AcceptChanges();
-
-                    // Fehlerhafte Dateien aus Arbeitsordnern löschen
-                    ClearBrokenFiles();
-
-                    #endregion
-                }
-
                 // Bilder holen
                 for (int i = 0; i < result.hitList.Rows.Count; i++)
                 {
-                    status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i, blnFehlersaetze);
+                    status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i);
 
                     if (!String.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Verarbeitung abgebrochen:  " + ex.Message);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung abgebrochen:  " + ex.Message, EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für DaimlerFleet
+        /// </summary>
+        private static void QueryDaimlerFleet()
+        {
+            try
+            {
+                S.AP.Init("Z_DPM_READ_MELD_OPAV_01", "I_KUNNRS", taskConfiguration.Kundennummer);
+
+                if (taskConfiguration.AbfrageNachDatum && taskConfiguration.Abfragedatum.Year > 1900)
+                {
+                    S.AP.SetImportParameter("I_QMDAT", taskConfiguration.Abfragedatum.ToShortDateString());
+                }
+
+                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT");
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                foreach (DataRow row in tblSapResults.Rows)
+                {
+                    result.clear();
+
+                    string queryexpression = ".1001=" + row["CHASSIS_NUM"] + " & .110=ZB1";
+
+                    string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    if (status != "Keine Daten gefunden.")
+                    {
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            throw new Exception(status);
+                        }
+
+                        int iIndex = 0;
+
+                        if (result.hitCounter > 1)
+                        {
+                            string strDate = "";
+
+                            for (int i = 0; i < result.hitList.Rows.Count; i++)
+                            {
+                                string datum = result.hitList.Rows[i][4].ToString();
+
+                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                {
+                                    strDate = datum;
+                                    iIndex = i;
+                                }
+                            }
+                        }
+
+                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
+
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            Console.WriteLine(status);
+                        }
                     }
                 }
             }
