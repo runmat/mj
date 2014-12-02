@@ -67,21 +67,9 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '07'");
-                    if (matRow.Length == 1)
-                    {
-                        objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                        objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                        objVorerf.Material = matRow[0]["MAKTX"].ToString();
-                        fillForm();
-                    }
-                    else
-                    {
-                        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-                        cmdSave.Visible = false;
-
-                    }
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AZ");
+                    objVorerf.NrMaterial = "600";
+                    fillForm();
                    
                     Session["objVorerf"] = objVorerf;
                 }
