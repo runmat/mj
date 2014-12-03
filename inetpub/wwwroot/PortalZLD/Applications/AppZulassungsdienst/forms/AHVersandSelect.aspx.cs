@@ -79,22 +79,24 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlStVa_SelectedIndexChanged(object sender, EventArgs e)
         {
-            objNacherf = (NacherfZLD)Session["objNacherf"];
-            txtStVa.Text = ddlStVa.SelectedValue;
-            objNacherf.SelKreis = txtStVa.Text;
-
-            if (objNacherf.BestLieferanten == null)
+            if (String.Compare(objNacherf.SelKreis, ddlStVa.SelectedValue) != 0)
             {
-                objNacherf.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this);
+                objNacherf = (NacherfZLD)Session["objNacherf"];
+                txtStVa.Text = ddlStVa.SelectedValue;
+                objNacherf.SelKreis = txtStVa.Text;
 
-            if (objNacherf.Status > 0)
-            {
-                lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
-            }
-            }
+                if (objNacherf.BestLieferanten == null)
+                {
+                    objNacherf.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this);
 
+                    if (objNacherf.Status > 0)
+                    {
+                        lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
+                    }
+                }
                 Session["objNacherf"] = objNacherf;
             }
+        }
 
         /// <summary>
         /// Kundenauswahl in der DropDown geändert.

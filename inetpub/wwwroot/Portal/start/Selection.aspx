@@ -12,34 +12,7 @@
 		<meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
 		<uc1:styles id="ucStyles" runat="server"></uc1:styles>
         <script type="text/javascript" src="/Portal/Scripts/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript">
 
-            function LogPageVisit(appId, href) {
-                // Logging für IE8 vorerst überspringen
-                if (IsIEVersionOrLower(8)) {
-                    return true;
-                }
-
-                var url = '/Portal/Log.aspx?APP-ID=' + appId;
-                $.get(url).always(function () {
-                    window.location.href = href;
-                });
-
-                return false;
-            }
-
-            function IsIEVersionOrLower(ieVersion) {
-                if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-                    var ieversion = new Number(RegExp.$1);
-                    if (ieversion <= ieVersion) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
-        </script>
         <style type="text/css">
             
             .MainmenuItem {
