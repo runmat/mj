@@ -22,7 +22,12 @@
 
 <div class="control-group">
     
-    <label class="control-label">@Model.DisplayNameHtml @Model.RequiredIndicatorHtml</label>
+    <label class="control-label">
+        @if (!Model.IsCheckBox || Model.PostControlHtml == null)
+        {
+            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml
+        }
+    </label>
 
     <div class="controls">
         

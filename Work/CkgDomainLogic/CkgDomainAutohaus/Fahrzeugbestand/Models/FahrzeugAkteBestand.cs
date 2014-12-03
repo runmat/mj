@@ -5,7 +5,6 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -34,17 +33,14 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
         [Length(5)]
-        [Required]
         public string HerstellerSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
         [Length(3)]
-        [Required]
         public string TypSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
         [Length(5)]
-        [Required]
         public string VvsSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
@@ -70,6 +66,37 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
+
+
+        [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
+        public string BriefbestandsInfo { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ZBIIStorageLocation)]
+        public string BriefLagerort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleLocation)]
+        public string FahrzeugStandort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
+        public DateTime? ErstZulassungsgDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationDateCurrent)]
+        public DateTime? ZulassungsgDatumAktuell { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DeRegistrationDate)]
+        public DateTime? AbmeldeDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string Kennzeichen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
+        public string Briefnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        public bool CocVorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Remark)]
+        public string Bemerkung { get; set; }
 
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]

@@ -492,6 +492,8 @@
             var p = $(this);
 
             var pWidth = parseInt(p.css("width"), 10);
+            var isSmallContainer = (p.parent().hasClass("span8"));
+                
             p.children().find(".m-wrap,.chzn-container").each(function () {
                 
                 var e = $(this);

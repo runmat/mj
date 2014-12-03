@@ -16,24 +16,77 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_AHP_READ_FZGBESTAND.GT_WEBOUT, FahrzeugAkteBestand>(
-                    new Dictionary<string, string>(), 
+                    new Dictionary<string, string>(),
                     (s, d) =>
-                        {
-                            d.FIN = s.FIN;
-                            d.FinID = s.FIN_ID;
+                    {
+                        d.FIN = s.FIN;
+                        d.FinID = s.FIN_ID;
 
-                            // Fahrzeug Akte
-                            d.FabrikName = s.ZZFABRIKNAME;
-                            d.HandelsName= s.ZZHANDELSNAME;
-                            d.HerstellerSchluessel= s.ZZHERSTELLER_SCH;
-                            d.TypSchluessel= s.ZZTYP_SCHL;
-                            d.VvsSchluessel= s.ZZVVS_SCHLUESSEL;
-                            d.VvsPruefZiffer= s.ZZTYP_VVS_PRUEF;
+                        // Fahrzeug Akte
+                        d.FabrikName = s.ZZFABRIKNAME;
+                        d.HandelsName = s.ZZHANDELSNAME;
+                        d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
+                        d.TypSchluessel = s.ZZTYP_SCHL;
+                        d.VvsSchluessel = s.ZZVVS_SCHLUESSEL;
+                        d.VvsPruefZiffer = s.ZZTYP_VVS_PRUEF;
 
-                            // Fahrzeug Bestand
-                            d.Halter = s.HALTER;
-                            d.Kaeufer = s.KAEUFER;
-                        }));
+                        // Fahrzeug Bestand
+                        d.Halter = s.HALTER;
+                        d.Kaeufer = s.KAEUFER;
+
+                        d.BriefbestandsInfo = s.BRIEFBESTAND;
+                        d.BriefLagerort = s.LGORT;
+                        d.FahrzeugStandort = s.STANDORT;
+                        d.ErstZulassungsgDatum = s.ERSTZULDAT;
+                        d.ZulassungsgDatumAktuell = s.AKTZULDAT;
+                        d.AbmeldeDatum = s.ABMDAT;
+                        d.Kennzeichen = s.KENNZ;
+                        d.Briefnummer = s.BRIEFNR;
+                        d.CocVorhanden = (s.COCVORHANDEN.NotNullOrEmpty().ToUpper() == "X");
+                        d.Bemerkung = s.BEMERKUNG;
+                    }));
+            }
+        }
+
+        #endregion
+
+        #region Save to Repository
+
+        static public ModelMapping<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP, FahrzeugAkteBestand> Z_AHP_CRE_CHG_FZG_AKT_BEST_GT_WEB_IMP_To_FahrzeugAkteBestand
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP, FahrzeugAkteBestand>(
+                    new Dictionary<string, string>(),
+                    null,
+                    (s, d) =>
+                    {
+                        d.FIN_ID = s.FinID;
+                        d.FIN = s.FIN;
+
+                        // Fahrzeug Akte
+                        d.ZZFABRIKNAME = s.FabrikName;
+                        d.ZZHANDELSNAME = s.HandelsName;
+                        d.ZZTYP_SCHL = s.TypSchluessel;
+                        d.ZZHERSTELLER_SCH = s.HerstellerSchluessel;
+                        d.ZZVVS_SCHLUESSEL = s.VvsSchluessel;
+                        d.ZZTYP_VVS_PRUEF = s.VvsPruefZiffer;
+
+                        // Fahrzeug Bestand
+                        d.KAEUFER = s.Kaeufer;
+                        d.HALTER = s.Halter;
+
+                        d.BRIEFBESTAND = s.BriefbestandsInfo;
+                        d.LGORT = s.BriefLagerort;
+                        d.STANDORT = s.FahrzeugStandort;
+                        d.ERSTZULDAT = s.ErstZulassungsgDatum;
+                        d.AKTZULDAT = s.ZulassungsgDatumAktuell;
+                        d.ABMDAT = s.AbmeldeDatum;
+                        d.KENNZ = s.Kennzeichen;
+                        d.BRIEFNR = s.Briefnummer;
+                        d.COCVORHANDEN = (s.CocVorhanden ? "X" : "");
+                        d.BEMERKUNG = s.Bemerkung;
+                    }));
             }
         }
 
@@ -91,7 +144,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     null,
                     (s, d) =>
                         {
-                            d.GEWERBE = s.Gewerblich ? "X" : "";
+                            d.GEWERBE = (s.Gewerblich ? "X" : "");
                         }));
             }
         }
@@ -103,8 +156,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                 return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_PARTNER.GT_OUT, Adresse>(
                     PartnerToAdresseDict,
                     (s, d) =>
-                    {
-                    }));
+                        {
+                            d.Gewerblich = (s.GEWERBE.NotNullOrEmpty().ToUpper() == "X");
+                        }));
             }
         }
 

@@ -14,6 +14,21 @@
 
             @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.BriefbestandsInfo, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
+                    
+            @Html.FormTextBoxFor(m => m.FahrzeugStandort, new { @class = "m-wrap", col = "left" })
+            @Html.FormDatePickerFor(m => m.ErstZulassungsgDatum, new { @class = "m-wrap small", col = "right" })
+                    
+            @Html.FormDatePickerFor(m => m.ZulassungsgDatumAktuell, new { @class = "m-wrap small", col = "left" })
+            @Html.FormDatePickerFor(m => m.AbmeldeDatum, new { @class = "m-wrap small", col = "right" })
+                    
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
+                    
+            @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap" }, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+
 
             @*@Html.FormRequiredFieldsSummary()*@
 

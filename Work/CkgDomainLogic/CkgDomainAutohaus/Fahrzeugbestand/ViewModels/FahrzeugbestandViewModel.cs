@@ -150,11 +150,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public Adresse PickPartnerAddressFinished(int partnerID)
         {
-            if (AdressenKennung == "HALTER")
-                CurrentFahrzeug.Halter = partnerID.ToString();
-            if (AdressenKennung == "KAEUFER")
-                CurrentFahrzeug.Kaeufer = partnerID.ToString();
-
             return GetPartnerAdresse(AdressenKennung, partnerID.ToString());
         }
 

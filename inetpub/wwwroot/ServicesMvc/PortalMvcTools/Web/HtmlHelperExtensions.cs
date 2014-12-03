@@ -579,6 +579,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
+                IsCheckBox = true,
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
@@ -612,6 +613,7 @@ namespace PortalMvcTools.Web
             var validationMessageHtml = html.ValidationMessageFor(firstExpression);
             var model = new FormControlModel
             {
+                IsCheckBox = true,
                 DisplayNameHtml = labelText,
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(firstExpression),
                 ControlHtml = checkBoxesFor,

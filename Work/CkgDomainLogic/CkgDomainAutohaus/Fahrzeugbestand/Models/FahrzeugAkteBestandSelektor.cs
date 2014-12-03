@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -21,14 +22,40 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
             set { _fin = value.NotNullOrEmpty().ToUpper(); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        public string FabrikName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
+
+
+        [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
+        public string BriefbestandsInfo { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ZBIIStorageLocation)]
+        public string BriefLagerort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleLocation)]
+        public string FahrzeugStandort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
+        public DateTime? ErstZulassungsgDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationDateCurrent)]
+        public DateTime? ZulassungsgDatumAktuell { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DeRegistrationDate)]
+        public DateTime? AbmeldeDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string Kennzeichen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
+        public string Briefnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        public bool CocVorhanden { get; set; }
 
         
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]

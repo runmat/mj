@@ -10,48 +10,63 @@
         @Html.HiddenFor(m => m.FinID)
 
         <div class="row-fluid">
-            <div class="span6 form-horizontal" id="fahrzeug-akte">
+            <div class="span4 form-horizontal" id="fahrzeug-akte">
                 @using (Html.PortletBox(Localize.Autohaus_Fahrzeugakte, "icon-briefcase"))
                 {
                     @* Fahrzeug-Akte *@
                     
                     @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
-                    @Html.FormTextBoxFor(m => m.HerstellerSchluessel, new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.HerstellerSchluessel, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap small" })
                     @Html.FormTextBoxFor(m => m.VvsPruefZiffer, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap small" })
                 }
             </div>
 
-            <div class="span6 form-horizontal" id="fahrzeug-bestand">
+            <div class="span8 form-horizontal" id="fahrzeug-bestand">
                 @using (Html.PortletBox(Localize.InventoryData, "icon-table"))
                 {
                     @* Fahrzeug-Bestand *@
 
-                    @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap" })
+                    @Html.HiddenFor(m => m.Halter, new { @class = "m-wrap" })
                     @Html.FormTemplateControl(Localize.Holder,
-                                              @<text>
-                                                   <a id="h-dropdown" class="btn white" onclick="return PickPartnerAddress('HALTER');">
-                                                       <i class="icon-chevron-right margin-right-10"></i> <span id="h-dropdown-text">@Model.SelectedHalter.GetAutoSelectString()</span>
-                                                   </a>
-                                                   <div id="h-dropdown-grid" class="hide grid-dropdown"></div>
-                                               </text>, new { @class = "m-wrap" })                
+                            @<text>
+                                <a id="h-dropdown" class="btn white" onclick="return PickPartnerAddress('HALTER');">
+                                    <i class="icon-chevron-right margin-right-10"></i> 
+                                    <span id="h-dropdown-text" class="p-dropdown">@Model.SelectedHalter.GetAutoSelectString()</span>
+                                </a>
+                            </text>, new { @class = "m-wrap", col = "left" })                
 
-                    @Html.FormTextBoxFor(m => m.Kaeufer, new { @class = "m-wrap" })
+                    @Html.HiddenFor(m => m.Kaeufer, new { @class = "m-wrap" })
                     @Html.FormTemplateControl(Localize.Buyer,
-                                              @<text>
-                                                   <a id="k-dropdown" class="btn white" onclick="return PickPartnerAddress('KAEUFER');">
-                                                       <i class="icon-chevron-right margin-right-10"></i> <span id="k-dropdown-text">@Model.SelectedKaeufer.GetAutoSelectString()</span>
-                                                   </a>
-                                                   <div id="k-dropdown-grid" class="hide grid-dropdown"></div>
-                                               </text>, new { @class = "m-wrap" })
+                            @<text>
+                                <a id="k-dropdown" class="btn white" onclick="return PickPartnerAddress('KAEUFER');">
+                                    <i class="icon-chevron-right margin-right-10"></i> 
+                                    <span id="k-dropdown-text" class="p-dropdown">@Model.SelectedKaeufer.GetAutoSelectString()</span>
+                                </a>
+                            </text>, new { @class = "m-wrap", col = "right" })
+
+                    @Html.FormTextBoxFor(m => m.BriefbestandsInfo, new { @class = "m-wrap", col = "left" })
+                    @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
+                    
+                    @Html.FormTextBoxFor(m => m.FahrzeugStandort, new { @class = "m-wrap", col = "left" })
+                    @Html.FormDatePickerFor(m => m.ErstZulassungsgDatum, new { @class = "m-wrap small", col = "right" })
+                    
+                    @Html.FormDatePickerFor(m => m.ZulassungsgDatumAktuell, new { @class = "m-wrap small", col = "left" })
+                    @Html.FormDatePickerFor(m => m.AbmeldeDatum, new { @class = "m-wrap small", col = "right" })
+                    
+                    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "left" })
+                    @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
+                    
+                    @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+                    @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap", col = "right" }, rows:2)
                 }
             </div>
 
-            @*@Html.FormRequiredFieldsSummary()*@
+            @Html.FormRequiredFieldsSummary()
 
         </div>
         

@@ -3,6 +3,7 @@
 
 <style type="text/css">
     input[type="text"][readonly="readonly"] { border:0; font-weight: bold; }
+    .p-dropdown{ font-size: 0.85em; }
 </style>
 @Html.Partial("AdressenPflege/AdresseCommon")
 
@@ -244,13 +245,11 @@
     function ShowPartnerAddressGrid(result) {
         _dropdownCurrent.find("i").removeClass("icon-chevron-right").addClass("icon-chevron-down");
 
-        //var partnerWindow = $("#PartnerDialog").data("tWindow");
         $("#divPartnerSelection").html(result);
         FormPreparePrivateAdressenPflege();
 
-        $("#divGridEditStart").addClass("PartnerAddressSubGrid");
-        $(".grid-column-overall-quick-filter-pick-start").parent().hide();
-        //partnerWindow.center().open();
+        //$("#divGridEditStart").addClass("PartnerAddressSubGrid");
+        //$(".grid-column-overall-quick-filter-pick-start").parent().hide();
 
         $("#divFahrzeugDetails").slideUp();
         $("#divPartnerSelection").slideDown();
@@ -262,8 +261,6 @@
     }
 
     function ClosePartnerAddressGrid(postFunction) {
-        //var partnerWindow = $("#PartnerDialog").data("tWindow");
-        //partnerWindow.close();
         setTimeout(function() {
             $("#divPartnerSelection").slideUp();
             $("#divFahrzeugDetails").slideDown();

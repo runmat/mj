@@ -43,6 +43,8 @@ namespace MvcTools.Models
         /// </summary>
         public IDictionary<string, object> ControlHtmlAttributes { get; set; }
 
+        public bool IsCheckBox { get; set; }
+
         public FormMultiColumnMode ColumnMode
         {
             get

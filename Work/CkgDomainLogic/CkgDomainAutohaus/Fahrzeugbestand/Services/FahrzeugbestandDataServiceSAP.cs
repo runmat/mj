@@ -48,14 +48,20 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
 
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
             
-            if (model.FIN.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_FIN", model.FIN);
+            SAP.SetImportParameter("I_FIN", model.FIN);
 
-            if (model.Halter.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_HALTER", model.Halter);
+            SAP.SetImportParameter("I_HALTER", model.Halter);
+            SAP.SetImportParameter("I_KAEUFER", model.Kaeufer);
 
-            if (model.Kaeufer.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_KAEUFER", model.Kaeufer);
+            SAP.SetImportParameter("I_BRIEFBESTAND", model.BriefbestandsInfo);
+            SAP.SetImportParameter("I_LGORT", model.BriefLagerort);
+            SAP.SetImportParameter("I_STANDORT", model.FahrzeugStandort);
+            SAP.SetImportParameter("I_ERSTZULDAT", model.ErstZulassungsgDatum);
+            SAP.SetImportParameter("I_AKTZULDAT", model.ZulassungsgDatumAktuell);
+            SAP.SetImportParameter("I_ABMDAT", model.AbmeldeDatum);
+            SAP.SetImportParameter("I_KENNZ", model.Kennzeichen);
+            SAP.SetImportParameter("I_BRIEFNR", model.Briefnummer);
+            SAP.SetImportParameter("I_COCVORHANDEN", (model.CocVorhanden ? "X" : ""));
 
             SAP.Execute();
 
@@ -102,23 +108,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
 
         private static void CreateRowForFahrzeug(List<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP> fzgList, FahrzeugAkteBestand f)
         {
-            var sapFahrzeug = new Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP
-            {
-                FIN_ID = f.FinID,
-                FIN = f.FIN,
-
-                // Fahrzeug Akte
-                ZZFABRIKNAME = f.FabrikName,
-                ZZHANDELSNAME = f.HandelsName,
-                ZZTYP_SCHL = f.TypSchluessel,
-                ZZHERSTELLER_SCH = f.HerstellerSchluessel,
-                ZZVVS_SCHLUESSEL = f.VvsSchluessel,
-                ZZTYP_VVS_PRUEF = f.VvsPruefZiffer,
-
-                // Fahrzeug Bestand
-                KAEUFER = f.Kaeufer,
-                HALTER = f.Halter,
-            };
+            var sapFahrzeug = AppModelMappings.Z_AHP_CRE_CHG_FZG_AKT_BEST_GT_WEB_IMP_To_FahrzeugAkteBestand.CopyBack(f);
 
             fzgList.Add(sapFahrzeug);
         }
@@ -130,7 +120,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
         {
             get
             {
-                return new Dictionary<string, string> {
+                return new Dictionary<string, string> 
+                {
                     { "ZO01", "HALTER" },
                     { "ZO02", "KAEUFER" },
                 };
