@@ -60,6 +60,7 @@
       <DbMaintenanceStep>
         <Description>
           Inserting data into table '[DestTableName]' ...
+          All rows will be copied that are not in the target table
         </Description>
     
         <Sql>
@@ -80,7 +81,7 @@
           )
           SELECT
           [SourceTableName].`Id` ,
-          CONVERT(LogonContext,char(40)) ,
+          SUBSTRING(LogonContext, 1, 40) ,
           `Bapi` ,
           `Status` ,
           `time_stamp` ,
@@ -91,8 +92,8 @@
           `kunnr` ,
           `portalType`,
           `Browser`
-          from [SourceTableName], ReadOnlyTables
-          where ReadOnlyTables.TableName = '[DestTableName]' and DATE(time_stamp) >= DATE(ReadOnlyTables.LastSyncDate);
+          from [SourceTableName] WHERE
+          [SourceTableName].`Id` NOT IN (SELECT `Id` FROM `[DestTableName]`);
         </Sql>
       </DbMaintenanceStep>
 
@@ -128,23 +129,6 @@
 
         <Sql>
           CREATE INDEX `i_[DestTableName]_[IndexColumnName]` ON `[DestTableName]` (`[IndexColumnName]`);
-        </Sql>
-      </DbMaintenanceStep>
-
-      <DbMaintenanceStep>
-        <Description>
-          Lightning up data older than 90 days for table [SourceTableName], cleaning some 'heavy' big columns ...
-        </Description>
-
-        <Sql>
-          update [SourceTableName]
-          set
-          ImportParameters = null,
-          ImportTables = null,
-          DataContext = null,
-          ExportParameters = null,
-          ExportTables = null
-          where DATE_SUB(current_date(), INTERVAL 90 DAY) >= DATE(time_stamp);
         </Sql>
       </DbMaintenanceStep>
     </Steps>

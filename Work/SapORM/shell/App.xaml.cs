@@ -234,6 +234,15 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_EXP_MAHN_ERSTEINGANG").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
 
+            //Kroschke Zulassung
+            //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_IMPORT_ERFASSUNG1").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE").WriteOrmForExportTableStructures("I_KUNNR, I_VKORG, I_SPART", "00240045", "1010", "01");
+            //new FunctionReflector("Z_ZLD_AH_MATERIAL").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_ZULST_BY_PLZ").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_FI_CONV_IBAN_2_BANK_ACCOUNT").WriteOrmForExportTableStructures("I_IBAN", "DE79100100100196328100");
+            
             //new FunctionReflector("Z_AHP_CRE_CHG_PARTNER").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
             //new FunctionReflector("Z_AHP_READ_PARTNER").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
 
