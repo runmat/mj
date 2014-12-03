@@ -8,6 +8,7 @@ Namespace Kernel.Security
         Private m_intOrganizationID As Integer
         Private m_strOrganizationName As String
         Private m_strOrganizationReference As String
+        Private m_strOrganizationReference2 As String
         Private m_blnAllOrganizations As Boolean
         Private m_intCustomerID As Integer
         Private m_intUserId As Integer
@@ -21,12 +22,13 @@ Namespace Kernel.Security
 
 #Region " Constructor "
         Public Sub New(ByVal intOrganizationID As Integer, ByVal intCustomerID As Integer)
-            Me.new(intOrganizationID, "", intCustomerID, "", False, False, "", "", "", "", "", "", "", "", True)
+            Me.new(intOrganizationID, "", intCustomerID, "", "", False, False, "", "", "", "", "", "", "", "", True)
         End Sub
         Public Sub New(ByVal intOrganizationID As Integer, _
                        ByVal strOrganizationName As String, _
                        ByVal intCustomerID As Integer, _
                        ByVal strOrganizationReference As String, _
+                       ByVal strOrganizationReference2 As String, _
                        ByVal blnAllOrganizations As Boolean, _
                        ByVal blnOrganizationAdmin As Boolean, _
                        ByVal strLogoPath As String, _
@@ -43,6 +45,7 @@ Namespace Kernel.Security
             m_intOrganizationID = intOrganizationID
             m_strOrganizationName = strOrganizationName
             m_strOrganizationReference = strOrganizationReference
+            m_strOrganizationReference2 = strOrganizationReference2
             m_blnOrganizationAdmin = blnOrganizationAdmin
             m_intCustomerID = intCustomerID
             m_strLogoPath = strLogoPath
@@ -108,6 +111,12 @@ Namespace Kernel.Security
         Public ReadOnly Property OrganizationReference() As String
             Get
                 Return m_strOrganizationReference
+            End Get
+        End Property
+
+        Public ReadOnly Property OrganizationReference2() As String
+            Get
+                Return m_strOrganizationReference2
             End Get
         End Property
 
@@ -189,6 +198,7 @@ Namespace Kernel.Security
                 While dr.Read
                     m_strOrganizationName = dr("OrganizationName").ToString
                     m_strOrganizationReference = dr("OrganizationReference").ToString
+                    m_strOrganizationReference2 = dr("OrganizationReference2").ToString
                     If m_intOrganizationID = -1 Then
                         m_blnOrganizationAdmin = CBool(dr("OrganizationAdmin"))
                     Else
@@ -426,7 +436,8 @@ Namespace Kernel.Security
                                                                "OMail, " & _
                                                                "OWebDisplay, " & _
                                                                "OWeb, " & _
-                                                               "OrganizationReference) " & _
+                                                               "OrganizationReference, " & _
+                                                               "OrganizationReference2) " & _
                                                  "VALUES(@OrganizationName, " & _
                                                         "@CustomerID, " & _
                                                         "@AllOrganizations, " & _
@@ -438,7 +449,8 @@ Namespace Kernel.Security
                                                         "@OMail, " & _
                                                         "@OWebDisplay, " & _
                                                         "@OWeb, " & _
-                                                        "@OrganizationReference); " & _
+                                                        "@OrganizationReference, " & _
+                                                        "@OrganizationReference2); " & _
                                                  "SELECT SCOPE_IDENTITY()"
 
                 Dim strUpdate As String = "UPDATE Organization " & _
@@ -453,7 +465,8 @@ Namespace Kernel.Security
                                                "OMail=@OMail, " & _
                                                "OWebDisplay=@OWebDisplay, " & _
                                                "OWeb=@OWeb, " & _
-                                               "OrganizationReference=@OrganizationReference " & _
+                                               "OrganizationReference=@OrganizationReference, " & _
+                                               "OrganizationReference2=@OrganizationReference2 " & _
                                           "WHERE OrganizationID=@OrganizationID"
 
                 Dim cmd As New SqlClient.SqlCommand()
@@ -469,6 +482,7 @@ Namespace Kernel.Security
                 With cmd.Parameters
                     .AddWithValue("@OrganizationName", m_strOrganizationName)
                     .AddWithValue("@OrganizationReference", m_strOrganizationReference)
+                    .AddWithValue("@OrganizationReference2", m_strOrganizationReference2)
                     .AddWithValue("@CustomerID", m_intCustomerID)
                     .AddWithValue("@LogoPath", m_strLogoPath)
                     .AddWithValue("@CssPath", m_strCssPath)
