@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.AbmeldeDatum = s.ABMDAT;
                         d.Kennzeichen = s.KENNZ;
                         d.Briefnummer = s.BRIEFNR;
-                        d.CocVorhanden = (s.COCVORHANDEN.NotNullOrEmpty().ToUpper() == "X");
+                        d.CocVorhanden = s.COCVORHANDEN.XToBool();
                         d.Bemerkung = s.BEMERKUNG;
                     }));
             }
@@ -84,7 +84,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.ABMDAT = s.AbmeldeDatum;
                         d.KENNZ = s.Kennzeichen;
                         d.BRIEFNR = s.Briefnummer;
-                        d.COCVORHANDEN = (s.CocVorhanden ? "X" : "");
+                        d.COCVORHANDEN = s.CocVorhanden.BoolToX();
                         d.BEMERKUNG = s.Bemerkung;
                     }));
             }
@@ -144,7 +144,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     null,
                     (s, d) =>
                         {
-                            d.GEWERBE = (s.Gewerblich ? "X" : "");
+                            d.GEWERBE = s.Gewerblich.BoolToX();
                         }));
             }
         }
@@ -157,7 +157,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     PartnerToAdresseDict,
                     (s, d) =>
                         {
-                            d.Gewerblich = (s.GEWERBE.NotNullOrEmpty().ToUpper() == "X");
+                            d.Gewerblich = s.GEWERBE.XToBool();
                         }));
             }
         }
