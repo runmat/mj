@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using CarDocu.Models;
+using GeneralTools.Models;
 using GeneralTools.Services;
 
 namespace CarDocu.Services
@@ -50,13 +51,6 @@ namespace CarDocu.Services
             string commaSeparatedReturnCodes;
             string commaSeparatedReturnMessages;
 
-
-            // !! TEST !!
-            //Thread.Sleep(5000);
-            //return false;
-            // !! TEST !!
-
-
             try
             {
                 commaSeparatedReturnCodes = "";
@@ -95,7 +89,7 @@ namespace CarDocu.Services
             logItem.StandortCode = scanDocument.StandortCode;
 
             logItem.DocumentCodes = scanDocument.ScanDocumentTypeCodes;
-            logItem.ResultCodes = commaSeparatedReturnCodes.Split(',').Select(c => Convert.ToInt32(c)).ToList();
+            logItem.ResultCodes = commaSeparatedReturnCodes.Split(',').Select(c => c.ToInt(0)).ToList();
             logItem.ResultMessages = commaSeparatedReturnMessages.Split(',').ToList(); 
             
             return true;
