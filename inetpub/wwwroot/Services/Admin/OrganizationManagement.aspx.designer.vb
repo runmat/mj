@@ -329,6 +329,15 @@ Partial Public Class OrganizationManagement
     Protected WithEvents txtOrganizationReference As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''txtOrganizationReference2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtOrganizationReference2 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''cbxAllOrganizations-Steuerelement
     '''</summary>
     '''<remarks>
