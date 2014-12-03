@@ -52,7 +52,7 @@
 
 
     function AddressEdit(id) {
-        
+
         $.ajax(
         {
             type: "POST",
@@ -63,7 +63,7 @@
                 ShowItemDetails(result);
             },
             error: function (result) {
-                alert(result.data);        
+                alert(result.data);
             }
         });
     }

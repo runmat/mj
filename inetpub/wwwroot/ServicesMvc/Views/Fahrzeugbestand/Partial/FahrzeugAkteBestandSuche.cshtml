@@ -11,8 +11,8 @@
 
             @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
-            @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kaeufer, new { @class = "m-wrap", col = "right" })
+            @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
             
 
             @*@Html.FormRequiredFieldsSummary()*@

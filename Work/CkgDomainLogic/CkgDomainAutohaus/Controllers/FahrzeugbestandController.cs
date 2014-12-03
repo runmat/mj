@@ -29,12 +29,13 @@ namespace ServicesMvc.Controllers
 
         public FahrzeugbestandViewModel ViewModel { get { return GetViewModel<FahrzeugbestandViewModel>(); } }
 
+        public override AdressenPflegeViewModel AdressenPflegeViewModel { get { return ViewModel; } }
 
-        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugAkteBestandDataService fahrzeugbestandDataService, IAdressenDataService adressenDataService)
+
+        public FahrzeugbestandController(IAppSettings appSettings, ILogonContextDataService logonContext, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrzeugbestandDataService);
-            InitViewModel(AdressenPflegeViewModel, appSettings, logonContext, adressenDataService);
             InitModelStatics();
         }
 
@@ -57,6 +58,7 @@ namespace ServicesMvc.Controllers
         void InitModelStatics()
         {
             FahrzeugAkteBestand.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;
+            FahrzeugAkteBestandSelektor.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;
         }
 
 
@@ -160,7 +162,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult K()
         {
-            AdressenPflegeViewModel.DataInit("KÄUFER", LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenDataInit("KAEUFER", LogonContext.KundenNr);
 
             return View("TestAdressPflege");
         }
@@ -168,7 +170,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult H()
         {
-            AdressenPflegeViewModel.DataInit("HALTER", LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenDataInit("HALTER", LogonContext.KundenNr);
 
             return View("TestAdressPflege");
         }
@@ -176,7 +178,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult PickPartnerAddress(string partnerKennung)
         {
-            AdressenPflegeViewModel.DataInit(partnerKennung, LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenDataInit(partnerKennung, LogonContext.KundenNr);
 
             return PartialView("Partial/PartnerAdressenGrid");
         }
@@ -184,13 +186,12 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public JsonResult PickPartnerAddressFinished(int id)
         {
-            var selectedPartner = ViewModel.PickPartnerAddressFinished(AdressenPflegeViewModel.AdressenKennung,
-                                                                       AdressenPflegeViewModel.GetItem(id));
+            var selectedPartner = ViewModel.PickPartnerAddressFinished(id);
 
             return Json(new
                 {
                     partnerKennung = AdressenPflegeViewModel.AdressenKennung,
-                    partnerID = selectedPartner.ID,
+                    partnerID = selectedPartner.KundenNr,
                     partnerName = selectedPartner.GetAutoSelectString()
                 });
         }

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -22,7 +26,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
 
-        [NotMapped]
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
 
@@ -48,7 +52,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string VvsPruefZiffer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        [Length(25)]
+        [MaxLength(25)]
         public string FabrikName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TradeName)]
@@ -66,6 +70,25 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
+
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public Adresse SelectedHalter
+        {
+            get
+            {
+                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("HALTER", Halter) : null);
+            }
+        }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public Adresse SelectedKaeufer
+        {
+            get
+            {
+                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
+            }
+        }
 
         #endregion
 

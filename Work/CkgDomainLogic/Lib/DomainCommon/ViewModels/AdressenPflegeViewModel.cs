@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using GeneralTools.Models;
 using AppModelMappings = CkgDomainLogic.DomainCommon.Models.AddressModelMappings;
@@ -16,20 +15,20 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
     public class AdressenPflegeViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IAdressenDataService DataService { get { return CacheGet<IAdressenDataService>(); } }
+        public virtual IAdressenDataService AdressenDataService { get { return CacheGet<IAdressenDataService>(); } }
 
-        public string AdressenKennung { get; set; }
+        public string AdressenKennung { get { return AdressenDataService.AdressenKennung; } }
 
         [XmlIgnore]
-        public List<Land> Laender { get { return DataService.Laender; } }
+        public List<Land> Laender { get { return AdressenDataService.Laender; } }
 
         [XmlIgnore]
         public List<Adresse> Adressen
         {
             get
             {
-                DataService.KundennrOverride = KundennrOverride;
-                return DataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList();
+                AdressenDataService.KundennrOverride = KundennrOverride;
+                return AdressenDataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList();
             }
         }
 
@@ -38,34 +37,34 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public string KundennrOverride { get; set; }
 
 
-        public void DataInit(string adressenKennung, string kundennrOverride)
+        public void AdressenDataInit(string adressenKennung, string kundennrOverride)
         {
-            AdressenKennung = adressenKennung.ToUpper();
-            DataService.KundennrOverride = KundennrOverride = kundennrOverride;
+            AdressenDataService.AdressenKennung = adressenKennung.ToUpper();
+            AdressenDataService.KundennrOverride = KundennrOverride = kundennrOverride;
 
             Adresse.Laender = Laender;
 
             DataMarkForRefresh();
         }
 
-        public void DataMarkForRefresh()
+        public virtual void DataMarkForRefresh()
         {
-            DataService.MarkForRefreshAdressen();
+            AdressenDataService.MarkForRefreshAdressen();
             PropertyCacheClear(this, m => m.AdressenFiltered);
         }
 
 
         #region Repository
 
-        public Adresse GetItem(int id)
+        public virtual Adresse GetItem(int id)
         {
             return Adressen.FirstOrDefault(c => c.ID == id);
         }
 
         public void RemoveItem(int id)
         {
-            DataService.KundennrOverride = KundennrOverride;
-            DataService.DeleteAdresse(GetItem(id));
+            AdressenDataService.KundennrOverride = KundennrOverride;
+            AdressenDataService.DeleteAdresse(GetItem(id));
             DataMarkForRefresh();
         }
 
@@ -86,23 +85,14 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {
-            DataService.KundennrOverride = KundennrOverride;
-            var savdItem = DataService.SaveAdresse(item, addModelError);
+            AdressenDataService.KundennrOverride = KundennrOverride;
+            var savdItem = AdressenDataService.SaveAdresse(item, addModelError);
             DataMarkForRefresh();
             return savdItem;
         }
 
         public void ValidateModel(Adresse model, bool insertMode, Action<Expression<Func<Adresse, object>>, string> addModelError)
         {
-            //var existingItemsOfThisKey = Adressen.Where(t => t.ID == model.ID);
-            //var primaryKeyViolation = (insertMode && existingItemsOfThisKey.Any() ||
-            //                           !insertMode && existingItemsOfThisKey.Any(t => t.ID != model.ID));
-            //if (primaryKeyViolation)
-            //{
-            //    addModelError(m => m.COC_0_2_TYP, "Diese Kombination Typ / Variante / Version ist bereits vorhanden.");
-            //    addModelError(m => m.COC_0_2_VAR, null);
-            //    addModelError(m => m.COC_0_2_VERS, null);
-            //}
         }
 
         #endregion

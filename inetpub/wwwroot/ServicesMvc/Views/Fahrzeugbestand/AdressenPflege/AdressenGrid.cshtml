@@ -17,19 +17,18 @@
                 .XAjaxDataBinding("AdressenAjaxBinding", currentController)
                 .Columns(columns =>
                     {
-                        columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+                        columns.XBound(c => c.KundenNr).Width(145).Title("").Filterable(false).Sortable(false)
                                .ClientTemplate(
                                 (addressSelectorAvailable ?
-                                   "<button onclick='AddressSelect(\"<#= data.ID #>\");' class='btn mini blue tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+                                   "<button onclick='AddressSelect(\"<#= data.KundenNr #>\");' class='btn mini blue tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
                                     + "&nbsp;" : "") 
                                    +
-                                   "<button onclick='AddressEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                                   + "&nbsp;"
-                                   + "<button onclick='AddressRemove(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.DeleteAddress + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                                   "<button onclick='AddressEdit(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                             ).HeaderTemplate(
                                 "<button onclick='AddressNew();' class='btn mini gray tooltips' data-original-title='" + CommonResources.NewAddress + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                             );
 
+                      columns.XBound(c => c.KundenNr);
                       columns.XBound(c => c.Name1);
                       columns.XBound(c => c.Name2);
                       columns.XBound(c => c.StrasseHausNr);

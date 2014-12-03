@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -16,6 +17,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         [ModelMappingCompareIgnore]
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
+
+        [SelectListText]
+        [GridHidden, ScriptIgnore]
+        public string DisplayName { get { return GetAutoSelectString(); } }
 
         [LocalizedDisplay(LocalizeConstants.Name1)]
         [Required]
@@ -73,6 +78,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants._blank)]
         [ModelMappingCompareIgnore]
         public bool Gewerblich { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        public string ReferenzNr { get; set; }
 
         public string Typ { get; set; }
 

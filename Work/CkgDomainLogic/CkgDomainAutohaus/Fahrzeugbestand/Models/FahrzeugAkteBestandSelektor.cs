@@ -1,4 +1,11 @@
-﻿using GeneralTools.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Models
@@ -22,5 +29,13 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
+
+        
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
+
+        public List<Adresse> HalterForSelection { get { return GetViewModel().HalterForSelection; } }
+
+        public List<Adresse> KaeuferForSelection { get { return GetViewModel().KaeuferForSelection; } }
     }
 }

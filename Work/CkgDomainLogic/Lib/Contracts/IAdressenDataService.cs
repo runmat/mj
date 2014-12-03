@@ -7,6 +7,9 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 {
     public interface IAdressenDataService : ICkgGeneralDataService
     {
+        string AdressenKennung { get; set; }
+        string TranslateFromFriendlyAdressenKennung(string friendlyKennung);
+
         List<Adresse> Adressen { get; }
 
         List<Adresse> RgAdressen { get; }

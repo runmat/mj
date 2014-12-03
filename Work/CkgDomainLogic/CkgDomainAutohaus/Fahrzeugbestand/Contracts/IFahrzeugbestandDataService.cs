@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.General.Contracts;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Contracts
 {
-    public interface IFahrzeugAkteBestandDataService : ICkgGeneralDataService
+    public interface IFahrzeugAkteBestandDataService : IAdressenDataService
     {
         List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model);
 

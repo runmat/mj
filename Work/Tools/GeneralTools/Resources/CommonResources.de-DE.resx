@@ -135,8 +135,11 @@
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>
-  <data name="FieldLengthInvalid" xml:space="preserve">
+  <data name="ExactFieldLengthInvalid" xml:space="preserve">
     <value>Dieses Feld muss exakt {0} Zeichen lang sein</value>
+  </data>
+  <data name="FieldLengthInvalid" xml:space="preserve">
+    <value>Dieses Feld darf höchstens {0} Zeichen lang sein</value>
   </data>
   <data name="InvalidLicenseNo" xml:space="preserve">
     <value>Dies ist kein gültiges Kennzeichen</value>

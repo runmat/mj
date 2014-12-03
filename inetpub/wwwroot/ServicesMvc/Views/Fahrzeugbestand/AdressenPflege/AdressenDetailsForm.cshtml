@@ -7,6 +7,7 @@
     @using (Ajax.BeginForm("AddressDetailsFormSave", currentController, null, new MvcAjaxOptions { OnComplete = "GridItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "ajaxForm" }))
     {
         @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.InternalKey)
         @Html.HiddenFor(m => m.InternalKey2)
         @Html.HiddenFor(m => m.IsValid)
@@ -30,7 +31,8 @@
         @Html.FormTextBoxFor(m => m.Fax, new { @class = "m-wrap medium", col = "left" })
         @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
 
-        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+        @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormRequiredFieldsSummary()
 

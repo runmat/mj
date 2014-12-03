@@ -109,7 +109,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult AdressenPflege(string kennung, string kdnr)
         {
-            AdressenPflegeViewModel.DataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenDataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
 
             return View(AdressenPflegeViewModel);
         }

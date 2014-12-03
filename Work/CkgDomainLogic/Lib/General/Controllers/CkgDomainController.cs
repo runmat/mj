@@ -21,7 +21,7 @@ namespace CkgDomainLogic.General.Controllers
     {
         public IAppSettings AppSettings { get; protected set; }
 
-        public AdressenPflegeViewModel AdressenPflegeViewModel { get { return GetViewModel<AdressenPflegeViewModel>(); } }
+        public virtual AdressenPflegeViewModel AdressenPflegeViewModel { get { return GetViewModel<AdressenPflegeViewModel>(); } }
 
         public new ILogonContextDataService LogonContext
         {

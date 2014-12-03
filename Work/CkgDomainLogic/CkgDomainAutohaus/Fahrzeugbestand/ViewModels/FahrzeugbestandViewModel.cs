@@ -1,10 +1,13 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -16,28 +19,18 @@ using GeneralTools.Models;
 using System.IO;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 {
-    public class FahrzeugbestandViewModel : CkgBaseViewModel
+    public class FahrzeugbestandViewModel : AdressenPflegeViewModel
     {
         [XmlIgnore]
-        public IFahrzeugAkteBestandDataService DataService
-        {
-            get { return CacheGet<IFahrzeugAkteBestandDataService>(); }
-        }
+        public IFahrzeugAkteBestandDataService DataService { get { return CacheGet<IFahrzeugAkteBestandDataService>(); } }
 
-        public Adresse SelectedHalter
-        {
-            get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
-            set { PropertyCacheSet(value); }
-        }
+        [XmlIgnore]
+        public override IAdressenDataService AdressenDataService { get { return DataService; } }
 
-        public Adresse SelectedKaeufer
-        {
-            get { return PropertyCacheGet(() => new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose }); }
-            set { PropertyCacheSet(value); }
-        }
 
         public FahrzeugAkteBestandSelektor FahrzeugAkteBestandSelektor
         {
@@ -67,14 +60,20 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public FahrzeugAkteBestand CurrentFahrzeug { get; set; }
 
+        public List<Adresse> HalterForSelection { get { return PropertyCacheGet(() => GetPartnerAdressenForSelection("HALTER")); } }
+
+        public List<Adresse> KaeuferForSelection { get { return PropertyCacheGet(() => GetPartnerAdressenForSelection("KAEUFER")); } }
+
 
         public void DataInit()
         {
             DataMarkForRefresh();
         }
 
-        public void DataMarkForRefresh()
+        public override void DataMarkForRefresh()
         {
+            base.DataMarkForRefresh();
+
             PropertyCacheClear(this, m => m.FahrzeugeAkteBestandFiltered);
         }
 
@@ -85,15 +84,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             DataMarkForRefresh();
         }
 
-        public void RefreshSelectedKaueferAndHalter(FahrzeugAkteBestand model, Func<List<Adresse>> getHalterAdressen, Func<List<Adresse>> getKaeuferAdressen)
+        private List<Adresse> GetPartnerAdressenForSelection(string partnerArt)
         {
-            PropertyCacheClear(this, m => m.SelectedHalter);
-            if (model.Halter.IsNotNullOrEmpty())
-                SelectedHalter = getHalterAdressen().FirstOrDefault(a => a.TmpSelectionKey == model.Halter);
-
-            PropertyCacheClear(this, m => m.SelectedKaeufer);
-            if (model.Kaeufer.IsNotNullOrEmpty())
-                SelectedKaeufer = getHalterAdressen().FirstOrDefault(a => a.TmpSelectionKey == model.Kaeufer);
+            AdressenDataInit(partnerArt, LogonContext.KundenNr);
+            return Adressen.CopyAndInsertAtTop(new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose });
         }
 
         public void ValidateSearch(Action<string, string> addModelError)
@@ -135,14 +129,28 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             FahrzeugeAkteBestandFiltered = FahrzeugeAkteBestand.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        public Adresse PickPartnerAddressFinished(string partnerKennung, Adresse partner)
+        public Adresse GetPartnerAdresse(string partnerArt, string id)
         {
-            if (partnerKennung == "HALTER")
-                SelectedHalter = partner;
-            else
-                SelectedKaeufer = partner;
+            if (id.IsNullOrEmpty())
+                return new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose };
 
-            return partner;
+            AdressenDataInit(partnerArt, LogonContext.KundenNr);
+            return Adressen.FirstOrDefault(a => a.KundenNr.ToSapKunnr() == id.ToSapKunnr()) ?? new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose };
+        }
+
+        public Adresse PickPartnerAddressFinished(int partnerID)
+        {
+            if (AdressenKennung == "HALTER")
+                CurrentFahrzeug.Halter = partnerID.ToString();
+            if (AdressenKennung == "KAEUFER")
+                CurrentFahrzeug.Kaeufer = partnerID.ToString();
+
+            return GetPartnerAdresse(AdressenKennung, partnerID.ToString());
+        }
+
+        public override Adresse GetItem(int id)
+        {
+            return Adressen.FirstOrDefault(c => c.KundenNr.ToSapKunnr() == id.ToString().ToSapKunnr());
         }
     }
 }
