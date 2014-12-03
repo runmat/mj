@@ -493,14 +493,22 @@
 
             var pWidth = parseInt(p.css("width"), 10);
             var isSmallContainer = (p.parent().hasClass("span8"));
-                
+
+            var maxPageWidth = 900;
+            if (isSmallContainer) 
+                maxPageWidth = 300;
+
             p.children().find(".m-wrap,.chzn-container").each(function () {
                 
                 var e = $(this);
                 var eWidth = ((pWidth / 2) - 250);
                 
-                if (eWidth > 150 && pWidth > 900) {
+                if ((isSmallContainer || eWidth > 150) && pWidth > maxPageWidth) {
+
+                    console.log(eWidth);
                     
+                    if (eWidth < 120)
+                        eWidth = 120;
                     if (eWidth > 450)
                         eWidth = 450;
                     
@@ -756,6 +764,16 @@
     // </Breadcrumbs> //
     //
     
+    function scrollToTop() {
+        if (IsIE())
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 600);
+        else
+            setTimeout(function () {
+                $("body").animate({ scrollTop: 0 }, '300');
+            }, 600);
+    }
     
 
     

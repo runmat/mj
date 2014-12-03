@@ -95,6 +95,7 @@
             loadingShow: true,
             success: function () {
                 TryAddressGridRefresh();
+                scrollToTop();
             }
         });
     }
@@ -104,6 +105,7 @@
         GridItemDetailsFormPreparePrivateAjax();
         $("#divGridEditStart").slideUp();
         $("#divGridItemDetails").slideDown();
+        scrollToTop();
     }
 
     function CloseItemDetailsInner() {

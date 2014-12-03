@@ -177,7 +177,7 @@ body {
     }
 }
 
-.controls .checker .checkbox {
+.controls .checkbox, .controls .checkbox {
     margin-top: 1px;
 }
 

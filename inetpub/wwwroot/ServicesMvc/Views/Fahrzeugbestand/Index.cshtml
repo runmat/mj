@@ -129,6 +129,8 @@
         SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
+        scrollToTop();
+
         FormPrepareAjax();
         BreadcrumbsMoveNext('@Localize.Autohaus_Fahrzeugakte');
         try {
@@ -150,6 +152,7 @@
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
+            scrollToTop();
             BreadcrumbsMovePrev();
         }, 150);
     }
@@ -253,6 +256,7 @@
 
         $("#divFahrzeugDetails").slideUp();
         $("#divPartnerSelection").slideDown();
+        scrollToTop();
 
         setTimeout(function () {
             $(".grid-column-overall-filter").focus();
@@ -264,6 +268,7 @@
         setTimeout(function() {
             $("#divPartnerSelection").slideUp();
             $("#divFahrzeugDetails").slideDown();
+            scrollToTop();
             BreadcrumbsMovePrev();
         }, 150);
 
@@ -282,7 +287,6 @@
     //
     // </Partner Selection>
     //
-
 
     function OnDataBound_GridFahrzeugAkteBestand() {
         FilteredData_Grid_OnDataBound($(this));
