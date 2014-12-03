@@ -65,6 +65,7 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Code" Grid.Row="0" Grid.Column="0" />

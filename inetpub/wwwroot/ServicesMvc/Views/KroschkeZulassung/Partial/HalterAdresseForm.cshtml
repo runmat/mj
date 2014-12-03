@@ -1,0 +1,43 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model Adresse
+
+<div id="DivHalterAdresse" class="margin-top-20">
+    @using (Ajax.BeginForm("HalterAdresseForm", "KroschkeZulassung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivHalterAdresse", OnComplete = "AjaxFormHalterAdresseComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormHalterAdresse" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.Kennung)
+        @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.TmpSelectionKey)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            
+            DocumentReadyBind(AjaxFormHalterAdresseInit);
+            AjaxFormHalterAdresseInit();
+
+            function AjaxFormHalterAdresseInit() {
+                AjaxFormAdressePrepareAutoComplete($("#Name1"), "HalterAdresseGetAutoCompleteItems");
+                AjaxFormAdressePrepareAutoCompleteReset("AjaxFormHalterAdresse");
+            }
+
+        </script>
+    }
+</div>
