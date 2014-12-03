@@ -127,6 +127,7 @@ Partial Public Class OrganizationManagement
         txtOrganizationID.Text = _Organization.OrganizationId.ToString
         txtOrganizationName.Text = _Organization.OrganizationName
         txtOrganizationReference.Text = _Organization.OrganizationReference
+        txtOrganizationReference2.Text = _Organization.OrganizationReference2
         cbxAllOrganizations.Checked = _Organization.AllOrganizations
         txtLogoPath.Text = _Organization.LogoPath
         txtCssPath.Text = _Organization.CssPath
@@ -161,6 +162,7 @@ Partial Public Class OrganizationManagement
         txtOrganizationID.Text = "-1"
         txtOrganizationName.Text = ""
         txtOrganizationReference.Text = "999"
+        txtOrganizationReference2.Text = ""
         txtCName.Text = ""
         txtCAddress.Text = ""
         txtCMailDisplay.Text = ""
@@ -193,6 +195,8 @@ Partial Public Class OrganizationManagement
         txtOrganizationName.BackColor = System.Drawing.Color.FromName(strBackColor)
         txtOrganizationReference.Enabled = Not blnLock
         txtOrganizationReference.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtOrganizationReference2.Enabled = Not blnLock
+        txtOrganizationReference2.BackColor = System.Drawing.Color.FromName(strBackColor)
         cbxAllOrganizations.Enabled = Not blnLock
         txtCName.Enabled = Not blnLock
         txtCName.BackColor = System.Drawing.Color.FromName(strBackColor)
@@ -455,7 +459,7 @@ Partial Public Class OrganizationManagement
             End If
 
             Dim _Organization As New Organization(intOrganizationId, txtOrganizationName.Text, _
-                                                CInt(txtCustomerID.Text), txtOrganizationReference.Text, _
+                                                CInt(txtCustomerID.Text), txtOrganizationReference.Text, txtOrganizationReference2.Text, _
                                                 cbxAllOrganizations.Checked, False, _
                                                 txtLogoPath.Text, txtCssPath.Text, _
                                                 txtCName.Text, txtCAddress.Text, _
@@ -485,7 +489,7 @@ Partial Public Class OrganizationManagement
         Try
 
             Dim _Organization As New Organization(CInt(txtOrganizationID.Text), txtOrganizationName.Text, _
-                CInt(ddlFilterCustomer.SelectedItem.Value), txtOrganizationReference.Text, _
+                CInt(ddlFilterCustomer.SelectedItem.Value), txtOrganizationReference.Text, txtOrganizationReference2.Text, _
                 cbxAllOrganizations.Checked, False, _
                 txtLogoPath.Text, txtCssPath.Text, _
                 txtCName.Text, txtCAddress.Text, _
