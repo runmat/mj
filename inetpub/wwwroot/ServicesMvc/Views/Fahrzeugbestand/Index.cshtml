@@ -10,6 +10,9 @@
     Fahrzeugakte + Bestand <small>Pflege</small>
 </h3>
 
+@Html.FormBreadCrumbs(Localize.VehicleData)
+
+
 <div id="divSearchAndGrid">
     @using (Html.FormSearchBox())
     {
@@ -22,39 +25,51 @@
     }
 </div>
 <div id="divFahrzeugDetails"></div>
+<div id="divPartnerSelection"></div>
 
-@(Html.Telerik().Window()
-    .Name("PartnerDialog")
-    .Width(1000)
-    .Height(500)
-    .Visible(false)
-    .Title("Partner auswählen")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Resizable()
-    .Content(@<text><div id="InnerPartnerDialog"></div></text>))
-    
 
 <script type="text/javascript">
 
     var _modelStateValid = 'false';
+    var _adressenKennungLocalized = '';
 
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
 
         setTimeout(function () {
-            $("#FahrzeugAkteBestandForm").submit();
+            $("#FahrzeugAkteBestandSearchForm").submit();
         }, 100);
+
+        InitSearchFormOpenHandler();
+    }
+
+    function InitSearchFormOpenHandler() {
+        $("#FormSearchBox .portlet-title").click(function () {
+            if (!SearchFormIsCollapsed()) {
+                // enforce refresh of all partner dropdown contents
+                $("#TmpEnforcePartnerDropdownRefresh").val(true);
+                $("#FahrzeugAkteBestandSearchForm").submit();
+            }
+        });
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
     }
 
-    function ShowFahrzeugAkteBestandGrid() {
-
+    function TryShowFahrzeugAkteBestandGrid() {
         FormPreparePrivateAjax();
+
+        if ($("#TmpEnforcePartnerDropdownRefresh").val().toLowerCase() == "true") {
+            $("#TmpEnforcePartnerDropdownRefresh").val(false);
+            LoadingHide();
+            return;
+        }
+
+        ShowFahrzeugAkteBestandGrid();
+    }
+
+    function ShowFahrzeugAkteBestandGrid() {
 
         $.ajax({
             type: "POST",
@@ -114,6 +129,7 @@
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
         FormPrepareAjax();
+        BreadcrumbsMoveNext('@Localize.Autohaus_Fahrzeugakte');
         try {
             setTimeout(function () {
                 $("#FahrzeugDetailsFinSearchForm input[name='FIN']").focus();
@@ -133,6 +149,7 @@
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
+            BreadcrumbsMovePrev();
         }, 150);
     }
 
@@ -227,22 +244,31 @@
     function ShowPartnerAddressGrid(result) {
         _dropdownCurrent.find("i").removeClass("icon-chevron-right").addClass("icon-chevron-down");
 
-        var partnerWindow = $("#PartnerDialog").data("tWindow");
-        $("#InnerPartnerDialog").html(result);
+        //var partnerWindow = $("#PartnerDialog").data("tWindow");
+        $("#divPartnerSelection").html(result);
         FormPreparePrivateAdressenPflege();
 
         $("#divGridEditStart").addClass("PartnerAddressSubGrid");
         $(".grid-column-overall-quick-filter-pick-start").parent().hide();
-        partnerWindow.center().open();
+        //partnerWindow.center().open();
+
+        $("#divFahrzeugDetails").slideUp();
+        $("#divPartnerSelection").slideDown();
 
         setTimeout(function () {
             $(".grid-column-overall-filter").focus();
+            setTimeout(BreadcrumbsMoveNext(_adressenKennungLocalized), 1000);
         }, 500);
     }
 
     function ClosePartnerAddressGrid(postFunction) {
-        var partnerWindow = $("#PartnerDialog").data("tWindow");
-        partnerWindow.close();
+        //var partnerWindow = $("#PartnerDialog").data("tWindow");
+        //partnerWindow.close();
+        setTimeout(function() {
+            $("#divPartnerSelection").slideUp();
+            $("#divFahrzeugDetails").slideDown();
+            BreadcrumbsMovePrev();
+        }, 150);
 
         _dropdownCurrent.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-right");
         _dropdownCurrent = null;

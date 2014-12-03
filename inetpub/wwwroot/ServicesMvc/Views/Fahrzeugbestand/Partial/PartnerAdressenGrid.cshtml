@@ -1,5 +1,9 @@
-﻿
-<a onclick="return ClosePartnerAddressGrid();" class="hide btn mini red margin-bottom-10"><i class="icon-chevron-left"></i> @Localize.Back</a>
+﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
+@model FahrzeugbestandViewModel
+
+<script type="text/javascript">
+    _adressenKennungLocalized = '@Model.AdressenKennungLocalized';
+</script>
 
 @Html.Partial("AdressenPflege/AdressenGrid", new ViewDataDictionary { { "AddressSelectorAvailable" , true } })
 

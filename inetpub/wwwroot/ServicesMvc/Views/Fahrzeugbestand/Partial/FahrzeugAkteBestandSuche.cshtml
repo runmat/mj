@@ -2,18 +2,18 @@
 
 <div id="divFahrzeugAkteBestandSuche">
     @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
-        new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "ShowFahrzeugAkteBestandGrid();" }, new { id = "FahrzeugAkteBestandForm" }))
+        new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "TryShowFahrzeugAkteBestandGrid();" }, new { id = "FahrzeugAkteBestandSearchForm" }))
     {    
         <div class="form-horizontal">
             
             @Html.FormValidationSummary()
-
+            
+            @Html.HiddenFor(m => m.TmpEnforcePartnerDropdownRefresh)
 
             @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
             @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
-            
 
             @*@Html.FormRequiredFieldsSummary()*@
 

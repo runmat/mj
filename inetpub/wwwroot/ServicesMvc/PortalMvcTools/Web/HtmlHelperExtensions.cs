@@ -154,6 +154,12 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/BrowserWarnings/IeWarning");
         }
 
+        public static MvcHtmlString FormBreadCrumbs(this HtmlHelper html, string firstBreadCrumbText)
+        {
+            html.ViewBag.FirstBreadCrumbText = firstBreadCrumbText;
+            return html.Partial("Partial/BreadCrumbs");
+        }
+
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
         {
             return html.ValidationSummary(excludePropertyErrors, Localize.PleaseCheckYourInputs);

@@ -85,6 +85,12 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FinSearchFormSubmit(FahrzeugAkteBestandSelektor model)
         {
+            if (model.TmpEnforcePartnerDropdownRefresh)
+            {
+                ViewModel.DataMarkForRefreshPartnerAdressen();
+                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", model);
+            }
+
             ViewModel.FinSearchSelektor = model;
             ViewModel.ValidateFinSearch(ModelState.AddModelError);
             if (!ModelState.IsValid)
@@ -180,7 +186,7 @@ namespace ServicesMvc.Controllers
         {
             AdressenPflegeViewModel.AdressenDataInit(partnerKennung, LogonContext.KundenNr);
 
-            return PartialView("Partial/PartnerAdressenGrid");
+            return PartialView("Partial/PartnerAdressenGrid", ViewModel);
         }
 
         [HttpPost]

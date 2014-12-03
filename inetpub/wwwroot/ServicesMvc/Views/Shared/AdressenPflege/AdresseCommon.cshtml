@@ -61,6 +61,7 @@
             loadingShow: true,
             success: function (result) {
                 ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.EditAddress'); } catch (e) { }
             },
             error: function (result) {
                 alert(result.data);
@@ -77,6 +78,7 @@
             success: function (result) {
                 _collectionChanged = true;
                 ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.NewAddress'); } catch (e) { }
             }
         });
     }
@@ -113,6 +115,7 @@
 
     function CloseItemDetails() {
         CloseItemDetailsInner();
+        try { BreadcrumbsMovePrev(); } catch (e) { }
         TryAddressGridRefresh();
     }
 

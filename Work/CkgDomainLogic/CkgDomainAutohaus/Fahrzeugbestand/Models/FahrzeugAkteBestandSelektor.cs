@@ -37,5 +37,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public List<Adresse> HalterForSelection { get { return GetViewModel().HalterForSelection; } }
 
         public List<Adresse> KaeuferForSelection { get { return GetViewModel().KaeuferForSelection; } }
+
+        public bool TmpEnforcePartnerDropdownRefresh { get; set; }
     }
 }

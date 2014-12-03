@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Contracts;
@@ -30,6 +31,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         [XmlIgnore]
         public override IAdressenDataService AdressenDataService { get { return DataService; } }
+
+        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(AdressenKennung == "HALTER" ? Localize.Holder : Localize.Buyer); } }
 
 
         public FahrzeugAkteBestandSelektor FahrzeugAkteBestandSelektor
@@ -74,7 +77,14 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         {
             base.DataMarkForRefresh();
 
+            DataMarkForRefreshPartnerAdressen();
             PropertyCacheClear(this, m => m.FahrzeugeAkteBestandFiltered);
+        }
+
+        public void DataMarkForRefreshPartnerAdressen()
+        {
+            PropertyCacheClear(this, m => m.HalterForSelection);
+            PropertyCacheClear(this, m => m.KaeuferForSelection);
         }
 
         public void LoadFahrzeuge()
