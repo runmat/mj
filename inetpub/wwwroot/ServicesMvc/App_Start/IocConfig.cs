@@ -33,6 +33,8 @@ using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
+using CkgDomainLogic.KroschkeZulassung.Contracts;
+using CkgDomainLogic.KroschkeZulassung.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -154,6 +156,8 @@ namespace ServicesMvc.App_Start
 
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<KroschkeZulassungDataServiceSAP>().As<IKroschkeZulassungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
