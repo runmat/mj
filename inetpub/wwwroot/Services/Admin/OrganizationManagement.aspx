@@ -149,6 +149,8 @@
                                                         </asp:ButtonField>
                                                         <asp:BoundField DataField="OrganizationReference" SortExpression="OrganizationReference"
                                                             HeaderText="Referenz" />
+                                                        <asp:BoundField DataField="OrganizationReference2" SortExpression="OrganizationReference2"
+                                                            HeaderText="Referenz2" />
                                                         <asp:TemplateField SortExpression="AllOrganizations" HeaderText="Zeige ALLE Organisationen">
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="CheckBox1" runat="server" Enabled="False" Checked='<%# DataBinder.Eval(Container, "DataItem.AllOrganizations") %>'>
@@ -218,6 +220,14 @@
                                                                             </td>
                                                                             <td align="left" class="active">
                                                                                 <asp:TextBox ID="txtOrganizationReference" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="formquery">
+                                                                            <td class="firstLeft active">
+                                                                                Organisationsreferenz2:
+                                                                            </td>
+                                                                            <td align="left" class="active">
+                                                                                <asp:TextBox ID="txtOrganizationReference2" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
                                                                         <tr class="formquery">
