@@ -429,6 +429,10 @@
     <None Include="App_Data\XmlData\FahrtAdressen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="App_Data\XmlData\StepsKroschkeZulassung.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\img\bg-white-lock-header.png" />
@@ -4198,6 +4202,24 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Index.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\HalterAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Common.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\SummaryPdf.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\OptionenDienstleistungen.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\OptionenDienstleistungenForm.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Rechnungsdaten.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\RechnungsdatenForm.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\HalterAdresse.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\HalterAdresseForm.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Receipt.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Summary.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\BankAdressdatenForm.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\BankAdressdaten.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Fahrzeugdaten.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\FahrzeugdatenForm.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
