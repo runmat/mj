@@ -247,31 +247,37 @@ textarea.m-wrap {
     width: 100px !Important;
 }
 .label-width-100 .controls {
-    margin-left: 100px !Important;
+    margin-left: 110px !Important;
 }
 .label-width-120 .control-label {
     width: 120px !Important;
 }
 .label-width-120 .controls {
-    margin-left: 120px !Important;
+    margin-left: 130px !Important;
 }
 .label-width-150 .control-label {
     width: 150px !Important;
 }
 .label-width-150 .controls {
-    margin-left: 150px !Important;
+    margin-left: 160px !Important;
+}
+.label-width-175 .control-label {
+    width: 175px !Important;
+}
+.label-width-175 .controls {
+    margin-left: 185px !Important;
 }
 .label-width-200 .control-label {
     width: 200px !Important;
 }
 .label-width-200 .controls {
-    margin-left: 200px !Important;
+    margin-left: 210px !Important;
 }
 .label-width-250 .control-label {
     width: 250px !Important;
 }
 .label-width-250 .controls {
-    margin-left: 250px !Important;
+    margin-left: 260px !Important;
 }
 
 .uppercase {
