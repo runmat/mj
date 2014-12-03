@@ -2,13 +2,11 @@
 Option Explicit On
 
 Partial Public Class KBSMenue
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        If Me.IsPostBack = False Then
+        If IsPostBack = False Then
 
             Dim objKasse As Kasse = CType(Page.Session("mKasse"), Kasse)
 
@@ -24,43 +22,27 @@ Partial Public Class KBSMenue
         End If
     End Sub
 
-    Private Sub GridChange_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridChange.RowCommand
+    Private Sub GridChange_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridChange.RowCommand
         If e.CommandName = "goTo" Then
-            Response.Redirect("/KBS/Forms/" & e.CommandArgument.ToString)
+            Dim zielUrl As String = e.CommandArgument.ToString()
+
+            If zielUrl.StartsWith("http") Then
+                OpenExternalLink(zielUrl)
+            Else
+                Response.Redirect("/KBS/Forms/" & zielUrl)
+            End If
+        End If
+    End Sub
+
+    Private Sub OpenExternalLink(ByVal zielUrl As String)
+        If (Not Page.ClientScript.IsStartupScriptRegistered("OpenExternalLink")) Then
+
+            Dim sb As StringBuilder = New StringBuilder()
+            sb.Append("<script type=""text/javascript"">")
+            sb.Append("window.open(""" & zielUrl & """, ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & vbCrLf)
+            sb.Append("</script>")
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "OpenExternalLink", sb.ToString())
+
         End If
     End Sub
 End Class
-
-' ************************************************
-' $History: KBSMenue.ascx.vb $
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 12.02.10   Time: 16:29
-' Updated in $/CKAG2/KBS/controls
-' 
-' *****************  Version 7  *****************
-' User: Rudolpho     Date: 10.02.10   Time: 17:53
-' Updated in $/CKAG2/KBS/controls
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 30.04.09   Time: 11:44
-' Updated in $/CKAG2/KBS/controls
-' ITA 2838 unfertig
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 24.04.09   Time: 15:48
-' Updated in $/CKAG2/KBS/controls
-' ITA 2808
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 24.04.09   Time: 10:35
-' Updated in $/CKAG2/KBS/controls
-' from server.transfer back wegen js
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 23.04.09   Time: 17:50
-' Updated in $/CKAG2/KBS/controls
-' ITA 2808
-' 
-'
-' ************************************************
