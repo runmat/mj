@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Script.Serialization;
@@ -8,6 +9,7 @@ using CkgDomainLogic.Fahrzeugbestand.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using System.Linq;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Models
 {
@@ -75,16 +77,30 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
         [Length(1)]
+        [GridHidden]
         public string BriefbestandsInfo { get; set; }
 
-        public static string BriefbestandsInfoOptionen
+        [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
+        public string BriefbestandsInfoAsText
         {
             get
             {
-                return "," + Localize.DropdownDefaultOptionPleaseChoose + ";" +
-                       "0," + Localize.InStock + ";" +
-                       "1," + Localize.TempDispatched + ";" +
-                       "2," + Localize.FinalDispatched + "";
+                var entry = BriefbestandsInfoOptionen.FirstOrDefault(i => i.Key == BriefbestandsInfo);
+                return entry == null ? "" : entry.Text;
+            }
+        }
+
+        public static List<SelectItem> BriefbestandsInfoOptionen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem("", ""),
+                    new SelectItem("0", Localize.InStock),
+                    new SelectItem("1", Localize.TempDispatched),
+                    new SelectItem("2", Localize.FinalDispatched),
+                };
             }
         }
 
