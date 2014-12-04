@@ -2,6 +2,7 @@
 <script type="text/javascript">
 
     var _modelIsValid = false;
+    var _customButtonText = '@Localize.Save';
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -15,6 +16,12 @@
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
         $('.tooltips').tooltip();
+    }
+
+    function FormWizardShowHideSaveButton(show, delay) {
+        setTimeout(function () {
+            FormWizard.ButtonCustom1Show(show, _customButtonText);
+        }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
     
     function FormWizardInitPrivate() {
@@ -36,6 +43,12 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
+            FormWizardShowHideSaveButton(step == 2, 500);
+            return true;
+        });
+
+        FormWizard.OnCustom1(function (step, maxSteps) {
+            alert("... here goes the ajax action for the custom 'save' button");
             return true;
         });
 
