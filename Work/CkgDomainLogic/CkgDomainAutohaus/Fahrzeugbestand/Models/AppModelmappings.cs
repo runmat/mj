@@ -115,6 +115,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.Email = s.EMAIL;
                         d.Telefon = s.TELEFON;
                         d.ReferenzNr = s.REFKUNNR;
+                        d.Gewerblich = s.GEWERBE.XToBool();
                     }));
             }
         }
@@ -157,7 +158,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     PartnerToAdresseDict,
                     (s, d) =>
                         {
-                            d.Gewerblich = s.GEWERBE.XToBool();
                         }));
             }
         }
