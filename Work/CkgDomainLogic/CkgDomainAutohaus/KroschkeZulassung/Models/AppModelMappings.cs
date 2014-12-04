@@ -72,6 +72,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                     , (s, d) =>
                         {
                             d.ID = s.ASNUM;
+                            d.MaterialNr = s.EAN11;
                             d.Name = s.ASKTX;
                             d.IstGewaehlt = s.VW_AG.IsNotNullOrEmpty();
                     }));
@@ -191,7 +192,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                         {
                             d.ZULBELN = s.BelegNr;
                             d.LFDNR = s.PositionsNr;
-                            d.MATNR = s.ID;
+                            d.MATNR = s.MaterialNr;
                             d.MENGE = s.Menge;
                         }));
             }
