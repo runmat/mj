@@ -114,7 +114,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             // Fahrzeug
                             d.ZZREFNR5 = s.Fahrzeugdaten.AuftragsNr;
                             d.ZZREFNR2 = s.Fahrzeugdaten.FahrgestellNr;
-                            d.ZZBRIEFNR = s.Fahrzeugdaten.Zb2Nr;
+                            d.BRIEFNR = s.Fahrzeugdaten.Zb2Nr;
                             d.FAHRZ_ART = s.Fahrzeugdaten.FahrzeugartId;
                             d.VK_KUERZEL = s.Fahrzeugdaten.VerkaeuferKuerzel;
                             d.ZZREFNR3 = s.Fahrzeugdaten.Kostenstelle;
