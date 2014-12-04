@@ -5,6 +5,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -32,18 +33,22 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         #region Fahrzeug Akte
 
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
+        [Required]
         [Length(5)]
         public string HerstellerSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
+        [Required]
         [Length(3)]
         public string TypSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
+        [Required]
         [Length(5)]
         public string VvsSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
+        [Required]
         [Length(1)]
         public string VvsPruefZiffer { get; set; }
 
@@ -69,12 +74,26 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
+        [Length(1)]
         public string BriefbestandsInfo { get; set; }
 
+        public static string BriefbestandsInfoOptionen
+        {
+            get
+            {
+                return "," + Localize.DropdownDefaultOptionPleaseChoose + ";" +
+                       "0," + Localize.InStock + ";" +
+                       "1," + Localize.TempDispatched + ";" +
+                       "2," + Localize.FinalDispatched + "";
+            }
+        }
+
         [LocalizedDisplay(LocalizeConstants.ZBIIStorageLocation)]
+        [Length(30)]
         public string BriefLagerort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VehicleLocation)]
+        [Length(30)]
         public string FahrzeugStandort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
@@ -87,15 +106,18 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public DateTime? AbmeldeDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Length(15)]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
+        [Length(25)]
         public string Briefnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CocAvailable)]
         public bool CocVorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Remark)]
+        [Length(35)]
         public string Bemerkung { get; set; }
 
 

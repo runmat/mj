@@ -38,12 +38,6 @@
     function TryShowPartnerGrid() {
         FormPreparePrivateAjax();
 
-        if ($("#TmpEnforcePartnerDropdownRefresh").val().toLowerCase() == "true") {
-            $("#TmpEnforcePartnerDropdownRefresh").val(false);
-            LoadingHide();
-            return;
-        }
-
         ShowPartnerGrid();
     }
 

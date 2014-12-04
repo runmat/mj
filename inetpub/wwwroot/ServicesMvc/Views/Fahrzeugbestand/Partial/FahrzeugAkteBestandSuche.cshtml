@@ -1,4 +1,5 @@
-﻿@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestandSelektor
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestandSelektor
 
 <div id="divFahrzeugAkteBestandSuche">
     @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
@@ -15,7 +16,7 @@
             @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
             
-            @Html.FormTextBoxFor(m => m.BriefbestandsInfo, new { @class = "m-wrap", col = "left" })
+            @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
                     
             @Html.FormTextBoxFor(m => m.FahrzeugStandort, new { @class = "m-wrap", col = "left" })

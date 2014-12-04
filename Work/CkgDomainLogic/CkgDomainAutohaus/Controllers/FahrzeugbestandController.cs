@@ -66,8 +66,8 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.LoadFahrzeuge();
-                if (ViewModel.FahrzeugeAkteBestand.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+                //if (ViewModel.FahrzeugeAkteBestand.None())
+                //    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
             return PartialView("Partial/FahrzeugAkteBestandSuche", ViewModel.FahrzeugAkteBestandSelektor);

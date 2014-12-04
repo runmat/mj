@@ -49,7 +49,7 @@
                                 </a>
                             </text>, new { @class = "m-wrap", col = "right" })
 
-                    @Html.FormTextBoxFor(m => m.BriefbestandsInfo, new { @class = "m-wrap", col = "left" })
+                    @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
                     @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
                     
                     @Html.FormTextBoxFor(m => m.FahrzeugStandort, new { @class = "m-wrap", col = "left" })

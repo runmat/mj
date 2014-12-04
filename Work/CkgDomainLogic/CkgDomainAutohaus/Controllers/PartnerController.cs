@@ -65,5 +65,40 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/PartnerSuche", ViewModel.PartnerSelektor);
         }
+
+
+        #region Grid
+
+        [HttpPost]
+        public ActionResult ShowPartnerGrid()
+        {
+            return PartialView("AdressenPflege/AdressenGrid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult PartnerAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.PartnersFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridPartner(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterPartners(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
+        #region Export
+
+        protected override IEnumerable GetGridExportData()
+        {
+            return ViewModel.PartnersFiltered;
+        }
+
+        #endregion
     }
 }
