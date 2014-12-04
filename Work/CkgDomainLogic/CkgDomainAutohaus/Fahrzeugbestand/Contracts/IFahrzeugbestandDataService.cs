@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
+using CkgDomainLogic.Partner.Contracts;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Contracts
 {
-    public interface IFahrzeugAkteBestandDataService : IAdressenDataService
+    public interface IFahrzeugAkteBestandDataService : IPartnerDataService
     {
         List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model);
 

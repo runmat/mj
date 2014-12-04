@@ -1,0 +1,59 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@using GeneralTools.Resources
+@{
+    var gridName = "GridAdresse";
+    var currentController = ViewContext.RouteData.GetRequiredString("controller");
+    var addressSelectorAvailable = (bool)(ViewData["AddressSelectorAvailable"] ?? false);
+}
+
+<div class="portlet">
+    <div id="divGridEditStart">
+
+        @(Html.Telerik()
+              .Grid<Adresse>()
+                .Name(gridName)
+        
+                .XGroup("GridAdressenPflege")
+                .XAjaxDataBinding("AdressenAjaxBinding", currentController)
+                .Columns(columns =>
+                    {
+                        columns.XBound(c => c.KundenNr).Width(145).Title("").Filterable(false).Sortable(false)
+                               .ClientTemplate(
+                                (addressSelectorAvailable ?
+                                   "<button onclick='AddressSelect(\"<#= data.KundenNr #>\");' class='btn mini blue tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+                                    + "&nbsp;" : "") 
+                                   +
+                                   "<button onclick='AddressEdit(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                            ).HeaderTemplate(
+                                "<button onclick='ClosePartnerAddressGrid();' class='btn mini red tooltips' data-original-title='" + Localize.Back + "' data-placement='right'><i class='icon-chevron-left margin-right-5'></i></button>" +
+                                "<button onclick='AddressNew();' class='btn mini gray tooltips margin-left-5' data-original-title='" + CommonResources.NewAddress + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                            );
+
+                      columns.XBound(c => c.KundenNr);
+                      columns.XBound(c => c.Name1);
+                      columns.XBound(c => c.Name2);
+                      columns.XBound(c => c.StrasseHausNr);
+                      columns.XBound(c => c.PLZ);
+                      columns.XBound(c => c.Ort);
+                      columns.XBound(c => c.Land);
+                      columns.XBound(c => c.Email);
+                  })
+                .XAutoColumnConfiguration()
+                .ClientEvents(events => events.XAutoClientEvents(gridName))
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.Name1).Ascending())
+                .ToolBar(commands =>
+                {
+                    commands.FilteredDataCommand("ExportFilteredExcel", currentController).HtmlAttributes(new { @class = "hide btn mini gray tooltips a_btn_mini excel", data_original_title = "Excel Export", data_placement = "right" });
+                    commands.FilteredDataCommand("ExportFilteredPDF", currentController).HtmlAttributes(new { @class = "hide btn mini gray tooltips a_btn_mini pdf", data_original_title = "PDF Export", data_placement = "right" });
+                })
+              )
+
+    </div>
+</div>
+
+<div id="divGridItemDetails"></div>
+
+
+
+

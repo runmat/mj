@@ -47,14 +47,6 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
-        [CkgApplication]
-        public ActionResult Partner()
-        {
-            ViewModel.DataInit();
-
-            return View(ViewModel);
-        }
-
         void InitModelStatics()
         {
             FahrzeugAkteBestand.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;

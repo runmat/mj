@@ -4220,10 +4220,9 @@
     <Content Include="Views\KroschkeZulassung\Partial\FahrzeugdatenForm.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partner.cshtml" />
+    <Content Include="Views\Partner\Pflege.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
     <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\TestAdressPflege.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
@@ -4233,6 +4232,11 @@
     <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Shared\Partial\BreadCrumbs.cshtml" />
+    <Content Include="Views\Partner\Partial\Common.cshtml" />
+    <Content Include="Views\Partner\Partial\PartnerAdressenGrid.cshtml" />
+    <Content Include="Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
+    <Content Include="Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
+    <Content Include="Views\Partner\Partial\PartnerSuche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

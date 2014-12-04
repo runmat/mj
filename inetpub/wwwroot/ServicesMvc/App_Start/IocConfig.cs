@@ -28,6 +28,8 @@ using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Services;
 using CkgDomainLogic.Logs.Contracts;
 using CkgDomainLogic.Logs.Services;
+using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Partner.Services;
 using CkgDomainLogic.Services;
 using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Services;
@@ -156,6 +158,7 @@ namespace ServicesMvc.App_Start
 
             builder.RegisterType<UebfuehrgDataServiceSAP>().As<IUebfuehrgDataService>().InstancePerHttpRequest();
             builder.RegisterType<FahrzeugAkteBestandDataServiceSAP>().As<IFahrzeugAkteBestandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<PartnerDataServiceSAP>().As<IPartnerDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();

@@ -1,0 +1,95 @@
+﻿@model CkgDomainLogic.Partner.ViewModels.PartnerViewModel
+
+@Html.Partial("AdressenPflege/AdresseCommon")
+
+<h3 class="page-title">Partner <small>Pflege</small> </h3>
+
+
+<div id="divSearchAndGrid">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/PartnerSuche", Model.PartnerSelektor)
+    }
+
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid"></div>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+    var _adressenKennungLocalized = '';
+
+    function FormPreparePrivate() {
+        FormPreparePrivateAdressenPflege();
+
+//        setTimeout(function () {
+//            $("#PartnerSearchForm").submit();
+//        }, 100);
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function TryShowPartnerGrid() {
+        FormPreparePrivateAjax();
+
+        if ($("#TmpEnforcePartnerDropdownRefresh").val().toLowerCase() == "true") {
+            $("#TmpEnforcePartnerDropdownRefresh").val(false);
+            LoadingHide();
+            return;
+        }
+
+        ShowPartnerGrid();
+    }
+
+    function ShowPartnerGrid() {
+
+        $.ajax({
+            type: "POST",
+            url: "ShowPartnerGrid",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowPartnerSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowPartnerSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAdressen");
+
+        $("#divGrid").slideDown();
+    }
+
+    
+    function OnDataBound_GridAdressen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAdressen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAdressen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
