@@ -158,7 +158,7 @@ namespace SapORM.Models
 
 			public string ZZREFNR5 { get; set; }
 
-			public string ZZBRIEFNR { get; set; }
+			public string BRIEFNR { get; set; }
 
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
@@ -228,7 +228,7 @@ namespace SapORM.Models
 					O_G_VERSSCHEIN = (string)row["O_G_VERSSCHEIN"],
 					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
 					ZZREFNR5 = (string)row["ZZREFNR5"],
-					ZZBRIEFNR = (string)row["ZZBRIEFNR"],
+					BRIEFNR = (string)row["BRIEFNR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
