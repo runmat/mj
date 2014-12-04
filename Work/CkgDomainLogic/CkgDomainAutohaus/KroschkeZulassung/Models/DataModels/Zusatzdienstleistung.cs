@@ -5,6 +5,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
     {
         public string ID { get; set; }
 
+        public string MaterialNr { get; set; }
+
         public string Name { get; set; }
 
         public string BelegNr { get; set; }
