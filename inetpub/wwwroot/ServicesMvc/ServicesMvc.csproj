@@ -2426,6 +2426,8 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
+    <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
+    <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2467,6 +2469,9 @@
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
+    <Content Include="Areas\Web.config" />
+    <Content Include="Areas\SampleArea\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Autohaus\Views\_ViewStart.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4220,23 +4225,23 @@
     <Content Include="Views\KroschkeZulassung\Partial\FahrzeugdatenForm.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
-    <Content Include="Views\Partner\Pflege.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\Common.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Index.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
-    <Content Include="Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\Pflege.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Shared\Partial\BreadCrumbs.cshtml" />
-    <Content Include="Views\Partner\Partial\Common.cshtml" />
-    <Content Include="Views\Partner\Partial\PartnerAdressenGrid.cshtml" />
-    <Content Include="Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
-    <Content Include="Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
-    <Content Include="Views\Partner\Partial\PartnerSuche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerAdressenGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerSuche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4258,6 +4263,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\js\" />

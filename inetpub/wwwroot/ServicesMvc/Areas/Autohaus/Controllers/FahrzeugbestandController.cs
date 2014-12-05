@@ -21,7 +21,7 @@ using Telerik.Web.Mvc;
 using System.Linq;
 using Adresse = CkgDomainLogic.DomainCommon.Models.Adresse;
 
-namespace ServicesMvc.Controllers
+namespace ServicesMvc.Autohaus.Controllers
 {
     public class FahrzeugbestandController : CkgDomainController
     {
