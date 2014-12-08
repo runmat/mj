@@ -85,6 +85,16 @@ namespace CkgDomainLogic.General.Database.Models
             {
                 de_de_kurz = translatedResourceCustom.de_de_kurz;    
             }
+
+            if (!string.IsNullOrEmpty(translatedResourceCustom.fr))
+            {
+                fr = translatedResourceCustom.fr;
+            }
+
+            if (!string.IsNullOrEmpty(translatedResourceCustom.fr_kurz))
+            {
+                fr_kurz = translatedResourceCustom.fr_kurz;
+            }
         }
 
         /// <summary>
