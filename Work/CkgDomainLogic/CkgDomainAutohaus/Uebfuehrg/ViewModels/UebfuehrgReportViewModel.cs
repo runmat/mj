@@ -175,15 +175,15 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             FileService.TryDirectoryCreate(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath));
 
             // Get web folder urls for big images
-            ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt, mapToUrlFunction).ToList();
+            ImageFileNames = GetTempFolderPathForFiles("*{0}*.jpg", fahrt, mapToUrlFunction).ToList();
             
             // Get web folder urls for pdf files
-            var availablePdfs = GetTempFolderPathForFiles("{0}*.pdf", fahrt, mapToUrlFunction).ToList();
+            var availablePdfs = GetTempFolderPathForFiles("*{0}*.pdf", fahrt, mapToUrlFunction).ToList();
 
             PdfFileNames = FilterPdfsForUeberfuhrungsauftrag(availablePdfs, auftragsNr, fahrt).ToList();
 
             // Get web folder urls for thumb images
-            var mask = "THUMB_{0}*.jpg";
+            var mask = "THUMB_*{0}*.jpg";
             ThumbImageFileNames = GetTempFolderPathForFiles(mask, fahrt, mapToUrlFunction).ToList();
             // Also copy thumb images at this point
             // Note: Big images and pdf files will be copied only if user clicks on the apropiate thumbnail
@@ -193,22 +193,25 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public IEnumerable<string> FilterPdfsForUeberfuhrungsauftrag(IEnumerable<string> liste, string auftragsnummer, string fahrt)
         {
             string fahrtAlt = "XXX"; // Wert für den Fall dass kein unbekannte Daten übergeben wurden
+            string fahrtAltProtokoll = "XXX";
             string fahrtNeu = "XXX";
             if (fahrt == "1")
             {
-                fahrtAlt = "-0001-";
-                fahrtNeu = "_H.pdf";
+                fahrtAlt = "-1";
+                fahrtAltProtokoll = "-1P";
+                fahrtNeu = "_H";
             }
 
             if (fahrt == "2")
             {
-                fahrtAlt = "-0002-";
-                fahrtNeu = "_R.pdf";
+                fahrtAlt = "-2";
+                fahrtAltProtokoll = "-2P";
+                fahrtNeu = "_R";
             }
 
-            return liste.Where(n =>
-                (Path.GetFileName(n).StartsWith(auftragsnummer.TrimStart(new[] { '0' })) && n.Contains(fahrtAlt)) ||
-                (n.Contains(auftragsnummer) && n.EndsWith(fahrtNeu)));
+            return liste.Select(x => Path.GetFileNameWithoutExtension(x.ToUpper()))
+                        .Where(n =>(n.Contains(auftragsnummer.TrimStart(new[] { '0' })) && (n.Contains(fahrtAlt) || n.Contains(fahrtAltProtokoll) )) ||
+                        (n.Contains(auftragsnummer) && n.EndsWith(fahrtNeu)));
         } 
 
         public void CopySingleBigImage(int tour, int singleFileNr)
@@ -262,16 +265,34 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public int GetTourFromFilename(string filename)
         {
-            if (filename.LastIndexOf('-') == -1)
-                return 0;
 
-            filename = filename.Substring(filename.LastIndexOf('-'));
+            // Diese Logik funktioniert nur bei PDFs mit dem Format 0027904333-0001-1P.pdf
+            // PDFs mit dem Format 0000325503_0027904332_D_e-alp-ru_H.pdf werden hier nicht erkannt.
+            //if (filename.LastIndexOf('-') == -1)
+            //    return 0;
+
+            //filename = filename.Substring(filename.LastIndexOf('-'));
             
-            int tour;
-            if (!Int32.TryParse(filename.Substring(1, 1), out tour))
-                return -1;
+            //int tour;
+            //if (!Int32.TryParse(filename.Substring(1, 1), out tour))
+            //    return -1;
 
-            return tour;
+            //return tour;
+
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filename.ToUpper());
+
+            if (fileNameWithoutExtension.EndsWith("_H") || fileNameWithoutExtension.EndsWith("-1") || fileNameWithoutExtension.EndsWith("-1P"))
+            {
+                return 1;
+            }
+
+            if (fileNameWithoutExtension.EndsWith("_R") || fileNameWithoutExtension.EndsWith("-2") || fileNameWithoutExtension.EndsWith("-2P"))
+            {
+                return 2;
+            }
+
+            return -1;
+
         }
 
         public string GetPdfFilesAsZip()
