@@ -200,7 +200,7 @@
     }
 
     function VersEventDelete(id) {
-        if (!confirm('Dieses Event wirklich löschen?'))
+        if (!confirm('@Localize.VersEventDeleteEventConfirmation'))
             return;
 
         $.ajax({
@@ -209,7 +209,7 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                SpanAlertSuccess("Message", "@Localize.EventSuccessfullyDeleted", 1800);
+                SpanAlertSuccess("Message", "@HttpUtility.HtmlEncode(Localize.EventSuccessfullyDeleted)", 1800);
                 //$("#VersEventGrid").data("tGrid").ajaxRequest();
                 FilterGrid("VersEventGrid");
             },
