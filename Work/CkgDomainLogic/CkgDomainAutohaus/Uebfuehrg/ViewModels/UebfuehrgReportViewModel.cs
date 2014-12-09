@@ -216,7 +216,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void CopySingleBigImage(int tour, int singleFileNr)
         {
-            CopyFilesToTempFolder("{0}*.jpg", singleFileNr, tour);
+            CopyFilesToTempFolder("*{0}*.jpg", singleFileNr, tour);
         }
 
         public void CopySinglePdf(int singleFileNr)
@@ -303,7 +303,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 return "";
 
             var zipFileNameWithoutExtensions = string.Format("Ueberfuehrungsprotokolle_{0}_Fahrt_{1}", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt);
-            var auftragGeber = LogonContext.KundenNr.ToSapKunnr();
 
             var zip = new ZipFile();
 
@@ -312,18 +311,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             // Folgende Ermittlungen der PDF also Ausschalten, nur noch die vor-gefilterten Daten anzeigen
 
-            var fileNamesForFahrt = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}*{1}P.pdf", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt));
-            //foreach (var fileName in fileNamesForFahrt)
-            //    zip.AddFile(fileName, zipFileNameWithoutExtensions);
-
-            var fileNamesGeneral = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}_{1}*.pdf", auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView));
-            //foreach (var fileName in fileNamesGeneral)
-            //    zip.AddFile(fileName, zipFileNameWithoutExtensions);
-
-            var allPdfFiles = fileNamesForFahrt.Union(fileNamesGeneral);
+            var allPdfFiles = FileService.TryDirectoryGetFiles(sourcePath, "*.pdf");
 
             // Liste mit den bereits ermittleten PdfFileNames abgleichen
-            var pdfFilesToZip = allPdfFiles.Where(x => PdfFileNames.Select(filename => Path.GetFileName(filename.ToUpper())).Contains(Path.GetFileName(x.ToUpper())));
+            // PdfFileNames beinhaltet den Dateinamne ohne Extension und ohne verzeichnis da alles in der VM gepsiechert ist
+            var pdfFilesToZip = allPdfFiles.Where(x => PdfFileNames.Contains(Path.GetFileNameWithoutExtension(x.ToUpper())));
 
             foreach (var pdfFileName in pdfFilesToZip)
             {
