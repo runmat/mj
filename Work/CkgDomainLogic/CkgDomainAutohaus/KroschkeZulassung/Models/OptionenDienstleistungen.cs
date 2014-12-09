@@ -79,7 +79,36 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public static List<Kennzeichengroesse> KennzeichengroesseList { get; set; }
 
         [XmlIgnore]
-        public List<Kennzeichengroesse> KennzeichengroesseListForMatNr { get { return KennzeichengroesseList.Where(k => k.MatNr == ZulassungsartMatNr.ToInt()).ToList(); } }
+        public List<Kennzeichengroesse> KennzeichengroesseListForMatNr
+        {
+            get
+            {
+                var liste = KennzeichengroesseList.Where(k => k.MatNr == ZulassungsartMatNr.ToInt()).OrderBy(k => k.Position).ToList();
+
+                if (liste.Count == 0)
+                {
+                    liste.Add(new Kennzeichengroesse
+                    {
+                        Id = 1,
+                        Groesse = "520x114",
+                        MatNr = ZulassungsartMatNr.ToInt(),
+                        Position = 1
+                    });
+                }
+                    
+                var maxPos = liste.Max(k => k.Position);
+
+                liste.Add(new Kennzeichengroesse
+                {
+                    Id = 9999,
+                    Groesse = "Sondermass",
+                    MatNr = ZulassungsartMatNr.ToInt(),
+                    Position = (maxPos + 1)
+                });
+
+                return liste;
+            }
+        }
 
         public string KennzeichenGroesseText { get { return (Kennzeichengroesse == null ? "" : Kennzeichengroesse.Groesse); } }
 
@@ -97,22 +126,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
-
-        public bool IstNeuzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "593"); } }
-
-        public bool IstGebrauchtzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "588"); } }
-
-        public bool Ist72hVersandzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "598"); } }
-
-        public bool IstAbmeldung { get { return (ZulassungsartMatNr.TrimStart('0') == "573" || ZulassungsartMatNr.TrimStart('0') == "584" || ZulassungsartMatNr.TrimStart('0') == "669"); } }
-
-        public bool IstUmkennzeichnung { get { return (ZulassungsartMatNr.TrimStart('0') == "596"); } }
-
-        public bool IstKurzzeitzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "592"); } }
-
-        public bool IstFirmeneigeneZulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "619"); } }
-
-        public bool IstZollzulassung { get { return (ZulassungsartMatNr.TrimStart('0') == "600"); } }
 
         [LocalizedDisplay(LocalizeConstants.LicensePlatesAvailable)]
         public bool KennzeichenVorhanden { get; set; }
@@ -136,27 +149,30 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
             if (NurEinKennzeichen)
                 s += String.Format("<br/>{0}", Localize.OnlyOneLicensePlate);
 
-            if (KennzeichenSondergroesse && Kennzeichengroesse != null)
-                s += String.Format("<br/>{0}: {1}", Localize.LicensePlateSpecialSize, Kennzeichengroesse.Groesse);
+            if (KennzeichenSondergroesse)
+                s += String.Format("<br/>{0}", Localize.LicensePlateSpecialSize);
+
+            if (Kennzeichengroesse != null)
+                s += String.Format("<br/>{0}: {1}", Localize.LicensePlateSize, Kennzeichengroesse.Groesse);
 
             if (Saisonkennzeichen)
                 s += String.Format("<br/>{0}: {1}-{2}", Localize.SeasonalLicensePlate, SaisonBeginn, SaisonEnde);
 
             s += String.Format("<br/>{0}: {1}", Localize.Comment, Bemerkung);
 
-            if (IstGebrauchtzulassung)
+            if (Zulassungsdaten.IstGebrauchtzulassung(ZulassungsartMatNr))
             {
                 s += String.Format("<br/>{0}: {1}", Localize.LicensePlatesAvailable, KennzeichenVorhanden);
             }
-            else if (IstAbmeldung)
+            else if (Zulassungsdaten.IstAbmeldung(ZulassungsartMatNr))
             {
                 s += String.Format("<br/>{0}: {1}", Localize.ReserveExistingLicenseNo, VorhandenesKennzeichenReservieren);
             }
-            else if (IstFirmeneigeneZulassung)
+            else if (Zulassungsdaten.IstFirmeneigeneZulassung(ZulassungsartMatNr))
             {
-                s += String.Format("<br/>{0}: {1}", Localize.HoldingPeriodUntil, HaltedauerBis);
+                s += String.Format("<br/>{0}: {1}", Localize.HoldingPeriodUntil, (HaltedauerBis.HasValue ? HaltedauerBis.Value.ToShortDateString() : ""));
             }
-            else if (IstUmkennzeichnung)
+            else if (Zulassungsdaten.IstUmkennzeichnung(ZulassungsartMatNr))
             {
                 s += String.Format("<br/>{0}: {1}", Localize.LicenseNoOld, AltesKennzeichen);
             }

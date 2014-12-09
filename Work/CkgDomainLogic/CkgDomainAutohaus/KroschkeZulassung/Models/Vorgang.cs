@@ -43,13 +43,15 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         public OptionenDienstleistungen OptionenDienstleistungen { get; set; }
 
+        public string AuftragszettelPdfPfad { get; set; }
+
         public byte[] KundenformularPdf { get; set; }
 
         public Vorgang()
         {
             Rechnungsdaten = new Rechnungsdaten();
             BankAdressdaten = new BankAdressdaten();
-            Fahrzeugdaten = new Fahrzeugdaten();
+            Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
             Halterdaten = new Adresse { Land = "DE", Kennung = "HALTER" };
             Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();

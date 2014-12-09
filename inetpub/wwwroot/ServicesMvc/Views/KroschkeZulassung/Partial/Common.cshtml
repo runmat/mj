@@ -27,6 +27,7 @@
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
+            FormWizard.tabClickDisabled = true;
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
@@ -34,7 +35,7 @@
 
             try {
                 $("#AjaxForm" + stepName).submit();
-                
+                window.scrollTo(0, 0);
                 return false;
             }
             catch (e) {
@@ -43,12 +44,15 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
-            FormWizardShowHideSaveButton(step == 2, 500);
+            FormWizardShowHideSaveButton(step == 7, 500);
+
+            window.scrollTo(0, 0);
             return true;
         });
 
         FormWizard.OnCustom1(function (step, maxSteps) {
-            alert("... here goes the ajax action for the custom 'save' button");
+            SaveZulassung();
+
             return true;
         });
 
@@ -77,6 +81,23 @@
             type: "POST",
             url: FormWizard.GetNextTabKey(),
             data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                FormPreparePrivateAjax();
+            }
+        });
+    }
+
+    function SaveZulassung() {
+        $.ajax({
+            type: "POST",
+            url: "Save",
+            data: { },
             loadingShow: true,
             success: function (result) {
                 if (typeof (result.message) !== "undefined") {
@@ -123,6 +144,9 @@
                         $("#Swift").attr("readonly", false);
                         $("#Swift").attr("placeholder", "");
                         $("#Swift").val("");
+                        $("#Geldinstitut").attr("readonly", false);
+                        $("#Geldinstitut").attr("placeholder", "");
+                        $("#Geldinstitut").val("");
                         SpanAlertWarning("bankDataHint", '@Localize.BankDataCouldNotBeRetrievedFromIban.ToJavascriptString()', 1800);
                         return;
                     }
@@ -214,6 +238,26 @@
 
     }
 
+    function CheckKennzeichenReserviert() {
+        var wkz2 = $("#Wunschkennzeichen2");
+        var wkz3 = $("#Wunschkennzeichen3");
+        var resName = $("#ReservierungsName");
+        var resNr = $("#ReservierungsNr");
+
+        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
+        if (kennzReserv) {
+            wkz2.attr('readonly', true);
+            wkz3.attr('readonly', true);
+            resName.attr('readonly', false);
+            resNr.attr('readonly', false);
+        } else {
+            wkz2.attr('readonly', false);
+            wkz3.attr('readonly', false);
+            resName.attr('readonly', true);
+            resNr.attr('readonly', true);
+        }
+    }
+
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();
@@ -221,6 +265,31 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
+        }
+    }
+
+    function CheckKennzeichenSondergroesse() {
+        var kennzGr = $("#KennzeichenGroesseId");
+
+        var kennzSondergr = $("#KennzeichenSondergroesse").is(":checked");
+        if (kennzSondergr) {
+            kennzGr.attr('disabled', false);
+        } else {
+            kennzGr.attr('disabled', true);
+        }
+    }
+
+    function CheckSaisonkennzeichen() {
+        var sais1 = $("#SaisonBeginn");
+        var sais2 = $("#SaisonEnde");
+
+        var saisKennz = $("#Saisonkennzeichen").is(":checked");
+        if (saisKennz) {
+            sais1.attr('disabled', false);
+            sais2.attr('disabled', false);
+        } else {
+            sais1.attr('disabled', true);
+            sais2.attr('disabled', true);
         }
     }
 

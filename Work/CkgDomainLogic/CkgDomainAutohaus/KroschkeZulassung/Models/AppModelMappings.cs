@@ -75,7 +75,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.MaterialNr = s.EAN11;
                             d.Name = s.ASKTX;
                             d.IstGewaehlt = s.VW_AG.IsNotNullOrEmpty();
-                    }));
+                            d.Menge = "1";
+                        }));
             }
         }
 
@@ -131,28 +132,18 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.KREISBEZ = s.Zulassungsdaten.ZulassungskreisBezeichnung;
                             d.ZZEVB = s.Zulassungsdaten.EvbNr;
                             d.ZZKENN = s.Zulassungsdaten.Kennzeichen;
+                            d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.Wunschkennzeichen.BoolToX();
-                            if (s.Zulassungsdaten.Wunschkennzeichen)
-                            {
-                                d.WUNSCHKENN_JN = "X";
-                                d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2;
-                                d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3;
-                            }
-                            if (s.Zulassungsdaten.KennzeichenReservieren)
-                            {
-                                d.RESERVKENN_JN = "X";
-                                d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
-                            }
+                            d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2;
+                            d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3;
+                            d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
 
                             // Optionen/Dienstleistungen
                             d.EINKENN_JN = s.OptionenDienstleistungen.NurEinKennzeichen.BoolToX();
                             d.KENNZFORM = s.OptionenDienstleistungen.KennzeichenGroesseText;
                             d.SAISON_KNZ = s.OptionenDienstleistungen.Saisonkennzeichen.BoolToX();
-                            if (s.OptionenDienstleistungen.Saisonkennzeichen)
-                            {
-                                d.SAISON_BEG = s.OptionenDienstleistungen.SaisonBeginn;
-                                d.SAISON_END = s.OptionenDienstleistungen.SaisonEnde;
-                            }
+                            d.SAISON_BEG = s.OptionenDienstleistungen.SaisonBeginn;
+                            d.SAISON_END = s.OptionenDienstleistungen.SaisonEnde;
                             d.BEMERKUNG = s.OptionenDienstleistungen.Bemerkung;
                             d.KENNZ_VH = s.OptionenDienstleistungen.KennzeichenVorhanden.BoolToX();
                             d.VH_KENNZ_RES = s.OptionenDienstleistungen.VorhandenesKennzeichenReservieren.BoolToX();

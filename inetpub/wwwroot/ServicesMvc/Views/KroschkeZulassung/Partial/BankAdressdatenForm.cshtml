@@ -37,15 +37,19 @@
                                                             @Html.SpanAlert("bankDataHint")
                                                         </text>)
 
-        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap large uppercase", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
-        
-        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap large", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap large uppercase", @readonly = "readonly" },
+                                    postControlHtml: @<text>
+                                                          <span class="margin-left-10">@Localize.WillBeFilledAutomatically</span>
+                                                        </text>)
+
+        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap large", @readonly = "readonly" },
+                                    postControlHtml: @<text>
+                                                            <span class="margin-left-10">@Localize.WillBeFilledAutomatically</span>
+                                                        </text>)
             
         
         <script type="text/javascript">
-
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        
         </script>
     }
 </div>

@@ -20,7 +20,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string Zb2Nr { get; set; }
 
