@@ -196,18 +196,18 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             string fahrtNeu = "XXX";
             if (fahrt == "1")
             {
-                fahrtAlt = "_0001_";
+                fahrtAlt = "-0001-";
                 fahrtNeu = "_H.pdf";
             }
 
             if (fahrt == "2")
             {
-                fahrtAlt = "_0002_";
+                fahrtAlt = "-0002-";
                 fahrtNeu = "_R.pdf";
             }
 
             return liste.Where(n =>
-                (n.StartsWith(auftragsnummer.TrimStart(new[] { '0' })) && n.Contains(fahrtAlt)) ||
+                (Path.GetFileName(n).StartsWith(auftragsnummer.TrimStart(new[] { '0' })) && n.Contains(fahrtAlt)) ||
                 (n.Contains(auftragsnummer) && n.EndsWith(fahrtNeu)));
         } 
 
@@ -286,13 +286,28 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             var zip = new ZipFile();
 
+            // beim InitData wurden die PDF Dateien bereits gefiltert, Ergebnis wurde in der Property PdfFileNames gespeichert
+            // Stattdessen wird auf die Verzeichnise erneut zugegriffen ohne dass eine Filterung vorgenommen wird
+
+            // Folgende Ermittlungen der PDF also Ausschalten, nur noch die vor-gefilterten Daten anzeigen
+
             var fileNamesForFahrt = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}*{1}P.pdf", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt));
-            foreach (var fileName in fileNamesForFahrt)
-                zip.AddFile(fileName, zipFileNameWithoutExtensions);
+            //foreach (var fileName in fileNamesForFahrt)
+            //    zip.AddFile(fileName, zipFileNameWithoutExtensions);
 
             var fileNamesGeneral = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}_{1}*.pdf", auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView));
-            foreach (var fileName in fileNamesGeneral)
-                zip.AddFile(fileName, zipFileNameWithoutExtensions);
+            //foreach (var fileName in fileNamesGeneral)
+            //    zip.AddFile(fileName, zipFileNameWithoutExtensions);
+
+            var allPdfFiles = fileNamesForFahrt.Union(fileNamesGeneral);
+
+            // Liste mit den bereits ermittleten PdfFileNames abgleichen
+            var pdfFilesToZip = allPdfFiles.Where(x => PdfFileNames.Select(filename => Path.GetFileName(filename.ToUpper())).Contains(Path.GetFileName(x.ToUpper())));
+
+            foreach (var pdfFileName in pdfFilesToZip)
+            {
+                zip.AddFile(pdfFileName);
+            }
 
             var zipFileName = GetDestinationFileName(zipFileNameWithoutExtensions + ".zip", DestinationRelativePath);
             if (!FileService.TryFileDelete(zipFileName))
