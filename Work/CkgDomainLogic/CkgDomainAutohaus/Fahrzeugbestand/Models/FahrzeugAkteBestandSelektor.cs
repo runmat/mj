@@ -14,6 +14,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
     public class FahrzeugAkteBestandSelektor
     {
         private string _fin;
+        private string _kennzeichen;
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN
@@ -49,7 +50,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public DateTime? AbmeldeDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
-        public string Kennzeichen { get; set; }
+        public string Kennzeichen
+        {
+            get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
         public string Briefnummer { get; set; }

@@ -177,19 +177,23 @@
     }
 
     function TryCloseFahrzeugDetails() {
+
         SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
+        
         if (_modelStateValid) {
             if (_finIdJustCreated) {
-                var message = 'Die Fahrzeug-Akte wurde erfolgreich angelegt, Sie können nun den Fahrzeugbestand pflegen.';
+                var message = '@Localize.VehicleCreatedPleaseEditVehicleStock';
                 SpanAlertSuccess("Message", message, 4000);
                 FormPrepareAjax();
                 return;
             }
-            
+
+            FormPrepareAjax();
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");
             return;
         }
+
         FormPrepareAjax();
     }
 
@@ -199,10 +203,10 @@
 
         if (readonly) {
             $("#fahrzeug-bestand").show();
-            $("input[type=submit] span").text('@Localize.Save');
+            $("button[type=submit] span").text('@Localize.Save');
         } else {
             $("#fahrzeug-bestand").hide();
-            $("input[type=submit] span").text('@Localize.VehicleCreate');
+            $("button[type=submit] span").text('@Localize.VehicleCreate');
         }
     }
     

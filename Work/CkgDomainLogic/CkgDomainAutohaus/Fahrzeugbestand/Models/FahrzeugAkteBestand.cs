@@ -16,6 +16,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
     public class FahrzeugAkteBestand
     {
         private string _fin;
+        private string _kennzeichen;
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
         [Required]
@@ -126,7 +127,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [Length(15)]
-        public string Kennzeichen { get; set; }
+        public string Kennzeichen
+        {
+            get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
         [Length(25)]
