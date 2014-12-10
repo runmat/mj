@@ -39,7 +39,7 @@ namespace CkgDomainLogic.Partner.ViewModels
 
         public PartnerSelektor PartnerSelektor
         {
-            get { return PropertyCacheGet(() => new PartnerSelektor()); }
+            get { return PropertyCacheGet(() => new PartnerSelektor { PartnerKennung = "HALTER" }); }
             set { PropertyCacheSet(value); }
         }
 

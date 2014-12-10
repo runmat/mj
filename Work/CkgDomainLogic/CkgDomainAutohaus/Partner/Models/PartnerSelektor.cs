@@ -1,22 +1,34 @@
-﻿using GeneralTools.Models;
-using GeneralTools.Resources;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
+using CkgDomainLogic.Partner.ViewModels;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.Partner.Models
 {
     public class PartnerSelektor
     {
-        private string _fin;
+        public string PartnerKennung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.VIN)]
-        public string FIN
+        public static List<SelectItem> PartnerKennungen
         {
-            get { return _fin.NotNullOrEmpty().ToUpper(); }
-            set { _fin = value.NotNullOrEmpty().ToUpper(); }
+            get
+            {
+                return new List<SelectItem>
+                    {
+                        new SelectItem ("HALTER", Localize.Holder),
+                        new SelectItem ("KAEUFER", Localize.Buyer),
+                    };
+            }
         }
 
-        [LocalizedDisplay(LocalizeConstants.January)]
-        public bool TestFlag { get; set; }
+        public IHtmlString PartnerKennungLocalized { get { return GetViewModel().AdressenKennungLocalized; } }
 
-        public string PartnerKennung { get { return !TestFlag ? "HALTER" : "KAEUFER"; } }
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<PartnerViewModel> GetViewModel { get; set; }
     }
 }

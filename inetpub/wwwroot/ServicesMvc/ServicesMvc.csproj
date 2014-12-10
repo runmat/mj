@@ -2472,6 +2472,8 @@
     <Content Include="Areas\Web.config" />
     <Content Include="Areas\SampleArea\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Autohaus\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4227,9 +4229,7 @@
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Pflege.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\Common.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />

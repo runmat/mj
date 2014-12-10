@@ -21,7 +21,7 @@
 <script type="text/javascript">
 
     var _modelStateValid = 'false';
-    var _adressenKennungLocalized = '';
+    var _partnerKennungLocalized = '';
 
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
@@ -65,6 +65,8 @@
         GridAllColumnFilterApplyToGrid("GridAdresse");
 
         $("#divGrid").slideDown();
+
+        $("#FormSearchResults div.caption span").text(_partnerKennungLocalized + ", " + "@Localize.Result");
     }
 
     

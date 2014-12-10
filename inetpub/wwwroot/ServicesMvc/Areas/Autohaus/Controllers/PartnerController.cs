@@ -39,6 +39,7 @@ namespace ServicesMvc.Autohaus.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, partnerDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -55,6 +56,11 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.DataInit();
 
             return View(ViewModel);
+        }
+
+        void InitModelStatics()
+        {
+            PartnerSelektor.GetViewModel = GetViewModel<PartnerViewModel>;
         }
 
         [HttpPost]
@@ -80,7 +86,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ShowPartnerGrid()
         {
-            return PartialView("AdressenPflege/AdressenGrid", ViewModel);
+            return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
 
         [GridAction]

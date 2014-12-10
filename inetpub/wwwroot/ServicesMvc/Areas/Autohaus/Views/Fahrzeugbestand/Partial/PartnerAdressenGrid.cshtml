@@ -5,5 +5,9 @@
     _adressenKennungLocalized = '@Model.AdressenKennungLocalized';
 </script>
 
-@Html.Partial("AdressenPflege/AdressenGrid", new ViewDataDictionary { { "AddressSelectorAvailable" , true } })
+@Html.Partial("../Partner/AdressenPflege/AdressenGrid", new ViewDataDictionary
+    {
+        { "AddressSelectorAvailable" , true },
+        { "BackButtonAvailable" , true },
+    })
 
