@@ -565,7 +565,7 @@ namespace PortalMvcTools.Web
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
-                PostControlHtml = postControlHtml == null ? html.Raw("&nbsp;") : postControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
