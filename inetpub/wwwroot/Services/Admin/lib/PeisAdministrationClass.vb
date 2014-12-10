@@ -12,12 +12,6 @@
 #End Region
 #Region "Properties"
 
-    'Public ReadOnly Property Filter() As DataTable
-    '    Get
-    '        Return mFilter
-    '    End Get
-    'End Property
-
     Public ReadOnly Property KeyWords() As DataTable
         Get
             If mKeyWords Is Nothing Then
@@ -32,17 +26,6 @@
 
 
 #Region "Methodes"
-
-
-    'Public Sub New()
-    '    Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
-    '    mFilter = New PeisFilter(ConfigurationManager.AppSettings("Connectionstring"))
-    'End Sub
-
-    'Public Sub fillFilter()
-    '    mFilter.refill()
-    'End Sub
-
 
     Public Sub deleteFilter(ByVal FilterID As String)
         Try
