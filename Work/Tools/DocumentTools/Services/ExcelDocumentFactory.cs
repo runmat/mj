@@ -288,7 +288,10 @@ namespace DocumentTools.Services
             if (type != typeof(string))
                 return o;
 
-            var s = (string)o;
+            var s = "";
+            try { s = (string) o; }
+            catch (InvalidCastException) { s = ""; }
+
             s = s.Replace("<br>", " ");
             s = s.Replace("<br/>", " ");
             s = s.Replace("<br />", " ");
