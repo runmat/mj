@@ -68,18 +68,6 @@ Public Class Change02
             lblErrorDetails.Text = ""
             lnkFahrzeughistorie.Visible = False
 
-
-
-
-            'Durch Aufruf der Fahrzeughistorie wird die AppID geändert, dies darf nicht sein
-            'If Session("HoldAppID") Is Nothing Then
-            '    Session("HoldAppID") = Session("AppID")
-            'Else
-            '    Session("AppID") = Session("HoldAppID")
-            'End If
-
-
-
             If Not IsPostBack Then
                 GetAppIDFromQueryString(Me) ' füllen page.Session("AppID")
                 lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
@@ -87,7 +75,7 @@ Public Class Change02
             End If
 
         Catch ex As Exception
-            lblError.Text = "beim laden der Seite ist ein Fehler aufgetreten: " & ex.Message
+            lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten: " & ex.Message
         End Try
     End Sub
 
