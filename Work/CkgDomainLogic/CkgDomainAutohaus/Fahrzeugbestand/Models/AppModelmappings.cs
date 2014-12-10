@@ -112,8 +112,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.PLZ = s.PLZNR;
                         d.Ort = s.ORT;
                         d.Land = s.LAND;
-                        d.Email = s.EMAIL;
                         d.Telefon = s.TELEFON;
+                        d.Fax = s.FAX;
+                        d.Bemerkung = s.BEMERKUNG;
+                        d.Email = s.EMAIL;
                         d.ReferenzNr = s.REFKUNNR;
                         d.Gewerblich = s.GEWERBE.XToBool();
                     }));
@@ -131,8 +133,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                 {"PLZNR", "PLZ"},
                 {"ORT", "Ort"},
                 {"LAND", "Land"},
-                {"EMAIL", "Email"},
                 {"Telefon", "Telefon"},
+                {"FAX", "Fax"},
+                {"EMAIL", "Email"},
+                {"BEMERKUNG", "Bemerkung"},
                 {"REFKUNNR", "ReferenzNr"},
             };
 
@@ -146,6 +150,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     (s, d) =>
                         {
                             d.GEWERBE = s.Gewerblich.BoolToX();
+                            d.SAVEKDDATEN = true.BoolToX();
                         }));
             }
         }

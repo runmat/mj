@@ -499,6 +499,11 @@ namespace GeneralTools.Models
             return null;
         }
 
+        public static IEnumerable<string> GetScaffoldPropertyLowerNames(this Type type)
+        {
+            return type.GetScaffoldProperties().Select(property => property.Name.ToLower());
+        }
+
         public static IEnumerable<string> GetScaffoldPropertyNames(this Type type)
         {
             return type.GetScaffoldProperties().Select(property => property.Name);

@@ -7,11 +7,13 @@ using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Partner.ViewModels;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Partner.Models
 {
     public class PartnerSelektor
     {
+        [LocalizedDisplay(LocalizeConstants.PartnerRole)]
         public string PartnerKennung { get; set; }
 
         public static List<SelectItem> PartnerKennungen

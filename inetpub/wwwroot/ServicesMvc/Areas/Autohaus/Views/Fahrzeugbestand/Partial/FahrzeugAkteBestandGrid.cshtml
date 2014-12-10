@@ -17,7 +17,7 @@
                 .HeaderTemplate(
                       "<button onclick='FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );
-            columns.XBoundAll();
+            columns.XBoundAllExcept(m => m.Bemerkung);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
