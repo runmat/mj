@@ -28,6 +28,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
 
+        [GridHidden, NotMapped]
+        public bool FinIdJustCreated { get; set; }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 

@@ -128,10 +128,16 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
 
-            if (savedModel.FinID.IsNullOrEmpty())
-                LoadFahrzeuge();
-            else
+            if (savedModel.FinID.IsNotNullOrEmpty())
                 DataMarkForRefresh();
+            else
+            {
+                LoadFahrzeuge();
+
+                savedModel = LoadFahrzeugDetailsUsingFin(model.FIN);
+                savedModel.FinIdJustCreated = true;
+                CurrentFahrzeug = savedModel;
+            }
         }
 
         public void FilterFahrzeugeAkteBestand(string filterValue, string filterProperties)

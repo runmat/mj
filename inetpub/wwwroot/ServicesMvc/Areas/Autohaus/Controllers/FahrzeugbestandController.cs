@@ -64,11 +64,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.ValidateSearch(ModelState.AddModelError);
 
             if (ModelState.IsValid)
-            {
                 ViewModel.LoadFahrzeuge();
-                //if (ViewModel.FahrzeugeAkteBestand.None())
-                //    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
 
             return PartialView("Partial/FahrzeugAkteBestandSuche", ViewModel.FahrzeugAkteBestandSelektor);
         }
@@ -114,6 +110,9 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.UpdateFahrzeugDetails(model, ModelState.AddModelError);
 
+            if (ModelState.IsValid)
+                ModelState.Clear();
+                
             return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }
 

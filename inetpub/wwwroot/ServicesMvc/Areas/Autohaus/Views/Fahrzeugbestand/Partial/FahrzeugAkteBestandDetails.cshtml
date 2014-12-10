@@ -21,8 +21,11 @@
                     @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small" })
                     @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap small" })
                     @Html.FormTextBoxFor(m => m.VvsPruefZiffer, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap small" })
+
+                    @Html.HiddenFor(m => m.FabrikName)
+                    @Html.FormTextBlockFor(m => m.FabrikName, new { @class = "m-wrap small" })
+                    @Html.HiddenFor(m => m.HandelsName)
+                    @Html.FormTextBlockFor(m => m.HandelsName, new { @class = "m-wrap small" })
                 }
             </div>
 
@@ -31,7 +34,7 @@
                 {
                     @* Fahrzeug-Bestand *@
 
-                    @Html.HiddenFor(m => m.Halter, new { @class = "m-wrap" })
+                    @Html.HiddenFor(m => m.Halter)
                     @Html.FormTemplateControl(Localize.Holder,
                             @<text>
                                 <a id="h-dropdown" class="btn white" onclick="return PickPartnerAddress('HALTER');">
@@ -40,7 +43,7 @@
                                 </a>
                             </text>, new { @class = "m-wrap", col = "left" })                
 
-                    @Html.HiddenFor(m => m.Kaeufer, new { @class = "m-wrap" })
+                    @Html.HiddenFor(m => m.Kaeufer)
                     @Html.FormTemplateControl(Localize.Buyer,
                             @<text>
                                 <a id="k-dropdown" class="btn white" onclick="return PickPartnerAddress('KAEUFER');">
@@ -62,16 +65,16 @@
                     @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
                     
                     @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
-                    @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap", col = "right" }, rows:2)
+                    @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap", col = "right" }, rows: 2)
                 }
             </div>
 
-            @Html.FormRequiredFieldsSummary()
-
         </div>
         
+        @Html.FormRequiredFieldsSummary()
+
         <div class="form-actions">
-            <button type="submit" class='btn blue'><i class='icon-ok margin-right-10'></i>@Localize.Save</button>
+            <button type="submit" class='btn blue'><i class='icon-ok margin-right-10'></i><span>@Localize.Save</span></button>
             <button type="button" onclick="CloseFahrzeugDetails();" class='btn'><i class='halflings-icon remove margin-right-10'></i>@Localize.Cancel</button>
 
             <button type="button" onclick="ToggleFzgAkte();" class='hide btn purple margin-left-50'><i class='icon-search margin-right-10'></i>@Localize.Temporary</button>
@@ -80,6 +83,8 @@
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
             _finSearchFahrzeugFinID = '@Model.FinID.NotNullOrEmpty()';
+            _finIdJustCreated = @Model.FinIdJustCreated.ToString().ToLower();
+            //alert(_finIdJustCreated + ' - ' + _finSearchFahrzeugFinID);
         </script>
     }
 </div>

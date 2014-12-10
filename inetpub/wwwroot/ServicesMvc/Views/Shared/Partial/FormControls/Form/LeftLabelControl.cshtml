@@ -1,4 +1,5 @@
 ﻿@using MvcTools.Models
+@using MvcTools.Models
 @model FormControlModel 
 
 
@@ -31,21 +32,25 @@
 
     <div class="controls">
         
-        @if (@Model.PreControlHtml != null)
+        @if (Model.PreControlHtml != null)
         {
             @Model.PreControlHtml
         }
            
         @Model.ControlHtml
         
-        @if (@Model.ValidationMessageHtml != null)
+        @if (Model.ValidationMessageHtml != null)
         {
             @Model.ValidationMessageHtml
         }
         
-        @if (@Model.PostControlHtml != null)
+        @if (Model.PostControlHtml != null)
         {
             @Model.PostControlHtml
+        }
+        else if (Model.IsCheckBox)
+        {
+            @Html.Raw("&nbsp;")
         }
 
     </div>

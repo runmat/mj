@@ -13,6 +13,7 @@
 
 @Html.FormBreadCrumbs(Localize.VehicleData)
 
+@Html.SpanAlert("Message")
 
 <div id="divSearchAndGrid">
     @using (Html.FormSearchBox())
@@ -122,6 +123,7 @@
     }
 
     var _finSearchFahrzeugFinID = '';
+    var _finIdJustCreated = false;
 
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
@@ -177,6 +179,13 @@
     function TryCloseFahrzeugDetails() {
         SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
         if (_modelStateValid) {
+            if (_finIdJustCreated) {
+                var message = 'Die Fahrzeug-Akte wurde erfolgreich angelegt, Sie können nun den Fahrzeugbestand pflegen.';
+                SpanAlertSuccess("Message", message, 4000);
+                FormPrepareAjax();
+                return;
+            }
+            
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");
             return;
@@ -187,6 +196,14 @@
     function SetFahrzeugakteFormToReadOnly(readonly) {
         $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
         $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
+
+        if (readonly) {
+            $("#fahrzeug-bestand").show();
+            $("input[type=submit] span").text('@Localize.Save');
+        } else {
+            $("#fahrzeug-bestand").hide();
+            $("input[type=submit] span").text('@Localize.VehicleCreate');
+        }
     }
     
 
