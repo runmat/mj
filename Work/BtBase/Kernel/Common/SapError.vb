@@ -28,6 +28,8 @@
         End Property
 
         Public Sub ClearError() Implements ISapError.ClearError
+            strErrorCode = "0"
+            strErrorMessage = ""
             bErrorOccured = False
         End Sub
 
