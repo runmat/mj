@@ -3,6 +3,7 @@
 
     var _modelIsValid = false;
     var _customButtonText = '@Localize.Save';
+    var _skipBankAddressData = false;
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -16,6 +17,7 @@
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
         $('.tooltips').tooltip();
+        setTimeout('LoadingHide()', 1000);
     }
 
     function FormWizardShowHideSaveButton(show, delay) {
@@ -45,6 +47,10 @@
 
         FormWizard.OnPrev(function (step, maxSteps) {
             FormWizardShowHideSaveButton(step == 7, 500);
+
+            if (step == 2 && _skipBankAddressData) {
+                FormWizard.ButtonPrevInvoke();
+            }
 
             window.scrollTo(0, 0);
             return true;
@@ -116,6 +122,12 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
+        }
+    }
+
+    function TrySkipBankAddressData() {
+        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
+            $("#AjaxFormBankAdressdaten").submit();
         }
     }
 
@@ -386,6 +398,31 @@
             var newHeight = (gridHeight + 80) + 'px';
             grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
         }, 300);
+    }
+
+    function CleanUpKennzeichen(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-Z
+        if (key >= 65 && key <= 90) {
+            return true;
+        }
+        // a-z
+        if (key >= 97 && key <= 122) {
+            return true;
+        }
+        // ä,ö,ü,Ä,Ö,Ü,-
+        if (key == 132 || key == 148 || key == 129 || key == 142 || key == 153 || key == 154 || key == 45) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
     }
 
 </script>

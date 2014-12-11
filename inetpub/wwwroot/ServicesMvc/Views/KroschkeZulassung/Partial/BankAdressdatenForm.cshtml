@@ -62,7 +62,13 @@
 
         
         <script type="text/javascript">
+            
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            _skipBankAddressData = ($("#SkipBankAdressdaten").val().toString().toLowerCase() == 'true');
+
+            TrySkipBankAddressData();
+
         </script>
     }
 </div>
