@@ -117,11 +117,6 @@ Partial Public Class Abrufgruende
 
 
     End Sub
-    Private Function plausi() As Boolean
-        If Not txtSapWert.Text.Replace(" ", "").Length = 0 AndAlso Not txtWebBezeichnung.Text.Replace(" ", "").Length = 0 AndAlso Not rblTyp.SelectedIndex = -1 Then
-            Return True
-        End If
-    End Function
 
     Private Sub gvEndgueltig_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvEndgueltig.RowCommand
         If e.CommandName = "loesch" Then

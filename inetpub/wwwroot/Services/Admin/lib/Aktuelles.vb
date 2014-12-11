@@ -137,57 +137,5 @@
         End Try
     End Sub
 
-    'Public Sub Save(ByVal strConnectionString As String)
-    '    Try
-    '        m_strConnectionstring = strConnectionString
-    '        Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
-    '        cn.Open()
-    '        Save(cn)
-    '    Catch ex As Exception
-    '        Throw New Exception("Fehler beim Speichern eines Eintrages!", ex)
-    '    End Try
-    'End Sub
-    'Public Sub Save(ByVal cn As SqlClient.SqlConnection)
-    '    Try
-    '        Dim strInsert As String = "INSERT INTO ForbiddenUserNames (UserName, " & _
-    '                                                       "UpdateDate, " & _
-    '                                                       "UpdateUser) " & _
-    '                                         "VALUES(@UserName, " & _
-    '                                                "GetDate(), " & _
-    '                                                "@UpdateUser); " & _
-    '                                         "SELECT IDENT_CURRENT('ForbiddenUserNames')"
-
-    '        Dim strUpdate As String = "UPDATE ForbiddenUserNames " & _
-    '                                  "SET UserName=@UserName, " & _
-    '                                       "UpdateDate=GetDate(), " & _
-    '                                       "UpdateUser=@UpdateUser " & _
-    '                                  "WHERE [ID]=@ID"
-
-    '        Dim cmd As New SqlClient.SqlCommand()
-    '        cmd.Connection = cn
-
-    '        'Speichern
-    '        If m_blnIsNew Then
-    '            cmd.CommandText = strInsert
-    '        Else
-    '            cmd.CommandText = strUpdate
-    '            cmd.Parameters.AddWithValue("@Id", m_intID)
-    '        End If
-    '        With cmd.Parameters
-    '            .AddWithValue("@UserName", UCase(m_strUserName))
-    '            .AddWithValue("@UpdateUser", m_strUpdateUser)
-    '        End With
-
-
-    '        If m_blnIsNew Then
-    '            'Wenn ForbiddenUserName neu ist dann ID ermitteln, damit bei nachfolgendem Fehler und erneutem Speichern Datensatz nicht doppelt angelegt wird.
-    '            m_intID = CInt(cmd.ExecuteScalar)
-    '        Else
-    '            cmd.ExecuteNonQuery()
-    '        End If
-    '    Catch ex As Exception
-    '        Throw New Exception("Fehler beim Speichern eines Eintrages!", ex)
-    '    End Try
-    'End Sub
 #End Region
 End Class
