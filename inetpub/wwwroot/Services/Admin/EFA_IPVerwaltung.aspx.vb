@@ -235,32 +235,6 @@ Public Class EFA_IPVerwaltung
                     cn.Close()
                 End Try
 
-                'ElseIf e.CommandName = "save" Then
-                '    Dim text As String
-                '    Dim tmpTXT As TextBox
-                '    tmpTXT = CType(gv.Rows(tmpgvRowindex).FindControl("txtWERKS"), TextBox)
-                '    text = tmpTXT.Text
-
-
-                '    cn = New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-                '    Try
-
-
-                '        cn.Open()
-                '        cmdCommand = New SqlClient.SqlCommand("Update KBS_EFA Set WERKS='" & text & "' where IP='" & e.CommandArgument.ToString & "'")
-                '        cmdCommand.Connection = cn
-                '        cmdCommand.CommandType = CommandType.Text
-                '        cmdCommand.ExecuteNonQuery()
-                '        lblMessage.Text = "Kasse - " & KassenIP & " - erfolgreich aktualisiert"
-
-
-                '    Catch ex As Exception
-                '        lblError.Text = "es ist ein Fehler beim updaten der Datenbank aufgetreten: " & ex.Message
-
-                '    Finally
-                '        cn.Close()
-                '    End Try
-
             ElseIf e.CommandName = "entfernen" Then
 
 
