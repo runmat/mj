@@ -28,6 +28,16 @@
     .PartnerAddressSubGrid .dataTables_filter input {
         height: 15px;
     }
+    
+    input[disabled].m-wrap,
+    select[disabled].m-wrap,
+    textarea[disabled].m-wrap,
+    input[readonly].m-wrap,
+    select[readonly].m-wrap,
+    textarea[readonly].m-wrap {
+        cursor: not-allowed;
+        background-color: #eeeeee;
+    }
 </style>
 
 <script type="text/javascript">
