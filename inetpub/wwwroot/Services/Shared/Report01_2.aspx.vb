@@ -191,10 +191,6 @@ Partial Public Class Report01_2
                 lblNoData.Text = CStr(Session("ShowOtherString"))
                 lblNoData.Visible = True
             End If
-            'If (Not Session("BackLink") Is Nothing) AndAlso CStr(Session("BackLink")) = "HistoryBack" Then
-            '    lnkKreditlimit.Text = "Zurück"
-            '    lnkKreditlimit.NavigateUrl = "javascript:history.back()"
-            'End If
 
         End If
     End Sub
@@ -244,33 +240,6 @@ Partial Public Class Report01_2
         End Try
     End Sub
 
-
-    'Private Sub GridView1_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridView1.RowDataBound
-    '    If e.Row.RowType <> DataControlRowType.Header And e.Row.RowType <> DataControlRowType.Pager And _
-    '          e.Row.RowType <> DataControlRowType.Footer Then
-    '        e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#FFD6D6'")
-
-    '        If e.Row.RowState = DataControlRowState.Normal Then
-    '            e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='White'")
-    '        ElseIf e.Row.RowState = DataControlRowState.Alternate Then
-    '            e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='#DEE1E0'")
-    '        End If
-
-    '        'Dim cell As TableCell
-    '        'For Each cell In e.Row.Cells
-    '        '    cell.CssClass = "BoundFieldnoPadLeft"
-    '        'Next
-    '        'e.Row.Cells(0).CssClass = "BoundField"
-    '    ElseIf e.Row.RowType = DataControlRowType.Header Then
-
-    '        'Dim cell As TableCell
-    '        'For Each cell In e.Row.Cells
-    '        '    cell.CssClass = "BoundFieldnoPadLeft"
-    '        'Next
-    '        'e.Row.Cells(0).CssClass = "BoundField"
-    '    End If
-    'End Sub
-
     Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex, e.SortExpression)
     End Sub
@@ -282,10 +251,6 @@ Partial Public Class Report01_2
     Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
         FillGrid(0)
     End Sub
-
-    'Private Sub Report01_2_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-    '    CKG.Base.Business.HelpProcedures.FixedGridViewCols(GridView1)
-    'End Sub
 
     Protected Overrides Sub OnUnload(e As System.EventArgs)
         MyBase.OnUnload(e)
