@@ -70,11 +70,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if ((Cpdkunde || CpdMitEinzugsermaechtigung) && !Rechnungsempfaenger.AdresseVollstaendig)
-                yield return new ValidationResult(Localize.AddressRequired);
+            if (Einzugsermaechtigung && !BankdatenVollstaendig)
+                yield return new ValidationResult(Localize.CompleteBankDataRequired);
 
-            if (CpdMitEinzugsermaechtigung && !BankdatenVollstaendig)
-                yield return new ValidationResult(Localize.BankDataRequired);
+            if ((Cpdkunde || BankdatenVollstaendig) && !Rechnungsempfaenger.AdresseVollstaendig)
+                yield return new ValidationResult(Localize.CompleteAddressRequired);
+
+            if (Rechnungsempfaenger.AdresseVollstaendig && String.IsNullOrEmpty(Zahlungsart))
+                yield return new ValidationResult(Localize.PaymentTypeRequired, new[] { "Zahlungsart" });
         }
 
         public string GetSummaryString()

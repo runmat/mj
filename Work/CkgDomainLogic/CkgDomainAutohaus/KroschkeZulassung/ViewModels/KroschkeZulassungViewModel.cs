@@ -63,6 +63,8 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
             Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
             Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.Kunde.CpdMitEinzugsermaechtigung;
+
+            Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
         }
 
         #endregion
@@ -143,7 +145,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         [XmlIgnore]
         public List<Adresse> HalterAdressenFiltered
         {
+// ReSharper disable ConvertClosureToMethodGroup
             get { return PropertyCacheGet(() => GetHalterAdressen()); }
+// ReSharper restore ConvertClosureToMethodGroup
             private set { PropertyCacheSet(value); }
         }
 
@@ -176,6 +180,17 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         public void SetHalterAdresse(Adresse model)
         {
             HalterAdresse = model;
+
+            Zulassung.Zulassungsdaten.Zulassungskreis = LoadKfzKreisAusHalterAdresse();
+
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Kennzeichen) || Zulassung.Zulassungsdaten.Kennzeichen.EndsWith("-"))
+                Zulassung.Zulassungsdaten.Kennzeichen = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
+
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen2) || Zulassung.Zulassungsdaten.Wunschkennzeichen2.EndsWith("-"))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
+
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen3) || Zulassung.Zulassungsdaten.Wunschkennzeichen3.EndsWith("-"))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
         }
 
         public void DataMarkForRefreshHalterAdressenFiltered()
@@ -203,15 +218,45 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Wunschkennzeichen = model.Wunschkennzeichen;
-            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.KennzeichenReservieren = model.KennzeichenReservieren;
-            Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
-            Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+
+            var kennz = model.Kennzeichen.NotNullOrEmpty().ToUpper();
+            if (kennz != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+                Zulassung.Zulassungsdaten.Kennzeichen = kennz;
+            else
+                Zulassung.Zulassungsdaten.Kennzeichen = "";
+
+            Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
+
+            if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
+            {
+                Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
+                Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = "";
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = "";
+            }
+            else
+            {
+                Zulassung.Zulassungsdaten.ReservierungsNr = "";
+                Zulassung.Zulassungsdaten.ReservierungsName = "";
+
+                var wkz2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
+                if (wkz2 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen2 = wkz2;
+                else
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen2 = "";
+
+                var wkz3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
+                if (wkz3 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen3 = wkz3;
+                else
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen3 = "";
+            }
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+
+            var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
+            if (tempKg != null)
+                Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
         }
 
         #endregion
@@ -226,30 +271,50 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         {
             Zulassung.OptionenDienstleistungen.GewaehlteDienstleistungenString = model.GewaehlteDienstleistungenString;
             Zulassung.OptionenDienstleistungen.NurEinKennzeichen = model.NurEinKennzeichen;
+
             Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse = model.KennzeichenSondergroesse;
-            Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = model.KennzeichenGroesseId;
+            if (Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse)
+            {
+                Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = model.KennzeichenGroesseId;
+            }
+            else
+            {
+                var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
+                if (tempKg != null)
+                    Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
+            }
+
             Zulassung.OptionenDienstleistungen.Saisonkennzeichen = model.Saisonkennzeichen;
-            Zulassung.OptionenDienstleistungen.SaisonBeginn = model.SaisonBeginn;
-            Zulassung.OptionenDienstleistungen.SaisonEnde = model.SaisonEnde;
+            if (Zulassung.OptionenDienstleistungen.Saisonkennzeichen)
+            {
+                Zulassung.OptionenDienstleistungen.SaisonBeginn = model.SaisonBeginn;
+                Zulassung.OptionenDienstleistungen.SaisonEnde = model.SaisonEnde;
+            }
+            else
+            {
+                Zulassung.OptionenDienstleistungen.SaisonBeginn = "";
+                Zulassung.OptionenDienstleistungen.SaisonEnde = "";
+            }
+
             Zulassung.OptionenDienstleistungen.Bemerkung = model.Bemerkung;
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = model.ZulassungsartMatNr;
 
-            if (Zulassung.OptionenDienstleistungen.IstGebrauchtzulassung)
+            if (Zulassungsdaten.IstGebrauchtzulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = model.KennzeichenVorhanden;
             else
                 Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = false;
 
-            if (Zulassung.OptionenDienstleistungen.IstAbmeldung)
+            if (Zulassungsdaten.IstAbmeldung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             else
                 Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = false;
 
-            if (Zulassung.OptionenDienstleistungen.IstFirmeneigeneZulassung)
+            if (Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = model.HaltedauerBis;
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
-            if (Zulassung.OptionenDienstleistungen.IstUmkennzeichnung)
+            if (Zulassungsdaten.IstUmkennzeichnung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = model.AltesKennzeichen.NotNullOrEmpty().ToUpper();
             else
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = "";
@@ -279,7 +344,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         public void Save(bool saveDataInSap)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap, true);
+            SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap);
         }
 
         public string BeauftragungBezeichnung
@@ -325,12 +390,6 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
                             new GeneralEntity
                             {
-                                Title = Localize.BankDataAndAddressForEndCustomerInvoice,
-                                Body = Zulassung.BankAdressdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
                                 Title = Localize.VehicleData,
                                 Body = Zulassung.Fahrzeugdaten.GetSummaryString(),
                             },
@@ -351,6 +410,12 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
                             {
                                 Title = Localize.RegistrationOptions,
                                 Body = Zulassung.OptionenDienstleistungen.GetSummaryString(),
+                            },
+
+                            new GeneralEntity
+                            {
+                                Title = Localize.DataForEndCustomerInvoice,
+                                Body = Zulassung.BankAdressdaten.GetSummaryString(),
                             }
                         )
             };

@@ -4,7 +4,7 @@
 <div id="DivOptionenDienstleistungen" class="margin-top-20">
     @using (Ajax.BeginForm("OptionenDienstleistungenForm", "KroschkeZulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivOptionenDienstleistungen", OnComplete = "AjaxFormOptionenDienstleistungenComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormOptionenDienstleistungen" }))
+                    htmlAttributes: new { @class = "form-horizontal label-width-200", id = "AjaxFormOptionenDienstleistungen" }))
     {
         @Html.FormValidationSummary()
         
@@ -27,47 +27,39 @@
         </div>
         
         @Html.HiddenFor(m => m.ZulassungsartMatNr)
-        @Html.HiddenFor(m => m.Ist72hVersandzulassung)
-        @Html.HiddenFor(m => m.IstAbmeldung)
-        @Html.HiddenFor(m => m.IstFirmeneigeneZulassung)
-        @Html.HiddenFor(m => m.IstGebrauchtzulassung)
-        @Html.HiddenFor(m => m.IstKurzzeitzulassung)
-        @Html.HiddenFor(m => m.IstNeuzulassung)
-        @Html.HiddenFor(m => m.IstUmkennzeichnung)
-        @Html.HiddenFor(m => m.IstZollzulassung)
         
-        @Html.FormCheckBoxFor(m => m.NurEinKennzeichen, new { @class = "m-wrap" })
+        @Html.FormCheckBoxFor(m => m.NurEinKennzeichen, new { @class = "m-wrap xsmall" })
         
-        @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap xsmall" },
+        @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenSondergroesse()" },
                                     postControlHtml: @<text>
                                                             @Html.DropDownListFor(m => m.KennzeichenGroesseId, Model.KennzeichengroesseListForMatNr.ToSelectList(), new { @class = "m-wrap small margin-left-50" })
                                                         </text>)
 
-        @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap xsmall" },
+        @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap xsmall", onchange = "CheckSaisonkennzeichen()" },
                                     postControlHtml: @<text>
                                                             @Html.DropDownListFor(m => m.SaisonBeginn, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap xsmall margin-left-50" })
-                                                            @Html.DropDownListFor(m => m.SaisonEnde, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap xsmall margin-left-10" })
+                                                            @Html.DropDownListFor(m => m.SaisonEnde, OptionenDienstleistungen.SaisonMonate.ToSelectList(), new { @class = "m-wrap xsmall margin-left-5" })
                                                         </text>)
         
-        if (Model.IstGebrauchtzulassung)
+        if (Zulassungsdaten.IstGebrauchtzulassung(Model.ZulassungsartMatNr))
         {
-            @Html.FormCheckBoxFor(m => m.KennzeichenVorhanden, new { @class = "m-wrap" })
+            @Html.FormCheckBoxFor(m => m.KennzeichenVorhanden, new { @class = "m-wrap xsmall" })
         }
         else
         {
             @Html.HiddenFor(m => m.KennzeichenVorhanden)
         }
 
-        if (Model.IstAbmeldung)
+        if (Zulassungsdaten.IstAbmeldung(Model.ZulassungsartMatNr))
         {
-            @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap" })
+            @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap xsmall" })
         }
         else
         {
             @Html.HiddenFor(m => m.VorhandenesKennzeichenReservieren)
         }
 
-        if (Model.IstFirmeneigeneZulassung)
+        if (Zulassungsdaten.IstFirmeneigeneZulassung(Model.ZulassungsartMatNr))
         {
             @Html.FormDatePickerFor(m => m.HaltedauerBis, new { @class = "m-wrap small" })
         }
@@ -76,7 +68,7 @@
             @Html.HiddenFor(m => m.HaltedauerBis)
         }
 
-        if (Model.IstUmkennzeichnung)
+        if (Zulassungsdaten.IstUmkennzeichnung(Model.ZulassungsartMatNr))
         {
             @Html.FormTextBoxFor(m => m.AltesKennzeichen, new { @class = "m-wrap medium uppercase" })
         }
@@ -92,7 +84,8 @@
 
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
-            MultiSelectPreparePrivate();
+            CheckKennzeichenSondergroesse();
+            CheckSaisonkennzeichen();
 
             function MultiSelectPreparePrivate() {
                 $('#pre-selected-options').multiSelect();
@@ -114,6 +107,8 @@
                     $("#GewaehlteDienstleistungenString").val(selectedOptions);
                 });
             }
+            
+            MultiSelectPreparePrivate();
 
         </script>
     }

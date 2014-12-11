@@ -20,6 +20,10 @@ else
     {
         <a href="KundenformularAsPdf" class="btn blue tooltips margin-left-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
     }
+    @if (!String.IsNullOrEmpty(Model.Zulassung.AuftragszettelPdfPfad))
+    {
+        <a href="AuftragszettelAsPdf" class="btn blue tooltips margin-left-5" data-original-title='@Localize.OrderFormAsPdfFile' data-placement="top"> @Localize.OrderForm <i class="icon-download-alt"></i></a>
+    }
 </div>
 
 @if (Model.SaveErrorMessage.IsNotNullOrEmpty())
@@ -34,3 +38,7 @@ else
         FormWizard.InsertActionButton("#ReceiptFormActions");
     </script>    
 }
+
+<script type="text/javascript">
+    FormWizardShowHideSaveButton(false);
+</script>

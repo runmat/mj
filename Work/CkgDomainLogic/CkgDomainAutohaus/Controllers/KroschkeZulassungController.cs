@@ -205,7 +205,7 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
-        
+
         [HttpPost]
         public ActionResult LoadKfzKreisAusHalterAdresse()
         {
@@ -267,8 +267,7 @@ namespace ServicesMvc.Controllers
         {
             var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel());
 
-            var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
-            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
+            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
         }
@@ -278,6 +277,13 @@ namespace ServicesMvc.Controllers
             var formularPdfBytes = ViewModel.Zulassung.KundenformularPdf;
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
+        }
+
+        public FileContentResult AuftragszettelAsPdf()
+        {
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(ViewModel.Zulassung.AuftragszettelPdfPfad);
+
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderForm) };
         }
 
         #endregion   

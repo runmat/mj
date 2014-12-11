@@ -30,13 +30,13 @@
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
             
-            DocumentReadyBind(AjaxFormHalterAdresseInit);
-            AjaxFormHalterAdresseInit();
-
             function AjaxFormHalterAdresseInit() {
                 AjaxFormAdressePrepareAutoComplete($("#Name1"), "HalterAdresseGetAutoCompleteItems");
                 AjaxFormAdressePrepareAutoCompleteReset("AjaxFormHalterAdresse");
             }
+            
+            DocumentReadyBind(AjaxFormHalterAdresseInit);
+            AjaxFormHalterAdresseInit();
 
         </script>
     }
