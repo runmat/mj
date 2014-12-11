@@ -257,13 +257,6 @@ Namespace Kernel.Security
 
         Public ReadOnly Property LogoImage() As IO.MemoryStream
             Get
-                ''Dim fs As New IO.FileStream(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Replace("file:///", "")) & "\" & Me.LogoPath2, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite)
-                'Dim fs As New IO.FileStream("C:\Inetpub\wwwroot" & Replace(LogoPath2, "/", "\"), IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite)
-                'Dim br As New IO.BinaryReader(fs)
-                'Dim ms As New IO.MemoryStream(br.ReadBytes(fs.Length))
-                'br.Close()
-                'fs.Close()
-                'Return ms
                 Dim fileName As String = HttpContext.Current.Server.MapPath(LogoPath2)
                 If File.Exists(fileName) Then
                     Return New MemoryStream(File.ReadAllBytes(fileName))
