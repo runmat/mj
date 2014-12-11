@@ -397,6 +397,8 @@ namespace CkgDomainLogic.General.Services
         public override string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
         {
             var defaultColumnNames = string.Join(",", modelType.GetScaffoldPropertyNames());
+            if (gridGroup.IsNullOrEmpty())
+                return defaultColumnNames;
 
             var dbContext = CreateDbContext();
             var affectedColumns = GetDbContextColumnTranslations(dbContext, gridColumnMode, gridGroup, UserLogonLevel, defaultColumnNames);

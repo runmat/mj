@@ -65,7 +65,7 @@ namespace Telerik.Web.Mvc.UI
         static List<string> GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
         {
             var logonContext = (SessionStore.GetCurrentLogonContext() as ILogonContextDataService);
-            if (logonContext == null || gridGroup.IsNullOrEmpty())
+            if (logonContext == null)
                 return new List<string>();
 
             return logonContext.GetUserGridColumnNames(modelType, gridColumnMode, gridGroup).Split('~', ' ', ',', ';').ToList();

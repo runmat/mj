@@ -200,7 +200,7 @@ namespace CkgDomainLogic.General.Services
         {
             var logonLevel = UserLogonLevel;
 
-            if (logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Master)
+            if (gridGroup.IsNullOrEmpty() || (logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Master))
                 // let give a chance to all model properties here, return empty string
                 return string.Join("~", modelType.GetScaffoldPropertyNames());
 
