@@ -103,20 +103,6 @@ Namespace Kernel.Security
             End If
         End Sub
 
-        'Public Function IsAdminOf(ByVal intGroupID As Integer) As Boolean
-        '    Dim gr As Group = DirectCast(List(InnerList.BinarySearch(intGroupID, New GroupComparer())), Group)
-        '    If gr.IsGroupAdmin Then Return True
-        '    Return False
-
-        '    'Dim gr As Group
-        '    'For Each gr In Me
-        '    '    If gr.GroupId = intGroupID AndAlso gr.IsGroupAdmin Then
-        '    '        Return True
-        '    '    End If
-        '    'Next
-        '    'Return False
-        'End Function
-
         Private Sub GetGroups(ByVal cn As SqlClient.SqlConnection, Optional ByVal customerId As Integer = 0)
             Dim gr As Group
             Dim cmdGetCustomer As SqlClient.SqlCommand
@@ -247,32 +233,6 @@ Namespace Kernel.Security
             End Function
         End Class
 
-        'Private Class AdminComparer
-        '    Implements IComparer
-
-        '    Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
-        '        Dim blnX As Boolean
-        '        Dim blnY As Boolean
-        '        If TypeOf x Is Group Then
-        '            blnX = DirectCast(x, Group).IsGroupAdmin
-        '        Else
-        '            blnX = DirectCast(x, Boolean)
-        '        End If
-        '        If TypeOf y Is Group Then
-        '            blnY = DirectCast(y, Group).IsGroupAdmin
-        '        Else
-        '            blnY = DirectCast(y, Boolean)
-        '        End If
-
-        '        If blnX = blnY Then
-        '            Return 0
-        '        ElseIf blnX > blnY Then
-        '            Return 1
-        '        Else
-        '            Return -1
-        '        End If
-        '    End Function
-        'End Class
 #End Region
 
     End Class
