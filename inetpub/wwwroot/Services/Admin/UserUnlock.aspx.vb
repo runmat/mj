@@ -771,7 +771,6 @@ Partial Public Class UserUnlock
                 End If
             End If
 
-            Dim strTemp As String = txtUserID.Text
             Dim strLogMsg As String = "User ändern"
             tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text))
 
@@ -788,7 +787,7 @@ Partial Public Class UserUnlock
             Dim pwordconfirm As String = ""
 
             If _User.Save() Then
-                If Not (strPwd = String.Empty) Then ' Not (txtPassword.Text = String.Empty)
+                If Not (strPwd = String.Empty) Then
                     If _User.Customer.CustomerPasswordRules.DontSendEmail Then
                         pword = txtPassword.Text
                         pwordconfirm = txtConfirmPassword.Text
@@ -819,9 +818,8 @@ Partial Public Class UserUnlock
 
                 If (pword <> String.Empty) Then 'Nur bei Passwortänderung
                     Dim errorMessage As String = ""
-                    If Not _User.SendPasswordMail(pword, errorMessage) Then
-                        lblError.Text = errorMessage
-                    End If
+                    _User.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Neu)
+                    If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text = errorMessage
                 End If
             End If
 

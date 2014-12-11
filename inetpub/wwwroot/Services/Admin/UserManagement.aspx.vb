@@ -1989,7 +1989,6 @@ Partial Public Class UserManagement
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
         Dim tblLogParameter As DataTable
         Dim strPwd As String = String.Empty
-        Dim bInitialPswd As Boolean = False
         Dim blnEingabenOK As Boolean = True
 
         Try
@@ -2147,12 +2146,12 @@ Partial Public Class UserManagement
                 intOrganizationID = 0
             End If
 
-            Dim isNewUser = txtUserID.Text = "-1"
+            Dim isNewUser = (txtUserID.Text = "-1")
+            Dim isApproved = cbxApproved.Checked
+            Dim newPassword = chkNewPasswort.Checked
 
             ' Erst validieren, dann speichern..
-            If isNewUser _
-                        OrElse chkNewPasswort.Checked = True _
-                        OrElse txtPassword.Text <> String.Empty Then
+            If isNewUser OrElse Not String.IsNullOrEmpty(txtPassword.Text) Then
 
                 If _customer.CustomerPasswordRules.DontSendEmail Or Not _User.HighestAdminLevel = AdminLevel.None Or cbxOrganizationAdmin.Checked Then
                     ' Wenn Passwort nicht per Mail txtFelder abfragen
@@ -2164,10 +2163,6 @@ Partial Public Class UserManagement
                         blnEingabenOK = False
                     End If
                     strPwd = txtPassword.Text
-                Else
-                    ' Sonst nach Kundeneinstellungen ein neues Passwort generieren
-                    strPwd = _customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
-                    bInitialPswd = True
                 End If
             End If
 
@@ -2180,11 +2175,11 @@ Partial Public Class UserManagement
                     txtUserID.Text = _User.UserID.ToString
 
                     ' Wenn Passwortänderung
-                    If Not (strPwd = String.Empty) Then
+                    If Not String.IsNullOrEmpty(strPwd) Then
                         Dim pword As String = strPwd
                         Dim pwordconfirm As String = strPwd
 
-                        If Not _User.ChangePasswordNew("", pword, pwordconfirm, m_User.UserName, True, bInitialPswd) Then
+                        If Not _User.ChangePassword("", pword, pwordconfirm, m_User.UserName, True) Then
                             txtUserID.Text = _User.UserID.ToString
                             lblError.Text = _User.ErrorMessage
                         Else
@@ -2194,25 +2189,23 @@ Partial Public Class UserManagement
                         blnSuccess = True
                     End If
 
-                    _User.SetLastLogin(Now)
-                    _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
+                _User.SetLastLogin(Now)
+                _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
+            Else
+                lblError.Text = _User.ErrorMessage
+            End If
+            tblLogParameter = SetNewLogParameters(_User)
+            Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
-                    'EmployeeInfos ggf. speichern
-                Else
-                    lblError.Text = _User.ErrorMessage
-                End If
-                tblLogParameter = SetNewLogParameters(_User)
-                Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
+            If blnSuccess Then
+                lblMessage.Text = "Die Änderungen wurden gespeichert."
+                Search(True, True, , True)
+                Dim errorMessage As String = ""
 
-                If blnSuccess Then
-                    lblMessage.Text = "Die Änderungen wurden gespeichert."
-                    Search(True, True, , True)
-                    Dim errorMessage As String = ""
+                ' Versand von neuen Benutzerdaten erst nach Freigabe, daher in lbtnApproved_Click
 
-                    ' Versandt von neuen Benutzerdaten erst nach Freigabe, daher in lbtnApproved_Click
-
-                    ' Ausnahme für Orgaadmins und Kundenadmins, die Benutzer anlegen ++++++++++++++++++
-                    If isNewUser And cbxApproved.Checked And Session("UsernameStart") Is Nothing Then
+                ' Ausnahme für Orgaadmins und Kundenadmins, die Benutzer anlegen ++++++++++++++++++
+                    If isNewUser And isApproved And Session("UsernameStart") Is Nothing Then
 
                         ' Neuanlage Benutzer (ohne Adminrechte) Authentifizierungs-Email versenden
                         If _User.HighestAdminLevel = AdminLevel.None Then
@@ -2230,7 +2223,7 @@ Partial Public Class UserManagement
                                 InsertIntoWebUserUpload(_User.UserID, strPwd, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
 
                                 'Mail versenden
-                                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User, False) Then
+                                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
                                     lblError.Text = errorMessage
                                 Else
                                     'Status auf erfolgreich versandt setzen
@@ -2241,11 +2234,10 @@ Partial Public Class UserManagement
                                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
-                                        _User.ChangePasswordNew("", strPwd, strPwd, "Freigabeprozess - " + m_User.UserName, True, bInitialPswd)
-                                        _User.SendPasswordMail(strPwd, errorMessage, False)
+                                        _User.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Neu)
                                     End If
                                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
-                                    _User.SendUsernameMail(errorMessage, False, False)
+                                    _User.SendUsernameMail(errorMessage, False)
                                 End If
                             End If
                         End If
@@ -2255,20 +2247,9 @@ Partial Public Class UserManagement
                         ' Neue Benutzer werden im lbtnApproved_Click behandelt
                         ' für alle anderen gilt
 
-                        ' Passwort per Mail +++++++++++++++++++++++++
-                        ' Kein Passwort bis sendPW = True
-                        Dim sendPW As Boolean = False
-
-                        ' Falls Benutzer kein Admin und Passwort Generierungsregeln ein Passwort liefern
-                        If _User.HighestAdminLevel = AdminLevel.None And strPwd <> String.Empty And Not (Session("UsernameStart") Is Nothing) Then
-                            sendPW = True
-                        End If
-
-                        If sendPW Then
-                            ' sendPasswordMail prüft Restriktionen fürs senden 
-                            If Not _User.SendPasswordMail(strPwd, errorMessage, False) Then
-                                lblError.Text = errorMessage
-                            End If
+                        ' Link für neues Passwort verschicken
+                        If Not isNewUser AndAlso newPassword Then
+                            _User.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Zuruecksetzen)
                         End If
 
                         ' Benutzername per Mail +++++++++++++++++++++++++
@@ -2277,14 +2258,14 @@ Partial Public Class UserManagement
                             ' Username geändert AND Username nicht leer AND User kein Admin
                             If _User.UserName <> CStr(Session("UsernameStart")) And _User.UserName <> String.Empty And _
                                 _User.HighestAdminLevel = AdminLevel.None And Not cbxOrganizationAdmin.Checked Then
-                                If Not _User.SendUsernameChangedMail(errorMessage, False) Then
+                                If Not _User.SendUsernameChangedMail(errorMessage) Then
                                     lblError.Text = errorMessage
                                 End If
                             End If
                             ' Falls Benutzer entsperrt wurde
                             If Not Session("LockedOutStart") Is Nothing Then
                                 If _User.Approved And _User.AccountIsLockedOut = False And CBool(Session("LockedOutStart")) = True Then
-                                    If Not _User.SendUserUnlockMail(errorMessage, m_User, False) Then
+                                    If Not _User.SendUserUnlockMail(errorMessage, m_User) Then
                                         lblError.Text = errorMessage
                                     End If
                                 End If
@@ -2293,16 +2274,16 @@ Partial Public Class UserManagement
 
                     End If
 
-                    If _customer.ShowDistrikte AndAlso Session("Changed") = 1 Then
+                If _customer.ShowDistrikte AndAlso Session("Changed") = 1 Then
 
-                        ErmitteleRechteAusCheckBoxen(Matrix.Rows.GetEnumerator, m_Rights)
-                        Dim selectedDistrict As String = GetSelectedDistrict()
-                        SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, True, False)
-                        SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, False, True)
-                        SetDistrictRights(m_Rights)
+                    ErmitteleRechteAusCheckBoxen(Matrix.Rows.GetEnumerator, m_Rights)
+                    Dim selectedDistrict As String = GetSelectedDistrict()
+                    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, True, False)
+                    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, False, True)
+                    SetDistrictRights(m_Rights)
 
-                    End If
                 End If
+            End If
             End If
 
         Catch ex As Exception
@@ -2444,14 +2425,13 @@ Partial Public Class UserManagement
                 errorMessage = String.Empty
                 pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
                 If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-                _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
 
                 'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
                 InsertIntoWebUserUpload(_User.UserID, pword, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
 
                 'Mail versenden
                 errorMessage = String.Empty
-                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User, False) Then
+                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
                     lblError.Text &= errorMessage & "<br /><br />"
                 Else
                     'Status auf erfolgreich versandt setzen
@@ -2462,19 +2442,13 @@ Partial Public Class UserManagement
                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
-                        Dim pword As String = ""
-                        'Passwort generieren
                         errorMessage = String.Empty
-                        pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
-                        If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-                        _User.ChangePasswordNew("", pword, pword, "Freigabeprozess - " + m_User.UserName, True)
-                        errorMessage = String.Empty
-                        _User.SendPasswordMail(pword, errorMessage, False)
+                        _User.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Neu)
                         If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
                     End If
                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
                     errorMessage = String.Empty
-                    _User.SendUsernameMail(errorMessage, False, False)
+                    _User.SendUsernameMail(errorMessage, False)
                     If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
                 End If
             End If
@@ -2864,11 +2838,14 @@ Partial Public Class UserManagement
     End Sub
 
     Protected Sub lbtnCopy_Click(sender As Object, e As EventArgs) Handles lbtnCopy.Click
+        Session("UsernameStart") = Nothing
+
         btnCreatePassword.Enabled = False
         SearchMode(False)
 
         txtUserID.Text = "-1"
         chkLoggedOn.Checked = False
+        cbxApproved.Checked = True 'default für kopierte User
 
         ' Nicht kopiert wird:
         txtUserName.Text = String.Empty
