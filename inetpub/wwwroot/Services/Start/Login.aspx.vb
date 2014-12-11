@@ -15,8 +15,6 @@ Partial Public Class Login
 
     Private m_User As New User()
     Private m_App As Base.Kernel.Security.App
-    Private cke As Integer
-    Private ckp As Integer
     Private random As New Random
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -341,21 +339,6 @@ Partial Public Class Login
                         trPasswortVergessen.Visible = True
                         trHelpCenter.Visible = False
                     Else
-                        'If m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "User" Then ' Gleich weiter zur Ensperrung!
-                        '    If m_User.Email.Length > 0 And m_User.Customer.ForcePasswordQuestion And m_User.QuestionID > -1 Then
-                        '        System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
-                        '    Else
-                        '        lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
-                        '        trPasswortVergessen.Visible = True
-                        '        trHelpCenter.Visible = False
-                        '        lnkPasswortVergessen_Click(sender, e)
-                        '    End If
-                        'ElseIf m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "Now" Then ' gerade gesperrt? Sperrung anzeigen!
-                        '    lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
-                        '    trPasswortVergessen.Visible = True
-                        '    trHelpCenter.Visible = False
-                        '    lnkPasswortVergessen.Text = "Entsperren"
-
                         ' Wenn User sich selbst gesperrt hat oder vom Regelprozess gesperrt wurde -> Anzeige Kundenadmin-Kontakt oder Passwortneuanforderung
                         If m_User.AccountIsLockedOut AndAlso (m_User.AccountIsLockedBy = "User" OrElse m_User.AccountIsLockedBy = "Now" OrElse m_User.AccountIsLockedBy = "Regelprozess") Then
 
@@ -457,18 +440,14 @@ Partial Public Class Login
         MessageLabel.Text = ""
         trHelpCenter.Visible = False
         If Not String.IsNullOrEmpty(txtConfirmEmail.Text) AndAlso txtConfirmEmail.Text.ToUpper() = m_User.Email.ToUpper() Then
-            If m_User.CheckNewPasswordRequestAllowed() Then
-                Dim strErg As String = ""
-                If m_User.SendNewPasswordRequestConfirmMail(strErg) Then
-                    lblError.Text = "Eine Bestätigungs-EMail wurde an die hinterlegte Adresse versandt."
-                Else
-                    lblError.Text = strErg
-                    trHelpCenter.Visible = True
-                End If
+
+            Dim errorMessage As String = ""
+            If m_User.SendPasswordResetMail(errorMessage, Security.User.PasswordMailMode.Zuruecksetzen) Then
+                m_User.UnlockAccount()
             Else
-                lblError.Text = "Sie haben bereits ein neues Kennwort angefordert."
-                trHelpCenter.Visible = True
+                lblError.Text = "Es ist ein Fehler aufgetreten: " & errorMessage
             End If
+
         Else
             lblError.Text = "Die Email-Adresse stimmt nicht mit der hinterlegten Adresse überein."
         End If
@@ -535,32 +514,7 @@ Partial Public Class Login
             Me.DoubleLogin2.Visible = False
             Session("CaptchaGen1") = GenerateRandomCode()
             Session("CaptchaGen2") = GenerateRandomCode()
-            'Prüfe ggf. den Key zur Passwortneugenerierung (Link wurde per Mail an User gesendet)
-            If Not String.IsNullOrEmpty(Request.QueryString("pwreqkey")) Then
-                If m_User.CheckNewPasswordRequestKeyValid(Request.QueryString("pwreqkey")) Then
-                    If Not String.IsNullOrEmpty(m_User.UserName) Then
-                        txtUsername.Text = m_User.UserName
-                        'Neues Passwort generieren und per Mail verschicken
-                        Dim errMsg As String = ""
-                        Dim newPwd As String = m_User.Customer.CustomerPasswordRules.CreateNewPasswort(errMsg)
-                        If String.IsNullOrEmpty(errMsg) Then
-                            m_User.ChangePasswordFirstLogin(newPwd, newPwd, "System")
-                            If m_User.SendPasswordMail(newPwd, errMsg) Then
-                                lblError.Text = "Das Passwort wurde an die hinterlegte Adresse versandt."
-                                m_User.SetNewPasswordRequestSentAndUnlockAccount()
-                            Else
-                                lblError.Text = "Fehler beim Versenden des neuen Passwortes: " & errMsg
-                            End If
-                        Else
-                            lblError.Text = errMsg
-                        End If
-                    Else
-                        lblError.Text = "Fehler: User konnte nicht ermittelt werden"
-                    End If
-                Else
-                    lblError.Text = "Fehler: Der Link ist nicht (mehr) gültig oder wurde bereits zur Generierung eines neuen Passwortes verwendet."
-                End If
-            End If
+            
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)
@@ -638,11 +592,6 @@ Partial Public Class Login
             Response.Redirect("/ServicesMvc/Login/Index")
         End If
     End Sub
-
-    Private Function DoTemporaryTimeLimitedLogging(info As String)
-
-
-    End Function
 
     Function UrlRemoteUserProcessLogin() As Boolean
         Dim remoteUserName As String = "", remoteUserPwdHashed As String = ""
@@ -724,7 +673,6 @@ Partial Public Class Login
 
         Return True
     End Function
-
 
     Function UrlRemoteHashedDateIsValid(strHashedDate As String) As Boolean
 
@@ -850,6 +798,7 @@ Partial Public Class Login
         Me.CodeNumberTextBox.Text = ""
         GenerateCaptcha()
     End Sub
+
     Private Function validateHelpData() As Boolean
         MessageLabel.Text = ""
         Dim breturn As Boolean = False
@@ -938,6 +887,7 @@ Partial Public Class Login
         str &= vbCrLf & "AUF DIESE MAIL NICHT ANTWORTEN."
         SendMailToDAD(str)
     End Sub
+
     Private Sub SendMailToDAD(ByVal message As String)
 
         Try
@@ -1022,7 +972,6 @@ Partial Public Class Login
         Return EncText
     End Function
 
-
     Private Function DbGetStringValue(sql As String) As String
         Dim result As Object
         Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -1070,7 +1019,6 @@ Partial Public Class Login
 
     End Function
 
-
     Public Sub RedirectFromLoginPage(webUser As User)
         If (webUser.Customer.MvcLayoutAsWebFormsInline Or Not webUser.Customer.HasMvcApplicationsOnly) Then
             FormsAuthentication.RedirectFromLoginPage(webUser.UserID.ToString, False)
@@ -1079,31 +1027,5 @@ Partial Public Class Login
             Response.Redirect(servicesMvsRootUrl)
         End If
     End Sub
-
-    'Public Function psEncrypt(ByVal sInputVal As String) As String
-
-    '    Dim loCryptoClass As New TripleDESCryptoServiceProvider
-    '    Dim loCryptoProvider As New MD5CryptoServiceProvider
-    '    Dim lbtBuffer() As Byte
-
-    '    Try
-    '        lbtBuffer = System.Text.Encoding.ASCII.GetBytes(sInputVal)
-    '        loCryptoClass.Key = loCryptoProvider.ComputeHash(ASCIIEncoding.ASCII.GetBytes(lscryptoKey))
-    '        loCryptoClass.IV = lbtVector
-    '        sInputVal = Convert.ToBase64String(loCryptoClass.CreateEncryptor().TransformFinalBlock(lbtBuffer, 0, lbtBuffer.Length()))
-    '        psEncrypt = sInputVal
-    '    Catch ex As CryptographicException
-    '        Throw ex
-    '    Catch ex As FormatException
-    '        Throw ex
-    '    Catch ex As Exception
-    '        Throw ex
-    '    Finally
-    '        loCryptoClass.Clear()
-    '        loCryptoProvider.Clear()
-    '        loCryptoClass = Nothing
-    '        loCryptoProvider = Nothing
-    '    End Try
-    'End Function
 
 End Class
