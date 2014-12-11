@@ -1195,8 +1195,6 @@ Partial Public Class CustomerManagement
                 ' physical to virtual path..
                 LogoDebug.Text &= "8. Fertig<br>"
                 Return newFileName.Replace(physRoot, "/").Replace("\", "/")
-
-                Fill_BilderDropDownListen()
             Else
                 ' Limit reached, discard the file
                 e.IsValid = False
