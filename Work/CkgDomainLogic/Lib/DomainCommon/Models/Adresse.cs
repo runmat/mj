@@ -72,11 +72,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         public string Kennung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Remark)]
-        [ModelMappingCompareIgnore]
         public string Bemerkung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._blank)]
-        [ModelMappingCompareIgnore]
         public bool Gewerblich { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
