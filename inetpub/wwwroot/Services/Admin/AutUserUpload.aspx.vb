@@ -103,11 +103,6 @@ Partial Public Class AutUserUpload
 
             lblError.Text = "Bitte wählen Sie eine Firma aus."
             Exit Sub
-            'Else
-            '    If CustomerNameInputOptional(ddlFilterCustomer.SelectedValue) = False Then
-            '        lblError.Text = "Namensangaben zum Kunden nicht als Pflicht definiert. <br> Bitte im Kunden ändern."
-            '        Exit Sub
-            '    End If
 
         End If
 
@@ -269,8 +264,6 @@ Partial Public Class AutUserUpload
                 _User.UrlRemoteLoginKey = HttpUtility.UrlEncode(Guid.NewGuid().ToString)
             End If
 
-            Dim strLogMsg As String = "User anlegen"
-
             Dim intGroupID As Integer = GetGroupID(TempRow(UploadExcelColumns.Groupname))
 
             If intGroupID > 0 Then
@@ -297,7 +290,6 @@ Partial Public Class AutUserUpload
 
             Dim blnSuccess As Boolean = False
             Dim pword As String = ""
-            Dim pwordconfirm As String = ""
             Dim LinkKey As String = ""
 
 
@@ -1336,24 +1328,6 @@ Partial Public Class AutUserUpload
         Else
             EmailAddressCheck = False
         End If
-    End Function
-
-    Private Function CustomerNameInputOptional(ByVal ID As String) As Boolean
-
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        cn.Open()
-
-        Dim cmdCustomer As New SqlClient.SqlCommand("SELECT Count(CustomerID) FROM Customer WHERE CustomerID=@ID and NameInputOptional = 1", cn)
-        cmdCustomer.Parameters.AddWithValue("@ID", ID)
-        If cmdCustomer.ExecuteScalar.ToString = "0" Then
-            Return True
-        Else
-            Return False
-        End If
-
-        cn.Close()
-        cn.Dispose()
-
     End Function
 
     Private Function CheckCustomerMaxUser(ByVal AnzahlUserInUploadTable As Integer) As Boolean
