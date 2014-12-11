@@ -5,23 +5,30 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeugbestand.Contracts;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
+using CkgDomainLogic.Partner.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 {
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IAdressenDataService AdressenDataService { get { return CacheGet<IAdressenDataService>(); } }
+        public IKroschkeZulassungDataService ZulassungDataService { get { return CacheGet<IKroschkeZulassungDataService>(); } }
 
         [XmlIgnore]
-        public IKroschkeZulassungDataService ZulassungDataService { get { return CacheGet<IKroschkeZulassungDataService>(); } }
+        public IFahrzeugAkteBestandDataService FahrzeugAkteBestandDataService { get { return CacheGet<IFahrzeugAkteBestandDataService>(); } }
+
+        [XmlIgnore]
+        public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
 
         public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
 
@@ -50,6 +57,23 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         [XmlIgnore]
         public string SaveErrorMessage { get; private set; }
+
+        public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
+
+
+        public void SetParamFahrzeugAkte(string fin)
+        {
+            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin }).FirstOrDefault();
+            if (ParamFahrzeugAkte == null)
+                return;
+
+            SetFahrzeugdaten(new Fahrzeugdaten
+                {
+                    FahrgestellNr = ParamFahrzeugAkte.FIN,
+                    Zb2Nr = ParamFahrzeugAkte.Briefnummer,
+                });
+            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr());
+        }
 
 
         #region Rechnungsdaten
@@ -143,38 +167,46 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         }
 
         [XmlIgnore]
+        public List<Adresse> HalterAdressen
+        {
+            // ReSharper disable ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => GetHalterAdressen()); }
+            // ReSharper restore ConvertClosureToMethodGroup
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
         public List<Adresse> HalterAdressenFiltered
         {
-// ReSharper disable ConvertClosureToMethodGroup
-            get { return PropertyCacheGet(() => GetHalterAdressen()); }
-// ReSharper restore ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => HalterAdressen); }
             private set { PropertyCacheSet(value); }
         }
 
         public void FilterHalterAdressen(string filterValue, string filterProperties)
         {
-            HalterAdressenFiltered = GetHalterAdressen().SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            HalterAdressenFiltered = HalterAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         List<Adresse> GetHalterAdressen()
         {
-            var list = AdressenDataService.Adressen.Where(a => a.Kennung == "HALTER").ToListOrEmptyList();
+            PartnerDataService.AdressenKennung = "HALTER";
+            var list = PartnerDataService.Adressen;
             list.ForEach(a => a.Typ = "Halter");
             return list;
         }
 
         public List<string> GetHalterAdressenAsAutoCompleteItems()
         {
-            return GetHalterAdressen().Select(a => a.GetAutoSelectString()).ToList();
+            return HalterAdressen.Select(a => a.GetAutoSelectString()).ToList();
         }
 
         public Adresse GetHalteradresse(string key)
         {
             int id;
             if (Int32.TryParse(key, out id))
-                return GetHalterAdressen().FirstOrDefault(v => v.ID == id);
+                return HalterAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
 
-            return GetHalterAdressen().FirstOrDefault(a => a.GetAutoSelectString() == key);
+            return HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
         }
 
         public void SetHalterAdresse(Adresse model)
@@ -193,8 +225,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
         }
 
-        public void DataMarkForRefreshHalterAdressenFiltered()
+        public void DataMarkForRefreshHalterAdressen()
         {
+            PropertyCacheClear(this, m => m.HalterAdressen);
             PropertyCacheClear(this, m => m.HalterAdressenFiltered);
         }
 
@@ -335,7 +368,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassungsdaten.MaterialList = Zulassungsarten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
-            AdressenDataService.MarkForRefreshAdressen();
+            PartnerDataService.MarkForRefreshAdressen();
 
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);

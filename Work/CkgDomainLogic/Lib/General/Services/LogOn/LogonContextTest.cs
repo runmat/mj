@@ -80,7 +80,23 @@ namespace CkgDomainLogic.General.Services
             if (User != null)
                 Customer = ct.GetCustomer(User.CustomerID); 
             else 
-                Customer = new Customer { CustomerID = 0, Customername = "Test-Kunde", KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"] };
+                Customer = new Customer
+                    {
+                        CustomerID = 209,
+                        Customername = "Test-Kunde",
+                        KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"],
+                        AccountingArea = 1010,
+                    };
+            
+            Organization= new Organization
+                {
+                    AllOrganizations =  false,
+                    CustomerID = 209,
+                    OrganizationID = 266,
+                    OrganizationName = "240072_4340",
+                    OrganizationReference = "240072",
+                    OrganizationReference2 = "4340",
+                }; 
 
             LocalizationService = localizationService;
 

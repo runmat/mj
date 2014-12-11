@@ -2,12 +2,14 @@
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
 using CkgDomainLogic.KroschkeZulassung.ViewModels;
+using CkgDomainLogic.Partner.Contracts;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -23,17 +25,25 @@ namespace ServicesMvc.Controllers
         public KroschkeZulassungViewModel ViewModel { get { return GetViewModel<KroschkeZulassungViewModel>(); } }
 
         public KroschkeZulassungController(IAppSettings appSettings, ILogonContextDataService logonContext,
-            IAdressenDataService adressenDataService,
-            IKroschkeZulassungDataService zulassungDataService)
+            IPartnerDataService partnerDataService,
+            IKroschkeZulassungDataService zulassungDataService,
+            IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, adressenDataService, zulassungDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
-            ViewModel.DataMarkForRefresh();
+            if (ViewModel.ParamFahrzeugAkte == null)
+                ViewModel.DataMarkForRefresh();
+
+            if (id.IsNotNullOrEmpty())
+            {
+                ViewModel.SetParamFahrzeugAkte(id);
+                return RedirectPermanent(string.Format("~/{0}/{1}", RouteData.GetRequiredString("controller"), RouteData.GetRequiredString("action")));
+            }
 
             return View(ViewModel);
         }
@@ -138,9 +148,7 @@ namespace ServicesMvc.Controllers
             }
 
             if (ModelState.IsValid)
-            {
                 ViewModel.SetHalterAdresse(model);
-            }
 
             model.IsValid = ModelState.IsValid;
 
@@ -164,7 +172,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult HalterAdressenShowGrid()
         {
-            ViewModel.DataMarkForRefreshHalterAdressenFiltered();
+            ViewModel.DataMarkForRefreshHalterAdressen();
 
             return PartialView("Partial/HalterAdressenAuswahlGrid");
         }

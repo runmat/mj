@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
@@ -26,7 +27,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
 
-        public string pfadAuftragszettel { get; private set; }
+        public string PfadAuftragszettel { get; private set; }
 
         private static KroschkeZulassungSqlDbContext CreateDbContext()
         {
@@ -36,15 +37,15 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
         public KroschkeZulassungDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            pfadAuftragszettel = GeneralTools.Services.GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel");
+            PfadAuftragszettel = GeneralTools.Services.GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel");
         }
 
         public void MarkForRefresh()
         {
             Zulassung = new Vorgang
                 {
-                    VkOrg = ((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea.ToString(),
-                    VkBur = ((LogonContextDataServiceBase)LogonContext).Organization.OrganizationReference2,
+                    VkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString(),
+                    VkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2,
                     Vorerfasser = LogonContext.UserName,
                     VorgangsStatus = "1"
                 };
@@ -60,11 +61,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = ((LogonContextDataServiceBase) LogonContext).Organization.OrganizationReference;
+            var orgRef = ((ILogonContextDataService) LogonContext).Organization.OrganizationReference;
 
             SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
-            SAP.SetImportParameter("I_VKORG", ((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea.ToString());
-            SAP.SetImportParameter("I_VKBUR", ((LogonContextDataServiceBase)LogonContext).Organization.OrganizationReference2);
+            SAP.SetImportParameter("I_VKORG", ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString());
+            SAP.SetImportParameter("I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
             SAP.SetImportParameter("I_SPART", "01");
 
             var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP);
@@ -100,7 +101,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
         private IEnumerable<Material> LoadZulassungsartenFromSap()
         {
-            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", ((LogonContextDataServiceBase)LogonContext).Organization.OrganizationReference2);
+            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
 
             var sapList = Z_ZLD_AH_MATERIAL.GT_MAT.GetExportListWithExecute(SAP);
 
@@ -123,7 +124,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
         {
             Z_DPM_READ_LV_001.Init(SAP, "I_VWAG", "X");
 
-            var kroschkeKunde = (((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea == 1010);
+            var kroschkeKunde = (((ILogonContextDataService)LogonContext).Customer.AccountingArea == 1010);
 
             if (kroschkeKunde)
                 SAP.SetImportParameter("I_EKORG", "0001");
@@ -176,7 +177,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
             Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
-            SAP.SetImportParameter("I_TELNR", ((LogonContextDataServiceBase)LogonContext).UserInfo.Telephone);
+            SAP.SetImportParameter("I_TELNR", ((ILogonContextDataService)LogonContext).UserInfo.Telephone);
             SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
 
             if (saveDataInSap)
@@ -228,7 +229,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             var fileNames = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
 
             if (saveDataInSap && fileNames.Count > 0)
-                Zulassung.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", pfadAuftragszettel, fileNames[0].FILENAME.Split('/')[1], Zulassung.BelegNr.PadLeft(10, '0'));
+                Zulassung.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", PfadAuftragszettel, fileNames[0].FILENAME.Split('/')[1], Zulassung.BelegNr.PadLeft(10, '0'));
             else
                 Zulassung.AuftragszettelPdfPfad = "";
 

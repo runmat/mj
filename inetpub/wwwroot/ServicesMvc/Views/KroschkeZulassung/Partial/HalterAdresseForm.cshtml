@@ -28,7 +28,7 @@
 
 
         <script type="text/javascript">
-            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
             
             function AjaxFormHalterAdresseInit() {
                 AjaxFormAdressePrepareAutoComplete($("#Name1"), "HalterAdresseGetAutoCompleteItems");
