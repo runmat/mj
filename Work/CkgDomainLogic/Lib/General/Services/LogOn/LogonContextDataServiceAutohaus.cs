@@ -94,7 +94,7 @@ namespace CkgDomainLogic.General.Services
                         ua.AppTypeRank = appType.Rank;
                         ua.AppTypeFriendlyName = GetAppTypeFriendlyName(appType.AppType);
                     }
-                    RewriteUrlToLogPageVisit(ua);
+                    //RewriteUrlToLogPageVisit(ua);
                 });
 
             return true;
