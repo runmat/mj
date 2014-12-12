@@ -11,6 +11,11 @@ namespace CkgServerTasks
         {
             try
             {
+                var runBapiCheck = (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["RunBapiCheck"]) && ConfigurationManager.AppSettings["RunBapiCheck"].ToUpper() == "TRUE");
+
+                if (!runBapiCheck)
+                    return;
+
                 var connString = ConfigurationManager.AppSettings["BapiCheckSqlConnection"];
                 var testSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
 
