@@ -29,7 +29,7 @@
         @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormTextBoxFor(m => m.Fax, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
+        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
 
         @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium", col = "right" })

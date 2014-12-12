@@ -24,7 +24,7 @@
 <div class="control-group">
     
     <label class="control-label">
-        @if (!Model.IsCheckBox || Model.PostControlHtml == null)
+        @if (!Model.LabelHidden)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml
         }
@@ -42,6 +42,11 @@
         @if (Model.ValidationMessageHtml != null)
         {
             @Model.ValidationMessageHtml
+        }
+        
+        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+        {
+            <label class="checkbox">@Model.DisplayNameHtml</label>
         }
         
         @if (Model.PostControlHtml != null)

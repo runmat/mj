@@ -43,7 +43,15 @@ namespace MvcTools.Models
         /// </summary>
         public IDictionary<string, object> ControlHtmlAttributes { get; set; }
 
+        /// <summary>
+        /// Is this a checkbox?
+        /// </summary>
         public bool IsCheckBox { get; set; }
+
+        /// <summary>
+        /// optionally hide left positioned label 
+        /// </summary>
+        public bool LabelHidden { get; set; }
 
         public FormMultiColumnMode ColumnMode
         {
