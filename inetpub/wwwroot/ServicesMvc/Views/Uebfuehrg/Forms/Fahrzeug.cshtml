@@ -58,8 +58,8 @@
         @Html.FormDropDownListFor(m => m.Fahrzeugklasse, Model.FahrzeugklasseOptions.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
         @Html.FormDropDownListFor(m => m.Fahrzeugwert, Model.FahrzeugwertOptions.ToSelectList(), new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormCheckBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap", col = "left" }, postControlHtml: @<text><label class="checker">@Localize.VehicleRegisteredAndReady</label></text>)
-        @Html.FormCheckBoxFor(m => m.ZulassungBeauftragt, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.VehiclesLicenseOrdered</label></text>)
+        @Html.FormCheckBoxFor(m => m.FahrzeugZugelassen, new { @class = "m-wrap", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.VehicleRegisteredAndReady</label></text>)
+        @Html.FormCheckBoxFor(m => m.ZulassungBeauftragt, new { @class = "m-wrap", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.VehiclesLicenseOrdered</label></text>)
 
         @Html.FormTextBoxFor(m => m.Referenznummer, new { @class = "m-wrap medium" })
 
