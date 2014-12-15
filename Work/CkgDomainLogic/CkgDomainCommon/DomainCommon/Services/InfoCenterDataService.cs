@@ -71,6 +71,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public List<DokumentRight> DocumentRights { get { return _domainDbContext.DokumentRights.ToList(); } }
 
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
         public List<Land> Laender { get; private set; }
         public List<SelectItem> Versicherungen { get; private set; }
         public List<VersandOption> VersandOptionen { get; private set; }
