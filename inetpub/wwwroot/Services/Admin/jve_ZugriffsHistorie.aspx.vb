@@ -86,11 +86,11 @@ Public Class jve_ZugriffsHistorie
         End If
     End Sub
 
-    Private Sub Page_PreRender(sender As Object, e As EventArgs)
+    Private Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         Common.SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(sender As Object, e As EventArgs)
+    Private Sub Page_Unload(sender As Object, e As EventArgs) Handles Me.Unload
         Common.SetEndASPXAccess(Me)
     End Sub
 
