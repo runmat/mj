@@ -200,7 +200,7 @@
     }
 
     function VersEventDelete(id) {
-        if (!confirm('@Localize.VersEventDeleteEventConfirmation'))
+        if (!confirm('@MvcHtmlString.Create(Localize.VersEventDeleteEventConfirmation)'))
             return;
 
         $.ajax({
