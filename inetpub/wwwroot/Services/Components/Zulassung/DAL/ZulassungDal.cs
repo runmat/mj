@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using CKG.Base.Business;
@@ -26,8 +25,6 @@ namespace CKG.Components.Zulassung.DAL
             get { return kennung; }
             set { kennung = value; }
         }
-
-
     }
 
     public enum VersandAdressTyp
@@ -75,7 +72,6 @@ namespace CKG.Components.Zulassung.DAL
         private DateTime zulassungsDate = DateTime.MinValue;
         private string zulassungsKreis = string.Empty;
         private string zulassungsTyp = string.Empty;
-        private List<string> documents = new List<string>();
        
 
         public string ErrMsg
@@ -174,8 +170,8 @@ namespace CKG.Components.Zulassung.DAL
                         this.protokollarten = GetProtokollarten() ?? new DataTable();
                         if (!this.protokollarten.Columns.Contains("ID"))
                         {
-                            this.protokollarten.Columns.Add("ID", System.Type.GetType("System.String"));
-                            this.protokollarten.Columns.Add("Filename", System.Type.GetType("System.String"));
+                            this.protokollarten.Columns.Add("ID", typeof(string));
+                            this.protokollarten.Columns.Add("Filename", typeof(string));
                         }
                     }
                 }
@@ -189,11 +185,7 @@ namespace CKG.Components.Zulassung.DAL
             {
                 lock (syncRoot)
                 {
-                    if (this.defaultZulassungsart == null)
-                    {
-                        this.defaultZulassungsart = GetDefaultZulassungsart();
-                    }
-                    return this.defaultZulassungsart;
+                    return this.defaultZulassungsart ?? (this.defaultZulassungsart = GetDefaultZulassungsart());
                 }
             }
         }
@@ -229,11 +221,9 @@ namespace CKG.Components.Zulassung.DAL
             {
                 if (this.vehicles != null)
                 {
-                    //if (this.selectedVehicles == null)
-                    //{
-                        this.selectedVehicles = new DataView(this.vehicles);
-                        this.selectedVehicles.RowFilter = AuswahlCol +" = '99'";
-                    //}
+                    this.selectedVehicles = new DataView(this.vehicles);
+                    this.selectedVehicles.RowFilter = AuswahlCol +" = '99'";
+
                     return this.selectedVehicles;
                 }
                 return null;
@@ -291,7 +281,7 @@ namespace CKG.Components.Zulassung.DAL
 
                     if (value != null)
                     {
-                        this.VersandAdressTyp = DAL.VersandAdressTyp.Anderer;
+                        this.VersandAdressTyp = VersandAdressTyp.Anderer;
                     }
 
                     OnPropertyChanged("VersandAddress");
@@ -730,7 +720,7 @@ namespace CKG.Components.Zulassung.DAL
 
                 if ((row["ZF_NAME1"] != DBNull.Value) && this.VersandAddress == null)
                 {
-                    this.VersandAddress = new AddressData()
+                    this.VersandAddress = new AddressData
                     {
                         Name1 = (string)row["ZF_NAME1"],
                         Name2 = row["ZF_NAME2"] == DBNull.Value ? string.Empty : (string)row["ZF_NAME2"],
@@ -742,7 +732,7 @@ namespace CKG.Components.Zulassung.DAL
 
                 if ((row["ZH_NAME1"] != DBNull.Value) && this.HalterAddress == null)
                 {
-                    this.HalterAddress = new AddressData()
+                    this.HalterAddress = new AddressData
                     {
                         Name1 = (string)row["ZH_NAME1"],
                         Name2 = row["ZH_NAME2"] == DBNull.Value ? string.Empty : (string)row["ZH_NAME2"],
@@ -831,52 +821,17 @@ namespace CKG.Components.Zulassung.DAL
                 {
                     var importRow = importZul.NewRow();
 
-                    string wunschkennzeichenData = string.Empty;
+                    importRow["WUNSCHKENNZ"] = row["Wunschkennz1"].ToString();
+                    importRow["WNV_2"] = row["Wunschkennz2"].ToString();
+                    importRow["WNV_3"] = row["Wunschkennz3"].ToString();
+                    importRow["RES_PIN"] = row["ResNr"].ToString();
+                    importRow["RESNR"] = row["ResName"].ToString();
 
-                    if (!string.IsNullOrEmpty(row["Wunschkennz1"] as string))
-                    {
-                        wunschkennzeichenData = (string)row["Wunschkennz1"];
-                        if (!string.IsNullOrEmpty(row["Wunschkennz2"] as string))
-                        {
-                            wunschkennzeichenData = wunschkennzeichenData + "," + (string)row["Wunschkennz2"];
-                            if (!string.IsNullOrEmpty(row["Wunschkennz3"] as string))
-                            {
-                                wunschkennzeichenData = wunschkennzeichenData + "," + (string)row["Wunschkennz3"];
-
-                            }
-                        }
-
-                    }
-                    //Reservierungsname und -nummer in das Wunschkennzeichen eintragen
-                    if (!string.IsNullOrEmpty(row["ResNr"] as string))
-                    {
-                        if (wunschkennzeichenData != string.Empty)
-                        {
-                            wunschkennzeichenData = wunschkennzeichenData + ", " + (string)row["ResNr"];
-                        }
-                        else
-                        {
-                            wunschkennzeichenData = (string)row["ResNr"];
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(row["ResName"] as string))
-                    {
-                        if (wunschkennzeichenData != string.Empty)
-                        {
-                            wunschkennzeichenData = wunschkennzeichenData + ", " + (string)row["ResName"];
-                        }
-                        else
-                        {
-                            wunschkennzeichenData = (string)row["ResName"];
-                        }
-                    }
-
-                    importRow["EQUNR"] = ((string)row["DummyEqui"]).Equals("ja") ? null : (string)row["EQUNR"];
-                    importRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                    importRow["ZZBRIEF"] = (string)row["TIDNR"];
-                    importRow["ZZREFNR"] = (string)row["LIZNR"]; 
-                    importRow["ZFAHRZEUGART"] = ZFAHRZEUGART_G.Equals(row["ZFAHRZEUGART"]) ? "G" : string.Empty;
+                    importRow["EQUNR"] = (row["DummyEqui"].ToString().Equals("ja") ? null : row["EQUNR"].ToString());
+                    importRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                    importRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                    importRow["ZZREFNR"] = row["LIZNR"].ToString(); 
+                    importRow["ZFAHRZEUGART"] = (ZFAHRZEUGART_G.Equals(row["ZFAHRZEUGART"]) ? "G" : string.Empty);
 
                     importRow["ZULDAT"] = ZulassungsDate.ToShortDateString();
                     importRow["EVBNR"] = evbNo;
@@ -888,7 +843,6 @@ namespace CKG.Components.Zulassung.DAL
                     {
                         importRow["EVBBISDAT"] = versicherungUntil.Value.ToShortDateString();
                     }
-                    importRow["WUNSCHKENNZ"] = wunschkennzeichenData;
                     importRow["IHREZ_E"] = Buchungscode;
                     importRow["SFV_FZG"] = ZulassungsTyp;
                     importRow["VERSICHERUNG"] = versichererAddress.Name1;
@@ -897,39 +851,21 @@ namespace CKG.Components.Zulassung.DAL
                     importRow["STEUERN"] = "";
                     importRow["EXKUNNR_ZL"] = "";
                     importRow["KVGR3"] = "";
-                    if (this.HalterAddress != null)
-                    {
-                        if (this.HalterAddress.Country.ToUpper() == "DE")
-                        {
-                            importRow["ZUL_DEZ"] = "1";
-                            importRow["ZUL_AUSLAND"] = "0";
-                            importRow["ZUL_EXPORT"] = "0";
-                        }
-                        else
-                        {
-                            importRow["ZUL_DEZ"] = "0";
-                            importRow["ZUL_AUSLAND"] = "1";
-                            importRow["ZUL_EXPORT"] = "0";
-                        }
-                    }
-                    else
-                    {
-                        importRow["ZUL_DEZ"] = "1";
-                        importRow["ZUL_AUSLAND"] = "0";
-                        importRow["ZUL_EXPORT"] = "0";
-                    }
+
+                    var blnAusland = (this.HalterAddress != null && this.HalterAddress.Country.ToUpper() != "DE");
+
+                    importRow["ZUL_DEZ"] = (blnAusland ? "0" : "1");
+                    importRow["ZUL_AUSLAND"] = (blnAusland ? "1" : "0");
+                    importRow["ZUL_EXPORT"] = "0";
 
                     importZul.Rows.Add(importRow);
 
-                    //### Partner Zulassung ###
+                    //Rechnungsemfänger
                     var partnerZulRow = partnerZul.NewRow();
 
-                    //Rechnungsemfänger
-                    partnerZulRow = partnerZul.NewRow();
-
-                    partnerZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                    partnerZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                    partnerZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                    partnerZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                    partnerZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                    partnerZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                     partnerZulRow["PARTN_ROLE"] = "RE";
 
                     if (string.IsNullOrEmpty(Empfänger))
@@ -942,9 +878,9 @@ namespace CKG.Components.Zulassung.DAL
                     //Regulierer
                     partnerZulRow = partnerZul.NewRow();
 
-                    partnerZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                    partnerZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                    partnerZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                    partnerZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                    partnerZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                    partnerZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                     partnerZulRow["PARTN_ROLE"] = "RG";
 
                     if (string.IsNullOrEmpty(Regulierer))
@@ -959,9 +895,9 @@ namespace CKG.Components.Zulassung.DAL
                         partnerZulRow = partnerZul.NewRow();
 
                         //Halter
-                        partnerZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                        partnerZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                        partnerZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                        partnerZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                        partnerZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                        partnerZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                         partnerZulRow["PARTN_ROLE"] = "ZH";
                         partnerZulRow["NAME"] = HalterAddress.Name1;
                         partnerZulRow["NAME_2"] = HalterAddress.Name2;
@@ -979,9 +915,9 @@ namespace CKG.Components.Zulassung.DAL
                         partnerZulRow = partnerZul.NewRow();
 
                         // Versicherungsnehmer
-                        partnerZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                        partnerZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                        partnerZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                        partnerZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                        partnerZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                        partnerZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                         partnerZulRow["PARTN_ROLE"] = "ZC";
                         partnerZulRow["NAME"] = versicherter.Name1;
                         partnerZulRow["NAME_2"] = versicherter.Name2;
@@ -994,15 +930,15 @@ namespace CKG.Components.Zulassung.DAL
                         partnerZul.Rows.Add(partnerZulRow);
                     }
 
-                    var versand = VersandAddress ?? (this.VersandAdressTyp == DAL.VersandAdressTyp.Halter ? this.HalterAddress : this.AuftraggeberAddress);
+                    var versand = VersandAddress ?? (this.VersandAdressTyp == VersandAdressTyp.Halter ? this.HalterAddress : this.AuftraggeberAddress);
                     if (versand != null)
                     {
                         partnerZulRow = partnerZul.NewRow();
 
                         //Versand Schein und Schilder
-                        partnerZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                        partnerZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                        partnerZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                        partnerZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                        partnerZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                        partnerZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                         partnerZulRow["PARTN_ROLE"] = "ZE";
                         partnerZulRow["NAME"] = versand.Name1;
                         partnerZulRow["NAME_2"] = versand.Name2;
@@ -1014,16 +950,14 @@ namespace CKG.Components.Zulassung.DAL
                         partnerZul.Rows.Add(partnerZulRow);
                     }
 
-
-
                     //### Dienstleistungen Zulassung ###
                     foreach (DataRow dienstlRow in SelectedServices.Rows)
                     {
                         var dienstlZulRow = dienstlZul.NewRow();
 
-                        dienstlZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                        dienstlZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                        dienstlZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                        dienstlZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                        dienstlZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                        dienstlZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                         dienstlZulRow["DIENSTL_NR"] = dienstlRow["DIENSTL_NR"];
                         dienstlZulRow["DIENSTL_TEXT"] = dienstlRow["DIENSTL_TEXT"];
                         dienstlZulRow["MATNR"] = dienstlRow["MATNR"];
@@ -1031,21 +965,19 @@ namespace CKG.Components.Zulassung.DAL
                         dienstlZul.Rows.Add(dienstlZulRow);
                     }
 
-
                     //### Dokumente Zulassung ###
                     foreach (DataRow docRow in Protokollarten.Select("Filename <> ''"))
                     {
                         var dokZulRow = dokZul.NewRow();
 
-                        dokZulRow["ZZFAHRG"] = (string)row["CHASSIS_NUM"];
-                        dokZulRow["ZZBRIEF"] = (string)row["TIDNR"];
-                        dokZulRow["ZZREFNR"] = (string)row["LIZNR"];
+                        dokZulRow["ZZFAHRG"] = row["CHASSIS_NUM"].ToString();
+                        dokZulRow["ZZBRIEF"] = row["TIDNR"].ToString();
+                        dokZulRow["ZZREFNR"] = row["LIZNR"].ToString();
                         dokZulRow["DOKUMENTENART"] = docRow["ZZPROTOKOLLART"];
 
                         dokZul.Rows.Add(dokZulRow);
                     }
                 }
-
 
                 myProxy.callBapi();
                 
@@ -1062,7 +994,7 @@ namespace CKG.Components.Zulassung.DAL
             {
                 m_intStatus = -5555;
 
-                switch (Base.Business.HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
                 {
                     case "NO_VKORG":
                         m_strMessage = "VKORG konnte nicht ermittelt werden.";
@@ -1194,7 +1126,7 @@ namespace CKG.Components.Zulassung.DAL
                             row.SetField("KARTE", "X");
                         }
 
-                        return new VorhandeneDokumente()
+                        return new VorhandeneDokumente
                         {
                             Vollmacht = row.Field<string>("VOLLM").Equals("X", StringComparison.Ordinal),
                             Register = row.Field<string>("REGISTER").Equals("X", StringComparison.Ordinal),
@@ -1289,7 +1221,7 @@ namespace CKG.Components.Zulassung.DAL
 
         public DataSet GetPrintData(out DataTable header)
         {
-            header = new System.Data.DataTable("Kopf");
+            header = new DataTable("Kopf");
             header.Columns.Add("LogonUser");
             header.Columns.Add("Regulierer");
             header.Columns.Add("Empfaenger");  
@@ -1341,7 +1273,6 @@ namespace CKG.Components.Zulassung.DAL
                 if (r["KUNNR"].ToString().Equals(Empfänger.PadLeft(10, '0')) && r["PARVW"].ToString().Equals("RE"))
                 {
                     row["Empfaenger"] = r["NAME1"] + " (" + Empfänger + ")";
-                    continue;
                 }
             }
             //Wenn Name nicht gefunden dann nur die Nummer ausgeben
@@ -1355,7 +1286,7 @@ namespace CKG.Components.Zulassung.DAL
             row["HOrt"] = this.HalterAddress.City;
             row["HLand"] = this.HalterAddress.Country;
 
-            var vAddress = this.VersandAddress ?? (this.VersandAdressTyp == DAL.VersandAdressTyp.Halter ? this.HalterAddress : this.AuftraggeberAddress);
+            var vAddress = this.VersandAddress ?? (this.VersandAdressTyp == VersandAdressTyp.Halter ? this.HalterAddress : this.AuftraggeberAddress);
 
             row["VName"] = vAddress.Name1;
             row["VName2"] = vAddress.Name2;
@@ -1385,8 +1316,8 @@ namespace CKG.Components.Zulassung.DAL
 
             header.Rows.Add(row);
 
-            var ds = new System.Data.DataSet();
-            var fahrzeuge = new System.Data.DataTable("Fahrzeuge");
+            var ds = new DataSet();
+            var fahrzeuge = new DataTable("Fahrzeuge");
             ds.Tables.Add(fahrzeuge);
 
             fahrzeuge.Columns.Add("Fahrgestellnummer");
@@ -1397,7 +1328,7 @@ namespace CKG.Components.Zulassung.DAL
             fahrzeuge.Columns.Add("ResNummer");
             fahrzeuge.Columns.Add("ResName");
 
-            foreach (System.Data.DataRowView kfz in this.SelectedVehicles)
+            foreach (DataRowView kfz in this.SelectedVehicles)
             {
                 row = fahrzeuge.NewRow();
                 row["Fahrgestellnummer"] = kfz["CHASSIS_NUM"];
@@ -1410,24 +1341,24 @@ namespace CKG.Components.Zulassung.DAL
                 fahrzeuge.Rows.Add(row);
             }
 
-            var dienstleistungen = new System.Data.DataTable("Dienstleistungen");
+            var dienstleistungen = new DataTable("Dienstleistungen");
             ds.Tables.Add(dienstleistungen);
 
             dienstleistungen.Columns.Add("Dienstleistung");
 
-            foreach (System.Data.DataRow dienstleistung in this.SelectedServices.Rows)
+            foreach (DataRow dienstleistung in this.SelectedServices.Rows)
             {
                 row = dienstleistungen.NewRow();
                 row["Dienstleistung"] = dienstleistung["DIENSTL_TEXT"];
                 dienstleistungen.Rows.Add(row);
             }
 
-            var dokumente = new System.Data.DataTable("Dokumente");
+            var dokumente = new DataTable("Dokumente");
             ds.Tables.Add(dokumente);
 
             dokumente.Columns.Add("Dokument");
 
-            foreach (System.Data.DataRow dokument in this.Protokollarten.Rows)
+            foreach (DataRow dokument in this.Protokollarten.Rows)
             {
                 var filename = (string)dokument["Filename"];
                 if (!String.IsNullOrEmpty(filename))
@@ -1542,7 +1473,7 @@ namespace CKG.Components.Zulassung.DAL
 
                 if (row != null)
                 {
-                    return new AddressData()
+                    return new AddressData
                         {
                             Name1 = row.Field<string>("NAME1"),
                             Name2 = row.Field<string>("NAME2"),
@@ -1590,16 +1521,16 @@ namespace CKG.Components.Zulassung.DAL
                 var returnTable = sapProxy.getExportTable("GT_OUT");
 
                 var protokolle = returnTable.Clone();
-                protokolle.Columns.Add("ID", System.Type.GetType("System.String"));
-                protokolle.Columns.Add("Filename", System.Type.GetType("System.String"));
-                protokolle.Columns.Add("Filepath", System.Type.GetType("System.String"));
-                protokolle.Columns.Add("Fahrt", System.Type.GetType("System.String"));
+                protokolle.Columns.Add("ID", typeof(string));
+                protokolle.Columns.Add("Filename", typeof(string));
+                protokolle.Columns.Add("Filepath", typeof(string));
+                protokolle.Columns.Add("Fahrt", typeof(string));
 
                 int i = 1;
-                DataRow NewRow = null;
+
                 foreach (DataRow Row in returnTable.Select("WEB_UPLOAD = 'X'"))
                 {
-                    NewRow = protokolle.NewRow();
+                    DataRow NewRow = protokolle.NewRow();
                     NewRow["ID"] = i;
                     NewRow["Filename"] = "";
                     NewRow["Filepath"] = "";
@@ -1654,7 +1585,7 @@ namespace CKG.Components.Zulassung.DAL
             var table = sapProxy.getExportTable("GT_OUT_DL");
 
 
-            table.Columns.Add("Description", typeof(System.String));
+            table.Columns.Add("Description", typeof(String));
             table.Columns["Description"].DefaultValue = string.Empty;
 
             var selectionRow = table.NewRow();
@@ -1741,12 +1672,11 @@ namespace CKG.Components.Zulassung.DAL
                     result.AcceptChanges();
 
                     // Get customer specific countries
-                    var customerCountries = CustomerCountries;
-                    if (customerCountries != null && customerCountries.Rows.Count > 0)
+                    if (CustomerCountries != null && CustomerCountries.Rows.Count > 0)
                     {
                         var newResult = result.Clone();
 
-                        foreach (DataRow row in customerCountries.Rows)
+                        foreach (DataRow row in CustomerCountries.Rows)
                         {
                             var countryRows = result.Select(string.Format("LAND1 = '{0}'", row["POS_KURZTEXT"]));
                             if (countryRows.Length > 0)
@@ -1796,8 +1726,6 @@ namespace CKG.Components.Zulassung.DAL
             m_strAppID = AppID;
             m_strSessionID = SessionID;
 
-            DataTable TempTable = new DataTable();
-
             if (!m_blnGestartet)
             {
                 this.m_blnGestartet = true;
@@ -1830,8 +1758,8 @@ namespace CKG.Components.Zulassung.DAL
                 {
 
                     m_blnGestartet = false;
-                }//end try
-            }//end if
+                }
+            }
         }
 
     }
