@@ -110,6 +110,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public List<Adresse> FahrtAdressen { get; private set; }
 
         [XmlIgnore]
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
+
+        [XmlIgnore]
         public List<Adresse> RechnungsAdressen { get; private set; }
 
         [XmlIgnore]
@@ -152,6 +155,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         [XmlIgnore]
         public string ReceiptPdfFileName { get; set; }
+
+        [XmlIgnore]
+        private bool IstKroschke { get { return (LogonContext.Customer.AccountingArea == 1010); } }
 
 
         public void DataInit(int anzahlFahrzeugeGewuenscht, IDictionary<string, string> externalParams = null)
@@ -229,9 +235,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Header = "Rechnungsdaten",
                     EditFromSummaryDisabled = true,
                     IsMandatory = true,
+                    KundenNrUser = LogonContext.KundenNr,
                     KundenNr = LogonContext.KundenNr,
 
                     ViewName = "RgDaten",
+                    GetKundenAusHierarchie = () => KundenAusHierarchie,
                     GetRechnungsAdressen = () => RechnungsAdressen,
 
 #if TESTDATA
@@ -240,7 +248,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 #endif
                 };
 
-            if (RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
+            if ((IstKroschke && RgDaten.KundenAusHierarchie.Count() > 1) || RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
             {
                 TryDataContextRestoreUiModel(RgDaten);
                 list.Add(RgDaten);
@@ -487,6 +495,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             Laender = DataService.Laender;
             DomainCommon.Models.Adresse.Laender = Laender;
 
+            KundenAusHierarchie = DataService.KundenAusHierarchie;
             RechnungsAdressen = DataService.GetRechnungsAdressen();
         }
 
@@ -604,7 +613,36 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten)
         {
+            if (IstKroschke && !String.IsNullOrEmpty(rgDaten.AgKundenNr))
+            {
+                rgDaten.KundenNr = rgDaten.AgKundenNr;
+
+                if (rgDaten.KundenNr != DataService.KundenNr)
+                {
+                    DataService.KundenNr = rgDaten.AgKundenNr;
+                    RechnungsAdressen = DataService.GetRechnungsAdressen();
+                }
+            }
+
+            rgDaten.GetKundenAusHierarchie = () => KundenAusHierarchie;
             rgDaten.GetRechnungsAdressen = () => RechnungsAdressen;
+
+            if (IstKroschke)
+            {
+                if (String.IsNullOrEmpty(rgDaten.RgKundenNr))
+                    rgDaten.RgKundenNr = rgDaten.RgAdressen.First().KundenNr;
+
+                if (String.IsNullOrEmpty(rgDaten.ReKundenNr))
+                    rgDaten.ReKundenNr = rgDaten.ReAdressen.First().KundenNr;
+
+                if (StepCurrentModel is RgDaten)
+                {
+                    (StepCurrentModel as RgDaten).KundenNr = rgDaten.KundenNr;
+                    (StepCurrentModel as RgDaten).RgKundenNr = rgDaten.RgKundenNr;
+                    (StepCurrentModel as RgDaten).ReKundenNr = rgDaten.ReKundenNr;
+                }
+            }
+
             DataService.AuftragGeber = rgDaten.RgKundenNr;
 
             FahrtAdressen = DataService.GetFahrtAdressen(_addressTypes);
@@ -624,7 +662,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         {
             model.InitDienstleistungen(Dienstleistungen, model.FahrtTyp);
         }
-
 
 
         #region Fahrzeug

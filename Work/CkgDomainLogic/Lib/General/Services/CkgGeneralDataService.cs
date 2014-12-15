@@ -26,6 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         #region General data + Business logic
 
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
         public List<Land> Laender { get { return null; } }
         public List<SelectItem> Versicherungen { get; private set; }
 
