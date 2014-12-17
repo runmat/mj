@@ -175,22 +175,48 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             FileService.TryDirectoryCreate(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath));
 
             // Get web folder urls for big images
-            ImageFileNames = GetTempFolderPathForFiles("{0}*.jpg", fahrt, mapToUrlFunction).ToList();
+            ImageFileNames = GetTempFolderPathForFiles("*{0}*.jpg", fahrt, mapToUrlFunction).ToList();
             
             // Get web folder urls for pdf files
-            PdfFileNames = GetTempFolderPathForFiles("{0}*.pdf", fahrt, mapToUrlFunction).ToList();
+            var availablePdfs = GetTempFolderPathForFiles("*{0}*.pdf", fahrt, mapToUrlFunction).ToList();
+
+            PdfFileNames = FilterPdfsForUeberfuhrungsauftrag(availablePdfs, auftragsNr, fahrt).ToList();
 
             // Get web folder urls for thumb images
-            var mask = "THUMB_{0}*.jpg";
+            var mask = "THUMB_*{0}*.jpg";
             ThumbImageFileNames = GetTempFolderPathForFiles(mask, fahrt, mapToUrlFunction).ToList();
             // Also copy thumb images at this point
             // Note: Big images and pdf files will be copied only if user clicks on the apropiate thumbnail
             CopyFilesToTempFolder(mask);
         }
 
+        public IEnumerable<string> FilterPdfsForUeberfuhrungsauftrag(IEnumerable<string> liste, string auftragsnummer, string fahrt)
+        {
+            string fahrtAlt = "XXX"; // Wert für den Fall dass kein unbekannte Daten übergeben wurden
+            string fahrtAltProtokoll = "XXX";
+            string fahrtNeu = "XXX";
+            if (fahrt == "1")
+            {
+                fahrtAlt = "-1";
+                fahrtAltProtokoll = "-1P";
+                fahrtNeu = "_H";
+            }
+
+            if (fahrt == "2")
+            {
+                fahrtAlt = "-2";
+                fahrtAltProtokoll = "-2P";
+                fahrtNeu = "_R";
+            }
+
+            return liste.Select(x => Path.GetFileNameWithoutExtension(x.ToUpper()))
+                        .Where(n =>(n.Contains(auftragsnummer.TrimStart(new[] { '0' })) && (n.Contains(fahrtAlt) || n.Contains(fahrtAltProtokoll) )) ||
+                        (n.Contains(auftragsnummer) && n.EndsWith(fahrtNeu)));
+        } 
+
         public void CopySingleBigImage(int tour, int singleFileNr)
         {
-            CopyFilesToTempFolder("{0}*.jpg", singleFileNr, tour);
+            CopyFilesToTempFolder("*{0}*.jpg", singleFileNr, tour);
         }
 
         public void CopySinglePdf(int singleFileNr)
@@ -230,25 +256,43 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         IEnumerable<string> GetTempFolderPathForFiles(string fileMask, string fahrt, Func<string, string> mapToUrlFunction)
         {
             var sourcePath = GetSourcePath();
-            var fileNames = FileService.TryDirectoryGetFiles(sourcePath, string.Format(fileMask, HistoryAuftragCurrent.AuftragsNrWebViewTrimmed));
+            var filesInDirectory = FileService.TryDirectoryGetFiles(sourcePath, string.Format(fileMask, HistoryAuftragCurrent.AuftragsNrWebViewTrimmed));
 
-            return fileNames
+            return filesInDirectory
                 .Where(f => fahrt == GetTourFromFilename(f).ToString())
                 .Select(f => mapToUrlFunction(Path.Combine(AppSettings.WebViewAbsolutePath, DestinationRelativePath, FileService.PathGetFileName(f)))).OrderBy(f => f);
         }
 
         public int GetTourFromFilename(string filename)
         {
-            if (filename.LastIndexOf('-') == -1)
-                return 0;
 
-            filename = filename.Substring(filename.LastIndexOf('-'));
+            // Diese Logik funktioniert nur bei PDFs mit dem Format 0027904333-0001-1P.pdf
+            // PDFs mit dem Format 0000325503_0027904332_D_e-alp-ru_H.pdf werden hier nicht erkannt.
+            //if (filename.LastIndexOf('-') == -1)
+            //    return 0;
+
+            //filename = filename.Substring(filename.LastIndexOf('-'));
             
-            int tour;
-            if (!Int32.TryParse(filename.Substring(1, 1), out tour))
-                return -1;
+            //int tour;
+            //if (!Int32.TryParse(filename.Substring(1, 1), out tour))
+            //    return -1;
 
-            return tour;
+            //return tour;
+
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filename.ToUpper());
+
+            if (fileNameWithoutExtension.EndsWith("_H") || fileNameWithoutExtension.EndsWith("-1") || fileNameWithoutExtension.EndsWith("-1P"))
+            {
+                return 1;
+            }
+
+            if (fileNameWithoutExtension.EndsWith("_R") || fileNameWithoutExtension.EndsWith("-2") || fileNameWithoutExtension.EndsWith("-2P"))
+            {
+                return 2;
+            }
+
+            return -1;
+
         }
 
         public string GetPdfFilesAsZip()
@@ -259,17 +303,24 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 return "";
 
             var zipFileNameWithoutExtensions = string.Format("Ueberfuehrungsprotokolle_{0}_Fahrt_{1}", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt);
-            var auftragGeber = LogonContext.KundenNr.ToSapKunnr();
 
             var zip = new ZipFile();
 
-            var fileNamesForFahrt = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}*{1}P.pdf", HistoryAuftragCurrent.AuftragsNrWebViewTrimmed, HistoryAuftragCurrent.Fahrt));
-            foreach (var fileName in fileNamesForFahrt)
-                zip.AddFile(fileName, zipFileNameWithoutExtensions);
+            // beim InitData wurden die PDF Dateien bereits gefiltert, Ergebnis wurde in der Property PdfFileNames gespeichert
+            // Stattdessen wird auf die Verzeichnise erneut zugegriffen ohne dass eine Filterung vorgenommen wird
 
-            var fileNamesGeneral = FileService.TryDirectoryGetFiles(sourcePath, string.Format("{0}_{1}*.pdf", auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView));
-            foreach (var fileName in fileNamesGeneral)
-                zip.AddFile(fileName, zipFileNameWithoutExtensions);
+            // Folgende Ermittlungen der PDF also Ausschalten, nur noch die vor-gefilterten Daten anzeigen
+
+            var allPdfFiles = FileService.TryDirectoryGetFiles(sourcePath, "*.pdf");
+
+            // Liste mit den bereits ermittleten PdfFileNames abgleichen
+            // PdfFileNames beinhaltet den Dateinamne ohne Extension und ohne verzeichnis da alles in der VM gepsiechert ist
+            var pdfFilesToZip = allPdfFiles.Where(x => PdfFileNames.Contains(Path.GetFileNameWithoutExtension(x.ToUpper())));
+
+            foreach (var pdfFileName in pdfFilesToZip)
+            {
+                zip.AddFile(pdfFileName);
+            }
 
             var zipFileName = GetDestinationFileName(zipFileNameWithoutExtensions + ".zip", DestinationRelativePath);
             if (!FileService.TryFileDelete(zipFileName))

@@ -11,11 +11,6 @@
     <meta content="JavaScript" name="vs_defaultClientScript">
     <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
-    <style type="text/css">
-        .StandardButton
-        {
-        }
-    </style>
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
@@ -50,7 +45,7 @@
         }
     </script>
 
-    <table id="Table4" width="100%" align="center">
+    <table width="100%" align="center">
         <tr>
             <td>
                 <uc1:Header ID="ucHeader" runat="server"></uc1:Header>
@@ -58,7 +53,7 @@
         </tr>
         <tr>
             <td>
-                <table id="Table0" cellspacing="0" cellpadding="0" width="100%" border="0">
+                <table cellspacing="0" cellpadding="0" width="100%" border="0">
                     <tbody>
                         <tr>
                             <td class="PageNavigation" colspan="2" height="19">
@@ -67,7 +62,7 @@
                             </td>
                         </tr>
                         <td valign="top" width="100%">
-                            <table id="Table6" cellspacing="0" cellpadding="0" width="100%" border="0">
+                            <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                 <tr>
                                     <td class="TaskTitle" valign="top" width="100%">
                                         &nbsp;Bitte Model-ID eingeben.
@@ -79,11 +74,10 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0">
+                            <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                 <tr>
                                     <td valign="top" align="middle" width="100%">
-                                        <table class="BorderLeftBottom" id="Table1" cellspacing="0" cellpadding="5" width="400"
-                                            bgcolor="white" border="0">
+                                        <table class="BorderLeftBottom" cellspacing="0" cellpadding="5" width="400" bgcolor="white" border="0">
                                             <tr>
                                                 <td class="TextLarge" align="left" nowrap="nowrap">
                                                     Model-ID:
@@ -97,20 +91,23 @@
                                                     Aktion:
                                                 </td>
                                                 <td class="TextLarge" style="padding-left: 15px" align="left" width="100%">
-                                                    <asp:RadioButtonList ID="rbAktion" runat="server">
-                                                        <asp:ListItem Value="X" Selected="True">Änderung Gesamtfahrzeugbestand</asp:ListItem>
-                                                        <asp:ListItem Value="">Änderung Fahrzeugbestand zur Zulassung</asp:ListItem>
+                                                    <asp:RadioButtonList ID="rblGesamt" runat="server">
+                                                        <asp:ListItem Value="Ja" Selected="True">Änderung Gesamtfahrzeugbestand</asp:ListItem>
+                                                        <asp:ListItem Value="Nein">Änderung Fahrzeugbestand zur Zulassung</asp:ListItem>
                                                     </asp:RadioButtonList>
                                                 </td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="TextLarge" valign="center" nowrap>
-                                    </td>
-                                    <td class="" valign="center" width="100%">
-                                        <p align="right">
-                                            <asp:LinkButton ID="btnConfirm" runat="server" Height="16px" CssClass="StandardButton"
-                                                Width="78px">Weiter&nbsp;&#187;</asp:LinkButton></p>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" valign="center" width="100%">
+                                                    <p align="right">
+                                                        <asp:LinkButton ID="btnNewModelId" runat="server" Height="16px" CssClass="StandardButton"
+                                                            Width="128px">Neue Model-ID&nbsp;&#187;</asp:LinkButton>
+                                                        <asp:LinkButton ID="btnConfirm" runat="server" Height="16px" CssClass="StandardButton"
+                                                            Width="78px" style="margin-left: 10px">Weiter&nbsp;&#187;</asp:LinkButton>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
