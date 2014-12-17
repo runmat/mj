@@ -22,7 +22,7 @@
             @Html.FormMultiSelectListFor(m => m.UserIds, SapLogItemSelector.AllUsers, new { @class = "m-wrap chosen", col = "right" })
 
             @Html.FormRadioButtonListFor(m => m.BapiDurationMinimumLevel, Model.AllSapBapiDurationLevels, new { @class = "m-wrap", col = "left" })
-            @Html.FormCheckBoxFor(m => m.ShowMaxDauerProBapiAndKunde, new { @class = "m-wrap", col = "right" }, postControlHtml: @<text><label class="checker">@Localize.ShowMaxDauerProBapiAndKunde</label></text>)
+            @Html.FormCheckBoxFor(m => m.ShowMaxDauerProBapiAndKunde, new { @class = "m-wrap", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.ShowMaxDauerProBapiAndKunde</label></text>)
 
 
             <div class="form-actions">
