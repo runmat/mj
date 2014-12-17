@@ -239,6 +239,10 @@ Namespace Kernel.Security
                                               "FROM WebGroupArchives " & _
                                               "WHERE GroupID=@GroupID"
 
+                Dim strDeleteDocuments As String = "DELETE " & _
+                                               "FROM DocumentRights " & _
+                                               "WHERE GroupID=@GroupID"
+
                 Dim strDeleteEmployees As String = "DELETE " & _
                                                "FROM WebGroupEmployee " & _
                                                "WHERE GroupID=@GroupID"
@@ -246,9 +250,6 @@ Namespace Kernel.Security
                 Dim strDeleteGroup As String = "DELETE " & _
                                                "FROM WebGroup " & _
                                                "WHERE GroupID=@GroupID"
-
-
-
 
                 Dim cmd As New SqlClient.SqlCommand()
                 cmd.Connection = cn
@@ -260,6 +261,10 @@ Namespace Kernel.Security
 
                 'Archiv-Verknuepfungen loeschen
                 cmd.CommandText = strDeleteArchive
+                cmd.ExecuteNonQuery()
+
+                'Document-Verknuepfungen loeschen
+                cmd.CommandText = strDeleteDocuments
                 cmd.ExecuteNonQuery()
 
                 'Mitarbeiter-Verknuepfungen loeschen
