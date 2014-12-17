@@ -1,14 +1,11 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
+﻿Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Change10
-    Inherits System.Web.UI.Page
+    Inherits Page
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
 
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         ucHeader.InitUser(m_User)
         FormAuth(Me, m_User)
@@ -29,28 +26,38 @@ Partial Public Class Change10
         DoSubmit()
     End Sub
 
+    Protected Sub btnNewModelId_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNewModelId.Click
+        DoSubmit(True)
+    End Sub
+
 #Region "Methods"
 
-    Private Sub DoSubmit(Optional ByVal Fahrgestellnummer As String = "")
+    Private Sub DoSubmit(Optional ByVal newModelId As Boolean = False)
         Session("lnkExcel") = ""
-        Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls"
 
         Dim objECModelID As New ecModelID(m_User, m_App, "")
         Try
 
-
-            If txtModelID.Text.Length > 0 Then
-                objECModelID.ModelID = txtModelID.Text
-            Else
+            If Not newModelId AndAlso String.IsNullOrEmpty(txtModelID.Text) Then
                 lblError.Text = "Bitte geben Sie eine Model-ID ein!"
                 Return
             End If
 
+            If newModelId Then
 
-            objECModelID.Gesamt = rbAktion.SelectedValue
+                objECModelID.ModelID = ""
+                objECModelID.VerarbeitungsKz = "N"
+                objECModelID.Gesamt = False
+                objECModelID.LoadHerstellerIds()
 
+            Else
 
-            objECModelID.Show(Me)
+                objECModelID.ModelID = txtModelID.Text
+                objECModelID.VerarbeitungsKz = "U"
+                objECModelID.Gesamt = (rblGesamt.SelectedValue = "Ja")
+                objECModelID.Show(Me)
+
+            End If
 
             If objECModelID.Message.Length > 0 Then
                 lblError.Text = objECModelID.Message
@@ -59,11 +66,11 @@ Partial Public Class Change10
                 Response.Redirect("Change10_2.aspx?AppID=" & Session("AppID").ToString)
             End If
 
-
-
         Catch ex As Exception
             lblError.Text = "Beim Erstellen des Reportes ist ein Fehler aufgetreten."
         End Try
     End Sub
+
 #End Region
+
 End Class

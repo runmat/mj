@@ -35,7 +35,30 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<LoginUserMessage> LoginMessages { get; set; }
 
-        public List<LoginUserMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList().ToListOrEmptyList(); } }
+        public List<LoginUserMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList(); } }
+
+        public List<LoginUserMessageConfirmations> GetLoginUserMessageConfirmations()
+        {
+            if (UserID.IsNullOrEmpty())
+                return new List<LoginUserMessageConfirmations>();
+
+            return Database.SqlQuery<LoginUserMessageConfirmations>("SELECT * FROM LoginUserMessageConfirmations WHERE UserID = {0}", UserID).ToList();
+        }
+
+        public void SetLoginUserMessageConfirmation(int messageID, DateTime showMessageFromDate)
+        {
+            if (UserID.IsNullOrEmpty())
+                return;
+            
+            try
+            {
+                Database.ExecuteSqlCommand(
+                    " insert into LoginUserMessageConfirmations (UserID, MessageID, ShowMessageFrom, ConfirmDate)" + 
+                    " select {0}, {1}, {2}, getdate()", 
+                    UserID, messageID, showMessageFromDate);
+            }
+            catch (Exception) { }
+        }
 
         private User _user;
         public User User

@@ -82,5 +82,7 @@ namespace CkgDomainLogic.General.Contracts
         string TranslateMenuAppName(IApplicationUserMenuItem menuItem);
 
         MaintenanceResult ValidateMaintenance();
+
+        void MaintenanceMessageConfirmAndDontShowAgain();
     }
 }
