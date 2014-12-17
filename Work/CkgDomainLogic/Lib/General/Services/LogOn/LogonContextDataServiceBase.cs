@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Web;
-using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
@@ -369,6 +368,11 @@ namespace CkgDomainLogic.General.Services
 
             var modifiedUrl = string.Concat("mvc/DomainCommon/LogPageVisit?", "logappid=", appId, "&url=", urlEncoded);
             menuItem.AppURL = modifiedUrl;
+        }
+
+        virtual public void MaintenanceMessageConfirmAndDontShowAgain()
+        {
+            
         }
     }
 }

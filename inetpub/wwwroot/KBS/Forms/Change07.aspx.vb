@@ -668,13 +668,15 @@ Partial Public Class Change07
     End Sub
 
     Private Function CheckFreitexte() As Boolean
-        For Each row As DataRow In mObjUmlagerung.Umlagerung.Rows
-            Dim artRows As DataRow() = mObjUmlagerung.Artikel.Select("MATNR='" & row("MATNR") & "'")
-            If artRows.Length > 0 AndAlso Not IsDBNull(artRows(0)("TEXTPFLICHT")) AndAlso CChar(artRows(0)("TEXTPFLICHT")) = "X"c AndAlso (IsDBNull(row("LTEXT")) OrElse String.IsNullOrEmpty(row("LTEXT").ToString())) Then
-                'Erfoderlicher Freitext nicht gefüllt
-                Return False
-            End If
-        Next
+        If mObjUmlagerung.Artikel IsNot Nothing Then
+            For Each row As DataRow In mObjUmlagerung.Umlagerung.Rows
+                Dim artRows As DataRow() = mObjUmlagerung.Artikel.Select("MATNR='" & row("MATNR") & "'")
+                If artRows.Length > 0 AndAlso Not IsDBNull(artRows(0)("TEXTPFLICHT")) AndAlso CChar(artRows(0)("TEXTPFLICHT")) = "X"c AndAlso (IsDBNull(row("LTEXT")) OrElse String.IsNullOrEmpty(row("LTEXT").ToString())) Then
+                    'Erforderlicher Freitext nicht gefüllt
+                    Return False
+                End If
+            Next
+        End If      
 
         Return True
     End Function

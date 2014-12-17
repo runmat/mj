@@ -72,6 +72,28 @@ namespace WebTools.Services
             return true;
         }
 
+        static public string UrlRemoteEncryptHourAndDate(string strHourAndDate = null)
+        {
+            if (strHourAndDate.IsNullOrEmpty())
+                strHourAndDate = DateTime.Now.ToString("HHddMMyyy");
+
+            if (string.IsNullOrEmpty(strHourAndDate)) return "*** error: empty string ***";
+            if (strHourAndDate.Length != 10) return "*** error: invalid length ***";
+            Int64 dummy;
+            if (!Int64.TryParse(strHourAndDate, out dummy)) return "*** error: invalid value for hour + date ***";
+
+            var strEncryptedHourAndDate = "";
+            var reversal = false;
+            for (var i = 0; i < strHourAndDate.Length; i++)
+            {
+                var ch = strHourAndDate[i] + 30;
+                strEncryptedHourAndDate += ((char)(!reversal ? ch : ('A' + 'Z' - ch))).ToString();
+                reversal = !reversal;
+            }
+
+            return strEncryptedHourAndDate;
+        }
+
         #endregion
 
 
