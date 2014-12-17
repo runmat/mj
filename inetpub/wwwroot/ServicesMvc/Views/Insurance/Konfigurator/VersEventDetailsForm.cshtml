@@ -46,7 +46,7 @@
 
 
     <form action="#" class="form-horizontal" onsubmit="return false;">
-        @Html.FormTemplateControl("Event Orte", @<text>@Html.Partial("Konfigurator/VersEventOrteGrid")</text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl(Localize.VersEventLocations, @<text>@Html.Partial("Konfigurator/VersEventOrteGrid")</text>, new { @class = "m-wrap" })
 
         @Html.FormRequiredFieldsSummary()
 

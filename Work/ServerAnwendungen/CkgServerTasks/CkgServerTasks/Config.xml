@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DeleteOrder>
+    <Paths Path="c:\temp\deletebatchtest\" MitUnterverzeichnis="Ja" MitOrdner="Ja" DaysBack="30">
+        <Patterns Pattern="*.txt"/>
+        <Patterns Pattern="*.log"/>
+    </Paths>
+</DeleteOrder>

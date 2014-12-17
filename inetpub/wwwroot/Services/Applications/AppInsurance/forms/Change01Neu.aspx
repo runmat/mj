@@ -445,7 +445,7 @@
                                                     <td colspan="3">
                                                         <div>
                                                             <asp:Button ID="btnFake" runat="server" Style="display: none" Text="Fake" />
-                                                            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="BUTTON" Visible="False" />
+                                                            <asp:Button ID="Button1" runat="server" OnClick="Button1Click" Text="BUTTON" Visible="False" />
                                                             <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" BackgroundCssClass="modalBackground"
                                                                 CancelControlID="btnCancel" DropShadow="true" PopupControlID="mb" TargetControlID="btnFake"
                                                                 X="450" Y="200">
