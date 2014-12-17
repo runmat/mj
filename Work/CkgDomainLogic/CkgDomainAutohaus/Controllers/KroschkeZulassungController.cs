@@ -34,16 +34,14 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string id)
+        public ActionResult Index(string fin, string halterNr)
         {
-            if (ViewModel.ParamFahrzeugAkte == null)
-                ViewModel.DataMarkForRefresh();
+            ViewModel.DataMarkForRefresh();
 
-            if (id.IsNotNullOrEmpty())
-            {
-                ViewModel.SetParamFahrzeugAkte(id);
-                return RedirectPermanent(string.Format("~/{0}/{1}", RouteData.GetRequiredString("controller"), RouteData.GetRequiredString("action")));
-            }
+            ViewModel.SetParamFahrzeugAkte(fin);
+            
+            if (halterNr.IsNotNullOrEmpty())
+                ViewModel.SetParamHalter(halterNr);
 
             return View(ViewModel);
         }

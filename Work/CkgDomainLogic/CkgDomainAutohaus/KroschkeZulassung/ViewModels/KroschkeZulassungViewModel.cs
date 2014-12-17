@@ -63,16 +63,21 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         public void SetParamFahrzeugAkte(string fin)
         {
-            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin }).FirstOrDefault();
+            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();
             if (ParamFahrzeugAkte == null)
                 return;
 
             SetFahrzeugdaten(new Fahrzeugdaten
-                {
-                    FahrgestellNr = ParamFahrzeugAkte.FIN,
-                    Zb2Nr = ParamFahrzeugAkte.Briefnummer,
-                });
+            {
+                FahrgestellNr = ParamFahrzeugAkte.FIN,
+                Zb2Nr = ParamFahrzeugAkte.Briefnummer,
+            });
             HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr());
+        }
+
+        public void SetParamHalter(string halterNr)
+        {
+            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == halterNr.NotNullOrEmpty().ToSapKunnr());
         }
 
 
