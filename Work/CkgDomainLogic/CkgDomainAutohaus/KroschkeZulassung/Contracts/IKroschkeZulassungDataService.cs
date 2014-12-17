@@ -7,8 +7,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 {
     public interface IKroschkeZulassungDataService : ICkgGeneralDataService
     {
-        Vorgang Zulassung { get; set; }
-
         List<Kunde> Kunden { get; }
 
         List<Domaenenfestwert> Fahrzeugarten { get; }

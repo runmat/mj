@@ -42,19 +42,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
         public void MarkForRefresh()
         {
-            Zulassung = new Vorgang
-                {
-                    VkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString(),
-                    VkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2,
-                    Vorerfasser = LogonContext.UserName,
-                    VorgangsStatus = "1"
-                };
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Fahrzeugarten);
             PropertyCacheClear(this, m => m.Zulassungsarten);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
-            Zulassung.OptionenDienstleistungen.InitDienstleistungen(Zusatzdienstleistungen);
         }
 
         private IEnumerable<Kunde> LoadKundenFromSap()

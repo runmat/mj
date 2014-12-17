@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
@@ -13,6 +14,7 @@ using CkgDomainLogic.Partner.Contracts;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 
@@ -110,9 +112,19 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
+
+                Test();
             }
 
             return PartialView("Partial/FahrzeugdatenForm", model);
+        }
+
+        void Test()
+        {
+            var path = Path.Combine(AppSettings.DataPath, @"AhZulassung_01.xml");
+            XmlService.XmlSerializeToFile(ViewModel, path);
+            var savedVm = XmlService.XmlDeserializeFromFile<KroschkeZulassungViewModel>(path);
+            InitViewModel(savedVm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
         }
 
         #endregion

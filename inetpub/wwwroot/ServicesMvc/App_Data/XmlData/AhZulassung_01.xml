@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KroschkeZulassungViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ParamFahrzeugAkte>
+    <FIN>WVWZZZ3CZBE343296</FIN>
+    <FinID>1000000016</FinID>
+    <FinIdJustCreated>false</FinIdJustCreated>
+    <HerstellerSchluessel>0603</HerstellerSchluessel>
+    <TypSchluessel>AYJ</TypSchluessel>
+    <VvsSchluessel>00020</VvsSchluessel>
+    <VvsPruefZiffer>2</VvsPruefZiffer>
+    <FabrikName />
+    <HandelsName />
+    <Halter>0100282799</Halter>
+    <Kaeufer>0200203844</Kaeufer>
+    <BriefbestandsInfo>0</BriefbestandsInfo>
+    <BriefLagerort />
+    <FahrzeugStandort />
+    <ErstZulassungsgDatum xsi:nil="true" />
+    <ZulassungsgDatumAktuell xsi:nil="true" />
+    <AbmeldeDatum xsi:nil="true" />
+    <Kennzeichen />
+    <Briefnummer>ZB471198765</Briefnummer>
+    <CocVorhanden>false</CocVorhanden>
+    <Bemerkung />
+  </ParamFahrzeugAkte>
+  <SkipBankAdressdaten>true</SkipBankAdressdaten>
+</KroschkeZulassungViewModel>

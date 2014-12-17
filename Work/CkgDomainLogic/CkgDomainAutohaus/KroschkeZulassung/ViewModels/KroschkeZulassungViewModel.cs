@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
@@ -30,7 +29,8 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         [XmlIgnore]
         public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
 
-        public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
+        public Vorgang Zulassung { get; set; }
+        //public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
 
         [XmlIgnore]
         public IDictionary<string, string> Steps
@@ -56,7 +56,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         }
 
         [XmlIgnore]
-        public string SaveErrorMessage { get; private set; }
+        public string SaveErrorMessage { get; set; }
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
@@ -101,7 +101,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Bank-/Adressdaten
 
-        public bool SkipBankAdressdaten { get; private set; }
+        public bool SkipBankAdressdaten { get; set; }
 
         public void CheckCpd()
         {
@@ -177,7 +177,6 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             // ReSharper disable ConvertClosureToMethodGroup
             get { return PropertyCacheGet(() => GetHalterAdressen()); }
             // ReSharper restore ConvertClosureToMethodGroup
-            private set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
@@ -366,6 +365,14 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         public void DataMarkForRefresh()
         {
             ZulassungDataService.MarkForRefresh();
+            Zulassung = new Vorgang
+            {
+                VkOrg = LogonContext.Customer.AccountingArea.ToString(),
+                VkBur = LogonContext.Organization.OrganizationReference2,
+                Vorerfasser = LogonContext.UserName,
+                VorgangsStatus = "1"
+            };
+            Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
             Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
@@ -398,6 +405,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             }
         }
 
+        [XmlIgnore]
         private GeneralEntity SummaryBeauftragungsHeader
         {
             get
