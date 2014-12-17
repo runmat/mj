@@ -137,6 +137,31 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return AppModelMappings.Z_DPM_READ_LV_001_GT_OUT_DL_To_Zusatzdienstleistung.Copy(sapList).OrderBy(x => x.Name);
         }
 
+        private IEnumerable<Zusatzdienstleistung> LoadZusatzdienstleistungenFromSap()
+        {
+            Z_DPM_READ_LV_001.Init(SAP, "I_VWAG", "X");
+
+            var kroschkeKunde = (((LogonContextDataServiceBase)LogonContext).Customer.AccountingArea == 1010);
+
+            if (kroschkeKunde)
+                SAP.SetImportParameter("I_EKORG", "0001");
+
+            var importListAG = Z_DPM_READ_LV_001.GT_IN_AG.GetImportList(SAP);
+            importListAG.Add(new Z_DPM_READ_LV_001.GT_IN_AG { AG = LogonContext.KundenNr.ToSapKunnr() });
+            SAP.ApplyImport(importListAG);
+
+            var sort1 = (kroschkeKunde ? "" : "1");
+
+            var importListProcess = Z_DPM_READ_LV_001.GT_IN_PROZESS.GetImportList(SAP);
+            importListProcess.Add(new Z_DPM_READ_LV_001.GT_IN_PROZESS { SORT1 = sort1 });
+            SAP.ApplyImport(importListProcess);
+            
+            var sapList = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportListWithExecute(SAP)
+                .Where(x => x.ASNUM.IsNotNullOrEmpty() && x.EXTGROUP == "1" && x.KTEXT1_H2.IsNullOrEmpty());
+
+            return AppModelMappings.Z_DPM_READ_LV_001_GT_OUT_DL_To_Zusatzdienstleistung.Copy(sapList).OrderBy(x => x.Name);
+        }
+
         private IEnumerable<Kennzeichengroesse> LoadKennzeichengroessenFromSql()
         {
             var ct = CreateDbContext();
