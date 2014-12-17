@@ -6,7 +6,6 @@ Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Kernel
 Imports CKG.Base.Business
 Imports CKG.Portal.PageElements
-Imports Microsoft.Data.SAPClient
 Imports CKG.Base.Common
 
 Public Class ec_10

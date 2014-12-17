@@ -1,7 +1,6 @@
 ﻿Option Explicit On
 Option Strict On
 
-Imports CKG.Base.Kernel
 Imports CKG.Base.Business
 Imports CKG.Base.Common
 
@@ -10,6 +9,7 @@ Namespace Treuhand
         Inherits Base.Business.BankBase
 
 #Region " Declarations"
+
         Private mE_SUBRC As String
         Private mE_MESSAGE As String
         Private m_strSperrEnsperr As String
@@ -17,7 +17,6 @@ Namespace Treuhand
         Private m_tblFahrzeuge As DataTable
         Private m_tblBestand As DataTable
         Private m_strTreunehmer As String
-        Private m_strFilename2 As String
         Private m_strReferenceforAut As String
         Private m_strErdatvon As String
         Private m_strErdatbis As String
@@ -34,6 +33,7 @@ Namespace Treuhand
 #End Region
 
 #Region " Properties "
+
         Public Property tblUpload() As DataTable
             Get
                 Return m_tblUpload
@@ -42,6 +42,7 @@ Namespace Treuhand
                 m_tblUpload = value
             End Set
         End Property
+
         Public Property Fahrzeuge() As DataTable
             Get
                 Return m_tblFahrzeuge
@@ -68,6 +69,7 @@ Namespace Treuhand
                 mE_MESSAGE = Value
             End Set
         End Property
+
         Public Property SperrEnsperr() As String
             Get
                 Return m_strSperrEnsperr
@@ -85,6 +87,7 @@ Namespace Treuhand
                 m_tblBestand = value
             End Set
         End Property
+
         Public Property Treunehmer() As String
             Get
                 Return m_strTreunehmer
@@ -93,6 +96,7 @@ Namespace Treuhand
                 m_strTreunehmer = value
             End Set
         End Property
+
         Public Property ReferenceforAut() As String
             Get
                 Return m_strReferenceforAut
@@ -101,6 +105,7 @@ Namespace Treuhand
                 m_strReferenceforAut = value
             End Set
         End Property
+
         Public Property Erdatvon() As String
             Get
                 Return m_strErdatvon
@@ -109,6 +114,7 @@ Namespace Treuhand
                 m_strErdatvon = value
             End Set
         End Property
+
         Public Property Erdatbis() As String
             Get
                 Return m_strErdatbis
@@ -117,6 +123,7 @@ Namespace Treuhand
                 m_strErdatbis = value
             End Set
         End Property
+
         Public Property Treugeber() As String
             Get
                 Return m_Treugeber
@@ -186,16 +193,17 @@ Namespace Treuhand
 
         Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByVal objApp As Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFilename As String)
             MyBase.New(objUser, objApp, strAppID, strSessionID, strFilename)
-            m_strFilename2 = strFilename
         End Sub
 
         Public Overloads Sub Fill()
 
         End Sub
+
         Public Overrides Sub Change()
 
 
         End Sub
+
         Public Overrides Sub Show()
 
 
@@ -234,11 +242,13 @@ Namespace Treuhand
             End Try
 
         End Sub
+
         Public Sub GiveCars(ByVal page As Page, ByVal strAppID As String, ByVal strSessionID As String, Optional ByVal kombiUpload As Boolean = False)
 
             m_strClassAndMethod = "SperreFreigabe.GiveCars"
             m_strAppID = strAppID
             m_strSessionID = strSessionID
+            Dim tmpDat As DateTime
 
             Try
 
@@ -259,7 +269,12 @@ Namespace Treuhand
                         NewDatarow("EQUI_KEY") = uploadRow("EQUI_KEY")
                         NewDatarow("ERNAM") = Left(uploadRow("ERNAM").ToString, 12)
                         NewDatarow("ERDAT") = uploadRow("ERDAT")
-                        NewDatarow("SPERRDAT") = uploadRow("SPERRDAT")
+                        'Sicherstellen, dass kein Sperrdatum < heute ins System geht
+                        If DateTime.TryParse(uploadRow("SPERRDAT").ToString(), tmpDat) AndAlso tmpDat.Date < DateTime.Today.Date Then
+                            NewDatarow("SPERRDAT") = DateTime.Today.ToString("dd.MM.yyyy")
+                        Else
+                            NewDatarow("SPERRDAT") = uploadRow("SPERRDAT")
+                        End If
                         NewDatarow("TREUH_VGA") = uploadRow("TREUH_VGA")
                         NewDatarow("SUBRC") = ""
                         NewDatarow("MESSAGE") = ""
@@ -283,9 +298,7 @@ Namespace Treuhand
                 m_tblFahrzeuge.Columns.Add("ERROR", GetType(System.String))
 
                 For index = 0 To m_tblFahrzeuge.Rows.Count - 1
-                    '  m_tblFahrzeuge.Select("ID='1")(index)("ID") = index + 1
                     m_tblFahrzeuge.Rows(index).SetField("ID", index + 1)
-
                 Next
 
                 E_SUBRC = myProxy.getExportParameter("E_SUBRC")
@@ -299,11 +312,13 @@ Namespace Treuhand
                 End Select
             End Try
         End Sub
+
         Public Sub AutorizeCar(ByVal page As Page, ByVal strAppID As String, ByVal strSessionID As String)
 
             m_strClassAndMethod = "SperreFreigabe.GiveCars"
             m_strAppID = strAppID
             m_strSessionID = strSessionID
+            Dim tmpDat As DateTime
 
             Try
 
@@ -321,7 +336,12 @@ Namespace Treuhand
                         NewDatarow("EQUI_KEY") = uploadRow("EQUI_KEY")
                         NewDatarow("ERNAM") = Left(uploadRow("ERNAM").ToString, 12)
                         NewDatarow("ERDAT") = uploadRow("ERDAT")
-                        NewDatarow("SPERRDAT") = uploadRow("SPERRDAT")
+                        'Sicherstellen, dass kein Sperrdatum < heute ins System geht
+                        If DateTime.TryParse(uploadRow("SPERRDAT").ToString(), tmpDat) AndAlso tmpDat.Date < DateTime.Today.Date Then
+                            NewDatarow("SPERRDAT") = DateTime.Today.ToString("dd.MM.yyyy")
+                        Else
+                            NewDatarow("SPERRDAT") = uploadRow("SPERRDAT")
+                        End If
                         NewDatarow("TREUH_VGA") = uploadRow("TREUH_VGA")
                         NewDatarow("SUBRC") = ""
                         NewDatarow("MESSAGE") = ""
@@ -444,9 +464,9 @@ Namespace Treuhand
                 myProxy.callBapi()
 
                 Dim tblTemp As New DataTable
-                tblTemp.Columns.Add("Freigeben", System.Type.GetType("System.String"))
-                tblTemp.Columns.Add("Sperren", System.Type.GetType("System.String"))
-                tblTemp.Columns.Add("Entsperren", System.Type.GetType("System.String"))
+                tblTemp.Columns.Add("Freigeben", Type.GetType("System.String"))
+                tblTemp.Columns.Add("Sperren", Type.GetType("System.String"))
+                tblTemp.Columns.Add("Entsperren", Type.GetType("System.String"))
 
                 Dim tmpRow As DataRow = tblTemp.NewRow
                 tmpRow("Freigeben") = myProxy.getExportParameter("E_FREIGABE")
@@ -504,6 +524,7 @@ Namespace Treuhand
             End If
             Return Fahrzeuge
         End Function
+
         Public Sub GetTreuhandBestand(ByVal page As Page, ByVal strAppID As String, ByVal strSessionID As String)
 
             m_strClassAndMethod = "SperreFreigabe.GetTreuhandBestand"
@@ -541,6 +562,8 @@ Namespace Treuhand
             End Try
 
         End Sub
+
 #End Region
+
     End Class
 End Namespace
