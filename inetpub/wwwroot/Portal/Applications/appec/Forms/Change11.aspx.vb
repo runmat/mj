@@ -1,12 +1,11 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
+﻿Imports CKG.Base.Kernel
 Imports CKG.Portal.PageElements
 Imports CKG.Base.Kernel.Common.Common
 Imports System.Data
 Imports System.Data.OleDb
 
 Partial Public Class Change11
-    Inherits System.Web.UI.Page
+    Inherits Page
 
     Protected WithEvents ucHeader As Header
     Protected WithEvents ucStyles As Styles
@@ -15,7 +14,7 @@ Partial Public Class Change11
     Private m_App As Base.Kernel.Security.App
     Private objHaendler As ec_17
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         ucHeader.InitUser(m_User)
         FormAuth(Me, m_User)
@@ -45,11 +44,11 @@ Partial Public Class Change11
         End Try
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
@@ -66,7 +65,6 @@ Partial Public Class Change11
             Exit Sub
         End If
 
-
         upload(upFile.PostedFile)
     End Sub
 
@@ -77,11 +75,11 @@ Partial Public Class Change11
         ddlMarke.DataBind()
     End Sub
 
-    Private Sub upload(ByVal uFile As System.Web.HttpPostedFile)
+    Private Sub upload(ByVal uFile As HttpPostedFile)
 
         Dim filepath As String = ConfigurationManager.AppSettings("ExcelPath")
         Dim filename As String = ""
-        Dim info As System.IO.FileInfo
+        Dim info As IO.FileInfo
 
         'Dateiname: User_yyyyMMddhhmmss.xls
         If Right(upFile.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
@@ -94,14 +92,14 @@ Partial Public Class Change11
         Try
             If Not (uFile Is Nothing) Then
                 uFile.SaveAs(ConfigurationManager.AppSettings("ExcelPath") & filename)
-                info = New System.IO.FileInfo(filepath & filename)
+                info = New IO.FileInfo(filepath & filename)
                 If Not (info.Exists) Then
                     lblError.Text = "Fehler beim Speichern."
                     Exit Sub
                 End If
 
                 'Datei gespeichert -> Auswertung
-                Dim sConnectionString As String = ""
+                Dim sConnectionString As String
                 If Right(upFile.PostedFile.FileName.ToUpper, 4) = ".XLS" Then
                     sConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
                      "Data Source=" & filepath & filename & ";" & _
@@ -110,7 +108,6 @@ Partial Public Class Change11
                     sConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + filename + _
                     ";Extended Properties=""Excel 12.0 Xml;HDR=YES"""
                 End If
-
 
                 Dim objConn As New OleDbConnection(sConnectionString)
                 objConn.Open()
@@ -130,7 +127,6 @@ Partial Public Class Change11
                 Dim objDataset1 As New DataSet()
                 objAdapter1.Fill(objDataset1, "XLData")
 
-
                 Dim TempTable As DataTable = objDataset1.Tables(0)
 
                 objConn.Close()
@@ -138,6 +134,7 @@ Partial Public Class Change11
                 objHaendler.Model = New DataTable
 
                 objHaendler.Model.Columns.Add("Fahrgestellnummer")
+                objHaendler.Model.Columns.Add("Auftragsnummer")
                 objHaendler.Model.Columns.Add("Model")
 
                 objHaendler.Model.AcceptChanges()
@@ -150,11 +147,13 @@ Partial Public Class Change11
 
                             NewRow = objHaendler.Model.NewRow
 
-                            If dr(9).ToString.Length = 0 Then Exit For
-
-                            If dr(15).ToString.Length > 0 Then
+                            If dr(13).ToString.Length > 0 Then
+                                'Fahrgestellnummer = Spalte N
                                 NewRow("Fahrgestellnummer") = dr(13).ToString
+                                'Model = Spalte I
                                 NewRow("Model") = dr(8).ToString
+                                'Auftragsnummer = Spalte L
+                                NewRow("Auftragsnummer") = dr(11).ToString
 
                                 objHaendler.Model.Rows.Add(NewRow)
 
@@ -167,8 +166,12 @@ Partial Public Class Change11
                             NewRow = objHaendler.Model.NewRow
 
                             If dr(0).ToString.Length > 0 Then
+                                'Fahrgestellnummer = Spalte A
                                 NewRow("Fahrgestellnummer") = dr(0).ToString
+                                'Model = Spalte B
                                 NewRow("Model") = dr(1).ToString
+                                'Auftragsnummer = Spalte C
+                                NewRow("Auftragsnummer") = dr(2).ToString
 
                                 objHaendler.Model.Rows.Add(NewRow)
 
@@ -177,12 +180,11 @@ Partial Public Class Change11
                         Next
                 End Select
 
-                objHaendler.SetAvis(Me.Page)
+                objHaendler.SetAvis()
 
                 Session("objModel") = objHaendler
 
                 FillGrid(0)
-
 
             End If
         Catch ex As Exception
@@ -201,8 +203,7 @@ Partial Public Class Change11
             Else
                 GridView1.Visible = True
                 ExcelCell.Visible = True
-                Dim tmpDataView As New DataView()
-                tmpDataView = tblTemp.DefaultView
+                Dim tmpDataView As DataView = tblTemp.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -248,7 +249,6 @@ Partial Public Class Change11
                 GridView1.DataSource = tmpDataView
                 GridView1.DataBind()
 
-
             End If
             If GridView1.PageCount > 1 Then
                 GridView1.PagerStyle.CssClass = "PagerStyle"
@@ -256,35 +256,40 @@ Partial Public Class Change11
                 GridView1.DataBind()
             End If
                 
-
         Catch ex As Exception
             lblError.Text = "Daten konnten nicht geladen werden!"
         End Try
     End Sub
 
-    Private Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+    Private Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridView1.PageIndexChanging
 
         FillGrid(e.NewPageIndex)
 
     End Sub
 
-
     Protected Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkCreateExcel.Click
 
         Dim tblExcel As DataTable = CType(Session("objModel"), ec_17).Result.Copy
 
-        tblExcel.Columns(0).ColumnName = "Fahrgestellnummer"
-        tblExcel.Columns(1).ColumnName = "Model ID"
-        tblExcel.Columns(2).ColumnName = "Status"
+        tblExcel.Columns("CHASSIS_NUM").ColumnName = "Fahrgestellnummer"
+        tblExcel.Columns("ZAUFTRAGS_NR").ColumnName = "Auftragsnummer"
+        tblExcel.Columns("LIZNR").ColumnName = "Auftragsnummer Equi"
+        tblExcel.Columns("UNIT_NR").ColumnName = "Unit-Nr."
+        tblExcel.Columns("ZMODELL").ColumnName = "Model ID"
+        tblExcel.Columns("ZMODEL_ID").ColumnName = "Model ID zur Unit-Nr."
+        tblExcel.Columns("REPLA_DATE").ColumnName = "Datum Zulassung"
+        tblExcel.Columns("LICENSE_NUM").ColumnName = "Kennzeichen"
+        tblExcel.Columns("BEM").ColumnName = "Status"
 
         Try
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
 
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, tblExcel, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, tblExcel, Page)
 
         Catch ex As Exception
             lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message
         End Try
     End Sub
+
 End Class

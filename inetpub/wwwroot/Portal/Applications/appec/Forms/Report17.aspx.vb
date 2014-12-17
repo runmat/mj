@@ -116,7 +116,7 @@ Public Class Report17
                     Dim tblName As String = ""
                     objExcel.ReturnTableName(strFilename, tblName)
 
-                    objHaendler.setMatch(tblName, Session("AppID").ToString, Session.SessionID, Me)
+                    objHaendler.setMatch(tblName)
                     If objHaendler.Status <> 0 Then
                         lblError.Text = objHaendler.Message
                     Else
