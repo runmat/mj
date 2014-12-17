@@ -347,6 +347,10 @@ namespace CkgDomainLogic.General.Services
             return new MaintenanceResult();
         }
 
+        public void MaintenanceMessageConfirmAndDontShowAgain()
+        {
+        }
+
         public void Clear()
         {
             KundenNr = "";

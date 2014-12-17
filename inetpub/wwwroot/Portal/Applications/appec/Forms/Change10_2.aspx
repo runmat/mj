@@ -12,33 +12,19 @@
     <meta content="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" name="vs_targetSchema">
     <uc1:Styles ID="ucStyles" runat="server"></uc1:Styles>
     <style type="text/css">
-        .style1
-        {
-            height: 23px;
-        }
-        .style2
+        .style1 
         {
             width: 185px;
         }
-        .style3
+        .tablestyle1 td 
         {
-            height: 23px;
-            width: 185px;
-        }
-        .style4
-        {
-            width: 181px;
-        }
-        .style5
-        {
-            height: 23px;
-            width: 181px;
+            height: 25px;
         }
     </style>
 </head>
 <body leftmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
-         <script language="JavaScript" type="text/javascript">
+         <script type="text/javascript">
              function numbersonly(e, decimal) {
                  var key;
                  var keychar;
@@ -67,7 +53,7 @@
                      return false;
              }
         </script>      
-    <table id="Table4" width="100%" align="center">
+    <table width="100%" align="center">
         <tr>
             <td>
                 <uc1:Header ID="ucHeader" runat="server"></uc1:Header>
@@ -75,7 +61,7 @@
         </tr>
         <tr>
             <td>
-                <table id="Table0" cellspacing="0" cellpadding="0" width="100%" border="0">
+                <table cellspacing="0" cellpadding="0" width="100%" border="0">
                     <tr>
                         <td class="PageNavigation" colspan="2">
                             <asp:Label ID="lblHead" runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;
@@ -87,147 +73,234 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="" valign="top" width="100">
-                            <table id="Table2" bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="100%"
-                                border="0">
+                        <td width="100">
+                            <table bordercolor="#ffffff" cellspacing="0" cellpadding="0" width="100%" border="0">
                                 <tr>
                                     <td >
-                                        <asp:LinkButton ID="cmdBack"  Height="16px" runat="server" CssClass="StandardButton"> &#149;&nbsp;Zurück</asp:LinkButton>
+                                        <asp:LinkButton ID="cmdBack" Height="16px" runat="server" CssClass="StandardButton"> &#149;&nbsp;Zurück</asp:LinkButton>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td valign="center" style="padding-bottom: 2px" width="150">
-                                        &nbsp;</td>
                                 </tr>
                             </table>
                         </td>
-                        <td valign="top">
-                            <table id="Table6" cellspacing="0" cellpadding="0" width="100%" border="0">
-                                <tr>
-                                    <td class="" valign="top">
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="BorderLeftBottom" id="Table3" cellspacing="0" cellpadding="0" border="0">
-                                <tr>
-                                    <td valign="top" align="left">
-                                        <table id="Table1" cellspacing="0" cellpadding="2" bgcolor="white" border="0">
-                                            <tr>
-                                                <td valign="middle" nowrap colspan="4">
-                                                    <asp:Label ID="lblError" runat="server" EnableViewState="False" CssClass="TextError"></asp:Label>&nbsp;<asp:Label
-                                                        ID="lblMessage" runat="server" EnableViewState="False" CssClass="TextError" ForeColor="#009933"></asp:Label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle" nowrap>
-                                                    &nbsp;
-                                                </td>
-                                                <td class="" valign="middle" nowrap>
-                                                    &nbsp;
-                                                </td>
-                                                <td class="style2" valign="middle" nowrap>
-                                                    Alt
-                                                </td>
-                                                <td valign="top" nowrap class="style4">
-                                                    Neu
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle" nowrap class="style1">
-                                                </td>
-                                                <td class="style1" valign="middle" nowrap>
-                                                    Model-Id:
-                                                </td>
-                                                <td class="style3" valign="middle" nowrap>
-                                                    <asp:Label ID="lblModellID" runat="server"></asp:Label>
-                                                </td>
-                                                <td valign="top" nowrap class="style5">
-                                                    &nbsp;
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle" nowrap>
-                                                </td>
-                                                <td valign="middle" nowrap>
-                                                    <asp:Label ID="Label1" runat="server">Modellbezeichnung:</asp:Label>
-                                                </td>
-                                                <td valign="middle" nowrap class="style2">
-                                                    <asp:Label ID="lblModellBez" runat="server"></asp:Label>
-                                                </td>
-                                                <td valign="middle" nowrap class="style4">
-                                                    <asp:TextBox ID="txtModellBez" runat="server" Font-Size="12px" CssClass="InputDisableStyle" ></asp:TextBox>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle" nowrap>
-                                                </td>
-                                                <td class="" valign="middle" nowrap>
-                                                    SIPP-Code:
-                                                </td>
-                                                <td class="style2" valign="middle">
-                                                    <asp:Label ID="lblSippCode" runat="server"></asp:Label>
-                                                </td>
-                                                <td valign="top" class="style4">
-                                                    <asp:TextBox ID="txtSippcode" runat="server" Font-Size="12px" CssClass="InputDisableStyle" MaxLength="4"></asp:TextBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle">
-                                                </td>
-                                                <td class="" valign="middle">
-                                                    Laufzeit in Tagen:
-                                                </td>
-                                                <td class="style2" valign="middle">
-                                                    <asp:Label ID="lblLaufzeit" runat="server"></asp:Label>
-                                                </td>
-                                                <td valign="top" nowrap class="style4">
-                                                    <asp:TextBox ID="txtLaufzeit" runat="server" Font-Size="12px" onKeyPress="return numbersonly(event, false)"  CssClass="InputDisableStyle" MaxLength="4"></asp:TextBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle">
-                                                    &nbsp;
-                                                </td>
-                                                <td class="" valign="middle">
-                                                    Laufzeitbindung
-                                                </td>
-                                                <td class="style2" valign="middle">
-                                                    <asp:CheckBox ID="cbxLaufz" runat="server" TextAlign="Left" Enabled="False"></asp:CheckBox>
-                                                </td>
-                                                <td valign="top" nowrap class="style4">
-                                                    <asp:CheckBox ID="cbxLaufzBindNeu" runat="server" TextAlign="Left"></asp:CheckBox>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="middle">
-                                                </td>
-                                                <td valign="middle">
-                                                    <asp:DropDownList ID="ddlModellHidden" runat="server" EnableViewState="True" Enabled="False"
-                                                        Width="0px">
-                                                    </asp:DropDownList>
-                                                </td>
-                                                <td valign="middle" colspan="1" class="style2">
-                                                    <p align="right">
-                                                        &nbsp;</p>
-                                                </td>
-                                                <td valign="middle" class="style4">
-                                                    <p align="right">
-                                                        <asp:LinkButton ID="cmdCreate" runat="server" CssClass="StandardButton"  Height="16px" Width="78px"> &#149;&nbsp;Speichern</asp:LinkButton></p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <input id="txtHerstellerHidden" type="hidden" size="1" runat="server">
-                                        <input id="txtHerstellerBezeichnungHidden" type="hidden" size="1" runat="server">
-                                    </td>
-                                </tr>
-                            </table>
+                        <td>
                             &nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">
+                        <td width="100">
                             &nbsp;
                         </td>
-                        <td valign="top">
+                        <td>
+                            <table class="BorderLeftBottom tablestyle1" style="padding-left: 10px; padding-right: 10px" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td nowrap colspan="3">
+                                        <asp:Label ID="lblError" runat="server" EnableViewState="False" CssClass="TextError"/>
+                                        &nbsp;
+                                        <asp:Label ID="lblMessage" runat="server" EnableViewState="False" CssClass="TextError" ForeColor="#009933"/>
+                                    </td>
+                                </tr>
+                                <tr id="trAltNeu" runat="server">
+                                    <td valign="top" class="style1">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="top" class="style1">
+                                        Alt
+                                    </td>
+                                    <td valign="top" class="style1">
+                                        Neu
+                                    </td>
+                                </tr>
+                                <tr id="trHersteller" runat="server">
+                                    <td class="style1">
+                                        Hersteller*:
+                                    </td>
+                                    <td align="center" colspan="2">
+                                        <asp:DropDownList ID="ddlHersteller" runat="server"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Model-Id<span id="requiredModelId" runat="server">*</span>:
+                                    </td>
+                                    <td class="style1">
+                                        <asp:Label ID="lblModellID" runat="server"/>
+                                    </td>
+                                    <td class="style1">
+                                        <asp:TextBox ID="txtModellId" runat="server" Font-Size="12px" CssClass="InputDisableStyle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Modellbezeichnung<span id="requiredBezeichnung" runat="server">*</span>:
+                                    </td>
+                                    <td class="style1" nowrap>
+                                        <asp:Label ID="lblModellBez" runat="server"/>
+                                    </td>
+                                    <td class="style1" nowrap>
+                                        <asp:TextBox ID="txtModellBez" runat="server" Font-Size="12px" CssClass="InputDisableStyle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        SIPP-Code<span id="requiredSippCode" runat="server">*</span>:
+                                    </td>
+                                    <td class="style1">
+                                        <asp:Label ID="lblSippCode" runat="server"/>
+                                    </td>
+                                    <td class="style1">
+                                        <asp:TextBox ID="txtSippcode" runat="server" Font-Size="12px" CssClass="InputDisableStyle" MaxLength="4"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Laufzeit in Tagen:
+                                    </td>
+                                    <td class="style1">
+                                        <asp:Label ID="lblLaufzeit" runat="server"/>
+                                    </td>
+                                    <td class="style1">
+                                        <asp:TextBox ID="txtLaufzeit" runat="server" Font-Size="12px" onKeyPress="return numbersonly(event, false)" CssClass="InputDisableStyle" MaxLength="4"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Laufzeitbindung:
+                                    </td>
+                                    <td class="style1">
+                                        <asp:CheckBox ID="cbxLaufzBind" runat="server" TextAlign="Left" Enabled="False"/>
+                                    </td>
+                                    <td class="style1">
+                                        <asp:CheckBox ID="cbxLaufzBindNeu" runat="server" TextAlign="Left"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Fahrzeuggruppe LKW:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblFzggruppeLkw" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblFzggruppeLkwNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Wintertaugliche Bereifung:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblWinterreifen" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblWinterreifenNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Anhängerkupplung:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblAhk" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblAhkNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Navigationssystem:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblNavi" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblNaviNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Securiti Fleet:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblSecuritiFleet" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblSecuritiFleetNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        Leasing:
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblLeasing" runat="server" RepeatDirection="Horizontal" Enabled="False">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                    <td align="left" class="style1">
+                                        <asp:RadioButtonList ID="rblLeasingNeu" runat="server" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="Ja" Text="Ja"/>
+                                            <asp:ListItem Value="Nein" Text="Nein"/>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        <asp:Label ID="lblRequiredFieldsHint" runat="server">* = Pflichtfelder</asp:Label>
+                                    </td>
+                                    <td colspan="2">
+                                        <p align="right">
+                                            <asp:LinkButton ID="cmdCreate" runat="server" CssClass="StandardButton" Height="16px" Width="78px"> &#149;&nbsp;Speichern</asp:LinkButton>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            &nbsp;
                         </td>
                     </tr>
                 </table>

@@ -39,6 +39,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string UserSalutation { get { return string.Format("{0} {1}", Title, LastName); } }
 
+        public string UrlRemoteLoginKey { get; set; }
+
         
         #region User Security Rules
 

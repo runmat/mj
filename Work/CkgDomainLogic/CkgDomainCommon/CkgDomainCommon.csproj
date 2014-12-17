@@ -110,6 +110,7 @@
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\XarisController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="DomainCommon\Contracts\IBriefVersandDataService.cs" />
     <Compile Include="DomainCommon\Contracts\ICustomerDocumentDataService.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="DomainCommon\Services\TranslationFormatService.cs" />
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\XarisViewModel.cs" />
     <Compile Include="Logs\Contracts\ILogsDataService.cs" />
     <Compile Include="Logs\Models\Data\CustomerApplication.cs" />
     <Compile Include="Logs\Models\Data\PageVisitLogItem.cs" />

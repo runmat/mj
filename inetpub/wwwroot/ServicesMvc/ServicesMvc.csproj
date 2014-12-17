@@ -4228,6 +4228,7 @@
     <Content Include="Views\KroschkeZulassung\Partial\FahrzeugdatenForm.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
+    <Content Include="Views\Xaris\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Pflege.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />

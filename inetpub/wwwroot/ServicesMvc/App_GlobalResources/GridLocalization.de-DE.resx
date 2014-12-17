@@ -259,7 +259,7 @@
     <value>Ist nicht gleich</value>
   </data>
   <data name="FilterStringNotSubstringOf" xml:space="preserve">
-    <value>Does not contain</value>
+    <value>Beinhaltet nicht</value>
   </data>
   <data name="FilterOr" xml:space="preserve">
     <value>Or</value>

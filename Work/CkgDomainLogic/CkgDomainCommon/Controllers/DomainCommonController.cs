@@ -40,8 +40,16 @@ namespace ServicesMvc.Controllers
             if (string.IsNullOrEmpty(url) == false)
             {
                 var decodedUrl = HttpUtility.UrlDecode(url);
-                var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
-                result = new RedirectResult(mvcReadyUrl);
+                if (decodedUrl.StartsWith("mvc/"))
+                {
+                    var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
+                    result = new RedirectResult(mvcReadyUrl);
+                }
+                else
+                {
+                    var nonMvcUrl = decodedUrl + (decodedUrl.Contains("?") ? "&" : "?") + "AppID=" + logappid;
+                    result = new RedirectResult(nonMvcUrl);
+                }
             }
 
             if (!logappid.IsNullOrEmpty() && LogonContext != null && LogonContext.User != null && LogonContext.Customer != null)

@@ -118,10 +118,11 @@
     <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />
-    <Compile Include="General\Services\Database\Models\LoginMessage.cs" />
+    <Compile Include="General\Services\Database\Models\LoginUserMessage.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResource.cs" />
     <Compile Include="General\Services\Database\Models\WebUserPwdHistory.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceTest.cs" />
