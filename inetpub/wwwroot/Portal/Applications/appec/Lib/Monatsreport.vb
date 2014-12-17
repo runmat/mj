@@ -6,7 +6,7 @@ Imports CKG.Base.Business
 Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
-Imports Microsoft.Data.SAPClient
+
 Public Class Monatsreport
 
     Inherits Base.Business.DatenimportBase

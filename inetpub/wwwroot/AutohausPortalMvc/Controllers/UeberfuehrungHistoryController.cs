@@ -39,7 +39,7 @@ namespace AutohausPortalMvc.Controllers
         #endregion 
 
 
-        public UeberfuehrungHistoryController(IAppSettings appSettings, ILogonContextDataServiceAutohaus logonContext, IUeberfuehrungDataService ueberfuehrungDataService) : base(appSettings, logonContext)
+        public UeberfuehrungHistoryController(IAppSettings appSettings, ILogonContextDataService logonContext, IUeberfuehrungDataService ueberfuehrungDataService) : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, ueberfuehrungDataService);
         }

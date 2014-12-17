@@ -23,8 +23,8 @@
 
         @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "left" })
-        @Html.FormCheckBoxFor(m => m.KennzeichenReservieren, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
         
         @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
