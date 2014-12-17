@@ -1,4 +1,5 @@
 ﻿@using MvcTools.Models
+@using MvcTools.Models
 @model FormControlModel 
 
 
@@ -22,25 +23,39 @@
 
 <div class="control-group">
     
-    <label class="control-label">@Model.DisplayNameHtml @Model.RequiredIndicatorHtml</label>
+    <label class="control-label">
+        @if (!Model.LabelHidden)
+        {
+            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml
+        }
+    </label>
 
     <div class="controls">
         
-        @if (@Model.PreControlHtml != null)
+        @if (Model.PreControlHtml != null)
         {
             @Model.PreControlHtml
         }
            
         @Model.ControlHtml
         
-        @if (@Model.ValidationMessageHtml != null)
+        @if (Model.ValidationMessageHtml != null)
         {
             @Model.ValidationMessageHtml
         }
         
-        @if (@Model.PostControlHtml != null)
+        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+        {
+            <label class="checkbox">@Model.DisplayNameHtml</label>
+        }
+        
+        @if (Model.PostControlHtml != null)
         {
             @Model.PostControlHtml
+        }
+        else if (Model.IsCheckBox)
+        {
+            @Html.Raw("&nbsp;")
         }
 
     </div>
