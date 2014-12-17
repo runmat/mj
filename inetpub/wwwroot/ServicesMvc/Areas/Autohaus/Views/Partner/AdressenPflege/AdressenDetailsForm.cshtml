@@ -1,0 +1,49 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model Adresse
+
+@{ var currentController = ViewContext.RouteData.GetRequiredString("controller"); }
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName">
+    @using (Ajax.BeginForm("AddressDetailsFormSave", currentController, null, new MvcAjaxOptions { OnComplete = "GridItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.InternalKey)
+        @Html.HiddenFor(m => m.InternalKey2)
+        @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+        @Html.HiddenFor(m => m.Kennung)
+
+        @Html.FormValidationSummary()
+        
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall", col = "left" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Fax, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
+
+        @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i>@Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Cancel</button>
+        </div>
+    
+        <script type="text/javascript">
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+            _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+        </script>
+    }
+</div>
