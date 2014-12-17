@@ -1,0 +1,53 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.XarisViewModel
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+        $("body").css("overflow-y", "hidden");
+
+        $(window).resize(function () {
+            onResize();
+        });
+        onResize();
+
+        var url = '@Html.Raw(Model.XarisUrl)';
+        //alert(url);
+        var ifr = document.getElementById('ifrMvcApp');
+        setTimeout(function () { ifr.src = url; }, 10);
+    }
+
+    function isIeAndVersion() {
+        var myNav = navigator.userAgent.toLowerCase();
+        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : 9999;
+    }
+
+    function getBodyWidth() {
+        var p = $(".body-container");
+        var pWidth = parseInt(p.css("width"), 10);
+        return pWidth + 10;
+    }
+
+    function getWindowHeight() {
+        var height = 0;
+        if (isIeAndVersion() < 10)
+            height = window.document.clientHeight;
+        else
+            height = window.document.documentElement.clientHeight;
+
+        return height - 130;
+    }
+
+    function onResize() {
+        var ifr = document.getElementById('ifrMvcApp');
+        ifr.width = getBodyWidth();
+
+        var height = getWindowHeight();
+        ifr.height = height - 20;
+        //$(".page-sidebar").css("min-height", height);
+    }
+
+</script>
+
+<a target='_blank' href='@Html.Raw(Model.XarisUrl)'>Sepia im seaparaten Tab...</a>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src=""></iframe>
