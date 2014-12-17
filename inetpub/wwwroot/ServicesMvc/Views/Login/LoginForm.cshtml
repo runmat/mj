@@ -26,8 +26,11 @@
                                 @Html.Partial("Partial/MaintenanceHintsInformationToConfirm", Model.MaintenanceInfo)
 
                                 <div class="form-actions no-bottom-margin">
-                                    <button onclick="RedirectFromLoginPage();" class="btn blue pull-right">
-                                        <i class="icon-chevron-right m-icon-white"></i> @Localize.LoginUnderstoodLoginNow
+                                    <button onclick="RedirectFromLoginPage(true);" class="btn green pull-right">
+                                        <i class="icon-chevron-right m-icon-white"></i> @Localize.LoginAndDoNotShowAgain
+                                    </button>            
+                                    <button onclick="RedirectFromLoginPage(false);" class="btn blue pull-right margin-top-10">
+                                        <i class="icon-chevron-right m-icon-white"></i> @Localize.Login
                                     </button>            
                                 </div>
                              </div>
@@ -115,19 +118,34 @@
             if (_modelIsValid) {
                 if (!_modePasswordReset && !_modeCaptchaReset) {
                     if (!_modelMessagesToConfirmAvailable) {
-                        RedirectFromLoginPage();
+                        RedirectFromLoginPage(true);
                     }
                 }
             }
             
-            function RedirectFromLoginPage() {
+            function RedirectFromLoginPage(dontShowMessagesAgain) {
                 var redirectUrl = unescape('@Model.RedirectUrl');
                 redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
 
                 $("#loginDiv").html("");
                 $("#loginDiv").hide();
                 $("#login-loader").show();
-                location.replace(redirectUrl);
+                
+                if (!dontShowMessagesAgain) {
+                    location.replace(redirectUrl);
+                    return;
+                }
+
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "ConfirmActiveMessagesDontShowAgain",
+                    data: { },
+                    loadingShow: false,
+                    success: function (result) {
+                        location.replace(redirectUrl);
+                    }
+                });
             }
 
             function RequestSwitchMode(modeResetPassword) {
