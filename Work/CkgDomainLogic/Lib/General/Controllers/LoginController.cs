@@ -186,11 +186,19 @@ namespace CkgDomainLogic.General.Controllers
             ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
 
             return Json(new
-                            {
-                                passwordRuleCount = ViewModel.PasswordRuleCount, 
-                                localizedPasswordValidationErrorMessages,
-                                localizedPasswordRuleMessages
-                            });
+            {
+                passwordRuleCount = ViewModel.PasswordRuleCount,
+                localizedPasswordValidationErrorMessages,
+                localizedPasswordRuleMessages
+            });
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmActiveMessagesDontShowAgain()
+        {
+            LogonContext.MaintenanceMessageConfirmAndDontShowAgain();
+
+            return new EmptyResult();
         }
     }
 }

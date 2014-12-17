@@ -2,9 +2,6 @@
 Option Explicit On
 
 Imports CKG.Base.Kernel.Common
-Imports CKG.Components.ComCommon.Treuhand
-Imports CKG.Base.Kernel.Security
-Imports CKG.Base.Business
 Imports Telerik.Web.UI
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.IO
@@ -12,18 +9,18 @@ Imports System.IO
 Namespace Treuhand
 
     Partial Public Class Change101s_3
-        Inherits System.Web.UI.Page
+        Inherits Page
 
 #Region "Declarations"
         Private m_User As Base.Kernel.Security.User
         Private m_App As Base.Kernel.Security.App
         Private CustomerObject As SperreFreigabe
-        Private tblDaten As DataTable
+        Private dvDaten As DataView
 #End Region
 
 #Region "PageEvents"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
             m_User = Common.GetUser(Me) ' füllen Form.Session("objUser"), rückgabe eines UserObjekte
             Common.FormAuth(Me, m_User)
@@ -36,9 +33,10 @@ Namespace Treuhand
             lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
 
             CustomerObject = CType(Session("SperrObject"), SperreFreigabe)
-            If Session("tblDaten") IsNot Nothing Then
-                tblDaten = CType(Session("tblDaten"), DataTable)
+            If Session("dvDaten") IsNot Nothing Then
+                dvDaten = CType(Session("dvDaten"), DataView)
             End If
+
 
             If Not IsPostBack Then
                 Common.TranslateTelerikColumns(rgGrid1)
@@ -49,48 +47,17 @@ Namespace Treuhand
 
         End Sub
 
-        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
             Common.SetEndASPXAccess(Me)
         End Sub
 
-        Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+        Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
             Common.SetEndASPXAccess(Me)
         End Sub
 
 #End Region
 
 #Region "Methods"
-
-        ''' <summary>
-        ''' Gridview prüfen
-        ''' </summary>
-        ''' <returns>Anzahl der Gridviewzeilen</returns>
-        ''' <remarks></remarks>
-        Private Function CheckGrid() As Int32
-            Dim chbox As CheckBox
-            Dim intReturn As Int32 = 0
-            Dim tmpRows As DataRow()
-
-            For Each item As GridDataItem In rgGrid1.Items
-                Dim strZZFAHRG As String = ""
-                strZZFAHRG = "EQUI_KEY = '" & item("EQUI_KEY").Text & "'"
-                tmpRows = CustomerObject.tblUpload.Select(strZZFAHRG)
-                If (tmpRows.Length > 0) Then
-                    tmpRows(0).BeginEdit()
-                    chbox = CType(item.FindControl("chkAnfordern"), CheckBox)
-                    If chbox.Checked Then           'anfordern
-                        tmpRows(0).Item("SELECT") = "99"
-                        intReturn += 1
-                    End If
-
-                    tmpRows(0).EndEdit()
-                    CustomerObject.tblUpload.AcceptChanges()
-                End If
-            Next
-
-            Session("CustomerObject") = CustomerObject
-            Return intReturn
-        End Function
 
         Private Sub FillGrid(Optional blnAllowShowSaveButton As Boolean = True)
 
@@ -106,8 +73,10 @@ Namespace Treuhand
                     rgGrid1.Columns.FindByUniqueName("ERROR").Visible = True
                 End If
 
-                tblDaten = CustomerObject.tblUpload
-                Session("tblDaten") = tblDaten
+                dvDaten = New DataView(CustomerObject.tblUpload)
+                dvDaten.Sort = "MESSAGE DESC, EQUI_KEY ASC"
+                Session("dvDaten") = dvDaten
+
                 rgGrid1.Rebind()
                 'Setzen der DataSource geschieht durch das NeedDataSource-Event
             End If
@@ -128,8 +97,10 @@ Namespace Treuhand
                 rgGrid1.Columns.FindByUniqueName("SPERRDAT").Visible = False
                 rgGrid1.Columns.FindByUniqueName("TREUH_VGA").Visible = True
 
-                tblDaten = CustomerObject.Fahrzeuge
-                Session("tblDaten") = tblDaten
+                dvDaten = New DataView(CustomerObject.Fahrzeuge)
+                dvDaten.Sort = "MESSAGE DESC, EQUI_KEY ASC"
+                Session("dvDaten") = dvDaten
+
                 rgGrid1.Rebind()
                 'Setzen der DataSource geschieht durch das NeedDataSource-Event
             End If
@@ -143,8 +114,8 @@ Namespace Treuhand
         End Sub
 
         Protected Sub rgGrid1_NeedDataSource(sender As Object, e As GridNeedDataSourceEventArgs)
-            If tblDaten IsNot Nothing Then
-                rgGrid1.DataSource = tblDaten.DefaultView
+            If dvDaten IsNot Nothing Then
+                rgGrid1.DataSource = dvDaten
             Else
                 rgGrid1.DataSource = Nothing
             End If
@@ -269,7 +240,7 @@ Namespace Treuhand
 
 #Region "Events"
 
-        Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+        Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles cmdSave.Click
 
             'Workaround, um (versehentliches) Mehrfachabsenden zu verhindern
             If Session("Sent_Change101s_3") IsNot Nothing Then
@@ -285,8 +256,8 @@ Namespace Treuhand
                 End If
             End If
 
-            Dim iSelCount As Integer
-            iSelCount = CheckGrid()
+            Dim selRows() As DataRow = CustomerObject.tblUpload.Select("SELECT='99'")
+            Dim iSelCount As Integer = selRows.Length
 
             lblError.Text = ""
 
@@ -295,63 +266,62 @@ Namespace Treuhand
                 FillGrid()
             Else
                 If m_User.Groups.ItemByID(m_User.GroupID).Authorizationright > 0 Then
-                    For Each tmpRow As DataRow In CustomerObject.tblUpload.Rows
-                        If tmpRow("SELECT").ToString = "99" Then
+                    For Each tmpRow As DataRow In selRows
 
-                            Dim logApp As New Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel)
+                        Dim logApp As New Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel)
 
-                            logApp.CollectDetails("Vertrags. - / Fahrgestellnr.", CType(tmpRow("EQUI_KEY").ToString, Object), True)
-                            logApp.CollectDetails("Treunehmer", CType(CustomerObject.Treunehmer, Object))
-                            logApp.CollectDetails("Sachbearbeiter", CType(tmpRow("ERNAM").ToString, Object))
-                            logApp.CollectDetails("Sperrdatum", CType(tmpRow("SPERRDAT").ToString, Object))
-                            logApp.CollectDetails("Datum", CType(tmpRow("ERDAT").ToString, Object))
-                            CustomerObject.ReferenceforAut = tmpRow("EQUI_KEY").ToString
+                        logApp.CollectDetails("Vertrags. - / Fahrgestellnr.", CType(tmpRow("EQUI_KEY").ToString, Object), True)
+                        logApp.CollectDetails("Treunehmer", CType(CustomerObject.Treunehmer, Object))
+                        logApp.CollectDetails("Sachbearbeiter", CType(tmpRow("ERNAM").ToString, Object))
+                        logApp.CollectDetails("Sperrdatum", CType(tmpRow("SPERRDAT").ToString, Object))
+                        logApp.CollectDetails("Datum", CType(tmpRow("ERDAT").ToString, Object))
+                        CustomerObject.ReferenceforAut = tmpRow("EQUI_KEY").ToString
 
-                            If tmpRow("TREUH_VGA").ToString = "S" Then
-                                logApp.CollectDetails("Sperren", "X")
-                                logApp.CollectDetails("Entsperren", "")
-                            Else
-                                logApp.CollectDetails("Sperren", "")
-                                logApp.CollectDetails("Entsperren", "X")
-                            End If
-
-                            'CustomerObject.FinforAut = tmpRow("Fahrgestellnummer").ToString
-                            'Anwendung erfordert Autorisierung (Level>0)
-                            Dim DetailArray(1, 2) As Object
-                            Dim ms As MemoryStream
-                            Dim formatter As BinaryFormatter
-                            Dim b() As Byte
-
-                            ms = New MemoryStream()
-                            formatter = New BinaryFormatter()
-                            formatter.Serialize(ms, CustomerObject)
-                            b = ms.ToArray
-                            ms = New IO.MemoryStream(b)
-                            DetailArray(0, 0) = ms
-                            DetailArray(0, 1) = "CustomerObject"
-
-                            'Pruefen, ob schon in der Autorisierung.
-                            Dim strInitiator As String = ""
-                            Dim intAuthorizationID As Int32
-
-                            m_App.CheckForPendingAuthorization(CInt(Session("AppID")), m_User.Organization.OrganizationId, m_User.KUNNR, tmpRow("EQUI_KEY").ToString, m_User.IsTestUser, strInitiator, intAuthorizationID)
-                            If Not strInitiator.Length = 0 Then
-                                'Fahrzeug wurde schon mal freigegeben und liegt zur Autorisierung vor
-                                tmpRow("MESSAGE") = "liegt zur Autorisierung vor"
-
-                            Else
-                                If tmpRow("TREUH_VGA").ToString = "S" Then
-                                    intAuthorizationID = Common.WriteAuthorization(m_App.Connectionstring, CInt(Session("AppID")), m_User.UserName, m_User.Organization.OrganizationId, CustomerObject.Treunehmer, tmpRow("EQUI_KEY").ToString, "Sperren", "", m_User.IsTestUser, DetailArray)
-                                    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, CInt(Session("AppID")), m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString, CustomerObject.Treunehmer, "Sperrung für Treunehmer " & CustomerObject.Treunehmer & " erfolgreich initiiert.", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, logApp.InputDetails)
-
-                                Else
-                                    intAuthorizationID = Common.WriteAuthorization(m_App.Connectionstring, CInt(Session("AppID")), m_User.UserName, m_User.Organization.OrganizationId, CustomerObject.Treunehmer, tmpRow("EQUI_KEY").ToString, "Entsperren", "", m_User.IsTestUser, DetailArray)
-                                    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, CInt(Session("AppID")), m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString, CustomerObject.Treunehmer, "Entsperrung für Treunehmer " & CustomerObject.Treunehmer & " erfolgreich initiiert.", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, logApp.InputDetails)
-                                End If
-
-                                tmpRow("MESSAGE") = "Aut."
-                            End If
+                        If tmpRow("TREUH_VGA").ToString = "S" Then
+                            logApp.CollectDetails("Sperren", "X")
+                            logApp.CollectDetails("Entsperren", "")
+                        Else
+                            logApp.CollectDetails("Sperren", "")
+                            logApp.CollectDetails("Entsperren", "X")
                         End If
+
+                        'CustomerObject.FinforAut = tmpRow("Fahrgestellnummer").ToString
+                        'Anwendung erfordert Autorisierung (Level>0)
+                        Dim DetailArray(1, 2) As Object
+                        Dim ms As MemoryStream
+                        Dim formatter As BinaryFormatter
+                        Dim b() As Byte
+
+                        ms = New MemoryStream()
+                        formatter = New BinaryFormatter()
+                        formatter.Serialize(ms, CustomerObject)
+                        b = ms.ToArray
+                        ms = New IO.MemoryStream(b)
+                        DetailArray(0, 0) = ms
+                        DetailArray(0, 1) = "CustomerObject"
+
+                        'Pruefen, ob schon in der Autorisierung.
+                        Dim strInitiator As String = ""
+                        Dim intAuthorizationID As Int32
+
+                        m_App.CheckForPendingAuthorization(CInt(Session("AppID")), m_User.Organization.OrganizationId, m_User.KUNNR, tmpRow("EQUI_KEY").ToString, m_User.IsTestUser, strInitiator, intAuthorizationID)
+                        If Not strInitiator.Length = 0 Then
+                            'Fahrzeug wurde schon mal freigegeben und liegt zur Autorisierung vor
+                            tmpRow("MESSAGE") = "liegt zur Autorisierung vor"
+
+                        Else
+                            If tmpRow("TREUH_VGA").ToString = "S" Then
+                                intAuthorizationID = Common.WriteAuthorization(m_App.Connectionstring, CInt(Session("AppID")), m_User.UserName, m_User.Organization.OrganizationId, CustomerObject.Treunehmer, tmpRow("EQUI_KEY").ToString, "Sperren", "", m_User.IsTestUser, DetailArray)
+                                logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, CInt(Session("AppID")), m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString, CustomerObject.Treunehmer, "Sperrung für Treunehmer " & CustomerObject.Treunehmer & " erfolgreich initiiert.", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, logApp.InputDetails)
+
+                            Else
+                                intAuthorizationID = Common.WriteAuthorization(m_App.Connectionstring, CInt(Session("AppID")), m_User.UserName, m_User.Organization.OrganizationId, CustomerObject.Treunehmer, tmpRow("EQUI_KEY").ToString, "Entsperren", "", m_User.IsTestUser, DetailArray)
+                                logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, CInt(Session("AppID")), m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString, CustomerObject.Treunehmer, "Entsperrung für Treunehmer " & CustomerObject.Treunehmer & " erfolgreich initiiert.", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, logApp.InputDetails)
+                            End If
+
+                            tmpRow("MESSAGE") = "Aut."
+                        End If
+
                     Next
                     FillGrid()
                 Else
@@ -411,6 +381,7 @@ Namespace Treuhand
                 CustomerObject.tblUpload.Select("ID='" & tmpGridRow("ID").Text & "'")(0)("SELECT") = ""
             End If
 
+            Session("CustomerObject") = CustomerObject
         End Sub
 
         Protected Sub cmdCheck_Click(sender As Object, e As EventArgs) Handles cmdCheck.Click
