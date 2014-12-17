@@ -123,8 +123,10 @@ namespace ServicesMvc.Controllers
         {
             var path = Path.Combine(AppSettings.DataPath, @"AhZulassung_01.xml");
             XmlService.XmlSerializeToFile(ViewModel, path);
+            
             var savedVm = XmlService.XmlDeserializeFromFile<KroschkeZulassungViewModel>(path);
             InitViewModel(savedVm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+            savedVm.DataMarkForRefresh();
         }
 
         #endregion
