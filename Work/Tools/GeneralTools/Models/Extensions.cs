@@ -234,9 +234,14 @@ namespace GeneralTools.Models
             return ret;
         }
 
-        public static string NotNullOrEmpty(this string s, string defaultValue = "")
+        public static string NotNullOrEmpty(this string s, string defaultValue)
         {
             return string.IsNullOrEmpty(s) ? defaultValue : s;
+        }
+
+        public static string NotNullOrEmpty(this string s)
+        {
+            return s.NotNullOrEmpty("");
         }
 
         public static string NotNullOrEmptyOrNullString(this string s, string additionalNullstring=null)
