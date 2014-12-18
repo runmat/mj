@@ -694,5 +694,12 @@ namespace CkgDomainLogic.General.Database.Services
         }
 
         #endregion
+
+
+        public IEnumerable<PersistableObject> GetPersistableObjectsFor(string ownerKey, string groupKey)
+        {
+            return Database.SqlQuery<PersistableObject>("SELECT * FROM PersistableObject WHERE OwnerKey = {0} and GroupKey = {0}", ownerKey, groupKey);
+        }
+
     }
 }

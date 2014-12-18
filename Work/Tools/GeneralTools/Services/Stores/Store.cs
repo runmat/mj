@@ -166,46 +166,6 @@ namespace GeneralTools.Services
             SetByKey(typeof(T).Name, value);
         }
 
-        //protected void SetIfNull<T>(T value)
-        //{
-        //    if (!_propertyStoreBuffer.ContainsKey(typeof(T).Name))
-        //        SetByKey(typeof(T).Name, value);
-        //}
-
-        //private T GetStatic<T>(Func<T> objectCreateFunc, string additionalKey = null)
-        //{
-        //    var invocationList = objectCreateFunc.GetInvocationList();
-        //    if (invocationList.None() || invocationList[0].Target == null || invocationList[0].Method == null)
-        //        return objectCreateFunc();
-
-        //    var staticClassAndPropertyKey = string.Format("{0}.{1}", invocationList[0].Target, invocationList[0].Method.Name);
-
-        //    var uniqueKey = additionalKey.IsNullOrEmpty() ? staticClassAndPropertyKey : string.Format("{0}.{1}", staticClassAndPropertyKey, additionalKey);
-
-        //    return GetByKey(uniqueKey, objectCreateFunc);
-        //}
-
-        //internal protected void PropertyCacheInitOnly(object value)
-        //{
-        //    var stackTrace = new StackTrace(Thread.CurrentThread, true);
-        //    var stackFrames = stackTrace.GetFrames();
-        //    if (stackFrames == null || stackFrames.Count() < 2)
-        //        return;
-
-        //    var propertySetterMethod = stackFrames[1];
-
-        //    if (propertySetterMethod == null
-        //        || propertySetterMethod.GetMethod() == null
-        //        || !propertySetterMethod.GetMethod().Name.StartsWith("set_"))
-        //        throw new NotSupportedException(PropertyCacheSetConstraintMessage);
-
-        //    var propertyName = propertySetterMethod.GetMethod().Name.Replace("set_", "");
-
-        //    if (GetByKey<object>(propertyName, () => null) == null)
-        //        // => SETZT DIE DATEN NUR WENN DER CACHE LEER IST !   
-        //        SetByKey(propertyName, value);
-        //}
-
         #endregion
 
         #endregion

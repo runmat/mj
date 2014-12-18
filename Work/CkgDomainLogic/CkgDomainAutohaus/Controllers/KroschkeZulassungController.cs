@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.General.Contracts;
@@ -33,11 +32,15 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
         public ActionResult Index(string fin, string halterNr)
         {
+            var pKey = LogonContext.PersistenceKey;
+            var pService = LogonContext.PersistenceService;
+
             ViewModel.DataMarkForRefresh();
 
             ViewModel.SetParamFahrzeugAkte(fin);
@@ -46,6 +49,11 @@ namespace ServicesMvc.Controllers
                 ViewModel.SetParamHalter(halterNr);
 
             return View(ViewModel);
+        }
+
+        void InitModelStatics()
+        {
+            Vorgang.GetViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
@@ -93,7 +101,9 @@ namespace ServicesMvc.Controllers
         {
             var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
 
+// ReSharper disable RedundantAnonymousTypePropertyName
             return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
+// ReSharper restore RedundantAnonymousTypePropertyName
         }
 
         #endregion
@@ -252,9 +262,7 @@ namespace ServicesMvc.Controllers
                 ViewModel.SetOptionenDienstleistungen(model);
             }
 
-            model.InitDienstleistungen(ViewModel.ZulassungDataService.Zusatzdienstleistungen);
-
-            return PartialView("Partial/OptionenDienstleistungenForm", model);
+            return PartialView("Partial/OptionenDienstleistungenForm", ViewModel.Zulassung.OptionenDienstleistungen);
         }
 
         #endregion

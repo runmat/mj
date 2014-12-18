@@ -86,6 +86,8 @@
 
             CheckKennzeichenSondergroesse();
             CheckSaisonkennzeichen();
+            
+            MultiSelectPreparePrivate();
 
             function MultiSelectPreparePrivate() {
                 $('#pre-selected-options').multiSelect();
@@ -107,8 +109,6 @@
                     $("#GewaehlteDienstleistungenString").val(selectedOptions);
                 });
             }
-            
-            MultiSelectPreparePrivate();
 
         </script>
     }

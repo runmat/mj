@@ -21,6 +21,12 @@ namespace CkgDomainLogic.General.Services
 
         public ILocalizationService LocalizationService { get; set; }
 
+        
+        public string PersistenceKey { get { return UserName; } }
+
+        public IPersistenceService PersistenceService { get; set; }
+
+
         public string LogoutUrl { get; set; }
 
         // ReSharper disable LocalizableElement

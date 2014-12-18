@@ -1,27 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <KroschkeZulassungViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ParamFahrzeugAkte>
-    <FIN>WVWZZZ3CZBE343296</FIN>
-    <FinID>1000000016</FinID>
-    <FinIdJustCreated>false</FinIdJustCreated>
-    <HerstellerSchluessel>0603</HerstellerSchluessel>
-    <TypSchluessel>AYJ</TypSchluessel>
-    <VvsSchluessel>00020</VvsSchluessel>
-    <VvsPruefZiffer>2</VvsPruefZiffer>
-    <FabrikName />
-    <HandelsName />
-    <Halter>0100282799</Halter>
-    <Kaeufer>0200203844</Kaeufer>
-    <BriefbestandsInfo>0</BriefbestandsInfo>
-    <BriefLagerort />
-    <FahrzeugStandort />
-    <ErstZulassungsgDatum xsi:nil="true" />
-    <ZulassungsgDatumAktuell xsi:nil="true" />
-    <AbmeldeDatum xsi:nil="true" />
-    <Kennzeichen />
-    <Briefnummer>ZB471198765</Briefnummer>
-    <CocVorhanden>false</CocVorhanden>
-    <Bemerkung />
-  </ParamFahrzeugAkte>
+  <Zulassung>
+    <VkOrg>1010</VkOrg>
+    <VkBur>4340</VkBur>
+    <Vorerfasser>mjelueg</Vorerfasser>
+    <VorgangsStatus>1</VorgangsStatus>
+    <Rechnungsdaten>
+      <KundenNr>0000329245</KundenNr>
+    </Rechnungsdaten>
+    <BankAdressdaten>
+      <Rechnungsempfaenger />
+      <Cpdkunde>false</Cpdkunde>
+      <CpdMitEinzugsermaechtigung>false</CpdMitEinzugsermaechtigung>
+      <Einzugsermaechtigung>false</Einzugsermaechtigung>
+      <Rechnung>false</Rechnung>
+      <Bar>false</Bar>
+      <Zahlungsart />
+      <Iban />
+      <Swift />
+    </BankAdressdaten>
+    <Fahrzeugdaten>
+      <AuftragsNr>g</AuftragsNr>
+      <FahrgestellNr>GH</FahrgestellNr>
+      <Zb2Nr />
+      <FahrzeugartId>1</FahrzeugartId>
+      <Kostenstelle>gh</Kostenstelle>
+      <BestellNr>gh</BestellNr>
+    </Fahrzeugdaten>
+    <Halterdaten>
+      <UiIndex>0</UiIndex>
+      <IsMandatory>false</IsMandatory>
+      <IgnoreSummaryItem>false</IgnoreSummaryItem>
+      <EditFromSummaryDisabled>false</EditFromSummaryDisabled>
+      <Land>DE</Land>
+      <Kennung>HALTER</Kennung>
+      <Gewerblich>false</Gewerblich>
+      <ID>0</ID>
+      <TestInt>0</TestInt>
+      <NoSaveButUiRefreshOnly>false</NoSaveButUiRefreshOnly>
+      <IsValid>false</IsValid>
+      <InsertModeTmp>false</InsertModeTmp>
+      <IsDefaultPartner>false</IsDefaultPartner>
+    </Halterdaten>
+    <Zulassungsdaten>
+      <Zulassungsdatum xsi:nil="true" />
+      <KennzeichenReserviert>false</KennzeichenReserviert>
+    </Zulassungsdaten>
+    <OptionenDienstleistungen>
+      <GewaehlteDienstleistungenString />
+      <NurEinKennzeichen>false</NurEinKennzeichen>
+      <KennzeichenSondergroesse>false</KennzeichenSondergroesse>
+      <KennzeichenGroesseId xsi:nil="true" />
+      <Saisonkennzeichen>false</Saisonkennzeichen>
+      <KennzeichenVorhanden>false</KennzeichenVorhanden>
+      <VorhandenesKennzeichenReservieren>false</VorhandenesKennzeichenReservieren>
+      <HaltedauerBis xsi:nil="true" />
+    </OptionenDienstleistungen>
+  </Zulassung>
   <SkipBankAdressdaten>true</SkipBankAdressdaten>
 </KroschkeZulassungViewModel>

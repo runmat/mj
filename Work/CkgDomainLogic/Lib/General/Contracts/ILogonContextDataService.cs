@@ -13,8 +13,10 @@ namespace CkgDomainLogic.General.Contracts
 
     public enum GridColumnMode { Master, Slave }
     
-    public interface ILogonContextDataService : ILogonContext, IApplicationUserMenuProvider
+    public interface ILogonContextDataService : ILogonContext, IApplicationUserMenuProvider, IPersistenceOwnerKeyProvider
     {
+        IPersistenceService PersistenceService { get; set; }
+
         List<ApplicationType> AppTypes { get; set; }
 
         User User { get; set; }

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.KroschkeZulassung.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -46,6 +50,9 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public string AuftragszettelPdfPfad { get; set; }
 
         public byte[] KundenformularPdf { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<KroschkeZulassungViewModel> GetViewModel { get; set; }
 
         public Vorgang()
         {

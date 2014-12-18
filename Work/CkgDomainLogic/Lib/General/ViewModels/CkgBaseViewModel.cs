@@ -16,9 +16,6 @@ namespace CkgDomainLogic.General.ViewModels
 
         private void InitDataService<T>(T dataService) where T : class
         {
-            //if (!(dataService is ICkgGeneralDataService))
-            //    return;
-
             var cachedService = CacheGet<T>();
             if (cachedService == null)
                 CacheSet(dataService);

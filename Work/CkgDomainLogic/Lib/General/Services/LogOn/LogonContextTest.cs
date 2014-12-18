@@ -363,5 +363,9 @@ namespace CkgDomainLogic.General.Services
             MvcEnforceRawLayout = false;
             LogoutUrl = "";
         }
+
+        public string PersistenceKey { get { return UserName; } }
+
+        public IPersistenceService PersistenceService { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 {
     public class KroschkeZulassungDataServiceSAP : CkgGeneralDataServiceSAP, IKroschkeZulassungDataService
     {
-        public Vorgang Zulassung { get; set; }
+        public Vorgang Zulassung { get { return Vorgang.GetViewModel().Zulassung; } }
 
         public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 

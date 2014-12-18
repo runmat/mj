@@ -100,6 +100,9 @@
     <Compile Include="Contracts\IAttributeWithModelMappingConvert.cs" />
     <Compile Include="Contracts\IUserSecurityRuleDataProvider.cs" />
     <Compile Include="Contracts\INullable.cs" />
+    <Compile Include="Contracts\Persistency\IPersistenceOwnerKeyProvider.cs" />
+    <Compile Include="Contracts\Persistency\IPersistenceService.cs" />
+    <Compile Include="Contracts\Persistency\IPersistableObjectContainer.cs" />
     <Compile Include="Log\Contracts\ISapLogger.cs" />
     <Compile Include="Log\Models\LogConstants.cs" />
     <Compile Include="Log\Services\CkgSessionWrapperException.cs" />

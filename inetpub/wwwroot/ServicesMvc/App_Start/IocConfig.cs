@@ -94,9 +94,15 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<WebSecurityService>().As<ISecurityService>().InstancePerHttpRequest();
             builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerHttpRequest();
 
+
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTest) : typeof(LogonContextDataServiceDadServices));
-            builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest()
-                .PropertiesAutowired();
+
+            // Persistence (Warenkorb, etc)
+            builder.RegisterType(logonSettingsType).As<IPersistenceOwnerKeyProvider>().InstancePerHttpRequest();
+            builder.RegisterType<PersistenceServiceSql>().As<IPersistenceService>().InstancePerHttpRequest().PropertiesAutowired();
+
+            builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest().PropertiesAutowired();
+
 
             var grunddatenEquiBestandDataService = (appSettings.IsClickDummyMode ? typeof(EquiGrunddatenDataServiceTest) : typeof(EquiGrunddatenDataServiceSAP));
             builder.RegisterType(grunddatenEquiBestandDataService).As<IEquiGrunddatenDataService>().InstancePerHttpRequest();
