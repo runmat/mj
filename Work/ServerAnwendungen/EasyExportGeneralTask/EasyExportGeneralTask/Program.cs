@@ -1498,7 +1498,7 @@ namespace EasyExportGeneralTask
         {
             try
             {
-                S.AP.Init("Z_DPM_READ_MELD_OPAV_01", "I_KUNNRS", taskConfiguration.Kundennummer);
+                S.AP.Init("Z_DPM_EXP_ABMELDUNGEN_DF_01", "I_KUNNRS", taskConfiguration.Kundennummer);
 
                 if (taskConfiguration.AbfrageNachDatum && taskConfiguration.Abfragedatum.Year > 1900)
                 {
