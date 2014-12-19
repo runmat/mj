@@ -131,6 +131,7 @@
     <Compile Include="General\Services\DbContextExtensions.cs" />
     <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
     <Compile Include="General\Services\Persistency\PersistenceServiceSql.cs" />
+    <Compile Include="General\Services\Persistency\PersistenceSqlDbContext.cs" />
     <Compile Include="General\Services\SearchExtensions40.cs" />
     <Compile Include="General\ViewModels\CkgBaseViewModel.cs" />
     <Compile Include="General\ViewModels\CkgCommonViewModel.cs" />

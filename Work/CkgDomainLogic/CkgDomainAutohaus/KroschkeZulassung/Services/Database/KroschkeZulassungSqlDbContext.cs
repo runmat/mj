@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.KroschkeZulassung.Models;
 
 namespace CkgDomainLogic.KroschkeZulassung.Services
@@ -25,6 +26,12 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             Database.SetInitializer<KroschkeZulassungSqlDbContext>(null);
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+
+
+        public IEnumerable<PersistableObject> GetPersistableObjectsFor(string ownerKey, string groupKey)
+        {
+            return Database.SqlQuery<PersistableObject>("SELECT * FROM PersistableObject WHERE OwnerKey = {0} and GroupKey = {0}", ownerKey, groupKey);
         }
     }
 }

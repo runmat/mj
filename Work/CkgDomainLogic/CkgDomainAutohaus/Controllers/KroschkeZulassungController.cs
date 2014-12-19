@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -40,6 +41,13 @@ namespace ServicesMvc.Controllers
         {
             var pKey = LogonContext.PersistenceKey;
             var pService = LogonContext.PersistenceService;
+            var list = pService.GetObjectContainers("KroschkeZulassung").ToListOrEmptyList();
+            var firstItem = list.FirstOrDefault();
+            if (firstItem != null)
+            {
+                var key = firstItem.ObjectKey;
+                var data = firstItem.ObjectData;
+            }
 
             ViewModel.DataMarkForRefresh();
 

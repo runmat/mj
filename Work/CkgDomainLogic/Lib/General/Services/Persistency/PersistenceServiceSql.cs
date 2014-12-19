@@ -1,10 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using CkgDomainLogic.General.Database.Services;
+﻿using System.Collections.Generic;
 using GeneralTools.Contracts;
 
 namespace CkgDomainLogic.General.Services
@@ -17,9 +11,9 @@ namespace CkgDomainLogic.General.Services
         {
             var ct = CreateDbContext();
 
+            var dbItems = ct.GetPersistableObjectsFor(OwnerKeyProvider.PersistenceKey, groupKey);
 
-
-            return null;
+            return dbItems;
         }
 
         public IPersistableObjectContainer ReadObjectContainer(string groupKey, string objectKey)
@@ -31,9 +25,9 @@ namespace CkgDomainLogic.General.Services
         {
         }
 
-        private static DomainDbContext CreateDbContext()
+        private static PersistenceSqlDbContext CreateDbContext()
         {
-            return new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], "");
+            return new PersistenceSqlDbContext();
         }
     }
 }
