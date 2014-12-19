@@ -34,7 +34,12 @@ namespace CkgDomainLogic.General.Services
             set { PropertyCacheSet(value); }
         }
 
-        public WebUserInfo UserInfo { get; set; }
+        private WebUserInfo _userInfo = new WebUserInfo { Telephone = "04102 56677" };
+        public WebUserInfo UserInfo
+        {
+            get { return _userInfo; }
+            set { _userInfo = value; }
+        }
 
         private LogonLevel _userLogonLevel = LogonLevel.User;
         public LogonLevel UserLogonLevel
@@ -64,7 +69,6 @@ namespace CkgDomainLogic.General.Services
         public string AppUrl { get; set; }
 
         private string _userID = "1";
-
         public string UserID 
         { 
             get { return _userID; }
@@ -364,8 +368,8 @@ namespace CkgDomainLogic.General.Services
             LogoutUrl = "";
         }
 
-        public string PersistenceKey { get { return UserName; } }
+        public string PersistanceKey { get { return UserName; } }
 
-        public IPersistenceService PersistenceService { get; set; }
+        public IPersistanceService PersistanceService { get; set; }
     }
 }

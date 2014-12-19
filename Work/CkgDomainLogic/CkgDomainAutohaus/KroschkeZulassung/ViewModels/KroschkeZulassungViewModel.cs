@@ -33,6 +33,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         //public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
 
         [XmlIgnore]
+        public List<KroschkeZulassungViewModel> Warenkorb { get; set; }
+
+        [XmlIgnore]
         public IDictionary<string, string> Steps
         {
             get
@@ -362,9 +365,8 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Misc + Summaries + Savings
 
-        public void DataMarkForRefresh()
+        public void DataInit()
         {
-            ZulassungDataService.MarkForRefresh();
             Zulassung = new Vorgang
             {
                 VkOrg = LogonContext.Customer.AccountingArea.ToString(),
@@ -372,6 +374,13 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
                 Vorerfasser = LogonContext.UserName,
                 VorgangsStatus = "1"
             };
+
+            DataMarkForRefresh();
+        }
+
+        public void DataMarkForRefresh()
+        {
+            ZulassungDataService.MarkForRefresh();
             Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
             Rechnungsdaten.KundenList = Kunden;

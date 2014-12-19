@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 
 namespace GeneralTools.Services
@@ -11,8 +12,11 @@ namespace GeneralTools.Services
     /// <summary>
     /// Klasse zum Puffern von (vorerst nur) Property Inhalten (später ggfls. auch von anderen Inhalten)
     /// (Architektur durch Matthias Jenzen, 16.07.2013)
+    /// 
+    /// Erweiterung 19.12.2014: 
+    /// Basis-Klasse für persistierbare Objekte, z. B. Warenkorb-Objekte
     /// </summary>
-    public class Store
+    public class Store : IPersistableObject
     {
         #region Property Store
 
@@ -167,6 +171,17 @@ namespace GeneralTools.Services
         }
 
         #endregion
+
+        #endregion
+
+
+        #region IPersistableObject
+
+        public string ObjectKey { get; set; }
+
+        public DateTime? EditDate { get; set; }
+
+        public string EditUser { get; set; }
 
         #endregion
     }

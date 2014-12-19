@@ -29,9 +29,9 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
         }
 
 
-        public IEnumerable<PersistableObject> GetPersistableObjectsFor(string ownerKey, string groupKey)
+        public IEnumerable<PersistableObjectContainer> GetPersistableObjectsFor(string ownerKey, string groupKey)
         {
-            return Database.SqlQuery<PersistableObject>("SELECT * FROM PersistableObject WHERE OwnerKey = {0} and GroupKey = {0}", ownerKey, groupKey);
+            return Database.SqlQuery<PersistableObjectContainer>("SELECT * FROM PersistableObject WHERE OwnerKey = {0} and GroupKey = {0}", ownerKey, groupKey);
         }
     }
 }

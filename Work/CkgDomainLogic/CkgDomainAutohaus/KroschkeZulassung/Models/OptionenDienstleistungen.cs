@@ -26,11 +26,16 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
             {
                 _gewaehlteDienstleistungenString = value;
 
-                if (AvailableDienstleistungen != null)
-                {
-                    AvailableDienstleistungen.ForEach(dl => dl.IstGewaehlt = false);
-                    GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
-                }
+                SetGewaehlteDienstleistungen();
+            }
+        }
+
+        private void SetGewaehlteDienstleistungen()
+        {
+            if (AvailableDienstleistungen != null)
+            {
+                AvailableDienstleistungen.ForEach(dl => dl.IstGewaehlt = false);
+                GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
             }
         }
 
@@ -47,6 +52,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
             if (GewaehlteDienstleistungenString.IsNullOrEmpty())
                 GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
+            else
+                SetGewaehlteDienstleistungen();
         }
 
         public string ZulassungsartMatNr { get; set; }

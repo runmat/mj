@@ -97,9 +97,8 @@ namespace ServicesMvc.App_Start
 
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTest) : typeof(LogonContextDataServiceDadServices));
 
-            // Persistence (Warenkorb, etc)
-            builder.RegisterType(logonSettingsType).As<IPersistenceOwnerKeyProvider>().InstancePerHttpRequest();
-            builder.RegisterType<PersistenceServiceSql>().As<IPersistenceService>().InstancePerHttpRequest().PropertiesAutowired();
+            // Persistance (Warenkorb, etc)
+            builder.RegisterType<PersistanceServiceSql>().As<IPersistanceService>().InstancePerHttpRequest().PropertiesAutowired();
 
             builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest().PropertiesAutowired();
 

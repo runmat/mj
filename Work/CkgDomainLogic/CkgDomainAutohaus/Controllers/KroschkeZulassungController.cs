@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -24,7 +25,11 @@ namespace ServicesMvc.Controllers
     {
         public override string DataContextKey { get { return GetDataContextKey<KroschkeZulassungViewModel>(); } }
 
-        public KroschkeZulassungViewModel ViewModel { get { return GetViewModel<KroschkeZulassungViewModel>(); } }
+        public KroschkeZulassungViewModel ViewModel 
+        { 
+            get { return GetViewModel<KroschkeZulassungViewModel>(); } 
+            set { SetViewModel(value); } 
+        }
 
         public KroschkeZulassungController(IAppSettings appSettings, ILogonContextDataService logonContext,
             IPartnerDataService partnerDataService,
@@ -39,22 +44,40 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Index(string fin, string halterNr)
         {
-            var pKey = LogonContext.PersistenceKey;
-            var pService = LogonContext.PersistenceService;
-            var list = pService.GetObjectContainers("KroschkeZulassung").ToListOrEmptyList();
-            var firstItem = list.FirstOrDefault();
-            if (firstItem != null)
-            {
-                var key = firstItem.ObjectKey;
-                var data = firstItem.ObjectData;
-            }
+            //var list = PersistanceGetObjectContainers("KroschkeZulassung").ToListOrEmptyList();
+            //var item = list.LastOrDefault();
+            //KroschkeZulassungViewModel vm = null;
+            //if (item != null)
+            //{
+            //    PersistanceObjectKeyCurrent = item.ObjectKey;
+            //    vm = (KroschkeZulassungViewModel)item.Object;
+            //    InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+            //    vm.DataMarkForRefresh();
+            //    var key = item.ObjectKey;
+            //    var data = item.ObjectData;
+            //}
 
-            ViewModel.DataMarkForRefresh();
+            ViewModel.DataInit();
 
             ViewModel.SetParamFahrzeugAkte(fin);
             
             if (halterNr.IsNotNullOrEmpty())
                 ViewModel.SetParamHalter(halterNr);
+
+            
+            // <Warenkorb Test>
+            var objectKey = ConfigurationManager.AppSettings["TestPersistanceObjectKey"];
+            var list = PersistanceGetObjects<KroschkeZulassungViewModel>("KroschkeZulassung");
+            var vm = list.FirstOrDefault(o => o.ObjectKey == objectKey);
+            if (vm != null)
+            {
+                InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+                vm.DataMarkForRefresh();
+                ViewModel = vm;
+            }
+            ViewModel.Warenkorb = list;
+            // </Warenkorb Test>
+
 
             return View(ViewModel);
         }
@@ -280,6 +303,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Save()
         {
+            PersistanceSaveObject("KroschkeZulassung", ViewModel);
             ViewModel.Save(false);
 
             return PartialView("Partial/Receipt", ViewModel);

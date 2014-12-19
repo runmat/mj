@@ -292,5 +292,41 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         #endregion
+
+
+
+        #region Persistance Service
+
+        protected virtual string GetPersistanceOwnerKey()
+        {
+            return LogonContext.UserName;
+        }
+
+        private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey)
+        {
+            var pService = LogonContext.PersistanceService;
+            if (pService == null)
+                return new List<IPersistableObjectContainer>();
+
+            return pService.GetObjectContainers(GetPersistanceOwnerKey(), groupKey);
+        }
+
+        protected List<T> PersistanceGetObjects<T>(string groupKey)
+        {
+            return PersistanceGetObjectContainers(groupKey)
+                    .Select(pContainer => (T)pContainer.Object)
+                        .ToListOrEmptyList();
+        }
+
+        protected void PersistanceSaveObject(string groupKey, IPersistableObject o)
+        {
+            var pService = LogonContext.PersistanceService;
+            if (pService == null)
+                return ;
+
+            pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+        }
+
+        #endregion
     }
 }

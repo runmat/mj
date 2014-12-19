@@ -99,7 +99,7 @@ namespace GeneralTools.Models
                 if (value == null)
                     return;
 
-                // store the type of our object (only for XML Persistence purpose)
+                // store the type of our object (only for XML Persistance purpose)
                 var type = value.GetType();
                 _StackContextType = type.GetFullTypeName();
 
@@ -133,7 +133,7 @@ namespace GeneralTools.Models
                 if (value == null)
                     return;
 
-                // store the type of our object (only for XML Persistence purpose)
+                // store the type of our object (only for XML Persistance purpose)
                 var type = value.GetType();
                 _LogonContextType = type.GetFullTypeName();
 
@@ -167,7 +167,7 @@ namespace GeneralTools.Models
                 if (value == null)
                     return;
                 
-                // store the type of our object (only for XML Persistence purpose)
+                // store the type of our object (only for XML Persistance purpose)
                 var type = value.GetType();
                 _DataContextType = type.GetFullTypeName();
 

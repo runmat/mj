@@ -6,28 +6,29 @@ using GeneralTools.Contracts;
 
 namespace CkgDomainLogic.General.Database.Models
 {
-    public class PersistableObject : IPersistableObjectContainer
+    public class PersistableObjectContainer : IPersistableObjectContainer
     {
         [Key]
         public int ID { get; set; }
 
         [NotMapped, XmlIgnore]
-        public string ObjectKey { get { return ID.ToString(); }  }
+        public string ObjectKey { get { return ID.ToString(); }  set {} }
 
-
-        public string OwnerKey { get; set; }
-
-        public string GroupKey { get; set; }
+        [NotMapped, XmlIgnore]
+        public object Object { get; set; }
 
         public string ObjectType { get; set; }
 
         public string ObjectData { get; set; }
 
 
-        public DateTime? InsertDatum { get; set; }
-        public string InsertUser { get; set; }
+        public string OwnerKey { get; set; }
 
-        public DateTime? UpdDatum { get; set; }
-        public string UpdUser { get; set; }
+        public string GroupKey { get; set; }
+
+
+        public DateTime? EditDate { get; set; }
+
+        public string EditUser { get; set; }
     }
 }

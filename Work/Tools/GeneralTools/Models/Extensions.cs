@@ -28,20 +28,6 @@ namespace GeneralTools.Models
             return (source != null && source.Any()) ? source.ToList() : new List<TSource>();
         }
 
-        //public static TValue FirstOrDefault<TSource, TValue>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Expression<Func<TSource, TValue>> defaultExpression) 
-        //    where TSource : class
-        //{
-        //    var item = source.FirstOrDefault(predicate);
-        //    if (item == null)
-        //        return default(TValue);
-
-        //    var propertyName = defaultExpression.GetPropertyName();
-        //    var modelType = typeof(TSource);
-        //    var propertyValue = (TValue)modelType.GetProperty(propertyName).GetValue(item, null);
-            
-        //    return propertyValue;
-        //}
-
         public static TSource[] ToArrayOrEmptyArray<TSource>(this IEnumerable<TSource> source)
         {
             return source != null && source.Any() ? source.ToArray() : new TSource[0];
