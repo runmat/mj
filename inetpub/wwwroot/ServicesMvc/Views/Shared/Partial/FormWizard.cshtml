@@ -69,6 +69,11 @@
 </style>
 
 <script type="text/javascript">
+    
+    function ShoppingCartTryHide() {
+        try { ShoppingCartHide(); }
+        catch (e) { }
+    }
 
     var FormWizard = function () {
 
@@ -104,6 +109,7 @@
                         return tabClickValid;
                     },
                     onNext: function (tab, navigation, index) {
+                        ShoppingCartTryHide();
                         var current = index + 1;
                         var total = navigation.find('li').length;
 
@@ -129,7 +135,7 @@
                         return true;
                     },
                     onPrevious: function (tab, navigation, index) {
-
+                        ShoppingCartTryHide();
                         var current = index + 1;
                         var total = navigation.find('li').length;
 
@@ -177,6 +183,7 @@
                 $('#formWizard').find('.button-prev').hide();
 
                 $('#formWizard .button-submit').click(function () {
+                    ShoppingCartTryHide();
                     var buttonType = 'submit';
                     if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
                         if (!FormWizard.buttonOnClickPrivate[buttonType]())
@@ -185,6 +192,7 @@
                 }).hide();
 
                 $('#formWizard .button-custom1').click(function () {
+                    ShoppingCartTryHide();
                     var buttonType = 'custom1';
                     if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
                         if (!FormWizard.buttonOnClickPrivate[buttonType]())
@@ -193,6 +201,7 @@
                 }).hide();
 
                 $('#formWizard .button-restart').click(function () {
+                    ShoppingCartTryHide();
                     var buttonType = 'restart';
                     if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
                         if (!FormWizard.buttonOnClickPrivate[buttonType]())
@@ -398,7 +407,7 @@
 
             stepKeys: [ @Model.StepKeysAsJavascript ],
                 
-            tabClickForwardEnforceValid : false,
+                tabClickForwardEnforceValid : false,
 
             tabClickDisabled : false,
 
@@ -467,22 +476,22 @@
                     $('#formWizard').find('.button-next').show();
                 } else
                     if (current == total) {
-                        $('#formWizard').find('.button-prev').hide();
-                        $('#formWizard').find('.button-next').hide();
-                        $('#formWizard').find('.button-submit').hide();
-                        $('#formWizard').find('.button-restart').show();
-                    } else
+                    $('#formWizard').find('.button-prev').hide();
+                    $('#formWizard').find('.button-next').hide();
+                    $('#formWizard').find('.button-submit').hide();
+                    $('#formWizard').find('.button-restart').show();
+                } else
                         if (current == total - 1) {
-                            $('#formWizard').find('.button-prev').show();
-                            $('#formWizard').find('.button-next').hide();
-                            $('#formWizard').find('.button-submit').show();
-                            $('#formWizard').find('.button-restart').hide();
-                        } else {
-                            $('#formWizard').find('.button-prev').show();
-                            $('#formWizard').find('.button-next').show();
-                            $('#formWizard').find('.button-submit').hide();
-                            $('#formWizard').find('.button-restart').hide();
-                        }
+                    $('#formWizard').find('.button-prev').show();
+                    $('#formWizard').find('.button-next').hide();
+                    $('#formWizard').find('.button-submit').show();
+                    $('#formWizard').find('.button-restart').hide();
+                } else {
+                    $('#formWizard').find('.button-prev').show();
+                    $('#formWizard').find('.button-next').show();
+                    $('#formWizard').find('.button-submit').hide();
+                    $('#formWizard').find('.button-restart').hide();
+                }
             }
 
             //

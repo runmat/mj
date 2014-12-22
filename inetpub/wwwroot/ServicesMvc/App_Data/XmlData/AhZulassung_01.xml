@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <KroschkeZulassungViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ObjectKey>7</ObjectKey>
-  <EditDate>2014-12-19T17:10:13.903</EditDate>
+  <EditDate>2014-12-19T17:29:04.403</EditDate>
   <EditUser>mjelueg</EditUser>
   <Zulassung>
     <VkOrg>1010</VkOrg>
@@ -36,7 +36,7 @@
       <IsMandatory>false</IsMandatory>
       <IgnoreSummaryItem>false</IgnoreSummaryItem>
       <EditFromSummaryDisabled>false</EditFromSummaryDisabled>
-      <Name1>PETER HALTER</Name1>
+      <Name1>XAVER HALTER</Name1>
       <Strasse>STORMARNSTR.</Strasse>
       <PLZ>22926</PLZ>
       <Ort>AHRENSBURG</Ort>

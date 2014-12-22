@@ -4242,6 +4242,7 @@
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerSuche.cshtml" />
+    <Content Include="Views\Shared\Partial\ShoppingCartGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

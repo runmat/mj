@@ -128,11 +128,15 @@ namespace PortalMvcTools.Web
             return new MvcWrapper(html.ViewContext, "FormSearchResults", model);
         }
 
-        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey")
+        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey", bool isCollapsible = true, bool isClosable = false)
         {
             return new MvcWrapper(html.ViewContext, "PortletBox", new FormOuterLayerModel
                 {
-                    Header = header, IconCssClass = iconCssClass, PortletCssClass = portletCssClass
+                    Header = header,
+                    IconCssClass = iconCssClass,
+                    PortletCssClass = portletCssClass,
+                    IsCollapsible = isCollapsible,
+                    IsClosable = isClosable
                 });
         }
 

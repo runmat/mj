@@ -327,6 +327,11 @@ namespace CkgDomainLogic.General.Controllers
             pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
+        [HttpPost]
+        public ActionResult ShoppingCartGridShow()
+        {
+            return PartialView("Partial/ShoppingCartGrid");
+        }
         #endregion
     }
 }
