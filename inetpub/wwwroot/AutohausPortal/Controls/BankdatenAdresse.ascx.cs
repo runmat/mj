@@ -21,8 +21,8 @@ namespace AutohausPortal.Controls
         public bool Rechnung { get { return rbRechnung.Checked; } }
         public bool Bar { get { return rbBar.Checked; } }
         public string Kontoinhaber { get { return txtKontoinhaber.Text; } }
-        public string IBAN { get { return txtIBAN.Text; } }
-        public string SWIFT { get { return txtSWIFT.Text; } }
+        public string IBAN { get { return (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper()); } }
+        public string SWIFT { get { return (String.IsNullOrEmpty(txtSWIFT.Text) ? "" : txtSWIFT.Text.ToUpper()); } }
         public string Geldinstitut { get { return txtGeldinstitut.Text; } }
         public string Bankkey { get; set; }
         public string Kontonr { get; set; }
