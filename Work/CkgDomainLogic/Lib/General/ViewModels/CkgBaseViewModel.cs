@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Contracts;
 using GeneralTools.Services;
@@ -7,10 +8,10 @@ namespace CkgDomainLogic.General.ViewModels
 {
     public class CkgBaseViewModel : Store 
     {
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IAppSettings AppSettings { get; private set; }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public ILogonContextDataService LogonContext { get; private set; }
 
 

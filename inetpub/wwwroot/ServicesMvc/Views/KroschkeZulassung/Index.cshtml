@@ -2,95 +2,12 @@
 
 @Html.Partial("Partial/Common")
 
-<style type="text/css">
-    .shopping-cart-menu {
-        display: inline;
-    }
-    .shopping-cart-menu span.badge {
-        padding-top: 6px;
-        padding-bottom: 4px;
-        padding-left: 4px;
-        padding-right: 6px;
-        margin-left: 22px;
-        font-size: 16px!important;
-        font-weight: normal;
-        height: 16px;
-        width: 16px;
-        background-color: #ffb848;
-        border-radius: 16px !important;
-        text-shadow: none !important;
-        float: none;
-        text-align: center;
-    }
-    .shopping-cart-menu .glyphicons i:before {
-        color: #707070!important;
-        margin-top: -3px;
-        margin-left: 30px;
-        background-color: transparent!important;
-        float: none;
-        font-size: 28px!important;
-    }
-    
-    .shopping-cart-body-inner 
-    {
-        margin-top: 0px;
-        margin-bottom: 35px;
-    }
-    .shopping-cart-body .portlet .caption i.icon-shopping-cart {
-        font-size: 18px;
-        margin-top: 2px;
-        margin-right: 10px;
-    }
-</style>
-
-<script type="text/javascript">
-
-    function ShoppingCartHide() {
-        $(".shopping-cart-body .portlet a.remove").trigger("click");
-    }
-
-    function ShoppingCartShow() {
-
-        var shoppingCardVisible = ($(".shopping-cart-body").html() !== '');
-        if (shoppingCardVisible) {
-            ShoppingCartHide();
-            return false;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "ShoppingCartGridShow",
-            data: {},
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-
-                $(".shopping-cart-body").html("");
-                $(".shopping-cart-body").append("<div class='shopping-cart-body-inner hide'></div>");
-                $(".shopping-cart-body-inner").html(result);
-                $(".shopping-cart-body-inner").slideDown(200);
-                FormPreparePrivateAjax();
-            }
-        });
-
-        return false;
-    };
-</script>
-
 <div class="page-title">
     @Localize.KroschkeZulassung  <small></small>
-    <span class="shopping-cart-menu">
-        <a href="#" onclick="return ShoppingCartShow();" class="dropdown-toggle glyphicons shopping_cart tooltips" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
-            data-original-title="Warenkorb anzeigen" data-placement="right">
-            <span class="badge">2</span>
-            <i></i>
-        </a>
-    </span>
+    @Html.Partial("ShoppingCart/Menu")
 </div>
-<div class="shopping-cart-body"></div>
+@Html.Partial("ShoppingCart/Common")
+
 
 <div class="portlet app-view beauftragung">
     

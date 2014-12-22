@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -347,5 +348,25 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion   
+
+
+        #region Shopping Cart 
+
+        public override void ShoppingCartDataInit()
+        {
+            ViewModel.WarenkorbDataInit();
+        }
+
+        public override IEnumerable ShoppingCartGetItems()
+        {
+            return ViewModel.WarenkorbFiltered;
+        }
+
+        public override void ShoppingCartFilterItems(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterWarenkorb(filterValue, filterColumns);
+        }
+
+        #endregion
     }
 }

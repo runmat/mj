@@ -4242,7 +4242,11 @@
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerSuche.cshtml" />
-    <Content Include="Views\Shared\Partial\ShoppingCartGrid.cshtml" />
+    <Content Include="Views\Shared\ShoppingCart\PortletGrid.cshtml" />
+    <Content Include="Views\Shared\ShoppingCart\Common.cshtml" />
+    <Content Include="Views\Shared\ShoppingCart\Grid.cshtml" />
+    <Content Include="Views\Shared\ShoppingCart\Menu.cshtml" />
+    <Content Include="Views\KroschkeZulassung\ShoppingCart\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -322,15 +322,80 @@ namespace CkgDomainLogic.General.Controllers
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
-                return ;
+                return;
 
             pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+        }
+
+        #endregion
+
+        
+        #region Shopping Cart (based on 'Persistance Service')
+
+        public virtual void ShoppingCartDataInit()
+        {
+        }
+
+        public virtual IEnumerable ShoppingCartGetItems()
+        {
+            return null;
+        }
+
+        public virtual void ShoppingCartFilterItems(string filterValue, string filterColumns)
+        {
         }
 
         [HttpPost]
         public ActionResult ShoppingCartGridShow()
         {
-            return PartialView("Partial/ShoppingCartGrid");
+            ShoppingCartDataInit();
+            return PartialView("ShoppingCart/PortletGrid");
+        }
+
+        [GridAction]
+        public ActionResult ShoppingCartAjaxBinding()
+        {
+            var items = ShoppingCartGetItems();
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridShoppingCart(string filterValue, string filterColumns)
+        {
+            ShoppingCartFilterItems(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult EditShoppingCartItem(int id)
+        {
+            //return PartialView("ShoppingCartPflege/ShoppingCartDetailsForm", ViewModel.GetItem(id).SetInsertMode(ViewModel.InsertMode));
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteShoppingCart(int id)
+        {
+            //ViewModel.RemoveItem(id);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ShoppingCartExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ShoppingCartGetItems().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Warenkorb", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ShoppingCartExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ShoppingCartGetItems().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
         #endregion
     }

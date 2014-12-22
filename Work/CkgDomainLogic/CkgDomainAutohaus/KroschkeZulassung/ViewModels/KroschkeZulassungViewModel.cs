@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -13,6 +14,7 @@ using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
 using CkgDomainLogic.Partner.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
 
@@ -20,22 +22,29 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 {
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IKroschkeZulassungDataService ZulassungDataService { get { return CacheGet<IKroschkeZulassungDataService>(); } }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IFahrzeugAkteBestandDataService FahrzeugAkteBestandDataService { get { return CacheGet<IFahrzeugAkteBestandDataService>(); } }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
 
+
+        [ScriptIgnore]
         public Vorgang Zulassung { get; set; }
-        //public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
 
         [XmlIgnore]
-        public List<KroschkeZulassungViewModel> Warenkorb { get; set; }
+        [LocalizedDisplay(LocalizeConstants.VIN)]
+        public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
         [XmlIgnore]
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
+
+
+        [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
         {
             get
@@ -49,16 +58,19 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             }
         }
 
+        [XmlIgnore, ScriptIgnore]
         public string[] StepKeys { get { return PropertyCacheGet(() => Steps.Select(s => s.Key).ToArray()); } }
 
+        [XmlIgnore, ScriptIgnore]
         public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
 
+        [XmlIgnore, ScriptIgnore]
         public string FirstStepPartialViewName
         {
             get { return string.Format("{0}", StepKeys[0]); }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public string SaveErrorMessage { get; set; }
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
@@ -86,7 +98,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Rechnungsdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Kunde> Kunden { get { return ZulassungDataService.Kunden; } }
 
         public void SetRechnungsdaten(Rechnungsdaten model)
@@ -142,7 +154,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Fahrzeugdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten; } }
 
         public void SetFahrzeugdaten(Fahrzeugdaten model)
@@ -164,17 +176,17 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region HalterAdresse
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public Adresse HalterAdresse
         {
             get { return Zulassung.Halterdaten; }
             set { Zulassung.Halterdaten = value; }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Adresse> HalterAdressen
         {
             // ReSharper disable ConvertClosureToMethodGroup
@@ -182,7 +194,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             // ReSharper restore ConvertClosureToMethodGroup
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Adresse> HalterAdressenFiltered
         {
             get { return PropertyCacheGet(() => HalterAdressen); }
@@ -248,7 +260,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Zulassungsdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Material> Zulassungsarten { get { return ZulassungDataService.Zulassungsarten; } }
 
         public void SetZulassungsdaten(Zulassungsdaten model)
@@ -304,7 +316,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region OptionenDienstleistungen
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return ZulassungDataService.Kennzeichengroessen; } }
 
         public void SetOptionenDienstleistungen(OptionenDienstleistungen model)
@@ -401,6 +413,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap);
         }
 
+        [XmlIgnore, ScriptIgnore]
         public string BeauftragungBezeichnung
         {
             get
@@ -414,7 +427,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         private GeneralEntity SummaryBeauftragungsHeader
         {
             get
@@ -476,6 +489,31 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             };
 
             return summaryModel;
+        }
+
+        #endregion
+
+
+        #region Shopping Cart
+
+        [XmlIgnore, ScriptIgnore]
+        public List<KroschkeZulassungViewModel> Warenkorb { get; set; }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<KroschkeZulassungViewModel> WarenkorbFiltered
+        {
+            get { return PropertyCacheGet(() => Warenkorb); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void WarenkorbDataInit()
+        {
+            PropertyCacheClear(this, m => m.WarenkorbFiltered);
+        }
+
+        public void FilterWarenkorb(string filterValue, string filterProperties)
+        {
+            WarenkorbFiltered = Warenkorb.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         #endregion
