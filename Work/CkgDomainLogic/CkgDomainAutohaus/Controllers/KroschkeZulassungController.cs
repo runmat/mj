@@ -36,7 +36,7 @@ namespace ServicesMvc.Controllers
             IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
             : base(appSettings, logonContext)
         {
-            if (System.Web.HttpContext.Current.Request.Url.AbsolutePath.ToLower().EndsWith("index"))
+            if (IsInitialRequestOf("Index"))
                 ViewModel = null;
 
             InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
