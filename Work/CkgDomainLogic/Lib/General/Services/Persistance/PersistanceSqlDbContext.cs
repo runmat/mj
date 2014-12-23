@@ -38,5 +38,10 @@ namespace CkgDomainLogic.General.Services
                 "EXEC PersistableObjectContainerSave {0}, {1}, {2}, {3}, {4}, {5}",
                 objectKey, ownerKey, groupKey, userName, objectType, objectData);
         }
+
+        public void DeletePersistedObject(string objectKey)
+        {
+            Database.ExecuteSqlCommand("delete from PersistableObjectContainer where ID = {0}", objectKey);
+        }
     }
 }

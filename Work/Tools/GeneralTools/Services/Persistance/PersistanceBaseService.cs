@@ -11,6 +11,8 @@ namespace GeneralTools.Services
 
         protected abstract void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData);
 
+        protected abstract void DeletePersistedObject(string objectKey);
+
 
         public IEnumerable<IPersistableObjectContainer> GetObjectContainers(string ownerKey, string groupKey)
         {
@@ -43,6 +45,11 @@ namespace GeneralTools.Services
             var objectData = XmlService.XmlSerializeToString(o);
 
             PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData);
+        }
+
+        public void DeleteObject(string objectKey)
+        {
+            DeletePersistedObject(objectKey);
         }
     }
 }

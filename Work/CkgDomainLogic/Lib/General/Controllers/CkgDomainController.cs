@@ -11,6 +11,7 @@ using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Controllers;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -302,6 +303,7 @@ namespace CkgDomainLogic.General.Controllers
             return LogonContext.UserName;
         }
 
+
         private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey)
         {
             var pService = LogonContext.PersistanceService;
@@ -327,19 +329,43 @@ namespace CkgDomainLogic.General.Controllers
             pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
+        protected void PersistanceDeleteObject(string objectKey)
+        {
+            var pService = LogonContext.PersistanceService;
+            if (pService == null)
+                return;
+
+            pService.DeleteObject(objectKey);
+        }
+
         #endregion
 
         
         #region Shopping Cart (based on 'Persistance Service')
 
+        protected virtual IEnumerable ShoppingCartLoadItems()
+        {
+            return null;
+        }
+
+        protected virtual void ShoppingCartEditItem(string objectKey)
+        {
+        }
+
+        protected virtual void ShoppingCartFilterItems(string filterValue, string filterProperties)
+        {
+        }
+
+        private static string ShoppingCartEditItemKeyCurrent
+        {
+            get { return SessionHelper.GetSessionString("ShoppingCartEditItemKeyCurrent"); }
+            set { SessionHelper.SetSessionValue("ShoppingCartEditItemKeyCurrent", value); }
+        }
+
         protected static IEnumerable ShoppingCartItems
         {
             get { return (IEnumerable)SessionHelper.GetSessionObject("ShoppingCartItems"); }
-            set
-            {
-                SessionHelper.SetSessionValue("ShoppingCartItems", value);
-                ShoppingCartDataInit();
-            }
+            set { SessionHelper.SetSessionValue("ShoppingCartItems", value); }
         }
 
         private static IEnumerable ShoppingCartItemsFiltered
@@ -348,35 +374,49 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("ShoppingCartItemsFiltered", value); }
         }
 
-        private static void ShoppingCartDataInit()
-        {
-            ShoppingCartItemsFiltered = ShoppingCartItems;
-        }
-
         protected static void ShoppingCartFilterGenericItems<T>(string filterValue, string filterProperties)
         {
             ShoppingCartItemsFiltered = ShoppingCartItems.Cast<T>().ToList().SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        protected void ShoppingCartLoadItems()
+        private static void ShoppingCartPushEditItemKey(string id)
         {
-            ShoppingCartItems = ShoppingCartGetItems();
+            ShoppingCartEditItemKeyCurrent = id;
         }
 
-        protected virtual IEnumerable ShoppingCartGetItems()
+        protected static string ShoppingCartPopEditItemKey()
         {
-            return null;
+            var id = ShoppingCartEditItemKeyCurrent;
+            ShoppingCartEditItemKeyCurrent = null;
+            return id;
         }
 
-        protected virtual void ShoppingCartFilterItems(string filterValue, string filterProperties)
+        protected void ShoppingCartLoadAndCacheItems()
         {
+            ShoppingCartItems = ShoppingCartLoadItems();
+            ShoppingCartItemsFiltered = ShoppingCartItems;
+        }
+
+        protected List<T> ShoppingCartLoadGenericItems<T>(string groupKey)
+        {
+            return PersistanceGetObjects<T>(groupKey);
+        }
+
+        protected object ShoppingCartGetItem(string id)
+        {
+            return ShoppingCartItems.Cast<Store>().FirstOrDefault(item => item.ObjectKey == id);
+        }
+
+        protected void ShoppingCartSaveItem(string groupKey, IPersistableObject o)
+        {
+            PersistanceSaveObject(groupKey, o);
         }
 
         [HttpPost]
         public ActionResult ShoppingCartGridShow()
         {
-            ShoppingCartLoadItems();
-            ShoppingCartDataInit();
+            ShoppingCartLoadAndCacheItems();
+
             return PartialView("ShoppingCart/PortletGrid");
         }
 
@@ -396,16 +436,19 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditShoppingCartItem(int id)
+        public ActionResult ShoppingCartItemEdit(string id)
         {
-            //return PartialView("ShoppingCartPflege/ShoppingCartDetailsForm", ViewModel.GetItem(id).SetInsertMode(ViewModel.InsertMode));
+            ShoppingCartPushEditItemKey(id);
+
             return new EmptyResult();
         }
 
         [HttpPost]
-        public ActionResult DeleteShoppingCart(int id)
+        public ActionResult ShoppingCartItemRemove(string id)
         {
-            //ViewModel.RemoveItem(id);
+            PersistanceDeleteObject(id);
+
+            ShoppingCartLoadAndCacheItems();
 
             return new EmptyResult();
         }

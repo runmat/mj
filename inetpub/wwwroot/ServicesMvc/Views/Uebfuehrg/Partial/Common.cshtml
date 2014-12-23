@@ -84,7 +84,7 @@
         });
 
         FormWizard.OnRestart(function () {
-            location.reload();
+            LocationReloadWithoutQueryString();
         });
 
         if ($(".alert-error").length > 0)

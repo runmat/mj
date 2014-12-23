@@ -194,6 +194,7 @@
     <EmbeddedResource Include="Resources\CommonResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\CommonResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -22,6 +22,13 @@ namespace CkgDomainLogic.General.Services
             ct.PersistObject(objectKey, ownerKey, groupKey, userName, objectType, objectData);
         }
 
+        protected override void DeletePersistedObject(string objectKey)
+        {
+            var ct = CreateDbContext();
+
+            ct.DeletePersistedObject(objectKey);
+        }
+
 
         private static PersistanceSqlDbContext CreateDbContext()
         {
