@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -14,7 +13,6 @@ using CkgDomainLogic.Partner.Contracts;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 
@@ -53,6 +51,7 @@ namespace ServicesMvc.Controllers
             if (halterNr.IsNotNullOrEmpty())
                 ViewModel.SetParamHalter(halterNr);
 
+            ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
 
             return View(ViewModel);
@@ -129,21 +128,9 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
-
-                Test();
             }
 
             return PartialView("Partial/FahrzeugdatenForm", model);
-        }
-
-        void Test()
-        {
-            var path = Path.Combine(AppSettings.DataPath, @"AhZulassung_01.xml");
-            XmlService.XmlSerializeToFile(ViewModel, path);
-            
-            var savedVm = XmlService.XmlDeserializeFromFile<KroschkeZulassungViewModel>(path);
-            InitViewModel(savedVm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-            savedVm.DataMarkForRefresh();
         }
 
         #endregion
@@ -279,7 +266,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Save()
         {
-            ShoppingCartSaveItem();
+            ShoppingCartItemSave();
             ViewModel.Save(false);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -289,6 +276,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Receipt()
         {
             ViewModel.Save(true);
+            ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -349,7 +337,7 @@ namespace ServicesMvc.Controllers
             ViewModel = vm;
         }
 
-        private void ShoppingCartSaveItem()
+        private void ShoppingCartItemSave()
         {
             ShoppingCartSaveItem(ShoppingCartPersistanceKey, ViewModel);
         }

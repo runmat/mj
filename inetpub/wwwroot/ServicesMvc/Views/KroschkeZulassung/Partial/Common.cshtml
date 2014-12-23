@@ -12,6 +12,7 @@
     function FormPreparePrivate() {
         try { FormWizardInitPrivate(); } catch (e) { }
         try { MultiSelectPreparePrivate(); } catch (e) { }
+        ShoppingCartMenuRefreshCount();
     };
 
     function FormPreparePrivateAjax() {
@@ -83,9 +84,10 @@
     }
 
     function AjaxRequestNextStep() {
+        var nextTabKey = FormWizard.GetNextTabKey();
         $.ajax({
             type: "POST",
-            url: FormWizard.GetNextTabKey(),
+            url: nextTabKey,
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -95,6 +97,9 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
+                
+                if (nextTabKey.toLowerCase() == "receipt")
+                    ShoppingCartMenuRefreshCount();
             }
         });
     }
@@ -111,6 +116,8 @@
                     return;
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                FormPreparePrivateAjax();
+                ShoppingCartMenuRefreshCount();
             }
         });
     }

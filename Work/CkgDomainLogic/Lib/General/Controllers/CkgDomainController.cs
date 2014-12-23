@@ -331,6 +331,9 @@ namespace CkgDomainLogic.General.Controllers
 
         protected void PersistanceDeleteObject(string objectKey)
         {
+            if (objectKey.IsNullOrEmpty())
+                return;
+
             var pService = LogonContext.PersistanceService;
             if (pService == null)
                 return;
@@ -410,6 +413,7 @@ namespace CkgDomainLogic.General.Controllers
         protected void ShoppingCartSaveItem(string groupKey, IPersistableObject o)
         {
             PersistanceSaveObject(groupKey, o);
+            ShoppingCartLoadAndCacheItems();
         }
 
         [HttpPost]
@@ -467,6 +471,13 @@ namespace CkgDomainLogic.General.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        public ActionResult ShoppingCartMenuRefreshCount()
+        {
+            var count = ShoppingCartItems.Cast<object>().Count();
+            
+            return Json(new { count = count });
         }
 
         #endregion

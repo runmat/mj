@@ -107,10 +107,24 @@
             loadingShow: false,
             success: function () {
                 FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
             }
         });
     }
 
+
+    function ShoppingCartMenuRefreshCount() {
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartMenuRefreshCount",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                alert(result.count);
+                $(".shopping-cart-menu a span.badge").html(result.count);
+            }
+        });
+    }
 
     function FormPreparePrivateGridShoppingCard() {
         FormPreparePrivateAjax();
