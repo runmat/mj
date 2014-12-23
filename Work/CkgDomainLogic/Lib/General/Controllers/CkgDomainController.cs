@@ -332,22 +332,50 @@ namespace CkgDomainLogic.General.Controllers
         
         #region Shopping Cart (based on 'Persistance Service')
 
-        public virtual void ShoppingCartDataInit()
+        protected static IEnumerable ShoppingCartItems
         {
+            get { return (IEnumerable)SessionHelper.GetSessionObject("ShoppingCartItems"); }
+            set
+            {
+                SessionHelper.SetSessionValue("ShoppingCartItems", value);
+                ShoppingCartDataInit();
+            }
         }
 
-        public virtual IEnumerable ShoppingCartGetItems()
+        private static IEnumerable ShoppingCartItemsFiltered
+        {
+            get { return (IEnumerable)SessionHelper.GetSessionObject("ShoppingCartItemsFiltered"); }
+            set { SessionHelper.SetSessionValue("ShoppingCartItemsFiltered", value); }
+        }
+
+        private static void ShoppingCartDataInit()
+        {
+            ShoppingCartItemsFiltered = ShoppingCartItems;
+        }
+
+        protected static void ShoppingCartFilterGenericItems<T>(string filterValue, string filterProperties)
+        {
+            ShoppingCartItemsFiltered = ShoppingCartItems.Cast<T>().ToList().SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        protected void ShoppingCartLoadItems()
+        {
+            ShoppingCartItems = ShoppingCartGetItems();
+        }
+
+        protected virtual IEnumerable ShoppingCartGetItems()
         {
             return null;
         }
 
-        public virtual void ShoppingCartFilterItems(string filterValue, string filterColumns)
+        protected virtual void ShoppingCartFilterItems(string filterValue, string filterProperties)
         {
         }
 
         [HttpPost]
         public ActionResult ShoppingCartGridShow()
         {
+            ShoppingCartLoadItems();
             ShoppingCartDataInit();
             return PartialView("ShoppingCart/PortletGrid");
         }
@@ -355,7 +383,7 @@ namespace CkgDomainLogic.General.Controllers
         [GridAction]
         public ActionResult ShoppingCartAjaxBinding()
         {
-            var items = ShoppingCartGetItems();
+            var items = ShoppingCartItemsFiltered;
             return View(new GridModel(items));
         }
 
@@ -384,7 +412,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartGetItems().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Warenkorb", dt);
 
             return new EmptyResult();
@@ -392,11 +420,12 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartGetItems().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
+
         #endregion
     }
 }

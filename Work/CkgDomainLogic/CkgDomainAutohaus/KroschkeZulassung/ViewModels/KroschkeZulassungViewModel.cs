@@ -492,30 +492,5 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         }
 
         #endregion
-
-
-        #region Shopping Cart
-
-        [XmlIgnore, ScriptIgnore]
-        public List<KroschkeZulassungViewModel> Warenkorb { get; set; }
-
-        [XmlIgnore, ScriptIgnore]
-        public List<KroschkeZulassungViewModel> WarenkorbFiltered
-        {
-            get { return PropertyCacheGet(() => Warenkorb); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        public void WarenkorbDataInit()
-        {
-            PropertyCacheClear(this, m => m.WarenkorbFiltered);
-        }
-
-        public void FilterWarenkorb(string filterValue, string filterProperties)
-        {
-            WarenkorbFiltered = Warenkorb.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
-        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -45,40 +46,12 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Index(string fin, string halterNr)
         {
-            //var list = PersistanceGetObjectContainers("KroschkeZulassung").ToListOrEmptyList();
-            //var item = list.LastOrDefault();
-            //KroschkeZulassungViewModel vm = null;
-            //if (item != null)
-            //{
-            //    PersistanceObjectKeyCurrent = item.ObjectKey;
-            //    vm = (KroschkeZulassungViewModel)item.Object;
-            //    InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-            //    vm.DataMarkForRefresh();
-            //    var key = item.ObjectKey;
-            //    var data = item.ObjectData;
-            //}
-
             ViewModel.DataInit();
 
             ViewModel.SetParamFahrzeugAkte(fin);
             
             if (halterNr.IsNotNullOrEmpty())
                 ViewModel.SetParamHalter(halterNr);
-
-            
-            // <Warenkorb Test>
-            var objectKey = ConfigurationManager.AppSettings["TestPersistanceObjectKey"];
-            var list = PersistanceGetObjects<KroschkeZulassungViewModel>("KroschkeZulassung");
-            var vm = list.FirstOrDefault(o => o.ObjectKey == objectKey);
-            if (vm != null)
-            {
-                InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-                vm.DataMarkForRefresh();
-                ViewModel = vm;
-            }
-            ViewModel.Warenkorb = list;
-            // </Warenkorb Test>
-
 
             return View(ViewModel);
         }
@@ -352,19 +325,27 @@ namespace ServicesMvc.Controllers
 
         #region Shopping Cart 
 
-        public override void ShoppingCartDataInit()
+        protected override IEnumerable ShoppingCartGetItems()
         {
-            ViewModel.WarenkorbDataInit();
+            var list = PersistanceGetObjects<KroschkeZulassungViewModel>("KroschkeZulassung");
+
+            // <Warenkorb Test>
+            var objectKey = ConfigurationManager.AppSettings["TestPersistanceObjectKey"];
+            var vm = list.FirstOrDefault(o => o.ObjectKey == objectKey);
+            if (vm != null)
+            {
+                InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+                vm.DataMarkForRefresh();
+                ViewModel = vm;
+            }
+            // </Warenkorb Test>
+
+            return list;
         }
 
-        public override IEnumerable ShoppingCartGetItems()
+        protected override void ShoppingCartFilterItems(string filterValue, string filterProperties)
         {
-            return ViewModel.WarenkorbFiltered;
-        }
-
-        public override void ShoppingCartFilterItems(string filterValue, string filterColumns)
-        {
-            ViewModel.FilterWarenkorb(filterValue, filterColumns);
+            ShoppingCartFilterGenericItems<KroschkeZulassungViewModel>(filterValue, filterProperties);
         }
 
         #endregion
