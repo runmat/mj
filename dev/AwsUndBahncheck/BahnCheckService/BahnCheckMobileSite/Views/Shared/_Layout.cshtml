@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>My Page</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	
+        <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    
+        <link rel="stylesheet" href="@Url.Content("~/Content/JQM/css/themes/A.css")" />
+
+        <link rel="stylesheet" href="@Url.Content("~/JQM/jquery.mobile-1.2.0.min.css")" />
+
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")"></script>
+
+        <script type="text/javascript" src="@Url.Content("~/JQM/jquery.mobile-1.2.0.min.js")"></script>
+</head> 
+
+<body> 
+
+    <div data-theme="a" data-role="page">
+
+        <div data-role="header">
+            <h3>Matzi's Bahn</h3>
+        </div>
+
+        @RenderBody()
+    </div>
+
+</body>
+
+</html>

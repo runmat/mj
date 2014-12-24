@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BahnCheckModelStoreContainer" CdmEntityContainer="RbEntities">
+    <EntitySetMapping Name="RbRequest">
+      <EntityTypeMapping TypeName="BahnCheckModel.RbRequest">
+        <MappingFragment StoreEntitySet="RbRequest">
+          <ScalarProperty Name="ProcessingStartDate" ColumnName="ProcessingStartDate" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="InsDate" ColumnName="InsDate" />
+          <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+          <ScalarProperty Name="Bahnhof" ColumnName="Bahnhof" />
+          <ScalarProperty Name="Zug" ColumnName="Zug" />
+          <ScalarProperty Name="Abfahrt" ColumnName="Abfahrt" />
+          <ScalarProperty Name="Auskunft" ColumnName="Auskunft" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RbStamm">
+      <EntityTypeMapping TypeName="BahnCheckModel.RbStamm">
+        <MappingFragment StoreEntitySet="RbStamm">
+          <ScalarProperty Name="Zugnummer" ColumnName="Zugnummer" />
+          <ScalarProperty Name="Abfahrt" ColumnName="Abfahrt" />
+          <ScalarProperty Name="Bahnhof" ColumnName="Bahnhof" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

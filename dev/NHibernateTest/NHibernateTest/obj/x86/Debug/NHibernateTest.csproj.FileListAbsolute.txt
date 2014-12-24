@@ -15,3 +15,11 @@ C:\Users\JenzenM\Documents\mj\NHibernateTest\NHibernateTest\obj\x86\Debug\NHiber
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.exe.config
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.exe
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.pdb
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.exe
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.pdb
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\FluentNHibernate.dll
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\Iesi.Collections.dll
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernate.dll
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\Iesi.Collections.xml
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernate.xml
+C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.csprojResolveAssemblyReference.cache

@@ -1,0 +1,12 @@
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\General\Contracts\CalendarService\bin\Debug\CalendarService.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\General\Contracts\CalendarService\bin\Debug\CalendarService.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\General\Contracts\CalendarService\obj\Debug\CalendarService.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\General\Contracts\CalendarService\obj\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\General\Contracts\CalendarService\bin\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\General\Contracts\CalendarService\bin\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\General\Contracts\CalendarService\obj\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\General\Contracts\CalendarService\obj\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\bin\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\bin\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.pdb

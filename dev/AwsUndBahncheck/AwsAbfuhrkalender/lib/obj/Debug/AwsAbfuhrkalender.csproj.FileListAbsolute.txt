@@ -1,0 +1,27 @@
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\bin\Debug\AwsAbfuhrkalender.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\bin\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\obj\Debug\AwsAbfuhrkalender.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\obj\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\bin\Debug\CalendarService.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\bin\Debug\CalendarService.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsImport\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.dll
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.pdb

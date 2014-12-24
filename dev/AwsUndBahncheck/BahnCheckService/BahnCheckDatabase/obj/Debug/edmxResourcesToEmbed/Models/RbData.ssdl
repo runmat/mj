@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BahnCheckModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="BahnCheckModelStoreContainer">
+    <EntitySet Name="RbRequest" EntityType="BahnCheckModel.Store.RbRequest" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RbStamm" EntityType="BahnCheckModel.Store.RbStamm" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="RbRequest">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="InsDate" Type="datetime" Nullable="false" />
+    <Property Name="ProcessingStartDate" Type="datetime" />
+    <Property Name="UpdDate" Type="datetime" />
+    <Property Name="Bahnhof" Type="varchar" MaxLength="50" />
+    <Property Name="Zug" Type="varchar" MaxLength="50" />
+    <Property Name="Abfahrt" Type="datetime" />
+    <Property Name="Auskunft" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="RbStamm">
+    <Key>
+      <PropertyRef Name="Zugnummer" />
+    </Key>
+    <Property Name="Zugnummer" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Abfahrt" Type="time" Nullable="false" />
+    <Property Name="Bahnhof" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+</Schema>

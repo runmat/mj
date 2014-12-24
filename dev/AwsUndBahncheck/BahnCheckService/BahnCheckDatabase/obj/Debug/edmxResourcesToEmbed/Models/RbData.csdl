@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BahnCheckModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="RbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="RbRequest" EntityType="BahnCheckModel.RbRequest" />
+    <EntitySet Name="RbStamm" EntityType="BahnCheckModel.RbStamm" />
+  </EntityContainer>
+  <EntityType Name="RbRequest">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="InsDate" Type="DateTime" Nullable="false" />
+    <Property Name="UpdDate" Type="DateTime" />
+    <Property Name="Bahnhof" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Zug" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Abfahrt" Type="DateTime" />
+    <Property Name="Auskunft" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Type="DateTime" Name="ProcessingStartDate" />
+  </EntityType>
+  <EntityType Name="RbStamm">
+    <Key>
+      <PropertyRef Name="Zugnummer" />
+    </Key>
+    <Property Name="Zugnummer" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Abfahrt" Type="Time" Nullable="false" />
+    <Property Name="Bahnhof" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+  </EntityType>
+</Schema>

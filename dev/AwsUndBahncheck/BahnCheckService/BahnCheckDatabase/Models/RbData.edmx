@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BahnCheckModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="BahnCheckModelStoreContainer">
+          <EntitySet Name="RbRequest" EntityType="BahnCheckModel.Store.RbRequest" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RbStamm" EntityType="BahnCheckModel.Store.RbStamm" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="RbRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="InsDate" Type="datetime" Nullable="false" />
+          <Property Name="ProcessingStartDate" Type="datetime" />
+          <Property Name="UpdDate" Type="datetime" />
+          <Property Name="Bahnhof" Type="varchar" MaxLength="50" />
+          <Property Name="Zug" Type="varchar" MaxLength="50" />
+          <Property Name="Abfahrt" Type="datetime" />
+          <Property Name="Auskunft" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="RbStamm">
+          <Key>
+            <PropertyRef Name="Zugnummer" />
+          </Key>
+          <Property Name="Zugnummer" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Abfahrt" Type="time" Nullable="false" />
+          <Property Name="Bahnhof" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BahnCheckModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RbRequest" EntityType="BahnCheckModel.RbRequest" />
+          <EntitySet Name="RbStamm" EntityType="BahnCheckModel.RbStamm" />
+        </EntityContainer>
+        <EntityType Name="RbRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InsDate" Type="DateTime" Nullable="false" />
+          <Property Name="UpdDate" Type="DateTime" />
+          <Property Name="Bahnhof" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Zug" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Abfahrt" Type="DateTime" />
+          <Property Name="Auskunft" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Type="DateTime" Name="ProcessingStartDate" />
+        </EntityType>
+        <EntityType Name="RbStamm">
+          <Key>
+            <PropertyRef Name="Zugnummer" />
+          </Key>
+          <Property Name="Zugnummer" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Abfahrt" Type="Time" Nullable="false" />
+          <Property Name="Bahnhof" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BahnCheckModelStoreContainer" CdmEntityContainer="RbEntities">
+          <EntitySetMapping Name="RbRequest"><EntityTypeMapping TypeName="BahnCheckModel.RbRequest"><MappingFragment StoreEntitySet="RbRequest">
+            <ScalarProperty Name="ProcessingStartDate" ColumnName="ProcessingStartDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="InsDate" ColumnName="InsDate" />
+            <ScalarProperty Name="UpdDate" ColumnName="UpdDate" />
+            <ScalarProperty Name="Bahnhof" ColumnName="Bahnhof" />
+            <ScalarProperty Name="Zug" ColumnName="Zug" />
+            <ScalarProperty Name="Abfahrt" ColumnName="Abfahrt" />
+            <ScalarProperty Name="Auskunft" ColumnName="Auskunft" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="RbStamm"><EntityTypeMapping TypeName="BahnCheckModel.RbStamm"><MappingFragment StoreEntitySet="RbStamm">
+            <ScalarProperty Name="Zugnummer" ColumnName="Zugnummer" />
+            <ScalarProperty Name="Abfahrt" ColumnName="Abfahrt" />
+            <ScalarProperty Name="Bahnhof" ColumnName="Bahnhof" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="RbData">
+        <EntityTypeShape EntityType="BahnCheckModel.RbRequest" Width="1.5" PointX="0.75" PointY="0.75" Height="2.085348307291667" IsExpanded="true" />
+        <EntityTypeShape EntityType="BahnCheckModel.RbStamm" Width="1.5" PointX="2.75" PointY="0.75" Height="1.4279589843749996" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
