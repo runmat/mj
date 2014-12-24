@@ -25,3 +25,10 @@ C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debu
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.csprojResolveAssemblyReference.cache
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.dll
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.dll
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\AwsAbfuhrkalender.pdb
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.dll
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\bin\Debug\CalendarService.pdb
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.dll
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\AwsAbfuhrkalender\lib\obj\Debug\AwsAbfuhrkalender.pdb

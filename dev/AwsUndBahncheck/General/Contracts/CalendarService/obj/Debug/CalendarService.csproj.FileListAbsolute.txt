@@ -10,3 +10,8 @@ C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarServ
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\bin\Debug\CalendarService.pdb
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.dll
 C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.pdb
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\bin\Debug\CalendarService.dll
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\bin\Debug\CalendarService.pdb
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.dll
+C:\Users\Matz\Documents\mj\dev\AwsUndBahncheck\General\Contracts\CalendarService\obj\Debug\CalendarService.pdb
