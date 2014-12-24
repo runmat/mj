@@ -29,16 +29,5 @@ namespace AwsAbfuhrkalenderApp
             var googleCalendarService = new GoogleCalendarService();
             googleCalendarService.ImportCalendarItems(itemList);
         }
-
-        //static void ExcelImport()
-        //{
-        //    const int year = 2013;
-
-        //    var excelFileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), string.Format("aws_{0}.xlsx", year));
-
-        //    var awsImport = AwsExcelImportServiceFactory.Create();
-        //    awsImport.CalendarService = new GoogleCalendarService();
-        //    //awsImport.Import(excelFileName, year);
-        //}
     }
 }
