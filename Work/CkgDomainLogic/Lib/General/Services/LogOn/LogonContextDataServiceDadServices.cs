@@ -168,6 +168,8 @@ namespace CkgDomainLogic.General.Services
                     RewriteUrlToLogPageVisit(ua);
                 });
 
+            dbContext.SetLastLogin(DateTime.Now);
+
             return true;
         }
 
