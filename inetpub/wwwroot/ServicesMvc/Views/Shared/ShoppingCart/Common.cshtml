@@ -46,8 +46,11 @@
         border: none!important;
         border-left: 1px solid #f3f3f3!important;
     }
+    .shopping-cart-item-selection-count {
+        margin-right: 15px;
+    }
     
-    .t-grid tbody td button.btn {
+    .t-grid tbody td button.btn, .btn.rounded {
         border-radius: 16px !important;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35)!important;
     }
@@ -56,7 +59,7 @@
         background-color: #FCF3C7!important;
     }
     .t-grid-selected-alt {
-        background-color: #FBF6DC!important;
+        background-color: #FFFAE0!important;
     }
     .t-grid-multi-row-select {
         cursor: default!important;
@@ -143,7 +146,32 @@
 
         return false;
     }
+    
+    function ShoppingCartMultiSelectedItemsSubmit() {
 
+        SpanAlertWarning("ShoppingCartSubmitWaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartMultiSelectedItemsSubmit",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertWarningHide("ShoppingCartSubmitWaitHint");
+                if (result.success) {
+                    SpanAlertSuccess("ShoppingCartSubmitWaitHint", '@Localize.OK.ToJavascriptString()', 2000);
+                }
+                FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
+
+                _gridShoppingCart_MultiSelectItemCount = 0;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+            }
+        });
+
+        return false;        
+    }
+    
 
     function ShoppingCartMenuRefreshCount() {
         $.ajax({
@@ -160,6 +188,8 @@
     function FormPreparePrivateGridShoppingCard() {
         FormPreparePrivateAjax();
         GridAllColumnFilterApplyToGrid("GridShoppingCart");
+
+        $("#GridShoppingCart .dataTables_length label").prepend("<span class='shopping-cart-item-selection-count hide'></span>");
     }
 
     function OnDataBound_GridShoppingCart() {
@@ -202,12 +232,12 @@
     function GridShoppingCart_MultiSelectItemCountRefresh() {
         var count = _gridShoppingCart_MultiSelectItemCount;
         if (count == 0) {
-            $("#ShoppingCartItemSelectionCount").addClass('hide');
+            $(".shopping-cart-item-selection-count").addClass('hide');
             return;
         }
 
-        $("#ShoppingCartItemSelectionCount").removeClass('hide');
-        $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $(".shopping-cart-item-selection-count").removeClass('hide');
+        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
     }
 
     function GridShoppingCart_OnAllSelectionChange(check) {
@@ -218,11 +248,7 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                //var count = result.allSelectionCount;
                 GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
-
-                //$("#csv-upload-reset > span.found-count").text(result.allFoundCount);
-                //$("#csv-upload-reset > span.all-count").text(result.allCount);
                 FilterGrid("GridShoppingCart");
             }
         });
@@ -230,16 +256,22 @@
 
     function GridShoppingCart_MultiSelectUpdate(count) {
         if (count == 0) {
-            $("#ShoppingCartItemSelectionCount").addClass('hide');
+            $(".shopping-cart-item-selection-count").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
             $.uniform.update($("#uncheckAllRecords"));
             return;
         }
 
-        $("#ShoppingCartItemSelectionCount").removeClass('hide');
-        $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' ausgewählt!');
+        $(".shopping-cart-item-selection-count").removeClass('hide');
+        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }   
+    
+    function GridShoppingCart_MultiSelectItemCountHint(count) {
+        return  '<button onclick="return ShoppingCartMultiSelectedItemsSubmit();" class="btn blue rounded">' +
+                '<i class="icon-chevron-right margin-right-10"></i>' + 
+                 count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+    }
     
 </script>

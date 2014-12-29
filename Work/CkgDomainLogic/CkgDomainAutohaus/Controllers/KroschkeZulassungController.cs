@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -38,7 +41,6 @@ namespace ServicesMvc.Controllers
                 ViewModel = null;
 
             InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
-            InitModelStatics();
         }
 
         [CkgApplication]
@@ -55,11 +57,6 @@ namespace ServicesMvc.Controllers
             ShoppingCartTryEditItemAsViewModel();
 
             return View(ViewModel);
-        }
-
-        void InitModelStatics()
-        {
-            Vorgang.GetViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
@@ -267,7 +264,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Save()
         {
             ShoppingCartItemSave();
-            ViewModel.Save(false);
+            ViewModel.Save(ViewModel.Zulassung, false);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -275,7 +272,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-            ViewModel.Save(true);
+            ViewModel.Save(ViewModel.Zulassung, true);
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -345,6 +342,28 @@ namespace ServicesMvc.Controllers
         protected override void ShoppingCartFilterItems(string filterValue, string filterProperties)
         {
             ShoppingCartFilterGenericItems<KroschkeZulassungViewModel>(filterValue, filterProperties);
+        }
+
+        [HttpPost]
+        public override JsonResult ShoppingCartMultiSelectedItemsSubmit()
+        {
+            var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
+
+            foreach (var vm in warenkorb)
+            {
+                InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+                vm.DataMarkForRefresh();
+
+                ViewModel.Save(vm.Zulassung, true);
+
+                if (ViewModel.SaveErrorMessage.IsNotNullOrEmpty())
+                    break;
+
+                ShoppingCartItemRemove(vm.ObjectKey);
+            }
+
+
+            return Json(new { success = ViewModel.SaveErrorMessage.IsNullOrEmpty() });
         }
 
         #endregion

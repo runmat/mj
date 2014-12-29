@@ -21,8 +21,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 
         Bankdaten GetBankdaten(string iban);
 
-        string GetZulassungskreis();
+        string GetZulassungskreis(Vorgang zulassung);
 
-        string SaveZulassung(bool saveDataInSap);
+        string SaveZulassung(Vorgang zulassung, bool saveDataInSap);
     }
 }

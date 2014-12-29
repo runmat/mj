@@ -15,8 +15,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 {
     public class KroschkeZulassungDataServiceSAP : CkgGeneralDataServiceSAP, IKroschkeZulassungDataService
     {
-        public Vorgang Zulassung { get { return Vorgang.GetViewModel().Zulassung; } }
-
         public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 
         public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
@@ -100,9 +98,9 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return AppModelMappings.Z_ZLD_AH_MATERIAL_GT_MAT_To_Material.Copy(sapList);
         }
 
-        public string GetZulassungskreis()
+        public string GetZulassungskreis(Vorgang zulassung)
         {
-            Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", Zulassung.Halterdaten.PLZ, Zulassung.Halterdaten.Ort);
+            Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", zulassung.Halterdaten.PLZ, zulassung.Halterdaten.Ort);
 
             var sapList = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithExecute(SAP);
 
@@ -137,14 +135,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return AppModelMappings.Z_DPM_READ_LV_001_GT_OUT_DL_To_Zusatzdienstleistung.Copy(sapList).OrderBy(x => x.Name);
         }
 
-        private IEnumerable<Kennzeichengroesse> LoadKennzeichengroessenFromSql()
+        private static IEnumerable<Kennzeichengroesse> LoadKennzeichengroessenFromSql()
         {
             var ct = CreateDbContext();
 
             return ct.GetKennzeichengroessen();
         }
 
-        private bool GetSapId()
+        private bool GetSapId(Vorgang vorgang)
         {
             Z_ZLD_EXPORT_BELNR.Init(SAP);
 
@@ -153,18 +151,20 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             if (String.IsNullOrEmpty(tmpId) || tmpId.TrimStart('0').Length == 0)
                 return false;
 
-            Zulassung.BelegNr = tmpId;
+            vorgang.BelegNr = tmpId;
 
             return true;
         }
 
-        public string SaveZulassung(bool saveDataInSap)
+        public string SaveZulassung(Vorgang zulassung, bool saveDataInSap)
         {
-            var blnCpdKunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
+            var blnCpdKunde = zulassung.Rechnungsdaten.Kunde.Cpdkunde;
 
-            var blnBelegNrLeer = (String.IsNullOrEmpty(Zulassung.BelegNr) || Zulassung.BelegNr.TrimStart('0').Length == 0);
+            var blnBelegNrLeer = (String.IsNullOrEmpty(zulassung.BelegNr) || zulassung.BelegNr.TrimStart('0').Length == 0);
 
-            if (blnBelegNrLeer && !GetSapId())
+            var vorgaenge = new List<Vorgang> { zulassung };
+
+            if (blnBelegNrLeer && !GetSapId(zulassung))
                 return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
 
             Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
@@ -178,29 +178,27 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             if (blnCpdKunde)
                 SAP.SetImportParameter("I_FORMULAR", "X");
 
-            var vorgaenge = new List<Vorgang> { Zulassung };
-
             var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(vorgaenge).ToList();
             SAP.ApplyImport(bakList);
 
             var positionen = new List<Zusatzdienstleistung> { new Zusatzdienstleistung
                 {
-                    BelegNr = Zulassung.BelegNr,
+                    BelegNr = zulassung.BelegNr,
                     PositionsNr = "10",
-                    MaterialNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr,
+                    MaterialNr = zulassung.Zulassungsdaten.ZulassungsartMatNr,
                     Menge = "1"
                 } };
 
-            Zulassung.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = Zulassung.BelegNr);
-            positionen.AddRange(Zulassung.OptionenDienstleistungen.GewaehlteDienstleistungen);
+            zulassung.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = zulassung.BelegNr);
+            positionen.AddRange(zulassung.OptionenDienstleistungen.GewaehlteDienstleistungen);
 
             var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
             SAP.ApplyImport(posList);
 
-            if (!String.IsNullOrEmpty(Zulassung.BankAdressdaten.Rechnungsempfaenger.Name1))
+            if (!String.IsNullOrEmpty(zulassung.BankAdressdaten.Rechnungsempfaenger.Name1))
             {
-                Zulassung.BankAdressdaten.Rechnungsempfaenger.BelegNr = Zulassung.BelegNr;
-                var adressen = new List<Adressdaten> { Zulassung.BankAdressdaten.Rechnungsempfaenger };
+                zulassung.BankAdressdaten.Rechnungsempfaenger.BelegNr = zulassung.BelegNr;
+                var adressen = new List<Adressdaten> { zulassung.BankAdressdaten.Rechnungsempfaenger };
 
                 var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                 SAP.ApplyImport(adrsList);
@@ -221,14 +219,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             var fileNames = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
 
             if (saveDataInSap && fileNames.Count > 0)
-                Zulassung.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", PfadAuftragszettel, fileNames[0].FILENAME.Split('/')[1], Zulassung.BelegNr.PadLeft(10, '0'));
+                zulassung.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", PfadAuftragszettel, fileNames[0].FILENAME.Split('/')[1], zulassung.BelegNr.PadLeft(10, '0'));
             else
-                Zulassung.AuftragszettelPdfPfad = "";
+                zulassung.AuftragszettelPdfPfad = "";
 
             if (blnCpdKunde)
-                Zulassung.KundenformularPdf = SAP.GetExportParameterByte("E_PDF");
+                zulassung.KundenformularPdf = SAP.GetExportParameterByte("E_PDF");
             else
-                Zulassung.KundenformularPdf = null;
+                zulassung.KundenformularPdf = null;
 
             return "";
         }

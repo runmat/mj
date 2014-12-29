@@ -252,7 +252,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         public string LoadKfzKreisAusHalterAdresse()
         {
-            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis();
+            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis(Zulassung);
         }
 
         #endregion
@@ -408,9 +408,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(bool saveDataInSap)
+        public void Save(Vorgang zulassung, bool saveDataInSap)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap);
+            SaveErrorMessage = ZulassungDataService.SaveZulassung(zulassung, saveDataInSap);
         }
 
         [XmlIgnore, ScriptIgnore]

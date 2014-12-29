@@ -4,12 +4,7 @@
     var currentController = ViewContext.RouteData.GetRequiredString("controller");
 }
 
-<h4>
-    @Localize.Selection
-    <span id="ShoppingCartItemSelectionCount" class="alert alert-warning margin-left-15 hide">
-        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-    </span>
-</h4> 
+@Html.SpanAlert("ShoppingCartSubmitWaitHint")
 
 @(Html.Telerik()
     .Grid<KroschkeZulassungViewModel>()

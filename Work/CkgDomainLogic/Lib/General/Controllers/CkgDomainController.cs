@@ -482,7 +482,7 @@ namespace CkgDomainLogic.General.Controllers
 
         protected static List<Store> ShoppingCartItemsFilteredAsStore
         {
-            get { return ShoppingCartItemsFiltered.Cast<Store>().ToListOrEmptyList(); }
+            get { return ShoppingCartItems.Cast<Store>().ToListOrEmptyList(); }
         }
 
 
@@ -520,6 +520,14 @@ namespace CkgDomainLogic.General.Controllers
 
             return Json(new { allSelectionCount, allCount });
         }
+
+        [HttpPost]
+        public virtual JsonResult ShoppingCartMultiSelectedItemsSubmit()
+        {
+            return Json(new { success = true });
+        }
+
+        
 
         //
         // </Multi Selection>

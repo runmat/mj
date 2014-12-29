@@ -257,9 +257,17 @@
         span.find("span").html(message);
         span.fadeIn(300).delay(delay).fadeOut(300);
     }
+    
+    function SpanAlertHide(id) {
+        var span = $("#" + id);
+        span.hide();
+    }
 
     function SpanAlertWarning(id, message, delay) {
         SpanAlert(id + "Warning", message, delay);
+    }
+    function SpanAlertWarningHide(id) {
+        SpanAlertHide(id + "Warning");
     }
 
     function SpanAlertSuccess(id, message, delay) {
@@ -274,7 +282,7 @@
         var errorHeader = '@Localize.SystemErrorOccurred';
         SpanAlert(id + "Error", errorHeader + ' <br />' + getAjaxErrorMessage(jqXhr), 10000);
     }
-    
+
 
 
     // <Grid Multi Select>
