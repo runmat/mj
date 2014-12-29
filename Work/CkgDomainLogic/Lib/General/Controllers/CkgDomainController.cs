@@ -477,8 +477,54 @@ namespace CkgDomainLogic.General.Controllers
         {
             var count = ShoppingCartItems.Cast<object>().Count();
             
-            return Json(new { count = count });
+            return Json(new { count });
         }
+
+        protected static List<Store> ShoppingCartItemsFilteredAsStore
+        {
+            get { return ShoppingCartItemsFiltered.Cast<Store>().ToListOrEmptyList(); }
+        }
+
+
+        //
+        // <Multi Selection>
+        //
+
+        public void ShoppingCartItemSelect(string objectKey, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var item = ShoppingCartItemsFilteredAsStore.FirstOrDefault(f => f.ObjectKey == objectKey);
+            if (item == null)
+                return;
+
+            item.IsSelected = select;
+            allSelectionCount = ShoppingCartItemsFilteredAsStore.Count(c => c.IsSelected);
+        }
+
+        public void ShoppingCartItemsSelect(bool select, out int allSelectionCount, out int allCount)
+        {
+            ShoppingCartItemsFilteredAsStore.ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = ShoppingCartItemsFilteredAsStore.Count(c => c.IsSelected);
+            allCount = ShoppingCartItemsFilteredAsStore.Count();
+        }
+
+        [HttpPost]
+        public JsonResult ShoppingCartItemSelectionChanged(string objectKey, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0;
+            if (objectKey.IsNullOrEmpty())
+                ShoppingCartItemsSelect(isChecked, out allSelectionCount, out allCount);
+            else
+                ShoppingCartItemSelect(objectKey, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount });
+        }
+
+        //
+        // </Multi Selection>
+        //
+
 
         #endregion
     }

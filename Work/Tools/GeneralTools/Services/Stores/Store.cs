@@ -177,6 +177,8 @@ namespace GeneralTools.Services
 
         #region IPersistableObject
 
+        public bool IsSelected { get; set; }
+
         public string ObjectKey { get; set; }
 
         public DateTime? EditDate { get; set; }

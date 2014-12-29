@@ -1,5 +1,4 @@
-﻿@using GeneralTools.Resources
-<style type="text/css">
+﻿<style type="text/css">
     .shopping-cart-menu {
         display: inline;
     }
@@ -52,6 +51,18 @@
         border-radius: 16px !important;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35)!important;
     }
+    
+    .t-grid-selected {
+        background-color: #FCF3C7!important;
+    }
+    .t-grid-selected-alt {
+        background-color: #FBF6DC!important;
+    }
+    .t-grid-multi-row-select {
+        cursor: default!important;
+        background-color: #fff;
+    }
+    
 </style>
 
 <div class="shopping-cart-body"></div>
@@ -107,12 +118,14 @@
                 LocationReloadWithoutQueryString();
             }
         });
+
+        return false;
     }
 
     function ShoppingCartItemRemove(id) {
 
         if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
-            return;
+            return false;
 
         $.ajax({
             type: "POST",
@@ -124,6 +137,8 @@
                 ShoppingCartMenuRefreshCount();
             }
         });
+
+        return false;
     }
 
 
@@ -147,6 +162,10 @@
     function OnDataBound_GridShoppingCart() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridShoppingCart", true);
     }
 
     function OnColumnShowHide_GridShoppingCart() {
@@ -157,4 +176,60 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function OnSelectionChange_GridShoppingCart(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemSelectionChanged",
+            data: { objectKey: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
+                FormWizard.ActionsShow(count > 0);
+                if (count == 0) {
+                    $("#ShoppingCartItemSelectionCount").addClass('hide');
+                    return;
+                }
+
+                $("#ShoppingCartItemSelectionCount").removeClass('hide');
+                $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridShoppingCart_OnAllSelectionChange(check) {
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                //var count = result.allSelectionCount;
+                GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
+
+                //$("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                //$("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridShoppingCart");
+            }
+        });
+    }
+
+    function GridShoppingCart_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#ShoppingCartItemSelectionCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#ShoppingCartItemSelectionCount").removeClass('hide');
+        $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }   
+    
 </script>

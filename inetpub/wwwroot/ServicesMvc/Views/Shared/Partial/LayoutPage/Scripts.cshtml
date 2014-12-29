@@ -279,7 +279,7 @@
 
     // <Grid Multi Select>
 
-    function Grid_PrepareMultiRowSelected(gridName) {
+    function Grid_PrepareMultiRowSelected(gridName, rowBackgroundSelectionDisabled) {
 
         $("#" + gridName + " table tbody tr").each(function () {
             var tr = $(this);
@@ -290,20 +290,21 @@
             });
         });
         
-        $("#" + gridName + " table tbody tr").click(function (e) {
-            var clickedElement = e.target;
-            var tr = $(this);
-            tr.find('td input[type=checkbox]').each(function () {
-                if (this == clickedElement)
-                    return false;
+        if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
+            $("#" + gridName + " table tbody tr").click(function (e) {
+                var clickedElement = e.target;
+                var tr = $(this);
+                tr.find('td input[type=checkbox]').each(function () {
+                    if (this == clickedElement)
+                        return false;
 
-                this.checked = !($(this).is(':checked'));
-                $.uniform.update($(this));
-                //Grid_FormatMultiRowSelected(tr, this.checked);
-                $(this).trigger('change');
-                return true;
+                    this.checked = !($(this).is(':checked'));
+                    $.uniform.update($(this));
+                    //Grid_FormatMultiRowSelected(tr, this.checked);
+                    $(this).trigger('change');
+                    return true;
+                });
             });
-        });
     }
 
     function Grid_FormatMultiRowSelected(tr, check) {
