@@ -1,8 +1,9 @@
-﻿
+﻿@model CkgDomainLogic.KroschkeZulassung.ViewModels.KroschkeZulassungViewModel 
+
 <script type="text/javascript">
 
     var _modelIsValid = false;
-    var _customButtonText = '@Localize.Save';
+    var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.Save)';
     var _skipBankAddressData = false;
 
     function KroschkeZulassungFormPreparePrivate() {
@@ -23,6 +24,7 @@
 
     function FormWizardShowHideSaveButton(show, delay) {
         setTimeout(function () {
+            $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
             FormWizard.ButtonCustom1Show(show, _customButtonText);
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }

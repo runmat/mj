@@ -135,6 +135,9 @@
             success: function () {
                 FilterGrid("GridShoppingCart");
                 ShoppingCartMenuRefreshCount();
+
+                _gridShoppingCart_MultiSelectItemCount--;
+                GridShoppingCart_MultiSelectItemCountRefresh();
             }
         });
 
@@ -176,6 +179,8 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    var _gridShoppingCart_MultiSelectItemCount = 0;
+
     function OnSelectionChange_GridShoppingCart(cb) {
 
         Grid_FormatMultiRowSelected(cb);
@@ -186,18 +191,23 @@
             data: { objectKey: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: true,
             success: function (result) {
-                var count = result.allSelectionCount;
                 GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(count > 0);
-                if (count == 0) {
-                    $("#ShoppingCartItemSelectionCount").addClass('hide');
-                    return;
-                }
 
-                $("#ShoppingCartItemSelectionCount").removeClass('hide');
-                $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+                _gridShoppingCart_MultiSelectItemCount = result.allSelectionCount;
+                GridShoppingCart_MultiSelectItemCountRefresh();
             }
         });
+    }
+    
+    function GridShoppingCart_MultiSelectItemCountRefresh() {
+        var count = _gridShoppingCart_MultiSelectItemCount;
+        if (count == 0) {
+            $("#ShoppingCartItemSelectionCount").addClass('hide');
+            return;
+        }
+
+        $("#ShoppingCartItemSelectionCount").removeClass('hide');
+        $("#ShoppingCartItemSelectionCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
     }
 
     function GridShoppingCart_OnAllSelectionChange(check) {
