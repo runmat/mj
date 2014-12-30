@@ -236,18 +236,27 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             var i = 0;
             foreach (var vorgang in zulassungen)
             {
+                vorgang.AuftragszettelPdfPfad = "";
                 if (saveDataInSap && fileNames.Count > i)
-                    vorgang.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", PfadAuftragszettel,
+                    vorgang.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", 
+                                                                    PfadAuftragszettel,
                                                                     fileNames[i].FILENAME.Split('/')[1],
                                                                     vorgang.BelegNr.PadLeft(10, '0'));
-                else
-                    vorgang.AuftragszettelPdfPfad = "";
 
                 // ToDo: Pro Vorgang ein eigenes Kundenformular, am besten Export Parameter ersetzen durch Export-Tabelleneintrag!)
                 try   { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
                 catch { vorgang.KundenformularPdf = null; }
 
                 i++;
+            }
+            if (saveDataInSap && fileNames.Count > i)
+            {
+                foreach (var vorgang in zulassungen)
+                {
+                    vorgang.AuftragslistePdfPfad = String.Format("{0}{1}\\Auftragsliste\\Auftragsliste.pdf", 
+                                                                    PfadAuftragszettel,
+                                                                    fileNames[i].FILENAME.Split('/')[1]);
+                }
             }
 
             return "";

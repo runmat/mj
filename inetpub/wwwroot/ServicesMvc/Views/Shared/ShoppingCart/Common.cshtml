@@ -161,14 +161,16 @@
             loadingShow: true,
             success: function (result) {
                 SpanAlertWarningHide("ShoppingCartSubmitWaitHint");
-                if (result.success) {
-                    SpanAlertSuccess("ShoppingCartSubmitWaitHint", '@Localize.OK.ToJavascriptString()', 2000);
-                }
-                FilterGrid("GridShoppingCart");
+                //FilterGrid("GridShoppingCart");
                 ShoppingCartMenuRefreshCount();
 
-                _gridShoppingCart_MultiSelectItemCount = 0;
-                GridShoppingCart_MultiSelectItemCountRefresh();
+                //_gridShoppingCart_MultiSelectItemCount = 0;
+                //GridShoppingCart_MultiSelectItemCountRefresh();
+
+                try {
+                    ShoppingCartSubmitFinished(result);
+                } catch (e) {
+                }
             }
         });
 
@@ -240,7 +242,7 @@
     
     function GridShoppingCart_MultiSelectItemCountRefresh() {
         var count = _gridShoppingCart_MultiSelectItemCount;
-        if (count == 0) {
+        if (count <= 0) {
             $(".shopping-cart-item-selection-count").addClass('hide');
             return;
         }

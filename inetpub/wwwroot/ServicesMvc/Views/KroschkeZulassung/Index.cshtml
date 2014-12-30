@@ -9,7 +9,7 @@
 @Html.Partial("ShoppingCart/Common")
 
 
-<div class="portlet app-view hidden-on-shopping-cart-opened">
+<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
     
     @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
 
@@ -17,6 +17,8 @@
         @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
     </div>
 </div>
+
+
 
 
 

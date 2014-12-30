@@ -286,30 +286,53 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
-            return PartialView("Partial/Summary", ViewModel.CreateSummaryModel());
+            return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
-        public FileContentResult SummaryAsPdf()
+        public FileContentResult SummaryAsPdf(string id)
         {
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel());
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(null, "");
+
+            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
 
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
         }
 
-        public FileContentResult KundenformularAsPdf()
+        public FileContentResult KundenformularAsPdf(string id)
         {
-            var formularPdfBytes = ViewModel.Zulassung.KundenformularPdf;
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(null, "");
+
+            var formularPdfBytes = zulassung.KundenformularPdf;
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
 
-        public FileContentResult AuftragszettelAsPdf()
+        public FileContentResult AuftragszettelAsPdf(string id)
         {
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(ViewModel.Zulassung.AuftragszettelPdfPfad);
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(null, "");
+
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(zulassung.AuftragszettelPdfPfad);
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderForm) };
+        }
+
+        public FileContentResult AuftragslisteAsPdf()
+        {
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            if (zulassung == null)
+                return new FileContentResult(null, "");
+
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(zulassung.AuftragslistePdfPfad);
+
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
         }
 
         #endregion   
@@ -350,7 +373,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public override JsonResult ShoppingCartSelectedItemsSubmit()
+        public override ActionResult ShoppingCartSelectedItemsSubmit()
         {
             var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
             foreach (var vm in warenkorb)
@@ -367,7 +390,7 @@ namespace ServicesMvc.Controllers
                     ShoppingCartItemRemove(vm.ObjectKey);
             }
 
-            return Json(new { success = ViewModel.SaveErrorMessage.IsNullOrEmpty() });
+            return PartialView("Partial/Receipt", ViewModel);
         }
 
         #endregion

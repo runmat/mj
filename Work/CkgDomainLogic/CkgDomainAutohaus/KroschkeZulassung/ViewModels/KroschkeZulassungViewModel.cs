@@ -36,6 +36,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         [ScriptIgnore]
         public Vorgang Zulassung { get; set; }
 
+        [XmlIgnore, ScriptIgnore]
+        public List<Vorgang> ZulassungenForReceipt { get; set; }
+
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
@@ -109,7 +112,8 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
             Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.Kunde.CpdMitEinzugsermaechtigung;
 
-            Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
+            if (Zulassung.BankAdressdaten.Zahlungsart.IsNullOrEmpty())
+                Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
         }
 
         #endregion
@@ -378,6 +382,8 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Misc + Summaries + Savings
 
+        public bool TempFlagSaveDataToSap { get; set; }
+
         public void DataInit()
         {
             Zulassung = new Vorgang
@@ -409,87 +415,16 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(List<Vorgang> zulassungen, bool saveDataInSap)
+        public void Save(List<Vorgang> zulassungen, bool saveDataToSap)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataInSap);
-        }
+            TempFlagSaveDataToSap = saveDataToSap;
 
-        [XmlIgnore, ScriptIgnore]
-        public string BeauftragungBezeichnung
-        {
-            get
-            {
-                return String.Format("{0}: {1}, {2}, {3}, {4}",
-                    Zulassung.Fahrzeugdaten.AuftragsNr,
-                    Zulassung.Rechnungsdaten.Kunde.KundenNameNr,
-                    Zulassung.Zulassungsdaten.Zulassungsart.MaterialText,
-                    Zulassung.Halter,
-                    Zulassung.Zulassungsdaten.Kennzeichen);
-            }
-        }
+            ZulassungenForReceipt = null;
 
-        [XmlIgnore, ScriptIgnore]
-        private GeneralEntity SummaryBeauftragungsHeader
-        {
-            get
-            {
-                return new GeneralEntity
-                {
-                    Title = Localize.YourOrder,
-                    Body = BeauftragungBezeichnung,
-                    Tag = "SummaryMainItem"
-                };
-            }
-        }
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap);
 
-        public GeneralSummary CreateSummaryModel()
-        {
-            var summaryModel = new GeneralSummary
-            {
-                Header = Localize.OrderSummaryVehicleRegistration,
-                Items = new ListNotEmpty<GeneralEntity>
-                        (
-                            SummaryBeauftragungsHeader,
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.InvoiceData,
-                                Body = Zulassung.Rechnungsdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.VehicleData,
-                                Body = Zulassung.Fahrzeugdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.Holder,
-                                Body = HalterAdresse.GetPostLabelString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.Registration,
-                                Body = Zulassung.Zulassungsdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.RegistrationOptions,
-                                Body = Zulassung.OptionenDienstleistungen.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.DataForEndCustomerInvoice,
-                                Body = Zulassung.BankAdressdaten.GetSummaryString(),
-                            }
-                        )
-            };
-
-            return summaryModel;
+            if (SaveErrorMessage.IsNullOrEmpty())
+                ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
         }
 
         #endregion

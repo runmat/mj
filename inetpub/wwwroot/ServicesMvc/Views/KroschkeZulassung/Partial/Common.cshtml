@@ -107,10 +107,11 @@
     }
 
     function SaveZulassung() {
+        var nextTabKey = FormWizard.GetNextTabKey();
         $.ajax({
             type: "POST",
             url: "Save",
-            data: { },
+            data: {},
             loadingShow: true,
             success: function (result) {
                 if (typeof (result.message) !== "undefined") {
@@ -119,9 +120,19 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
-                ShoppingCartMenuRefreshCount();
+
+                if (nextTabKey.toLowerCase() == "receipt") 
+                    ShoppingCartMenuRefreshCount();
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
             }
         });
+    } 
+
+    function ShoppingCartSubmitFinished(result) {
+        $(".form-wizard").html(result);
+        ShoppingCartHide();
     }
 
     // Rechnungsdaten

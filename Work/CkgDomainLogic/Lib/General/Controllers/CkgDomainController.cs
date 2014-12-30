@@ -522,7 +522,7 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public virtual JsonResult ShoppingCartSelectedItemsSubmit()
+        public virtual ActionResult ShoppingCartSelectedItemsSubmit()
         {
             return Json(new { success = true });
         }
