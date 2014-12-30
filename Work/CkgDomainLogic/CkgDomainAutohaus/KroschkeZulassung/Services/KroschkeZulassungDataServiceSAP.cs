@@ -160,8 +160,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
         public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataInSap)
         {
-            var blnCpdKunde = zulassungen.First().Rechnungsdaten.Kunde.Cpdkunde;
-
             foreach (var vorgang in zulassungen)
             {
                 // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
@@ -180,8 +178,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             if (saveDataInSap)
                 SAP.SetImportParameter("I_SPEICHERN", "X");
 
-            if (blnCpdKunde)
-                SAP.SetImportParameter("I_FORMULAR", "X");
+            SAP.SetImportParameter("I_FORMULAR", "X");
 
             var positionen = new List<Zusatzdienstleistung>();
             var adressen = new List<Adressdaten>();
@@ -247,8 +244,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                     vorgang.AuftragszettelPdfPfad = "";
 
                 // ToDo: Pro Vorgang ein eigenes Kundenformular, am besten Export Parameter ersetzen durch Export-Tabelleneintrag!)
-                if (blnCpdKunde)
-                    vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF");
+                try   { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
+                catch { vorgang.KundenformularPdf = null; }
 
                 i++;
             }
