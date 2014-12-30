@@ -156,6 +156,94 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return true;
         }
 
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataInSap)
+        {
+            var blnCpdKunde = zulassungen.First().Rechnungsdaten.Kunde.Cpdkunde;
+
+            Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
+            SAP.SetImportParameter("I_TELNR", ((ILogonContextDataService)LogonContext).UserInfo.Telephone);
+            SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
+
+            if (saveDataInSap)
+                SAP.SetImportParameter("I_SPEICHERN", "X");
+
+            if (blnCpdKunde)
+                SAP.SetImportParameter("I_FORMULAR", "X");
+
+            var positionen = new List<Zusatzdienstleistung>();
+            var adressen = new List<Adressdaten>();
+            foreach (var vorgang in zulassungen)
+            {
+                // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
+                var blnBelegNrLeer = (String.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+
+                if (blnBelegNrLeer && !GetSapId(vorgang))
+                    return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
+
+
+                // Vorgang, Zusatzdienstleistungen (GT_POS)
+                positionen.Add(new Zusatzdienstleistung
+                {
+                    BelegNr = vorgang.BelegNr,
+                    PositionsNr = "10",
+                    MaterialNr = vorgang.Zulassungsdaten.ZulassungsartMatNr,
+                    Menge = "1"
+                });
+                vorgang.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = vorgang.BelegNr);
+                positionen.AddRange(vorgang.OptionenDienstleistungen.GewaehlteDienstleistungen);
+
+
+                // Vorgang, Adressen (GT_ADRS)
+                if (!String.IsNullOrEmpty(vorgang.BankAdressdaten.Rechnungsempfaenger.Name1))
+                {
+                    vorgang.BankAdressdaten.Rechnungsempfaenger.BelegNr = vorgang.BelegNr;
+                    adressen.Add(vorgang.BankAdressdaten.Rechnungsempfaenger);
+                }
+            }
+
+            var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();
+            SAP.ApplyImport(bakList);
+
+            var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
+            SAP.ApplyImport(posList);
+
+            var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
+            SAP.ApplyImport(adrsList);
+
+            SAP.Execute();
+
+            if (SAP.ResultCode != 0)
+            {
+                var errString = "";
+                var errList = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_ERROR.GetExportList(SAP);
+                if (errList.Count > 0 && errList.Any(e => e.MESSAGE != "OK"))
+                    errString = String.Join(", ", errList.Select(e => e.MESSAGE));
+
+                return String.Format("{0}: {1}{2}", Localize.SaveFailed, SAP.ResultMessage, (String.IsNullOrEmpty(errString) ? "" : String.Format(" ({0})", errString)));
+            }
+
+            var fileNames = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
+
+            var i = 0;
+            foreach (var vorgang in zulassungen)
+            {
+                if (saveDataInSap && fileNames.Count > i)
+                    vorgang.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", PfadAuftragszettel,
+                                                                    fileNames[i].FILENAME.Split('/')[1],
+                                                                    vorgang.BelegNr.PadLeft(10, '0'));
+                else
+                    vorgang.AuftragszettelPdfPfad = "";
+
+                // ToDo: Pro Vorgang ein eigenes Kundenformular, am besten Export Parameter ersetzen durch Export-Tabelleneintrag!)
+                if (blnCpdKunde)
+                    vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF");
+
+                i++;
+            }
+
+            return "";
+        }
+
         public string SaveZulassung(Vorgang zulassung, bool saveDataInSap)
         {
             var blnCpdKunde = zulassung.Rechnungsdaten.Kunde.Cpdkunde;
@@ -202,7 +290,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
                 var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                 SAP.ApplyImport(adrsList);
-            }        
+            }
 
             SAP.Execute();
 

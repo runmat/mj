@@ -236,7 +236,7 @@ namespace SapORM
 
             //Kroschke Zulassung
             //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
-            //new FunctionReflector("Z_ZLD_AH_IMPORT_ERFASSUNG1").WriteOrmForExportTableStructures();
+            new FunctionReflector("Z_ZLD_AH_IMPORT_ERFASSUNG1").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE").WriteOrmForExportTableStructures("I_KUNNR, I_VKORG, I_SPART", "00240045", "1010", "01");
             //new FunctionReflector("Z_ZLD_AH_MATERIAL").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_AH_ZULST_BY_PLZ").WriteOrmForExportTableStructures();

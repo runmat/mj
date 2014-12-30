@@ -408,9 +408,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(Vorgang zulassung, bool saveDataInSap)
+        public void Save(List<Vorgang> zulassungen, bool saveDataInSap)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassung(zulassung, saveDataInSap);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataInSap);
         }
 
         [XmlIgnore, ScriptIgnore]

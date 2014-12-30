@@ -40,7 +40,12 @@ namespace ServicesMvc.Controllers
             if (IsInitialRequestOf("Index"))
                 ViewModel = null;
 
-            InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+            InitViewModelExpicit(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+        }
+
+        private void InitViewModelExpicit(KroschkeZulassungViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IKroschkeZulassungDataService zulassungDataService, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
+        {
+            InitViewModel(vm, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
         }
 
         [CkgApplication]
@@ -264,7 +269,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Save()
         {
             ShoppingCartItemSave();
-            ViewModel.Save(ViewModel.Zulassung, false);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, false);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -272,7 +277,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-            ViewModel.Save(ViewModel.Zulassung, true);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, true);
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -329,7 +334,7 @@ namespace ServicesMvc.Controllers
             if (vm == null)
                 return;
 
-            InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+            InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
             vm.DataMarkForRefresh();
             ViewModel = vm;
         }
@@ -345,23 +350,22 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public override JsonResult ShoppingCartMultiSelectedItemsSubmit()
+        public override JsonResult ShoppingCartSelectedItemsSubmit()
         {
             var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
-
             foreach (var vm in warenkorb)
             {
-                InitViewModel(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+                InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
                 vm.DataMarkForRefresh();
-
-                ViewModel.Save(vm.Zulassung, true);
-
-                if (ViewModel.SaveErrorMessage.IsNotNullOrEmpty())
-                    break;
-
-                ShoppingCartItemRemove(vm.ObjectKey);
             }
 
+            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), true);
+
+            if (ViewModel.SaveErrorMessage.IsNullOrEmpty())
+            {
+                foreach (var vm in warenkorb)
+                    ShoppingCartItemRemove(vm.ObjectKey);
+            }
 
             return Json(new { success = ViewModel.SaveErrorMessage.IsNullOrEmpty() });
         }

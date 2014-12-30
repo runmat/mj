@@ -26,6 +26,7 @@
         background-color: transparent!important;
         float: none;
         font-size: 28px!important;
+        text-decoration: none!important;
     }
     
     .shopping-cart-body-inner 
@@ -73,7 +74,8 @@
 <script type="text/javascript">
 
     function ShoppingCartHide() {
-        $(".shopping-cart-body .portlet a.remove").trigger("click");
+        $(".shopping-cart-body").html("");
+        $(".hidden-on-shopping-cart-opened").slideDown(200);
     }
 
     function ShoppingCartShow() {
@@ -106,6 +108,7 @@
         $(".shopping-cart-body").html("");
         $(".shopping-cart-body").append("<div class='shopping-cart-body-inner hide'></div>");
         $(".shopping-cart-body-inner").html(result);
+        $(".hidden-on-shopping-cart-opened").slideUp(200);
         $(".shopping-cart-body-inner").slideDown(200);
         FormPreparePrivateGridShoppingCard();
     }
@@ -147,13 +150,13 @@
         return false;
     }
     
-    function ShoppingCartMultiSelectedItemsSubmit() {
+    function ShoppingCartSelectedItemsSubmit() {
 
         SpanAlertWarning("ShoppingCartSubmitWaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
 
         $.ajax({
             type: "POST",
-            url: "ShoppingCartMultiSelectedItemsSubmit",
+            url: "ShoppingCartSelectedItemsSubmit",
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -190,6 +193,12 @@
         GridAllColumnFilterApplyToGrid("GridShoppingCart");
 
         $("#GridShoppingCart .dataTables_length label").prepend("<span class='shopping-cart-item-selection-count hide'></span>");
+
+        $(".shopping-cart-body .portlet a.remove").on("click", function (e) {
+            e.preventDefault();
+            ShoppingCartHide();
+            return false;
+        });
     }
 
     function OnDataBound_GridShoppingCart() {
@@ -269,7 +278,7 @@
     }   
     
     function GridShoppingCart_MultiSelectItemCountHint(count) {
-        return  '<button onclick="return ShoppingCartMultiSelectedItemsSubmit();" class="btn blue rounded">' +
+        return  '<button onclick="return ShoppingCartSelectedItemsSubmit();" class="btn blue rounded">' +
                 '<i class="icon-chevron-right margin-right-10"></i>' + 
                  count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
     }
