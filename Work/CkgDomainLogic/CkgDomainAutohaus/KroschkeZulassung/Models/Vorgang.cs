@@ -62,7 +62,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
 
         [XmlIgnore, ScriptIgnore]
-        public string BeauftragungBezeichnung
+        public string BeauftragungBezeichnungKunde
         {
             get
             {
@@ -76,14 +76,31 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         }
 
         [XmlIgnore, ScriptIgnore]
-        private GeneralEntity SummaryBeauftragungsHeader
+        private GeneralEntity SummaryBeauftragungsHeaderKunde
         {
             get
             {
                 return new GeneralEntity
                 {
                     Title = Localize.YourOrder,
-                    Body = BeauftragungBezeichnung,
+                    Body = BeauftragungBezeichnungKunde,
+                    Tag = "SummaryMainItem"
+                };
+            }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        private GeneralEntity SummaryBeauftragungsHeader
+        {
+            get
+            {
+                if (BelegNr.IsNullOrEmpty())
+                    return null;
+
+                return new GeneralEntity
+                {
+                    Title = Localize.OurReceiptNo,
+                    Body = string.Format("{0}", BelegNr),
                     Tag = "SummaryMainItem"
                 };
             }
@@ -96,6 +113,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                 Header = Localize.OrderSummaryVehicleRegistration,
                 Items = new ListNotEmpty<GeneralEntity>
                         (
+                            SummaryBeauftragungsHeaderKunde,
+
                             SummaryBeauftragungsHeader,
 
                             new GeneralEntity

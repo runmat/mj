@@ -107,6 +107,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         public void SetRechnungsdaten(Rechnungsdaten model)
         {
+            if (Zulassung.Rechnungsdaten.KundenNr != model.KundenNr)
+                Zulassung.BankAdressdaten.Zahlungsart = null;
+
             Zulassung.Rechnungsdaten.KundenNr = model.KundenNr;
 
             Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
@@ -419,7 +422,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         {
             TempFlagSaveDataToSap = saveDataToSap;
 
-            ZulassungenForReceipt = null;
+            ZulassungenForReceipt = new List<Vorgang>();
 
             SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap);
 

@@ -268,8 +268,9 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Save()
         {
-            ShoppingCartItemSave();
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, false);
+
+            ShoppingCartItemSave();
 
             return PartialView("Partial/Receipt", ViewModel);
         }
