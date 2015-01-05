@@ -95,7 +95,7 @@ namespace ServicesMvc
 
         protected void Application_BeginRequest()
         {
-            this.SetCacheOff();
+            //this.SetCacheOff();
         }
 
         protected void Application_AcquireRequestState()
