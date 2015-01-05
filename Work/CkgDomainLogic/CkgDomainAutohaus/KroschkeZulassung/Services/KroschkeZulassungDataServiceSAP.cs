@@ -199,8 +199,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                 if (!String.IsNullOrEmpty(vorgang.BankAdressdaten.Rechnungsempfaenger.Name1))
                 {
                     vorgang.BankAdressdaten.Rechnungsempfaenger.BelegNr = vorgang.BelegNr;
+                    vorgang.BankAdressdaten.Rechnungsempfaenger.Kennung = "RE";
                     adressen.Add(vorgang.BankAdressdaten.Rechnungsempfaenger);
                 }
+                // Halteradresse
+                adressen.Add(new Adressdaten().AdresseToAdressdaten(vorgang.BelegNr, "ZH", vorgang.Halterdaten));
             }
 
             var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();

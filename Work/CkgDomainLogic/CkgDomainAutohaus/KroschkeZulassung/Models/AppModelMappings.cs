@@ -162,6 +162,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                     , null
                     , (s, d) =>
                         {
+                            d.PARVW = s.Kennung;
                             d.ZULBELN = s.BelegNr;
                             d.NAME1 = s.Name1;
                             d.NAME2 = s.Name2;

@@ -1,10 +1,13 @@
-﻿using GeneralTools.Models;
+﻿using CkgDomainLogic.DomainCommon.Models;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.KroschkeZulassung.Models
 {
     public class Adressdaten
     {
+        public string Kennung { get; set; }
+
         public string BelegNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Name1)]
@@ -23,5 +26,17 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public string Ort { get; set; }
 
         public bool AdresseVollstaendig { get { return (Name1.IsNotNullOrEmpty() && Strasse.IsNotNullOrEmpty() && Plz.IsNotNullOrEmpty() && Ort.IsNotNullOrEmpty()); } }
+
+        public Adressdaten AdresseToAdressdaten(string belegNr, string kennung, Adresse adresse)
+        {
+            BelegNr = belegNr;
+            Name1 = adresse.Name1;
+            Name2 = adresse.Name2;
+            Strasse = adresse.StrasseHausNr;
+            Plz = adresse.PLZ;
+            Ort = adresse.Ort;
+
+            return this;
+        }
     }
 }
