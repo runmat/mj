@@ -1,0 +1,23 @@
+﻿<div class="control-group">
+    <label class="control-label">@Localize.UploadCsvFile:</label>
+    <div class="controls">
+                
+        @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Localizable("de-DE")
+            .Async(async => async
+            .Save("UploadFahrzeugdatenStart", "Autohaus")
+            .SaveField("uploadFiles")
+            .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                .OnUpload("UploadStart")
+                .OnSuccess("UploadFinished")
+                .OnError("UploadError")
+            )
+        )
+    </div>
+</div>
+
+<a href="DownloadFahrzeugdatenCsvTemplate" class="btn white tooltips margin-right-10 margin-top-20" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>

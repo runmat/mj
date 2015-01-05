@@ -16,6 +16,8 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Services;
 using CkgDomainLogic.Fahrer.Contracts;
 using CkgDomainLogic.Fahrer.Services;
+using CkgDomainLogic.UploadFahrzeugdaten.Contracts;
+using CkgDomainLogic.UploadFahrzeugdaten.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Services;
 using CkgDomainLogic.Insurance.Contracts;
@@ -158,6 +160,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<KroschkeZulassungDataServiceSAP>().As<IKroschkeZulassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

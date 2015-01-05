@@ -2467,6 +2467,9 @@
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
+    <None Include="Documents\Templates\UploadFahrzeugdaten.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -4220,6 +4223,11 @@
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
     <Content Include="Views\Xaris\Index.cshtml" />
+    <Content Include="Views\Autohaus\UploadFahrzeugdaten\FileUpload.cshtml" />
+    <Content Include="Views\Autohaus\UploadFahrzeugdaten\Receipt.cshtml" />
+    <Content Include="Views\Autohaus\UploadFahrzeugdaten\UploadFahrzeugdatenGrid.cshtml" />
+    <Content Include="Views\Autohaus\UploadFahrzeugdaten\UploadSaveFahrzeugdatenGrid.cshtml" />
+    <Content Include="Views\Autohaus\UploadFahrzeugdaten.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
