@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.UploadFahrzeugdaten.Models;
+using CkgDomainLogic.AutohausFahrzeugdaten.Models;
 
-namespace CkgDomainLogic.UploadFahrzeugdaten.Contracts
+namespace CkgDomainLogic.AutohausFahrzeugdaten.Contracts
 {
     public interface IUploadFahrzeugdatenDataService
     {

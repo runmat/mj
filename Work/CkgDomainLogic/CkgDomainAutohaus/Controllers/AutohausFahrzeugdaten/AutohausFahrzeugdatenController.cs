@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
-using CkgDomainLogic.UploadFahrzeugdaten.ViewModels;
+using CkgDomainLogic.AutohausFahrzeugdaten.ViewModels;
 using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Models;
@@ -12,7 +12,7 @@ using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class AutohausController
+    public partial class AutohausFahrzeugdatenController
     {
         public UploadFahrzeugdatenViewModel UploadFahrzeugdatenViewModel { get { return GetViewModel<UploadFahrzeugdatenViewModel>(); } }
 

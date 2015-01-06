@@ -6,14 +6,14 @@ using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using CkgDomainLogic.UploadFahrzeugdaten.Contracts;
-using CkgDomainLogic.UploadFahrzeugdaten.Models;
+using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using CkgDomainLogic.AutohausFahrzeugdaten.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
-namespace CkgDomainLogic.UploadFahrzeugdaten.ViewModels
+namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 {
     public class UploadFahrzeugdatenViewModel : CkgBaseViewModel
     {

@@ -5,7 +5,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
-namespace CkgDomainLogic.UploadFahrzeugdaten.Models
+namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 {
 	public class UploadFahrzeug : IValidatableObject
 	{

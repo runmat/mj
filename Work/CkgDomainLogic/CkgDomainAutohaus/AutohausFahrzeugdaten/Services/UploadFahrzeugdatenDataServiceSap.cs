@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.UploadFahrzeugdaten.Contracts;
-using CkgDomainLogic.UploadFahrzeugdaten.Models;
+using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using CkgDomainLogic.AutohausFahrzeugdaten.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 
-namespace CkgDomainLogic.UploadFahrzeugdaten.Services
+namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
 {
     public class UploadFahrzeugdatenDataServiceSap : CkgGeneralDataServiceSAP, IUploadFahrzeugdatenDataService
     {

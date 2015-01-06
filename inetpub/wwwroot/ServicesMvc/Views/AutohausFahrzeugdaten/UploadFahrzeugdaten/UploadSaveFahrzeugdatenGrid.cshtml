@@ -1,5 +1,5 @@
-﻿@using CkgDomainLogic.UploadFahrzeugdaten.Models
-@using CkgDomainLogic.UploadFahrzeugdaten.ViewModels
+﻿@using CkgDomainLogic.AutohausFahrzeugdaten.Models
+@using CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 @model UploadFahrzeugdatenViewModel
 
 @Html.ValidationSummary()
@@ -21,7 +21,7 @@
     .Name(gridName)
     .XGroup("GridUploadSaveFahrzeugdaten")
     .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
-    .XAjaxDataBinding("UploadSaveFahrzeugdatenAjaxBinding", "Autohaus")
+    .XAjaxDataBinding("UploadSaveFahrzeugdatenAjaxBinding", "AutohausFahrzeugdaten")
     .Columns(columns =>
     {
         columns.XBound(c => c.DatensatzNr).Visible(false);
@@ -48,8 +48,8 @@
     .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
     .ToolBar(commands =>
     {
-        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredExcel", "Autohaus");
-        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredPDF", "Autohaus");
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredExcel", "AutohausFahrzeugdaten");
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredPDF", "AutohausFahrzeugdaten");
     })
 )
 

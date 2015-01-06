@@ -4223,11 +4223,11 @@
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
     <Content Include="Views\Xaris\Index.cshtml" />
-    <Content Include="Views\Autohaus\UploadFahrzeugdaten\FileUpload.cshtml" />
-    <Content Include="Views\Autohaus\UploadFahrzeugdaten\Receipt.cshtml" />
-    <Content Include="Views\Autohaus\UploadFahrzeugdaten\UploadFahrzeugdatenGrid.cshtml" />
-    <Content Include="Views\Autohaus\UploadFahrzeugdaten\UploadSaveFahrzeugdatenGrid.cshtml" />
-    <Content Include="Views\Autohaus\UploadFahrzeugdaten.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\FileUpload.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\Receipt.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\UploadFahrzeugdatenGrid.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\UploadSaveFahrzeugdatenGrid.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

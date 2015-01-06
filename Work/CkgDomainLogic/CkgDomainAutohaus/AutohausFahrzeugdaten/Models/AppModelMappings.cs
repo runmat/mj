@@ -2,7 +2,7 @@
 using GeneralTools.Models;
 using SapORM.Models;
 
-namespace CkgDomainLogic.UploadFahrzeugdaten.Models
+namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 {
     public class AppModelMappings : ModelMappings
     {

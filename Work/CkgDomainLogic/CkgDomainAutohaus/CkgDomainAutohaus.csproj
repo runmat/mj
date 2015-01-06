@@ -70,13 +70,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\UploadFahrzeugdaten\AutohausController.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\KroschkeZulassungController.cs" />
-    <Compile Include="UploadFahrzeugdaten\Contracts\IUploadFahrzeugdatenDataService.cs" />
-    <Compile Include="UploadFahrzeugdaten\Models\AppModelMappings.cs" />
-    <Compile Include="UploadFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
-    <Compile Include="UploadFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
-    <Compile Include="UploadFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Contracts\IUploadFahrzeugdatenDataService.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\AppModelMappings.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
+    <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
     <Compile Include="KroschkeZulassung\Contracts\IKroschkeZulassungDataService.cs" />
     <Compile Include="KroschkeZulassung\Models\AppModelMappings.cs" />
     <Compile Include="KroschkeZulassung\Models\DataModels\Adressdaten.cs" />
