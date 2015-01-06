@@ -4,5 +4,9 @@
     _adressenKennungLocalized = '@Model.AdressenKennungLocalized';
 </script>
 
-@Html.Partial("AdressenPflege/AdressenGrid", new ViewDataDictionary { { "AddressSelectorAvailable" , false } })
+@Html.Partial("AdressenPflege/AdressenGrid", new ViewDataDictionary
+    {
+        { "AddressSelectorAvailable" , false },
+        { "ZulassungAvailable" , (Model.AdressenKennung.NotNullOrEmpty().ToUpper() == "HALTER") },
+    })
 

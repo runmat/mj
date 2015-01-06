@@ -1,12 +1,11 @@
-﻿@model CkgDomainLogic.Partner.ViewModels.PartnerViewModel
-@using CkgDomainLogic.DomainCommon.Models
+﻿@using CkgDomainLogic.DomainCommon.Models
 @using GeneralTools.Resources
 @{
     var gridName = "GridAdresse";
     var currentController = ViewContext.RouteData.GetRequiredString("controller");
     var addressSelectorAvailable = (bool)(ViewData["AddressSelectorAvailable"] ?? false);
     var backButtonAvailable = (bool)(ViewData["BackButtonAvailable"] ?? false);
-    var zulassungAvailable = (Model.AdressenKennung.NotNullOrEmpty().ToUpper() == "HALTER");
+    var zulassungAvailable = (bool)(ViewData["ZulassungAvailable"] ?? false); 
 }
 
 <div class="portlet">
