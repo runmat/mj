@@ -4247,6 +4247,7 @@
     <Content Include="Views\Shared\ShoppingCart\Grid.cshtml" />
     <Content Include="Views\Shared\ShoppingCart\Menu.cshtml" />
     <Content Include="Views\KroschkeZulassung\ShoppingCart\Grid.cshtml" />
+    <Content Include="Views\KroschkeZulassung\Partial\BankAdressdatenReForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

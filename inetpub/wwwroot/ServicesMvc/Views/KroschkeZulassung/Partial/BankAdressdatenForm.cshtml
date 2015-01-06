@@ -15,15 +15,10 @@
                 
                 @using (Html.PortletBox(Localize.DifferentAddress, "icon-home"))
                 {
-                    @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name1, new { @class = "m-wrap large" })
+                    @Html.HiddenFor(m => m.Cpdkunde)
+                    @Html.HiddenFor(m => m.CpdMitEinzugsermaechtigung)
 
-                    @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name2, new { @class = "m-wrap large" })
-
-                    @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Strasse, new { @class = "m-wrap large" })
-
-                    @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Plz, new { @class = "m-wrap small" })
-
-                    @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Ort, new { @class = "m-wrap large" }) 
+                    @Html.PartialFor(m => m.Rechnungsempfaenger, "Partial/BankAdressdatenReForm")
 
                     @Html.FormRadioButtonListFor(m => m.Zahlungsart, BankAdressdaten.Zahlungsarten.ToSelectList())
                 }

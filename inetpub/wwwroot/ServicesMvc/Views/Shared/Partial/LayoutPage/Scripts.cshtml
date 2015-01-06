@@ -417,13 +417,13 @@
 
         var form = tbCity.closest("form");
         if (countryPropertyName != "") {
-            var countryDropdown = $("#" + form.attr("id") + " select[name='" + countryPropertyName + "']");
+            var countryDropdown = $("#" + form.attr("id") + " select[name$='" + countryPropertyName + "'], input[name$='" + countryPropertyName + "']");
             if (countryDropdown.val().toLowerCase() != "de")
                 return;
         }
         
         //var plz = $("#" + postCodePropertyName);
-        var plz = $("#" + form.attr("id") + " input[name='" + postCodePropertyName + "']");
+        var plz = $("#" + form.attr("id") + " input[name$='" + postCodePropertyName + "']");
         if (plz.val().length != 5)
             return;
 

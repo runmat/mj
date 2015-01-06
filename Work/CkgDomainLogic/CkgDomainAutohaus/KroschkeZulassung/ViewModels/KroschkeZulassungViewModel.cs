@@ -243,13 +243,13 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.Zulassungsdaten.Zulassungskreis = LoadKfzKreisAusHalterAdresse();
 
             if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Kennzeichen) || Zulassung.Zulassungsdaten.Kennzeichen.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Kennzeichen = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
+                Zulassung.Zulassungsdaten.Kennzeichen = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
 
             if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen2) || Zulassung.Zulassungsdaten.Wunschkennzeichen2.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
 
             if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen3) || Zulassung.Zulassungsdaten.Wunschkennzeichen3.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
         }
 
         public void DataMarkForRefreshHalterAdressen()
@@ -280,7 +280,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
             var kennz = model.Kennzeichen.NotNullOrEmpty().ToUpper();
-            if (kennz != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+            if (kennz != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
                 Zulassung.Zulassungsdaten.Kennzeichen = kennz;
             else
                 Zulassung.Zulassungsdaten.Kennzeichen = "";
@@ -300,13 +300,13 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
                 Zulassung.Zulassungsdaten.ReservierungsName = "";
 
                 var wkz2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
-                if (wkz2 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+                if (wkz2 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
                     Zulassung.Zulassungsdaten.Wunschkennzeichen2 = wkz2;
                 else
                     Zulassung.Zulassungsdaten.Wunschkennzeichen2 = "";
 
                 var wkz3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
-                if (wkz3 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis))
+                if (wkz3 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
                     Zulassung.Zulassungsdaten.Wunschkennzeichen3 = wkz3;
                 else
                     Zulassung.Zulassungsdaten.Wunschkennzeichen3 = "";

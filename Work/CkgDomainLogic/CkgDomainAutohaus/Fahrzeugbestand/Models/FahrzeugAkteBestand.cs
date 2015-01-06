@@ -17,6 +17,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
     {
         private string _fin;
         private string _kennzeichen;
+        private string _typSchluessel;
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
         [Required]
@@ -46,7 +47,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
         [Required]
         [Length(3)]
-        public string TypSchluessel { get; set; }
+        public string TypSchluessel
+        {
+            get { return _typSchluessel.NotNullOrEmpty().ToUpper(); }
+            set { _typSchluessel = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
         [Required]

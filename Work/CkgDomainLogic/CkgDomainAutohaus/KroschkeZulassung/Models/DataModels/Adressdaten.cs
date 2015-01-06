@@ -1,4 +1,5 @@
-﻿using CkgDomainLogic.DomainCommon.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -23,7 +24,12 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public string Plz { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.City)]
+        [AddressPostcodeCityMapping("Plz", "Land")]
         public string Ort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Country)]
+        [Required]
+        public string Land { get { return "DE"; } }
 
         public bool AdresseVollstaendig { get { return (Name1.IsNotNullOrEmpty() && Strasse.IsNotNullOrEmpty() && Plz.IsNotNullOrEmpty() && Ort.IsNotNullOrEmpty()); } }
 

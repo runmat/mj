@@ -122,7 +122,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
             }
             else
             {
-                s += String.Format("<br/>{0}", Localize.PersonalisedNumberPlate);
                 s += String.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo2, Wunschkennzeichen2);
                 s += String.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo3, Wunschkennzeichen3);
             }

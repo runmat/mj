@@ -30,6 +30,24 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
 
         #region Load Fahrzeug-Akte-Bestand
 
+        public FahrzeugAkteBestand GetTypDaten(string fin, string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
+        {
+            Z_AHP_READ_TYPDAT_BESTAND.Init(SAP);
+
+            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_FIN", fin);
+            SAP.SetImportParameter("I_ZZHERSTELLER_SCH", herstellerSchluessel);
+            SAP.SetImportParameter("I_ZZTYP_SCHL", typSchluessel);
+            SAP.SetImportParameter("I_ZZVVS_SCHLUESSEL", vvsSchluessel);
+
+            SAP.Execute();
+
+            var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportList(SAP);
+            var list = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
+
+            return list.FirstOrDefault();
+        }
+
         public List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
         {
             return
@@ -37,8 +55,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
                     GetSapFahrzeugeAkteBestand(model)).ToList();
         }
 
-        private IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> GetSapFahrzeugeAkteBestand(
-            FahrzeugAkteBestandSelektor model)
+        private IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> GetSapFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
         {
             Z_AHP_READ_FZGBESTAND.Init(SAP);
 

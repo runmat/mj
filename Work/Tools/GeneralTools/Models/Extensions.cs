@@ -210,12 +210,26 @@ namespace GeneralTools.Models
         {
             var ret = "";
             s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
-                {
-                    if (c >= 'A' && c <= 'Z' && ret != "")
-                        ret += "-";
+            {
+                if (c >= 'A' && c <= 'Z' && ret != "")
+                    ret += "-";
 
-                    ret += c.ToString().ToLower();
-                });
+                ret += c.ToString().ToLower();
+            });
+
+            return ret;
+        }
+
+        public static string RemoveDigits(this string s)
+        {
+            var ret = "";
+            s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
+                {
+                    if (c >= '0' && c <= '9')
+                        return;
+
+                ret += c.ToString();
+            });
 
             return ret;
         }

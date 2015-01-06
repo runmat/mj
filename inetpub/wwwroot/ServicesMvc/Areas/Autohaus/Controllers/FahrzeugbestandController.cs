@@ -116,6 +116,19 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }
 
+        [HttpPost]
+        public ActionResult GetTypDaten(string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
+        {
+            var model = ViewModel.GetTypDaten(herstellerSchluessel, typSchluessel, vvsSchluessel);
+
+            return Json(new
+                {
+                    success = (model != null),
+                    fabrikName = (model ?? new FahrzeugAkteBestand()).FabrikName,
+                    handelsName = (model ?? new FahrzeugAkteBestand()).HandelsName
+                });
+        }
+        
 
         #region Grid
 

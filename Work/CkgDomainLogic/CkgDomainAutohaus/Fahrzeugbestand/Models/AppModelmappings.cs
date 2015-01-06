@@ -47,6 +47,24 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     }));
             }
         }
+        static public ModelMapping<Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN, FahrzeugAkteBestand> Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN, FahrzeugAkteBestand>(
+                    new Dictionary<string, string>(),
+                    (s, d) =>
+                    {
+                        d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
+                        d.TypSchluessel = s.ZZTYP_SCHL;
+                        d.VvsSchluessel = s.ZZVVS_SCHLUESSEL;
+                        d.VvsPruefZiffer = s.ZZTYP_VVS_PRUEF;
+
+                        d.FabrikName = s.ZZFABRIKNAME;
+                        d.HandelsName = s.ZZHANDELSNAME;
+                    }));
+            }
+        }
 
         #endregion
 

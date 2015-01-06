@@ -110,6 +110,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
                 addModelError("", Localize.PleaseFillOutForm);
         }
 
+        public FahrzeugAkteBestand GetTypDaten(string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
+        {
+            return DataService.GetTypDaten(FinSearchSelektor.FIN, herstellerSchluessel, typSchluessel, vvsSchluessel);
+        }
+
         public FahrzeugAkteBestand LoadFahrzeugDetailsUsingFin(string fin)
         {
             return CurrentFahrzeug =

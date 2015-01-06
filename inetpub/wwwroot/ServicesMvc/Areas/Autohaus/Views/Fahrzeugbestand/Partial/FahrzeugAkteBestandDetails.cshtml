@@ -18,14 +18,12 @@
                     @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
                     @Html.FormTextBoxFor(m => m.HerstellerSchluessel, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small uppercase" })
                     @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap small" })
                     @Html.FormTextBoxFor(m => m.VvsPruefZiffer, new { @class = "m-wrap small" })
 
-                    @Html.HiddenFor(m => m.FabrikName)
-                    @Html.FormTextBlockFor(m => m.FabrikName, new { @class = "m-wrap small" })
-                    @Html.HiddenFor(m => m.HandelsName)
-                    @Html.FormTextBlockFor(m => m.HandelsName, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap medium" })
+                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap medium" })
                 }
             </div>
 
@@ -85,6 +83,8 @@
             _finSearchFahrzeugFinID = '@Model.FinID.NotNullOrEmpty()';
             _finIdJustCreated = @Model.FinIdJustCreated.ToString().ToLower();
             //alert(_finIdJustCreated + ' - ' + _finSearchFahrzeugFinID);
+
+            InitCheckTypDaten();
         </script>
     }
 </div>

@@ -9,5 +9,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Contracts
         List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model);
 
         string SaveFahrzeugAkteBestand(FahrzeugAkteBestand fahrzeugAkteBestand);
+
+        FahrzeugAkteBestand GetTypDaten(string fin, string herstellerSchluessel, string typSchluessel, string vvsSchluessel);
     }
 }

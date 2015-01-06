@@ -196,6 +196,7 @@
 
     function SetFahrzeugakteFormToReadOnly(readonly) {
         $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
+        $("#FabrikName,#HandelsName").attr("readonly", true);
         $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
 
         if (readonly) {
@@ -207,6 +208,47 @@
         }
     }
     
+    function InitCheckTypDaten() {
+        $("#HerstellerSchluessel,#TypSchluessel,#VvsSchluessel").change(function () { TryCheckTypDaten(); });
+
+        $("#FabrikName,#HandelsName").attr("readonly", true);
+    }
+    
+    function TryCheckTypDaten() {
+
+        var submitButton = $("button[type='submit']");
+        submitButton.attr("disabled", "disabled");
+
+        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
+        if (!typDatenComplete)
+            return;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetTypDaten",
+            data: {
+                herstellerSchluessel: $("#HerstellerSchluessel").val(),
+                typSchluessel: $("#TypSchluessel").val().toUpperCase(),
+                vvsSchluessel: $("#VvsSchluessel").val(),
+            },
+            loadingShow: false,
+            success: function (result) {
+                submitButton.removeAttr("disabled");
+                $("#FabrikName").val("");
+                $("#HandelsName").val("");
+                if (!result.success)
+                    return;
+
+                $("#FabrikName").val(result.fabrikName);
+                $("#HandelsName").val(result.handelsName);
+            },
+            error: function (result) {
+                alert(result.data);
+                submitButton.removeAttr("disabled");
+            }
+        });
+    }
 
     //
     // <Partner Selection>
