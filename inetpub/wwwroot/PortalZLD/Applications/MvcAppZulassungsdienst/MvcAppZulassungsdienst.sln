@@ -24,44 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZLDBaseMvc", "..\..\..\..\..\Work\ZLDBaseMvc\ZLDBaseMvc.csproj", "{41662BCF-C75E-44B8-94ED-95BB62276155}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MvcAppZulassungsdienst.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\PortalZLD.vbproj
-		SccProjectName2 = ../../
-		SccLocalPath2 = ..\\..
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\Work\\ZLDBase\\Base.vbproj
-		SccProjectName3 = ../../../../Work/ZLDBase
-		SccLocalPath3 = ..\\..\\..\\..\\..\\Work\\ZLDBase
-		SccProjectUniqueName4 = ..\\..\\..\\..\\..\\Work\\Tools\\MvcTools\\MvcTools.csproj
-		SccProjectName4 = ../../../../Work/Tools/MvcTools
-		SccLocalPath4 = ..\\..\\..\\..\\..\\Work\\Tools\\MvcTools
-		SccProjectUniqueName5 = ..\\..\\..\\ServicesMvc\\PortalMvcTools\\PortalMvcTools.csproj
-		SccProjectName5 = ../../../../CKAG2/ServicesMvc/PortalMvcTools
-		SccLocalPath5 = ..\\..\\..\\ServicesMvc\\PortalMvcTools
-		SccProjectUniqueName6 = ..\\..\\..\\..\\..\\Work\\CkgDomainLogic\\Lib\\CkgDomainLogic.csproj
-		SccProjectName6 = ../../../../Work/CkgDomainLogic/Lib
-		SccLocalPath6 = ..\\..\\..\\..\\..\\Work\\CkgDomainLogic\\Lib
-		SccProjectUniqueName7 = ..\\..\\..\\..\\..\\Work\\Tools\\WebTools\\WebTools.csproj
-		SccProjectName7 = ../../../../Work/Tools/WebTools
-		SccLocalPath7 = ..\\..\\..\\..\\..\\Work\\Tools\\WebTools
-		SccProjectUniqueName8 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools\\GeneralTools.csproj
-		SccProjectName8 = ../../../../Work/Tools/GeneralTools
-		SccLocalPath8 = ..\\..\\..\\..\\..\\Work\\Tools\\GeneralTools
-		SccProjectUniqueName9 = ..\\..\\..\\..\\..\\Work\\Tools\\WebTools35\\WebTools35.csproj
-		SccProjectName9 = ../../../../Work/Tools/WebTools35
-		SccLocalPath9 = ..\\..\\..\\..\\..\\Work\\Tools\\WebTools35
-		SccProjectUniqueName10 = ..\\..\\..\\..\\..\\Work\\Tools\\DocumentTools\\DocumentTools.csproj
-		SccProjectName10 = ../../../../Work/Tools/DocumentTools
-		SccLocalPath10 = ..\\..\\..\\..\\..\\Work\\Tools\\DocumentTools
-		SccProjectUniqueName11 = ..\\..\\..\\..\\..\\Work\\ZLDBaseMvc\\ZLDBaseMvc.csproj
-		SccProjectName11 = ../../../../Work/ZLDBaseMvc
-		SccLocalPath11 = ..\\..\\..\\..\\..\\Work\\ZLDBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
