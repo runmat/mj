@@ -40,8 +40,14 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        private bool IstKroschke { get { return (LogonContext.Customer.AccountingArea == 1010); } }
+
         public void LoadHistoryAuftraege()
         {
+            if (IstKroschke && !String.IsNullOrEmpty(HistoryAuftragSelector.AgKundenNr))
+                HistoryAuftragSelector.KundenNr = HistoryAuftragSelector.AgKundenNr;
+
             HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector)
                 .OrderByDescending(a => a.AuftragsNr)
                 .ThenBy(a => a.Fahrt)
@@ -78,6 +84,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             HistoryAuftragSelector = new HistoryAuftragSelector
             {
                 AuftragsArt = "A",
+                KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                 KundenNrUser = LogonContext.KundenNr.ToSapKunnr(),
                 GetKundenAusHierarchie = () => DataService.KundenAusHierarchie
             };

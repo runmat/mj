@@ -29,6 +29,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
+        public string KundenNr { get; set; }
+
         public string KundenNrUser { get; set; }
 
         #region AG
