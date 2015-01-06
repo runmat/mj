@@ -36,6 +36,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistoryAuftraege(HistoryAuftragSelector model)
         {
+            model.GetKundenAusHierarchie = ReportViewModel.HistoryAuftragSelector.GetKundenAusHierarchie;
             ReportViewModel.HistoryAuftragSelector = model;
 
             bool dateRangeResetOccurred;

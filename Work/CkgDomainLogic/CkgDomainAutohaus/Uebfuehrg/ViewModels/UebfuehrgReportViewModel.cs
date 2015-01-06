@@ -78,7 +78,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             HistoryAuftragSelector = new HistoryAuftragSelector
             {
                 AuftragsArt = "A",
-                KundenNr = LogonContext.KundenNr.ToSapKunnr()
+                KundenNrUser = LogonContext.KundenNr.ToSapKunnr(),
+                GetKundenAusHierarchie = () => DataService.KundenAusHierarchie
             };
 
             DataMarkForRefresh();

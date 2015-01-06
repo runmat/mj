@@ -164,7 +164,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragSelector>(
                     new Dictionary<string, string> {
-                        { "Kunnr_Ag", "KundenNr" },
+                        { "Kunnr_Ag", "AgKundenNr" },
                         { "EX_KUNNR", "KundenReferenz" },
                         { "Zorgadmin", "AlleOrganisationen" },
                     }, (sap, business) =>

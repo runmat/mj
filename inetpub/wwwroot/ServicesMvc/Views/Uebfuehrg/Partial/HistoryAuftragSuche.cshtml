@@ -8,10 +8,19 @@
             
             @Html.FormValidationSummary()
             
-            @Html.HiddenFor(m => m.KundenNr)
+            @Html.HiddenFor(m => m.KundenNrUser)
             @Html.HiddenFor(m => m.KundenReferenz) 
             @Html.HiddenFor(m => m.AlleOrganisationen)
             
+            @if (Model.KundenAusHierarchie.Count > 1)
+            {
+                @Html.FormDropDownListFor(m => m.AgKundenNr, Model.KundenAusHierarchie.ToSelectList(), new { @class = "m-wrap large" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.AgKundenNr)
+            }
+
             @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "left" }, new[] { "!far-past", "!this-year" })
             @Html.FormDateRangePickerFor(m => m.UeberfuehrungsDatumRange, new { col = "right" }, new[] { "!far-past", "!this-year" })
 
