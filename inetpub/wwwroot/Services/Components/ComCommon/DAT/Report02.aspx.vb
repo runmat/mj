@@ -2,7 +2,6 @@
 Option Explicit On
 
 Imports CKG.Components.ComCommon.SilverDAT
-Imports DAT_BankenLinie_Connector
 
 Namespace DAT
     Public Class Report02
@@ -453,7 +452,7 @@ Namespace DAT
             Dim SubModels As Integer = 0
             Integer.TryParse(ddlSubModels.SelectedValue, SubModels)
 
-            Dim bMx As String = Get_Daten.GetECode(m_DAT.DATcustomerLogin, m_DAT.DATcustomerNumber, m_DAT.DATcustomerSignature, m_DAT.DATinterfacePartnerNumber, m_DAT.DATinterfacePartnerSignature, mileage, year, "", ErrorMessage, additionalOptions.ToArray(), VehicleTypes, Manufacturers, BaseModels, SubModels)
+            Dim bMx As String = m_DAT.GetECode(mileage, year, "", ErrorMessage, additionalOptions.ToArray(), VehicleTypes, Manufacturers, BaseModels, SubModels)
 
             Return bMx
 
