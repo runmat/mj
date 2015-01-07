@@ -1,4 +1,5 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable ConvertIfStatementToNullCoalescingExpression
+// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -115,32 +116,48 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             return DataService.GetTypDaten(FinSearchSelektor.FIN, herstellerSchluessel, typSchluessel, vvsSchluessel);
         }
 
-        public FahrzeugAkteBestand LoadFahrzeugDetailsUsingFin(string fin)
+        FahrzeugAkteBestand GetFahrzeugBestandUsingFin(string fin)
         {
-            return CurrentFahrzeug =
-                FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == fin)
-                ?? new FahrzeugAkteBestand { FIN = fin };
+            return FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == fin);
         }
 
-        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, Action<string, string> addModelError)
+        public FahrzeugAkteBestand TryLoadFahrzeugDetailsUsingFin(string fin)
         {
-            var savedModel = LoadFahrzeugDetailsUsingFin(model.FIN);
+            CurrentFahrzeug = GetFahrzeugBestandUsingFin(fin);
+            if (CurrentFahrzeug == null)
+                CurrentFahrzeug = DataService.GetTypDaten(fin, null, null, null) ?? new FahrzeugAkteBestand { FIN = fin }; 
 
-            ModelMapping.Copy(model, savedModel);
+            return CurrentFahrzeug;
+        }
+
+        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, string fin, Action<string, string> addModelError)
+        {
+            var savedModel = GetFahrzeugBestandUsingFin(fin);
+
+            var akteHasBeenValid = CurrentFahrzeug != null && CurrentFahrzeug.AkteIsValid;
+            var bestandAlreadyExistedForThisCustomer = (savedModel != null);
+            
+            if (!bestandAlreadyExistedForThisCustomer)
+                savedModel = new FahrzeugAkteBestand { FIN = fin };
+
+            if (model != null)
+                ModelMapping.Copy(model, savedModel);
+
             CurrentFahrzeug = savedModel;
 
             var errorMessage = DataService.SaveFahrzeugAkteBestand(savedModel);
-            if (errorMessage.IsNotNullOrEmpty())
+            if (errorMessage.IsNotNullOrEmpty() && addModelError != null)
                 addModelError("", errorMessage);
 
-            if (savedModel.FinID.IsNotNullOrEmpty())
-                DataMarkForRefresh();
-            else
-            {
+            DataMarkForRefresh();
+
+            if (!bestandAlreadyExistedForThisCustomer)
                 LoadFahrzeuge();
 
-                savedModel = LoadFahrzeugDetailsUsingFin(model.FIN);
-                savedModel.FinIdJustCreated = true;
+            if (!akteHasBeenValid)
+            {
+                savedModel = GetFahrzeugBestandUsingFin(fin);
+                savedModel.AkteJustCreated = true;
                 CurrentFahrzeug = savedModel;
             }
         }

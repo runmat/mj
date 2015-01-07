@@ -55,6 +55,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
+                        d.FinID = s.FIN_ID;
                         d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
                         d.TypSchluessel = s.ZZTYP_SCHL;
                         d.VvsSchluessel = s.ZZVVS_SCHLUESSEL;

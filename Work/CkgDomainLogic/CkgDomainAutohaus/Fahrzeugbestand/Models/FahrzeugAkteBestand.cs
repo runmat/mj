@@ -30,9 +30,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
 
-        [GridHidden, NotMapped]
-        public bool FinIdJustCreated { get; set; }
-
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
@@ -70,6 +67,22 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.TradeName)]
         [Length(25)]
         public string HandelsName { get; set; }
+
+
+        [GridHidden, NotMapped]
+        public bool AkteIsValid
+        {
+            get
+            {
+                return HerstellerSchluessel.IsNotNullOrEmpty() && 
+                       TypSchluessel.IsNotNullOrEmpty() &&
+                       VvsSchluessel.IsNotNullOrEmpty() && 
+                       VvsPruefZiffer.IsNotNullOrEmpty();
+            }
+        }
+
+        [GridHidden, NotMapped]
+        public bool AkteJustCreated { get; set; }
 
         #endregion
 

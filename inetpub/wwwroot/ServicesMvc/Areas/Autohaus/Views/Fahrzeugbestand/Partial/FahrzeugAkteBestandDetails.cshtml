@@ -80,9 +80,8 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            _finSearchFahrzeugFinID = '@Model.FinID.NotNullOrEmpty()';
-            _finIdJustCreated = @Model.FinIdJustCreated.ToString().ToLower();
-            //alert(_finIdJustCreated + ' - ' + _finSearchFahrzeugFinID);
+            _akteJustCreated = @Model.AkteJustCreated.ToString().ToLower();
+            _akteIsValid = @Model.AkteIsValid.ToString().ToLower();
 
             InitCheckTypDaten();
         </script>

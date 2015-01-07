@@ -119,8 +119,8 @@
         });
     }
 
-    var _finSearchFahrzeugFinID = '';
-    var _finIdJustCreated = false;
+    var _akteJustCreated = false;
+    var _akteIsValid = false;
 
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
@@ -141,7 +141,7 @@
 
     function ShowFahrzeugDetailsComingFromFinSearch(result) {
         $("#divFahrzeugDetails").html(result);
-        SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
+        SetFahrzeugakteFormToReadOnly(_akteIsValid);
         FormPrepareAjax();
     }
 
@@ -175,10 +175,10 @@
 
     function TryCloseFahrzeugDetails() {
 
-        SetFahrzeugakteFormToReadOnly(_finSearchFahrzeugFinID != '');
+        SetFahrzeugakteFormToReadOnly(_akteIsValid);
         
         if (_modelStateValid) {
-            if (_finIdJustCreated) {
+            if (_akteJustCreated) {
                 var message = '@Localize.VehicleCreatedPleaseEditVehicleStock';
                 SpanAlertSuccess("Message", message, 4000);
                 FormPrepareAjax();

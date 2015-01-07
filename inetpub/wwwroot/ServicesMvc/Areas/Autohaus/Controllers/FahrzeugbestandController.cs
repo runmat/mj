@@ -97,7 +97,7 @@ namespace ServicesMvc.Autohaus.Controllers
             if (finToLoad == "useModelFin")
                 finToLoad = ViewModel.FinSearchSelektor.FIN;
 
-            ViewModel.LoadFahrzeugDetailsUsingFin(finToLoad);
+            ViewModel.TryLoadFahrzeugDetailsUsingFin(finToLoad);
 
             return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }
@@ -108,7 +108,7 @@ namespace ServicesMvc.Autohaus.Controllers
             if (!ModelState.IsValid)
                 return PartialView("Partial/FahrzeugAkteBestandDetails", model);
 
-            ViewModel.UpdateFahrzeugDetails(model, ModelState.AddModelError);
+            ViewModel.UpdateFahrzeugDetails(model, model.FIN, ModelState.AddModelError);
 
             if (ModelState.IsValid)
                 ModelState.Clear();

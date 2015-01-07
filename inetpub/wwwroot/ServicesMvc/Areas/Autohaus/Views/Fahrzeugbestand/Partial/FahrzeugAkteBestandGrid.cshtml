@@ -23,7 +23,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
     .XToolBar("Fahrzeugbestand")
 )
 

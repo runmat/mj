@@ -44,8 +44,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
 
             var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportList(SAP);
             var list = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
+            var item = list.FirstOrDefault();
+            if (item != null)
+                item.FIN = fin;
 
-            return list.FirstOrDefault();
+            return item;
         }
 
         public List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
