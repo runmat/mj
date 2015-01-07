@@ -222,6 +222,7 @@ namespace CkgDomainLogic.Controllers
                 case ".jpeg":
                 case ".gif":
                 case ".png":
+                case ".apk":
                     break;
                 default:
                     return false;
