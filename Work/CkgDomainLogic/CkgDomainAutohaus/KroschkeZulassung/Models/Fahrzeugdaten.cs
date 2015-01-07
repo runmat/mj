@@ -12,9 +12,17 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 {
     public class Fahrzeugdaten
     {
+        private string _kostenstelle;
+        private string _bestellNr;
+        private string _auftragsNr;
+
         [Required]
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
-        public string AuftragsNr { get; set; }
+        public string AuftragsNr
+        {
+            get { return _auftragsNr.NotNullOrEmpty().ToUpper(); }
+            set { _auftragsNr = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
@@ -54,11 +62,19 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.CostCenter)]
-        public string Kostenstelle { get; set; }
+        public string Kostenstelle
+        {
+            get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
+            set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.OrderCode)]
-        public string BestellNr { get; set; }
+        public string BestellNr
+        {
+            get { return _bestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _bestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         public string GetSummaryString()
         {

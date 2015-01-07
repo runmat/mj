@@ -161,6 +161,19 @@
         }
     }
 
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+        
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban();
+    }
+
     function LoadBankdatenAusIban() {
 
         var iban = $("#Iban").val();
@@ -179,7 +192,6 @@
                         $("#Geldinstitut").attr("readonly", false);
                         $("#Geldinstitut").attr("placeholder", "");
                         $("#Geldinstitut").val("");
-                        SpanAlertWarning("bankDataHint", '@Localize.BankDataCouldNotBeRetrievedFromIban.ToJavascriptString()', 1800);
                         return;
                     }
 
@@ -262,6 +274,7 @@
                     }
 
                     $("#Zulassungskreis").val(result.kfzKreis);
+                    ZulassungskreisOnChange();
                     SpanAlertSuccess("kfzKreisHint", '@Localize.RegDistrictSuccessfullyRetrievedFromCarOwnerAddr.ToJavascriptString()', 1800);
                 }
             });
@@ -288,6 +301,23 @@
             resName.attr('readonly', true);
             resNr.attr('readonly', true);
         }
+    }
+    
+    function ZulassungskreisOnChange() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "GetKennzeichenLinkeSeite",
+                data: { zulassungsKreis: $("#Zulassungskreis").val() },
+                loadingShow: false,
+                success: function (result) {
+                    $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
+                    $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
+                    $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
+                }
+            });
+
+        return false;
     }
 
     // OptionenDienstleistungen

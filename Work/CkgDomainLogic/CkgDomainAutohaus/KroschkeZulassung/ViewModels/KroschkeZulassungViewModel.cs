@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -240,16 +239,27 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
         {
             HalterAdresse = model;
 
-            Zulassung.Zulassungsdaten.Zulassungskreis = LoadKfzKreisAusHalterAdresse();
+            var zulassungsKreis = LoadKfzKreisAusHalterAdresse();
+            Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
 
-            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Kennzeichen) || Zulassung.Zulassungsdaten.Kennzeichen.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Kennzeichen = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
+                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
 
-            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen2) || Zulassung.Zulassungsdaten.Wunschkennzeichen2.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
 
-            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.Wunschkennzeichen3) || Zulassung.Zulassungsdaten.Wunschkennzeichen3.EndsWith("-"))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits());
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+        }
+
+        public string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        {
+            return Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+        }
+
+        static bool KennzeichenIsValid(string kennnzeichen)
+        {
+            return Zulassungsdaten.KennzeichenIsValid(kennnzeichen);
         }
 
         public void DataMarkForRefreshHalterAdressen()
@@ -279,38 +289,22 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
-            var kennz = model.Kennzeichen.NotNullOrEmpty().ToUpper();
-            if (kennz != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
-                Zulassung.Zulassungsdaten.Kennzeichen = kennz;
-            else
-                Zulassung.Zulassungsdaten.Kennzeichen = "";
-
             Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
 
             if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
             {
                 Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
                 Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = "";
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = "";
             }
             else
             {
                 Zulassung.Zulassungsdaten.ReservierungsNr = "";
                 Zulassung.Zulassungsdaten.ReservierungsName = "";
-
-                var wkz2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
-                if (wkz2 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
-                    Zulassung.Zulassungsdaten.Wunschkennzeichen2 = wkz2;
-                else
-                    Zulassung.Zulassungsdaten.Wunschkennzeichen2 = "";
-
-                var wkz3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
-                if (wkz3 != String.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis.RemoveDigits()))
-                    Zulassung.Zulassungsdaten.Wunschkennzeichen3 = wkz3;
-                else
-                    Zulassung.Zulassungsdaten.Wunschkennzeichen3 = "";
             }
+
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2;
+            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3;
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
 

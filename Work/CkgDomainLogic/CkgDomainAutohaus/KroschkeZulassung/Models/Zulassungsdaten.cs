@@ -11,6 +11,10 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 {
     public class Zulassungsdaten : IValidatableObject
     {
+        private string _wunschkennzeichen2;
+        private string _wunschkennzeichen3;
+        private string _kennzeichen;
+
         [Required]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
@@ -47,20 +51,50 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string ZulassungskreisBezeichnung { get; set; }
 
+        [Required]
         [LocalizedDisplay(LocalizeConstants.EvbNumber)]
         public string EvbNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
-        public string Kennzeichen { get; set; }
+        public string Kennzeichen
+        {
+            get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedNumberPlate)]
-        public bool Wunschkennzeichen { get { return (!KennzeichenReserviert); } }
+        public bool WunschkennzeichenVorhanden
+        {
+            get
+            {
+                return (KennzeichenReserviert ||
+                        (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
+            }
+        }
+
+        public static string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        {
+            return string.Format("{0}-", zulassungsKreis.NotNullOrEmpty().ToUpper().RemoveDigits());
+        }
+
+        public static bool KennzeichenIsValid(string kennnzeichen)
+        {
+            return kennnzeichen.IsNotNullOrEmpty() && !kennnzeichen.LastCharIs('-');
+        }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
-        public string Wunschkennzeichen2 { get; set; }
+        public string Wunschkennzeichen2
+        {
+            get { return _wunschkennzeichen2.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennzeichen2 = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
-        public string Wunschkennzeichen3 { get; set; }
+        public string Wunschkennzeichen3
+        {
+            get { return _wunschkennzeichen3.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennzeichen3 = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNoReserved)]
         public bool KennzeichenReserviert { get; set; }

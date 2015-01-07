@@ -234,6 +234,11 @@ namespace GeneralTools.Models
             return ret;
         }
 
+        public static bool LastCharIs(this string s, char lastChar)
+        {
+            return !s.IsNullOrEmpty() && (s[s.Length - 1] == lastChar);
+        }
+
         public static string NotNullOrEmpty(this string s, string defaultValue)
         {
             return string.IsNullOrEmpty(s) ? defaultValue : s;
@@ -242,6 +247,11 @@ namespace GeneralTools.Models
         public static string NotNullOrEmpty(this string s)
         {
             return s.NotNullOrEmpty("");
+        }
+
+        public static string NotNullOr(this string s, string alternativeValue)
+        {
+            return s.IsNotNullOrEmpty() ? s : alternativeValue;
         }
 
         public static string NotNullOrEmptyOrNullString(this string s, string additionalNullstring=null)

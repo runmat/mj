@@ -34,20 +34,19 @@
         
                     @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap large" })
 
-                    @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap large uppercase" },
+                    @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap large uppercase", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
                                          postControlHtml: @<text>
-                                                               <a href="#" onclick="return LoadBankdatenAusIban()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadBankDataFromIban</a>
-                                                               @Html.SpanAlert("bankDataHint")
                                                            </text>)
 
                     @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap large uppercase", @readonly = "readonly" },
                                          postControlHtml: @<text>
-                                                               <span class="margin-left-10">@Localize.WillBeFilledAutomatically</span>
+                                                               <div>@Localize.WillBeFilledAutomatically</div>
                                                            </text>)
 
                     @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap large", @readonly = "readonly" },
                                          postControlHtml: @<text>
-                                                               <span class="margin-left-10">@Localize.WillBeFilledAutomatically</span>
+                                                               <div>@Localize.WillBeFilledAutomatically</div>
+                                                               @Html.SpanAlert("bankDataHint")
                                                            </text>)
                 }
 

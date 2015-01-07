@@ -238,6 +238,12 @@ namespace ServicesMvc.Controllers
             return Json(new { kfzKreis = ViewModel.LoadKfzKreisAusHalterAdresse() });
         }
 
+        [HttpPost]
+        public ActionResult GetKennzeichenLinkeSeite(string zulassungsKreis)
+        {
+            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis) });
+        }
+
         #endregion
 
         #region OptionenDienstleistungen

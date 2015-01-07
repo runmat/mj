@@ -94,6 +94,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                     , null
                     , (s, d) =>
                         {
+                            var defaultKennzeichenLinkeSeite = Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(s.Zulassungsdaten.Zulassungskreis);
+
                             d.ZULBELN = s.BelegNr;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
@@ -123,7 +125,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.ZZREFNR4 = s.Fahrzeugdaten.BestellNr;
 
                             // Halter
-                            d.ZZREFNR1 = s.Halter;
+                            d.ZZREFNR1 = s.Halter.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
                             d.ZZZLDAT = s.Zulassungsdaten.Zulassungsdatum;
@@ -131,12 +133,12 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.KREISKZ = s.Zulassungsdaten.Zulassungskreis;
                             d.KREISBEZ = s.Zulassungsdaten.ZulassungskreisBezeichnung;
                             d.ZZEVB = s.Zulassungsdaten.EvbNr;
-                            d.ZZKENN = s.Zulassungsdaten.Kennzeichen;
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
-                            d.WUNSCHKENN_JN = s.Zulassungsdaten.Wunschkennzeichen.BoolToX();
-                            d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2;
-                            d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3;
+                            d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
+                            d.ZZKENN = s.Zulassungsdaten.Kennzeichen.NotNullOr(defaultKennzeichenLinkeSeite);
+                            d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2.NotNullOr(defaultKennzeichenLinkeSeite);
+                            d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3.NotNullOr(defaultKennzeichenLinkeSeite);
 
                             // Optionen/Dienstleistungen
                             d.EINKENN_JN = s.OptionenDienstleistungen.NurEinKennzeichen.BoolToX();
