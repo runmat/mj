@@ -1,20 +1,15 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Portal.PageElements
+﻿Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Change02
-    Inherits System.Web.UI.Page
+    Inherits Page
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
-    Private m_objTable As DataTable
-    Private m_objExcel As DataTable
     Private m_report As Zul_Sperr_Entsperr
 
-    Protected WithEvents ucStyles As CKG.Portal.PageElements.Styles
-    Protected WithEvents ucHeader As CKG.Portal.PageElements.Header
+    Protected WithEvents ucStyles As Portal.PageElements.Styles
+    Protected WithEvents ucHeader As Portal.PageElements.Header
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         Session("ShowLink") = "False"
         m_User = GetUser(Me)
@@ -40,7 +35,7 @@ Partial Public Class Change02
                 End If
 
             ElseIf Not Session("App_Report") Is Nothing Then
- 
+
                 m_report = CType(Session("App_Report"), Zul_Sperr_Entsperr)
                 Session("App_ResultTablePDIs") = m_report.ResultPDIs
                 Session("App_ResultTable") = m_report.ResultTable
@@ -52,9 +47,8 @@ Partial Public Class Change02
 
 
     End Sub
-    Private Sub DoSubmit()
-        Dim checkInput As Boolean = True
 
+    Private Sub DoSubmit()
         Session("lnkExcel") = ""
 
         Try
@@ -80,7 +74,6 @@ Partial Public Class Change02
                     Session("App_Report") = m_report
                     Session("App_ResultTable") = m_report.Result
 
-                    m_objTable = m_report.Result
                     FillControlls()
                 End If
             End If
@@ -89,50 +82,32 @@ Partial Public Class Change02
         End Try
 
     End Sub
+
     Private Sub FillControlls(Optional ByVal FlagFilter As String = "")
 
-        Dim dvCarports As DataView
-        Dim dvHersteller As DataView
-        Dim dvLiefertermin As DataView
-        Dim dvBereifung As DataView
-        Dim dvGetriebe As DataView
-        Dim dvKraftstoff As DataView
-        Dim dvNavi As DataView
-        Dim dvFarbe As DataView
-        Dim dvVermiet As DataView
-        Dim dvFzgArt As DataView
-        Dim dvAufbauArt As DataView
-        Dim dvHaendlernr As DataView
-        Dim dvHaendlername As DataView
-        Dim dvEKIndikator As DataView
-        Dim dvVerwZweck As DataView
-        Dim dvOwnerCode As DataView
-        Dim dvSperrdat As DataView
-        Dim dvZulKreis As DataView
-        If Session("App_Report") Is Nothing Then
-        Else
+        If Session("App_Report") IsNot Nothing Then
             m_report = CType(Session("App_Report"), Zul_Sperr_Entsperr)
         End If
 
+        Dim dvCarports As DataView = m_report.ResultPDIs.DefaultView
+        Dim dvHersteller As DataView = m_report.Hersteller.DefaultView
+        Dim dvLiefertermin As DataView = m_report.Liefermonat.DefaultView
+        Dim dvBereifung As DataView = m_report.Bereifung.DefaultView
+        Dim dvGetriebe As DataView = m_report.Getriebe.DefaultView
+        Dim dvKraftstoff As DataView = m_report.Kraftstoff.DefaultView
+        Dim dvNavi As DataView = m_report.Navi.DefaultView
+        Dim dvFarbe As DataView = m_report.Farbe.DefaultView
+        Dim dvVermiet As DataView = m_report.Vermiet.DefaultView
+        Dim dvFzgArt As DataView = m_report.FzgArt.DefaultView
+        Dim dvAufbauArt As DataView = m_report.AufbauArt.DefaultView
+        Dim dvHaendlernr As DataView = m_report.Haendlernr.DefaultView
+        Dim dvHaendlername As DataView = m_report.Handlername.DefaultView
+        Dim dvEKIndikator As DataView = m_report.EKIndikator.DefaultView
+        Dim dvVerwZweck As DataView = m_report.VerwZweck.DefaultView
+        Dim dvOwnerCode As DataView = m_report.HOwnerCode.DefaultView
+        Dim dvSperrdat As DataView = m_report.Sperrdat.DefaultView
+        Dim dvZulKreis As DataView = m_report.ZulKreis.DefaultView
 
-        dvCarports = m_report.ResultPDIs.DefaultView
-        dvHersteller = m_report.Hersteller.DefaultView
-        dvLiefertermin = m_report.Liefermonat.DefaultView
-        dvBereifung = m_report.Bereifung.DefaultView
-        dvGetriebe = m_report.Getriebe.DefaultView
-        dvKraftstoff = m_report.Kraftstoff.DefaultView
-        dvNavi = m_report.Navi.DefaultView
-        dvFarbe = m_report.Farbe.DefaultView
-        dvVermiet = m_report.Vermiet.DefaultView
-        dvFzgArt = m_report.FzgArt.DefaultView
-        dvAufbauArt = m_report.AufbauArt.DefaultView
-        dvHaendlernr = m_report.Haendlernr.DefaultView
-        dvHaendlername = m_report.Handlername.DefaultView
-        dvEKIndikator = m_report.EKIndikator.DefaultView
-        dvVerwZweck = m_report.VerwZweck.DefaultView
-        dvOwnerCode = m_report.HOwnerCode.DefaultView
-        dvSperrdat = m_report.Sperrdat.DefaultView
-        dvZulKreis = m_report.ZulKreis.DefaultView
         If FlagFilter.Contains("Carportnr") = False Then
             If dvCarports.Count > 0 Then
                 BoundControls(dvCarports, ddlCarports, "Carport", "Carportnr", "Carportnr")
@@ -144,11 +119,13 @@ Partial Public Class Change02
                 BoundControls(dvHersteller, ddlHersteller, "Hersteller_ID_Avis", "Hersteller_ID_Avis", "Hersteller_ID_Avis")
             End If
         End If
+
         If FlagFilter.Contains("Liefermonat") = False Then
             If dvLiefertermin.Count > 0 Then
                 BoundControls(dvLiefertermin, ddlLiefermonat, "Liefermonat", "ID", "Liefermonat")
             End If
         End If
+
         If FlagFilter.Contains("Reifenart") = False Then
             If dvBereifung.Count > 0 Then
                 BoundControls(dvBereifung, ddlBereifung, "REIFENART", "ID", "REIFENART")
@@ -172,6 +149,7 @@ Partial Public Class Change02
                 BoundControls(dvNavi, ddlNavi, "Navigation", "ID", "Navigation")
             End If
         End If
+
         If FlagFilter.Contains("Farbe") = False Then
             If dvFarbe.Count > 0 Then
                 BoundControls(dvFarbe, ddlFarbe, "FARBE", "ID", "FARBE")
@@ -202,7 +180,6 @@ Partial Public Class Change02
             End If
         End If
 
-
         If FlagFilter.Contains("Haendler_Kurzname") = False Then
             If dvHaendlername.Count > 0 Then
                 BoundControls(dvHaendlername, ddlHaendlername, "Haendler_Kurzname", "ID", "Haendler_Kurzname")
@@ -213,14 +190,13 @@ Partial Public Class Change02
             If dvEKIndikator.Count > 0 Then
                 BoundControls(dvEKIndikator, ddlEKIndikator, "Einkaufsindikator", "ID", "Einkaufsindikator")
             End If
-
         End If
+
         If FlagFilter.Contains("Verwendungszweck") = False Then
             If dvVerwZweck.Count > 0 Then
                 BoundControls(dvVerwZweck, ddlVerwZweck, "VERWENDUNGSZWECK", "ID", "VERWENDUNGSZWECK")
             End If
         End If
-
 
         If FlagFilter.Contains("Owner_Code") = False Then
             If dvOwnerCode.Count > 0 Then
@@ -241,6 +217,7 @@ Partial Public Class Change02
             End If
         End If
     End Sub
+
     Private Sub BoundControls(ByVal View As DataView, ByVal Dropdown As DropDownList, ByVal Text As String, _
                                                 ByVal Value As String, ByVal Sort As String)
         If View.Count > 0 Then
@@ -299,7 +276,6 @@ Partial Public Class Change02
                 lblError.Text = "Keine Ergbnisse zu den gewählten Kriterien!"
             End If
 
-
         End If
         Session("App_Report") = m_report
     End Sub
@@ -330,7 +306,6 @@ Partial Public Class Change02
                 If IsNumeric(Mid(lblMessage.Text, i, 1)) = True Then
                     NumString += Mid(lblMessage.Text, i, 1)
 
-
                 End If
 
             Next
@@ -342,18 +317,16 @@ Partial Public Class Change02
                 End If
             End If
 
-
-
         End If
 
         Response.Redirect("Change02_1.aspx?AppID=" & Session("AppID").ToString)
     End Sub
+
     Private Sub Setfilter()
         Dim iStatus As Integer
-        Dim sFilter As String
-        Dim sFilterproof As String = ""
-        sFilter = "ZULASSUNGSORT = '" & Session("AppZulKreis").ToString & "'"
-        sFilterproof = proofDropdowns()
+        Dim sFilter As String = "ZULASSUNGSORT = '" & Session("AppZulKreis").ToString & "'"
+        Dim sFilterproof As String = proofDropdowns()
+
         If sFilterproof <> "" Then
             sFilter = sFilter & " And " & sFilterproof
             m_report.FilterString = sFilter
@@ -380,12 +353,16 @@ Partial Public Class Change02
         Session("App_Report") = m_report
     End Sub
 
-    Protected Sub ddlCarports_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged
+    Protected Sub ddl_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged, ddlHersteller.SelectedIndexChanged, _
+            ddlLiefermonat.SelectedIndexChanged, ddlBereifung.SelectedIndexChanged, ddlGetriebe.SelectedIndexChanged, ddlKraftstoff.SelectedIndexChanged, _
+            ddlNavi.SelectedIndexChanged, ddlFarbe.SelectedIndexChanged, ddlVermiet.SelectedIndexChanged, ddlFzgArt.SelectedIndexChanged, _
+            ddlAufbauArt.SelectedIndexChanged, ddlHaendlernr.SelectedIndexChanged, ddlHaendlername.SelectedIndexChanged, ddlEKIndikator.SelectedIndexChanged, _
+            ddlVerwZweck.SelectedIndexChanged, ddlOwnerCode.SelectedIndexChanged, ddlSperrdat.SelectedIndexChanged
         Setfilter()
     End Sub
+
     Private Sub insertScript()
-        'If Not (highlightID Is Nothing) Then
-        '        
+
         Literal1.Text = "						<script language=""Javascript"">" & vbCrLf
         Literal1.Text &= "						  <!-- //" & vbCrLf
         Literal1.Text &= "							slidedown('Suche2');" & vbCrLf
@@ -393,28 +370,6 @@ Partial Public Class Change02
         Literal1.Text &= "						</script>" & vbCrLf
 
     End Sub
-
-    Protected Sub ddlHersteller_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHersteller.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-
-    Protected Sub ddlLiefermonat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlLiefermonat.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlBereifung_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlBereifung.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlGetriebe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlGetriebe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlKraftstoff_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlKraftstoff.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
 
     Private Function proofDropdowns() As String
         Dim sFilter As String = ""
@@ -545,50 +500,6 @@ Partial Public Class Change02
         Return sFilter
     End Function
 
-
-    Protected Sub ddlNavi_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlNavi.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFarbe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFarbe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVermiet_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVermiet.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFzgArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFzgArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlAufbauArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAufbauArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlernr_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlernr.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlername_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlername.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlEKIndikator_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlEKIndikator.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVerwZweck_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVerwZweck.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlOwnerCode_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlOwnerCode.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlSperrdat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlSperrdat.SelectedIndexChanged
-        Setfilter()
-    End Sub
 End Class
 ' ************************************************
 ' $History: Change02.aspx.vb $
