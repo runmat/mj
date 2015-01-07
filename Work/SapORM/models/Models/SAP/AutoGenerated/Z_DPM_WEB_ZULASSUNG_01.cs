@@ -74,6 +74,14 @@ namespace SapORM.Models
 
 			public string ZUL_EXPORT { get; set; }
 
+			public string WNV_2 { get; set; }
+
+			public string WNV_3 { get; set; }
+
+			public string RES_PIN { get; set; }
+
+			public string RESNR { get; set; }
+
 			public static GT_AUF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_AUF
@@ -100,6 +108,10 @@ namespace SapORM.Models
 					ZUL_DEZ = (string)row["ZUL_DEZ"],
 					ZUL_AUSLAND = (string)row["ZUL_AUSLAND"],
 					ZUL_EXPORT = (string)row["ZUL_EXPORT"],
+					WNV_2 = (string)row["WNV_2"],
+					WNV_3 = (string)row["WNV_3"],
+					RES_PIN = (string)row["RES_PIN"],
+					RESNR = (string)row["RESNR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
