@@ -1,13 +1,9 @@
-Option Explicit On
-Option Strict On
-
 Imports CKG.Base.Business
-Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
 
 Public Class Change02_2
-    Inherits System.Web.UI.Page
+    Inherits Page
     Protected WithEvents lblHead As System.Web.UI.WebControls.Label
     Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
 
@@ -31,6 +27,7 @@ Public Class Change02_2
     Protected WithEvents rb_1389 As RadioButton
     Protected WithEvents rb_5530 As RadioButton
     Protected WithEvents rb_Selbstabholung As RadioButton
+    Protected WithEvents rb_47076 As RadioButton
 
     Protected WithEvents ddlPartneradressen As DropDownList
     Protected WithEvents ddlGeschaeftsstelle As DropDownList
@@ -279,6 +276,8 @@ Public Class Change02_2
                         rb_1391.Checked = True
                     Case "1389"
                         rb_1389.Checked = True
+                    Case "47076"
+                        rb_47076.Checked = True
                 End Select
 
                 ddlGeschaeftsstelle.SelectedValue = .Geschaefsstelle
@@ -346,7 +345,7 @@ Public Class Change02_2
             mObjBriefanforderung.MaterialNummer = "1391"
             mObjBriefanforderung.MaterialText = rb_1391.Text
         ElseIf rb_1389.Checked And rb_1389.Visible = True Then
-            mObjBriefanforderung.MaterialNummer = "1389"
+            mObjBriefanforderung.MaterialNummer = "47075" 'Material wurde von 1389 auf 47075 geändert.
             mObjBriefanforderung.MaterialText = rb_1389.Text
         ElseIf rb_5530.Checked And rb_5530.Visible = True Then
             mObjBriefanforderung.MaterialNummer = "5530"
@@ -354,6 +353,9 @@ Public Class Change02_2
         ElseIf rb_Selbstabholung.Checked And rb_Selbstabholung.Visible = True Then
             mObjBriefanforderung.MaterialNummer = "13950"
             mObjBriefanforderung.MaterialText = rb_Selbstabholung.Text
+        ElseIf rb_47076.Checked And rb_47076.Visible = True Then
+            mObjBriefanforderung.MaterialNummer = "47076"
+            mObjBriefanforderung.MaterialText = rb_47076.Text
 
 
         End If
