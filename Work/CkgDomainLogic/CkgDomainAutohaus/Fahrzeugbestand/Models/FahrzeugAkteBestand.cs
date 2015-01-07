@@ -162,6 +162,56 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [Length(35)]
         public string Bemerkung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        public string FahrzeugArt { get; set; }
+
+        public static List<SelectItem> FahrzeugArtOptionen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem("", ""),
+                    new SelectItem("PKW", "PKW"),
+                    new SelectItem("LKW", "LKW"),
+                    new SelectItem("Andere", Localize.Others),
+                };
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.SalesDivision)]
+        public string VerkaufsSparte { get; set; }
+
+        public static List<SelectItem> VerkaufsSpartenOptionen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem("", ""),
+                    new SelectItem("Neuwagen", Localize.NewCars),
+                    new SelectItem("Gebr.wagen", Localize.UsedCars),
+                    new SelectItem("Andere", Localize.Others),
+                };
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleNo)]
+        [Length(15)]
+        public string FahrzeugNummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [Length(15)]
+        public string AuftragsNummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CompanyRef1)]
+        [Length(10)]
+        public string FirmenReferenz1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CompanyRef2)]
+        [Length(10)]
+        public string FirmenReferenz2 { get; set; }
+
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public Adresse SelectedHalter

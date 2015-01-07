@@ -44,6 +44,13 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.Briefnummer = s.BRIEFNR;
                         d.CocVorhanden = s.COCVORHANDEN.XToBool();
                         d.Bemerkung = s.BEMERKUNG;
+
+                        d.FahrzeugArt = s.FZGART;
+                        d.VerkaufsSparte = s.VKSPARTE;
+                        d.FahrzeugNummer = s.FZGNR;
+                        d.AuftragsNummer = s.AUFNR;
+                        d.FirmenReferenz1 = s.FAREF1;
+                        d.FirmenReferenz2 = s.FAREF2;
                     }));
             }
         }
@@ -105,6 +112,13 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.BRIEFNR = s.Briefnummer;
                         d.COCVORHANDEN = s.CocVorhanden.BoolToX();
                         d.BEMERKUNG = s.Bemerkung;
+
+                        d.FZGART = s.FahrzeugArt;
+                        d.VKSPARTE = s.VerkaufsSparte;
+                        d.FZGNR = s.FahrzeugNummer;
+                        d.AUFNR = s.AuftragsNummer;
+                        d.FAREF1 = s.FirmenReferenz1;
+                        d.FAREF2 = s.FirmenReferenz2;
                     }));
             }
         }

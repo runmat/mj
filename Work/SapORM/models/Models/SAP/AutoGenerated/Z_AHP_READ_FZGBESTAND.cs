@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -74,6 +75,18 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string FZGART { get; set; }
+
+			public string VKSPARTE { get; set; }
+
+			public string FZGNR { get; set; }
+
+			public string AUFNR { get; set; }
+
+			public string FAREF1 { get; set; }
+
+			public string FAREF2 { get; set; }
+
 			public static GT_WEBOUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEBOUT
@@ -100,6 +113,12 @@ namespace SapORM.Models
 					BRIEFNR = (string)row["BRIEFNR"],
 					COCVORHANDEN = (string)row["COCVORHANDEN"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
+					FZGART = (string)row["FZGART"],
+					VKSPARTE = (string)row["VKSPARTE"],
+					FZGNR = (string)row["FZGNR"],
+					AUFNR = (string)row["AUFNR"],
+					FAREF1 = (string)row["FAREF1"],
+					FAREF2 = (string)row["FAREF2"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -124,7 +143,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEBOUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEBOUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -138,7 +157,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEBOUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEBOUT> ToList(ISapDataService sapDataService)
@@ -153,7 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEBOUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -163,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEBOUT> GetExportList(ISapDataService sapDataService)
@@ -173,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEBOUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -183,7 +202,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_READ_FZGBESTAND", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEBOUT> GetImportList(ISapDataService sapDataService)
@@ -193,7 +212,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}

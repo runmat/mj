@@ -77,7 +77,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
             SAP.SetImportParameter("I_ABMDAT", model.AbmeldeDatum);
             SAP.SetImportParameter("I_KENNZ", model.Kennzeichen);
             SAP.SetImportParameter("I_BRIEFNR", model.Briefnummer);
-            SAP.SetImportParameter("I_COCVORHANDEN", (model.CocVorhanden ? "X" : ""));
+            SAP.SetImportParameter("I_COCVORHANDEN", model.CocVorhanden.BoolToX());
 
             SAP.Execute();
 
