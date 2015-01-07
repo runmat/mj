@@ -4220,6 +4220,9 @@
     <Content Include="Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
     <Content Include="Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
     <Content Include="Views\Xaris\Index.cshtml" />
+    <Content Include="Views\UserReporting\UserList.cshtml" />
+    <Content Include="Views\UserReporting\Partial\Grid.cshtml" />
+    <Content Include="Views\UserReporting\Partial\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
