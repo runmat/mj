@@ -1,44 +1,34 @@
 ﻿Option Explicit On
 Option Strict On
 
-
 Imports CKG.Base.Business
-Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
 Imports System.Data.OleDb
 
-
 Partial Public Class Change03
-    Inherits System.Web.UI.Page
+    Inherits Page
 
-    Protected WithEvents lblHead As System.Web.UI.WebControls.Label
-    Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
+    Protected WithEvents lblHead As Label
+    Protected WithEvents lblPageTitle As Label
     Protected WithEvents ucHeader As Header
     Protected WithEvents ucStyles As Styles
 
-    Protected WithEvents lblError As System.Web.UI.WebControls.Label
+    Protected WithEvents lblError As Label
     Protected WithEvents lb_weiter As LinkButton
-    Protected WithEvents upFile As System.Web.UI.HtmlControls.HtmlInputFile
-    Protected WithEvents lblExcelfile As System.Web.UI.WebControls.Label
+    Protected WithEvents upFile As HtmlInputFile
+    Protected WithEvents lblExcelfile As Label
 
     Protected WithEvents txtZulassungsdatum As TextBox
     Protected WithEvents txtMVANummer As TextBox
     Protected WithEvents txtFahrgestellnummer As TextBox
 
-
-
-
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
 
-    Private m_context As HttpContext = HttpContext.Current
     Private mObjUploadZulassung As UploadZulassung
 
-
-
-
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
         ' Hier Benutzercode zur Seiteninitialisierung einfügen
         Try
@@ -59,7 +49,7 @@ Partial Public Class Change03
         End Try
     End Sub
 
-    Private Sub lb_Weiter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_weiter.Click
+    Private Sub lb_Weiter_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_weiter.Click
         doSubmit()
     End Sub
 
@@ -69,26 +59,24 @@ Partial Public Class Change03
 
     Private Sub doSubmit()
 
-
-
-
         Dim tmpZulassungsTable = LoadZulassungsFile()
 
-        If Not tmpZulassungsTable Is Nothing Then
+        If tmpZulassungsTable IsNot Nothing Then
             Dim strTemp As String = ""
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls"
 
             mObjUploadZulassung = New UploadZulassung(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, strFileName)
+            If rbPlanzulassung.Checked Then
+                mObjUploadZulassung.ArtDerZulassung = UploadZulassung.Zulassungstyp.Planzulassung
+            Else
+                mObjUploadZulassung.ArtDerZulassung = UploadZulassung.Zulassungstyp.Zulassung
+            End If
             mObjUploadZulassung.generateZulassungsTable(tmpZulassungsTable)
 
             If mObjUploadZulassung.Status = 0 Then
-                HelpProcedures.getAppParameters(Session("AppID").ToString, strTemp, System.Configuration.ConfigurationManager.AppSettings("ConnectionString"))
-                Session.Add("mObjUploadZulassungSession", mObjUploadZulassung)
-                If rbDez.Checked Then
-                    mObjUploadZulassung.DezZul = True
-                Else
-                    mObjUploadZulassung.DezZul = False
-                End If
+                HelpProcedures.getAppParameters(Session("AppID").ToString, strTemp, ConfigurationManager.AppSettings("ConnectionString"))
+                mObjUploadZulassung.DezZul = rbDez.Checked
+                Session("mObjUploadZulassungSession") = mObjUploadZulassung
                 Response.Redirect("Change03_1.aspx?AppID=" & Session("AppID").ToString & strTemp)
             Else
                 lblError.Text = mObjUploadZulassung.Message
@@ -104,18 +92,15 @@ Partial Public Class Change03
             If Right(upFile.PostedFile.FileName.ToUpper, 4) <> ".XLS" Then
                 lblError.Text = "Es können nur Dateien im .XLS - Format verarbeitet werden."
                 Return Nothing
-                Exit Function
             End If
             If (upFile.PostedFile.ContentLength > CType(ConfigurationManager.AppSettings("MaxUploadSize"), Integer)) Then
                 lblError.Text = "Datei '" & upFile.PostedFile.FileName & "' ist zu gross (>300 KB)."
                 Return Nothing
-                Exit Function
             End If
         Else
             If txtFahrgestellnummer.Text.Trim(" "c).Length = 0 AndAlso txtMVANummer.Text.Trim(" "c).Length = 0 Then
                 lblError.Text = "Wählen Sie einen Vorgang"
                 Return Nothing
-                Exit Function
             Else
                 Return checkAndGenerateEinzelzulassung()
             End If
@@ -124,29 +109,43 @@ Partial Public Class Change03
         Return getZulassungen(upFile.PostedFile)
     End Function
 
-
     Private Function checkAndGenerateEinzelzulassung() As DataTable
         Dim Fahrgestellnummer As String = ""
         Dim MVANummer As String = ""
         Dim ErrorMessage As String = ""
 
-
-
-        If Not HelpProcedures.checkDate(txtZulassungsdatum, ErrorMessage, False) OrElse CDate(txtZulassungsdatum.Text) < Today Then
-            If ErrorMessage.Length = 0 Then
-                'wenn keine errormessage dann vergangenheit
-                ErrorMessage = "Zulassungsdatum darf nicht in der Vergangenheit liegen"
+        If rbPlanzulassung.Checked Then
+            If Not HelpProcedures.checkDate(txtPlanzulassungsdatum, ErrorMessage, False) OrElse CDate(txtPlanzulassungsdatum.Text) < Today Then
+                If ErrorMessage.Length = 0 Then
+                    'wenn keine errormessage dann vergangenheit
+                    ErrorMessage = "Planzulassungsdatum darf nicht in der Vergangenheit liegen"
+                End If
             End If
-        End If
+            If Not HelpProcedures.checkDate(txtVerarbeitungsdatum, ErrorMessage, True) OrElse (Not String.IsNullOrEmpty(txtVerarbeitungsdatum.Text) AndAlso CDate(txtVerarbeitungsdatum.Text) < Today) Then
+                If ErrorMessage.Length = 0 Then
+                    'wenn keine errormessage dann vergangenheit
+                    ErrorMessage = "Verarbeitungsdatum darf nicht in der Vergangenheit liegen"
+                End If
+            End If
+            If ErrorMessage.Length = 0 AndAlso Not String.IsNullOrEmpty(txtVerarbeitungsdatum.Text) AndAlso CDate(txtVerarbeitungsdatum.Text) >= CDate(txtPlanzulassungsdatum.Text) Then
+                ErrorMessage = "Verarbeitungsdatum muss vor dem Planzulassungsdatum liegen"
+            End If
 
+        Else
+            If Not HelpProcedures.checkDate(txtZulassungsdatum, ErrorMessage, False) OrElse CDate(txtZulassungsdatum.Text) < Today Then
+                If ErrorMessage.Length = 0 Then
+                    'wenn keine errormessage dann vergangenheit
+                    ErrorMessage = "Zulassungsdatum darf nicht in der Vergangenheit liegen"
+                End If
+            End If
+
+        End If
 
         If Not txtFahrgestellnummer.Text.Trim(" "c).Length = 0 AndAlso Not txtFahrgestellnummer.Text.Trim(" "c).Length = 17 Then
             ErrorMessage = "Die Fahrgestellnummer ist nicht korrekt"
         Else
             Fahrgestellnummer = txtFahrgestellnummer.Text.Trim(" "c)
         End If
-
-
 
         If Not txtMVANummer.Text.Trim(" "c).Length = 0 Then
             If Not txtMVANummer.Text.Trim(" "c).Length < 7 Then
@@ -165,25 +164,34 @@ Partial Public Class Change03
             tmpDataTable.Columns.Add("Fahrgestellnummer", String.Empty.GetType)
             tmpDataTable.Columns.Add("MVANummer", String.Empty.GetType)
             tmpDataTable.Columns.Add("Zulassungsdatum", String.Empty.GetType)
+            If rbPlanzulassung.Checked Then
+                tmpDataTable.Columns.Add("Verarbeitungsdatum", String.Empty.GetType)
+            End If
 
             Dim tmpRow As DataRow = tmpDataTable.NewRow()
             'überschriftsspalte wie in EXCEL faken
             tmpRow(0) = "Überschrift"
             tmpRow(1) = "Überschrift"
             tmpRow(2) = "Überschrift"
+            If rbPlanzulassung.Checked Then
+                tmpRow(3) = "Überschrift"
+            End If
             tmpDataTable.Rows.Add(tmpRow)
 
             tmpRow = tmpDataTable.NewRow
             tmpRow(0) = Fahrgestellnummer
             tmpRow(1) = MVANummer
-            tmpRow(2) = txtZulassungsdatum.Text
+            If rbPlanzulassung.Checked Then
+                tmpRow(2) = txtPlanzulassungsdatum.Text
+                tmpRow(3) = txtVerarbeitungsdatum.Text
+            Else
+                tmpRow(2) = txtZulassungsdatum.Text
+            End If
             tmpDataTable.Rows.Add(tmpRow)
             tmpDataTable.AcceptChanges()
             Return tmpDataTable
         End If
     End Function
-
-
 
     Private Function getDataTableFromExcel(ByVal filepath As String, ByVal filename As String) As DataTable
         '----------------------------------------------------------------------
@@ -202,7 +210,7 @@ Partial Public Class Change03
 
         Dim schemaTable As DataTable
         Dim tmpObj() As Object = {Nothing, Nothing, Nothing, "Table"}
-        schemaTable = objConn.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, tmpObj)
+        schemaTable = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, tmpObj)
 
         For Each sheet As DataRow In schemaTable.Rows
             Dim tableName As String = sheet("Table_Name").ToString
@@ -215,20 +223,20 @@ Partial Public Class Change03
         Return tblTemp
     End Function
 
-    Private Function getZulassungen(ByVal uFile As System.Web.HttpPostedFile) As DataTable
+    Private Function getZulassungen(ByVal uFile As HttpPostedFile) As DataTable
         Dim tmpTable As New DataTable
         Try
             Dim filepath As String = ConfigurationManager.AppSettings("ExcelPath")
             Dim filename As String
-            Dim info As System.IO.FileInfo
+            Dim info As IO.FileInfo
 
             'Dateiname: User_yyyyMMddhhmmss.xls
             filename = m_User.UserName & "_" & Format(Now, "yyyyMMddhhmmss") & ".xls"
 
-            If Not (uFile Is Nothing) Then
+            If uFile IsNot Nothing Then
                 uFile.SaveAs(ConfigurationManager.AppSettings("ExcelPath") & filename)
                 uFile = Nothing
-                info = New System.IO.FileInfo(filepath & filename)
+                info = New IO.FileInfo(filepath & filename)
                 If Not (info.Exists) Then
                     tmpTable = Nothing
                     Throw New Exception("Fehler beim Speichern")
@@ -238,18 +246,50 @@ Partial Public Class Change03
             End If
         Catch ex As Exception
             lblError.Text = ex.Message
-        Finally
-            getZulassungen = tmpTable
         End Try
 
+        Return tmpTable
     End Function
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
+    End Sub
+
+    Protected Sub rbWIDez_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles rbWI.CheckedChanged, rbDez.CheckedChanged
+        If rbWI.Checked Then
+            rbPlanzulassung.Enabled = True
+        Else
+            rbPlanzulassung.Checked = False
+            rbZulassung.Checked = True
+            rbPlanzulassung.Enabled = False
+            trZulassungsdatum.Visible = True
+            trPlanzulassungsdatum.Visible = False
+            trVerarbeitungsdatum.Visible = False
+            divInfoZulassung.Visible = True
+            divInfoPlanzulassung.Visible = False
+        End If
+    End Sub
+
+    Protected Sub ZulArt_Changed(ByVal sender As Object, ByVal e As EventArgs) Handles rbZulassung.CheckedChanged, rbPlanzulassung.CheckedChanged
+        If rbPlanzulassung.Checked Then
+            trZulassungsdatum.Visible = False
+            trPlanzulassungsdatum.Visible = True
+            trVerarbeitungsdatum.Visible = True
+            divInfoZulassung.Visible = False
+            divInfoPlanzulassung.Visible = True
+
+        Else
+            trZulassungsdatum.Visible = True
+            trPlanzulassungsdatum.Visible = False
+            trVerarbeitungsdatum.Visible = False
+            divInfoZulassung.Visible = True
+            divInfoPlanzulassung.Visible = False
+
+        End If
     End Sub
 
 End Class
