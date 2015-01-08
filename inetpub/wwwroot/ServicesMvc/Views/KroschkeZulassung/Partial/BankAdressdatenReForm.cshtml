@@ -1,15 +1,15 @@
 ﻿@using CkgDomainLogic.KroschkeZulassung.Models
 @model Adressdaten
 
-@Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap large" })
+@Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap" })
 
-@Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap large" })
+@Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap" })
 
-@Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap large" })
+@Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap" })
 
-@Html.FormTextBoxFor(m => m.Plz, new { @class = "m-wrap small" })
+@Html.FormTextBoxFor(m => m.Plz, new { @class = "m-wrap xsmall" })
 
-@Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap large" }) 
+@Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap" }) 
 
 @Html.HiddenFor(m => m.Land) 
 

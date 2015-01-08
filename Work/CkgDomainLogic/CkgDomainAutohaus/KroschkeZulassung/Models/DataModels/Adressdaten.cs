@@ -36,6 +36,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public Adressdaten AdresseToAdressdaten(string belegNr, string kennung, Adresse adresse)
         {
             BelegNr = belegNr;
+            Kennung = kennung;
             Name1 = adresse.Name1;
             Name2 = adresse.Name2;
             Strasse = adresse.StrasseHausNr;
