@@ -52,6 +52,9 @@
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\..\..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="GeneralTools, Version=1.0.5437.24206, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Work\GAC\GeneralTools.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
