@@ -36,7 +36,7 @@ namespace CkgDomainLogic.Equi.Models
         public string Standort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Location)]
-        public string StandortText { get { return (IsMissing ? Localize.NoDataFound : (!String.IsNullOrEmpty(AbcKennzeichen) && AbcKennzeichen == "1") ? Localize.TempDispatchedSing : "DAD"); } }
+        public string StandortText { get { return (IsMissing ? Localize.NoDataFound : (!String.IsNullOrEmpty(AbcKennzeichen) && AbcKennzeichen == "1") ? Localize.TempDispatchedSing : Standort); } }
 
         [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
         public string Versandgrund { get; set; }

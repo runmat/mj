@@ -110,6 +110,7 @@
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\UserReportingController.cs" />
     <Compile Include="Controllers\XarisController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="DomainCommon\Contracts\IAdressenDataService.cs" />
@@ -157,6 +158,12 @@
     <Compile Include="Logs\ViewModels\LogsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\SAP\AdressenPflegeTests.cs" />
+    <Compile Include="UserReporting\Contracts\IUserReportingDataService.cs" />
+    <Compile Include="UserReporting\Models\DataModels\UserInfo.cs" />
+    <Compile Include="UserReporting\Services\Database\UserReportingDbContext.cs" />
+    <Compile Include="UserReporting\Models\UIModels\WebUserSuchparameter.cs" />
+    <Compile Include="UserReporting\Services\UserReportingDataServiceSql.cs" />
+    <Compile Include="UserReporting\ViewModels\UserReportingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Tools\DocumentTools\DocumentTools.csproj">

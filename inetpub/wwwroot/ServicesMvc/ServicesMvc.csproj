@@ -4228,6 +4228,9 @@
     <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\UploadFahrzeugdatenGrid.cshtml" />
     <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\UploadSaveFahrzeugdatenGrid.cshtml" />
     <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten.cshtml" />
+    <Content Include="Views\UserReporting\UserList.cshtml" />
+    <Content Include="Views\UserReporting\Partial\Grid.cshtml" />
+    <Content Include="Views\UserReporting\Partial\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

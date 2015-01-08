@@ -223,14 +223,12 @@ Public Class Carport
         MyBase.New(objUser, objApp, strFilename)
     End Sub
 
-    '----------------------------------------------------------------------
-    ' Methode: Fill
-    ' Autor: O.Rudolph
-    ' Beschreibung: füllen der Detailsicht und Carportübersicht(Change01)
-    ' Erstellt am: 14.11.2008
-    ' ITA: 2352
-    '----------------------------------------------------------------------
-
+    ''' <summary>
+    ''' füllen der Detailsicht und Carportübersicht(Change01)
+    ''' </summary>
+    ''' <param name="strAppID"></param>
+    ''' <param name="strSessionID"></param>
+    ''' <remarks></remarks>
     Public Overloads Sub FILL(ByVal strAppID As String, ByVal strSessionID As String)
 
         m_strClassAndMethod = "Carport.FILL"
@@ -257,10 +255,8 @@ Public Class Carport
             Dim sCarport As String = ""
             dv.Sort = "Carportnr"
             e = 0
-            m_tblResultPDIs = New DataTable
-            m_tblResultPDIs.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultPDIs.Columns.Add("Carport", System.Type.GetType("System.String"))
-            m_tblResultPDIs = FillFirstRow(m_tblResultPDIs, "Carportnr", "Carport")
+
+            m_tblResultPDIs = FillFirstRow("Carportnr", "Carport")
 
             Do While e < dv.Count
                 row = m_tblResultPDIs.NewRow
@@ -276,8 +272,8 @@ Public Class Carport
             dv.Sort = "Hersteller_ID_Avis"
             e = 0
             Dim HerrCode As String = ""
-            m_tblHersteller = FillFirstRow(m_tblHersteller, "HerstellerID", "Hersteller_ID_Avis")
-            row = m_tblHersteller.NewRow
+            m_tblHersteller = FillFirstRow("HerstellerID", "Hersteller_ID_Avis")
+
             Do While e < dv.Count
                 row = m_tblHersteller.NewRow
                 If HerrCode <> dv.Item(e)("Hersteller_ID_Avis").ToString Then
@@ -290,24 +286,24 @@ Public Class Carport
                 e = e + 1
             Loop
 
-            m_tblLiefermonat = FillFirstRow(m_tblLiefermonat, "ID", "Liefermonat")
+            m_tblLiefermonat = FillFirstRow("ID", "Liefermonat")
             BoundViews(dv, m_tblLiefermonat, "Liefermonat")
 
-            m_tblBereifung = FillFirstRow(m_tblBereifung, "ID", "REIFENART")
+            m_tblBereifung = FillFirstRow("ID", "REIFENART")
             BoundViews(dv, m_tblBereifung, "REIFENART")
 
-            m_tblGetriebe = FillFirstRow(m_tblGetriebe, "ID", "ANTRIEBSART")
+            m_tblGetriebe = FillFirstRow("ID", "ANTRIEBSART")
             BoundViews(dv, m_tblGetriebe, "ANTRIEBSART")
 
 
-            m_tblKraftstoff = FillFirstRow(m_tblKraftstoff, "ID", "Kraftstoffart")
+            m_tblKraftstoff = FillFirstRow("ID", "Kraftstoffart")
             BoundViews(dv, m_tblKraftstoff, "Kraftstoffart")
 
-            m_tblNavi = FillFirstRow(m_tblNavi, "ID", "Navigation")
+            m_tblNavi = FillFirstRow("ID", "Navigation")
             dv.Sort = "Navigation"
             e = 0
             Dim sNavi As String = ""
-            row = m_tblNavi.NewRow
+
             Do While e < dv.Count
                 row = m_tblNavi.NewRow
                 If sNavi <> dv.Item(e)("Navigation").ToString Then
@@ -325,41 +321,41 @@ Public Class Carport
                 e = e + 1
             Loop
 
-            m_tblFarbe = FillFirstRow(m_tblFarbe, "ID", "FARBE")
+            m_tblFarbe = FillFirstRow("ID", "FARBE")
             BoundViews(dv, m_tblFarbe, "FARBE")
 
-            m_tblVermiet = FillFirstRow(m_tblVermiet, "ID", "Vermietgruppe")
+            m_tblVermiet = FillFirstRow("ID", "Vermietgruppe")
             BoundViews(dv, m_tblVermiet, "Vermietgruppe")
 
-            m_tblFzgArt = FillFirstRow(m_tblFzgArt, "ID", "Fahrzeugart")
+            m_tblFzgArt = FillFirstRow("ID", "Fahrzeugart")
             BoundViews(dv, m_tblFzgArt, "Fahrzeugart")
 
-            m_tblAufbauArt = FillFirstRow(m_tblAufbauArt, "ID", "AUFBAUART")
+            m_tblAufbauArt = FillFirstRow("ID", "AUFBAUART")
             BoundViews(dv, m_tblAufbauArt, "AUFBAUART")
 
-            m_tblHaendlernr = FillFirstRow(m_tblHaendlernr, "ID", "HaendlerId")
+            m_tblHaendlernr = FillFirstRow("ID", "HaendlerId")
             BoundViews(dv, m_tblHaendlernr, "HaendlerId")
 
-            m_tblHandlername = FillFirstRow(m_tblHandlername, "ID", "Haendler_Kurzname")
+            m_tblHandlername = FillFirstRow("ID", "Haendler_Kurzname")
             BoundViews(dv, m_tblHandlername, "Haendler_Kurzname")
 
-            m_tblEKIndikator = FillFirstRow(m_tblEKIndikator, "ID", "Einkaufsindikator")
+            m_tblEKIndikator = FillFirstRow("ID", "Einkaufsindikator")
             BoundViews(dv, m_tblEKIndikator, "Einkaufsindikator")
 
-            m_tblVerwZweck = FillFirstRow(m_tblVerwZweck, "ID", "VERWENDUNGSZWECK")
+            m_tblVerwZweck = FillFirstRow("ID", "VERWENDUNGSZWECK")
             BoundViews(dv, m_tblVerwZweck, "VERWENDUNGSZWECK")
 
-            m_tblHOwnerCode = FillFirstRow(m_tblHOwnerCode, "ID", "Owner_Code")
+            m_tblHOwnerCode = FillFirstRow("ID", "Owner_Code")
             BoundViews(dv, m_tblHOwnerCode, "Owner_Code")
 
-            m_tblZulKreis = FillFirstRow(m_tblZulKreis, "ID", "ZULASSUNGSORT")
+            m_tblZulKreis = FillFirstRow("ID", "ZULASSUNGSORT")
             BoundViews(dv, m_tblZulKreis, "ZULASSUNGSORT")
 
             dv.Sort = "Datum_zur_Sperre"
             e = 0
             Dim Sperrdate As String = ""
-            m_tblSperrdat = FillFirstRow(m_tblSperrdat, "ID", "Datum_zur_Sperre")
-            row = m_tblSperrdat.NewRow
+            m_tblSperrdat = FillFirstRow("ID", "Datum_zur_Sperre")
+
             Do While e < dv.Count
                 row = m_tblSperrdat.NewRow
                 If Sperrdate <> dv.Item(e)("Datum_zur_Sperre").ToString AndAlso dv.Item(e)("Datum_zur_Sperre").ToString <> "00000000" Then
@@ -373,9 +369,9 @@ Public Class Carport
             Loop
 
             m_tblResultCarports = New DataTable()
-            m_tblResultCarports.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultCarports.Columns.Add("Carport Name", System.Type.GetType("System.String"))
-            m_tblResultCarports.Columns.Add("Fahrzeuge", System.Type.GetType("System.Int32"))
+            m_tblResultCarports.Columns.Add("Carportnr", Type.GetType("System.String"))
+            m_tblResultCarports.Columns.Add("Carport Name", Type.GetType("System.String"))
+            m_tblResultCarports.Columns.Add("Fahrzeuge", Type.GetType("System.Int32"))
 
             Dim keys(1) As DataColumn
             keys(0) = m_tblResultCarports.Columns(0)
@@ -388,8 +384,6 @@ Public Class Carport
 
             Dim PdiRow As DataRow
             Dim FindRow As DataRow
-
-            row = tblTemp2.NewRow
 
             Dim tblSortDetails As DataTable
 
@@ -455,14 +449,13 @@ Public Class Carport
         End Try
     End Sub
 
-    Private Function FillFirstRow(ByVal Table As DataTable, ByVal ID As String, ByVal ColumnName As String) As DataTable
-        Dim row As DataRow
+    Private Function FillFirstRow(ByVal ID As String, ByVal ColumnName As String) As DataTable
 
-        Table = New DataTable
-        Table.Columns.Add(ID, System.Type.GetType("System.String"))
-        Table.Columns.Add(ColumnName, System.Type.GetType("System.String"))
+        Dim Table As New DataTable
+        Table.Columns.Add(ID, Type.GetType("System.String"))
+        Table.Columns.Add(ColumnName, Type.GetType("System.String"))
 
-        row = Table.NewRow
+        Dim row As DataRow = Table.NewRow
         row(0) = "-1"
         row(1) = "- keine Auswahl -"
         Table.Rows.Add(row)
@@ -496,7 +489,6 @@ Public Class Carport
 
     End Function
 
-
     Public Sub Save(ByVal strAppID As String, ByVal strSessionID As String) ', ByVal SaveTable As DataTable
 
         m_strClassAndMethod = "Carport.Save"
@@ -527,12 +519,12 @@ Public Class Carport
         End Try
     End Sub
 
-    Public Function Filter(ByVal FilterString As String) As Integer
+    Public Function Filter(ByVal fString As String) As Integer
 
         Dim dv As DataView
 
         dv = Result.DefaultView
-        dv.RowFilter = FilterString
+        dv.RowFilter = fString
         If dv.Count > 0 Then
 
             dv.Sort = "Carportnr"
@@ -541,10 +533,8 @@ Public Class Carport
             Dim e As Int32
 
             e = 0
-            m_tblResultPDIs = New DataTable
-            m_tblResultPDIs.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultPDIs.Columns.Add("Carport", System.Type.GetType("System.String"))
-            m_tblResultPDIs = FillFirstRow(m_tblResultPDIs, "Carportnr", "Carport")
+
+            m_tblResultPDIs = FillFirstRow("Carportnr", "Carport")
             Dim sCarport As String = ""
             Do While e < dv.Count
                 row = m_tblResultPDIs.NewRow
@@ -557,12 +547,10 @@ Public Class Carport
                 e = e + 1
             Loop
 
-
             dv.Sort = "Hersteller_ID_Avis"
             e = 0
             Dim HerrCode As String = ""
-            m_tblHersteller = FillFirstRow(m_tblHersteller, "HerstellerID", "Hersteller_ID_Avis")
-            row = m_tblHersteller.NewRow
+            m_tblHersteller = FillFirstRow("HerstellerID", "Hersteller_ID_Avis")
             Do While e < dv.Count
                 row = m_tblHersteller.NewRow
                 If HerrCode <> dv.Item(e)("Hersteller_ID_Avis").ToString Then
@@ -575,26 +563,22 @@ Public Class Carport
                 e = e + 1
             Loop
 
-
-            m_tblLiefermonat = FillFirstRow(m_tblLiefermonat, "ID", "Liefermonat")
+            m_tblLiefermonat = FillFirstRow("ID", "Liefermonat")
             BoundViews(dv, m_tblLiefermonat, "Liefermonat")
 
-            m_tblBereifung = FillFirstRow(m_tblBereifung, "ID", "REIFENART")
+            m_tblBereifung = FillFirstRow("ID", "REIFENART")
             BoundViews(dv, m_tblBereifung, "REIFENART")
 
-            m_tblGetriebe = FillFirstRow(m_tblGetriebe, "ID", "ANTRIEBSART")
+            m_tblGetriebe = FillFirstRow("ID", "ANTRIEBSART")
             BoundViews(dv, m_tblGetriebe, "ANTRIEBSART")
 
-
-            m_tblKraftstoff = FillFirstRow(m_tblKraftstoff, "ID", "Kraftstoffart")
+            m_tblKraftstoff = FillFirstRow("ID", "Kraftstoffart")
             BoundViews(dv, m_tblKraftstoff, "Kraftstoffart")
 
-
-            m_tblNavi = FillFirstRow(m_tblNavi, "ID", "Navigation")
+            m_tblNavi = FillFirstRow("ID", "Navigation")
             dv.Sort = "Navigation"
             e = 0
             Dim sNavi As String = ""
-            row = m_tblNavi.NewRow
             Do While e < dv.Count
                 row = m_tblNavi.NewRow
                 If sNavi <> dv.Item(e)("Navigation").ToString Then
@@ -612,48 +596,40 @@ Public Class Carport
                 e = e + 1
             Loop
 
-
-            m_tblFarbe = FillFirstRow(m_tblFarbe, "ID", "FARBE")
+            m_tblFarbe = FillFirstRow("ID", "FARBE")
             BoundViews(dv, m_tblFarbe, "FARBE")
 
-
-            m_tblVermiet = FillFirstRow(m_tblVermiet, "ID", "Vermietgruppe")
+            m_tblVermiet = FillFirstRow("ID", "Vermietgruppe")
             BoundViews(dv, m_tblVermiet, "Vermietgruppe")
 
-
-            m_tblFzgArt = FillFirstRow(m_tblFzgArt, "ID", "Fahrzeugart")
+            m_tblFzgArt = FillFirstRow("ID", "Fahrzeugart")
             BoundViews(dv, m_tblFzgArt, "Fahrzeugart")
 
-
-            m_tblAufbauArt = FillFirstRow(m_tblAufbauArt, "ID", "AUFBAUART")
+            m_tblAufbauArt = FillFirstRow("ID", "AUFBAUART")
             BoundViews(dv, m_tblAufbauArt, "AUFBAUART")
 
-
-            m_tblHaendlernr = FillFirstRow(m_tblHaendlernr, "ID", "HaendlerId")
+            m_tblHaendlernr = FillFirstRow("ID", "HaendlerId")
             BoundViews(dv, m_tblHaendlernr, "HaendlerId")
 
-
-            m_tblHandlername = FillFirstRow(m_tblHandlername, "ID", "Haendler_Kurzname")
+            m_tblHandlername = FillFirstRow("ID", "Haendler_Kurzname")
             BoundViews(dv, m_tblHandlername, "Haendler_Kurzname")
 
-
-            m_tblEKIndikator = FillFirstRow(m_tblEKIndikator, "ID", "Einkaufsindikator")
+            m_tblEKIndikator = FillFirstRow("ID", "Einkaufsindikator")
             BoundViews(dv, m_tblEKIndikator, "Einkaufsindikator")
 
-            m_tblVerwZweck = FillFirstRow(m_tblVerwZweck, "ID", "VERWENDUNGSZWECK")
+            m_tblVerwZweck = FillFirstRow("ID", "VERWENDUNGSZWECK")
             BoundViews(dv, m_tblVerwZweck, "VERWENDUNGSZWECK")
 
-            m_tblHOwnerCode = FillFirstRow(m_tblHOwnerCode, "ID", "Owner_Code")
+            m_tblHOwnerCode = FillFirstRow("ID", "Owner_Code")
             BoundViews(dv, m_tblHOwnerCode, "Owner_Code")
 
-            m_tblZulKreis = FillFirstRow(m_tblZulKreis, "ID", "ZULASSUNGSORT")
+            m_tblZulKreis = FillFirstRow("ID", "ZULASSUNGSORT")
             BoundViews(dv, m_tblZulKreis, "ZULASSUNGSORT")
 
             dv.Sort = "Datum_zur_Sperre"
             e = 0
             Dim Sperrdate As String = ""
-            m_tblSperrdat = FillFirstRow(m_tblSperrdat, "ID", "Datum_zur_Sperre")
-            row = m_tblSperrdat.NewRow
+            m_tblSperrdat = FillFirstRow("ID", "Datum_zur_Sperre")
             Do While e < dv.Count
                 row = m_tblSperrdat.NewRow
                 If Sperrdate <> dv.Item(e)("Datum_zur_Sperre").ToString AndAlso dv.Item(e)("Datum_zur_Sperre").ToString <> "00000000" Then
@@ -667,15 +643,14 @@ Public Class Carport
             Loop
 
             m_tblResultCarports = New DataTable()
-            m_tblResultCarports.Columns.Add("Carportnr", System.Type.GetType("System.String"))
-            m_tblResultCarports.Columns.Add("Carport Name", System.Type.GetType("System.String"))
-            m_tblResultCarports.Columns.Add("Fahrzeuge", System.Type.GetType("System.Int32"))
+            m_tblResultCarports.Columns.Add("Carportnr", Type.GetType("System.String"))
+            m_tblResultCarports.Columns.Add("Carport Name", Type.GetType("System.String"))
+            m_tblResultCarports.Columns.Add("Fahrzeuge", Type.GetType("System.Int32"))
 
             Dim keys(1) As DataColumn
             keys(0) = m_tblResultCarports.Columns(0)
 
             m_tblResultCarports.PrimaryKey = keys
-
 
             dv = m_tblResult.DefaultView
 
@@ -684,16 +659,11 @@ Public Class Carport
             Dim PdiRow As DataRow
             Dim FindRow As DataRow
 
-            row = Result.NewRow
-
-
             Dim tblSortDetails As DataTable
-
 
             tblSortDetails = m_tblResult.Clone
 
             dv.Sort = "Carportnr asc, Typ_ID_Avis asc, Modellbezeichnung asc, Eingangsdatum asc ,Fahrgestellnummer asc"
-
 
             e = 0
 
@@ -716,7 +686,6 @@ Public Class Carport
                 e = e + 1
             Loop
 
-
             For Each row In tblSortDetails.Rows
 
                 PdiRow = m_tblResultCarports.NewRow
@@ -735,7 +704,6 @@ Public Class Carport
                     FindRow.EndEdit()
                 End If
             Next
-
 
             Return dv.Count
 
@@ -759,38 +727,40 @@ Public Class Carport
 
             e = 0
             m_tblResultExcel = New DataTable
-            m_tblResultExcel.Columns.Add("Carport", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Hersteller Id.", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Model Id.", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Modellgruppe", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Modellbezeichnung", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Reifenart", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Fahrgestellnummer", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Datum Eingang", System.Type.GetType("System.DateTime"))
-            m_tblResultExcel.Columns.Add("Datum Bereit", System.Type.GetType("System.DateTime"))
-            m_tblResultExcel.Columns.Add("ZBII Nummer", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Datum Sperre", System.Type.GetType("System.DateTime"))
-            m_tblResultExcel.Columns.Add("Sperrvermerk", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Liefermonat", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Zulassungsort", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Fahrzeugart", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Aufbauart", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Kraftstoffart", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Navi", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Navi CD", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Farbe", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Reifengröße", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Vermietgruppe", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Verwendungszweck", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Bezahltkennzeichen", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Owner-Code", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Händler Id.", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Händlerkurzname", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Einkaufsindikator", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("MVA-Nummer", System.Type.GetType("System.String"))
-            m_tblResultExcel.Columns.Add("Status", System.Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Carport", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Hersteller Id.", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Model Id.", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Modellgruppe", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Modellbezeichnung", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Reifenart", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Fahrgestellnummer", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Datum Eingang", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("Datum Bereit", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("ZBII Nummer", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Datum Sperre", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("Sperrvermerk", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Liefermonat", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Zulassungsort", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Fahrzeugart", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Aufbauart", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Kraftstoffart", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Navi", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Navi CD", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Farbe", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Reifengröße", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Vermietgruppe", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Verwendungszweck", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Bezahltkennzeichen", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Owner-Code", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Händler Id.", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Händlerkurzname", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Einkaufsindikator", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("MVA-Nummer", Type.GetType("System.String"))
+            m_tblResultExcel.Columns.Add("Datum Planzulassung", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("Datum Durchführung", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("Datum Beauftragung Planzulassung", Type.GetType("System.DateTime"))
+            m_tblResultExcel.Columns.Add("Status", Type.GetType("System.String"))
 
-            Dim sCarport As String = ""
             Do While e < dv.Count
                 row = m_tblResultExcel.NewRow
                 row(0) = dv.Item(e)("Carportnr")
@@ -829,7 +799,16 @@ Public Class Carport
                 row(26) = dv.Item(e)("Haendler_Kurzname")
                 row(27) = dv.Item(e)("Einkaufsindikator")
                 row(28) = dv.Item(e)("MVA-Nummer")
-                row(29) = dv.Item(e)("Status")
+                If IsDate(dv.Item(e)("Datum_Planzulassung")) Then
+                    row(29) = dv.Item(e)("Datum_Planzulassung")
+                End If
+                If IsDate(dv.Item(e)("Datum_Durchfuehrung")) Then
+                    row(30) = dv.Item(e)("Datum_Durchfuehrung")
+                End If
+                If IsDate(dv.Item(e)("Datum_Beauftragung_Planzulassung")) Then
+                    row(31) = dv.Item(e)("Datum_Beauftragung_Planzulassung")
+                End If
+                row(32) = dv.Item(e)("Status")
                 m_tblResultExcel.Rows.Add(row)
 
                 e = e + 1

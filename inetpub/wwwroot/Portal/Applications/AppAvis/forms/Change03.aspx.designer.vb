@@ -95,6 +95,24 @@ Partial Public Class Change03
     Protected WithEvents rbDez As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
+    '''rbZulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rbZulassung As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''rbPlanzulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rbPlanzulassung As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
     '''tr_Text-Steuerelement
     '''</summary>
     '''<remarks>
@@ -120,6 +138,15 @@ Partial Public Class Change03
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents tbl_Query As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''trZulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trZulassungsdatum As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''txtZulassungsdatum_CalendarExtender-Steuerelement
@@ -158,6 +185,114 @@ Partial Public Class Change03
     Protected WithEvents vceZulassungsdatum As Global.AjaxControlToolkit.ValidatorCalloutExtender
 
     '''<summary>
+    '''trPlanzulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trPlanzulassungsdatum As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtPlanzulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtPlanzulassungsdatum As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtPlanzulassungsdatum_CalendarExtender-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtPlanzulassungsdatum_CalendarExtender As Global.AjaxControlToolkit.CalendarExtender
+
+    '''<summary>
+    '''meePlanzulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents meePlanzulassungsdatum As Global.AjaxControlToolkit.MaskedEditExtender
+
+    '''<summary>
+    '''mevPlanzulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents mevPlanzulassungsdatum As Global.AjaxControlToolkit.MaskedEditValidator
+
+    '''<summary>
+    '''vcePlanzulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents vcePlanzulassungsdatum As Global.AjaxControlToolkit.ValidatorCalloutExtender
+
+    '''<summary>
+    '''trVerarbeitungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trVerarbeitungsdatum As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtVerarbeitungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtVerarbeitungsdatum As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtVerarbeitungsdatum_CalendarExtender-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtVerarbeitungsdatum_CalendarExtender As Global.AjaxControlToolkit.CalendarExtender
+
+    '''<summary>
+    '''meeVerarbeitungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents meeVerarbeitungsdatum As Global.AjaxControlToolkit.MaskedEditExtender
+
+    '''<summary>
+    '''mevVerarbeitungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents mevVerarbeitungsdatum As Global.AjaxControlToolkit.MaskedEditValidator
+
+    '''<summary>
+    '''vceVerarbeitungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents vceVerarbeitungsdatum As Global.AjaxControlToolkit.ValidatorCalloutExtender
+
+    '''<summary>
     '''tbl_Upload-Steuerelement
     '''</summary>
     '''<remarks>
@@ -174,4 +309,22 @@ Partial Public Class Change03
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lbl_Info As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''divInfoZulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents divInfoZulassung As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''divInfoPlanzulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents divInfoPlanzulassung As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class

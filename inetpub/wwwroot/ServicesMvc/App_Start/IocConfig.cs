@@ -37,6 +37,8 @@ using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Services;
+using CkgDomainLogic.UserReporting.Contracts;
+using CkgDomainLogic.UserReporting.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -161,6 +163,8 @@ namespace ServicesMvc.App_Start
 
             builder.RegisterType<KroschkeZulassungDataServiceSAP>().As<IKroschkeZulassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
