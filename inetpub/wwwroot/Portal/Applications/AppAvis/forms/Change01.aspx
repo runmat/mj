@@ -275,7 +275,7 @@
                                                                     Text="Nein" />
                                                             </td>
                                                             </tr>
-                                                                                                                 <tr>
+                                                            <tr>
                                                             <td>
                                                                 Gesperrt:
                                                             </td>
@@ -288,7 +288,7 @@
                                                                     Text="Nein" />
                                                             </td>
                                                             </tr>
-                                                                                                                 <tr>
+                                                            <tr>
                                                             <td>
                                                                 Zulassungsbereit:</td>
                                                              <td>
@@ -297,6 +297,18 @@
                                                                  &nbsp;<asp:RadioButton ID="rdo_JaBereit" runat="server" AutoPostBack="True" GroupName="Bereit"
                                                                      Text="Ja" />
                                                                  &nbsp;<asp:RadioButton ID="rdo_NeinBereit" runat="server" AutoPostBack="True" GroupName="Bereit"
+                                                                     Text="Nein" />
+                                                             </td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>
+                                                                Planzulassung:</td>
+                                                             <td>
+                                                                 <asp:RadioButton ID="rdo_AllePlanzulassung" runat="server" AutoPostBack="True" Checked="True"
+                                                                     GroupName="Planzulassung" Text="Alle" />
+                                                                 &nbsp;<asp:RadioButton ID="rdo_JaPlanzulassung" runat="server" AutoPostBack="True" GroupName="Planzulassung"
+                                                                     Text="Ja" />
+                                                                 &nbsp;<asp:RadioButton ID="rdo_NeinPlanzulassung" runat="server" AutoPostBack="True" GroupName="Planzulassung"
                                                                      Text="Nein" />
                                                              </td>
                                                             </tr>

@@ -3,13 +3,9 @@ Option Strict On
 
 Imports System
 Imports CKG.Base.Kernel
-Imports CKG.Base.Business
-Imports CKG.Base.Common
-
 Imports SapORM.Contracts
 
 Public Class UploadZulassung
-
     Inherits Base.Business.BankBase
 
 #Region " Declarations"
@@ -21,22 +17,28 @@ Public Class UploadZulassung
 
 #Region " Properties"
 
+    Public Enum Zulassungstyp
+        Zulassung = 1
+        Planzulassung = 2
+    End Enum
+
     Public ReadOnly Property ZulassungsTabelle() As DataTable
         Get
             If mZulassungsTabelle Is Nothing Then
                 mZulassungsTabelle = New DataTable
                 With mZulassungsTabelle
-                    .Columns.Add("Fahrgestellnummer", System.Type.GetType("System.String"))
-                    .Columns.Add("MVANummer", System.Type.GetType("System.String"))
-                    .Columns.Add("Zulassungsdatum", System.Type.GetType("System.String"))
-                    .Columns.Add("Herstellernummer", System.Type.GetType("System.String"))
-                    .Columns.Add("Modell", System.Type.GetType("System.String"))
-                    .Columns.Add("Modellbezeichnung", System.Type.GetType("System.String"))
-                    .Columns.Add("geplanterLiefertermin", System.Type.GetType("System.String"))
-                    .Columns.Add("istbezahlt", System.Type.GetType("System.String"))
-                    .Columns.Add("Sperrdatum", System.Type.GetType("System.String"))
-                    .Columns.Add("Sperrvermerk", System.Type.GetType("System.String"))
-                    .Columns.Add("STATUS", System.Type.GetType("System.String"))
+                    .Columns.Add("Fahrgestellnummer", Type.GetType("System.String"))
+                    .Columns.Add("MVANummer", Type.GetType("System.String"))
+                    .Columns.Add("Zulassungsdatum", Type.GetType("System.String"))
+                    .Columns.Add("Verarbeitungsdatum", Type.GetType("System.String"))
+                    .Columns.Add("Herstellernummer", Type.GetType("System.String"))
+                    .Columns.Add("Modell", Type.GetType("System.String"))
+                    .Columns.Add("Modellbezeichnung", Type.GetType("System.String"))
+                    .Columns.Add("geplanterLiefertermin", Type.GetType("System.String"))
+                    .Columns.Add("istbezahlt", Type.GetType("System.String"))
+                    .Columns.Add("Sperrdatum", Type.GetType("System.String"))
+                    .Columns.Add("Sperrvermerk", Type.GetType("System.String"))
+                    .Columns.Add("STATUS", Type.GetType("System.String"))
                 End With
                 mZulassungsTabelle.AcceptChanges()
 
@@ -55,11 +57,13 @@ Public Class UploadZulassung
         End Set
     End Property
 
+    Public Property ArtDerZulassung As Zulassungstyp
 
 #End Region
 
 #Region " Methods"
-    Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByRef objApp As Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFileName As String, Optional ByVal hez As Boolean = False)
+
+    Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByRef objApp As Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFileName As String)
         MyBase.New(objUser, objApp, strAppID, strSessionID, strFileName)
     End Sub
 
@@ -79,15 +83,27 @@ Public Class UploadZulassung
                     mSAPTabelleZulassung.Clear()
                 End If
 
-                Dim tmpSAPRow As DataRow
-                Dim tmpNewRowZulassung As DataRow
+                Dim tmpRows() As DataRow
 
-                For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
-                    tmpNewRowZulassung = mSAPTabelleZulassung.NewRow
-                    tmpSAPRow = mSAPTabelle.Select("CHASSIS_NUM='" & tmpRow("Fahrgestellnummer").ToString & "'")(0)
+                If ArtDerZulassung = Zulassungstyp.Planzulassung Then
+                    tmpRows = ZulassungsTabelle.Select()
+                Else
+                    tmpRows = ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
+                End If
 
-                    tmpNewRowZulassung("CHASSIS_NUM") = tmpSAPRow("CHASSIS_NUM").ToString
-                    tmpNewRowZulassung("ZULDAT") = tmpSAPRow("ZULDAT")
+                For Each tmpRow As DataRow In tmpRows
+                    Dim tmpSAPRow As DataRow = mSAPTabelle.Select("CHASSIS_NUM='" & tmpRow("Fahrgestellnummer").ToString & "'")(0)
+
+                    Dim tmpNewRowZulassung As DataRow = mSAPTabelleZulassung.NewRow
+
+                    tmpNewRowZulassung("CHASSIS_NUM") = tmpRow("Fahrgestellnummer").ToString
+                    If ArtDerZulassung = Zulassungstyp.Planzulassung Then
+                        tmpNewRowZulassung("PLZULDAT") = tmpRow("Zulassungsdatum")
+                        tmpNewRowZulassung("DURCHFD") = tmpRow("Verarbeitungsdatum")
+                    Else
+                        tmpNewRowZulassung("ZULDAT") = tmpRow("Zulassungsdatum")
+                    End If
+
                     tmpNewRowZulassung("REIFENART") = tmpSAPRow("REIFENART").ToString
                     tmpNewRowZulassung("ZULASSUNGSORT") = tmpSAPRow("ZULASSUNGSORT").ToString
                     tmpNewRowZulassung("VERWENDUNGSZWECK") = tmpSAPRow("VERWENDUNGSZWECK").ToString
@@ -96,7 +112,6 @@ Public Class UploadZulassung
                     tmpNewRowZulassung("EQUNR") = tmpSAPRow("EQUNR").ToString
                     tmpNewRowZulassung("QMNUM") = tmpSAPRow("QMNUM").ToString
                     tmpNewRowZulassung("ZZCARPORT") = tmpSAPRow("ZZCARPORT").ToString
-
                     tmpNewRowZulassung("AKTION") = "Z" 'Zulassung
                     tmpNewRowZulassung("WEB_USER") = Left(m_objUser.UserName, 15)
 
@@ -110,7 +125,7 @@ Public Class UploadZulassung
 
                 'nur fehlerhafte sätze wurden zurückgeliefert
                 'jetzt müssen alle stadien die wirklich übertragen worden waren, ermal den status ok bekommen
-                For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
+                For Each tmpRow As DataRow In tmpRows
                     tmpRow("STATUS") = "Zulassung erfolgreich beauftragt."
                 Next
 
@@ -136,80 +151,15 @@ Public Class UploadZulassung
         End If
     End Sub
 
-    Public Sub SaveDataDez(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
-
-        Try
-
-            m_intStatus = 0
-            m_strMessage = ""
-
-            mSAPTabelleZulassung = S.AP.GetImportTableWithInit("Z_DPM_DEZ_ZUL_001.GT_WEB", "I_KUNNR_AG", m_objUser.KUNNR.ToSapKunnr())
-
-            Dim tmpSAPRow As DataRow
-            Dim tmpNewRowZulassung As DataRow
-
-            For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
-                tmpNewRowZulassung = mSAPTabelleZulassung.NewRow
-                tmpSAPRow = mSAPTabelle.Select("CHASSIS_NUM='" & tmpRow("Fahrgestellnummer").ToString & "'")(0)
-
-                tmpNewRowZulassung("CHASSIS_NUM") = tmpSAPRow("CHASSIS_NUM").ToString
-                tmpNewRowZulassung("ZULDAT") = tmpSAPRow("ZULDAT")
-                tmpNewRowZulassung("REIFENART") = tmpSAPRow("REIFENART").ToString
-                tmpNewRowZulassung("ZULASSUNGSORT") = tmpSAPRow("ZULASSUNGSORT").ToString
-                tmpNewRowZulassung("VERWENDUNGSZWECK") = tmpSAPRow("VERWENDUNGSZWECK").ToString
-                tmpNewRowZulassung("DAT_SPERRE") = tmpSAPRow("DAT_SPERRE")
-                tmpNewRowZulassung("SPERRVERMERK") = tmpSAPRow("SPERRVERMERK").ToString
-                tmpNewRowZulassung("EQUNR") = tmpSAPRow("EQUNR").ToString
-                tmpNewRowZulassung("QMNUM") = tmpSAPRow("QMNUM").ToString
-                tmpNewRowZulassung("ZZCARPORT") = tmpSAPRow("ZZCARPORT").ToString
-
-                tmpNewRowZulassung("AKTION") = "Z" 'Zulassung
-                tmpNewRowZulassung("WEB_USER") = Left(m_objUser.UserName, 15)
-
-                mSAPTabelleZulassung.Rows.Add(tmpNewRowZulassung)
-            Next
-            mSAPTabelleZulassung.AcceptChanges()
-
-            S.AP.Execute()
-
-            mSAPTabelleZulassung = S.AP.GetExportTable("GT_WEB")
-
-            'nur fehlerhafte sätze wurden zurückgeliefert
-            'jetzt müssen alle stadien die wirklich übertragen worden waren, ermal den status ok bekommen
-            For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS='Für Zulassung bereit'")
-                tmpRow("STATUS") = "Zulassung erfolgreich beauftragt."
-            Next
-
-            'alle fehlerhaften Datensätze werden zurückgeliefert, status dort Ändern
-            For Each tmpRow As DataRow In mSAPTabelleZulassung.Rows
-                ZulassungsTabelle.Select("Fahrgestellnummer='" & tmpRow("CHASSIS_NUM").ToString & "'")(0)("STATUS") = "Zulassungsbeauftragung fehlgeschlagen: " & tmpRow("FEHLER").ToString
-            Next
-
-            mSAPTabelleZulassung.AcceptChanges()
-
-        Catch ex As Exception
-            m_intStatus = -5555
-            Select Case ex.Message
-                Case "NO_DATA"
-                    m_strMessage = "Keine Ergebnisse für die gewählten Kriterien."
-                Case Else
-                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-            End Select
-        Finally
-            m_blnGestartet = False
-        End Try
-    End Sub
-
     Public Sub generateZulassungsTable(ByVal tmpZulassungsTable As DataTable)
-        Dim tmpNewRow As DataRow
 
-        If Not ZulassungsTabelle Is Nothing Then
+        If ZulassungsTabelle IsNot Nothing Then
             ZulassungsTabelle.Clear()
         End If
 
         Try
             For Each tmpRow As DataRow In tmpZulassungsTable.Rows
-                tmpNewRow = ZulassungsTabelle.NewRow
+                Dim tmpNewRow As DataRow = ZulassungsTabelle.NewRow
 
                 Dim fehlerHafteRow As Boolean = False
                 If Not tmpZulassungsTable.Rows(0) Is tmpRow Then
@@ -236,6 +186,14 @@ Public Class UploadZulassung
                             fehlerHafteRow = True
                         End If
 
+                        If ArtDerZulassung = Zulassungstyp.Planzulassung AndAlso tmpRow(3).ToString.Length > 0 Then
+                            If IsDate(tmpRow(3).ToString) Then
+                                tmpNewRow("Verarbeitungsdatum") = CDate(tmpRow(3).ToString).ToShortDateString
+                            Else
+                                fehlerHafteRow = True
+                            End If
+                        End If
+
                         If fehlerHafteRow Then
                             tmpNewRow("Status") = "Fehlerhafte Uploaddatei, Fahrzeug wird ignoriert"
                             ZulassungsTabelle.Rows.Add(tmpNewRow)
@@ -255,7 +213,7 @@ Public Class UploadZulassung
             m_intStatus = -111
             m_strMessage = "Die Übergabetabelle konnte nicht generiert werden, überprüfen Sie Ihre Exceldatei. (Fehler: " & ex.Message & ")"
         End Try
-        
+
     End Sub
 
     Public Overrides Sub Show()
@@ -266,15 +224,7 @@ Public Class UploadZulassung
             m_intStatus = 0
 
             Try
-
-                Dim pI_I_DEZ As String
-                If DezZul Then
-                    pI_I_DEZ = "X"
-                Else
-                    pI_I_DEZ = " "
-                End If
-
-                S.AP.Init("Z_M_FAHRGNR_READ_FZGPOOL_006", "I_KUNNR_AG, I_DEZ", m_objUser.KUNNR.ToSapKunnr(), pI_I_DEZ)
+                S.AP.Init("Z_M_FAHRGNR_READ_FZGPOOL_006", "I_KUNNR_AG, I_DEZ", m_objUser.KUNNR.ToSapKunnr(), DezZul)
 
                 If mSAPTabelle Is Nothing Then
                     mSAPTabelle = S.AP.GetImportTable("GT_WEB")
@@ -285,12 +235,10 @@ Public Class UploadZulassung
                 Dim tmpNewRow As DataRow
                 For Each tmpRow As DataRow In ZulassungsTabelle.Select("STATUS<>'Fehlerhafte Uploaddatei, Fahrzeug wird ignoriert'")
                     tmpNewRow = mSAPTabelle.NewRow
-
                     tmpNewRow("ZULDAT") = tmpRow("Zulassungsdatum")
                     tmpNewRow("CHASSIS_NUM") = tmpRow("Fahrgestellnummer").ToString
                     tmpNewRow("MVA_NUMMER") = tmpRow("MVANummer").ToString
                     mSAPTabelle.Rows.Add(tmpNewRow)
-
                 Next
                 mSAPTabelle.AcceptChanges()
 
@@ -326,7 +274,7 @@ Public Class UploadZulassung
                         Case "3"
                             tmpRow("STATUS") = "Fahrzeug gesperrt"
                         Case "4"
-                            tmpRow("STATUS") = "Fahrzeug nicht zulassungbreit"
+                            tmpRow("STATUS") = "Fahrzeug nicht zulassungsbereit"
                         Case "5"
                             tmpRow("STATUS") = "Dezentrale Zulassung"
                         Case "6"
@@ -344,12 +292,6 @@ Public Class UploadZulassung
                         tmpRow("Sperrdatum") = ""
                     Else
                         tmpRow("Sperrdatum") = CType(tmpRowSAP("DAT_SPERRE"), DateTime).ToShortDateString()
-                    End If
-
-                    If IsDBNull(tmpRowSAP("ZULDAT")) OrElse Not IsDate(tmpRowSAP("ZULDAT")) OrElse CType(tmpRowSAP("ZULDAT"), DateTime).Year < 1901 Then
-                        tmpRow("Zulassungsdatum") = ""
-                    Else
-                        tmpRow("Zulassungsdatum") = CType(tmpRowSAP("ZULDAT"), DateTime).ToShortDateString()
                     End If
 
                     tmpRow("Herstellernummer") = tmpRowSAP("HERST_NUMMER").ToString
@@ -381,6 +323,7 @@ Public Class UploadZulassung
             End Try
         End If
     End Sub
+
 #End Region
 
 End Class
