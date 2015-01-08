@@ -8,19 +8,17 @@ Imports System.Drawing
 
 
 Partial Public Class Change03_1
-    Inherits System.Web.UI.Page
+    Inherits Page
 
-    Private m_context As HttpContext = HttpContext.Current
-    Private m_App As Base.Kernel.Security.App
     Private m_User As Base.Kernel.Security.User
     Private mObjUploadZulassung As UploadZulassung
 
-    Protected WithEvents lblError As System.Web.UI.WebControls.Label
-    Protected WithEvents lblNoData As System.Web.UI.WebControls.Label
-    Protected WithEvents DataGrid1 As System.Web.UI.WebControls.DataGrid
-    Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
-    Protected WithEvents lblHead As System.Web.UI.WebControls.Label
-    Protected WithEvents lbBack As System.Web.UI.WebControls.LinkButton
+    Protected WithEvents lblError As Label
+    Protected WithEvents lblNoData As Label
+    Protected WithEvents DataGrid1 As DataGrid
+    Protected WithEvents lblPageTitle As Label
+    Protected WithEvents lblHead As Label
+    Protected WithEvents lbBack As LinkButton
 
     Protected WithEvents lbweiter As LinkButton
     Protected WithEvents imgbExcel As ImageButton
@@ -28,41 +26,14 @@ Partial Public Class Change03_1
     Protected WithEvents ucStyles As Styles
     Protected WithEvents ucHeader As Header
 
-#Region "Properties"
-
-
-    Private Property Refferer() As String
-        Get
-            If Not Session.Item(Me.Request.Url.LocalPath & "Refferer") Is Nothing Then
-                Return Session.Item(Me.Request.Url.LocalPath & "Refferer").ToString()
-            Else : Return Nothing
-            End If
-        End Get
-        Set(ByVal value As String)
-            Session.Item(Me.Request.Url.LocalPath & "Refferer") = value
-        End Set
-    End Property
-
-
-
-#End Region
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         Try
             m_User = GetUser(Me)
-            m_App = New Base.Kernel.Security.App(m_User) 'erzeugt ein App_objekt 
             ucHeader.InitUser(m_User)
             FormAuth(Me, m_User)
             lblError.Text = ""
 
             If Not IsPostBack Then
-                If Refferer Is Nothing Then
-                    If Not Me.Request.UrlReferrer Is Nothing Then
-                        Refferer = Me.Request.UrlReferrer.ToString
-                    Else
-                        Refferer = ""
-                    End If
-                End If
                 GetAppIDFromQueryString(Me) ' füllen page.Session("AppID")
                 lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
                 ucStyles.TitleText = lblHead.Text
@@ -76,25 +47,12 @@ Partial Public Class Change03_1
                 End If
             End If
 
-            'seitenspeziefische Aktionen
-           
             FillGrid(0)
 
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
-
-
-    Private Sub responseBack()
-        If Refferer = "" Then
-            Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
-            Response.Redirect(strLinkPrefix & "Start/Selection.aspx")
-        Else
-            Response.Redirect(Refferer)
-        End If
-    End Sub
-
 
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
         If mObjUploadZulassung.Status = 0 Then
@@ -153,12 +111,10 @@ Partial Public Class Change03_1
                 End If
 
                 DataGrid1.CurrentPageIndex = intTempPageIndex
-
                 DataGrid1.DataSource = tmpDataView
-
                 DataGrid1.DataBind()
 
-
+                DataGrid1.Columns(4).Visible = (mObjUploadZulassung.ArtDerZulassung = UploadZulassung.Zulassungstyp.Planzulassung)
 
                 For Each tmpItem As DataGridItem In DataGrid1.Items
                     Dim tmpLabel As Label
@@ -187,8 +143,6 @@ Partial Public Class Change03_1
                     End If
                 Next
 
-
-
             End If
         Else
             lblError.Text = mObjUploadZulassung.Message
@@ -197,7 +151,7 @@ Partial Public Class Change03_1
 
     End Sub
 
-    Private Sub DataGrid1_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGrid1.ItemCommand
+    Private Sub DataGrid1_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles DataGrid1.ItemCommand
 
         If e.CommandName = "Delete" Then
             mObjUploadZulassung.ZulassungsTabelle.Select("Fahrgestellnummer='" & e.CommandArgument.ToString & "'")(0).Delete()
@@ -206,27 +160,25 @@ Partial Public Class Change03_1
         End If
     End Sub
 
-    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
+    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
         FillGrid(e.NewPageIndex)
     End Sub
 
-
-    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
+    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
         FillGrid(DataGrid1.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub lbBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbBack.Click
+    Private Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
         Response.Redirect("Change03.aspx?AppID=" & Session("AppID").ToString)
     End Sub
-
 
     Protected Sub lbweiter_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbweiter.Click
 
@@ -237,47 +189,32 @@ Partial Public Class Change03_1
                 lbweiter.Text = "Zulassung beauftragen"
                 imgbExcel.Visible = True
             Else
-                'lbweiter.Enabled = False
-                'lbBack.Enabled = False
                 lblError.Text = mObjUploadZulassung.Message
-                Exit Sub
             End If
 
         ElseIf lbweiter.Text = "Zulassung beauftragen" Then
-
             mObjUploadZulassung.change()
-
-            'lbweiter.Enabled = False
-            'lbBack.Enabled = False
-
             If mObjUploadZulassung.Status = 0 Then
                 FillGrid(0)
             Else
                 lblError.Text = mObjUploadZulassung.Message
-                Exit Sub
             End If
+
         End If
 
     End Sub
 
-
-    Protected Sub imgbExcel_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbExcel.Click
+    Protected Sub imgbExcel_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbExcel.Click
         Try
-            Dim control As New Control
-            Dim tblTranslations As New DataTable()
-            Dim tblTemp As New DataTable()
-            Dim AppURL As String
-            Dim col As DataGridColumn
             Dim col2 As DataColumn
             Dim bVisibility As Integer
-            Dim i As Integer
-            Dim sColName As String = ""
+            Dim sColName As String
 
-            AppURL = Replace(Me.Request.Url.LocalPath, "/Portal", "..")
-            tblTranslations = CType(Me.Session(AppURL), DataTable)
-            tblTemp = mObjUploadZulassung.ZulassungsTabelle.Copy
-            For Each col In DataGrid1.Columns
-                For i = tblTemp.Columns.Count - 1 To 0 Step -1
+            Dim AppURL As String = Replace(Request.Url.LocalPath, "/Portal", "..")
+            Dim tblTranslations As DataTable = CType(Session(AppURL), DataTable)
+            Dim tblTemp As DataTable = mObjUploadZulassung.ZulassungsTabelle.Copy
+            For Each col As DataGridColumn In DataGrid1.Columns
+                For i As Integer = tblTemp.Columns.Count - 1 To 0 Step -1
                     bVisibility = 0
                     col2 = tblTemp.Columns(i)
                     If col2.ColumnName.ToUpper = col.SortExpression.ToUpper OrElse col2.ColumnName.ToUpper = col.HeaderText.ToUpper.Replace("COL_", "") Then
@@ -286,11 +223,14 @@ Partial Public Class Change03_1
                             tblTemp.Columns.Remove(col2)
                         ElseIf sColName.Length > 0 Then
                             col2.ColumnName = sColName
-
                         End If
                     End If
                     'EQUNR nicht mit in Excel ausgeben, wird meist nur als boundcolumn versteckt als schlüssel verwendet JJU2008.10.23
                     If col2.ColumnName.ToUpper = "EQUNR" Then
+                        tblTemp.Columns.Remove(col2)
+                    End If
+                    'wenn keine Planzulassung, Verarbeitungsdatum nicht mit ausgeben
+                    If col2.ColumnName.ToUpper = "VERARBEITUNGSDATUM" AndAlso mObjUploadZulassung.ArtDerZulassung = UploadZulassung.Zulassungstyp.Zulassung Then
                         tblTemp.Columns.Remove(col2)
                     End If
                 Next
@@ -298,7 +238,7 @@ Partial Public Class Change03_1
             Next
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, tblTemp, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, tblTemp, Page)
         Catch ex As Exception
             lblError.Text = "Beim erstellen des Exceldatei ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
