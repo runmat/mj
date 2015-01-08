@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -76,6 +77,22 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
                             d.Name = s.ASKTX;
                             d.IstGewaehlt = s.VW_AG.IsNotNullOrEmpty();
                             d.Menge = "1";
+                        }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME, PdfFormular> Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME, PdfFormular>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.Belegnummer = s.ZULBELN;
+                            d.Typ = s.FORMART;
+                            d.Label = s.NAME;
+                            d.DateiPfad = s.FILENAME;
                         }));
             }
         }

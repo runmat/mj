@@ -23,6 +23,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 
         string GetZulassungskreis(Vorgang zulassung);
 
-        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataInSap);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
     }
 }

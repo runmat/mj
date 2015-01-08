@@ -133,6 +133,7 @@
     <Compile Include="General\Models\UiModel.cs" />
     <Compile Include="KroschkeZulassung\Models\BankAdressdaten.cs" />
     <Compile Include="KroschkeZulassung\Models\Fahrzeugdaten.cs" />
+    <Compile Include="KroschkeZulassung\Models\PdfFormular.cs" />
     <Compile Include="KroschkeZulassung\Models\UIModels\Bankdaten.cs" />
     <Compile Include="KroschkeZulassung\Models\Vorgang.cs" />
     <Compile Include="KroschkeZulassung\Models\OptionenDienstleistungen.cs" />

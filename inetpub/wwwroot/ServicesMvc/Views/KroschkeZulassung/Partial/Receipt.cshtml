@@ -32,7 +32,7 @@
 else
 {
     <div class="alert alert-success">
-        @if (Model.TempFlagSaveDataToSap)
+        @if (Model.SaveDataToErpSystem)
         {
             <i class="icon-check"></i><span class="padding-left-5"><strong>@Localize.ThankYou</strong>, @Localize.WeReceivedYourOrder!</span>
         }
@@ -44,7 +44,7 @@ else
     
     <div id="ReceiptFormActions">
     
-        @if (Model.TempFlagSaveDataToSap)
+        @if (Model.AuftragslisteAvailable)
         {
             <a href="AuftragslisteAsPdf" class="btn yellow tooltips margin-right-5" data-original-title='@Localize.OrderListAsPdfFile' data-placement="top"> @Localize.OrderList <i class="icon-download-alt"></i></a>
         }
@@ -64,9 +64,9 @@ else
                     <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
                 }
             
-                @if (zulassung.AuftragszettelPdfPfad.IsNotNullOrEmpty())
+                @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
                 {
-                    <a href="AuftragszettelAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5" data-original-title='@Localize.OrderFormAsPdfFile' data-placement="top"> @Localize.OrderForm <i class="icon-download-alt"></i></a>
+                    <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
                 }
             
             </div>

@@ -145,6 +145,11 @@ namespace GeneralTools.Models
             return val.Substring(start, len);
         }
 
+        public static string SubstringTry(this string s, int start)
+        {
+            return s.SubstringTry(start, 99999999);
+        }
+
         public static string PrependIfNotNull(this string s, string prepend)
         {
             if (s.IsNullOrEmpty() || prepend.IsNullOrEmpty())

@@ -379,7 +379,9 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Misc + Summaries + Savings
 
-        public bool TempFlagSaveDataToSap { get; set; }
+        public bool SaveDataToErpSystem { get; set; }
+
+        public bool AuftragslisteAvailable { get; set; }
 
         public void DataInit()
         {
@@ -412,13 +414,14 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(List<Vorgang> zulassungen, bool saveDataToSap)
+        public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
-            TempFlagSaveDataToSap = saveDataToSap;
+            SaveDataToErpSystem = saveDataToSap;
+            AuftragslisteAvailable = saveDataToSap;
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
                 ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();

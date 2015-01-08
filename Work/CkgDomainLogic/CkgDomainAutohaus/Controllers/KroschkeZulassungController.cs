@@ -274,7 +274,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Save()
         {
-            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, false);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
 
             ShoppingCartItemSave();
 
@@ -284,7 +284,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, true);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -300,7 +300,7 @@ namespace ServicesMvc.Controllers
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(null, "");
+                return new FileContentResult(new byte[1], "");
 
             var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
 
@@ -313,20 +313,24 @@ namespace ServicesMvc.Controllers
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(null, "");
+                return new FileContentResult(new byte[1], "");
 
             var formularPdfBytes = zulassung.KundenformularPdf;
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
 
-        public FileContentResult AuftragszettelAsPdf(string id)
+        public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(null, "");
+                return new FileContentResult(new byte[1], "");
 
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(zulassung.AuftragszettelPdfPfad);
+            var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
+            if (zusatzFormular == null)
+                return new FileContentResult(new byte[1], ""); 
+
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderForm) };
         }
@@ -335,9 +339,13 @@ namespace ServicesMvc.Controllers
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
             if (zulassung == null)
-                return new FileContentResult(null, "");
+                return new FileContentResult(new byte[1], "");
 
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(zulassung.AuftragslistePdfPfad);
+            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            if (auftragslisteFormular == null)
+                return new FileContentResult(new byte[1], "");
+            
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
         }
@@ -389,9 +397,10 @@ namespace ServicesMvc.Controllers
                 vm.DataMarkForRefresh();
             }
 
-            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), true);
+            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), saveDataToSap: true, saveFromShoppingCart: true);
 
-            if (ViewModel.SaveErrorMessage.IsNullOrEmpty())
+            // ToDo !!! TEST !!!
+            if (false) //ViewModel.SaveErrorMessage.IsNullOrEmpty())
             {
                 foreach (var vm in warenkorb)
                     ShoppingCartItemRemove(vm.ObjectKey);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
@@ -10,6 +11,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 {
     public class Vorgang
     {
+        private List<PdfFormular> _zusatzformulare = new List<PdfFormular>();
+
         [LocalizedDisplay(LocalizeConstants.ReceiptNo)]
         public string BelegNr { get; set; }
 
@@ -44,10 +47,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         public OptionenDienstleistungen OptionenDienstleistungen { get; set; }
 
-        public string AuftragszettelPdfPfad { get; set; }
+        [XmlIgnore]
+        public List<PdfFormular> Zusatzformulare
+        {
+            get { return _zusatzformulare; }
+            set { _zusatzformulare = value; }
+        }
 
-        public string AuftragslistePdfPfad { get; set; }
-
+        [XmlIgnore]
         public byte[] KundenformularPdf { get; set; }
 
         public Vorgang()

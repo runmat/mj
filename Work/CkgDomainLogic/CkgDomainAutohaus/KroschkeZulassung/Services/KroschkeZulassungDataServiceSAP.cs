@@ -158,12 +158,13 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             return true;
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataInSap)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             foreach (var vorgang in zulassungen)
             {
                 // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
-                var blnBelegNrLeer = (String.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+                // ToDo !!! TEST !!!
+                var blnBelegNrLeer = true; // (String.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
 
                 if (blnBelegNrLeer && !GetSapId(vorgang))
                     return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
@@ -174,10 +175,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             SAP.SetImportParameter("I_TELNR", ((ILogonContextDataService)LogonContext).UserInfo.Telephone);
             SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
 
-            if (saveDataInSap)
+            if (saveDataToSap)
                 SAP.SetImportParameter("I_SPEICHERN", "X");
 
             SAP.SetImportParameter("I_FORMULAR", "X");
+            SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
 
             var positionen = new List<Zusatzdienstleistung>();
             var adressen = new List<Adressdaten>();
@@ -208,17 +210,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
 
             var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();
             SAP.ApplyImport(bakList);
-            //XmlService.XmlSerializeToFile(bakList, Path.Combine(AppSettings.DataPath, "1-bakList.xml"));
 
             var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
             SAP.ApplyImport(posList);
-            //XmlService.XmlSerializeToFile(posList, Path.Combine(AppSettings.DataPath, "1-posList.xml"));
 
             if (adressen.Any())
             {
                 var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                 SAP.ApplyImport(adrsList);
-                //XmlService.XmlSerializeToFile(adrsList, Path.Combine(AppSettings.DataPath, "1-adrsList.xml"));
             }
 
             try
@@ -240,35 +239,42 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                 return string.Format("{0}: {1}{2}", Localize.SaveFailed, SAP.ResultMessage, (String.IsNullOrEmpty(errString) ? "" : String.Format(" ({0})", errString)));
             }
 
-            var fileNames = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
+            // alle PDF Formulare abrufen:
+            var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
+            //XmlService.XmlSerializeToFile(fileNames, Path.Combine(AppSettings.DataPath, "GT_FILENAME.xml"));
+            
+            var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
+            // alle relativen Pfade zu absoluten Pfaden konvertieren:
+            fileNames.ForEach(f =>
+                {
+                    f.DateiPfad = Path.Combine(PfadAuftragszettel, SlashToBackslash(f.DateiPfad).SubstringTry(1));
 
-            var i = 0;
+                    // ToDo: Entfernen nach Ingas Rework:
+                    if (f.Typ.IsNotNullOrEmpty())
+                        f.DateiPfad = f.DateiPfad.Replace(".pdf", "_" + f.Label.Replace(" ", "") + ".pdf");
+                });
+
+            var auftragsListePath = fileNames.FirstOrDefault(f => f.DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"));
             foreach (var vorgang in zulassungen)
             {
-                vorgang.AuftragszettelPdfPfad = "";
-                if (saveDataInSap && fileNames.Count > i)
-                    vorgang.AuftragszettelPdfPfad = String.Format("{0}{1}\\{2}.pdf", 
-                                                                    PfadAuftragszettel,
-                                                                    fileNames[i].FILENAME.Split('/')[1],
-                                                                    vorgang.BelegNr.PadLeft(10, '0'));
+                var bnr = vorgang.BelegNr;
+                vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr));
+                vorgang.Zusatzformulare.Add(auftragsListePath);
 
-                // ToDo: Pro Vorgang ein eigenes Kundenformular, am besten Export Parameter ersetzen durch Export-Tabelleneintrag!)
-                try   { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
-                catch { vorgang.KundenformularPdf = null; }
-
-                i++;
-            }
-            if (saveDataInSap && fileNames.Count > i)
-            {
-                foreach (var vorgang in zulassungen)
+                if (!saveFromShoppingCart && vorgang.BankAdressdaten.Cpdkunde)
                 {
-                    vorgang.AuftragslistePdfPfad = String.Format("{0}{1}\\Auftragsliste\\Auftragsliste.pdf", 
-                                                                    PfadAuftragszettel,
-                                                                    fileNames[i].FILENAME.Split('/')[1]);
+                    // NICHT Warenkorb (=> immer nur Einzel-Vorgang, also zulassungen.Count == 1)
+                    try { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
+                    catch { vorgang.KundenformularPdf = null; }
                 }
             }
 
             return "";
+        }
+
+        static string SlashToBackslash(string s)
+        {
+            return s.Replace('/', '\\');
         }
     }
 }
