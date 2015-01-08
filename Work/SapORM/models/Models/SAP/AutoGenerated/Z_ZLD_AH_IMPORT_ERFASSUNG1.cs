@@ -725,12 +725,18 @@ namespace SapORM.Models
 
 			public string FILENAME { get; set; }
 
+			public string FORMART { get; set; }
+
+			public string NAME { get; set; }
+
 			public static GT_FILENAME Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_FILENAME
 				{
 					ZULBELN = (string)row["ZULBELN"],
 					FILENAME = (string)row["FILENAME"],
+					FORMART = (string)row["FORMART"],
+					NAME = (string)row["NAME"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

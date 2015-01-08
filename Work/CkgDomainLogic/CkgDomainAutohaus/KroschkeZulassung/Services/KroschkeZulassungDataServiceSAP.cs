@@ -221,7 +221,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                 //XmlService.XmlSerializeToFile(adrsList, Path.Combine(AppSettings.DataPath, "1-adrsList.xml"));
             }
 
-            SAP.Execute();
+            try
+            {
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                return string.Format("{0}: SAP-Ausnahmefehler '{1}', Details: '{2}'", Localize.SaveFailed, e.Message, (e.InnerException != null ? e.InnerException.Message : "Keine weitere Beschreibung aus SAP verfügbar!" ));
+            }
 
             if (SAP.ResultCode != 0)
             {
@@ -230,7 +237,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
                 if (errList.Count > 0 && errList.Any(e => e.MESSAGE != "OK"))
                     errString = String.Join(", ", errList.Select(e => e.MESSAGE));
 
-                return String.Format("{0}: {1}{2}", Localize.SaveFailed, SAP.ResultMessage, (String.IsNullOrEmpty(errString) ? "" : String.Format(" ({0})", errString)));
+                return string.Format("{0}: {1}{2}", Localize.SaveFailed, SAP.ResultMessage, (String.IsNullOrEmpty(errString) ? "" : String.Format(" ({0})", errString)));
             }
 
             var fileNames = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
