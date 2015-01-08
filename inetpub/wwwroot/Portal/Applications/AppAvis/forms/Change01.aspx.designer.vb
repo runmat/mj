@@ -13,7 +13,6 @@ Option Explicit On
 
 Partial Public Class Change01
 
-
     '''<summary>
     '''Form1-Steuerelement
     '''</summary>
@@ -337,6 +336,33 @@ Partial Public Class Change01
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents rdo_NeinBereit As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''rdo_AllePlanzulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rdo_AllePlanzulassung As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''rdo_JaPlanzulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rdo_JaPlanzulassung As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''rdo_NeinPlanzulassung-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rdo_NeinPlanzulassung As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
     '''ddlKraftstoff-Steuerelement
