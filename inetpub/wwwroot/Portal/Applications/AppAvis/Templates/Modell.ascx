@@ -125,17 +125,14 @@
 					<asp:TemplateColumn>
 						<HeaderTemplate>
                             <asp:ImageButton ID="ibt_All" runat="server" CommandName="All" 
-                                ImageUrl="../../../Images/Confirm_Mini_red.GIF" onclick="ibt_All_Click" 
+                                ImageUrl="../../../Images/Confirm_Mini_red.GIF"  
                                 ToolTip="Alle ausgewählten Positionen übernehmen" />
                         </HeaderTemplate>
 						<ItemTemplate>
-							<asp:Literal  Visible=false id="ConfirmImageButton" runat="server" Text="<%# &quot;<a href=&quot;&quot;javascript:SetValues('&quot; &amp; DataBinder.Eval(Container, &quot;DataItem.ID&quot;) &amp; &quot;','&quot; &amp; DataBinder.Eval(Container, &quot;DataItem.Task&quot;) &amp; &quot;')&quot;&quot;><img id=&quot;&quot;Picture_&quot; &amp; DataBinder.Eval(Container, &quot;DataItem.ID&quot;) &amp; &quot;&quot;&quot; border=&quot;&quot;0&quot;&quot; src=&quot;&quot;/Portal/Images/Confirm_mini_Grey.gif&quot;&quot; width=&quot;&quot;20&quot;&quot; height=&quot;&quot;18&quot;&quot;></a>&quot; %>">
-							</asp:Literal><asp:ImageButton ID="ImageButton1"   runat="server" CommandName="Edit" ImageUrl="../../../Images/Confirm_Mini.GIF"  />
+							<asp:ImageButton ID="ImageButton1" runat="server" CommandName="Edit" ImageUrl="../../../Images/Confirm_Mini.GIF" />
 	  					</ItemTemplate>
 					</asp:TemplateColumn>                    
-                    
-
-					
+                    	
 				</Columns>
 			</DBWC:HIERARGRID>
 			</td>

@@ -1,7 +1,6 @@
 ﻿var timerlen = 5;
 var slideAniLen = 500;
 
-
 var timerID = new Array();
 var startTime = new Array();
 var obj = new Array();
@@ -55,8 +54,6 @@ function startslide(objname) {
         obj[objname].style.display = "block";
     }
 
-
-
     timerID[objname] = setInterval('slidetick(\'' + objname + '\');', timerlen);
 
     if (dir[objname] == "up") {
@@ -68,7 +65,7 @@ function slidetick(objname) {
     var elapsed = (new Date()).getTime() - startTime[objname];
 
     if (elapsed > slideAniLen)
-        endSlide(objname)
+        endSlide(objname);
     else {
         var d = Math.round(elapsed / slideAniLen * endHeight[objname]);
         if (dir[objname] == "up")
@@ -102,47 +99,49 @@ function endSlide(objname) {
 var divWidth = '';
 var divHeight = '';
 var txtFirstButton = 'OK';
-var txtSecondButton = 'Cancel'
+var txtSecondButton = 'Cancel';
 
-function DisplayCalender() {
+function DisplayCalendar(divId) {
     // Set default dialogbox width if null
 
-    if (document.getElementById('DivCalendar').style.display == 'block')
-        {
-        document.getElementById('DivCalendar').style.display = 'none'
-        document.Form1.SelOpen2.value = ''
-        }
+    var divObj = document.getElementById(divId);
+    var btnId = "btn" + divId;
+
+    if (divObj.style.display == 'block') {
+        divObj.style.display = 'none';
+        document.Form1.SelOpen2.value = '';
+    }
     else {
-        divWidth = 180
+        divWidth = 180;
 
         // Set default dialogBox height if null
 
-        divHeight = 90
+        divHeight = 90;
 
-        // Ge the dialogbox object
-        var divLayer = document.getElementById('DivCalendar');
         // Set dialogbox height and width
-        SetHeightWidth(divLayer)
+        SetHeightWidth(divObj);
         // Set dialogbox top and left
-        SetTopLeft(divLayer);
+        SetTopLeft(divObj, btnId);
 
         // Show the div layer
-        divLayer.style.display = 'block';
+        divObj.style.display = 'block';
         // Change the location and reset the width and height if window is resized
-        window.onresize = function() { if (divLayer.style.display == 'block') { SetTopLeft(divLayer); SetHeightWidth(divLayer) } }
-         document.Form1.SelOpen2.value = "O";
-        // Set the dialogbox display message
-        //document.getElementById('confirmText').innerText = msg;
-        //divLayer.className = 'transbox'
+        window.onresize = function () {
+            if (divObj.style.display == 'block') {
+                SetTopLeft(divObj, btnId);
+                SetHeightWidth(divObj);
+            }
+        };
+        document.Form1.SelOpen2.value = divId;
     }
 }
 
-function SetTopLeft(divLayer) {
+function SetTopLeft(divLayer, btnId) {
     // Get the dialogbox height
     var divHeightPer = divLayer.style.height.split('px')[0];
 
-    // Set the top variable 
-    var top = (parseInt(document.body.offsetHeight) / 2) - (divHeightPer / 2)
+    // Set the top variable
+    var top = (parseInt(document.body.offsetHeight) / 2) - (divHeightPer / 2);
     // Get the dialog box width
     var divWidthPix = divLayer.style.width.split('px')[0];
 
@@ -151,8 +150,7 @@ function SetTopLeft(divLayer) {
     // set the dialogbox position to abosulute
     divLayer.style.position = 'absolute';
 
-
-    var CalButton = document.getElementById('Cal1');
+    var CalButton = document.getElementById(btnId);
 
     // Set the div top to the height
     divLayer.style.top = CalButton.style.top + 143;
@@ -160,30 +158,11 @@ function SetTopLeft(divLayer) {
     // Set the div Left to the height
     divLayer.style.left = CalButton.style.left + 280;
 }
+
 function SetHeightWidth(divLayer) {
     // Set the dialogbox width
     divLayer.style.width = divWidth + 'px';
     // Set the dialogbox Height
-    divLayer.style.height = divHeight + 'px'
+    divLayer.style.height = divHeight + 'px';
 }
-
-
-//function SetValues2(ZulDat) {
-//   window.document.Form1.Zuldat.value = ZulDat;
-// }
-// function CountoverModell() {
-
-//                var count;
-//                var count2;
-//                window.document.Form1.Aktuell.value = ZulDat;
-//                count = Number(window.document.Form1.AktuelleAnzahl.value);
-
-//                     count = count + 1;
-//     window.document.getElementsByName("AktuellGesamt").style.display = 'none';
-//     window.document.Form1.Zuldat.value = '2';
-//                    count2 = Number(document.getElementById("AktuelleSumme").value);
-//                     count2 = count2 + 1;
-//                    document.getElementById("AktuelleSumme").value = count2;
-
-
-// }          
+         
