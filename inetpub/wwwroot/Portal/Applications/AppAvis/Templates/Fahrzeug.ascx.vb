@@ -14,20 +14,17 @@
         DG1.DataBind()
 
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
+
+        DG1.Columns(9).HeaderText = "Datum <br/> " & objCarports.ArtDerZulassung.ToString()
+
         Select Case objCarports.Task
             Case "Ausgabe"
                 DG1.Columns(15).Visible = True       'Ergebnis
             Case "Zulassen"
                 DG1.Columns(9).Visible = True       'Bemerkung Anzeige
                 DG1.Columns(10).Visible = False      'Bemerkung Eingabe
-                'DG1.Columns(9).Visible = True       'Datum Erstzulassung Eingabe
             Case "Verschieben"
-                'DG1.Columns(8).Visible = True       'Bemerkung Datum Eingabe
                 DG1.Columns(14).Visible = True      'Ziel-PDI
-            Case "Sperren"
-                'DG1.Columns(8).Visible = True       'Bemerkung Datum Eingabe
-            Case "Entsperren"
-                'DG1.Columns(8).Visible = True       'Bemerkung Datum Eingabe
         End Select
     End Sub
     Public Sub Check()
