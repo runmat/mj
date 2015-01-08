@@ -254,6 +254,11 @@ namespace CkgDomainLogic.General.Database.Services
             Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = FailedLogins + 1 WHERE Username = {0}", userName);
         }
 
+        public void LockUserAndSave(string userName)
+        {
+            Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 1 WHERE Username = {0}", userName);
+        }
+
         public void FailedLoginsResetAndSave(string userName)
         {
             Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = 0 WHERE Username = {0}", userName);

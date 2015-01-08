@@ -189,14 +189,26 @@ namespace CkgDomainLogic.General.Services
                 return;
             }
 
+            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
+
             if (!ValidatePassword(loginModel.Password, dbContext.User))
             {
-                addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
-                dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                if (dbContext.User.UserCountFailedLogins < customer.LockedAfterNLogins)
+                {
+                    addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
+                    dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                }
+                else
+                {
+                    if (!dbContext.User.UserIsDisabled)
+                        dbContext.LockUserAndSave(loginModel.UserName);
+
+                    addModelError(m => m.UserName, Localize.LoginUserDisabled);
+                }
+                
                 return;
             }
 
-            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
             List<string> userErrorMessages;
             if (!ValidateUser(dbContext.User, customer, LocalizationService, out userErrorMessages))
             {
