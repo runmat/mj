@@ -377,13 +377,6 @@
     <Compile Include="lib\Zulassungsreport.vb" />
     <Compile Include="lib\Zul_Sperr_Entsperr.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="Templates\DZFahrzeug.ascx.designer.vb">
-      <DependentUpon>DZFahrzeug.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\DZFahrzeug.ascx.vb">
-      <DependentUpon>DZFahrzeug.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Templates\Fahrzeug.ascx.designer.vb">
       <DependentUpon>Fahrzeug.ascx</DependentUpon>
     </Compile>
@@ -441,6 +434,7 @@
     <Content Include="forms\Info01.htm" />
     <Content Include="forms\Info02.htm" />
     <Content Include="forms\Info3.htm" />
+    <Content Include="forms\Info01a.htm" />
     <Content Include="forms\Report01.aspx" />
     <Content Include="forms\Report02.aspx" />
     <Content Include="forms\Report03.aspx" />
@@ -455,7 +449,6 @@
     <Content Include="forms\Report10.aspx" />
     <Content Include="forms\scroll.htc" />
     <Content Include="Javascript\Slideup_Down.js" />
-    <Content Include="Templates\DZFahrzeug.ascx" />
     <Content Include="Templates\Fahrzeug.ascx" />
     <Content Include="Templates\Modell.ascx" />
   </ItemGroup>
