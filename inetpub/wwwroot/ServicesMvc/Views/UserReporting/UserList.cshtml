@@ -1,0 +1,50 @@
+﻿@model CkgDomainLogic.UserReporting.ViewModels.UserReportingViewModel 
+
+<h3 class="page-title" id="headerTitle">@Localize.UserReporting_UserList <small></small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.Suchparameter)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridUserList");
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function OnDataBound_GridUserList() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridUserList() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUserList() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowUserListSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridUserList");
+
+        $("#divGrid").slideDown();
+    }
+
+</script>
