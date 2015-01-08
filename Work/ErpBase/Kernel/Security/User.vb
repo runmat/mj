@@ -1546,10 +1546,11 @@ Namespace Kernel.Security
 
                         'Applications holen
                         GetApplications(cn, intCustID)
-
-                        'App instanzieren
-                        m_app = New App(Me)
                     End If
+
+                    'App instanziieren
+                    m_app = New App(Me)
+
                     'Auf abgelaufenes Passwort pruefen
                     If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(System.TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
                         m_blnPasswordExpired = True
