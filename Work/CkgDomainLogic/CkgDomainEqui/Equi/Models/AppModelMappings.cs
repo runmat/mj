@@ -302,7 +302,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.TechnIdentnummer = s.TIDNR;
                         d.AbcKennzeichen = s.ABCKZ;
                         d.Raum = s.MSGRP;
-                        d.Standort = s.STORT;
+                        d.Standort = s.TEXT_STO;
                         d.Versandgrund = s.ZZVGRUND;
                         d.Eingangsdatum = s.DATAB;
                         d.Versanddatum = s.ZZTMPDT;

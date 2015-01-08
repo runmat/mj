@@ -1,0 +1,38 @@
+﻿@model CkgDomainLogic.UserReporting.ViewModels.UserReportingViewModel
+@using CkgDomainLogic.UserReporting.Models
+
+@{
+    var gridName = "GridUserList";
+}
+
+@(Html.Telerik()
+    .Grid<UserInfo>()
+    .Name(gridName)
+    .XGroup("GridUserList")
+    .XAjaxDataBinding("UserListAjaxBinding", "UserReporting")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.CustomerName);
+        columns.XBound(c => c.Kunnr);
+        columns.XBound(c => c.Username);
+        columns.XBound(c => c.Title);
+        columns.XBound(c => c.FirstName);
+        columns.XBound(c => c.LastName);
+        columns.XBound(c => c.GroupName);
+        columns.XBound(c => c.OrganizationName);
+        columns.XBound(c => c.CreateDate);
+        columns.XBound(c => c.CreatedBy);
+        columns.XBound(c => c.DeleteDate);
+        columns.XBound(c => c.LastChangedBy);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Username))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUserListFilteredExcel", "UserReporting");
+        commands.FilteredDataCommand("ExportUserListFilteredPDF", "UserReporting");
+    })
+    .Groupable(g => g.Enabled(false))
+)

@@ -1,13 +1,11 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
+﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Portal.PageElements
 
 Partial Public Class Change01
-    Inherits System.Web.UI.Page
+    Inherits Page
 
-    Protected WithEvents ucStyles As CKG.Portal.PageElements.Styles
-    Protected WithEvents ucHeader As CKG.Portal.PageElements.Header
+    Protected WithEvents ucStyles As Portal.PageElements.Styles
+    Protected WithEvents ucHeader As Portal.PageElements.Header
 
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
@@ -15,7 +13,7 @@ Partial Public Class Change01
     Private m_objExcel As DataTable
     Private m_report As Carport
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         Session("ShowLink") = "False"
         m_User = GetUser(Me)
@@ -52,19 +50,16 @@ Partial Public Class Change01
         End Try
     End Sub
 
-    Private Sub calVon_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles calVon.SelectionChanged
-        Me.txtEingangsdatumVon.Text = calVon.SelectedDate.ToShortDateString
+    Private Sub calVon_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calVon.SelectionChanged
+        txtEingangsdatumVon.Text = calVon.SelectedDate.ToShortDateString
         calVon.Visible = False
         Setfilter()
     End Sub
 
     Private Sub DoSubmit()
-        Dim checkInput As Boolean = True
-
         Session("lnkExcel") = ""
 
         Try
-
             lblError.Text = ""
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls"
             m_report = New Carport(m_User, m_App, strFileName)
@@ -108,8 +103,7 @@ Partial Public Class Change01
         Else
             rowResultate.Visible = True
 
-            Dim tmpDataView As New DataView()
-            tmpDataView = m_objTable.DefaultView
+            Dim tmpDataView As DataView = m_objTable.DefaultView
 
             Dim intTempPageIndex As Int32 = intPageIndex
             Dim strTempSort As String = ""
@@ -178,11 +172,11 @@ Partial Public Class Change01
         End If
     End Sub
 
-    Private Sub DataGrid1_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGrid1.ItemDataBound
+    Private Sub DataGrid1_ItemDataBound(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles DataGrid1.ItemDataBound
         Dim intItem As Int32
 
         For intItem = 0 To m_objTable.Columns.Count - 1
-            If m_objTable.Columns(intItem).DataType Is System.Type.GetType("System.DateTime") Then
+            If m_objTable.Columns(intItem).DataType Is Type.GetType("System.DateTime") Then
                 If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
                     e.Item.Cells(intItem).Text = DataBinder.Eval(e.Item.DataItem, m_objTable.Columns(intItem).ColumnName, "{0:dd.MM.yyyy}")
                 End If
@@ -190,34 +184,34 @@ Partial Public Class Change01
         Next
     End Sub
 
-    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
+    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
         FillGrid(DataGrid1.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
+    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
         FillGrid(e.NewPageIndex)
     End Sub
 
-    Private Sub cmdDetails_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDetails.Click
+    Private Sub cmdDetails_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDetails.Click
         Response.Redirect("Change01_2.aspx?AppID=" & Session("AppID").ToString)
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Protected Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles lnkCreateExcel.Click
+    Protected Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles lnkCreateExcel.Click
         CreateExcel()
 
     End Sub
+
     Private Sub Setfilter()
         Dim iStatus As Integer
         Dim sFilter As String
-        Dim sFilterproof As String = ""
         sFilter = proofDropdowns()
 
         m_report.FilterString = sFilter
@@ -248,7 +242,6 @@ Partial Public Class Change01
 
     End Sub
 
-
     Protected Sub cmdBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBack.Click
         Session("App_Report") = Nothing
         Session("App_ResultTable") = Nothing
@@ -259,6 +252,7 @@ Partial Public Class Change01
     Protected Sub lnkCreateExcel2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkCreateExcel2.Click
         CreateExcel()
     End Sub
+
     Private Sub CreateExcel()
         If Not (Session("App_ResultTableCarports") Is Nothing) Then
             m_objExcel = CType(Session("App_ResultTableCarports"), DataTable)
@@ -267,13 +261,14 @@ Partial Public Class Change01
                 Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
 
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, Me.m_objExcel, Me.Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, m_objExcel, Page)
 
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message
             End Try
         End If
     End Sub
+
     Private Sub FillControlls(Optional ByVal FlagFilter As String = "")
 
         Dim dvCarports As DataView
@@ -427,6 +422,7 @@ Partial Public Class Change01
         End If
 
     End Sub
+
     Private Sub BoundControls(ByVal View As DataView, ByVal Dropdown As DropDownList, ByVal Text As String, _
                                                 ByVal Value As String, ByVal Sort As String)
         If View.Count > 0 Then
@@ -439,9 +435,7 @@ Partial Public Class Change01
             End With
         End If
     End Sub
-    Protected Sub ddlCarports_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged
-        Setfilter()
-    End Sub
+
     Private Sub insertScript()
         'If Not (highlightID Is Nothing) Then
         '        
@@ -454,28 +448,6 @@ Partial Public Class Change01
         Literal1.Text &= "						</script>" & vbCrLf
 
     End Sub
-
-    Protected Sub ddlHersteller_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHersteller.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-
-    Protected Sub ddlLiefermonat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlLiefermonat.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlBereifung_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlBereifung.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlGetriebe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlGetriebe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlKraftstoff_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlKraftstoff.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
 
     Private Function proofDropdowns() As String
         Dim sFilter As String = ""
@@ -672,156 +644,99 @@ Partial Public Class Change01
                 sFilter = "Zulassungsbereit <>'X'"
             End If
         End If
+        If rdo_JaPlanzulassung.Checked Then
+            If sFilter <> "" Then
+                sFilter = sFilter & " AND Datum_Planzulassung IS NOT NULL"
+            Else
+                sFilter = "Planzulassung IS NOT NULL"
+            End If
+        End If
+        If rdo_NeinPlanzulassung.Checked Then
+            If sFilter <> "" Then
+                sFilter = sFilter & " AND Datum_Planzulassung IS NULL"
+            Else
+                sFilter = "Planzulassung IS NULL"
+            End If
+        End If
         Return sFilter
     End Function
 
-
-    Protected Sub ddlNavi_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlNavi.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFarbe_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFarbe.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVermiet_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVermiet.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlFzgArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFzgArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlAufbauArt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAufbauArt.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlernr_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlernr.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlHaendlername_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlHaendlername.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlEKIndikator_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlEKIndikator.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlVerwZweck_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlVerwZweck.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlOwnerCode_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlOwnerCode.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub ddlSperrdat_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlSperrdat.SelectedIndexChanged
-        Setfilter()
-    End Sub
-
-    Protected Sub btnCal1_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnCal1.Click
+    Protected Sub btnCal1_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnCal1.Click
         calVon.Visible = True
         If SelOpen2.Value = "O" Then insertScript()
     End Sub
 
-    Protected Sub btnCal2_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnCal2.Click
+    Protected Sub btnCal2_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnCal2.Click
         calBis.Visible = True
         If SelOpen2.Value = "O" Then insertScript()
     End Sub
 
     Protected Sub calBis_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calBis.SelectionChanged
-        Me.txtEingangsdatumBis.Text = calBis.SelectedDate.ToShortDateString
+        txtEingangsdatumBis.Text = calBis.SelectedDate.ToShortDateString
         calBis.Visible = False
         Setfilter()
     End Sub
 
-    Protected Sub btnCalBereit1_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnCalBereit1.Click
+    Protected Sub btnCalBereit1_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnCalBereit1.Click
         calBisBereit.Visible = True
         If SelOpen2.Value = "O" Then insertScript()
     End Sub
 
     Protected Sub calBisBereit_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calBisBereit.SelectionChanged
-        Me.txtMeldungsdatumBis.Text = calBisBereit.SelectedDate.ToShortDateString
+        txtMeldungsdatumBis.Text = calBisBereit.SelectedDate.ToShortDateString
         calBisBereit.Visible = False
         Setfilter()
     End Sub
 
-    Protected Sub btnCalBereit2_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnCalBereit2.Click
+    Protected Sub btnCalBereit2_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnCalBereit2.Click
         calVonBereit.Visible = True
         If SelOpen2.Value = "O" Then insertScript()
     End Sub
 
     Protected Sub calVonBereit_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles calVonBereit.SelectionChanged
-        Me.txtMeldungsdatumVon.Text = calVonBereit.SelectedDate.ToShortDateString
+        txtMeldungsdatumVon.Text = calVonBereit.SelectedDate.ToShortDateString
         calVonBereit.Visible = False
         Setfilter()
     End Sub
 
-    Protected Sub ibtnDelEingVon_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnDelEingVon.Click
+    Protected Sub ibtnDelEingVon_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelEingVon.Click
         txtEingangsdatumVon.Text = ""
         Setfilter()
     End Sub
 
-    Protected Sub ibtnDelEingBis_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnDelEingBis.Click
+    Protected Sub ibtnDelEingBis_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelEingBis.Click
         txtEingangsdatumBis.Text = ""
         Setfilter()
     End Sub
 
-    Protected Sub ibtnDelBereitVon_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnDelBereitVon.Click
+    Protected Sub ibtnDelBereitVon_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelBereitVon.Click
         txtMeldungsdatumVon.Text = ""
         Setfilter()
     End Sub
 
-    Protected Sub ibtnDelBereitBis_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ibtnDelBereitBis.Click
+    Protected Sub ibtnDelBereitBis_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ibtnDelBereitBis.Click
         txtMeldungsdatumBis.Text = ""
         Setfilter()
     End Sub
 
-    Protected Sub rdo_Alle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_Alle.CheckedChanged
+    Protected Sub ddl_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCarports.SelectedIndexChanged, ddlHersteller.SelectedIndexChanged, _
+            ddlLiefermonat.SelectedIndexChanged, ddlBereifung.SelectedIndexChanged, ddlGetriebe.SelectedIndexChanged, ddlKraftstoff.SelectedIndexChanged, _
+            ddlNavi.SelectedIndexChanged, ddlFarbe.SelectedIndexChanged, ddlVermiet.SelectedIndexChanged, ddlFzgArt.SelectedIndexChanged, ddlAufbauArt.SelectedIndexChanged, _
+            ddlHaendlernr.SelectedIndexChanged, ddlHaendlername.SelectedIndexChanged, ddlEKIndikator.SelectedIndexChanged, ddlVerwZweck.SelectedIndexChanged, _
+            ddlOwnerCode.SelectedIndexChanged, ddlSperrdat.SelectedIndexChanged
+
+        Setfilter()
+    End Sub
+
+    Protected Sub rdo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_Alle.CheckedChanged, rdo_Ja.CheckedChanged, rdo_Nein.CheckedChanged, _
+            rdo_AlleSperr.CheckedChanged, rdo_JaSperr.CheckedChanged, rdo_NeinSperr.CheckedChanged, _
+            rdo_AlleBereit.CheckedChanged, rdo_JaBereit.CheckedChanged, rdo_NeinBereit.CheckedChanged, _
+            rdo_AllePlanzulassung.CheckedChanged, rdo_JaPlanzulassung.CheckedChanged, rdo_NeinPlanzulassung.CheckedChanged
+
         Setfilter()
         If SelOpen2.Value = "O" Then insertScript()
     End Sub
 
-    Protected Sub rdo_Ja_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_Ja.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_Nein_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_Nein.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_AlleSperr_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_AlleSperr.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_JaSperr_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_JaSperr.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_NeinSperr_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_NeinSperr.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_AlleBereit_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_AlleBereit.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_JaBereit_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_JaBereit.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
-
-    Protected Sub rdo_NeinBereit_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdo_NeinBereit.CheckedChanged
-        Setfilter()
-        If SelOpen2.Value = "O" Then insertScript()
-    End Sub
 End Class
 ' ************************************************
 ' $History: Change01.aspx.vb $
