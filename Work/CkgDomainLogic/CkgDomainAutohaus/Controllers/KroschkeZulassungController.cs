@@ -285,9 +285,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Receipt()
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
-            // ToDo !!! TEST !!!
-            if (false) 
-                ShoppingCartItemRemove(ViewModel.ObjectKey);
+            ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -401,8 +399,7 @@ namespace ServicesMvc.Controllers
 
             ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), saveDataToSap: true, saveFromShoppingCart: true);
 
-            // ToDo !!! TEST !!!
-            if (false) //ViewModel.SaveErrorMessage.IsNullOrEmpty())
+            if (ViewModel.SaveErrorMessage.IsNullOrEmpty())
             {
                 foreach (var vm in warenkorb)
                     ShoppingCartItemRemove(vm.ObjectKey);
