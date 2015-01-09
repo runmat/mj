@@ -1,0 +1,29 @@
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@{
+    var gridName = "GridFahrzeugAkteBestand";
+}
+
+@(Html.Telerik()
+    .Grid<FahrzeugAkteBestand>()
+    .Name(gridName)
+    .XGroup(null)
+    .XAjaxDataBinding("FahrzeugAkteBestandAjaxBinding", "Fahrzeugbestand")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.FinID).Title("").Filterable(false).Groupable(false).Sortable(false)
+                .ClientTemplate(
+                      "<button onclick='FahrzeugShowAjax(\"<#= data.FIN #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
+                      "<a href='../../kroschkezulassung/index?fin=<#= data.FIN #>' class='btn mini gray margin-left-10 tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white tag'></i></a>"
+                )
+                .HeaderTemplate(
+                      "<button onclick='FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                );
+            columns.XBoundAllExcept(m => m.Bemerkung);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+    .XToolBar("Fahrzeugbestand")
+)
+

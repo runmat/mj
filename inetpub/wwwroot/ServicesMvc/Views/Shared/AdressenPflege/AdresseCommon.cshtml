@@ -1,0 +1,154 @@
+﻿@using DomainCommonModels = CkgDomainLogic.DomainCommon.Models
+@using GeneralTools.Resources
+
+<script type="text/javascript">
+
+    function FormPreparePrivateAdressenPflege() {
+
+        GridAllColumnFilterApplyToGrid("GridAdresse");
+
+//        setTimeout(function() {
+//            //alert($("#GridAdresse td .btn").length);
+//            //alert($("#GridAdresse td .btn")[0]);
+//            $($("#GridAdresse td .btn")[0]).trigger("click");
+//        }, 500);
+    }
+
+    function GetGrid() {
+        return $("#GridAdresse").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridAdresse .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function TryAddressGridRefresh() {
+        //        if (typeof (GetGrid()) !== "undefined") {
+        //            GetGrid().ajaxRequest();
+        //        }
+        FilterGrid("GridAdresse");
+    }
+
+    function TryGridPageTo1() {
+        // Refresh grid and goto grid page 1
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().pageTo(1);
+        }
+    }
+
+    function OnDataBound_GridAdresse() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridAdresse() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAdresse() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function AddressEdit(id) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "EditAddress",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.EditAddress'); } catch (e) { }
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function AddressNew() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "NewAddress",
+            loadingShow: true,
+            success: function (result) {
+                _collectionChanged = true;
+                ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.NewAddress'); } catch (e) { }
+            }
+        });
+    }
+
+    function AddressRemove(id) {
+        if (!confirm('@CommonResources.DeleteAddressConfirm.ToJavascriptString()'))
+            return;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteAddress",
+            data: { id: id },
+            loadingShow: true,
+            success: function () {
+                TryAddressGridRefresh();
+                scrollToTop();
+            }
+        });
+    }
+
+    function ShowItemDetails(result, showCloseButton) {
+        $("#divGridItemDetails").html(result);
+        GridItemDetailsFormPreparePrivateAjax();
+        $("#divGridEditStart").slideUp();
+        $("#divGridItemDetails").slideDown();
+        scrollToTop();
+    }
+
+    function CloseItemDetailsInner() {
+        $("#divGridItemDetails").slideUp(function() {
+            $("#divGridEditStart").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function CloseItemDetails() {
+        CloseItemDetailsInner();
+        try { BreadcrumbsMovePrev(); } catch (e) { }
+        TryAddressGridRefresh();
+    }
+
+    var _modelIsValid = false;
+    var _modelIsInsertMode = false;
+    var _modelIsCocOrder = false;
+
+    function GridItemDetailsFormPreparePrivateAjax() {
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        if (_modelIsValid)
+            CloseItemDetails();
+
+        if (!_modelIsInsertMode)
+            $("#Kennung").attr('readonly', 'readonly');
+    }
+
+    function ItemsLoad() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Load",
+            loadingShow: true,
+            success: function (result) {
+                TryAddressGridRefresh();
+            }
+        });
+    }
+
+</script>
+

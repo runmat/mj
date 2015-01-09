@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
 using CkgDomainLogic.KroschkeZulassung.ViewModels;
+using CkgDomainLogic.Partner.Contracts;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -20,20 +25,41 @@ namespace ServicesMvc.Controllers
     {
         public override string DataContextKey { get { return GetDataContextKey<KroschkeZulassungViewModel>(); } }
 
-        public KroschkeZulassungViewModel ViewModel { get { return GetViewModel<KroschkeZulassungViewModel>(); } }
+        public KroschkeZulassungViewModel ViewModel 
+        { 
+            get { return GetViewModel<KroschkeZulassungViewModel>(); } 
+            set { SetViewModel(value); } 
+        }
 
         public KroschkeZulassungController(IAppSettings appSettings, ILogonContextDataService logonContext,
-            IAdressenDataService adressenDataService,
-            IKroschkeZulassungDataService zulassungDataService)
+            IPartnerDataService partnerDataService,
+            IKroschkeZulassungDataService zulassungDataService,
+            IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, adressenDataService, zulassungDataService);
+            if (IsInitialRequestOf("Index"))
+                ViewModel = null;
+
+            InitViewModelExpicit(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+        }
+
+        private void InitViewModelExpicit(KroschkeZulassungViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IKroschkeZulassungDataService zulassungDataService, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
+        {
+            InitViewModel(vm, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Index(string fin, string halterNr)
         {
-            ViewModel.DataMarkForRefresh();
+            ViewModel.DataInit();
+
+            ViewModel.SetParamFahrzeugAkte(fin);
+            
+            if (halterNr.IsNotNullOrEmpty())
+                ViewModel.SetParamHalter(halterNr);
+
+            ShoppingCartLoadAndCacheItems();
+            ShoppingCartTryEditItemAsViewModel();
 
             return View(ViewModel);
         }
@@ -83,7 +109,9 @@ namespace ServicesMvc.Controllers
         {
             var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
 
+// ReSharper disable RedundantAnonymousTypePropertyName
             return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
+// ReSharper restore RedundantAnonymousTypePropertyName
         }
 
         #endregion
@@ -138,9 +166,7 @@ namespace ServicesMvc.Controllers
             }
 
             if (ModelState.IsValid)
-            {
                 ViewModel.SetHalterAdresse(model);
-            }
 
             model.IsValid = ModelState.IsValid;
 
@@ -164,7 +190,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult HalterAdressenShowGrid()
         {
-            ViewModel.DataMarkForRefreshHalterAdressenFiltered();
+            ViewModel.DataMarkForRefreshHalterAdressen();
 
             return PartialView("Partial/HalterAdressenAuswahlGrid");
         }
@@ -205,11 +231,17 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
-        
+
         [HttpPost]
         public ActionResult LoadKfzKreisAusHalterAdresse()
         {
             return Json(new { kfzKreis = ViewModel.LoadKfzKreisAusHalterAdresse() });
+        }
+
+        [HttpPost]
+        public ActionResult GetKennzeichenLinkeSeite(string zulassungsKreis)
+        {
+            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis) });
         }
 
         #endregion
@@ -232,9 +264,7 @@ namespace ServicesMvc.Controllers
                 ViewModel.SetOptionenDienstleistungen(model);
             }
 
-            model.InitDienstleistungen(ViewModel.ZulassungDataService.Zusatzdienstleistungen);
-
-            return PartialView("Partial/OptionenDienstleistungenForm", model);
+            return PartialView("Partial/OptionenDienstleistungenForm", ViewModel.Zulassung.OptionenDienstleistungen);
         }
 
         #endregion
@@ -244,7 +274,9 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Save()
         {
-            ViewModel.Save(false);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
+
+            ShoppingCartItemSave();
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -252,7 +284,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-            ViewModel.Save(true);
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+            // ToDo !!! TEST !!!
+            if (false) 
+                ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -260,26 +295,122 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
-            return PartialView("Partial/Summary", ViewModel.CreateSummaryModel());
+            return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
-        public FileContentResult SummaryAsPdf()
+        public FileContentResult SummaryAsPdf(string id)
         {
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel());
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(new byte[1], "");
 
-            var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
-            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
+            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
+
+            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
         }
 
-        public FileContentResult KundenformularAsPdf()
+        public FileContentResult KundenformularAsPdf(string id)
         {
-            var formularPdfBytes = ViewModel.Zulassung.KundenformularPdf;
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(new byte[1], "");
+
+            var formularPdfBytes = zulassung.KundenformularPdf;
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
 
+        public FileContentResult ZusatzformularAsPdf(string id, string typ)
+        {
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new FileContentResult(new byte[1], "");
+
+            var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
+            if (zusatzFormular == null)
+                return new FileContentResult(new byte[1], ""); 
+
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderForm) };
+        }
+
+        public FileContentResult AuftragslisteAsPdf()
+        {
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            if (zulassung == null)
+                return new FileContentResult(new byte[1], "");
+
+            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            if (auftragslisteFormular == null)
+                return new FileContentResult(new byte[1], "");
+            
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
+        }
+
         #endregion   
+
+
+        #region Shopping Cart 
+
+        private const string ShoppingCartPersistanceKey = "KroschkeZulassung";
+
+        protected override IEnumerable ShoppingCartLoadItems()
+        {
+            return ShoppingCartLoadGenericItems<KroschkeZulassungViewModel>(ShoppingCartPersistanceKey);
+        }
+
+        protected void ShoppingCartTryEditItemAsViewModel()
+        {
+            var objectKey = ShoppingCartPopEditItemKey();
+            if (objectKey == null)
+                return;
+
+            var vm = ShoppingCartGetItem(objectKey) as KroschkeZulassungViewModel;
+            if (vm == null)
+                return;
+
+            InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+            vm.DataMarkForRefresh();
+            ViewModel = vm;
+        }
+
+        private void ShoppingCartItemSave()
+        {
+            ShoppingCartSaveItem(ShoppingCartPersistanceKey, ViewModel);
+        }
+
+        protected override void ShoppingCartFilterItems(string filterValue, string filterProperties)
+        {
+            ShoppingCartFilterGenericItems<KroschkeZulassungViewModel>(filterValue, filterProperties);
+        }
+
+        [HttpPost]
+        public override ActionResult ShoppingCartSelectedItemsSubmit()
+        {
+            var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
+            foreach (var vm in warenkorb)
+            {
+                InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
+                vm.DataMarkForRefresh();
+            }
+
+            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), saveDataToSap: true, saveFromShoppingCart: true);
+
+            // ToDo !!! TEST !!!
+            if (false) //ViewModel.SaveErrorMessage.IsNullOrEmpty())
+            {
+                foreach (var vm in warenkorb)
+                    ShoppingCartItemRemove(vm.ObjectKey);
+            }
+
+            return PartialView("Partial/Receipt", ViewModel);
+        }
+
+        #endregion
     }
 }

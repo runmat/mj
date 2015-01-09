@@ -9,43 +9,60 @@
         @Html.FormValidationSummary()
         
 
-        <h5 class="form-section">@Localize.DifferentAddress</h5>
-        
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name1, new { @class = "m-wrap large" })
-
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Name2, new { @class = "m-wrap large" })
-
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Strasse, new { @class = "m-wrap large" })
-
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Plz, new { @class = "m-wrap small" })
-
-        @Html.FormTextBoxFor(m => m.Rechnungsempfaenger.Ort, new { @class = "m-wrap large" }) 
-
-        @Html.FormRadioButtonListFor(m => m.Zahlungsart, BankAdressdaten.Zahlungsarten.ToSelectList())
-
-        
-        <h5 class="form-section">@Localize.BankData</h5>
-        
-        @Html.HiddenFor(m => m.KontoNr)
-        @Html.HiddenFor(m => m.Bankleitzahl)
-        
-        @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap large" })
-
-        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap large uppercase" },
-                                    postControlHtml: @<text>
-                                                            <a href="#" onclick="return LoadBankdatenAusIban()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadBankDataFromIban</a>
-                                                            @Html.SpanAlert("bankDataHint")
-                                                        </text>)
-
-        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap large uppercase", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
-        
-        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap large", placeholder = Localize.WillBeFilledAutomatically, @readonly = "readonly" })
+        <div class="row-fluid">
             
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.DifferentAddress, "icon-home"))
+                {
+                    @Html.HiddenFor(m => m.Cpdkunde)
+                    @Html.HiddenFor(m => m.CpdMitEinzugsermaechtigung)
+
+                    @Html.PartialFor(m => m.Rechnungsempfaenger, "Partial/BankAdressdatenReForm")
+
+                    @Html.FormRadioButtonListFor(m => m.Zahlungsart, BankAdressdaten.Zahlungsarten.ToSelectList())
+                }
+
+            </div>
+
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.BankData, "icon-book"))
+                {
+                    @Html.HiddenFor(m => m.KontoNr)
+                    @Html.HiddenFor(m => m.Bankleitzahl)
+        
+                    @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap" })
+
+                    @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap uppercase", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+                                         postControlHtml: @<text>
+                                                           </text>)
+
+                    @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap uppercase", @readonly = "readonly" },
+                                         postControlHtml: @<text>
+                                                               <div>@Localize.WillBeFilledAutomatically</div>
+                                                           </text>)
+
+                    @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap", @readonly = "readonly" },
+                                         postControlHtml: @<text>
+                                                               <div>@Localize.WillBeFilledAutomatically</div>
+                                                               @Html.SpanAlert("bankDataHint")
+                                                           </text>)
+                }
+
+            </div>
+
+        </div>
+
         
         <script type="text/javascript">
-
+            
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        
+
+            _skipBankAddressData = ($("#SkipBankAdressdaten").val().toString().toLowerCase() == 'true');
+
+            TrySkipBankAddressData();
+
         </script>
     }
 </div>

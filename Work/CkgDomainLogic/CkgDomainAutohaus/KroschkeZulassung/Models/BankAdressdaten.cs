@@ -17,28 +17,19 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         public bool CpdMitEinzugsermaechtigung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DirectDebitMandate)]
-        public bool Einzugsermaechtigung { get; set; }
+        [XmlIgnore]
+        public bool Einzugsermaechtigung { get { return Zahlungsart.NotNullOrEmpty() == "E"; } }
 
         [LocalizedDisplay(LocalizeConstants.Invoice)]
-        public bool Rechnung { get; set; }
+        [XmlIgnore]
+        public bool Rechnung { get { return Zahlungsart.NotNullOrEmpty() == "R"; } }
 
         [LocalizedDisplay(LocalizeConstants.Cash)]
-        public bool Bar { get; set; }
+        [XmlIgnore]
+        public bool Bar { get { return Zahlungsart.NotNullOrEmpty() == "B"; } }
 
         [LocalizedDisplay(LocalizeConstants.PaymentType)]
-        public string Zahlungsart 
-        {
-            get
-            {
-                return (Einzugsermaechtigung ? "E" : (Rechnung ? "R" : (Bar ? "B" : "")));
-            }
-            set
-            {
-                Einzugsermaechtigung = (value == "E");
-                Rechnung = (value == "R");
-                Bar = (value == "B");
-            }
-        }
+        public string Zahlungsart { get; set; }
 
         [XmlIgnore]
         public static string Zahlungsarten { get { return string.Format("E,{0};R,{1};B,{2}", Localize.DirectDebitMandate, Localize.Invoice, Localize.Cash); } }
@@ -70,11 +61,14 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if ((Cpdkunde || CpdMitEinzugsermaechtigung) && !Rechnungsempfaenger.AdresseVollstaendig)
-                yield return new ValidationResult(Localize.AddressRequired);
+            if (Cpdkunde && !Rechnungsempfaenger.AdresseVollstaendig)
+                yield return new ValidationResult(Localize.CompleteAddressRequired);
 
-            if (CpdMitEinzugsermaechtigung && !BankdatenVollstaendig)
-                yield return new ValidationResult(Localize.BankDataRequired);
+            if (Einzugsermaechtigung && !BankdatenVollstaendig)
+                yield return new ValidationResult(Localize.CompleteBankDataRequired);
+
+            if (Rechnungsempfaenger.AdresseVollstaendig && String.IsNullOrEmpty(Zahlungsart))
+                yield return new ValidationResult(Localize.PaymentTypeRequired, new[] { "Zahlungsart" });
         }
 
         public string GetSummaryString()

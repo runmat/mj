@@ -1,7 +1,10 @@
-﻿
+﻿@model CkgDomainLogic.KroschkeZulassung.ViewModels.KroschkeZulassungViewModel 
+
 <script type="text/javascript">
 
     var _modelIsValid = false;
+    var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
+    var _skipBankAddressData = false;
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -10,16 +13,26 @@
     function FormPreparePrivate() {
         try { FormWizardInitPrivate(); } catch (e) { }
         try { MultiSelectPreparePrivate(); } catch (e) { }
+        ShoppingCartMenuRefreshCount();
     };
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
         $('.tooltips').tooltip();
+        setTimeout('LoadingHide()', 1000);
+    }
+
+    function FormWizardShowHideSaveButton(show, delay) {
+        setTimeout(function () {
+            $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
+            FormWizard.ButtonCustom1Show(show, _customButtonText);
+        }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
     
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
+            FormWizard.tabClickDisabled = true;
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
@@ -27,7 +40,7 @@
 
             try {
                 $("#AjaxForm" + stepName).submit();
-                
+                window.scrollTo(0, 0);
                 return false;
             }
             catch (e) {
@@ -36,18 +49,33 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
+            FormWizardShowHideSaveButton(step == 7, 500);
+
+            if (step == 2 && _skipBankAddressData) {
+                FormWizard.ButtonPrevInvoke();
+            }
+
+            window.scrollTo(0, 0);
+            return true;
+        });
+
+        FormWizard.OnCustom1(function (step, maxSteps) {
+            SaveZulassung();
+
             return true;
         });
 
         FormWizard.OnSubmit(function () {
 
+            LoadingShow();
+            SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
             AjaxRequestNextStep();
 
             return true;
         });
 
         FormWizard.OnRestart(function () {
-            location.reload();
+            LocationReloadWithoutQueryString();
         });
     }
 
@@ -60,9 +88,32 @@
     }
 
     function AjaxRequestNextStep() {
+        var nextTabKey = FormWizard.GetNextTabKey();
         $.ajax({
             type: "POST",
-            url: FormWizard.GetNextTabKey(),
+            url: nextTabKey,
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertWarningHide("WaitHint");
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                FormPreparePrivateAjax();
+                
+                if (nextTabKey.toLowerCase() == "receipt")
+                    ShoppingCartMenuRefreshCount();
+            }
+        });
+    }
+
+    function SaveZulassung() {
+        var nextTabKey = FormWizard.GetNextTabKey();
+        $.ajax({
+            type: "POST",
+            url: "Save",
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -71,8 +122,20 @@
                     return;
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                FormPreparePrivateAjax();
+
+                if (nextTabKey.toLowerCase() == "receipt") 
+                    ShoppingCartMenuRefreshCount();
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
             }
         });
+    } 
+
+    function ShoppingCartSubmitFinished(result) {
+        $(".form-wizard").html(result);
+        ShoppingCartHide();
     }
 
     // Rechnungsdaten
@@ -85,6 +148,12 @@
         }
     }
 
+    function TrySkipBankAddressData() {
+        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
+            $("#AjaxFormBankAdressdaten").submit();
+        }
+    }
+
     // BankAdressdaten
     function AjaxFormBankAdressdatenComplete() {
         FormPrepareAjax();
@@ -93,6 +162,19 @@
             AjaxRequestNextStep();
             return;
         }
+    }
+
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+        
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban();
     }
 
     function LoadBankdatenAusIban() {
@@ -110,7 +192,9 @@
                         $("#Swift").attr("readonly", false);
                         $("#Swift").attr("placeholder", "");
                         $("#Swift").val("");
-                        SpanAlertWarning("bankDataHint", '@Localize.BankDataCouldNotBeRetrievedFromIban.ToJavascriptString()', 1800);
+                        $("#Geldinstitut").attr("readonly", false);
+                        $("#Geldinstitut").attr("placeholder", "");
+                        $("#Geldinstitut").val("");
                         return;
                     }
 
@@ -193,12 +277,50 @@
                     }
 
                     $("#Zulassungskreis").val(result.kfzKreis);
+                    ZulassungskreisOnChange();
                     SpanAlertSuccess("kfzKreisHint", '@Localize.RegDistrictSuccessfullyRetrievedFromCarOwnerAddr.ToJavascriptString()', 1800);
                 }
             });
 
         return false;
 
+    }
+
+    function CheckKennzeichenReserviert() {
+        var wkz2 = $("#Wunschkennzeichen2");
+        var wkz3 = $("#Wunschkennzeichen3");
+        var resName = $("#ReservierungsName");
+        var resNr = $("#ReservierungsNr");
+
+        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
+        if (kennzReserv) {
+            wkz2.attr('readonly', true);
+            wkz3.attr('readonly', true);
+            resName.attr('readonly', false);
+            resNr.attr('readonly', false);
+        } else {
+            wkz2.attr('readonly', false);
+            wkz3.attr('readonly', false);
+            resName.attr('readonly', true);
+            resNr.attr('readonly', true);
+        }
+    }
+    
+    function ZulassungskreisOnChange() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "GetKennzeichenLinkeSeite",
+                data: { zulassungsKreis: $("#Zulassungskreis").val() },
+                loadingShow: false,
+                success: function (result) {
+                    $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
+                    $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
+                    $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
+                }
+            });
+
+        return false;
     }
 
     // OptionenDienstleistungen
@@ -208,6 +330,31 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
+        }
+    }
+
+    function CheckKennzeichenSondergroesse() {
+        var kennzGr = $("#KennzeichenGroesseId");
+
+        var kennzSondergr = $("#KennzeichenSondergroesse").is(":checked");
+        if (kennzSondergr) {
+            kennzGr.attr('disabled', false);
+        } else {
+            kennzGr.attr('disabled', true);
+        }
+    }
+
+    function CheckSaisonkennzeichen() {
+        var sais1 = $("#SaisonBeginn");
+        var sais2 = $("#SaisonEnde");
+
+        var saisKennz = $("#Saisonkennzeichen").is(":checked");
+        if (saisKennz) {
+            sais1.attr('disabled', false);
+            sais2.attr('disabled', false);
+        } else {
+            sais1.attr('disabled', true);
+            sais2.attr('disabled', true);
         }
     }
 
@@ -304,6 +451,31 @@
             var newHeight = (gridHeight + 80) + 'px';
             grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
         }, 300);
+    }
+
+    function CleanUpKennzeichen(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-Z
+        if (key >= 65 && key <= 90) {
+            return true;
+        }
+        // a-z
+        if (key >= 97 && key <= 122) {
+            return true;
+        }
+        // ä,ö,ü,Ä,Ö,Ü,-
+        if (key == 132 || key == 148 || key == 129 || key == 142 || key == 153 || key == 154 || key == 45) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
     }
 
 </script>

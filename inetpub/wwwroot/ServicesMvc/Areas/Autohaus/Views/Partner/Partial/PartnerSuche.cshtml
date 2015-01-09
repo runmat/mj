@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Partner.Models
+@model PartnerSelektor
+
+<div id="divPartnerSuche">
+    @using (Ajax.BeginForm("LoadPartners", "Partner", null,
+        new MvcAjaxOptions("divPartnerSuche") { OnComplete = "TryShowPartnerGrid();" }, new { id = "PartnerSearchForm" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormRadioButtonListFor(m => m.PartnerKennung, PartnerSelektor.PartnerKennungen, new { @class = "m-wrap" })
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _partnerKennungLocalized = '@Model.PartnerKennungLocalized';
+        </script>
+    }
+</div>
+

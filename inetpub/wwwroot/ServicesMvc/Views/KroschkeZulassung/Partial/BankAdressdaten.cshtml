@@ -5,15 +5,3 @@
 @Html.HiddenFor(m => m.SkipBankAdressdaten)
 
 @Html.Partial("Partial/BankAdressdatenForm", @Model.Zulassung.BankAdressdaten)
-
-<script type="text/javascript">
-
-    CheckSkipBankAdressdaten();
-
-    function CheckSkipBankAdressdaten() {
-        if ($("#SkipBankAdressdaten")) {
-            $("#AjaxFormBankAdressdaten").submit();
-        }
-    } 
-       
-</script>
