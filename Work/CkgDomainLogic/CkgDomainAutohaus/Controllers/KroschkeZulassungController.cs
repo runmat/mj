@@ -285,7 +285,9 @@ namespace ServicesMvc.Controllers
         public ActionResult Receipt()
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
-            ShoppingCartItemRemove(ViewModel.ObjectKey);
+            // ToDo !!! TEST !!!
+            if (false) 
+                ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
         }

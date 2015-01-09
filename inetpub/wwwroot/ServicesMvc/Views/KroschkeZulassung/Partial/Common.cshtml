@@ -67,6 +67,8 @@
 
         FormWizard.OnSubmit(function () {
 
+            LoadingShow();
+            SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
             AjaxRequestNextStep();
 
             return true;
@@ -93,6 +95,7 @@
             data: {},
             loadingShow: true,
             success: function (result) {
+                SpanAlertWarningHide("WaitHint");
                 if (typeof (result.message) !== "undefined") {
                     alert(result.message);
                     return;
