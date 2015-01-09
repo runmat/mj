@@ -163,8 +163,7 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             foreach (var vorgang in zulassungen)
             {
                 // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
-                // ToDo !!! TEST !!!
-                var blnBelegNrLeer = true; // (String.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+                var blnBelegNrLeer = (String.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
 
                 if (blnBelegNrLeer && !GetSapId(vorgang))
                     return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
