@@ -2,30 +2,52 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeugbestand.Contracts;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.KroschkeZulassung.Contracts;
 using CkgDomainLogic.KroschkeZulassung.Models;
+using CkgDomainLogic.Partner.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 using GeneralTools.Services;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 {
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
-        [XmlIgnore]
-        public IAdressenDataService AdressenDataService { get { return CacheGet<IAdressenDataService>(); } }
-
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IKroschkeZulassungDataService ZulassungDataService { get { return CacheGet<IKroschkeZulassungDataService>(); } }
 
-        public Vorgang Zulassung { get { return ZulassungDataService.Zulassung; } }
+        [XmlIgnore, ScriptIgnore]
+        public IFahrzeugAkteBestandDataService FahrzeugAkteBestandDataService { get { return CacheGet<IFahrzeugAkteBestandDataService>(); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
+
+
+        [ScriptIgnore]
+        public Vorgang Zulassung { get; set; }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Vorgang> ZulassungenForReceipt { get; set; }
 
         [XmlIgnore]
+        [LocalizedDisplay(LocalizeConstants.VIN)]
+        public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
+
+        [XmlIgnore]
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
+
+
+        [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
         {
             get
@@ -39,30 +61,61 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             }
         }
 
+        [XmlIgnore, ScriptIgnore]
         public string[] StepKeys { get { return PropertyCacheGet(() => Steps.Select(s => s.Key).ToArray()); } }
 
+        [XmlIgnore, ScriptIgnore]
         public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
 
+        [XmlIgnore, ScriptIgnore]
         public string FirstStepPartialViewName
         {
             get { return string.Format("{0}", StepKeys[0]); }
         }
 
-        [XmlIgnore]
-        public string SaveErrorMessage { get; private set; }
+        [XmlIgnore, ScriptIgnore]
+        public string SaveErrorMessage { get; set; }
+
+        public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
+
+
+        public void SetParamFahrzeugAkte(string fin)
+        {
+            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();
+            if (ParamFahrzeugAkte == null)
+                return;
+
+            SetFahrzeugdaten(new Fahrzeugdaten
+            {
+                FahrgestellNr = ParamFahrzeugAkte.FIN,
+                Zb2Nr = ParamFahrzeugAkte.Briefnummer,
+            });
+            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr());
+        }
+
+        public void SetParamHalter(string halterNr)
+        {
+            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == halterNr.NotNullOrEmpty().ToSapKunnr());
+        }
 
 
         #region Rechnungsdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Kunde> Kunden { get { return ZulassungDataService.Kunden; } }
 
         public void SetRechnungsdaten(Rechnungsdaten model)
         {
+            if (Zulassung.Rechnungsdaten.KundenNr != model.KundenNr)
+                Zulassung.BankAdressdaten.Zahlungsart = null;
+
             Zulassung.Rechnungsdaten.KundenNr = model.KundenNr;
 
             Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
             Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.Kunde.CpdMitEinzugsermaechtigung;
+
+            if (Zulassung.BankAdressdaten.Zahlungsart.IsNullOrEmpty())
+                Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
         }
 
         #endregion
@@ -70,7 +123,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Bank-/Adressdaten
 
-        public bool SkipBankAdressdaten { get; private set; }
+        public bool SkipBankAdressdaten { get; set; }
 
         public void CheckCpd()
         {
@@ -108,7 +161,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Fahrzeugdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten; } }
 
         public void SetFahrzeugdaten(Fahrzeugdaten model)
@@ -130,62 +183,94 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region HalterAdresse
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public Adresse HalterAdresse
         {
             get { return Zulassung.Halterdaten; }
             set { Zulassung.Halterdaten = value; }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> HalterAdressen
+        {
+            // ReSharper disable ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => GetHalterAdressen()); }
+            // ReSharper restore ConvertClosureToMethodGroup
+        }
+
+        [XmlIgnore, ScriptIgnore]
         public List<Adresse> HalterAdressenFiltered
         {
-            get { return PropertyCacheGet(() => GetHalterAdressen()); }
+            get { return PropertyCacheGet(() => HalterAdressen); }
             private set { PropertyCacheSet(value); }
         }
 
         public void FilterHalterAdressen(string filterValue, string filterProperties)
         {
-            HalterAdressenFiltered = GetHalterAdressen().SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            HalterAdressenFiltered = HalterAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         List<Adresse> GetHalterAdressen()
         {
-            var list = AdressenDataService.Adressen.Where(a => a.Kennung == "HALTER").ToListOrEmptyList();
+            PartnerDataService.AdressenKennung = "HALTER";
+            var list = PartnerDataService.Adressen;
             list.ForEach(a => a.Typ = "Halter");
             return list;
         }
 
         public List<string> GetHalterAdressenAsAutoCompleteItems()
         {
-            return GetHalterAdressen().Select(a => a.GetAutoSelectString()).ToList();
+            return HalterAdressen.Select(a => a.GetAutoSelectString()).ToList();
         }
 
         public Adresse GetHalteradresse(string key)
         {
             int id;
             if (Int32.TryParse(key, out id))
-                return GetHalterAdressen().FirstOrDefault(v => v.ID == id);
+                return HalterAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
 
-            return GetHalterAdressen().FirstOrDefault(a => a.GetAutoSelectString() == key);
+            return HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
         }
 
         public void SetHalterAdresse(Adresse model)
         {
             HalterAdresse = model;
+
+            var zulassungsKreis = LoadKfzKreisAusHalterAdresse();
+            Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
+
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
+                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+
+            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
         }
 
-        public void DataMarkForRefreshHalterAdressenFiltered()
+        public string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
         {
+            return Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+        }
+
+        static bool KennzeichenIsValid(string kennnzeichen)
+        {
+            return Zulassungsdaten.KennzeichenIsValid(kennnzeichen);
+        }
+
+        public void DataMarkForRefreshHalterAdressen()
+        {
+            PropertyCacheClear(this, m => m.HalterAdressen);
             PropertyCacheClear(this, m => m.HalterAdressenFiltered);
         }
 
         public string LoadKfzKreisAusHalterAdresse()
         {
-            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis();
+            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis(Zulassung);
         }
 
         #endregion
@@ -193,7 +278,7 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Zulassungsdaten
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Material> Zulassungsarten { get { return ZulassungDataService.Zulassungsarten; } }
 
         public void SetZulassungsdaten(Zulassungsdaten model)
@@ -203,15 +288,29 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Wunschkennzeichen = model.Wunschkennzeichen;
-            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.KennzeichenReservieren = model.KennzeichenReservieren;
-            Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
-            Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+
+            Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
+
+            if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
+            {
+                Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
+                Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+            }
+            else
+            {
+                Zulassung.Zulassungsdaten.ReservierungsNr = "";
+                Zulassung.Zulassungsdaten.ReservierungsName = "";
+            }
+
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2;
+            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3;
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+
+            var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
+            if (tempKg != null)
+                Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
         }
 
         #endregion
@@ -219,37 +318,57 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region OptionenDienstleistungen
 
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return ZulassungDataService.Kennzeichengroessen; } }
 
         public void SetOptionenDienstleistungen(OptionenDienstleistungen model)
         {
             Zulassung.OptionenDienstleistungen.GewaehlteDienstleistungenString = model.GewaehlteDienstleistungenString;
             Zulassung.OptionenDienstleistungen.NurEinKennzeichen = model.NurEinKennzeichen;
+
             Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse = model.KennzeichenSondergroesse;
-            Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = model.KennzeichenGroesseId;
+            if (Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse)
+            {
+                Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = model.KennzeichenGroesseId;
+            }
+            else
+            {
+                var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
+                if (tempKg != null)
+                    Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
+            }
+
             Zulassung.OptionenDienstleistungen.Saisonkennzeichen = model.Saisonkennzeichen;
-            Zulassung.OptionenDienstleistungen.SaisonBeginn = model.SaisonBeginn;
-            Zulassung.OptionenDienstleistungen.SaisonEnde = model.SaisonEnde;
+            if (Zulassung.OptionenDienstleistungen.Saisonkennzeichen)
+            {
+                Zulassung.OptionenDienstleistungen.SaisonBeginn = model.SaisonBeginn;
+                Zulassung.OptionenDienstleistungen.SaisonEnde = model.SaisonEnde;
+            }
+            else
+            {
+                Zulassung.OptionenDienstleistungen.SaisonBeginn = "";
+                Zulassung.OptionenDienstleistungen.SaisonEnde = "";
+            }
+
             Zulassung.OptionenDienstleistungen.Bemerkung = model.Bemerkung;
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = model.ZulassungsartMatNr;
 
-            if (Zulassung.OptionenDienstleistungen.IstGebrauchtzulassung)
+            if (Zulassungsdaten.IstGebrauchtzulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = model.KennzeichenVorhanden;
             else
                 Zulassung.OptionenDienstleistungen.KennzeichenVorhanden = false;
 
-            if (Zulassung.OptionenDienstleistungen.IstAbmeldung)
+            if (Zulassungsdaten.IstAbmeldung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             else
                 Zulassung.OptionenDienstleistungen.VorhandenesKennzeichenReservieren = false;
 
-            if (Zulassung.OptionenDienstleistungen.IstFirmeneigeneZulassung)
+            if (Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = model.HaltedauerBis;
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
-            if (Zulassung.OptionenDienstleistungen.IstUmkennzeichnung)
+            if (Zulassungsdaten.IstUmkennzeichnung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = model.AltesKennzeichen.NotNullOrEmpty().ToUpper();
             else
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = "";
@@ -260,9 +379,27 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
 
         #region Misc + Summaries + Savings
 
+        public bool SaveDataToErpSystem { get; set; }
+
+        public bool AuftragslisteAvailable { get; set; }
+
+        public void DataInit()
+        {
+            Zulassung = new Vorgang
+            {
+                VkOrg = LogonContext.Customer.AccountingArea.ToString(),
+                VkBur = LogonContext.Organization.OrganizationReference2,
+                Vorerfasser = LogonContext.UserName,
+                VorgangsStatus = "1"
+            };
+
+            DataMarkForRefresh();
+        }
+
         public void DataMarkForRefresh()
         {
             ZulassungDataService.MarkForRefresh();
+            Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
             Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
@@ -270,92 +407,24 @@ namespace CkgDomainLogic.KroschkeZulassung.ViewModels
             Zulassungsdaten.MaterialList = Zulassungsarten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
-            AdressenDataService.MarkForRefreshAdressen();
+            PartnerDataService.MarkForRefreshAdressen();
 
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        public void Save(bool saveDataInSap)
+        public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
-            SaveErrorMessage = ZulassungDataService.SaveZulassung(saveDataInSap, true);
-        }
+            SaveDataToErpSystem = saveDataToSap;
+            AuftragslisteAvailable = saveDataToSap;
 
-        public string BeauftragungBezeichnung
-        {
-            get
-            {
-                return String.Format("{0}: {1}, {2}, {3}, {4}",
-                    Zulassung.Fahrzeugdaten.AuftragsNr,
-                    Zulassung.Rechnungsdaten.Kunde.KundenNameNr,
-                    Zulassung.Zulassungsdaten.Zulassungsart.MaterialText,
-                    Zulassung.Halter,
-                    Zulassung.Zulassungsdaten.Kennzeichen);
-            }
-        }
+            ZulassungenForReceipt = new List<Vorgang>();
 
-        private GeneralEntity SummaryBeauftragungsHeader
-        {
-            get
-            {
-                return new GeneralEntity
-                {
-                    Title = Localize.YourOrder,
-                    Body = BeauftragungBezeichnung,
-                    Tag = "SummaryMainItem"
-                };
-            }
-        }
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
-        public GeneralSummary CreateSummaryModel()
-        {
-            var summaryModel = new GeneralSummary
-            {
-                Header = Localize.OrderSummaryVehicleRegistration,
-                Items = new ListNotEmpty<GeneralEntity>
-                        (
-                            SummaryBeauftragungsHeader,
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.InvoiceData,
-                                Body = Zulassung.Rechnungsdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.BankDataAndAddressForEndCustomerInvoice,
-                                Body = Zulassung.BankAdressdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.VehicleData,
-                                Body = Zulassung.Fahrzeugdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.Holder,
-                                Body = HalterAdresse.GetPostLabelString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.Registration,
-                                Body = Zulassung.Zulassungsdaten.GetSummaryString(),
-                            },
-
-                            new GeneralEntity
-                            {
-                                Title = Localize.RegistrationOptions,
-                                Body = Zulassung.OptionenDienstleistungen.GetSummaryString(),
-                            }
-                        )
-            };
-
-            return summaryModel;
+            if (SaveErrorMessage.IsNullOrEmpty())
+                ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
         }
 
         #endregion

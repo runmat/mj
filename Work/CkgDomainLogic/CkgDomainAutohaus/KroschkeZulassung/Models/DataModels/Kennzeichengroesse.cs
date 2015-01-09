@@ -9,9 +9,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         [SelectListKey]
         public int Id { get; set; }
 
-        public int MatNr { get; set; }
+        public int? MatNr { get; set; }
 
         [SelectListText]
         public string Groesse { get; set; }
+
+        public int? Position { get; set; }
     }
 }

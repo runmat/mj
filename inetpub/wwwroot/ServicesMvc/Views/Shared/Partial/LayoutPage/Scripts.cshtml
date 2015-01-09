@@ -257,9 +257,17 @@
         span.find("span").html(message);
         span.fadeIn(300).delay(delay).fadeOut(300);
     }
+    
+    function SpanAlertHide(id) {
+        var span = $("#" + id);
+        span.hide();
+    }
 
     function SpanAlertWarning(id, message, delay) {
         SpanAlert(id + "Warning", message, delay);
+    }
+    function SpanAlertWarningHide(id) {
+        SpanAlertHide(id + "Warning");
     }
 
     function SpanAlertSuccess(id, message, delay) {
@@ -274,12 +282,12 @@
         var errorHeader = '@Localize.SystemErrorOccurred';
         SpanAlert(id + "Error", errorHeader + ' <br />' + getAjaxErrorMessage(jqXhr), 10000);
     }
-    
+
 
 
     // <Grid Multi Select>
 
-    function Grid_PrepareMultiRowSelected(gridName) {
+    function Grid_PrepareMultiRowSelected(gridName, rowBackgroundSelectionDisabled) {
 
         $("#" + gridName + " table tbody tr").each(function () {
             var tr = $(this);
@@ -290,20 +298,21 @@
             });
         });
         
-        $("#" + gridName + " table tbody tr").click(function (e) {
-            var clickedElement = e.target;
-            var tr = $(this);
-            tr.find('td input[type=checkbox]').each(function () {
-                if (this == clickedElement)
-                    return false;
+        if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
+            $("#" + gridName + " table tbody tr").click(function (e) {
+                var clickedElement = e.target;
+                var tr = $(this);
+                tr.find('td input[type=checkbox]').each(function () {
+                    if (this == clickedElement)
+                        return false;
 
-                this.checked = !($(this).is(':checked'));
-                $.uniform.update($(this));
-                //Grid_FormatMultiRowSelected(tr, this.checked);
-                $(this).trigger('change');
-                return true;
+                    this.checked = !($(this).is(':checked'));
+                    $.uniform.update($(this));
+                    //Grid_FormatMultiRowSelected(tr, this.checked);
+                    $(this).trigger('change');
+                    return true;
+                });
             });
-        });
     }
 
     function Grid_FormatMultiRowSelected(tr, check) {
@@ -408,13 +417,13 @@
 
         var form = tbCity.closest("form");
         if (countryPropertyName != "") {
-            var countryDropdown = $("#" + form.attr("id") + " select[name='" + countryPropertyName + "']");
+            var countryDropdown = $("#" + form.attr("id") + " select[name$='" + countryPropertyName + "'], input[name$='" + countryPropertyName + "']");
             if (countryDropdown.val().toLowerCase() != "de")
                 return;
         }
         
         //var plz = $("#" + postCodePropertyName);
-        var plz = $("#" + form.attr("id") + " input[name='" + postCodePropertyName + "']");
+        var plz = $("#" + form.attr("id") + " input[name$='" + postCodePropertyName + "']");
         if (plz.val().length != 5)
             return;
 
@@ -492,13 +501,23 @@
             var p = $(this);
 
             var pWidth = parseInt(p.css("width"), 10);
+            var isSmallContainer = (p.parent().hasClass("span8"));
+
+            var maxPageWidth = 900;
+            if (isSmallContainer) 
+                maxPageWidth = 300;
+
             p.children().find(".m-wrap,.chzn-container").each(function () {
                 
                 var e = $(this);
                 var eWidth = ((pWidth / 2) - 250);
                 
-                if (eWidth > 150 && pWidth > 900) {
+                if ((isSmallContainer || eWidth > 150) && pWidth > maxPageWidth) {
+
+                    console.log(eWidth);
                     
+                    if (eWidth < 120)
+                        eWidth = 120;
                     if (eWidth > 450)
                         eWidth = 450;
                     
@@ -754,7 +773,20 @@
     // </Breadcrumbs> //
     //
     
+    function scrollToTop() {
+        if (IsIE())
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 600);
+        else
+            setTimeout(function () {
+                $("body").animate({ scrollTop: 0 }, '300');
+            }, 600);
+    }
     
+    function LocationReloadWithoutQueryString() {
+        window.location = window.location.pathname;
+    }
 
     
 </script>

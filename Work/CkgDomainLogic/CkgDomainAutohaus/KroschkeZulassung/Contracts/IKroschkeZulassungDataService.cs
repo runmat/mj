@@ -7,8 +7,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 {
     public interface IKroschkeZulassungDataService : ICkgGeneralDataService
     {
-        Vorgang Zulassung { get; set; }
-
         List<Kunde> Kunden { get; }
 
         List<Domaenenfestwert> Fahrzeugarten { get; }
@@ -23,8 +21,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Contracts
 
         Bankdaten GetBankdaten(string iban);
 
-        string GetZulassungskreis();
+        string GetZulassungskreis(Vorgang zulassung);
 
-        string SaveZulassung(bool saveDataInSap, bool mitKundenformular);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
     }
 }

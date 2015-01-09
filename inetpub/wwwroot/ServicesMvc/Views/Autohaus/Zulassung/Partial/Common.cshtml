@@ -62,7 +62,7 @@
             if ($("#FreieZulassungsOption.FahrzeugID").val() != "") {
                 location.href = '@Url.Action("Fahrzeugverwaltung","Autohaus")';
             } else {
-                location.reload();
+                LocationReloadWithoutQueryString();
             }
         });
     }

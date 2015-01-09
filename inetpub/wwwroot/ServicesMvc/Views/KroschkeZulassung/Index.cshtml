@@ -1,8 +1,15 @@
 ﻿@model CkgDomainLogic.KroschkeZulassung.ViewModels.KroschkeZulassungViewModel
 
-<h3 class="page-title">@Localize.KroschkeZulassung  <small></small></h3>
+@Html.Partial("Partial/Common")
 
-<div class="portlet app-view beauftragung">
+<div class="page-title">
+    @Localize.KroschkeZulassung  <small></small>
+    @Html.Partial("ShoppingCart/Menu")
+</div>
+@Html.Partial("ShoppingCart/Common")
+
+
+<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
     
     @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
 
@@ -11,6 +18,7 @@
     </div>
 </div>
 
-@Html.Partial("Partial/Common")
+
+
 
 

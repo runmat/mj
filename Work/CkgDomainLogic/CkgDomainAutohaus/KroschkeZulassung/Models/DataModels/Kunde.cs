@@ -38,11 +38,11 @@ namespace CkgDomainLogic.KroschkeZulassung.Models
         {
             get
             {
-                return String.Format("{0} ~ {1}{2}{3}", 
-                    KundenNr.NotNullOrEmpty().TrimStart('0'), 
+                return String.Format("{0}{1}{2} ~ {3}", 
                     Name1, 
                     (String.IsNullOrEmpty(Name2) ? "" : ", " + Name2), 
-                    (String.IsNullOrEmpty(Ort) ? "" : ", " + Ort));
+                    (String.IsNullOrEmpty(Ort) ? "" : ", " + Ort), 
+                    KundenNr.NotNullOrEmpty().TrimStart('0'));
             }
         }
 
