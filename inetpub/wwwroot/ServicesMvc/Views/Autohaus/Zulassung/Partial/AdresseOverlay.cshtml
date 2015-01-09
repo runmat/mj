@@ -1,9 +1,0 @@
-﻿@model CkgDomainLogic.DomainCommon.Models.Adresse
-@{
-    var addressType = (string)@ViewBag.AdressType;
-}
-
-<h5 class="margin-bottom-25 bold">@addressType.ToLowerFirstUpper() bearbeiten: </h5> 
-
-@Html.Partial("Zulassung/Partial/AdresseOverlayForm", @Model)
-
