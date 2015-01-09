@@ -1,0 +1,64 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model ZulassungsReportSelektor
+
+<div id="divZulassungsReportSuche">
+    @using (Ajax.BeginForm("LoadZulassungsReport", "ZulassungsReport", null,
+        new MvcAjaxOptions("divZulassungsReportSuche") { OnComplete = "ShowZulassungsReport();" }, new { id = "ZulassungsReportForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "right" })
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowZulassungsReport() {
+        
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowZulassungsReport",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowZulassungsReportSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

@@ -2425,9 +2425,10 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
+    <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
-    <Compile Include="Areas\Autohaus\Controllers\KroschkeZulassungController.cs" />
+    <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2475,6 +2476,9 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\AdressenPflege\AdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\ZulassungsReport\Index.cshtml" />
+    <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4210,24 +4214,24 @@
     <Content Include="Views\Uebfuehrg\Partial\HistoryAuftragDetailsWithDocuments.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_End.cshtml" />
     <Content Include="Views\Shared\Wrappers\PortletBox_Begin.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Index.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\HalterAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Common.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\SummaryPdf.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\OptionenDienstleistungen.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\OptionenDienstleistungenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Rechnungsdaten.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\RechnungsdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\HalterAdresse.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\HalterAdresseForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Receipt.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Summary.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\BankAdressdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\BankAdressdaten.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Fahrzeugdaten.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\FahrzeugdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\Zulassungsdaten.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\ZulassungsdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Index.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\HalterAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\SummaryPdf.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\OptionenDienstleistungen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\OptionenDienstleistungenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Rechnungsdaten.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\RechnungsdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\HalterAdresse.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\HalterAdresseForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Receipt.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Summary.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankAdressdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankAdressdaten.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Fahrzeugdaten.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Zulassungsdaten.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenForm.cshtml" />
     <Content Include="Views\Xaris\Index.cshtml" />
     <Content Include="Views\UserReporting\UserList.cshtml" />
     <Content Include="Views\UserReporting\Partial\Grid.cshtml" />
@@ -4250,8 +4254,8 @@
     <Content Include="Views\Shared\ShoppingCart\Common.cshtml" />
     <Content Include="Views\Shared\ShoppingCart\Grid.cshtml" />
     <Content Include="Views\Shared\ShoppingCart\Menu.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\ShoppingCart\Grid.cshtml" />
-    <Content Include="Areas\Autohaus\Views\KroschkeZulassung\Partial\BankAdressdatenReForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\ShoppingCart\Grid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankAdressdatenReForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
