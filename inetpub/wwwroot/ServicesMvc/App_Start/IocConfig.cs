@@ -35,8 +35,6 @@ using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
-using CkgDomainLogic.Autohaus.Contracts;
-using CkgDomainLogic.Autohaus.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
 using GeneralTools.Contracts;
