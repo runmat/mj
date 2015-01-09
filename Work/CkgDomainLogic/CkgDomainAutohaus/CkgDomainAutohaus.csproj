@@ -70,6 +70,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutohausFahrzeugdaten\Contracts\IUploadFahrzeugdatenDataService.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\AppModelMappings.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
+    <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
     <Compile Include="Zulassung\Models\AppModelMappings.cs" />
     <Compile Include="Zulassung\Models\DataModels\Adressdaten.cs" />
