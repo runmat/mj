@@ -14,8 +14,6 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Services;
 using CkgDomainLogic.Fahrer.Contracts;
 using CkgDomainLogic.Fahrer.Services;
-using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
-using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Finance.Contracts;
@@ -37,8 +35,8 @@ using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
-using CkgDomainLogic.KroschkeZulassung.Contracts;
-using CkgDomainLogic.KroschkeZulassung.Services;
+using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.Autohaus.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
 using GeneralTools.Contracts;
@@ -116,7 +114,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<CocErfassungDataServiceSAP>().As<ICocErfassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
             builder.RegisterType<BriefVersandDataServiceSAP>().As<IBriefVersandDataService>().InstancePerHttpRequest();
-            builder.RegisterType<ZulassungDataServiceSAP>().As<IZulassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<CkgDomainLogic.CoC.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.CoC.Contracts.IZulassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<InfoCenterDataService>().As<IInfoCenterDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingZB1KopienDataServiceSAP>().As<ILeasingZB1KopienDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingUnzugelFzgDataServiceSAP>().As<ILeasingUnzugelFzgDataService>().InstancePerHttpRequest();
@@ -166,8 +164,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
 
-            builder.RegisterType<KroschkeZulassungDataServiceSAP>().As<IKroschkeZulassungDataService>().InstancePerHttpRequest();
-            builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerHttpRequest();
 
