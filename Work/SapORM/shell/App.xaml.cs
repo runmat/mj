@@ -248,7 +248,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_AHP_CRE_CHG_FZG_AKT_BEST").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
-            //ok new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR, I_FIN, I_ZZHERSTELLER_SCH, I_ZZTYP_SCHL, I_ZZVVS_SCHLUESSEL", "10026883", "9876543210", "X", "X", "X"); 
+            //new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883"); 
 
             //CoCTest();
             //TeslaTest();
