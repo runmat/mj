@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -19,7 +18,7 @@ using GeneralTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 
-namespace ServicesMvc.Controllers
+namespace ServicesMvc.Autohaus.Controllers
 {
     public class KroschkeZulassungController : CkgDomainController 
     {

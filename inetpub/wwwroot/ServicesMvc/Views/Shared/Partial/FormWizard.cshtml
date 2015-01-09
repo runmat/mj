@@ -1,5 +1,17 @@
 ﻿@model MvcTools.Models.FormWizardModel 
 
+@if (Model.StepTitlesInNewLine)
+{
+    <style type="text/css">
+        .form-wizard .progress {
+            margin-bottom: 0;
+        }
+        .step .formWizardStepDescWrapper {
+            display: block!important;
+        }
+    </style>
+}
+
 <style type="text/css">
     
     .step .formWizardStepDescWrapper {
