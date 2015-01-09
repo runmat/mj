@@ -36,6 +36,12 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
         [Required]
         public string VvsPruefziffer { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.FactoryName)]
+        public string FabrikName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TradeName)]
+        public string HandelsName { get; set; }
+
         [StringLength(15)]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
@@ -82,9 +88,11 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 	        get
 	        {
                 if (!String.IsNullOrEmpty(ValidationErrorsJson) && ValidationErrorsJson != "[]")
-                {
                     return Localize.Error;
-                }
+
+	            if (!TypdatenGefunden)
+	                return Localize.TypeDataNotFound;
+
                 return Localize.OK;
 	        }
 	    }
@@ -93,6 +101,8 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string SaveStatus { get; set; }
+
+        public bool TypdatenGefunden { get; set; }
 
         [ModelMappingCompareIgnore]
         [GridHidden]

@@ -21,6 +21,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
 
         public void ValidateFahrzeugdatenCsvUpload()
         {
+            CheckTypdaten();
             UploadItems.ForEach(ValidateSingleUploadItem);
         }
 
@@ -53,7 +54,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
             return "";
         }
 
-        void ValidateSingleUploadItem(UploadFahrzeug item)
+        private void ValidateSingleUploadItem(UploadFahrzeug item)
         {
             var liste = new List<ValidationResult>();
 
@@ -61,6 +62,41 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
 
             var ser = new System.Web.Script.Serialization.JavaScriptSerializer();
             item.ValidationErrorsJson = ser.Serialize(liste);
+        }
+
+        private void CheckTypdaten()
+        {
+            Z_AHP_READ_TYPDAT_BESTAND.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            var fzgList = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_WEB_IMP_MASS_From_UploadFahrzeug.CopyBack(UploadItems).ToList();
+            SAP.ApplyImport(fzgList);
+
+            SAP.Execute();
+
+            var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportListWithExecute(SAP);
+            var typList = Fahrzeugbestand.Models.AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
+            
+            foreach (var item in UploadItems)
+            {
+                var typItem = typList.FirstOrDefault(t => t.FIN == item.FahrgestellNr);
+
+                if (typItem != null)
+                {
+                    item.TypdatenGefunden = true;
+                    item.HerstellerSchluessel = typItem.HerstellerSchluessel;
+                    item.TypSchluessel = typItem.TypSchluessel;
+                    item.VvsSchluessel = typItem.VvsSchluessel;
+                    item.VvsPruefziffer = typItem.VvsPruefZiffer;
+                    item.FabrikName = typItem.FabrikName;
+                    item.HandelsName = typItem.HandelsName;
+                }
+                else
+                {
+                    item.TypdatenGefunden = false;
+                    item.FabrikName = "";
+                    item.HandelsName = "";
+                }  
+            }
         }
     }
 }
