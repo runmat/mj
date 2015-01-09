@@ -247,10 +247,6 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             fileNames.ForEach(f =>
                 {
                     f.DateiPfad = Path.Combine(PfadAuftragszettel, SlashToBackslash(f.DateiPfad).SubstringTry(1));
-
-                    // ToDo: Entfernen nach Ingas Rework:
-                    if (f.Typ.IsNotNullOrEmpty())
-                        f.DateiPfad = f.DateiPfad.Replace(".pdf", "_" + f.Label.Replace(" ", "") + ".pdf");
                 });
 
             var auftragsListePath = fileNames.FirstOrDefault(f => f.DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"));
