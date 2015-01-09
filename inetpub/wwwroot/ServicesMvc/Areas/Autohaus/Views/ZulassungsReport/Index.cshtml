@@ -1,0 +1,51 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@model ZulassungsReportViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Registration <small>Report</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowZulassungsReportSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridZulassungen");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridZulassungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridZulassungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridZulassungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
