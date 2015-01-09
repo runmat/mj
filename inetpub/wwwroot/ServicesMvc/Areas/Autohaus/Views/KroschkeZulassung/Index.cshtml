@@ -11,7 +11,7 @@
 
 <div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
     
-    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
 
     <div id="formWizardTab1" class="hide">
         @Html.Partial("Partial/" + Model.FirstStepPartialViewName)

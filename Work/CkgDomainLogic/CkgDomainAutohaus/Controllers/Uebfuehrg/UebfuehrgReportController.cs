@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;

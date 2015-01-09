@@ -254,7 +254,8 @@ namespace CkgDomainLogic.KroschkeZulassung.Services
             {
                 var bnr = vorgang.BelegNr;
                 vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr));
-                vorgang.Zusatzformulare.Add(auftragsListePath);
+                if (auftragsListePath != null)
+                    vorgang.Zusatzformulare.Add(auftragsListePath);
 
                 if (!saveFromShoppingCart && vorgang.BankAdressdaten.Cpdkunde)
                 {
