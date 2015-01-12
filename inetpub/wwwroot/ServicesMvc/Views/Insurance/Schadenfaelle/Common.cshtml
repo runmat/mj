@@ -391,7 +391,7 @@
         FormPreparePrivateAjax();
 
         BreadcrumbsMoveNext($("#idSchadenAkte").text());
-        BreadcrumbsMoveNext("Schadenakte");
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallSchadenakte)");
         TabsEnable(true);
 
         $(".nav-tabs a").on("click", function () {
@@ -561,7 +561,7 @@
         $("#divTerminSchadenfallEdit").html(result);
         TerminSchadenfallEditPreparePrivate();
         $("#divTerminSchadenfallKalender").slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
-        BreadcrumbsMoveNext("Termin Details");
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminDetails)");
 
         //FormPrepareAjax();
     }
@@ -577,7 +577,7 @@
                 });
                 CalendarsReModeDateScroll();
                 if (typeof (useSaveMessage) !== 'undefined' && useSaveMessage)
-                    SpanAlertSuccess("Message", "Der Termin wurde erfolgreich gespeichert!", 1800);
+                    SpanAlertSuccess("Message", "@MvcHtmlString.Create(Localize.AppointmentSuccessfullyCreated)", 1800);
                 else
                     SpanAlertWarning("Message", "Termin nicht gespeichert!", 1800);
             }, 200);
@@ -617,7 +617,7 @@
         $("#divTerminSchadenfallInit").html(result);
         TerminSchadenfallCreatePreparePrivate();
         $("#divSchadenakte").slideUp(200, function () { $("#divTerminSchadenfallInit").slideDown(200); });
-        BreadcrumbsMoveNext("Terminanlage");
+        BreadcrumbsMoveNext(@MvcHtmlString.Create(Localize.VersicherungsFallTerminanlage));
 
         //$(":radio[value=RE]").uniformRadioDisable();
 
@@ -635,7 +635,7 @@
             loadingShow: false,
             success: function (result) {
                 if (result == '') {
-                    SpanAlertWarning("Message", "@Localize.AppointmentCreationImpossibleDueToMissingLocation", 1800);
+                    SpanAlertWarning("Message", "@MvcHtmlString.Create(Localize.AppointmentCreationImpossibleDueToMissingLocation)", 1800);
                     return;
                 }
 
@@ -657,7 +657,7 @@
             $("#divTerminSchadenfallKalender").slideDown(200);
             CalendarPreparePrivate();
         });
-        BreadcrumbsMoveNext("Kalender");
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallKalender)");
     }
 
     var _calendarBoxArt = 'GU';
@@ -1179,7 +1179,7 @@
             CalendarPreparePrivate();
         });
         //console.log("Boxen Termine");
-        BreadcrumbsMoveNext("Boxen Termine");
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallBoxenTermine)");
     }
 
     function TerminUebersichtKalenderClose() {
