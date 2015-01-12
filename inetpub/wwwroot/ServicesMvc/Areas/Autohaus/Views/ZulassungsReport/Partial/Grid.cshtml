@@ -7,13 +7,31 @@
     .Grid<ZulassungsReportModel>()
     .Name(gridName)
 
-    .XGroup("GridZulassungenModel")
+    .XGroup(null)
     .XAjaxDataBinding("ItemsAjaxBinding", "ZulassungsReport")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.BelegNummer);
+
+            columns.XBound(c => c.Preis).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum())
+                   .ClientGroupFooterTemplate("∑ <#= $.telerik.formatString('{0:c}', Sum) #>");
+            columns.XBound(c => c.PreisGebuehr).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum()) 
+                   .ClientGroupFooterTemplate("∑ <#= $.telerik.formatString('{0:c}', Sum) #>");
+            columns.XBound(c => c.PreisSteuer).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum()) 
+                   .ClientGroupFooterTemplate("∑ <#= $.telerik.formatString('{0:c}', Sum) #>");
+            columns.XBound(c => c.PreisKz).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum()) 
+                   .ClientGroupFooterTemplate("∑ <#= $.telerik.formatString('{0:c}', Sum) #>");
+        })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.ZulassungDatum).Descending())
     .XToolBar("ZulassungsReport")
+
+    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PositionsNummer)))
 )
 

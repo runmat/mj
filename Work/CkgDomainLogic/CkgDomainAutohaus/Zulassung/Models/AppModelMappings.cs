@@ -1,5 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 using System.Collections.Generic;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -105,8 +106,34 @@ namespace CkgDomainLogic.Autohaus.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.KundenNr = s.KUNNR;
                         d.Kennzeichen = s.ZZKENN;
                         d.ZulassungDatum = s.ZZZLDAT;
+                        d.BelegNummer = s.ZULBELN;
+                        d.PositionsNummer = s.ZULPOSNR;
+                        d.ErfassungsDatum = s.VE_ERDAT;
+                        d.ErfassungsUser = s.VE_ERNAM;
+                        d.ZulassungsKreis = s.KREISKZ;
+                        d.MaterialNr = s.MATNR;
+                        d.KundenReferenz = s.KUNDEN_REF;
+                        d.EvbNummmer = s.ZZEVB;
+                        d.VertriebsBelegnummer = s.VBELN;
+                        d.VkUser = s.VK_KUERZEL;
+                        d.KundenNotiz = s.KUNDEN_REF;
+                        d.BearbeitungsStatus = s.BEB_STATUS;
+                        d.MaterialKurztext = s.MAKTX;
+                        d.Referenz1 = s.ZZREFNR1;
+                        d.Referenz1 = s.ZZREFNR2;
+                        d.Referenz1 = s.ZZREFNR3;
+                        d.Referenz1 = s.ZZREFNR4;
+
+                        d.Preis = s.PREIS_DL.NullIf0();
+                        d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                        d.PreisSteuer = s.PREIS_ST.NullIf0();
+                        d.PreisKz = s.PREIS_KZ.NullIf0();
+
+                        var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
+                        d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
                     }));
             }
         }
