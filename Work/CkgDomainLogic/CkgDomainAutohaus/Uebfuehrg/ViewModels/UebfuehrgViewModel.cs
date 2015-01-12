@@ -591,8 +591,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 {
                     var subModelRgDaten = subModel as RgDaten;
 
-                    subModelRgDaten.RgKundenNr = storedRgDaten.RgKundenNr;
-                    subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
+                    if (subModelRgDaten.RgAdressen.Any(rg => rg.KundenNr.NotNullOrEmpty().TrimStart('0') == storedRgDaten.RgKundenNr.NotNullOrEmpty().TrimStart('0')))
+                        subModelRgDaten.RgKundenNr = storedRgDaten.RgKundenNr;
+
+                    if (subModelRgDaten.ReAdressen.Any(re => re.KundenNr.NotNullOrEmpty().TrimStart('0') == storedRgDaten.ReKundenNr.NotNullOrEmpty().TrimStart('0')))
+                        subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
                 }
             }
 
