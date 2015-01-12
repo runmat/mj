@@ -49,7 +49,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewModel.LoadZulassungsReport();
+                ViewModel.LoadZulassungsReport(ModelState.AddModelError);
                 if (ViewModel.Items.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }

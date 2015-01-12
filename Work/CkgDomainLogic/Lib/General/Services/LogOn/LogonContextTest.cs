@@ -26,7 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
-        public string GroupName { get; set; }
+        public string GroupName { get { return PropertyCacheGet(() => "LUEG_BOCHUM"); } set { PropertyCacheSet(value); } }
 
         public string UserName
         {
