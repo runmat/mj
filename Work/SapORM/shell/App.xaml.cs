@@ -1408,8 +1408,8 @@ namespace SapORM
         {
             var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
                         "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
-                            "", //KunnrLueg.ToSapKunnr(),
-                            "LUEG_BOCHUM",
+                            "0000329245".ToSapKunnr(),
+                            "",
                             "1010",
                             "4340",
                             DateTime.Today.AddMonths(-2),
