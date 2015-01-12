@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
@@ -331,7 +332,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
 
-            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderForm) };
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
         }
 
         public FileContentResult AuftragslisteAsPdf()
