@@ -102,11 +102,17 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string SaveStatus { get; set; }
 
+        [ModelMappingCompareIgnore]
+        [GridHidden]
+        public bool ValidationOk { get; set; }
+
+        [ModelMappingCompareIgnore]
+        [GridHidden]
         public bool TypdatenGefunden { get; set; }
 
         [ModelMappingCompareIgnore]
         [GridHidden]
-        public bool IsValid { get; set; }
+        public bool IsValid { get { return (ValidationOk && TypdatenGefunden); } }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

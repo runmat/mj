@@ -21,8 +21,8 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
 
         public void ValidateFahrzeugdatenCsvUpload()
         {
-            CheckTypdaten();
             UploadItems.ForEach(ValidateSingleUploadItem);
+            CheckTypdaten();
         }
 
         public string SaveFahrzeugdatenCsvUpload()
@@ -58,7 +58,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
         {
             var liste = new List<ValidationResult>();
 
-            item.IsValid = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
+            item.ValidationOk = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
 
             var ser = new System.Web.Script.Serialization.JavaScriptSerializer();
             item.ValidationErrorsJson = ser.Serialize(liste);
@@ -70,8 +70,6 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
 
             var fzgList = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_WEB_IMP_MASS_From_UploadFahrzeug.CopyBack(UploadItems).ToList();
             SAP.ApplyImport(fzgList);
-
-            SAP.Execute();
 
             var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportListWithExecute(SAP);
             var typList = Fahrzeugbestand.Models.AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
