@@ -1,4 +1,5 @@
 ﻿Imports DAT_BankenLinie_Connector
+Imports GeneralTools.Services
 
 Public Class DATBankenlinieConnector
 
@@ -7,6 +8,10 @@ Public Class DATBankenlinieConnector
     Private customerSignature As String = ""
     Private interfacePartnerNumber As String = ""
     Private interfacePartnerSignature As String = ""
+
+    Private urlAuthentication As String = ""
+    Private urlEvaluation As String = ""
+    Private urlVehicleSelection As String = ""
 
     Public ReadOnly Property DATcustomerNumber() As String
         Get
@@ -36,6 +41,13 @@ Public Class DATBankenlinieConnector
 
     Public Sub New(ByVal usr As Base.Kernel.Security.User)
         GetSDCredentials(usr)
+        GetWebServiceUrls()
+    End Sub
+
+    Private Sub GetWebServiceUrls()
+        urlAuthentication = GeneralConfiguration.GetConfigValue("DATBewertung", "AuthenticationUrl")
+        urlEvaluation = GeneralConfiguration.GetConfigValue("DATBewertung", "EvaluationUrl")
+        urlVehicleSelection = GeneralConfiguration.GetConfigValue("DATBewertung", "VehicleSelectionUrl")
     End Sub
 
     Private Sub GetSDCredentials(ByVal user As Base.Kernel.Security.User)
@@ -58,10 +70,10 @@ Public Class DATBankenlinieConnector
     End Sub
 
     Public Function GetDATVersion() As String
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.basicSelectionRequest = New de.dat.gold.basicSelectionRequest()
@@ -83,10 +95,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlVehicleTypes_DataTable() As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.basicSelectionRequest = New de.dat.gold.basicSelectionRequest()
@@ -129,10 +141,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlManufacturers_DataTable(ByVal vehicleType As Integer) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.manufacturerSelectionRequest = New de.dat.gold.manufacturerSelectionRequest()
@@ -206,10 +218,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlBaseModels_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.baseModelSelectionRequest = New de.dat.gold.baseModelSelectionRequest()
@@ -258,10 +270,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlSubModels_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subModelSelectionRequest = New de.dat.gold.subModelSelectionRequest()
@@ -311,10 +323,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlEngineOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -365,10 +377,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlBodyOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -419,10 +431,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlGearingOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -473,10 +485,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlEquipmentLineOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -528,10 +540,10 @@ Public Class DATBankenlinieConnector
 
     'Transporter & LKW
     Public Function ddlWheelbase_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -583,10 +595,10 @@ Public Class DATBankenlinieConnector
 
     'Transporter 
     Public Function ddlTypeOfDrive_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -638,10 +650,10 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlConstructionOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -693,10 +705,10 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlNumberOfAxleOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -748,10 +760,10 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlDriversCabOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -803,10 +815,10 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlGrossVehicleWeightOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -858,10 +870,10 @@ Public Class DATBankenlinieConnector
 
     'LKW 
     Public Function ddlSuspensionOptions_DataTable(ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.subTypeVariantEquipmentSelectionRequest = New de.dat.gold.subTypeVariantEquipmentSelectionRequest()
@@ -912,10 +924,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlContainer_DataTable(ByVal europaCode As String, Optional ByVal ezMonat As Integer = 0, Optional ByVal ezJahr As Integer = 0) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
@@ -965,10 +977,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function ddlConstructionYear_DataTable(ByVal europaCode As String) As DataTable
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim vs As de.dat.gold.priceFocusSelectionRequest = New de.dat.gold.priceFocusSelectionRequest()
@@ -1012,10 +1024,10 @@ Public Class DATBankenlinieConnector
     End Function
 
     Public Function GetConstructionTimeMin(ByVal europaCode As String, ByVal container As String) As Integer
-        Dim vi As New de.dat.gold.authentication.Authentication()
+        Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
         Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-        Dim viSelection As New de.dat.gold.VehicleSelectionService()
+        Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
         viSelection.CookieContainer = vi.CookieContainer
 
         Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
@@ -1044,10 +1056,10 @@ Public Class DATBankenlinieConnector
 
         Try
             'Setzen der Container
-            Dim vi As New de.dat.gold.authentication.Authentication()
+            Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
             Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
 
-            Dim viSelection As New de.dat.gold.VehicleSelectionService()
+            Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
             viSelection.CookieContainer = vi.CookieContainer
 
             Dim iConstructionTime As Integer = CalculateConstructionTime(1, constructionYear)
@@ -1071,7 +1083,7 @@ Public Class DATBankenlinieConnector
                 minConstructionTime = ConstPeriod.constructionTimeMin
             End If
 
-            Dim viEvaluation As New de.dat.gold.evaluation.Evaluation()
+            Dim viEvaluation As New de.dat.gold.evaluation.Evaluation(urlEvaluation)
             viEvaluation.CookieContainer = vi.CookieContainer
 
             Dim vs As de.dat.gold.evaluation.vehicleEvaluationRequest = New de.dat.gold.evaluation.vehicleEvaluationRequest()
@@ -1108,8 +1120,8 @@ Public Class DATBankenlinieConnector
 
             Try
                 Dim bMx As de.dat.gold.evaluation.getVehicleEvaluationResponseVXS = viEvaluation.getVehicleEvaluation(vs)
-                hep = bMx.Dossier(0).Valuation.PurchasePriceGross.Value.ToString()
-                hvp = bMx.Dossier(0).Valuation.SalesPriceGross.Value.ToString()
+                hep = bMx.Dossier(0).Valuation.PurchasePriceGross.Value.ToString("F2")
+                hvp = bMx.Dossier(0).Valuation.SalesPriceGross.Value.ToString("F2")
             Catch e As Exception
                 returnMessage = "Leider ist ein Fehler beim berechnen der Preise aufgetreten.<br>" & ReplaceErrorMessages(e.Message)
                 hep = ""
@@ -1137,6 +1149,51 @@ Public Class DATBankenlinieConnector
     Public Function CalculateConstructionTime(ByVal monat As Integer, ByVal jahr As Integer) As Integer
         'Berechnung: Ausgangspunkt ist Januar 1970 = 10, ab da für jeden Monat +10
         Return (jahr - 1970) * 120 + monat * 10
+    End Function
+
+    Public Function GetECode(ByVal mileage As Integer, ByVal constructionYear As Integer, ByVal selectedContainer As String, ByRef ErrorMessage As String, ByVal additionalOptions() As Integer, ByVal vehicleType As Integer, ByVal manufacturer As Integer, ByVal baseModel As Integer, ByVal subModel As Integer) As String
+        Dim ECode As String = ""
+
+        Try
+
+            Dim vi As New de.dat.gold.authentication.Authentication(urlAuthentication)
+            Dim sessionID As String = vi.Login(customerLogin, customerNumber, customerSignature, interfacePartnerNumber, interfacePartnerSignature)
+
+            Dim viSelection As New de.dat.gold.VehicleSelectionService(urlVehicleSelection)
+            viSelection.CookieContainer = vi.CookieContainer
+
+            Dim localePeriod As de.dat.gold.locale = New de.dat.gold.locale()
+            localePeriod.country = "DE"
+            localePeriod.datCountryIndicator = "DE"
+            localePeriod.language = "de"
+
+            Dim vsPeriod As de.dat.gold.subTypeVariantNumberSelectionRequest = New de.dat.gold.subTypeVariantNumberSelectionRequest()
+            vsPeriod.sessionID = sessionID
+            vsPeriod.restriction = de.dat.gold.releaseRestriction.APPRAISAL
+            vsPeriod.locale = localePeriod
+            vsPeriod.vehicleType = vehicleType
+            vsPeriod.manufacturer = manufacturer
+            vsPeriod.baseModel = baseModel
+            vsPeriod.subModel = subModel
+            If additionalOptions.Length = 0 Then
+                vsPeriod.selectedOptions = New Integer() {-10}
+            Else
+                vsPeriod.selectedOptions = additionalOptions
+            End If
+
+            ECode = viSelection.compileDatECode(vsPeriod)
+
+            Dim xPeriod As Boolean = False
+            Dim yPeriod As Boolean = False
+
+            vi.doLogout(xPeriod, yPeriod)
+
+        Catch
+
+        End Try
+
+        Return ECode
+
     End Function
 
 End Class

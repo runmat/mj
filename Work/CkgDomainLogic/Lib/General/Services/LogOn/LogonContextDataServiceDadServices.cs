@@ -21,9 +21,23 @@ namespace CkgDomainLogic.General.Services
     {
         public string CurrentGridColumns { get; set; }
 
+        private IEnumerable<LoginUserMessageConfirmations> _loginUserMessageConfirmations;
+
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages
         {
-            get { return CreateDbContext().ActiveLoginMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }
+            get { return MaintenanceCoreLoginUserMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }
+        }
+
+        public List<LoginUserMessage> MaintenanceCoreLoginUserMessages
+        {
+            get
+            {
+                var messageList = CreateDbContext().ActiveLoginMessages.ToListOrEmptyList();
+
+                messageList.ForEach(message => message.MessageIsConfirmedByUser = GetLoginUserMessageConfirmations(message.ID, message.ShowMessageFrom).Any());
+
+                return messageList.ToList();
+            }
         }
 
 
@@ -107,6 +121,7 @@ namespace CkgDomainLogic.General.Services
                     return false;
             }
 
+            _loginUserMessageConfirmations = null;
             UserName = User.Username;
             UserInfo = dbContext.GetUserInfo();
             AppTypes = dbContext.ApplicationTypes.ToList();
@@ -152,6 +167,8 @@ namespace CkgDomainLogic.General.Services
                     }
                     RewriteUrlToLogPageVisit(ua);
                 });
+
+            dbContext.SetLastLogin(DateTime.Now);
 
             return true;
         }
@@ -502,6 +519,26 @@ namespace CkgDomainLogic.General.Services
             UserApps = CreateDbContext().UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
 
             return UserApps.First(a => a.AppID == appID).AppIsMvcFavorite;
+        }
+
+        IEnumerable<LoginUserMessageConfirmations> GetLoginUserMessageConfirmations(int? messageID = null, DateTime? showMessageFromDate = null)
+        {
+            var confirmations = _loginUserMessageConfirmations ?? (_loginUserMessageConfirmations = CreateDbContext().GetLoginUserMessageConfirmations());
+
+            if (messageID == null && showMessageFromDate == null)
+                return confirmations;
+
+            return confirmations.Where(c => c.MessageID == messageID && c.ShowMessageFrom == showMessageFromDate);
+        }
+
+        override public void MaintenanceMessageConfirmAndDontShowAgain()
+        {
+            var dbContext = CreateDbContext();
+            MaintenanceCoreLoginUserMessages.ForEach(message =>
+            {
+                if (message.MaintenanceShowAndLetConfirmMessageAfterLogin)
+                    dbContext.SetLoginUserMessageConfirmation(message.ID, message.ShowMessageFrom.GetValueOrDefault());
+            });
         }
     }
 }
