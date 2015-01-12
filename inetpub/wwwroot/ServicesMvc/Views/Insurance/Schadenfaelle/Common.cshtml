@@ -132,7 +132,7 @@
 
     var _modelStateValid = false;
     var _directNavigateToTermine = false;
-    var _breadCrumbInitial = "@Localize.DamageCases";
+    var _breadCrumbInitial = "@MvcHtmlString.Create(Localize.DamageCases)";
     var _mode = "schadenfaelle";
     var _schadenfallIsValid = true;
     
@@ -305,7 +305,7 @@
         $("#divSchadenfall").html(result);
         VorgangDetailsFormPreparePrivate();
         $("#SchadenfallGridDiv").slideUp(200, function () { $("#divSchadenfall").slideDown(200); });
-        BreadcrumbsMoveNext("Fall bearbeiten");
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungFallBearbeiten)");
 
         //FormPrepareAjax();
     }
