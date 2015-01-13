@@ -42,6 +42,8 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
                         d.FZGNR = s.FahrzeugNr;
                         d.KENNZ = s.Kennzeichen;
                         d.VKSPARTE = s.Verkaufssparte;
+                        d.ZZFABRIKNAME = s.FabrikName;
+                        d.ZZHANDELSNAME = s.HandelsName;
                         d.ZZHERSTELLER_SCH = s.HerstellerSchluessel;
                         d.ZZTYP_SCHL = s.TypSchluessel;
                         d.ZZTYP_VVS_PRUEF = s.VvsPruefziffer;
