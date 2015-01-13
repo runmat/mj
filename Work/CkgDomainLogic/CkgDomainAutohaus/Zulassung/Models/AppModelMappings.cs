@@ -122,6 +122,8 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.KundenNotiz = s.KUNDEN_REF;
                         d.BearbeitungsStatus = s.BEB_STATUS;
                         d.MaterialKurztext = s.MAKTX;
+                        d.FeinstaubAmt = s.FEINSTAUBAMT;
+                        d.DokumentName = s.AH_DOKNAME.NotNullOrEmpty().Trim(' ');
                         d.Referenz1 = s.ZZREFNR1;
                         d.Referenz1 = s.ZZREFNR2;
                         d.Referenz1 = s.ZZREFNR3;

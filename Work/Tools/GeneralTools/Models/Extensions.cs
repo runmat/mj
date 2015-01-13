@@ -280,9 +280,19 @@ namespace GeneralTools.Models
             return !string.IsNullOrEmpty(s) && s.ToLower() != "null";
         }
 
+        public static string NullIfNullOrEmpty(this string s)
+        {
+            return (s.IsNullOrEmpty() ? null : s);
+        }
+
         public static decimal? NullIf0(this decimal? val)
         {
             return (val.GetValueOrDefault() == 0 ? null : val);
+        }
+
+        public static string SlashToBackslash(this string s)
+        {
+            return s.NotNullOrEmpty().Replace('/', '\\');
         }
 
         public static string RemovePropertyName<T>(this string s, Expression<Func<T>> expression, string replaceWith)

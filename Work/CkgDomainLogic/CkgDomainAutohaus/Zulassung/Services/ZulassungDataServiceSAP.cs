@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Autohaus.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Autohaus.Models.AppModelMappings;
@@ -27,8 +27,6 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
 
-        public string PfadAuftragszettel { get; private set; }
-
         private static ZulassungSqlDbContext CreateDbContext()
         {
             return new ZulassungSqlDbContext();
@@ -37,7 +35,6 @@ namespace CkgDomainLogic.Autohaus.Services
         public ZulassungDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            PfadAuftragszettel = GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel");
         }
 
         public void MarkForRefresh()
@@ -246,7 +243,7 @@ namespace CkgDomainLogic.Autohaus.Services
             // alle relativen Pfade zu absoluten Pfaden konvertieren:
             fileNames.ForEach(f =>
                 {
-                    f.DateiPfad = Path.Combine(PfadAuftragszettel, SlashToBackslash(f.DateiPfad).SubstringTry(1));
+                    f.DateiPfad = Path.Combine(KroschkeZulassungViewModel.PfadAuftragszettel, f.DateiPfad.SlashToBackslash().SubstringTry(1));
                 });
 
             var auftragsListePath = fileNames.FirstOrDefault(f => f.DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"));
@@ -266,11 +263,6 @@ namespace CkgDomainLogic.Autohaus.Services
             }
 
             return "";
-        }
-
-        static string SlashToBackslash(string s)
-        {
-            return s.Replace('/', '\\');
         }
 
 

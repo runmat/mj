@@ -57,6 +57,16 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.MaterialText)]
         public string MaterialKurztext { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.F)]
+        public string FeinstaubAmt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Document)]
+        [GridExportIgnore]
+        public string DokumentName { get; set; }
+
+        [GridExportIgnore]
+        public bool DokumentNameIsValid { get { return DokumentName.IsNotNullOrEmpty(); } }
+
         [LocalizedDisplay(LocalizeConstants.Reference1)]
         public string Referenz1 { get; set; }
 

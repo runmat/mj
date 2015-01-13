@@ -46,6 +46,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
 
+        public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
 
         [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
