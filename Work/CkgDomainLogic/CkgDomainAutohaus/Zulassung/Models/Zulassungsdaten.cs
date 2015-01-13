@@ -35,7 +35,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [XmlIgnore]
-        static public List<Material> MaterialList { get; set; }
+        public List<Material> MaterialList { get; set; }
 
         public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
 

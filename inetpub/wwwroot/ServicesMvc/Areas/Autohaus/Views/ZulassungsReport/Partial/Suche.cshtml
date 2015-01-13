@@ -2,6 +2,11 @@
 @using CkgDomainLogic.Autohaus.ViewModels
 @model ZulassungsReportSelektor
 
+@{
+    var kundenList = (List<Kunde>)ViewData["KundenList"];
+    kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde {Name1 = Localize.DropdownDefaultOptionAll});
+}
+
 <div id="divZulassungsReportSuche">
     @using (Ajax.BeginForm("LoadZulassungsReport", "ZulassungsReport", null,
         new MvcAjaxOptions("divZulassungsReportSuche") { OnComplete = "ShowZulassungsReport();" }, new { id = "ZulassungsReportForm" }))
@@ -11,7 +16,7 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenListWithEmptyOption.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormDropDownListFor(m => m.KundenNr, kundenList.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
 
             @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "left" })

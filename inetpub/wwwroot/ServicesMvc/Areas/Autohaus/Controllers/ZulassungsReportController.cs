@@ -56,6 +56,7 @@ namespace ServicesMvc.Autohaus.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
+            ViewData.Add("KundenList", ViewModel.Kunden);
             return PartialView("Partial/Suche", ViewModel.Selektor);
         }
 

@@ -73,7 +73,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataMarkForRefresh()
         {
-            Rechnungsdaten.KundenList = Kunden;
             PropertyCacheClear(this, m => m.ItemsFiltered);
         }
 
