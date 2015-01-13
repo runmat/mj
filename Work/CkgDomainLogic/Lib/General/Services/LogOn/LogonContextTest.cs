@@ -97,7 +97,7 @@ namespace CkgDomainLogic.General.Services
                     AllOrganizations =  false,
                     CustomerID = 209,
                     OrganizationID = 266,
-                    OrganizationName = "240072_4340",
+                    OrganizationName = "LUEG_BOCHUM",
                     OrganizationReference = "240072",
                     OrganizationReference2 = "4340",
                 }; 

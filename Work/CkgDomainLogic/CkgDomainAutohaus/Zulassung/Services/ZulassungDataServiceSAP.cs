@@ -270,8 +270,8 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, Action<string, string> addModelError)
         {
-            var iKunnr = selector.KundenNr.ToSapKunnr();
-            //var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
+            var iKunnr = selector.KundenNr;
+            var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
             var iVkOrg = ((ILogonContextDataService) LogonContext).Customer.AccountingArea.ToString();
             var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
 
@@ -279,8 +279,13 @@ namespace CkgDomainLogic.Autohaus.Services
             {
                 Z_ZLD_AH_ZULLISTE.Init(SAP);
 
-                SAP.SetImportParameter("I_KUNNR", iKunnr);
-                //SAP.SetImportParameter("I_GRUPPE", iGroup);
+                SAP.SetImportParameter("I_KUNNR", iKunnr.ToSapKunnr());
+                if (iKunnr.IsNullOrEmpty())
+                {
+                    SAP.SetImportParameter("I_KUNNR", "");
+                    SAP.SetImportParameter("I_GRUPPE", iGroup);
+                }
+
                 SAP.SetImportParameter("I_VKORG", iVkOrg);
                 SAP.SetImportParameter("I_VKBUR", iVkBur);
 

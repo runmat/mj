@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
@@ -9,12 +6,8 @@ namespace CkgDomainLogic.Autohaus.Models
 {
     public class ZulassungsReportSelektor : Store
     {
-        [Required]
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string KundenNr { get; set; }
-
-        [XmlIgnore]
-        static public List<Kunde> KundenList { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen

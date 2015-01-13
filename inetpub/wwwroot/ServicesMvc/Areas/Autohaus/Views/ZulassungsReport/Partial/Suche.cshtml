@@ -11,7 +11,7 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenList.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenListWithEmptyOption.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
 
             @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "left" })
@@ -26,7 +26,7 @@
             @Html.FormRadioButtonListFor(m => m.AuftragsArt, ZulassungsReportViewModel.AuftragsArtOptionen)
 
 
-            @Html.FormRequiredFieldsSummary()
+            @* @Html.FormRequiredFieldsSummary() *@
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>

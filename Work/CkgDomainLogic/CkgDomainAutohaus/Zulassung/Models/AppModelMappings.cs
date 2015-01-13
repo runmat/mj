@@ -120,7 +120,6 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.VertriebsBelegnummer = s.VBELN;
                         d.VkUser = s.VK_KUERZEL;
                         d.KundenNotiz = s.KUNDEN_REF;
-                        d.BearbeitungsStatus = s.BEB_STATUS;
                         d.MaterialKurztext = s.MAKTX;
                         d.FeinstaubAmt = s.FEINSTAUBAMT;
                         d.DokumentName = s.AH_DOKNAME.NotNullOrEmpty().Trim(' ');
@@ -128,6 +127,8 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Referenz1 = s.ZZREFNR2;
                         d.Referenz1 = s.ZZREFNR3;
                         d.Referenz1 = s.ZZREFNR4;
+
+                        SetStatus(s, d);
 
                         d.Preis = s.PREIS_DL.NullIf0();
                         d.PreisGebuehr = s.PREIS_GB.NullIf0();
@@ -137,6 +138,52 @@ namespace CkgDomainLogic.Autohaus.Models
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
                     }));
+            }
+        }
+
+        static void SetStatus(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.StatusAsText = d.Status = s.BEB_STATUS.NotNullOrEmpty().ToUpper();
+
+            switch (d.Status)
+            {
+                case "4":
+                    d.Status = "DIS";
+                    break;
+                case "5":
+                    d.Status = "GO";
+                    break;
+                case "7":
+                    d.Status = "AR";
+                    break;
+            }
+
+            switch (d.Status)
+            {
+                case "A":
+                    d.StatusAsText = Localize.Adopted;
+                    break;
+                case "AR":
+                    d.StatusAsText = Localize.Invoiced;
+                    break;
+                case "D":
+                    d.StatusAsText = Localize.Accomplished;
+                    break;
+                case "DIS":
+                    d.StatusAsText = Localize.Planned;
+                    break;
+                case "O":
+                    d.StatusAsText = Localize.Open;
+                    break;
+                case "F":
+                    d.StatusAsText = Localize.Failed;
+                    break;
+                case "L":
+                    d.StatusAsText = Localize.Deleted;
+                    break;
+                case "GO":
+                    d.StatusAsText = Localize.InWork;
+                    break;
             }
         }
 

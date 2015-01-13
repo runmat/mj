@@ -19,7 +19,7 @@
                     "<# } #> "
                 ).Title("").Sortable(false).Filterable(false);
             columns.XBound(c => c.BelegNummer);
-            columns.XBound(c => c.BearbeitungsStatus);
+            columns.XBound(c => c.StatusAsText);
             columns.XBound(c => c.Referenz1);
             columns.XBound(c => c.Referenz2);
             columns.XBound(c => c.Referenz3);
@@ -56,6 +56,6 @@
     .XSort(sortOrder => sortOrder.Add(c => c.ZulassungDatum).Descending())
     .XToolBar("ZulassungsReport")
 
-    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PositionsNummer)))
+    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.KundenNr)))
 )
 

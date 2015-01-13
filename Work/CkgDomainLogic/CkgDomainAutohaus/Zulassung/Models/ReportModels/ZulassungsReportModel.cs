@@ -48,8 +48,11 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Remark)]
         public string KundenNotiz { get; set; }
 
+        [GridExportIgnore, GridHidden]
+        public string Status { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Status)]
-        public string BearbeitungsStatus { get; set; }
+        public string StatusAsText { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.MaterialNo)]
         public string MaterialNr { get; set; }
