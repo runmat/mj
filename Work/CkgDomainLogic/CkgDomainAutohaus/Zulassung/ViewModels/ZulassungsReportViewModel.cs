@@ -82,7 +82,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void LoadZulassungsReport(Action<string, string> addModelError)
         {
-            Items = DataService.GetZulassungsReportItems(Selektor, addModelError);
+            Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
 
             DataMarkForRefresh();
         }

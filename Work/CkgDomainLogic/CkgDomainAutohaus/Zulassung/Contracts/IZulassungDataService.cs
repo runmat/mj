@@ -29,7 +29,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         #region Zulassungs Report
 
-        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, Action<string, string> addModelError);
+        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
 
         #endregion
     }

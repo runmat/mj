@@ -268,7 +268,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         #region Zulassungs Report
 
-        public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, Action<string, string> addModelError)
+        public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
             var iKunnr = selector.KundenNr;
             var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
@@ -320,6 +320,21 @@ namespace CkgDomainLogic.Autohaus.Services
 
             var sapItems = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportList(SAP);
             var webItems = AppModelMappings.Z_ZLD_AH_ZULLISTE_GT_OUT_To_ZulassungsReportModel.Copy(sapItems).ToList();
+            var sapKunden = Z_ZLD_AH_ZULLISTE.GT_KUN.GetExportList(SAP).ToListOrEmptyList();
+            webItems.ForEach(item =>
+                {
+                    if (iKunnr.IsNotNullOrEmpty())
+                    {
+                        var kunde = kunden.FirstOrDefault(k => k.KundenNr == item.KundenNr);
+                        item.KundenNrAndName = (kunde == null ? item.KundenNr : string.Format("{0} - {1}, {2}, {3}", kunde.KundenNr, kunde.Name1, kunde.Name2, kunde.Ort));
+                    }
+                    else
+                    {
+                        var sapKunde = sapKunden.FirstOrDefault(k => k.KUNNR.ToSapKunnr() == item.KundenNr.ToSapKunnr());
+                        item.KundenNrAndName = (sapKunde == null ? item.KundenNr : string.Format("{0} - {1}", sapKunde.KUNNR, sapKunde.NAME1));
+                    }
+                } 
+            );
             return webItems;
         }
 

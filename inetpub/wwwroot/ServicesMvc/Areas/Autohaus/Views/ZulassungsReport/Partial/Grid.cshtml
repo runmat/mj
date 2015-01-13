@@ -18,6 +18,9 @@
                     "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DokumentName #>' ></a> " +
                     "<# } #> "
                 ).Title("").Sortable(false).Filterable(false);
+            columns.XBound(c => c.KundenNrAndName)
+                .Aggregate(aggregates => aggregates.Count())
+                    .ClientGroupHeaderTemplate("<strong>Kunde: <#= Key #>, Anzahl: <#= Count #></strong>");
             columns.XBound(c => c.BelegNummer);
             columns.XBound(c => c.StatusAsText);
             columns.XBound(c => c.Referenz1);
@@ -56,6 +59,6 @@
     .XSort(sortOrder => sortOrder.Add(c => c.ZulassungDatum).Descending())
     .XToolBar("ZulassungsReport")
 
-    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.KundenNr)))
+    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.KundenNrAndName)))
 )
 

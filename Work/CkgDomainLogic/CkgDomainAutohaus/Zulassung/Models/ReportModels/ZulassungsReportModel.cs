@@ -9,6 +9,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Customer)]
+        public string KundenNrAndName { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ReceiptNo)]
         public string BelegNummer { get; set; }
 

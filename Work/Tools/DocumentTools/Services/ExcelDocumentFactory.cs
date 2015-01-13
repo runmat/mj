@@ -10,6 +10,7 @@ using System.Web;
 using Aspose.Cells;
 using GeneralTools.Models;
 
+
 namespace DocumentTools.Services
 {
     public class ExcelDocumentFactory : AbstractDocumentFactory
@@ -300,5 +301,16 @@ namespace DocumentTools.Services
         }
 
         #endregion
+
+        public void RemoveAllRegistersExceptFirst(string fileName)
+        {
+            var wb = new Workbook();
+            wb.Open(fileName, FileFormatType.Excel2003);
+
+            for (var i = 1; i < wb.Worksheets.Count; i++)
+            {
+                wb.Worksheets.RemoveAt(1);
+            }
+        }
     }
 }
