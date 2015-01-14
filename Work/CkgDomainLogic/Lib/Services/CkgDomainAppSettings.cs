@@ -14,9 +14,9 @@ namespace CkgDomainLogic.Services
     {
         public string AppName { get { return ""; } }
 
-        public string AppOwnerName { get { return ConfigurationManager.AppSettings["AppOwnerShortName"]; } }
+        public string AppOwnerName { get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerShortName"); } }
 
-        public string AppOwnerFullName { get { return ConfigurationManager.AppSettings["AppOwnerFullName"]; } }
+        public string AppOwnerFullName { get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName"); } }
 
         public string AppCopyRight { get { return string.Format("© {0} {1}", DateTime.Now.Year, AppName); } }
 
