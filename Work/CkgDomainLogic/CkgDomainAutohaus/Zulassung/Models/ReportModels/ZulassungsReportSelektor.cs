@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -49,12 +48,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!AuftragsDatumRange.IsSelected && !ZulassungsDatumRange.IsSelected)
-                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, 
-                    new[]
-                        {
-                            "AuftragsDatumRange", 
-                            "ZulassungsDatumRange"
-                        });
+                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, new[] { "AuftragsDatumRange",  "ZulassungsDatumRange" });
         }
     }
 }
