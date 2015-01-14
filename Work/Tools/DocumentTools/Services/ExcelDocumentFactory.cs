@@ -301,16 +301,5 @@ namespace DocumentTools.Services
         }
 
         #endregion
-
-        public void RemoveAllRegistersExceptFirst(string fileName)
-        {
-            var wb = new Workbook();
-            wb.Open(fileName, FileFormatType.Excel2003);
-
-            for (var i = 1; i < wb.Worksheets.Count; i++)
-            {
-                wb.Worksheets.RemoveAt(1);
-            }
-        }
     }
 }
