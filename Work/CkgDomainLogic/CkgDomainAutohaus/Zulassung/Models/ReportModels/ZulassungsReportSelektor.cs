@@ -1,10 +1,14 @@
-﻿using GeneralTools.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class ZulassungsReportSelektor : Store
+    public class ZulassungsReportSelektor : Store, IValidatableObject 
     {
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string KundenNr { get; set; }
@@ -40,5 +44,17 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.Reference4)]
         public string Referenz4 { get; set; }
+    
+        
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!AuftragsDatumRange.IsSelected && !ZulassungsDatumRange.IsSelected)
+                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, 
+                    new[]
+                        {
+                            "AuftragsDatumRange", 
+                            "ZulassungsDatumRange"
+                        });
+        }
     }
 }

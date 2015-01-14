@@ -102,6 +102,9 @@
         });
         $('.field-validation-error').each(function () {
             $(this).removeClass("field-validation-error").addClass("help-inline");
+            var controlGroupDiv = $(this).closest('div[class^="control-group"]');
+            if (controlGroupDiv != null)
+                controlGroupDiv.addClass('error');
         });
     }
 
