@@ -1,9 +1,9 @@
 ﻿@using CkgDomainLogic.Logs.Models
 @model PageVisitLogItemSelector
 
-<div id="divPageVisitLogItemsSuche">
-    @using (Ajax.BeginForm("LoadPageVisitLogItems", "Logs", null,
-        new MvcAjaxOptions("divPageVisitLogItemsSuche") { OnComplete = "ShowPageVisitLogItems();" }, new { id = "PageVisitLogItemsForm" }))
+<div id="divUnusedAppsSuche">
+    @using (Ajax.BeginForm("LoadUnusedApps", "Logs", null,
+        new MvcAjaxOptions("divUnusedAppsSuche") { OnComplete = "ShowUnusedApps();" }, new { id = "UnusedAppsForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             
@@ -15,10 +15,7 @@
             @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
             @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormCheckBoxFor(m => m.OnlyUnusedCustomerApplications, new { @class = "m-wrap", col = "right" })
-
-            @Html.FormMultiSelectListFor(m => m.CustomerIds, PageVisitLogItemSelector.AllCustomers, new { @class = "m-wrap chosen" })
+            @Html.FormMultiSelectListFor(m => m.AppIds, PageVisitLogItemSelector.AllApplications, new { @class = "m-wrap chosen" })
 
 
             <div class="form-actions">
@@ -39,10 +36,9 @@
 
     function ResetFilter() {
         ClearChosenMultiSelect("#AppIds");
-        ClearChosenMultiSelect("#CustomerIds");
 
         $("#SubmitWithNoDataQuerying").val(true);
-        $("#PageVisitLogItemsForm").submit();
+        $("#UnusedAppsForm").submit();
     }
     
     function ClearChosenMultiSelect(id) {
@@ -50,7 +46,7 @@
         $(id).parent().find('.chzn-container li.search-choice').remove();
     }
 
-    function ShowPageVisitLogItems() {
+    function ShowUnusedApps() {
 
         FormPreparePrivateAjax();
 
@@ -61,14 +57,14 @@
 
         $.ajax({
             type: "POST",
-            url: "ShowPageVisitLogItems",
+            url: "ShowUnusedApps",
             loadingShow: true,
             success: function (result) {
 
                 SearchResultsTryHide();
 
                 if (_modelStateValid) {
-                    ShowPageVisitLogItemsSearchResult(result);
+                    ShowUnusedAppsSearchResult(result);
                     //return;
                 }
 
