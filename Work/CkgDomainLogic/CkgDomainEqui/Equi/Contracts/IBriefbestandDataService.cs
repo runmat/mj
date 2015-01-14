@@ -23,7 +23,7 @@ namespace CkgDomainLogic.Equi.Contracts
 
         List<Fahrzeugbrief> GetVersandBeauftragungen(VersandBeauftragungSelektor model);
 
-        string DeleteVersandBeauftragungen(string fin);
+        string DeleteVersandBeauftragungen(string fin, string kennzeichen);
 
         #endregion
 
