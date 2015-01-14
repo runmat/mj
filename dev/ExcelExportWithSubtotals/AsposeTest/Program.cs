@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -11,8 +10,6 @@ namespace AsposeTest
 {
     class Program
     {
-        const string OutFileName = @"C:\Users\JenzenM\Downloads\TestXls.xlsx";
-
         static void Main()
         {
             AsposeTest();
@@ -21,14 +18,17 @@ namespace AsposeTest
         static void AsposeTest()
         {
             TestSpreadSheetLight();
-            //Test2();
         }
 
         static private void TestSpreadSheetLight()
         {
-            var dt = new DataTable(); 
             var connString = @"server=.\SQLExpress;database=Test;Integrated Security=True";
-            var subtotalColumns = new[] {2, 4};
+            var fileName = @"C:\Users\JenzenM\Downloads\TestXls.xlsx";
+            var subtotalColumns = new[] { 2, 4 };
+            var subtotalVals = new double[] { 0, 0 };
+            var subtotalRows = new List<int>();
+
+            var dt = new DataTable();
 
             var query = "select * from TestXls";
 
@@ -45,15 +45,25 @@ namespace AsposeTest
 
             var sl = new SLDocument();
 
-            var boldStyle = sl.CreateStyle();
-            boldStyle.Font.Bold = true;
+            var boldStyleAlignTop = sl.CreateStyle();
+            boldStyleAlignTop.Font.Bold = true;
+            boldStyleAlignTop.SetVerticalAlignment(VerticalAlignmentValues.Top);
 
             var alternatingRowStyle = sl.CreateStyle();
             alternatingRowStyle.SetPatternFill(PatternValues.Solid, System.Drawing.Color.FromArgb(255, 254, 242, 232), System.Drawing.Color.White);
+            alternatingRowStyle.SetRightBorder(BorderStyleValues.Thin, System.Drawing.Color.LightGray);
 
             var boldStyleSubtotal = sl.CreateStyle();
             boldStyleSubtotal.Font.Bold = true;
-            boldStyleSubtotal.SetPatternFill(PatternValues.Solid, System.Drawing.Color.FromArgb(255, 244, 232, 212), System.Drawing.Color.White);
+            boldStyleSubtotal.SetPatternFill(PatternValues.Solid, System.Drawing.Color.FromArgb(255, 240, 222, 202), System.Drawing.Color.White);
+            boldStyleSubtotal.SetVerticalAlignment(VerticalAlignmentValues.Top);
+            boldStyleSubtotal.SetTopBorder(BorderStyleValues.Thin, System.Drawing.Color.LightGray);
+
+            var boldStyleTotal = sl.CreateStyle();
+            boldStyleTotal.Font.Bold = true;
+            boldStyleTotal.SetPatternFill(PatternValues.Solid, System.Drawing.Color.FromArgb(255, 220, 202, 182), System.Drawing.Color.White);
+            boldStyleTotal.SetTopBorder(BorderStyleValues.Thin, System.Drawing.Color.Black);
+            boldStyleTotal.SetVerticalAlignment(VerticalAlignmentValues.Top);
 
             var totalColCount = dt.Columns.Count;
             var totalRowCount = dt.Rows.Count;
@@ -65,10 +75,19 @@ namespace AsposeTest
             var groupValOld = "";
 
             sl.ImportDataTable(1, 1, dt, true);
+
+            // column formatting (currency , etc)
+            for (var dc = groupCol; dc <= dt.Columns.Count; dc++)
+                if (dt.Columns[dc - 1].DataType == typeof(Decimal))
+                    sl.SetColumnStyle(dc, new SLStyle { FormatCode = "#,##0.00" });
+
+            // autofit column widths
             sl.AutoFitColumn(1, dt.Columns.Count);
+            // fixed width for 1. column (=groupCol)
             sl.SetColumnWidth(1, 40);
+            // increase column widths a bit
             for (var col = groupCol + 1; col <= totalColCount; col++)
-                sl.SetColumnWidth(col, sl.GetColumnWidth(col)+5);
+                sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
 
             for (var r = 0; r <= totalRowCount; r++)
             {
@@ -86,120 +105,65 @@ namespace AsposeTest
 
                     totalRow++;
 
-                    sl.SetCellValue(totalRow-1, groupCol, string.Format("{0}, Ergebnis", groupValOld));
+                    sl.SetCellValue(totalRow - 1, groupCol, string.Format("{0}, Ergebnis", groupValOld));
 
 
                     var subtotalRowStart = totalRowOld;
                     var subtotalRowEnd = totalRow - 2;
+                    var stc = 0;
                     subtotalColumns.ToList().ForEach(subtotalColumn =>
                         {
-                            var sum = (double) 0;
+                            var sum = (double)0;
                             for (var sr = subtotalRowStart; sr <= subtotalRowEnd; sr++)
                                 sum += sl.GetCellValueAsDouble(sr, subtotalColumn);
+                            subtotalVals[stc] += sum;
+
                             sl.SetCellValue(subtotalRowEnd + 1, subtotalColumn, sum);
 
+                            // avoid formula calculation, because Excel will mark workbook as unsaved after open:
                             //var columnChar = (char)(('A') + subtotalColumn - 1);
                             //sl.SetCellValue(totalRow - 1, subtotalColumn, string.Format("=SUBTOTAL(9,{0}{1}:{0}{2})", columnChar, subtotalRowStart, subtotalRowEnd));
+
+                            stc++;
                         });
                     sl.GroupRows(subtotalRowStart, subtotalRowEnd);
 
                     sl.SetRowStyle(subtotalRowEnd + 1, boldStyleSubtotal);
+                    //sl.SetRowHeight(subtotalRowEnd + 1, 22);
+                    subtotalRows.Add(subtotalRowEnd + 1);
+
+                    sl.SetCellStyle(subtotalRowEnd + 1, groupCol, new SLStyle { Alignment = new SLAlignment { Horizontal = HorizontalAlignmentValues.Right, Vertical = VerticalAlignmentValues.Top } });
 
 
                     totalRowOld = totalRow;
-                    
+
                     #endregion
                 }
 
                 groupValOld = groupVal;
             }
 
-            sl.SetRowStyle(1, boldStyle);
-            sl.SetColumnStyle(groupCol, new SLStyle
+            sl.SetRowStyle(1, boldStyleAlignTop);
+            sl.SetRowHeight(1, 22);
+
+            // Total Summary Row
+            sl.SetCellValue(totalRow, groupCol, "Endsumme, Ergebnis");
+            sl.SetRowStyle(totalRow, boldStyleTotal);
+            sl.SetRowHeight(totalRow, 22);
+            var stcTotal = 0;
+            subtotalColumns.ToList().ForEach(subtotalColumn =>
             {
-                Alignment = new SLAlignment { Horizontal = HorizontalAlignmentValues.Right }
+                sl.SetCellValue(totalRow, subtotalColumn, subtotalVals[stcTotal]);
+                stcTotal++;
             });
+
+            sl.SetCellStyle(totalRow, groupCol, new SLStyle { Alignment = new SLAlignment { Horizontal = HorizontalAlignmentValues.Right, Vertical = VerticalAlignmentValues.Top } });
+            sl.GroupRows(2, totalRow - 1);
+            subtotalRows.ForEach(st => sl.SetRowHeight(st, 22));
+
+            sl.FreezePanes(1, 0);
             sl.SetPageSettings(new SLPageSettings { ZoomScale = 130 });
-            sl.SaveAs(OutFileName);
-
-
-            var sd = SpreadsheetDocument.Open(OutFileName, true);
-            sd.ChangeDocumentType(SpreadsheetDocumentType.Workbook);
-            sd.WorkbookPart.Workbook.CalculationProperties = new CalculationProperties
-                {
-                    ForceFullCalculation = false,
-                    FullCalculationOnLoad = false,
-                    CalculationOnSave = false,
-                };
-            //var sheet = new Sheet { Id = sd.WorkbookPart.GetIdOfPart(sd.WorkbookPart.WorksheetParts.First()), SheetId = 2, Name = "mySheet" };
-            //sd.WorkbookPart.Workbook.Sheets.Append(sheet);
-            sd.WorkbookPart.Workbook.Save();
-            sd.Close();
-        }
-
-        #region x
-
-// ReSharper disable UnusedMember.Local
-        private static void Test2()
-// ReSharper restore UnusedMember.Local
-        {
-            var rand = new Random();
-
-            var dt = new DataTable();
-            dt.Columns.Add("Product", typeof (string));
-            dt.Columns.Add("IP Address", typeof (string));
-            dt.Columns.Add("Date (UTC)", typeof (DateTime));
-            dt.Columns.Add("Size (MB)", typeof (double));
-            dt.Columns.Add("Cost", typeof (decimal));
-
-            for (int i = 0; i < 10; ++i)
-            {
-                dt.Rows.Add(string.Format("Prod{0}", rand.Next(5)),
-                            string.Format("{0}.{1}.{2}.{3}", rand.Next(256), rand.Next(256), rand.Next(256),
-                                          rand.Next(256)),
-                            DateTime.UtcNow.AddDays(rand.NextDouble()*20),
-                            decimal.Round((decimal) (rand.NextDouble()*500 + 200), 4),
-                            decimal.Round((decimal) (rand.NextDouble()*20 + 5), 2));
-            }
-
-            var sl = new SLDocument();
-
-            var iStartRowIndex = 3;
-            var iStartColumnIndex = 2;
-
-            sl.ImportDataTable(iStartRowIndex, iStartColumnIndex, dt, true);
-
-            // This part sets the style, but you might be using a template file,
-            // so the styles are probably already set.
-
-            SLStyle style = sl.CreateStyle();
-            style.FormatCode = "yyyy/mm/dd hh:mm:ss";
-            sl.SetColumnStyle(4, style);
-
-            style.FormatCode = "#,##0.0000";
-            sl.SetColumnStyle(5, style);
-
-            style.FormatCode = "$#,##0.00";
-            sl.SetColumnStyle(6, style);
-
-            // The next part is optional, but it shows how you can set a table on your
-            // data based on your DataTable's dimensions.
-
-            // + 1 because the header row is included
-            // - 1 because it's a counting thing, because the start row is counted.
-            int iEndRowIndex = iStartRowIndex + dt.Rows.Count + 1 - 1;
-            // - 1 because it's a counting thing, because the start column is counted.
-            int iEndColumnIndex = iStartColumnIndex + dt.Columns.Count - 1;
-            SLTable table = sl.CreateTable(iStartRowIndex, iStartColumnIndex, iEndRowIndex, iEndColumnIndex);
-            table.SetTableStyle(SLTableStyleTypeValues.Medium17);
-            table.HasTotalRow = true;
-            table.SetTotalRowLabel(2, "Ergebnis");
-            table.SetTotalRowFunction(5, SLTotalsRowFunctionValues.Sum);
-            sl.InsertTable(table);
-
-            sl.SaveAs(OutFileName);
+            sl.SaveAs(fileName);
         }
     }
-
-    #endregion
 }
