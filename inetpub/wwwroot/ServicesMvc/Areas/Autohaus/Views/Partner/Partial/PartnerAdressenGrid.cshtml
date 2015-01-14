@@ -3,6 +3,9 @@
 <script type="text/javascript">
     _adressenKennungLocalized = '@Model.AdressenKennungLocalized';
 </script>
+<div>
+    *@Model.AdressenKennung.NotNullOrEmpty().ToUpper()*
+</div>
 
 @Html.Partial("AdressenPflege/AdressenGrid", new ViewDataDictionary
     {

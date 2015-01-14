@@ -85,6 +85,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ShowPartnerGrid()
         {
+            ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
             return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
 

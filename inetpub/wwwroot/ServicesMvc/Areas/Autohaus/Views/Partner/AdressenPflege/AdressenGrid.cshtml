@@ -24,8 +24,8 @@
                                 (!addressSelectorAvailable ?
                                         "" : "<button onclick='AddressSelect(\"<#= data.KundenNr #>\");' class='btn mini blue margin-right-5 tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></button>") 
                                   + "<button onclick='AddressEdit(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                                  + (!zulassungAvailable ? 
-                                        "" : "<a href='../../kroschkezulassung/index?halterNr=<#= data.KundenNr #>' class='btn mini gray margin-left-10 tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white tag'></i></a>")
+                                  + (!zulassungAvailable ?
+                                        "" : "<a href='../../autohaus/zulassung/index?halterNr=<#= data.KundenNr #>' class='btn mini gray margin-left-10 tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white tag'></i></a>")
                             ).HeaderTemplate(
                                 (backButtonAvailable ?
                                     "<button onclick='ClosePartnerAddressGrid();' class='btn mini red margin-right-5 tooltips' data-original-title='" + Localize.Back + "' data-placement='right'><i class='icon-chevron-left margin-left-5 margin-right-5'></i></button>" : "") 
