@@ -1327,7 +1327,7 @@ Partial Public Class _Report05
                     End If
                 Next
                 str = str.Replace("\", "'")
-                lblOpen.Text = "<script language=""Javascript"">window.open(""_Report022.aspx?USER=" & m_User.UserName & "&PAR=" & str & """, ""Übertragungsprotokoll"", ""width=700,height=480,left=0,top=0,scrollbars=YES"");location.replace(""/Portal/(" & Session.SessionID.ToString & ")/Start/Selection.aspx"");</script>"
+                lblOpen.Text = "<script language=""Javascript"">window.open(""_Report022.aspx?USER=" & m_User.UserName & "&PAR=" & str & """, ""Übertragungsprotokoll"", ""width=700,height=480,left=0,top=0,scrollbars=YES"");location.replace(""/Portal/(S(" & Session.SessionID.ToString & "))/Start/Selection.aspx"");</script>"
             End If
         End If
     End Sub
