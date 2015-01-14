@@ -188,7 +188,6 @@
     <Compile Include="Web\TelerikExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Images\help.png" />
     <EmbeddedResource Include="Images\edit.png" />
@@ -198,15 +197,6 @@
     <EmbeddedResource Include="Images\excel.png" />
     <EmbeddedResource Include="Images\pdf.png" />
     <EmbeddedResource Include="Styles\TelerikExtensions.css" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Shared\EditableContent_Once.cshtml">
       <Generator>MvcRazorClassGenerator</Generator>
       <LastGenOutput>EditableContent_Once.cs</LastGenOutput>
