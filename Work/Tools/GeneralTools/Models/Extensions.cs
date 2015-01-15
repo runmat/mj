@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -53,6 +54,13 @@ namespace GeneralTools.Models
             var copiedList = source.Copy();
             copiedList.Insert(0, itemToInsert);
             return copiedList;
+        }
+
+        public static Type GetItemType(this IEnumerable someCollection)
+        {
+            var type = someCollection.GetType();
+            var ienum = type.GetInterface(typeof(IEnumerable<>).Name);
+            return ienum != null ? ienum.GetGenericArguments()[0] : null;
         }
     }
 

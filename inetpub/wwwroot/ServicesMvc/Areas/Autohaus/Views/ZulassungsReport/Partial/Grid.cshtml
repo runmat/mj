@@ -4,8 +4,8 @@
     var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0:c}', Sum) #></strong>";
 }
 
-@(Html.Telerik()
-    .Grid<ZulassungsReportModel>()
+@(Html.XTelerik()
+    .XGrid<ZulassungsReportModel>()
     .Name(gridName)
 
     .XGroup(null)

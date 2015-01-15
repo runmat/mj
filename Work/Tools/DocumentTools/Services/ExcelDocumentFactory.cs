@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using Aspose.Cells;
 using GeneralTools.Models;
 
 
@@ -49,9 +48,9 @@ namespace DocumentTools.Services
                 if (separator == '*')
                     separator = TryAutoFindSeparatorInFile(excelFileName);
 
-                var workbook = new Workbook();
+                var workbook = new Aspose.Cells.Workbook();
                 if (extension.ToLower().StartsWith(".xls"))
-                    workbook.Open(excelFileName, FileFormatType.Default);
+                    workbook.Open(excelFileName, Aspose.Cells.FileFormatType.Default);
                 else if (extension.ToLower() == ".csv")
                     workbook.Open(excelFileName, separator);
                 else
@@ -182,6 +181,15 @@ namespace DocumentTools.Services
 
         #region Write to Excel
 
+        public void CreateExcelGroupedDocumentAndSendAsResponse(string reportName, DataTable data, string[] subtotalColumnNames)
+        {
+            var sl = SpreadsheetLightService.CreateSpreadsheetLightDocument(data, subtotalColumnNames);
+            var bytes = sl.GetBytes();
+            HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
+            HttpContext.Current.Response.AppendHeader("Content-Disposition", string.Format("attachment; filename={0}.xlsx", reportName));
+            HttpContext.Current.Response.BinaryWrite(bytes);
+        }
+
         public void CreateExcelDocumentAndSendAsResponse(string reportName, DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle = true)
         {
             var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet);
@@ -289,7 +297,7 @@ namespace DocumentTools.Services
             if (type != typeof(string))
                 return o;
 
-            var s = "";
+            string s;
             try { s = (string) o; }
             catch (InvalidCastException) { s = ""; }
 
