@@ -20,13 +20,11 @@ namespace AsposeTest
             TestSpreadSheetLight();
         }
 
-        static private void TestSpreadSheetLight()
+        private static void TestSpreadSheetLight()
         {
             var connString = @"server=.\SQLExpress;database=Test;Integrated Security=True";
             var fileName = @"C:\Users\JenzenM\Downloads\TestXls.xlsx";
-            var subtotalColumns = new[] { 2, 4 };
-            var subtotalVals = new double[] { 0, 0 };
-            var subtotalRows = new List<int>();
+            
 
             var dt = new DataTable();
 
@@ -43,7 +41,23 @@ namespace AsposeTest
             conn.Close();
             da.Dispose();
 
+            var sl = CreateSpreadsheetLightDocument(dt, new[] { "menge", "preis" });
+            sl.SaveAs(fileName);
+        }
+
+        public static SLDocument CreateSpreadsheetLightDocument(DataTable dt, string[] subtotalColumnNames)
+        {
             var sl = new SLDocument();
+
+            var subtotalVals = new double[] { 0, 0 };
+            var subtotalRows = new List<int>();
+            var subtotalColumns = new List<int>(); // new[] { 2, 4 };
+
+            for (var stc = 0; stc < subtotalColumnNames.Length; stc++)
+                subtotalColumnNames[stc] = subtotalColumnNames[stc].ToUpper();
+            for (var c = 0; c < dt.Columns.Count; c++)
+                if (subtotalColumnNames.Contains(dt.Columns[c].ColumnName.ToUpper()))
+                    subtotalColumns.Add(c+1);
 
             var boldStyleAlignTop = sl.CreateStyle();
             boldStyleAlignTop.Font.Bold = true;
@@ -76,18 +90,12 @@ namespace AsposeTest
 
             sl.ImportDataTable(1, 1, dt, true);
 
-            // column formatting (currency , etc)
+            // apply column formatting (currency , etc)
             for (var dc = groupCol; dc <= dt.Columns.Count; dc++)
-                if (dt.Columns[dc - 1].DataType == typeof(Decimal))
-                    sl.SetColumnStyle(dc, new SLStyle { FormatCode = "#,##0.00" });
-
-            // autofit column widths
-            sl.AutoFitColumn(1, dt.Columns.Count);
-            // fixed width for 1. column (=groupCol)
-            sl.SetColumnWidth(1, 40);
-            // increase column widths a bit
-            for (var col = groupCol + 1; col <= totalColCount; col++)
-                sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
+            {
+                if (dt.Columns[dc - 1].DataType == typeof (Decimal))
+                    sl.SetColumnStyle(dc, new SLStyle {FormatCode = "#,##0.00"});
+            }
 
             for (var r = 0; r <= totalRowCount; r++)
             {
@@ -99,18 +107,18 @@ namespace AsposeTest
 
                 if (groupValOld != "" && groupValOld != groupVal)
                 {
-                    #region Teilergebnis
+                    // Subtotals (Teilergebnisse)
 
                     sl.InsertRow(totalRow, 1);
-
                     totalRow++;
-
-                    sl.SetCellValue(totalRow - 1, groupCol, string.Format("{0}, Ergebnis", groupValOld));
-
 
                     var subtotalRowStart = totalRowOld;
                     var subtotalRowEnd = totalRow - 2;
                     var stc = 0;
+
+                    var subtotalItemsCount = (subtotalRowEnd - subtotalRowStart + 1);
+                    sl.SetCellValue(totalRow - 1, groupCol, string.Format("{0}, {1}, Ergebnis", groupValOld, FormatAnzahl(subtotalItemsCount)));
+
                     subtotalColumns.ToList().ForEach(subtotalColumn =>
                         {
                             var sum = (double)0;
@@ -126,18 +134,17 @@ namespace AsposeTest
 
                             stc++;
                         });
+
+                    // grouping subtotal elements
                     sl.GroupRows(subtotalRowStart, subtotalRowEnd);
 
                     sl.SetRowStyle(subtotalRowEnd + 1, boldStyleSubtotal);
-                    //sl.SetRowHeight(subtotalRowEnd + 1, 22);
                     subtotalRows.Add(subtotalRowEnd + 1);
 
                     sl.SetCellStyle(subtotalRowEnd + 1, groupCol, new SLStyle { Alignment = new SLAlignment { Horizontal = HorizontalAlignmentValues.Right, Vertical = VerticalAlignmentValues.Top } });
 
 
                     totalRowOld = totalRow;
-
-                    #endregion
                 }
 
                 groupValOld = groupVal;
@@ -147,7 +154,7 @@ namespace AsposeTest
             sl.SetRowHeight(1, 22);
 
             // Total Summary Row
-            sl.SetCellValue(totalRow, groupCol, "Endsumme, Ergebnis");
+            sl.SetCellValue(totalRow, groupCol, string.Format("Endsumme, {0}, Ergebnis", FormatAnzahl(dt.Rows.Count)));
             sl.SetRowStyle(totalRow, boldStyleTotal);
             sl.SetRowHeight(totalRow, 22);
             var stcTotal = 0;
@@ -158,12 +165,27 @@ namespace AsposeTest
             });
 
             sl.SetCellStyle(totalRow, groupCol, new SLStyle { Alignment = new SLAlignment { Horizontal = HorizontalAlignmentValues.Right, Vertical = VerticalAlignmentValues.Top } });
+            // grouping overall elements 
             sl.GroupRows(2, totalRow - 1);
+            // adapt height of all subtotal sum rows here, because grouping did reset row heights
             subtotalRows.ForEach(st => sl.SetRowHeight(st, 22));
 
+            // autofit column widths
+            sl.AutoFitColumn(0, dt.Columns.Count);
+            // increase column widths a bit
+            for (var col = groupCol; col <= totalColCount; col++)
+                sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
+
             sl.FreezePanes(1, 0);
-            sl.SetPageSettings(new SLPageSettings { ZoomScale = 130 });
-            sl.SaveAs(fileName);
+            // optional, scale the worksheet
+            //sl.SetPageSettings(new SLPageSettings { ZoomScale = 130 });
+
+            return sl;
+        }
+
+        static string FormatAnzahl(int count)
+        {
+            return string.Format("({0} Zeile{1})", count, (count == 1 ? "" : "n"));
         }
     }
 }
