@@ -42,6 +42,7 @@ namespace AsposeTest
             da.Dispose();
 
             var sl = CreateSpreadsheetLightDocument(dt, new[] { "menge", "preis" });
+            //var bytes = sl.GetBytes();
             sl.SaveAs(fileName);
         }
 
@@ -172,9 +173,9 @@ namespace AsposeTest
 
             // autofit column widths
             sl.AutoFitColumn(0, dt.Columns.Count);
-            // increase column widths a bit
-            for (var col = groupCol; col <= totalColCount; col++)
-                sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
+            // optional, increase column widths a bit
+            //for (var col = groupCol; col <= totalColCount; col++)
+            //    sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
 
             sl.FreezePanes(1, 0);
             // optional, scale the worksheet

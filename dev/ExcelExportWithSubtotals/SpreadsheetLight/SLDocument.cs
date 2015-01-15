@@ -3526,11 +3526,23 @@ namespace SpreadsheetLight
         /// <summary>
         /// Saves the spreadsheet. If it's a newly created spreadsheet, the default blank file name is used. If it's an existing spreadsheet, the given file name is used. WARNING: The existing spreadsheet will be overwritten without prompts.
         /// </summary>
+        public byte[] GetBytes()
+        {
+            CloseAndCleanUp();
+
+            var data = memstream.ToArray();
+            memstream.Close();
+            return data;
+        }
+
+        /// <summary>
+        /// Saves the spreadsheet. If it's a newly created spreadsheet, the default blank file name is used. If it's an existing spreadsheet, the given file name is used. WARNING: The existing spreadsheet will be overwritten without prompts.
+        /// </summary>
         public void Save()
         {
             CloseAndCleanUp();
 
-            byte[] data = memstream.ToArray();
+            var data = memstream.ToArray();
             memstream.Close();
             File.WriteAllBytes(gsSpreadsheetFileName, data);
         }
@@ -3538,28 +3550,25 @@ namespace SpreadsheetLight
         /// <summary>
         /// Saves the spreadsheet to a given file name.
         /// </summary>
-        /// <param name="FileName">The file name of the spreadsheet to be saved to.</param>
-        public void SaveAs(string FileName)
+        /// <param name="fileName">The file name of the spreadsheet to be saved to.</param>
+        public void SaveAs(string fileName)
         {
-            //gsSpreadsheetFileName = FileName;
-
             CloseAndCleanUp();
 
-            byte[] data = memstream.ToArray();
+            var data = memstream.ToArray();
             memstream.Close();
-            //File.WriteAllBytes(gsSpreadsheetFileName, data);
-            File.WriteAllBytes(FileName, data);
+            File.WriteAllBytes(fileName, data);
         }
 
         /// <summary>
         /// Saves the spreadsheet to a stream.
         /// </summary>
-        /// <param name="OutputStream">The output stream.</param>
-        public void SaveAs(Stream OutputStream)
+        /// <param name="outputStream">The output stream.</param>
+        public void SaveAs(Stream outputStream)
         {
             CloseAndCleanUp();
 
-            memstream.WriteTo(OutputStream);
+            memstream.WriteTo(outputStream);
             memstream.Close();
         }
 
