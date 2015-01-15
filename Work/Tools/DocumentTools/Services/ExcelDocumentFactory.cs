@@ -183,6 +183,9 @@ namespace DocumentTools.Services
 
         public void CreateExcelGroupedDocumentAndSendAsResponse(string reportName, DataTable data, string[] subtotalColumnNames)
         {
+            // Advanced Excel Export with groupings, aggregates, subtotals, etc
+            // no Aspose needed anymore, based on SpreadsheetLight library + "DocumentFormat Open XML" library
+
             var sl = SpreadsheetLightService.CreateSpreadsheetLightDocument(data, subtotalColumnNames);
             var bytes = sl.GetBytes();
             HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";

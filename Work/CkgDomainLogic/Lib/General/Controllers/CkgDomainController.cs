@@ -206,6 +206,9 @@ namespace CkgDomainLogic.General.Controllers
                 new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ExcelExport", dt);
             else
             {
+                // Advanced Excel Export with groupings, aggregates, subtotals, etc
+                // no Aspose needed anymore, based on SpreadsheetLight library + "DocumentFormat Open XML" library
+
                 var gridAggregateColumnNames = GetValidGridAggregatesColumnNames(grid);
 
                 new ExcelDocumentFactory().CreateExcelGroupedDocumentAndSendAsResponse("ExcelExport", dt, gridAggregateColumnNames);
