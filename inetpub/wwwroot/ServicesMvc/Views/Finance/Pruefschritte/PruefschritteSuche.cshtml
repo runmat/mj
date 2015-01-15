@@ -9,8 +9,8 @@
         <div class="form-horizontal label-width-200" id="searchForm">
             @Html.ValidationSummary()
             
-            @Html.FormTextBoxFor(m => m.Kontonummer, new { @class = "m-wrap" })
-            @Html.FormTextBoxFor(m => m.PAID, new { @class = "m-wrap" })
+            @Html.FormTextBoxFor(m => m.Kontonummer, new { @class = "m-wrap", @onkeypress = "return NumbersOnly(false);" })
+            @Html.FormTextBoxFor(m => m.PAID, new { @class = "m-wrap", @onkeypress = "return NumbersOnly(false);" })
 
             <div class="space20"></div>
 
