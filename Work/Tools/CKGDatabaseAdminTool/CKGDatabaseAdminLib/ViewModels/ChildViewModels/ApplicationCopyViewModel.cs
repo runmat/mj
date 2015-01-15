@@ -84,6 +84,10 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             Parent = parentVM;
             ShowOnlyNewApplications = true;
+            CopyAppWithChildApplications = true;
+            CopyAppWithFieldTranslations = true;
+            CopyAppWithColumnTranslations = true;
+            CopyAppWithConfigurationValues = true;
 
             DataService = new ApplicationCopyDataServiceSql(Parent.ActualDatabase);
 
