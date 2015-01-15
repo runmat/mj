@@ -22,7 +22,7 @@
                 <br style="margin-top: 10px" />                
 
                 <div style="margin-top: 5px;"  align="center" >            
-                    <% If MenuAdminSource.Count > 0 Then %>
+                    <% If MenuAdminSource IsNot Nothing AndAlso MenuAdminSource.Count > 0 Then%>
                         <table cellspacing="0" cellpadding="0" rules="all" border="1" style="background-color:White;width:395px;border-collapse:collapse;">
 	                        <tbody>
 		                        <tr class="menuehead">
@@ -40,7 +40,7 @@
                     <% End If%>
                 </div>                
                 <div id="ChangeMenue" style="margin-top: 5px;"  align="center" >
-                    <% If MenuChangeSource.Count > 0 Then %>
+                    <% If MenuChangeSource IsNot Nothing AndAlso MenuChangeSource.Count > 0 Then%>
                         <table cellspacing="0" cellpadding="0" rules="all" border="1" style="background-color:White;width:395px;border-collapse:collapse;">
 	                        <tbody>
 		                        <tr class="menuehead">
@@ -58,7 +58,7 @@
                     <% End If%>
                 </div>
                 <div id="ReportMenue" style="margin-top: 5px;"  align="center" >
-                    <% If MenuReportSource.Count > 0 Then %>
+                    <% If MenuReportSource IsNot Nothing AndAlso MenuReportSource.Count > 0 Then%>
                         <table cellspacing="0" cellpadding="0" rules="all" border="1" style="background-color:White;width:395px;border-collapse:collapse;">
 	                        <tbody>
 		                        <tr class="menuehead">
@@ -76,7 +76,7 @@
                     <% End If%>                    
                 </div>
                 <div id="HelpMenue" style="margin-top: 5px;"  align="center" >
-                    <% If MenuHelpDeskSource.Count > 0 Then %>
+                    <% If MenuHelpDeskSource IsNot Nothing AndAlso MenuHelpDeskSource.Count > 0 Then%>
                         <table cellspacing="0" cellpadding="0" rules="all" border="1" style="background-color:White;width:395px;border-collapse:collapse;">
 	                        <tbody>
 		                        <tr class="menuehead">
