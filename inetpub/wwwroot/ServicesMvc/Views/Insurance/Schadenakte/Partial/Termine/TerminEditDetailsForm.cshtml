@@ -44,7 +44,7 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @MvcHtmlString.Create(Localize.Save)</button>
             <button type="button" class="btn" onclick="TerminSchadenfallEditDetailsClose(true, false);">@Localize.Cancel</button>
         </div>
     
