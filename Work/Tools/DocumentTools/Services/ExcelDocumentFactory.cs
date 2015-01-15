@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using Aspose.Cells;
 using GeneralTools.Models;
 
 
@@ -48,9 +49,9 @@ namespace DocumentTools.Services
                 if (separator == '*')
                     separator = TryAutoFindSeparatorInFile(excelFileName);
 
-                var workbook = new Aspose.Cells.Workbook();
+                var workbook = new Workbook();
                 if (extension.ToLower().StartsWith(".xls"))
-                    workbook.Open(excelFileName, Aspose.Cells.FileFormatType.Default);
+                    workbook.Open(excelFileName, FileFormatType.Default);
                 else if (extension.ToLower() == ".csv")
                     workbook.Open(excelFileName, separator);
                 else
@@ -197,7 +198,7 @@ namespace DocumentTools.Services
         {
             var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet);
 
-            xlsDoc.Workbook.Save(reportName + ".xls", Aspose.Cells.FileFormatType.Excel2003, Aspose.Cells.SaveType.OpenInExcel, HttpContext.Current.Response);
+            xlsDoc.Workbook.Save(reportName + ".xls", FileFormatType.Excel2003, SaveType.OpenInExcel, HttpContext.Current.Response);
         }
 
         public void CreateExcelDocumentAsPDFAndSendAsResponse(string reportName, DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle = true, bool landscapeOrientation = false)
@@ -205,24 +206,24 @@ namespace DocumentTools.Services
             var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet, doAlternatingRowStyle);
 
             if (landscapeOrientation)
-                foreach (Aspose.Cells.Worksheet sheet in xlsDoc.Workbook.Worksheets)
-                    sheet.PageSetup.Orientation = Aspose.Cells.PageOrientationType.Landscape;
+                foreach (Worksheet sheet in xlsDoc.Workbook.Worksheets)
+                    sheet.PageSetup.Orientation = PageOrientationType.Landscape;
 
             var ms = new MemoryStream();
-            xlsDoc.Workbook.Save(ms, Aspose.Cells.FileFormatType.AsposePdf);
+            xlsDoc.Workbook.Save(ms, FileFormatType.AsposePdf);
             var pdfDoc = new Aspose.Pdf.Pdf { IsImagesInXmlDeleteNeeded = true };
             pdfDoc.BindXML(ms, null);
 
             pdfDoc.Save(reportName + ".pdf", Aspose.Pdf.SaveType.OpenInAcrobat, HttpContext.Current.Response);
         }
 
-        private static Aspose.Cells.WorkbookDesigner CreateDocument(DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle =true)
+        private static WorkbookDesigner CreateDocument(DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle =true)
         {
-            var xlsDoc = new Aspose.Cells.WorkbookDesigner();
+            var xlsDoc = new WorkbookDesigner();
             if (!string.IsNullOrEmpty(excelTemplatePath))
             {
                 var xlsStream = new FileStream(excelTemplatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                xlsDoc.Workbook.Open(xlsStream, Aspose.Cells.FileFormatType.Default, null);
+                xlsDoc.Workbook.Open(xlsStream, FileFormatType.Default, null);
                 xlsStream.Close();
             }
             else
@@ -238,13 +239,13 @@ namespace DocumentTools.Services
             return xlsDoc;
         }
 
-        private static void FillWorkbookForSmartMarkers(Aspose.Cells.WorkbookDesigner designer , DataTable data)
+        private static void FillWorkbookForSmartMarkers(WorkbookDesigner designer , DataTable data)
         {
             designer.SetDataSource(data);
             designer.Process();
         }
 
-        static void FillWorkbookDynamically(Aspose.Cells.Workbook wb, DataTable data, int colOffSet , int rowOffSet , bool doAlternatingRowStyle)
+        static void FillWorkbookDynamically(Workbook wb, DataTable data, int colOffSet , int rowOffSet , bool doAlternatingRowStyle)
         {
             var columnIndex = colOffSet; 
 
@@ -266,7 +267,7 @@ namespace DocumentTools.Services
 
                 headerCell.Style.Font.IsBold = true;
                 headerCell.Style.ForegroundColor = headerColor;
-                headerCell.Style.Pattern = Aspose.Cells.BackgroundType.Solid;
+                headerCell.Style.Pattern = BackgroundType.Solid;
 
                 var rowIndex = rowOffSet + 1;
                 foreach (DataRow row in data.Rows)
@@ -287,7 +288,7 @@ namespace DocumentTools.Services
                     if (doAlternatingRowStyle && (rowIndex - rowOffSet) % 2 == 0 )
                     {
                         cell.Style.ForegroundColor = alternateColor;
-                        cell.Style.Pattern = Aspose.Cells.BackgroundType.Solid;
+                        cell.Style.Pattern = BackgroundType.Solid;
                     }
                     rowIndex ++;
                 }
