@@ -3,27 +3,19 @@ Option Strict On
 
 Imports System
 Imports CKG.Base.Business
-Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Common
 
 Public Class Historie
     Inherits CKG.Base.Business.DatenimportBase
 
 #Region " Declarations"
-    Private m_strBriefnummer As String
-    Private m_datEingangsdatumVon As DateTime
-    Private m_datEingangsdatumBis As DateTime
-    Private m_strFahrgestellnummer As String
-    Private m_strHaendlerID As String
+
     Private m_tblBRIEFLEBENSLAUF_LPTable As DataTable
     Private m_tblQMEL_DATENTable As DataTable
     Private m_tblQMMIDATENTable As DataTable
     Private mGT_ADDR As DataTable
     Private mGT_EQUI As DataTable
     Private mGT_TEXT As DataTable
-
-
 
     Private mFahrgestellnummer As String
     Private mKennzeichen As String
@@ -59,10 +51,10 @@ Public Class Historie
     Private mAnzBemerkungen As String
     Private mVersandgrund As String
 
-
 #End Region
 
 #Region " Properties"
+
     Public ReadOnly Property QMMIDATENTable() As DataTable
         Get
             Return m_tblQMMIDATENTable
@@ -75,13 +67,11 @@ Public Class Historie
         End Get
     End Property
 
-
     Public ReadOnly Property diverseFahrzeuge() As DataTable
         Get
             Return mGT_EQUI
         End Get
     End Property
-
 
     Public ReadOnly Property GT_ADDR() As DataTable
         Get
@@ -100,7 +90,6 @@ Public Class Historie
             Return m_tblBRIEFLEBENSLAUF_LPTable
         End Get
     End Property
-
 
     Public Property Fahrgestellnummer() As String
         Get
@@ -228,7 +217,6 @@ Public Class Historie
         End Set
     End Property
 
-
     Public Property Erstzulassungsdatum() As String
         Get
             Return mErstzulassungsdatum
@@ -237,7 +225,6 @@ Public Class Historie
             mErstzulassungsdatum = value
         End Set
     End Property
-
 
     Public Property Abmeldedatum() As String
         Get
@@ -274,6 +261,7 @@ Public Class Historie
             mFahrzeughalterName1Name2 = value
         End Set
     End Property
+
     Public Property FahrzeughalterStrasseNummer() As String
         Get
             Return mFahrzeughalterStrasseNummer
@@ -282,6 +270,7 @@ Public Class Historie
             mFahrzeughalterStrasseNummer = value
         End Set
     End Property
+
     Public Property FahrzeughalterPLZOrt() As String
         Get
             Return mFahrzeughalterPLZOrt
@@ -290,7 +279,6 @@ Public Class Historie
             mFahrzeughalterPLZOrt = value
         End Set
     End Property
-
 
     Public Property VersandadresseBEZ() As String
         Get
@@ -355,7 +343,6 @@ Public Class Historie
         End Set
     End Property
 
-
     Public Property EhmaligesKennzeichen() As String
         Get
             Return mEhmaligesKennzeichen
@@ -373,7 +360,6 @@ Public Class Historie
             mZBIIAufbietung = value
         End Set
     End Property
-
 
     Public Property EhmaligeZBIINummer() As String
         Get
@@ -402,10 +388,10 @@ Public Class Historie
         End Set
     End Property
 
-
 #End Region
 
 #Region " Methods"
+
     Public Sub New(ByRef objUser As CKG.Base.Kernel.Security.User, ByVal objApp As CKG.Base.Kernel.Security.App, ByVal strFilename As String)
         MyBase.New(objUser, objApp, strFilename)
     End Sub
@@ -415,18 +401,9 @@ Public Class Historie
         If Not m_blnGestartet Then
             m_blnGestartet = True
 
-            Dim intID As Int32 = -1
             m_intStatus = 0
 
             Try
-                'If m_objLogApp Is Nothing Then
-                '    m_objLogApp = New CKG.Base.Kernel.Logging.Trace(m_objApp.Connectionstring, m_objApp.SaveLogAccessSAP, m_objApp.LogLevel)
-                'End If
-
-                'CHC SessionId wurde nicht übergeben
-                'intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_M_BRIEFLEBENSLAUF_001", m_strAppID, m_strSessionID, m_objUser.CurrentLogAccessASPXID)
-                'intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_M_BRIEFLEBENSLAUF_001", strAppID, strSessionID, m_objUser.CurrentLogAccessASPXID)
-
                 Dim proxy = DynSapProxy.getProxy("Z_M_BRIEFLEBENSLAUF_001", m_objApp, m_objUser, CurrentPageHelper.GetCurrentPage())
 
                 'befüllen der Importparameter
@@ -441,61 +418,34 @@ Public Class Historie
 
                 proxy.callBapi()
 
-                'If intID > -1 Then
-                '    m_objLogApp.WriteEndDataAccessSAP(intID, True)
-                'End If
-
                 'auswerten der exportparameter
                 mGT_ADDR = proxy.getExportTable("GT_ADDR")
-                'HelpProcedures.killAllDBNullValuesInDataTable(mGT_ADDR)
                 m_tblQMEL_DATENTable = proxy.getExportTable("GT_QMEL")
-                'HelpProcedures.killAllDBNullValuesInDataTable(m_tblQMEL_DATENTable)
                 m_tblQMMIDATENTable = proxy.getExportTable("GT_QMMA")
-                'HelpProcedures.killAllDBNullValuesInDataTable(m_tblQMMIDATENTable)
                 m_tblBRIEFLEBENSLAUF_LPTable = proxy.getExportTable("GT_WEB")
-                'HelpProcedures.killAllDBNullValuesInDataTable(m_tblBRIEFLEBENSLAUF_LPTable)
                 mGT_EQUI = proxy.getExportTable("GT_EQUI")
-                'HelpProcedures.killAllDBNullValuesInDataTable(mGT_EQUI)
                 mGT_TEXT = proxy.getExportTable("GT_TEXT")
-                'HelpProcedures.killAllDBNullValuesInDataTable(mGT_TEXT)
 
-                Dim row As DataRow
-
-                For Each row In m_tblQMEL_DATENTable.Rows
+                For Each row As DataRow In m_tblQMEL_DATENTable.Rows
                     If Not row("STRMN") Is Nothing Then
                         row("STRMN") = row("STRMN").ToString.TrimStart("0"c)
-                        'If row("STRMN").ToString <> String.Empty Then
-                        '    row("STRMN") = Left(MakeDateStandard(row("STRMN").ToString).ToString, 10)
-                        'End If
                     End If
-                    If Not TypeOf row("ERDAT") Is System.DBNull Then
+                    If Not TypeOf row("ERDAT") Is DBNull Then
                         row("ERDAT") = row("ERDAT").ToString.TrimStart("0"c)
-                        'If row("ERDAT").ToString <> String.Empty Then
-                        '    row("ERDAT") = Left(MakeDateStandard(row("ERDAT").ToString).ToString, 10)
-                        'End If
                     End If
                 Next
 
-                For Each row In m_tblQMMIDATENTable.Rows
+                For Each row As DataRow In m_tblQMMIDATENTable.Rows
                     If Not row("ZZUEBER") Is Nothing Then
                         row("ZZUEBER") = row("ZZUEBER").ToString.TrimStart("0"c)
-                        'If row("ZZUEBER").ToString <> String.Empty Then
-                        '    row("ZZUEBER") = Left(MakeDateStandard(row("ZZUEBER").ToString).ToString, 10)
-                        'End If
                     End If
-                    If Not TypeOf row("PSTER") Is System.DBNull Then
+                    If Not TypeOf row("PSTER") Is DBNull Then
                         row("PSTER") = row("PSTER").ToString.TrimStart("0"c)
-                        'If row("PSTER").ToString <> String.Empty Then
-                        '    row("PSTER") = Left(MakeDateStandard(row("PSTER").ToString).ToString, 10)
-                        'End If
                     End If
-                    If Not TypeOf row("AEDAT") Is System.DBNull Then
+                    If Not TypeOf row("AEDAT") Is DBNull Then
                         row("AEDAT") = row("AEDAT").ToString.TrimStart("0"c)
-                        'If row("AEDAT").ToString <> String.Empty Then
-                        '    row("AEDAT") = Left(MakeDateStandard(row("AEDAT").ToString).ToString, 10)
-                        'End If
                     End If
-                    If Not TypeOf row("AEZEIT") Is System.DBNull Then
+                    If Not TypeOf row("AEZEIT") Is DBNull Then
                         row("AEZEIT") = row("AEZEIT").ToString.TrimStart("0"c)
                         If row("AEZEIT").ToString <> String.Empty Then
                             row("AEZEIT") = Left(row("AEZEIT").ToString, 2) & ":" & row("AEZEIT").ToString.Substring(2, 2)
@@ -504,7 +454,7 @@ Public Class Historie
                 Next
 
                 'übersetzung navi 
-                For Each row In m_tblBRIEFLEBENSLAUF_LPTable.Rows
+                For Each row As DataRow In m_tblBRIEFLEBENSLAUF_LPTable.Rows
                     Select Case row("ZZNAVI").ToString
                         Case "N"
                             row("ZZNAVI") = "NAVI"
@@ -513,7 +463,7 @@ Public Class Historie
                     End Select
                 Next
 
-                'bearbeiten der Adresstabelle für die Ausgabe JJU 20081020
+                'bearbeiten der Adresstabelle für die Ausgabe
                 mGT_ADDR.Columns.Add("Anschrift", Type.GetType("System.String"))
                 mGT_ADDR.Columns.Add("LieferantAdresse", Type.GetType("System.String"))
                 For Each tmprow As DataRow In mGT_ADDR.Rows
@@ -528,11 +478,8 @@ Public Class Historie
 
                 Next
                 mGT_ADDR.AcceptChanges()
-                'CreateOutPut(mGT_ADDR, strAppID)
-                'mGT_ADDR = m_tblResult
 
-
-                'bearbeitung der EQUI Tabelle für die Ausgabe JJU20081127
+                'bearbeitung der EQUI Tabelle für die Ausgabe
                 If Not mGT_EQUI Is Nothing Then
 
                     For Each tmprow As DataRow In mGT_EQUI.Rows
@@ -550,20 +497,14 @@ Public Class Historie
                     mGT_EQUI = m_tblResult
                 End If
 
-                If Not mGT_TEXT Is Nothing Then
-                    If m_tblBRIEFLEBENSLAUF_LPTable.Rows.Count = 1 Then
-
-                        'Bemerkungen in Property AnzBemerkungen
-                        For Each row In mGT_TEXT.Rows
-                            mAnzBemerkungen &= row("TDLINE").ToString & vbCrLf
-
-                        Next
-                    End If
+                mAnzBemerkungen = ""
+                If mGT_TEXT IsNot Nothing AndAlso m_tblBRIEFLEBENSLAUF_LPTable.Rows.Count = 1 Then
+                    'Bemerkungen in Property AnzBemerkungen
+                    For Each row As DataRow In mGT_TEXT.Rows
+                        mAnzBemerkungen &= row("TDLINE").ToString & vbCrLf
+                    Next
                 End If
 
-
-
-                'WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR & ", ZZBRIEF=" & UCase(strBriefnummer) & ", ZFAHRG=" & UCase(strFahrgestellnummer) & ", ZZREF1=" & UCase(strRef1) & ", ZZKENN=" & UCase(strAmtlKennzeichen), m_tblBRIEFLEBENSLAUF_LPTable, False)
             Catch ex As Exception
                 mGT_ADDR = Nothing
                 m_tblBRIEFLEBENSLAUF_LPTable = Nothing
@@ -583,35 +524,12 @@ Public Class Historie
                     Case Else
                         m_strMessage = ex.Message
                 End Select
-                'If intID > -1 Then
-                '    m_objLogApp.WriteEndDataAccessSAP(intID, False, m_strMessage)
-                'End If
-                'WriteLogEntry(False, "KUNNR=" & m_objUser.KUNNR & ", ZZBRIEF=" & UCase(strBriefnummer) & ", ZFAHRG=" & UCase(strFahrgestellnummer) & ", ZZREF1=" & UCase(strRef1) & ", ZZKENN=" & UCase(strAmtlKennzeichen) & ", " & Replace(m_strMessage, "<br>", " "), m_tblBRIEFLEBENSLAUF_LPTable, False)
             Finally
-                'If intID > -1 Then
-                '    m_objLogApp.WriteStandardDataAccessSAP(intID)
-                'End If
                 m_blnGestartet = False
             End Try
         End If
     End Sub
-#End Region
-End Class
 
-' ************************************************
-' $History: Historie.vb $
-' 
-' *****************  Version 6  *****************
-' User: Rudolpho     Date: 16.07.10   Time: 9:53
-' Updated in $/CKAG2/Applications/AppF2/lib
-' ITA: 3855
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 3.09.09    Time: 11:35
-' Updated in $/CKAG2/Applications/AppF2/lib
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 4.08.09    Time: 11:42
-' Updated in $/CKAG2/Applications/AppF2/lib
-' ITA: 3019
-' 
+#End Region
+
+End Class
