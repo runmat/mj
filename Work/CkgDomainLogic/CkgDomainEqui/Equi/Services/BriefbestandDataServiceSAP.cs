@@ -111,7 +111,7 @@ namespace CkgDomainLogic.Equi.Services
             return Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB.GetExportList(SAP);
         }
 
-        public string DeleteVersandBeauftragungen(string fin)
+        public string DeleteVersandBeauftragungen(string fin, string kennzeichen)
         {
             var error = SAP.ExecuteAndCatchErrors(
 
@@ -120,7 +120,7 @@ namespace CkgDomainLogic.Equi.Services
                 {
                     Z_M_VERSAUFTR_FEHLERHAFTE_DEL.Init(SAP);
                     SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-                    SAP.SetImportParameter("I_LICENSE_NUM", "");
+                    SAP.SetImportParameter("I_LICENSE_NUM", kennzeichen);
                     SAP.SetImportParameter("I_CHASSIS_NUM", fin);
                     SAP.SetImportParameter("I_ZZBRFVERS", "1");
                     SAP.SetImportParameter("I_ZZSCHLVERS", "0");
