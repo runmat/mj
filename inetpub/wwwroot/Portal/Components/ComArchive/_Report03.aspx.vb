@@ -96,7 +96,7 @@ Imports CKG.EasyAccess
 
         'Diese Anwendung benötigt zwingend die Bezeichnung des Filterkriteriums im Archiv
         If sRefField.Length = 0 Then
-            Response.Redirect("/Portal/(" & Session.SessionID.ToString & ")/Start/Selection.aspx")
+            Response.Redirect("/Portal/(S(" & Session.SessionID.ToString & "))/Start/Selection.aspx")
         End If
 
         Try
