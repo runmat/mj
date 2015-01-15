@@ -50,9 +50,9 @@ namespace AsposeTest
         {
             var sl = new SLDocument();
 
-            var subtotalVals = new double[] { 0, 0 };
+            var subtotalVals = new double[subtotalColumnNames.Length];
             var subtotalRows = new List<int>();
-            var subtotalColumns = new List<int>(); // new[] { 2, 4 };
+            var subtotalColumns = new List<int>();
 
             for (var stc = 0; stc < subtotalColumnNames.Length; stc++)
                 subtotalColumnNames[stc] = subtotalColumnNames[stc].ToUpper();
@@ -80,9 +80,6 @@ namespace AsposeTest
             boldStyleTotal.SetTopBorder(BorderStyleValues.Thin, System.Drawing.Color.Black);
             boldStyleTotal.SetVerticalAlignment(VerticalAlignmentValues.Top);
 
-            var totalColCount = dt.Columns.Count;
-            var totalRowCount = dt.Rows.Count;
-
             var totalRow = 1;
             var totalRowOld = 2;
 
@@ -98,7 +95,7 @@ namespace AsposeTest
                     sl.SetColumnStyle(dc, new SLStyle {FormatCode = "#,##0.00"});
             }
 
-            for (var r = 0; r <= totalRowCount; r++)
+            for (var r = 0; r <= dt.Rows.Count; r++)
             {
                 if (r % 2 == 1)
                     sl.SetRowStyle(totalRow, alternatingRowStyle);
@@ -174,7 +171,7 @@ namespace AsposeTest
             // autofit column widths
             sl.AutoFitColumn(0, dt.Columns.Count);
             // optional, increase column widths a bit
-            //for (var col = groupCol; col <= totalColCount; col++)
+            //for (var col = groupCol; col <= dt.Columns.Count; col++)
             //    sl.SetColumnWidth(col, sl.GetColumnWidth(col) + 5);
 
             sl.FreezePanes(1, 0);
