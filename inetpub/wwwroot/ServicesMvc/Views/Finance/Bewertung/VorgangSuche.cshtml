@@ -9,9 +9,9 @@
             @Html.ValidationSummary()
             
             @Html.FormRadioButtonListFor(m => m.Vertragsart, Model.AuswahlVertragsart.ToSelectList())
-            @Html.FormTextBoxFor(m => m.Kontonummer, new { @class = "m-wrap" })
-            @Html.FormTextBoxFor(m => m.CIN, new { @class = "m-wrap" })
-            @Html.FormTextBoxFor(m => m.PAID, new { @class = "m-wrap" })
+            @Html.FormTextBoxFor(m => m.Kontonummer, new { @class = "m-wrap", @onkeypress = "return NumbersOnly(false);" })
+            @Html.FormTextBoxFor(m => m.CIN, new { @class = "m-wrap", @onkeypress = "return NumbersOnly(false);" })
+            @Html.FormTextBoxFor(m => m.PAID, new { @class = "m-wrap", @onkeypress = "return NumbersOnly(false);" })
             
             <div class="space20"></div>
 

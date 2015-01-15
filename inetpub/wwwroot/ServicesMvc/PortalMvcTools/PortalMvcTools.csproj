@@ -119,17 +119,7 @@
     <Compile Include="Web\HtmlHelperExtensionsSimpleForm.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Shared\Partial\FormValidationSummaryResponsive.cshtml">
       <Generator>MvcRazorClassGenerator</Generator>
       <LastGenOutput>FormValidationSummaryResponsive.cs</LastGenOutput>
