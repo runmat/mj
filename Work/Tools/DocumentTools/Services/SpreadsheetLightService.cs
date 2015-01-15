@@ -51,11 +51,17 @@ namespace DocumentTools.Services
 
             sl.ImportDataTable(1, 1, dt, true);
 
-            // apply column formatting (currency , etc)
             for (var dc = groupCol; dc <= dt.Columns.Count; dc++)
             {
-                if (dt.Columns[dc - 1].DataType == typeof(Decimal))
+                var dataColumn = dt.Columns[dc - 1];
+                
+                // apply column formatting (currency , etc)
+                if (dataColumn.DataType == typeof(Decimal))
                     sl.SetColumnStyle(dc, new SLStyle { FormatCode = "#,##0.00" });
+                
+                // set header cells to localized values
+                var header = (!string.IsNullOrEmpty(dataColumn.Caption) ? dataColumn.Caption : dataColumn.ColumnName.Replace("-<br>", ""));
+                sl.SetCellValue(1, dc, header);
             }
 
             for (var r = 0; r <= dt.Rows.Count; r++)
