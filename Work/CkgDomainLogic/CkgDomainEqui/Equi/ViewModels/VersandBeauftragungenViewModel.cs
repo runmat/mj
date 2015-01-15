@@ -80,7 +80,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             foreach (var fahrzeugbrief in VersandBeauftragungen.Where(c => c.IsSelected))
             {
-                var error = DataService.DeleteVersandBeauftragungen(fahrzeugbrief.Fahrgestellnummer);
+                var error = DataService.DeleteVersandBeauftragungen(fahrzeugbrief.Fahrgestellnummer, fahrzeugbrief.Kennzeichen);
                 if (error.IsNotNullOrEmpty())
                     return error;
                 
