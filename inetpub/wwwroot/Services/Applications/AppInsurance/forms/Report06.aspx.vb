@@ -1,15 +1,9 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
+﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 Imports Telerik.Web.UI
-
 Imports System.Linq
 Imports System.Web.UI.WebControls
-
-Imports CKG.Base.Kernel.Security
 Imports System.Data
-Imports System.Drawing
-
 Imports Telerik.Web.UI.GridExcelBuilder
 
 
@@ -19,7 +13,6 @@ Public Class Report06
 #Region "Declarations"
     Private m_App As Security.App
     Private m_User As Security.User
-    Private m_Track As Sendungsverfolgung
     Private sapSource As MopedKennzeichen
     Private changedRows As Dictionary(Of Integer, String)
     Private isExcelExportConfigured As Boolean = False
