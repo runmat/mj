@@ -178,7 +178,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
                 if (objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'").Length == 0)
                 { lblError.Text = "Fehler beim Speichern des Zulassungskreises"; return; }
                 objVorerf.KreisKennz = ddlStVa1.SelectedValue;
@@ -560,8 +560,7 @@ namespace AutohausPortal.forms
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
             tmpDView.RowFilter = "Matnr = 588";
             tmpDView.Sort = "Matnr";
 

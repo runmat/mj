@@ -235,7 +235,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
 
                 objVorerf.KreisKennz = "";
                 objVorerf.Kreis = "";

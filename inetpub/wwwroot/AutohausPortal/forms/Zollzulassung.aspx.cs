@@ -177,7 +177,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
                 objVorerf.KreisKennz = ddlStVa1.SelectedValue;
                 objVorerf.Kreis = objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'")[0]["KREISTEXT"].ToString();
                 DataRow [] KennzSonder =   objCommon.tblSonderStva.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'");
@@ -468,8 +468,7 @@ namespace AutohausPortal.forms
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
             tmpDView.RowFilter = "Matnr = 600";
             tmpDView.Sort = "Matnr";
             if (tmpDView.Count > 0)
@@ -655,8 +654,7 @@ namespace AutohausPortal.forms
 
             divHoldData.Visible = false;
 
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
             tmpDView.RowFilter = "Matnr = 600";
             tmpDView.Sort = "Matnr";
             if (tmpDView.Count > 0)
