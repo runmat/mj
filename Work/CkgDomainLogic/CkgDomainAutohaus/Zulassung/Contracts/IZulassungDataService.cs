@@ -13,6 +13,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         List<Material> Zulassungsarten { get; }
 
+        List<Material> Abmeldearten { get; }
+
         List<Zusatzdienstleistung> Zusatzdienstleistungen { get; }
 
         List<Kennzeichengroesse> Kennzeichengroessen { get; }

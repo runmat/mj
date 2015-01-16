@@ -15,7 +15,8 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen3;
         private string _kennzeichen;
 
-        [Required]
+        public bool ModusAbmeldung { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
 
@@ -26,22 +27,24 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (MaterialList == null)
                     return new Material();
 
-                var option = MaterialList.FirstOrDefault(m => m.MaterialNr == ZulassungsartMatNr);
-                if (option == null)
-                    return new Material();
-
-                return option;
+                var list = (ModusAbmeldung ? Abmeldearten : MaterialList);
+                return list.FirstOrDefault(m => m.MaterialNr == ZulassungsartMatNr) ?? new Material();
             }
         }
 
         [XmlIgnore]
         static public List<Material> MaterialList { get; set; }
 
+        [XmlIgnore]
+        static public List<Material> Abmeldearten { get; set; }
+
         public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        public DateTime? Abmeldedatum { get; set; }
 
         [Required]
         [StringLength(3)]
@@ -105,24 +108,44 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.ReservationName)]
         public string ReservierungsName { get; set; }
 
-        public static bool IstNeuzulassung(string matNr) { return (matNr.TrimStart('0') == "593"); }
+        public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 
-        public static bool IstGebrauchtzulassung(string matNr) { return (matNr.TrimStart('0') == "588"); }
+        public static bool IstGebrauchtzulassung(string matNr) { return (TrimMatNr(matNr) == "588"); }
 
-        public static bool Ist72hVersandzulassung(string matNr) { return (matNr.TrimStart('0') == "598"); }
+        public static bool Ist72HVersandzulassung(string matNr) { return (TrimMatNr(matNr) == "598"); }
 
-        public static bool IstAbmeldung(string matNr) { return (matNr.TrimStart('0') == "573" || matNr.TrimStart('0') == "584" || matNr.TrimStart('0') == "669"); }
+        public static bool IstAbmeldung(string matNr) { return (TrimMatNr(matNr) == "573" || TrimMatNr(matNr) == "584" || TrimMatNr(matNr) == "669"); }
 
-        public static bool IstUmkennzeichnung(string matNr) { return (matNr.TrimStart('0') == "596"); }
+        public static bool IstUmkennzeichnung(string matNr) { return (TrimMatNr(matNr) == "596"); }
 
-        public static bool IstKurzzeitzulassung(string matNr) { return (matNr.TrimStart('0') == "592"); }
+        public static bool IstKurzzeitzulassung(string matNr) { return (TrimMatNr(matNr) == "592"); }
 
-        public static bool IstFirmeneigeneZulassung(string matNr) { return (matNr.TrimStart('0') == "619"); }
+        public static bool IstFirmeneigeneZulassung(string matNr) { return (TrimMatNr(matNr) == "619"); }
 
-        public static bool IstZollzulassung(string matNr) { return (matNr.TrimStart('0') == "600"); }
+        public static bool IstZollzulassung(string matNr) { return (TrimMatNr(matNr) == "600"); }
+
+        static string TrimMatNr(string matNr)
+        {
+            return matNr.NotNullOrEmpty().TrimStart('0');
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (ModusAbmeldung)
+            {
+                if (Abmeldedatum == null)
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.CancellationDate, Localize.Required.ToLower()), new[] { "Abmeldedatum" });
+            }
+
+            if (!ModusAbmeldung)
+            {
+                if (Zulassungsdatum == null)
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
+                
+                if (ZulassungsartMatNr.IsNullOrEmpty())
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr" });
+            }
+
             if (!IstKurzzeitzulassung(ZulassungsartMatNr) && !IstZollzulassung(ZulassungsartMatNr) && String.IsNullOrEmpty(EvbNr))
                 yield return new ValidationResult(Localize.EvbNumberRequired, new[] { "EvbNr" });
 
