@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 namespace MvcTools.Controllers
 {
@@ -30,6 +31,11 @@ namespace MvcTools.Controllers
                 viewResult.MasterName = "~/Views/Shared/_LayoutRaw.cshtml";
 
             return viewResult;
+        }
+
+        protected bool IsInitialRequestOf(string actionName)
+        {
+            return (System.Web.HttpContext.Current.Request.Url.AbsolutePath.ToLower().EndsWith(actionName.ToLower()));
         }
     }
 }

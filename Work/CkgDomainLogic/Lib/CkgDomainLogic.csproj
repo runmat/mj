@@ -87,6 +87,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="DomainCommon\Models\Adresse.cs" />
+    <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
+    <Compile Include="DomainCommon\Models\CommonSummary.cs" />
+    <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
@@ -112,6 +118,7 @@
     <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
@@ -123,6 +130,8 @@
     <Compile Include="General\Services\CkgGeneralDataService.cs" />
     <Compile Include="General\Services\DbContextExtensions.cs" />
     <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
+    <Compile Include="General\Services\Persistance\PersistanceServiceSql.cs" />
+    <Compile Include="General\Services\Persistance\PersistanceSqlDbContext.cs" />
     <Compile Include="General\Services\SearchExtensions40.cs" />
     <Compile Include="General\ViewModels\CkgBaseViewModel.cs" />
     <Compile Include="General\ViewModels\CkgCommonViewModel.cs" />
@@ -157,6 +166,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Services\AdressenDataServiceSAP.cs" />
     <Compile Include="Services\CkgDomainAppSettings.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />
     <Compile Include="General\Models\DataModels\Land.cs" />
@@ -216,6 +226,7 @@
     <EmbeddedResource Include="Resources\DomainCommonResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DomainCommonResources.de-DE.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\DomainCommonResources.resx">
       <SubType>Designer</SubType>

@@ -1,0 +1,290 @@
+﻿<style type="text/css">
+    .shopping-cart-menu {
+        display: inline;
+    }
+    .shopping-cart-menu span.badge {
+        padding-top: 6px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 6px;
+        margin-left: 22px;
+        font-size: 16px!important;
+        font-weight: normal;
+        height: 16px;
+        width: 16px;
+        background-color: #ffb848;
+        border-radius: 16px !important;
+        text-shadow: none!important;
+        float: none;
+        text-align: center;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+    }
+    .shopping-cart-menu .glyphicons i:before {
+        color: #707070!important;
+        margin-top: -3px;
+        margin-left: 30px;
+        background-color: transparent!important;
+        float: none;
+        font-size: 28px!important;
+        text-decoration: none!important;
+    }
+    
+    .shopping-cart-body-inner 
+    {
+        margin-top: 0px;
+        margin-bottom: 35px;
+    }
+    .shopping-cart-body .portlet .caption i.icon-shopping-cart {
+        font-size: 18px;
+        margin-top: 2px;
+        margin-right: 10px;
+    }
+    .shopping-cart-body {
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+        width: 98%;
+    }
+    .shopping-cart-body .portlet.box {
+        border: none!important;
+        border-left: 1px solid #f3f3f3!important;
+    }
+    .shopping-cart-item-selection-count {
+        margin-right: 15px;
+    }
+    
+    .t-grid tbody td button.btn, .btn.rounded {
+        border-radius: 16px !important;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35)!important;
+    }
+    
+    .t-grid-selected {
+        background-color: #FCF3C7!important;
+    }
+    .t-grid-selected-alt {
+        background-color: #FFFAE0!important;
+    }
+    .t-grid-multi-row-select {
+        cursor: default!important;
+        background-color: #fff;
+    }
+    
+</style>
+
+<div class="shopping-cart-body"></div>
+
+<script type="text/javascript">
+
+    function ShoppingCartHide() {
+        $(".shopping-cart-body").html("");
+        $(".hidden-on-shopping-cart-opened").slideDown(200);
+    }
+
+    function ShoppingCartShow() {
+
+        var shoppingCartVisible = ($(".shopping-cart-body").html() !== '');
+        if (shoppingCartVisible) {
+            ShoppingCartHide();
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartGridShow",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                ShoppingCartShowResult(result);
+            }
+        });
+
+        return false;
+    };
+    
+    function ShoppingCartShowResult(result) {
+        if (typeof (result.message) !== "undefined") {
+            alert(result.message);
+            return;
+        }
+
+        $(".shopping-cart-body").html("");
+        $(".shopping-cart-body").append("<div class='shopping-cart-body-inner hide'></div>");
+        $(".shopping-cart-body-inner").html(result);
+        $(".hidden-on-shopping-cart-opened").slideUp(200);
+        $(".shopping-cart-body-inner").slideDown(200);
+        FormPreparePrivateGridShoppingCard();
+    }
+
+    function ShoppingCartItemEdit(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemEdit",
+            data: { id: id },
+            loadingShow: false,
+            success: function () {
+                LocationReloadWithoutQueryString();
+            }
+        });
+
+        return false;
+    }
+
+    function ShoppingCartItemRemove(id) {
+
+        if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
+            return false;
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemRemove",
+            data: { id: id },
+            loadingShow: false,
+            success: function () {
+                FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
+
+                _gridShoppingCart_MultiSelectItemCount--;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+            }
+        });
+
+        return false;
+    }
+    
+    function ShoppingCartSelectedItemsSubmit(btn) {
+
+        $(btn).attr("disabled", true);
+        LoadingShow();
+        SpanAlertWarning("ShoppingCartSubmitWaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartSelectedItemsSubmit",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                SpanAlertWarningHide("ShoppingCartSubmitWaitHint");
+                //FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
+
+                //_gridShoppingCart_MultiSelectItemCount = 0;
+                //GridShoppingCart_MultiSelectItemCountRefresh();
+
+                try {
+                    ShoppingCartSubmitFinished(result);
+                } catch (e) {
+                }
+            }
+        });
+
+        return false;        
+    }
+    
+
+    function ShoppingCartMenuRefreshCount() {
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartMenuRefreshCount",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                $(".shopping-cart-menu a span.badge").html(result.count);
+            }
+        });
+    }
+
+    function FormPreparePrivateGridShoppingCard() {
+        FormPreparePrivateAjax();
+        GridAllColumnFilterApplyToGrid("GridShoppingCart");
+
+        $("#GridShoppingCart .dataTables_length label").prepend("<span class='shopping-cart-item-selection-count hide'></span>");
+
+        $(".shopping-cart-body .portlet a.remove").on("click", function (e) {
+            e.preventDefault();
+            ShoppingCartHide();
+            return false;
+        });
+    }
+
+    function OnDataBound_GridShoppingCart() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridShoppingCart", true);
+    }
+
+    function OnColumnShowHide_GridShoppingCart() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridShoppingCart() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    var _gridShoppingCart_MultiSelectItemCount = 0;
+
+    function OnSelectionChange_GridShoppingCart(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemSelectionChanged",
+            data: { objectKey: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: true,
+            success: function (result) {
+                GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
+
+                _gridShoppingCart_MultiSelectItemCount = result.allSelectionCount;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+            }
+        });
+    }
+    
+    function GridShoppingCart_MultiSelectItemCountRefresh() {
+        var count = _gridShoppingCart_MultiSelectItemCount;
+        if (count <= 0) {
+            $(".shopping-cart-item-selection-count").addClass('hide');
+            return;
+        }
+
+        $(".shopping-cart-item-selection-count").removeClass('hide');
+        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
+    }
+
+    function GridShoppingCart_OnAllSelectionChange(check) {
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartItemSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
+                FilterGrid("GridShoppingCart");
+            }
+        });
+    }
+
+    function GridShoppingCart_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $(".shopping-cart-item-selection-count").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $(".shopping-cart-item-selection-count").removeClass('hide');
+        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }   
+    
+    function GridShoppingCart_MultiSelectItemCountHint(count) {
+        return  '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
+                '<i class="icon-chevron-right margin-right-10"></i>' + 
+                 count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+    }
+    
+</script>

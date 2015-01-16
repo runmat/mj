@@ -240,9 +240,17 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE").WriteOrmForExportTableStructures("I_KUNNR, I_VKORG, I_SPART", "00240045", "1010", "01");
             //new FunctionReflector("Z_ZLD_AH_MATERIAL").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_AH_ZULST_BY_PLZ").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_ZULLISTE").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_FI_CONV_IBAN_2_BANK_ACCOUNT").WriteOrmForExportTableStructures("I_IBAN", "DE79100100100196328100");
             
+            //new FunctionReflector("Z_AHP_CRE_CHG_PARTNER").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
+            //new FunctionReflector("Z_AHP_READ_PARTNER").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
+
+            //new FunctionReflector("Z_AHP_CRE_CHG_FZG_AKT_BEST").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+            //new FunctionReflector("Z_AHP_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
+            //ok new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR, I_FIN, I_ZZHERSTELLER_SCH, I_ZZTYP_SCHL, I_ZZVVS_SCHLUESSEL", "10026883", "9876543210", "X", "X", "X"); 
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -318,6 +326,8 @@ namespace SapORM
             //CsiTest();
 
             //TargoTest3();
+
+            AhpZullisteTest();
 
             Shutdown();
         }
@@ -1390,6 +1400,35 @@ namespace SapORM
                         );
 
             var listCount = list.Count;
+        }
+
+        static readonly string KunnrLueg = "240042";
+
+        static void AhpZullisteTest()
+        {
+            var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
+                        "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
+                            "", //KunnrLueg.ToSapKunnr(),
+                            "LUEG_BOCHUM",
+                            "1010",
+                            "4340",
+                            DateTime.Today.AddMonths(-2),
+                            DateTime.Today,
+                            "1"
+                        );
+
+            var listCount = list.Count;
+
+            //var list2 = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
+            //            "I_KUNNR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
+            //                KunnrLueg.ToSapKunnr(),
+            //                DateTime.Today.AddMonths(-2),
+            //                DateTime.Today,
+            //                "1"
+            //            );
+
+            //var listCount2 = list2.Count;
+            
         }
 
         #region Chart Table Export

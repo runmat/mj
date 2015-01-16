@@ -1,0 +1,41 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@{
+    var gridName = "GridShoppingCart";
+    var currentController = ViewContext.RouteData.GetRequiredString("controller");
+}
+
+@Html.SpanAlert("ShoppingCartSubmitWaitHint")
+
+@(Html.Telerik()
+    .Grid<KroschkeZulassungViewModel>()
+    .Name(gridName)
+        
+    .XGroup(null)
+    .XAjaxDataBinding("ShoppingCartAjaxBinding", currentController)
+    .Columns(columns =>
+        {
+            columns.XBound("")
+                .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ObjectKey #>' onchange='OnSelectionChange_GridShoppingCart($(this))' /> <# } #>")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridShoppingCart_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                .Filterable(false); 
+            columns.XBound(c => c.ObjectKey).Width(145).Title("").Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                            "<button onclick='return ShoppingCartItemEdit(\"<#= data.ObjectKey #>\");' class='btn mini blue tooltips margin-right-10' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
+                            "<button onclick='return ShoppingCartItemRemove(\"<#= data.ObjectKey #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                );
+
+            columns.XBound(c => c.FIN);
+            columns.XBound(c => c.HalterDatenAsString);
+            columns.XBound(c => c.EditDate);
+            columns.XBound(c => c.EditUser);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.EditDate).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ShoppingCartExportFilteredExcel", currentController).HtmlAttributes(new { @class = "hide btn mini gray tooltips a_btn_mini excel", data_original_title = "Excel Export", data_placement = "right" });
+        commands.FilteredDataCommand("ShoppingCartExportFilteredPDF", currentController).HtmlAttributes(new { @class = "hide btn mini gray tooltips a_btn_mini pdf", data_original_title = "PDF Export", data_placement = "right" });
+    })
+)

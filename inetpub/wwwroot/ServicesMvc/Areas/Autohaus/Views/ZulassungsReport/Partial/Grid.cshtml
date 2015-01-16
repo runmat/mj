@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@{
+    var gridName = "GridZulassungen";
+}
+
+@(Html.Telerik()
+    .Grid<ZulassungsReportModel>()
+    .Name(gridName)
+
+    .XGroup("GridZulassungenModel")
+    .XAjaxDataBinding("ItemsAjaxBinding", "ZulassungsReport")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ZulassungDatum).Descending())
+    .XToolBar("ZulassungsReport")
+)
+
