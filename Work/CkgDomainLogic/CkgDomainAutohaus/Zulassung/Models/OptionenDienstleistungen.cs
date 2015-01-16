@@ -184,6 +184,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 s += String.Format("<br/>{0}: {1}", Localize.LicenseNoOld, AltesKennzeichen);
             }
 
+            if (s.StartsWith("<br/>"))
+                s = s.SubstringTry(5);
+
             return s;
         }
     }

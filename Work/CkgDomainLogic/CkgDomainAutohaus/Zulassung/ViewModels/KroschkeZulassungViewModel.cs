@@ -426,6 +426,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     {
                         ModusAbmeldung = ModusAbmeldung,
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
+                        Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
                     },
             };
 
