@@ -159,7 +159,10 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZREFNR1 = s.Halter.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
+                            
                             d.ZZZLDAT = s.Zulassungsdaten.Zulassungsdatum;
+                            d.STILL_DAT = s.Zulassungsdaten.Abmeldedatum;
+
                             d.BLTYP = s.Zulassungsdaten.Belegtyp;
                             d.KREISKZ = s.Zulassungsdaten.Zulassungskreis;
                             d.KREISBEZ = s.Zulassungsdaten.ZulassungskreisBezeichnung;

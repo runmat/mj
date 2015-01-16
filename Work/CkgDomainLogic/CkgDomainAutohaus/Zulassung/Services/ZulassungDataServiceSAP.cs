@@ -21,7 +21,9 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
 
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => LoadZulassungsartenFromSap().ToList()); } }
+        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => !m.IstAbmeldung).ToList()); } }
+
+        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => m.IstAbmeldung).ToList()); } }
 
         public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); } }
 
@@ -45,6 +47,7 @@ namespace CkgDomainLogic.Autohaus.Services
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Fahrzeugarten);
             PropertyCacheClear(this, m => m.Zulassungsarten);
+            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
         }
@@ -91,7 +94,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList);
         }
 
-        private IEnumerable<Material> LoadZulassungsartenFromSap()
+        private IEnumerable<Material> LoadZulassungsAbmeldeArtenFromSap()
         {
             Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
 
