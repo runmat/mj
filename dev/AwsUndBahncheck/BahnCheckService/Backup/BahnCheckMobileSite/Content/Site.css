@@ -1,0 +1,68 @@
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+
+body {
+    font-size: 2.0em;
+}
+
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* MATZI */
+
+td, div {
+    padding-left: 20px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.right {
+    text-align: right;
+}
+
+.smaller {
+    font-size: 0.6em;
+}
+
+.small {
+    font-size: 0.45em;
+}
+
+.smaller_right {
+    font-size: 0.6em;
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.processingInfo {
+    color: orange;
+}

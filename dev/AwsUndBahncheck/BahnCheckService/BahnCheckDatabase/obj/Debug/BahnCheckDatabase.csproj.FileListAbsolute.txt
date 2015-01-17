@@ -2,7 +2,6 @@ C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\Ba
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\bin\Debug\BahnCheckDatabase.dll
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\bin\Debug\BahnCheckDatabase.pdb
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\bin\Debug\EntityFramework.dll
-C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\bin\Debug\EntityFramework.xml
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\obj\Debug\BahnCheckDatabase.dll
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\obj\Debug\BahnCheckDatabase.pdb
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheckDatabase\obj\Debug\BahnCheckDatabase.csprojResolveAssemblyReference.cache

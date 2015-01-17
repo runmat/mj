@@ -1,0 +1,115 @@
+﻿@model BahnCheckDatabase.Models.RbRequest
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="tbl" style="margin-top: 10px;">
+    <tr>
+        <td class="smaller">Abfahrt</td>
+        <td id="Abfahrt">@Model.AbfahrtString</td>
+    </tr>
+    <tr>
+        <td class="smaller">von</td>
+        <td class="smaller" id="Bahnhof">@Model.Bahnhof</td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="smaller">Pünktlich?</td>
+        <td class="bold" id="Auskunft">@Model.Auskunft</td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="smaller">Zug</td>
+        <td class="smaller" id="Zug">@Model.Zug</td>
+    </tr>
+    <tr>
+        <td class="small">Abfragedatum</td>
+        <td class="small" id="UpdDate">@Model.UpdDateString</td>
+    </tr>
+</table>
+
+<br />
+<div id="RbButtons">
+    <a id="Refresh" href="#" onclick="RbRefresh()" data-role="button" data-inline="true" style="font-size: 1.0em; display: none;"><span>Refresh</span></a>
+    <a id="Requery" href="#" onclick="RbRequery()" data-role="button" data-inline="true" style="font-size: 1.0em;"><span>Nächster Zug!</span></a>
+    <a id="OneTrainEarlier" href="#" onclick="RbOneTrainEarlierOrLater(-1)" data-role="button" data-inline="true" style="font-size: 1.0em;"><span>Zug -</span></a>
+    <a id="OneTrainLater" href="#" onclick="RbOneTrainEarlierOrLater(1)" data-role="button" data-inline="true" style="font-size: 1.0em;"><span>Zug +</span></a>
+</div>
+<div id="ProcessingInfo" class="ui-loader ui-corner-all ui-body-a ui-loader-verbose">
+    <span class='ui-icon ui-icon-loading'></span>
+    <div id="InnerProcessingInfo" class="smaller processingInfo"></div>
+</div>
+
+<script type="text/javascript">
+
+    $(window).load(function () {
+        setTimeout('RbRequery()', 1500);
+    });
+
+    function RbRequery() {
+        DisableUI();
+
+        RbAjax("RbRequery", "");
+    }
+
+    function RbRefresh() {
+        DisableUI();
+
+        RbAjax("RbRefresh", "");
+    }
+
+    function RbOneTrainEarlierOrLater(ofs) {
+        DisableUI();
+
+        RbAjax("RbOneTrainEarlierOrLater", "ofs: " + ofs);
+    }
+
+    function onSuccess(data) {
+
+        $("#ProcessingInfo").show();
+        $("#InnerProcessingInfo").html(data.ProcessingInfo);
+        
+        if (data.ProcessingInfo != "finished!")
+            RbAjax("RbPolling", "");
+        else {
+            $("#Abfahrt").html(data.AbfahrtString);
+            $("#Bahnhof").html(data.Bahnhof);
+            $("#Auskunft").html(data.Auskunft);
+            $("#Zug").html(data.Zug);
+            $("#UpdDate").html(data.UpdDateString);
+
+            $("#ProcessingInfo").hide();
+            $("#InnerProcessingInfo").html("");
+            $("#Refresh").show();
+
+            EnableUI();
+        }
+    }
+
+    function RbAjax(what, param) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/Home/" + what,
+            data: "{" + param + "}",
+            dataType: "json",
+            success: onSuccess
+        });
+    }
+
+    function EnableUI() {
+        $("#RbButtons").show();
+        $("#tbl").fadeTo('slow', 1.0);
+    }
+
+    function DisableUI() {
+        $("#RbButtons").hide();
+        $("#tbl").fadeTo('slow', 0.3);
+    }
+</script>
