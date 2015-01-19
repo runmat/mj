@@ -307,8 +307,15 @@ namespace AppZulassungsdienst.forms
                 }
                 else 
                 {
-                    txtKennz1.Text = objNacherf.Kennzeichen.Substring(0, 3);
-                    txtKennz2.Text = objNacherf.Kennzeichen.Substring(2);
+                    txtKennz1.Text = objNacherf.Kennzeichen.Substring(0, Math.Min(3, objNacherf.Kennzeichen.Length));
+                    if (objNacherf.Kennzeichen.Length > 3)
+                    {
+                        txtKennz2.Text = objNacherf.Kennzeichen.Substring(3);
+                    }
+                    else
+                    {
+                        txtKennz2.Text = "";
+                    }
                 }
             }
             txtBemerk.Text = objNacherf.Bemerkung;

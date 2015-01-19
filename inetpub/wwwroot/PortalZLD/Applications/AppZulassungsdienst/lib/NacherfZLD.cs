@@ -1613,8 +1613,15 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, 3);
-                        tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, Math.Min(3, tblKopf.Kennzeichen.Length));
+                        if (tblKopf.Kennzeichen.Length > 3)
+                        {
+                            tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        }
+                        else
+                        {
+                            tblKopf.KennABC = "";
+                        }
                     }
 
                     tblKopf.Kennztyp = dRow["KENNZTYP"].ToString();
