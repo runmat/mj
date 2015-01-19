@@ -442,11 +442,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ZulassungDataService.MarkForRefresh();
             Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
-            //Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
-            //Zulassungsdaten.MaterialList = Zulassungsarten;
-            Zulassungsdaten.Abmeldearten = Abmeldearten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
             PartnerDataService.MarkForRefreshAdressen();

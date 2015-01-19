@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Autohaus.Models
         static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
 
         [XmlIgnore]
-        static public List<Material> Abmeldearten { get; set; }
+        static List<Material> Abmeldearten { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Abmeldearten; } }
 
         public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
 
