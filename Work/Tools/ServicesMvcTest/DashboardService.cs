@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Autofac;
 using GeneralTools.Models;
 using ServicesMvc;
 
@@ -8,7 +9,7 @@ namespace CkgDomainLogic.Services
 {
     public class DashboardService
     {
-        public static void InvokeViewModelForAppUrl(string appUrl)
+        public static void InvokeViewModelForAppUrl(string appUrl, IContainer iocContainer)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
@@ -19,8 +20,12 @@ namespace CkgDomainLogic.Services
             if (controllerType == null)
                 return;
 
-
-
+            var ctor = controllerType.GetConstructors().First();
+            var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p =>
+                {
+                    var xxx = iocContainer.Resolve(p.ParameterType);
+                    return xxx;
+                }).ToArray());
         }
 
         private static Type GetControllerType(string area, string controller, Assembly servicesMvcAssembly)

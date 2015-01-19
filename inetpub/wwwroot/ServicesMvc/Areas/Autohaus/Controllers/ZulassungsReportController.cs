@@ -9,7 +9,6 @@ using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
