@@ -83,7 +83,7 @@ namespace AppZulassungsdienst.forms
                     {
                         Int32.TryParse(IDKopf, out id);
                     }
-                    if (id != 0)
+                    if (id != 0 && objNacherf != null)
                     {
                         objNacherf.LoadDB_ZLDRecordset(id);
                         if (objNacherf.Vorgang.StartsWith("A"))
@@ -407,13 +407,21 @@ namespace AppZulassungsdienst.forms
             {
                 GridView1.Columns[5].Visible = false;
             }
-            GridViewRow gridRow = GridView1.Rows[0];
-            TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
-            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
 
-            tmpDView.RowFilter = "Matnr = " + txtHauptPos.Text;
-            tmpDView.Sort = "Matnr";
-            if (tmpDView.Count > 0)
+            string matNr = "";
+            DataView tmpDView = null;
+            if (GridView1.Rows.Count > 0)
+            {
+                GridViewRow gridRow = GridView1.Rows[0];
+                TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
+                matNr = txtHauptPos.Text;
+
+                tmpDView = objCommon.tblKennzGroesse.DefaultView;
+                tmpDView.RowFilter = "Matnr = " + matNr;
+                tmpDView.Sort = "Matnr";
+            }
+            
+            if (tmpDView != null && tmpDView.Count > 0)
             {
                 ddlKennzForm.DataSource = tmpDView;
                 ddlKennzForm.DataTextField = "Groesse";
@@ -421,7 +429,7 @@ namespace AppZulassungsdienst.forms
                 ddlKennzForm.DataBind();
                 if (objNacherf.KennzForm.Length > 0)
                 {
-                    DataRow[] kennzRow = objCommon.tblKennzGroesse.Select("Groesse ='" + objNacherf.KennzForm + "' AND Matnr= '" + txtHauptPos.Text + "'" );
+                    DataRow[] kennzRow = objCommon.tblKennzGroesse.Select("Groesse ='" + objNacherf.KennzForm + "' AND Matnr= '" + matNr + "'");
                     if (kennzRow.Length>0)
                     {
                         ddlKennzForm.SelectedValue = kennzRow[0]["ID"].ToString();    
