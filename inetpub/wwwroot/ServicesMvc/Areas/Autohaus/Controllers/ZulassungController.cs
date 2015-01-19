@@ -46,6 +46,7 @@ namespace ServicesMvc.Autohaus.Controllers
         private void InitViewModelExpicit(KroschkeZulassungViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IZulassungDataService zulassungDataService, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
         {
             InitViewModel(vm, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -68,6 +69,11 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Abmeldung(string fin, string halterNr)
         {
             return Index(fin, halterNr, abmeldung: "1");
+        }
+
+        void InitModelStatics()
+        {
+            CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
