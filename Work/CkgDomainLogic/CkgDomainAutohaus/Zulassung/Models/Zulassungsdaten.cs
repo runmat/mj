@@ -33,7 +33,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [XmlIgnore]
-        static public List<Material> MaterialList { get; set; }
+        public List<Material> MaterialList { get; set; }
 
         [XmlIgnore]
         static public List<Material> Abmeldearten { get; set; }

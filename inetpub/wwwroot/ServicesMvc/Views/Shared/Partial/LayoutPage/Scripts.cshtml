@@ -102,6 +102,9 @@
         });
         $('.field-validation-error').each(function () {
             $(this).removeClass("field-validation-error").addClass("help-inline");
+            var controlGroupDiv = $(this).closest('div[class^="control-group"]');
+            if (controlGroupDiv != null)
+                controlGroupDiv.addClass('error');
         });
     }
 
@@ -514,8 +517,6 @@
                 
                 if ((isSmallContainer || eWidth > 150) && pWidth > maxPageWidth) {
 
-                    console.log(eWidth);
-                    
                     if (eWidth < 120)
                         eWidth = 120;
                     if (eWidth > 450)

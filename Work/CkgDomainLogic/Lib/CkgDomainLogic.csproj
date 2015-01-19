@@ -175,6 +175,7 @@
     <Compile Include="General\Services\Database\Models\ApplicationUser.cs" />
     <Compile Include="General\Contracts\ICkgGeneralDataService.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceSAP.cs" />
+    <Compile Include="Services\Extensions\GeneralExtensions.cs" />
     <Compile Include="UnitTests\SAP\GeneralTests.cs" />
     <Compile Include="UnitTests\SAP\UeberfuehrungTests.cs" />
     <Compile Include="Zulassung\MobileErfassung\Contracts\IZulMobileErfassungDataService.cs" />

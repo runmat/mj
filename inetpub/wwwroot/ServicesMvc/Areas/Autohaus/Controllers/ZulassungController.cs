@@ -87,6 +87,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetRechnungsdaten(model);
             }
 
+            ViewData.Add("KundenList", ViewModel.Kunden);
             return PartialView("Partial/RechnungsdatenForm", model);
         }
 
@@ -235,6 +236,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetZulassungsdaten(model);
             }
 
+            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 

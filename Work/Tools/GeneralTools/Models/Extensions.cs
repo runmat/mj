@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -53,6 +54,13 @@ namespace GeneralTools.Models
             var copiedList = source.Copy();
             copiedList.Insert(0, itemToInsert);
             return copiedList;
+        }
+
+        public static Type GetItemType(this IEnumerable someCollection)
+        {
+            var type = someCollection.GetType();
+            var ienum = type.GetInterface(typeof(IEnumerable<>).Name);
+            return ienum != null ? ienum.GetGenericArguments()[0] : null;
         }
     }
 
@@ -278,6 +286,21 @@ namespace GeneralTools.Models
         public static bool IsNotNullOrEmpty(this string s)
         {
             return !string.IsNullOrEmpty(s) && s.ToLower() != "null";
+        }
+
+        public static string NullIfNullOrEmpty(this string s)
+        {
+            return (s.IsNullOrEmpty() ? null : s);
+        }
+
+        public static decimal? NullIf0(this decimal? val)
+        {
+            return (val.GetValueOrDefault() == 0 ? null : val);
+        }
+
+        public static string SlashToBackslash(this string s)
+        {
+            return s.NotNullOrEmpty().Replace('/', '\\');
         }
 
         public static string RemovePropertyName<T>(this string s, Expression<Func<T>> expression, string replaceWith)

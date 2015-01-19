@@ -5,7 +5,7 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Partial/Suche", Model.Selektor)
+    @Html.Partial("Partial/Suche", Model.Selektor, new ViewDataDictionary{{ "KundenList", Model.Kunden }})
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -38,6 +38,8 @@
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
+
+        GridInitGroupCollapsing();
     }
 
     function OnColumnShowHide_GridZulassungen() {
@@ -48,4 +50,14 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+
+    function GridInitGroupCollapsing() {
+        var grid = $("#GridZulassungen").data('tGrid');
+
+        $("#GridZulassungen tbody").find('>tr.t-grouping-row').each(
+            function (index, elem) {
+                if (index > 0)
+                    grid.collapseRow(elem);
+            });
+    }
 </script>
