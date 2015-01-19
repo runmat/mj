@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -11,6 +14,9 @@ namespace CkgDomainLogic.Autohaus.Models
 {
     public class Zulassungsdaten : IValidatableObject
     {
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
+
         private string _wunschkennzeichen2;
         private string _wunschkennzeichen3;
         private string _kennzeichen;
@@ -35,7 +41,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [XmlIgnore]
-        public List<Material> MaterialList { get; set; }
+        static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
 
         public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
 
