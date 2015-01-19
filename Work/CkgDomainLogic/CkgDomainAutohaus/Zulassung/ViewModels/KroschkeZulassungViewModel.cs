@@ -308,7 +308,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return ZulassungDataService.Zulassungsarten; } }
+        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten { get { return ZulassungDataService.Abmeldearten; } }
@@ -448,6 +448,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             PartnerDataService.MarkForRefreshAdressen();
 
+            PropertyCacheClear(this, m => m.Zulassungsarten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
@@ -463,7 +464,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
+            {
                 ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
+
+                if (ZulassungenForReceipt.ToListOrEmptyList().None() || ZulassungenForReceipt.First().Zusatzformulare.ToListOrEmptyList().None(z => z.IstAuftragsListe))
+                    AuftragslisteAvailable = false;
+            }
         }
 
         #endregion

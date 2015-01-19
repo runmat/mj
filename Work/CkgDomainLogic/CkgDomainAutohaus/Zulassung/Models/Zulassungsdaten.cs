@@ -145,17 +145,17 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 if (Zulassungsdatum == null)
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
-                
+
                 if (ZulassungsartMatNr.IsNullOrEmpty())
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr" });
 
-                if (!IstKurzzeitzulassung(ZulassungsartMatNr) && !IstZollzulassung(ZulassungsartMatNr) && String.IsNullOrEmpty(EvbNr))
+                if (!IstKurzzeitzulassung(ZulassungsartMatNr) && !IstZollzulassung(ZulassungsartMatNr) && string.IsNullOrEmpty(EvbNr))
                     yield return new ValidationResult(Localize.EvbNumberRequired, new[] { "EvbNr" });
 
-                if (!String.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
+                if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
 
-                if (KennzeichenReserviert && (String.IsNullOrEmpty(ReservierungsName) || String.IsNullOrEmpty(ReservierungsNr)))
+                if (KennzeichenReserviert && (string.IsNullOrEmpty(ReservierungsName) || string.IsNullOrEmpty(ReservierungsNr)))
                     yield return new ValidationResult(Localize.ReservationDataRequired, new[] { "ReservierungsName", "ReservierungsNr" });
             }
         }
@@ -165,33 +165,33 @@ namespace CkgDomainLogic.Autohaus.Models
             var s = "";
 
             if (Zulassungsart != null)
-                s += String.Format("{0}: {1}", Localize.RegistrationType, Zulassungsart.MaterialText);
+                s += string.Format("{0}: {1}", Localize.RegistrationType, Zulassungsart.MaterialText);
 
             if (ModusAbmeldung)
             {
-                s += String.Format("<br/>{0}: {1}", Localize.CancellationDate, (Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : ""));
-                s += String.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+                s += string.Format("<br/>{0}: {1}", Localize.CancellationDate, (Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : ""));
+                s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
             }
             else
             {
-                s += String.Format("<br/>{0}: {1}", Localize.RegistrationDate, (Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : ""));
-                s += String.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+                s += string.Format("<br/>{0}: {1}", Localize.RegistrationDate, (Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : ""));
+                s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
 
-                if (!String.IsNullOrEmpty(EvbNr))
-                    s += String.Format("<br/>{0}: {1}", Localize.EvbNumber, EvbNr);
+                if (!string.IsNullOrEmpty(EvbNr))
+                    s += string.Format("<br/>{0}: {1}", Localize.EvbNumber, EvbNr);
 
-                s += String.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo, Kennzeichen);
+                s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo, Kennzeichen);
 
                 if (KennzeichenReserviert)
                 {
-                    s += String.Format("<br/>{0}", Localize.LicenseNoReserved);
-                    s += String.Format("<br/>{0}: {1}", Localize.ReservationNo, ReservierungsNr);
-                    s += String.Format("<br/>{0}: {1}", Localize.ReservationName, ReservierungsName);
+                    s += string.Format("<br/>{0}", Localize.LicenseNoReserved);
+                    s += string.Format("<br/>{0}: {1}", Localize.ReservationNo, ReservierungsNr);
+                    s += string.Format("<br/>{0}: {1}", Localize.ReservationName, ReservierungsName);
                 }
                 else
                 {
-                    s += String.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo2, Wunschkennzeichen2);
-                    s += String.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo3, Wunschkennzeichen3);
+                    s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo2, Wunschkennzeichen2);
+                    s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo3, Wunschkennzeichen3);
                 }
             }
 

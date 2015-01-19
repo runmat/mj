@@ -9,6 +9,7 @@ using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Autohaus.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Autohaus.Models.AppModelMappings;
@@ -240,7 +241,6 @@ namespace CkgDomainLogic.Autohaus.Services
 
             // alle PDF Formulare abrufen:
             var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
-            //XmlService.XmlSerializeToFile(fileNames, Path.Combine(AppSettings.DataPath, "GT_FILENAME.xml"));
             
             var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
             // alle relativen Pfade zu absoluten Pfaden konvertieren:
