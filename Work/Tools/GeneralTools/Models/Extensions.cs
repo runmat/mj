@@ -28,20 +28,6 @@ namespace GeneralTools.Models
             return (source != null && source.Any()) ? source.ToList() : new List<TSource>();
         }
 
-        //public static TValue FirstOrDefault<TSource, TValue>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Expression<Func<TSource, TValue>> defaultExpression) 
-        //    where TSource : class
-        //{
-        //    var item = source.FirstOrDefault(predicate);
-        //    if (item == null)
-        //        return default(TValue);
-
-        //    var propertyName = defaultExpression.GetPropertyName();
-        //    var modelType = typeof(TSource);
-        //    var propertyValue = (TValue)modelType.GetProperty(propertyName).GetValue(item, null);
-            
-        //    return propertyValue;
-        //}
-
         public static TSource[] ToArrayOrEmptyArray<TSource>(this IEnumerable<TSource> source)
         {
             return source != null && source.Any() ? source.ToArray() : new TSource[0];
@@ -159,6 +145,11 @@ namespace GeneralTools.Models
             return val.Substring(start, len);
         }
 
+        public static string SubstringTry(this string s, int start)
+        {
+            return s.SubstringTry(start, 99999999);
+        }
+
         public static string PrependIfNotNull(this string s, string prepend)
         {
             if (s.IsNullOrEmpty() || prepend.IsNullOrEmpty())
@@ -224,19 +215,48 @@ namespace GeneralTools.Models
         {
             var ret = "";
             s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
-                {
-                    if (c >= 'A' && c <= 'Z' && ret != "")
-                        ret += "-";
+            {
+                if (c >= 'A' && c <= 'Z' && ret != "")
+                    ret += "-";
 
-                    ret += c.ToString().ToLower();
-                });
+                ret += c.ToString().ToLower();
+            });
 
             return ret;
         }
 
+        public static string RemoveDigits(this string s)
+        {
+            var ret = "";
+            s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
+                {
+                    if (c >= '0' && c <= '9')
+                        return;
+
+                ret += c.ToString();
+            });
+
+            return ret;
+        }
+
+        public static bool LastCharIs(this string s, char lastChar)
+        {
+            return !s.IsNullOrEmpty() && (s[s.Length - 1] == lastChar);
+        }
+
+        public static string NotNullOrEmpty(this string s, string defaultValue)
+        {
+            return string.IsNullOrEmpty(s) ? defaultValue : s;
+        }
+
         public static string NotNullOrEmpty(this string s)
         {
-            return string.IsNullOrEmpty(s) ? "" : s;
+            return s.NotNullOrEmpty("");
+        }
+
+        public static string NotNullOr(this string s, string alternativeValue)
+        {
+            return s.IsNotNullOrEmpty() ? s : alternativeValue;
         }
 
         public static string NotNullOrEmptyOrNullString(this string s, string additionalNullstring=null)
@@ -497,6 +517,11 @@ namespace GeneralTools.Models
                 return string.Join(",", typeFullName.Split(',').Take(2).ToArray());
 
             return null;
+        }
+
+        public static IEnumerable<string> GetScaffoldPropertyLowerNames(this Type type)
+        {
+            return type.GetScaffoldProperties().Select(property => property.Name.ToLower());
         }
 
         public static IEnumerable<string> GetScaffoldPropertyNames(this Type type)

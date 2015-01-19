@@ -65,6 +65,7 @@ namespace SapORM.Services
             sw.WriteLine("using System.Linq;");
             sw.WriteLine("using System.Web.Script.Serialization;");
             sw.WriteLine("using GeneralTools.Contracts;");
+            sw.WriteLine("using GeneralTools.Models;");
             sw.WriteLine("using SapORM.Contracts;");
             sw.WriteLine("");
 
@@ -178,7 +179,7 @@ namespace SapORM.Services
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> ToList(DataTable dt, ISapConnection sapConnection = null)", tbl.TableName);
             sw.WriteLine("\t\t\t{");
-            sw.WriteLine("\t\t\t\treturn Select(dt, sapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dt, sapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
 
             sw.WriteLine();
@@ -193,7 +194,7 @@ namespace SapORM.Services
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)", tbl.TableName);
             sw.WriteLine("\t\t\t{");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> ToList(ISapDataService sapDataService)", tbl.TableName);
@@ -208,7 +209,7 @@ namespace SapORM.Services
             sw.WriteLine("\t\t\t\t ");
             sw.WriteLine("\t\t\t\tvar dts = sapDataService.GetExportTablesWithInitExecute(\"" + SapFunction + "\", inputParameterKeys, inputParameterValues);");
             sw.WriteLine("\t\t\t\t ");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> GetExportListWithExecute(ISapDataService sapDataService)", tbl.TableName);
@@ -218,7 +219,7 @@ namespace SapORM.Services
             sw.WriteLine("\t\t\t\t ");
             sw.WriteLine("\t\t\t\tvar dts = sapDataService.GetExportTablesWithExecute();");
             sw.WriteLine("\t\t\t\t ");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine(); 
             sw.WriteLine("\t\t\tpublic static List<{0}> GetExportList(ISapDataService sapDataService)", tbl.TableName);
@@ -228,7 +229,7 @@ namespace SapORM.Services
             sw.WriteLine("\t\t\t\t ");
             sw.WriteLine("\t\t\t\tvar dts = sapDataService.GetExportTables();");
             sw.WriteLine("\t\t\t\t ");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)", tbl.TableName);
@@ -238,7 +239,7 @@ namespace SapORM.Services
             sw.WriteLine("\t\t\t\t ");
             sw.WriteLine("\t\t\t\tvar dts = sapDataService.GetImportTablesWithInit(\"" + SapFunction + "\", inputParameterKeys, inputParameterValues);");
             sw.WriteLine("\t\t\t\t ");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine();
             sw.WriteLine("\t\t\tpublic static List<{0}> GetImportList(ISapDataService sapDataService)", tbl.TableName);
@@ -248,7 +249,7 @@ namespace SapORM.Services
             sw.WriteLine("\t\t\t\t ");
             sw.WriteLine("\t\t\t\tvar dts = sapDataService.GetImportTables();");
             sw.WriteLine("\t\t\t\t ");
-            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToList();");
+            sw.WriteLine("\t\t\t\treturn Select(dts, sapDataService.SapConnection).ToListOrEmptyList();");
             sw.WriteLine("\t\t\t}");
             sw.WriteLine("\t\t}");
         }

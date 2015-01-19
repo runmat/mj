@@ -47,11 +47,10 @@ namespace Telerik.Web.Mvc.UI
             GridBoundColumnBuilder<TModel> column = null;
 
             var modelColumnList = userMasterColumns;
-            modelColumnList
-                .Where(slave => modelType.GetScaffoldPropertyNames().Contains(slave)).ToList()
-                    .ForEach(propertyName =>
+            var propertyNameList =  modelColumnList.Where(slave => modelType.GetScaffoldPropertyLowerNames().Contains(slave.ToLower())).ToList();
+            propertyNameList.ForEach(propertyName =>
                         {
-                            if (propertiesToExclude == null || propertiesToExclude.None(pExclude => pExclude.GetPropertyName() == propertyName) )
+                            if (propertiesToExclude == null || propertiesToExclude.None() || propertiesToExclude.None(pExclude => pExclude.GetPropertyName().ToLower() == propertyName.ToLower()))
                                 column = builder.XBound(propertyName, !userSlaveColumnsToHide.Contains(propertyName));
                         });
 
