@@ -1,19 +1,65 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @{
     var gridName = "GridZulassungen";
+    var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0:c}', Sum) #></strong>";
 }
 
-@(Html.Telerik()
-    .Grid<ZulassungsReportModel>()
+@(Html.XTelerik()
+    .XGrid<ZulassungsReportModel>()
     .Name(gridName)
 
-    .XGroup("GridZulassungenModel")
+    .XGroup(null)
     .XAjaxDataBinding("ItemsAjaxBinding", "ZulassungsReport")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.DokumentName).ClientTemplate(
+                    "<# if (data.DokumentNameIsValid) { #>" +
+                    "   <a class='btn mini gray pdf tooltips a_btn_mini' " +
+                    "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DokumentName #>' ></a> " +
+                    "<# } #> "
+                ).Title("").Sortable(false).Filterable(false);
+            columns.XBound(c => c.KundenNrAndName)
+                .Aggregate(aggregates => aggregates.Count())
+                    .ClientGroupHeaderTemplate("<strong>Kunde: <#= Key #>, Anzahl: <#= Count #></strong>");
+            columns.XBound(c => c.BelegNummer);
+            columns.XBound(c => c.StatusAsText);
+
+            columns.XBound(c => c.Preis).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum())
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.PreisGebuehr).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum())
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.PreisSteuer).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum())
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.PreisKz).Format("{0:c}")
+                .Aggregate(aggreages => aggreages.Sum())
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+
+            columns.XBound(c => c.Referenz1);
+            columns.XBound(c => c.Referenz2);
+            columns.XBound(c => c.Referenz3);
+            columns.XBound(c => c.Referenz4);
+            columns.XBound(c => c.EvbNummmer);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.ErfassungsDatum);
+            columns.XBound(c => c.ZulassungDatum);
+            columns.XBound(c => c.MaterialKurztext);
+
+            columns.XBound(c => c.FeinstaubAmt);
+            columns.XBound(c => c.KennzeichenMerkmal);
+            columns.XBound(c => c.VkUser);
+            columns.XBound(c => c.KundenReferenz);
+            columns.XBound(c => c.KundenNotiz);
+            columns.XBound(c => c.ErfassungsUser);
+        })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.ZulassungDatum).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.KundenNrAndName).Descending())
     .XToolBar("ZulassungsReport")
+
+    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.KundenNrAndName)))
 )
 

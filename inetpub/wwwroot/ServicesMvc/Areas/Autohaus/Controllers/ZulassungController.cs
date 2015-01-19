@@ -46,6 +46,7 @@ namespace ServicesMvc.Autohaus.Controllers
         private void InitViewModelExpicit(KroschkeZulassungViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IZulassungDataService zulassungDataService, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
         {
             InitViewModel(vm, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -70,6 +71,11 @@ namespace ServicesMvc.Autohaus.Controllers
             return Index(fin, halterNr, abmeldung: "1");
         }
 
+        void InitModelStatics()
+        {
+            CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+        }
+
 
         #region Rechnungsdaten
 
@@ -87,6 +93,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetRechnungsdaten(model);
             }
 
+            ViewData.Add("KundenList", ViewModel.Kunden);
             return PartialView("Partial/RechnungsdatenForm", model);
         }
 
@@ -235,6 +242,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetZulassungsdaten(model);
             }
 
+            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 

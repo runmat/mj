@@ -38,6 +38,9 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
+                if (KundenNr.IsNullOrEmpty())
+                    return Name1;
+
                 return String.Format("{0}{1}{2} ~ {3}", 
                     Name1, 
                     (String.IsNullOrEmpty(Name2) ? "" : ", " + Name2), 

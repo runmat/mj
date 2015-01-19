@@ -15,30 +15,26 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string KundenNr { get; set; }
 
-        public Kunde Kunde
+
+        public Kunde GetKunde(List<Kunde> kunden)
         {
-            get
-            {
-                if (KundenList == null)
+            if (kunden == null)
                     return new Kunde();
 
-                var option = KundenList.FirstOrDefault(k => k.KundenNr == KundenNr);
-                if (option == null)
-                    return new Kunde();
+            var option = kunden.FirstOrDefault(k => k.KundenNr == KundenNr);
+            if (option == null)
+                return new Kunde();
 
-                return option;
-            }
+            return option;
         }
 
-        [XmlIgnore]
-        static public List<Kunde> KundenList { get; set; }
-
-        public string GetSummaryString()
+        public string GetSummaryString(List<Kunde> kunden)
         {
             var s = "";
 
-            if (Kunde != null)
-                s += String.Format("{0}: {1}", Localize.Customer, Kunde.KundenNameNr.Replace(", ", "<br/>"));
+            var kunde = GetKunde(kunden);
+            if (kunde != null)
+                s += String.Format("{0}: {1}", Localize.Customer, kunde.KundenNameNr.Replace(", ", "<br/>"));
 
             return s;
         }

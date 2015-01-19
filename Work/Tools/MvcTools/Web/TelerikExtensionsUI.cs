@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -7,7 +8,9 @@ using System.Web.Mvc;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using MvcTools.Web;
+using Telerik.Web.Mvc.Infrastructure;
 using Telerik.Web.Mvc.UI.Fluent;
+using Telerik.Web.Mvc.UI.Html;
 
 namespace Telerik.Web.Mvc.UI
 {
@@ -302,5 +305,50 @@ namespace Telerik.Web.Mvc.UI
         }
 
         #endregion
+
+        #region Row Grouping + Subtotals, advanced excel export, etc
+
+        public static XViewComponentFactory<TModel> XTelerik<TModel>(this HtmlHelper<TModel> helper) where TModel : class
+        {
+            var componentFactory = helper.Telerik();
+            var myComponentFactory = new XViewComponentFactory<TModel>(helper,
+                                            componentFactory.ClientSideObjectWriterFactory,
+                                            componentFactory.StyleSheetRegistrar(), componentFactory.ScriptRegistrar());
+
+            return myComponentFactory;
+        }
+
+        #endregion
+    }
+
+    public class XViewComponentFactory<TModel> : ViewComponentFactory<TModel> where TModel : class
+    {
+        public XViewComponentFactory(HtmlHelper<TModel> htmlHelper, IClientSideObjectWriterFactory clientSideObjectWriterFactory, StyleSheetRegistrarBuilder styleSheetRegistrar, ScriptRegistrarBuilder scriptRegistrar)
+                                    : base(htmlHelper, clientSideObjectWriterFactory, styleSheetRegistrar, scriptRegistrar)
+        {
+        }
+
+        private static void SaveGridToSession(IGrid grid, Type type)
+        {
+            SessionHelper.SetSessionObject(string.Format("Telerik_Grid_{0}", type.Name), grid);
+        }
+
+        public GridBuilder<T> XGrid<T>() where T : class
+        {
+            var gridBuilder = GridBuilder<T>.Create(Register(() =>
+                {
+                    var grid = new Grid<T>(HtmlHelper.ViewContext, ClientSideObjectWriterFactory,
+                                   DI.Current.Resolve<IUrlGenerator>(),
+                                   DI.Current.Resolve<ILocalizationServiceFactory>().Create("GridLocalization", CultureInfo.CurrentUICulture),
+                                   DI.Current.Resolve<IGridHtmlBuilderFactory>());
+
+                    SaveGridToSession(grid, typeof (T));
+
+                    return grid;
+                }));
+
+            
+            return gridBuilder;
+        }
     }
 }

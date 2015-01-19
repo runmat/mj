@@ -1,5 +1,8 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @model Zulassungsdaten
+@{
+    var materialList = (List<Material>)ViewData["MaterialList"];
+}
 
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
@@ -9,39 +12,30 @@
         @Html.FormValidationSummary()
 
         
-        @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
-
-        if (Model.ModusAbmeldung)
-        {
-            @Html.HiddenFor(m => m.ZulassungsartMatNr)
-            @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
-            @Html.HiddenFor(m => m.Zulassungskreis)
-        }
-        else
-        {
-            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, Zulassungsdaten.MaterialList.ToSelectList(), new { @class = "m-wrap medium" })
-            @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
-
-            @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
-                                postControlHtml: @<text>
-                                                        <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadDistrictFromOwnerAddress</a>
-                                                        @Html.SpanAlert("kfzKreisHint")
-                                                    </text>)
-
-            @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
-
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-            @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
         
-            @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-            @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
-        
-            @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-            @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
-        }
+        @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium" })
 
-                
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+        
+        @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
+                            postControlHtml: @<text>
+                                                    <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadDistrictFromOwnerAddress</a>
+                                                    @Html.SpanAlert("kfzKreisHint")
+                                                </text>)
+
+        @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
+        
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+        @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+        @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
+        
+        
         @Html.FormRequiredFieldsSummary()
         
         <script type="text/javascript">

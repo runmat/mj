@@ -32,6 +32,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public Adresse Halterdaten { get; set; }
 
+        public List<Kunde> Kunden { get; set; }
+
         public string Halter
         {
             get
@@ -68,13 +70,13 @@ namespace CkgDomainLogic.Autohaus.Models
 
 
         [XmlIgnore, ScriptIgnore]
-        public string BeauftragungBezeichnungKunde
+        string BeauftragungBezeichnungKunde
         {
             get
             {
                 return String.Format("{0}: {1}, {2}, {3}, {4}",
                     Fahrzeugdaten.AuftragsNr,
-                    Rechnungsdaten.Kunde.KundenNameNr,
+                    Rechnungsdaten.GetKunde(Kunden).KundenNameNr,
                     Zulassungsdaten.Zulassungsart.MaterialText,
                     Halter,
                     Zulassungsdaten.Kennzeichen);
@@ -126,7 +128,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             new GeneralEntity
                             {
                                 Title = Localize.InvoiceData,
-                                Body = Rechnungsdaten.GetSummaryString(),
+                                Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
                             new GeneralEntity
