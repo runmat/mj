@@ -208,20 +208,14 @@ namespace CkgDomainLogic.Autohaus.Services
                 }
 
                 var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();
-                if (saveDataToSap)
-                    XmlService.XmlSerializeToFile(bakList, Path.Combine(AppSettings.DataPath, string.Format("GT_BAK{0}.xml", saveFromShoppingCart ? "-ShoppingCart" : "-Direct")));
                 SAP.ApplyImport(bakList);
 
                 var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
-                if (saveDataToSap)
-                    XmlService.XmlSerializeToFile(posList, Path.Combine(AppSettings.DataPath, string.Format("GT_POS{0}.xml", saveFromShoppingCart ? "-ShoppingCart" : "-Direct")));
                 SAP.ApplyImport(posList);
 
                 if (adressen.Any())
                 {
                     var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
-                    if (saveDataToSap)
-                        XmlService.XmlSerializeToFile(adrsList, Path.Combine(AppSettings.DataPath, string.Format("GT_ADRS{0}.xml", saveFromShoppingCart ? "-ShoppingCart" : "-Direct")));
                     SAP.ApplyImport(adrsList);
                 }
 
@@ -244,8 +238,6 @@ namespace CkgDomainLogic.Autohaus.Services
 
             // alle PDF Formulare abrufen:
             var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
-            if (saveDataToSap)
-                XmlService.XmlSerializeToFile(fileNamesSap, Path.Combine(AppSettings.DataPath, string.Format("GT_FILENAME{0}.xml", saveFromShoppingCart ? "-ShoppingCart" : "-Direct")));
             
             var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
             // alle relativen Pfade zu absoluten Pfaden konvertieren:

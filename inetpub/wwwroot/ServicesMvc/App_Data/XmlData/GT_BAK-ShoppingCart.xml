@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfGT_BAK_IN xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <GT_BAK_IN>
-    <ZULBELN>0001608161</ZULBELN>
+    <ZULBELN>0001608178</ZULBELN>
     <VKORG>1010</VKORG>
     <VKBUR>4340</VKBUR>
     <VE_ERNAM>mjelueg</VE_ERNAM>
-    <BLTYP>AN</BLTYP>
+    <BLTYP>AK</BLTYP>
     <KUNNR>0000329245</KUNNR>
     <ZZREFNR1>XAVER HALTER </ZZREFNR1>
-    <ZZREFNR2>XSXS</ZZREFNR2>
-    <ZZREFNR3>XS</ZZREFNR3>
-    <ZZREFNR4>XS</ZZREFNR4>
+    <ZZREFNR2>FG</ZZREFNR2>
+    <ZZREFNR3>FG</ZZREFNR3>
+    <ZZREFNR4>FG</ZZREFNR4>
     <KREISKZ>HH</KREISKZ>
     <WUNSCHKENN_JN />
     <RESERVKENN_JN />
@@ -26,7 +26,7 @@
     <VH_KENNZ_RES />
     <STILL_DAT xsi:nil="true" />
     <FAHRZ_ART>1</FAHRZ_ART>
-    <ZZEVB>SSSSSSS</ZZEVB>
+    <ZZEVB />
     <SAISON_KNZ />
     <SAISON_BEG />
     <SAISON_END />
@@ -37,7 +37,7 @@
     <RECH_JN />
     <BARZ_JN />
     <HALTE_DAUER xsi:nil="true" />
-    <ZZREFNR5>XS</ZZREFNR5>
+    <ZZREFNR5>FG</ZZREFNR5>
     <BRIEFNR />
   </GT_BAK_IN>
 </ArrayOfGT_BAK_IN>

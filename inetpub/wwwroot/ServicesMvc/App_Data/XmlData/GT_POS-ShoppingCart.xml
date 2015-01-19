@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfGT_POS_IN xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <GT_POS_IN>
-    <ZULBELN>0001608161</ZULBELN>
+    <ZULBELN>0001608178</ZULBELN>
     <LFDNR>10</LFDNR>
-    <MATNR>000000000000000593</MATNR>
+    <MATNR>000000000000000592</MATNR>
     <MENGE>1</MENGE>
   </GT_POS_IN>
   <GT_POS_IN>
-    <ZULBELN>0001608161</ZULBELN>
+    <ZULBELN>0001608178</ZULBELN>
     <MATNR>700</MATNR>
     <MENGE>1</MENGE>
   </GT_POS_IN>

@@ -281,7 +281,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return ZulassungDataService.Zulassungsarten; } }
+        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
 
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
@@ -413,6 +413,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             PartnerDataService.MarkForRefreshAdressen();
 
+            PropertyCacheClear(this, m => m.Zulassungsarten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
