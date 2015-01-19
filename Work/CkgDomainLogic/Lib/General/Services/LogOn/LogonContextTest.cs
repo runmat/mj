@@ -26,7 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
-        public string GroupName { get; set; }
+        public string GroupName { get { return PropertyCacheGet(() => "LUEG_BOCHUM"); } set { PropertyCacheSet(value); } }
 
         public string UserName
         {
@@ -97,7 +97,7 @@ namespace CkgDomainLogic.General.Services
                     AllOrganizations =  false,
                     CustomerID = 209,
                     OrganizationID = 266,
-                    OrganizationName = "240072_4340",
+                    OrganizationName = "LUEG_BOCHUM",
                     OrganizationReference = "240072",
                     OrganizationReference2 = "4340",
                 }; 

@@ -46,6 +46,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
 
+        public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
 
         [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
@@ -104,6 +105,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Kunde> Kunden { get { return ZulassungDataService.Kunden; } }
 
+
         public void SetRechnungsdaten(Rechnungsdaten model)
         {
             if (Zulassung.Rechnungsdaten.KundenNr != model.KundenNr)
@@ -111,8 +113,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             Zulassung.Rechnungsdaten.KundenNr = model.KundenNr;
 
-            Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
-            Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.Kunde.CpdMitEinzugsermaechtigung;
+            Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.GetKunde(Kunden).Cpdkunde;
+            Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.GetKunde(Kunden).CpdMitEinzugsermaechtigung;
 
             if (Zulassung.BankAdressdaten.Zahlungsart.IsNullOrEmpty())
                 Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
@@ -127,7 +129,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void CheckCpd()
         {
-            SkipBankAdressdaten = !Zulassung.Rechnungsdaten.Kunde.Cpdkunde;
+            SkipBankAdressdaten = !Zulassung.Rechnungsdaten.GetKunde(Kunden).Cpdkunde;
         }
 
         public void SetBankAdressdaten(ref BankAdressdaten model)
@@ -398,13 +400,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataMarkForRefresh()
         {
+            Zulassung.Kunden = Kunden;
+
             ZulassungDataService.MarkForRefresh();
             Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
-            Rechnungsdaten.KundenList = Kunden;
+            //Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
-            Zulassungsdaten.MaterialList = Zulassungsarten;
+            //Zulassungsdaten.MaterialList = Zulassungsarten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
             PartnerDataService.MarkForRefreshAdressen();

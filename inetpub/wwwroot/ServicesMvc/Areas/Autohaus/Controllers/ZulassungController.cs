@@ -46,6 +46,7 @@ namespace ServicesMvc.Autohaus.Controllers
         private void InitViewModelExpicit(KroschkeZulassungViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IZulassungDataService zulassungDataService, IFahrzeugAkteBestandDataService fahrzeugbestandDataService)
         {
             InitViewModel(vm, appSettings, logonContext, partnerDataService, zulassungDataService, fahrzeugbestandDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -62,6 +63,11 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartTryEditItemAsViewModel();
 
             return View(ViewModel);
+        }
+
+        void InitModelStatics()
+        {
+            CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
@@ -81,6 +87,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetRechnungsdaten(model);
             }
 
+            ViewData.Add("KundenList", ViewModel.Kunden);
             return PartialView("Partial/RechnungsdatenForm", model);
         }
 
@@ -229,6 +236,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SetZulassungsdaten(model);
             }
 
+            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 

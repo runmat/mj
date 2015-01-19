@@ -1402,13 +1402,13 @@ namespace SapORM
             var listCount = list.Count;
         }
 
-        static readonly string KunnrLueg = "240042";
+        static readonly string KunnrLueg = "240042"; // 0000329245
 
         static void AhpZullisteTest()
         {
             var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
                         "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
-                            "", //KunnrLueg.ToSapKunnr(),
+                            "",
                             "LUEG_BOCHUM",
                             "1010",
                             "4340",
@@ -1418,17 +1418,6 @@ namespace SapORM
                         );
 
             var listCount = list.Count;
-
-            //var list2 = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
-            //            "I_KUNNR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
-            //                KunnrLueg.ToSapKunnr(),
-            //                DateTime.Today.AddMonths(-2),
-            //                DateTime.Today,
-            //                "1"
-            //            );
-
-            //var listCount2 = list2.Count;
-            
         }
 
         #region Chart Table Export

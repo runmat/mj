@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Web.Mvc;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.General.Contracts;
@@ -8,6 +9,7 @@ using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -49,11 +51,12 @@ namespace ServicesMvc.Autohaus.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewModel.LoadZulassungsReport();
+                ViewModel.LoadZulassungsReport(ModelState.AddModelError);
                 if (ViewModel.Items.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
+            ViewData.Add("KundenList", ViewModel.Kunden);
             return PartialView("Partial/Suche", ViewModel.Selektor);
         }
 
@@ -77,6 +80,13 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
+        public FileContentResult PdfDocumentDownload(string docName)
+        {
+            var docFullName = Path.Combine(KroschkeZulassungViewModel.PfadAuftragszettel, docName.SlashToBackslash().SubstringTry(1));
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(docFullName);
+
+            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(docFullName) };
+        }
 
         #region Export
 

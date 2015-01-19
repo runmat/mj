@@ -27,7 +27,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
 
-
         public ZulassungsReportSelektor Selektor
         {
             get { return PropertyCacheGet(() => new ZulassungsReportSelektor()); }
@@ -54,6 +53,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return PropertyCacheGet(() => DataService.FahrzeugStatusWerte); }
         }
 
+        [XmlIgnore, ScriptIgnore]
+        public List<Kunde> Kunden { get { return DataService.Kunden; } }
+
+        [XmlIgnore]
+        public static string AuftragsArtOptionen
+        {
+            get
+            {
+                return string.Format("1,{0};2,{1};3,{2}", Localize.AllOrders, Localize.FinishedOrders, Localize.OpenOrders);
+            }
+        }
+
+
         public void DataInit()
         {
             DataMarkForRefresh();
@@ -68,9 +80,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
         }
 
-        public void LoadZulassungsReport()
+        public void LoadZulassungsReport(Action<string, string> addModelError)
         {
-            Items = DataService.GetZulassungsReportItems(Selektor);
+            Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
 
             DataMarkForRefresh();
         }

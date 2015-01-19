@@ -1,5 +1,11 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Autohaus.ViewModels
 @model ZulassungsReportSelektor
+
+@{
+    var kundenList = (List<Kunde>)ViewData["KundenList"];
+    kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde {Name1 = Localize.DropdownDefaultOptionAll});
+}
 
 <div id="divZulassungsReportSuche">
     @using (Ajax.BeginForm("LoadZulassungsReport", "ZulassungsReport", null,
@@ -10,23 +16,25 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormDropDownListFor(m => m.KundenNr, kundenList.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
 
-            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap", col = "right" })
 
-            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "right" })
-            
-            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Referenz3, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz4, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormDateRangePickerFor(m => m.ZulassungsDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "right" })
+
+            @Html.FormRadioButtonListFor(m => m.AuftragsArt, ZulassungsReportViewModel.AuftragsArtOptionen)
 
 
-            @*@Html.FormRequiredFieldsSummary()*@
+            @* @Html.FormRequiredFieldsSummary() *@
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
         </div>  
         

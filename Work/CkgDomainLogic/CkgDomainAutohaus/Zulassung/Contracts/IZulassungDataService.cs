@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Autohaus.Models;
@@ -28,7 +29,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         #region Zulassungs Report
 
-        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector);
+        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
 
         #endregion
     }

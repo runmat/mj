@@ -1,5 +1,8 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @model Rechnungsdaten
+@{
+    var kundenList = (List<Kunde>)ViewData["KundenList"];
+}
 
 <div id="DivRechnungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("RechnungsdatenForm", "Zulassung", null,
@@ -9,7 +12,7 @@
         @Html.FormValidationSummary()
         
 
-        @Html.FormDropDownListFor(m => m.KundenNr, Rechnungsdaten.KundenList.ToSelectList(), new { @class = "m-wrap" })
+        @Html.FormDropDownListFor(m => m.KundenNr, kundenList.ToSelectList(), new { @class = "m-wrap" })
 
                 
         @Html.FormRequiredFieldsSummary()

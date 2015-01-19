@@ -15,6 +15,7 @@ using GeneralTools.Services;
 using MvcTools.Controllers;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
+using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
@@ -183,11 +184,35 @@ namespace CkgDomainLogic.General.Controllers
             return new List<object>();
         }
 
+        private static string[] GetValidGridAggregatesColumnNames(IGrid grid) 
+        {
+            var columns = grid.Columns.Cast<IGridBoundColumn>();
+            var subTotalColumns = columns.Where(c => c.ClientGroupFooterTemplate.IsNotNullOrEmpty());
+            var validSubTotalColumns = subTotalColumns.Where(c => c.MemberType != typeof(string));
+
+            return validSubTotalColumns.Select(c => c.Member).ToArray();
+        }
+
         [ValidateInput(false)]
         public ActionResult GridDataExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ExcelExport", dt);
+            var exportList = GetGridExportData();
+            var modelType = exportList.GetItemType();
+
+            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+
+            var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
+            if (grid == null || grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)
+                new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ExcelExport", dt);
+            else
+            {
+                // Advanced Excel Export with groupings, aggregates, subtotals, etc
+                // no Aspose needed anymore, based on SpreadsheetLight library + "DocumentFormat Open XML" library
+
+                var gridAggregateColumnNames = GetValidGridAggregatesColumnNames(grid);
+
+                new ExcelDocumentFactory().CreateExcelGroupedDocumentAndSendAsResponse("ExcelExport", dt, gridAggregateColumnNames);
+            }
 
             return new EmptyResult();
         }
