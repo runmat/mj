@@ -428,7 +428,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
+            {
                 ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
+
+                if (ZulassungenForReceipt.ToListOrEmptyList().None() || ZulassungenForReceipt.First().Zusatzformulare.ToListOrEmptyList().None(z => z.IstAuftragsListe))
+                    AuftragslisteAvailable = false;
+            }
         }
 
         #endregion
