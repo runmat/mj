@@ -14,15 +14,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
     [DashboardProviderViewModel]
     public class ZulassungsReportViewModel : CkgBaseViewModel
     {
-        //public object ReportSelector { get { return Selektor; } set { Selektor = (ZulassungsReportSelektor)value; } }
-
-        //public IEnumerable ReportItems { get { return Items; } }
-
-        //public void ReportItemsLoad(Action<string, string> addModelError)
-        //{
-        //    LoadZulassungsReport(addModelError);
-        //}
-
         [XmlIgnore, ScriptIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 

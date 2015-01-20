@@ -101,7 +101,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IReportController.cs" />
     <Compile Include="Models\FormInnerLayerModel.cs" />
     <Compile Include="Models\FormOuterLayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

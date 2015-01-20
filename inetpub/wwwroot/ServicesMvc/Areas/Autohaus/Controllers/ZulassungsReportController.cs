@@ -15,8 +15,6 @@ namespace ServicesMvc.Autohaus.Controllers
 {
     public class ZulassungsReportController : CkgDomainController
     {
-        //public IReportViewModel ReportViewModel { get { return ViewModel; } }
-        
         public override string DataContextKey { get { return GetDataContextKey<ZulassungsReportViewModel>(); } }
 
         public ZulassungsReportViewModel ViewModel 

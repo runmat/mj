@@ -34,11 +34,18 @@ namespace CkgDomainLogic.Services
             if (vm == null)
                 return;
 
-            //var vieModelProperty = controllerType.GetPropertiesForAttribute()
-            Do(vm);
+            Do(vm, () => new ZulassungsReportSelektor
+                                {
+                                    ZulassungsDatumRange = new DateRange
+                                        {
+                                            IsSelected = true,
+                                            StartDate = DateTime.Today.AddMonths(-4),
+                                            EndDate = DateTime.Today.AddMonths(-2),
+                                        }
+                                });
         }
 
-        private static void Do(object vm)
+        private static void Do(object vm, Func<object> createSelectorObjectFunc)
         {
             var vmType = vm.GetType();
 
@@ -54,18 +61,10 @@ namespace CkgDomainLogic.Services
             if (piDashboardItemsLoadMethod == null)
                 return;
 
-            var selector = new ZulassungsReportSelektor
-                {
-                    ZulassungsDatumRange = new DateRange
-                        {
-                            IsSelected = true,
-                            StartDate = DateTime.Today.AddMonths(-4),
-                            EndDate = DateTime.Today.AddMonths(-2),
-                        }
-                };
+            var selector = createSelectorObjectFunc();
             piDashboardItemSelector.SetValue(vm, selector, null);
 
-            piDashboardItemsLoadMethod.Invoke(vm, new object[] { null });
+            piDashboardItemsLoadMethod.Invoke(vm, piDashboardItemsLoadMethod.GetParameters().Select(p => (object)null).ToArray());
             var items = piDashboardItems.GetValue(vm, null);
         }
 
