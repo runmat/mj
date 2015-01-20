@@ -13,6 +13,7 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Services;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -61,6 +62,8 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
+
+            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");
 
             return View("Index", ViewModel);
         }

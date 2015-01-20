@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IReportController.cs" />
     <Compile Include="Models\FormInnerLayerModel.cs" />
     <Compile Include="Models\FormOuterLayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,7 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\Shared\Wrappers\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Web.Mvc;
 using Autofac;
+using CkgDomainLogic.Autohaus.Models;
+using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using ServicesMvc;
 
@@ -9,7 +12,7 @@ namespace CkgDomainLogic.Services
 {
     public class DashboardService
     {
-        public static void InvokeViewModelForAppUrl(string appUrl, IContainer iocContainer)
+        public static void InvokeViewModelForAppUrl(string appUrl, IContainer iocContainer = null)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
@@ -21,11 +24,36 @@ namespace CkgDomainLogic.Services
                 return;
 
             var ctor = controllerType.GetConstructors().First();
-            var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p =>
+            var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p => GetInstanceOf(p.ParameterType, iocContainer)).ToArray());
+
+            var vm = ((IReportController) controllerObject).ReportViewModel;
+            Do(vm);
+        }
+
+        private static void Do(IReportViewModel vm)
+        {
+            vm.ReportSelector = new ZulassungsReportSelektor
                 {
-                    var xxx = iocContainer.Resolve(p.ParameterType);
-                    return xxx;
-                }).ToArray());
+                    ZulassungsDatumRange = new DateRange
+                        {
+                            IsSelected = true, 
+                            StartDate = DateTime.Today.AddMonths(-4),
+                            EndDate = DateTime.Today.AddMonths(-2),
+                        }
+                };
+
+            vm.ReportItemsLoad((s,e) => {});
+            var items = vm.ReportItems;
+        }
+
+        private static object GetInstanceOf(Type type, IContainer iocContainer)
+        {
+            if (iocContainer != null)
+                // use custom resolver
+                return iocContainer.Resolve(type);
+
+            // use MVC resolver
+            return DependencyResolver.Current.GetService(type);
         }
 
         private static Type GetControllerType(string area, string controller, Assembly servicesMvcAssembly)

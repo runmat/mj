@@ -1,32 +1,32 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
-using CkgDomainLogic.Partner.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Resources;
-using GeneralTools.Services;
-using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
+    [DashboardProviderViewModel]
     public class ZulassungsReportViewModel : CkgBaseViewModel
     {
+        //public object ReportSelector { get { return Selektor; } set { Selektor = (ZulassungsReportSelektor)value; } }
+
+        //public IEnumerable ReportItems { get { return Items; } }
+
+        //public void ReportItemsLoad(Action<string, string> addModelError)
+        //{
+        //    LoadZulassungsReport(addModelError);
+        //}
+
         [XmlIgnore, ScriptIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
-
+        [DashboardItemSelector]
         public ZulassungsReportSelektor Selektor
         {
             get { return PropertyCacheGet(() => new ZulassungsReportSelektor()); }
@@ -34,6 +34,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore]
+        [DashboardItems]
         public List<ZulassungsReportModel> Items
         {
             get { return PropertyCacheGet(() => new List<ZulassungsReportModel>()); }
@@ -80,6 +81,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
         }
 
+        [DashboardItemsLoadMethod]
         public void LoadZulassungsReport(Action<string, string> addModelError)
         {
             Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);

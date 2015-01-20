@@ -1,4 +1,6 @@
-﻿using CkgDomainLogic.Services;
+﻿using System.Web;
+using CkgDomainLogic.Services;
+using MvcTools.Web;
 using SapORM.Services;
 using ServicesMvc;
 
@@ -10,6 +12,8 @@ namespace ServicesMvcTest
         {
             var sap = new SapDataServiceDefaultFactory().Create();
             var iocContainer = IocConfig.CreateIocContainerAndRegisterTypes(sap);
+
+            HttpContext.Current = SessionHelper.FakeHttpContext();
 
             DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index", iocContainer);
         }

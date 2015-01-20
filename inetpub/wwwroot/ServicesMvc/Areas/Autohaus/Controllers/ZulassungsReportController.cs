@@ -13,8 +13,10 @@ using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
 {
-    public class ZulassungsReportController : CkgDomainController 
+    public class ZulassungsReportController : CkgDomainController
     {
+        //public IReportViewModel ReportViewModel { get { return ViewModel; } }
+        
         public override string DataContextKey { get { return GetDataContextKey<ZulassungsReportViewModel>(); } }
 
         public ZulassungsReportViewModel ViewModel 
@@ -94,6 +96,6 @@ namespace ServicesMvc.Autohaus.Controllers
             return ViewModel.ItemsFiltered;
         }
 
-        #endregion    
+        #endregion
     }
 }
