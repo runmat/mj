@@ -6,13 +6,15 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IApplicationCopyDataService : ICkgGeneralDataService
     {
-        ObservableCollection<ApplicationInfo> Applications { get; }
+        ObservableCollection<Application> Applications { get; }
 
-        ObservableCollection<ApplicationInfo> ChildApplications { get; }
+        ObservableCollection<Application> ChildApplications { get; }
 
         ObservableCollection<ApplicationField> FieldTranslations { get; }
 
         ObservableCollection<ColumnTranslation> ColumnTranslations { get; }
+
+        ObservableCollection<ApplicationConfig> ConfigurationValues { get; }
 
         bool IsInEditMode { get; }
 
@@ -24,7 +26,7 @@ namespace CKGDatabaseAdminLib.Contracts
 
         void BeginEdit(int appId, string appURL);
 
-        int? CopyApplication(bool blnChildApplications, bool blnFieldTranslations, bool blnColumnTranslations);
+        int? CopyApplication(bool blnChildApplications, bool blnFieldTranslations, bool blnColumnTranslations, bool blnConfigurationValues);
 
         void ResetCurrentApp();
     }

@@ -9,6 +9,7 @@ using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
@@ -157,6 +158,32 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (KennzeichenReserviert && (string.IsNullOrEmpty(ReservierungsName) || string.IsNullOrEmpty(ReservierungsNr)))
                     yield return new ValidationResult(Localize.ReservationDataRequired, new[] { "ReservierungsName", "ReservierungsNr" });
+            }
+
+            foreach (var dateResult in ValidateWochenendeUndFeiertage(Zulassungsdatum, "Zulassungsdatum").ToList())
+                yield return dateResult;
+
+            foreach (var dateResult in ValidateWochenendeUndFeiertage(Abmeldedatum, "Abmeldedatum").ToList())
+                yield return dateResult;
+        }
+
+        static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)
+        {
+            if (dateValue == null)
+                yield break;
+
+            var datum = dateValue.GetValueOrDefault();
+            if (datum < DateTime.Today)
+                yield return new ValidationResult("Bitte geben Sie ein Datum ab heute an", new[] { datePropertyName });
+            else if (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
+                yield return new ValidationResult("Bitte vermeiden Sie Wochenendtage", new[] { datePropertyName });
+            else
+            {
+                var feiertag = DateService.GetFeiertag(datum);
+                if (feiertag != null)
+                    yield return new ValidationResult(
+                        string.Format("Der {0} ist ein Feiertag, '{1}'. Bitte vermeiden Sie Feiertage.", datum.ToString("dd.MM.yy"), feiertag.Name)
+                        , new[] { datePropertyName });
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -63,9 +62,9 @@ namespace CkgDomainLogic.CoC.Models
             get
             {
                 var keySuffix = VersandKey.NotNullOrEmpty().ToUpper();
-                var key = string.Format("SendungsverfolgungExternUrl_{0}", keySuffix);
+                var key = string.Format("Url_{0}", keySuffix);
 
-                var surveyLink = ApplicationConfiguration.GetApplicationConfigValue(key, "1", 1);
+                var surveyLink = GeneralConfiguration.GetConfigValue("Sendungsverfolgung", key);
                 if (surveyLink.IsNullOrEmpty())
                     return "#";
 
