@@ -6,7 +6,7 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IFieldTranslationCopyDataService : ICkgGeneralDataService
     {
-        ObservableCollection<ApplicationInfo> Applications { get; }
+        ObservableCollection<Application> Applications { get; }
 
         ObservableCollection<ApplicationField> FieldTranslations { get; }
 
