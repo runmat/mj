@@ -14,11 +14,11 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<ApplicationInfo> Applications { get { return DataService.Applications; } }
+        public ObservableCollection<Application> Applications { get { return DataService.Applications; } }
 
         public ObservableCollection<BapiTable> Bapis { get { return DataService.Bapis; } }
 
-        public ObservableCollection<ApplicationInfo> BapiApplications { get { return DataService.BapiApplications; } }
+        public ObservableCollection<Application> BapiApplications { get { return DataService.BapiApplications; } }
 
         [XmlIgnore]
         private readonly IBapiApplicationDataService DataService;
