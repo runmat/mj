@@ -52,16 +52,77 @@ namespace CkgDomainLogic.Logs.Services
 
             var hitlist = new List<PageVisitLogItem>();
 
-            foreach (var item in customerApps)
+            if (pageVisitLogItemSelector.OnlyUnusedApplications)
             {
-                int intKunnr;
-                if (!Int32.TryParse(item.KUNNR, out intKunnr))
-                    intKunnr = 0;
-
-                if (pageVisitLogItemSelector.OnlyUnusedApplications)
+                foreach (var item in Applications)
                 {
-                    if (!pageVisits.Any(p => p.CustomerID == item.CustomerID && p.AppID == item.AppID))
+                    var appId = item.AppID;
+
+                    if (pageVisits.All(p => p.AppID != appId))
                     {
+                        if (customerApps.Any(a => a.AppID == appId))
+                        {
+                            foreach (var custApp in customerApps.Where(a => a.AppID == appId))
+                            {
+                                int intKunnr;
+                                if (!Int32.TryParse(custApp.KUNNR, out intKunnr))
+                                    intKunnr = 0;
+
+                                hitlist.Add(new PageVisitLogItem
+                                {
+                                    CustomerID = custApp.CustomerID,
+                                    CustomerName = custApp.CustomerName,
+                                    KUNNR = intKunnr,
+                                    AppID = appId,
+                                    AppFriendlyName = item.AppFriendlyName,
+                                    Hits = 0
+                                });
+                            }
+                        }
+                        else
+                        {
+                            hitlist.Add(new PageVisitLogItem
+                            {
+                                CustomerID = null,
+                                CustomerName = null,
+                                KUNNR = null,
+                                AppID = appId,
+                                AppFriendlyName = item.AppFriendlyName,
+                                Hits = 0
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in customerApps)
+                {
+                    int intKunnr;
+                    if (!Int32.TryParse(item.KUNNR, out intKunnr))
+                        intKunnr = 0;
+
+                    if (pageVisitLogItemSelector.OnlyUnusedCustomerApplications)
+                    {
+                        if (!pageVisits.Any(p => p.CustomerID == item.CustomerID && p.AppID == item.AppID))
+                        {
+                            hitlist.Add(new PageVisitLogItem
+                            {
+                                CustomerID = item.CustomerID,
+                                CustomerName = item.CustomerName,
+                                KUNNR = intKunnr,
+                                AppID = item.AppID,
+                                AppFriendlyName = item.AppFriendlyName,
+                                Hits = 0
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var hitCount = (from p in pageVisits
+                                        where p.CustomerID == item.CustomerID && p.AppID == item.AppID
+                                        select p.Hits).Sum();
+
                         hitlist.Add(new PageVisitLogItem
                         {
                             CustomerID = item.CustomerID,
@@ -69,25 +130,9 @@ namespace CkgDomainLogic.Logs.Services
                             KUNNR = intKunnr,
                             AppID = item.AppID,
                             AppFriendlyName = item.AppFriendlyName,
-                            Hits = 0
+                            Hits = hitCount
                         });
                     }
-                }
-                else
-                {
-                    var hitCount = (from p in pageVisits
-                                    where p.CustomerID == item.CustomerID && p.AppID == item.AppID
-                                    select p.Hits).Sum();
-
-                    hitlist.Add(new PageVisitLogItem
-                    {
-                        CustomerID = item.CustomerID,
-                        CustomerName = item.CustomerName,
-                        KUNNR = intKunnr,
-                        AppID = item.AppID,
-                        AppFriendlyName = item.AppFriendlyName,
-                        Hits = hitCount
-                    });
                 }
             }
 

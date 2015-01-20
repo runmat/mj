@@ -136,17 +136,12 @@
                                                     <RowStyle CssClass="ItemStyle" />
                                                     <EmptyDataRowStyle BackColor="#DFDFDF" />
                                                     <Columns>
-                                                        <asp:TemplateField Visible="false">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblSendnr" runat="server" Text='<%# Bind("ZZTRACK") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>                                                    
+                                                        <asp:BoundField DataField="ZZTRACK" Visible="False" />                                                  
                                                         <asp:TemplateField>
                                                             <HeaderStyle Width="15px" />
                                                             <ItemTemplate>
                                                                 <asp:ImageButton ID="lbSendung" runat="server"
-                                                                  ImageUrl="../../../Images/DHL-logo.gif" ToolTip="Sendung verfolgen" Height="16px" Width="16px"
-                                                                    />
+                                                                  ImageUrl="../../../Images/shipping.gif" ToolTip="Sendung verfolgen" Height="13px" Width="28px" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:BoundField DataField="AGENTUR" HeaderStyle-Width="85px" HeaderText="Agenturnr." SortExpression="AGENTUR" />
@@ -158,11 +153,7 @@
                                                         <asp:BoundField DataField="ERDAT" HeaderStyle-Width="75px" HeaderText="beauftragt am" DataFormatString="{0:dd.MM.yyyy}" SortExpression="ERDAT" />
                                                         <asp:BoundField DataField="PACKDAT" HeaderStyle-Width="75px" HeaderText="versendet am" DataFormatString="{0:dd.MM.yyyy}" SortExpression="PACKDAT" />
                                                         <asp:BoundField DataField="PACKZEIT" HeaderStyle-Width="75px" HeaderText="versendet um"  SortExpression="PACKZEIT" />
-
-         
-                                                    </Columns>
-    
-                                                    
+                                                    </Columns>  
                                                 </asp:GridView>
                                             </td>
                                         </tr>
@@ -182,7 +173,7 @@
                             </div>
                                 <script type="text/javascript" language="javascript">
                                         function openinfo(url) {
-                                        fenster = window.open(url, "Sendungverfolgung", "menubar=0,scrollbars=2,toolbars=0,location=0,directories=0,status=0,width=800,height=600");
+                                        fenster = window.open(url, "Sendungsverfolgung", "menubar=0,scrollbars=2,toolbars=0,location=0,directories=0,status=0,width=800,height=600");
                                         fenster.focus();
                                     }
                                 </script>
