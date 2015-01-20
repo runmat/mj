@@ -11,7 +11,7 @@ namespace CKGDatabaseAdminLib.Services
 {
     public class ApplicationBapiDataServiceSql : CkgGeneralDataService, IApplicationBapiDataService
     {
-        public ObservableCollection<ApplicationInfo> Applications { get { return _dataContext.Applications.Local; } }
+        public ObservableCollection<Application> Applications { get { return _dataContext.Applications.Local; } }
 
         public ObservableCollection<BapiTable> Bapis { get { return _dataContext.BapisSorted; } }
 

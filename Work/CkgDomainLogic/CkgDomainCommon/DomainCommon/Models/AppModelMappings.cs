@@ -46,7 +46,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "COUNTRY_ZS", "Land" },
                         { "ERNAM", "ErfassungsUserName" },
                         { "ZZBETREFF", "Bemerkung"},
-                        { "ZZVGRUND", "Versandgrund"}
+                        { "ZZVGRUND", "Versandgrund"},
+                        { "ZZ_MAHNA", "Mahnverfahren"}
                     },
 
                     // Init Copy  (from SAP)

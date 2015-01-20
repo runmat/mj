@@ -216,6 +216,13 @@ namespace DocumentTools.Services
             pdfDoc.Save(reportName + ".pdf", Aspose.Pdf.SaveType.OpenInAcrobat, HttpContext.Current.Response);
         }
 
+        public void CreateExcelDocumentAndSaveAsFile(string reportPathAndFilename, DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle = true)
+        {
+            var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet);
+
+            xlsDoc.Workbook.Save(reportPathAndFilename, FileFormatType.Excel2003);
+        }
+
         private static WorkbookDesigner CreateDocument(DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle =true)
         {
             var xlsDoc = new WorkbookDesigner();

@@ -56,6 +56,36 @@ namespace GeneralTools.Models
             return copiedList;
         }
 
+        public static DataTable ToDataTable<T>(this IList<T> source)
+        {
+            var dt = new DataTable();
+            var properties = TypeDescriptor.GetProperties(typeof(T));
+            
+            // Column Headers
+            for (int i = 0; i < properties.Count; i++)
+            {
+                PropertyDescriptor property = properties[i];
+                var propType = property.PropertyType;
+                if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof (Nullable<>))
+                    propType = propType.GetGenericArguments()[0];
+                dt.Columns.Add(property.Name, propType);
+            }
+
+            // Data
+            object[] values = new object[properties.Count];
+
+            foreach (T item in source)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(item);
+                }
+                dt.Rows.Add(values);
+            }
+
+            return dt;
+        }
+
         public static Type GetItemType(this IEnumerable someCollection)
         {
             var type = someCollection.GetType();
