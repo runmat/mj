@@ -564,6 +564,61 @@ namespace GeneralTools.Models
                 return true;
             });
         }
+
+
+        /// <summary>
+        /// Alle Properties von Typ "type" mit Property-Klassen die ein Attribut "attributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetPropertiesWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true)
+                    .Any(p => p.GetType() == attributeType));
+        }
+
+        public static PropertyInfo GetPropertyWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetPropertiesWithAttribute(attributeType).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Alle Properties von Typ "type" mit Property-Klassen die ein Klassen-Attribut "classAttributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="classAttributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetPropertiesOfClassWithAttribute(this Type type, Type classAttributeType)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.PropertyType.GetCustomAttributes(true)
+                    .Any(p => p.GetType() == classAttributeType));
+        }
+
+        public static PropertyInfo GetPropertyOfClassWithAttribute(this Type type, Type propertyClassAttributeType)
+        {
+            return type.GetPropertiesOfClassWithAttribute(propertyClassAttributeType).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Alle Methoden von Typ "type" mit Property-Klassen die ein Attribut "attributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<MethodInfo> GetMethodsWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true)
+                    .Any(p => p.GetType() == attributeType));
+        }
+
+        public static MethodInfo GetMethodWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetMethodsWithAttribute(attributeType).FirstOrDefault();
+        }
     }
 
     public static class DateTimeExtensions

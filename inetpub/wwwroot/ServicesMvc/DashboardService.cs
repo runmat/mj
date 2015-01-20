@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
 using CkgDomainLogic.Autohaus.Models;
-using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using ServicesMvc;
 
@@ -26,24 +26,47 @@ namespace CkgDomainLogic.Services
             var ctor = controllerType.GetConstructors().First();
             var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p => GetInstanceOf(p.ParameterType, iocContainer)).ToArray());
 
-            var vm = ((IReportController) controllerObject).ReportViewModel;
+            var piDashboardProviderViewModel = controllerType.GetPropertyOfClassWithAttribute(typeof (DashboardProviderViewModelAttribute));
+            if (piDashboardProviderViewModel == null)
+                return;
+
+            var vm = piDashboardProviderViewModel.GetValue(controllerObject, null);
+            if (vm == null)
+                return;
+
+            //var vieModelProperty = controllerType.GetPropertiesForAttribute()
             Do(vm);
         }
 
-        private static void Do(IReportViewModel vm)
+        private static void Do(object vm)
         {
-            vm.ReportSelector = new ZulassungsReportSelektor
+            var vmType = vm.GetType();
+
+            var piDashboardItemSelector = vmType.GetPropertyWithAttribute(typeof(DashboardItemSelectorAttribute));
+            if (piDashboardItemSelector == null)
+                return;
+
+            var piDashboardItems = vmType.GetPropertyWithAttribute(typeof(DashboardItemsAttribute));
+            if (piDashboardItems == null)
+                return;
+
+            var piDashboardItemsLoadMethod = vmType.GetMethodWithAttribute(typeof(DashboardItemsLoadMethod));
+            if (piDashboardItemsLoadMethod == null)
+                return;
+
+            var selector = new ZulassungsReportSelektor
                 {
                     ZulassungsDatumRange = new DateRange
                         {
-                            IsSelected = true, 
+                            IsSelected = true,
                             StartDate = DateTime.Today.AddMonths(-4),
                             EndDate = DateTime.Today.AddMonths(-2),
                         }
                 };
+            piDashboardItemSelector.SetValue(vm, selector, null);
 
-            vm.ReportItemsLoad((s,e) => {});
-            var items = vm.ReportItems;
+            piDashboardItemsLoadMethod.Invoke(vm, new object[] { null });
+            var items = piDashboardItems.GetValue(vm, null);
         }
 
         private static object GetInstanceOf(Type type, IContainer iocContainer)
