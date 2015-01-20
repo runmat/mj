@@ -276,6 +276,11 @@ namespace CkgDomainLogic.General.Services
             return "";
         }
 
+        public virtual void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+
+        }
+
         public virtual User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
         {
             return null;

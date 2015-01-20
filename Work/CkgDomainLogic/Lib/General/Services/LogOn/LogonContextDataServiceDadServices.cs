@@ -243,6 +243,15 @@ namespace CkgDomainLogic.General.Services
             return email;
         }
 
+        public override void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+            var dbContext = CreateDbContext(loginModel.UserName);
+            var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
+
+            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0)
+                addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
+        }
+
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
         {
             if (!SecurityService.ValidatePasswordResetToken(passwordToken, tokenExpirationMinutes))
@@ -304,6 +313,22 @@ namespace CkgDomainLogic.General.Services
 
         public override void LogoutUser()
         {
+            UserID = "";
+            UserName = "";
+            User = null;
+            UserInfo = null;
+            FirstName = "";
+            LastName = "";
+            KundenNr = "";
+            Customer = null;
+            GroupName = "";
+            Group = null;
+            Organization = null;
+            if (AppTypes != null)
+                AppTypes.Clear();
+            if (UserApps != null)
+                UserApps.Clear();
+            UserNameEncryptedToUrlEncoded = "";
         }
 
         public override bool ChangePassword(string oldPassword, string newPassword)

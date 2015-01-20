@@ -114,6 +114,21 @@ namespace CkgDomainLogic.General.Services
 
         public void LogoutUser()
         {
+            UserID = "";
+            UserName = "";
+            User = null;
+            UserInfo = null;
+            FirstName = "";
+            LastName = "";
+            KundenNr = "";
+            Customer = null;
+            GroupName = "";
+            Group = null;
+            Organization = null;
+            if (AppTypes != null)
+                AppTypes.Clear();
+            if (UserApps != null)
+                UserApps.Clear();
         }
 
         public bool ChangePassword(string oldPassword, string newPassword)
@@ -254,6 +269,10 @@ namespace CkgDomainLogic.General.Services
         public string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             return "";
+        }
+
+        public void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
         }
 
         public IEnumerable<string> GetAddressPostcodeCityMappings(string plz)
