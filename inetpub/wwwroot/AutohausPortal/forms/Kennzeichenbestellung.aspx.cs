@@ -69,6 +69,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AB");
                     objVorerf.NrMaterial = "25";
+                    objVorerf.Material = "Euro-Kennzeichen geprägt";
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;

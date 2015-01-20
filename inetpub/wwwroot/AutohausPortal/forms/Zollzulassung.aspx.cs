@@ -69,6 +69,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AZ");
                     objVorerf.NrMaterial = "600";
+                    objVorerf.Material = "Zollzulassung";
                     fillForm();
                    
                     Session["objVorerf"] = objVorerf;

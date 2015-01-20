@@ -66,6 +66,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AS");
                     objVorerf.NrMaterial = "570";
+                    objVorerf.Material = "Sonstige Dienstleistung";
                     fillForm();
                 }
                 Session["objVorerf"] = objVorerf;

@@ -65,6 +65,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AU");
                     objVorerf.NrMaterial = "596";
+                    objVorerf.Material = "Umkennzeichnung";
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;

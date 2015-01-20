@@ -69,6 +69,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AK");
                     objVorerf.NrMaterial = "592";
+                    objVorerf.Material = "Kurzzeitzulassung";
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;
