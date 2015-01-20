@@ -2480,15 +2480,15 @@
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.csv">
+    <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
+    </Content>
+    <Content Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Documents\Templates\UploadBestandsdaten.csv">
+    </Content>
+    <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
