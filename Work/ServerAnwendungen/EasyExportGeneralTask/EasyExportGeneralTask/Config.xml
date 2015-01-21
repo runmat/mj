@@ -7,7 +7,7 @@
         <Name>Athlon</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer></Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>Athlon</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -62,7 +62,7 @@
         <Name>EuropaService</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer></Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>EuropaService</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -104,7 +104,7 @@
         <Name>StarCar</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer></Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>StarCar</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -146,7 +146,7 @@
         <Name>XLeasing</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer></Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>XLeasing</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -188,7 +188,7 @@
         <Name>Alphabet</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer>0000325503</Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>Alphabet</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>false</AbfrageNachDatum>
@@ -230,7 +230,7 @@
         <Name>LeasePlan</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer>0000336070</Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>LeasePlan</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>false</AbfrageNachDatum>
@@ -273,7 +273,7 @@
         <Name>XLCheck</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer>*</Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>XLCheck</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>false</AbfrageNachDatum>
@@ -315,7 +315,7 @@
         <Name>CharterWay_All</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer>0010020162</Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>CharterWay_All</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -357,7 +357,7 @@
         <Name>CharterWay_Single</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer>0010020162</Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>CharterWay_Single</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>false</AbfrageNachDatum>
@@ -399,7 +399,7 @@
         <Name>DCBank</Name>
         <!--Kundennummer (10-stellig), optional-->
         <Kundennummer></Kundennummer>
-        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank)-->
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
         <Ablauf>DCBank</Ablauf>
         <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
         <AbfrageNachDatum>true</AbfrageNachDatum>
@@ -419,6 +419,48 @@
         <easyLocation>DCBANK</easyLocation>
         <!--<easyBlobPathLocal>\\vms013\PROD\dad\DCBank</easyBlobPathLocal>-->
         <easyBlobPathLocal>C:\TEMP\_Test\DCBank</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>DCB</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>DaimlerFleet</Name>
+        <!--Kundennummer (hier bis zu 50-stellig mit ; getrennt), optional-->
+        <Kundennummer>0000342812;0000301270</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet)-->
+        <Ablauf>DaimlerFleet</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>false</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>DCBANK</easyLocation>
+        <!--<easyBlobPathLocal>\\vms013\PROD\dad\DaimlerFleet</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\DaimlerFleet</easyBlobPathLocal>
         <Archive>
             <ArchivDefinition>
                 <!--Archivname-->
