@@ -10,11 +10,11 @@ namespace CKGDatabaseAdminLib.Services
 {
     public class BapiApplicationDataServiceSql : CkgGeneralDataService, IBapiApplicationDataService
     {
-        public ObservableCollection<ApplicationInfo> Applications { get { return _dataContext.Applications.Local; } }
+        public ObservableCollection<Application> Applications { get { return _dataContext.Applications.Local; } }
 
         public ObservableCollection<BapiTable> Bapis { get { return _dataContext.BapisSorted; } }
 
-        public ObservableCollection<ApplicationInfo> BapiApplications { get; set; }
+        public ObservableCollection<Application> BapiApplications { get; set; }
 
         private DatabaseContext _dataContext;
 
@@ -35,7 +35,7 @@ namespace CKGDatabaseAdminLib.Services
         public void GetBapiUsage(int bapiId)
         {
             _dataContext.CurrentBapiId = bapiId;
-            BapiApplications = new ObservableCollection<ApplicationInfo>(_dataContext.GetApplicationsForBapi());
+            BapiApplications = new ObservableCollection<Application>(_dataContext.GetApplicationsForBapi());
         }
 
         public void ResetCurrentBapiId()

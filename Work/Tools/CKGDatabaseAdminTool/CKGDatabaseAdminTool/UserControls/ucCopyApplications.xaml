@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="768" d:DesignWidth="1024">
     <Grid Margin="5" Background="#EEEEEE">
 
         <Grid.Resources>
@@ -81,14 +81,16 @@
             </Grid.Resources>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="35*"/>
-                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="18*"/>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="26*"/>
+                <ColumnDefinition Width="32*"/>
             </Grid.ColumnDefinitions>
 
             <CheckBox Grid.Column="0" IsChecked="{Binding CopyAppWithChildApplications}">Mit Unterseiten</CheckBox>
             <CheckBox Grid.Column="1" IsChecked="{Binding CopyAppWithFieldTranslations}">Mit Feldübersetzungen</CheckBox>
             <CheckBox Grid.Column="2" IsChecked="{Binding CopyAppWithColumnTranslations}">Mit Spaltenübersetzungen</CheckBox>
+            <CheckBox Grid.Column="3" IsChecked="{Binding CopyAppWithConfigurationValues}">Mit Konfigurationseinstellungen</CheckBox>
             
         </Grid>
         
