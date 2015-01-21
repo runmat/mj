@@ -1,18 +1,19 @@
-﻿Imports CKG.Base.Business
-Imports CKG.Base.Kernel
+﻿Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Report05
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Declarations"
+
     Private m_App As Security.App
     Private m_User As Security.User
-    Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
+    Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
     Private m_Track As Sendungsverfolgung
+
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
         GetAppIDFromQueryString(Me)
@@ -27,11 +28,11 @@ Partial Public Class Report05
         End If
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
@@ -44,53 +45,39 @@ Partial Public Class Report05
         FillGrid(pageindex)
     End Sub
 
-    Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
+    Private Sub GridView1_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridView1.RowDataBound
+        m_Track = CType(Session("m_Track"), Sendungsverfolgung)
 
-        If e.CommandName = "Show" Then
-
-            Dim strSendnumber As String = CType(e.CommandArgument, String)
-
-
-
-        End If
-
-
-    End Sub
-
-    Private Sub GridView1_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridView1.RowDataBound
-        'OnClick="javascript:openinfo('http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&idc=' & '<%# Bind("ZZTRACK") %>' & );"
         If e.Row.RowType = DataControlRowType.DataRow Then
-            Dim ibutton As ImageButton
-            Dim lblSendnr As Label
-            lblSendnr = CType(e.Row.FindControl("lblSendnr"), Label)
-            ibutton = CType(e.Row.FindControl("lbSendung"), ImageButton)
-            If lblSendnr.Text.Trim.Length > 0 Then
-                ibutton.Attributes.Add("onclick", "javascript:openinfo('http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&idc=" & lblSendnr.Text & "')")
+
+            Dim dRow = CType(e.Row.DataItem, DataRowView)
+            Dim sendNr As String = dRow("ZZTRACK").ToString()
+
+            Dim ibutton As ImageButton = CType(e.Row.FindControl("lbSendung"), ImageButton)
+
+            If Not String.IsNullOrEmpty(sendNr) Then
+                Dim erfDat As Date = CDate(dRow("ERDAT"))
+
+                'Ab 16.1.2015 UPS statt DHL
+                Dim servicePartnerUrl As String = IIf(erfDat >= New Date(2015, 1, 16).Date, m_Track.Url_Ups, m_Track.Url_Dhl)
+                ibutton.Attributes.Add("onclick", "javascript:openinfo('" & String.Format(servicePartnerUrl, sendNr) & "')")
             Else
                 ibutton.Visible = False
             End If
 
-
         End If
 
     End Sub
 
-    Private Sub GridView1_RowUpdating(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewUpdateEventArgs) Handles GridView1.RowUpdating
-
-    End Sub
-
-    Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView1.Sorting
+    Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex, e.SortExpression)
     End Sub
+
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-
-
-
-        Dim TrackTable As DataTable
-
         m_Track = CType(Session("m_Track"), Sendungsverfolgung)
-        TrackTable = m_Track.SendungsDaten
-        If Not TrackTable Is Nothing Then
+        Dim TrackTable As DataTable = m_Track.SendungsDaten
+
+        If TrackTable IsNot Nothing Then
 
             If TrackTable.Rows.Count = 0 Then
                 lblError.Visible = True
@@ -161,7 +148,6 @@ Partial Public Class Report05
     End Sub
 
     Protected Sub btnConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnConfirm.Click
-        Session("m_Track") = Nothing
 
         m_Track = New Sendungsverfolgung(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
 
@@ -172,50 +158,43 @@ Partial Public Class Report05
             m_Track.DatumBis = Now.ToShortDateString
         End If
         m_Track.Agentur = ""
-        Dim sNummerTrenn As String = ""
         For i As Integer = 1 To txtOrgNr.Text.Length
             If IsNumeric(Mid(txtOrgNr.Text, i, 1)) = True Then
-                sNummerTrenn = txtOrgNr.Text
                 m_Track.Agentur &= Mid(txtOrgNr.Text, i, 1)
             End If
         Next
-        m_Track.GetData(CStr(Request.QueryString("AppID")), Session.SessionID.ToString, Me.Page)
+        m_Track.GetData(CStr(Request.QueryString("AppID")), Session.SessionID.ToString, Page)
+
+        Session("m_Track") = m_Track
 
         If m_Track.SendungsDaten Is Nothing OrElse m_Track.SendungsDaten.Rows.Count = 0 Then
             lblError.Visible = True
             Result.Visible = False
             lblError.Text = "Es wurden keine Daten zur Anzeige gefunden."
         Else
-
-            If Session("m_Track") Is Nothing Then
-                Session.Add("m_Track", m_Track)
-            End If
-            If Session("ResultExcel") Is Nothing Then
-                Session.Add("ResultExcel", m_Track.ResultExcel)
-            End If
             FillGrid(0)
-
         End If
+
     End Sub
 
-    Protected Sub NewSearch_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles NewSearch.Click
+    Protected Sub NewSearch_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles NewSearch.Click
         tab1.Visible = Not tab1.Visible
         btnConfirm.Visible = Not btnConfirm.Visible
     End Sub
 
     Protected Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkCreateExcel.Click
-        Dim reportExcel As DataTable
-        Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
-        Dim sPath As String = ConfigurationManager.AppSettings("ExcelPath")
-        reportExcel = CType(Session("ResultExcel"), DataTable)
+        m_Track = CType(Session("m_Track"), Sendungsverfolgung)
 
-        reportExcel.AcceptChanges()
-        Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
-        ' excelFactory.CreateDocumentAndWriteToFilesystemWithPath(sPath + strFileName, reportExcel)
-        excelFactory.CreateDocumentAndSendAsResponse(strFileName, reportExcel, Me)
+        If m_Track IsNot Nothing Then
+            Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
+            Dim reportExcel As DataTable = m_Track.ResultExcel
+            Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, reportExcel, Me)
+        End If
     End Sub
 
     Protected Sub lbBack_Click(sender As Object, e As EventArgs) Handles lbBack.Click
         Response.Redirect("../../../Start/Selection.aspx?AppID=" & Session("AppID").ToString, False)
     End Sub
+
 End Class
