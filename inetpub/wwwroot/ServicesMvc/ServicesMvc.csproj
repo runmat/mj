@@ -4264,6 +4264,9 @@
     <Content Include="Views\Shared\ShoppingCart\Menu.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\ShoppingCart\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankAdressdatenReForm.cshtml" />
+    <Content Include="Views\Logs\UnusedApps.cshtml" />
+    <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
