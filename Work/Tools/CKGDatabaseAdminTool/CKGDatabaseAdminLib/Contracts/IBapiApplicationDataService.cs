@@ -6,11 +6,11 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IBapiApplicationDataService : ICkgGeneralDataService
     {
-        ObservableCollection<ApplicationInfo> Applications { get; }
+        ObservableCollection<Application> Applications { get; }
 
         ObservableCollection<BapiTable> Bapis { get; }
 
-        ObservableCollection<ApplicationInfo> BapiApplications { get; }
+        ObservableCollection<Application> BapiApplications { get; }
 
         void InitDataContext(string connectionName);
 
