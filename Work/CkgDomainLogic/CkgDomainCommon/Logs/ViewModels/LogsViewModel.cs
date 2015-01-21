@@ -338,6 +338,13 @@ namespace CkgDomainLogic.Logs.ViewModels
             return true;
         }
 
+        public bool LoadUnusedApps(PageVisitLogItemSelector newPageVisitLogItemSelector)
+        {
+            newPageVisitLogItemSelector.OnlyUnusedApplications = true;
+
+            return LoadPageVisitLogItems(newPageVisitLogItemSelector);
+        }
+
         public bool LoadWebServiceTrafficLogItems(WebServiceTrafficLogItemSelector newWebServiceTrafficLogItemSelector)
         {
             if (WebServiceTrafficLogItemSelector.LogsConnection != newWebServiceTrafficLogItemSelector.LogsConnection)
