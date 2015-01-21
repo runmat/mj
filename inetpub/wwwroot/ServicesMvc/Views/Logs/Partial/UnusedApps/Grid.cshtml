@@ -1,0 +1,29 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel
+@using CkgDomainLogic.Logs.Models
+@{
+    var gridName = "GridLogsUnusedApps";
+}
+
+
+@(Html.Telerik()
+    .Grid<PageVisitLogItem>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("LogsPageVisitsAjaxBinding", "Logs")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.AppID);
+        columns.Bound(c => c.AppFriendlyName);
+        columns.Bound(c => c.CustomerName);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AppID))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUnusedAppsFilteredExcel", "Logs");
+        commands.FilteredDataCommand("ExportUnusedAppsFilteredPDF", "Logs");
+    })
+    .Groupable(g => g.Enabled(false)))
+
