@@ -6,7 +6,7 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IApplicationBapiDataService : ICkgGeneralDataService
     {
-        ObservableCollection<ApplicationInfo> Applications { get; }
+        ObservableCollection<Application> Applications { get; }
 
         ObservableCollection<BapiTable> Bapis { get; }
 

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Web;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.Models
 {
     /// <summary>
     /// Fahrzeugbrief-Datensatz
     /// </summary>
-    public class Fahrzeugbrief
+    public class Fahrzeugbrief : IAddressStreetHouseNo
     {
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         public string Equipmentnummer { get; set; }
@@ -69,7 +71,13 @@ namespace CkgDomainLogic.Equi.Models
         public string Strasse { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.HouseNo)]
+        public string HausNr { get { return Hausnummer; } set { Hausnummer = value; } }
+
+        [LocalizedDisplay(LocalizeConstants.HouseNo)]
         public string Hausnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Street)]
+        public string StrasseHausNr { get { return AddressService.FormatStreetAndHouseNo(this); } }
 
         [LocalizedDisplay(LocalizeConstants.PickDate)]
         public DateTime? Pickdatum { get; set; }
@@ -82,6 +90,17 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.Memo)]
         public string Memo { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Manufacturer)]
+        public string FahrzeugHersteller { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleType)]
+        public string FahrzeugTyp { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
+        public string VersandGrund { get; set; }
+
+        
 
 
         public bool BriefVersand { get; set; }
