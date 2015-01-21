@@ -557,8 +557,9 @@ namespace AppZulassungsdienst.forms
             ddlKennzForm.Enabled = chkKennzSonder.Checked;
 
 
-            objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, RowKopf["KUNNR"].ToString());
-            tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            //objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, RowKopf["KUNNR"].ToString());
+            //tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";

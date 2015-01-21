@@ -55,7 +55,8 @@ namespace AppZulassungsdienst.forms
 
             if (dvKunden == null)
             {
-                InitKundenliste(false);
+                //InitKundenliste(false);
+                InitKundenliste();
             }
             InitLargeDropdowns();
             InitJava();
@@ -86,11 +87,11 @@ namespace AppZulassungsdienst.forms
                     if (id != 0)
                     {
                         objNacherf.LoadDB_ZLDRecordset(id);
-                        if (objNacherf.Vorgang.StartsWith("A"))
-                        {
-                            InitKundenliste(true);
-                            BindDropdownKunde();
-                        }
+                        //if (objNacherf.Vorgang.StartsWith("A"))
+                        //{
+                        //    InitKundenliste(true);
+                        //    BindDropdownKunde();
+                        //}
                         fillForm();
                         SelectValues();
                     }
@@ -99,18 +100,20 @@ namespace AppZulassungsdienst.forms
             }
          }
         
-        private void InitKundenliste(bool autohaus)
+        private void InitKundenliste()//bool autohaus)
         {
-            DataView tmpDView;
-            if (autohaus)
-            {
-                objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
-                tmpDView = objCommon.tblAHKundenStamm.DefaultView;
-            }
-            else
-            {
-                tmpDView = objCommon.tblKundenStamm.DefaultView;
-            }
+            //DataView tmpDView;
+            //if (autohaus)
+            //{
+            //    objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, objNacherf.Kunnr.PadLeft(10, '0'));
+            //    tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            //}
+            //else
+            //{
+            //    tmpDView = objCommon.tblKundenStamm.DefaultView;
+            //}
+
+            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             dvKunden = tmpDView;
         }
