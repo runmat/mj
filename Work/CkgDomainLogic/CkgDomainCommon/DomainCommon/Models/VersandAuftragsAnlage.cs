@@ -30,6 +30,8 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Versandgrund { get; set; }
 
+        public string Mahnverfahren { get; set; }
+
 
         #region Versand Adresse
 

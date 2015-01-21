@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Models;
@@ -23,7 +22,6 @@ namespace CkgDomainLogic.Archive.Services
 
         public EasyAccessDataService()
         {
-            // todo: klären, ob ein ArchivName übergeben werden soll
             m_easyAccess = new EasyAccess((ILogonContextDataService)LogonContext);
         }
 
@@ -80,16 +78,13 @@ namespace CkgDomainLogic.Archive.Services
 
         private void LoadArchives(EasyAccessSuchparameter suchparameter)
         {
-            string status = "";
-            EasyAccess40.Archive arc;
-
             // Archive
             suchparameter.Archives.Clear();
             EasyArchive archives = m_easyAccess.getArchives(); 
             archives.resetCounter();
             while (archives.hasNext())
             {
-                arc = archives.nextArchive();
+                EasyAccess40.Archive arc = archives.nextArchive();
                 suchparameter.Archives.Add(new EasyAccessArchive
                     {
                         ArchiveType = arc.Type, 
@@ -104,7 +99,7 @@ namespace CkgDomainLogic.Archive.Services
                     });
             }
 
-            status = "";
+            string status = "";
             m_easyAccess.init(ref status);
             ErrorMessage = status;
 
@@ -126,8 +121,6 @@ namespace CkgDomainLogic.Archive.Services
 
         private void LoadArchiveTypeSpecificData(EasyAccessSuchparameter suchparameter, bool initial = false)
         {
-            string status = "";
-
             if (!HasErrors)
             {
                 // Archive des gewählten Typs
@@ -138,19 +131,22 @@ namespace CkgDomainLogic.Archive.Services
 
                 if (suchparameter.ArchivesOfType.Any())
                 {
-                    EasyAccessArchive selArchiv = suchparameter.ArchivesOfType.FirstOrDefault();
+                    var firstArchive = suchparameter.ArchivesOfType.First();
 
-                    // initial das erste Archiv des Typs selektieren
+                    // initial die ersten 2 Archive des Typs selektieren
                     if (initial)
                     {
-                        selArchiv.Selected = true;
+                        firstArchive.Selected = true;
+
+                        if (suchparameter.ArchivesOfType.Count > 1)
+                            suchparameter.ArchivesOfType[1].Selected = true;
                     }
 
                     // Suchfelder
                     suchparameter.SearchFields.Clear();
                     string strSearchFields = "";
-                    status = "";
-                    EasyAccess40.Archive selEasyArchive = GetEasyAccess40Archive(selArchiv);
+                    string status = "";
+                    EasyAccess40.Archive selEasyArchive = GetEasyAccess40Archive(firstArchive);
                     List<EasyResultField> tmpListe = m_easyAccess.getSearchFields(selEasyArchive, ref strSearchFields, ref status);
                     ErrorMessage = status;
 
@@ -222,9 +218,9 @@ namespace CkgDomainLogic.Archive.Services
 
         private EasyAccess40.Archive GetEasyAccess40Archive(EasyAccessArchive arc)
         {
-            long arcId = 0;
+            long arcId;
             long.TryParse(arc.Id, out arcId);
-            int arcIdx = 0;
+            int arcIdx;
             int.TryParse(arc.Index, out arcIdx);
             return new EasyAccess40.Archive(arcId, arc.Location, arc.Name, arcIdx, arc.IndexName, 
                 arc.TitleName, arc.DefaultQuery, arc.ArchiveType);
@@ -269,9 +265,9 @@ namespace CkgDomainLogic.Archive.Services
 
             foreach (EasyAccessResultField sPar in Suchparameter.SearchFields)
             {
-                int intId = 0;
+                int intId;
                 Int32.TryParse(sPar.Id, out intId);
-                int intIdx = 0;
+                int intIdx;
                 Int32.TryParse(sPar.Index, out intIdx);
                 liste.Add(new EasyResultField(sPar.Name, intId, intIdx));
             }

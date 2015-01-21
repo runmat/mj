@@ -37,6 +37,9 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.OnlyUnusedApplications)]
         public bool OnlyUnusedApplications { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.OnlyUnusedCustomerApplications)]
+        public bool OnlyUnusedCustomerApplications { get; set; }
+
         public bool SubmitWithNoDataQuerying { get; set; }
 
 
