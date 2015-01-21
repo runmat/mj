@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
 using CKGDatabaseAdminLib.Models;
 using CKGDatabaseAdminLib.Services;
+using DocumentTools.Services;
+using GeneralTools.Models;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
 
@@ -71,12 +74,24 @@ namespace CKGDatabaseAdminLib.ViewModels
             Parent.ShowMessage("Änderungen verworfen", MessageType.Success);
         }
 
+        public void ExportGitBranchInfos(object parameter)
+        {
+            var savePath = (parameter as string);
+
+            new ExcelDocumentFactory().CreateExcelDocumentAndSaveAsFile(savePath, GetGitBranchesAsDataTable());
+        }
+
         #endregion
 
         private void FilterGitBranches()
         {
             DataService.FilterGitBranches();
             SendPropertyChanged("GitBranches");
+        }
+
+        private DataTable GetGitBranchesAsDataTable()
+        {
+            return (GitBranches != null ? GitBranches.ToDataTable() : new DataTable());
         }
     }
 }

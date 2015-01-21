@@ -23,9 +23,9 @@ namespace CKGDatabaseAdminLib
 
         public DbSet<GitBranchInfo> GitBranchInfos { get; set; }
 
-        public DbSet<ApplicationInfo> Applications { get; set; }
+        public DbSet<Application> Applications { get; set; }
 
-        public ObservableCollection<ApplicationInfo> ApplicationsInMenuOnly
+        public ObservableCollection<Application> ApplicationsInMenuOnly
         {
             get
             {
@@ -33,7 +33,7 @@ namespace CKGDatabaseAdminLib
                             where a.AppInMenu
                             select a;
 
-                return new ObservableCollection<ApplicationInfo>(liste);
+                return new ObservableCollection<Application>(liste);
             }
         }
 
@@ -78,7 +78,7 @@ namespace CKGDatabaseAdminLib
             }
         }
 
-        public DbSqlQuery<ApplicationInfo> GetApplicationsForBapi()
+        public DbSqlQuery<Application> GetApplicationsForBapi()
         {
             var query = "SELECT a.* FROM Application a, ApplicationBapi ab WHERE ab.ApplicationId = a.AppId";
             if (CurrentBapiId.HasValue)
@@ -126,9 +126,7 @@ namespace CKGDatabaseAdminLib
 
         public List<BapiCheckItem> GetBapiCheckItemsForCheck(bool testSap)
         {
-            List<BapiCheckItem> liste = new List<BapiCheckItem>();
-
-            liste = (
+            List<BapiCheckItem> liste = (
                 from s in BapiCheckItems
                 where s.TestSap == testSap
                 select s
@@ -162,9 +160,9 @@ namespace CKGDatabaseAdminLib
             SaveChanges();
         }
 
-        public List<ApplicationInfo> GetChildApplicationsForApplication()
+        public List<Application> GetChildApplicationsForApplication()
         {
-            List<ApplicationInfo> liste = new List<ApplicationInfo>();
+            List<Application> liste = new List<Application>();
             if (CurrentAppId.HasValue)
             {
                 liste = (
@@ -236,6 +234,36 @@ namespace CKGDatabaseAdminLib
             return liste;
         }
 
+        public DbSet<ApplicationConfig> ApplicationConfigs { get; set; }
+
+        public List<ApplicationConfig> GetApplicationConfigsForApplication()
+        {
+            List<ApplicationConfig> liste = new List<ApplicationConfig>();
+            if (CurrentAppId.HasValue)
+            {
+                liste = (
+                    from c in ApplicationConfigs
+                    where c.CustomerID == 1 && c.AppID == CurrentAppId.Value
+                    select c
+                ).ToList();
+            }
+            return liste;
+        }
+
+        public List<ApplicationConfig> GetApplicationConfigsForApplication(int? appId)
+        {
+            List<ApplicationConfig> liste = new List<ApplicationConfig>();
+            if (appId.HasValue)
+            {
+                liste = (
+                    from c in ApplicationConfigs
+                    where c.ConfigID == 1 && c.AppID == appId.Value
+                    select c
+                ).ToList();
+            }
+            return liste;
+        }
+
         public void ClearApplicationFieldsForApplication(string appUrl)
         {
             if (!String.IsNullOrEmpty(appUrl))
@@ -262,17 +290,25 @@ namespace CKGDatabaseAdminLib
             SaveChanges();
         }
 
-        public void CopyApplication(ApplicationInfo appToCopy, IEnumerable<ApplicationField> fields, IEnumerable<ColumnTranslation> cols, bool appIsChild)
+        public void CopyApplication(Application appToCopy, IEnumerable<ApplicationField> fields, IEnumerable<ColumnTranslation> cols, IEnumerable<ApplicationConfig> configs, bool appIsChild)
         {
             var newApp = Applications.Create();
             newApp.AppComment = appToCopy.AppComment;
+            newApp.AppDescription = appToCopy.AppDescription;
             newApp.AppFriendlyName = appToCopy.AppFriendlyName;
             newApp.AppInMenu = appToCopy.AppInMenu;
             newApp.AppName = appToCopy.AppName;
             newApp.AppParent = appToCopy.AppParent;
             newApp.AppRank = appToCopy.AppRank;
+            newApp.AppSchwellwert = appToCopy.AppSchwellwert;
+            newApp.AppTechType = appToCopy.AppTechType;
             newApp.AppType = appToCopy.AppType;
             newApp.AppURL = appToCopy.AppURL;
+            newApp.AuthorizationLevel = appToCopy.AuthorizationLevel;
+            newApp.BatchAuthorization = appToCopy.BatchAuthorization;
+            newApp.LogDuration = appToCopy.LogDuration;
+            newApp.MaxLevel = appToCopy.MaxLevel;
+            newApp.MaxLevelsPerGroup = appToCopy.MaxLevelsPerGroup;
             Applications.Add(newApp);
 
             SaveChanges();
@@ -307,7 +343,23 @@ namespace CKGDatabaseAdminLib
                     ColumnTranslations.Add(newItem);
                 }
             }
-            
+
+            if (configs != null)
+            {
+                foreach (var item in configs)
+                {
+                    var newItem = ApplicationConfigs.Create();
+                    newItem.AppID = newApp.AppID;
+                    newItem.ConfigKey = item.ConfigKey;
+                    newItem.ConfigType = item.ConfigType;
+                    newItem.ConfigValue = item.ConfigValue;
+                    newItem.CustomerID = item.CustomerID;
+                    newItem.Description = item.Description;
+                    newItem.GroupID = item.GroupID;
+                    ApplicationConfigs.Add(newItem);
+                }
+            }
+
             SaveChanges();
         }
 

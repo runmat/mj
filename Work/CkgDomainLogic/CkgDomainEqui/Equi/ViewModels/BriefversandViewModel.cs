@@ -393,7 +393,8 @@ namespace CkgDomainLogic.Equi.ViewModels
                 DadAnforderungsDatum = DateTime.Today,
                 ErfassungsUserName = LogonContext.UserName,
                 Bemerkung = VersandOptionen.Bemerkung,
-                Versandgrund = VersandOptionen.VersandGrund.Code
+                Versandgrund = VersandOptionen.VersandGrund.Code,
+                Mahnverfahren = (VersandAdresse.Kennung == "ZULASSUNG" ? "0001" : "0002")
             };
 
             ModelMapping.Copy(VersandAdresse, versandAuftrag);

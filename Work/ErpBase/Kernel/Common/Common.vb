@@ -16,8 +16,6 @@ Imports System.Drawing
 Namespace Kernel.Common
     Public Class Common
 
-        Private m_User As User
-        Private m_strTitleText As String
         Private Shared m_strAppKey As String = ConfigurationManager.AppSettings("ApplicationKey")
 
         Public Shared Sub GetAppIDFromQueryString(ByVal page As System.Web.UI.Page)
@@ -90,28 +88,6 @@ Namespace Kernel.Common
                                         End If
                                     End If
 
-
-                                    'Funktioniert irgendwie nicht, da immer noch spalten stehen bleibem im Grid, obwohl Cell.Visible=false JJ2007.11.12
-                                    '--------------------------------------------------------                
-                                    'If TypeOf control.Parent Is System.Web.UI.WebControls.TableCell Then
-                                    '    Dim tmpCell As System.Web.UI.WebControls.TableCell
-                                    '    tmpCell = CType(control.Parent, System.Web.UI.WebControls.TableCell)
-                                    '    tmpCell.Visible = CBool(rows(0)("Visibility"))
-                                    '    If tmpCell.Visible Then
-                                    '        If (rows(0)("Content") Is System.DBNull.Value) Or (rows(0)("Content") Is System.String.Empty) Then
-                                    '            'wenn in der Datenbank nichts als übersetzung eingetragen ist, soll er nichts machen!
-                                    '        Else
-                                    '            If TypeOf control Is System.Web.UI.WebControls.LinkButton Then
-                                    '                linkbutton = CType(control, System.Web.UI.WebControls.LinkButton)
-                                    '                linkbutton.Text = CStr(rows(0)("Content"))
-                                    '            ElseIf TypeOf control Is System.Web.UI.WebControls.Label Then
-                                    '                label = CType(control, System.Web.UI.WebControls.Label)
-                                    '                label.Text = CStr(rows(0)("Content"))
-                                    '            End If
-                                    '        End If
-                                    '    End If
-                                    'End If
-                                    '--------------------------------------------------------
                                 Case "LBL"
                                     If TypeOf control Is System.Web.UI.WebControls.Label Then
                                         label = CType(control, System.Web.UI.WebControls.Label)
@@ -124,6 +100,7 @@ Namespace Kernel.Common
                                             End If
                                         End If
                                     End If
+
                                 Case "LB"
 
                                     If TypeOf control Is System.Web.UI.WebControls.LinkButton Then
@@ -151,15 +128,15 @@ Namespace Kernel.Common
 
                                         End If
                                     End If
+
                                 Case "TR"
                                     If TypeOf control Is System.Web.UI.HtmlControls.HtmlTableRow Then
                                         control.Visible = CBool(rows(0)("Visibility"))
                                         If control.Visible Then
                                             TranslateTrLabel(inControl, "LBL_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
-                                            'TranslateTrLinkButton(inControl, "LB_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
-                                            'TranslateTrRadioButton(inControl, "RB_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
                                         End If
                                     End If
+
                                 Case "TXT"
                                     If TypeOf control Is System.Web.UI.WebControls.TextBox Then
                                         textbox = CType(control, System.Web.UI.WebControls.TextBox)
@@ -179,7 +156,6 @@ Namespace Kernel.Common
 
                                         End If
                                     End If
-                                Case Else
 
                             End Select
                         End If
@@ -188,135 +164,6 @@ Namespace Kernel.Common
             End If
         End Sub
 
-        'UHA Origial Algorithmus 
-        '---------------------------------------------------------------------------------------------
-        'Public Shared Sub CheckAllControl(ByVal inControl As System.Web.UI.Control, ByVal inTranslation As DataTable)
-        '    If inControl.HasControls Then
-        '        Dim rows() As DataRow
-        '        Dim control As System.Web.UI.Control
-        '        Dim label As System.Web.UI.WebControls.Label
-        '        Dim linkbutton As System.Web.UI.WebControls.LinkButton
-        '        Dim radiobutton As System.Web.UI.WebControls.RadioButton
-
-        '        For Each control In inControl.Controls
-        '            'Ist das Control (incl. Unter-Controls) überhaupt sichtbar?
-        '            'Bzw.: Ist das Control progammatisch unsichtbar gesetzt?
-        '            '=> Translation überflüssig!
-        '            If control.Visible Then
-        '                CheckAllControl(control, inTranslation)
-        '                rows = inTranslation.Select("ControlID = '" & control.ID & "'")
-        '                If rows.Length = 1 Then
-        '                    Select Case UCase(CStr(rows(0)("FieldType")))
-        '                        Case "COL"
-        '                            If TypeOf control Is System.Web.UI.WebControls.LinkButton Then
-        '                                If TypeOf inControl.Parent Is System.Web.UI.WebControls.DataGridItem Then
-        '                                    If CBool(rows(0)("Visibility")) Then
-        '                                        linkbutton = CType(control, System.Web.UI.WebControls.LinkButton)
-        '                                        If linkbutton.Visible Then
-        '                                            linkbutton.Text = CStr(rows(0)("Content"))
-        '                                        End If
-        '                                    Else
-        '                                        Dim tmpDatagrid As System.Web.UI.WebControls.DataGrid
-        '                                        tmpDatagrid = CType(inControl.Parent.Parent.Parent, System.Web.UI.WebControls.DataGrid)
-        '                                        Dim tmpColumn As System.Web.UI.WebControls.DataGridColumn
-        '                                        For Each tmpColumn In tmpDatagrid.Columns
-        '                                            If tmpColumn.HeaderText = CStr(control.ID) Then
-        '                                                tmpColumn.Visible = False
-        '                                            End If
-        '                                        Next
-        '                                    End If
-        '                                End If
-        '                            End If
-        '                        Case "LBL"
-        '                            If TypeOf control Is System.Web.UI.WebControls.Label Then
-        '                                label = CType(control, System.Web.UI.WebControls.Label)
-        '                                label.Visible = True
-        '                                If CBool(rows(0)("Visibility")) Then
-        '                                    label.Text = CStr(rows(0)("Content"))
-        '                                Else
-        '                                    label.Text = " "
-        '                                End If
-        '                            End If
-        '                        Case "LB"
-        '                            If TypeOf control Is System.Web.UI.WebControls.LinkButton Then
-        '                                linkbutton = CType(control, System.Web.UI.WebControls.LinkButton)
-        '                                linkbutton.Visible = CBool(rows(0)("Visibility"))
-        '                                If linkbutton.Visible Then
-        '                                    linkbutton.Text = CStr(rows(0)("Content"))
-        '                                Else
-        '                                    linkbutton.Text = " "
-        '                                End If
-        '                            End If
-        '                        Case "RB"
-        '                            If TypeOf control Is System.Web.UI.WebControls.RadioButton Then
-        '                                radiobutton = CType(control, System.Web.UI.WebControls.RadioButton)
-        '                                radiobutton.Visible = CBool(rows(0)("Visibility"))
-        '                                If radiobutton.Visible Then
-        '                                    radiobutton.Text = CStr(rows(0)("Content"))
-        '                                Else
-        '                                    radiobutton.Text = " "
-        '                                End If
-        '                            End If
-        '                        Case "TR"
-        '                            If TypeOf control Is System.Web.UI.HtmlControls.HtmlTableRow Then
-        '                                control.Visible = CBool(rows(0)("Visibility"))
-        '                                If control.Visible Then
-        '                                    TranslateTrLabel(inControl, "LBL_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
-        '                                    'TranslateTrLinkButton(inControl, "LB_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
-        '                                    'TranslateTrRadioButton(inControl, "RB_" & UCase(CStr(rows(0)("FieldName"))), CStr(rows(0)("Content")))
-        '                                End If
-        '                            End If
-        '                        Case Else
-
-        '                    End Select
-        '                End If
-        '            End If
-        '        Next
-        '    End If
-        'End Sub
-        '---------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-        'Public Shared Sub TranslateTrLinkButton(ByRef inControl As System.Web.UI.Control, ByVal strFieldName As String, ByVal strContent As String)
-        '    Dim innercontrol As System.Web.UI.Control
-        '    Dim linkbutton As System.Web.UI.WebControls.LinkButton
-
-        '    If inControl.HasControls Then
-        '        For Each innercontrol In inControl.Controls
-        '            If TypeOf innercontrol Is System.Web.UI.WebControls.LinkButton Then
-        '                If UCase(innercontrol.ID) = strFieldName Then
-        '                    linkbutton = CType(innercontrol, System.Web.UI.WebControls.LinkButton)
-        '                    linkbutton.Text = strContent
-        '                End If
-        '            Else
-        '                TranslateTrLabel(innercontrol, strFieldName, strContent)
-        '            End If
-        '        Next
-        '    End If
-        'End Sub
-
-        'Public Shared Sub TranslateTrRadioButton(ByRef inControl As System.Web.UI.Control, ByVal strFieldName As String, ByVal strContent As String)
-        '    Dim innercontrol As System.Web.UI.Control
-        '    Dim radiobutton As System.Web.UI.WebControls.RadioButton
-
-        '    If inControl.HasControls Then
-        '        For Each innercontrol In inControl.Controls
-        '            If TypeOf innercontrol Is System.Web.UI.WebControls.RadioButton Then
-        '                If UCase(innercontrol.ID) = strFieldName Then
-        '                    radiobutton = CType(innercontrol, System.Web.UI.WebControls.RadioButton)
-        '                    radiobutton.Text = strContent
-        '                End If
-        '            Else
-        '                TranslateTrLabel(innercontrol, strFieldName, strContent)
-        '            End If
-        '        Next
-        '    End If
-        'End Sub
         Public Shared Function TranslateColLbtn(ByVal inControl As System.Web.UI.Control, ByVal inTranslation As DataTable, ByVal strFieldname As String, ByRef iVisible As Integer) As String
             TranslateColLbtn = ""
             If inControl.HasControls Then
@@ -338,6 +185,7 @@ Namespace Kernel.Common
             End If
 
         End Function
+
         Public Shared Sub TranslateTrLabel(ByRef inControl As System.Web.UI.Control, ByVal strFieldName As String, ByVal strContent As String)
             Dim innercontrol As System.Web.UI.Control
             Dim label As System.Web.UI.WebControls.Label
@@ -413,6 +261,7 @@ Namespace Kernel.Common
                 Form.Response.Redirect(strLinkPrefix & "Default.aspx")
             End If
         End Sub
+
         Public Shared Sub FormAuth(ByVal Form As System.Web.UI.Page, ByVal _User As User, ByVal ZLD As String)
             Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
 
@@ -437,6 +286,7 @@ Namespace Kernel.Common
                 Form.Response.Redirect(strLinkPrefix & "Default.aspx")
             End If
         End Sub
+
         Public Shared Sub FormAuthNoReferrer(ByVal Form As System.Web.UI.Page, ByVal _User As User)
             '§§§ JVE 11.04.2006: Sonderfall, nur für SIXT! 
             'Bei dieser Authorisierung wird der Parameter URL-Referrer nicht abgefragt, da dieser
@@ -483,7 +333,6 @@ Namespace Kernel.Common
             Else
                 Form.Response.Redirect(strLinkPrefix & "Default.aspx")
             End If
-
 
             If Not Form.Session("objUser") Is Nothing Then
                 Dim AppName As String = Form.Request.Url.LocalPath
@@ -555,12 +404,6 @@ Namespace Kernel.Common
                 _user = CType(Form.Session("objUser"), User)
             Else
                 _user = New User(CInt(Form.User.Identity.Name), ConfigurationManager.AppSettings("Connectionstring"))
-                If _user.FailedLogins = 0 Then
-                    '_user.SetLoggedOn(_user.UserName, True, Form.Session.SessionID.ToString)
-                    ' Rausgenommen OR 05102009
-                    ' Mir ist der Sinn nicht klar! Kein User-Objekt in der Session aber wenn kein "FailedLogin" dann sofort einloggen!?
-                    ' Alte Bounce Application???
-                End If
             End If
 
             _user.CurrentLogAccessASPXID = -1
@@ -596,14 +439,6 @@ Namespace Kernel.Common
 
             Form.Session("objUser") = _user
             log.Dispose()
-
-
-            'Benutzerbezogen Setzen des Kundenlogos
-            Try
-                'AddKndLogoToMasterPage(Form, _user.Customer.LogoPath)
-            Catch
-            End Try
-
 
             Return _user
         End Function
@@ -1164,286 +999,13 @@ Namespace Kernel.Common
             End Try
         End Function
 
-        Private Shared Function AddKndLogoToMasterPage(ByRef form As Page, ByVal sLogoPath As String) As Boolean
-            Try
-
-
-                Dim physPath As String = String.Empty
-
-                'Wenn Virtuerller Pfad dann den Physischen setzen
-                If sLogoPath.IndexOf("~/") = 0 Then
-                    physPath = HttpContext.Current.Server.MapPath(sLogoPath)
-                    sLogoPath = VirtualPathUtility.ToAbsolute(sLogoPath)
-
-                End If
-
-                If Not File.Exists(physPath) Then
-                    Return False
-                End If
-
-                Dim litCrtl As LiteralControl
-                Dim imgControlId As String = "imgLogo"
-                Dim parentCrtl As Control
-
-                If form.Master Is Nothing Then
-                    Return False
-                End If
-
-
-                'Das aktuelle "rechte" Logo ermitteln
-                Dim masterImgControl As Control = form.Master.FindControl(imgControlId)
-                Dim img As System.Web.UI.WebControls.Image = CType(masterImgControl, System.Web.UI.WebControls.Image)
-
-                Dim imageString As String = "<table cellspacing=""0"" cellpadding=""0"" class=""logoTable""><tr><td align=""left"" class=""ImgKndLogo"">"
-                imageString += "<img height=""100%"" src=""" + sLogoPath + """></td><td align=""right"">"
-                imageString += "<img src=""" + img.ImageUrl + """></td></tr></table>"
-
-                Dim count = 0
-
-                If Not masterImgControl Is Nothing Then
-
-                    'Übergeordnetes element ermitteln
-                    parentCrtl = masterImgControl.Parent
-
-                    Dim nextID As String
-
-                    For Each crtl As Control In parentCrtl.Controls
-                        count += 1
-                        nextID = parentCrtl.Controls(count).ID
-                        'Das Control vor dem Logo Control suchen
-
-
-
-                        If nextID Is Nothing Then
-                            Continue For
-                        End If
-
-                        If count < parentCrtl.Controls.Count And nextID.Equals(imgControlId) Then
-
-                            litCrtl = TryCast(crtl, LiteralControl)
-
-                            If Not litCrtl Is Nothing Then
-                                'Den TAG für des Kundenlogo an das ende des Literaltextes anfügen
-
-                                If InStr(litCrtl.Text, "website") > 0 Then
-                                    litCrtl.Text += imageString
-                                Else
-                                    litCrtl.Text = imageString + litCrtl.Text
-                                End If
-
-                                'Dem aktuellen Logo eine andere Stylesheetklasse zuordnen
-                                img.CssClass = "dadLogoIfIsKndLogo"
-
-                                Exit For
-
-                            Else
-                                Return False
-                            End If
-                        End If
-
-                    Next
-
-
-
-                End If
-
-                Return True
-
-            Catch ex As Exception
-
-                Return False
-
-            End Try
-        End Function
-
         Public Shared Function GetApplicationConfigValue(ByVal configKey As String, ByVal appID As String, Optional ByVal customerID As Integer = 0, Optional ByVal groupID As Integer = 0) As String
             Return GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue(configKey, appID, customerID, groupID)
         End Function
+
+        Public Shared Function GetGeneralConfigValue(ByVal context As String, ByVal configKey As String) As String
+            Return GeneralTools.Services.GeneralConfiguration.GetConfigValue(context, configKey)
+        End Function
+
     End Class
 End Namespace
-' ************************************************
-' $History: Common.vb $
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 22.03.11   Time: 14:50
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 5.10.09    Time: 15:46
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 27.07.09   Time: 9:25
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 5.05.09    Time: 10:10
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 28.04.09   Time: 13:45
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 13.10.08   Time: 13:28
-' Updated in $/CKAG/Base/Kernel/Common
-' ITA 2315 testfertig
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 24.06.08   Time: 16:15
-' Updated in $/CKAG/Base/Kernel/Common
-' ITA 2033 Aufbohren der Feldübersetzung für GridView
-' 
-' *****************  Version 5  *****************
-' User: Rudolpho     Date: 15.05.08   Time: 14:33
-' Updated in $/CKAG/Base/Kernel/Common
-' ITA:1865
-' 
-' *****************  Version 4  *****************
-' User: Rudolpho     Date: 14.05.08   Time: 14:31
-' Updated in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 3  *****************
-' User: Rudolpho     Date: 11.04.08   Time: 11:57
-' Updated in $/CKAG/Base/Kernel/Common
-' Migration OR
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 10.04.08   Time: 17:37
-' Updated in $/CKAG/Base/Kernel/Common
-' Migration
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 3.04.08    Time: 16:42
-' Created in $/CKAG/Base/Kernel/Common
-' 
-' *****************  Version 32  *****************
-' User: Rudolpho     Date: 11.01.08   Time: 9:22
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA:1604
-' 
-' *****************  Version 31  *****************
-' User: Rudolpho     Date: 9.01.08    Time: 16:42
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA: 1604
-' 
-' *****************  Version 30  *****************
-' User: Uha          Date: 19.12.07   Time: 14:10
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1510,1512,1511 Anforderung / Zulassung
-' 
-' *****************  Version 29  *****************
-' User: Jungj        Date: 13.11.07   Time: 10:22
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' *****************  Version 28  *****************
-' User: Jungj        Date: 12.11.07   Time: 14:59
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' *****************  Version 27  *****************
-' User: Jungj        Date: 9.11.07    Time: 14:58
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' *****************  Version 26  *****************
-' User: Uha          Date: 27.09.07   Time: 10:27
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Controlnamen für Feldübersetzungen geändert
-' 
-' *****************  Version 25  *****************
-' User: Uha          Date: 26.09.07   Time: 13:20
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Unsichtbare Controls werden nicht mehr übersetzt.
-' 
-' *****************  Version 24  *****************
-' User: Uha          Date: 24.09.07   Time: 17:01
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1238: Anlage Floorcheckauftrag - Testversion
-' 
-' *****************  Version 23  *****************
-' User: Uha          Date: 18.09.07   Time: 16:26
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Feldübersetzungen für Spaltenüberschriften von Datagrids erweitert
-' 
-' *****************  Version 22  *****************
-' User: Uha          Date: 12.09.07   Time: 16:41
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1263: Pflege der Feldübersetzungen - Fix 1
-' 
-' *****************  Version 21  *****************
-' User: Uha          Date: 12.09.07   Time: 15:17
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1263: Pflege der Feldübersetzungen
-' 
-' *****************  Version 20  *****************
-' User: Uha          Date: 10.09.07   Time: 13:23
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1280: Bugfix III; ITA 1263: Testversion Translation
-' 
-' *****************  Version 19  *****************
-' User: Uha          Date: 30.08.07   Time: 12:36
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1280: Paßwortversand im Web auf Benutzerwunsch
-' 
-' *****************  Version 18  *****************
-' User: Uha          Date: 8.08.07    Time: 15:10
-' Updated in $/CKG/Base/Base/Kernel/Common
-' GC.Collect() in Sub SetEndASPXAccess wieder entfernt
-' 
-' *****************  Version 17  *****************
-' User: Uha          Date: 8.08.07    Time: 14:57
-' Updated in $/CKG/Base/Base/Kernel/Common
-' GC.Collect() in Sub SetEndASPXAccess eingebaut
-' 
-' *****************  Version 16  *****************
-' User: Uha          Date: 7.08.07    Time: 14:23
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 15  *****************
-' User: Uha          Date: 2.07.07    Time: 15:39
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Verbindung ASPX-Logging mit BAPI-Logging
-' 
-' *****************  Version 14  *****************
-' User: Uha          Date: 21.06.07   Time: 15:43
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Bug in GetUser gefixt
-' 
-' *****************  Version 13  *****************
-' User: Uha          Date: 20.06.07   Time: 16:18
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Parameter ClearDurationASPX eingebracht
-' 
-' *****************  Version 12  *****************
-' User: Uha          Date: 20.06.07   Time: 14:32
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Logging der Laufzeiten der ASPX-Seiten eingeführt
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 8.06.07    Time: 14:25
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' *****************  Version 10  *****************
-' User: Uha          Date: 31.05.07   Time: 11:41
-' Updated in $/CKG/Base/Base/Kernel/Common
-' ITA 1077 - Login bei bereits aktiver Anmeldung ermöglichen
-' 
-' *****************  Version 9  *****************
-' User: Uha          Date: 23.05.07   Time: 15:02
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Fehler in Methode GetAppIDFromQueryString beseitigt
-' 
-' *****************  Version 8  *****************
-' User: Uha          Date: 2.05.07    Time: 15:20
-' Updated in $/CKG/Base/Base/Kernel/Common
-' Methode FormAuthNoReferrer fehlerbereinigt
-' 
-' *****************  Version 7  *****************
-' User: Uha          Date: 5.03.07    Time: 13:54
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' *****************  Version 6  *****************
-' User: Uha          Date: 1.03.07    Time: 16:32
-' Updated in $/CKG/Base/Base/Kernel/Common
-' 
-' ************************************************

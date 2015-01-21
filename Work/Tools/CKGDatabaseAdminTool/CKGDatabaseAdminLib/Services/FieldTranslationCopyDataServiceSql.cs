@@ -13,7 +13,7 @@ namespace CKGDatabaseAdminLib.Services
 {
     public class FieldTranslationCopyDataServiceSql : CkgGeneralDataService, IFieldTranslationCopyDataService
     {
-        public ObservableCollection<ApplicationInfo> Applications { get; private set; }
+        public ObservableCollection<Application> Applications { get; private set; }
 
         public ObservableCollection<ApplicationField> FieldTranslations { get; set; }
 
@@ -54,7 +54,7 @@ namespace CKGDatabaseAdminLib.Services
 
         public void FilterData(bool onlyNew)
         {
-            IEnumerable<ApplicationInfo> listeTemp;
+            IEnumerable<Application> listeTemp;
 
             var allApps = _dataContext.Applications.Local;
 
@@ -69,7 +69,7 @@ namespace CKGDatabaseAdminLib.Services
                             select a;
             }
 
-            Applications = new ObservableCollection<ApplicationInfo>(listeTemp.OrderBy(g => g.AppID));
+            Applications = new ObservableCollection<Application>(listeTemp.OrderBy(g => g.AppID));
         }
 
         public void BeginEdit(int appId, string appURL)
