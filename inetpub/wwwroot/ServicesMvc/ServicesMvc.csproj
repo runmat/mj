@@ -4227,6 +4227,9 @@
     <Content Include="Views\UserReporting\UserList.cshtml" />
     <Content Include="Views\UserReporting\Partial\Grid.cshtml" />
     <Content Include="Views\UserReporting\Partial\Suche.cshtml" />
+    <Content Include="Views\Logs\UnusedApps.cshtml" />
+    <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
