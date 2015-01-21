@@ -3254,23 +3254,25 @@ namespace AppZulassungsdienst.lib
                     var command = new SqlCommand();
                     var adapter = new SqlDataAdapter();
 
-                    command.CommandText = "SELECT dbo.ZLDKopfTabelle.*, dbo.ZLDPositionsTabelle.Matnr, dbo.ZLDPositionsTabelle.Matbez, dbo.ZLDPositionsTabelle.id_pos," +
-                                          " dbo.ZLDPositionsTabelle.Preis, dbo.ZLDPositionsTabelle.GebPreis, dbo.ZLDPositionsTabelle.Preis_Amt, dbo.ZLDPositionsTabelle.Preis_Amt_Add, dbo.ZLDPositionsTabelle.PreisKZ," +
-                                          " dbo.ZLDPositionsTabelle.PosLoesch, dbo.ZLDPositionsTabelle.GebMatPflicht, dbo.ZLDPositionsTabelle.GebMatnr, " +
-                                          "dbo.ZLDPositionsTabelle.GebMatnrSt, dbo.ZLDPositionsTabelle.Menge, dbo.ZLDPositionsTabelle.GebPak" +
-                                          " FROM dbo.ZLDKopfTabelle INNER JOIN" +
-                                          " dbo.ZLDPositionsTabelle ON dbo.ZLDKopfTabelle.id = dbo.ZLDPositionsTabelle.id_Kopf" +
-                                          " WHERE id_sap = @id_sap AND testuser = @testuser" +
-                                          " AND WebMTArt = 'D' AND abgerechnet = 0 AND Flieger = @Flieger";
-
-                    command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
-                    command.Parameters.AddWithValue("@Flieger", SelFlieger);
+                    command.CommandText = "SELECT k.*, p.Matnr, p.Matbez, p.id_pos, p.Preis, p.GebPreis, p.Preis_Amt, p.Preis_Amt_Add, p.PreisKZ," +
+                                          " p.PosLoesch, p.GebMatPflicht, p.GebMatnr, p.GebMatnrSt, p.Menge, p.GebPak, a.Name1, a.Name2, a.Strasse," +
+                                          " a.PLZ, a.Ort, b.Inhaber, b.IBAN, b.SWIFT" +
+                                          " FROM dbo.ZLDKopfTabelle k" +
+                                          " INNER JOIN dbo.ZLDPositionsTabelle p ON k.id = p.id_Kopf" +
+                                          " LEFT OUTER JOIN dbo.ZLDKundenadresse a ON k.id = a.id_Kopf" +
+                                          " LEFT OUTER JOIN dbo.ZLDBankverbindung b ON k.id = b.id_Kopf" +
+                                          " WHERE k.id_sap = @id_sap AND k.testuser = @testuser" +
+                                          " AND p.WebMTArt = 'D' AND k.abgerechnet = 0 AND k.Flieger = @Flieger" +
+                                          " ORDER BY k.id_sap, p.id_pos, k.kundenname asc, k.referenz1 asc, k.Kennzeichen";
 
                     Int32 tmpID_SAP;
-                    Int32.TryParse(SapRow["ZULBELN"].ToString(), out tmpID_SAP);
+                    if (!Int32.TryParse(SapRow["ZULBELN"].ToString(), out tmpID_SAP))
+                    {
+                        tmpID_SAP = 0;
+                    }
+                    command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
+                    command.Parameters.AddWithValue("@Flieger", SelFlieger);
                     command.Parameters.AddWithValue("@id_sap", tmpID_SAP);
-
-                    command.CommandText += " ORDER BY  dbo.ZLDKopfTabelle.id_sap, dbo.ZLDPositionsTabelle.id_pos,kundenname asc, referenz1 asc, Kennzeichen";
                     
                     if (connection.State != ConnectionState.Open)
                     {
@@ -3353,8 +3355,12 @@ namespace AppZulassungsdienst.lib
                     DataTable importPos = myProxy.getImportTable("GT_IMP_POS_S01");
                     DataTable importBank = myProxy.getImportTable("GT_IMP_BANK");
                     DataTable importAdresse = myProxy.getImportTable("GT_IMP_ADRS");
+                    DataTable importWebuser = null;
+                    if (SelSofortabrechnung)
+                        importWebuser = myProxy.getImportTable("GT_IMP_WEBUSER_DATEN");
                     Int32 LastID = 0;
                     Int32 OKLoeschCount = 0;
+                    DataRow importRow;
                     
                     foreach (DataRow SaveRow in tblListe.Select(tblListe.DefaultView.RowFilter))
                     {
@@ -3378,8 +3384,6 @@ namespace AppZulassungsdienst.lib
 
                                 insertDatatoSAPTable(tblKopf, ref importAuftrRow, tblStvaStamm, aktion);
 
-                                DataRow importRow;
-                                //----------------
                                 var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
                                                    where p.id_Kopf == tmpID
                                                    select p);
@@ -3545,6 +3549,15 @@ namespace AppZulassungsdienst.lib
                         }
                     }
 
+                    if (SelSofortabrechnung)
+                    {
+                        importRow = importWebuser.NewRow();
+                        importRow["ERNAM"] = m_objUser.UserName;
+                        importRow["VNAME"] = m_objUser.FirstName;
+                        importRow["NNAME"] = m_objUser.LastName;
+                        importWebuser.Rows.Add(importRow);
+                    }
+
                     if (OKLoeschCount > 0)
                     {
                         myProxy.callBapi();
@@ -3625,7 +3638,7 @@ namespace AppZulassungsdienst.lib
             importAuftrRow["VBELN"] = "";
             importAuftrRow["VKORG"] = tblKopf.Filiale.Substring(0, 4);
             importAuftrRow["VKBUR"] = tblKopf.Filiale.Substring(4, 4);
-            importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+            importAuftrRow["ERNAM"] = m_objUser.UserName;
             importAuftrRow["ERDAT"] = DateTime.Now;
             importAuftrRow["FLAG"] = tblKopf.FLAG;
             importAuftrRow["VZB_STATUS"] = "";
@@ -3867,7 +3880,7 @@ namespace AppZulassungsdienst.lib
                                 importAuftrRow["VBELN"] = "";
                                 importAuftrRow["VKORG"] = tblKopf.Filiale.Substring(0, 4);
                                 importAuftrRow["VKBUR"] = tblKopf.Filiale.Substring(4, 4);
-                                importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                                importAuftrRow["ERNAM"] = m_objUser.UserName;
                                 importAuftrRow["ERDAT"] = DateTime.Now;
                                 importAuftrRow["FLAG"] = tblKopf.FLAG;
 
@@ -4781,7 +4794,7 @@ namespace AppZulassungsdienst.lib
                         importAuftrRow["VE_ERNAM"] = SaveRow["VE_ERNAM"];
                         importAuftrRow["VE_ERDAT"] = SaveRow["VE_ERDAT"];
                         importAuftrRow["VE_ERZEIT"] = SaveRow["VE_ERZEIT"];
-                        importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                        importAuftrRow["ERNAM"] = m_objUser.UserName;
                         importAuftrRow["ERDAT"] = DateTime.Now;
                         importAuftrRow["FLAG"] = SaveRow["FLAG"];
                         importAuftrRow["VZB_STATUS"] = "LA";
@@ -5204,7 +5217,7 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["VBELN"] = "";
                     importAuftrRow["VKORG"] = strVKORG;
                     importAuftrRow["VKBUR"] = strVKBUR;
-                    importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                    importAuftrRow["ERNAM"] = m_objUser.UserName;
                     importAuftrRow["ERDAT"] = DateTime.Now;
                     importAuftrRow["FLAG"] = "";
                     importAuftrRow["BARCODE"] = Barcode;
