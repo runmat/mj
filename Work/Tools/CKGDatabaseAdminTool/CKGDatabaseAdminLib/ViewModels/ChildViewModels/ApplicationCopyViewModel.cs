@@ -16,13 +16,15 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<ApplicationInfo> Applications { get { return DataService.Applications; } }
+        public ObservableCollection<Application> Applications { get { return DataService.Applications; } }
 
-        public ObservableCollection<ApplicationInfo> ChildApplications { get { return DataService.ChildApplications; } }
+        public ObservableCollection<Application> ChildApplications { get { return DataService.ChildApplications; } }
 
         public ObservableCollection<ApplicationField> FieldTranslations { get { return DataService.FieldTranslations; } }
 
         public ObservableCollection<ColumnTranslation> ColumnTranslations { get { return DataService.ColumnTranslations; } }
+
+        public ObservableCollection<ApplicationConfig> ConfigurationValues { get { return DataService.ConfigurationValues; } }
 
         [XmlIgnore]
         private readonly IApplicationCopyDataService DataService;
@@ -66,6 +68,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _copyAppWithColumnTranslations = value; SendPropertyChanged("CopyAppWithColumnTranslations"); }
         }
 
+        private bool _copyAppWithConfigurationValues;
+        public bool CopyAppWithConfigurationValues
+        {
+            get { return _copyAppWithConfigurationValues; }
+            set { _copyAppWithConfigurationValues = value; SendPropertyChanged("CopyAppWithConfigurationValues"); }
+        }
+
         public ICommand CommandCopyApplications { get; private set; }
         public ICommand CommandCopyApplicationToDestinationDatabase { get; private set; }
 
@@ -75,6 +84,10 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             Parent = parentVM;
             ShowOnlyNewApplications = true;
+            CopyAppWithChildApplications = true;
+            CopyAppWithFieldTranslations = true;
+            CopyAppWithColumnTranslations = true;
+            CopyAppWithConfigurationValues = true;
 
             DataService = new ApplicationCopyDataServiceSql(Parent.ActualDatabase);
 
@@ -124,7 +137,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             {
                 if (!String.IsNullOrEmpty(DestinationDatabase))
                 {
-                    var neueID = DataService.CopyApplication(CopyAppWithChildApplications, CopyAppWithFieldTranslations, CopyAppWithColumnTranslations);
+                    var neueID = DataService.CopyApplication(CopyAppWithChildApplications, CopyAppWithFieldTranslations, CopyAppWithColumnTranslations, CopyAppWithConfigurationValues);
                     if (neueID != null)
                     {
                         Parent.ShowMessage("Anwendung wurde erfolgreich kopiert (neue ID: " + neueID.Value + ")", MessageType.Success);
@@ -149,7 +162,7 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
-                var selectedApp = (e.AddedItems[0] as ApplicationInfo);
+                var selectedApp = (e.AddedItems[0] as Application);
                 DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
             }
             else

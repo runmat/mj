@@ -249,7 +249,13 @@ namespace EasyExportGeneralTask
                         case AblaufTyp.DCBank:
                             strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
                             strKennzeichen = row["KENNZEICHEN"].ToString();
-                            cls.SavePictureDCBank(ref LC, logDS, ref row, taskConfig, blnFehlerhafteSaetze);
+                            cls.SavePictureDCBank(ref LC, logDS, ref row, taskConfig);
+                            break;
+
+                        case AblaufTyp.DaimlerFleet:
+                            strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
+                            strKennzeichen = row["KENNZEICHEN"].ToString();
+                            cls.SavePictureDaimlerFleet(ref LC, logDS, ref row, taskConfig);
                             break;
                     }
                 }
@@ -361,7 +367,6 @@ namespace EasyExportGeneralTask
                 else
                 {
                     Console.WriteLine(" übersprungen.");
-                    return;
                 }
             }
             else
@@ -734,7 +739,7 @@ namespace EasyExportGeneralTask
             }
 
             // neuen Namen für Datei vergeben
-            string newFilePath = "";
+            string newFilePath;
 
             Console.WriteLine("Wait... for " + kennzeichen);
 
@@ -799,7 +804,7 @@ namespace EasyExportGeneralTask
             File.Move(row["Filepath"].ToString(), newFilePath);
         }
 
-        public static void SavePictureDCBank(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, bool blnFehlerhafteSaetze)
+        public static void SavePictureDCBank(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
         {
             object iStatus;
             object status = "";
@@ -808,63 +813,57 @@ namespace EasyExportGeneralTask
 
             Console.WriteLine("Wait... for " + strFahrgestellnummer);
 
-            if (blnFehlerhafteSaetze)
+            if (File.Exists(row["Filepath"].ToString()))
             {
-                if (row["found"] != DBNull.Value) // Nur Fehlerdateien neu laden
-                {
-                    if (File.Exists(row["Filepath"].ToString()))
-                    {
-                        Console.WriteLine(" " + row["File"] + " wird neu geholt.");
-                        File.Delete(row["Filepath"].ToString());
-                    }
-
-                    Console.WriteLine(" " + row["File"]);
-
-                    // Datei speichern
-                    iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
-
-                    if (iStatus.ToString() == "1")
-                    {
-                        LogFile lfile2 = logDS.FindFile(strFahrgestellnummer, row["KENNZEICHEN"].ToString(), "");
-                        if (lfile2 != null)
-                        {
-                            lfile2.Finished = true;
-                            LC.DeleteXmlEntry(lfile2);
-                            LC.WriteToXml();
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine(" übersprungen.");
-                    return;
-                }
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
             }
-            else
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
             {
-                if (File.Exists(row["Filepath"].ToString()))
-                {
-                    Console.WriteLine(" " + row["File"] + " existiert bereits.");
-                    throw new IOException(row["File"] + " existiert bereits.");
-                }
-
-                // Datei speichern
-                iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
-
-                if (iStatus.ToString() != "1")
-                {
-                    throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
-                }
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
             }
 
             // neuen Namen für Datei vergeben
             string dateValue = DateTime.Today.ToString("yyyyMMdd");
 
             string newFilePath = taskConfig.easyBlobPathLocal + "\\" + strFahrgestellnummer + "_" + row[".TITEL"] + "_" + dateValue + ".pdf";
+            if (File.Exists(newFilePath))
+            {
+                File.Delete(newFilePath);
+            }
+
+            File.Move(row["Filepath"].ToString(), newFilePath);
+        }
+
+        public static void SavePictureDaimlerFleet(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
+        {
+            object iStatus;
+            object status = "";
+
+            string strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
+
+            Console.WriteLine("Wait... for " + strFahrgestellnummer);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+            {
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+            }
+
+            // neuen Namen für Datei vergeben
+            string newFilePath = taskConfig.easyBlobPathLocal + "\\" + strFahrgestellnummer + ".pdf";
             if (File.Exists(newFilePath))
             {
                 File.Delete(newFilePath);

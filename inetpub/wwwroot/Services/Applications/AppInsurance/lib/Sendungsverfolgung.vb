@@ -2,9 +2,7 @@
 Option Strict On
 
 Imports System
-Imports CKG.Base.Kernel
 Imports CKG.Base.Business
-Imports Microsoft.Data.SAPClient
 Imports CKG.Base.Common
 
 Public Class Sendungsverfolgung
@@ -16,7 +14,8 @@ Public Class Sendungsverfolgung
     Private m_SendungsDaten As DataTable
     Private mE_SUBRC As String
     Private mE_MESSAGE As String
-
+    Private m_Url_Dhl As String
+    Private m_Url_Ups As String
 
     Public Property DatumVon() As String
         Get
@@ -54,9 +53,25 @@ Public Class Sendungsverfolgung
         End Set
     End Property
 
+    Public ReadOnly Property Url_Dhl() As String
+        Get
+            Return m_Url_Dhl
+        End Get
+    End Property
+
+    Public ReadOnly Property Url_Ups() As String
+        Get
+            Return m_Url_Ups
+        End Get
+    End Property
+
     Public Sub New(ByRef objUser As CKG.Base.Kernel.Security.User, ByRef objApp As CKG.Base.Kernel.Security.App, ByVal strAppID As String, ByVal strSessionID As String, ByVal strFileName As String)
         MyBase.New(objUser, objApp, strAppID, strSessionID, strFileName)
 
+        Dim context As String = "Sendungsverfolgung"
+
+        m_Url_Dhl = CKG.Base.Kernel.Common.Common.GetGeneralConfigValue(context, "Url_Dhl")
+        m_Url_Ups = CKG.Base.Kernel.Common.Common.GetGeneralConfigValue(context, "Url_Ups")
     End Sub
 
     Public Overloads Overrides Sub show()
@@ -78,9 +93,7 @@ Public Class Sendungsverfolgung
             Dim strKUNNR As String = m_objUser.Customer.KUNNR.PadLeft(10, "0"c)
 
             Try
-
                 Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_DPM_READ_MOFA_01", m_objApp, m_objUser, page)
-
 
                 myProxy.setImportParameter("AG", strKUNNR)
                 myProxy.setImportParameter("AB_ERDAT", m_DatumVon.ToString)
@@ -90,7 +103,6 @@ Public Class Sendungsverfolgung
                 myProxy.callBapi()
 
                 m_SendungsDaten = myProxy.getExportTable("GT_OUT")
-
 
                 ResultExcel = New DataTable
 
@@ -111,7 +123,6 @@ Public Class Sendungsverfolgung
                 For Each LastOrderRow As DataRow In m_SendungsDaten.Rows
                     Dim NewRow As DataRow = ResultExcel.NewRow
                     NewRow("Agenturnr.") = LastOrderRow("AGENTUR")
-
 
                     NewRow("Name1") = LastOrderRow("NAME1")
                     NewRow("Straße") = LastOrderRow("STREET")
@@ -139,8 +150,6 @@ Public Class Sendungsverfolgung
                     ResultExcel.AcceptChanges()
                 Next
 
-
-
                 If mE_SUBRC <> "0" Then
                     m_intStatus = CInt(mE_SUBRC)
                     m_strMessage = mE_MESSAGE
@@ -152,7 +161,6 @@ Public Class Sendungsverfolgung
                 m_blnGestartet = False
             End Try
         End If
-
-
     End Sub
+
 End Class
