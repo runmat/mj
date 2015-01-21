@@ -40,6 +40,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\Aspose.Cells.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\..\GAC\EntityFramework.dll</HintPath>
     </Reference>
@@ -85,10 +89,10 @@
     <Compile Include="Models\DbModels\ColumnTranslation.cs" />
     <Compile Include="Models\DbModels\DbModelBase.cs" />
     <Compile Include="Models\DbModels\BAPI.cs" />
-    <Compile Include="Models\DbModels\ApplicationInfo.cs" />
     <Compile Include="Models\DbModels\Bapi2Report4CsvExport.cs" />
     <Compile Include="Models\DbModels\BapiCheckItem.cs" />
     <Compile Include="Models\DbModels\GitBranchInfo.cs" />
+    <Compile Include="Models\DbModels\ApplicationConfig.cs" />
     <Compile Include="Models\DbModels\LoginUserMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sap.cs" />
@@ -113,6 +117,10 @@
     <ProjectReference Include="..\..\..\CkgDomainLogic\Lib\CkgDomainLogic.csproj">
       <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
       <Name>CkgDomainLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>

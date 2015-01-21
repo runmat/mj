@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
              xmlns:lib="clr-namespace:CKGDatabaseAdminLib;assembly=CKGDatabaseAdminLib"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800">
     <Grid Margin="5" Background="#EEEEEE">
@@ -26,9 +25,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="35px"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type RadioButton}">
                     <Setter Property="Margin" Value="10,0"/>
@@ -45,7 +45,7 @@
                          IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="dgGitBranches" ItemsSource="{Binding GitBranches}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="dgGitBranches" ItemsSource="{Binding GitBranches}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Entwickler" Binding="{Binding Entwickler}" />
@@ -84,6 +84,9 @@
 
         <Button Grid.Row="2" Grid.Column="0" Width="200px" HorizontalAlignment="Right" Margin="10,2" Command="{Binding CommandCancelGitBranchInfos}" Content="Änderungen verwerfen"/>
         <Button Grid.Row="2" Grid.Column="1" Width="200px" HorizontalAlignment="Left" Margin="10,2" Command="{Binding CommandSaveGitBranchInfos}" Content="Änderungen speichern"/>
+        <Button Grid.Row="2" Grid.Column="2" Width="25px" HorizontalAlignment="Right" Margin="5,2" Name="btnExportToExcel" Click="btnExportToExcel_OnClick" ToolTip="Excel-Export">
+            <Image Source="/CKGDatabaseAdminTool;component/Images/excel_icon.png"/>
+        </Button>
 
     </Grid>
 </UserControl>

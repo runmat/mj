@@ -6,7 +6,7 @@
         xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
         xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
                  WindowStartupLocation="CenterScreen" 
-        Width="1024" Height="768" Title="CKGDatabaseAdminTool" IsIconVisible="False">
+        Width="1280" Height="720" Title="CKGDatabaseAdminTool" IsIconVisible="False">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type ViewModels:LoginUserMessageViewModel}">
