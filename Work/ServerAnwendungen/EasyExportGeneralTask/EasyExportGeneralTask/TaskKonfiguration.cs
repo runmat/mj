@@ -120,7 +120,8 @@ namespace EasyExportGeneralTask
         StarCar,
         XLeasing,
         XLCheck,
-        DCBank
+        DCBank,
+        DaimlerFleet
     }
 
     public class ArchivDefinition
