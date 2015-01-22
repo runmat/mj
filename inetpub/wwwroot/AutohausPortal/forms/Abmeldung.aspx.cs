@@ -72,7 +72,7 @@ namespace AutohausPortal.forms
                 {
                     objVorerf = new AHErfassung(ref m_User, m_App, "AA");
                     objVorerf.NrMaterial = "573";
-                    objVorerf.NrMaterial = "Abmeldung vor Ort";
+                    objVorerf.Material = "Abmeldung vor Ort";
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;
