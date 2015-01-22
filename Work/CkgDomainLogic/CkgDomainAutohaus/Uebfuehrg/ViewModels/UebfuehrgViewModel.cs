@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -32,11 +31,12 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             get { return CacheGet<IUebfuehrgDataService>(); }
         }
 
-        [XmlIgnore]
-        public IFahrzeugverwaltungDataService FahrzeugverwaltungDataService
-        {
-            get { return CacheGet<IFahrzeugverwaltungDataService>(); }
-        }
+        // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+        //[XmlIgnore]
+        //public IFahrzeugverwaltungDataService FahrzeugverwaltungDataService
+        //{
+        //    get { return CacheGet<IFahrzeugverwaltungDataService>(); }
+        //}
 
         [XmlIgnore]
         public List<CommonUiModel> StepModels { get; private set; }
@@ -174,7 +174,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             AnzahlFahrzeugeGewuenschtCorrespondingDisabled = true;
 
-            List<Autohaus.Models.Fahrzeug> storedFahrzeuge = null;
+            // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+            //List<Autohaus.Models.Fahrzeug> storedFahrzeuge = null;
+
             foreach (var param in externalParams)
             {
                 var fahrzeugIndex = param.Key.SubstringTry(param.Key.Length - 1, 1).ToInt();
@@ -197,17 +199,18 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         break;
 
                     case "id":
-                        if (storedFahrzeuge == null)
-                            storedFahrzeuge = FahrzeugverwaltungDataService.FahrzeugeGet();
-                        if (storedFahrzeuge == null)
-                            break;
-                        var storedFahrzeug = storedFahrzeuge.FirstOrDefault(sf => sf.ID == param.Value.ToInt());
-                        if (storedFahrzeug == null)
-                            break;
+                        // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+                        //if (storedFahrzeuge == null)
+                        //    storedFahrzeuge = FahrzeugverwaltungDataService.FahrzeugeGet();
+                        //if (storedFahrzeuge == null)
+                        //    break;
+                        //var storedFahrzeug = storedFahrzeuge.FirstOrDefault(sf => sf.ID == param.Value.ToInt());
+                        //if (storedFahrzeug == null)
+                        //    break;
 
-                        fahrzeugModel.FIN = storedFahrzeug.FahrgestellNr;
-                        fahrzeugModel.Kennzeichen = storedFahrzeug.Kennzeichen;
-                        fahrzeugModel.Referenznummer = storedFahrzeug.ReferenzNr;
+                        //fahrzeugModel.FIN = storedFahrzeug.FahrgestellNr;
+                        //fahrzeugModel.Kennzeichen = storedFahrzeug.Kennzeichen;
+                        //fahrzeugModel.Referenznummer = storedFahrzeug.ReferenzNr;
                         break;
                 }
             }
