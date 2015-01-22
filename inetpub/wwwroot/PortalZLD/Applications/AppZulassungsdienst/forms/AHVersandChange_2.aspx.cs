@@ -172,7 +172,8 @@ namespace AppZulassungsdienst.forms
             txtZLDLief.Text = RowKopf["KREISKZ"].ToString();
             txtKunde.Text = RowKopf["KUNNR"].ToString();
             //String Name1="";
-            DataRow [] RowKunde = objCommon.tblAHKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
+            //DataRow [] RowKunde = objCommon.tblAHKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
+            DataRow[] RowKunde = objCommon.tblKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
             if (RowKunde.Length > 0) { txtKundeName.Text = RowKunde[0]["NAME1"].ToString(); }
             
             txtKennzWunsch.Text = RowKopf["ZZKENN"].ToString();
