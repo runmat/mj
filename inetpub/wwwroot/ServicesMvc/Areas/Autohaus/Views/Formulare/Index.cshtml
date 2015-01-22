@@ -1,0 +1,51 @@
+﻿@using CkgDomainLogic.Autohaus.ViewModels
+@model FormulareViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Autohaus_Formulare <small></small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.Selektor, new ViewDataDictionary{{ "ZulassungskreiseList", Model.Zulassungskreise }})
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowFormulareSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFormulare");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridFormulare() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridFormulare() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFormulare() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    
+</script>

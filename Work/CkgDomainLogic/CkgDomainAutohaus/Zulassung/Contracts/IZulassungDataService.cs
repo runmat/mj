@@ -32,5 +32,13 @@ namespace CkgDomainLogic.Autohaus.Contracts
         List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
 
         #endregion
+
+        #region Dokumentencenter Formulare
+
+        List<Zulassungskreis> Zulassungskreise { get; }
+
+        List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError);
+
+        #endregion
     }
 }
