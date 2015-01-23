@@ -22,7 +22,7 @@
         <div id="content">
             <div id="navigationSubmenu" style="margin-top: 10px; margin-bottom: 10px">
                 <asp:LinkButton ID="lbBack" Style="padding-left: 15px" runat="server" class="firstLeft active"
-                    Text="zurück" OnClick="lbBack_Click" CausesValidation="False"></asp:LinkButton>
+                    Text="zurück" OnClick="LbBackClick" CausesValidation="False"></asp:LinkButton>
             </div>
             <div id="innerContent">
                 <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server" >
@@ -58,9 +58,9 @@
                                 <td align="right">
                                     <div id="queryImage">
                                         <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="../../../Images/queryArrow.gif"
-                                            ToolTip="Abfrage öffnen" Visible="false" OnClick="NewSearch_Click" />
+                                            ToolTip="Abfrage öffnen" Visible="false" OnClick="NewSearchClick" />
                                         <asp:ImageButton ID="NewSearchUp" runat="server" ToolTip="Abfrage schließen" ImageUrl="../../../Images/queryArrowUp.gif"
-                                            Visible="false" OnClick="NewSearchUp_Click" />
+                                            Visible="false" OnClick="NewSearchUpClick" />
                                     </div>
                                 </td>
                             </tr>
@@ -175,7 +175,7 @@
                     </asp:Panel>
                     <div id="dataQueryFooter">
                         <asp:LinkButton ID="lbCreate" runat="server" CssClass="Tablebutton" Width="78px"
-                            OnClientClick="Show_BusyBox1();" OnClick="lbCreate_Click">» Suchen </asp:LinkButton>
+                            OnClientClick="Show_BusyBox1();" OnClick="LbCreateClick">» Suchen </asp:LinkButton>
                     </div>
                     <div id="Result" runat="Server" visible="false">
                         <table cellspacing="0" cellpadding="0" style="width: 100%" bgcolor="white" border="0">
@@ -184,10 +184,10 @@
                                     <div style="width: 100%; max-width: 909px">        
                                         <telerik:RadGrid ID="rgGrid1" runat="server" PageSize="15" AllowSorting="True" 
                                             AutoGenerateColumns="False" GridLines="None" Culture="de-DE" EnableHeaderContextMenu="true" 
-                                            OnExcelMLExportRowCreated="rgGrid1_ExcelMLExportRowCreated" 
-                                            OnExcelMLExportStylesCreated="rgGrid1_ExcelMLExportStylesCreated" 
-                                            OnItemCommand="rgGrid1_ItemCommand" OnItemCreated="rgGrid1_ItemCreated" 
-                                            OnNeedDataSource="rgGrid1_NeedDataSource" ShowGroupPanel="True" >
+                                            OnExcelMLExportRowCreated="RgGrid1ExcelMlExportRowCreated" 
+                                            OnExcelMLExportStylesCreated="RgGrid1ExcelMlExportStylesCreated" 
+                                            OnItemCommand="RgGrid1ItemCommand" OnItemCreated="RgGrid1ItemCreated" 
+                                            OnNeedDataSource="RgGrid1NeedDataSource" ShowGroupPanel="True" >
                                             <ExportSettings HideStructureColumns="true">
                                                 <Excel Format="ExcelML" />
                                             </ExportSettings>
@@ -262,7 +262,7 @@
                 </div>
                 <div>
                     <asp:Button ID="btnFake" runat="server" Text="Fake" Style="display: none" />
-                    <asp:Button ID="Button1" runat="server" Text="BUTTON" OnClick="Button1_Click" Visible="False" />
+                    <asp:Button ID="Button1" runat="server" Text="BUTTON" OnClick="Button1Click" Visible="False" />
                     <cc1:ModalPopupExtender ID="ModalPopupExtender2" runat="server" TargetControlID="btnFake"
                         PopupControlID="mb" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="btnCancel"
                         X="450" Y="200">
@@ -328,7 +328,7 @@
                                     </tr>
                                     <tr>
                                         <td style="color:#4C4C4C;font-weight:bold;width:90px">
-                                            Merkantiler Minderwert:</td>
+                                            Mehrkilometer:</td>
                                         <td>
                                             <asp:CheckBox runat="server" ID="cbxMinderwert"/>
                                             </td>
@@ -343,7 +343,7 @@
                             <tr>
                                 <td align="center">
                                     <asp:Button ID="btnOK" runat="server" Text="Übernehmen" CssClass="TablebuttonLarge"
-                                        Font-Bold="True" Width="90px" Height="25px" onclick="btnOK_Click" style="vertical-align:middle" />
+                                        Font-Bold="True" Width="90px" Height="25px" onclick="BtnOkClick" style="vertical-align:middle" />
                                     <asp:Button ID="btnCancel" runat="server" Text="Abbrechen" CssClass="TablebuttonLarge"
                                         Font-Bold="true" Width="90px" Height="25px" style="vertical-align:middle" />
                                 </td>
