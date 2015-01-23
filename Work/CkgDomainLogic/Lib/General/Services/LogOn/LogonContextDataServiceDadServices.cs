@@ -248,7 +248,7 @@ namespace CkgDomainLogic.General.Services
             var dbContext = CreateDbContext(loginModel.UserName);
             var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
 
-            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0)
+            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
                 addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
         }
 
