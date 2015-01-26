@@ -4,7 +4,14 @@
     <div class="portlet-title cursor-pointer">
         <div class="caption"><i class="@Model.IconCssClass"></i>@Model.Header</div>
         <div class="tools">
-            <a href="#" class="collapse"></a>
+            @if (Model.IsCollapsible)
+            {
+                <a href="#" class="collapse"></a>
+            }
+            @if (Model.IsClosable)
+            {
+                <a href="javascript:void(0);" class="remove"></a>
+            }
         </div>
     </div>
     <div class="portlet-body form">

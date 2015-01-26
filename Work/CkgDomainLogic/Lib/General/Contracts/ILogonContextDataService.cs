@@ -15,6 +15,8 @@ namespace CkgDomainLogic.General.Contracts
     
     public interface ILogonContextDataService : ILogonContext, IApplicationUserMenuProvider
     {
+        IPersistanceService PersistanceService { get; set; }
+
         List<ApplicationType> AppTypes { get; set; }
 
         User User { get; set; }

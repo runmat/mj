@@ -85,8 +85,18 @@ textarea.m-wrap {
     background:#222 url(../assets/img/icon-color-close.png) center no-repeat !important;
 }
 
-.gray {
+.gray, .m-wrap.gray {
     background-color: #aaa;
+}
+
+input[disabled].m-wrap,
+select[disabled].m-wrap,
+textarea[disabled].m-wrap,
+input[readonly].m-wrap,
+select[readonly].m-wrap,
+textarea[readonly].m-wrap {
+  cursor: not-allowed;
+  background-color: #eeeeee;
 }
 
 .padding-left-5 {
@@ -469,7 +479,6 @@ textarea.m-wrap {
 .form-horizontal .checker {
     padding-top: 0;
 }
-
 
 .form-horizontal span.validation-message {
     color: red;
@@ -1137,7 +1146,6 @@ i.pdf-export
 .fontItalic {
     font-style: italic;
 }
-
 
 /* <Dienstleistungs Auswahl> */
 .dienstleistungen-wrapper {

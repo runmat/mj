@@ -1,0 +1,5 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+<h4>@Localize.Principal</h4> 
+
+@Html.Partial("Partial/RechnungsdatenForm", @Model.Zulassung.Rechnungsdaten, new ViewDataDictionary { { "KundenList", Model.Kunden } })
