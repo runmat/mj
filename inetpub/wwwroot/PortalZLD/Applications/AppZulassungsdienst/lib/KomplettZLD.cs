@@ -2302,7 +2302,7 @@ namespace AppZulassungsdienst.lib
                             importRowAuftrag["VBELN"] = "";
                             importRowAuftrag["VKORG"] = VKORG;
                             importRowAuftrag["VKBUR"] = VKBUR;
-                            importRowAuftrag["ERNAM"] = tblKopf.username.PadLeft(12);
+                            importRowAuftrag["ERNAM"] = tblKopf.username;
                             importRowAuftrag["ERDAT"] = DateTime.Now;
                             importRowAuftrag["FLAG"] = "";
                             importRowAuftrag["BARCODE"] = tblKopf.Barcode;
