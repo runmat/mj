@@ -1,6 +1,13 @@
+1.
+Dahsboard mit .NET Report Architektur inkl. Berechtigungs-Integration
+
+
+2.
 Angular js
 ExtJS
 knockout.js
 
+
+3.
 Windows PDF Formular Generator
 
