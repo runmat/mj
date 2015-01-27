@@ -2425,6 +2425,7 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
+    <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
@@ -2479,6 +2480,9 @@
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Formulare\Partial\Grid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
