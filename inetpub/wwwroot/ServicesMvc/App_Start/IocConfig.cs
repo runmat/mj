@@ -44,6 +44,8 @@ using MvcTools.Data;
 using MvcTools.Web;
 using PortalMvcTools.Services;
 using WebTools.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 
 namespace ServicesMvc.App_Start
 {
@@ -163,6 +165,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerHttpRequest();
 
