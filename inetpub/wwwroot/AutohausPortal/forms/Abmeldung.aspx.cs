@@ -70,18 +70,10 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '05'");
-                    if (matRow.Length == 1)
-                    {
-                        objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                        objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                        objVorerf.Material = matRow[0]["MAKTX"].ToString(); fillForm();
-                    }
-                    else
-                    {
-                        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-                        cmdSave.Visible = false;
-                    }
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AA");
+                    objVorerf.NrMaterial = "573";
+                    objVorerf.Material = "Abmeldung vor Ort";
+                    fillForm();
 
                     Session["objVorerf"] = objVorerf;
                 }
