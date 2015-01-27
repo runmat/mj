@@ -825,11 +825,11 @@ namespace AutohausPortal.forms
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
                 objVorerf.Ort = ucBankdatenAdresse.Ort;
-                objVorerf.SWIFT = ucBankdatenAdresse.SWIFT != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.SWIFT : "";
+                objVorerf.SWIFT = ucBankdatenAdresse.IsSWIFTInitial ? "" : ucBankdatenAdresse.SWIFT;
                 objVorerf.IBAN = ucBankdatenAdresse.IBAN;
                 objVorerf.Bankkey = ucBankdatenAdresse.Bankkey;
                 objVorerf.Kontonr = ucBankdatenAdresse.Kontonr;
-                objVorerf.Geldinstitut = ucBankdatenAdresse.Geldinstitut != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.Geldinstitut : "";
+                objVorerf.Geldinstitut = ucBankdatenAdresse.IsGeldinstitutInitial ? "" : ucBankdatenAdresse.Geldinstitut;
                 objVorerf.Inhaber = ucBankdatenAdresse.Kontoinhaber;
                 objVorerf.EinzugErm = ucBankdatenAdresse.Einzug;
                 objVorerf.Rechnung = ucBankdatenAdresse.Rechnung;
