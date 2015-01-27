@@ -191,6 +191,13 @@ namespace AppZulassungsdienst.forms
             {
                 objListe.Zuldat = ZLDCommon.toShortDateStr(txtZulDate.Text);
                 objListe.ZuldatBis = ZLDCommon.toShortDateStr(txtZulDateBis.Text);
+
+                if (String.IsNullOrEmpty(objListe.Zuldat) || String.IsNullOrEmpty(objListe.ZuldatBis))
+                {
+                    lblError.Text = "Bitte geben Sie einen gültigen Zeitraum für das Zulassungsdatum an!";
+                    return;
+                }
+
                 DateTime vonDatum = DateTime.Parse(objListe.Zuldat);
                 DateTime bisDatum = DateTime.Parse(objListe.ZuldatBis);
                 if (vonDatum > bisDatum)

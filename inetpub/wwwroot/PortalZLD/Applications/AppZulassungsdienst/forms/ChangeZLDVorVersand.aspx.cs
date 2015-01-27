@@ -63,11 +63,17 @@ namespace AppZulassungsdienst.forms
         }
 
         protected void Page_Load(object sender, EventArgs e)
-            {
+        {
             if (!IsPostBack)
             {
                 if (Request.QueryString["New"] != null)
                 {
+                    if (Session["objVorVersand"] == null)
+                    {
+                        //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
+                        Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                    }
+
                     objVorVersand = (VoerfZLD)Session["objVorVersand"];
                     refillForm();
                 }

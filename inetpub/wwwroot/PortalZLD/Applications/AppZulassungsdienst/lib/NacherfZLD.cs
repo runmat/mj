@@ -778,8 +778,15 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, 3);
-                        tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, Math.Min(3, tblKopf.Kennzeichen.Length));
+                        if (tblKopf.Kennzeichen.Length > 3)
+                        {
+                            tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        }
+                        else
+                        {
+                            tblKopf.KennABC = "";
+                        }
                     }
 
                     tblKopf.Kennztyp = dRow["KENNZTYP"].ToString();
@@ -4262,93 +4269,96 @@ namespace AppZulassungsdienst.lib
                     // Preisfindung durchführen
                     GetPreise(strAppID, strSessionID, page, tblStvaStamm, tblMaterialStamm);
 
-                    // Preise übernehmen
-                    foreach (DataRow itemRow in NewPosPreise.Rows)
+                    if (NewPosPreise != null)
                     {
-                        var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                      where p.id_Kopf == tmpID && p.id_pos == Int32.Parse(itemRow["ZULPOSNR"].ToString())
-                                      select p).Single();
-
-                        tblPos.SDRelevant = itemRow["SD_REL"].ToString();
-                        tblPos.WebMTArt = itemRow["WEBMTART"].ToString();
-                        tblPos.GebPak = itemRow["GBPAK"].ToString();
-
-                        decimal iPreisAmtAdd = 0;
-                        if (ZLDCommon.IsDecimal(itemRow["GEB_AMT_ADD_C"].ToString().Trim()))
+                        // Preise übernehmen
+                        foreach (DataRow itemRow in NewPosPreise.Rows)
                         {
-                            Decimal.TryParse(itemRow["GEB_AMT_ADD_C"].ToString(), out iPreisAmtAdd);
-                        }
-                        tblPos.Preis_Amt_Add = iPreisAmtAdd;
+                            var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
+                                          where p.id_Kopf == tmpID && p.id_pos == Int32.Parse(itemRow["ZULPOSNR"].ToString())
+                                          select p).Single();
 
-                        Decimal iMenge = 1;
-                        if (ZLDCommon.IsDecimal(itemRow["Menge_C"].ToString().Trim()))
-                        {
-                            Decimal.TryParse(itemRow["Menge_C"].ToString(), out iMenge);
-                        }
-                        tblPos.Menge = iMenge.ToString("0");
+                            tblPos.SDRelevant = itemRow["SD_REL"].ToString();
+                            tblPos.WebMTArt = itemRow["WEBMTART"].ToString();
+                            tblPos.GebPak = itemRow["GBPAK"].ToString();
 
-                        tblPos.PosLoesch = "";
+                            decimal iPreisAmtAdd = 0;
+                            if (ZLDCommon.IsDecimal(itemRow["GEB_AMT_ADD_C"].ToString().Trim()))
+                            {
+                                Decimal.TryParse(itemRow["GEB_AMT_ADD_C"].ToString(), out iPreisAmtAdd);
+                            }
+                            tblPos.Preis_Amt_Add = iPreisAmtAdd;
 
-                        if (itemRow["LOEKZ"].ToString() == "X")tblPos.PosLoesch = "L";
+                            Decimal iMenge = 1;
+                            if (ZLDCommon.IsDecimal(itemRow["Menge_C"].ToString().Trim()))
+                            {
+                                Decimal.TryParse(itemRow["Menge_C"].ToString(), out iMenge);
+                            }
+                            tblPos.Menge = iMenge.ToString("0");
 
-                        decimal dPreis;
-                        tblPos.Preis = decimal.TryParse(itemRow["PREIS_C"].ToString(), out dPreis) ? dPreis : 0;
-                        
-                        DataRow[] SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
-                                        "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
-                                        "' AND WEBMTART = 'G'");
-                        if (SelRow.Length == 1)
-                        {
-                            decimal dGebPreis;
-                            decimal dGebAmtPreis;
-                            tblPos.GebPreis = decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out dGebPreis) ? dGebPreis : 0;
-                            tblPos.Preis_Amt = decimal.TryParse(SelRow[0]["GEB_AMT_C"].ToString(), out dGebAmtPreis) ? dGebAmtPreis : 0;
-                            
-                            tblPos.GebPak = SelRow[0]["GBPAK"].ToString();
-                        }
-                        else if (tblPos.WebMTArt == "G")
-                        {
-                            decimal dGebAmtPreis;
-                            if (decimal.TryParse(itemRow["GEB_AMT_C"].ToString(), out dGebAmtPreis))
+                            tblPos.PosLoesch = "";
+
+                            if (itemRow["LOEKZ"].ToString() == "X") tblPos.PosLoesch = "L";
+
+                            decimal dPreis;
+                            tblPos.Preis = decimal.TryParse(itemRow["PREIS_C"].ToString(), out dPreis) ? dPreis : 0;
+
+                            DataRow[] SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
+                                            "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
+                                            "' AND WEBMTART = 'G'");
+                            if (SelRow.Length == 1)
+                            {
+                                decimal dGebPreis;
+                                decimal dGebAmtPreis;
+                                tblPos.GebPreis = decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out dGebPreis) ? dGebPreis : 0;
+                                tblPos.Preis_Amt = decimal.TryParse(SelRow[0]["GEB_AMT_C"].ToString(), out dGebAmtPreis) ? dGebAmtPreis : 0;
+
+                                tblPos.GebPak = SelRow[0]["GBPAK"].ToString();
+                            }
+                            else if (tblPos.WebMTArt == "G")
+                            {
+                                decimal dGebAmtPreis;
+                                if (decimal.TryParse(itemRow["GEB_AMT_C"].ToString(), out dGebAmtPreis))
+                                {
+                                    tblPos.GebPreis = 0;
+                                    tblPos.Preis_Amt = dGebAmtPreis;
+                                }
+                                tblPos.GebPak = itemRow["GBPAK"].ToString();
+                            }
+                            else
                             {
                                 tblPos.GebPreis = 0;
-                                tblPos.Preis_Amt = dGebAmtPreis;
+                                tblPos.Preis_Amt = 0;
                             }
-                            tblPos.GebPak = itemRow["GBPAK"].ToString();
-                        }
-                        else
-                        {
-                            tblPos.GebPreis = 0;
-                            tblPos.Preis_Amt = 0;
-                        }
 
-                        SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
-                                                                    "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
-                                                                    "' AND WEBMTART = 'K'");
-                        if (SelRow.Length == 1)
-                        {
-                            Decimal Preis;
-                            tblPos.PreisKZ = Decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out Preis) ? Preis : 0;
-                        }
-
-                        DataRow[] MatRow = tblMaterialStamm.Select("MATNR='" + tblPos.Matnr.TrimStart('0') + "'");
-
-                        if (MatRow.Length == 1)
-                        {
-                            if (MatRow[0]["GEBMAT"].ToString().Length > 0)
+                            SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
+                                                                        "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
+                                                                        "' AND WEBMTART = 'K'");
+                            if (SelRow.Length == 1)
                             {
-                                tblPos.GebMatPflicht = "X";
+                                Decimal Preis;
+                                tblPos.PreisKZ = Decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out Preis) ? Preis : 0;
                             }
-                        }
 
-                        tblPos.UPreis = itemRow["UPREIS_C"].ToString();
-                        tblPos.Differrenz = itemRow["DIFF_C"].ToString();
-                        tblPos.Konditionstab = itemRow["KONDTAB"].ToString();
-                        tblPos.Konditionsart = itemRow["KSCHL"].ToString();
+                            DataRow[] MatRow = tblMaterialStamm.Select("MATNR='" + tblPos.Matnr.TrimStart('0') + "'");
 
-                        if (ZLDCommon.IsDate(itemRow["CALCDAT"].ToString()))
-                        {
-                            tblPos.CalcDat = DateTime.Parse(itemRow["CALCDAT"].ToString());
+                            if (MatRow.Length == 1)
+                            {
+                                if (MatRow[0]["GEBMAT"].ToString().Length > 0)
+                                {
+                                    tblPos.GebMatPflicht = "X";
+                                }
+                            }
+
+                            tblPos.UPreis = itemRow["UPREIS_C"].ToString();
+                            tblPos.Differrenz = itemRow["DIFF_C"].ToString();
+                            tblPos.Konditionstab = itemRow["KONDTAB"].ToString();
+                            tblPos.Konditionsart = itemRow["KSCHL"].ToString();
+
+                            if (ZLDCommon.IsDate(itemRow["CALCDAT"].ToString()))
+                            {
+                                tblPos.CalcDat = DateTime.Parse(itemRow["CALCDAT"].ToString());
+                            }
                         }
                     }
 

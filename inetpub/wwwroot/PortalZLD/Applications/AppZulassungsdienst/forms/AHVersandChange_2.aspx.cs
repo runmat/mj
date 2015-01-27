@@ -216,8 +216,11 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnStamm_Click(object sender, EventArgs e)
         {
-
             objNacherf = (NacherfZLD)Session["objNacherf"];
+
+            if (objNacherf.BestLieferanten == null || objNacherf.BestLieferanten.Rows.Count == 0)
+                return;
+
             DataRow[] SelRow = objNacherf.BestLieferanten.Select("LIFNR = '" + ddlKunnr.SelectedValue + "'");
             if (SelRow.Length == 1)
             {
