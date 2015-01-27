@@ -242,7 +242,9 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_AH_ZULST_BY_PLZ").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_FI_CONV_IBAN_2_BANK_ACCOUNT").WriteOrmForExportTableStructures("I_IBAN", "DE79100100100196328100");
-            
+
+            //new FunctionReflector("Z_AHP_CRE_CHG_PARTNER_FZGDATEN").WriteOrmForExportTableStructures("I_KUNNR", "329247");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
