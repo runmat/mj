@@ -1981,7 +1981,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             if (txtIBAN.Text.Trim(' ').Length > 0 || chkEinzug.Checked)
             {
-                objCommon.IBAN = txtIBAN.Text.Trim(' ');
+                objCommon.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
                 objCommon.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objCommon.Message != String.Empty)
                 {
@@ -3158,7 +3158,7 @@ namespace AppZulassungsdienst.forms
             objNacherf.PLZ = txtPlz.Text;
             objNacherf.Ort = txtOrt.Text;
             objNacherf.SWIFT = txtSWIFT.Text;
-            objNacherf.IBAN = txtIBAN.Text;
+            objNacherf.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             objNacherf.BankKey = objCommon.Bankschluessel;
             objNacherf.Kontonr = objCommon.Kontonr;
             objNacherf.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
