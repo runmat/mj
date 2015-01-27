@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using System.Web.Routing;
 using System.Web.WebPages;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -365,5 +362,33 @@ namespace MvcTools.Web
         }
 
         #endregion
+
+
+        #region UrlHelper
+
+        public static string ContentArea(this UrlHelper url, string path)
+        {
+            var modulName = url.RequestContext.RouteData.DataTokens["area"];
+            var modulContentLoad = "";
+
+            if (modulName == null)
+                return string.Empty;
+
+            if (!string.IsNullOrEmpty(modulName.ToString()))
+                modulContentLoad = "Areas/" + modulName;
+
+            if (path.StartsWith("~/"))
+                path = path.Remove(0, 2);
+
+            if (path.StartsWith("/"))
+                path = path.Remove(0, 1);
+
+            path = path.Replace("../", string.Empty);
+
+            return VirtualPathUtility.ToAbsolute("~/" + modulContentLoad + "/" + path);
+        }
+
+        #endregion
+
     }
 }

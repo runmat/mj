@@ -432,6 +432,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
+    <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
+    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />
+    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.js" />
+    <Content Include="Areas\Common\Content\Dashboard\gritter\jquery.gritter.js" />
+    <Content Include="Areas\Common\Content\Dashboard\icon-sprite.PNG" />
+    <Content Include="Areas\Common\Content\Dashboard\jquery-sDashboard.js" />
+    <Content Include="Areas\Common\Content\Dashboard\sDashboard.css" />
+    <Content Include="Areas\Common\Content\Dashboard\touchpunch\jquery.ui.touch-punch.js" />
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\img\bg-white-lock-header.png" />
@@ -2429,6 +2438,10 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
+    <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Common\lib\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\ViewModels\DashboardViewModel.cs" />
     <Compile Include="DashboardService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2480,6 +2493,10 @@
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
+    <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Common\Content\Web.config" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <None Include="Documents\Templates\UploadFahrzeugeinsteuerung.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4246,6 +4263,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\Common\lib\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />
