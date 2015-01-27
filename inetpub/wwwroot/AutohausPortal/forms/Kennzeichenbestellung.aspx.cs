@@ -217,7 +217,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
 
                 if (objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'").Length == 0 && rbKennzPrae.Checked)
                 { lblError.Text = "Fehler beim Speichern des zulassungskreises"; return; }
@@ -518,8 +518,7 @@ namespace AutohausPortal.forms
                 DropDownList ddlKennzForm =
                 (DropDownList)e.Item.FindControl("ddlKennzForm");
 
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
                 tmpDView.RowFilter = "Matnr = 593";
                 if (rbKennzFun.Checked) { tmpDView.RowFilter = "Matnr = 6"; }
                 tmpDView.Sort = "Matnr";
@@ -1316,8 +1315,7 @@ namespace AutohausPortal.forms
                 HtmlGenericControl divKennzFun = (HtmlGenericControl)rItem.FindControl("divKennzFun");
                 HtmlGenericControl divTrennKennz = (HtmlGenericControl)rItem.FindControl("divTrennKennz");
                     
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
                 tmpDView.RowFilter = "Matnr = 593";
                 if (rbKennzFun.Checked) { tmpDView.RowFilter = "Matnr = 6"; }
                 tmpDView.Sort = "Matnr";

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AutohausPortal.lib;
@@ -10,7 +8,6 @@ using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using System.IO;
 using SmartSoft.PdfLibrary;
-using System.Text;
 
 namespace AutohausPortal.forms
 {   /// <summary>
@@ -18,7 +15,7 @@ namespace AutohausPortal.forms
     /// und können dann gedruckt werden. 
     /// Aufruf aus Auftraege.aspx
     /// </summary>
-    public partial class PrintDialog : System.Web.UI.Page
+    public partial class PrintDialog : Page
     {
         private AHErfassung objVorerf;
         private User m_User;
@@ -39,61 +36,55 @@ namespace AutohausPortal.forms
             objVorerf = (AHErfassung)Session["objVorerf"];
             if (!IsPostBack) 
             { 
-                 if (objVorerf.tblPrint.Rows.Count > 0)
-                 {
-                     DataTable showTable = new DataTable();
-                     showTable.Columns.Add("ZULBELN", typeof(String));
-                     showTable.Columns.Add("FILENAME", typeof(String));
-                     showTable.Columns.Add("Path", typeof(String));
+                DataTable showTable = new DataTable();
+                showTable.Columns.Add("ZULBELN", typeof(String));
+                showTable.Columns.Add("FILENAME", typeof(String));
+                showTable.Columns.Add("Path", typeof(String));
  
-                    if (objVorerf.tblPrint.Rows.Count > 0)
+                if (objVorerf != null && objVorerf.tblPrint != null && objVorerf.tblPrint.Rows.Count > 0)
+                {
+                    // Pfad zu den PDF´s aufbauen
+                    String NetworkPath;
+                    if (m_User.IsTestUser)
                     {
-                        // Pfad zu den PDF´s aufbauen
-                        String NetworkPath = "";
-                        if (m_User.IsTestUser)
-                        {
-                            NetworkPath = "\\\\192.168.10.96\\test\\portal\\zld\\ah_auftrag\\";
-                        }
-                        else 
-                        {
-                            NetworkPath = "\\\\192.168.10.96\\prod\\portal\\zld\\ah_auftrag\\";
-                        }
-
-                        string[] files = null;
-                        List<byte[]> filesByte = new List<byte[]>();
-                        String FolderName = objVorerf.tblPrint.Rows[0]["FILENAME"].ToString().Split('/')[1].ToString();
-                        if (Directory.Exists(NetworkPath + FolderName))
-                        {
-                            files = Directory.GetFiles(NetworkPath + FolderName + "\\", "*.pdf");
-                            foreach (string sFile in files)
-                            {
-                                filesByte.Add(File.ReadAllBytes(sFile));
-                            }
-
-                            string sPath = null;
-
-                            sPath = NetworkPath + FolderName + "\\Auftragsliste_" + FolderName + ".pdf";
-                            // Mergen der einzelnen PDF´s in ein großes PDF
-                            File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, true));
-                            DataRow PrintRow = showTable.NewRow();
-                            PrintRow["ZULBELN"] = "1";
-                            PrintRow["FILENAME"] = "Einzelaufträge_" + FolderName + ".pdf";
-                            PrintRow["Path"] = sPath;
-                            showTable.Rows.Add(PrintRow);
-
-                            // Tagesliste separat anbieten
-                            sPath = NetworkPath + FolderName + "\\Auftragsliste\\Auftragsliste.pdf";
-                            PrintRow = showTable.NewRow();
-                            PrintRow["ZULBELN"] = "2";
-                            PrintRow["FILENAME"] = "Gesamtliste_" + FolderName + ".pdf";
-                            PrintRow["Path"] = sPath;
-                            showTable.Rows.Add(PrintRow);
-                        }
+                        NetworkPath = "\\\\192.168.10.96\\test\\portal\\zld\\ah_auftrag\\";
+                    }
+                    else 
+                    {
+                        NetworkPath = "\\\\192.168.10.96\\prod\\portal\\zld\\ah_auftrag\\";
                     }
 
-                    GridView2.DataSource = showTable;
-                    GridView2.DataBind();
-                }                
+                    List<byte[]> filesByte = new List<byte[]>();
+                    String FolderName = objVorerf.tblPrint.Rows[0]["FILENAME"].ToString().Split('/')[1].ToString();
+                    if (Directory.Exists(NetworkPath + FolderName))
+                    {
+                        string[] files = Directory.GetFiles(NetworkPath + FolderName + "\\", "*.pdf");
+                        foreach (string sFile in files)
+                        {
+                            filesByte.Add(File.ReadAllBytes(sFile));
+                        }
+
+                        string sPath = NetworkPath + FolderName + "\\Auftragsliste_" + FolderName + ".pdf";
+                        // Mergen der einzelnen PDF´s in ein großes PDF
+                        File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte, true));
+                        DataRow PrintRow = showTable.NewRow();
+                        PrintRow["ZULBELN"] = "1";
+                        PrintRow["FILENAME"] = "Einzelaufträge_" + FolderName + ".pdf";
+                        PrintRow["Path"] = sPath;
+                        showTable.Rows.Add(PrintRow);
+
+                        // Tagesliste separat anbieten
+                        sPath = NetworkPath + FolderName + "\\Auftragsliste\\Auftragsliste.pdf";
+                        PrintRow = showTable.NewRow();
+                        PrintRow["ZULBELN"] = "2";
+                        PrintRow["FILENAME"] = "Gesamtliste_" + FolderName + ".pdf";
+                        PrintRow["Path"] = sPath;
+                        showTable.Rows.Add(PrintRow);
+                    }
+                }
+
+                GridView2.DataSource = showTable;
+                GridView2.DataBind();               
             }
         }
 
