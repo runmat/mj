@@ -130,14 +130,31 @@ namespace CkgDomainLogic.Autohaus.Models
 
                         SetStatus(s, d);
 
-                        d.Preis = s.PREIS_DL.NullIf0();
-                        d.PreisGebuehr = s.PREIS_GB.NullIf0();
-                        d.PreisSteuer = s.PREIS_ST.NullIf0();
-                        d.PreisKz = s.PREIS_KZ.NullIf0();
-
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
                     }));
+            }
+        }
+
+        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.Preis = null;
+            d.PreisGebuehr = null;
+            d.PreisSteuer = null;
+            d.PreisKz = null;
+
+            switch (d.Status.NotNullOrEmpty().ToUpper())
+            {
+                case "AR":
+                    d.Preis = s.PREIS_DL.NullIf0();
+                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                    d.PreisSteuer = s.PREIS_ST.NullIf0();
+                    d.PreisKz = s.PREIS_KZ.NullIf0();
+                    break;
+
+                case "D":
+                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                    break;
             }
         }
 
@@ -185,6 +202,8 @@ namespace CkgDomainLogic.Autohaus.Models
                     d.StatusAsText = Localize.InWork;
                     break;
             }
+
+            SetPreise(s, d);
         }
 
         #endregion
