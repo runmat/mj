@@ -58,26 +58,32 @@ Partial Public Class ServicesMenue
                     Else
                         dRow("AppURL") = GetUrlString(dRow("AppURL").ToString(), dRow("AppID").ToString())
                     End If
+
+                    ' PageVisit soll auf dem Server geloggt werden und nicht auf via JS
+                    ' Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
+                    Dim url As String = dRow("AppURL").ToString()
+
+                    ' Url encoden für die Verwendung als Query Params
+                    url = HttpUtility.UrlEncode(url)
+                    url = Convert.ToBase64String(Encoding.UTF8.GetBytes(url.ToCharArray()))
+
+                    ' Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
+                    dRow("AppURL") = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow("AppID"), "&url=", url)
+
                 Next
 
-                Dim dvAppLinks As DataView = New DataView(appTable)
-                dvAppLinks.RowFilter = "AppType='Report' AND AppInMenu=1"
                 MenuReportSource = New DataView(appTable)
                 MenuReportSource.RowFilter = "AppType='Report' AND AppInMenu=1"
 
-                dvAppLinks.RowFilter = "AppType='Change' AND AppInMenu=1"
                 MenuChangeSource = New DataView(appTable)
                 MenuChangeSource.RowFilter = "AppType='Change' AND AppInMenu=1"
 
-                dvAppLinks.RowFilter = "AppType='Admin' AND AppInMenu=1"
                 MenuAdminSource = New DataView(appTable)
                 MenuAdminSource.RowFilter = "AppType='Admin' AND AppInMenu=1"
 
-                dvAppLinks.RowFilter = "AppType='KVP' AND AppInMenu=1"
                 MenuKVPSource = New DataView(appTable)
                 MenuKVPSource.RowFilter = "AppType='KVP' AND AppInMenu=1"
 
-                dvAppLinks.RowFilter = "AppType='Helpdesk' AND AppInMenu=1"
                 MenuHelpDeskSource = New DataView(appTable)
                 MenuHelpDeskSource.RowFilter = "AppType='Helpdesk' AND AppInMenu=1"
 

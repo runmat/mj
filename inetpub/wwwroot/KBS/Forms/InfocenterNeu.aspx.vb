@@ -87,41 +87,30 @@ Partial Public Class InfocenterNeu
     End Sub
 
     Protected Sub rgDokumente_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles rgDokumente.ItemDataBound
+        'Gruppenheader ohne Überschriften
         If TypeOf e.Item Is GridGroupHeaderItem Then
-            If icDocs IsNot Nothing AndAlso icDocs.Documents IsNot Nothing Then
-                Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
-                Dim strText As String = item.DataCell.Text.Split(":"c)(1)
-
-                Dim tmpInt As Integer = 0
-                If Int32.TryParse(strText, tmpInt) Then
-                    Dim docType As DataRow = icDocs.DocumentTypes.Select("documentTypeId=" & tmpInt)(0)
-                    item.DataCell.Text = docType("docTypeName").ToString()
-                End If
-            End If
+            Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
+            Dim groupDataRow As DataRowView = CType(e.Item.DataItem, DataRowView)
+            item.DataCell.Text = groupDataRow("docTypeName").ToString()
         End If
     End Sub
 
     Protected Sub rgDokumente_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles rgDokumente.ItemCommand
-        Dim index As Integer
-        Dim gridRow As GridDataItem
-        Dim lButton As LinkButton
-
         Select Case e.CommandName
             Case "showDocument"
-                index = e.Item.ItemIndex
-                gridRow = rgDokumente.Items(index)
-                lButton = CType(e.Item.FindControl("lbtDateiOeffnen"), LinkButton)
+                Dim index As Integer = e.Item.ItemIndex
+                Dim gridRow As GridDataItem = rgDokumente.Items(index)
+                Dim lButton As LinkButton = CType(e.Item.FindControl("lbtDateiOeffnen"), LinkButton)
 
                 If lButton IsNot Nothing Then
                     Dim fName As String = lButton.Text
                     Dim fType As String = gridRow("FileType").Text
-                    Dim fExtension As String = "." & fType
                     Dim sPfad As String = fileSourcePath & fName & "." & fType
 
                     If File.Exists(sPfad) Then
                         Session("App_Filepath") = sPfad
 
-                        Select Case gridRow("FileType").Text
+                        Select Case fType
                             Case "pdf"
                                 Session("App_ContentType") = "Application/pdf"
                                 Session("App_ContentDisposition") = "inline"
@@ -153,7 +142,6 @@ Partial Public Class InfocenterNeu
                         lblError.Text = "Die angeforderte Datei wurde nicht auf dem Server gefunden"
                     End If
                 End If
-
         End Select
     End Sub
 

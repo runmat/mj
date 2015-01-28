@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
@@ -17,28 +18,15 @@ using ServicesMvc.App_Start;
 
 namespace ServicesMvc
 {
-    // Hinweis: Anweisungen zum Aktivieren des klassischen Modus von IIS6 oder IIS7 
-    // finden Sie unter "http://go.microsoft.com/?LinkId=9394801".
-
     public class MvcApplication : HttpApplication
     {
         public static MvcApplication Instance { get; private set; }
-
-        //private IAppSettings _appSettings;
-        //public IAppSettings AppSettings { get { return (_appSettings ?? (_appSettings = CkgDomainAppSettings.DefaultInstanceDAD)); } }
-
-        //private ILogService _logService;
-        //public ILogService LogService
-        //{
-        //    get { return (_logService ?? (_logService = new LogService(AppSettings.AppName, Path.Combine(AppSettings.DataPath, "log.xml")))); }
-        //}
-
 
         protected void Application_Start()
         {
             Instance = this;
 
-            AreaRegistration.RegisterAllAreas();
+            AreaAutoRegistration.RegisterAreasFolder(Assembly.GetAssembly(typeof(MvcApplication)));
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -52,15 +40,14 @@ namespace ServicesMvc
             DefaultModelBinder.ResourceClassKey = "ValidationMessages";
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(RequiredAttribute), typeof(LocalizedRequiredAttributeAdapter));
 
-
-            //throw new DirectoryNotFoundException("Test: Application_Start");
-
             //
             // views and controllers provided by external assemblies:
             //
             MvcTools.MvcSettings.RegisterRoutes(RouteTable.Routes, typeof(PortalHtmlHelperExtensions).Assembly);
 
+            //
             // Autofac / IoC Integration:
+            //
             IocConfig.RegisterIocContainer();
 
             //
@@ -71,11 +58,6 @@ namespace ServicesMvc
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            //
-            // Connecting our Logger to our SapDataService
-            //
-            // S.AP.GetLogService = () => LogService;
-
             //
             // DB Tier to Middle Tier Model mapping validation:
             // validate model mappings between our de-coupled SAP and Web Models

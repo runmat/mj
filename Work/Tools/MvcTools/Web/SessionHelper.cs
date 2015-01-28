@@ -35,6 +35,14 @@ namespace MvcTools.Web
             Session[key] = model;
         }
 
+        public static void SetSessionObject(string key, object model)
+        {
+            if (Session == null)
+                return;
+
+            Session[key] = model;
+        }
+
         public static T GetSessionValue<T>(string key, T defaultVal)
         {
             if (Session == null)

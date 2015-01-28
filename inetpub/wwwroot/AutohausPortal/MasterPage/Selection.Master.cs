@@ -36,7 +36,7 @@ namespace AutohausPortal.MasterPage
             
             try
             {
-                if (HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10"))
+                if (HttpContext.Current.Request.UserAgent != null && (HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10") || HttpContext.Current.Request.UserAgent.ToLower().Contains("rv:11.0")))
                 {
                     this.Head1.Controls.Add(new LiteralControl("<META content=\"IE=9,chrome=1\" http-equiv=\"X-UA-Compatible\">"));
                 }

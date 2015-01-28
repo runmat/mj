@@ -21,7 +21,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 {
     public class BriefVersandDataServiceSAP : CkgGeneralDataServiceSAP, IBriefVersandDataService
     {
-        private bool? _endgVersand = null;
+        private bool? _endgVersand;
 
         private List<VersandGrund> Versandgruende { get { return PropertyCacheGet(() => LoadVersandgruendeFromSap().ToList()); } }
 
@@ -45,14 +45,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             Z_DPM_READ_VERS_GRUND_KUN_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if (_endgVersand.Value)
-            {
-                SAP.SetImportParameter("I_ABCKZ", "2");
-            }
-            else
-            {
-                SAP.SetImportParameter("I_ABCKZ", "1");
-            }
+            SAP.SetImportParameter("I_ABCKZ", _endgVersand.GetValueOrDefault() ? "2" : "1");
 
             var sapList = Z_DPM_READ_VERS_GRUND_KUN_01.GT_OUT.GetExportListWithExecute(SAP);
 
