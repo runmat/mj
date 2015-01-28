@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
 using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
-using System.Linq.Expressions;
-using System.Globalization;
 using System.Configuration;
-using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
@@ -18,9 +11,8 @@ namespace AutohausPortal.lib
     /// <summary>
     /// Allgemeine Klasse in der Stammdaten geladen werden.
     /// </summary>
-    public class ZLDCommon : CKG.Base.Business.DatenimportBase
+    public class ZLDCommon : DatenimportBase
     {
-
         #region Properties
 
         /// <summary>
@@ -43,22 +35,6 @@ namespace AutohausPortal.lib
         /// Tabelle Sonderkreiskennzeichen z.b. HH1 aus SAP.
         /// </summary>
         public DataTable tblSonderStva
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle Materialstamm aus SAP.
-        /// </summary>
-        public DataTable tblMaterialStamm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle Materialtext ohne Materialnummer
-        /// </summary>
-        public DataTable tblMaterialtextohneMatNr
         {
             get;
             set;
@@ -166,8 +142,6 @@ namespace AutohausPortal.lib
 
             tblKundenStamm = new DataTable();
             tblStvaStamm = new DataTable();
-            tblMaterialStamm = new DataTable();
-            tblMaterialtextohneMatNr = new DataTable();
             tblKennzGroesse = new DataTable();
             tblFahrzeugarten = new DataTable();
         } 
@@ -240,39 +214,14 @@ namespace AutohausPortal.lib
                         m_intStatus = -5555;
                         m_strMessage = "Keine Kundendaten gefunden!";
                     }
-                    DataRow dr;
+
                     if (tblKundenStamm.Rows.Count > 1)
                     {
-                        dr = tblKundenStamm.NewRow();
+                        DataRow dr = tblKundenStamm.NewRow();
                         dr["KUNNR"] = "0";
                         dr["NAME1"] = " - keine Auswahl - ";
                         tblKundenStamm.Rows.Add(dr);                   
                     }
-   
-                    tblMaterialtextohneMatNr = new DataTable();
-
-                    tblMaterialtextohneMatNr = myProxy.getExportTable("GT_MAT");
-                    tblMaterialStamm = tblMaterialtextohneMatNr.Copy();
-                    foreach (DataRow drow in tblMaterialStamm.Rows)
-                    {
-                        drow["MATNR"] = drow["MATNR"].ToString().TrimStart('0');
-                        drow["MAKTX"] = drow["MAKTX"].ToString();
-                    }
-
-
-                    if (tblMaterialStamm.Rows.Count == 0)
-                    {
-                        m_intStatus = -5555;
-                        m_strMessage = "Keine Materialdaten gefunden!";
-                    }
-
-                    dr = tblMaterialStamm.NewRow();
-                    dr["MATNR"] = "0";
-                    dr["MAKTX"] = " - keine Auswahl - ";
-                    tblMaterialStamm.Rows.Add(dr);
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -362,14 +311,14 @@ namespace AutohausPortal.lib
         {
             m_intStatus = 0;
             m_strMessage = "";
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"].ToString();
+            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+
             try
             {
                 tblKennzGroesse = new DataTable();
 
-                System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
-                System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
+                SqlCommand command = new SqlCommand();
+                SqlDataAdapter adapter = new SqlDataAdapter();
 
 
                 command.CommandText = "SELECT  dbo.KennzeichGroesse.ID, dbo.MaterialKennzGroesse.Matnr, dbo.MaterialKennzGroesse.Kennzart, dbo.KennzeichGroesse.Groesse" +
@@ -513,7 +462,7 @@ namespace AutohausPortal.lib
         /// <returns></returns>
         private static string ermittleAnzahlAuftraege(CKG.Base.Kernel.Security.User usr, SqlConnection conn)
         {
-            string menge = "0";
+            string menge;
 
             try
             {
@@ -555,7 +504,7 @@ namespace AutohausPortal.lib
         /// <returns></returns>
         public string getAnzahlAuftraege()
         {
-            string menge = "0";
+            string menge;
 
             try
             {
@@ -581,6 +530,7 @@ namespace AutohausPortal.lib
         /// Lädt Anzahl der angelegten Aufträge (für Anzeige in der Masterpage), statisch, mit Übergabe von User und Connection
         /// </summary>
         /// <param name="usr"></param>
+        /// <param name="conn"></param>
         /// <returns></returns>
         public static string getAnzahlAuftraege(CKG.Base.Kernel.Security.User usr, SqlConnection conn)
         {
@@ -720,7 +670,7 @@ namespace AutohausPortal.lib
         {
             try
             {
-                int dummy = 0;
+                int dummy;
                 return Int32.TryParse(Value, out dummy);
             }
             catch

@@ -44,6 +44,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         #region unused Iterface-Members
 
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
         public List<Land> Laender { get; private set; }
         public List<SelectItem> Versicherungen { get; private set; }
         public List<VersandOption> VersandOptionen { get; private set; }

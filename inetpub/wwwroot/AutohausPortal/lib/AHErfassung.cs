@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
-using System.Linq.Expressions;
-using System.Globalization;
 using System.Configuration;
-using System.Data.Linq;
 namespace AutohausPortal.lib
 {   
     /// <summary>
     /// Klasse die verschiedenste SAP- bzw. Datenbankzugriffe herstellt. 
     /// Sammel, sichern, Löschen und editieren von Eingabedaten in SQL oder SAP.
     /// </summary>
-    public class AHErfassung : CKG.Base.Business.DatenimportBase
+    public class AHErfassung : DatenimportBase
     {
         #region Declarations
 
@@ -1333,6 +1328,7 @@ namespace AutohausPortal.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
 
+                    myProxy.setImportParameter("I_SPEICHERN", "X");
                     myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
 
                     DataTable importAuftrag = myProxy.getImportTable("GT_BAK_IN");
@@ -1720,7 +1716,7 @@ namespace AutohausPortal.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_SIMULATION", "X"); // wichtig!
+                    myProxy.setImportParameter("I_FORMULAR", "X");
 
                     DataTable importAuftrag = myProxy.getImportTable("GT_BAK_IN");
                     DataTable importPos = myProxy.getImportTable("GT_POS_IN");

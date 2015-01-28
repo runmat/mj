@@ -1207,10 +1207,8 @@ Namespace Kernel.Security
                 If cn.State = ConnectionState.Closed Then
                     cn.Open()
                 End If
-                Dim cmd As SqlClient.SqlCommand = New SqlClient.SqlCommand("SELECT LastChangedBy,Max(ID) as ID  " & _
-                                                          "FROM AdminHistory_User  " & _
-                                                          "WHERE Username = @Username And " & _
-                                                          "Action='Benutzer gesperrt' Group By LastChangedBy ORDER BY ID DESC", cn)
+                Dim cmd As SqlClient.SqlCommand = New SqlClient.SqlCommand("SELECT LastChangedBy FROM AdminHistory_User " & _
+                    "WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = @Username AND Action = 'Benutzer gesperrt')", cn)
 
                 cmd.Parameters.AddWithValue("@Username", objUser.UserName)
                 Dim sUser As String = CStr(cmd.ExecuteScalar)
@@ -1546,10 +1544,11 @@ Namespace Kernel.Security
 
                         'Applications holen
                         GetApplications(cn, intCustID)
-
-                        'App instanzieren
-                        m_app = New App(Me)
                     End If
+
+                    'App instanziieren
+                    m_app = New App(Me)
+
                     'Auf abgelaufenes Passwort pruefen
                     If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(System.TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
                         m_blnPasswordExpired = True

@@ -115,7 +115,7 @@
                                             <td align="left">
                                                 <asp:GridView ID="dgSearchResult" Width="100%" runat="server" AllowSorting="True"
                                                     AutoGenerateColumns="False" CellPadding="0" AlternatingRowStyle-BackColor="#DEE1E0"
-                                                    AllowPaging="True" GridLines="None" PageSize="20" EditRowStyle-Wrap="False" PagerStyle-Wrap="True"
+                                                    AllowPaging="True" GridLines="None" PageSize="10" EditRowStyle-Wrap="False" PagerStyle-Wrap="True"
                                                     CssClass="GridView">
                                                     <PagerSettings Visible="False" />
                                                     <HeaderStyle CssClass="GridTableHead"></HeaderStyle>
