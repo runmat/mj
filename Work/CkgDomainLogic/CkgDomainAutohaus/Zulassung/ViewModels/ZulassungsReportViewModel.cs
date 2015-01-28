@@ -72,10 +72,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
         }
 
-        [DashboardItemsLoadMethod]
+        [DashboardItemsLoadMethod("Zulassungen")]
         public void LoadZulassungsReport(Action<string, string> addModelError)
         {
             Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
+
+            DataMarkForRefresh();
+        }
+
+        [DashboardItemsLoadMethod("Abmeldungen")]
+        public void LoadAbmeldungsReport(Action<string, string> addModelError)
+        {
+            Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
+
+            // ToDo: Test
+            Items.ForEach(item =>
+                {
+                    if (item.ZulassungDatum != null)
+                        item.ZulassungDatum = item.ZulassungDatum.GetValueOrDefault().AddYears(-5).AddMonths(-6);
+                });
 
             DataMarkForRefresh();
         }

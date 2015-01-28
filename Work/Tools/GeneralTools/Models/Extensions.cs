@@ -623,8 +623,7 @@ namespace GeneralTools.Models
         public static IEnumerable<PropertyInfo> GetPropertiesOfClassWithAttribute(this Type type, Type classAttributeType)
         {
             return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(property => property.PropertyType.GetCustomAttributes(true)
-                    .Any(p => p.GetType() == classAttributeType));
+                .Where(property => property.PropertyType.GetCustomAttributes(true).Any(attr => attr.GetType() == classAttributeType));
         }
 
         public static PropertyInfo GetPropertyOfClassWithAttribute(this Type type, Type propertyClassAttributeType)
@@ -641,13 +640,24 @@ namespace GeneralTools.Models
         public static IEnumerable<MethodInfo> GetMethodsWithAttribute(this Type type, Type attributeType)
         {
             return type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(property => property.GetCustomAttributes(true)
-                    .Any(p => p.GetType() == attributeType));
+                .Where(property => property.GetCustomAttributes(true).Any(attr => attr.GetType() == attributeType));
         }
 
         public static MethodInfo GetMethodWithAttribute(this Type type, Type attributeType)
         {
             return type.GetMethodsWithAttribute(attributeType).FirstOrDefault();
+        }
+
+        public static IEnumerable<MethodInfo> GetMethodsWithAttribute<T>(this Type type, Predicate<T> filterAttributeFunc) where T : Attribute
+        {
+            var attributeType = typeof (T);
+            return type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true).Any(attr => attr.GetType() == attributeType && filterAttributeFunc((T)attr)));
+        }
+
+        public static MethodInfo GetMethodWithAttribute<T>(this Type type, Predicate<T> filterAttributeFunc) where T : Attribute
+        {
+            return type.GetMethodsWithAttribute<T>(filterAttributeFunc).FirstOrDefault();
         }
     }
 
