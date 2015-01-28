@@ -201,7 +201,7 @@
                 return;
 
             chart.formPreparePrivate(chart);
-            showBusy($("#" + chart.GetPlaceHolderID()), 20, -35);
+            showBusy($("#" + chart.GetPlaceHolderID()));
             chart.GetFilterForm().submit();
         });
 
@@ -224,7 +224,7 @@
         }
 
         chartPlaceHolder.fadeTo("fast", 0.8, function () {
-            showBusy($("#" + chartPlaceHolderID), 20, -35);
+            showBusy($("#" + chartPlaceHolderID));
         });
 
         $.ajax({

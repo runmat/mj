@@ -30,20 +30,34 @@
     function FormPrepareDashboard() {
 
 	    var dashboardJson =
-	    [{
-	        widgetTitle: "bar Chart Widget",
-	        widgetId: "id002",
-	        widgetType: "chart",
-	        enableRefresh: true,
-	        refreshCallBack: function (widgetId) {
-	            return _dashboardData;
-	        },
-	        widgetContent: {
-	            data: null, //myExampleData.barChartData,
-	            options: null //myExampleData.barChartOptions
+	    [
+	        {
+	            widgetTitle: "Zulassungen",
+	            widgetId: "id002",
+	            widgetType: "chart",
+	            enableRefresh: true,
+	            refreshCallBack: function (widgetId) {
+	                return _dashboardData;
+	            },
+	            widgetContent: {
+	                data: null, 
+	                options: null 
+	            }
 	        }
-
-	    }];
+	        , {
+	            widgetTitle: "Abmeldungen",
+	            widgetId: "id003",
+	            widgetType: "chart",
+	            enableRefresh: true,
+	            refreshCallBack: function (widgetId) {
+	                return _dashboardData;
+	            },
+	            widgetContent: {
+	                data: null, 
+	                options: null 
+	            }
+	        }
+	    ];
 	    
 		//basic initialization example
 		$("#myDashboard").sDashboard({
@@ -72,27 +86,50 @@
 		    $("#id002 .sDashboard-refresh-icon").trigger("click");
 		});
 
-	    InitDashboardChain();
+		DashboardChainInit();
 	}
 
-	function InitDashboardChain() {
+    var _dashboardChainIndex = 0;
 
-	    var widgetId = "#id002";
-	    var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
-	    showBusy(busyHintDiv, 0, 0);
+    function DashboardChainInit() {
+        
+        var dashboardWidgets = $("#myDashboard li");
+        _dashboardChainIndex = 0;
+        
+        $.each(dashboardWidgets, function (i, elem) {
+            var widgetId = "#" + $(elem).attr("id"); 
+            var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+            showBusy(busyHintDiv, 0, 0);
+        });
+
+        DashboardChainExecute(dashboardWidgets);
+    }
+
+    function DashboardChainExecute(dashboardWidgets) {
+
+        if (_dashboardChainIndex >= dashboardWidgets.length)
+            return;
+
+        var widget = dashboardWidgets.eq(_dashboardChainIndex);
+        var widgetId = "#" + widget.attr("id");
+        var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+
 	    $.ajax(
         {
             type: "POST",
             url: "GetBarChartData",
-            data: {},
+            data: { id: widgetId },
             loadingShow: false,
             success: function (result) {
                 _dashboardData = result;
+
                 hideBusy(busyHintDiv);
-                //alert("");
-                busyHintDiv.addClass("hide");
+                busyHintDiv.hide();
 
                 $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+
+                _dashboardChainIndex++;
+                setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
             }
         });
     }

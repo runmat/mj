@@ -34,7 +34,7 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetBarChartData()
+        public ActionResult GetBarChartData(string id)
         {
             Thread.Sleep(1000);
 
@@ -45,6 +45,14 @@ namespace ServicesMvc.Common.Controllers
                             new []{3, 0}, new []{9, 1}, new []{2, 2}, new []{10, 3}
                         },
                 };
+            if (id.Contains("003"))
+                data = new []
+                    {
+                        new []
+                            {
+                                new []{5, 0}, new []{1, 1}, new []{9, 2}, new []{4, 3}
+                            },
+                    };
 
             var options = new
                 {
@@ -53,7 +61,12 @@ namespace ServicesMvc.Common.Controllers
                             show = true,
                             horizontal = true,
                             shadowSize = 0,
-                            barWidth = 0.5
+                            barWidth = 0.5,
+                            fillColor = new {
+                                colors = new[] { (id.Contains("003") ? "#CB4B4B" : "#4B4BCB"), "#fff" },
+                              start = "top",
+                              end = "bottom"
+                            },
                         },
                     mouse = new
                         {

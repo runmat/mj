@@ -642,10 +642,7 @@
         return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
     };
     
-    function showBusy(elem, centerOfsX, centerOfsY) {
-        if (typeof(centerOfsX) == 'undefined') centerOfsX = 0;
-        if (typeof(centerOfsY) == 'undefined') centerOfsY = 0;
-
+    function showBusy(elem) {
         var opts = {
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -661,8 +658,8 @@
             hwaccel: false, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
             zIndex: 2000000000 // The z-index (defaults to 2000000000)
-            ,top: '50%' //parseInt(parseInt(elem.css("height"),10)/2 + centerOfsY,10) + 'px' // Top position relative to parent in px
-            ,left: '50%' //parseInt(parseInt(elem.css("width"),10)/2 + centerOfsX,10) + 'px' // Left position relative to parent in px
+            ,top: '50%' 
+            ,left: '50%'
         };
         elem.spin(opts);
     }

@@ -236,4 +236,6 @@ li.ui-sortable-placeholder {
  position: fixed;
  }*/
  
- 
+ .sDashboard-icon.sDashboard-circle-plus-icon, .sDashboard-icon.sDashboard-refresh-icon {
+     display: none;
+ }
