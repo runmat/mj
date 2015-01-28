@@ -31,7 +31,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
 
-
         [ScriptIgnore]
         public Vorgang Zulassung { get; set; }
 
@@ -47,6 +46,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
 
         public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
+        public bool ModusAbmeldung { get; set; }
+
 
         [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
@@ -57,7 +58,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsKroschkeZulassung.xml"));
 
-                    return dict;
+                    if (!ModusAbmeldung)
+                        return dict;
+
+                    var abmeldungsDict = new XmlDictionary<string, string>();
+                    dict.ToList().ForEach(entry =>
+                        {
+                            if (entry.Key == "Zulassungsdaten")
+                            {
+                                abmeldungsDict.Add(entry.Key, Localize.Cancellation);
+                                return;
+                            }
+
+                            if (entry.Key == "OptionenDienstleistungen")
+                                return;
+
+                            abmeldungsDict.Add(entry.Key, entry.Value);
+                        });
+
+                    return abmeldungsDict;
                 });
             }
         }
@@ -96,7 +115,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetParamHalter(string halterNr)
         {
+            if (halterNr.IsNullOrEmpty())
+                return;
+
             HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == halterNr.NotNullOrEmpty().ToSapKunnr());
+        }
+
+        public void SetParamAbmeldung(string abmeldung)
+        {
+            ModusAbmeldung = abmeldung.IsNotNullOrEmpty();
         }
 
 
@@ -283,10 +310,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
 
+        [XmlIgnore, ScriptIgnore]
+        public List<Material> Abmeldearten { get { return ZulassungDataService.Abmeldearten; } }
+
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
             Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;
             Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
+            Zulassung.Zulassungsdaten.Abmeldedatum = model.Abmeldedatum;
             Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
@@ -392,7 +423,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 VkOrg = LogonContext.Customer.AccountingArea.ToString(),
                 VkBur = LogonContext.Organization.OrganizationReference2,
                 Vorerfasser = LogonContext.UserName,
-                VorgangsStatus = "1"
+                VorgangsStatus = "1",
+                Zulassungsdaten = new Zulassungsdaten
+                    {
+                        ModusAbmeldung = ModusAbmeldung,
+                        ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
+                        Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
+                    },
             };
 
             DataMarkForRefresh();
@@ -405,10 +442,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ZulassungDataService.MarkForRefresh();
             Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
 
-            //Rechnungsdaten.KundenList = Kunden;
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
-            //Zulassungsdaten.MaterialList = Zulassungsarten;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
             PartnerDataService.MarkForRefreshAdressen();

@@ -65,7 +65,6 @@ namespace CkgDomainLogic.Autohaus.Models
             BankAdressdaten = new BankAdressdaten();
             Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
             Halterdaten = new Adresse { Land = "DE", Kennung = "HALTER" };
-            Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 
@@ -119,7 +118,7 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             var summaryModel = new GeneralSummary
             {
-                Header = Localize.OrderSummaryVehicleRegistration,
+                Header = (Zulassungsdaten.ModusAbmeldung ? Localize.OrderSummaryVehicleCancellation : Localize.OrderSummaryVehicleRegistration),
                 Items = new ListNotEmpty<GeneralEntity>
                         (
                             SummaryBeauftragungsHeaderKunde,
@@ -146,21 +145,25 @@ namespace CkgDomainLogic.Autohaus.Models
 
                             new GeneralEntity
                             {
-                                Title = Localize.Registration,
+                                Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
                                 Body = Zulassungsdaten.GetSummaryString(),
                             },
 
-                            new GeneralEntity
-                            {
-                                Title = Localize.RegistrationOptions,
-                                Body = OptionenDienstleistungen.GetSummaryString(),
-                            },
+                            (Zulassungsdaten.ModusAbmeldung 
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.RegistrationOptions,
+                                        Body = OptionenDienstleistungen.GetSummaryString(),
+                                    }),
 
-                            new GeneralEntity
-                            {
-                                Title = Localize.DataForEndCustomerInvoice,
-                                Body = BankAdressdaten.GetSummaryString(),
-                            }
+                            (BankAdressdaten.GetSummaryString().IsNullOrEmpty()
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.DataForEndCustomerInvoice,
+                                        Body = BankAdressdaten.GetSummaryString(),
+                                    })
                         )
             };
 

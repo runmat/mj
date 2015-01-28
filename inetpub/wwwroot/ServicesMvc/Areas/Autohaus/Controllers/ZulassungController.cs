@@ -50,19 +50,25 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr)
+        public ActionResult Index(string fin, string halterNr, string abmeldung)
         {
+            ViewModel.SetParamAbmeldung(abmeldung);
+
             ViewModel.DataInit();
 
             ViewModel.SetParamFahrzeugAkte(fin);
-            
-            if (halterNr.IsNotNullOrEmpty())
-                ViewModel.SetParamHalter(halterNr);
+            ViewModel.SetParamHalter(halterNr);
 
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
 
-            return View(ViewModel);
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Abmeldung(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, abmeldung: "1");
         }
 
         void InitModelStatics()
@@ -367,7 +373,8 @@ namespace ServicesMvc.Autohaus.Controllers
 
         protected override IEnumerable ShoppingCartLoadItems()
         {
-            return ShoppingCartLoadGenericItems<KroschkeZulassungViewModel>(ShoppingCartPersistanceKey);
+            return ShoppingCartLoadGenericItems<KroschkeZulassungViewModel>(ShoppingCartPersistanceKey)
+                    .Where(item => item.ModusAbmeldung == ViewModel.ModusAbmeldung);
         }
 
         protected void ShoppingCartTryEditItemAsViewModel()
