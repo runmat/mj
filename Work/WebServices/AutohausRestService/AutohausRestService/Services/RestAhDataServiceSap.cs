@@ -89,24 +89,24 @@ namespace AutohausRestService.Services
                     {
                         if (fzgList.Count() == 1)
                         {
-                            // 1 Partner : 1 Fzg
+                            // 1 Partner & 1 Fahrzeug
                             linkListe.Add(GenerateWebLink(user.UrlRemoteLoginKey, WebLinkType.BestandZurFahrzeugId, fzgList.First().FahrzeugID));
                         }
                         else
                         {
-                            // 1 Partner : n Fzg
+                            // 1 Partner & n Fahrzeuge
                             linkListe.Add(GenerateWebLink(user.UrlRemoteLoginKey, WebLinkType.BestandDesKunden, pList.First().KundenNr));
                         }
                     }
                     else
                     {
-                        // 1 Partner : 0 Fzg
+                        // 1 Partner & 0 Fahrzeuge
                         linkListe.Add(GenerateWebLink(user.UrlRemoteLoginKey, WebLinkType.Partnerverwaltung, pList.First().KundenNr));
                     }
                 }
                 else if (fzgList.Any())
                 {
-                    // 0 Partner : 1 oder n Fzg
+                    // 0 Partner & 1 oder n Fahrzeug(e)
                     foreach (var fzg in fzgList)
                     {
                         linkListe.Add(GenerateWebLink(user.UrlRemoteLoginKey, WebLinkType.BestandZurFahrzeugId, fzg.FahrzeugID));
@@ -142,7 +142,7 @@ namespace AutohausRestService.Services
                     break;
             }
 
-            return String.Format("{0}{1}{2}&ra={3}&rb={4}", WebPortalUrl, appLink, itemId, remoteLoginKey, expToken);
+            return String.Format("{0}{1}{2}&ra={3}&rb={4}", WebPortalUrl, appLink, itemId.Trim(), remoteLoginKey, expToken);
         }
     }
 }
