@@ -85,9 +85,6 @@
     <Reference Include="FluentValidation.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\FluentValidation.MVC4.4.0.0.1\lib\Net40\FluentValidation.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="MySQL.Data, Version=6.7.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\MySQL.Data.dll</HintPath>
@@ -435,8 +432,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
-    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />
     <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
     <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
     <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />
@@ -446,14 +441,6 @@
     <Content Include="Areas\Common\Content\Dashboard\jquery-sDashboard.js" />
     <Content Include="Areas\Common\Content\Dashboard\sDashboard.css" />
     <Content Include="Areas\Common\Content\Dashboard\touchpunch\jquery.ui.touch-punch.js" />
-    <Content Include="apple-touch-icon-120x120-precomposed.png" />
-    <Content Include="apple-touch-icon-120x120.png" />
-    <Content Include="apple-touch-icon-152x152-precomposed.png" />
-    <Content Include="apple-touch-icon-152x152.png" />
-    <Content Include="apple-touch-icon-76x76-precomposed.png" />
-    <Content Include="apple-touch-icon-76x76.png" />
-    <Content Include="apple-touch-icon-precomposed.png" />
-    <Content Include="apple-touch-icon.png" />
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\img\bg-white-lock-header.png" />
@@ -2453,15 +2440,12 @@
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
-    <Compile Include="Controllers\StrafzettelController.cs" />
+    <Compile Include="Areas\Common\lib\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Models\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardSqlDbContext.cs" />
+    <Compile Include="Areas\Common\lib\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardAppUrlService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2501,9 +2485,6 @@
     <Content Include="Views\Leasing\CsvUpload\Receipt.cshtml" />
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
-    <Content Include="Areas\Common\Content\Web.config" />
-    <Content Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
-    <Content Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <Content Include="Areas\Web.config" />
@@ -2521,6 +2502,7 @@
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Common\Content\Web.config" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2531,9 +2513,6 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
@@ -4200,6 +4179,7 @@
     <Content Include="Views\CocSendung\VerfolgungMulti\Id\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Grid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Suche.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Login\Partial\Footer.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenSuche.cshtml" />
@@ -4208,10 +4188,6 @@
     <Content Include="Views\Finance\Mahnstop\MahnstopSuche.cshtml" />
     <Content Include="Views\Finance\Mahnstop.cshtml" />
     <Content Include="Views\Finance\Mahnstop\Partial\MahnstopEditForm.cshtml" />
-    <Content Include="Views\Equi\BriefbestandVhc\FahrzeugbriefeVhcGrid.cshtml" />
-    <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcGrid.cshtml" />
-    <Content Include="Views\Equi\BriefbestandVhc.cshtml" />
-    <Content Include="Views\Equi\KlaerfaelleVhc.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangSuche.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangGrid.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang.cshtml" />
@@ -4280,39 +4256,6 @@
     <Content Include="Views\Logs\UnusedApps.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
-    <Content Include="Views\Insurance\SchadenDokumenteAlle.cshtml" />
-    <Content Include="Views\Insurance\Schadenfaelle\DokumenteAlleGrid.cshtml" />
-    <Content Include="Views\Zanf\ZanfReport.cshtml" />
-    <Content Include="Views\Zanf\ZanfReport\ZanfGrid.cshtml" />
-    <Content Include="Views\Zanf\ZanfReport\ZanfSuche.cshtml" />
-    <Content Include="Views\Zanf\ZanfReport\ZanfKlaerfalltext.cshtml" />
-    <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaege.cshtml" />
-    <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaegeResults.cshtml" />
-    <Content Include="Views\Zanf\ReportZulassungsunterlagen.cshtml" />
-    <Content Include="Views\Zanf\Zulassungsunterlagen\Grid.cshtml" />
-    <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
-    <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
-    <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
-    <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
-    <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
-    <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
-    <Content Include="Views\Shared\Partial\FormPersistence\GridMenu.cshtml" />
-    <Content Include="Views\Test\Cerberus.cshtml" />
-    <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
-    <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeSuche.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftragsDetail.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Uebersicht.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Informationen.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\InformationenGrid.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Dokumente.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Aufgaben.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
-    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
-    <Content Include="Views\Shared\Partial\FormPersistence\GridMenuReset.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4602,10 +4545,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\css\.DS_Store" />
-    <Content Include="assets\fonts\cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff" />
-    <Content Include="assets\fonts\DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff" />
-    <Content Include="assets\fonts\k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff" />
-    <Content Include="assets\fonts\MTP_ySUJH_bn48VBG8sNSnhCUOGz7vYGh680lGh-uXM.woff" />
+    <None Include="assets\fonts\cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff" />
+    <None Include="assets\fonts\DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff" />
+    <None Include="assets\fonts\k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff" />
+    <None Include="assets\fonts\MTP_ySUJH_bn48VBG8sNSnhCUOGz7vYGh680lGh-uXM.woff" />
     <None Include="assets\img\blog\Thumbs.db" />
     <None Include="assets\img\pages\Thumbs.db" />
     <None Include="assets\img\social\Thumbs.db" />

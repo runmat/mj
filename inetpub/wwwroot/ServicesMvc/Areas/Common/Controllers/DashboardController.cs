@@ -1,5 +1,8 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System.Threading;
 using System.Web.Mvc;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -9,7 +12,6 @@ using GeneralTools.Models;
 
 namespace ServicesMvc.Common.Controllers
 {
-    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class DashboardController : CkgDomainController
     {
         public override string DataContextKey { get { return "DashboardViewModel"; } }
@@ -31,26 +33,35 @@ namespace ServicesMvc.Common.Controllers
             return View(ViewModel);
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
-        public ActionResult ShowReportForDashboardItem(int id, string token)
-        {
-            var redirectUrl = ViewModel.DashboardPrepareReportForItem(id);
-
-            return Redirect(redirectUrl);
-        }
-
         [HttpPost]
         public ActionResult GetBarChartData(string id)
         {
-            return Json(ViewModel.GetBarChartData(id));
-        }
+            Thread.Sleep(300);
 
-        [HttpPost]
-        public ActionResult DashboardItemsSave(string commaSeparatedIds)
-        {
-            ViewModel.DashboardItemsSave(commaSeparatedIds);
+            var data = new []
+                {
+                    new []
+                        {
+                            new []{3, 0}, new []{9, 1}, new []{2, 2}, new []{10, 3}
+                        },
+                };
+            if (id.Contains("003"))
+                data = new []
+                    {
+                        new []
+                            {
+                                new []{5, 0}, new []{1, 1}, new []{9, 2}, new []{4, 3}, new []{7, 4}
+                            },
+                    };
 
-            return Json(new { hiddenItemsCount = ViewModel.HiddenDashboardItems.Count });
+            var dbId = id.Replace("id_", "").Replace("#", "");
+            var dashboardItem = ViewModel.DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+
+            var options = "";
+            if (dashboardItem != null)
+                options = dashboardItem.ChartJsonOptions;
+
+            return Json(new { data, options });
         }
     }
 }
