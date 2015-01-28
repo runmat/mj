@@ -15,990 +15,148 @@ namespace AppZulassungsdienst.lib
     {
         #region "Declarations"
 
-        DataTable tblListe;
-        DataTable tblErrors;
-
-        DataTable KopfTabelle;
-        DataTable Bankverbindung;
-        DataTable Kundenadresse;
-
-        String strVKORG;
-        String strVKBUR;
-
-        // Kopftabelle
-        Int32 id_Kopf;
-        Int32 id_sap;
-        String kundenname;
-        String kundennr;
-        String Referenz1;
-        String Referenz2;
-        String KreisKZ;
-        String KreisBez;
-        Boolean WunschKenn;
-        Boolean mReserviert;
-        String mReserviertKennz;
-        Boolean mFeinstaub;
-        String mZulDate;
-        String mKennzeichen;
-        String mKennztyp;
-        String mKennzForm;
-        Int32 mKennzAnz;
-        Boolean mEinKennz;
-        String mBemerkung;
-        Boolean mEC;
-        Boolean mBar;
-        String mPauschal;
-        // Positionstabelle
-
-        DataTable tblPositionen;
-
-        // Filter
-        String mSelMatnr;
-        String mSelID;
-        String mSelDatum;
-        String mSelKunde;
-        String mSelKreis;
+        private DataTable KopfTabelle;
+        private DataTable Bankverbindung;
+        private DataTable Kundenadresse;
 
         #endregion
 
         #region "Properties"
-        /// <summary>
-        /// Tabelle zur Anzeige der erfassten Daten
-        /// </summary>
-        public DataTable tblEingabeListe
-        {
-            get { return tblListe; }
-            set { tblListe = value; }
-        }
-        /// <summary>
-        /// Fehlertabelle SAP
-        /// </summary>
-        public DataTable tblFehler
-        {
-            get { return tblErrors; }
-            set { tblErrors = value; }
-        }
-        /// <summary>
-        /// Verkaufsorganisation
-        /// </summary>
-        public String VKORG
-        {
-            get { return strVKORG; }
-            set { strVKORG = value; }
-        }
-        /// <summary>
-        /// Verkaufsbüro
-        /// </summary>
-        public String VKBUR
-        {
-            get { return strVKBUR; }
-            set { strVKBUR = value; }
-        }
-        /// <summary>
-        /// Positionstabelle
-        /// </summary>
-        public DataTable Positionen
-        {
-            get { return tblPositionen; }
-            set { tblPositionen = value; }
-        }
-        /// <summary>
-        /// ZUBELN
-        /// </summary>
-        public Int32 SapID
-        {
-            get { return id_sap; }
-            set { id_sap = value; }
-        }
-        /// <summary>
-        /// KopfID SQL
-        /// </summary>
-        public Int32 KopfID
-        {
-            get { return id_Kopf; }
-            set { id_Kopf = value; }
-        }
-        /// <summary>
-        /// Flag abgerechnet SQL
-        /// </summary>
-        public Boolean abgerechnet
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden
-        /// </summary>
-        public String Kundenname
-        {
-            get { return kundenname; }
-            set { kundenname = value; }
-        }
-        /// <summary>
-        /// Kundennummer
-        /// </summary>
-        public String Kunnr
-        {
-            get { return kundennr; }
-            set { kundennr = value; }
-        }
-        /// <summary>
-        /// Kundennummer für die Preisfindung
-        /// </summary>
-        public String KunnrPreis
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Referenz1
-        /// </summary>
-        public String Ref1
-        {
-            get { return Referenz1; }
-            set { Referenz1 = value; }
-        }
-        /// <summary>
-        /// Refernenz2
-        /// </summary>
-        public String Ref2
-        {
-            get { return Referenz2; }
-            set { Referenz2 = value; }
-        }
-        /// <summary>
-        /// Kreiskennzeichen/StVa
-        /// </summary>
-        public String KreisKennz
-        {
-            get { return KreisKZ; }
-            set { KreisKZ = value; }
-        }
-        /// <summary>
-        /// Kreisbezeichnung
-        /// </summary>
-        public String Kreis
-        {
-            get { return KreisBez; }
-            set { KreisBez = value; }
-        }
-        /// <summary>
-        /// Wunschkennzeichen erwünscht!?
-        /// </summary>
-        public Boolean WunschKennz
-        {
-            get { return WunschKenn; }
-            set { WunschKenn = value; }
-        }
-        /// <summary>
-        /// Wunschkennzeichen reserviert!?
-        /// </summary>
-        public Boolean Reserviert
-        {
-            get { return mReserviert; }
-            set { mReserviert = value; }
-        }
-        /// <summary>
-        /// Reservierungsnummer
-        /// </summary>
-        public String ReserviertKennz
-        {
-            get { return mReserviertKennz; }
-            set { mReserviertKennz = value; }
-        }
-        /// <summary>
-        /// Feinstaubplakette ja/nein
-        /// </summary>
-        public Boolean Feinstaub
-        {
-            get { return mFeinstaub; }
-            set { mFeinstaub = value; }
-        }
-        /// <summary>
-        /// Zulassungsdatum
-        /// </summary>
-        public String ZulDate
-        {
-            get { return mZulDate; }
-            set { mZulDate = value; }
-        }
-        /// <summary>
-        /// Kennzeichen komplett
-        /// </summary>
-        public String Kennzeichen
-        {
-            get { return mKennzeichen; }
-            set { mKennzeichen = value; }
-        }
-        /// <summary>
-        /// Kennzeichentyp(EURO/Fun etc.)
-        /// </summary>
-        public String Kennztyp
-        {
-            get { return mKennztyp; }
-            set { mKennztyp = value; }
-        }
-        /// <summary>
-        /// Kennzeichengröße
-        /// </summary>
-        public String KennzForm
-        {
-            get { return mKennzForm; }
-            set { mKennzForm = value; }
-        }
-        /// <summary>
-        /// Anzahl der Kennzeichen
-        /// </summary>
-        public Int32 KennzAnzahl
-        {
-            get { return mKennzAnz; }
-            set { mKennzAnz = value; }
-        }
-        /// <summary>
-        /// nur ein Kennzeichen erwünscht!?
-        /// </summary>
-        public Boolean EinKennz
-        {
-            get { return mEinKennz; }
-            set { mEinKennz = value; }
-        }
-        /// <summary>
-        /// Bemerkung
-        /// </summary>
-        public String Bemerkung
-        {
-            get { return mBemerkung; }
-            set { mBemerkung = value; }
-        }
-        /// <summary>
-        /// Barcode
-        /// </summary>
-        public String Barcode
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// EC-Zahlung
-        /// </summary>
-        public Boolean EC
-        {
-            get { return mEC; }
-            set { mEC = value; }
-        }
-        /// <summary>
-        /// Barzahlung
-        /// </summary>
-        public Boolean Bar
-        {
-            get { return mBar; }
-            set { mBar = value; }
-        }
-        /// <summary>
-        /// per Rechnung
-        /// </summary>
-        public Boolean RE
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz bereits angelegt
-        /// </summary>
-        public Boolean saved
-        {
-            get;
-            set;
-        }
 
-        /// <summary>
-        /// Datensatz wurde bearbeitet
-        /// </summary>
-        public Boolean bearbeitet
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Vorgang z.B. Vorerfassung(VE), Nacherfassung(NZ), Versandzulassung(VZ)
-        /// </summary>
-        public String Vorgang
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz zum Speichern markiert
-        /// </summary>
-        public Int16 toSave
-        {
-            get;
-            set;
-        }
+        public String VKORG { get; set; }
+        public String VKBUR { get; set; }
 
-        /// <summary>
-        /// Datensatz zum Löschen markiert
-        /// </summary>
-        public String toDelete
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// zu leistende Steuer
-        /// </summary>
-        public Decimal Steuer
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichenpreis
-        /// </summary>
-        public Decimal PreisKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Materialnummer zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelMatnr
-        {
-            get { return mSelMatnr; }
-            set { mSelMatnr = value; }
-        }
-        /// <summary>
-        /// Zulassungsdatum zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelDatum
-        {
-            get { return mSelDatum; }
-            set { mSelDatum = value; }
-        }
-        /// <summary>
-        /// SAPID/ZUBELN zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelID
-        {
-            get { return mSelID; }
-            set { mSelID = value; }
-        }
-        /// <summary>
-        /// Kundennummer zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelKunde
-        {
-            get { return mSelKunde; }
-            set { mSelKunde = value; }
-        }
-        /// <summary>
-        /// Zulassungskreis zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelKreis
-        {
-            get { return mSelKreis; }
-            set { mSelKreis = value; }
-        }
-        /// <summary>
-        /// Lieferantennummer zur Selektion Nacherfassungsdaten
-        /// </summary>
-        public String SelLief
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde ist Pauschalkunde
-        /// </summary>
-        public String PauschalKunde
-        {
-            get { return mPauschal; }
-            set { mPauschal = value; }
+        public DataTable tblEingabeListe { get; set; }
+        public DataTable tblFehler { get; set; }
+        public DataTable Positionen { get; set; }
+        public DataTable BestLieferanten { get; set; }
+        public DataTable NewPosPreise { get; set; }
+        public DataTable tblBarquittungen { get; set; }
+        public DataTable SapResultTable { get; set; }
+        public DataTable AHVersandListe { get; set; }
+        public DataTable AHVersandKopf { get; set; }
+        public DataTable AHVersandPos { get; set; }
+        public DataTable AHVersandBank { get; set; }
+        public DataTable AHVersandAdresse { get; set; }
 
-        }
-        /// <summary>
-        /// Kundeaufträge mit/ohne Steuer berechnet
-        /// </summary>
-        public String OhneSteuer
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// zuständige Zulassungsdienste Versandzulassung
-        /// </summary>
-        public DataTable BestLieferanten
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// zuständiger Zulassungsdienst Versandzulassung
-        /// </summary>
-        public String Lieferant_ZLD
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Frachtnummer Hinsendung Versandzulassung
-        /// </summary>
-        public String FrachtNrHin
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Frachtnummer Rücksendung Versandzulassung
-        /// </summary>
-        public String FrachtNrBack
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Belegtyp SAP
-        /// </summary>
-        public String SelStatus
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// zuständige Verkaufsbüro durchzuführende Versandzulassung
-        /// </summary>
-        public String DZVKBUR
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde ist Barkunde ?!
-        /// </summary>
-        public Boolean Barkunde
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Positionstabelle für die Preisfindung(neu Positionen)
-        /// </summary>
-        public DataTable NewPosPreise
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kundennummer Warenempfänger
-        /// </summary>
-        public String KundennrWE
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Partnerrolle (WE=Warenempfänger, AG = Auftrtaggeber)
-        /// </summary>
-        public String Partnerrolle
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Name1
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Name2
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Postleitzahl des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String PLZ
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Ort des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Ort
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Strasse des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Strasse
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// SWIFT-BIC SAP
-        /// </summary>
-        public String SWIFT
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// IBAN des Kunden
-        /// </summary>
-        public String IBAN
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bankschlüssel SAP
-        /// </summary>
-        public String BankKey
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kontonummer des Kunden
-        /// </summary>
-        public String Kontonr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Inhaber der Firma(Kunde)
-        /// </summary>
-        public String Inhaber
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Geldinstitut des Kunden
-        /// </summary>
-        public String Geldinstitut
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde gibt Einzugsermächtigung!?
-        /// </summary>
-        public Boolean EinzugErm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde zahlt per Rechnung
-        /// </summary>
-        public Boolean Rechnung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// erfasste Dienstleistung geändert(Hinweis Preisfindung)
-        /// </summary>
-        public Boolean ChangeMatnr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Resulttabele SAP Nacherfassungsdaten
-        /// </summary>
-        public DataTable SapResultTable
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Amtsgebühr pflegen ja/nein(Filiale)
-        /// </summary>
-        public Boolean ShowGebAmt
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Anzahl anzuzeigener Datensätze in der Übersicht(Gridview)
-        /// </summary>
-        public int ListePageSize
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// ausgewählte Seite(Gridnavigation) in der Übersicht
-        /// </summary>
-        public int ListePageIndex
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Index PageSize in der Übersicht (Gridview)
-        /// </summary>
-        public int ListePageSizeIndex
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// ausgewählte Sortierung in der Übersicht
-        /// </summary>
-        public string GridSort
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Rückgabetabelle SAP mit Pfaden der Barquittungen
-        /// </summary>
-        public DataTable tblBarquittungen
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verzeichnis der Sofortabrechnungen
-        /// </summary>
-        public string SofortabrechnungVerzeichnis
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Vorgänge ohne bestimmtes Zul. bzw. Durchführungsdatum
-        /// </summary>
-        public bool bFlieger
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Selektion Vorgänge ohne bestimmtes Zul. bzw. Durchführungsdatum 
-        /// </summary>
-        public bool SelFlieger
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Selektion bzw. Modus "Neue AH-Vorgänge" 
-        /// </summary>
-        public bool SelAnnahmeAH
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Selektion bzw. Modus "Sofortabrechnung" 
-        /// </summary>
-        public bool SelSofortabrechnung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Selektion bzw. Modus "Nacherfassung durchzuf. Vers.zul. -> Bearbeitung" 
-        /// </summary>
-        public bool SelEditDurchzufVersZul
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gruppen-/Tour-ID
-        /// </summary>
-        public string SelGroupTourID
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Langtextnummer SAP 
-        /// </summary>
-        public String NrLangText
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Langtext SAP 
-        /// </summary>
-        public String LangText
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Rückgabetabelle Versandzulassungen erfasst durch Autohaus
-        /// </summary>
-        public DataTable AHVersandListe
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kopftabelle Versandzulassungen erfasst durch Autohaus
-        /// </summary>
-        public DataTable AHVersandKopf
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Positionstabelle Versandzulassungen erfasst durch Autohaus
-        /// </summary>
-        public DataTable AHVersandPos
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bankdaten Versandzulassungen erfasst durch Autohaus
-        /// </summary>
-        public DataTable AHVersandBank
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// abweichende Versandadresse Versandzulassungen erfasst durch Autohaus
-        /// </summary>
-        public DataTable AHVersandAdresse
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Hinsendung v. Dokumenten
-        /// </summary>
-        public String Name1Hin
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Adressdaten für die Hinsendung v. Dokumenten
-        /// </summary>
-        public String Name2Hin
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Hinsendung v. Dokumenten
-        /// </summary>
-        public String StrasseHin
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Hinsendung v. Dokumenten
-        /// </summary>
-        public String PLZHin
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Hinsendung v. Dokumenten
-        /// </summary>
-        public String OrtHin
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Dokumente für die Hinsendung
-        /// </summary>
-        public String DocRueck1
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String NameRueck1
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String NameRueck2
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String StrasseRueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String PLZRueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String OrtRueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String Doc2Rueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String Name1Rueck2
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String Name2Rueck2
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String Strasse2Rueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String PLZ2Rueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adressdaten für die Rücksendung v. Dokumenten
-        /// </summary>
-        public String Ort2Rueck
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Ist der ausgwählte Lieferant ein ZLD (Versandzulassung)?!
-        /// </summary>
-        public String IsZLD
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Material dem ZLD nicht zugwiesen(Fehlernummer).
-        /// </summary>
-        public int MatError
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Material dem ZLD nicht zugwiesen(Fehlertext).
-        /// </summary>
-        public String MatErrorText
-        {
-            get;
-            set;
-        }
-
-        public Boolean ZusatzKZ
-        {
-            get;
-            set;
-        }
-        public string WunschKZ2
-        {
-            get;
-            set;
-        }
-        public string WunschKZ3
-        {
-            get;
-            set;
-        }
-        public bool OhneGruenenVersSchein
-        {
-            get;
-            set;
-        }
-        public bool SofortabrechnungErledigt
-        {
-            get;
-            set;
-        }
-        public string SofortabrechnungPfad
-        {
-            get; 
-            set;
-        }
-        public string Infotext
-        {
-            get;
-            set;
-        }
-        public bool Nachbearbeiten
-        {
-            get;
-            set;
-        }
+        // Kopfdaten
+        public Int32 KopfID { get; set; }
+        public Int32 SapID { get; set; }
+        public Boolean abgerechnet { get; set; }
+        public String Kundenname { get; set; }
+        public String Kunnr { get; set; }
+        public String Ref1 { get; set; }
+        public String Ref2 { get; set; }
+        public String KreisKennz { get; set; }
+        public String Kreis { get; set; }
+        public Boolean WunschKennz { get; set; }
+        public Boolean Reserviert { get; set; }
+        public String ReserviertKennz { get; set; }
+        public Boolean Feinstaub { get; set; }
+        public String ZulDate { get; set; }
+        public String Kennzeichen { get; set; }
+        public String Kennztyp { get; set; }
+        public String KennzForm { get; set; }
+        public Int32 KennzAnzahl { get; set; }
+        public Boolean EinKennz { get; set; }
+        public String Bemerkung { get; set; }
+        public Boolean EC { get; set; }
+        public Boolean Bar { get; set; }
+        public Boolean saved { get; set; }
+        public Int16 toSave { get; set; }
+        public String toDelete { get; set; }
+        public Boolean bearbeitet { get; set; }
+        public String Barcode { get; set; }
+        public String OhneSteuer { get; set; }
+        public String PauschalKunde { get; set; }
+        public Decimal Steuer { get; set; }
+        public String Vorgang { get; set; }
+        public String FrachtNrHin { get; set; }
+        public String FrachtNrBack { get; set; }
+        public Boolean Barkunde { get; set; }
+        public Boolean RE { get; set; }
+        public bool bFlieger { get; set; }
+        public Boolean ZusatzKZ { get; set; }
+        public string WunschKZ2 { get; set; }
+        public string WunschKZ3 { get; set; }
+        public bool OhneGruenenVersSchein { get; set; }
+        public string Infotext { get; set; }
+        public bool Nachbearbeiten { get; set; }
         public string Mobuser { get; set; }
         public string Poolnr { get; set; }
         public bool Onlinevorgang { get; set; }
+        public bool SofortabrechnungErledigt { get; set; }
+        public string SofortabrechnungPfad { get; set; }
+        public string Briefnr { get; set; }
+        public string Orderid { get; set; }
+        public string Hppos { get; set; }
+
+        // Adressdaten
+        public String Partnerrolle { get; set; }
+        public String KundennrWE { get; set; }
+        public String Name1 { get; set; }
+        public String Name2 { get; set; }
+        public String PLZ { get; set; }
+        public String Ort { get; set; }
+        public String Strasse { get; set; }
+
+        // Bankdaten
+        public String BankKey { get; set; }
+        public String Kontonr { get; set; }
+        public Boolean EinzugErm { get; set; }
+        public Boolean Rechnung { get; set; }
+        public String Geldinstitut { get; set; }
+        public String Inhaber { get; set; }
+        public String IBAN { get; set; }
+        public String SWIFT { get; set; }
+
+        // Selektion
+        public String SelMatnr { get; set; }
+        public String SelDatum { get; set; }
+        public String SelID { get; set; }
+        public String SelKunde { get; set; }
+        public String SelKreis { get; set; }
+        public String SelLief { get; set; }
+        public String SelStatus { get; set; }
+        public bool SelFlieger { get; set; }
+        public bool SelAnnahmeAH { get; set; }
+        public bool SelSofortabrechnung { get; set; }
+        public bool SelEditDurchzufVersZul { get; set; }
+        public string SelGroupTourID { get; set; }
+
+        public String Lieferant_ZLD { get; set; }
+        public String IsZLD { get; set; }
+        public String KunnrPreis { get; set; }
+        public Decimal PreisKennz { get; set; }
+        public String DZVKBUR { get; set; }
+        public Boolean ChangeMatnr { get; set; }
+        public Boolean ShowGebAmt { get; set; }
+        public int ListePageSize { get; set; }
+        public int ListePageIndex { get; set; }
+        public int ListePageSizeIndex { get; set; }
+        public string GridSort { get; set; }
+        public string SofortabrechnungVerzeichnis { get; set; }
+        public String NrLangText { get; set; }
+        public String LangText { get; set; }
+        public String Name1Hin { get; set; }
+        public String Name2Hin { get; set; }
+        public String StrasseHin { get; set; }
+        public String PLZHin { get; set; }
+        public String OrtHin { get; set; }
+        public String DocRueck1 { get; set; }
+        public String NameRueck1 { get; set; }
+        public String NameRueck2 { get; set; }
+        public String StrasseRueck { get; set; }
+        public String PLZRueck { get; set; }
+        public String OrtRueck { get; set; }
+        public String Doc2Rueck { get; set; }
+        public String Name1Rueck2 { get; set; }
+        public String Name2Rueck2 { get; set; }
+        public String Strasse2Rueck { get; set; }
+        public String PLZ2Rueck { get; set; }
+        public String Ort2Rueck { get; set; }
+        public int MatError { get; set; }
+        public String MatErrorText { get; set; }
 
         #endregion
 
@@ -1059,14 +217,14 @@ namespace AppZulassungsdienst.lib
 
                     DynSapProxyObj myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
                     
-                    myProxy.setImportParameter("I_KUNNR", mSelKunde);
+                    myProxy.setImportParameter("I_KUNNR", SelKunde);
                     myProxy.setImportParameter("I_VKORG", VKORG);
                     myProxy.setImportParameter("I_VKBUR", VKBUR);
-                    myProxy.setImportParameter("I_ZZZLDAT", mSelDatum);
+                    myProxy.setImportParameter("I_ZZZLDAT", SelDatum);
 
-                    if (mSelID.Length > 0)
+                    if (SelID.Length > 0)
                     {
-                        myProxy.setImportParameter("I_ZULBELN", mSelID.PadLeft(10, '0'));
+                        myProxy.setImportParameter("I_ZULBELN", SelID.PadLeft(10, '0'));
                     }
                     else
                     {
@@ -1077,8 +235,8 @@ namespace AppZulassungsdienst.lib
 
                     if (!SelSofortabrechnung)
                     {
-                        myProxy.setImportParameter("I_KREISKZ", mSelKreis);
-                        myProxy.setImportParameter("I_MATNR", mSelMatnr);
+                        myProxy.setImportParameter("I_KREISKZ", SelKreis);
+                        myProxy.setImportParameter("I_MATNR", SelMatnr);
                         myProxy.setImportParameter("I_BLTYP", SelStatus);
                         myProxy.setImportParameter("I_DZLD_VKBUR", DZVKBUR);
 
@@ -1230,16 +388,16 @@ namespace AppZulassungsdienst.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_EX_VSZUL", ref m_objApp, ref m_objUser, ref page);
 
-                    if (mSelKunde.Length > 0) mSelKunde = mSelKunde.PadLeft(10, '0');
-                    myProxy.setImportParameter("I_KUNNR", mSelKunde);
+                    if (SelKunde.Length > 0) SelKunde = SelKunde.PadLeft(10, '0');
+                    myProxy.setImportParameter("I_KUNNR", SelKunde);
                     myProxy.setImportParameter("I_VKBUR", VKBUR);
                     myProxy.setImportParameter("I_VKORG", VKORG);
-                    myProxy.setImportParameter("I_ZZZLDAT", mSelDatum);
-                    myProxy.setImportParameter("I_KREISKZ", mSelKreis);
+                    myProxy.setImportParameter("I_ZZZLDAT", SelDatum);
+                    myProxy.setImportParameter("I_KREISKZ", SelKreis);
 
-                    if (mSelID.Length > 0)
+                    if (SelID.Length > 0)
                     {
-                        myProxy.setImportParameter("I_ZULBELN", mSelID.PadLeft(10, '0'));
+                        myProxy.setImportParameter("I_ZULBELN", SelID.PadLeft(10, '0'));
                     }
                     else
                     {
@@ -1478,21 +636,21 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         private void CreatePosTable()
         {
-            tblPositionen = new DataTable();
-            tblPositionen.Columns.Add("id_Kopf", typeof(Int32));
-            tblPositionen.Columns.Add("id_pos", typeof(Int32));
-            tblPositionen.Columns.Add("Menge", typeof(String));
-            tblPositionen.Columns.Add("Matnr", typeof(String));
-            tblPositionen.Columns.Add("Matbez", typeof(String));
-            tblPositionen.Columns.Add("Preis", typeof(String));
-            tblPositionen.Columns.Add("WebMTArt", typeof(String));
-            tblPositionen.Columns.Add("SDRelevant", typeof(String));
-            tblPositionen.Columns.Add("UPreis", typeof(String));
-            tblPositionen.Columns.Add("Differrenz", typeof(String));
-            tblPositionen.Columns.Add("Konditionstab", typeof(String));
-            tblPositionen.Columns.Add("Konditionsart", typeof(String));
-            tblPositionen.Columns.Add("CALCDAT", typeof(String));
-            tblPositionen.Columns.Add("GebPak", typeof(String));
+            Positionen = new DataTable();
+            Positionen.Columns.Add("id_Kopf", typeof(Int32));
+            Positionen.Columns.Add("id_pos", typeof(Int32));
+            Positionen.Columns.Add("Menge", typeof(String));
+            Positionen.Columns.Add("Matnr", typeof(String));
+            Positionen.Columns.Add("Matbez", typeof(String));
+            Positionen.Columns.Add("Preis", typeof(String));
+            Positionen.Columns.Add("WebMTArt", typeof(String));
+            Positionen.Columns.Add("SDRelevant", typeof(String));
+            Positionen.Columns.Add("UPreis", typeof(String));
+            Positionen.Columns.Add("Differrenz", typeof(String));
+            Positionen.Columns.Add("Konditionstab", typeof(String));
+            Positionen.Columns.Add("Konditionsart", typeof(String));
+            Positionen.Columns.Add("CALCDAT", typeof(String));
+            Positionen.Columns.Add("GebPak", typeof(String));
         }
 
         /// <summary>
@@ -1522,8 +680,12 @@ namespace AppZulassungsdienst.lib
                     String ohneSt;
                     var tblKopf = new ZLDKopfTabelle();
 
-                    Int32.TryParse(dRow["ZULBELN"].ToString(), out id_sap);
-                    tblKopf.id_sap = id_sap;
+                    Int32 tmpID;
+                    if (Int32.TryParse(dRow["ZULBELN"].ToString(), out tmpID))
+                    {
+                        SapID = tmpID;
+                    }
+                    tblKopf.id_sap = SapID;
 
                     tblKopf.id_user = m_objUser.UserID;
                     tblKopf.id_session = strSessionID;
@@ -1572,6 +734,9 @@ namespace AppZulassungsdienst.lib
                     tblKopf.OhneGruenenVersSchein = dRow["O_G_VERSSCHEIN"].ToString();
                     tblKopf.SofortabrechnungErledigt = ZLDCommon.XToBool(dRow["SOFORT_ABR_ERL"].ToString());
                     tblKopf.SofortabrechnungPfad = dRow["SA_PFAD"].ToString();
+                    tblKopf.Briefnr = dRow["BRIEFNR"].ToString();
+                    tblKopf.Orderid = dRow["ORDERID"].ToString();
+                    tblKopf.Hppos = dRow["HPPOS"].ToString();
                     tblKopf.Reserviert = ZLDCommon.XToBool(dRow["RESERVKENN_JN"].ToString());
                     tblKopf.ReserviertKennz = dRow["RESERVKENN"].ToString();
                     tblKopf.Feinstaub = ZLDCommon.XToBool(dRow["FEINSTAUBAMT"].ToString());
@@ -1613,8 +778,15 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, 3);
-                        tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        tblKopf.KennKZ = tblKopf.Kennzeichen.Substring(0, Math.Min(3, tblKopf.Kennzeichen.Length));
+                        if (tblKopf.Kennzeichen.Length > 3)
+                        {
+                            tblKopf.KennABC = tblKopf.Kennzeichen.Substring(3);
+                        }
+                        else
+                        {
+                            tblKopf.KennABC = "";
+                        }
                     }
 
                     tblKopf.Kennztyp = dRow["KENNZTYP"].ToString();
@@ -1752,7 +924,7 @@ namespace AppZulassungsdienst.lib
                     ZLD_DataContext.Connection.Open();
                     ZLD_DataContext.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
                     ZLD_DataContext.SubmitChanges();
-                    id_Kopf = tblKopf.id;
+                    KopfID = tblKopf.id;
                     ohneSt = tblKopf.OhneSteuer;
 
                     ZLD_DataContext.Connection.Close();
@@ -1769,9 +941,9 @@ namespace AppZulassungsdienst.lib
                             }
 
 
-                            if (id_sapPos == id_sap)
+                            if (id_sapPos == SapID)
                             {
-                                var tmpPos = new ZLDPositionsTabelle { id_Kopf = id_Kopf };
+                                var tmpPos = new ZLDPositionsTabelle { id_Kopf = KopfID };
 
                                 int dPosID;
                                 int.TryParse(drow["ZULPOSNR"].ToString(), out dPosID);
@@ -1871,7 +1043,7 @@ namespace AppZulassungsdienst.lib
                         }
                     }
 
-                    var tblBank = new ZLDBankverbindung { id_Kopf = id_Kopf };
+                    var tblBank = new ZLDBankverbindung { id_Kopf = KopfID };
 
                     if (tblAuftragBank.Rows.Count == 0)
                     {
@@ -1886,7 +1058,7 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        DataRow[] drBank = tblAuftragBank.Select("ZULBELN = '" + id_sap.ToString().PadLeft(10, '0') + "'");
+                        DataRow[] drBank = tblAuftragBank.Select("ZULBELN = '" + SapID.ToString().PadLeft(10, '0') + "'");
                         if (drBank.Length > 0)
                         {
                             tblBank.Inhaber = drBank[0]["KOINH"].ToString();
@@ -1906,7 +1078,7 @@ namespace AppZulassungsdienst.lib
                     ZLD_DataContext.SubmitChanges();
                     ZLD_DataContext.Connection.Close();
 
-                    var tblKunnadresse = new ZLDKundenadresse { id_Kopf = id_Kopf };
+                    var tblKunnadresse = new ZLDKundenadresse { id_Kopf = KopfID };
 
                     if (tblAuftragAdress.Rows.Count == 0)
                     {
@@ -1920,7 +1092,7 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        DataRow[] drAdresse = tblAuftragAdress.Select("ZULBELN = '" + id_sap.ToString().PadLeft(10, '0') + "'");
+                        DataRow[] drAdresse = tblAuftragAdress.Select("ZULBELN = '" + SapID.ToString().PadLeft(10, '0') + "'");
                         if (drAdresse.Length > 0)
                         {
                             tblKunnadresse.Kundennr = drAdresse[0]["KUNNR"].ToString();
@@ -2548,7 +1720,7 @@ namespace AppZulassungsdienst.lib
             try
             {
                 var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                               where k.id == id_Kopf
+                               where k.id == KopfID
                                select k).Single();
 
                 tblKopf.id_user = m_objUser.UserID;
@@ -2568,16 +1740,19 @@ namespace AppZulassungsdienst.lib
                     tblKopf.KreisKZ_Direkt = KundeRow[0]["KREISKZ_DIREKT"].ToString();
                 }
 
-                tblKopf.WunschKenn = WunschKenn;
+                tblKopf.WunschKenn = WunschKennz;
                 tblKopf.ZusatzKZ = ZLDCommon.BoolToX(ZusatzKZ);
                 tblKopf.WunschKZ2 = WunschKZ2;
                 tblKopf.WunschKZ3 = WunschKZ3;
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                 tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
                 tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
+                tblKopf.Briefnr = Briefnr;
+                tblKopf.Orderid = Orderid;
+                tblKopf.Hppos = Hppos;
 
-                tblKopf.Reserviert = mReserviert;
-                tblKopf.Feinstaub = mFeinstaub;
+                tblKopf.Reserviert = Reserviert;
+                tblKopf.Feinstaub = Feinstaub;
                 tblKopf.KreisKZ = KreisKennz;
 
                 // Kennzeichen geändert? dann wieder für die 
@@ -2636,7 +1811,7 @@ namespace AppZulassungsdienst.lib
                 tblKopf.toDelete = toDelete;
                 DateTime tmpDate;
                 Int32 iMenge = 1;
-                DateTime.TryParse(mZulDate, out tmpDate);
+                DateTime.TryParse(ZulDate, out tmpDate);
 
                 if (tblKopf.Zulassungsdatum != tmpDate)
                 {
@@ -2646,32 +1821,32 @@ namespace AppZulassungsdienst.lib
                 tblKopf.Zulassungsdatum = tmpDate;
                 ZLD_DataContext.Connection.Open();
                 ZLD_DataContext.SubmitChanges();
-                id_Kopf = tblKopf.id;
+                KopfID = tblKopf.id;
                 ZLD_DataContext.Connection.Close();
 
                 ZLD_DataContext = new ZLDTableClassesDataContext();
                 ZLD_DataContext.Connection.Open();
                 // Positionen updaten bzw. neu aufbauen
-                if (tblPositionen.Rows.Count > 0)
+                if (Positionen.Rows.Count > 0)
                 {
                     var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                       where p.id_Kopf == id_Kopf
+                                       where p.id_Kopf == KopfID
                                        select p);
 
-                    if (tblPosCount.Count() == tblPositionen.Rows.Count || tblPosCount.Count() < tblPositionen.Rows.Count)
+                    if (tblPosCount.Count() == Positionen.Rows.Count || tblPosCount.Count() < Positionen.Rows.Count)
                     {
-                        foreach (DataRow drow in tblPositionen.Rows)
+                        foreach (DataRow drow in Positionen.Rows)
                         {
                             var idpos = (Int32) drow["id_pos"];
 
                             var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                          where p.id_Kopf == id_Kopf && p.id_pos == idpos
+                                          where p.id_Kopf == KopfID && p.id_pos == idpos
                                           select p);
                             if (tblPos.Any())
                             {
                                 foreach (var PosRow in tblPos)
                                 {
-                                    if (PosRow.id_Kopf == id_Kopf)
+                                    if (PosRow.id_Kopf == KopfID)
                                     {
                                         PosRow.PosLoesch = drow["PosLoesch"].ToString();
 
@@ -2746,7 +1921,7 @@ namespace AppZulassungsdienst.lib
                             {
                                 var tblPosNew = new ZLDPositionsTabelle
                                     {
-                                        id_Kopf = id_Kopf,
+                                        id_Kopf = KopfID,
                                         id_pos = idpos,
                                         Matnr = drow["Matnr"].ToString().PadLeft(18, '0')
                                     };
@@ -2812,15 +1987,15 @@ namespace AppZulassungsdienst.lib
                             }
                         }
                     }
-                    else if (tblPosCount.Count() > tblPositionen.Rows.Count)
+                    else if (tblPosCount.Count() > Positionen.Rows.Count)
                     {
 
                         foreach (var PosRow in tblPosCount)
                         {
-                            DataRow[] drow = tblPositionen.Select("id_pos = " + PosRow.id_pos);
+                            DataRow[] drow = Positionen.Select("id_pos = " + PosRow.id_pos);
                             if (drow.Length == 1)
                             {
-                                PosRow.id_Kopf = id_Kopf;
+                                PosRow.id_Kopf = KopfID;
                                 PosRow.id_pos = (Int32)drow[0]["id_pos"];
                                 PosRow.Matnr = drow[0]["Matnr"].ToString().PadLeft(18, '0');
 
@@ -2877,21 +2052,21 @@ namespace AppZulassungsdienst.lib
                         }
                         ZLD_DataContext.Connection.Close();
 
-                        foreach (DataRow drow in tblPositionen.Rows)
+                        foreach (DataRow drow in Positionen.Rows)
                         {
                             var idpos = (Int32) drow["id_pos"];
 
                             var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                          where p.id_Kopf == id_Kopf && p.id_pos == idpos
+                                          where p.id_Kopf == KopfID && p.id_pos == idpos
                                           select p);
 
                             if (tblPos.Any())
                             {
                                 foreach (var PosRow in tblPos)
                                 {
-                                    if (PosRow.id_Kopf == id_Kopf)
+                                    if (PosRow.id_Kopf == KopfID)
                                     {
-                                        PosRow.id_Kopf = id_Kopf;
+                                        PosRow.id_Kopf = KopfID;
                                         PosRow.id_pos = idpos;
                                         PosRow.Matnr = drow["Matnr"].ToString().PadLeft(18, '0');
                                         
@@ -2937,7 +2112,7 @@ namespace AppZulassungsdienst.lib
 
                                 var tblPosNew = new ZLDPositionsTabelle
                                     {
-                                        id_Kopf = id_Kopf,
+                                        id_Kopf = KopfID,
                                         id_pos = idpos,
                                         Matnr = drow["Matnr"].ToString().PadLeft(18, '0')
                                     };
@@ -3108,28 +2283,31 @@ namespace AppZulassungsdienst.lib
                 KopfTabelle = tmpKopf;
                 DataRow dRow = KopfTabelle.Rows[0];
 
-                id_Kopf = (Int32)dRow["id"];
-                id_sap = (Int32)dRow["id_sap"];
+                KopfID = (Int32)dRow["id"];
+                SapID = (Int32)dRow["id_sap"];
                 abgerechnet = (dRow["abgerechnet"] != null && (Boolean)dRow["abgerechnet"]);
-                kundenname = dRow["kundenname"].ToString();
+                Kundenname = dRow["kundenname"].ToString();
                 Kunnr = dRow["kundennr"].ToString().TrimStart('0');
                 Ref1 = dRow["referenz1"].ToString();
                 Ref2 = dRow["referenz2"].ToString();
-                KreisKZ = dRow["KreisKZ"].ToString();
-                KreisBez = dRow["KreisBez"].ToString();
-                WunschKenn = (dRow["WunschKenn"] != null && (Boolean)dRow["WunschKenn"]);
+                KreisKennz = dRow["KreisKZ"].ToString();
+                Kreis = dRow["KreisBez"].ToString();
+                WunschKennz = (dRow["WunschKenn"] != null && (Boolean)dRow["WunschKenn"]);
                 ZusatzKZ = ZLDCommon.XToBool(dRow["ZusatzKZ"].ToString());
                 WunschKZ2 = dRow["WunschKZ2"].ToString();
                 WunschKZ3 = dRow["WunschKZ3"].ToString();
                 OhneGruenenVersSchein = ZLDCommon.XToBool(dRow["OhneGruenenVersSchein"].ToString());
                 SofortabrechnungErledigt = (dRow["SofortabrechnungErledigt"] != null && (Boolean)dRow["SofortabrechnungErledigt"]);
                 SofortabrechnungPfad = dRow["SofortabrechnungPfad"].ToString();
-                mReserviert = (dRow["Reserviert"] != null && (Boolean)dRow["Reserviert"]);
-                mReserviertKennz = dRow["ReserviertKennz"].ToString();
-                mFeinstaub = (dRow["Feinstaub"] != null && (Boolean)dRow["Feinstaub"]);
-                mZulDate = dRow["Zulassungsdatum"].ToString();
-                if (ZLDCommon.IsDate(mZulDate)) { mZulDate = ((DateTime)dRow["Zulassungsdatum"]).ToShortDateString(); }
-                mKennzeichen = dRow["Kennzeichen"].ToString();
+                Briefnr = dRow["Briefnr"].ToString();
+                Orderid = dRow["Orderid"].ToString();
+                Hppos = dRow["Hppos"].ToString();
+                Reserviert = (dRow["Reserviert"] != null && (Boolean)dRow["Reserviert"]);
+                ReserviertKennz = dRow["ReserviertKennz"].ToString();
+                Feinstaub = (dRow["Feinstaub"] != null && (Boolean)dRow["Feinstaub"]);
+                ZulDate = dRow["Zulassungsdatum"].ToString();
+                if (ZLDCommon.IsDate(ZulDate)) { ZulDate = ((DateTime)dRow["Zulassungsdatum"]).ToShortDateString(); }
+                Kennzeichen = dRow["Kennzeichen"].ToString();
                 Bemerkung = dRow["Bemerkung"].ToString();
                 Infotext = dRow["Infotext"].ToString();
                 Nachbearbeiten = (dRow["Nachbearbeiten"] != null && (Boolean)dRow["Nachbearbeiten"]);
@@ -3141,8 +2319,8 @@ namespace AppZulassungsdienst.lib
                 Poolnr = dRow["POOLNR"].ToString();
                 KennzForm = dRow["KennzForm"].ToString();
                 EinKennz = (dRow["EinKennz"] != null && (Boolean)dRow["EinKennz"]);
-                mEC = (dRow["EC"] != null && (Boolean)dRow["EC"]);
-                mBar = (dRow["Bar"] != null && (Boolean)dRow["Bar"]);
+                EC = (dRow["EC"] != null && (Boolean)dRow["EC"]);
+                Bar = (dRow["Bar"] != null && (Boolean)dRow["Bar"]);
                 RE = (dRow["RE"] != null && (Boolean)dRow["RE"]);
                 PauschalKunde = dRow["PauschalKunde"].ToString();
                 OhneSteuer = dRow["OhneSteuer"].ToString();
@@ -3157,10 +2335,10 @@ namespace AppZulassungsdienst.lib
                 
                 Decimal Preis;
                 Steuer = Decimal.TryParse(dRow["Steuer"].ToString(), out Preis) ? Preis : 0;
-               
-                tblPositionen = tmpPos;
 
-                foreach (DataRow PosRow in tblPositionen.Rows)
+                Positionen = tmpPos;
+
+                foreach (DataRow PosRow in Positionen.Rows)
                 {
                     PosRow["Matnr"] = PosRow["Matnr"].ToString().TrimStart('0');
                     if (PosRow["id_pos"].ToString() == "10")
@@ -3247,31 +2425,33 @@ namespace AppZulassungsdienst.lib
             try
             {
 
-                tblListe = new DataTable();
+                tblEingabeListe = new DataTable();
                 foreach (DataRow SapRow in SapResultTable.Rows)
                 {
                     var tmpTable = new DataTable();
                     var command = new SqlCommand();
                     var adapter = new SqlDataAdapter();
 
-                    command.CommandText = "SELECT dbo.ZLDKopfTabelle.*, dbo.ZLDPositionsTabelle.Matnr, dbo.ZLDPositionsTabelle.Matbez, dbo.ZLDPositionsTabelle.id_pos," +
-                                          " dbo.ZLDPositionsTabelle.Preis, dbo.ZLDPositionsTabelle.GebPreis, dbo.ZLDPositionsTabelle.Preis_Amt, dbo.ZLDPositionsTabelle.Preis_Amt_Add, dbo.ZLDPositionsTabelle.PreisKZ," +
-                                          " dbo.ZLDPositionsTabelle.PosLoesch, dbo.ZLDPositionsTabelle.GebMatPflicht, dbo.ZLDPositionsTabelle.GebMatnr, " +
-                                          "dbo.ZLDPositionsTabelle.GebMatnrSt, dbo.ZLDPositionsTabelle.Menge, dbo.ZLDPositionsTabelle.GebPak" +
-                                          " FROM dbo.ZLDKopfTabelle INNER JOIN" +
-                                          " dbo.ZLDPositionsTabelle ON dbo.ZLDKopfTabelle.id = dbo.ZLDPositionsTabelle.id_Kopf" +
-                                          " WHERE id_sap = @id_sap AND testuser = @testuser" +
-                                          " AND WebMTArt = 'D' AND abgerechnet = 0 AND Flieger = @Flieger";
-
-                    command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
-                    command.Parameters.AddWithValue("@Flieger", SelFlieger);
+                    command.CommandText = "SELECT k.*, p.Matnr, p.Matbez, p.id_pos, p.Preis, p.GebPreis, p.Preis_Amt, p.Preis_Amt_Add, p.PreisKZ," +
+                                          " p.PosLoesch, p.GebMatPflicht, p.GebMatnr, p.GebMatnrSt, p.Menge, p.GebPak, a.Name1, a.Name2, a.Strasse," +
+                                          " a.PLZ, a.Ort, b.Inhaber, b.IBAN, b.SWIFT" +
+                                          " FROM dbo.ZLDKopfTabelle k" +
+                                          " INNER JOIN dbo.ZLDPositionsTabelle p ON k.id = p.id_Kopf" +
+                                          " LEFT OUTER JOIN dbo.ZLDKundenadresse a ON k.id = a.id_Kopf" +
+                                          " LEFT OUTER JOIN dbo.ZLDBankverbindung b ON k.id = b.id_Kopf" +
+                                          " WHERE k.id_sap = @id_sap AND k.testuser = @testuser" +
+                                          " AND p.WebMTArt = 'D' AND k.abgerechnet = 0 AND k.Flieger = @Flieger" +
+                                          " ORDER BY k.id_sap, p.id_pos, k.kundenname asc, k.referenz1 asc, k.Kennzeichen";
 
                     Int32 tmpID_SAP;
-                    Int32.TryParse(SapRow["ZULBELN"].ToString(), out tmpID_SAP);
+                    if (!Int32.TryParse(SapRow["ZULBELN"].ToString(), out tmpID_SAP))
+                    {
+                        tmpID_SAP = 0;
+                    }
+                    command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
+                    command.Parameters.AddWithValue("@Flieger", SelFlieger);
                     command.Parameters.AddWithValue("@id_sap", tmpID_SAP);
 
-                    command.CommandText += " ORDER BY  dbo.ZLDKopfTabelle.id_sap, dbo.ZLDPositionsTabelle.id_pos,kundenname asc, referenz1 asc, Kennzeichen";
-                    
                     if (connection.State != ConnectionState.Open)
                     {
                         connection.Open();
@@ -3289,20 +2469,20 @@ namespace AppZulassungsdienst.lib
                         rowListe["Status"] = "";
                     }
 
-                    if (tblListe.Columns.Count == 0)
+                    if (tblEingabeListe.Columns.Count == 0)
                     {
-                        tblListe = tmpTable.Copy();
+                        tblEingabeListe = tmpTable.Copy();
                     }
                     else
                     {
                         for (int iRow = 0; iRow < tmpTable.Rows.Count; iRow++)
                         {
-                            DataRow RowNew = tblListe.NewRow();
+                            DataRow RowNew = tblEingabeListe.NewRow();
                             for (int i = 0; i < tmpTable.Columns.Count; i++)
                             {
                                 RowNew[i] = tmpTable.Rows[iRow][i];
                             }
-                            tblListe.Rows.Add(RowNew);
+                            tblEingabeListe.Rows.Add(RowNew);
                         }
                     }
                 }
@@ -3353,10 +2533,14 @@ namespace AppZulassungsdienst.lib
                     DataTable importPos = myProxy.getImportTable("GT_IMP_POS_S01");
                     DataTable importBank = myProxy.getImportTable("GT_IMP_BANK");
                     DataTable importAdresse = myProxy.getImportTable("GT_IMP_ADRS");
+                    DataTable importWebuser = null;
+                    if (SelSofortabrechnung)
+                        importWebuser = myProxy.getImportTable("GT_IMP_WEBUSER_DATEN");
                     Int32 LastID = 0;
                     Int32 OKLoeschCount = 0;
-                    
-                    foreach (DataRow SaveRow in tblListe.Select(tblListe.DefaultView.RowFilter))
+                    DataRow importRow;
+
+                    foreach (DataRow SaveRow in tblEingabeListe.Select(tblEingabeListe.DefaultView.RowFilter))
                     {
                         if ((SaveRow["PosLoesch"].ToString() == "O" && SaveRow["id_Pos"].ToString() == "10")
                             || (SaveRow["PosLoesch"].ToString() == "L" && SaveRow["id_Pos"].ToString() == "10"))
@@ -3378,8 +2562,6 @@ namespace AppZulassungsdienst.lib
 
                                 insertDatatoSAPTable(tblKopf, ref importAuftrRow, tblStvaStamm, aktion);
 
-                                DataRow importRow;
-                                //----------------
                                 var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
                                                    where p.id_Kopf == tmpID
                                                    select p);
@@ -3545,21 +2727,30 @@ namespace AppZulassungsdienst.lib
                         }
                     }
 
+                    if (SelSofortabrechnung)
+                    {
+                        importRow = importWebuser.NewRow();
+                        importRow["ERNAM"] = m_objUser.UserName;
+                        importRow["VNAME"] = m_objUser.FirstName;
+                        importRow["NNAME"] = m_objUser.LastName;
+                        importWebuser.Rows.Add(importRow);
+                    }
+
                     if (OKLoeschCount > 0)
                     {
                         myProxy.callBapi();
 
-                        tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+                        tblFehler = myProxy.getExportTable("GT_EX_ERRORS");
 
-                        if (tblErrors.Rows.Count > 0)
+                        if (tblFehler.Rows.Count > 0)
                         {
                             m_intStatus = -9999;
 
-                            foreach (DataRow rowError in tblErrors.Rows)
+                            foreach (DataRow rowError in tblFehler.Rows)
                             {
                                 Int32 idsap;
                                 Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
-                                DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                                DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idsap);
                                 if (rowListe.Length > 0)
                                 {
                                     rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -3625,7 +2816,7 @@ namespace AppZulassungsdienst.lib
             importAuftrRow["VBELN"] = "";
             importAuftrRow["VKORG"] = tblKopf.Filiale.Substring(0, 4);
             importAuftrRow["VKBUR"] = tblKopf.Filiale.Substring(4, 4);
-            importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+            importAuftrRow["ERNAM"] = m_objUser.UserName;
             importAuftrRow["ERDAT"] = DateTime.Now;
             importAuftrRow["FLAG"] = tblKopf.FLAG;
             importAuftrRow["VZB_STATUS"] = "";
@@ -3660,6 +2851,9 @@ namespace AppZulassungsdienst.lib
             importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
             importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
             importAuftrRow["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
+            importAuftrRow["BRIEFNR"] = tblKopf.Briefnr;
+            importAuftrRow["ORDERID"] = tblKopf.Orderid;
+            importAuftrRow["HPPOS"] = tblKopf.Hppos;
 
             importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
             importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -3847,7 +3041,7 @@ namespace AppZulassungsdienst.lib
                     Int32 LastID = 0;
                     Int32 OKLoeschCount = 0;
 
-                    foreach (DataRow SaveRow in tblListe.Select(tblListe.DefaultView.RowFilter))
+                    foreach (DataRow SaveRow in tblEingabeListe.Select(tblEingabeListe.DefaultView.RowFilter))
                     {
                         if ((SaveRow["PosLoesch"].ToString() == "O") || (SaveRow["PosLoesch"].ToString() == "L"))
                         {
@@ -3867,7 +3061,7 @@ namespace AppZulassungsdienst.lib
                                 importAuftrRow["VBELN"] = "";
                                 importAuftrRow["VKORG"] = tblKopf.Filiale.Substring(0, 4);
                                 importAuftrRow["VKBUR"] = tblKopf.Filiale.Substring(4, 4);
-                                importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                                importAuftrRow["ERNAM"] = m_objUser.UserName;
                                 importAuftrRow["ERDAT"] = DateTime.Now;
                                 importAuftrRow["FLAG"] = tblKopf.FLAG;
 
@@ -3908,6 +3102,9 @@ namespace AppZulassungsdienst.lib
                                 importAuftrRow["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
                                 importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
                                 importAuftrRow["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
+                                importAuftrRow["BRIEFNR"] = tblKopf.Briefnr;
+                                importAuftrRow["ORDERID"] = tblKopf.Orderid;
+                                importAuftrRow["HPPOS"] = tblKopf.Hppos;
 
                                 importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
                                 importAuftrRow["RESERVKENN"] = tblKopf.ReserviertKennz;
@@ -4076,17 +3273,17 @@ namespace AppZulassungsdienst.lib
                     {
                         myProxy.callBapi();
 
-                        tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+                        tblFehler = myProxy.getExportTable("GT_EX_ERRORS");
 
-                        if (tblErrors.Rows.Count > 0)
+                        if (tblFehler.Rows.Count > 0)
                         {
                             RaiseError("-9999","Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden");
                            
-                            foreach (DataRow rowError in tblErrors.Rows)
+                            foreach (DataRow rowError in tblFehler.Rows)
                             {
                                 Int32 idsap;
                                 Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
-                                DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                                DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idsap);
                                 if (rowListe.Length > 0)
                                 {
                                     rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4168,9 +3365,9 @@ namespace AppZulassungsdienst.lib
                     DataTable importPos = myProxy.getImportTable("GT_IMP_POS_S01");
                     DataTable importBank = myProxy.getImportTable("GT_IMP_BANK");
                     DataTable importAdresse = myProxy.getImportTable("GT_IMP_ADRS");
-                   
 
-                    foreach (DataRow SaveRow in tblListe.Select(tblListe.DefaultView.RowFilter))
+
+                    foreach (DataRow SaveRow in tblEingabeListe.Select(tblEingabeListe.DefaultView.RowFilter))
                     {
                         tmpID = (Int32)SaveRow["id"];
                         if (LastID != tmpID)
@@ -4393,18 +3590,18 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-                    tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
-                    if (tblErrors.Rows.Count > 0)
+                    tblFehler = myProxy.getExportTable("GT_EX_ERRORS");
+                    if (tblFehler.Rows.Count > 0)
                     {
                         RaiseError("-9999","Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden");
                        
-                        foreach (DataRow rowError in tblErrors.Rows)
+                        foreach (DataRow rowError in tblFehler.Rows)
                         {
                             Int32 idsap;
                             Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
                             Int32 id_Pos;
                             Int32.TryParse(rowError["ZULPOSNR"].ToString(), out id_Pos);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4690,18 +3887,18 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-                    tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
-                    if (tblErrors.Rows.Count > 0)
+                    tblFehler = myProxy.getExportTable("GT_EX_ERRORS");
+                    if (tblFehler.Rows.Count > 0)
                     {
                         RaiseError("-9999","Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden");
                      
-                        foreach (DataRow rowError in tblErrors.Rows)
+                        foreach (DataRow rowError in tblFehler.Rows)
                         {
                             Int32 idsap;
                             Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
                             Int32 id_Pos;
                             Int32.TryParse(rowError["ZULPOSNR"].ToString(), out id_Pos);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -4781,7 +3978,7 @@ namespace AppZulassungsdienst.lib
                         importAuftrRow["VE_ERNAM"] = SaveRow["VE_ERNAM"];
                         importAuftrRow["VE_ERDAT"] = SaveRow["VE_ERDAT"];
                         importAuftrRow["VE_ERZEIT"] = SaveRow["VE_ERZEIT"];
-                        importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                        importAuftrRow["ERNAM"] = m_objUser.UserName;
                         importAuftrRow["ERDAT"] = DateTime.Now;
                         importAuftrRow["FLAG"] = SaveRow["FLAG"];
                         importAuftrRow["VZB_STATUS"] = "LA";
@@ -4834,6 +4031,9 @@ namespace AppZulassungsdienst.lib
                         importAuftrRow["O_G_VERSSCHEIN"] = SaveRow["O_G_VERSSCHEIN"];
                         importAuftrRow["SOFORT_ABR_ERL"] = SaveRow["SOFORT_ABR_ERL"];
                         importAuftrRow["SA_PFAD"] = SaveRow["SA_PFAD"];
+                        importAuftrRow["BRIEFNR"] = SaveRow["BRIEFNR"];
+                        importAuftrRow["ORDERID"] = SaveRow["ORDERID"];
+                        importAuftrRow["HPPOS"] = SaveRow["HPPOS"];
                         importAuftrRow["RESERVKENN_JN"] = SaveRow["RESERVKENN_JN"];
                         importAuftrRow["RESERVKENN"] = SaveRow["RESERVKENN"];
                         importAuftrRow["FEINSTAUBAMT"] = SaveRow["FEINSTAUBAMT"];
@@ -5000,17 +4200,17 @@ namespace AppZulassungsdienst.lib
 
                     myProxy.callBapi();
 
-                    tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
+                    tblFehler = myProxy.getExportTable("GT_EX_ERRORS");
 
-                    if (tblErrors.Rows.Count > 0)
+                    if (tblFehler.Rows.Count > 0)
                     {
                         RaiseError("-9999","Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden");
                       
-                        foreach (DataRow rowError in tblErrors.Rows)
+                        foreach (DataRow rowError in tblFehler.Rows)
                         {
                             Int32 idsap;
                             Int32.TryParse(rowError["ZULBELN"].ToString(), out idsap);
-                            DataRow[] rowListe = tblListe.Select("id_sap=" + idsap);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idsap);
                             if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["ERROR_TEXT"].ToString();
@@ -5052,7 +4252,7 @@ namespace AppZulassungsdienst.lib
 
             var ZLD_DataContext = new ZLDTableClassesDataContext();
 
-            foreach (DataRow dRow in tblListe.Select(tblListe.DefaultView.RowFilter))
+            foreach (DataRow dRow in tblEingabeListe.Select(tblEingabeListe.DefaultView.RowFilter))
             {
                 var tmpID = (Int32)dRow["id"];
                 if (LastID != tmpID)
@@ -5069,93 +4269,96 @@ namespace AppZulassungsdienst.lib
                     // Preisfindung durchführen
                     GetPreise(strAppID, strSessionID, page, tblStvaStamm, tblMaterialStamm);
 
-                    // Preise übernehmen
-                    foreach (DataRow itemRow in NewPosPreise.Rows)
+                    if (NewPosPreise != null)
                     {
-                        var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                      where p.id_Kopf == tmpID && p.id_pos == Int32.Parse(itemRow["ZULPOSNR"].ToString())
-                                      select p).Single();
-
-                        tblPos.SDRelevant = itemRow["SD_REL"].ToString();
-                        tblPos.WebMTArt = itemRow["WEBMTART"].ToString();
-                        tblPos.GebPak = itemRow["GBPAK"].ToString();
-
-                        decimal iPreisAmtAdd = 0;
-                        if (ZLDCommon.IsDecimal(itemRow["GEB_AMT_ADD_C"].ToString().Trim()))
+                        // Preise übernehmen
+                        foreach (DataRow itemRow in NewPosPreise.Rows)
                         {
-                            Decimal.TryParse(itemRow["GEB_AMT_ADD_C"].ToString(), out iPreisAmtAdd);
-                        }
-                        tblPos.Preis_Amt_Add = iPreisAmtAdd;
+                            var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
+                                          where p.id_Kopf == tmpID && p.id_pos == Int32.Parse(itemRow["ZULPOSNR"].ToString())
+                                          select p).Single();
 
-                        Decimal iMenge = 1;
-                        if (ZLDCommon.IsDecimal(itemRow["Menge_C"].ToString().Trim()))
-                        {
-                            Decimal.TryParse(itemRow["Menge_C"].ToString(), out iMenge);
-                        }
-                        tblPos.Menge = iMenge.ToString("0");
+                            tblPos.SDRelevant = itemRow["SD_REL"].ToString();
+                            tblPos.WebMTArt = itemRow["WEBMTART"].ToString();
+                            tblPos.GebPak = itemRow["GBPAK"].ToString();
 
-                        tblPos.PosLoesch = "";
+                            decimal iPreisAmtAdd = 0;
+                            if (ZLDCommon.IsDecimal(itemRow["GEB_AMT_ADD_C"].ToString().Trim()))
+                            {
+                                Decimal.TryParse(itemRow["GEB_AMT_ADD_C"].ToString(), out iPreisAmtAdd);
+                            }
+                            tblPos.Preis_Amt_Add = iPreisAmtAdd;
 
-                        if (itemRow["LOEKZ"].ToString() == "X")tblPos.PosLoesch = "L";
+                            Decimal iMenge = 1;
+                            if (ZLDCommon.IsDecimal(itemRow["Menge_C"].ToString().Trim()))
+                            {
+                                Decimal.TryParse(itemRow["Menge_C"].ToString(), out iMenge);
+                            }
+                            tblPos.Menge = iMenge.ToString("0");
 
-                        decimal dPreis;
-                        tblPos.Preis = decimal.TryParse(itemRow["PREIS_C"].ToString(), out dPreis) ? dPreis : 0;
-                        
-                        DataRow[] SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
-                                        "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
-                                        "' AND WEBMTART = 'G'");
-                        if (SelRow.Length == 1)
-                        {
-                            decimal dGebPreis;
-                            decimal dGebAmtPreis;
-                            tblPos.GebPreis = decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out dGebPreis) ? dGebPreis : 0;
-                            tblPos.Preis_Amt = decimal.TryParse(SelRow[0]["GEB_AMT_C"].ToString(), out dGebAmtPreis) ? dGebAmtPreis : 0;
-                            
-                            tblPos.GebPak = SelRow[0]["GBPAK"].ToString();
-                        }
-                        else if (tblPos.WebMTArt == "G")
-                        {
-                            decimal dGebAmtPreis;
-                            if (decimal.TryParse(itemRow["GEB_AMT_C"].ToString(), out dGebAmtPreis))
+                            tblPos.PosLoesch = "";
+
+                            if (itemRow["LOEKZ"].ToString() == "X") tblPos.PosLoesch = "L";
+
+                            decimal dPreis;
+                            tblPos.Preis = decimal.TryParse(itemRow["PREIS_C"].ToString(), out dPreis) ? dPreis : 0;
+
+                            DataRow[] SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
+                                            "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
+                                            "' AND WEBMTART = 'G'");
+                            if (SelRow.Length == 1)
+                            {
+                                decimal dGebPreis;
+                                decimal dGebAmtPreis;
+                                tblPos.GebPreis = decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out dGebPreis) ? dGebPreis : 0;
+                                tblPos.Preis_Amt = decimal.TryParse(SelRow[0]["GEB_AMT_C"].ToString(), out dGebAmtPreis) ? dGebAmtPreis : 0;
+
+                                tblPos.GebPak = SelRow[0]["GBPAK"].ToString();
+                            }
+                            else if (tblPos.WebMTArt == "G")
+                            {
+                                decimal dGebAmtPreis;
+                                if (decimal.TryParse(itemRow["GEB_AMT_C"].ToString(), out dGebAmtPreis))
+                                {
+                                    tblPos.GebPreis = 0;
+                                    tblPos.Preis_Amt = dGebAmtPreis;
+                                }
+                                tblPos.GebPak = itemRow["GBPAK"].ToString();
+                            }
+                            else
                             {
                                 tblPos.GebPreis = 0;
-                                tblPos.Preis_Amt = dGebAmtPreis;
+                                tblPos.Preis_Amt = 0;
                             }
-                            tblPos.GebPak = itemRow["GBPAK"].ToString();
-                        }
-                        else
-                        {
-                            tblPos.GebPreis = 0;
-                            tblPos.Preis_Amt = 0;
-                        }
 
-                        SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
-                                                                    "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
-                                                                    "' AND WEBMTART = 'K'");
-                        if (SelRow.Length == 1)
-                        {
-                            Decimal Preis;
-                            tblPos.PreisKZ = Decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out Preis) ? Preis : 0;
-                        }
-
-                        DataRow[] MatRow = tblMaterialStamm.Select("MATNR='" + tblPos.Matnr.TrimStart('0') + "'");
-
-                        if (MatRow.Length == 1)
-                        {
-                            if (MatRow[0]["GEBMAT"].ToString().Length > 0)
+                            SelRow = NewPosPreise.Select("ZULBELN = '" + itemRow["ZULBELN"].ToString() +
+                                                                        "' AND UEPOS = '" + itemRow["ZULPOSNR"].ToString() +
+                                                                        "' AND WEBMTART = 'K'");
+                            if (SelRow.Length == 1)
                             {
-                                tblPos.GebMatPflicht = "X";
+                                Decimal Preis;
+                                tblPos.PreisKZ = Decimal.TryParse(SelRow[0]["PREIS_C"].ToString(), out Preis) ? Preis : 0;
                             }
-                        }
 
-                        tblPos.UPreis = itemRow["UPREIS_C"].ToString();
-                        tblPos.Differrenz = itemRow["DIFF_C"].ToString();
-                        tblPos.Konditionstab = itemRow["KONDTAB"].ToString();
-                        tblPos.Konditionsart = itemRow["KSCHL"].ToString();
+                            DataRow[] MatRow = tblMaterialStamm.Select("MATNR='" + tblPos.Matnr.TrimStart('0') + "'");
 
-                        if (ZLDCommon.IsDate(itemRow["CALCDAT"].ToString()))
-                        {
-                            tblPos.CalcDat = DateTime.Parse(itemRow["CALCDAT"].ToString());
+                            if (MatRow.Length == 1)
+                            {
+                                if (MatRow[0]["GEBMAT"].ToString().Length > 0)
+                                {
+                                    tblPos.GebMatPflicht = "X";
+                                }
+                            }
+
+                            tblPos.UPreis = itemRow["UPREIS_C"].ToString();
+                            tblPos.Differrenz = itemRow["DIFF_C"].ToString();
+                            tblPos.Konditionstab = itemRow["KONDTAB"].ToString();
+                            tblPos.Konditionsart = itemRow["KSCHL"].ToString();
+
+                            if (ZLDCommon.IsDate(itemRow["CALCDAT"].ToString()))
+                            {
+                                tblPos.CalcDat = DateTime.Parse(itemRow["CALCDAT"].ToString());
+                            }
                         }
                     }
 
@@ -5200,19 +4403,19 @@ namespace AppZulassungsdienst.lib
 
                     DataRow importAuftrRow = importAuftrag.NewRow();
                     importAuftrRow["MANDT"] = "010";
-                    importAuftrRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                    importAuftrRow["ZULBELN"] = SapID.ToString().PadLeft(10, '0');
                     importAuftrRow["VBELN"] = "";
-                    importAuftrRow["VKORG"] = strVKORG;
-                    importAuftrRow["VKBUR"] = strVKBUR;
-                    importAuftrRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                    importAuftrRow["VKORG"] = VKORG;
+                    importAuftrRow["VKBUR"] = VKBUR;
+                    importAuftrRow["ERNAM"] = m_objUser.UserName;
                     importAuftrRow["ERDAT"] = DateTime.Now;
                     importAuftrRow["FLAG"] = "";
                     importAuftrRow["BARCODE"] = Barcode;
                     importAuftrRow["KUNNR"] = KunnrPreis.PadLeft(10, '0');
-                    importAuftrRow["ZZREFNR1"] = Referenz1;
-                    importAuftrRow["ZZREFNR2"] = Referenz2;
-                    importAuftrRow["KREISKZ"] = KreisKZ;
-                    DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + KreisKZ + "'");
+                    importAuftrRow["ZZREFNR1"] = Ref1;
+                    importAuftrRow["ZZREFNR2"] = Ref2;
+                    importAuftrRow["KREISKZ"] = KreisKennz;
+                    DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + KreisKennz + "'");
                     
                     if (RowStva.Length == 1)
                     {
@@ -5220,16 +4423,19 @@ namespace AppZulassungsdienst.lib
                     }
                     else
                     {
-                        importAuftrRow["KREISBEZ"] = KreisBez;
+                        importAuftrRow["KREISBEZ"] = Kreis;
                     }
 
-                    importAuftrRow["WUNSCHKENN_JN"] = ZLDCommon.BoolToX(WunschKenn);
+                    importAuftrRow["WUNSCHKENN_JN"] = ZLDCommon.BoolToX(WunschKennz);
                     importAuftrRow["ZUSKENNZ"] = ZLDCommon.BoolToX(ZusatzKZ);
                     importAuftrRow["WU_KENNZ2"] = WunschKZ2;
                     importAuftrRow["WU_KENNZ3"] = WunschKZ3;
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
                     importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
+                    importAuftrRow["BRIEFNR"] = Briefnr;
+                    importAuftrRow["ORDERID"] = Orderid;
+                    importAuftrRow["HPPOS"] = Hppos;
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["RESERVKENN"] = ReserviertKennz;
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
@@ -5256,7 +4462,7 @@ namespace AppZulassungsdienst.lib
                     foreach (DataRow PosRow in tblPosCount)
                     {
                         DataRow importRow = importPos.NewRow();
-                        importRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                        importRow["ZULBELN"] = SapID.ToString().PadLeft(10, '0');
                         importRow["ZULPOSNR"] = PosRow["id_pos"].ToString().PadLeft(6, '0');
                         importRow["UEPOS"] = PosRow["UEPOS"].ToString().PadLeft(6, '0');
                         importRow["MENGE_C"] = PosRow["Menge"].ToString() != "" && PosRow["Menge"].ToString() != "0" ? importRow["MENGE_C"] = PosRow["Menge"].ToString() : importRow["MENGE_C"] = "1";
@@ -5431,6 +4637,9 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
                     importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
+                    importAuftrRow["BRIEFNR"] = Briefnr;
+                    importAuftrRow["ORDERID"] = Orderid;
+                    importAuftrRow["HPPOS"] = Hppos;
 
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
@@ -5743,7 +4952,7 @@ namespace AppZulassungsdienst.lib
           
             ClearError();
 
-            id_sap = 0;
+            SapID = 0;
             if (m_blnGestartet == false)
             {
                 m_blnGestartet = true;
@@ -5818,7 +5027,7 @@ namespace AppZulassungsdienst.lib
         protected override void ClearError()
         {
             base.ClearError();
-            tblErrors = null;
+            tblFehler = null;
         }
 
         #endregion

@@ -156,8 +156,15 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    txtKennz1.Text = objMeldungDAD.Kennzeichen.Substring(0, 3);
-                    txtKennz2.Text = objMeldungDAD.Kennzeichen.Substring(2);
+                    txtKennz1.Text = objMeldungDAD.Kennzeichen.Substring(0, Math.Min(3, objMeldungDAD.Kennzeichen.Length));
+                    if (objMeldungDAD.Kennzeichen.Length > 3)
+                    {
+                        txtKennz2.Text = objMeldungDAD.Kennzeichen.Substring(3);
+                    }
+                    else
+                    {
+                        txtKennz2.Text = "";
+                    }
                 }
             }
             else

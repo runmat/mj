@@ -63,11 +63,17 @@ namespace AppZulassungsdienst.forms
         }
 
         protected void Page_Load(object sender, EventArgs e)
-            {
+        {
             if (!IsPostBack)
             {
                 if (Request.QueryString["New"] != null)
                 {
+                    if (Session["objVorVersand"] == null)
+                    {
+                        //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
+                        Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                    }
+
                     objVorVersand = (VoerfZLD)Session["objVorVersand"];
                     refillForm();
                 }
@@ -553,7 +559,7 @@ namespace AppZulassungsdienst.forms
                     objVorVersand.PLZ = txtPlz.Text;
                     objVorVersand.Ort = txtOrt.Text;
                     objVorVersand.SWIFT = txtSWIFT.Text;
-                    objVorVersand.IBAN = txtIBAN.Text;
+                    objVorVersand.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                     objVorVersand.BankKey = objCommon.Bankschluessel;
                     objVorVersand.Kontonr = objCommon.Kontonr;
                     objVorVersand.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
@@ -860,7 +866,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             if (txtIBAN.Text.Trim(' ').Length > 0 || chkEinzug.Checked)
             {
-                objCommon.IBAN = txtIBAN.Text.Trim(' ');
+                objCommon.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
                 objCommon.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objCommon.Message != String.Empty)
                 {
@@ -1454,7 +1460,7 @@ namespace AppZulassungsdienst.forms
                             objVorVersand.PLZ = txtPlz.Text;
                             objVorVersand.Ort = txtOrt.Text;
                             objVorVersand.SWIFT = txtSWIFT.Text;
-                            objVorVersand.IBAN = txtIBAN.Text;
+                            objVorVersand.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                             objVorVersand.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
                             objVorVersand.Inhaber = txtKontoinhaber.Text;
                             objVorVersand.EinzugErm = chkEinzug.Checked;

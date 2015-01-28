@@ -718,9 +718,6 @@ Public Class UserUnlock
 #End Region
 
 #Region " Events "
-    'Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-    '    Search(True, True, True, True)
-    'End Sub
 
     Private Sub dgSearchResult_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles dgSearchResult.SortCommand
         Dim strSort As String = e.SortExpression
@@ -827,25 +824,7 @@ Public Class UserUnlock
             Dim _customer As New Customer(CInt(ddlCustomer.SelectedItem.Value), m_User.App.Connectionstring)
 
             Dim _User As User
-            'If _customer.NameInputOptional Then
-            '    _User = New User(CInt(txtUserID.Text), _
-            '                                      txtUserName.Text, _
-            '                                      txtReference.Text, _
-            '                                      cbxTestUser.Checked, _
-            '                                      CInt(ddlCustomer.SelectedItem.Value), _
-            '                                      cbxCustomerAdmin.Checked, _
-            '                                      cbxPwdNeverExpires.Checked, _
-            '                                      cbxAccountIsLockedOut.Checked, _
-            '                                      cbxFirstLevelAdmin.Checked, _
-            '                                      chkLoggedOn.Checked, cbxOrganizationAdmin.Checked, _
-            '                                      m_User.App.Connectionstring, _
-            '                                      CInt(txtReadMessageCount.Text), _
-            '                                      m_User.UserName, _
-            '                                      cbxApproved.Checked, _
-            '                                      txtStore.Text, _
-            '                                      chk_Matrix1.Checked, _
-            '                                      txtValidFrom.Text)
-            'Else
+
             _User = New User(CInt(txtUserID.Text), _
                                               txtUserName.Text, _
                                               txtReference.Text, _
@@ -866,7 +845,6 @@ Public Class UserUnlock
                                               txtStore.Text, _
                                               chk_Matrix1.Checked, _
                                               txtValidFrom.Text)
-            'End If
 
             _User.Email = txtMail.Text
             _User.Telephone = txtPhone.Text
@@ -902,7 +880,7 @@ Public Class UserUnlock
             Dim pwordconfirm As String = ""
 
             If _User.Save() Then
-                If Not (strPwd = String.Empty) Then ' Not (txtPassword.Text = String.Empty)
+                If Not (strPwd = String.Empty) Then
                     If _User.Customer.CustomerPasswordRules.DontSendEmail Then
                         pword = txtPassword.Text
                         pwordconfirm = txtConfirmPassword.Text
@@ -924,7 +902,6 @@ Public Class UserUnlock
             Else
                 lblError.Text = _User.ErrorMessage
             End If
-            tblLogParameter = New DataTable
             tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
             Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
@@ -934,9 +911,8 @@ Public Class UserUnlock
 
                 If (pword <> String.Empty) Then 'Nur bei Passwortänderung
                     Dim errorMessage As String = ""
-                    If Not _User.SendPasswordMail(pword, errorMessage) Then
-                        lblError.Text = errorMessage
-                    End If
+                    _User.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Neu)
+                    If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text = errorMessage
                 End If
             End If
 
