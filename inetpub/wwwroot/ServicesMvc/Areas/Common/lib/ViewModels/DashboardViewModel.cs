@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
@@ -15,9 +16,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public IDashboardDataService DataService { get { return CacheGet<IDashboardDataService>(); } }
 
 
-        public List<string> DashboardItems
+        public List<IDashboardItem> DashboardItems
         {
-            get { return PropertyCacheGet(() => DataService.DashboardItems.ToList()); }
+            get { return PropertyCacheGet(() => DataService.GetDashboardItems().ToList()); }
         }
         
         public void DataInit()

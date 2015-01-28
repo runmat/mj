@@ -93,6 +93,7 @@
     <Compile Include="DomainCommon\Models\CommonSummary.cs" />
     <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
     <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
+    <Compile Include="General\Contracts\IDashboardItem.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
@@ -169,6 +170,10 @@
     </Compile>
     <Compile Include="Services\AdressenDataServiceSAP.cs" />
     <Compile Include="Services\CkgDomainAppSettings.cs" />
+    <Compile Include="General\Services\Dashboard\Attributes\DashboardItemsAttribute.cs" />
+    <Compile Include="General\Services\Dashboard\Attributes\DashboardItemSelectorAttribute.cs" />
+    <Compile Include="General\Services\Dashboard\Attributes\DashboardItemsLoadMethodAttribute.cs" />
+    <Compile Include="General\Services\Dashboard\Attributes\DashboardProviderViewModelAttribute.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />
     <Compile Include="General\Models\DataModels\Land.cs" />
     <Compile Include="General\Services\Database\DomainDbContext.cs" />

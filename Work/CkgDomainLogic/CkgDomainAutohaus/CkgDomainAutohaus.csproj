@@ -77,10 +77,6 @@
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
-    <Compile Include="General\Dashboard_MoveTo_CkgDomainLogic\Attributes\DashboardItemSelector.cs" />
-    <Compile Include="General\Dashboard_MoveTo_CkgDomainLogic\Attributes\DashboardProviderViewModel.cs" />
-    <Compile Include="General\Dashboard_MoveTo_CkgDomainLogic\Attributes\DashboardItems.cs" />
-    <Compile Include="General\Dashboard_MoveTo_CkgDomainLogic\Attributes\DashboardItemsLoadMethod.cs" />
     <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
     <Compile Include="Zulassung\Models\AppModelMappings.cs" />
     <Compile Include="Zulassung\Models\DataModels\Adressdaten.cs" />

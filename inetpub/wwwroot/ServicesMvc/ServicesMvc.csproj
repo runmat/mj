@@ -2441,9 +2441,11 @@
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\lib\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Models\DashboardItem.cs" />
     <Compile Include="Areas\Common\lib\Services\DashboardDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="DashboardService.cs" />
+    <Compile Include="Areas\Common\lib\Services\DashboardAppUrlService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4275,7 +4277,6 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
-    <Folder Include="Areas\Common\lib\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

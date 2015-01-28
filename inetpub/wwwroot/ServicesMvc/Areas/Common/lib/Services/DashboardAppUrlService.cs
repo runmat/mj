@@ -4,13 +4,12 @@ using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
 using CkgDomainLogic.Autohaus.Models;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using ServicesMvc;
 
-namespace CkgDomainLogic.Services
+namespace CkgDomainLogic.General.Services
 {
-    public class DashboardService
+    public class DashboardAppUrlService
     {
         public static void InvokeViewModelForAppUrl(string appUrl, IContainer iocContainer = null)
         {

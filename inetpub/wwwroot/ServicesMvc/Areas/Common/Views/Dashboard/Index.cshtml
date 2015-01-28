@@ -3,17 +3,33 @@
 @Html.Partial("Partial/Common")
 
 <h3 class="page-title">Dashboard <small>Sample</small> </h3>
-
-    
-<div>
-    <button class="btn margin-left-10" id="btnRefresh">
-        Refresh
-    </button>
-</div>
 		
 <ul id="myDashboard">
-
 </ul>
+
+<script type="text/javascript">
+    var _dashboardJson = [];
+</script>
+@foreach (var dashBoardItem in Model.DashboardItems)
+{
+    <script type="text/javascript">
+        _dashboardJson.push(
+            {
+                widgetTitle: "@dashBoardItem.Title",
+                widgetId: "id_@dashBoardItem.ID",
+                widgetType: "chart",
+                enableRefresh: true,
+                refreshCallBack: function (widgetId) {
+                    return _dashboardData;
+                },
+                widgetContent: {
+                    data: null,
+                    options: null
+                }
+            }
+        );
+    </script>
+}
 
 <script type="text/javascript">
 
@@ -28,66 +44,31 @@
     var _dashboardData = { data: null, options: null };
 
     function FormPrepareDashboard() {
-
-	    var dashboardJson =
-	    [
-	        {
-	            widgetTitle: "Zulassungen",
-	            widgetId: "id002",
-	            widgetType: "chart",
-	            enableRefresh: true,
-	            refreshCallBack: function (widgetId) {
-	                return _dashboardData;
-	            },
-	            widgetContent: {
-	                data: null, 
-	                options: null 
-	            }
-	        }
-	        , {
-	            widgetTitle: "Abmeldungen",
-	            widgetId: "id003",
-	            widgetType: "chart",
-	            enableRefresh: true,
-	            refreshCallBack: function (widgetId) {
-	                return _dashboardData;
-	            },
-	            widgetContent: {
-	                data: null, 
-	                options: null 
-	            }
-	        }
-	    ];
 	    
-		//basic initialization example
-		$("#myDashboard").sDashboard({
-		    dashboardData: dashboardJson
-		});
+        //basic initialization example
+        $("#myDashboard").sDashboard({
+            dashboardData: _dashboardJson
+        });
 
-		//widget order changes event example
-		$("#myDashboard").bind("sdashboardorderchanged", function (e, data) {
-		    $.gritter.add({
-		        position: 'bottom-left',
-		        title: 'Order Changed',
-		        time: 4000,
-		        text: 'The widgets order has been changed,check the console for the sorted widget definitions array'
-		    });
-		    if (console) {
-		        console.log("Sorted Array");
-		        console.log("+++++++++++++++++++++++++");
-		        console.log(data.sortedDefinitions);
-		        console.log("+++++++++++++++++++++++++");
-		    }
+        //widget order changes event example
+        $("#myDashboard").bind("sdashboardorderchanged", function (e, data) {
+            $.gritter.add({
+                position: 'bottom-left',
+                title: 'Order Changed',
+                time: 4000,
+                text: 'The widgets order has been changed,check the console for the sorted widget definitions array'
+            });
+            if (console) {
+                console.log("Sorted Array");
+                console.log("+++++++++++++++++++++++++");
+                console.log(data.sortedDefinitions);
+                console.log("+++++++++++++++++++++++++");
+            }
 
-		});
+        });
 
-		$("#btnRefresh").click(function () {
-
-		    $("#id002 .sDashboard-refresh-icon").trigger("click");
-		});
-
-		DashboardChainInit();
-	}
+        DashboardChainInit();
+    }
 
     var _dashboardChainIndex = 0;
 
@@ -114,24 +95,26 @@
         var widgetId = "#" + widget.attr("id");
         var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
 
-	    $.ajax(
-        {
-            type: "POST",
-            url: "GetBarChartData",
-            data: { id: widgetId },
-            loadingShow: false,
-            success: function (result) {
-                _dashboardData = result;
+        $.ajax(
+            {
+                type: "POST",
+                url: "GetBarChartData",
+                data: { id: widgetId },
+                loadingShow: false,
+                success: function (result) {
+                    _dashboardData.data = result.data;
+                    _dashboardData.options = jQuery.parseJSON(result.options);
+                    console.log(result.options);
 
-                hideBusy(busyHintDiv);
-                busyHintDiv.hide();
+                    hideBusy(busyHintDiv);
+                    busyHintDiv.hide();
 
-                $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
 
-                _dashboardChainIndex++;
-                setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
-            }
-        });
+                    _dashboardChainIndex++;
+                    setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
+                }
+            });
     }
 
 </script>

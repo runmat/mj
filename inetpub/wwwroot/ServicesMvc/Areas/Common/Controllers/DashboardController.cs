@@ -36,7 +36,7 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetBarChartData(string id)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(300);
 
             var data = new []
                 {
@@ -50,39 +50,16 @@ namespace ServicesMvc.Common.Controllers
                     {
                         new []
                             {
-                                new []{5, 0}, new []{1, 1}, new []{9, 2}, new []{4, 3}
+                                new []{5, 0}, new []{1, 1}, new []{9, 2}, new []{4, 3}, new []{7, 4}
                             },
                     };
 
-            var options = new
-                {
-                    bars = new
-                        {
-                            show = true,
-                            horizontal = true,
-                            shadowSize = 0,
-                            barWidth = 0.5,
-                            fillColor = new {
-                                colors = new[] { (id.Contains("003") ? "#CB4B4B" : "#4B4BCB"), "#fff" },
-                              start = "top",
-                              end = "bottom"
-                            },
-                        },
-                    mouse = new
-                        {
-                            track = true,
-                            relative = true
-                        },
-                    xaxis = new
-                        {
-                            min = 0,
-                        },
-                    yaxis = new
-                        {
-                            min = 0,
-                            autoscaleMargin = 1
-                        }
-                };
+            var dbId = id.Replace("id_", "").Replace("#", "");
+            var dashboardItem = ViewModel.DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+
+            var options = "";
+            if (dashboardItem != null)
+                options = dashboardItem.ChartJsonOptions;
 
             return Json(new { data, options });
         }

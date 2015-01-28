@@ -1,5 +1,5 @@
 ﻿using System.Web;
-using CkgDomainLogic.Services;
+using CkgDomainLogic.General.Services;
 using MvcTools.Web;
 using SapORM.Services;
 using ServicesMvc;
@@ -15,7 +15,7 @@ namespace ServicesMvcTest
 
             HttpContext.Current = SessionHelper.FakeHttpContext();
 
-            DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index", iocContainer);
+            DashboardAppUrlService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index", iocContainer);
         }
     }
 }
