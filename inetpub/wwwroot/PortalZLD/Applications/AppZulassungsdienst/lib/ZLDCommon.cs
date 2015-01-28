@@ -306,63 +306,63 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        /// <summary>
-       /// Laden der Stammdaten der jeweiligen Autohausgruppe aus SAP. Bapi: Z_ZLD_AH_KUNDE_ZU_GRUPPE
-       /// </summary>
-       /// <param name="strAppID">AppID</param>
-       /// <param name="strSessionID">SessionID</param>
-       /// <param name="page">ChangeZLDNach.aspx, AHVersandChange.aspx</param>
-       /// <param name="Kunnr">Kundennummer</param>
-        public void getSAPAHDatenStamm(String strAppID, String strSessionID, System.Web.UI.Page page, String Kunnr)
-        {
-           m_strClassAndMethod = "ZLDCommon.getSAPAHDatenStamm";
-           m_strAppID = strAppID;
-           m_strSessionID = strSessionID;
-           m_intStatus = 0;
-           m_strMessage = String.Empty;
+       // /// <summary>
+       // /// Laden der Stammdaten der jeweiligen Autohausgruppe aus SAP. Bapi: Z_ZLD_AH_KUNDE_ZU_GRUPPE
+       // /// </summary>
+       // /// <param name="strAppID">AppID</param>
+       // /// <param name="strSessionID">SessionID</param>
+       // /// <param name="page">ChangeZLDNach.aspx, AHVersandChange.aspx</param>
+       // /// <param name="Kunnr">Kundennummer</param>
+       // public void getSAPAHDatenStamm(String strAppID, String strSessionID, System.Web.UI.Page page, String Kunnr)
+       // {
+       //    m_strClassAndMethod = "ZLDCommon.getSAPAHDatenStamm";
+       //    m_strAppID = strAppID;
+       //    m_strSessionID = strSessionID;
+       //    m_intStatus = 0;
+       //    m_strMessage = String.Empty;
 
-           if (m_blnGestartet == false)
-           {
-               m_blnGestartet = true;
-               try
-               {
-                   DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_KUNDE_ZU_GRUPPE", ref m_objApp, ref m_objUser, ref page);
+       //    if (m_blnGestartet == false)
+       //    {
+       //        m_blnGestartet = true;
+       //        try
+       //        {
+       //            DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_KUNDE_ZU_GRUPPE", ref m_objApp, ref m_objUser, ref page);
 
-                   myProxy.setImportParameter("I_VKORG", VKORG);
-                   myProxy.setImportParameter("I_VKBUR", VKBUR);
-                   myProxy.setImportParameter("I_KUNNR", Kunnr.PadLeft(10,'0'));
+       //            myProxy.setImportParameter("I_VKORG", VKORG);
+       //            myProxy.setImportParameter("I_VKBUR", VKBUR);
+       //            myProxy.setImportParameter("I_KUNNR", Kunnr.PadLeft(10,'0'));
 
-                   myProxy.callBapi();
+       //            myProxy.callBapi();
 
-                   tblAHKundenStamm = myProxy.getExportTable("GT_DEB");
-                   foreach (DataRow drow in tblAHKundenStamm.Rows)
-                   {
-                       drow["KUNNR"] = drow["KUNNR"].ToString().TrimStart('0');
-                       drow["NAME1"] = drow["NAME1"] + " ~ " + drow["KUNNR"].ToString();
-                       if (drow["EXTENSION1"].ToString().Length > 0)
-                       {
-                           drow["NAME1"] = drow["NAME1"] + " / " + drow["EXTENSION1"].ToString();
-                       }
-                   }
+       //            tblAHKundenStamm = myProxy.getExportTable("GT_DEB");
+       //            foreach (DataRow drow in tblAHKundenStamm.Rows)
+       //            {
+       //                drow["KUNNR"] = drow["KUNNR"].ToString().TrimStart('0');
+       //                drow["NAME1"] = drow["NAME1"] + " ~ " + drow["KUNNR"].ToString();
+       //                if (drow["EXTENSION1"].ToString().Length > 0)
+       //                {
+       //                    drow["NAME1"] = drow["NAME1"] + " / " + drow["EXTENSION1"].ToString();
+       //                }
+       //            }
 
-                   DataRow dr = tblAHKundenStamm.NewRow();
-                   dr["KUNNR"] = "0";
-                   dr["NAME1"] = " - keine Auswahl - ";
-                   tblAHKundenStamm.Rows.Add(dr);
-               }
-               catch (Exception ex)
-               {
-                   switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                   {
-                       default:
-                           m_intStatus = -9999;
-                           m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                           break;
-                   }
-               }
-               finally { m_blnGestartet = false; }
-           }
-       }
+       //            DataRow dr = tblAHKundenStamm.NewRow();
+       //            dr["KUNNR"] = "0";
+       //            dr["NAME1"] = " - keine Auswahl - ";
+       //            tblAHKundenStamm.Rows.Add(dr);
+       //        }
+       //        catch (Exception ex)
+       //        {
+       //            switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+       //            {
+       //                default:
+       //                    m_intStatus = -9999;
+       //                    m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+       //                    break;
+       //            }
+       //        }
+       //        finally { m_blnGestartet = false; }
+       //    }
+       //}
 
         /// <summary>
        /// Laden der Zulassungsstellen aus SAP. Bapi: Z_ZLD_EXPORT_ZULSTEL

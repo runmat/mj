@@ -109,6 +109,34 @@ namespace CkgDomainLogic.General.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB, KundeAusHierarchie> Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_KundeAusHierarchie
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB, KundeAusHierarchie>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Barkunde = s.BARKUNDE.XToBool();
+                        d.CpdMitEinzugsermaechtigung = s.XCPDEIN.XToBool();
+                        d.Cpdkunde = s.XCPDK.XToBool();
+                        d.HausNr = s.HOUSE_NUM1;
+                        d.KundenNr = s.KUNNR;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.OhneUmsatzsteuer = s.OHNEUST.XToBool();
+                        d.Ort = s.CITY1;
+                        d.Pauschalkunde = s.ZZPAUSCHAL.XToBool();
+                        d.Plz = s.POST_CODE1;
+                        d.Strasse = s.STREET;
+                        d.VkBur = s.VKBUR;
+                        d.VkOrg = s.VKORG;
+                    }));
+            }
+        }
+
         #endregion
     }
 }

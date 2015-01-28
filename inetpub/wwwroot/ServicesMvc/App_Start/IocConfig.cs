@@ -45,6 +45,8 @@ using MvcTools.Web;
 using PortalMvcTools.Services;
 using SapORM.Contracts;
 using WebTools.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 
 namespace ServicesMvc
 {
@@ -170,6 +172,7 @@ namespace ServicesMvc
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
 

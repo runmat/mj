@@ -66,21 +66,10 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '02'");
-                    if (matRow.Length == 1)
-                    {
-                        objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                        objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                        objVorerf.Material = matRow[0]["MAKTX"].ToString(); 
-                        fillForm();
-                    }
-                    else
-                    {
-                        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-                        cmdSave.Visible = false;
-                    }
-
-                    Session["objVorerf"] = objVorerf;
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AG");
+                    objVorerf.NrMaterial = "588";
+                    objVorerf.Material = "Gebrauchtzulassung";
+                    fillForm();
                 }
                 Session["objVorerf"] = objVorerf;
 
@@ -178,7 +167,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
                 if (objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'").Length == 0)
                 { lblError.Text = "Fehler beim Speichern des Zulassungskreises"; return; }
                 objVorerf.KreisKennz = ddlStVa1.SelectedValue;
@@ -299,11 +288,11 @@ namespace AutohausPortal.forms
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
                 objVorerf.Ort = ucBankdatenAdresse.Ort;
-                objVorerf.SWIFT = ucBankdatenAdresse.SWIFT != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.SWIFT : "";
+                objVorerf.SWIFT = ucBankdatenAdresse.IsSWIFTInitial ? "" : ucBankdatenAdresse.SWIFT;
                 objVorerf.IBAN = ucBankdatenAdresse.IBAN;
                 objVorerf.Bankkey = ucBankdatenAdresse.Bankkey;
                 objVorerf.Kontonr = ucBankdatenAdresse.Kontonr;
-                objVorerf.Geldinstitut = ucBankdatenAdresse.Geldinstitut != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.Geldinstitut : "";
+                objVorerf.Geldinstitut = ucBankdatenAdresse.IsGeldinstitutInitial ? "" : ucBankdatenAdresse.Geldinstitut;
                 objVorerf.Inhaber = ucBankdatenAdresse.Kontoinhaber;
                 objVorerf.EinzugErm = ucBankdatenAdresse.Einzug;
                 objVorerf.Rechnung = ucBankdatenAdresse.Rechnung;
@@ -560,8 +549,7 @@ namespace AutohausPortal.forms
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            DataView tmpDView = new DataView();
-            tmpDView = objCommon.tblKennzGroesse.DefaultView;
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
             tmpDView.RowFilter = "Matnr = 588";
             tmpDView.Sort = "Matnr";
 

@@ -130,13 +130,60 @@ namespace CkgDomainLogic.Autohaus.Models
 
                         SetStatus(s, d);
 
-                        d.Preis = s.PREIS_DL.NullIf0();
-                        d.PreisGebuehr = s.PREIS_GB.NullIf0();
-                        d.PreisSteuer = s.PREIS_ST.NullIf0();
-                        d.PreisKz = s.PREIS_KZ.NullIf0();
-
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
+                    }));
+            }
+        }
+
+        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.Preis = null;
+            d.PreisGebuehr = null;
+            d.PreisSteuer = null;
+            d.PreisKz = null;
+
+            switch (d.Status.NotNullOrEmpty().ToUpper())
+            {
+                case "AR":
+                    d.Preis = s.PREIS_DL.NullIf0();
+                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                    d.PreisSteuer = s.PREIS_ST.NullIf0();
+                    d.PreisKz = s.PREIS_KZ.NullIf0();
+                    break;
+
+                case "D":
+                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                    break;
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME, PdfFormular> Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME, PdfFormular>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Belegnummer = s.ZULBELN;
+                        d.Typ = s.FORMART;
+                        d.Label = s.NAME;
+                        d.DateiPfad = s.FILENAME;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL, Zulassungskreis> Z_ZLD_EXPORT_ZULSTEL_GT_EX_ZULSTELL_To_Zulassungskreis
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL, Zulassungskreis>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KreisKz = s.KREISKZ;
+                        d.KreisBez = s.KREISBEZ;
                     }));
             }
         }
@@ -185,6 +232,8 @@ namespace CkgDomainLogic.Autohaus.Models
                     d.StatusAsText = Localize.InWork;
                     break;
             }
+
+            SetPreise(s, d);
         }
 
         #endregion

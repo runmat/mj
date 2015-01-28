@@ -29,6 +29,8 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
 
+        public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
+
         private static ZulassungSqlDbContext CreateDbContext()
         {
             return new ZulassungSqlDbContext();
@@ -47,6 +49,7 @@ namespace CkgDomainLogic.Autohaus.Services
             PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
+            PropertyCacheClear(this, m => m.Zulassungskreise);
         }
 
         private IEnumerable<Kunde> LoadKundenFromSap()
@@ -340,6 +343,40 @@ namespace CkgDomainLogic.Autohaus.Services
                 } 
             );
             return webItems;
+        }
+
+        #endregion
+
+
+        #region Dokumentencenter Formulare
+
+        private IEnumerable<Zulassungskreis> LoadZulassungskreiseFromSap()
+        {
+            var sapList = Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportListWithInitExecute(SAP);
+
+            return AppModelMappings.Z_ZLD_EXPORT_ZULSTEL_GT_EX_ZULSTELL_To_Zulassungskreis.Copy(sapList)
+                .Where(z => z.KreisKz.IsNotNullOrEmpty() && !z.KreisKz.IsNumeric()).OrderBy(z => z.KreisKz);
+        }
+
+        public List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError)
+        {
+            try
+            {
+                Z_ZLD_AH_AUSGABE_ZULFORMS.Init(SAP, "I_KUNNR_AG, I_KREISKZ", LogonContext.KundenNr.ToSapKunnr(), selector.Zulassungskreis);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                addModelError("", e.FormatSapSaveException());
+            }
+
+            if (SAP.ResultCode != 0)
+                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+
+            var sapItems = Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME.GetExportList(SAP);
+
+            return AppModelMappings.Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular.Copy(sapItems).OrderBy(f => f.Typ).ToList();
         }
 
         #endregion

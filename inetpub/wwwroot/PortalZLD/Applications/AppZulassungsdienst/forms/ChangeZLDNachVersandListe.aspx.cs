@@ -26,6 +26,12 @@ namespace AppZulassungsdienst.forms
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
+            if (Session["objNacherf"] == null)
+            {
+                //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
+                Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+            }
+
             objNacherf = (NacherfZLD)Session["objNacherf"];
             if (m_User.Reference.Trim(' ').Length == 0)
             {
@@ -34,7 +40,6 @@ namespace AppZulassungsdienst.forms
             }
             if (Session["objCommon"] == null)
             {
-
                 objCommon = new ZLDCommon(ref m_User, m_App);
                 objCommon.VKBUR = m_User.Reference.Substring(4, 4);
                 objCommon.VKORG = m_User.Reference.Substring(0, 4);
@@ -46,7 +51,6 @@ namespace AppZulassungsdienst.forms
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-
             }
 
             if (IsPostBack != true)

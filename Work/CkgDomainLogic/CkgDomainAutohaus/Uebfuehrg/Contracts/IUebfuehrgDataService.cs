@@ -9,6 +9,8 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
 {
     public interface IUebfuehrgDataService : ICkgGeneralDataService 
     {
+        string KundenNr { get; set; }
+
         string AuftragGeber { get; set; }
 
         List<Adresse> GetFahrtAdressen(string[] addressTypes);

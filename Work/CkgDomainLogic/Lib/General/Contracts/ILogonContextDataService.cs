@@ -63,6 +63,8 @@ namespace CkgDomainLogic.General.Contracts
 
         string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 
+        void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
+
         User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes);
 
         User TryGetUserFromUserName(string userName);
