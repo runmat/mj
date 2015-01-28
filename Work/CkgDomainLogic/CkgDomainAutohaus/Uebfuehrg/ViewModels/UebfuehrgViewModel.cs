@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -32,11 +31,12 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             get { return CacheGet<IUebfuehrgDataService>(); }
         }
 
-        [XmlIgnore]
-        public IFahrzeugverwaltungDataService FahrzeugverwaltungDataService
-        {
-            get { return CacheGet<IFahrzeugverwaltungDataService>(); }
-        }
+        // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+        //[XmlIgnore]
+        //public IFahrzeugverwaltungDataService FahrzeugverwaltungDataService
+        //{
+        //    get { return CacheGet<IFahrzeugverwaltungDataService>(); }
+        //}
 
         [XmlIgnore]
         public List<CommonUiModel> StepModels { get; private set; }
@@ -110,6 +110,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public List<Adresse> FahrtAdressen { get; private set; }
 
         [XmlIgnore]
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
+
+        [XmlIgnore]
         public List<Adresse> RechnungsAdressen { get; private set; }
 
         [XmlIgnore]
@@ -153,6 +156,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         [XmlIgnore]
         public string ReceiptPdfFileName { get; set; }
 
+        [XmlIgnore]
+        private bool IstKroschke { get { return (LogonContext.Customer.AccountingArea == 1010); } }
+
 
         public void DataInit(int anzahlFahrzeugeGewuenscht, IDictionary<string, string> externalParams = null)
         {
@@ -174,7 +180,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
             AnzahlFahrzeugeGewuenschtCorrespondingDisabled = true;
 
-            List<Autohaus.Models.Fahrzeug> storedFahrzeuge = null;
+            // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+            //List<Autohaus.Models.Fahrzeug> storedFahrzeuge = null;
+
             foreach (var param in externalParams)
             {
                 var fahrzeugIndex = param.Key.SubstringTry(param.Key.Length - 1, 1).ToInt();
@@ -197,17 +205,18 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         break;
 
                     case "id":
-                        if (storedFahrzeuge == null)
-                            storedFahrzeuge = FahrzeugverwaltungDataService.FahrzeugeGet();
-                        if (storedFahrzeuge == null)
-                            break;
-                        var storedFahrzeug = storedFahrzeuge.FirstOrDefault(sf => sf.ID == param.Value.ToInt());
-                        if (storedFahrzeug == null)
-                            break;
+                        // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
+                        //if (storedFahrzeuge == null)
+                        //    storedFahrzeuge = FahrzeugverwaltungDataService.FahrzeugeGet();
+                        //if (storedFahrzeuge == null)
+                        //    break;
+                        //var storedFahrzeug = storedFahrzeuge.FirstOrDefault(sf => sf.ID == param.Value.ToInt());
+                        //if (storedFahrzeug == null)
+                        //    break;
 
-                        fahrzeugModel.FIN = storedFahrzeug.FahrgestellNr;
-                        fahrzeugModel.Kennzeichen = storedFahrzeug.Kennzeichen;
-                        fahrzeugModel.Referenznummer = storedFahrzeug.ReferenzNr;
+                        //fahrzeugModel.FIN = storedFahrzeug.FahrgestellNr;
+                        //fahrzeugModel.Kennzeichen = storedFahrzeug.Kennzeichen;
+                        //fahrzeugModel.Referenznummer = storedFahrzeug.ReferenzNr;
                         break;
                 }
             }
@@ -229,9 +238,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Header = "Rechnungsdaten",
                     EditFromSummaryDisabled = true,
                     IsMandatory = true,
+                    KundenNrUser = LogonContext.KundenNr,
                     KundenNr = LogonContext.KundenNr,
 
                     ViewName = "RgDaten",
+                    GetKundenAusHierarchie = () => KundenAusHierarchie,
                     GetRechnungsAdressen = () => RechnungsAdressen,
 
 #if TESTDATA
@@ -240,7 +251,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 #endif
                 };
 
-            if (RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
+            if ((IstKroschke && RgDaten.KundenAusHierarchie.Count() > 1) || RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
             {
                 TryDataContextRestoreUiModel(RgDaten);
                 list.Add(RgDaten);
@@ -487,6 +498,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             Laender = DataService.Laender;
             DomainCommon.Models.Adresse.Laender = Laender;
 
+            KundenAusHierarchie = DataService.KundenAusHierarchie;
             RechnungsAdressen = DataService.GetRechnungsAdressen();
         }
 
@@ -582,8 +594,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 {
                     var subModelRgDaten = subModel as RgDaten;
 
-                    subModelRgDaten.RgKundenNr = storedRgDaten.RgKundenNr;
-                    subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
+                    if (subModelRgDaten.RgAdressen.Any(rg => rg.KundenNr.NotNullOrEmpty().TrimStart('0') == storedRgDaten.RgKundenNr.NotNullOrEmpty().TrimStart('0')))
+                        subModelRgDaten.RgKundenNr = storedRgDaten.RgKundenNr;
+
+                    if (subModelRgDaten.ReAdressen.Any(re => re.KundenNr.NotNullOrEmpty().TrimStart('0') == storedRgDaten.ReKundenNr.NotNullOrEmpty().TrimStart('0')))
+                        subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
                 }
             }
 
@@ -604,7 +619,36 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten)
         {
+            if (IstKroschke && !String.IsNullOrEmpty(rgDaten.AgKundenNr))
+            {
+                rgDaten.KundenNr = rgDaten.AgKundenNr;
+
+                if (rgDaten.KundenNr != DataService.KundenNr)
+                {
+                    DataService.KundenNr = rgDaten.AgKundenNr;
+                    RechnungsAdressen = DataService.GetRechnungsAdressen();
+                }
+            }
+
+            rgDaten.GetKundenAusHierarchie = () => KundenAusHierarchie;
             rgDaten.GetRechnungsAdressen = () => RechnungsAdressen;
+
+            if (IstKroschke)
+            {
+                if (String.IsNullOrEmpty(rgDaten.RgKundenNr))
+                    rgDaten.RgKundenNr = rgDaten.RgAdressen.First().KundenNr;
+
+                if (String.IsNullOrEmpty(rgDaten.ReKundenNr))
+                    rgDaten.ReKundenNr = rgDaten.ReAdressen.First().KundenNr;
+
+                if (StepCurrentModel is RgDaten)
+                {
+                    (StepCurrentModel as RgDaten).KundenNr = rgDaten.KundenNr;
+                    (StepCurrentModel as RgDaten).RgKundenNr = rgDaten.RgKundenNr;
+                    (StepCurrentModel as RgDaten).ReKundenNr = rgDaten.ReKundenNr;
+                }
+            }
+
             DataService.AuftragGeber = rgDaten.RgKundenNr;
 
             FahrtAdressen = DataService.GetFahrtAdressen(_addressTypes);
@@ -624,7 +668,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         {
             model.InitDienstleistungen(Dienstleistungen, model.FahrtTyp);
         }
-
 
 
         #region Fahrzeug

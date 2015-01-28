@@ -117,7 +117,7 @@
             <!--textinput-->
             <div class="formfeld" id="divIBAN" runat="server" style="width: 500px;">
                 <div class="formfeld_start"></div>
-                <asp:TextBox CssClass="formtext" ID="txtIBAN" MaxLength="34" runat="server"
+                <asp:TextBox CssClass="formtext TextUpperCase" ID="txtIBAN" MaxLength="34" runat="server"
                     Style="width: 470px;"></asp:TextBox>
                 <div class="formfeld_end"></div>
             </div>

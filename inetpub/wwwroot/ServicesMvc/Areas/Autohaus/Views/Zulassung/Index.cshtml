@@ -1,0 +1,24 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+@Html.Partial("Partial/Common")
+
+<div class="page-title">
+    @(Model.ModusAbmeldung ? Localize.Cancellation : Localize.Registration) <small></small>
+    @Html.Partial("ShoppingCart/Menu")
+</div>
+@Html.Partial("ShoppingCart/Common")
+
+
+<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
+    </div>
+</div>
+
+
+
+
+

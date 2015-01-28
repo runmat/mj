@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@{
+    var gridName = "GridFormulare";
+}
+
+@(Html.XTelerik()
+    .XGrid<PdfFormular>()
+    .Name(gridName)
+    .XGroup(null)
+    .XAjaxDataBinding("FormulareAjaxBinding", "Formulare")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Typ);
+            columns.XBound(c => c.DateiPfad).ClientTemplate(
+                    "   <a class='btn mini gray pdf tooltips a_btn_mini' " +
+                    "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DateiPfad #>' ></a> "
+                ).Title("").Sortable(false).Filterable(false);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Typ).Ascending())
+    .XToolBar("Formulare")
+)
+
