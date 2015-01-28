@@ -1,0 +1,364 @@
+﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
+@model FahrzeugbestandViewModel
+
+@Html.Partial("Partial/Common")
+@Html.Partial("AdressenPflege/AdresseCommon")
+
+<h3 class="page-title" id="headerTitle">
+    Fahrzeugakte + Bestand <small>Pflege</small>
+</h3>
+
+@Html.FormBreadCrumbs(Localize.VehicleData)
+
+@Html.SpanAlert("Message")
+
+<div id="divSearchAndGrid">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/FahrzeugAkteBestandSuche", Model.FahrzeugAkteBestandSelektor)
+    }
+
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid"></div>
+    }
+</div>
+<div id="divFahrzeugDetails"></div>
+<div id="divPartnerSelection"></div>
+
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+    var _adressenKennungLocalized = '';
+
+    function FormPreparePrivate() {
+        FormPreparePrivateAdressenPflege();
+
+//        setTimeout(function () {
+//            $("#FahrzeugAkteBestandSearchForm").submit();
+//        }, 100);
+
+        InitSearchFormOpenHandler();
+    }
+
+    function InitSearchFormOpenHandler() {
+        $("#FormSearchBox .portlet-title").click(function () {
+            if (!SearchFormIsCollapsed()) {
+                // enforce refresh of all partner dropdown contents
+                $("#TmpEnforcePartnerDropdownRefresh").val(true);
+                $("#FahrzeugAkteBestandSearchForm").submit();
+            }
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function TryShowFahrzeugAkteBestandGrid() {
+        FormPreparePrivateAjax();
+
+        if ($("#TmpEnforcePartnerDropdownRefresh").val().toLowerCase() == "true") {
+            $("#TmpEnforcePartnerDropdownRefresh").val(false);
+            LoadingHide();
+            return;
+        }
+
+        ShowFahrzeugAkteBestandGrid();
+    }
+
+    function ShowFahrzeugAkteBestandGrid() {
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestandGrid",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowFahrzeugAkteBestandSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowFahrzeugAkteBestandSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAkteBestand");
+
+        $("#divGrid").slideDown();
+    }
+
+    function FahrzeugShowAjax(fin) {
+        FahrzeugShowCreateAjax(fin);
+    }
+
+    function FahrzeugCreateAjax() {
+        FahrzeugShowCreateAjax(null);
+    }
+    
+    function FahrzeugShowCreateAjax(fin) {
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestandDetails",
+            data: { finToLoad: fin },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugDetails(result);
+                LoadingHide();
+            }
+        });
+    }
+
+    var _akteJustCreated = false;
+    var _akteIsValid = false;
+
+    function ShowFahrzeugDetails(result) {
+        $("#divFahrzeugDetails").html(result);
+        SetFahrzeugakteFormToReadOnly(true);
+        $("#divSearchAndGrid").slideUp();
+        $("#divFahrzeugDetails").slideDown();
+        scrollToTop();
+
+        FormPrepareAjax();
+        BreadcrumbsMoveNext('@Localize.Autohaus_Fahrzeugakte');
+        try {
+            setTimeout(function () {
+                $("#FahrzeugDetailsFinSearchForm input[name='FIN']").focus();
+            }, 200);
+        }
+        catch(e){}
+    }
+
+    function ShowFahrzeugDetailsComingFromFinSearch(result) {
+        $("#divFahrzeugDetails").html(result);
+        SetFahrzeugakteFormToReadOnly(_akteIsValid);
+        FormPrepareAjax();
+    }
+
+    function CloseFahrzeugDetails() {
+        setTimeout(function () {
+            $("#divFahrzeugDetails").slideUp();
+            $("#divSearchAndGrid").slideDown();
+            setTimeout('LoadingHide();', 500);
+            scrollToTop();
+            BreadcrumbsMovePrev();
+        }, 150);
+    }
+
+    function FinSearchTryLoadFahrzeugDetails() {
+        if (!_modelStateValid) {
+            FormPrepareAjax();
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugAkteBestandDetails",
+            data: { finToLoad: "useModelFin" },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugDetailsComingFromFinSearch(result);
+                LoadingHide();
+            }
+        });
+    }
+
+    function TryCloseFahrzeugDetails() {
+
+        SetFahrzeugakteFormToReadOnly(_akteIsValid);
+        
+        if (_modelStateValid) {
+            if (_akteJustCreated) {
+                var message = '@Localize.VehicleCreatedPleaseEditVehicleStock';
+                SpanAlertSuccess("Message", message, 4000);
+                FormPrepareAjax();
+                return;
+            }
+
+            FormPrepareAjax();
+            CloseFahrzeugDetails();
+            FilterGrid("GridFahrzeugAkteBestand");
+            return;
+        }
+
+        FormPrepareAjax();
+    }
+
+    function SetFahrzeugakteFormToReadOnly(readonly) {
+        $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
+        $("#FabrikName,#HandelsName").attr("readonly", true);
+        $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
+
+        if (readonly) {
+            $("#fahrzeug-bestand").show();
+            $("button[type=submit] span").text('@Localize.Save');
+        } else {
+            $("#fahrzeug-bestand").hide();
+            $("button[type=submit] span").text('@Localize.VehicleCreate');
+        }
+    }
+    
+    function InitCheckTypDaten() {
+        $("#HerstellerSchluessel,#TypSchluessel,#VvsSchluessel").change(function () { TryCheckTypDaten(); });
+
+        $("#FabrikName,#HandelsName").attr("readonly", true);
+    }
+    
+    function TryCheckTypDaten() {
+
+        var submitButton = $("button[type='submit']");
+        submitButton.attr("disabled", "disabled");
+
+        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
+        if (!typDatenComplete)
+            return;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetTypDaten",
+            data: {
+                herstellerSchluessel: $("#HerstellerSchluessel").val(),
+                typSchluessel: $("#TypSchluessel").val().toUpperCase(),
+                vvsSchluessel: $("#VvsSchluessel").val(),
+            },
+            loadingShow: false,
+            success: function (result) {
+                submitButton.removeAttr("disabled");
+                $("#FabrikName").val("");
+                $("#HandelsName").val("");
+                if (!result.success)
+                    return;
+
+                $("#FabrikName").val(result.fabrikName);
+                $("#HandelsName").val(result.handelsName);
+            },
+            error: function (result) {
+                alert(result.data);
+                submitButton.removeAttr("disabled");
+            }
+        });
+    }
+
+    //
+    // <Partner Selection>
+    //
+
+    var _dropdownCurrent = null;
+    var _dropdownGridCurrent = null;
+
+    function PickPartnerAddress(partnerKennung) {
+
+        var dropdownThis = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown");
+        _dropdownCurrent = dropdownThis;
+        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown-grid");
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddress",
+            data: { partnerKennung: partnerKennung },
+            loadingShow: true,
+            success: function (result) {
+                ShowPartnerAddressGrid(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+
+        return false;
+    }
+
+    function AddressSelect(id) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "PickPartnerAddressFinished",
+            data: { id: id },
+            loadingShow: false,
+            success: function (result) {
+                //console.log(result.partnerKennung);
+                //console.log(result.partnerName);
+                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
+                console.log(dropdownTextSpan);
+                dropdownTextSpan.html(result.partnerName);
+                var hiddenFieldName = (result.partnerKennung.toLowerCase().substr(0, 1) == "k" ? "Kaeufer" : "Halter");
+                $("#fahrzeug-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
+
+                ClosePartnerAddressGrid();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowPartnerAddressGrid(result) {
+        _dropdownCurrent.find("i").removeClass("icon-chevron-right").addClass("icon-chevron-down");
+
+        $("#divPartnerSelection").html(result);
+        FormPreparePrivateAdressenPflege();
+
+        //$("#divGridEditStart").addClass("PartnerAddressSubGrid");
+        //$(".grid-column-overall-quick-filter-pick-start").parent().hide();
+
+        $("#divFahrzeugDetails").slideUp();
+        $("#divPartnerSelection").slideDown();
+        scrollToTop();
+
+        setTimeout(function () {
+            $(".grid-column-overall-filter").focus();
+            setTimeout(BreadcrumbsMoveNext(_adressenKennungLocalized), 1000);
+        }, 500);
+    }
+
+    function ClosePartnerAddressGrid(postFunction) {
+        setTimeout(function() {
+            $("#divPartnerSelection").slideUp();
+            $("#divFahrzeugDetails").slideDown();
+            scrollToTop();
+            BreadcrumbsMovePrev();
+        }, 150);
+
+        _dropdownCurrent.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-right");
+        _dropdownCurrent = null;
+        _dropdownGridCurrent = null;
+
+        if (typeof (postFunction) !== "undefined")
+            eval(postFunction);
+        else
+            setTimeout("LoadingHide()", 50);
+
+        return false;
+    }
+
+    //
+    // </Partner Selection>
+    //
+
+    function OnDataBound_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugAkteBestand() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

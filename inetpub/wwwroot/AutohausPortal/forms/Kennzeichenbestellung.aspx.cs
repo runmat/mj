@@ -67,30 +67,10 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    Boolean FindMatEuro = false;
-                    Boolean FindMatFun = false;
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '08'");
-                    if (matRow.Length == 1)
-                    {
-                        objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                        objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                        objVorerf.Material = matRow[0]["MAKTX"].ToString(); fillForm();
-                        FindMatEuro = true;
-                    }
-                    matRow = objCommon.tblMaterialStamm.Select("ZUONR = '11'");
-                    if (matRow.Length == 1)
-                    {
-                        FindMatFun = true;
-                        if (FindMatEuro == false)
-                        {
-                            objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                            objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                            objVorerf.Material = matRow[0]["MAKTX"].ToString(); fillForm();
-                        }
-                    }
-
-
-                    SetMatRadio(FindMatEuro, FindMatFun);
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AB");
+                    objVorerf.NrMaterial = "25";
+                    objVorerf.Material = "Euro-Kennzeichen geprägt";
+                    fillForm();
 
                     Session["objVorerf"] = objVorerf;
                 }
@@ -237,7 +217,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
 
                 if (objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'").Length == 0 && rbKennzPrae.Checked)
                 { lblError.Text = "Fehler beim Speichern des zulassungskreises"; return; }
@@ -305,11 +285,11 @@ namespace AutohausPortal.forms
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
                 objVorerf.Ort = ucBankdatenAdresse.Ort;
-                objVorerf.SWIFT = ucBankdatenAdresse.SWIFT != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.SWIFT : "";
+                objVorerf.SWIFT = ucBankdatenAdresse.IsSWIFTInitial ? "" : ucBankdatenAdresse.SWIFT;
                 objVorerf.IBAN = ucBankdatenAdresse.IBAN;
                 objVorerf.Bankkey = ucBankdatenAdresse.Bankkey;
                 objVorerf.Kontonr = ucBankdatenAdresse.Kontonr;
-                objVorerf.Geldinstitut = ucBankdatenAdresse.Geldinstitut != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.Geldinstitut : "";
+                objVorerf.Geldinstitut = ucBankdatenAdresse.IsGeldinstitutInitial ? "" : ucBankdatenAdresse.Geldinstitut;
                 objVorerf.Inhaber = ucBankdatenAdresse.Kontoinhaber;
                 objVorerf.EinzugErm = ucBankdatenAdresse.Einzug;
                 objVorerf.Rechnung = ucBankdatenAdresse.Rechnung;
@@ -538,8 +518,7 @@ namespace AutohausPortal.forms
                 DropDownList ddlKennzForm =
                 (DropDownList)e.Item.FindControl("ddlKennzForm");
 
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
                 tmpDView.RowFilter = "Matnr = 593";
                 if (rbKennzFun.Checked) { tmpDView.RowFilter = "Matnr = 6"; }
                 tmpDView.Sort = "Matnr";
@@ -819,34 +798,34 @@ namespace AutohausPortal.forms
             }
         }
 
-        /// <summary>
-        /// Ist es eine Kennzeichenbestellung oder werden Fun-Kennzeichen bestellt
-        /// </summary>
-        /// <param name="FindMatEuro">Darf die Gruppe Eurokennzeichen bestellen</param>
-        /// <param name="FindMatFun">Darf die Gruppe Fun-Kennzeichen bestellen</param>
-        private void SetMatRadio(Boolean FindMatEuro, Boolean FindMatFun)
-        {
-            if (!FindMatEuro && !FindMatFun)
-            {
-                lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-                cmdSave.Visible = false;
-            }
-            else if (FindMatEuro && !FindMatFun)
-            {
-                rbKennzPrae.Checked = true;
-                rbKennzFun.Checked = false;
-                rbKennzFun.Visible = false;
-                lblKennzfun.Visible = false;
-            }
-            else if (FindMatFun && !FindMatEuro)
-            {
-                rbKennzFun.Checked = true;
-                rbKennzPrae.Checked = false;
-                rbKennzPrae.Visible = false;
-                lblKennzprea.Visible = false;
-            }
+        ///// <summary>
+        ///// Ist es eine Kennzeichenbestellung oder werden Fun-Kennzeichen bestellt
+        ///// </summary>
+        ///// <param name="FindMatEuro">Darf die Gruppe Eurokennzeichen bestellen</param>
+        ///// <param name="FindMatFun">Darf die Gruppe Fun-Kennzeichen bestellen</param>
+        //private void SetMatRadio(Boolean FindMatEuro, Boolean FindMatFun)
+        //{
+        //    if (!FindMatEuro && !FindMatFun)
+        //    {
+        //        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
+        //        cmdSave.Visible = false;
+        //    }
+        //    else if (FindMatEuro && !FindMatFun)
+        //    {
+        //        rbKennzPrae.Checked = true;
+        //        rbKennzFun.Checked = false;
+        //        rbKennzFun.Visible = false;
+        //        lblKennzfun.Visible = false;
+        //    }
+        //    else if (FindMatFun && !FindMatEuro)
+        //    {
+        //        rbKennzFun.Checked = true;
+        //        rbKennzPrae.Checked = false;
+        //        rbKennzPrae.Visible = false;
+        //        lblKennzprea.Visible = false;
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Einfügen der bereits vorhandenen Daten
@@ -887,17 +866,9 @@ namespace AutohausPortal.forms
             if (Ref4.Length == 0) { txtReferenz4.Enabled = false; }
 
             txtDatum.Text = objVorerf.ZulDate;
-            Boolean FindMatEuro = false;
-            Boolean FindMatFun = false;
-            DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '08'");
-            if (matRow.Length == 1) { FindMatEuro = true; }
-            matRow = objCommon.tblMaterialStamm.Select("ZUONR = '11'");
-            if (matRow.Length == 1) { FindMatFun = true; }
 
-            rbKennzPrae.Checked = objVorerf.NrMaterial == "25" ? true : false;
-            rbKennzFun.Checked = objVorerf.NrMaterial == "6" ? true : false;
-
-            SetMatRadio(FindMatEuro, FindMatFun);
+            rbKennzPrae.Checked = (objVorerf.NrMaterial == "25");
+            rbKennzFun.Checked = (objVorerf.NrMaterial == "6");
 
             txtAnzahl.Text = "1";
             DataTable controls = (DataTable)Session["tblControls"];
@@ -1344,8 +1315,7 @@ namespace AutohausPortal.forms
                 HtmlGenericControl divKennzFun = (HtmlGenericControl)rItem.FindControl("divKennzFun");
                 HtmlGenericControl divTrennKennz = (HtmlGenericControl)rItem.FindControl("divTrennKennz");
                     
-                DataView tmpDView = new DataView();
-                tmpDView = objCommon.tblKennzGroesse.DefaultView;
+                DataView tmpDView = new DataView(objCommon.tblKennzGroesse);
                 tmpDView.RowFilter = "Matnr = 593";
                 if (rbKennzFun.Checked) { tmpDView.RowFilter = "Matnr = 6"; }
                 tmpDView.Sort = "Matnr";

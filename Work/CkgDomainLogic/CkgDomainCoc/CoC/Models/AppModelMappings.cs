@@ -448,6 +448,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.ZulassungsDatum = s.VDATU;
                         d.VersandID = s.ZZSEND2;
                         d.VertragsNr = s.ZZREFNR;
+                        d.VersandKey = "1"; // 1 = DHL
                     }));
             }
         }

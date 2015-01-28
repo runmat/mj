@@ -58,6 +58,11 @@ namespace CkgDomainLogic.General.ViewModels
             return LogonContext.TryGetEmailAddressFromUsername(loginModel, addModelError);
         }
 
+        public void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+            LogonContext.CheckIfPasswordResetAllowed(loginModel, addModelError);
+        }
+
         public void ValidatePasswordModelAgainstRules(Action<string, string> addModelError)
         {
             List<string> localizedPasswordValidationErrorMessages;

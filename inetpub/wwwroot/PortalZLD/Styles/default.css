@@ -3052,3 +3052,7 @@ a[disabled], a:active[disabled], a:hover[disabled], a:visited[disabled]
    color:#808080; 
    text-decoration:none;
 }
+
+.TextUpperCase {
+    text-transform: uppercase;
+}

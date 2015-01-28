@@ -388,7 +388,7 @@ namespace AppZulassungsdienst.forms
                     objVorerf.PLZ = txtPlz.Text;
                     objVorerf.Ort = txtOrt.Text;
                     objVorerf.SWIFT = txtSWIFT.Text;
-                    objVorerf.IBAN = txtIBAN.Text;
+                    objVorerf.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                     objVorerf.BankKey = objCommon.Bankschluessel;
                     objVorerf.Kontonr = objCommon.Kontonr;
                     objVorerf.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
@@ -420,7 +420,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             if (txtIBAN.Text.Trim(' ').Length > 0 || chkCPDEinzug.Checked)
             {
-                objCommon.IBAN = txtIBAN.Text.Trim(' ');
+                objCommon.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
                 objCommon.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objCommon.Message != String.Empty)
                 {
@@ -1421,7 +1421,7 @@ namespace AppZulassungsdienst.forms
                     objVorerf.PLZ = txtPlz.Text;
                     objVorerf.Ort = txtOrt.Text;
                     objVorerf.SWIFT = txtSWIFT.Text;
-                    objVorerf.IBAN = txtIBAN.Text;
+                    objVorerf.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                     objVorerf.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
                     objVorerf.Inhaber = txtKontoinhaber.Text;
                     objVorerf.EinzugErm = bEinzug;
