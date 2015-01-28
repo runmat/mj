@@ -5,11 +5,14 @@ Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Groupmanagement
     Inherits System.Web.UI.Page
+
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
     Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.Admin.GridNavigation
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -43,7 +46,9 @@ Partial Public Class Groupmanagement
             lblError.Text = ex.ToString
         End Try
     End Sub
+
 #Region " Data and Function "
+
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -115,6 +120,7 @@ Partial Public Class Groupmanagement
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         trSearchResult.Visible = True
         Dim dvGroup As DataView
@@ -148,11 +154,6 @@ Partial Public Class Groupmanagement
             End Try
         End If
         dvGroup.Sort = strSort
-        If dvGroup.Count > dgSearchResult.PageSize Then
-            dgSearchResult.PagerSettings.Visible = True
-        Else
-            dgSearchResult.PagerSettings.Visible = False
-        End If
 
         With dgSearchResult
             .DataSource = dvGroup
@@ -561,9 +562,11 @@ Partial Public Class Groupmanagement
         End With
         Return tblPar
     End Function
+
 #End Region
 
 #Region " Events "
+
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         Search(, True)
     End Sub
@@ -746,6 +749,7 @@ Partial Public Class Groupmanagement
             End If
         End Try
     End Sub
+
 #End Region
 
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
@@ -785,8 +789,6 @@ Partial Public Class Groupmanagement
             lstAppAssigned.Items.Remove(_item)
         Next
     End Sub
-
-
 
     Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnAssignArchiv.Click
         Dim _item As ListItem
@@ -897,6 +899,14 @@ Partial Public Class Groupmanagement
         End If
         Session("ResultSort") = strSort
         FillDataGrid(strSort)
+    End Sub
+
+    Private Sub dgSearchResult_PageIndexChanging(ByVal sender As Object, ByVal e As EventArgs) Handles dgSearchResult.PageIndexChanging
+
+    End Sub
+
+    Private Sub dgSearchResult_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgSearchResult.PageIndexChanged
+
     End Sub
 
     Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEmpty.Click

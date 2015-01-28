@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -32,10 +31,10 @@ namespace ServicesMvc.Controllers
         public UebfuehrgReportViewModel ReportViewModel { get { return GetViewModel<UebfuehrgReportViewModel>(); } }
 
 
-        public UebfuehrgController(IAppSettings appSettings, ILogonContextDataService logonContext, IUebfuehrgDataService uebfuehrgDataService, IFahrzeugverwaltungDataService fahrzeugverwaltungDataService)
+        public UebfuehrgController(IAppSettings appSettings, ILogonContextDataService logonContext, IUebfuehrgDataService uebfuehrgDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, uebfuehrgDataService, fahrzeugverwaltungDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, uebfuehrgDataService);
             InitViewModel(ReportViewModel, appSettings, logonContext, uebfuehrgDataService);
         }
     }

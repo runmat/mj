@@ -9,17 +9,26 @@ namespace GeneralTools.Models
     {
         public int Length { get; private set; }
 
-        public LengthAttribute(int length) 
+        public bool ForceExactLength { get; set; }
+
+        public LengthAttribute(int length, bool forceExactLength = false)
         {
+            ForceExactLength = forceExactLength;
             this.ErrorMessageResourceType = typeof(CommonResources);
-            this.ErrorMessageResourceName = "FieldLengthInvalid";
+            this.ErrorMessageResourceName = (forceExactLength ? "Exact" :"") + "FieldLengthInvalid";
 
             Length = length;
         }
 
         public override bool IsValid(object value)
         {
-            return value == null || (value.ToString().Length == Length);
+            if (value == null)
+                return true;
+
+            if (ForceExactLength)
+                return (value.ToString().Length == Length);
+
+            return (value.ToString().Length <= Length);
         }
 
         public override string FormatErrorMessage(string name)

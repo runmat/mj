@@ -9,5 +9,9 @@
         public string IconCssClass { get; set; }
 
         public string PortletCssClass { get; set; }
+
+        public bool IsCollapsible { get; set; }
+
+        public bool IsClosable { get; set; }
     }
 }

@@ -303,7 +303,7 @@ namespace AppZulassungsdienst.forms
                 resultRow["MANDT"] = OldRow["MANDT"];
                 resultRow["ZKBA1"] = OldRow["ZKBA1"];
                 resultRow["ZKBA2"] = OldRow["ZKBA2"];
-                resultRow["AENAM"] = m_User.UserName.PadLeft(12);
+                resultRow["AENAM"] = m_User.UserName;
                 resultRow["AEDAT"] = DateTime.Now.ToShortDateString();
 
                 //Privat Zulassung

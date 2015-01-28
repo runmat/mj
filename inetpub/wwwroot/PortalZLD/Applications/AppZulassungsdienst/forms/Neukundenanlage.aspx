@@ -388,7 +388,7 @@
                                                         IBAN:
                                                     </td>
                                                     <td class="firstLeft active">
-                                                        <asp:TextBox ID="txtIBAN" Width="270" MaxLength="34" CssClass="TextBoxNormal"
+                                                        <asp:TextBox ID="txtIBAN" Width="270" MaxLength="34" CssClass="TextBoxNormal TextUpperCase"
                                                             runat="server" TabIndex="30"></asp:TextBox>
                                                     </td>
                                                 </tr>

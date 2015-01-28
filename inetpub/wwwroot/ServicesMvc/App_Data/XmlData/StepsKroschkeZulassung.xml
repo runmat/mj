@@ -5,7 +5,7 @@
             <string>Rechnungsdaten</string>
         </key>
         <value>
-            <string>Rechnungs-&lt;br /&gt;daten</string>
+            <string>Auftrag-&lt;br /&gt;geber</string>
         </value>
     </item>
     <item>
@@ -13,23 +13,23 @@
             <string>BankAdressdaten</string>
         </key>
         <value>
-            <string>Bankdaten/&lt;br /&gt;Adresse</string>
+            <string>Adresse</string>
         </value>
+    </item>
+    <item>
+      <key>
+        <string>HalterAdresse</string>
+      </key>
+      <value>
+        <string>Halter</string>
+      </value>
     </item>
     <item>
         <key>
             <string>Fahrzeugdaten</string>
         </key>
         <value>
-            <string>Fahrzeug-&lt;br /&gt;daten</string>
-        </value>
-    </item>
-    <item>
-        <key>
-            <string>HalterAdresse</string>
-        </key>
-        <value>
-            <string>Halter</string>
+            <string>Fahrzeug</string>
         </value>
     </item>
     <item>
@@ -45,7 +45,7 @@
             <string>OptionenDienstleistungen</string>
         </key>
         <value>
-            <string>Optionen/&lt;br /&gt;Dienst-&lt;br /&gt;leistungen</string>
+            <string>Optionen</string>
         </value>
     </item>
     <item>
