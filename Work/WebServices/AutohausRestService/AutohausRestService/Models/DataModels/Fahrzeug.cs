@@ -5,7 +5,7 @@ namespace AutohausRestService.Models
 {
     public class Fahrzeug
     {
-        public int ID { get; set; }
+        public string FahrzeugID { get; set; }
 
         [Required]
         public string FahrgestellNr { get; set; }
@@ -24,11 +24,11 @@ namespace AutohausRestService.Models
 
         public string Kennzeichen { get; set; }
 
-        public DateTime Erstzulassung { get; set; }
+        public DateTime? Erstzulassung { get; set; }
 
-        public DateTime AktZulassung { get; set; }
+        public DateTime? AktZulassung { get; set; }
 
-        public DateTime Abmeldedatum { get; set; }
+        public DateTime? Abmeldedatum { get; set; }
 
         public string Standort { get; set; }
 

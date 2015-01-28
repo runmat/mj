@@ -2,9 +2,9 @@
 
 namespace AutohausRestService.Models
 {
-    public class Kaeufer
+    public class Partner
     {
-        public int ID { get; set; }
+        public string KundenNr { get; set; }
 
         [Required]
         public string Name1 { get; set; }
@@ -27,6 +27,10 @@ namespace AutohausRestService.Models
 
         public string Email { get; set; }
 
+        public string Telefon { get; set; }
+
+        public string Fax { get; set; }
+
         public string Bemerkung { get; set; }
 
         public string Referenz1 { get; set; }
@@ -36,5 +40,7 @@ namespace AutohausRestService.Models
         public string Partnerrolle { get; set; }
 
         public string Referenz2 { get; set; }
+
+        public bool KundendatenSpeichern { get; set; }
     }
 }

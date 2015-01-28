@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using AutohausRestService.Models;
+using AutohausRestService.Services;
 
 namespace AutohausRestService
 {
@@ -11,6 +13,10 @@ namespace AutohausRestService
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.MessageHandlers.Add(new RestLoggingHandler());
+
+            config.Filters.Add(new RestExceptionFilterAttribute());
         }
     }
 }

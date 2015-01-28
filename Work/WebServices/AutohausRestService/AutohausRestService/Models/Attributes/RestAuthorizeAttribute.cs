@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using AutohausRestService.Services;
@@ -11,27 +10,18 @@ namespace AutohausRestService.Models
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            var auth = actionContext.Request.Headers.Authorization;
-            if (auth == null || auth.Scheme != "Basic")
+            var authHeader = actionContext.Request.Headers.Authorization;
+            if (authHeader == null || authHeader.Scheme != "Basic")
             {
                 HandleUnauthorizedRequest(actionContext);
                 return;
             }
 
-            string tokenString;
+            string uname;
+            string pword;
+            RestAuthentication.GetUsernameAndPasswordFromAuthorizationHeader(authHeader, out uname, out pword);
 
-            try
-            {
-                var authBytes = Convert.FromBase64String(auth.Parameter);
-                tokenString = Encoding.UTF8.GetString(authBytes);
-            }
-            catch (Exception)
-            {
-                tokenString = "";
-            }
-
-            var tokens = tokenString.Split(':');
-            if (tokens.Length < 2 || !IsUserValid(tokens[0], tokens[1]))
+            if (String.IsNullOrEmpty(uname) || String.IsNullOrEmpty(pword) || !IsUserValid(uname, pword))
                 HandleUnauthorizedRequest(actionContext);
         }
 
@@ -39,7 +29,7 @@ namespace AutohausRestService.Models
         {
             var dbContext = new DomainDbContext(ConfigurationService.DbConnection, username);
 
-            if (dbContext.User == null)
+            if (dbContext.User == null || dbContext.User.UserIsDisabled)
                 return false;
 
             return dbContext.TryLogin(password);
