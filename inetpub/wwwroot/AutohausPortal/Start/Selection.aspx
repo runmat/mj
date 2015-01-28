@@ -25,7 +25,7 @@
                             { %>
                             <% System.Data.DataRowView row = MenuChangeSource[i]; %>
                             <li>
-                                <a href='<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>');"><%= row["AppFriendlyName"] %></a>
+                                <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
                         <% } %>
                     </ul>   
@@ -42,7 +42,7 @@
                             { %>
                             <% System.Data.DataRowView row = MenuChangeAHSource[i]; %>
                             <li>
-                                <a href='<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>');"><%= row["AppFriendlyName"] %></a>
+                                <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
                         <% } %>
                     </ul>   
@@ -59,7 +59,7 @@
                             { %>
                             <% System.Data.DataRowView row = MenuReportSource[i]; %>
                             <li>
-                                <a href='<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>');"><%= row["AppFriendlyName"] %></a>
+                                <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
                         <% } %>
                     </ul>
@@ -76,7 +76,7 @@
                             { %>
                             <% System.Data.DataRowView row = MenuToolsSource[i]; %>
                             <li>
-                                <a href='<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>' onclick="return LogPageVisit('<%= row["AppId"] %>', '<%= ResolveClientUrl(GetUrlString(row["AppURL"].ToString(), row["AppID"].ToString())) %>');"><%= row["AppFriendlyName"] %></a>
+                                <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
                         <% } %>
                     </ul>

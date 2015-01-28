@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Web.Script.Serialization;
 using GeneralTools.Models;
 
 namespace MvcTools.Data
@@ -14,7 +15,8 @@ namespace MvcTools.Data
         {
             return type.GetProperties()
                 .Where(p => p.GetCustomAttributes(true)
-                    .All(c => c.GetType() != typeof(GridExportIgnoreAttribute) && !c.GetType().IsSubclassOf(typeof(GridExportIgnoreAttribute))));
+                    .All(c =>    c.GetType() != typeof(GridExportIgnoreAttribute) && !c.GetType().IsSubclassOf(typeof(GridExportIgnoreAttribute))
+                              && c.GetType() != typeof(ScriptIgnoreAttribute)));
         }
 
         public static DataTable ToTable(IEnumerable list)

@@ -779,28 +779,3 @@ function resetZahlart() {
     $('.formselects[id$=divZahlungsart] .ez-radio').removeClass('ez-radio');
     $('.formselects[id$=divZahlungsart] input').ezMark();
 }
-
-function LogPageVisit(appId, href) {
-    // vorerst kein Logging bei IE8 oder geringer, da dort Probleme auftreten
-    if (IsIEVersionOrLower(8)) {
-        return true;
-    }
-
-    var url = '/AutohausPortal/Log.aspx?APP-ID=' + appId;
-    $.get(url).always(function () {
-        window.location.href = href;
-    });
-
-    return false;
-}
-
-function IsIEVersionOrLower(ieVersion) {
-    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-        var ieversion = new Number(RegExp.$1);
-        if (ieversion <= ieVersion) {
-            return true;
-        }
-    }
-
-    return false;
-}
