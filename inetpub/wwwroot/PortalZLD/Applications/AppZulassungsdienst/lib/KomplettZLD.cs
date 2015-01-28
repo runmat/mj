@@ -13,565 +13,99 @@ namespace AppZulassungsdienst.lib
     /// </summary>
     public class KomplettZLD : DatenimportBase
     {
-        DataTable _kopfTabelle;
-        DataTable _bankverbindung;
-        DataTable _kundenadresse;
+        #region "Declarations"
+
+        private DataTable _kopfTabelle;
+        private DataTable _bankverbindung;
+        private DataTable _kundenadresse;
+
+        #endregion
 
         #region "Properties"
 
-        /// <summary>
-        /// Tabelle zur Anzeige der erfassten Daten
-        /// </summary>
-        public DataTable tblEingabeListe
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Fehlertabelle SAP
-        /// </summary>
-        public DataTable tblFehler
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Benutzertabelle SQL
-        /// </summary>
-        public DataTable tblUser
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsorganisation
-        /// </summary>
-        public String VKORG
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsbüro
-        /// </summary>
-        public String VKBUR
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Positionstabelle
-        /// </summary>
-        public DataTable Positionen
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// ZUBELN
-        /// </summary>
-        public Int32 SapID
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// KopfID SQL
-        /// </summary>
-        public Int32 KopfID
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Flag Abgerechnet SQL
-        /// </summary>
-        public Boolean Abgerechnet
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden
-        /// </summary>
-        public String Kundenname
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kundennummer
-        /// </summary>
-        public String Kunnr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Referenz 1
-        /// </summary>
-        public String Ref1
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Referenz 2
-        /// </summary>
-        public String Ref2
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kreiskennzeichen/StVa
-        /// </summary>
-        public String KreisKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kreisbezeichnung
-        /// </summary>
-        public String Kreis
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Wunschkennzeichen SQL/SAP
-        /// </summary>
-        public Boolean WunschKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// bereits Reserviert SQL/SAP
-        /// </summary>
-        public Boolean Reserviert
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Reservierungsnummer SQL/SAP
-        /// </summary>
-        public String ReserviertKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Feinstaubplakette SQL/SAP
-        /// </summary>
-        public Boolean Feinstaub
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Zulassungsdatum SQL/SAP
-        /// </summary>
-        public String ZulDate
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichen komplett SQL/SAP
-        /// </summary>
-        public String Kennzeichen
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichentyp(EURO) SAP
-        /// </summary>
-        public String Kennztyp
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichengröße/form
-        /// </summary>
-        public String KennzForm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichenanzahl
-        /// </summary>
-        public Int32 KennzAnzahl
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// nur ein Kennzeichen
-        /// </summary>
-        public Boolean EinKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bemerkung
-        /// </summary>
-        public String Bemerkung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Barcode
-        /// </summary>
-        public String Barcode
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// zu leistende Steuer
-        /// </summary>
-        public Decimal Steuer
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kennzeichenpreis
-        /// </summary>
-        public Decimal PreisKennz
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// EC-Zahlung
-        /// </summary>
-        public Boolean EC
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Barzahlung
-        /// </summary>
-        public Boolean Bar
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// per Rechnung
-        /// </summary>
-        public Boolean RE
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz bereits angelegt
-        /// </summary>
-        public Boolean saved
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz wurde bearbeitet
-        /// </summary>
-        public Boolean bearbeitet
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Vorgang z.B. Vorerfassung, Nacherfassung, Versandzulassung
-        /// </summary>
-        public String Vorgang
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz zum Speichern markiert
-        /// </summary>
-        public Int16 toSave
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Datensatz zum Löschen markiert
-        /// </summary>
-        public String toDelete
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kundennummer Warenempfängen
-        /// </summary>
-        public String KundennrWE
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Partnerrolle(z.B. WE = Warenempfänger)
-        /// </summary>
-        public String Partnerrolle
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Name1
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        ///  Name des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Name2
-        {
-            get;
-            set; 
-        }
-        /// <summary>
-        ///  Postleitzahl des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String PLZ
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Ort des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Ort
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Strasse des Kunden(abweichende Adressdaten)
-        /// </summary>
-        public String Strasse
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// SWIFT-BIC SAP
-        /// </summary>
-        public String SWIFT
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// IBAN des Kunden
-        /// </summary>
-        public String IBAN
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bankschlüssel SAP
-        /// </summary>
-        public String BankKey
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kontonummer des Kunden
-        /// </summary>
-        public String Kontonr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Inhaber der Firma
-        /// </summary>
-        public String Inhaber
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Geldinstitutes
-        /// </summary>
-        public String Geldinstitut
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde gibt Einzugsermächtigung!?
-        /// </summary>
-        public Boolean EinzugErm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde möcht per Rechnung zahlen
-        /// </summary>
-        public Boolean Rechnung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Rückgabetabelle(Kunde, Referenzen etc.) der Selektion über Barcode
-        /// </summary>
-        public DataTable tblBarcodData
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Rückgabetabelle(Dienstleistungen) der Selektion über Barcode
-        /// </summary>
-        public DataTable tblBarcodMaterial
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde ist Barkunde
-        /// </summary>
-        public Boolean Barkunde
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Neue Positionen Preisfindung
-        /// </summary>
-        public DataTable NewPosPreise
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kunde ist Pauschalkunde
-        /// </summary>
-        public String PauschalKunde
-        {
-            get ;
-            set ; 
+        public String VKORG { get; set; }
+        public String VKBUR { get; set; }
 
-        }
-        /// <summary>
-        /// Kundeaufträge mit/ohne Steuer berechnet
-        /// </summary>
-        public String OhneSteuer
-        {
-            get;
-            set;
+        public DataTable tblEingabeListe { get; set; }
+        public DataTable tblFehler { get; set; }
+        public DataTable tblUser { get; set; }
+        public DataTable Positionen { get; set; }
+        public DataTable tblBarcodData { get; set; }
+        public DataTable tblBarcodMaterial { get; set; }
+        public DataTable NewPosPreise { get; set; }
+        public DataTable tblBarquittungen { get; set; }
 
-        }
-        /// <summary>
-        /// Anzahl anzuzeigener Datensätze in der Übersicht(Gridview)
-        /// </summary>
-        public int ListePageSize
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// ausgewählte Seite(Gridnavigation) in der Übersicht
-        /// </summary>
-        public int ListePageIndex
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// Index PageSize in der Übersicht (Gridview)
-        /// </summary>
-        public int ListePageSizeIndex
-        {
-            get;
-            set;
-
-        }
-        /// <summary>
-        /// CPD-Adresse bestätigt!?
-        /// </summary>
-        public Boolean ConfirmCPDAdress
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Rückgabetabelle SAP mit Pfaden der Barquittungen
-        /// </summary>
-        public DataTable tblBarquittungen
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Wurden Dienstleistungen nachträglich geändert?!
-        /// </summary>
-        public Boolean ChangeMatnr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// von Welchen benutzer sollen die Daten angezeigt werden
-        /// </summary>
-        public String SelctedUserID
-        {
-            get;
-            set;
-
-        }
-        public Boolean ZusatzKZ
-        {
-            get;
-            set;
-        }
-        public string WunschKZ2
-        {
-            get;
-            set;
-        }
-        public string WunschKZ3
-        {
-            get;
-            set;
-        }
-        public bool OhneGruenenVersSchein
-        {
-            get;
-            set;
-        }
-        public bool SofortabrechnungErledigt
-        {
-            get;
-            set;
-        }
+        // Kopfdaten
+        public Int32 KopfID { get; set; }
+        public Int32 SapID { get; set; }
+        public Boolean Abgerechnet { get; set; }
+        public String Kundenname { get; set; }
+        public String Kunnr { get; set; }
+        public String Ref1 { get; set; }
+        public String Ref2 { get; set; }
+        public String KreisKennz { get; set; }
+        public String Kreis { get; set; }
+        public Boolean WunschKennz { get; set; }
+        public Boolean Reserviert { get; set; }
+        public String ReserviertKennz { get; set; }
+        public Boolean Feinstaub { get; set; }
+        public String ZulDate { get; set; }
+        public String Kennzeichen { get; set; }
+        public String Kennztyp { get; set; }
+        public String KennzForm { get; set; }
+        public Int32 KennzAnzahl { get; set; }
+        public Boolean EinKennz { get; set; }
+        public String Bemerkung { get; set; }
+        public Boolean EC { get; set; }
+        public Boolean Bar { get; set; }
+        public Boolean saved { get; set; }
+        public Int16 toSave { get; set; }
+        public String toDelete { get; set; }
+        public Boolean bearbeitet { get; set; }
+        public String Barcode { get; set; }
+        public String OhneSteuer { get; set; }
+        public String PauschalKunde { get; set; }
+        public Decimal Steuer { get; set; }
+        public String Vorgang { get; set; }
+        public Boolean Barkunde { get; set; }
+        public Boolean RE { get; set; }
+        public Boolean ZusatzKZ { get; set; }
+        public string WunschKZ2 { get; set; }
+        public string WunschKZ3 { get; set; }
+        public bool OhneGruenenVersSchein { get; set; }
+        public bool SofortabrechnungErledigt { get; set; }
         public string SofortabrechnungPfad { get; set; }
+        public string Briefnr { get; set; }
+        public string Orderid { get; set; }
+        public string Hppos { get; set; }
 
+        // Adressdaten
+        public String Partnerrolle { get; set; }
+        public String KundennrWE { get; set; }
+        public String Name1 { get; set; }
+        public String Name2 { get; set; }
+        public String PLZ { get; set; }
+        public String Ort { get; set; }
+        public String Strasse { get; set; }
+
+        // Bankdaten
+        public String BankKey { get; set; }
+        public String Kontonr { get; set; }
+        public Boolean EinzugErm { get; set; }
+        public Boolean Rechnung { get; set; }
+        public String Geldinstitut { get; set; }
+        public String Inhaber { get; set; }
+        public String IBAN { get; set; }
+        public String SWIFT { get; set; }
+     
+        public Decimal PreisKennz { get; set; }
+        public int ListePageSize { get; set; }
+        public int ListePageIndex { get; set; }
+        public int ListePageSizeIndex { get; set; }
+        public Boolean ConfirmCPDAdress { get; set; }
+        public Boolean ChangeMatnr { get; set; }
+        public String SelctedUserID { get; set; }
+        
         #endregion
 
         /// <summary>
@@ -789,6 +323,9 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
                     importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
+                    importAuftrRow["BRIEFNR"] = Briefnr;
+                    importAuftrRow["ORDERID"] = Orderid;
+                    importAuftrRow["HPPOS"] = Hppos;
 
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
@@ -1112,6 +649,9 @@ namespace AppZulassungsdienst.lib
                     importAuftrRow["O_G_VERSSCHEIN"] = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                     importAuftrRow["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(SofortabrechnungErledigt);
                     importAuftrRow["SA_PFAD"] = SofortabrechnungPfad;
+                    importAuftrRow["BRIEFNR"] = Briefnr;
+                    importAuftrRow["ORDERID"] = Orderid;
+                    importAuftrRow["HPPOS"] = Hppos;
                     importAuftrRow["RESERVKENN_JN"] = ZLDCommon.BoolToX(Reserviert);
                     importAuftrRow["FEINSTAUBAMT"] = ZLDCommon.BoolToX(Feinstaub);
 
@@ -1452,6 +992,9 @@ namespace AppZulassungsdienst.lib
                         tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                         tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
                         tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
+                        tblKopf.Briefnr = Briefnr;
+                        tblKopf.Orderid = Orderid;
+                        tblKopf.Hppos = Hppos;
                         tblKopf.Reserviert = Reserviert;
                         tblKopf.ReserviertKennz = ReserviertKennz;
                         tblKopf.Feinstaub = Feinstaub;
@@ -2010,6 +1553,9 @@ namespace AppZulassungsdienst.lib
                 tblKopf.OhneGruenenVersSchein = ZLDCommon.BoolToX(OhneGruenenVersSchein);
                 tblKopf.SofortabrechnungErledigt = SofortabrechnungErledigt;
                 tblKopf.SofortabrechnungPfad = SofortabrechnungPfad;
+                tblKopf.Briefnr = Briefnr;
+                tblKopf.Orderid = Orderid;
+                tblKopf.Hppos = Hppos;
 
                 tblKopf.Reserviert = Reserviert;
                 tblKopf.ReserviertKennz = ReserviertKennz;
@@ -2521,6 +2067,9 @@ namespace AppZulassungsdienst.lib
                 OhneGruenenVersSchein = ZLDCommon.XToBool(_kopfTabelle.Rows[0]["OhneGruenenVersSchein"].ToString());
                 SofortabrechnungErledigt = (Boolean)_kopfTabelle.Rows[0]["SofortabrechnungErledigt"];
                 SofortabrechnungPfad = _kopfTabelle.Rows[0]["SofortabrechnungPfad"].ToString();
+                Briefnr = _kopfTabelle.Rows[0]["Briefnr"].ToString();
+                Orderid = _kopfTabelle.Rows[0]["Orderid"].ToString();
+                Hppos = _kopfTabelle.Rows[0]["Hppos"].ToString();
                 Reserviert = (Boolean)_kopfTabelle.Rows[0]["Reserviert"];
                 ReserviertKennz = _kopfTabelle.Rows[0]["ReserviertKennz"].ToString();
                 Feinstaub = (Boolean)_kopfTabelle.Rows[0]["Feinstaub"];
@@ -2753,7 +2302,7 @@ namespace AppZulassungsdienst.lib
                             importRowAuftrag["VBELN"] = "";
                             importRowAuftrag["VKORG"] = VKORG;
                             importRowAuftrag["VKBUR"] = VKBUR;
-                            importRowAuftrag["ERNAM"] = tblKopf.username.PadLeft(12);
+                            importRowAuftrag["ERNAM"] = tblKopf.username;
                             importRowAuftrag["ERDAT"] = DateTime.Now;
                             importRowAuftrag["FLAG"] = "";
                             importRowAuftrag["BARCODE"] = tblKopf.Barcode;
@@ -2779,6 +2328,9 @@ namespace AppZulassungsdienst.lib
                             importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
                             importRowAuftrag["SOFORT_ABR_ERL"] = ZLDCommon.BoolToX(tblKopf.SofortabrechnungErledigt);
                             importRowAuftrag["SA_PFAD"] = tblKopf.SofortabrechnungPfad;
+                            importRowAuftrag["BRIEFNR"] = tblKopf.Briefnr;
+                            importRowAuftrag["ORDERID"] = tblKopf.Orderid;
+                            importRowAuftrag["HPPOS"] = tblKopf.Hppos;
 
                             importRowAuftrag["RESERVKENN_JN"] = ZLDCommon.BoolToX(tblKopf.Reserviert);
                             importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;

@@ -22,6 +22,8 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
 
         public string KundenNr { get; set; }
 
+        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
+
         private List<Land> _laender;
         public List<Land> Laender
         {

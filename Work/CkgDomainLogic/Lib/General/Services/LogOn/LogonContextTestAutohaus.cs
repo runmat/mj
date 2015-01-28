@@ -252,6 +252,10 @@ namespace CkgDomainLogic.General.Services
             return "";
         }
 
+        public void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+        }
+
         public IEnumerable<string> GetAddressPostcodeCityMappings(string plz)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
@@ -347,5 +351,9 @@ namespace CkgDomainLogic.General.Services
 
         public string VkOrg { get; private set; }
         public string VkBur { get; private set; }
+
+        public string PersistanceKey { get { return UserName; } }
+
+        public IPersistanceService PersistanceService { get; set; }
     }
 }

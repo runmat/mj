@@ -172,7 +172,8 @@ namespace AppZulassungsdienst.forms
             txtZLDLief.Text = RowKopf["KREISKZ"].ToString();
             txtKunde.Text = RowKopf["KUNNR"].ToString();
             //String Name1="";
-            DataRow [] RowKunde = objCommon.tblAHKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
+            //DataRow [] RowKunde = objCommon.tblAHKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
+            DataRow[] RowKunde = objCommon.tblKundenStamm.Select("KUNNR ='" + RowKopf["KUNNR"].ToString() + "'");
             if (RowKunde.Length > 0) { txtKundeName.Text = RowKunde[0]["NAME1"].ToString(); }
             
             txtKennzWunsch.Text = RowKopf["ZZKENN"].ToString();
@@ -215,8 +216,11 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnStamm_Click(object sender, EventArgs e)
         {
-
             objNacherf = (NacherfZLD)Session["objNacherf"];
+
+            if (objNacherf.BestLieferanten == null || objNacherf.BestLieferanten.Rows.Count == 0)
+                return;
+
             DataRow[] SelRow = objNacherf.BestLieferanten.Select("LIFNR = '" + ddlKunnr.SelectedValue + "'");
             if (SelRow.Length == 1)
             {

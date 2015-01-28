@@ -450,7 +450,7 @@ namespace AppZulassungsdienst.lib
                             SapRow["AP_SMTP_ADDR"] = Mail;
                             SapRow["AP_FAX_NUMBER"] =Fax;
                             SapRow["QUELLE"] = "ZLD-Neu";
-                            SapRow["ERNAM"] = m_objUser.UserName.PadLeft(12);
+                            SapRow["ERNAM"] = m_objUser.UserName;
                             if (Bankkey.Length > 0) { 
                                 SapRow["BANKS"] = "DE";
                                 SapRow["BANKL"] = Bankkey;

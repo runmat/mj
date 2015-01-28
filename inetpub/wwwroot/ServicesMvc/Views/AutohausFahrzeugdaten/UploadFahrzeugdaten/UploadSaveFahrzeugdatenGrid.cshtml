@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.AutohausFahrzeugdaten.Models
+@using CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
+@model UploadFahrzeugdatenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadSaveFahrzeugdaten"; }
+
+@if (Model.UploadItemsSaveErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsSaveErrorsOccurred)</span>
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+    .Grid<UploadFahrzeug>()
+    .Name(gridName)
+    .XGroup("GridUploadSaveFahrzeugdaten")
+    .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+    .XAjaxDataBinding("UploadSaveFahrzeugdatenAjaxBinding", "AutohausFahrzeugdaten")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzNr).Visible(false);
+        columns.XBound(c => c.SaveStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.HerstellerSchluessel);
+        columns.XBound(c => c.TypSchluessel);
+        columns.XBound(c => c.VvsSchluessel);
+        columns.XBound(c => c.VvsPruefziffer);
+        columns.XBound(c => c.FabrikName);
+        columns.XBound(c => c.HandelsName);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Erstzulassung);
+        columns.XBound(c => c.Zulassungsdatum);
+        columns.XBound(c => c.Abmeldedatum);
+        columns.XBound(c => c.Fahrzeugart);
+        columns.XBound(c => c.Verkaufssparte);
+        columns.XBound(c => c.FahrzeugNr);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.Referenz1);
+        columns.XBound(c => c.Referenz2);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredExcel", "AutohausFahrzeugdaten");
+        commands.FilteredDataCommand("ExportUploadSaveFahrzeugdatenFilteredPDF", "AutohausFahrzeugdaten");
+    })
+)
+

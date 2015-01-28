@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -168,22 +169,35 @@ namespace AutohausPortal.Start
 
                 if (!IsPostBack) 
                 {
-                    DataView dvAppLinks = m_User.Applications.DefaultView;
+                    DataTable appTable = m_User.Applications.Copy();
+                    MVC.MvcPrepareDataRowsUrl(appTable, m_User.UserName);
+
+                    foreach (DataRow dRow in appTable.Rows)
+                    {
+                        // PageVisit soll auf dem Server geloggt werden und nicht auf via JS
+                        // Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
+                        var url = dRow["AppURL"].ToString();
+
+                        // Url encoden für die Verwendung als Query Params
+                        url = HttpUtility.UrlEncode(url);
+                        url = Convert.ToBase64String(Encoding.UTF8.GetBytes(url.ToCharArray()));
+
+                        // Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
+                        dRow["AppURL"] = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow["AppID"], "&url=", url);
+                    }
+
+                    DataView dvAppLinks = new DataView(appTable);
                     dvAppLinks.Sort = "AppRank";
-                    dvAppLinks.RowFilter = "AppType='Change' AND AppInMenu=1";
-                    MenuChangeSource = new DataView(m_User.Applications);
+                    MenuChangeSource = new DataView(appTable);
                     MenuChangeSource.RowFilter = "AppType='Change' AND AppInMenu=1";
 
-                    dvAppLinks.RowFilter = "AppType='ChangeAH' AND AppInMenu=1";
-                    MenuChangeAHSource = new DataView(m_User.Applications);
+                    MenuChangeAHSource = new DataView(appTable);
                     MenuChangeAHSource.RowFilter = "AppType='ChangeAH' AND AppInMenu=1";
 
-                    dvAppLinks.RowFilter = "AppType='Report' AND AppInMenu=1";
-                    MenuReportSource = new DataView(m_User.Applications);
+                    MenuReportSource = new DataView(appTable);
                     MenuReportSource.RowFilter = "AppType='Report' AND AppInMenu=1";
 
-                    dvAppLinks.RowFilter = "AppType='Tools' AND AppInMenu=1";
-                    MenuToolsSource = new DataView(m_User.Applications);
+                    MenuToolsSource = new DataView(appTable);
                     MenuToolsSource.RowFilter = "AppType='Tools' AND AppInMenu=1";
 
                     ShowAnsprechpartner();
