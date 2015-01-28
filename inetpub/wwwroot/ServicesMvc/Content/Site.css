@@ -10,7 +10,8 @@ body {
 .input-validation-error label,
 .input-validation-error .control-label,
 .input-validation-error .help-block,
-.input-validation-error .help-inline {
+.input-validation-error .help-inline,
+.control-group.error .FormDateRangePickerCheckBox {
     color: #b94a48!important;
 }
 .help-inline {
@@ -177,7 +178,7 @@ body {
     }
 }
 
-.controls .checker {
+.controls .checkbox, .controls .checkbox {
     margin-top: 1px;
 }
 

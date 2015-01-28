@@ -157,17 +157,11 @@ Partial Public Class InfocenterNeuAdmin
     End Sub
 
     Protected Sub rgDokumente_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles rgDokumente.ItemDataBound
+        'Gruppenheader ohne Überschriften
         If TypeOf e.Item Is GridGroupHeaderItem Then
-            If icDocs IsNot Nothing AndAlso icDocs.Documents IsNot Nothing Then
-                Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
-                Dim strText As String = item.DataCell.Text.Split(":"c)(1)
-
-                Dim tmpInt As Integer = 0
-                If Int32.TryParse(strText, tmpInt) Then
-                    Dim docType As DataRow = icDocs.DocumentTypes.Select("documentTypeId=" & tmpInt)(0)
-                    item.DataCell.Text = docType("docTypeName").ToString()
-                End If
-            End If
+            Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
+            Dim groupDataRow As DataRowView = CType(e.Item.DataItem, DataRowView)
+            item.DataCell.Text = groupDataRow("docTypeName").ToString()
         End If
     End Sub
 
@@ -185,13 +179,12 @@ Partial Public Class InfocenterNeuAdmin
                 If lButton IsNot Nothing Then
                     Dim fName As String = lButton.Text
                     Dim fType As String = gridRow("FileType").Text
-                    Dim fExtension As String = "." & fType
                     Dim sPfad As String = fileSourcePath & fName & "." & fType
 
                     If File.Exists(sPfad) Then
                         Session("App_Filepath") = sPfad
 
-                        Select Case gridRow("FileType").Text
+                        Select Case fType
                             Case "pdf"
                                 Session("App_ContentType") = "Application/pdf"
                                 Session("App_ContentDisposition") = "inline"
@@ -485,13 +478,11 @@ Partial Public Class InfocenterNeuAdmin
     End Sub
 
     Protected Sub lbtnDeleteDocType_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnDeleteDocType.Click
-        Dim blnSuccess As Boolean = False
-
         If ddlDocTypeSelection.SelectedIndex >= 0 Then
             If ddlDocTypeSelection.SelectedItem.Value = "1" Then
                 lblError.Text = "Die Default-Dokumentenart kann nicht gelöscht werden."
             Else
-                blnSuccess = icDocs.DeleteDocumentType(Int32.Parse(ddlDocTypeSelection.SelectedItem.Value))
+                Dim blnSuccess As Boolean = icDocs.DeleteDocumentType(Int32.Parse(ddlDocTypeSelection.SelectedItem.Value))
 
                 If blnSuccess Then
                     Session("objInfoCenter") = icDocs

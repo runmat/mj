@@ -194,17 +194,14 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnStamm_Click(object sender, EventArgs e)
         {
-          
             objVorerf = (VoerfZLD)Session["objVorVersand"];
             
-            // MJE, 18.12.2012
-            if (objVorerf.BestLieferanten == null)
+            if (objVorerf.BestLieferanten == null || objVorerf.BestLieferanten.Rows.Count == 0)
                 return;
             
             DataRow[] SelRow = objVorerf.BestLieferanten.Select("LIFNR = '" + ddlKunnr.SelectedValue + "'");
             if (SelRow.Length == 1)
             {
-
                 lblName.Text = SelRow[0]["NAME1"].ToString() + " " + SelRow[0]["NAME2"].ToString();
                 lblStreet.Text = SelRow[0]["STREET"].ToString() + " " + SelRow[0]["HOUSE_NUM1"].ToString();
                 lblPLZOrt.Text = SelRow[0]["POST_CODE1"].ToString() + " " + SelRow[0]["CITY1"].ToString();

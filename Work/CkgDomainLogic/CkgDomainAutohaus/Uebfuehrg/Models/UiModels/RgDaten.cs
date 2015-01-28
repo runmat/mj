@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
-    public class RgDaten : CommonUiModel
+    public class RgDaten : CommonUiModel, IValidatableObject
     {
         #region RE
 
@@ -38,12 +40,11 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.InvoiceRecipientDeviant)]
         public string ReKundenNr { get; set; }
 
         [XmlIgnore]
-        public Adresse ReKunde { get { return RgAdressen.FirstOrDefault(r => r.KundenNr == ReKundenNr) ?? new Adresse(); } }
+        public Adresse ReKunde { get { return ReAdressen.FirstOrDefault(r => r.KundenNr == ReKundenNr) ?? new Adresse(); } }
 
         #endregion
 
@@ -76,7 +77,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.InvoicePayer)]
         public string RgKundenNr { get; set; }
 
@@ -86,17 +86,70 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         #endregion
 
 
+        #region AG
+
+        private List<KundeAusHierarchie> _kundenAusHierarchie;
+
+        [XmlIgnore]
+        public List<KundeAusHierarchie> KundenAusHierarchie
+        {
+            get
+            {
+                if (GetKundenAusHierarchie == null)
+                    return new List<KundeAusHierarchie>();
+
+                if (_kundenAusHierarchie != null)
+                    return _kundenAusHierarchie;
+
+                _kundenAusHierarchie = GetKundenAusHierarchie().ToList();
+                if (_kundenAusHierarchie.None())
+                {
+                    _kundenAusHierarchie = new List<KundeAusHierarchie> { new KundeAusHierarchie { KundenNr = KundenNrUser } };
+                    AgKundenNr = KundenNrUser;
+                }
+                else if (_kundenAusHierarchie.Count() == 1)
+                    AgKundenNr = _kundenAusHierarchie.First().KundenNr;
+
+                return _kundenAusHierarchie;
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Principal)]
+        public string AgKundenNr { get; set; }
+
+        [XmlIgnore]
+        public KundeAusHierarchie AgKunde { get { return KundenAusHierarchie.FirstOrDefault(k => k.KundenNr == AgKundenNr) ?? new KundeAusHierarchie(); } }
+
+        #endregion
+
+        public string KundenNrUser { get; set; }
+
         public string KundenNr { get; set; }
 
         [XmlIgnore]
         public Func<List<Adresse>> GetRechnungsAdressen { get; set; }
 
+        [XmlIgnore]
+        public Func<List<KundeAusHierarchie>> GetKundenAusHierarchie { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (String.IsNullOrEmpty(AgKundenNr) && (String.IsNullOrEmpty(RgKundenNr) || String.IsNullOrEmpty(ReKundenNr)))
+                yield return new ValidationResult(Localize.AllRequiredInputFieldsMustBeFilled);
+        }
+
         public override string GetSummaryString()
         {
-            return string.Format(   "Rechnungsempfänger:<br/>{0}<br/>" +
-                                    "Rechnungs-Regulierer:<br/>{1}<br/>", 
-                                    ReKunde.GetSummaryString(),
-                                    RgKunde.GetSummaryString());
+            var s = "";
+
+            if (!String.IsNullOrEmpty(AgKundenNr) && !String.IsNullOrEmpty(AgKunde.Name1))
+                s += String.Format("Auftraggeber:<br/>{0}<br/>", AgKunde.GetSummaryString());
+
+            s += String.Format("Rechnungsempfänger:<br/>{0}<br/>" + "Rechnungs-Regulierer:<br/>{1}<br/>",
+                (String.IsNullOrEmpty(ReKunde.Name1) && ReKundenNr == AgKundenNr && !String.IsNullOrEmpty(AgKunde.Name1) ? AgKunde.GetSummaryString() : ReKunde.GetSummaryString()),
+                (String.IsNullOrEmpty(RgKunde.Name1) && RgKundenNr == AgKundenNr && !String.IsNullOrEmpty(AgKunde.Name1) ? AgKunde.GetSummaryString() : RgKunde.GetSummaryString()));
+
+            return s;
         }
     }
 }

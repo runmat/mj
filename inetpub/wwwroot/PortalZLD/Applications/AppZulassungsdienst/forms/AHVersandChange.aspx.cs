@@ -271,7 +271,7 @@ namespace AppZulassungsdienst.forms
                     if (objNacherf.AHVersandBank.Rows.Count > 0)
                     {
                         objNacherf.AHVersandBank.Rows[0]["SWIFT"] = txtSWIFT.Text;
-                        objNacherf.AHVersandBank.Rows[0]["IBAN"] = txtIBAN.Text;
+                        objNacherf.AHVersandBank.Rows[0]["IBAN"] = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                         objNacherf.AHVersandBank.Rows[0]["BANKL"] = objCommon.Bankschluessel;
                         objNacherf.AHVersandBank.Rows[0]["BANKN"] = objCommon.Kontonr;
                         objNacherf.AHVersandBank.Rows[0]["EBPP_ACCNAME"] = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
@@ -285,7 +285,7 @@ namespace AppZulassungsdienst.forms
                         RowBank["MANDT"] = "010";
                         RowBank["ZULBELN"] = RowKopf["ZULBELN"].ToString().PadLeft(10, '0');
                         RowBank["SWIFT"] = txtSWIFT.Text;
-                        RowBank["IBAN"] = txtIBAN.Text;
+                        RowBank["IBAN"] = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                         RowBank["EBPP_ACCNAME"] = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
                         RowBank["KOINH"] = txtKontoinhaber.Text;
                         RowBank["EINZ_JN"] = ZLDCommon.BoolToX(chkEinzug.Checked);
@@ -401,7 +401,7 @@ namespace AppZulassungsdienst.forms
                         if (objNacherf.AHVersandBank.Rows.Count > 0 )
                         {
                             objNacherf.AHVersandBank.Rows[0]["SWIFT"] = txtSWIFT.Text;
-                            objNacherf.AHVersandBank.Rows[0]["IBAN"] = txtIBAN.Text;
+                            objNacherf.AHVersandBank.Rows[0]["IBAN"] = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                             objNacherf.AHVersandBank.Rows[0]["EBPP_ACCNAME"] = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
                             objNacherf.AHVersandBank.Rows[0]["KOINH"] =  txtKontoinhaber.Text;
                             objNacherf.AHVersandBank.Rows[0]["EINZ_JN"] = ZLDCommon.BoolToX(chkEinzug.Checked);
@@ -413,7 +413,7 @@ namespace AppZulassungsdienst.forms
                             RowBank["MANDT"] = "010";
                             RowBank["ZULBELN"] = RowKopf["ZULBELN"].ToString().PadLeft(10, '0');
                             RowBank["SWIFT"] = txtSWIFT.Text;
-                            RowBank["IBAN"] = txtIBAN.Text;
+                            RowBank["IBAN"] = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
                             RowBank["EBPP_ACCNAME"] = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
                             RowBank["KOINH"] = txtKontoinhaber.Text;
                             RowBank["EINZ_JN"] = ZLDCommon.BoolToX(chkEinzug.Checked);
@@ -557,8 +557,9 @@ namespace AppZulassungsdienst.forms
             ddlKennzForm.Enabled = chkKennzSonder.Checked;
 
 
-            objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, RowKopf["KUNNR"].ToString());
-            tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            //objCommon.getSAPAHDatenStamm(Session["AppID"].ToString(), Session.SessionID, this, RowKopf["KUNNR"].ToString());
+            //tmpDView = objCommon.tblAHKundenStamm.DefaultView;
+            tmpDView = objCommon.tblKundenStamm.DefaultView;
             tmpDView.Sort = "NAME1";
             ddlKunnr.DataSource = tmpDView;
             ddlKunnr.DataValueField = "KUNNR";
@@ -1084,7 +1085,7 @@ namespace AppZulassungsdienst.forms
             Boolean bError = false;
             if (txtIBAN.Text.Trim(' ').Length > 0  || chkEinzug.Checked)
             {
-                objCommon.IBAN = txtIBAN.Text.Trim(' ');
+                objCommon.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
                 objCommon.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objCommon.Message != String.Empty)
                 {

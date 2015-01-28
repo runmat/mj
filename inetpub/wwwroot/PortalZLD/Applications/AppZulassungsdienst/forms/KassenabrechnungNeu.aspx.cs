@@ -186,9 +186,8 @@ namespace AppZulassungsdienst.forms
                     break;
 
                 case "Confirm":
-                    DataRow[] confirmHeadRow =
-                        _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + e.CommandArgument + "'");
-                    if (!proofVorfallGridRow(ref confirmHeadRow[0]))
+                    DataRow[] confirmHeadRow = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + e.CommandArgument + "'");
+                    if (confirmHeadRow.Length > 0 && !proofVorfallGridRow(ref confirmHeadRow[0]))
                     {
                         if (confirmHeadRow.Length == 1)
                         {
@@ -703,13 +702,14 @@ namespace AppZulassungsdienst.forms
                 gvRow["TRANSACT_NUMBER"] = ddl.SelectedValue;
                 gvRow["Auswahl"] = chkAuswahl.Checked;
                 string strBudat = txtDate.Text.Trim();
-                if (strBudat != "")
+                DateTime tmpDat;
+                if (strBudat != "" && DateTime.TryParse(strBudat, out tmpDat))
                 {
-                    gvRow["BUDAT"] = txtDate.Text.Trim();
+                    gvRow["BUDAT"] = tmpDat;
                 }
                 else
                 {
-                    SetErrBehavior(txtDate, lblError, "Es wurde kein Datum eingetragen!");
+                    SetErrBehavior(txtDate, lblError, "Es wurde kein gültiges Datum eingetragen!");
                     blError = true;
                 }
 
@@ -1067,7 +1067,9 @@ namespace AppZulassungsdienst.forms
                 ddl.DataTextField = "TRANSACT_NAME";
                 ddl.DataBind();
 
-                ddl.SelectedValue = tblData.Rows[i]["TRANSACT_NUMBER"].ToString();
+                var valueToSelect = tblData.Rows[i]["TRANSACT_NUMBER"].ToString();
+                if (ddl.Items.FindByValue(valueToSelect) != null)
+                    ddl.SelectedValue = valueToSelect;
 
                 // Steuerung der Felder für Einnahmen und Ausgaben
                 Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(tblData.Rows[i]["TRANSACT_NUMBER"].ToString());

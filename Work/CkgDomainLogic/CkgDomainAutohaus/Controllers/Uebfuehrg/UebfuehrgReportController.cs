@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -36,6 +35,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistoryAuftraege(HistoryAuftragSelector model)
         {
+            model.GetKundenAusHierarchie = ReportViewModel.HistoryAuftragSelector.GetKundenAusHierarchie;
             ReportViewModel.HistoryAuftragSelector = model;
 
             bool dateRangeResetOccurred;

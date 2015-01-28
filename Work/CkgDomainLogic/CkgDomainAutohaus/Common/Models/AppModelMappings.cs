@@ -4,7 +4,7 @@ using SapORM.Models;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class AppModelMappings : ModelMappings
+    public partial class AppModelMappings : ModelMappings
     {
         #region FromSap
 

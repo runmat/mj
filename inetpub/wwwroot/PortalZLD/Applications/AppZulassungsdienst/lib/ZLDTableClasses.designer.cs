@@ -931,6 +931,12 @@ namespace AppZulassungsdienst.lib
 		
 		private string _SofortabrechnungPfad;
 		
+		private string _Briefnr;
+		
+		private string _Orderid;
+		
+		private string _Hppos;
+		
 		private EntitySet<ZLDBankverbindung> _ZLDBankverbindung;
 		
 		private EntitySet<ZLDKundenadresse> _ZLDKundenadresse;
@@ -1145,6 +1151,12 @@ namespace AppZulassungsdienst.lib
     partial void OnSofortabrechnungErledigtChanged();
     partial void OnSofortabrechnungPfadChanging(string value);
     partial void OnSofortabrechnungPfadChanged();
+    partial void OnBriefnrChanging(string value);
+    partial void OnBriefnrChanged();
+    partial void OnOrderidChanging(string value);
+    partial void OnOrderidChanged();
+    partial void OnHpposChanging(string value);
+    partial void OnHpposChanged();
     #endregion
 		
 		public ZLDKopfTabelle()
@@ -3191,6 +3203,66 @@ namespace AppZulassungsdienst.lib
 					this._SofortabrechnungPfad = value;
 					this.SendPropertyChanged("SofortabrechnungPfad");
 					this.OnSofortabrechnungPfadChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Briefnr", DbType="NVarChar(25)")]
+		public string Briefnr
+		{
+			get
+			{
+				return this._Briefnr;
+			}
+			set
+			{
+				if ((this._Briefnr != value))
+				{
+					this.OnBriefnrChanging(value);
+					this.SendPropertyChanging();
+					this._Briefnr = value;
+					this.SendPropertyChanged("Briefnr");
+					this.OnBriefnrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Orderid", DbType="NVarChar(10)")]
+		public string Orderid
+		{
+			get
+			{
+				return this._Orderid;
+			}
+			set
+			{
+				if ((this._Orderid != value))
+				{
+					this.OnOrderidChanging(value);
+					this.SendPropertyChanging();
+					this._Orderid = value;
+					this.SendPropertyChanged("Orderid");
+					this.OnOrderidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hppos", DbType="NVarChar(4)")]
+		public string Hppos
+		{
+			get
+			{
+				return this._Hppos;
+			}
+			set
+			{
+				if ((this._Hppos != value))
+				{
+					this.OnHpposChanging(value);
+					this.SendPropertyChanging();
+					this._Hppos = value;
+					this.SendPropertyChanged("Hppos");
+					this.OnHpposChanged();
 				}
 			}
 		}

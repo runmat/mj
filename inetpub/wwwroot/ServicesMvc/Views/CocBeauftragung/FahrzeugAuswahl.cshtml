@@ -18,7 +18,6 @@
     .Columns(columns =>
         {
             columns.XBound("").ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ID #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />").Filterable(false);
-            //columns.XBound("").ClientTemplate("<button onclick='return FahrzeugAuswahl(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='Fahrzeug wählen & zum nächsten Schritt!' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>").Filterable(false);
 
             columns.XBound(c => c.VIN);
             columns.XBound(c => c.AUFTR_NR_KD);
@@ -28,8 +27,6 @@
             columns.XBound(c => c.LAND);
             columns.XBound(c => c.AUSLIEFER_DATUM);
             columns.XBound(c => c.ERDAT);
-              
-            //columns.XBoundAll();
         })
 
     .XAutoColumnConfiguration()      

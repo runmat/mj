@@ -59,12 +59,18 @@
     <Reference Include="Aspose.Words">
       <HintPath>..\..\GAC\Aspose.Words.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\GAC\SpreadsheetLight\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\..\GAC\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PdfSharp\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SpreadsheetLight">
+      <HintPath>..\..\GAC\SpreadsheetLight\SpreadsheetLight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -83,6 +89,7 @@
     <Compile Include="Services\DataTableMailMergeSource.cs" />
     <Compile Include="Services\ExcelDocumentFactory.cs" />
     <Compile Include="Services\PdfDocumentFactory.cs" />
+    <Compile Include="Services\SpreadsheetLightService.cs" />
     <Compile Include="Services\WordDocumentFactory.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,63 +37,60 @@
                             <div id="data" runat="server">
                                 <telerik:RadGrid ID="rgDokumente" runat="server" PageSize="10" AllowPaging="false" AllowSorting="true" 
                                     AutoGenerateColumns="False" GridLines="None" Skin="Default">
-                                    <PagerStyle Mode="NumericPages"></PagerStyle>
-                                    <ItemStyle CssClass="ItemStyle" />
-                                    <AlternatingItemStyle CssClass="ItemStyle" />
+                                    <PagerStyle Mode="NumericPages"/>
+                                    <ItemStyle CssClass="ItemStyle"/>
+                                    <AlternatingItemStyle CssClass="ItemStyle"/>
                                     <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Fixed" GroupsDefaultExpanded="false">
                                         <SortExpressions>
-                                            <telerik:GridSortExpression FieldName="DocTypeName" SortOrder="Ascending" />
-                                            <telerik:GridSortExpression FieldName="FileName" SortOrder="Ascending" />
+                                            <telerik:GridSortExpression FieldName="FileName" SortOrder="Ascending"/>
                                         </SortExpressions>
                                         <GroupByExpressions>
                                             <telerik:GridGroupByExpression>
                                                 <SelectFields>
-                                                    <telerik:GridGroupByField FieldName="DocTypeId"></telerik:GridGroupByField>
+                                                    <telerik:GridGroupByField FieldName="DocTypeName"/>
                                                 </SelectFields>
                                                 <GroupByFields>
-                                                    <telerik:GridGroupByField FieldName="DocTypeId"></telerik:GridGroupByField>
+                                                    <telerik:GridGroupByField FieldName="DocTypeName" SortOrder="Ascending"/>
+                                                    <telerik:GridGroupByField FieldName="DocTypeId" SortOrder="Ascending"/>
                                                 </GroupByFields>
                                             </telerik:GridGroupByExpression>
                                         </GroupByExpressions>
-                                        <HeaderStyle ForeColor="#595959" />
-                                        <FooterStyle BackColor="#FFB27F" HorizontalAlign="Right" Wrap="false" />
+                                        <HeaderStyle ForeColor="#595959"/>
+                                        <FooterStyle BackColor="#FFB27F" HorizontalAlign="Right" Wrap="false"/>
                                         <Columns>
-                                            <telerik:GridBoundColumn SortExpression="DocumentId" DataField="DocumentId" visible="false" />
+                                            <telerik:GridBoundColumn SortExpression="DocumentId" DataField="DocumentId" visible="false"/>
                                             <telerik:GridTemplateColumn SortExpression="FileName" HeaderText="Dokument" HeaderButtonType="TextButton">
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="lbtPDF" runat="server" CommandName="showDocument" Height="18px" ImageUrl="/KBS/Images/iconPDF.gif" 
-                                                        ToolTip="PDF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "pdf" %>' />
+                                                        ToolTip="PDF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "pdf" %>'/>
                                                     <asp:ImageButton ID="lbtExcel" runat="server" CommandName="showDocument" Height="18px" ImageUrl="/KBS/Images/iconXLS.gif" 
-                                                        ToolTip="Excel" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("xls") %>' />
+                                                        ToolTip="Excel" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("xls") %>'/>
                                                     <asp:ImageButton ID="lbtWord" runat="server" CommandName="showDocument" Height="18px" ImageUrl="/KBS/Images/iconWORD.gif"
-                                                        ToolTip="Word" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("doc") %>' />
+                                                        ToolTip="Word" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("doc") %>'/>
                                                     <asp:ImageButton ID="lbtJepg" runat="server" CommandName="showDocument" Height="18px" ImageUrl="/KBS/Images/jpg-file.png"
-                                                        ToolTip="JPG" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("jp") %>' />
+                                                        ToolTip="JPG" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString().StartsWith("jp") %>'/>
                                                     <asp:ImageButton ID="lbtGif" runat="server" CommandName="showDocument" Height="18px" ImageUrl="/KBS/Images/jpg-file.png"
-                                                        ToolTip="GIF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "gif" %>' />                                         
+                                                        ToolTip="GIF" ImageAlign="Middle" Visible='<%# Eval("FileType").ToString() = "gif" %>'/>                                         
                                                     <span>
-                                                        <asp:LinkButton ID="lbtDateiOeffnen" runat="server" CommandName="showDocument" Text='<%# Eval("FileName") %>' >
-                                                        </asp:LinkButton>
+                                                        <asp:LinkButton ID="lbtDateiOeffnen" runat="server" CommandName="showDocument" Text='<%# Eval("FileName") %>'/>
                                                     </span>
                                                 </ItemTemplate>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn SortExpression="FileType" DataField="FileType" visible="false" />
-                                            <telerik:GridBoundColumn SortExpression="DocTypeId" DataField="docTypeId" Visible="false" />
-                                            <telerik:GridBoundColumn SortExpression="DocTypeName" HeaderText="Art" AllowSorting="false" 
-                                                DataField="DocTypeName" HeaderStyle-Width="200px" />
-                                            <telerik:GridButtonColumn UniqueName="colBearbeiten" HeaderStyle-Width="50px" ButtonType="ImageButton" ImageUrl="/KBS/Images/edit_01.gif" Text="bearbeiten" CommandName="editDocument" >
-                                            </telerik:GridButtonColumn>
+                                            <telerik:GridButtonColumn UniqueName="colBearbeiten" HeaderStyle-Width="50px" ButtonType="ImageButton" ImageUrl="/KBS/Images/edit_01.gif" 
+                                                Text="bearbeiten" CommandName="editDocument"/>
+                                            <telerik:GridBoundColumn SortExpression="FileType" DataField="FileType" visible="false"/>
+                                            <telerik:GridBoundColumn SortExpression="DocTypeId" DataField="DocTypeId" visible="false"/>
                                             <telerik:GridBoundColumn SortExpression="LastEdited" HeaderText="Letzte Änderung" HeaderButtonType="TextButton" 
                                                 DataField="LastEdited" DataFormatString="{0:dd.MM.yyyy HH:mm:ss}" HeaderStyle-Width="150px">
                                             </telerik:GridBoundColumn>
                                             <telerik:GridTemplateColumn UniqueName="colLoeschen" HeaderStyle-Width="100px">
                                                 <HeaderTemplate>
                                                     <asp:CheckBox ID="ckb_SelectAll" runat="server" OnCheckedChanged="ckb_SelectAll_CheckedChanged" ToolTip="Auf dieser Seite alle Dokumente löschen setzen."
-                                                        AutoPostBack="True" />
-                                                    <asp:Label ID="Label1" runat="server" Text="Löschen"></asp:Label>
+                                                        AutoPostBack="True"/>
+                                                    <asp:Label runat="server" Text="Löschen"></asp:Label>
                                                 </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:CheckBox ID="rb_sel" runat="server" GroupName="Auswahl" />
+                                                    <asp:CheckBox ID="rb_sel" runat="server" GroupName="Auswahl"/>
                                                 </ItemTemplate>
                                             </telerik:GridTemplateColumn>
                                         </Columns>
