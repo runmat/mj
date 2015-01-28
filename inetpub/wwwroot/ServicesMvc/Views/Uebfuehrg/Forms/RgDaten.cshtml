@@ -4,14 +4,25 @@
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         @Html.HiddenFor(m => m.UiIndex)
+        @Html.HiddenFor(m => m.KundenNrUser)
         @Html.HiddenFor(m => m.KundenNr)
 
         @Html.FormValidationSummary()
 
-        @Html.FormDropDownListFor(m => m.RgKundenNr, Model.RgAdressen.ToSelectList(), new { @class = "m-wrap large" })
-        @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })
-        
-        @Html.FormRequiredFieldsSummary()
+        if (Model.KundenAusHierarchie.Count > 1)
+        {
+            @Html.FormDropDownListFor(m => m.AgKundenNr, Model.KundenAusHierarchie.ToSelectList(), new { @class = "m-wrap large" })
+            @Html.HiddenFor(m => m.RgKundenNr)
+            @Html.HiddenFor(m => m.ReKundenNr)
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.AgKundenNr)
+            @Html.FormDropDownListFor(m => m.RgKundenNr, Model.RgAdressen.ToSelectList(), new { @class = "m-wrap large" })
+            @Html.FormDropDownListFor(m => m.ReKundenNr, Model.ReAdressen.ToSelectList(), new { @class = "m-wrap large" })
+        }
+
+        //@Html.FormRequiredFieldsSummary()
         
         
         <script type="text/javascript">

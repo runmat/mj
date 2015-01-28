@@ -152,10 +152,10 @@
       <DependentUpon>ResponsiblePage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Log.aspx.designer.vb">
+    <Compile Include="Start\Log.aspx.designer.vb">
       <DependentUpon>Log.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Log.aspx.vb">
+    <Compile Include="Start\Log.aspx.vb">
       <DependentUpon>Log.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
@@ -701,7 +701,7 @@
     <Content Include="JScript\jquery.blockUI.js" />
     <Content Include="JScript\jquery.scrollTo-1.4.2.js" />
     <Content Include="JScript\jquery.ui.datepicker-de.js" />
-    <Content Include="Log.aspx" />
+    <Content Include="Start\Log.aspx" />
     <Content Include="MasterPage\Services.Master" />
     <Content Include="MasterPage\Design.Master" />
     <None Include="My Project\Application.myapp">

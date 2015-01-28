@@ -141,19 +141,22 @@ namespace AppZulassungsdienst.forms
         protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
         {
             String FilePath;
-            DataRow[] RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
+            DataRow[] RowTemp;
 
-            if (RowTemp.Length > 0)
+            switch (e.CommandName)
             {
-                switch (e.CommandName)
-                {
-                    case "PrintBarquittung":
+                case "PrintBarquittung":
+                    RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
+
+                    if (RowTemp.Length > 0)
+                    {
                         String Barqnr = RowTemp[0]["BARQ_NR"].ToString();
                         String EasyID = RowTemp[0]["OBJECT_ID"].ToString();
 
                         if (!String.IsNullOrEmpty(EasyID))
                         {
-                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr, EasyID);
+                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr,
+                                                     EasyID);
                             if (objListe.Status != 0)
                             {
                                 lblError.Text = objListe.Message;
@@ -178,10 +181,16 @@ namespace AppZulassungsdienst.forms
                         {
                             Session["App_FileDelete"] = "X";
                         }
-                        ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-                        break;
+                        ResponseHelper.Redirect("Printpdf.aspx", "_blank",
+                                                "left=0,top=0,resizable=YES,scrollbars=YES");
+                    }
+                    break;
 
-                    case "PrintSofortabrechnung":
+                case "PrintSofortabrechnung":
+                    RowTemp = objListe.Auswertung.Select("ZULBELN= " + e.CommandArgument);
+
+                    if (RowTemp.Length > 0)
+                    {
                         objListe.Filename = RowTemp[0]["SA_PFAD"].ToString().TrimStart('/').Replace('/', '\\');
 
                         if (m_User.IsTestUser)
@@ -198,10 +207,11 @@ namespace AppZulassungsdienst.forms
                             Session["App_ContentType"] = "Application/pdf";
                             Session["App_Filepath"] = FilePath;
 
-                            ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+                            ResponseHelper.Redirect("Printpdf.aspx", "_blank",
+                                                    "left=0,top=0,resizable=YES,scrollbars=YES");
                         }
-                        break;
-                }
+                    }
+                    break;
             }
         }
 

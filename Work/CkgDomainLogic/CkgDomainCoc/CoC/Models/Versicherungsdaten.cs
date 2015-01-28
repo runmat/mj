@@ -13,7 +13,7 @@ namespace CkgDomainLogic.CoC.Models
         public string VersicherungsGesellschaft { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.EvbNumber)]
-        [Length(7)]
+        [Length(7, true)]
         [Required]
         public string EvbNummer { get; set; }
 

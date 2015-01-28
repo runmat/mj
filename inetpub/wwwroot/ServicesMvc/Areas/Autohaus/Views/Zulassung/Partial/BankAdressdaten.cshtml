@@ -1,0 +1,7 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+<h4>@Localize.BankDataAndAddressForEndCustomerInvoice</h4> 
+
+@Html.HiddenFor(m => m.SkipBankAdressdaten)
+
+@Html.Partial("Partial/BankAdressdatenForm", @Model.Zulassung.BankAdressdaten)

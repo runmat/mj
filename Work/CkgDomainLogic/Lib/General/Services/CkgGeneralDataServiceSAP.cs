@@ -33,6 +33,23 @@ namespace CkgDomainLogic.General.Services
 
         #region General data + Business logic
 
+        public List<KundeAusHierarchie> KundenAusHierarchie
+        {
+            get
+            {
+                return PropertyCacheGet(() =>
+                    AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_KundeAusHierarchie.Copy(SapKundenAusHierarchie)
+                        .OrderBy(k => k.KundenNameNr).ToList());
+            }
+        }
+
+        public List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> SapKundenAusHierarchie
+        {
+                                                // ReSharper disable ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => GetSapKundenAusHierarchie()); }
+                                                // ReSharper restore ConvertClosureToMethodGroup
+        }
+
         public List<Land> Laender
         {
             get
@@ -133,6 +150,20 @@ namespace CkgDomainLogic.General.Services
             // Connecting our User LogonContext to our SapDataService
             //
             SAP.GetLogonContext = () => LogonContext;
+        }
+
+        private List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> GetSapKundenAusHierarchie()
+        {
+            Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
+
+            var orgRef = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference;
+
+            SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
+            SAP.SetImportParameter("I_VKORG", ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString());
+            SAP.SetImportParameter("I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
+            SAP.SetImportParameter("I_SPART", "01");
+
+            return Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP).OrderBy(k => k.NAME1).ToList();
         }
 
         public List<Z_DPM_READ_LV_001.GT_OUT_DL> GetSapVersandOptionen()
