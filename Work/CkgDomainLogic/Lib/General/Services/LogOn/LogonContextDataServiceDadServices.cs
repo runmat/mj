@@ -189,14 +189,26 @@ namespace CkgDomainLogic.General.Services
                 return;
             }
 
+            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
+
             if (!ValidatePassword(loginModel.Password, dbContext.User))
             {
-                addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
-                dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                if (dbContext.User.UserCountFailedLogins < customer.LockedAfterNLogins)
+                {
+                    addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
+                    dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                }
+                else
+                {
+                    if (!dbContext.User.UserIsDisabled)
+                        dbContext.LockUserAndSave(loginModel.UserName);
+
+                    addModelError(m => m.UserName, Localize.LoginUserDisabled);
+                }
+                
                 return;
             }
 
-            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
             List<string> userErrorMessages;
             if (!ValidateUser(dbContext.User, customer, LocalizationService, out userErrorMessages))
             {
@@ -229,6 +241,15 @@ namespace CkgDomainLogic.General.Services
             //    addModelError(m => m.UserName, Localize.UserInvalidEmail);
 
             return email;
+        }
+
+        public override void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+            var dbContext = CreateDbContext(loginModel.UserName);
+            var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
+
+            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
+                addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
         }
 
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
@@ -292,6 +313,22 @@ namespace CkgDomainLogic.General.Services
 
         public override void LogoutUser()
         {
+            UserID = "";
+            UserName = "";
+            User = null;
+            UserInfo = null;
+            FirstName = "";
+            LastName = "";
+            KundenNr = "";
+            Customer = null;
+            GroupName = "";
+            Group = null;
+            Organization = null;
+            if (AppTypes != null)
+                AppTypes.Clear();
+            if (UserApps != null)
+                UserApps.Clear();
+            UserNameEncryptedToUrlEncoded = "";
         }
 
         public override bool ChangePassword(string oldPassword, string newPassword)
