@@ -18,14 +18,12 @@
                     @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
                     @Html.FormTextBoxFor(m => m.HerstellerSchluessel, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.TypSchluessel, new { @class = "m-wrap small uppercase" })
                     @Html.FormTextBoxFor(m => m.VvsSchluessel, new { @class = "m-wrap small" })
                     @Html.FormTextBoxFor(m => m.VvsPruefZiffer, new { @class = "m-wrap small" })
 
-                    @Html.HiddenFor(m => m.FabrikName)
-                    @Html.FormTextBlockFor(m => m.FabrikName, new { @class = "m-wrap small" })
-                    @Html.HiddenFor(m => m.HandelsName)
-                    @Html.FormTextBlockFor(m => m.HandelsName, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.FabrikName, new { @class = "m-wrap medium" })
+                    @Html.FormTextBoxFor(m => m.HandelsName, new { @class = "m-wrap medium" })
                 }
             </div>
 
@@ -33,6 +31,15 @@
                 @using (Html.PortletBox(Localize.InventoryData, "icon-table"))
                 {
                     @* Fahrzeug-Bestand *@
+
+                    @Html.FormDropDownListFor(m => m.FahrzeugArt, FahrzeugAkteBestand.FahrzeugArtOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
+                    @Html.FormDropDownListFor(m => m.VerkaufsSparte, FahrzeugAkteBestand.VerkaufsSpartenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
+
+                    @Html.FormTextBoxFor(m => m.FahrzeugNummer, new { @class = "m-wrap", col = "left" })
+                    @Html.FormTextBoxFor(m => m.AuftragsNummer, new { @class = "m-wrap", col = "right" })
+                
+                    @Html.FormTextBoxFor(m => m.FirmenReferenz1, new { @class = "m-wrap", col = "left" })
+                    @Html.FormTextBoxFor(m => m.FirmenReferenz2, new { @class = "m-wrap", col = "right" })
 
                     @Html.HiddenFor(m => m.Halter)
                     @Html.FormTemplateControl(Localize.Holder,
@@ -64,7 +71,7 @@
                     @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "left" })
                     @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
                     
-                    @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden:true, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+                    @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
                     @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap", col = "right" }, rows: 2)
                 }
             </div>
@@ -82,9 +89,10 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            _finSearchFahrzeugFinID = '@Model.FinID.NotNullOrEmpty()';
-            _finIdJustCreated = @Model.FinIdJustCreated.ToString().ToLower();
-            //alert(_finIdJustCreated + ' - ' + _finSearchFahrzeugFinID);
+            _akteJustCreated = @Model.AkteJustCreated.ToString().ToLower();
+            _akteIsValid = @Model.AkteIsValid.ToString().ToLower();
+
+            InitCheckTypDaten();
         </script>
     }
 </div>

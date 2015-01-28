@@ -77,6 +77,11 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<string>("select mail from vwWebUser inner join WebUserInfo on vwWebUser.UserID = WebUserInfo.id_user where Username = {0}", userName).FirstOrDefault();
         }
 
+        public string GetUserAccountLastLockedBy(string userName)
+        {
+            return Database.SqlQuery<string>("SELECT LastChangedBy FROM AdminHistory_User WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = {0} AND Action = {1})", userName, "Benutzer gesperrt").FirstOrDefault();
+        }
+
         public User GetUserFromPasswordToken(string passwordRequestKey)
         {
             return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();
@@ -254,6 +259,16 @@ namespace CkgDomainLogic.General.Database.Services
             Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = FailedLogins + 1 WHERE Username = {0}", userName);
         }
 
+        public void LockUserAndSave(string userName)
+        {
+            Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 1, LastChangedBy = {0} WHERE Username = {1}", UserName, userName);
+        }
+
+        public void UnlockUserAndSave(string userName)
+        {
+            Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 0, LastChangedBy = {0} WHERE Username = {1}", UserName, userName);
+        }
+
         public void FailedLoginsResetAndSave(string userName)
         {
             Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = 0 WHERE Username = {0}", userName);
@@ -268,6 +283,7 @@ namespace CkgDomainLogic.General.Database.Services
             Database.ExecuteSqlCommand("UPDATE WebUser SET LastPwdChange = getdate() WHERE Username = {0}", userName);
             Database.ExecuteSqlCommand("insert into WebUserPwdHistory (UserID, Password, DateOfChange, InitialPwd) select wu.UserID, {0}, getdate(), 0 from WebUser wu where wu.Username = {1}", password, userName);
             FailedLoginsResetAndSave(userName);
+            UnlockUserAndSave(userName);
         }
 
         public void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)

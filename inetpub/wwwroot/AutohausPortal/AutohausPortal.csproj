@@ -233,7 +233,7 @@
     <Content Include="Images\trennlinie_horiziontal.gif" />
     <Content Include="Images\trennlinie_vertikal.gif" />
     <Content Include="Images\TVRahmenSmall.png" />
-    <Content Include="Log.aspx" />
+    <Content Include="Start\Log.aspx" />
     <Content Include="Start\LogonMessage.aspx" />
     <Content Include="Styles\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Styles\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -526,11 +526,11 @@
     <Compile Include="lib\ResponseHelper.cs" />
     <Compile Include="lib\ZLDCommon.cs" />
     <Compile Include="lib\ZLDSuche.cs" />
-    <Compile Include="Log.aspx.cs">
+    <Compile Include="Start\Log.aspx.cs">
       <DependentUpon>Log.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Log.aspx.designer.cs">
+    <Compile Include="Start\Log.aspx.designer.cs">
       <DependentUpon>Log.aspx</DependentUpon>
     </Compile>
     <Compile Include="MasterPage\Form.Master.cs">
@@ -694,7 +694,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2012/9/4" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_ConfigurationName="Release" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_ConfigurationName="Release" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2012/9/4" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

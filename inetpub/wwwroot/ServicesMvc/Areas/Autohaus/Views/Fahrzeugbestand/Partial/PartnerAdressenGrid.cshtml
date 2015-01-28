@@ -1,0 +1,13 @@
+﻿@using CkgDomainLogic.Fahrzeugbestand.ViewModels
+@model FahrzeugbestandViewModel
+
+<script type="text/javascript">
+    _adressenKennungLocalized = '@Model.AdressenKennungLocalized';
+</script>
+
+@Html.Partial("../Partner/AdressenPflege/AdressenGrid", new ViewDataDictionary
+    {
+        { "AddressSelectorAvailable" , true },
+        { "BackButtonAvailable" , true },
+    })
+

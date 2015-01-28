@@ -7,6 +7,8 @@ namespace CkgDomainLogic.General.Contracts
 {
     public interface ICkgGeneralDataService
     {
+        List<KundeAusHierarchie> KundenAusHierarchie { get; }
+
         List<Land> Laender { get; }
 
         List<SelectItem> Versicherungen { get; }
