@@ -87,19 +87,15 @@ myExampleData.bubbleChartOptions = {
 
 //bar Chart sample data and options
 
-myExampleData.constructBarChartData = function() {
-	var d1 = [];
-	var d2 = []
-	var point
-	var i;
-	for ( i = 0; i < 4; i++) {
-		point = [Math.ceil(Math.random() * 10), i];
-		d1.push(point);
-		point = [Math.ceil(Math.random() * 10), i + 0.5];
-
-		d2.push(point);
-	}
-	return [d1, d2];
+myExampleData.constructBarChartData = function () {
+    var d1 = [];
+    var point;
+    var i;
+    for (i = 0; i < 4; i++) {
+        point = [Math.ceil(Math.random() * 10), i];
+        d1.push(point);
+    }
+    return [d1];
 };
 myExampleData.barChartData = myExampleData.constructBarChartData();
 
@@ -113,11 +109,14 @@ myExampleData.barChartOptions = {
 	mouse : {
 		track : true,
 		relative : true
-	},
-	yaxis : {
-		min : 0,
-		autoscaleMargin : 1
-	}
+    },
+    xaxis: {
+        min: 0,
+    },
+    yaxis: {
+        min: 0,
+        autoscaleMargin: 1
+    }
 };
 
 //bar chart sample data ends here

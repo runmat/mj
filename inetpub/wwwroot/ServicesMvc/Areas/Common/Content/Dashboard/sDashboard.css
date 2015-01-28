@@ -22,8 +22,8 @@
 	margin: 3px 3px 3px 0;
 	padding: 1px;
 	float: left;
-	width: 400px;
-	height: auto;
+	height: 227px !important;
+	width: 400px !important;
 }
 
 /*dashboard widget css*/
@@ -57,9 +57,10 @@
 .sDashboardWidgetContent {
 	margin: 0.3em;
 	padding: 0.4em;
-	height: 180px;
+    padding-top: 20px;
+	height: 160px;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 }
 
 .sDashboardWidgetContentMaximized {
@@ -226,3 +227,9 @@ li.ui-sortable-placeholder {
  background-size: 100% 100%;
  position: fixed;
  }*/
+ 
+ .sDashboardWidgetContentBusyHint {
+     margin-top: 60px;
+     margin-bottom: 150px;
+     text-align: center;
+ }

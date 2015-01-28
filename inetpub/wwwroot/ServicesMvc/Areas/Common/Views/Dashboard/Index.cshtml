@@ -14,6 +14,8 @@
         FormPrepareAjax();
     }
 
+    var _dashboardData = { data: null, options: null };
+
 	function FormPrepareDashboard() 
 	{
 		//**********************************************//
@@ -21,25 +23,21 @@
 		//this is the data format that the dashboard framework expects
 	    //**********************************************//
 
-	    var dashboardJson = 
+	    var dashboardJson =
 	    [{
-		    widgetTitle: "bar Chart Widget",
-		    widgetId: "id002",
-		    widgetType: "chart",
-		    enableRefresh: true,
-		    refreshCallBack: function (widgetId) {
-		        var refreshedData = {
-		            data: myExampleData.constructBarChartData(),
-		            options: myExampleData.barChartOptions
-		        };
-		        return refreshedData;
-		    },
-		    widgetContent: {
-		        data: myExampleData.barChartData,
-		        options: myExampleData.barChartOptions
-		    }
+	        widgetTitle: "bar Chart Widget",
+	        widgetId: "id002",
+	        widgetType: "chart",
+	        enableRefresh: true,
+	        refreshCallBack: function (widgetId) {
+	            return _dashboardData;
+	        },
+	        widgetContent: {
+	            data: null, //myExampleData.barChartData,
+	            options: null //myExampleData.barChartOptions
+	        }
 
-		}];
+	    }];
 	    
 		//basic initialization example
 		$("#myDashboard").sDashboard({
@@ -62,108 +60,41 @@
 		    }
 
 		});
-	    
-		//example for adding a text widget
-		$("#btnAddWidget").click(function () {
-		    $("#myDashboard").sDashboard("addWidget", {
-		        widgetTitle: "Widget 7",
-		        widgetId: "id008",
-		        widgetContent: "Lorem ipsum dolor sit amet," + "consectetur adipiscing elit." + "Aenean lacinia mollis condimentum." + "Proin vitae ligula quis ipsum elementum tristique." + "Vestibulum ut sem erat."
-		    });
+
+		$("#btnRefresh").click(function () {
+
+		    $("#id002 .sDashboard-refresh-icon").trigger("click");
 		});
 
-		//example for adding a table widget
-		$("#btnAddTableWidget").click(function () {
-		    $("#myDashboard").sDashboard("addWidget", {
-		        widgetTitle: "Table Widget 2",
-		        widgetId: "id007",
-		        widgetType: "table",
-		        widgetContent: myExampleData.tableWidgetData
-		    });
-
-		});
-
-		//example for  deleting a widget
-		$("#btnDeleteWidget").click(function () {
-		    $("#myDashboard").sDashboard("removeWidget", "id002");
-		});
-
-		//example for adding a pie chart widget
-		$("#btnAddPieChartWidget").click(function () {
-
-		    $("#myDashboard").sDashboard("addWidget", {
-		        widgetTitle: "Pie Chart 2",
-		        widgetId: "id006",
-		        widgetType: "chart",
-		        widgetContent: {
-		            data: myExampleData.pieChartData,
-		            options: myExampleData.pieChartOptions
-		        }
-		    });
-
-		});
-
-		//example for adding a bar chart widget
-		$("#btnAddBarChartWidget").click(function () {
-
-		    $("#myDashboard").sDashboard("addWidget", {
-		        widgetTitle: "Bar Chart 2",
-		        widgetId: "id005",
-		        widgetType: "chart",
-		        enableRefresh: true,
-		        refreshCallBack: function (widgetId) {
-		            var refreshedData = {
-		                data: myExampleData.constructBarChartData(),
-		                options: myExampleData.barChartOptions
-		            };
-		            return refreshedData;
-		        },
-		        widgetContent: {
-		            data: myExampleData.barChartData,
-		            options: myExampleData.barChartOptions
-		        }
-		    });
-		});
-
-		//example for adding an line chart widget
-		$("#btnAddLineChartWidget").click(function () {
-		    $("#myDashboard").sDashboard("addWidget", {
-		        widgetTitle: "Line Chart 2",
-		        widgetId: "id004",
-		        widgetType: "chart",
-		        getDataBySelection: true,
-		        widgetContent: {
-		            data: myExampleData.lineChartData,
-		            options: myExampleData.lineChartOptions
-		        }
-
-		    });
-		});
+	    InitDashboardChain();
 	}
+
+	function InitDashboardChain() {
+
+	    var widgetId = "#id002";
+	    $.ajax(
+        {
+            type: "POST",
+            url: "GetBarChartData",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                _dashboardData = result;
+                //$(widgetId + " .sDashboardWidgetContent").removeClass("hide");
+                $(widgetId + " .sDashboardWidgetContentBusyHint").addClass("hide");
+
+                $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+            }
+        });
+    }
 
 </script>
 
 <div>
     
-    <div style="padding-top: 5px;">
-        <label>Features :</label>
-        <button class="btn" id="btnAddWidget">
-            1) Add Widget
-        </button>
-        <button class="btn" id="btnAddTableWidget">
-            2) Add Table widget
-        </button>
-        <button class="btn" id="btnDeleteWidget">
-            3) Delete Bar Widget
-        </button>
-        <button class="btn" id="btnAddPieChartWidget">
-            4) Add Pie Chart widget
-        </button>
-        <button class="btn" id="btnAddBarChartWidget">
-            5) Add Bar Chart widget
-        </button>
-        <button class="btn" id="btnAddLineChartWidget">
-            6) Add Line Chart widget
+    <div>
+        <button class="btn margin-left-10" id="btnRefresh">
+            Refresh
         </button>
 		
     </div>
