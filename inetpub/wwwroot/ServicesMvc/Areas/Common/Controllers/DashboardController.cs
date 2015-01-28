@@ -6,6 +6,7 @@ using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using System.Linq;
 using GeneralTools.Models;
@@ -36,8 +37,6 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetBarChartData(string id)
         {
-            Thread.Sleep(300);
-
             var data = new []
                 {
                     new []
@@ -59,7 +58,10 @@ namespace ServicesMvc.Common.Controllers
 
             var options = "";
             if (dashboardItem != null)
+            {
                 options = dashboardItem.ChartJsonOptions;
+                DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
+            }
 
             return Json(new { data, options });
         }

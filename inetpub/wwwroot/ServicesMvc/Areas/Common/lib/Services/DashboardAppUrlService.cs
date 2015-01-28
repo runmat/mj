@@ -11,7 +11,7 @@ namespace CkgDomainLogic.General.Services
 {
     public class DashboardAppUrlService
     {
-        public static void InvokeViewModelForAppUrl(string appUrl, IContainer iocContainer = null)
+        public static void InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
@@ -33,7 +33,7 @@ namespace CkgDomainLogic.General.Services
             if (vm == null)
                 return;
 
-            Do(vm, () => new ZulassungsReportSelektor
+            Do(vm, key, () => new ZulassungsReportSelektor
                                 {
                                     ZulassungsDatumRange = new DateRange
                                         {
@@ -44,7 +44,7 @@ namespace CkgDomainLogic.General.Services
                                 });
         }
 
-        private static void Do(object vm, Func<object> createSelectorObjectFunc)
+        private static void Do(object vm, string key, Func<object> createSelectorObjectFunc)
         {
             var vmType = vm.GetType();
 
@@ -56,7 +56,7 @@ namespace CkgDomainLogic.General.Services
             if (piDashboardItems == null)
                 return;
 
-            var piDashboardItemsLoadMethod = vmType.GetMethodWithAttribute(typeof(DashboardItemsLoadMethod));
+            var piDashboardItemsLoadMethod = vmType.GetMethodWithAttribute<DashboardItemsLoadMethodAttribute>(attr => attr.Key == key);
             if (piDashboardItemsLoadMethod == null)
                 return;
 
