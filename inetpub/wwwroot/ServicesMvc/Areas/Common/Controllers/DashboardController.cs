@@ -36,7 +36,7 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetBarChartData()
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             var data = new []
                 {

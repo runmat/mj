@@ -201,7 +201,7 @@
                 return;
 
             chart.formPreparePrivate(chart);
-            showBusy(chart.GetPlaceHolderID(), 20, -35);
+            showBusy($("#" + chart.GetPlaceHolderID()), 20, -35);
             chart.GetFilterForm().submit();
         });
 
@@ -224,7 +224,7 @@
         }
 
         chartPlaceHolder.fadeTo("fast", 0.8, function () {
-            showBusy(chartPlaceHolderID, 20, -35);
+            showBusy($("#" + chartPlaceHolderID), 20, -35);
         });
 
         $.ajax({
@@ -238,7 +238,7 @@
                     chartPlaceHolder.slideDown(300, null, function () {
                         chart.showChart(chart, result);
                         chartPlaceHolder.fadeTo("fast", 1.0, function () {
-                            hideBusy(chartPlaceHolderID);
+                            hideBusy($("#" + chartPlaceHolderID));
                         });
                     });
                 }

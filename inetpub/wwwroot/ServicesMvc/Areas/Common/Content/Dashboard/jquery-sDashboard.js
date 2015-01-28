@@ -239,7 +239,7 @@
             //add widgetHeader to widgetContainer
             widgetContainer.append(widgetHeader);
             //add widgetContent to widgetContainer
-            widgetContent.prepend($("<div>Please wait...</div>").addClass("sDashboardWidgetContentBusyHint"));
+            widgetContent.prepend($("<div></div>").addClass("sDashboardWidgetContentBusyHint"));
             widgetContainer.append(widgetContent);
 
             //append the widgetContainer to the widget

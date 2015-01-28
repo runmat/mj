@@ -4,6 +4,17 @@
 
 <h3 class="page-title">Dashboard <small>Sample</small> </h3>
 
+    
+<div>
+    <button class="btn margin-left-10" id="btnRefresh">
+        Refresh
+    </button>
+</div>
+		
+<ul id="myDashboard">
+
+</ul>
+
 <script type="text/javascript">
 
     function FormPreparePrivate() {
@@ -16,12 +27,7 @@
 
     var _dashboardData = { data: null, options: null };
 
-	function FormPrepareDashboard() 
-	{
-		//**********************************************//
-		//dashboard json data
-		//this is the data format that the dashboard framework expects
-	    //**********************************************//
+    function FormPrepareDashboard() {
 
 	    var dashboardJson =
 	    [{
@@ -72,6 +78,8 @@
 	function InitDashboardChain() {
 
 	    var widgetId = "#id002";
+	    var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+	    showBusy(busyHintDiv, 0, 0);
 	    $.ajax(
         {
             type: "POST",
@@ -80,8 +88,9 @@
             loadingShow: false,
             success: function (result) {
                 _dashboardData = result;
-                //$(widgetId + " .sDashboardWidgetContent").removeClass("hide");
-                $(widgetId + " .sDashboardWidgetContentBusyHint").addClass("hide");
+                hideBusy(busyHintDiv);
+                //alert("");
+                busyHintDiv.addClass("hide");
 
                 $(widgetId + " .sDashboard-refresh-icon").trigger("click");
             }
@@ -89,17 +98,3 @@
     }
 
 </script>
-
-<div>
-    
-    <div>
-        <button class="btn margin-left-10" id="btnRefresh">
-            Refresh
-        </button>
-		
-    </div>
-		
-    <ul id="myDashboard">
-
-    </ul>
-</div>

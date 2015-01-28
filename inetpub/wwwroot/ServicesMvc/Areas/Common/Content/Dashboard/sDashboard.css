@@ -25,7 +25,15 @@
 	height: 227px !important;
 	width: 400px !important;
 }
-
+.sDashboardWidgetContentBusyHint 
+ {
+    border: 0;
+	height: 140px !important;
+	width: 400px !important;
+    margin-left: -10px;
+    margin-bottom: 100px;
+ }
+ 
 /*dashboard widget css*/
 .sDashboardWidget {
 	/*margin: 0 1em 1em 0;*/
@@ -228,8 +236,4 @@ li.ui-sortable-placeholder {
  position: fixed;
  }*/
  
- .sDashboardWidgetContentBusyHint {
-     margin-top: 60px;
-     margin-bottom: 150px;
-     text-align: center;
- }
+ 
