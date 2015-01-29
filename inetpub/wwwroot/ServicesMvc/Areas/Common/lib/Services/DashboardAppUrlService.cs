@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
-using CkgDomainLogic.Autohaus.Models;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using ServicesMvc;
 
@@ -11,7 +11,7 @@ namespace CkgDomainLogic.General.Services
 {
     public class DashboardAppUrlService
     {
-        public static void InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
+        public static DashboardItemsPackage InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
@@ -20,51 +20,32 @@ namespace CkgDomainLogic.General.Services
 
             var controllerType = GetControllerType(area, controller, servicesMvcAssembly);
             if (controllerType == null)
-                return;
+                return null;
 
             var ctor = controllerType.GetConstructors().First();
             var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p => GetInstanceOf(p.ParameterType, iocContainer)).ToArray());
 
             var piDashboardProviderViewModel = controllerType.GetPropertyOfClassWithAttribute(typeof (DashboardProviderViewModelAttribute));
             if (piDashboardProviderViewModel == null)
-                return;
+                return null;
 
             var vm = piDashboardProviderViewModel.GetValue(controllerObject, null);
             if (vm == null)
-                return;
+                return null;
 
-            Do(vm, key, () => new ZulassungsReportSelektor
-                                {
-                                    ZulassungsDatumRange = new DateRange
-                                        {
-                                            IsSelected = true,
-                                            StartDate = DateTime.Today.AddMonths(-4),
-                                            EndDate = DateTime.Today.AddMonths(-2),
-                                        }
-                                });
+            return GetItems(vm, key);
         }
 
-        private static void Do(object vm, string key, Func<object> createSelectorObjectFunc)
+        private static DashboardItemsPackage GetItems(object vm, string key)
         {
             var vmType = vm.GetType();
 
-            var piDashboardItemSelector = vmType.GetPropertyWithAttribute(typeof(DashboardItemSelectorAttribute));
-            if (piDashboardItemSelector == null)
-                return;
-
-            var piDashboardItems = vmType.GetPropertyWithAttribute(typeof(DashboardItemsAttribute));
-            if (piDashboardItems == null)
-                return;
-
             var piDashboardItemsLoadMethod = vmType.GetMethodWithAttribute<DashboardItemsLoadMethodAttribute>(attr => attr.Key == key);
             if (piDashboardItemsLoadMethod == null)
-                return;
+                return null;
 
-            var selector = createSelectorObjectFunc();
-            piDashboardItemSelector.SetValue(vm, selector, null);
-
-            piDashboardItemsLoadMethod.Invoke(vm, piDashboardItemsLoadMethod.GetParameters().Select(p => (object)null).ToArray());
-            var items = piDashboardItems.GetValue(vm, null);
+            var data = (DashboardItemsPackage)piDashboardItemsLoadMethod.Invoke(vm, piDashboardItemsLoadMethod.GetParameters().Select(p => (object)null).ToArray());
+            return data;
         }
 
         private static object GetInstanceOf(Type type, IContainer iocContainer)

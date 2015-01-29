@@ -37,33 +37,26 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetBarChartData(string id)
         {
-            var data = new []
-                {
-                    new []
-                        {
-                            new []{3, 0}, new []{9, 1}, new []{2, 2}, new []{10, 3}
-                        },
-                };
-            if (id.Contains("003"))
-                data = new []
-                    {
-                        new []
-                            {
-                                new []{5, 0}, new []{1, 1}, new []{9, 2}, new []{4, 3}, new []{7, 4}
-                            },
-                    };
-
             var dbId = id.Replace("id_", "").Replace("#", "");
             var dashboardItem = ViewModel.DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
 
-            var options = "";
             if (dashboardItem != null)
             {
-                options = dashboardItem.ChartJsonOptions;
-                DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
+                var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
+                var options = dashboardItem.ChartJsonOptions;
+                if (options.NotNullOrEmpty().Contains("@ticks") && data.labels != null)
+                {
+                    // [[0,"walter"], [1,"zabel"]]
+                    var labelArray = data.labels;
+                    options = options.Replace("@ticks", 
+                        string.Format("[{0}]", 
+                            string.Join(",", labelArray.Select(s => string.Format("[{0},\"{1}\"]", labelArray.ToList().IndexOf(s), s)) )));
+                }
+
+                return Json(new { data, options });
             }
 
-            return Json(new { data, options });
+            return Json(new { });
         }
     }
 }

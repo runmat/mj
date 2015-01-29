@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.General.Contracts;
 
-namespace CkgDomainLogic.DomainCommon.Contracts
+namespace CkgDomainLogic.General.Contracts
 {
     public interface IDashboardDataService
     {
