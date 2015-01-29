@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -17,7 +18,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
-        [DashboardItemSelector]
         public ZulassungsReportSelektor Selektor
         {
             get { return PropertyCacheGet(() => new ZulassungsReportSelektor()); }
@@ -25,7 +25,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore]
-        [DashboardItems]
         public List<ZulassungsReportModel> Items
         {
             get { return PropertyCacheGet(() => new List<ZulassungsReportModel>()); }
@@ -72,27 +71,84 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
         }
 
-        [DashboardItemsLoadMethod("Zulassungen")]
+        private List<ZulassungsReportModel> GetAllItems(ZulassungsReportSelektor selector, Action<string, string> addModelError)
+        {
+            var items = new List<ZulassungsReportModel>();
+            if (selector.KundenNr.IsNotNullOrEmpty())
+                items = DataService.GetZulassungsReportItems(selector, Kunden, addModelError);
+            else
+            {
+                foreach (var kunde in Kunden)
+                {
+                    selector.KundenNr = kunde.KundenNr;
+                    items = items.Concat(DataService.GetZulassungsReportItems(selector, Kunden, addModelError)).ToListOrEmptyList();
+                }
+            }
+
+            return items;
+        }
+
         public void LoadZulassungsReport(Action<string, string> addModelError)
         {
-            Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
+            Items = GetAllItems(Selektor, addModelError);
 
             DataMarkForRefresh();
         }
 
-        [DashboardItemsLoadMethod("Abmeldungen")]
-        public void LoadAbmeldungsReport(Action<string, string> addModelError)
+        [DashboardItemsLoadMethod("Zulassungen")]
+        public DashboardItemsPackage LoadChartDataZulassungen()
         {
-            Items = DataService.GetZulassungsReportItems(Selektor, Kunden, addModelError);
+            var selector = new ZulassungsReportSelektor
+                {
+                    ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+                };
 
-            // ToDo: Test
-            Items.ForEach(item =>
+            var items = GetAllItems(selector, null);
+
+            var xAxisArray = items.GroupBy(kunde => kunde.ZulassungDatum.ToFirstDayOfMonth()).OrderBy(k => k.Key).Select(k => k.Key).ToList();
+            xAxisArray.Insert(0, xAxisArray.Min().AddMonths(-1));
+            var xAxisLabels = xAxisArray.Select(date => date.ToString("yyyyMM")).ToArray();
+
+            var data = new object[Kunden.Count];
+            for (var k = 0; k < Kunden.Count; k++)
+            {
+                var subArray = items
+                    .Where(kunde => kunde.KundenNr == Kunden[k].KundenNr)
+                    .GroupBy(group => xAxisArray.IndexOf(group.ZulassungDatum.ToFirstDayOfMonth()))
+                    .Select(g => new [] { g.Key, g.Count() })
+                    .ToArray();
+
+                data[k] = new 
+                {
+                    data = subArray,
+                    label = Kunden[k].KundenNr.Trim('0')
+                };
+            }
+
+            return new DashboardItemsPackage
+                {
+                    data = data,
+                    labels = xAxisLabels
+                };
+        }
+
+        [DashboardItemsLoadMethod("Abmeldungen")]
+        public DashboardItemsPackage LoadChartDataAbmeldungen()
+        {
+            var selector = new ZulassungsReportSelektor
+            {
+                AuftragsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+            };
+
+            var items = DataService.GetZulassungsReportItems(selector, Kunden, null);
+
+            items.ForEach(item =>
                 {
                     if (item.ZulassungDatum != null)
                         item.ZulassungDatum = item.ZulassungDatum.GetValueOrDefault().AddYears(-5).AddMonths(-6);
                 });
 
-            DataMarkForRefresh();
+            return null;
         }
 
         public void FilterZulassungsReport(string filterValue, string filterProperties)

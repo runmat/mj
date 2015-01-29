@@ -103,6 +103,7 @@
     <Compile Include="General\Models\Attributes\KennzeichenAttribute.cs" />
     <Compile Include="General\Models\Attributes\ZulassungsKreisAttribute.cs" />
     <Compile Include="General\Models\Attributes\VIN.cs" />
+    <Compile Include="General\Models\DashboardItemsPackage.cs" />
     <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
     <Compile Include="General\Models\DataModels\KundeAusHierarchie.cs" />
@@ -170,8 +171,6 @@
     </Compile>
     <Compile Include="Services\AdressenDataServiceSAP.cs" />
     <Compile Include="Services\CkgDomainAppSettings.cs" />
-    <Compile Include="General\Services\Dashboard\Attributes\DashboardItemsAttribute.cs" />
-    <Compile Include="General\Services\Dashboard\Attributes\DashboardItemSelectorAttribute.cs" />
     <Compile Include="General\Services\Dashboard\Attributes\DashboardItemsLoadMethodAttribute.cs" />
     <Compile Include="General\Services\Dashboard\Attributes\DashboardProviderViewModelAttribute.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />

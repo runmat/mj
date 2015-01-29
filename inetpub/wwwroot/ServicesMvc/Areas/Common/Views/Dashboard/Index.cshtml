@@ -102,9 +102,10 @@
                 data: { id: widgetId },
                 loadingShow: false,
                 success: function (result) {
-                    _dashboardData.data = result.data;
+
+                    _dashboardData.data = result.data.data;
+                    console.log(result.data.labels);
                     _dashboardData.options = jQuery.parseJSON(result.options);
-                    console.log(result.options);
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();

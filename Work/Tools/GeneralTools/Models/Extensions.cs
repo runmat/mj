@@ -412,6 +412,22 @@ namespace GeneralTools.Models
             return tmp;
         }
 
+        public static DateTime ToFirstDayOfMonth(this DateTime? dateValue)
+        {
+            var date = dateValue.GetValueOrDefault();
+
+            return date.AddDays((date.Day * -1) + 1);
+        }
+
+        public static double ToJsonTicks(this DateTime dateValue)
+        {
+            var d1 = new DateTime(1970, 1, 1);
+            var d2 = dateValue.ToUniversalTime();
+            var ts = new TimeSpan(d2.Ticks - d1.Ticks);
+
+            return Math.Round(ts.TotalMilliseconds, 0);
+        }
+
         public static bool XToBool(this string stringValue)
         {
             return (stringValue.NotNullOrEmpty().ToUpper() == "X");
