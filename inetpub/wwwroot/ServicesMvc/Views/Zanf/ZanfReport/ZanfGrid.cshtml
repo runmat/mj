@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.Zanf.Models
+@using CkgDomainLogic.Zanf.ViewModels
+@model ZanfReportViewModel 
+
+@{ var gridName = "GridZulassungsAnforderungen"; }
+
+@(Html.Telerik()
+    .Grid<ZulassungsAnforderung>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("ZulassungsAnforderungenAjaxBinding", "Zanf")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.AnforderungsNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.KundenreferenzNr);
+        columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Ausfuehrungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Klaerfall);
+        columns.XBound(c => c.KlaerfallText);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AnforderungsNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportZulassungsAnforderungenFilteredExcel", "Zanf");
+        commands.FilteredDataCommand("ExportZulassungsAnforderungenFilteredPDF", "Zanf");
+    })
+)
