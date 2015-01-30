@@ -11,7 +11,7 @@ namespace CkgDomainLogic.General.Services
 {
     public class DashboardAppUrlService
     {
-        public static DashboardItemsPackage InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
+        public static ChartItemsPackage InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
@@ -36,7 +36,7 @@ namespace CkgDomainLogic.General.Services
             return GetItems(vm, key);
         }
 
-        private static DashboardItemsPackage GetItems(object vm, string key)
+        private static ChartItemsPackage GetItems(object vm, string key)
         {
             var vmType = vm.GetType();
 
@@ -44,7 +44,7 @@ namespace CkgDomainLogic.General.Services
             if (piDashboardItemsLoadMethod == null)
                 return null;
 
-            var data = (DashboardItemsPackage)piDashboardItemsLoadMethod.Invoke(vm, piDashboardItemsLoadMethod.GetParameters().Select(p => (object)null).ToArray());
+            var data = (ChartItemsPackage)piDashboardItemsLoadMethod.Invoke(vm, piDashboardItemsLoadMethod.GetParameters().Select(p => (object)null).ToArray());
             return data;
         }
 
@@ -66,7 +66,7 @@ namespace CkgDomainLogic.General.Services
             return controllerType;
         }
 
-        private static string GetAppUrlParts(string appUrl, out string area, out string controller, out string action)
+        private static void GetAppUrlParts(string appUrl, out string area, out string controller, out string action)
         {
             appUrl = appUrl.NotNullOrEmpty().ToLower();
             if (appUrl.StartsWith("mvc/"))
@@ -79,8 +79,6 @@ namespace CkgDomainLogic.General.Services
                 area = urlParts[++index];
             controller = urlParts[++index];
             action = urlParts[++index];
-
-            return appUrl;
         }
     }
 }

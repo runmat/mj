@@ -46,7 +46,7 @@ namespace ServicesMvc.Common.Controllers
                 var options = dashboardItem.ChartJsonOptions;
                 if (options.NotNullOrEmpty().Contains("@ticks") && data.labels != null)
                 {
-                    // [[0,"walter"], [1,"zabel"]]
+                    // label array json format, as string: "[[0,\"label 1\"], [1,\"label 2\"], [2,\"label 3\"]]"
                     var labelArray = data.labels;
                     options = options.Replace("@ticks", 
                         string.Format("[{0}]", 

@@ -2,7 +2,7 @@
 
 namespace CkgDomainLogic.General.Models
 {
-    public class DashboardItemsPackage 
+    public class ChartItemsPackage 
     {
         public object data { get; set; }
 
