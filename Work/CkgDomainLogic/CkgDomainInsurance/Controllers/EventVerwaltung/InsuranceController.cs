@@ -53,6 +53,14 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SchadenDokumenteAlle()
+        {
+            EventsViewModel.DataInit(UserCulture);
+
+            return View(EventsViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult Schadenverwaltung()
         {
             EventsViewModel.DataInit(UserCulture);
@@ -125,6 +133,24 @@ namespace ServicesMvc.Controllers
         public ActionResult FilterSchadenStatusAlleGrid(string filterValue, string filterColumns)
         {
             EventsViewModel.AlleSchadenStatusFilter(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Schadenfall Dokumente
+
+        [GridAction]
+        public ActionResult SchadenfallDokumenteAlleAjaxBinding()
+        {
+            return View(new GridModel(EventsViewModel.SchadenDokumenteAlleFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterSchadenDokumenteAlleGrid(string filterValue, string filterColumns)
+        {
+            EventsViewModel.AlleSchadenDokumenteFilter(filterValue, filterColumns);
 
             return new EmptyResult();
         }

@@ -13,6 +13,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public ICustomerDocumentDataService DataService { get { return CacheGet<ICustomerDocumentDataService>(); } }
 
         [XmlIgnore]
+        public List<CustomerDocument> AllDocuments { get { return DataService.AllDocuments; } }
+
+        [XmlIgnore]
         public List<CustomerDocument> Documents { get { return DataService.Documents; } }
 
         [XmlIgnore]
@@ -29,6 +32,20 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         }
 
         #region Filter
+
+        [XmlIgnore]
+        private List<CustomerDocument> m_AllDocumentsFiltered;
+        [XmlIgnore]
+        public List<CustomerDocument> AllDocumentsFiltered
+        {
+            get { return m_AllDocumentsFiltered ?? AllDocuments; }
+            private set { m_AllDocumentsFiltered = value; }
+        }
+
+        public void FilterAllDocuments(string filterValue, string filterProperties)
+        {
+            AllDocumentsFiltered = AllDocuments.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
 
         [XmlIgnore]
         private List<CustomerDocument> m_DocumentsFiltered;
