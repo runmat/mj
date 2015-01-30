@@ -308,7 +308,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult TerminSchadenfallEdit(int id)
+        public ActionResult TerminSchadenfallMove(int id)
         {
             EventsViewModel.InsertMode = false;
             ModelState.Clear();
@@ -438,6 +438,14 @@ namespace ServicesMvc.Controllers
         public ActionResult TerminSchadenfallKalenderEditElement(string boxArt, string key, string startDateString, int startTimeHours, int startTimeMinutes, int endTimeHours, int endTimeMinutes)
         {
             EventsViewModel.TerminCurrentPrepare(boxArt, key, startDateString, startTimeHours, startTimeMinutes, endTimeHours, endTimeMinutes);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
+        }
+        
+        [HttpPost]
+        public ActionResult TerminSchadenfallKalenderEditElementFromSchadenfallId(int id)
+        {
+            EventsViewModel.TerminCurrentPrepareFromSchadenfallId(id);
 
             return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
         }
