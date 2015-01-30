@@ -25,7 +25,7 @@ namespace CkgDomainLogic.General.Services
 
         public IEnumerable<DashboardItem> GetDashboardItems()
         {
-            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem");
+            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem order by Sort");
         }
     }
 }

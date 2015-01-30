@@ -1,8 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-using System.Threading;
-using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Contracts;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -10,6 +6,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using System.Linq;
 using GeneralTools.Models;
+using System.IO;
 
 namespace ServicesMvc.Common.Controllers
 {
@@ -43,7 +40,14 @@ namespace ServicesMvc.Common.Controllers
             if (dashboardItem != null)
             {
                 var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
-                var options = dashboardItem.ChartJsonOptions;
+
+                var chartOptionsFileName = Path.Combine(AppSettings.DataPath, "DashBoard", "ChartTemplates", 
+                                            string.Format("{0}.txt", dashboardItem.ChartJsonOptions));
+                if (!System.IO.File.Exists(chartOptionsFileName))
+                    return Json(new { });
+
+                var options = System.IO.File.ReadAllText(chartOptionsFileName);
+
                 if (options.NotNullOrEmpty().Contains("@ticks") && data.labels != null)
                 {
                     // label array json format, as string: "[[0,\"label 1\"], [1,\"label 2\"], [2,\"label 3\"]]"

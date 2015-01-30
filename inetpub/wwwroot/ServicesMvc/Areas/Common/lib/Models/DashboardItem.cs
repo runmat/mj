@@ -15,5 +15,7 @@ namespace CkgDomainLogic.General.Database.Models
         public string RelatedSelectorModel { get; set; }
 
         public string ChartJsonOptions { get; set; }
+    
+        public int? Sort { get; set; }
     }
 }

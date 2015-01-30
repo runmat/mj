@@ -433,6 +433,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />
     <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
     <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
     <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />

@@ -11,10 +11,10 @@ namespace CkgDomainLogic.General.Services
         public static ChartItemsPackage GetGroupedAndStackedItemsWithLabels<T>
             (
                 IList<T> items,
-                IEnumerable<string> stackedGroupValues,
-                Func<T, string> stackedKey,
                 Func<T, string> xAxisKey,
                 Action<IList<string>> addAdditionalXaxisKeys = null,
+                IEnumerable<string> stackedGroupValues = null,
+                Func<T, string> stackedKey = null,
                 Func<IGrouping<int, T>, int> aggregate = null
             ) where T : class
         {
@@ -22,6 +22,12 @@ namespace CkgDomainLogic.General.Services
             if (xAxisList.Any() && addAdditionalXaxisKeys != null)
                 addAdditionalXaxisKeys(xAxisList);
             var xAxisLabels = xAxisList.ToArray();
+
+            if (stackedGroupValues == null)
+                stackedGroupValues = new []{""};
+
+            if (stackedKey == null)
+                stackedKey = e => "";
 
             var groupValuesArray = stackedGroupValues.ToArray();
             var data = new object[stackedGroupValues.Count()];

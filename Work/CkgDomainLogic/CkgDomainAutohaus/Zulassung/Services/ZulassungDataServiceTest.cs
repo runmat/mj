@@ -89,9 +89,10 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             return new List<Kunde>
                 {
-                    new Kunde { KundenNr = "4711", Name1 = "Walter" },
-                    new Kunde { KundenNr = "4712", Name1 = "Zabel" },
-                    new Kunde { KundenNr = "4713", Name1 = "GmbH" },
+                    new Kunde { KundenNr = "Avis", Name1 = "Avis Autovermietung GmbH" },
+                    new Kunde { KundenNr = "CSI", Name1 = "CSI Catastrophe International Inc." },
+                    new Kunde { KundenNr = "Tesla", Name1 = "Tesla Motors" },
+                    new Kunde { KundenNr = "Sixt", Name1 = "Sixt Leasing GmbH" },
                 };
         }
 
@@ -100,12 +101,12 @@ namespace CkgDomainLogic.Autohaus.Services
             return null;
         }
 
-        private IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
+        private static IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
         {
             return null;
         }
 
-        private IEnumerable<Material> LoadZulassungsAbmeldeArtenFromSap()
+        private static IEnumerable<Material> LoadZulassungsAbmeldeArtenFromSap()
         {
             return null;
         }
@@ -139,7 +140,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
-            var list = (_zulassungsReportItems ?? (_zulassungsReportItems = CreateZulassungsReportItems(selector, kunden, addModelError)));
+            var list = (_zulassungsReportItems ?? (_zulassungsReportItems = CreateZulassungsReportItems()));
 
             if (selector.ZulassungsDatumRange.IsSelected)
                 list = list.Where(item =>
@@ -156,7 +157,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return list;
         }
 
-        private List<ZulassungsReportModel> CreateZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
+        private List<ZulassungsReportModel> CreateZulassungsReportItems()
         {
             var list = new List<ZulassungsReportModel>();
 
