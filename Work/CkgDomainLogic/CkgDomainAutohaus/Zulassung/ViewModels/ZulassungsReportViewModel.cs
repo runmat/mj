@@ -16,8 +16,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
     [DashboardProviderViewModel]
     public class ZulassungsReportViewModel : CkgBaseViewModel
     {
+        #region Main functionality
+
         [XmlIgnore, ScriptIgnore]
-        public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
+        public IZulassungDataService DataService
+        {
+            get { return CacheGet<IZulassungDataService>(); }
+        }
 
         public ZulassungsReportSelektor Selektor
         {
@@ -46,14 +51,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Kunde> Kunden { get { return DataService.Kunden; } }
+        public List<Kunde> Kunden
+        {
+            get { return DataService.Kunden; }
+        }
 
         [XmlIgnore]
         public static string AuftragsArtOptionen
         {
             get
             {
-                return string.Format("1,{0};2,{1};3,{2}", Localize.AllOrders, Localize.FinishedOrders, Localize.OpenOrders);
+                return string.Format("1,{0};2,{1};3,{2}", Localize.AllOrders, Localize.FinishedOrders,
+                                     Localize.OpenOrders);
             }
         }
 
@@ -72,7 +81,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
         }
 
-        private List<ZulassungsReportModel> GetAllItems(ZulassungsReportSelektor selector, Action<string, string> addModelError)
+        private List<ZulassungsReportModel> GetAllItems(ZulassungsReportSelektor selector,
+                                                        Action<string, string> addModelError)
         {
             var items = new List<ZulassungsReportModel>();
             if (selector.KundenNr.IsNotNullOrEmpty())
@@ -82,7 +92,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 foreach (var kunde in Kunden)
                 {
                     selector.KundenNr = kunde.KundenNr;
-                    items = items.Concat(DataService.GetZulassungsReportItems(selector, Kunden, addModelError)).ToListOrEmptyList();
+                    items =
+                        items.Concat(DataService.GetZulassungsReportItems(selector, Kunden, addModelError))
+                             .ToListOrEmptyList();
                 }
             }
 
@@ -96,30 +108,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             DataMarkForRefresh();
         }
 
-        [DashboardItemsLoadMethod("ZulassungenProKundeUndMonat")]
-        public ChartItemsPackage NameNotRelevant01()
+        public void FilterZulassungsReport(string filterValue, string filterProperties)
         {
-            var selector = new ZulassungsReportSelektor
-            {
-                ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
-            };
-
-            var items = GetAllItems(selector, null);
-
-
-            Func<string, string> stackedKeyFormat = (itemKey => itemKey.Trim('0'));
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
-            Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
-
-            var stackedGroupValues = items.GroupBy(k => stackedKeyFormat(k.KundenNr)).OrderBy(k => k.Key).Select(k => k.Key);
-
-            return ChartService.GetGroupedAndStackedItemsWithLabels(
-                    items, stackedGroupValues,
-                    stackedKey => stackedKeyFormat(stackedKey.KundenNr),
-                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
-                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
-                );
+            ItemsFiltered = Items.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+        #endregion
+
+
+        #region Dashboard functionality
+
         [DashboardItemsLoadMethod("ZulassungenUmsatzProKundeUndMonat")]
         public ChartItemsPackage NameNotRelevant02()
         {
@@ -131,53 +129,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var items = GetAllItems(selector, null);
 
 
-            Func<string, string> stackedKeyFormat = (itemKey => itemKey.Trim('0'));
+            Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
-            Func<IGrouping<int, ZulassungsReportModel>, int> aggregate = (g => (int) g.Sum(item => item.Preis));
+            Func<IGrouping<int, ZulassungsReportModel>, int> aggregate = (g => (int)g.Sum(item => item.Preis));
 
-            var stackedGroupValues = items.GroupBy(k => stackedKeyFormat(k.KundenNr)).OrderBy(k => k.Key).Select(k => k.Key);
+            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
 
             return ChartService.GetGroupedAndStackedItemsWithLabels(
-                    items, stackedGroupValues,
-                    stackedKey => stackedKeyFormat(stackedKey.KundenNr),
+                    items, 
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
                     xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1))),
+                    stackedGroupValues, stackedKey,
                     aggregate
                 );
         }
 
-        [DashboardItemsLoadMethod("ZulassungenProKundeUndWoche")]
-        public ChartItemsPackage NameNotRelevant03()
-        {
-            var selector = new ZulassungsReportSelektor
-            {
-                ZulassungsDatumRange = new DateRange(DateRangeType.Last60Days, true)
-            };
-
-            var items = GetAllItems(selector, null);
-
-            Func<string, string> stackedKeyFormat = (itemKey => itemKey.Trim('0'));
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.FormatYearAndWeek("yy"));
-            Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfWeek());
-
-            var stackedGroupValues = items.GroupBy(k => stackedKeyFormat(k.KundenNr)).OrderBy(k => k.Key).Select(k => k.Key);
-
-            return ChartService.GetGroupedAndStackedItemsWithLabels(
-                    items, stackedGroupValues,
-                    stackedKey => stackedKeyFormat(stackedKey.KundenNr),
-                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
-                    xAxisList =>
-                        {
-                            xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-7)));
-                            xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-14)));
-                            xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-21)));
-                        }
-                );
-        }
-
-        [DashboardItemsLoadMethod("ZulassungenAlleKunden")]
-        public ChartItemsPackage NameNotRelevant04()
+        [DashboardItemsLoadMethod("ZulassungenProKundeUndMonat")]
+        public ChartItemsPackage NameNotRelevant01()
         {
             var selector = new ZulassungsReportSelektor
             {
@@ -187,22 +156,90 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var items = GetAllItems(selector, null);
 
 
+            Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
-            var stackedGroupValues = new[]{ "all" };
+            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
 
             return ChartService.GetGroupedAndStackedItemsWithLabels(
-                    items, stackedGroupValues,
-                    stackedKey => "all",
+                    items, 
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
+                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1))),
+                    stackedGroupValues, stackedKey
+                );
+        }
+
+        [DashboardItemsLoadMethod("ZulassungenProKundeGesamt")]
+        public ChartItemsPackage NameNotRelevant05()
+        {
+            var selector = new ZulassungsReportSelektor
+            {
+                ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+            };
+
+            var items = GetAllItems(selector, null);
+
+
+            Func<ZulassungsReportModel, string> xAxisKeyModel = (groupKey => groupKey.KundenNr.Trim('0'));
+
+            return ChartService.GetGroupedAndStackedItemsWithLabels(
+                    items, 
+                    xAxisKeyModel,
+                    xAxisList => xAxisList.Insert(0, "")
+                );
+        }
+
+        [DashboardItemsLoadMethod("ZulassungenProKundeUndWoche")]
+        public ChartItemsPackage NameNotRelevant03()
+        {
+            var selector = new ZulassungsReportSelektor
+                {
+                    ZulassungsDatumRange = new DateRange(DateRangeType.Last60Days, true)
+                };
+
+            var items = GetAllItems(selector, null);
+
+
+            Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.FormatYearAndWeek("yy"));
+            Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfWeek());
+
+            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
+
+            return ChartService.GetGroupedAndStackedItemsWithLabels(
+                    items, 
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
+                    xAxisList =>
+                        {
+                            xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-7)));
+                            xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-14)));
+                        },
+                    stackedGroupValues, stackedKey
+                );
+        }
+
+        [DashboardItemsLoadMethod("ZulassungenAlleKunden")]
+        public ChartItemsPackage NameNotRelevant04()
+        {
+            var selector = new ZulassungsReportSelektor
+                {
+                    ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+                };
+
+            var items = GetAllItems(selector, null);
+
+
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
+
+            return ChartService.GetGroupedAndStackedItemsWithLabels(
+                    items, 
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
                     xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
                 );
         }
 
-        public void FilterZulassungsReport(string filterValue, string filterProperties)
-        {
-            ItemsFiltered = Items.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
+        #endregion
     }
 }
