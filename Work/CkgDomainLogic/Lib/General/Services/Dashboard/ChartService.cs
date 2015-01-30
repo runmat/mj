@@ -8,6 +8,7 @@ namespace CkgDomainLogic.General.Services
 {
     public class ChartService
     {
+<<<<<<< HEAD
         public static ChartItemsPackage GetPieChartGroupedItemsWithLabels<T>
             (
                 IList<T> items,
@@ -51,10 +52,24 @@ namespace CkgDomainLogic.General.Services
             ) where T : class
         {
             var xAxisList = items.OrderBy(xAxisKey).GroupBy(xAxisKey).Select(k => k.Key).ToListOrEmptyList();
+=======
+        public static ChartItemsPackage GetGroupedAndStackedItemsWithLabels<T>
+            (
+                IList<T> items,
+                IEnumerable<string> stackedGroupValues,
+                Func<T, string> stackedKey,
+                Func<T, string> xAxisKey,
+                Action<IList<string>> addAdditionalXaxisKeys = null,
+                Func<IGrouping<int, T>, int> aggregate = null
+            ) where T : class
+        {
+            var xAxisList = items.GroupBy(xAxisKey).OrderBy(k => k.Key).Select(k => k.Key).ToListOrEmptyList();
+>>>>>>> 5ffbd0e... simplification of chart data grouping and aggregating
             if (xAxisList.Any() && addAdditionalXaxisKeys != null)
                 addAdditionalXaxisKeys(xAxisList);
             var xAxisLabels = xAxisList.ToArray();
 
+<<<<<<< HEAD
             //if (stackedGroupValues == null)
             //    stackedGroupValues = new[] { "" };
 
@@ -64,11 +79,18 @@ namespace CkgDomainLogic.General.Services
             var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
             var stackedGroupValuesArray = stackedGroupValues.ToArray();
 
+=======
+            var groupValuesArray = stackedGroupValues.ToArray();
+>>>>>>> 5ffbd0e... simplification of chart data grouping and aggregating
             var data = new object[stackedGroupValues.Count()];
             for (var k = 0; k < stackedGroupValues.Count(); k++)
             {
                 var subArray = items
+<<<<<<< HEAD
                     .Where(item => stackedKey(item) == stackedGroupValuesArray[k])
+=======
+                    .Where(item => stackedKey(item) == groupValuesArray[k])
+>>>>>>> 5ffbd0e... simplification of chart data grouping and aggregating
                     .GroupBy(group => xAxisList.IndexOf(xAxisKey(group)))
                     .Select(g => new[] { g.Key, (aggregate == null ? g.Count() : aggregate(g)) })
                     .ToArray();
@@ -76,7 +98,11 @@ namespace CkgDomainLogic.General.Services
                 data[k] = new
                 {
                     data = subArray,
+<<<<<<< HEAD
                     label = stackedGroupValuesArray[k]
+=======
+                    label = groupValuesArray[k]
+>>>>>>> 5ffbd0e... simplification of chart data grouping and aggregating
                 };
             }
 

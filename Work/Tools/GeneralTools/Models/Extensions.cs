@@ -412,11 +412,41 @@ namespace GeneralTools.Models
             return tmp;
         }
 
+        public static DateTime ToFirstDayOfWeek(this DateTime? dateValue)
+        {
+            var date = dateValue.GetValueOrDefault();
+
+            return date.AddDays(date.DayOfWeek.ToString("d").ToInt() * -1);
+        }
+
         public static DateTime ToFirstDayOfMonth(this DateTime? dateValue)
         {
             var date = dateValue.GetValueOrDefault();
 
             return date.AddDays((date.Day * -1) + 1);
+        }
+
+        public static int GetWeekNumber(this DateTime? dateValue)
+        {
+            return dateValue.GetValueOrDefault().GetWeekNumber();
+        }
+
+        public static int GetWeekNumber(this DateTime dateValue)
+        {
+            var cul = CultureInfo.CurrentCulture;
+            var weekNum = cul.Calendar.GetWeekOfYear(dateValue, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            return weekNum;
+        }
+
+        public static string FormatYearAndWeek(this DateTime? dateValue, string yearFormat = "yyyy")
+        {
+            return dateValue.GetValueOrDefault().FormatYearAndWeek(yearFormat);
+        }
+
+        public static string FormatYearAndWeek(this DateTime dateValue, string yearFormat = "yyyy")
+        {
+            return string.Format("{0}{1}", dateValue.ToString(yearFormat), dateValue.GetWeekNumber().ToString("00"));
         }
 
         public static double ToJsonTicks(this DateTime dateValue)
