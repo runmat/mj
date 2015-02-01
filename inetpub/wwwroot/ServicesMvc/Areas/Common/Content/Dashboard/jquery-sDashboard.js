@@ -62,13 +62,8 @@
                     ui.item.startPosition = ui.item.index();
                 },
                 update: function (event, ui) {
+                    console.log(event, ui);
                     var newPosition = ui.item.index();
-                    console.log(_dashboardData[newPosition].widgetId.replace);
-                    try {
-                        DashboardWidgetEventOrderChanged(_dashboardData[newPosition].widgetId.replace(/id_/g, ""));
-                    }
-                    catch (e) { }
-                    
                     _dashboardData.splice.apply(
 							_dashboardData,
 							[newPosition, 0].concat(_dashboardData.splice(ui.item.startPosition, 1))
@@ -174,12 +169,8 @@
                     self._removeWidgetFromWidgetDefinitions(this.id);
                     $(this).remove();
                     $(".sDashboard-overlay").hide();
-                    console.log("remove widget " + this.id);
-                    try {
-                        DashboardWidgetEventRemove(this.id.replace(/id_/g, ""));
-                    }
-                    catch (e) { }
                 });
+                console.log("remove widget");
             });
 
             //table row click
@@ -213,7 +204,7 @@
             var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader sDashboard-clearfix");
             var maximizeButton = $('<div title="Maximize" class="sDashboard-icon sDashboard-circle-plus-icon "></span>');
 
-            var deleteButton = $('<div title="Chart verbergen" class="sDashboard-icon sDashboard-circle-remove-icon"></div>');
+            var deleteButton = $('<div title="Close" class="sDashboard-icon sDashboard-circle-remove-icon"></div>');
 
             //add delete button
             widgetHeader.append(deleteButton);
@@ -404,11 +395,7 @@
 					);
             }
 
-            console.log("added widget " + widgetDefinition.widgetId);
-            try {
-                DashboardWidgetEventAdd(widgetDefinition.widgetId.replace(/id_/g, ""));
-            }
-            catch (e) { }
+            console.log("add widget programmatically");
         },
         //remove a widget from the dashboard
         removeWidget: function (widgetId) {
@@ -423,6 +410,8 @@
                 this.element.find("li" + idSelector).remove();
                 //remove the dom element from the widgetDefinition
                 this._removeWidgetFromWidgetDefinitions(widgetId);
+
+                console.log("remove widget programmatically");
             }
         },
 
