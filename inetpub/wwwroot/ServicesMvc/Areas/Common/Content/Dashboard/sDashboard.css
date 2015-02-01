@@ -22,7 +22,7 @@
 	margin: 3px 3px 3px 0;
 	padding: 1px;
 	float: left;
-	height: 227px !important;
+	height: 223px !important;
 	width: 400px !important;
 }
 .sDashboardWidgetContentBusyHint 
@@ -141,7 +141,7 @@
 
 /*jquery sortable placeholder styles */
 .ui-sortable-placeholder {
-	border: 1px dotted black;
+	border: 0px dotted black;
 	margin: 3px 3px 3px 0;
 	padding: 1px;
 	visibility: visible !important;

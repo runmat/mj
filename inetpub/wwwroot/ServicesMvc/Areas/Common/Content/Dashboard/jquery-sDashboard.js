@@ -62,6 +62,7 @@
                     ui.item.startPosition = ui.item.index();
                 },
                 update: function (event, ui) {
+                    console.log(event, ui);
                     var newPosition = ui.item.index();
                     _dashboardData.splice.apply(
 							_dashboardData,
@@ -169,6 +170,7 @@
                     $(this).remove();
                     $(".sDashboard-overlay").hide();
                 });
+                console.log("remove widget");
             });
 
             //table row click
@@ -392,6 +394,8 @@
                 }
 					);
             }
+
+            console.log("add widget programmatically");
         },
         //remove a widget from the dashboard
         removeWidget: function (widgetId) {
@@ -406,6 +410,8 @@
                 this.element.find("li" + idSelector).remove();
                 //remove the dom element from the widgetDefinition
                 this._removeWidgetFromWidgetDefinitions(widgetId);
+
+                console.log("remove widget programmatically");
             }
         },
 

@@ -2,7 +2,7 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Dashboard <small>Sample</small> </h3>
+<h3 class="page-title">Dashboard <small>Sample</small><a class="margin-left-50" href="#" onclick="return AddWidget(9);">Add Widget</a> </h3>
 		
 <ul id="myDashboard">
 </ul>
@@ -10,7 +10,7 @@
 <script type="text/javascript">
     var _dashboardJson = [];
 </script>
-@foreach (var dashBoardItem in Model.DashboardItems)
+@foreach (var dashBoardItem in Model.DashboardItems.Where(d => d.ID != 9))
 {
     <script type="text/javascript">
         _dashboardJson.push(
@@ -50,24 +50,19 @@
             dashboardData: _dashboardJson
         });
 
+        DashboardChainInit();
+
+        BindDashboardEvents();
+    }
+
+    function BindDashboardEvents() {
         //widget order changes event example
         $("#myDashboard").bind("sdashboardorderchanged", function (e, data) {
-            $.gritter.add({
-                position: 'bottom-left',
-                title: 'Order Changed',
-                time: 4000,
-                text: 'The widgets order has been changed,check the console for the sorted widget definitions array'
-            });
-            if (console) {
-                console.log("Sorted Array");
-                console.log("+++++++++++++++++++++++++");
-                console.log(data.sortedDefinitions);
-                console.log("+++++++++++++++++++++++++");
-            }
-
+            console.log("Sorted Array");
+            console.log("+++++++++++++++++++++++++");
+            console.log(data.sortedDefinitions);
+            console.log("+++++++++++++++++++++++++");
         });
-
-        DashboardChainInit();
     }
 
     var _dashboardChainIndex = 0;
@@ -128,6 +123,46 @@
                     setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
                 }
             });
+    }
+
+    function AddWidget(rawWidgetId) {
+
+        $("#myDashboard").sDashboard("addWidget",
+            {
+                widgetTitle: "Just Added ;-)",
+                widgetId: "id_" + rawWidgetId,
+                widgetType: "chart",
+                enableRefresh: true,
+                refreshCallBack: function () {
+                    return _dashboardData;
+                },
+                widgetContent: {
+                    data: null,
+                    options: null
+                }
+            });
+
+        var widgetId = "#id_" + rawWidgetId;
+        var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+        showBusy(busyHintDiv, 0, 0);
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "GetBarChartData",
+                data: { id: "id_" + rawWidgetId },
+                loadingShow: false,
+                success: function (result) {
+                    _dashboardData.data = result.data.data;
+                    _dashboardData.options = jQuery.parseJSON(result.options);
+                    console.log(_dashboardData.data);
+                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    hideBusy(busyHintDiv);
+                    busyHintDiv.hide();
+                }
+            });
+
+        return false;
     }
 
 </script>
