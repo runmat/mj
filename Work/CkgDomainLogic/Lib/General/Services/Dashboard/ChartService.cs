@@ -45,7 +45,7 @@ namespace CkgDomainLogic.General.Services
             IList<T> items,
             Func<T, string> xAxisKey,
             Action<IList<string>> addAdditionalXaxisKeys = null,
-            IEnumerable<string> stackedGroupValues = null,
+            //IEnumerable<string> stackedGroupValues = null,
             Func<T, string> stackedKey = null,
             Func<IGrouping<int, T>, int> aggregate = null
             ) where T : class
@@ -55,13 +55,15 @@ namespace CkgDomainLogic.General.Services
                 addAdditionalXaxisKeys(xAxisList);
             var xAxisLabels = xAxisList.ToArray();
 
-            if (stackedGroupValues == null)
-                stackedGroupValues = new[] { "" };
+            //if (stackedGroupValues == null)
+            //    stackedGroupValues = new[] { "" };
 
             if (stackedKey == null)
                 stackedKey = e => "";
 
+            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
             var stackedGroupValuesArray = stackedGroupValues.ToArray();
+
             var data = new object[stackedGroupValues.Count()];
             for (var k = 0; k < stackedGroupValues.Count(); k++)
             {
