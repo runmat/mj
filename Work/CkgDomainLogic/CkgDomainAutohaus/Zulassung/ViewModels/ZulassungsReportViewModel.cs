@@ -132,15 +132,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
-            Func<IGrouping<int, ZulassungsReportModel>, int> aggregate = (g => (int)g.Sum(item => item.Preis));
-
-            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
+            Func<IGrouping<int, ZulassungsReportModel>, int> aggregate = (g => (int)g.Sum(item => item.Preis.GetValueOrDefault()));
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items, 
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
                     xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1))),
-                    stackedGroupValues, stackedKey,
+                    stackedKey,
                     aggregate
                 );
         }
@@ -160,13 +158,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
-            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
-
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items, 
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
                     xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1))),
-                    stackedGroupValues, stackedKey
+                    stackedKey
                 );
         }
 
@@ -244,8 +240,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.FormatYearAndWeek("yy"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfWeek());
 
-            var stackedGroupValues = items.GroupBy(stackedKey).OrderBy(k => k.Key).Select(k => k.Key);
-
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items, 
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
@@ -254,7 +248,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-7)));
                             xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddDays(-14)));
                         },
-                    stackedGroupValues, stackedKey
+                    stackedKey
                 );
         }
 
