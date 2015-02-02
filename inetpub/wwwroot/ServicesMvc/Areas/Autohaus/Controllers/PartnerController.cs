@@ -42,17 +42,17 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Index(string pid = null)
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(pid);
 
             return View("Pflege", ViewModel);
         }
 
         [CkgApplication]
-        public ActionResult Pflege()
+        public ActionResult Pflege(string pid = null)
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(pid);
 
             return View(ViewModel);
         }

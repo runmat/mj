@@ -39,9 +39,9 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Index(string pid = null, string fid = null)
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(pid, fid);
 
             return View(ViewModel);
         }
