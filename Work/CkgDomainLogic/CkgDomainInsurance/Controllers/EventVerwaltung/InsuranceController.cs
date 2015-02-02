@@ -369,6 +369,7 @@ namespace ServicesMvc.Controllers
                         boxArt = boxArt,
                         title = (t.IsBlockerDummyTermin ? "Blocker" : string.Format("{0} {1}", t.SchadenfallKennzeichen, t.Schadenfall.Nachname)),
                         isBlocker = t.IsBlockerDummyTermin,
+                        isCurrentEditing = (!EventsViewModel.InsertMode && t.ID == termin.ID),
 
                         startDateString = t.Datum.ToJsonDateTimeString(),
                         start = t.Datum.ToJsonDateString(),

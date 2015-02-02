@@ -27,6 +27,8 @@
 
         public bool isBlocker { get; set; }
 
+        public bool isCurrentEditing { get; set; }
+
         public string backgroundColor { get { return spaceAvailable ? "green" : (isBlocker ? "gray" : "red"); } }
 
         public int startTimeHours { get; set; }

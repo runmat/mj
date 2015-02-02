@@ -80,6 +80,11 @@
         margin-right: 1px;
         border-color: #a0a0a0;
     }
+    .fc-slot-div-current-appointment-mode {
+        background-color: orange;
+        margin-right: 1px;
+        border-color: red;
+    }
     
     #calendarReMode {
         opacity: 0;
@@ -1045,8 +1050,7 @@
                                     }
 
                                     $.each(result, function (e, item) {
-                                        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                                        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                                        CalendarCreateItem(item);
                                     });
 
                                     callback(result);
@@ -1060,6 +1064,17 @@
             }
         };
     } ();
+
+    function CalendarCreateItem(item) {
+        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
+        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+        
+        console.log(item);
+        if (item.isCurrentEditing) {
+            console.log("!!! isCurrentEditing !!!");
+            //$(elem).addClass("fc-slot-div-current-appointment-mode");
+        }
+    }
 
     function CalendarFormatBackgroundReadOnlySlots(date) {
         $.each($(".fc-slot-div"), function (i, elem) {
@@ -1110,8 +1125,7 @@
                 }
 
                 $.each(result, function (e, item) {
-                    item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                    item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                    CalendarCreateItem(item);
                 });
 
                 // success: fetched all appointments for one date but for all(!) boxes
