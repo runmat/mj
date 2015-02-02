@@ -142,6 +142,7 @@
     <Compile Include="Services\RestAuthentication.cs" />
     <Compile Include="Services\RestLogging.cs" />
     <Compile Include="Services\RestAhDataServiceSap.cs" />
+    <Compile Include="ViewModels\RestAhViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

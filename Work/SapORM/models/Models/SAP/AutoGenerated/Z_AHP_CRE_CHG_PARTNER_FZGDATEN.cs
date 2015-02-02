@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -109,7 +110,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_PARTNER_IMP> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_PARTNER_IMP> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -123,7 +124,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_PARTNER_IMP> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_IMP> ToList(ISapDataService sapDataService)
@@ -138,7 +139,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_IMP> GetExportListWithExecute(ISapDataService sapDataService)
@@ -148,7 +149,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_IMP> GetExportList(ISapDataService sapDataService)
@@ -158,7 +159,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_IMP> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -168,7 +169,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_IMP> GetImportList(ISapDataService sapDataService)
@@ -178,7 +179,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -301,7 +302,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_IMP> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_FZG_IMP> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -315,7 +316,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_IMP> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_IMP> ToList(ISapDataService sapDataService)
@@ -330,7 +331,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_IMP> GetExportListWithExecute(ISapDataService sapDataService)
@@ -340,7 +341,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_IMP> GetExportList(ISapDataService sapDataService)
@@ -350,7 +351,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_IMP> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -360,7 +361,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_IMP> GetImportList(ISapDataService sapDataService)
@@ -370,7 +371,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -463,7 +464,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_PARTNER_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_PARTNER_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -477,7 +478,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_PARTNER_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_OUT> ToList(ISapDataService sapDataService)
@@ -492,7 +493,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -502,7 +503,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_OUT> GetExportList(ISapDataService sapDataService)
@@ -512,7 +513,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -522,7 +523,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_PARTNER_OUT> GetImportList(ISapDataService sapDataService)
@@ -532,7 +533,169 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_WEB_PARTNER_ERR : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KUNNR { get; set; }
+
+			public string PARTART { get; set; }
+
+			public string NAME1 { get; set; }
+
+			public string NAME2 { get; set; }
+
+			public string STRASSE { get; set; }
+
+			public string HAUSNR { get; set; }
+
+			public string PLZNR { get; set; }
+
+			public string ORT { get; set; }
+
+			public string LAND { get; set; }
+
+			public string EMAIL { get; set; }
+
+			public string TELEFON { get; set; }
+
+			public string FAX { get; set; }
+
+			public string BEMERKUNG { get; set; }
+
+			public string GEWERBE { get; set; }
+
+			public string SAVEKDDATEN { get; set; }
+
+			public string REFKUNNR { get; set; }
+
+			public string REFKUNNR2 { get; set; }
+
+			public static GT_WEB_PARTNER_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_WEB_PARTNER_ERR
+				{
+					KUNNR = (string)row["KUNNR"],
+					PARTART = (string)row["PARTART"],
+					NAME1 = (string)row["NAME1"],
+					NAME2 = (string)row["NAME2"],
+					STRASSE = (string)row["STRASSE"],
+					HAUSNR = (string)row["HAUSNR"],
+					PLZNR = (string)row["PLZNR"],
+					ORT = (string)row["ORT"],
+					LAND = (string)row["LAND"],
+					EMAIL = (string)row["EMAIL"],
+					TELEFON = (string)row["TELEFON"],
+					FAX = (string)row["FAX"],
+					BEMERKUNG = (string)row["BEMERKUNG"],
+					GEWERBE = (string)row["GEWERBE"],
+					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
+					REFKUNNR = (string)row["REFKUNNR"],
+					REFKUNNR2 = (string)row["REFKUNNR2"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_WEB_PARTNER_ERR> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_WEB_PARTNER_ERR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_WEB_PARTNER_ERR).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_WEB_PARTNER_ERR>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_WEB_PARTNER_ERR>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_WEB_PARTNER_ERR>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_WEB_PARTNER_ERR>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_WEB_PARTNER_ERR> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_WEB_PARTNER_ERR>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -655,7 +818,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_FZG_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -669,7 +832,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_OUT> ToList(ISapDataService sapDataService)
@@ -684,7 +847,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -694,7 +857,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_OUT> GetExportList(ISapDataService sapDataService)
@@ -704,7 +867,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -714,7 +877,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_OUT> GetImportList(ISapDataService sapDataService)
@@ -724,7 +887,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -847,7 +1010,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_ERR> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_FZG_ERR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -861,7 +1024,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_FZG_ERR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_ERR> ToList(ISapDataService sapDataService)
@@ -876,7 +1039,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_ERR> GetExportListWithExecute(ISapDataService sapDataService)
@@ -886,7 +1049,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_ERR> GetExportList(ISapDataService sapDataService)
@@ -896,7 +1059,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_ERR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -906,7 +1069,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_AHP_CRE_CHG_PARTNER_FZGDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_FZG_ERR> GetImportList(ISapDataService sapDataService)
@@ -916,7 +1079,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -952,6 +1115,17 @@ namespace SapORM.Models
 		}
 
 		public static void Apply(this IEnumerable<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_PARTNER_OUT> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_PARTNER_ERR> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_PARTNER_ERR> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}

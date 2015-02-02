@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AutohausRestService.Contracts;
 using AutohausRestService.Models;
-using AutohausRestService.Services;
+using AutohausRestService.ViewModels;
 
 namespace AutohausRestService.Controllers
 {
     public class RestAhController : ApiController
     {
-        private IRestAhDataService DataService;
+        private RestAhViewModel ViewModel;
 
         public RestAhController()
         {
-            DataService = new RestAhDataServiceSap();
+            ViewModel = new RestAhViewModel();
         }
 
         // GET: /RestAh
@@ -82,7 +81,7 @@ namespace AutohausRestService.Controllers
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
-            var linkList = DataService.SaveDatensatz(ds, Request.Headers.Authorization, ModelState);
+            var linkList = ViewModel.SaveDatensatz(ds, Request.Headers.Authorization, ModelState);
 
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ModelState);
