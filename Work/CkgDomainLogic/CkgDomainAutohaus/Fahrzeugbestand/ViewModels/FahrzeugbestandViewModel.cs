@@ -76,7 +76,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             if (!String.IsNullOrEmpty(partnerId))
             {
                 var partnerIdClear = CryptoMd5.Decrypt(partnerId);
-                if (FahrzeugAkteBestandSelektor.HalterForSelection.Any(h => h.KundenNr.TrimStart('0') == partnerIdClear.TrimStart('0')))
+
+                if (FahrzeugAkteBestandSelektor.HalterForSelection.Any(h => h.KundenNr.NotNullOrEmpty().TrimStart('0') == partnerIdClear.TrimStart('0')))
                     FahrzeugAkteBestandSelektor.Halter = partnerIdClear.ToSapKunnr();
             }
 
