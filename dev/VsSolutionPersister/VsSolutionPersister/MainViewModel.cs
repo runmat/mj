@@ -1,4 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using WpfTools4.Commands;
 using WpfTools4.ViewModels;
 // ReSharper disable RedundantUsingDirective
 using GeneralTools.Models;
@@ -18,6 +21,9 @@ namespace VsSolutionPersister
         public string SolutionPath { get { return System.Configuration.ConfigurationManager.AppSettings["SolutionPathToPersist"]; } }
 
         public string SolutionName { get { return SolutionPath.NotNullOrEmpty().Split('\\').Last(); } }
+
+        public ICommand SolutionItemAddCommand { get; private set; }
+        public ICommand SolutionItemDeleteCommand { get; private set; }
 
         public ObservableCollection<SolutionItem> SolutionItems
         {
@@ -41,12 +47,25 @@ namespace VsSolutionPersister
 
         public MainViewModel()
         {
+            SolutionItemAddCommand = new DelegateCommand(e => SolutionItemAdd(), e => true);
+            SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string)e), e => true);
+
             SolutionItems = new ObservableCollection<SolutionItem>
             {
                 new SolutionItem {Name = "AH-2015 Zulassung", GitBranchName = "ita7764", RemoteSolutionStartPage = "autohaus/fahrzeugbestand/index"},
                 new SolutionItem {Name = "CSI Schadenfälle", GitBranchName = "ita7773", RemoteSolutionStartPage = "Insurance/SchadenstatusAlle"},
                 new SolutionItem {Name = "Dashboard", GitBranchName = "zDashboardPreview", RemoteSolutionStartPage = "Common/Dashboard/Index"},
             };
+        }
+
+        void SolutionItemAdd()
+        {
+            MessageBox.Show("Add me!");
+        }
+
+        void SolutionItemDelete(string solutionName)
+        {
+            MessageBox.Show(string.Format("Delete me: {0}", solutionName));
         }
     }
 }
