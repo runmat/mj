@@ -181,8 +181,9 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
+            var resTable = (DataTable)Session["ResultTable"];
 
-            DataView tmpDataView = objZLDSuche.Result.DefaultView;
+            DataView tmpDataView = resTable.DefaultView;
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)

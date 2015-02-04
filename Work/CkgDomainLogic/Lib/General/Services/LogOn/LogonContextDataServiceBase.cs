@@ -21,6 +21,12 @@ namespace CkgDomainLogic.General.Services
 
         public ILocalizationService LocalizationService { get; set; }
 
+        
+        public string PersistanceKey { get { return UserName; } }
+
+        public IPersistanceService PersistanceService { get; set; }
+
+
         public string LogoutUrl { get; set; }
 
         // ReSharper disable LocalizableElement
@@ -274,6 +280,11 @@ namespace CkgDomainLogic.General.Services
         public virtual string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             return "";
+        }
+
+        public virtual void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+
         }
 
         public virtual User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)

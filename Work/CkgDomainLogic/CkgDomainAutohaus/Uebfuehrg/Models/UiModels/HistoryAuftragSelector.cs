@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -27,6 +30,47 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
+
+        public string KundenNrUser { get; set; }
+
+        #region AG
+
+        private List<KundeAusHierarchie> _kundenAusHierarchie;
+
+        [XmlIgnore]
+        public List<KundeAusHierarchie> KundenAusHierarchie
+        {
+            get
+            {
+                if (GetKundenAusHierarchie == null)
+                    return new List<KundeAusHierarchie>();
+
+                if (_kundenAusHierarchie != null)
+                    return _kundenAusHierarchie;
+
+                _kundenAusHierarchie = GetKundenAusHierarchie().ToList();
+                if (_kundenAusHierarchie.None())
+                {
+                    _kundenAusHierarchie = new List<KundeAusHierarchie> { new KundeAusHierarchie { KundenNr = KundenNrUser } };
+                    AgKundenNr = KundenNrUser;
+                }
+                else if (_kundenAusHierarchie.Count() == 1)
+                    AgKundenNr = _kundenAusHierarchie.First().KundenNr;
+
+                return _kundenAusHierarchie;
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Principal)]
+        public string AgKundenNr { get; set; }
+
+        [XmlIgnore]
+        public KundeAusHierarchie AgKunde { get { return KundenAusHierarchie.FirstOrDefault(k => k.KundenNr == AgKundenNr) ?? new KundeAusHierarchie(); } }
+
+        [XmlIgnore]
+        public Func<List<KundeAusHierarchie>> GetKundenAusHierarchie { get; set; }
+
+        #endregion
 
         [LocalizedDisplay(LocalizeConstants.OrderID)]
         [RequiredAsGroup]

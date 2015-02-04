@@ -219,7 +219,7 @@ Namespace Start
                 Case -9999
                     Me.lblError.Text = "Beim Anfordern des Passwortes ist ein Fehler aufgetreten. (" & m_User.ErrorMessage & ")"
                 Case 0
-                    Me.lblError.Text = "Ein vorläufiges Passwort wurde erzeugt und versendet."
+                    Me.lblError.Text = "Eine Mail zur Generierung eines neuen Passwortes wurde versendet."
                     txtAntwortAnforderung.Text = ""
                     lnkLogout.Visible = True
                 Case 1
