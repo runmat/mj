@@ -416,6 +416,7 @@ namespace ServicesMvc.Controllers
                             key = timeThisDay.ToShortDateString(),
                             boxArt = boxArt,
                             title = title,
+                            isCurrentEditing = (!EventsViewModel.InsertMode && normalTermine.Any(t => t.ID == termin.ID)),
 
                             startDateString = timeThisDay.ToJsonDateString(),
                             start = timeThisDay.ToJsonDateString(),

@@ -225,6 +225,9 @@ namespace CkgDomainLogic.Insurance.Models
             if (viewModel == null)
                 return false;
 
+            if (!viewModel.InsertMode)
+                return true;
+
             var dataStoreRealTimeItems = viewModel.EventsDataService.TermineGet(null, VersBoxID);
 
             if (!viewModel.InsertMode)
@@ -283,8 +286,9 @@ namespace CkgDomainLogic.Insurance.Models
 
         public List<VersEventOrtBox> GetValidBoxenForThisTermin()
         {
-            if (GetCachedBoxArt() == "RE")
+            if (GetCachedBoxArt() == "RE" || !GetViewModel().InsertMode)
                 // für RE Modus (Werkstatt Modus) alle Boxen zulassen, weil der User die Box über die entsprechende Calendar Komponente selbst bestimmt
+                // oder bei Edit Modus (nicht Insert) => auch alle Boxen zulassen
                 return GetValidBoxen().ToList();
 
             return GetValidBoxen().Where(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID).Where(t => t.DatumZeitVon == this.DatumZeitVon).None()).ToList();
