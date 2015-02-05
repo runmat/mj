@@ -124,7 +124,7 @@ namespace VsSolutionPersister
             return Path.Combine(AppDataPath, item.Name);
         }
 
-        readonly string [] _filesToCopy = { "{0}.csproj.user", "{0}.tss", "{0}.suo" };
+        readonly string[] _filesToCopy = { "{0}.csproj.user", "{0}.tss", "{0}.suo", "{0}.v12.suo" };
 
         public void LoadSolutionItemFiles(SolutionItem item)
         {
