@@ -69,7 +69,7 @@ namespace VsSolutionPersister
             return startPageUrlNode.InnerText;
         }
 
-        public void SetSolutionStartpageUrl(string url)
+        public void SaveSolutionStartpageUrl(string url)
         {
             XmlDocument xmlDoc;
             XmlNode startPageUrlNode;
@@ -114,9 +114,49 @@ namespace VsSolutionPersister
             return XmlService.XmlDeserializeFromFile<List<SolutionItem>>(AppDataItemsFileName);
         }
 
-        public void SaveSolutionItems(List<SolutionItem> items)
+        public void SaveSolutionXmlItems(List<SolutionItem> items)
         {
             XmlService.XmlSerializeToFile(items, AppDataItemsFileName);
+        }
+
+        static string GetSolutionItemFolder(SolutionItem item)
+        {
+            return Path.Combine(AppDataPath, item.Name);
+        }
+
+        readonly string [] _filesToCopy = { "{0}.csproj.user", "{0}.tss", "{0}.suo" };
+
+        public void LoadSolutionItemFiles(SolutionItem item)
+        {
+            var itemFolder = GetSolutionItemFolder(item);
+            if (!Directory.Exists(itemFolder))
+                return;
+
+            for (var i = 0; i < _filesToCopy.Length; i++)
+            {
+                var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
+                FileService.TryFileCopy(Path.Combine(itemFolder, fileToCopy), Path.Combine(SolutionPath, fileToCopy));
+            }
+        }
+        public void SaveSolutionItemFiles(SolutionItem item)
+        {
+            var itemFolder = GetSolutionItemFolder(item);
+            if (!FileService.TryDirectoryDelete(itemFolder))
+                return;
+
+            if (!FileService.TryDirectoryCreate(itemFolder))
+                return;
+
+            for (var i = 0; i < _filesToCopy.Length; i++)
+            {
+                var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
+                FileService.TryFileCopy(Path.Combine(SolutionPath, fileToCopy), Path.Combine(itemFolder, fileToCopy));
+            }
+        }
+
+        public void DeleteSolutionItemFiles(SolutionItem item)
+        {
+            FileService.TryDirectoryDelete(GetSolutionItemFolder(item));
         }
     }
 }

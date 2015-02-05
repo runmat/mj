@@ -11,27 +11,29 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="Solution:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" />
         <TextBlock Text="{Binding SolutionName}" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="2" Grid.Row="0" />
 
-        <TextBlock Text="Startup Path:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
-        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+        <TextBlock Text="GIT-Branch:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" />
+        <TextBlock Text="{Binding GitBranchName}" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="2" Grid.Row="1" />
+
+        <TextBlock Text="Startup Path:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
+        <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
             <TextBox Text="{Binding StartPageUrl}" Width="300" />
             <Button  Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/save}" 
-                                            ToolTip="Neuen Eintrag hinzufügen" Command="{Binding SolutionItemAddCommand}" Margin="10,0,5,0" />
-            <Button  Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" 
-                                            ToolTip="Eintrag laden" Margin="10,0,5,0" />
+                                            ToolTip="Neuen Eintrag hinzufügen" Command="{Binding SolutionItemSaveCommand}" Margin="10,0,5,0" />
         </StackPanel>
 
-        <TextBlock Text="Einträge:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" />
+        <TextBlock Text="Einträge:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="3" Margin="0,20,0,0" />
         <DataGrid ItemsSource="{Binding SolutionItems}" SelectedItem="{Binding SelectedSolutionItem}" 
                   Height="200" 
                   PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
-                  VerticalAlignment="Top" Style="{StaticResource GradientDataGrid}" AutoGenerateColumns="False" Grid.Column="2" Grid.Row="2" >
+                  VerticalAlignment="Top" Style="{StaticResource GradientDataGrid}" AutoGenerateColumns="False" Grid.Column="2" Grid.Row="3" Margin="0,20,0,0">
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Aktionen" Width="80">
