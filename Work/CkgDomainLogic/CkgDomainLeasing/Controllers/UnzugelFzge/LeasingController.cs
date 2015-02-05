@@ -20,6 +20,8 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult FzgBriefeOhneLVNr()
         {
+            BriefeOhneLVNrViewModel.LoadUnzugelFzge(ModelState);
+
             return View(BriefeOhneLVNrViewModel);
         }
 
