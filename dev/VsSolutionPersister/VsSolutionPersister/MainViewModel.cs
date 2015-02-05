@@ -54,12 +54,7 @@ namespace VsSolutionPersister
             SolutionItemAddCommand = new DelegateCommand(e => SolutionItemAdd(), e => true);
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string)e), e => true);
 
-            SolutionItems = new ObservableCollection<SolutionItem>
-            {
-                new SolutionItem {GitBranchName = "ita7764", RemoteSolutionStartPage = "autohaus/fahrzeugbestand/index"},
-                new SolutionItem {GitBranchName = "ita7773", RemoteSolutionStartPage = "Insurance/SchadenstatusAlle"},
-                new SolutionItem {GitBranchName = "zDashboardPreview", RemoteSolutionStartPage = "Common/Dashboard/Index"},
-            };
+            SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
         }
 
         void SolutionItemAdd()
@@ -67,11 +62,13 @@ namespace VsSolutionPersister
             var newItem = new SolutionItem
             {
                 GitBranchName = PersisterService.GetCurrentGitBranchName(),
-                RemoteSolutionStartPage = PersisterService.GetCurrentSolutionStartpageUrl(),
+                RemoteSolutionStartPage = PersisterService.GetSolutionStartpageUrl(),
             };
 
             if (SolutionItems.None(item => item.Name == newItem.Name))
                 SolutionItems.Add(newItem);
+
+            PersisterService.SaveSolutionItems(SolutionItems.ToList());
         }
 
         void SolutionItemDelete(string solutionName)
@@ -80,6 +77,10 @@ namespace VsSolutionPersister
                 return;
 
             SolutionItems.Remove(SolutionItems.First(i => i.Name == solutionName));
+
+            PersisterService.SaveSolutionItems(SolutionItems.ToList());
+
+            PersisterService.SetSolutionStartpageUrl(PersisterService.GetSolutionStartpageUrl() + "___MATZ");
         }
     }
 }

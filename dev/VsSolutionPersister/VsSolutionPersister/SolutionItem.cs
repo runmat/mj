@@ -1,7 +1,10 @@
-﻿namespace VsSolutionPersister
+﻿using System.Xml.Serialization;
+
+namespace VsSolutionPersister
 {
     public class SolutionItem
     {
+        [XmlIgnore]
         public string Name 
         { 
             get

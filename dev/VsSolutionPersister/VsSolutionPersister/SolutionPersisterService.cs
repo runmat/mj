@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
+﻿using System.Collections.Generic;
+using GeneralTools.Services;
 // ReSharper disable RedundantUsingDirective
+using System.IO;
+using System.Xml;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GeneralTools.Models;
@@ -13,6 +12,21 @@ namespace VsSolutionPersister
 {
     public class SolutionPersisterService
     {
+        private static string AppDataRootPath { get { return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); } }
+
+        private static string AppDataPath
+        {
+            get
+            {
+                var path = Path.Combine(AppDataRootPath, "VsSolutionPersister");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                
+                return path;
+            }
+        }
+        private static string AppDataItemsFileName { get { return Path.Combine(AppDataPath, "items.xml"); } }
+
         public string SolutionPath { get { return System.Configuration.ConfigurationManager.AppSettings["SolutionPathToPersist"]; } }
 
         public string SolutionName { get { return SolutionPath.NotNullOrEmpty().Split('\\').Last(); } }
@@ -42,21 +56,67 @@ namespace VsSolutionPersister
             return headParts.Last().Trim();
         }
 
-        public string GetCurrentSolutionStartpageUrl()
+        public string GetSolutionStartpageUrl()
         {
-            var solutionUserFilename = Path.Combine(SolutionPath, SolutionName + ".csproj.user");
+            XmlDocument xmlDoc;
+            XmlNode startPageUrlNode;
+            string solutionUserFilename;
+
+            GetSolutionUserFileXml(out xmlDoc, out startPageUrlNode, out solutionUserFilename);
+            if (startPageUrlNode == null)
+                return "";
+
+            return startPageUrlNode.InnerText;
+        }
+
+        public void SetSolutionStartpageUrl(string url)
+        {
+            XmlDocument xmlDoc;
+            XmlNode startPageUrlNode;
+            string solutionUserFilename;
+
+            GetSolutionUserFileXml(out xmlDoc, out startPageUrlNode, out solutionUserFilename);
+            if (startPageUrlNode == null)
+                return;
+
+            startPageUrlNode.InnerText = url;
+
+            var sr = new StringWriter();
+            xmlDoc.Save(sr);
+            if (FileService.TryFileDelete(solutionUserFilename))
+                File.WriteAllText(solutionUserFilename, sr.ToString());
+        }
+
+        private void GetSolutionUserFileXml(out XmlDocument xmlDoc, out XmlNode startPageUrlNode, out string solutionUserFilename)
+        {
+            xmlDoc = new XmlDocument();
+            startPageUrlNode = null;
+
+            solutionUserFilename = Path.Combine(SolutionPath, SolutionName + ".csproj.user");
             if (!File.Exists(solutionUserFilename))
-                return "";
+                return;
 
-            var doc = new XmlDocument();
-            doc.Load(solutionUserFilename);
-            var mgr = new XmlNamespaceManager(doc.NameTable);
+            xmlDoc.Load(solutionUserFilename);
+            var mgr = new XmlNamespaceManager(xmlDoc.NameTable);
             mgr.AddNamespace("a", "http://schemas.microsoft.com/developer/msbuild/2003");
-            var nodes = doc.SelectNodes("//a:StartPageUrl", mgr);
+            var nodes = xmlDoc.SelectNodes("//a:StartPageUrl", mgr);
             if (nodes == null || nodes.Count == 0)
-                return "";
+                return;
 
-            return nodes[0].InnerText;
+            startPageUrlNode = nodes[0];
+        }
+
+        public List<SolutionItem> LoadSolutionItems()
+        {
+            if (!File.Exists(AppDataItemsFileName))
+                return new List<SolutionItem>();
+
+            return XmlService.XmlDeserializeFromFile<List<SolutionItem>>(AppDataItemsFileName);
+        }
+
+        public void SaveSolutionItems(List<SolutionItem> items)
+        {
+            XmlService.XmlSerializeToFile(items, AppDataItemsFileName);
         }
     }
 }
