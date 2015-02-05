@@ -84,7 +84,7 @@ namespace VsSolutionPersister
             var sr = new StringWriter();
             xmlDoc.Save(sr);
             if (FileService.TryFileDelete(solutionUserFilename))
-                File.WriteAllText(solutionUserFilename, sr.ToString());
+                File.WriteAllText(solutionUserFilename, sr.ToString(), new UnicodeEncoding());
         }
 
         private void GetSolutionUserFileXml(out XmlDocument xmlDoc, out XmlNode startPageUrlNode, out string solutionUserFilename)

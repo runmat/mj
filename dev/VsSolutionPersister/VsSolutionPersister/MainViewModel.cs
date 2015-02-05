@@ -25,6 +25,17 @@ namespace VsSolutionPersister
 
         public string SolutionName { get { return PersisterService.SolutionName; } }
 
+        public string StartPageUrl
+        {
+            get { return PersisterService.GetSolutionStartpageUrl(); }
+            set
+            {
+                PersisterService.SetSolutionStartpageUrl(value);
+                SaveSolutionItems();
+                SendPropertyChanged("StartPageUrl");
+            }
+        }
+
         public ObservableCollection<SolutionItem> SolutionItems
         {
             get { return _solutionItems; }
@@ -55,20 +66,32 @@ namespace VsSolutionPersister
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string)e), e => true);
 
             SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
+
+            SelectedSolutionItem = SolutionItems.FirstOrDefault(item => item.Name == CreateCurrentSolutionItem().Name);
+        }
+
+        void SaveSolutionItems()
+        {
+            PersisterService.SaveSolutionItems(SolutionItems.ToList());
         }
 
         void SolutionItemAdd()
         {
-            var newItem = new SolutionItem
-            {
-                GitBranchName = PersisterService.GetCurrentGitBranchName(),
-                RemoteSolutionStartPage = PersisterService.GetSolutionStartpageUrl(),
-            };
+            var newItem = CreateCurrentSolutionItem();
 
             if (SolutionItems.None(item => item.Name == newItem.Name))
                 SolutionItems.Add(newItem);
 
-            PersisterService.SaveSolutionItems(SolutionItems.ToList());
+            SaveSolutionItems();
+        }
+
+        SolutionItem CreateCurrentSolutionItem()
+        {
+            return new SolutionItem
+            {
+                GitBranchName = PersisterService.GetCurrentGitBranchName(),
+                RemoteSolutionStartPage = PersisterService.GetSolutionStartpageUrl(),
+            };
         }
 
         void SolutionItemDelete(string solutionName)
@@ -78,9 +101,7 @@ namespace VsSolutionPersister
 
             SolutionItems.Remove(SolutionItems.First(i => i.Name == solutionName));
 
-            PersisterService.SaveSolutionItems(SolutionItems.ToList());
-
-            PersisterService.SetSolutionStartpageUrl(PersisterService.GetSolutionStartpageUrl() + "___MATZ");
+            SaveSolutionItems();
         }
     }
 }
