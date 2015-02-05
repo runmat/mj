@@ -19,10 +19,12 @@
         <TextBlock Text="{Binding SolutionName}" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="2" Grid.Row="0" />
 
         <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/add}"
-                                            ToolTip="Neuen Eintrag hinzufügen" Command="{Binding SolutionItemAddCommand}" Margin="0,0,5,0" />
+                                            ToolTip="Neuen Eintrag hinzufügen" Command="{Binding SolutionItemAddCommand}" Margin="10,0,5,0" />
 
         <TextBlock Text="Einträge:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" />
-        <DataGrid ItemsSource="{Binding SolutionItems}" SelectedItem="{Binding SelectedSolutionItem}" VerticalAlignment="Top" Style="{StaticResource GradientDataGrid}" AutoGenerateColumns="False" Grid.Column="2" Grid.Row="2" >
+        <DataGrid ItemsSource="{Binding SolutionItems}" SelectedItem="{Binding SelectedSolutionItem}" 
+                  Height="200"
+                  VerticalAlignment="Top" Style="{StaticResource GradientDataGrid}" AutoGenerateColumns="False" Grid.Column="2" Grid.Row="2" >
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Aktionen" Width="80">
@@ -33,7 +35,7 @@
                                             ToolTip="Diesen Eintrag löschen" 
                                         Command="{Binding DataContext.SolutionItemDeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                         CommandParameter="{Binding Name}"
-                                        Margin="0,0,5,0" />
+                                        Margin="10,0,0,0" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
