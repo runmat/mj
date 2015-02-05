@@ -1,1 +1,9 @@
 *.tmp
+dev/VsSolutionPersister/VsSolutionPersister/obj/Debug/MainWindow.baml
+dev/VsSolutionPersister/VsSolutionPersister/obj/Debug/MainWindow.g.cs
+dev/VsSolutionPersister/VsSolutionPersister/obj/Debug/MainWindow.g.i.cs
+dev/VsSolutionPersister/VsSolutionPersister/obj/Debug/VsSolutionPersister.g.resources
+dev/work/Tools/WpfTools4/obj/Debug/Resources/Converters.baml
+dev/work/Tools/WpfTools4/obj/Debug/Resources/Styles.baml
+dev/work/Tools/WpfTools4/obj/Debug/Views/ProgressWindow.baml
+dev/work/Tools/WpfTools4/obj/Debug/WpfTools4.g.resources
