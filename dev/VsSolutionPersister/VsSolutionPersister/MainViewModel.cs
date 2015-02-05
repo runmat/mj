@@ -69,6 +69,8 @@ namespace VsSolutionPersister
                         StartPageUrl = SelectedSolutionItem.RemoteSolutionStartPage;
                 }
                 _prevSelectedSolutionItem = SelectedSolutionItem;
+
+                SendPropertyChanged("GitBranchName");
             }
         }
 
