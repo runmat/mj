@@ -16,16 +16,14 @@ namespace VsSolutionPersister
     {
         private SolutionItem _selectedSolutionItem;
         private ObservableCollection<SolutionItem> _solutionItems;
-        private SolutionPersisterService _solutionPersisterService;
+        private SolutionPersisterService _solutionService;
 
-        private SolutionPersisterService SolutionPersisterService
+        private SolutionPersisterService PersisterService
         {
-            get { return (_solutionPersisterService ?? (_solutionPersisterService = new SolutionPersisterService())); }
+            get { return (_solutionService ?? (_solutionService = new SolutionPersisterService())); }
         }
 
-        public string SolutionPath { get { return SolutionPersisterService.SolutionPath; } }
-
-        public string SolutionName { get { return SolutionPersisterService.SolutionName; } }
+        public string SolutionName { get { return PersisterService.SolutionName; } }
 
         public ObservableCollection<SolutionItem> SolutionItems
         {
@@ -58,29 +56,27 @@ namespace VsSolutionPersister
 
             SolutionItems = new ObservableCollection<SolutionItem>
             {
-                new SolutionItem {Name = "AH-2015 Zulassung", GitBranchName = "ita7764", RemoteSolutionStartPage = "autohaus/fahrzeugbestand/index"},
-                new SolutionItem {Name = "CSI Schadenfälle", GitBranchName = "ita7773", RemoteSolutionStartPage = "Insurance/SchadenstatusAlle"},
-                new SolutionItem {Name = "Dashboard", GitBranchName = "zDashboardPreview", RemoteSolutionStartPage = "Common/Dashboard/Index"},
+                new SolutionItem {GitBranchName = "ita7764", RemoteSolutionStartPage = "autohaus/fahrzeugbestand/index"},
+                new SolutionItem {GitBranchName = "ita7773", RemoteSolutionStartPage = "Insurance/SchadenstatusAlle"},
+                new SolutionItem {GitBranchName = "zDashboardPreview", RemoteSolutionStartPage = "Common/Dashboard/Index"},
             };
         }
 
         void SolutionItemAdd()
         {
-            var newSolutionName = Tools.Input("Please provide a name for the new item:");
-            if (newSolutionName.IsNullOrEmpty())
-                return;
-            
-            SolutionItems.Add(new SolutionItem
+            var newItem = new SolutionItem
             {
-                Name = newSolutionName,
-                GitBranchName = "",
-                RemoteSolutionStartPage = "",
-            });
+                GitBranchName = PersisterService.GetCurrentGitBranchName(),
+                RemoteSolutionStartPage = PersisterService.GetCurrentSolutionStartpageUrl(),
+            };
+
+            if (SolutionItems.None(item => item.Name == newItem.Name))
+                SolutionItems.Add(newItem);
         }
 
         void SolutionItemDelete(string solutionName)
         {
-            if (!Tools.Confirm(string.Format("Delete solution '{0}'?", solutionName)))
+            if (!Tools.Confirm(string.Format("Delete item '{0}'?", solutionName.Replace("___","   "))))
                 return;
 
             SolutionItems.Remove(SolutionItems.First(i => i.Name == solutionName));

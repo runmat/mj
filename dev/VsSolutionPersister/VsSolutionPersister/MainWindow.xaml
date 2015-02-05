@@ -40,7 +40,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" Foreground="Gray" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="300" Foreground="Gray" />
                 <DataGridTextColumn Header="GIT-Branch" Binding="{Binding GitBranchName}" Width="170" />
                 <DataGridTextColumn Header="Start-Page" Binding="{Binding RemoteSolutionStartPage}" Width="300" />
             </DataGrid.Columns>
