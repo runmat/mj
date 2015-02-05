@@ -18,7 +18,7 @@ namespace CkgDomainLogic.Equi.Services
 
         public List<Fahrzeugbrief> FahrzeugbriefeZumVersand
         {
-            get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, false).ToList()); }
+            get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, true).ToList()); }
         }
 
         private List<Fahrzeugbrief> FahrzeugbriefeGesamt
