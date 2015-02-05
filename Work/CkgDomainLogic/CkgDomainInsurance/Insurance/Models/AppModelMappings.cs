@@ -282,6 +282,39 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Zeit = HhMmFromSap(s.UZEIT);
                         d.User = s.BENUTZER;
                         d.Kommentar = s.TEXT;
+                        d.StatusFarbe = s.FARBE_STATUS;
+
+                        // ToDo: Remove Test Code:
+                        switch (d.StatusArtID)
+                        {
+                            case 2:
+                                d.StatusFarbe = "red";
+                                break;
+                            case 4:
+                                d.StatusFarbe = "yellow";
+                                break;
+                            case 5:
+                                d.StatusFarbe = "ivory";
+                                break;
+                            case 7:
+                                d.StatusFarbe = "orange";
+                                break;
+                            case 9:
+                                d.StatusFarbe = "pink";
+                                break;
+                            case 10:
+                                d.StatusFarbe = "black";
+                                break;
+                            case 11:
+                                d.StatusFarbe = "purple";
+                                break;
+                            case 16:
+                                d.StatusFarbe = "darkgreen";
+                                break;
+                            case 18:
+                                d.StatusFarbe = "green";
+                                break;
+                        }
                     }
                 ));
             }
@@ -326,6 +359,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Sort = s.REIHENFOLGE.ToInt();
                         d.Optional = s.OPTIONAL;
                         d.Bezeichnung = s.TEXT;
+                        d.ArtFarbe = s.FARBE_STATUS;
                     }
                 ));
             }

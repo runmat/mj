@@ -21,6 +21,9 @@
                 columns.XBound(c => c.VersicherungName);
                 columns.XBound(c => c.Referenznummer);
 
+                columns.XBound(c => c.CurrentStatusText);
+                columns.XBound(c => c.CurrentStatusFarbe);
+
                 for (var i = 1; i <= 30; i++)
                 {
                     columns.XBound(string.Format("Status{0}", i)).Title(Model.SchadenfallStatusAlleGetHeaderText(i)).Visible(Model.SchadenfallStatusAlleIsStatusVisible(i));
