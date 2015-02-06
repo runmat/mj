@@ -36,7 +36,13 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult ZulassungsAnforderungenAjaxBinding()
         {
-            return View(new GridModel(ZanfReportViewModel.ZulassungsAnforderungenFiltered));
+            return View(new GridModel(ZanfReportViewModel.ZulassungsAnforderungenForGrid));
+        }
+
+        [HttpPost]
+        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr)
+        {
+            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr));
         }
 
         [HttpPost]

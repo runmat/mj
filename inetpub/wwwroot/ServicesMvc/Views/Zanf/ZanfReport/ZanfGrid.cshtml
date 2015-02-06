@@ -19,6 +19,11 @@
         columns.XBound(c => c.Ausfuehrungsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Klaerfall);
         columns.XBound(c => c.KlaerfallText);
+        columns.XBound(c => c.AnforderungsNr).Width(100).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='ShowZanfKlaerfalltext(\"<#= data.AnforderungsNr #>\",\"<#= data.HauptpositionsNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='top'><i class='halflings-icon white search'></i></button>"
+            )
+        ;
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))

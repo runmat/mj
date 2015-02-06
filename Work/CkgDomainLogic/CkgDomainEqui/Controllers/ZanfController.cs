@@ -1,4 +1,5 @@
-﻿using CkgDomainLogic.Zanf.Contracts;
+﻿using System.Web.Mvc;
+using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
@@ -13,6 +14,11 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ZanfReportViewModel, appSettings, logonContext, zanfReportDataService);
-        }  
+        }
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("ZanfReport");
+        }
     }
 }

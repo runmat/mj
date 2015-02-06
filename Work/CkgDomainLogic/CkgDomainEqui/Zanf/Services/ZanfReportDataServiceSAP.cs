@@ -63,8 +63,10 @@ namespace CkgDomainLogic.Zanf.Services
             foreach (var webItem in webList)
             {
                 var zanf = webItem;
-                zanf.KlaerfallText = String.Join("<br/>", 
-                    textList.Where(t => t.ORDERID == zanf.AnforderungsNr && t.HPPOS == zanf.HauptpositionsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG));
+                var zeilen = textList.Where(t => t.ORDERID == zanf.AnforderungsNr && t.HPPOS == zanf.HauptpositionsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
+
+                //zanf.KlaerfallTextPreview = zeilen.FirstOrDefault();
+                zanf.KlaerfallText = String.Join("<br/>", zeilen);
             }
 
             return webList;

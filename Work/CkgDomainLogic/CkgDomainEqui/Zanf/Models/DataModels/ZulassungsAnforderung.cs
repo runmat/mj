@@ -4,7 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Zanf.Models
 {
-    public class ZulassungsAnforderung
+    public class ZulassungsAnforderung : ICloneable
     {
         [LocalizedDisplay(LocalizeConstants.RequestNo)]
         public string AnforderungsNr { get; set; }
@@ -23,14 +23,18 @@ namespace CkgDomainLogic.Zanf.Models
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
         public DateTime? Anlagedatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ExecutionDate)]
+        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Ausfuehrungsdatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ClarificationCase)]
         public bool Klaerfall { get; set; }
 
-        [GridRawHtml]
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string KlaerfallText { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

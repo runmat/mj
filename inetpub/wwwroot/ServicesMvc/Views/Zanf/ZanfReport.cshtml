@@ -68,5 +68,34 @@
 
         $("#divGrid").slideDown();
     }
+    
+    function ShowZanfKlaerfalltext(anforderungsNr, hauptpositionsNr) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "ShowZanfKlaerfalltext",
+                data: { anforderungsNr: anforderungsNr, hauptpositionsNr: hauptpositionsNr },
+                loadingShow: true,
+                success: function (result) {
+                    var dialog = $("#Klaerfalltext").data("tWindow");
+                    $("#InnerKlaerfalltext").html(result);
+                    dialog.center().open();
+                }
+            });
+
+        return false;
+    }
 
 </script>
+
+@(Html.Telerik().Window()
+    .Name("Klaerfalltext")
+    .Visible(false)
+    .Title("Klärfalltext")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(true)
+    .Height(600)
+    .Width(500)
+    .HtmlAttributes(new { @class = "ui-dialog-inner" })
+    .Content(@<text><div id="InnerKlaerfalltext" class="ui-dialog-inner"></div></text>))
