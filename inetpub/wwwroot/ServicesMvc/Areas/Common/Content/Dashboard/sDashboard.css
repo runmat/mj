@@ -244,49 +244,58 @@ li.ui-sortable-placeholder {
  
 .dashboard-dropdown-menu 
 {
-	margin:0;
+    display: inline-block;
+    color: #666;
+    font-size: 12pt;
+	padding: 5px 15px 5px 15px;
+	margin:0 0 0 20px;
 	padding:0;
 }
-
+.dashboard-dropdown-menu * {
+    color: #666!important;
+	text-decoration:none!important;
+}
 .dashboard-dropdown-menu li {
-	list-style:none;
-	float:left;
-	font:12px Arial, Helvetica, sans-serif #111;
-}
-
-.dashboard-dropdown-menu li a:link, .dashboard-dropdown-menu li a:visited {
-	display:block;
+    color: #666;
 	text-decoration:none;
-	background-color:#09F;
-	padding: 0.5em 2em;
 	margin:0;
-	border-right: 1px solid #fff;
-	color:#111;
+    /*border-radius: 20px !important;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);*/
+}
+.dashboard-dropdown-menu i.icon-angle-down {
+    font-size: 1.2em;
 }
 
-.dashboard-dropdown-menu li a:hover {
-	background-color:#0CF;	
+.dashboard-dropdown-menu span.badge {
+    padding-top: 6px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 6px;
+    margin-left: 22px;
+    font-size: 16px!important;
+    font-weight: normal;
+    height: 16px;
+    width: 16px;
+    background-color: #ffb848;
+    border-radius: 16px !important;
+    text-shadow: none!important;
+    float: none;
+    text-align: center;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+    color: white!important;
 }
-
-/*style the sub menu*/
-.dashboard-dropdown-menu li ul {
-	position:absolute;
-	visibility:hidden;
-	border-top:1px solid #fff;
-	margin:0;
-	padding:0;
+.dashboard-dropdown-menu ul.dropdown-menu i.icon-bar-chart {
+    margin-right: 10px;
 }
-
-.dashboard-dropdown-menu li ul li {
-	display:inline;
-	float:none;
+.dashboard-dropdown-menu ul.dropdown-menu li a {
+    padding-right: 10px;
 }
-
-.dashboard-dropdown-menu li ul li a:link, .dashboard-dropdown-menu li ul li a:visited {
-	background-color:#09F;
-	width:auto;
+.dashboard-dropdown-menu ul.dropdown-menu {
+    margin-top: 8px;
 }
-
-.dashboard-dropdown-menu li ul li a:hover {
-	background-color:#0CF;	
+.dashboard-dropdown-menu .dropdown-toggle {
+    background-color: transparent!important;
+}
+.dashboard-dropdown-menu a.dropdown-toggle i.icon-bar-chart {
+    margin-left: 8px;
 }
