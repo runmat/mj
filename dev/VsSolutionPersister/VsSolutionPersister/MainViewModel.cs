@@ -58,9 +58,11 @@ namespace VsSolutionPersister
                 SendPropertyChanged("SelectedSolutionItem");
                 if (SelectedSolutionItem != null)
                 {
-                    if (_prevSelectedSolutionItem != null && _prevSelectedSolutionItem != SelectedSolutionItem)
+                    if (_prevSelectedSolutionItem != SelectedSolutionItem)
                     {
-                        PersisterService.SaveSolutionItemFiles(_prevSelectedSolutionItem);
+                        if (_prevSelectedSolutionItem != null && SolutionItems.Any(item => item.Name == _prevSelectedSolutionItem.Name))
+                            PersisterService.SaveSolutionItemFiles(_prevSelectedSolutionItem);
+
                         PersisterService.LoadSolutionItemFiles(SelectedSolutionItem);
                     }
 
