@@ -330,10 +330,8 @@ namespace SapORM.Services
                             if (it.Name == ((DataTable)tmpRow[0]).TableName)
                             {
 								item = it.ToStructure();
-							    var tblTemp = new DataTable {TableName = it.Name};
-							    foreach (RFCTableColumn col in item.Columns) {
-									tblTemp.Columns.Add(col.Name, typeof(String));
-								}
+							    var tblTemp = ((DataTable) tmpRow[0]).Clone();
+
 							    var row = tblTemp.NewRow();
 
                                 foreach (RFCTableColumn col in item.Columns)
@@ -355,7 +353,7 @@ namespace SapORM.Services
 										case RFCTYPE.DATE:
                                             if (item[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(item[col.Name].ToString()))
                                             {
-												row[col.Name] = "";
+												row[col.Name] = DBNull.Value;
                                             }
                                             else
                                             {
