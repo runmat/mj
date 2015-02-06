@@ -293,10 +293,8 @@ namespace SapORM.Services
 						if (it.IsStructure()) {
 							if (it.Name == ((DataTable)tmpRow[0]).TableName) {
 								item = it.ToStructure();
-							    var tblTemp = new DataTable {TableName = it.Name};
-							    foreach (RFCTableColumn col in item.Columns) {
-									tblTemp.Columns.Add(col.Name, typeof(String));
-								}
+							    var tblTemp = ((DataTable) tmpRow[0]).Clone();
+
 							    var row = tblTemp.NewRow();
 
 								foreach (RFCTableColumn col in item.Columns) {
@@ -314,7 +312,7 @@ namespace SapORM.Services
 											break;
 										case RFCTYPE.DATE:
 											if (item[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(item[col.Name].ToString())) {
-												row[col.Name] = "";
+												row[col.Name] = DBNull.Value;
 											} else {
 												row[col.Name] = ConversionUtils.SAPDate2NetDate(item[col.Name].ToString());
 											}
@@ -486,7 +484,8 @@ namespace SapORM.Services
                             return false;
                         if (ex.ABAPException.ToUpper() == "ERR_DAT")
                             return false;
-
+                        if (ex.ABAPException.ToUpper() == "NO_HEADER")
+                            return false;
 					    
 						throw;
 					} 
