@@ -92,10 +92,10 @@ namespace VsSolutionPersister
 
         public MainViewModel()
         {
-            if (Tools.IsWindowOpenForProcessNamePartAndTitlePart("devenv", SolutionName))
+            if (Tools.IsWindowOpenForProcessNamePartAndTitlePart("devenv", SolutionName, 
+                        () => MessageBox.Show( string.Format("Bitte schließen Sie am Visual Studio die Solution '{0}'", SolutionName), 
+                                                Assembly.GetExecutingAssembly().FullName.Split(',')[0] + " - Info", MessageBoxButton.OK, MessageBoxImage.Hand)))
             {
-                MessageBox.Show(string.Format("Bitte schließen Sie am Visual Studio die Solution '{0}'", SolutionName), 
-                                Assembly.GetExecutingAssembly().FullName.Split(',')[0] + " - Info", MessageBoxButton.OK, MessageBoxImage.Hand);
                 Application.Current.Shutdown();
                 return;
             }
