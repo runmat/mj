@@ -14,6 +14,7 @@ namespace VsSolutionPersister
     public class MainViewModel : ViewModelBase
     {
         private string _startPageUrl;
+        private readonly bool _ctorCreated;
         private SolutionItem _prevSelectedSolutionItem;
         private SolutionItem _selectedSolutionItem;
         private ObservableCollection<SolutionItem> _solutionItems;
@@ -55,23 +56,30 @@ namespace VsSolutionPersister
             set
             {
                 _selectedSolutionItem = value;
+
                 SendPropertyChanged("SelectedSolutionItem");
-                if (SelectedSolutionItem != null)
-                {
-                    if (_prevSelectedSolutionItem != SelectedSolutionItem)
-                    {
-                        if (_prevSelectedSolutionItem != null && SolutionItems.Any(item => item.Name == _prevSelectedSolutionItem.Name))
-                            PersisterService.SaveSolutionItemFiles(_prevSelectedSolutionItem);
-
-                        PersisterService.LoadSolutionItemFiles(SelectedSolutionItem);
-                    }
-
-                    if (StartPageUrl.NotNullOrEmpty() != SelectedSolutionItem.RemoteSolutionStartPage.NotNullOrEmpty())
-                        StartPageUrl = SelectedSolutionItem.RemoteSolutionStartPage;
-                }
-                _prevSelectedSolutionItem = SelectedSolutionItem;
-
                 SendPropertyChanged("GitBranchName");
+
+                if (SelectedSolutionItem == null)
+                    return;
+
+                SolutionItems.ToList().ForEach(item => item.IsSelected = false);
+                SelectedSolutionItem.IsSelected = true;
+                SaveSolutionXmlItems();
+
+                if (_prevSelectedSolutionItem != SelectedSolutionItem)
+                {
+                    if (_prevSelectedSolutionItem != null && SolutionItems.Any(item => item.Name == _prevSelectedSolutionItem.Name))
+                        PersisterService.SaveSolutionItemFiles(_prevSelectedSolutionItem);
+
+                    if (_ctorCreated)
+                        PersisterService.LoadSolutionItemFiles(SelectedSolutionItem);
+
+                    _prevSelectedSolutionItem = SelectedSolutionItem;
+                }
+
+                if (StartPageUrl.NotNullOrEmpty() != SelectedSolutionItem.RemoteSolutionStartPage.NotNullOrEmpty())
+                    StartPageUrl = SelectedSolutionItem.RemoteSolutionStartPage;
             }
         }
 
@@ -89,7 +97,13 @@ namespace VsSolutionPersister
             defaultView.SortDescriptions.Add(new SortDescription("Datum", ListSortDirection.Descending ));
 
             StartPageUrl = PersisterService.GetSolutionStartpageUrl();
+
+            var formerSelectedSolutionItem = SolutionItems.FirstOrDefault(item => item.IsSelected);
+            if (formerSelectedSolutionItem != null)
+                PersisterService.SaveSolutionItemFiles(formerSelectedSolutionItem);
+
             SelectCurrentSolutionItem();
+            _ctorCreated = true;
         }
         
         void SelectCurrentSolutionItem()

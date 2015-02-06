@@ -19,5 +19,7 @@ namespace VsSolutionPersister
         public string GitBranchName { get; set; }
 
         public DateTime? Datum { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }
