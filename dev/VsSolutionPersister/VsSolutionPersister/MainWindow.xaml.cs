@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace VsSolutionPersister
@@ -26,6 +29,11 @@ namespace VsSolutionPersister
                     button.Command.Execute(button.CommandParameter);
                 }
             }
+        }
+
+        private void Window_Deactivated(object sender, System.EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

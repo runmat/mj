@@ -1,4 +1,5 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.ComponentModel;
+using System.Windows.Data;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WpfTools4.Commands;
@@ -6,9 +7,7 @@ using WpfTools4.Services;
 using WpfTools4.ViewModels;
 using GeneralTools.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VsSolutionPersister
 {
@@ -84,6 +83,8 @@ namespace VsSolutionPersister
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string) e), e => true);
 
             SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
+            var defaultView = CollectionViewSource.GetDefaultView(SolutionItems);
+            defaultView.SortDescriptions.Add(new SortDescription("Datum", ListSortDirection.Descending ));
 
             StartPageUrl = PersisterService.GetSolutionStartpageUrl();
             SelectCurrentSolutionItem();
@@ -94,13 +95,13 @@ namespace VsSolutionPersister
             SelectedSolutionItem = SolutionItems.FirstOrDefault(item => item.Name == CreateCurrentSolutionItem().Name);
         }
 
-
         SolutionItem CreateCurrentSolutionItem()
         {
             return new SolutionItem
             {
                 GitBranchName = PersisterService.GetCurrentGitBranchName(),
                 RemoteSolutionStartPage = PersisterService.GetSolutionStartpageUrl(),
+                Datum = DateTime.Now,
             };
         }
 

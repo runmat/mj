@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace VsSolutionPersister
 {
@@ -16,5 +17,7 @@ namespace VsSolutionPersister
         public string RemoteSolutionStartPage { get; set; }
 
         public string GitBranchName { get; set; }
+
+        public DateTime? Datum { get; set; }
     }
 }
