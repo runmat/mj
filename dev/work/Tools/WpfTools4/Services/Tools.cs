@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -79,6 +80,22 @@ namespace WpfTools4.Services
                 }
             }
             return child;
+        }
+
+        static public bool IsWindowOpenForProcessNamePartAndTitlePart(string processNamePart,  string captionPart)
+        {
+            try
+            {
+                foreach (var process in Process.GetProcessesByName(processNamePart))
+                    if (process.MainWindowTitle.ToLower().Contains(captionPart.ToLower()))
+                        return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
         }
     }
 }

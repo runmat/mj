@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Net.Mime;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Data;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -89,6 +92,14 @@ namespace VsSolutionPersister
 
         public MainViewModel()
         {
+            if (Tools.IsWindowOpenForProcessNamePartAndTitlePart("devenv", SolutionName))
+            {
+                MessageBox.Show(string.Format("Bitte schließen Sie am Visual Studio die Solution '{0}'", SolutionName), 
+                                Assembly.GetExecutingAssembly().FullName.Split(',')[0] + " - Info", MessageBoxButton.OK, MessageBoxImage.Hand);
+                Application.Current.Shutdown();
+                return;
+            }
+
             SolutionItemSaveCommand = new DelegateCommand(e => SolutionItemSave(), e => true);
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string) e), e => true);
 
