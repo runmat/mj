@@ -23,7 +23,7 @@ namespace CkgDomainLogic.Zanf.ViewModels
         {
             get
             {
-                var liste = ZulassungsAnforderungen.Clone();
+                var liste = ZulassungsAnforderungenFiltered.Clone();
 
                 liste.ForEach(item => item.KlaerfallText = (item.KlaerfallText.Contains("<br/>") ? item.KlaerfallText.Split(new[] { "<br/>" }, StringSplitOptions.None)[0] : item.KlaerfallText));
                 
