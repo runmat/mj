@@ -151,7 +151,7 @@
     }
 
     function Test() {
-        ShowSchadenakteAjax("17", false);
+        ShowSchadenakteAjax("139", false);
         setTimeout(function () {
 //            TerminSchadenfallCreate();
 //            setTimeout(function () {
@@ -161,8 +161,21 @@
 
             setTimeout(function () {
                 $($(".schadenakte-termine")[0]).trigger("click");
-            }, 300);
+    
+                setTimeout(function () {
+                    $("#TerminSchadenfallGrid .debug").trigger("click");
+                    
+                    setTimeout(function () {
+                        $(":radio[value=RE]").uniformRadioCheck();
+                        
+                        setTimeout(function () {
+                            $("#divTerminSchadenfallInit .debug").trigger("click");
+                        }, 100);
 
+                    }, 300);
+
+                }, 600);
+            }, 300);
 
         }, 1500);
     }
@@ -562,8 +575,6 @@
         TerminSchadenfallEditPreparePrivate();
         $("#divTerminSchadenfallKalender").slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
         BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminDetails)");
-
-        //FormPrepareAjax();
     }
     
     function TerminSchadenfallEditDetailsClose(updateCalendar, useSaveMessage) {
@@ -617,11 +628,7 @@
         $("#divTerminSchadenfallInit").html(result);
         TerminSchadenfallCreatePreparePrivate();
         $("#divSchadenakte").slideUp(200, function () { $("#divTerminSchadenfallInit").slideDown(200); });
-        BreadcrumbsMoveNext(@MvcHtmlString.Create(Localize.VersicherungsFallTerminanlage));
-
-        //$(":radio[value=RE]").uniformRadioDisable();
-
-        //FormPrepareAjax();
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminanlage)");
     }
 
     function TerminSchadenfallCreateFinish() {
@@ -827,14 +834,6 @@
             }
             dateCurrent = $(elem).fullCalendar('getDate');
         });
-
-//        if (dateCurrent.getDay() == 0) {
-//            // Sonntage überspringen:
-//            if (direction == 0) 
-//                direction = 1;
-//            CalendarsReModeDateScroll(direction);
-//            return;
-//        }
 
         $.each($(".calendar-container-box"), function (i, elem) {
             if ($(elem).data("tmp-display") == "none")
@@ -1053,7 +1052,6 @@
 
         var dateString = date.toString("yyyy-MM-dd");
         $("#calendarReModeCurrentDay").text(_calendarDayNames[date.getDay()] + ", " + date.toString("dd.MM.yyyy"));
-        //alert("AJAX !!!");
 
         CalendarFormatBackgroundReadOnlySlots(date);
 
@@ -1148,7 +1146,6 @@
     }
 
     function BtnTerminUebersichtRequestShowShowHide() {
-        //console.log($("#TmpVersEventOrtCurrentID").val());
         if ($("#TmpVersEventOrtCurrentID").val() !== '' && $("#TmpVersEventOrtCurrentID").val() != null)
             $("#btnTerminUebersichtRequestShow").removeClass('hide');
         else
@@ -1178,7 +1175,6 @@
             $("#TerminUebersichtKalender").slideDown(200);
             CalendarPreparePrivate();
         });
-        //console.log("Boxen Termine");
         BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallBoxenTermine)");
     }
 

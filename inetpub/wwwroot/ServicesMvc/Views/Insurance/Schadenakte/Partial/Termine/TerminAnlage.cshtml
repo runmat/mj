@@ -16,7 +16,7 @@
             @Html.FormDropDownListFor(m => m.VersOrtID, Model.GetValidOrte().ToSelectList(), new { @class = "m-wrap" })
 
             <div class="form-actions">
-                <button type="button" class="btn green margin-right-5" onclick="TerminSchadenfallCreateFinish()"><i class="icon-ok"></i> @Localize.More</button>
+                <button type="button" class="btn green margin-right-5 debug" onclick="TerminSchadenfallCreateFinish()"><i class="icon-ok"></i> @Localize.More</button>
                 <button type="button" class="btn margin-right-5" onclick="TerminSchadenfallClose(1);">@Localize.Cancel</button>
             </div>
         </form>

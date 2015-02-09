@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Insurance.Models
+@model TerminSchadenfall 
+
+<div class="re-termin-vorschlaege-auswahl-div">
+
+    <h5 class="no-margin">
+        <i class="icon-inbox vers-event-header-icon margin-right-10"></i><span><strong>@Localize.ProposedAppointments</strong></span>
+    </h5>
+    
+    <div class="margin-top-10">
+        <form action="#" class="form-horizontal no-margin">
+        
+            @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left3" })
+
+            @Html.FormTextBoxFor(m => m.UhrzeitZeitGewuenscht, new { @class = "m-wrap xsmall timepicker", col = "middle3" })
+
+            @Html.FormTextBoxFor(m => m.DauerMinutenGewuenscht, new { @class = "m-wrap xsmall", col = "right3" })
+
+            <button type="button" class="btn green margin-left-180" onclick="ReTerminVorschlaegeSearch()"><i class="icon-ok"></i> @Localize.SearchAvailableAppointments</button>
+            <button type="button" class="btn red margin-left-10" onclick="ReTerminVorschlaegeClose()"><i class="icon-remove"></i> @Localize.Close</button>
+        </form>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    FormPreparePrivateAjax();
+    $(".timepicker").clockface({ format: 'HH:mm' });
+    
+</script>

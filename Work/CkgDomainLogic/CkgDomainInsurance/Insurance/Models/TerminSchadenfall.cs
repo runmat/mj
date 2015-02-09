@@ -87,6 +87,7 @@ namespace CkgDomainLogic.Insurance.Models
 
 
         [LocalizedDisplay(LocalizeConstants.Date)]
+        [Required]
         public DateTime Datum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateTo)]
@@ -113,6 +114,14 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.Duration)]
         [NotMapped]
         public int DauerMinuten { get { return (int)(DatumZeitBis - DatumZeitVon).TotalMinutes; } }
+
+        [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
+        [GridHidden, Required, NotMapped]
+        public string UhrzeitZeitGewuenscht { get { return PropertyCacheGet(() => "10:00"); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay(LocalizeConstants.Duration)]
+        [GridHidden, Required, NotMapped]
+        public int DauerMinutenGewuenscht { get { return PropertyCacheGet(() => 60);} set { PropertyCacheSet(value); } }
         
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
