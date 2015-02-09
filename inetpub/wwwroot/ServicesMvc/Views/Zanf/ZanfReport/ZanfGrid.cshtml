@@ -11,10 +11,10 @@
     .XAjaxDataBinding("ZulassungsAnforderungenAjaxBinding", "Zanf")
     .Columns(columns =>
     {
-        columns.XBound(c => c.AnforderungsNr);
-        columns.XBound(c => c.FahrgestellNr);
-        columns.XBound(c => c.AuftragsNr);
         columns.XBound(c => c.KundenreferenzNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.AnforderungsNr);
+        columns.XBound(c => c.AuftragsNr);
         columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Ausfuehrungsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Klaerfall);

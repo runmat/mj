@@ -21,7 +21,7 @@ namespace CkgDomainLogic.Zanf.Models
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
         public DateTime? Anlagedatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ExecutionDate)]
+        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Ausfuehrungsdatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OnlyClarificationCases)]

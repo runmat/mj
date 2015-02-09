@@ -9,11 +9,11 @@
             
             @Html.ValidationSummary()
             
-            @Html.FormTextBoxFor(m => m.AnforderungsNr, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.KundenreferenzNr, new { @class = "m-wrap uppercase", col = "left" })
             @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right" })
             
             @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.KundenreferenzNr, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormTextBoxFor(m => m.AnforderungsNr, new { @class = "m-wrap", col = "right" })
             
             @Html.FormDatePickerFor(m => m.Anlagedatum, new { @class = "m-wrap small", col = "left" })
             @Html.FormDatePickerFor(m => m.Ausfuehrungsdatum, new { @class = "m-wrap small", col = "right" })
