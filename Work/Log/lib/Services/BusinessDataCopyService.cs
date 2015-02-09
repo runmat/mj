@@ -74,14 +74,18 @@ namespace LogMaintenance.Services
             var deleteExpiredPageVisits = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM PageVisit WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", pageVisitExpirydate.Date.ToString("yyyy-MM-dd"));
             var deleteExpiredBapi = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM SapBapi WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiExpiryDate.Date.ToString("yyyy-MM-dd"));
             var deleteExpiredBapiData = string.Format("SET SQL_SAFE_UPDATES = 0;UPDATE SapBapi SET ImportParameters = '', ImportTables = '', ExportParameters ='', ExportTables = '' WHERE time_stamp < '{0}';SET SQL_SAFE_UPDATES = 1;", sapBapiDataExpiryDate.Date.ToString("yyyy-MM-dd"));
+            const string deleteServiceMenueMessages = "SET SQL_SAFE_UPDATES = 0;DELETE FROM elmah_error WHERE AllXml like '%bei ASP.menue_servicesmenue_ascx.__RenderPanel1%';SET SQL_SAFE_UPDATES = 1;";
             var deleteExpiredElmah = string.Format("SET SQL_SAFE_UPDATES = 0;DELETE FROM elmah_error WHERE TimeUtc < '{0}';SET SQL_SAFE_UPDATES = 1;", elmahExpiryDate.Date.ToString("yyyy-MM-dd"));
+            const string optimizeElmahTabelleAfterDelete = "SET SQL_SAFE_UPDATES = 0;OPTIMIZE TABLE elmah_error;SET SQL_SAFE_UPDATES = 1;";
 
             var commands = new List<string>
                 {
                     deleteExpiredPageVisits,
                     deleteExpiredBapi,
                     deleteExpiredBapiData,
-                    deleteExpiredElmah
+                    deleteServiceMenueMessages,
+                    deleteExpiredElmah,
+                    optimizeElmahTabelleAfterDelete
                 };
 
             var status = from command in commands
