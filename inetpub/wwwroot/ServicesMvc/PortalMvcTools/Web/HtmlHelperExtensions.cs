@@ -128,11 +128,15 @@ namespace PortalMvcTools.Web
             return new MvcWrapper(html.ViewContext, "FormSearchResults", model);
         }
 
-        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey")
+        public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey", bool isCollapsible = true, bool isClosable = false)
         {
             return new MvcWrapper(html.ViewContext, "PortletBox", new FormOuterLayerModel
                 {
-                    Header = header, IconCssClass = iconCssClass, PortletCssClass = portletCssClass
+                    Header = header,
+                    IconCssClass = iconCssClass,
+                    PortletCssClass = portletCssClass,
+                    IsCollapsible = isCollapsible,
+                    IsClosable = isClosable
                 });
         }
 
@@ -152,6 +156,12 @@ namespace PortalMvcTools.Web
                 );
 
             return html.Partial("Partial/BrowserWarnings/IeWarning");
+        }
+
+        public static MvcHtmlString FormBreadCrumbs(this HtmlHelper html, string firstBreadCrumbText)
+        {
+            html.ViewBag.FirstBreadCrumbText = firstBreadCrumbText;
+            return html.Partial("Partial/BreadCrumbs");
         }
 
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
@@ -297,6 +307,20 @@ namespace PortalMvcTools.Web
             });
         }
 
+        static object GetMaxLengthAttributes<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes)
+        {
+            var propertyName = expression.GetPropertyName();
+            var property = typeof(TModel).GetProperty(propertyName);
+            if (property == null)
+                return controlHtmlAttributes;
+
+            var maxLengthAttribute = property.GetCustomAttributes(typeof(LengthAttribute), true).OfType<LengthAttribute>().FirstOrDefault();
+            if (maxLengthAttribute == null)
+                return controlHtmlAttributes;
+
+            return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = maxLengthAttribute.Length });
+        }
+
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
@@ -316,6 +340,7 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
+            controlHtmlAttributes = GetMaxLengthAttributes(expression, controlHtmlAttributes);
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
 
             var model = new FormControlModel
@@ -552,12 +577,14 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
 
             var model = new FormControlModel
             {
+                IsCheckBox = true,
+                LabelHidden = labelHidden,
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
@@ -591,6 +618,7 @@ namespace PortalMvcTools.Web
             var validationMessageHtml = html.ValidationMessageFor(firstExpression);
             var model = new FormControlModel
             {
+                IsCheckBox = true,
                 DisplayNameHtml = labelText,
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(firstExpression),
                 ControlHtml = checkBoxesFor,

@@ -76,7 +76,7 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,6 +87,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="DomainCommon\Models\Adresse.cs" />
+    <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
+    <Compile Include="DomainCommon\Models\CommonSummary.cs" />
+    <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
@@ -98,6 +104,7 @@
     <Compile Include="General\Models\Attributes\VIN.cs" />
     <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
+    <Compile Include="General\Models\DataModels\KundeAusHierarchie.cs" />
     <Compile Include="General\Models\DataModels\VersandGrund.cs" />
     <Compile Include="General\Models\DataModels\ZulassungsDienstleistung.cs" />
     <Compile Include="General\Models\DataModels\VinWunschkennzeichen.cs" />
@@ -112,16 +119,20 @@
     <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
+    <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />
-    <Compile Include="General\Services\Database\Models\LoginMessage.cs" />
+    <Compile Include="General\Services\Database\Models\LoginUserMessage.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResource.cs" />
     <Compile Include="General\Services\Database\Models\WebUserPwdHistory.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceTest.cs" />
     <Compile Include="General\Services\CkgGeneralDataService.cs" />
     <Compile Include="General\Services\DbContextExtensions.cs" />
     <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
+    <Compile Include="General\Services\Persistance\PersistanceServiceSql.cs" />
+    <Compile Include="General\Services\Persistance\PersistanceSqlDbContext.cs" />
     <Compile Include="General\Services\SearchExtensions40.cs" />
     <Compile Include="General\ViewModels\CkgBaseViewModel.cs" />
     <Compile Include="General\ViewModels\CkgCommonViewModel.cs" />
@@ -156,6 +167,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Services\AdressenDataServiceSAP.cs" />
     <Compile Include="Services\CkgDomainAppSettings.cs" />
     <Compile Include="Services\Extensions\GridExtensions.cs" />
     <Compile Include="General\Models\DataModels\Land.cs" />
@@ -164,6 +176,7 @@
     <Compile Include="General\Services\Database\Models\ApplicationUser.cs" />
     <Compile Include="General\Contracts\ICkgGeneralDataService.cs" />
     <Compile Include="General\Services\CkgGeneralDataServiceSAP.cs" />
+    <Compile Include="Services\Extensions\GeneralExtensions.cs" />
     <Compile Include="UnitTests\SAP\GeneralTests.cs" />
     <Compile Include="UnitTests\SAP\UeberfuehrungTests.cs" />
     <Compile Include="Zulassung\MobileErfassung\Contracts\IZulMobileErfassungDataService.cs" />
@@ -215,6 +228,7 @@
     <EmbeddedResource Include="Resources\DomainCommonResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DomainCommonResources.de-DE.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\DomainCommonResources.resx">
       <SubType>Designer</SubType>

@@ -26,7 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
-        public string GroupName { get; set; }
+        public string GroupName { get { return PropertyCacheGet(() => "LUEG_BOCHUM"); } set { PropertyCacheSet(value); } }
 
         public string UserName
         {
@@ -34,7 +34,12 @@ namespace CkgDomainLogic.General.Services
             set { PropertyCacheSet(value); }
         }
 
-        public WebUserInfo UserInfo { get; set; }
+        private WebUserInfo _userInfo = new WebUserInfo { Telephone = "04102 56677" };
+        public WebUserInfo UserInfo
+        {
+            get { return _userInfo; }
+            set { _userInfo = value; }
+        }
 
         private LogonLevel _userLogonLevel = LogonLevel.User;
         public LogonLevel UserLogonLevel
@@ -64,7 +69,6 @@ namespace CkgDomainLogic.General.Services
         public string AppUrl { get; set; }
 
         private string _userID = "1";
-
         public string UserID 
         { 
             get { return _userID; }
@@ -80,7 +84,23 @@ namespace CkgDomainLogic.General.Services
             if (User != null)
                 Customer = ct.GetCustomer(User.CustomerID); 
             else 
-                Customer = new Customer { CustomerID = 0, Customername = "Test-Kunde", KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"] };
+                Customer = new Customer
+                    {
+                        CustomerID = 209,
+                        Customername = "Test-Kunde",
+                        KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"],
+                        AccountingArea = 1010,
+                    };
+            
+            Organization= new Organization
+                {
+                    AllOrganizations =  false,
+                    CustomerID = 209,
+                    OrganizationID = 266,
+                    OrganizationName = "LUEG_BOCHUM",
+                    OrganizationReference = "240072",
+                    OrganizationReference2 = "4340",
+                }; 
 
             LocalizationService = localizationService;
 
@@ -114,6 +134,21 @@ namespace CkgDomainLogic.General.Services
 
         public void LogoutUser()
         {
+            UserID = "";
+            UserName = "";
+            User = null;
+            UserInfo = null;
+            FirstName = "";
+            LastName = "";
+            KundenNr = "";
+            Customer = null;
+            GroupName = "";
+            Group = null;
+            Organization = null;
+            if (AppTypes != null)
+                AppTypes.Clear();
+            if (UserApps != null)
+                UserApps.Clear();
         }
 
         public bool ChangePassword(string oldPassword, string newPassword)
@@ -200,7 +235,7 @@ namespace CkgDomainLogic.General.Services
         {
             var logonLevel = UserLogonLevel;
 
-            if (logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Master)
+            if (gridGroup.IsNullOrEmpty() || (logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Master))
                 // let give a chance to all model properties here, return empty string
                 return string.Join("~", modelType.GetScaffoldPropertyNames());
 
@@ -254,6 +289,10 @@ namespace CkgDomainLogic.General.Services
         public string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             return "";
+        }
+
+        public void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
         }
 
         public IEnumerable<string> GetAddressPostcodeCityMappings(string plz)
@@ -331,6 +370,10 @@ namespace CkgDomainLogic.General.Services
             return new MaintenanceResult();
         }
 
+        public void MaintenanceMessageConfirmAndDontShowAgain()
+        {
+        }
+
         public void Clear()
         {
             KundenNr = "";
@@ -343,5 +386,9 @@ namespace CkgDomainLogic.General.Services
             MvcEnforceRawLayout = false;
             LogoutUrl = "";
         }
+
+        public string PersistanceKey { get { return UserName; } }
+
+        public IPersistanceService PersistanceService { get; set; }
     }
 }

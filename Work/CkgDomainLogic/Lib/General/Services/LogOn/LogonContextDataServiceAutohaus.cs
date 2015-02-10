@@ -94,8 +94,19 @@ namespace CkgDomainLogic.General.Services
                         ua.AppTypeRank = appType.Rank;
                         ua.AppTypeFriendlyName = GetAppTypeFriendlyName(appType.AppType);
                     }
+
+                    if (!ua.AppURL.ToLower().StartsWith("mvc/"))
+                    {
+                        ua.AppURL = String.Format("{0}://{1}{2}",
+                            HttpContext.Current.Request.Url.Scheme,
+                            HttpContext.Current.Request.Url.Authority,
+                            ua.AppURL.Replace("../", "/AutohausPortal/"));
+                    }
+                        
                     RewriteUrlToLogPageVisit(ua);
                 });
+
+            dbContext.SetLastLogin(DateTime.Now);
 
             return true;
         }

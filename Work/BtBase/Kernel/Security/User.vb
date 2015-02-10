@@ -1,9 +1,15 @@
 Imports System.Configuration
-Imports System.Web.Mail
+Imports System.Web
+Imports WebTools.Services
 
 Namespace Kernel.Security
     <Serializable()> Public Class User
         REM § Enthält Daten eines einzelnen Benutzers.
+
+        Public Enum PasswordMailMode
+            Neu
+            Zuruecksetzen
+        End Enum
 
 #Region " Membervariables "
         Private m_strConnectionstring As String
@@ -34,7 +40,6 @@ Namespace Kernel.Security
         Private m_app As App
         Private m_customer As Customer
         Private m_organization As Organization
-        Private m_blnOrganizationAdmin As Boolean
         Private m_dtmLastLogin As DateTime
         Private m_mail As String = ""  'Emailadresse
         Private m_telephone As String = ""
@@ -126,7 +131,6 @@ Namespace Kernel.Security
             m_groups = New Groups(Me, m_strConnectionstring)
             'Organization
             m_organization = New Organization(-1, m_strConnectionstring, intUserId)
-            m_blnOrganizationAdmin = blnOrganizationAdmin
             'Angelegt von
             m_strCreatedBy = strCreatedBy
             '
@@ -177,7 +181,6 @@ Namespace Kernel.Security
             m_groups = New Groups(Me, m_strConnectionstring)
             'Organization
             m_organization = New Organization(-1, m_strConnectionstring, intUserId)
-            m_blnOrganizationAdmin = blnOrganizationAdmin
             'Angelegt von
             m_strCreatedBy = strCreatedBy
             '
@@ -527,6 +530,7 @@ Namespace Kernel.Security
 #End Region
 
 #Region " Functions "
+
         Public Function GetTranslations(ByVal sBrowserLanguage As String, ByVal sAppURL As String) As DataTable
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Dim tblReturn As New DataTable()
@@ -563,7 +567,7 @@ Namespace Kernel.Security
                     Next
                 End If
             Catch ex As Exception
-                Throw ex
+                Throw
             Finally
                 If cn.State <> ConnectionState.Closed Then
                     cn.Close()
@@ -572,6 +576,7 @@ Namespace Kernel.Security
 
             Return tblReturn
         End Function
+
         Public Function GetTranslations(ByVal sBrowserLanguage As String, ByVal sAppURL As String, ByVal ZLD As String) As DataTable
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Dim tblReturn As New DataTable()
@@ -610,7 +615,7 @@ Namespace Kernel.Security
                     Next
                 End If
             Catch ex As Exception
-                Throw ex
+                Throw
             Finally
                 If cn.State <> ConnectionState.Closed Then
                     cn.Close()
@@ -618,17 +623,6 @@ Namespace Kernel.Security
             End Try
 
             Return tblReturn
-        End Function
-        Private Function GetFailedLogins(ByVal strUserName As String, ByVal cn As SqlClient.SqlConnection) As Integer
-            Try
-                Dim cmdGetLogins As New SqlClient.SqlCommand("SELECT FailedLogins " & _
-                                                             "FROM WebUser " & _
-                                                             "WHERE Username=@Username", cn)
-                cmdGetLogins.Parameters.AddWithValue("@Username", strUserName)
-                Return CInt(cmdGetLogins.ExecuteScalar)
-            Catch ex As Exception
-                Throw New Exception("Konnte die Anzahl der fehlgeschlagenen Anmeldungen nicht aus der Datenbank lesen!", ex)
-            End Try
         End Function
 
         Public Sub SetEmployeePicture(ByVal blnPicture As Boolean, ByVal strChangeUser As String)
@@ -732,7 +726,7 @@ Namespace Kernel.Security
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
 
             Try
-                Dim strTemp As String = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strQuestionText, "sha1")
+                Dim strTemp As String = Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strQuestionText, "sha1")
                 cn.Open()
 
                 Dim cmdWork As New SqlClient.SqlCommand("DELETE FROM PasswordQuestionAnswers " & _
@@ -831,7 +825,7 @@ Namespace Kernel.Security
 
                 'Eingabe-Parameter ueberpruefen
                 If Not (Len(strUsername) > 0) Then
-                    Throw New System.Exception("Keine gültigen Anmeldedaten eingegeben!")
+                    Throw New Exception("Keine gültigen Anmeldedaten eingegeben!")
                 End If
 
                 'Prerequisits
@@ -877,7 +871,7 @@ Namespace Kernel.Security
                 blnReturn = GetUserData(cmdUser, cn)
 
                 If Not blnReturn Then
-                    Throw New System.Exception(m_strErrorMessage)
+                    Throw New Exception(m_strErrorMessage)
                 End If
 
                 'Anmeldestatus pruefen
@@ -887,9 +881,9 @@ Namespace Kernel.Security
                             SetFailedLogins(strUsername, m_intFailedLogins + 1, cn, strUsername)
                             m_intFailedLogins += 1
                             If m_mail.Length > 0 And m_customer.ForcePasswordQuestion And m_intQuestionID > -1 Then
-                                Throw New System.Exception("4174")
+                                Throw New Exception("4174")
                             Else
-                                Throw New System.Exception("")
+                                Throw New Exception("")
                             End If
                         Else
                             If m_blnAccountIsLockedOut Then
@@ -904,10 +898,10 @@ Namespace Kernel.Security
                                 m_blnAccountIsLockedOut = True
                                 m_strAccountIsLockedBy = "Now"
                             End If
-                            Throw New System.Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
-                    End If
+                            Throw New Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                        End If
                     Else
-                        Throw New System.Exception("")
+                        Throw New Exception("")
                     End If
                 Else
                     GetEmail(m_intUserId, blnReturn)
@@ -915,7 +909,7 @@ Namespace Kernel.Security
 
                 'Auf Freigabe des Accounts prüfen
                 If Not m_approved Then
-                    Throw New System.Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Auf Sperrung des Accounts pruefen
@@ -926,14 +920,14 @@ Namespace Kernel.Security
                     ElseIf sLockedBy = UserName Then
                         m_strAccountIsLockedBy = "User"
                     End If
-                    Throw New System.Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Gibt es eine Datumsbeschränkung
                 If Not m_ValidFrom Is DBNull.Value Then
                     If m_ValidFrom.Length > 0 AndAlso IsDate(m_ValidFrom) = True Then
                         If CDate(m_ValidFrom) >= Date.Now Then
-                            Throw New System.Exception("Das Benutzerkonto steht Ihnen ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
+                            Throw New Exception("Das Benutzerkonto steht Ihnen ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
                         End If
                     End If
                 End If
@@ -943,7 +937,7 @@ Namespace Kernel.Security
                 If Not m_customer.AllowMultipleLogin Then
                     If m_blnLoggedOn Then
                         m_blnDoubleLoginTry = True
-                        'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
+                        'Throw New Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
                         SetLoggedOn(strUsername, True)
                     End If
@@ -978,11 +972,11 @@ Namespace Kernel.Security
 
                 'Eingabe-Parameter ueberpruefen
                 If Not (Len(strUsername) > 0 And Len(strPassword) > 0) Then
-                    Throw New System.Exception("Keine gültigen Anmeldedaten eingegeben!")
+                    Throw New Exception("Keine gültigen Anmeldedaten eingegeben!")
                 End If
                 'Passwort mit Leerzeichen
                 If strPassword.Length <> strPassword.Trim.Length Then
-                    Throw New System.Exception("Überprüfen Sie Ihr Passwort! Leerzeichen nicht erlaubt!")
+                    Throw New Exception("Überprüfen Sie Ihr Passwort! Leerzeichen nicht erlaubt!")
                 End If
 
                 'Prerequisits
@@ -1025,7 +1019,7 @@ Namespace Kernel.Security
                                                     "AND Password = @Password", cn)
                 With cmdUser.Parameters
                     .AddWithValue("@Username", strUsername)
-                    .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
+                    .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
                 End With
                 blnReturn = GetUserData(cmdUser, cn, blnPasswdlink)
 
@@ -1041,7 +1035,7 @@ Namespace Kernel.Security
 
                 '-- ORU 20080205: von UHa einfügt für Testzwecke??? und vergessen zu entfernen
                 'If Not blnReturn Then 
-                '    Throw New System.Exception(m_strErrorMessage)
+                '    Throw New Exception(m_strErrorMessage)
                 'End If
 
                 'Anmeldestatus pruefen
@@ -1051,9 +1045,9 @@ Namespace Kernel.Security
                             SetFailedLogins(strUsername, m_intFailedLogins + 1, cn, strUsername)
                             m_intFailedLogins += 1
                             If m_mail.Length > 0 And m_customer.ForcePasswordQuestion And m_intQuestionID > -1 Then
-                                Throw New System.Exception("4174")
+                                Throw New Exception("4174")
                             Else
-                                Throw New System.Exception("9999")
+                                Throw New Exception("9999")
                             End If
                         Else
 
@@ -1069,11 +1063,11 @@ Namespace Kernel.Security
                                 m_blnAccountIsLockedOut = True
                                 m_strAccountIsLockedBy = "Now"
                             End If
-                            Throw New System.Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                            Throw New Exception("Das Passwort wurde mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
 
                         End If
                     Else
-                        Throw New System.Exception("")
+                        Throw New Exception("")
                     End If
                 Else
                     GetEmail(m_intUserId, blnReturn)
@@ -1081,7 +1075,7 @@ Namespace Kernel.Security
 
                 'Auf Freigabe des Accounts prüfen
                 If Not m_approved Then
-                    Throw New System.Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist noch nicht freigegeben. Bitte setzen Sie Sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Auf Sperrung des Accounts pruefen
@@ -1092,14 +1086,14 @@ Namespace Kernel.Security
                     ElseIf sLockedBy = UserName Then
                         m_strAccountIsLockedBy = "User"
                     End If
-                    Throw New System.Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                    Throw New Exception("Das Benutzerkonto ist gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                 End If
 
                 'Gibt es eine Datumsbeschränkung
                 If Not m_ValidFrom Is DBNull.Value Then
                     If m_ValidFrom.Length > 0 AndAlso IsDate(m_ValidFrom) = True Then
                         If CDate(m_ValidFrom) >= Date.Now Then
-                            Throw New System.Exception("Das Benutzerkonto steht Ihnen erst ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
+                            Throw New Exception("Das Benutzerkonto steht Ihnen erst ab " & CDate(m_ValidFrom).ToShortDateString & " zur Verfügung.")
                         End If
                     End If
                 End If
@@ -1109,7 +1103,7 @@ Namespace Kernel.Security
                 If Not m_customer.AllowMultipleLogin Then
                     If m_blnLoggedOn Then
                         m_blnDoubleLoginTry = True
-                        'Throw New System.Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
+                        'Throw New Exception("Der Benutzer ist bereits angemeldet. Mehrfache Anmeldungen sind nicht gestattet.")
                     Else
                         SetLoggedOn(strUsername, True)
                     End If
@@ -1134,10 +1128,8 @@ Namespace Kernel.Security
             End Try
             Return blnReturn
         End Function
-        '-------
-        'Sperrung durch
-        '-------
-        Private Function GetHistoryInfos(ByVal objUser As Kernel.Security.User) As String
+
+        Private Function GetHistoryInfos(ByVal objUser As User) As String
 
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Try
@@ -1166,6 +1158,7 @@ Namespace Kernel.Security
                 End If
             End Try
         End Function
+
         Public Function RequestNewPassword(ByVal strAnswer As String) As Integer
             Dim intReturn As Integer = -9999
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1185,25 +1178,15 @@ Namespace Kernel.Security
 
                 cmdCheckAnswer.Parameters.AddWithValue("@QuestionID", m_intQuestionID)
                 cmdCheckAnswer.Parameters.AddWithValue("@UserID", m_intUserId)
-                cmdCheckAnswer.Parameters.AddWithValue("@AnswerText", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strAnswer, "sha1"))
+                cmdCheckAnswer.Parameters.AddWithValue("@AnswerText", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strAnswer, "sha1"))
 
                 Dim intTemp As Integer = CInt(cmdCheckAnswer.ExecuteScalar)
 
                 If intTemp = 1 Then
                     'Antwort war richtig
 
-                    'Passwort erzeugen und mailen!
-                    Dim strTemp As String = m_customer.CustomerPasswordRules.CreateNewPasswort(m_strErrorMessage)
-                    If m_strErrorMessage.Length = 0 Then
-                        If Not ChangePassword("", strTemp, strTemp, m_strUsername, True) Then
-                            Throw New System.Exception(m_strErrorMessage)
-                        Else
-                            If Not SendPasswordMail(strTemp, m_strErrorMessage, True) Then
-                                Throw New System.Exception(m_strErrorMessage)
-                            End If
-                        End If
-                    Else
-                        Throw New System.Exception(m_strErrorMessage)
+                    If Not SendPasswordResetMail(m_strErrorMessage, PasswordMailMode.Zuruecksetzen) Then
+                        Throw New Exception(m_strErrorMessage)
                     End If
 
                     'Fehlerhafte Logins zurücksetzen
@@ -1217,7 +1200,7 @@ Namespace Kernel.Security
                     intTemp = m_customer.CustomerLoginRules.LockedAfterNLogins - m_intFailedLogins
                     If intTemp <= 0 Then
                         LockOutAccount(m_strUsername, cn, m_strUsername)
-                        Throw New System.Exception("Die Daten wurden mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
+                        Throw New Exception("Die Daten wurden mehrfach falsch eingegeben. Das Benutzerkonto wurde gesperrt. Bitte setzen Sie sich mit Ihrem Administrator in Verbindung!")
                     Else
                         intReturn = intTemp
                     End If
@@ -1234,13 +1217,13 @@ Namespace Kernel.Security
             Return intReturn
         End Function
 
-        Private Function GetUserDataFromName(ByVal strUserName As String, ByVal cn As SqlClient.SqlConnection, Optional ByVal blnPasswdlink As Boolean = False, Optional ByVal blnFromLogin As Boolean = True) As Boolean
+        Private Function GetUserDataFromName(ByVal strUserName As String, ByVal cn As SqlClient.SqlConnection, Optional ByVal blnPasswdlink As Boolean = False) As Boolean
             Dim blnReturn As Boolean
 
             Try
                 'Eingabe-Parameter ueberpruefen
                 If strUserName = String.Empty Then
-                    Throw New System.Exception("Kein gültiger Benutzername!")
+                    Throw New Exception("Kein gültiger Benutzername!")
                 End If
 
                 'Prerequisits
@@ -1297,7 +1280,7 @@ Namespace Kernel.Security
             Try
                 'Eingabe-Parameter ueberpruefen
                 If intUserId = 0 Then
-                    Throw New System.Exception("Keine gültige Benutzer-ID!")
+                    Throw New Exception("Keine gültige Benutzer-ID!")
                 End If
 
                 'Prerequisits
@@ -1383,30 +1366,30 @@ Namespace Kernel.Security
                     daUser.Fill(dtUser)
                     If Not dtUser.Rows Is Nothing AndAlso dtUser.Rows.Count = 1 Then
                         m_mail = ""
-                        If Not TypeOf dtUser.Rows(0)("mail") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("mail") Is DBNull Then
                             m_mail = CStr(dtUser.Rows(0)("mail"))
                         End If
                         m_blnEmployee = CBool(dtUser.Rows(0)("employee"))
                         m_blnPicture = CBool(dtUser.Rows(0)("picture"))
                         m_intHierarchyID = CInt(dtUser.Rows(0)("employeeHierarchy"))
                         m_strDepartment = ""
-                        If Not TypeOf dtUser.Rows(0)("department") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("department") Is DBNull Then
                             m_strDepartment = CStr(dtUser.Rows(0)("department"))
                         End If
                         m_strPosition = ""
-                        If Not TypeOf dtUser.Rows(0)("position") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("position") Is DBNull Then
                             m_strPosition = CStr(dtUser.Rows(0)("position"))
                         End If
                         m_strPhoneEmployee = ""
-                        If Not TypeOf dtUser.Rows(0)("telephone") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("telephone") Is DBNull Then
                             m_strPhoneEmployee = CStr(dtUser.Rows(0)("telephone"))
                         End If
                         m_strFax = ""
-                        If Not TypeOf dtUser.Rows(0)("fax") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("fax") Is DBNull Then
                             m_strFax = CStr(dtUser.Rows(0)("fax"))
                         End If
                         m_telephone = ""
-                        If Not TypeOf dtUser.Rows(0)("Telephone2") Is System.DBNull Then
+                        If Not TypeOf dtUser.Rows(0)("Telephone2") Is DBNull Then
                             m_telephone = CStr(dtUser.Rows(0)("Telephone2"))
                         End If
                     End If
@@ -1435,10 +1418,10 @@ Namespace Kernel.Security
                     Dim drUser As DataRow
                     For Each drUser In dtUser.Rows
                         intCustID = CInt(drUser("CustomerID"))
-                        m_intUserId = CType(drUser("UserID").ToString, System.Int32)
+                        m_intUserId = CType(drUser("UserID").ToString, Int32)
                         m_intUserHistoryID = -2
-                        If Not TypeOf drUser("UserHistoryID") Is System.DBNull Then
-                            m_intUserHistoryID = CType(drUser("UserHistoryID").ToString, System.Int32)
+                        If Not TypeOf drUser("UserHistoryID") Is DBNull Then
+                            m_intUserHistoryID = CType(drUser("UserHistoryID").ToString, Int32)
                         End If
                         m_customer = New Customer(intCustID, cn)
                         m_organization = New Organization(-1, cn, m_intUserId)
@@ -1452,11 +1435,11 @@ Namespace Kernel.Security
                         m_blnFirstLevelAdmin = CBool(drUser("FirstLevelAdmin"))
                         m_blnMatrixfilled = CBool(drUser("Matrix"))
                         m_strReference = ""
-                        If Not TypeOf drUser("Reference") Is System.DBNull Then
+                        If Not TypeOf drUser("Reference") Is DBNull Then
                             m_strReference = CStr(drUser("Reference"))
                         End If
                         m_blnLoggedOn = CBool(drUser("LoggedOn"))
-                        If Not drUser("LastLogin") Is System.DBNull.Value Then
+                        If Not drUser("LastLogin") Is DBNull.Value Then
                             m_dtmLastLogin = CDate(drUser("LastLogin"))
                         End If
                         m_intReadMessageCount = CInt(drUser("ReadMessageCount"))
@@ -1467,11 +1450,11 @@ Namespace Kernel.Security
                         m_store = drUser("Store").ToString
                         m_ValidFrom = drUser("ValidFrom").ToString
                         m_intQuestionID = -1
-                        If Not drUser("QuestionID") Is System.DBNull.Value Then
+                        If Not drUser("QuestionID") Is DBNull.Value Then
                             m_intQuestionID = CInt(drUser("QuestionID"))
                         End If
                         m_strAnswerText = ""
-                        If Not drUser("AnswerText") Is System.DBNull.Value Then
+                        If Not drUser("AnswerText") Is DBNull.Value Then
                             m_strAnswerText = CStr(drUser("AnswerText"))
                         End If
                     Next
@@ -1488,13 +1471,13 @@ Namespace Kernel.Security
                         GetGroups(cn)
 
                         'Applications holen
-                        GetApplications(cn, intCustID)
+                        GetApplications(cn)
 
                         'App instanzieren
                         m_app = New App(Me)
                     End If
                     'Auf abgelaufenes Passwort pruefen
-                    If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(System.TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
+                    If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
                         m_blnPasswordExpired = True
                     Else
                         m_blnPasswordExpired = False
@@ -1509,6 +1492,7 @@ Namespace Kernel.Security
 
             Return blnReturn
         End Function
+
         Private Function GetGroups(ByVal cn As SqlClient.SqlConnection) As Boolean
             Dim blnReturn As Boolean
 
@@ -1534,7 +1518,7 @@ Namespace Kernel.Security
             Return blnReturn
         End Function
 
-        Private Function GetApplications(ByVal cn As SqlClient.SqlConnection, ByVal intCustomerID As Int32) As Boolean
+        Private Function GetApplications(ByVal cn As SqlClient.SqlConnection) As Boolean
             Dim blnReturn As Boolean
 
             Try
@@ -1564,7 +1548,7 @@ Namespace Kernel.Security
                                                              "WHERE UserID=@UserID", cn)
                 cmdGetLogins.Parameters.AddWithValue("@UserID", m_intUserId)
                 Dim strPasswordFromDB As String = CStr(cmdGetLogins.ExecuteScalar)
-                If System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1") _
+                If Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1") _
                    = strPasswordFromDB Then Return True
                 If strPassword = strPasswordFromDB Then Return True
                 Return False
@@ -1577,7 +1561,7 @@ Namespace Kernel.Security
             Dim cmdCheckPassword As New SqlClient.SqlCommand("SELECT Count(DateOfChange) FROM WebUserPwdHistory WHERE UserID=@UserID AND Password=@Password", cn)
             With cmdCheckPassword.Parameters
                 .AddWithValue("@UserID", m_intUserId)
-                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
+                .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
             End With
             If CInt(cmdCheckPassword.ExecuteScalar) > 0 Then
                 Return False
@@ -1605,7 +1589,7 @@ Namespace Kernel.Security
                     Dim cmdSaveHist As New SqlClient.SqlCommand("INSERT INTO WebUserPwdHistory(UserID, Password, DateOfChange, InitialPwd) Values(@UserID, @Password, @DateOfChange, @InitialPwd)", cn)
                     With cmdSaveHist.Parameters
                         .AddWithValue("@UserID", m_intUserId)
-                        .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
+                        .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strPassword, "sha1"))
                         .AddWithValue("@DateOfChange", Now)
                         .AddWithValue("@InitialPwd", blnInitialPswd)
                     End With
@@ -1634,7 +1618,7 @@ Namespace Kernel.Security
                                             Dim tmpLastPwdChange As Date
                                             With cmdUpdate.Parameters
                                                 .AddWithValue("@UserID", m_intUserId)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                                .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
                                                 If blnAdmin Then
                                                     .AddWithValue("@LastPwdChange", CDate("03.02.1963"))
                                                     tmpLastPwdChange = CDate("03.02.1963")
@@ -1654,7 +1638,7 @@ Namespace Kernel.Security
                                                 .AddWithValue("@UserHistoryID", m_intUserHistoryID)
                                                 .AddWithValue("@LastPwdChange", tmpLastPwdChange)
                                                 .AddWithValue("@ChangeUser", strChangeUser)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                                .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
                                             End With
                                             cmdUpdate.ExecuteNonQuery()
                                             SavePasswordHistory(strNewPwd, tmpLastPwdChange, cn, blnInitialPswd)
@@ -1691,6 +1675,7 @@ Namespace Kernel.Security
             End If
             Return False
         End Function
+
         Public Function ChangePassword(ByVal strOldPwd As String, ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
                                 ByVal strChangeUser As String, Optional ByVal blnAdmin As Boolean = False) As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1709,7 +1694,7 @@ Namespace Kernel.Security
                                             Dim tmpLastPwdChange As Date
                                             With cmdUpdate.Parameters
                                                 .AddWithValue("@UserID", m_intUserId)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                                .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
 
                                                 If blnAdmin Then
                                                     .AddWithValue("@LastPwdChange", CDate("03.02.1963"))
@@ -1730,14 +1715,14 @@ Namespace Kernel.Security
                                             With cmdUpdate.Parameters
                                                 .AddWithValue("@UserHistoryID", m_intUserHistoryID)
                                                 .AddWithValue("@ChangeUser", strChangeUser)
-                                                .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                                .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
                                                 .AddWithValue("@LastPwdChange", tmpLastPwdChange)
 
                                             End With
                                             cmdUpdate.ExecuteNonQuery()
                                             SavePasswordHistory(strNewPwd, tmpLastPwdChange, cn)
                                             m_dtmLastPwdChange = tmpLastPwdChange
-                                            If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(System.TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
+                                            If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
                                                 m_blnPasswordExpired = True
                                             Else
                                                 m_blnPasswordExpired = False
@@ -1751,31 +1736,32 @@ Namespace Kernel.Security
                                                 cn.Close()
                                             End If
                                         End Try
-                                Else
+                                    Else
                                         m_strErrorMessage = String.Format("Dieses Passwort kann nicht wiederverwendet werden. Die letzten {0} Passwörter eines Benutzers sind für eine nochmalige Verwendung gesperrt.", m_customer.CustomerPasswordRules.PasswordHistoryEntries)
+                                    End If
+                                Else
+                                    m_strErrorMessage = m_customer.CustomerPasswordRules.ErrorMessage
                                 End If
                             Else
-                                m_strErrorMessage = m_customer.CustomerPasswordRules.ErrorMessage
+                                m_strErrorMessage = "Das neue Passwort und die Passwortbestätigung müssen einander entsprechen."
                             End If
                         Else
-                                m_strErrorMessage = "Das neue Passwort und die Passwortbestätigung müssen einander entsprechen."
+                            m_strErrorMessage = "Das alte und das neue Passwort dürfen nicht gleich sein."
                         End If
                     Else
-                            m_strErrorMessage = "Das alte und das neue Passwort dürfen nicht gleich sein."
+                        m_strErrorMessage = "Leere Zeichenfolge ist nicht erlaubt!"
                     End If
                 Else
-                    m_strErrorMessage = "Leere Zeichenfolge ist nicht erlaubt!"
-                End If
-            Else
                     m_strErrorMessage = "Sie müssen Ihr altes Passwort angeben!"
-            End If
+                End If
             ElseIf strOldPwd.Length <> strOldPwd.Trim.Length Then
                 m_strErrorMessage = "Überprüfen Sie Ihr altes Passwort! Leerzeichen nicht erlaubt!"
             Else
-            m_strErrorMessage = ""
+                m_strErrorMessage = ""
             End If
             Return False
         End Function
+
         Public Function ChangePasswordFirstLogin(ByVal strNewPwd As String, ByVal strNewPwdConfirm As String, _
                         ByVal strChangeUser As String) As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
@@ -1791,7 +1777,7 @@ Namespace Kernel.Security
                                 Dim tmpLastPwdChange As Date
                                 With cmdUpdate.Parameters
                                     .AddWithValue("@UserID", m_intUserId)
-                                    .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                    .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
                                     tmpLastPwdChange = Now
                                     .AddWithValue("@LastPwdChange", tmpLastPwdChange)
                                     .AddWithValue("@LastLogin", tmpLastPwdChange)
@@ -1805,14 +1791,14 @@ Namespace Kernel.Security
                                 With cmdUpdate.Parameters
                                     .AddWithValue("@UserHistoryID", m_intUserHistoryID)
                                     .AddWithValue("@ChangeUser", strChangeUser)
-                                    .AddWithValue("@Password", System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
+                                    .AddWithValue("@Password", Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(strNewPwd, "sha1"))
                                     .AddWithValue("@LastPwdChange", tmpLastPwdChange)
 
                                 End With
                                 cmdUpdate.ExecuteNonQuery()
                                 SavePasswordHistory(strNewPwd, tmpLastPwdChange, cn)
                                 m_dtmLastPwdChange = tmpLastPwdChange
-                                If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(System.TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
+                                If (Not m_blnPwdNeverExpires) AndAlso (m_dtmLastPwdChange < Now.Subtract(TimeSpan.FromDays(m_customer.CustomerLoginRules.NewPasswordAfterNDays))) Then
                                     m_blnPasswordExpired = True
                                 Else
                                     m_blnPasswordExpired = False
@@ -1840,189 +1826,223 @@ Namespace Kernel.Security
             End If
             Return False
         End Function
-        Public Function SendPasswordMail(ByVal password As String, ByRef errorMessage As String, Optional ByVal blnSendPasswordAnyway As Boolean = False) As Boolean
-            Try
-                If (Not m_customer.CustomerPasswordRules.DontSendEmail) Or blnSendPasswordAnyway Then
-                    If (m_mail <> String.Empty) Then
-                        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-                        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-                        Dim subject As String = "Ihr persönliches Passwort"
-                        Dim textBuilder As New System.Text.StringBuilder()
-                        With textBuilder
-                            .AppendLine("Guten Tag,")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Ihr persönliches Passwort für den Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst lautet:")
-                            .Append(Environment.NewLine)
-                            .AppendLine("<<" & password.Trim() & ">>")
-                            .AppendLine("(Ohne '<<' und '>>'. Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Passwort sowie Ihrem Benutzernamen können Sie nun das Login vornehmen.")
-                            .AppendLine("Wir müssen Sie bitten, Ihr Passwort nach der ersten Anmeldung aus Sicherheitsgründen zu ändern.")
-                            .AppendLine("Bitte bewahren Sie Ihren Benutzernamen sowie Ihr Online-Passwort an einem sicheren Platz auf und geben Sie Ihre Zugangsdaten nicht an Dritte weiter.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit freundlichen Grüßen")
-                            .AppendLine("Christoph Kroschke GmbH /")
-                            .AppendLine("Deutscher Auto Dienst GmbH")
-                        End With
 
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-                        client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
+        Public Function SendPasswordResetMail(ByRef errMsg As String, ByVal modus As PasswordMailMode) As Boolean
 
-                        Return True
-                    Else
-                        errorMessage = "Keine Mailadresse angegeben. Neues Passwort konnte nicht versendet werden."
-                        Return False
-                    End If
+            If Not m_customer.CustomerUsernameRules.DontSendEmail Then
+                If String.IsNullOrEmpty(m_mail) Then
+                    errMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
+                    Return False
                 End If
-            Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
-                Return False
-            End Try
+
+                Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
+                UpdateWebUserPasswordChangeRequestKey(confirmationToken)
+
+                Dim portalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
+                If portalLink = String.Empty Then
+                    Throw New Exception("Kein Login-Link konfiguriert!")
+                End If
+                'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
+                portalLink = portalLink.ToLower()
+                portalLink = portalLink.Replace("/start/login.aspx", "/")
+                portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
+                portalLink = portalLink.Replace("/services/", "/servicesmvc/")
+
+                Dim controller As String = "Login"
+                Dim action As String = "ChangePassword"
+                Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
+
+                Dim verb As String = IIf(modus = PasswordMailMode.Neu, "Generieren", "Zurücksetzen").ToString()
+
+                Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
+                Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
+                Dim subject As String = String.Format("Link zum {0} Ihres Passworts", verb)
+                Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                Dim textBuilder As New Text.StringBuilder()
+                With textBuilder
+                    .AppendLine(String.Format("Guten Tag {0},", userSalutation))
+                    .Append(Environment.NewLine)
+                    .Append(Environment.NewLine)
+                    .AppendLine(String.Format("bitte nutzen Sie diesen Link zum {0} Ihres Kennworts:", verb))
+                    .Append(Environment.NewLine)
+                    .AppendLine(confirmationUrl)
+                    .Append(Environment.NewLine)
+                    .Append(Environment.NewLine)
+                    .AppendLine("Mit freundlichen Grüßen")
+                    .AppendLine("Deutscher Auto Dienst GmbH")
+                End With
+
+                Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
+            End If
+
+            Return True
+
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMessage As String, ByVal Reapproved As Boolean, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal Reapproved As Boolean) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
+
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
                             .AppendLine("Ihr neuer persönlicher Benutzername für den Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst lautet:")
                             .Append(Environment.NewLine)
-                            .AppendLine(m_strUsername.Trim & " (Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
+                            .AppendLine(m_strUsername.Trim())
+                            .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
-                            .AppendLine("Hinweis!: Das persönliche Passwort erhalten Sie in einer separaten E-mail.")
+                            .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
                             .AppendLine("Christoph Kroschke GmbH /")
                             .AppendLine("Deutscher Auto Dienst GmbH")
-                        End With
-                        'End If
 
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                        End With
+
+                        Dim client As New Net.Mail.SmtpClient(smtpMailServer)
                         client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
 
-        Public Function SendUsernameChangedMail(ByRef errorMessage As String, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameChangedMail(ByRef errorMsg As String) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzername wurde geändert"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
                             .Append(Environment.NewLine)
                             .AppendLine("Ihr persönlicher Benutzername für den Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst hat sich geändert.")
                             .AppendLine("Ihr neuer Benutzername lautet:")
                             .Append(Environment.NewLine)
-                            .AppendLine(m_strUsername.Trim & " (Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
+                            .AppendLine(m_strUsername.Trim())
+                            .AppendLine("(Bitte achten Sie auf die korrekte Groß- und Kleinschreibung)")
                             .Append(Environment.NewLine)
-                            .AppendLine("Mit diesem Benutzername sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
+                            .AppendLine("Mit diesem Benutzernamen sowie Ihrem persönlichen Passwort können Sie das Login vornehmen.")
                             .Append(Environment.NewLine)
-                            .AppendLine("Hinweis!: Das persönliche Passwort erhalten Sie in einer separaten E-mail.")
+                            .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
                             .AppendLine("Christoph Kroschke GmbH /")
                             .AppendLine("Deutscher Auto Dienst GmbH")
                         End With
 
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                        Dim client As New Net.Mail.SmtpClient(smtpMailServer)
                         client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMessage As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
-                    If (m_mail <> String.Empty) Then
-                        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-                        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-                        Dim subject As String = "Ihr persönlicher Benutzername"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
 
-                        Dim Portallink As String = LoadLoginLinks(PortalLinkID)
-                        If Portallink = String.Empty Then
-                            Portallink = "https://sgw.kroschke.de/Services"
-                        End If
-
-                        ' Bsp.: "https://sgw.kroschke.de[/]Services/Start/Login.aspx" --> Das richtige Trennzeichen [] suchen, um den aktuellen Server auszulesen
-                        Dim iSplitindex As Integer = 0
-                        For i As Integer = 0 To 2
-                            iSplitindex = Portallink.IndexOf("/", iSplitindex)
-                            iSplitindex += 1
-                        Next
-
-                        Dim sServer As String = Portallink.Remove(iSplitindex - 1)
-                        Dim sValidationLink As String = sServer & "/Validation/Forms/Confirmation.aspx?key="
-
-                        With textBuilder
-                            .AppendLine("Sehr geehrte(r) " & m_title & " " & m_firstname & " " & m_lastname & ",")
-                            .Append(Environment.NewLine)
-                            .AppendLine("mit dieser Email übersenden wir Ihnen die Zugangsdaten zum Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst GmbH. ")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Bitte speichern Sie sich folgenden Link in Ihrem Internetbrowser ab:")
-                            .AppendLine(Portallink)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Ihr Benutzername lautet: " & m_strUsername)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Sofern Sie der korrekte Empfänger (" & m_firstname & " " & m_lastname & ")dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und das Portal nutzen zu können.")
-                            .AppendLine(sValidationLink & Goodlink)
-                            .Append(Environment.NewLine)
-                            .AppendLine("Sofern Sie nicht der korrekte Empfänger dieser Mail sind, klicken Sie bitte auf den folgenden Link:")
-                            .AppendLine(sValidationLink & BadLink)
-                            .Append(Environment.NewLine)
-                            .AppendLine("oder melden Sie sich telefonisch bei Ihrem Web-Administrator.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Für Rückfragen zur Anmeldung stehen wir Ihnen jederzeit gern zur Verfügung.")
-                            .Append(Environment.NewLine)
-                            .AppendLine("Mit freundlichen Grüßen")
-                            .AppendFormat("Web-Administration, {0} {1}", currentUser.FirstName, currentUser.LastName)
-
-                        End With
-
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
-                        client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
-
-                        Return True
-                    Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Benutzername konnte nicht versendet werden."
+                    If String.IsNullOrEmpty(m_mail) Then
+                        errorMsg = "Keine Mailadresse angegeben. Link konnte nicht versendet werden."
                         Return False
                     End If
+
+                    Dim confirmationToken As String = UserSecurityService.GenerateToken(UserName)
+                    UpdateWebUserPasswordChangeRequestKey(confirmationToken)
+
+                    Dim portalLinkOrig As String = LoadLoginLinks(m_customer.LoginLinkID)
+                    If portalLinkOrig = String.Empty Then
+                        Throw New Exception("Kein Login-Link konfiguriert!")
+                    End If
+                    'Pwd-Änderung + Anmeldung erfolgt immer über das ServicesMvc-Login
+                    Dim portalLink As String = portalLinkOrig.ToLower()
+                    portalLink = portalLink.Replace("/start/login.aspx", "/")
+                    portalLink = portalLink.Replace("/portal/", "/servicesmvc/")
+                    portalLink = portalLink.Replace("/services/", "/servicesmvc/")
+
+                    Dim controller As String = "Login"
+                    Dim action As String = "ChangePassword"
+                    Dim confirmationUrl As String = String.Format("{0}{1}/{2}?confirmation={3}", portalLink, controller, action, HttpUtility.UrlEncode(confirmationToken))
+
+                    Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
+                    Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
+                    Dim subject As String = "Ihr persönlicher Benutzername"
+                    Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                    Dim textBuilder As New Text.StringBuilder()
+                    With textBuilder
+                        .AppendLine(String.Format("Guten Tag {0},", userSalutation))
+                        .Append(Environment.NewLine)
+                        .Append(Environment.NewLine)
+                        .AppendLine("mit dieser Email übersenden wir Ihnen die Zugangsdaten zum Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst GmbH. ")
+                        .Append(Environment.NewLine)
+                        .AppendLine("Bitte speichern Sie sich folgenden Link in Ihrem Internetbrowser ab:")
+                        .Append(Environment.NewLine)
+                        .AppendLine(portalLinkOrig)
+                        .Append(Environment.NewLine)
+                        .AppendLine("Ihr Benutzername lautet:")
+                        .AppendLine(m_strUsername.Trim)
+                        .Append(Environment.NewLine)
+                        .AppendFormat("Sofern Sie der korrekte Empfänger ({0} {1}) dieser Mail sind, klicken Sie bitte auf den folgenden Link, um Ihre Benutzerdaten zu bestätigen und ein neues Kennwort zu generieren.", FirstName, LastName)
+                        .Append(Environment.NewLine)
+                        .AppendLine(confirmationUrl)
+                        .Append(Environment.NewLine)
+                        .Append(Environment.NewLine)
+                        .AppendLine("Mit freundlichen Grüßen")
+                        .AppendLine("Deutscher Auto Dienst GmbH")
+                    End With
+
+                    Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                    client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
+
+                    Return True
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
+
+        Public Sub UpdateWebUserPasswordChangeRequestKey(key As String)
+            Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
+            cn.Open()
+
+            Dim cmdUpdate As New SqlClient.SqlCommand("UPDATE WebUser SET PasswordChangeRequestKey=@key where UserID=" & m_intUserId, cn)
+
+            With cmdUpdate.Parameters
+                .AddWithValue("@UserID", UserID)
+                .AddWithValue("@key", key)
+            End With
+            cmdUpdate.ExecuteNonQuery()
+
+            cn.Close()
+            cn.Dispose()
+
+        End Sub
 
         Public Sub UpdateWebUserUploadMailSend(ByVal isSend As Boolean)
             Dim cn As New SqlClient.SqlConnection(m_app.Connectionstring)
@@ -2040,13 +2060,6 @@ Namespace Kernel.Security
             cn.Dispose()
 
         End Sub
-
-        ''' <summary>
-        ''' Prüft ob der Benutzer den kompletten Validationsprozess durchlaufen hat.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
 
         Public Function CheckValidationConfirmed() As Boolean
             Dim blnConfirmed As Boolean = False
@@ -2082,13 +2095,6 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        ''' <summary>
-        ''' Prüft ob ein Benutzer den kompletten Validationsprozess durchlaufen hat.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
-
         Public Shared Function CheckValidationConfirmed(ByVal UserID As String, ByVal Connectionstring As String) As Boolean
             Dim blnConfirmed As Boolean = False
 
@@ -2122,13 +2128,6 @@ Namespace Kernel.Security
 
             Return blnConfirmed
         End Function
-
-        ''' <summary>
-        ''' Prüft ob eine EMail mit Benutzerdaten für den Validationsprozess versendet wurde.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
 
         Public Function CheckValidationMailsend() As Boolean
             Dim blnConfirmed As Boolean = False
@@ -2164,13 +2163,6 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        ''' <summary>
-        ''' Prüft ob eine EMail mit Benutzerdaten für den Validationsprozess versendet wurde.
-        ''' <Return>
-        '''     
-        ''' </Return>
-        ''' </summary>
-
         Public Shared Function CheckValidationMailsend(ByVal UserID As String, ByVal Connectionstring As String) As Boolean
             Dim blnConfirmed As Boolean = False
 
@@ -2205,14 +2197,14 @@ Namespace Kernel.Security
             Return blnConfirmed
         End Function
 
-        Public Function SendUserUnlockMail(ByRef errorMessage As String, ByVal currentUser As User, Optional ByVal blnSendUsernameAnyway As Boolean = False) As Boolean
+        Public Function SendUserUnlockMail(ByRef errorMsg As String, ByVal currentUser As User) As Boolean
             Try
-                If (Not m_customer.CustomerUsernameRules.DontSendEmail) Or blnSendUsernameAnyway Then
+                If Not m_customer.CustomerUsernameRules.DontSendEmail Then
                     If (m_mail <> String.Empty) Then
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzerkonto wurde entsperrt"
-                        Dim textBuilder As New System.Text.StringBuilder()
+                        Dim textBuilder As New Text.StringBuilder()
                         Dim PortalLink As String = LoadLoginLinks(m_customer.LoginLinkID)
 
                         If PortalLink = String.Empty Then
@@ -2226,10 +2218,9 @@ Namespace Kernel.Security
                             iSplitindex += 1
                         Next
 
-                        Dim sServer As String = PortalLink.Remove(iSplitindex - 1)
-
                         With textBuilder
-                            .AppendLine("Sehr geehrte(r) " & m_title & " " & m_firstname & " " & m_lastname & ",")
+                            .AppendFormat("Sehr geehrte(r) {0} {1} {2},", m_title, m_firstname, m_lastname)
+                            .Append(Environment.NewLine)
                             .Append(Environment.NewLine)
                             .AppendLine("Ihr Benutzerkonto für Internetbereich der Kroschke Gruppe und dem Deutschen Auto Dienst GmbH wurde entsperrt.")
                             .Append(Environment.NewLine)
@@ -2237,26 +2228,29 @@ Namespace Kernel.Security
                             .Append(Environment.NewLine)
                             .AppendLine(PortalLink)
                             .Append(Environment.NewLine)
-                            .AppendLine("mit Ihrem Benutzernamen " & m_strUsername & " und Ihrem persönlichen Passwort anmelden.")
+                            .AppendFormat("mit Ihrem Benutzernamen {0} und Ihrem persönlichen Passwort anmelden.", m_strUsername)
+                            .Append(Environment.NewLine)
+                            .Append(Environment.NewLine)
                             .Append(Environment.NewLine)
                             .AppendLine("Haben Sie Fragen oder benötigen Sie ein neues Passwort, melden Sie sich telefonisch bei Ihrem Web-Administrator.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
+                            .Append(Environment.NewLine)
                             .AppendFormat("Web-Administration, {0} {1}", currentUser.FirstName, currentUser.LastName)
 
                         End With
 
-                        Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
+                        Dim client As New Net.Mail.SmtpClient(smtpMailServer)
                         client.Send(smtpMailSender, m_mail, subject, textBuilder.ToString)
 
                         Return True
                     Else
-                        errorMessage = "Keine Mailadresse angegeben. Der Entsperr-Email konnte nicht versendet werden."
+                        errorMsg = "Keine Mailadresse angegeben. Der Entsperr-Email konnte nicht versendet werden."
                         Return False
                     End If
                 End If
             Catch ex As Exception
-                errorMessage = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
+                errorMsg = String.Format("Beim Mailversand ist ein technisches Problem aufgetreten. Die Email wurde möglicherweise nicht verschickt. (Wortlaut der Fehlermeldung: {0})", ex.Message)
                 Return False
             End Try
         End Function
@@ -2406,7 +2400,6 @@ Namespace Kernel.Security
         End Function
 
         Public Function Save() As Boolean
-            Dim saveMail As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
             Try
 
@@ -2639,9 +2632,7 @@ Namespace Kernel.Security
                 If m_intUserId = -1 Then
                     'Wenn User neu ist dann ID ermitteln, damit bei nachfolgendem Fehler und erneutem Speichern Datensatz nicht doppelt angelegt wird.
                     m_intUserId = CInt(cmdUser.ExecuteScalar)
-                    saveMail = True
                 Else
-                    saveMail = False
                     cmdUser.ExecuteNonQuery()
                 End If
                 SaveUserInfo(m_strCreatedBy)
@@ -2696,7 +2687,7 @@ Namespace Kernel.Security
         End Function
 
         Public Function IsSuperiorTo(ByVal _User As User) As Boolean
-            If Me.HighestAdminLevel > _User.HighestAdminLevel Then
+            If HighestAdminLevel > _User.HighestAdminLevel Then
                 Return True
 
             Else
@@ -2707,13 +2698,14 @@ Namespace Kernel.Security
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime)
             SetLastLogin(dtmLastLogin, m_strConnectionstring)
         End Sub
+
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime, ByVal strConnectionString As String)
             If strConnectionString = "" Then
                 Throw New Exception("Fehler beim Setzen des Datums des letzen Logins: Kein ConnectionString vorhanden!")
-                Exit Sub
             End If
             SetLastLogin(dtmLastLogin, New SqlClient.SqlConnection(strConnectionString))
         End Sub
+
         Public Sub SetLastLogin(ByVal dtmLastLogin As DateTime, ByVal cn As SqlClient.SqlConnection)
             Try
                 If cn.State = ConnectionState.Closed Then
@@ -2745,19 +2737,19 @@ Namespace Kernel.Security
             m_approved = True
             Save()
         End Function
+
         Private Function GetPasswordHistory(ByVal cn As SqlClient.SqlConnection) As Boolean
             Try
 
-                Dim blnInitialPwd As Boolean = False
                 Dim cmdHist As New SqlClient.SqlCommand("SELECT TOP 1 InitialPwd FROM WebUserPwdHistory WHERE UserID=@UserID ORDER BY DateOfChange DESC", cn)
                 cmdHist.Parameters.AddWithValue("@UserID", m_intUserId)
                 Return CBool(cmdHist.ExecuteScalar)
-
 
             Catch ex As Exception
                 Throw New Exception("Fehler beim Schreiben der Passworthistorie!", ex)
             End Try
         End Function
+
 #End Region
 
     End Class

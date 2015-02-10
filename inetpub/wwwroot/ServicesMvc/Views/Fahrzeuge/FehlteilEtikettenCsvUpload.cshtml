@@ -45,7 +45,7 @@
 
         FormWizard.OnRestart(function () {
             //alert('Ok, let´s restart! :)');
-            location.reload();
+            LocationReloadWithoutQueryString();
         });
     }
 
@@ -63,7 +63,7 @@
         var fileName = e.files[0].name;
                 
         if (fileName.toLowerCase().indexOf('.csv') <= 0) {
-            alert('@Localize.FileUploadLegalFileTypesWarning');
+            alert('@Localize.FileUploadOnlyCsvLegal');
             return false;
         }
 

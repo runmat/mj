@@ -62,6 +62,14 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult UnusedApps()
+        {
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
 
         #region PageVisit Logs
 
@@ -135,6 +143,41 @@ namespace ServicesMvc.Controllers
         public ActionResult FilterGridLogsPageVisitsDetail(string filterValue, string filterColumns)
         {
             ViewModel.FilterPageVisitLogItemsDetail(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region UnusedApps
+
+        [HttpPost]
+        public ActionResult LoadUnusedApps(PageVisitLogItemSelector model)
+        {
+            ModelState.Clear();
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (ViewModel.LoadUnusedApps(model))
+                    if (ViewModel.PageVisitLogItemsFiltered.None())
+                        ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/UnusedApps/SucheUnusedApps", ViewModel.PageVisitLogItemSelector);
+        }
+
+        [HttpPost]
+        public ActionResult ShowUnusedApps()
+        {
+            return PartialView("Partial/UnusedApps/Grid", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridLogsUnusedApps(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterPageVisitLogItems(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -293,6 +336,22 @@ namespace ServicesMvc.Controllers
         {
             var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Webservice-Log", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportUnusedAppsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UnusedApps", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportUnusedAppsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UnusedApps", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

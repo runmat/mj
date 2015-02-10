@@ -3,16 +3,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.ViewModels;
-using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Services;
-using MvcTools.Web;
-using Telerik.Web.Mvc;
 using GeneralTools.Models;
 
 namespace ServicesMvc.Controllers
@@ -25,8 +21,6 @@ namespace ServicesMvc.Controllers
         private readonly int _portalType = 3;   // 1 = Portal, 2 = Services, 3 = ServicesMvc
 
         public override string DataContextKey { get { return GetDataContextKey<AdressenPflegeViewModel>(); } }
-
-        public AdressenPflegeViewModel AdressenPflegeViewModel { get { return GetViewModel<AdressenPflegeViewModel>(); } }
 
         public CkgCommonViewModel CkgCommonViewModel { get { return GetViewModel<CkgCommonViewModel>(); } }
 
@@ -46,8 +40,16 @@ namespace ServicesMvc.Controllers
             if (string.IsNullOrEmpty(url) == false)
             {
                 var decodedUrl = HttpUtility.UrlDecode(url);
-                var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
-                result = new RedirectResult(mvcReadyUrl);
+                if (decodedUrl.StartsWith("mvc/"))
+                {
+                    var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
+                    result = new RedirectResult(mvcReadyUrl);
+                }
+                else
+                {
+                    var nonMvcUrl = decodedUrl + (decodedUrl.Contains("?") ? "&" : "?") + "AppID=" + logappid;
+                    result = new RedirectResult(nonMvcUrl);
+                }
             }
 
             if (!logappid.IsNullOrEmpty() && LogonContext != null && LogonContext.User != null && LogonContext.Customer != null)
@@ -112,98 +114,12 @@ namespace ServicesMvc.Controllers
             return View();
         }
 
-
-        #region Adressen Pflege
-
         [CkgApplication]
         public ActionResult AdressenPflege(string kennung, string kdnr)
         {
-            AdressenPflegeViewModel.DataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenDataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
 
             return View(AdressenPflegeViewModel);
         }
-
-        [GridAction]
-        public ActionResult AdressenAjaxBinding()
-        {
-            var items = AdressenPflegeViewModel.AdressenFiltered; 
-
-            return View(new GridModel(items));
-        }
-
-        [HttpPost]
-        public ActionResult FilterGridAdresse(string filterValue, string filterColumns)
-        {
-            AdressenPflegeViewModel.FilterVersandAdressen(filterValue, filterColumns);
-
-            return new EmptyResult();
-        }
-
-        [HttpPost]
-        public ActionResult EditAddress(int id)
-        {
-            AdressenPflegeViewModel.InsertMode = false;
-            ModelState.Clear();
-            return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
-        }
-
-        [HttpPost]
-        public ActionResult NewAddress()
-        {
-            AdressenPflegeViewModel.InsertMode = true;
-            ModelState.Clear();
-            return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.NewItem().SetInsertMode(AdressenPflegeViewModel.InsertMode));
-        }
-
-        [HttpPost]
-        public ActionResult DeleteAddress(int id)
-        {
-            AdressenPflegeViewModel.RemoveItem(id);
-
-            return new EmptyResult();
-        }
-
-        [HttpPost]
-        public ActionResult AddressDetailsFormSave(Adresse model)
-        {
-            // Avoid ModelState clearing on saving 
-            // => because automatic model validation (via data annotations) would be omitted !!!
-            // ModelState.Clear();
-
-            var viewModel = AdressenPflegeViewModel;
-
-            viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
-
-            if (ModelState.IsValid)
-            {
-                if (viewModel.InsertMode)
-                    viewModel.AddItem(model);
-
-                model = viewModel.SaveItem(model, ModelState.AddModelError);
-            }
-
-            model.IsValid = ModelState.IsValid;
-            model.InsertModeTmp = viewModel.InsertMode;
-
-            return PartialView("AdressenPflege/AdressenDetailsForm", model);
-        }
-
-        public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
-        {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Adressen", dt);
-
-            return new EmptyResult();
-        }
-
-        public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
-        {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Adressen", dt, landscapeOrientation: true);
-
-            return new EmptyResult();
-        }
-
-        #endregion
     }
 }

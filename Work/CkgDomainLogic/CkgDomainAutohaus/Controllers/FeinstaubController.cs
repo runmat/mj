@@ -14,7 +14,7 @@ namespace AutohausPortalMvc.Controllers
     {
         public override string DataContextKey { get { return GetDataContextKey<AutohausFeinstaubVergabeViewModel>(); } }
 
-        public FeinstaubController(IAppSettings appSettings, ILogonContextDataServiceAutohaus logonContext, IAutohausFeinstaubVergabeDataService feinstaubVergabeDataService, 
+        public FeinstaubController(IAppSettings appSettings, ILogonContextDataService logonContext, IAutohausFeinstaubVergabeDataService feinstaubVergabeDataService, 
             IAutohausFeinstaubReportDataService feinstaubReportDataService)
             : base(appSettings, logonContext)
         {

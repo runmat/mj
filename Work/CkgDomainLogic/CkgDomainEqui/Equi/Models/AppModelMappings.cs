@@ -302,7 +302,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.TechnIdentnummer = s.TIDNR;
                         d.AbcKennzeichen = s.ABCKZ;
                         d.Raum = s.MSGRP;
-                        d.Standort = s.STORT;
+                        d.Standort = s.TEXT_STO;
                         d.Versandgrund = s.ZZVGRUND;
                         d.Eingangsdatum = s.DATAB;
                         d.Versanddatum = s.ZZTMPDT;
@@ -533,8 +533,23 @@ namespace CkgDomainLogic.Equi.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.FahrzeugHersteller = s.ZZHERST_TEXT;
+                        d.FahrzeugTyp = s.ZZHANDELSNAME;
                         d.Vertragsnummer = s.LIZNR;
+
                         d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.TechnIdentnummer = s.TIDNR;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.Eingangsdatum = s.ERDAT;
+
+                        d.VersandGrund = s.TEXT50;
+
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Strasse = s.STREET;
+                        d.Hausnummer = s.HOUSE_NUM1;
+                        d.PLZ = s.POST_CODE1;
+                        d.Ort = s.CITY1;
                     }));
             }
         }

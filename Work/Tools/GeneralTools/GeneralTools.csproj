@@ -100,6 +100,9 @@
     <Compile Include="Contracts\IAttributeWithModelMappingConvert.cs" />
     <Compile Include="Contracts\IUserSecurityRuleDataProvider.cs" />
     <Compile Include="Contracts\INullable.cs" />
+    <Compile Include="Contracts\Persistance\IPersistanceService.cs" />
+    <Compile Include="Contracts\Persistance\IPersistableObjectContainer.cs" />
+    <Compile Include="Contracts\Persistance\IPersistableObject.cs" />
     <Compile Include="Log\Contracts\ISapLogger.cs" />
     <Compile Include="Log\Models\LogConstants.cs" />
     <Compile Include="Log\Services\CkgSessionWrapperException.cs" />
@@ -157,6 +160,11 @@
     <Compile Include="Models\StringListNotEmpty.cs" />
     <Compile Include="Models\UI\GridItemsModel.cs" />
     <Compile Include="Models\XmlDictionary.cs" />
+    <Compile Include="Resources\CommonResources.fr.Designer.cs">
+      <DependentUpon>CommonResources.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Services\AddressService.cs" />
     <Compile Include="Services\AssemblyService.cs" />
     <Compile Include="Services\Configuration\ApplicationConfiguration.cs" />
@@ -170,6 +178,7 @@
     <Compile Include="Services\Misc\DynamicTypeBuilder.cs" />
     <Compile Include="Services\Misc\Feiertage\DeutscheFeiertageEinesJahres.cs" />
     <Compile Include="Services\Misc\TypeMerger.cs" />
+    <Compile Include="Services\Persistance\PersistanceBaseService.cs" />
     <Compile Include="Services\Stores\Store.cs" />
     <Compile Include="Services\Threads\BackgroundTaskBase.cs" />
     <Compile Include="Services\Threads\ThreadSaveQueue.cs" />
@@ -190,10 +199,15 @@
     <EmbeddedResource Include="Resources\CommonResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\CommonResources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResources.de-DE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\CommonResources.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonResources.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

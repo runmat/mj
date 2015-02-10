@@ -1,67 +1,56 @@
-﻿Public Partial Class Modell
-    Inherits System.Web.UI.UserControl
+﻿
+Partial Public Class Modell
+    Inherits UserControl
     Private objCarports As Zul_Sperr_Entsperr
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
-        Select Case objCarports.Task
-            Case "Zulassen"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False         'Datum ZieCarport
-            Case "Ausgabe"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False
-                HG1.Columns(18).Visible = False
-                HG1.Columns(19).Visible = False
-        End Select
+
+        SetTaskProperties()
     End Sub
 
-    Private Sub TitleList_DataBind(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.DataBinding
+    Private Sub TitleList_DataBind(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.DataBinding
         Dim dgi As DataGridItem = CType(Me.BindingContainer, DataGridItem)
         Dim ds As DataSet = CType(dgi.DataItem, DataSet)
 
         HG1.DataSource = ds
         HG1.DataMember = "Modelle"
         HG1.DataBind()
-        'Dim item As DataGridItem
-        'Dim i As Int32 = 0
-        '       For Each item In HG1.Items
-        'HG1.RowExpanded(i) = True
-        'i += 1
-        'ctl = CType(item.Cells(17).FindControl("Textbox3"), TextBox)
-        'ctl.Attributes.Add("onfocus", "doClear(" & ctl.ClientID & ")")
 
         objCarports = CType(Session("App_Report"), Zul_Sperr_Entsperr)
-        Select Case objCarports.Task
-            Case "Zulassen"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False         'Datum ZieCarport
-            Case "Ausgabe"
-                HG1.Columns(14).Visible = False         'Bemerkung
-                HG1.Columns(15).Visible = False         'Bemerkung Datum 
-                HG1.Columns(16).Visible = True          'Datum Erstzulassung
-                HG1.Columns(17).Visible = False
-                HG1.Columns(18).Visible = False
-                HG1.Columns(19).Visible = False
-        End Select
+
+        SetTaskProperties()
     End Sub
 
+    Private Sub SetTaskProperties()
 
-    Private Sub HG1_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles HG1.ItemCommand
+        HG1.Columns(16).HeaderText = "Datum <br/> " & objCarports.ArtDerZulassung.ToString()
+
+        Select Case objCarports.Task
+            Case "Zulassen"
+                HG1.Columns(13).Visible = False         'Bemerkung
+                HG1.Columns(14).Visible = False         'Bemerkung Datum 
+                HG1.Columns(15).Visible = True          'Datum Erstzulassung
+                HG1.Columns(16).Visible = False         'Datum ZieCarport
+            Case "Ausgabe"
+                HG1.Columns(13).Visible = False         'Bemerkung
+                HG1.Columns(14).Visible = False         'Bemerkung Datum 
+                HG1.Columns(15).Visible = True          'Datum Erstzulassung
+                HG1.Columns(16).Visible = False
+                HG1.Columns(17).Visible = False
+                HG1.Columns(18).Visible = False
+        End Select
+
+    End Sub
+
+    Private Sub HG1_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles HG1.ItemCommand
         Dim i As Integer
-        Dim ModId As String
         Dim txtBox As TextBox
         Dim AnzOld As String
         Dim AnzVorh As String
         Dim txtZul As TextBox
         Dim zudat As String = ""
         Dim c As DataGrid
-        Dim boolSperre As Boolean = False
         Dim chk As CheckBox
         Dim j As Integer = 0
         Dim iplus As Integer = 0
@@ -73,7 +62,6 @@
             FindControl("ChildTemplate_Modell_Fahrzeug").FindControl("DG1"),  _
                         DataGrid)
 
-            ModId = e.Item.Cells(1).Text
             txtBox = CType(e.Item.Cells(18).FindControl("Anzahl_neu"), TextBox)
             AnzOld = e.Item.Cells(17).Text
             AnzVorh = e.Item.Cells(18).Text
@@ -171,7 +159,6 @@
             Dim obj1 As HtmlInputText
             Dim lbl As Label
             Dim strText As String
-            Dim strName As String = ""
             For Each obj In Me.Parent.Page.Controls
                 strText = obj.UniqueID
                 If strText = "Form1" Then
@@ -207,20 +194,18 @@
             SelectAll(source, e)
         End If
 
-
     End Sub
-    Private Sub SelectAll(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+
+    Private Sub SelectAll(ByVal source As Object, ByVal e As DataGridCommandEventArgs)
         Dim c As DataGrid
         Dim GridItem As DataGridItem
         Dim Grid As DBauer.Web.UI.WebControls.HierarGrid
         Dim i As Integer
-        Dim ModId As String
         Dim txtBox As TextBox
         Dim AnzOld As String
         Dim AnzVorh As String
         Dim txtZul As TextBox
         Dim zudat As String = ""
-        Dim boolSperre As Boolean = False
         Dim chk As CheckBox
         Dim j As Integer = 0
         Dim iplus As Integer = 0
@@ -228,16 +213,12 @@
         Dim errMsg As String = ""
         Grid = CType(source, DBauer.Web.UI.WebControls.HierarGrid)
 
-
-        ' For i=0 to Grid.Items.CopyTo
-
         For Each GridItem In Grid.Items
             j = 0
             i = 0
             c = CType(GridItem.Cells(1).FindControl("DCP").FindControl("Panel_Modell_Fahrzeug"). _
                 FindControl("ChildTemplate_Modell_Fahrzeug").FindControl("DG1"),  _
                 DataGrid)
-            ModId = GridItem.Cells(1).Text
             txtBox = CType(GridItem.Cells(18).FindControl("Anzahl_neu"), TextBox)
             AnzOld = GridItem.Cells(17).Text
             AnzVorh = GridItem.Cells(18).Text
@@ -339,13 +320,11 @@
             Else : errMsg = "Geben Sie ein Zahlenwert ein."
             End If
 
-
         Next
         Dim obj As Control
         Dim obj1 As HtmlInputText
         Dim lbl As Label
         Dim strText As String
-        Dim strName As String = ""
         For Each obj In Me.Parent.Page.Controls
             strText = obj.UniqueID
             If strText = "Form1" Then
@@ -378,6 +357,7 @@
             End If
         Next
     End Sub
+
     Private Sub HG1_TemplateSelection(ByVal sender As Object, ByVal e As DBauer.Web.UI.WebControls.HierarGridTemplateSelectionEventArgs) Handles HG1.TemplateSelection
 
         Select Case (e.Row.Table.TableName)
@@ -388,8 +368,4 @@
         End Select
     End Sub
 
-
-    Protected Sub ibt_All_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs)
-
-    End Sub
 End Class

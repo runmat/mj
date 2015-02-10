@@ -4,16 +4,21 @@
 
 @Html.Partial("AdressenPflege/AdresseCommon")
 
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+        FormPreparePrivateAdressenPflege();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+</script>
+
 <h3 class="page-title">Adressenverwaltung <small></small></h3>
 
-<div class="portlet">
-    <div id="divGridEditStart">
-    
-        @Html.Partial("AdressenPflege/AdressenGrid")
-
-    </div>
-</div>
-
-<div id="divGridItemDetails"></div>
-
+@Html.Partial("AdressenPflege/AdressenGrid")
 

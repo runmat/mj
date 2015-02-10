@@ -28,8 +28,10 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult Index()
         {
-            if (LogonContext != null)
-                LogonContext.MvcEnforceRawLayout = false;
+            if (!string.IsNullOrEmpty(LogonContext.UserName))
+                LogonContext.LogoutUser();
+                
+            LogonContext.MvcEnforceRawLayout = false;
 
             CaptchaGenerate();
 
@@ -89,29 +91,36 @@ namespace CkgDomainLogic.General.Controllers
                     LogonContext = ViewModel.LogonContext;
                 else
                 {
-                    if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
-                    {
-                        ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
-                        model.IsValid = ModelState.IsValid;
-                        return PartialView(model);
-                    }
-
-                    var storedUserName = model.UserName;
-
-                    if (Request.Url == null)
-                        return new EmptyResult();
-
-                    // send e-mail with password reset link
-                    var passwordResetCustomerAdminInfo = ViewModel.TryGetPasswordResetCustomerAdminInfo(storedUserName);
-                    var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
-                    if (userEmail.IsNotNullOrEmpty() && mailSendValid)
-                        ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(), ModelState.AddModelError);
+                    ViewModel.CheckIfPasswordResetAllowed(model, ModelState.AddModelError);
 
                     if (ModelState.IsValid)
                     {
-                        model.PasswordResetCustomerAdminInfo = passwordResetCustomerAdminInfo;
-                        model.EmailForPasswordReset = userEmail;
-                        SetViewModel<LoginViewModel>(null);
+                        if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
+                        {
+                            ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
+                            model.IsValid = ModelState.IsValid;
+                            return PartialView(model);
+                        }
+
+                        var storedUserName = model.UserName;
+
+                        if (Request.Url == null)
+                            return new EmptyResult();
+
+                        // send e-mail with password reset link
+                        var passwordResetCustomerAdminInfo =
+                            ViewModel.TryGetPasswordResetCustomerAdminInfo(storedUserName);
+                        var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
+                        if (userEmail.IsNotNullOrEmpty() && mailSendValid)
+                            ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(),
+                                                                ModelState.AddModelError);
+
+                        if (ModelState.IsValid)
+                        {
+                            model.PasswordResetCustomerAdminInfo = passwordResetCustomerAdminInfo;
+                            model.EmailForPasswordReset = userEmail;
+                            SetViewModel<LoginViewModel>(null);
+                        }
                     }
                 }
             }
@@ -186,11 +195,19 @@ namespace CkgDomainLogic.General.Controllers
             ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
 
             return Json(new
-                            {
-                                passwordRuleCount = ViewModel.PasswordRuleCount, 
-                                localizedPasswordValidationErrorMessages,
-                                localizedPasswordRuleMessages
-                            });
+            {
+                passwordRuleCount = ViewModel.PasswordRuleCount,
+                localizedPasswordValidationErrorMessages,
+                localizedPasswordRuleMessages
+            });
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmActiveMessagesDontShowAgain()
+        {
+            LogonContext.MaintenanceMessageConfirmAndDontShowAgain();
+
+            return new EmptyResult();
         }
     }
 }

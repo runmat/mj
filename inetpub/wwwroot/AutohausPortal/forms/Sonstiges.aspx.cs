@@ -64,20 +64,10 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("ZUONR = '09'");
-                    if (matRow.Length == 1)
-                    {
-                        objVorerf = new AHErfassung(ref m_User, m_App, matRow[0]["BLTYP"].ToString());
-                        objVorerf.NrMaterial = matRow[0]["MATNR"].ToString();
-                        objVorerf.Material = matRow[0]["MAKTX"].ToString();
-                        fillForm();
-                    }
-                    else
-                    {
-                        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-                        cmdSave.Visible = false;
-                    }
-
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AS");
+                    objVorerf.NrMaterial = "570";
+                    objVorerf.Material = "Sonstige Dienstleistung";
+                    fillForm();
                 }
                 Session["objVorerf"] = objVorerf;
 
@@ -214,8 +204,7 @@ namespace AutohausPortal.forms
                 { lblError.Text = "Fehler beim Speichern der Filiale"; return; }
 
                 objVorerf.Kunnr = ddlKunnr1.SelectedValue;
-                objVorerf.Kundenname = ddlKunnr1.SelectedItem.Text;
-
+                objVorerf.Kundenname = (ddlKunnr1.SelectedItem != null ? ddlKunnr1.SelectedItem.Text : "");
 
                 if (objCommon.tblStvaStamm.Select("KREISKZ = '" + ddlStVa1.SelectedValue + "'").Length == 0)
                 { lblError.Text = "Fehler beim Speichern des zulassungskreises"; return; }
@@ -282,11 +271,11 @@ namespace AutohausPortal.forms
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
                 objVorerf.Ort = ucBankdatenAdresse.Ort;
-                objVorerf.SWIFT = ucBankdatenAdresse.SWIFT != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.SWIFT : "";
+                objVorerf.SWIFT = ucBankdatenAdresse.IsSWIFTInitial ? "" : ucBankdatenAdresse.SWIFT;
                 objVorerf.IBAN = ucBankdatenAdresse.IBAN;
                 objVorerf.Bankkey = ucBankdatenAdresse.Bankkey;
                 objVorerf.Kontonr = ucBankdatenAdresse.Kontonr;
-                objVorerf.Geldinstitut = ucBankdatenAdresse.Geldinstitut != "Wird automatisch gefüllt!" ? ucBankdatenAdresse.Geldinstitut : "";
+                objVorerf.Geldinstitut = ucBankdatenAdresse.IsGeldinstitutInitial ? "" : ucBankdatenAdresse.Geldinstitut;
                 objVorerf.Inhaber = ucBankdatenAdresse.Kontoinhaber;
                 objVorerf.EinzugErm = ucBankdatenAdresse.Einzug;
                 objVorerf.Rechnung = ucBankdatenAdresse.Rechnung;

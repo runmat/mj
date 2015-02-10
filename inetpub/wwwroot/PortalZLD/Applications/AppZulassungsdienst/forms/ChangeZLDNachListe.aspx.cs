@@ -332,6 +332,10 @@ namespace AppZulassungsdienst.forms
             GridView1.Columns[27].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
             // RE
             GridView1.Columns[28].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && objNacherf.Vorgang != "VZ" && objNacherf.Vorgang != "VE" && objNacherf.Vorgang != "AV" && objNacherf.Vorgang != "AX");
+            // Adresse
+            GridView1.Columns[29].Visible = objNacherf.SelSofortabrechnung;
+            // Bankverbindung
+            GridView1.Columns[30].Visible = objNacherf.SelSofortabrechnung;
 
             if (objNacherf.Vorgang == "VZ" || objNacherf.Vorgang == "VE" || objNacherf.Vorgang == "AV" || objNacherf.Vorgang == "AX")
             {

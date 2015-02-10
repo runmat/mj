@@ -16,7 +16,7 @@ namespace CKGDatabaseAdminLib.ViewModels
     {
         #region Properties
 
-        public ObservableCollection<ApplicationInfo> Applications { get { return DataService.Applications; } }
+        public ObservableCollection<Application> Applications { get { return DataService.Applications; } }
 
         public ObservableCollection<ApplicationField> FieldTranslations { get { return DataService.FieldTranslations; } }
 
@@ -116,7 +116,7 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             if (e.AddedItems != null && e.AddedItems.Count > 0)
             {
-                var selectedApp = (e.AddedItems[0] as ApplicationInfo);
+                var selectedApp = (e.AddedItems[0] as Application);
                 DataService.BeginEdit(selectedApp.AppID, selectedApp.AppURL);
             }
             else

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AutohausPortal.lib;
 
 namespace AutohausPortal.Controls
 {
-    public partial class BankdatenAdresse : System.Web.UI.UserControl
+    public partial class BankdatenAdresse : UserControl
     {
+        private const string _initialText = "Wird automatisch gefüllt!";
+
         #region Properties
 
         public string Name1 { get { return txtName1.Text; } }
@@ -21,9 +20,11 @@ namespace AutohausPortal.Controls
         public bool Rechnung { get { return rbRechnung.Checked; } }
         public bool Bar { get { return rbBar.Checked; } }
         public string Kontoinhaber { get { return txtKontoinhaber.Text; } }
-        public string IBAN { get { return txtIBAN.Text; } }
-        public string SWIFT { get { return txtSWIFT.Text; } }
+        public string IBAN { get { return (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper()); } }
+        public string SWIFT { get { return (String.IsNullOrEmpty(txtSWIFT.Text) ? "" : txtSWIFT.Text.ToUpper()); } }
+        public bool IsSWIFTInitial { get { return (String.Compare(SWIFT, _initialText, true) == 0); } }
         public string Geldinstitut { get { return txtGeldinstitut.Text; } }
+        public bool IsGeldinstitutInitial { get { return (String.Compare(Geldinstitut, _initialText, true) == 0); } }
         public string Bankkey { get; set; }
         public string Kontonr { get; set; }
 
@@ -54,8 +55,8 @@ namespace AutohausPortal.Controls
 
             txtKontoinhaber.Text = "";
             txtIBAN.Text = "";
-            txtSWIFT.Text = "Wird automatisch gefüllt!";
-            txtGeldinstitut.Text = "Wird automatisch gefüllt!";
+            txtSWIFT.Text = _initialText;
+            txtGeldinstitut.Text = _initialText;
         }
 
         public void SelectValues(AHErfassung objVorerf)
@@ -107,7 +108,7 @@ namespace AutohausPortal.Controls
                     {
                         // SWIFT manuell eingebbar machen, wenn unbekannt
                         txtSWIFT.Enabled = true;
-                        if (txtSWIFT.Text == "Wird automatisch gefüllt!")
+                        if (IsSWIFTInitial)
                         {
                             txtSWIFT.Text = "";
                         }
@@ -132,168 +133,168 @@ namespace AutohausPortal.Controls
             bool blnBankdatenErfasst = false;
             bool blnAdressdatenErfasst = false;
 
-            if (!String.IsNullOrEmpty(txtKontoinhaber.Text))
+            if (!String.IsNullOrEmpty(Kontoinhaber))
             {
                 blnBankdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtIBAN.Text))
+                if (String.IsNullOrEmpty(IBAN))
                 {
                     divIBAN.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtSWIFT.Text)) || (txtSWIFT.Text == "Wird automatisch gefüllt!"))
+                if ((String.IsNullOrEmpty(SWIFT)) || (IsSWIFTInitial))
                 {
                     divSWIFT.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
+                if (IsGeldinstitutInitial)
                 {
                     divGeldinstitut.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if (!String.IsNullOrEmpty(txtIBAN.Text))
+            if (!String.IsNullOrEmpty(IBAN))
             {
                 blnBankdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtKontoinhaber.Text))
+                if (String.IsNullOrEmpty(Kontoinhaber))
                 {
                     divKontoinhaber.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtSWIFT.Text)) || (txtSWIFT.Text == "Wird automatisch gefüllt!"))
+                if ((String.IsNullOrEmpty(SWIFT)) || (IsSWIFTInitial))
                 {
                     divSWIFT.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
+                if (IsGeldinstitutInitial)
                 {
                     divGeldinstitut.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if ((!String.IsNullOrEmpty(txtSWIFT.Text)) && (txtSWIFT.Text != "Wird automatisch gefüllt!"))
+            if ((!String.IsNullOrEmpty(SWIFT)) && (!IsSWIFTInitial))
             {
                 blnBankdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtKontoinhaber.Text))
+                if (String.IsNullOrEmpty(Kontoinhaber))
                 {
                     divKontoinhaber.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtIBAN.Text))
+                if (String.IsNullOrEmpty(IBAN))
                 {
                     divIBAN.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
+                if (IsGeldinstitutInitial)
                 {
                     txtGeldinstitut.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if ((!String.IsNullOrEmpty(txtGeldinstitut.Text)) && (txtGeldinstitut.Text != "Wird automatisch gefüllt!"))
+            if ((!String.IsNullOrEmpty(Geldinstitut)) && (!IsGeldinstitutInitial))
             {
                 blnBankdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtKontoinhaber.Text))
+                if (String.IsNullOrEmpty(Kontoinhaber))
                 {
                     divKontoinhaber.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtIBAN.Text))
+                if (String.IsNullOrEmpty(IBAN))
                 {
                     divIBAN.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtSWIFT.Text)) || (txtSWIFT.Text == "Wird automatisch gefüllt!"))
+                if ((String.IsNullOrEmpty(SWIFT)) || (IsSWIFTInitial))
                 {
                     divSWIFT.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if (!String.IsNullOrEmpty(txtName1.Text))
+            if (!String.IsNullOrEmpty(Name1))
             {
                 blnAdressdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtStrasse.Text))
+                if (String.IsNullOrEmpty(Strasse))
                 {
                     divStrasse.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtPlz.Text)) || (txtPlz.Text.Length < 5))
+                if ((String.IsNullOrEmpty(Plz)) || (Plz.Length < 5))
                 {
                     divPLZ.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtOrt.Text))
+                if (String.IsNullOrEmpty(Ort))
                 {
                     divOrt.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if (!String.IsNullOrEmpty(txtStrasse.Text))
+            if (!String.IsNullOrEmpty(Strasse))
             {
                 blnAdressdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtName1.Text))
+                if (String.IsNullOrEmpty(Name1))
                 {
                     divName1.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtPlz.Text)) || (txtPlz.Text.Length < 5))
+                if ((String.IsNullOrEmpty(Plz)) || (Plz.Length < 5))
                 {
                     divPLZ.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtOrt.Text))
+                if (String.IsNullOrEmpty(Ort))
                 {
                     divOrt.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if (!String.IsNullOrEmpty(txtPlz.Text))
+            if (!String.IsNullOrEmpty(Plz))
             {
                 blnAdressdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtName1.Text))
+                if (String.IsNullOrEmpty(Name1))
                 {
                     divName1.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtStrasse.Text))
+                if (String.IsNullOrEmpty(Strasse))
                 {
                     divStrasse.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtOrt.Text))
+                if (String.IsNullOrEmpty(Ort))
                 {
                     divOrt.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
             }
 
-            if (!String.IsNullOrEmpty(txtOrt.Text))
+            if (!String.IsNullOrEmpty(Ort))
             {
                 blnAdressdatenErfasst = true;
 
-                if (String.IsNullOrEmpty(txtName1.Text))
+                if (String.IsNullOrEmpty(Name1))
                 {
                     divName1.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if (String.IsNullOrEmpty(txtStrasse.Text))
+                if (String.IsNullOrEmpty(Strasse))
                 {
                     divStrasse.Attributes["class"] = "formfeld error";
                     blnOk = false;
                 }
-                if ((String.IsNullOrEmpty(txtPlz.Text)) || (txtPlz.Text.Length < 5))
+                if ((String.IsNullOrEmpty(Plz)) || (Plz.Length < 5))
                 {
                     divPLZ.Attributes["class"] = "formfeld error";
                     blnOk = false;
@@ -349,15 +350,15 @@ namespace AutohausPortal.Controls
 
         public void proofInserted()
         {
-            if (txtName1.Text != "") { disableDefaultValue(txtName1); }
-            if (txtName2.Text != "") { disableDefaultValue(txtName2); }
-            if (txtStrasse.Text != "") { disableDefaultValue(txtStrasse); }
-            if (txtPlz.Text != "") { disableDefaultValue(txtPlz); }
-            if (txtOrt.Text != "") { disableDefaultValue(txtOrt); }
+            if (Name1 != "") { disableDefaultValue(txtName1); }
+            if (Name2 != "") { disableDefaultValue(txtName2); }
+            if (Strasse != "") { disableDefaultValue(txtStrasse); }
+            if (Plz != "") { disableDefaultValue(txtPlz); }
+            if (Ort != "") { disableDefaultValue(txtOrt); }
 
-            if (txtKontoinhaber.Text != "") { disableDefaultValue(txtKontoinhaber); }
-            if (txtIBAN.Text != "") { disableDefaultValue(txtIBAN); }
-            if (txtSWIFT.Text != "") { disableDefaultValue(txtSWIFT); }
+            if (Kontoinhaber != "") { disableDefaultValue(txtKontoinhaber); }
+            if (IBAN != "") { disableDefaultValue(txtIBAN); }
+            if (SWIFT != "") { disableDefaultValue(txtSWIFT); }
         }
 
         /// <summary>

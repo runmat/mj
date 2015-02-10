@@ -325,6 +325,22 @@
                                                     <asp:RadioButton ID="rb_1390" runat="server" AutoPostBack="false" GroupName="Versandart" />
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                 <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td align="left" width="50%">
+                                                    <asp:RadioButton ID="rb_47076" runat="server" AutoPostBack="false"  GroupName="Versandart" /> 
+                                                        
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>

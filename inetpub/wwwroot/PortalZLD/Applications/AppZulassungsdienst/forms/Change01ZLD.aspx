@@ -167,7 +167,7 @@
                                                 <asp:Label ID="lblIBAN" runat="server">IBAN:</asp:Label>
                                             </td>
                                             <td class="firstLeft active" colspan="2" style="width: 100%;">
-                                                <asp:TextBox ID="txtIBAN" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                                <asp:TextBox ID="txtIBAN" Width="400px" CssClass="TextBoxNormal TextUpperCase" runat="server"
                                                     MaxLength="34"></asp:TextBox>
                                             </td>
                                         </tr>

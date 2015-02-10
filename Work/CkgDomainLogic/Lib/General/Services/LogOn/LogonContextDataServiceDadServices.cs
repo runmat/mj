@@ -21,9 +21,23 @@ namespace CkgDomainLogic.General.Services
     {
         public string CurrentGridColumns { get; set; }
 
+        private IEnumerable<LoginUserMessageConfirmations> _loginUserMessageConfirmations;
+
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages
         {
-            get { return CreateDbContext().ActiveLoginMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }
+            get { return MaintenanceCoreLoginUserMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }
+        }
+
+        public List<LoginUserMessage> MaintenanceCoreLoginUserMessages
+        {
+            get
+            {
+                var messageList = CreateDbContext().ActiveLoginMessages.ToListOrEmptyList();
+
+                messageList.ForEach(message => message.MessageIsConfirmedByUser = GetLoginUserMessageConfirmations(message.ID, message.ShowMessageFrom).Any());
+
+                return messageList.ToList();
+            }
         }
 
 
@@ -107,6 +121,7 @@ namespace CkgDomainLogic.General.Services
                     return false;
             }
 
+            _loginUserMessageConfirmations = null;
             UserName = User.Username;
             UserInfo = dbContext.GetUserInfo();
             AppTypes = dbContext.ApplicationTypes.ToList();
@@ -153,6 +168,8 @@ namespace CkgDomainLogic.General.Services
                     RewriteUrlToLogPageVisit(ua);
                 });
 
+            dbContext.SetLastLogin(DateTime.Now);
+
             return true;
         }
 
@@ -172,14 +189,26 @@ namespace CkgDomainLogic.General.Services
                 return;
             }
 
+            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
+
             if (!ValidatePassword(loginModel.Password, dbContext.User))
             {
-                addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
-                dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                if (dbContext.User.UserCountFailedLogins < customer.LockedAfterNLogins)
+                {
+                    addModelError(m => m.UserName, Localize.LoginUserOrPasswordWrong);
+                    dbContext.FailedLoginsIncrementAndSave(loginModel.UserName);
+                }
+                else
+                {
+                    if (!dbContext.User.UserIsDisabled)
+                        dbContext.LockUserAndSave(loginModel.UserName);
+
+                    addModelError(m => m.UserName, Localize.LoginUserDisabled);
+                }
+                
                 return;
             }
 
-            var customer = dbContext.GetCustomer(dbContext.User.CustomerID);
             List<string> userErrorMessages;
             if (!ValidateUser(dbContext.User, customer, LocalizationService, out userErrorMessages))
             {
@@ -212,6 +241,15 @@ namespace CkgDomainLogic.General.Services
             //    addModelError(m => m.UserName, Localize.UserInvalidEmail);
 
             return email;
+        }
+
+        public override void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        {
+            var dbContext = CreateDbContext(loginModel.UserName);
+            var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
+
+            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
+                addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
         }
 
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
@@ -275,6 +313,22 @@ namespace CkgDomainLogic.General.Services
 
         public override void LogoutUser()
         {
+            UserID = "";
+            UserName = "";
+            User = null;
+            UserInfo = null;
+            FirstName = "";
+            LastName = "";
+            KundenNr = "";
+            Customer = null;
+            GroupName = "";
+            Group = null;
+            Organization = null;
+            if (AppTypes != null)
+                AppTypes.Clear();
+            if (UserApps != null)
+                UserApps.Clear();
+            UserNameEncryptedToUrlEncoded = "";
         }
 
         public override bool ChangePassword(string oldPassword, string newPassword)
@@ -397,6 +451,8 @@ namespace CkgDomainLogic.General.Services
         public override string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
         {
             var defaultColumnNames = string.Join(",", modelType.GetScaffoldPropertyNames());
+            if (gridGroup.IsNullOrEmpty())
+                return defaultColumnNames;
 
             var dbContext = CreateDbContext();
             var affectedColumns = GetDbContextColumnTranslations(dbContext, gridColumnMode, gridGroup, UserLogonLevel, defaultColumnNames);
@@ -502,6 +558,26 @@ namespace CkgDomainLogic.General.Services
             UserApps = CreateDbContext().UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
 
             return UserApps.First(a => a.AppID == appID).AppIsMvcFavorite;
+        }
+
+        IEnumerable<LoginUserMessageConfirmations> GetLoginUserMessageConfirmations(int? messageID = null, DateTime? showMessageFromDate = null)
+        {
+            var confirmations = _loginUserMessageConfirmations ?? (_loginUserMessageConfirmations = CreateDbContext().GetLoginUserMessageConfirmations());
+
+            if (messageID == null && showMessageFromDate == null)
+                return confirmations;
+
+            return confirmations.Where(c => c.MessageID == messageID && c.ShowMessageFrom == showMessageFromDate);
+        }
+
+        override public void MaintenanceMessageConfirmAndDontShowAgain()
+        {
+            var dbContext = CreateDbContext();
+            MaintenanceCoreLoginUserMessages.ForEach(message =>
+            {
+                if (message.MaintenanceShowAndLetConfirmMessageAfterLogin)
+                    dbContext.SetLoginUserMessageConfirmation(message.ID, message.ShowMessageFrom.GetValueOrDefault());
+            });
         }
     }
 }

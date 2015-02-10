@@ -85,6 +85,16 @@ namespace CkgDomainLogic.General.Database.Models
             {
                 de_de_kurz = translatedResourceCustom.de_de_kurz;    
             }
+
+            if (!string.IsNullOrEmpty(translatedResourceCustom.fr))
+            {
+                fr = translatedResourceCustom.fr;
+            }
+
+            if (!string.IsNullOrEmpty(translatedResourceCustom.fr_kurz))
+            {
+                fr_kurz = translatedResourceCustom.fr_kurz;
+            }
         }
 
         /// <summary>
@@ -139,6 +149,7 @@ namespace CkgDomainLogic.General.Database.Models
                 culture = culture.Replace("-", "_");
             }
 
+            //fr-FR_Kurz
             var propertyInfo = typeof(TranslatedResource).GetProperty(string.Concat(culture, Kurz));
 
             // Property vorhanden && Hat einen Wert
@@ -148,6 +159,7 @@ namespace CkgDomainLogic.General.Database.Models
                 return propertyInfo.GetValue(this, null).ToString();
             }
 
+            //fr_Kurz
             var parts = culture.Split("_".ToCharArray()[0]);
             if (parts.Length == 2)
             {
@@ -158,6 +170,14 @@ namespace CkgDomainLogic.General.Database.Models
                 {
                     return propertyInfo.GetValue(this, null).ToString();
                 }
+            }
+
+            // fr -> Ich kann keine kurze Bezeichnung finden, daher die "normale" Bezeichnung aus der Sprache verwenden
+            propertyInfo = typeof(TranslatedResource).GetProperty(parts[0]);
+            if (propertyInfo != null && propertyInfo.GetValue(this, null) != null && string.IsNullOrEmpty(propertyInfo.GetValue(this, null).ToString()) == false)
+            {
+                // Diesen Wert verwenden
+                return propertyInfo.GetValue(this, null).ToString();
             }
 
             // Weder die Sprache-Kultur noch die Sprache habe ich finden können, Default zurückgeben

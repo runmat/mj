@@ -1,0 +1,46 @@
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestandSelektor
+
+<div id="divFahrzeugAkteBestandSuche">
+    @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
+        new MvcAjaxOptions("divFahrzeugAkteBestandSuche") { OnComplete = "TryShowFahrzeugAkteBestandGrid();" }, new { id = "FahrzeugAkteBestandSearchForm" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.HiddenFor(m => m.TmpEnforcePartnerDropdownRefresh)
+
+            @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
+
+            @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
+            
+            @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
+                    
+            @Html.FormTextBoxFor(m => m.FahrzeugStandort, new { @class = "m-wrap", col = "left" })
+            @Html.FormDatePickerFor(m => m.ErstZulassungsgDatum, new { @class = "m-wrap small", col = "right" })
+                    
+            @Html.FormDatePickerFor(m => m.ZulassungsgDatumAktuell, new { @class = "m-wrap small", col = "left" })
+            @Html.FormDatePickerFor(m => m.AbmeldeDatum, new { @class = "m-wrap small", col = "right" })
+                    
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
+                    
+            @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+

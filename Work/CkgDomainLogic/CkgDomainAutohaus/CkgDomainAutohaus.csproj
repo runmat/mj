@@ -8,7 +8,7 @@
     <ProjectGuid>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CkgDomainAutohaus</RootNamespace>
+    <RootNamespace>CkgDomainLogic</RootNamespace>
     <AssemblyName>CkgDomainAutohaus</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,7 +59,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,46 +70,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\KroschkeZulassungController.cs" />
-    <Compile Include="KroschkeZulassung\Contracts\IKroschkeZulassungDataService.cs" />
-    <Compile Include="KroschkeZulassung\Models\AppModelMappings.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Adressdaten.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Kennzeichengroesse.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Zusatzdienstleistung.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Kunde.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Material.cs" />
-    <Compile Include="KroschkeZulassung\Models\DataModels\Zulassungsstelle.cs" />
-    <Compile Include="Autohaus\Contracts\IFahrzeugverwaltungDataService.cs" />
-    <Compile Include="Autohaus\Contracts\IFahrzeugakteDataService.cs" />
-    <Compile Include="Autohaus\Contracts\IAutohausZulassungDataService.cs" />
-    <Compile Include="Autohaus\Models\DataModels\Fahrzeug.cs" />
-    <Compile Include="Autohaus\Models\DataModels\FahrzeugakteDocument.cs" />
-    <Compile Include="Autohaus\Models\DataModels\BeauftragteZulassung.cs" />
-    <Compile Include="Autohaus\Models\FreieZulassung.cs" />
-    <Compile Include="Autohaus\Models\Versicherungsdaten.cs" />
-    <Compile Include="Autohaus\Models\WunschkennzeichenOptionen.cs" />
-    <Compile Include="Autohaus\Models\ZulassungsDienstleistungen.cs" />
-    <Compile Include="Autohaus\Models\ZulassungsOptionen.cs" />
-    <Compile Include="Autohaus\Services\Database\AutohausSqlDbContext.cs" />
-    <Compile Include="Autohaus\Services\FahrzeugverwaltungDataServiceSQL.cs" />
-    <Compile Include="Autohaus\Services\FahrzeugakteDataServiceSQL.cs" />
-    <Compile Include="Autohaus\Services\AutohausZulassungDataServiceSAP.cs" />
-    <Compile Include="Autohaus\ViewModels\AutohausZulassungViewModel.cs" />
-    <Compile Include="Autohaus\ViewModels\FahrzeugverwaltungViewModel.cs" />
-    <Compile Include="Autohaus\ViewModels\FahrzeugakteViewModel.cs" />
-    <Compile Include="Autohaus\ViewModels\FahrzeugakteDocsViewModel.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Contracts\IUploadFahrzeugdatenDataService.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\AppModelMappings.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
+    <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
+    <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
+    <Compile Include="Zulassung\Models\AppModelMappings.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Adressdaten.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Kennzeichengroesse.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Zulassungskreis.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Zusatzdienstleistung.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Kunde.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Material.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Zulassungsstelle.cs" />
     <Compile Include="Common\Models\DataModels\Kundenstammdaten.cs" />
     <Compile Include="Common\Models\DataModels\Materialstammdaten.cs" />
-    <Compile Include="Controllers\Fahrzeugakte\AutohausController.cs" />
-    <Compile Include="Controllers\Fahrzeugverwaltung\AutohausController.cs" />
+    <Compile Include="Fahrzeugbestand\Contracts\IFahrzeugbestandDataService.cs" />
+    <Compile Include="Fahrzeugbestand\Models\AppModelmappings.cs" />
+    <Compile Include="Fahrzeugbestand\Models\FahrzeugAkteBestand.cs" />
+    <Compile Include="Fahrzeugbestand\Models\FahrzeugAkteBestandSelektor.cs" />
+    <Compile Include="Fahrzeugbestand\Services\FahrzeugbestandDataServiceSAP.cs" />
     <Compile Include="Controllers\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Report\FeinstaubController.cs" />
     <Compile Include="Controllers\Feinstaub\Vergabe\FeinstaubController.cs" />
-    <Compile Include="Controllers\AutohausController.cs" />
     <Compile Include="Controllers\Uebfuehrg\UebfuehrgReportController.cs" />
     <Compile Include="Controllers\Uebfuehrg\UebfuehrgController.cs" />
     <Compile Include="Controllers\UebfuehrgController.cs" />
-    <Compile Include="Controllers\Zulassung\AutohausController.cs" />
+    <Compile Include="Fahrzeugbestand\ViewModels\FahrzeugbestandViewModel.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubVergabeDataService.cs" />
     <Compile Include="Common\Models\AppModelMappings.cs" />
     <Compile Include="Feinstaub\Contracts\IAutohausFeinstaubReportDataService.cs" />
@@ -125,16 +115,26 @@
     <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubVergabeViewModel.cs" />
     <Compile Include="Feinstaub\ViewModels\AutohausFeinstaubReportViewModel.cs" />
     <Compile Include="General\Models\UiModel.cs" />
-    <Compile Include="KroschkeZulassung\Models\BankAdressdaten.cs" />
-    <Compile Include="KroschkeZulassung\Models\Fahrzeugdaten.cs" />
-    <Compile Include="KroschkeZulassung\Models\UIModels\Bankdaten.cs" />
-    <Compile Include="KroschkeZulassung\Models\Vorgang.cs" />
-    <Compile Include="KroschkeZulassung\Models\OptionenDienstleistungen.cs" />
-    <Compile Include="KroschkeZulassung\Models\Zulassungsdaten.cs" />
-    <Compile Include="KroschkeZulassung\Models\Rechnungsdaten.cs" />
-    <Compile Include="KroschkeZulassung\Services\Database\KroschkeZulassungSqlDbContext.cs" />
-    <Compile Include="KroschkeZulassung\Services\KroschkeZulassungDataServiceSAP.cs" />
-    <Compile Include="KroschkeZulassung\ViewModels\KroschkeZulassungViewModel.cs" />
+    <Compile Include="Zulassung\Models\BankAdressdaten.cs" />
+    <Compile Include="Zulassung\Models\Fahrzeugdaten.cs" />
+    <Compile Include="Zulassung\Models\PdfFormular.cs" />
+    <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportModel.cs" />
+    <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportSelektor.cs" />
+    <Compile Include="Zulassung\Models\UIModels\Bankdaten.cs" />
+    <Compile Include="Zulassung\Models\UIModels\FormulareSelektor.cs" />
+    <Compile Include="Zulassung\Models\Vorgang.cs" />
+    <Compile Include="Zulassung\Models\OptionenDienstleistungen.cs" />
+    <Compile Include="Zulassung\Models\Zulassungsdaten.cs" />
+    <Compile Include="Zulassung\Models\Rechnungsdaten.cs" />
+    <Compile Include="Zulassung\Services\Database\ZulassungSqlDbContext.cs" />
+    <Compile Include="Zulassung\Services\ZulassungDataServiceSAP.cs" />
+    <Compile Include="Zulassung\ViewModels\FormulareViewModel.cs" />
+    <Compile Include="Zulassung\ViewModels\ZulassungsReportViewModel.cs" />
+    <Compile Include="Zulassung\ViewModels\KroschkeZulassungViewModel.cs" />
+    <Compile Include="Partner\Contracts\IPartnerDataService.cs" />
+    <Compile Include="Partner\Models\PartnerSelektor.cs" />
+    <Compile Include="Partner\Services\PartnerDataServiceSAP.cs" />
+    <Compile Include="Partner\ViewModels\PartnerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KroschkeUeberfuehrung\Contracts\IUeberfuehrungDataService.cs" />
     <Compile Include="KroschkeUeberfuehrung\Models\AppModelMappings.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -28,20 +29,6 @@ namespace GeneralTools.Models
             return (source != null && source.Any()) ? source.ToList() : new List<TSource>();
         }
 
-        //public static TValue FirstOrDefault<TSource, TValue>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Expression<Func<TSource, TValue>> defaultExpression) 
-        //    where TSource : class
-        //{
-        //    var item = source.FirstOrDefault(predicate);
-        //    if (item == null)
-        //        return default(TValue);
-
-        //    var propertyName = defaultExpression.GetPropertyName();
-        //    var modelType = typeof(TSource);
-        //    var propertyValue = (TValue)modelType.GetProperty(propertyName).GetValue(item, null);
-            
-        //    return propertyValue;
-        //}
-
         public static TSource[] ToArrayOrEmptyArray<TSource>(this IEnumerable<TSource> source)
         {
             return source != null && source.Any() ? source.ToArray() : new TSource[0];
@@ -67,6 +54,43 @@ namespace GeneralTools.Models
             var copiedList = source.Copy();
             copiedList.Insert(0, itemToInsert);
             return copiedList;
+        }
+
+        public static DataTable ToDataTable<T>(this IList<T> source)
+        {
+            var dt = new DataTable();
+            var properties = TypeDescriptor.GetProperties(typeof(T));
+            
+            // Column Headers
+            for (int i = 0; i < properties.Count; i++)
+            {
+                PropertyDescriptor property = properties[i];
+                var propType = property.PropertyType;
+                if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof (Nullable<>))
+                    propType = propType.GetGenericArguments()[0];
+                dt.Columns.Add(property.Name, propType);
+            }
+
+            // Data
+            object[] values = new object[properties.Count];
+
+            foreach (T item in source)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(item);
+                }
+                dt.Rows.Add(values);
+            }
+
+            return dt;
+        }
+
+        public static Type GetItemType(this IEnumerable someCollection)
+        {
+            var type = someCollection.GetType();
+            var ienum = type.GetInterface(typeof(IEnumerable<>).Name);
+            return ienum != null ? ienum.GetGenericArguments()[0] : null;
         }
     }
 
@@ -159,6 +183,11 @@ namespace GeneralTools.Models
             return val.Substring(start, len);
         }
 
+        public static string SubstringTry(this string s, int start)
+        {
+            return s.SubstringTry(start, 99999999);
+        }
+
         public static string PrependIfNotNull(this string s, string prepend)
         {
             if (s.IsNullOrEmpty() || prepend.IsNullOrEmpty())
@@ -224,19 +253,48 @@ namespace GeneralTools.Models
         {
             var ret = "";
             s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
-                {
-                    if (c >= 'A' && c <= 'Z' && ret != "")
-                        ret += "-";
+            {
+                if (c >= 'A' && c <= 'Z' && ret != "")
+                    ret += "-";
 
-                    ret += c.ToString().ToLower();
-                });
+                ret += c.ToString().ToLower();
+            });
 
             return ret;
         }
 
+        public static string RemoveDigits(this string s)
+        {
+            var ret = "";
+            s.NotNullOrEmpty().ToArray().ToList().ForEach(c =>
+                {
+                    if (c >= '0' && c <= '9')
+                        return;
+
+                ret += c.ToString();
+            });
+
+            return ret;
+        }
+
+        public static bool LastCharIs(this string s, char lastChar)
+        {
+            return !s.IsNullOrEmpty() && (s[s.Length - 1] == lastChar);
+        }
+
+        public static string NotNullOrEmpty(this string s, string defaultValue)
+        {
+            return string.IsNullOrEmpty(s) ? defaultValue : s;
+        }
+
         public static string NotNullOrEmpty(this string s)
         {
-            return string.IsNullOrEmpty(s) ? "" : s;
+            return s.NotNullOrEmpty("");
+        }
+
+        public static string NotNullOr(this string s, string alternativeValue)
+        {
+            return s.IsNotNullOrEmpty() ? s : alternativeValue;
         }
 
         public static string NotNullOrEmptyOrNullString(this string s, string additionalNullstring=null)
@@ -258,6 +316,21 @@ namespace GeneralTools.Models
         public static bool IsNotNullOrEmpty(this string s)
         {
             return !string.IsNullOrEmpty(s) && s.ToLower() != "null";
+        }
+
+        public static string NullIfNullOrEmpty(this string s)
+        {
+            return (s.IsNullOrEmpty() ? null : s);
+        }
+
+        public static decimal? NullIf0(this decimal? val)
+        {
+            return (val.GetValueOrDefault() == 0 ? null : val);
+        }
+
+        public static string SlashToBackslash(this string s)
+        {
+            return s.NotNullOrEmpty().Replace('/', '\\');
         }
 
         public static string RemovePropertyName<T>(this string s, Expression<Func<T>> expression, string replaceWith)
@@ -497,6 +570,11 @@ namespace GeneralTools.Models
                 return string.Join(",", typeFullName.Split(',').Take(2).ToArray());
 
             return null;
+        }
+
+        public static IEnumerable<string> GetScaffoldPropertyLowerNames(this Type type)
+        {
+            return type.GetScaffoldProperties().Select(property => property.Name.ToLower());
         }
 
         public static IEnumerable<string> GetScaffoldPropertyNames(this Type type)
