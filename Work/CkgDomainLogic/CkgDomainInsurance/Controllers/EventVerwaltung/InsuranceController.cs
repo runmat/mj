@@ -307,6 +307,15 @@ namespace ServicesMvc.Controllers
             return PartialView("Schadenakte/Partial/Termine/TerminKalender", EventsViewModel.TerminCurrent);
         }
 
+        public ActionResult ReTerminVorschlaegeSearch(DateTime? datum, string uhrzeit, int dauer)
+        {
+            var errorMessage = EventsViewModel.ReTerminVorschlaegeSearch(datum, uhrzeit, dauer);
+            if (errorMessage.IsNotNullOrEmpty())
+                return Json(new { errorMessage });
+
+            return PartialView("Schadenakte/Partial/Termine/ReTerminVorschlaegeResults", EventsViewModel);
+        }
+
         [HttpPost]
         public ActionResult TerminSchadenfallEdit(int id)
         {

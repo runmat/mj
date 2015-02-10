@@ -4237,6 +4237,7 @@
     <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
     <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaege.cshtml" />
+    <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaegeResults.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

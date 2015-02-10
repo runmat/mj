@@ -7,6 +7,10 @@
         <i class="icon-inbox vers-event-header-icon margin-right-10"></i><span><strong>@Localize.ProposedAppointments</strong></span>
     </h5>
     
+    <div class="margin-top-20">
+        @Html.SpanAlert("ReTerminVorschlagMessage")
+    </div>
+
     <div class="margin-top-10">
         <form action="#" class="form-horizontal no-margin">
         
@@ -14,11 +18,16 @@
 
             @Html.FormTextBoxFor(m => m.UhrzeitZeitGewuenscht, new { @class = "m-wrap xsmall timepicker", col = "middle3" })
 
-            @Html.FormTextBoxFor(m => m.DauerMinutenGewuenscht, new { @class = "m-wrap xsmall", col = "right3" })
+            @Html.FormTextBoxFor(m => m.DauerMinutenGewuenscht, new { @class = "m-wrap xsmall", col = "right3" }, 
+            postControlHtml:@<text><span>min</span></text>)
 
-            <button type="button" class="btn green margin-left-180" onclick="ReTerminVorschlaegeSearch()"><i class="icon-ok"></i> @Localize.SearchAvailableAppointments</button>
+            <button type="button" class="btn green margin-left-180" onclick="ReTerminVorschlaegeSearch()"><i class="icon-search"></i> @Localize.SearchAvailableAppointments</button>
             <button type="button" class="btn red margin-left-10" onclick="ReTerminVorschlaegeClose()"><i class="icon-remove"></i> @Localize.Close</button>
         </form>
+    </div>
+    
+    <div class="re-termin-vorschlaege-results-div">
+        
     </div>
 
 </div>

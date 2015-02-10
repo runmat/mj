@@ -16,6 +16,10 @@ namespace CkgDomainLogic.Insurance.Models
     [Table("VersEventSchadenfallOrtBoxTermin")]
     public class TerminSchadenfall : Store, IValidatableObject
     {
+        private int _versBoxID;
+        private int _versOrtID;
+        private int _versSchadenfallID;
+
         [Key]
         public int ID { get; set; }
 
@@ -24,15 +28,39 @@ namespace CkgDomainLogic.Insurance.Models
         public string KundenNr { get; set; }
 
         [GridHidden]
-        public int VersSchadenfallID { get; set; }
+        public int VersSchadenfallID
+        {
+            get { return _versSchadenfallID; }
+            set
+            {
+                _versSchadenfallID = value;
+                PropertyCacheClear(this, m => m.Schadenfall);
+            }
+        }
 
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
-        public int VersOrtID { get; set; }
+        public int VersOrtID
+        {
+            get { return _versOrtID; }
+            set
+            {
+                _versOrtID = value;
+                PropertyCacheClear(this, m => m.Ort);
+            }
+        }
 
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.Box)]
-        public int VersBoxID { get; set; }
+        public int VersBoxID
+        {
+            get { return _versBoxID; }
+            set
+            {
+                _versBoxID = value;
+                PropertyCacheClear(this, m => m.Box);
+            }
+        }
 
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.BoxType)]
@@ -119,7 +147,7 @@ namespace CkgDomainLogic.Insurance.Models
         [GridHidden, Required, NotMapped]
         public string UhrzeitZeitGewuenscht { get { return PropertyCacheGet(() => "10:00"); } set { PropertyCacheSet(value); } }
 
-        [LocalizedDisplay(LocalizeConstants.Duration)]
+        [LocalizedDisplay(LocalizeConstants.AppointmentDuration)]
         [GridHidden, Required, NotMapped]
         public int DauerMinutenGewuenscht { get { return PropertyCacheGet(() => 60);} set { PropertyCacheSet(value); } }
         

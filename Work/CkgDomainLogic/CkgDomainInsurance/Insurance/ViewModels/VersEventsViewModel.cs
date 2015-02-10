@@ -193,36 +193,6 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                         }).ToList();
         }
 
-        //public List<string> SchadenfallStatusWertSave(int itemID, bool toggleDisabled = false)
-        //{
-        //    var errorList = new List<string>();
-
-        //    var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
-        //    if (item == null)
-        //        return errorList;
-
-        //    if (toggleDisabled && item.User.IsNotNullOrEmpty())
-        //        return errorList;
-
-        //    if (item.User.IsNullOrEmpty())
-        //    {
-        //        item.User = LogonContext.UserName;
-        //        item.Datum = DateTime.Now;
-        //        item.Zeit = DateTime.Now.ToString("HH:mm");
-        //    }
-        //    else
-        //    {
-        //        item.User = null;
-        //        item.Datum = null;
-        //        item.Zeit = null;
-        //    }
-
-        //    SchadenDataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
-        //    DataMarkForRefreshSchadenfallStatusWerte();
-
-        //    return errorList;
-        //}
-
         public void SchadenfallStatusWertSave(int itemID, DateTime? saveDate)
         {
             var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
@@ -701,6 +671,31 @@ namespace CkgDomainLogic.Insurance.ViewModels
                 serienTermine.ForEach(t => TerminAdd(t, modelState.AddModelError, termine));
 
             return termin;
+        }
+
+        public string ReTerminVorschlaegeSearch(DateTime? datum, string uhrzeit, int dauer)
+        {
+            var errorMessage = ""; 
+            var validationMessage = "";
+
+            TerminCurrent.Datum = datum.GetValueOrDefault();
+            TerminCurrent.ZeitVon = uhrzeit;
+            TerminCurrent.ZeitBis = TerminCurrent.DatumZeitVon.AddMinutes(dauer).ToString("HH:mm");
+
+            foreach (var box in TerminCurrent.GetValidBoxen())
+            {
+                TerminCurrent.VersBoxID = box.ID;
+
+                validationMessage = "";
+                TerminCurrent.Validate((key, message) => validationMessage = message);
+                if (validationMessage.IsNullOrEmpty())
+                    break;
+            }
+
+            if (validationMessage.IsNotNullOrEmpty())
+                errorMessage = Localize.AppointmentsOnSundayNotAvailable;
+
+            return errorMessage;
         }
 
         #endregion

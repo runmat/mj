@@ -653,7 +653,52 @@
             }
         });
     }
-    
+
+    function ReTerminVorschlaegeSearch() {
+        var datum = $(".re-termin-vorschlaege-auswahl-div input[name='Datum']");
+        var uhrzeit = $(".re-termin-vorschlaege-auswahl-div input[name='UhrzeitZeitGewuenscht']");
+        var dauer = $(".re-termin-vorschlaege-auswahl-div input[name='DauerMinutenGewuenscht']");
+
+        $(".re-termin-vorschlaege-results-div").html("");
+
+        if (datum.val().length == 0) {
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize.Date", 1500);
+            return;
+        }
+        if (uhrzeit.val().length == 0){
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize._Uhrzeitwunsch", 1500);
+            return;
+        }
+        if (dauer.val().length == 0){
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize.Duration", 1500);
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ReTerminVorschlaegeSearch",
+            data: {
+                datum: datum.val(), uhrzeit: uhrzeit.val(), dauer: dauer.val()
+            },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.errorMessage) !== 'undefined') {
+                    SpanAlertError("ReTerminVorschlagMessage", result.errorMessage, 2500);
+                    return;
+                }
+
+                $(".re-termin-vorschlaege-results-div").html(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("ReTerminVorschlagMessage", jqXhr);
+            }
+        });
+    }
+
+    function ReTerminVorschlaegeClose() {
+        $(".re-termin-vorschlaege-auswahl-div").slideUp(200);
+    }
+
     function TerminSchadenfallKalenderDetails(result) {
         var divToHide = ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == "" 
                             ? $("#divSchadenakte") 
