@@ -75,6 +75,12 @@
         DashboardChainInit();
 
         BindDashboardEvents();
+
+        $(".badge").click(function () {
+            $(".badge").toggle("highlight", function () {
+                $(".badge").show();
+            });
+        });
     }
 
     function BindDashboardEvents() {

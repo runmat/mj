@@ -2445,6 +2445,7 @@
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\lib\Contracts\IDashboardDataService.cs" />
     <Compile Include="Areas\Common\lib\Models\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Models\DashboardItemUser.cs" />
     <Compile Include="Areas\Common\lib\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\ViewModels\DashboardViewModel.cs" />
