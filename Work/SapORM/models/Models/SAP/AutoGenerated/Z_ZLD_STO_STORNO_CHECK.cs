@@ -9,16 +9,16 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_ZLD_EXPORT_BELNR
+	public partial class Z_ZLD_STO_STORNO_CHECK
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_ZLD_EXPORT_BELNR).Name);
+			sap.Init(typeof(Z_ZLD_STO_STORNO_CHECK).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_ZLD_EXPORT_BELNR).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_ZLD_STO_STORNO_CHECK).Name, inputParameterKeys, inputParameterValues);
 		}
 	}
 
