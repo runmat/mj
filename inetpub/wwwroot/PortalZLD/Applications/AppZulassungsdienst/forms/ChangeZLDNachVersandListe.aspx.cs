@@ -276,7 +276,7 @@ namespace AppZulassungsdienst.forms
                 {
                     Int32.TryParse(posID.Text, out intPosID);
                 }
-                if (pruefungsrelevant)
+                if (pruefungsrelevant && intPosID == 10)
                 {
                     if (ZulDate.Text == "")
                     {
@@ -324,7 +324,7 @@ namespace AppZulassungsdienst.forms
 
                 txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
 
-                if ((pruefungsrelevant) && (txtBox.Text.Length == 0 ))
+                if (pruefungsrelevant && txtBox.Text.Length == 0 && intPosID == 10)
                 {
                     txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
