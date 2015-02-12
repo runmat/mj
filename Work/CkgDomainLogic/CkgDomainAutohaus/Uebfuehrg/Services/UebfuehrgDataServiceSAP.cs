@@ -21,7 +21,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
 {
     public class UebfuehrgDataServiceSAP : CkgGeneralDataServiceSAP, IUebfuehrgDataService
     {
-        public string KundenNr { get { return LogonContext.KundenNr; } }
+        private string _kundenNr;
+        public string KundenNr
+        {
+            get { return _kundenNr ?? (_kundenNr = LogonContext.KundenNr.ToSapKunnr()); }
+            set { _kundenNr = value; }
+        }
 
         public string AuftragGeber { get; set; }
 

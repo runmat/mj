@@ -71,6 +71,7 @@ namespace Leasing.forms
             else
             {
                 lblError.Text = objHandler.Message;
+                lblError.Visible = true;
             }
 
         }

@@ -1396,10 +1396,8 @@ Partial Public Class UserManagement
             If cn.State = ConnectionState.Closed Then
                 cn.Open()
             End If
-            Dim cmd As SqlClient.SqlCommand = New SqlClient.SqlCommand("SELECT LastChangedBy,Max(ID) as ID  " & _
-                                                          "FROM AdminHistory_User  " & _
-                                                          "WHERE Username = @Username And " & _
-                                                          "Action='Benutzer gesperrt' Group By LastChangedBy ORDER BY ID DESC", cn)
+            Dim cmd As SqlClient.SqlCommand = New SqlClient.SqlCommand("SELECT LastChangedBy FROM AdminHistory_User " & _
+                "WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = @Username AND Action = 'Benutzer gesperrt')", cn)
 
             cmd.Parameters.AddWithValue("@Username", objUser.UserName)
             Dim sUser As String = CStr(cmd.ExecuteScalar)

@@ -37,6 +37,8 @@ using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
+using CkgDomainLogic.Zanf.Contracts;
+using CkgDomainLogic.Zanf.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -44,6 +46,8 @@ using MvcTools.Data;
 using MvcTools.Web;
 using PortalMvcTools.Services;
 using WebTools.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 
 namespace ServicesMvc.App_Start
 {
@@ -163,8 +167,10 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

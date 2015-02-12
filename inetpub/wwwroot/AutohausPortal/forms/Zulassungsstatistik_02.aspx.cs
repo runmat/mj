@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-using System.Data.SqlClient;
 using Telerik.Web.UI;
-using System.Configuration;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Security;
 using CKG.Base.Kernel.Common;
-using Telerik.Web.UI.GridExcelBuilder;
 
 namespace AutohausPortal.forms
 {
@@ -20,7 +13,7 @@ namespace AutohausPortal.forms
     /// Listenansicht Zulassungsstatistik. 
     /// Benutzte Klassen ZLD_Suche und ZLDCommon.
     /// </summary>
-    public partial class Zulassungsstatistik_02 : System.Web.UI.Page
+    public partial class Zulassungsstatistik_02 : Page
     {
         private User m_User;
         private App m_App;
@@ -80,12 +73,15 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="source">object</param>
         /// <param name="e">GridNeedDataSourceEventArgs</param>
-        protected void RadGrid1_NeedDataSource(object source, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
+        protected void RadGrid1_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
         {
             if (!e.IsFromDetailTable)
             {
-                objZLDSuche = (ZLD_Suche)Session["objZLDSuche"];
-                RadGrid1.DataSource = objZLDSuche.KundenDaten;      
+                if (Session["objZLDSuche"] != null)
+                {
+                    objZLDSuche = (ZLD_Suche)Session["objZLDSuche"];
+                    RadGrid1.DataSource = objZLDSuche.KundenDaten;
+                }   
             }
         }
 
@@ -94,17 +90,16 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="source">object</param>
         /// <param name="e">GridDetailTableDataBindEventArgs</param>
-        protected void RadGrid1_DetailTableDataBind(object source, Telerik.Web.UI.GridDetailTableDataBindEventArgs e)
+        protected void RadGrid1_DetailTableDataBind(object source, GridDetailTableDataBindEventArgs e)
         {
-            GridDataItem dataItem = (GridDataItem)e.DetailTableView.ParentItem;
+            GridDataItem dataItem = e.DetailTableView.ParentItem;
             switch (e.DetailTableView.Name)
             {
                 case "Orders":
                     {
                         objZLDSuche = (ZLD_Suche)Session["objZLDSuche"];
                         string CustomerID = dataItem.GetDataKeyValue("KUNNR").ToString();
-                        DataView dv = new DataView();
-                        dv = objZLDSuche.Auftragsdaten.DefaultView;
+                        DataView dv = objZLDSuche.Auftragsdaten.DefaultView;
                         dv.RowFilter = "KUNNR ='" + CustomerID + "'";
                         e.DetailTableView.DataSource = dv;
                         
@@ -121,7 +116,7 @@ namespace AutohausPortal.forms
         {
             foreach (GridDataItem dataItem in RadGrid1.MasterTableView.Items)
             {
-                if (dataItem.Expanded == true) 
+                if (dataItem.Expanded) 
                 {
                     string CustomerID = dataItem.GetDataKeyValue("KUNNR").ToString();
                     String Ref1 = "", Ref2 = "", Ref3 = "", Ref4 = "";
@@ -269,8 +264,6 @@ namespace AutohausPortal.forms
         /// </summary>
         private void PerformExcelExport()
         {
-            bool found;
-
             DataTable tblTemp = ((ZLD_Suche) Session["objZLDSuche"]).Auftragsdaten.Copy();
 
             // Summenzeilen entfernen
@@ -299,7 +292,7 @@ namespace AutohausPortal.forms
             // Spalten analog zur Anzeige ausblenden/umbenennen
             for (int i = tblTemp.Columns.Count - 1; i >= 0; i--)
             {
-                found = false;
+                bool found = false;
 
                 foreach (GridTableView cGrid in RadGrid1.MasterTableView.DetailTables)
                 {
@@ -335,8 +328,8 @@ namespace AutohausPortal.forms
             tblTemp.AcceptChanges();
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, @"Documents\Vorlage_Auftragsstatistik.xls", 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, @"Documents\Vorlage_Auftragsstatistik.xls");
         }
     }
 }

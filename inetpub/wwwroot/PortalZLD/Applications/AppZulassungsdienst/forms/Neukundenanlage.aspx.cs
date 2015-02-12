@@ -570,7 +570,7 @@ namespace AppZulassungsdienst.forms
             bool blnOk = true;
             if (rbJa.Checked && txtIBAN.Text.Trim(' ').Length > 0)
             {
-                objNeukunde.IBAN = txtIBAN.Text.Trim(' ');
+                objNeukunde.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
                 objNeukunde.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objNeukunde.Message != String.Empty)
                 {
