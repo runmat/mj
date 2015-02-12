@@ -4244,6 +4244,10 @@
     <Content Include="Views\Logs\UnusedApps.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
+    <Content Include="Views\Zanf\ZanfReport.cshtml" />
+    <Content Include="Views\Zanf\ZanfReport\ZanfGrid.cshtml" />
+    <Content Include="Views\Zanf\ZanfReport\ZanfSuche.cshtml" />
+    <Content Include="Views\Zanf\ZanfReport\ZanfKlaerfalltext.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

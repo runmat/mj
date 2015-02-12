@@ -102,8 +102,8 @@ Partial Public Class TaggleicheMeldungDAD
                     txtKennz2.Text = tmpKennz(1) & "-" & tmpKennz(2)
                 End If
             Else
-                txtKennz1.Text = objMeldungDAD.Kennzeichen.Substring(0, 3)
-                txtKennz2.Text = objMeldungDAD.Kennzeichen.Substring(2)
+                txtKennz1.Text = objMeldungDAD.Kennzeichen
+                txtKennz2.Text = ""
             End If
         Else
             txtKennz1.Text = ""
