@@ -28,7 +28,6 @@ namespace CkgDomainLogic.Leasing.Models
         public string Haendlerort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LeasingContractNo)]
-        [StringLength(20, MinimumLength=7)]
         [RegularExpression("^[0-9]*$")]
         public string Leasingvertragsnummer { get; set; }
         [LocalizedDisplay(LocalizeConstants.LeasingContractNo)]

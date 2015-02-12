@@ -99,11 +99,13 @@
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
+    <Compile Include="Controllers\ZanfController.cs" />
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
     <Compile Include="Controllers\Mahnsperre\EquiController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Controllers\VersandAbweichungen\EquipController.cs" />
+    <Compile Include="Controllers\Zanf\ZanfController.cs" />
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandDataService.cs" />
@@ -202,6 +204,12 @@
     <Compile Include="Strafzettel\Models\AppModelmappings.cs" />
     <Compile Include="Strafzettel\Services\StrafzettelDataServiceSAP.cs" />
     <Compile Include="Strafzettel\ViewModels\StrafzettelViewModel.cs" />
+    <Compile Include="Zanf\Contracts\IZanfReportDataService.cs" />
+    <Compile Include="Zanf\Models\AppModelMappings.cs" />
+    <Compile Include="Zanf\Models\UIModels\ZulassungsAnforderungSuchparameter.cs" />
+    <Compile Include="Zanf\Models\DataModels\ZulassungsAnforderung.cs" />
+    <Compile Include="Zanf\Services\ZanfReportDataServiceSAP.cs" />
+    <Compile Include="Zanf\ViewModels\ZanfReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\inetpub\wwwroot\ServicesMvc\PortalMvcTools\PortalMvcTools.csproj">
