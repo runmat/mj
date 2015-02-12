@@ -70,7 +70,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 return;
                             }
 
-                            if (entry.Key == "OptionenDienstleistungen")
+                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "HalterAdresse")
                                 return;
 
                             abmeldungsDict.Add(entry.Key, entry.Value);
@@ -461,7 +461,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
+            if (ModusAbmeldung)
+                SaveErrorMessage = ZulassungDataService.SaveAbmeldungen(zulassungen, saveDataToSap, saveFromShoppingCart);
+            else
+                SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

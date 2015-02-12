@@ -94,12 +94,12 @@ namespace CkgDomainLogic.General.Services
             
             Organization= new Organization
                 {
-                    AllOrganizations =  false,
+                    AllOrganizations =  true,
                     CustomerID = 209,
                     OrganizationID = 266,
-                    OrganizationName = "LUEG_BOCHUM",
-                    OrganizationReference = "240072",
-                    OrganizationReference2 = "4340",
+                    OrganizationName = "Standard",
+                    OrganizationReference = "240145",
+                    OrganizationReference2 = "4174",
                 }; 
 
             LocalizationService = localizationService;

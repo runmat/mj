@@ -161,18 +161,62 @@ namespace CkgDomainLogic.Autohaus.Services
             return true;
         }
 
+        string GetVorgangNummern(List<Vorgang> zulassungen)
+        {
+            foreach (var vorgang in zulassungen)
+            {
+                // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
+                var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+
+                if (blnBelegNrLeer && !GetSapId(vorgang))
+                    return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
+            }
+
+            return "";
+        }
+
+        public string SaveAbmeldungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
+        {
+            try
+            {
+                var errorMessage = GetVorgangNummern(zulassungen);
+                if (errorMessage.IsNotNullOrEmpty())
+                    return errorMessage;
+
+                Z_ZLD_AH_AF_ABM_SAVE.Init(SAP);
+
+                var bakList = AppModelMappings.Z_ZLD_AH_AF_ABM_SAVE_GT_ABM_IN_From_Vorgang.CopyBack(zulassungen).ToList();
+                SAP.ApplyImport(bakList);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                return e.FormatSapSaveException();
+            }
+
+            if (SAP.ResultCode != 0)
+            {
+                var errstring = "";
+                var errList = Z_ZLD_AH_AF_ABM_SAVE.GT_ABM.GetExportList(SAP);
+                if (errList.Count > 0 && errList.Any(e => e.SUBRC != 0))
+                    errstring = string.Join(", ", errList.Select(e => e.MESSAGE));
+
+                return string.Format("{0}{1}", SAP.ResultMessage.FormatSapSaveResultMessage(), errstring.FormatIfNotNull(" ({this})")); 
+            }
+
+            var fileNamesSap = Z_ZLD_AH_AF_ABM_SAVE.GT_FILENAME.GetExportList(SAP);
+
+            return "";
+        }
+
         public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             try
             {
-                foreach (var vorgang in zulassungen)
-                {
-                    // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
-                    var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
-
-                    if (blnBelegNrLeer && !GetSapId(vorgang))
-                        return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
-                }
+                var errorMessage = GetVorgangNummern(zulassungen);
+                if (errorMessage.IsNotNullOrEmpty())
+                    return errorMessage;
 
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
