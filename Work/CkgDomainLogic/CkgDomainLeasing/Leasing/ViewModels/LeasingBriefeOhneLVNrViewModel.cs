@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Services;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Leasing.ViewModels
 {
@@ -29,6 +32,8 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         public bool SubmitMode { get; set; }
 
+        public int CurrentAppID { get; set; }
+
         [XmlIgnore]
         public List<UnzugelFzg> GridItems
         {
@@ -47,6 +52,8 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         public void LoadUnzugelFzge(ModelStateDictionary state)
         {
+            GetCurrentAppID();
+
             DataService.MarkForRefreshUnzugelFzge();
             PropertyCacheClear(this, m => m.UnzugelFzgeFiltered);
 
@@ -74,6 +81,8 @@ namespace CkgDomainLogic.Leasing.ViewModels
             if ((UnzugelFzgeToSubmit != null) && (UnzugelFzgeToSubmit.Count > 0))
             {
                 DataService.SaveBriefLVNummern(UnzugelFzgeToSubmit);
+                if (!SendStatusMail())
+                    state.AddModelError("", Localize.EmailSentError);
             }
             else
             {
@@ -91,6 +100,43 @@ namespace CkgDomainLogic.Leasing.ViewModels
         {
             UnzugelFzgeToSubmit.Clear();
             SubmitMode = false;
+        }
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = HttpContextService.TryGetAppIdFromUrlOrSession();
+        }
+
+        private bool SendStatusMail()
+        {
+            bool erg = false;
+
+            try
+            {
+                var mailEmpfaenger = ApplicationConfiguration.GetApplicationConfigValue("MailEmpfaenger", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+
+                if (!String.IsNullOrEmpty(mailEmpfaenger))
+                {
+                    var mailBetreff = String.Format("{0} LV-Nr. Erfassung (Benutzer: {1})", LogonContext.CustomerName, LogonContext.UserName);
+
+                    var mailService = new SmtpMailService(AppSettings);
+
+                    string mailText = "Für nachfolgende(s) Fahrzeug(e) wurde(n) die LV-Nummern im Web erfasst:<br/>";
+                    mailText += "<br/>";
+                    foreach (var item in UnzugelFzgeToSubmit)
+                    {
+                        mailText += String.Format("Fahrgestellnummer: {0} - Leasingvertragsnummer: {1}<br/>", item.Fahrgestellnummer, item.Leasingvertragsnummer);
+                    }
+
+                    erg = mailService.SendMail(mailEmpfaenger, mailBetreff, mailText);
+                }
+            }
+            catch (Exception)
+            {
+                erg = false;
+            }
+
+            return erg;
         }
 
         #region Filter
