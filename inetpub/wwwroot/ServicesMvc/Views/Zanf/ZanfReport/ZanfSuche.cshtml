@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Zanf.Models
+@model ZulassungsAnforderungSuchparameter
+
+<div id="divZanfSuche">
+    @using (Ajax.BeginForm("LoadZulassungsAnforderungen", "Zanf", null,
+        new MvcAjaxOptions("divZanfSuche") { OnComplete = "ShowZulassungsAnforderungen();" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.ValidationSummary()
+            
+            @Html.FormTextBoxFor(m => m.KundenreferenzNr, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.AnforderungsNr, new { @class = "m-wrap", col = "right" })
+            
+            @Html.FormDatePickerFor(m => m.Anlagedatum, new { @class = "m-wrap small", col = "left" })
+            @Html.FormDatePickerFor(m => m.Ausfuehrungsdatum, new { @class = "m-wrap small", col = "right" })
+
+            @Html.FormCheckBoxFor(m => m.NurKlaerfaelle)
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowZulassungsAnforderungen() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowZulassungsAnforderungen",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowZanfSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

@@ -120,6 +120,10 @@
       <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
       <Name>MvcTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
+      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
+      <Name>WebTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lib\CkgDomainLogic.csproj">
       <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
       <Name>CkgDomainLogic</Name>
