@@ -1411,18 +1411,22 @@ namespace SapORM
 
         static void AhpZullisteTest()
         {
-            var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
-                        "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
-                            "",
-                            "LUEG_BOCHUM",
-                            "1010",
-                            "4340",
-                            DateTime.Today.AddMonths(-2),
-                            DateTime.Today,
-                            "1"
-                        );
+            var list2 = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(Sap);
 
-            var listCount = list.Count;
+            var hhs = list2.Where(l => l.ZKREIS.ToUpper().StartsWith("HAMBURG")).ToList();
+
+            //var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
+            //            "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
+            //                "",
+            //                "LUEG_BOCHUM",
+            //                "1010",
+            //                "4340",
+            //                DateTime.Today.AddMonths(-2),
+            //                DateTime.Today,
+            //                "1"
+            //            );
+
+            //var listCount = list.Count;
         }
 
         #region Chart Table Export

@@ -81,9 +81,9 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        public static string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        public static string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
-            return string.Format("{0}-", zulassungsKreis.NotNullOrEmpty().ToUpper().RemoveDigits());
+            return kennzeichen.NotNullOrEmpty().ToUpper().RemoveDigits().AppendIfNotNull("-");
         }
 
         public static bool KennzeichenIsValid(string kennnzeichen)

@@ -1,4 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
+
+using System;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -61,6 +63,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         {
                             d.KbaNr = s.KBANR;
                             d.Zulassungskreis = s.ZKFZKZ;
+                            d.ZulassungsKennzeichen = s.KREISKZ;
                         }));
             }
         }
@@ -250,8 +253,6 @@ namespace CkgDomainLogic.Autohaus.Models
                     , null
                     , (s, d) =>
                         {
-                            var defaultKennzeichenLinkeSeite = Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(s.Zulassungsdaten.Zulassungskreis);
-
                             d.ZULBELN = s.BelegNr;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
@@ -295,9 +296,12 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
-                            d.ZZKENN = s.Zulassungsdaten.Kennzeichen.NotNullOr(defaultKennzeichenLinkeSeite);
-                            d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2.NotNullOr(defaultKennzeichenLinkeSeite);
-                            d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3.NotNullOr(defaultKennzeichenLinkeSeite);
+
+                            Func<string, string> formatKennzeichen = (kennzeichen => kennzeichen.NotNullOr(Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen)));
+
+                            d.ZZKENN = formatKennzeichen(s.Zulassungsdaten.Kennzeichen);
+                            d.WU_KENNZ2 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen2);
+                            d.WU_KENNZ3 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen3);
 
                             // Optionen/Dienstleistungen
                             d.EINKENN_JN = s.OptionenDienstleistungen.NurEinKennzeichen.BoolToX();

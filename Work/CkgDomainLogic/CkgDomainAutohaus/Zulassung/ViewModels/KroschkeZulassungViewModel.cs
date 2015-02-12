@@ -268,22 +268,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             HalterAdresse = model;
 
-            var zulassungsKreis = LoadKfzKreisAusHalterAdresse();
+            string zulassungsKreis;
+            string zulassungsKennzeichen;
+            LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
             Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
-                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
         }
 
-        public string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
-            return Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+            return Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen);
         }
 
         static bool KennzeichenIsValid(string kennnzeichen)
@@ -297,9 +299,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.HalterAdressenFiltered);
         }
 
-        public string LoadKfzKreisAusHalterAdresse()
+        public void LoadKfzKreisAusHalterAdresse(out string kreis, out string kennzeichen)
         {
-            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis(Zulassung);
+            kreis = "";
+            kennzeichen = "";
+            if (HalterAdresse == null)
+                return;
+
+            ZulassungDataService.GetZulassungskreisUndKennzeichen(Zulassung, out kreis, out kennzeichen);
+        }
+
+        public void LoadKfzKennzeichenFromKreis(string kreis, out string kennzeichen)
+        {
+            ZulassungDataService.GetZulassungsKennzeichen(kreis, out kennzeichen);
         }
 
         #endregion
