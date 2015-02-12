@@ -152,7 +152,7 @@
 								<div id="pagination">
 									<uc1:GridNavigation ID="GridNavigation1" runat="server" />
 								</div>
-								<div id="data" style="float: none">
+								<div id="data">
 									<asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
 										CellPadding="0" CellSpacing="0" GridLines="None"
 										AllowSorting="true" AllowPaging="true" CssClass="GridView" PageSize="20" onsorting="GridView1_Sorting" 
