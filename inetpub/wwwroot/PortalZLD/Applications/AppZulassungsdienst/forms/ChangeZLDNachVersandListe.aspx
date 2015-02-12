@@ -104,7 +104,7 @@
 								</table>
 							</div>
 							<div id="Result" runat="Server">
-								<div id="data" style="float: none">
+								<div id="data">
 									<table cellspacing="0" cellpadding="0" width="100%" bgcolor="white" border="0">
 										<tr>
 											<td>
