@@ -256,6 +256,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_AHP_CRE_CHG_PARTNER_FZGDATEN").WriteOrmForExportTableStructures("I_KUNNR", "329247");
 
+            //new FunctionReflector("Z_ZANF_READ_KLAERF_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026226");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
