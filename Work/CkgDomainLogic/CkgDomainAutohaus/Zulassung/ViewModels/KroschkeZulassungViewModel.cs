@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -98,6 +99,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
+        public bool FahrzeugdatenKostenstelleIsVisible
+        {
+            get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
+        }
+
+        string GetApplicationConfigValueForCustomer(string configValue)
+        {
+            var userCustomerId = LogonContext.Customer.CustomerID;
+            var userGroupId = 0;
+            var appId = HttpContextService.TryGetAppIdFromUrlOrSession();
+
+            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
+        }
 
         public void SetParamFahrzeugAkte(string fin)
         {
@@ -430,6 +444,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
                         Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
                     },
+                Fahrzeugdaten = new Fahrzeugdaten
+                    {
+                        FahrzeugartId = "1",
+                    }
             };
 
             DataMarkForRefresh();
