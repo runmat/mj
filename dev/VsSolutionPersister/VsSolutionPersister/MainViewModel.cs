@@ -84,6 +84,7 @@ namespace VsSolutionPersister
                 {
                     GitService.CheckoutBranch(GitRootFolder, SelectedSolutionItem.GitBranchName);
                     GitCommitMessage = GitService.GetLastCommitMessage(GitRootFolder);
+                    SendPropertyChanged("GitBranchName");
                 }
 
                 SolutionItems.ToList().ForEach(item => item.IsSelected = false);
