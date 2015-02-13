@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -673,29 +674,82 @@ namespace CkgDomainLogic.Insurance.ViewModels
             return termin;
         }
 
+        [XmlIgnore, ScriptIgnore]
+        public List<TerminSchadenfall> TerminVorschlaege { get; private set; }
+
         public string ReTerminVorschlaegeSearch(DateTime? datum, string uhrzeit, int dauer)
         {
-            var errorMessage = ""; 
-            var validationMessage = "";
+            // Versuch 3 Termin-Vorschläge für die übergebenen Parameter zu generieren:
+            const int maxTerminVorschlaege = 3;
+            const int taktungMinuten = 15;
 
-            TerminCurrent.Datum = datum.GetValueOrDefault();
-            TerminCurrent.ZeitVon = uhrzeit;
-            TerminCurrent.ZeitBis = TerminCurrent.DatumZeitVon.AddMinutes(dauer).ToString("HH:mm");
+            TerminVorschlaege = new List<TerminSchadenfall>();
 
-            foreach (var box in TerminCurrent.GetValidBoxen())
+            var termin = new TerminSchadenfall
+                {
+                    VersOrtID = TerminCurrent.VersOrtID,
+                    VersBoxID = TerminCurrent.VersBoxID,
+                    Datum = datum.GetValueOrDefault(),
+                    ZeitVon = uhrzeit,
+                };
+            termin.ZeitBis = termin.DatumZeitVon.AddMinutes(dauer).ToString("HH:mm");
+            
+            var uhrzeitCurrent = termin.DatumZeitVon;
+            DateTime startDateTimeForDate; 
+            DateTime endDateTimeForDate;
+            TerminCurrent.Ort.GetDayTimeRangeForDate(datum.GetValueOrDefault(), out startDateTimeForDate, out endDateTimeForDate);
+            if (uhrzeitCurrent.TimeOfDay < startDateTimeForDate.TimeOfDay)
+                uhrzeitCurrent = startDateTimeForDate;
+            if (uhrzeitCurrent.TimeOfDay > endDateTimeForDate.AddMinutes(dauer * -1).TimeOfDay)
+                uhrzeitCurrent = endDateTimeForDate.AddMinutes(dauer * -1);
+
+            while (uhrzeitCurrent < endDateTimeForDate)
             {
-                TerminCurrent.VersBoxID = box.ID;
+                foreach (var box in TerminCurrent.GetValidBoxen())
+                {
+                    var boxID = box.ID;
+                    termin = new TerminSchadenfall
+                        {
+                            ID = TerminVorschlaege.Count*-1,
+                            VersOrtID = TerminCurrent.VersOrtID,
+                            Ort = TerminCurrent.Ort,
+                            VersBoxID = boxID,
+                            Datum = datum.GetValueOrDefault(),
+                            ZeitVon = uhrzeitCurrent.ToString("HH:mm"),
+                            ZeitBis = uhrzeitCurrent.AddMinutes(dauer).ToString("HH:mm")
+                        };
 
-                validationMessage = "";
-                TerminCurrent.Validate((key, message) => validationMessage = message);
-                if (validationMessage.IsNullOrEmpty())
-                    break;
+                    var validationMessage = "";
+                    termin.Validate((key, message) => validationMessage = message, TerminVorschlaege.Where(t => t.VersBoxID == boxID).ToList());
+                    
+                    if (validationMessage.IsNullOrEmpty())
+                    {
+                        TerminVorschlaege.Add(termin);
+
+                        if (TerminVorschlaege.Count == maxTerminVorschlaege)
+                            return "";
+                    }
+                }
+
+                uhrzeitCurrent = uhrzeitCurrent.AddMinutes(taktungMinuten);
             }
 
-            if (validationMessage.IsNotNullOrEmpty())
-                errorMessage = Localize.AppointmentsOnSundayNotAvailable;
+            if (TerminVorschlaege.None())
+                return Localize.NoAppointmentsFoundForThisDateTime;
 
-            return errorMessage;
+            return "";
+        }
+
+        public void ReTerminVorschlaegeSelect(int terminID)
+        {
+            var vorschlagsTermin = TerminVorschlaege.FirstOrDefault(t => t.ID == terminID);
+            if (vorschlagsTermin == null)
+                return;
+
+            TerminCurrent.Datum = vorschlagsTermin.Datum;
+            TerminCurrent.ZeitVon = vorschlagsTermin.ZeitVon;
+            TerminCurrent.ZeitBis = vorschlagsTermin.ZeitBis;
+            TerminCurrent.VersBoxID = vorschlagsTermin.VersBoxID;
         }
 
         #endregion

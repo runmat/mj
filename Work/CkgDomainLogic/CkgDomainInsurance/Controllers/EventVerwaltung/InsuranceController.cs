@@ -451,6 +451,13 @@ namespace ServicesMvc.Controllers
             return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
         }
 
+        public ActionResult ReTerminVorschlagSelect(int terminID)
+        {
+            EventsViewModel.ReTerminVorschlaegeSelect(terminID);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
+        }
+
         [HttpPost]
         public ActionResult TerminSchadenfallEditFormSave(TerminSchadenfall termin)
         {

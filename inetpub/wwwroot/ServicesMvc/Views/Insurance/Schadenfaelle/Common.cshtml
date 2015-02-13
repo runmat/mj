@@ -698,6 +698,31 @@
     function ReTerminVorschlaegeClose() {
         $(".re-termin-vorschlaege-auswahl-div").slideUp(200);
     }
+    
+    function ReTerminVorschlagSelect(terminID) {
+        $.ajax({
+            type: "POST",
+            url: "ReTerminVorschlagSelect",
+            data: {
+                terminID: terminID
+            },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.errorMessage) !== 'undefined') {
+                    SpanAlertError("ReTerminVorschlagMessage", result.errorMessage, 2500);
+                    return;
+                }
+
+                ReTerminVorschlaegeClose();
+                setTimeout(function () {
+                    TerminSchadenfallEditDetails(result);
+                }, 500);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("ReTerminVorschlagMessage", jqXhr);
+            }
+        });  
+    }
 
     function TerminSchadenfallKalenderDetails(result) {
         var divToHide = ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == "" 

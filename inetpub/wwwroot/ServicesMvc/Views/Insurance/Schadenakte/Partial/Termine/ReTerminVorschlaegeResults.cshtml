@@ -1,15 +1,19 @@
 ﻿@using CkgDomainLogic.Insurance.ViewModels
 @model VersEventsViewModel
 
-<div>
+<div class="margin-top-20">
     
-    <h4>Box: @Model.TerminCurrent.Box.BoxName</h4>
-    <h4>Datum: @Model.TerminCurrent.Datum.ToString("d")</h4>
-    <h4>Von @Model.TerminCurrent.DatumZeitVon.ToString("HH:mm")</h4>
-    <h4>Bis @Model.TerminCurrent.DatumZeitBis.ToString("HH:mm")</h4>
+    <h5><strong>@Localize.YourAppointmentProposals:</strong></h5>
+
+    <div class="margin-left-180">
+
+        @foreach (var terminVorschlag in Model.TerminVorschlaege)
+        {
+            <button type="button" class="btn green margin-right-20" onclick="ReTerminVorschlagSelect(@terminVorschlag.ID)">
+                <i class="icon-calendar margin-right-5"></i> 
+                @terminVorschlag.DatumZeitVon.ToString("HH:mm") - @terminVorschlag.DatumZeitBis.ToString("HH:mm"), @terminVorschlag.Box.BoxName
+            </button>
+        }
+    </div>
 
 </div>
-
-<script type="text/javascript">
-   
-</script>

@@ -16,10 +16,6 @@ namespace CkgDomainLogic.Insurance.Models
     [Table("VersEventSchadenfallOrtBoxTermin")]
     public class TerminSchadenfall : Store, IValidatableObject
     {
-        private int _versBoxID;
-        private int _versOrtID;
-        private int _versSchadenfallID;
-
         [Key]
         public int ID { get; set; }
 
@@ -28,39 +24,13 @@ namespace CkgDomainLogic.Insurance.Models
         public string KundenNr { get; set; }
 
         [GridHidden]
-        public int VersSchadenfallID
-        {
-            get { return _versSchadenfallID; }
-            set
-            {
-                _versSchadenfallID = value;
-                PropertyCacheClear(this, m => m.Schadenfall);
-            }
-        }
+        public int VersSchadenfallID { get; set; }
 
-        [GridHidden]
-        [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
-        public int VersOrtID
-        {
-            get { return _versOrtID; }
-            set
-            {
-                _versOrtID = value;
-                PropertyCacheClear(this, m => m.Ort);
-            }
-        }
+        [GridHidden, LocalizedDisplay(LocalizeConstants.VersEventLocation)]
+        public int VersOrtID { get; set; }
 
-        [GridHidden]
-        [LocalizedDisplay(LocalizeConstants.Box)]
-        public int VersBoxID
-        {
-            get { return _versBoxID; }
-            set
-            {
-                _versBoxID = value;
-                PropertyCacheClear(this, m => m.Box);
-            }
-        }
+        [GridHidden, LocalizedDisplay(LocalizeConstants.Box)]
+        public int VersBoxID { get; set; }
 
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.BoxType)]
@@ -221,6 +191,7 @@ namespace CkgDomainLogic.Insurance.Models
         public VersEventOrt Ort
         {
             get { return PropertyCacheGet(() => Event.Orte.FirstOrDefault(ort => ort.ID == VersOrtID) ?? new VersEventOrt()); }
+            set { PropertyCacheSet(value); }
         }
 
         [GridHidden]
@@ -256,7 +227,7 @@ namespace CkgDomainLogic.Insurance.Models
         public bool IsBlockerDummyTermin { get { return VersSchadenfallID == 0; } }
 
 
-        bool ValidateTimeDuplicatesAndIntersections(Action<string, string> addModelError)
+        bool ValidateTimeDuplicatesAndIntersections(Action<string, string> addModelError, List<TerminSchadenfall> additionalTermine = null)
         {
             var viewModel = GetViewModel();
             if (viewModel == null)
@@ -265,9 +236,14 @@ namespace CkgDomainLogic.Insurance.Models
             var dataStoreRealTimeItems = viewModel.EventsDataService.TermineGet(null, VersBoxID);
 
             if (!viewModel.InsertMode)
+            {
                 // skip current appointment while comparing with the list of stored appointments
                 // (but only if we are NOT in InsertMode (because item.ID will not be valid in insert mode))
                 dataStoreRealTimeItems = dataStoreRealTimeItems.Where(realTimeItem => realTimeItem.ID != ID).ToList();
+            }
+            
+            if (additionalTermine != null)
+                dataStoreRealTimeItems = dataStoreRealTimeItems.Concat(additionalTermine).ToList();
 
             var existingRealTimeItemOverlapping = dataStoreRealTimeItems
                 .FirstOrDefault(realTimeItem =>
@@ -295,7 +271,7 @@ namespace CkgDomainLogic.Insurance.Models
             return true;
         }
 
-        public bool Validate(Action<string, string> addModelError)
+        public bool Validate(Action<string, string> addModelError, List<TerminSchadenfall> additionalTermine = null)
         {
             if (DatumZeitVon >= DatumZeitBis)
             {
@@ -307,7 +283,7 @@ namespace CkgDomainLogic.Insurance.Models
             if (!Ort.ValidateTimeInDayTimeRange(DatumZeitVon, DatumZeitBis, addModelError))
                 return false;
 
-            if (!ValidateTimeDuplicatesAndIntersections(addModelError))
+            if (!ValidateTimeDuplicatesAndIntersections(addModelError, additionalTermine))
                 return false;
 
             return true;
