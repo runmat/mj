@@ -31,6 +31,9 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
 
+        public List<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> ZulassungskreisKennzeichen { get { return PropertyCacheGet(() => LoadZulassungskreisKennzeichenFromSap().ToList()); } }
+        
+
         private static ZulassungSqlDbContext CreateDbContext()
         {
             return new ZulassungSqlDbContext();
@@ -50,6 +53,7 @@ namespace CkgDomainLogic.Autohaus.Services
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
             PropertyCacheClear(this, m => m.Zulassungskreise);
+            PropertyCacheClear(this, m => m.ZulassungskreisKennzeichen);
         }
 
         private IEnumerable<Kunde> LoadKundenFromSap()
@@ -103,16 +107,44 @@ namespace CkgDomainLogic.Autohaus.Services
             return AppModelMappings.Z_ZLD_AH_MATERIAL_GT_MAT_To_Material.Copy(sapList);
         }
 
-        public string GetZulassungskreis(Vorgang zulassung)
+        static string GetKreis(Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST sapItem)
         {
+            return (sapItem.KREISKZ.IsNotNullOrEmpty() ? sapItem.KREISKZ : sapItem.ZKFZKZ).ToUpper();
+        }
+
+        public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
+        {
+            kreis = "";
+            kennzeichen = "";
+            if (zulassung == null || zulassung.Halterdaten == null)
+                return;
+
             Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", zulassung.Halterdaten.PLZ, zulassung.Halterdaten.Ort);
 
             var sapList = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithExecute(SAP);
 
+            kreis = kennzeichen = "";
             if (SAP.ResultCode == 0 && sapList.Count > 0)
-                return sapList[0].ZKFZKZ;
+            {
+                var sapItem = sapList[0];
+                kreis = GetKreis(sapItem);
+                kennzeichen = sapItem.ZKFZKZ;
+            }
+        }
 
-            return "";
+        public void GetZulassungsKennzeichen(string kreis, out string kennzeichen)
+        {
+            var sapList = ZulassungskreisKennzeichen;
+
+            kennzeichen = "";
+            var sapItem = sapList.FirstOrDefault(s => GetKreis(s) == kreis.NotNullOrEmpty().ToUpper());
+            if (sapItem != null)
+                kennzeichen = sapItem.ZKFZKZ;
+        }
+
+        private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
+        {
+            return Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(SAP);
         }
 
         private IEnumerable<Zusatzdienstleistung> LoadZusatzdienstleistungenFromSap()

@@ -81,9 +81,9 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        public static string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        public static string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
-            return string.Format("{0}-", zulassungsKreis.NotNullOrEmpty().ToUpper().RemoveDigits());
+            return kennzeichen.NotNullOrEmpty().ToUpper().RemoveDigits().AppendIfNotNull("-");
         }
 
         public static bool KennzeichenIsValid(string kennnzeichen)
@@ -155,9 +155,6 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
-
-                if (KennzeichenReserviert && (string.IsNullOrEmpty(ReservierungsName) || string.IsNullOrEmpty(ReservierungsNr)))
-                    yield return new ValidationResult(Localize.ReservationDataRequired, new[] { "ReservierungsName", "ReservierungsNr" });
             }
 
             foreach (var dateResult in ValidateWochenendeUndFeiertage(Zulassungsdatum, "Zulassungsdatum").ToList())
