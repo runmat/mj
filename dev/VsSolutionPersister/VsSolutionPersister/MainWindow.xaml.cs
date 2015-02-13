@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -8,6 +6,8 @@ namespace VsSolutionPersister
 {
     public partial class MainWindow
     {
+        MainViewModel ViewModel { get { return (MainViewModel) DataContext; } }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -17,23 +17,27 @@ namespace VsSolutionPersister
 
         private void UIElement_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var s = e.Source;
-            if (e.OriginalSource is Image)
+            if (!(e.OriginalSource is Image))
             {
-                e.Handled = true;
+                if (!ViewModel.AllowSelectionChange())
+                    e.Handled = true;
 
-                var image = (e.OriginalSource as Image);
-                if (image.Parent is Button)
-                {
-                    var button = (image.Parent as Button);
-                    button.Command.Execute(button.CommandParameter);
-                }
+                return;
+            }
+
+            e.Handled = true;
+            var image = (e.OriginalSource as Image);
+            if (image.Parent is Button)
+            {
+                var button = (image.Parent as Button);
+                button.Command.Execute(button.CommandParameter);
             }
         }
 
-        private void Window_Deactivated(object sender, System.EventArgs e)
+        private void WindowDeactivated(object sender, System.EventArgs e)
         {
-            Application.Current.Shutdown();
+            if (ViewModel.IsClosable)
+                Application.Current.Shutdown();
         }
     }
 }

@@ -37,6 +37,9 @@
     <ApplicationIcon>switch.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LibGit2Sharp">
+      <HintPath>GAC\LibGit2Sharp\LibGit2Sharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -57,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GitService.cs" />
     <Compile Include="SolutionItem.cs" />
     <Compile Include="SolutionPersisterService.cs" />
     <Page Include="MainWindow.xaml">
@@ -116,6 +120,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="switch.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="git2-e0902fb.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="git2-e0902fb.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

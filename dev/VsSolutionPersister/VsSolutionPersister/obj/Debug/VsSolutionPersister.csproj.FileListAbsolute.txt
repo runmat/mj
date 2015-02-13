@@ -28,3 +28,8 @@ C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\De
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\EntityFramework.xml
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\obj\Debug\Resources\LocalStyles.baml
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\obj\Debug\App.baml
+C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\LibGit2Sharp.dll
+C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\LibGit2Sharp.pdb
+C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\LibGit2Sharp.xml
+C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\git2-e0902fb.dll
+C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\git2-e0902fb.pdb

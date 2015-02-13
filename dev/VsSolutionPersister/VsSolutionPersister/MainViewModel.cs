@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Net.Mime;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
@@ -17,11 +16,14 @@ namespace VsSolutionPersister
     public class MainViewModel : ViewModelBase
     {
         private string _startPageUrl;
+        private string _gitCommitMessage;
         private readonly bool _ctorCreated;
         private SolutionItem _prevSelectedSolutionItem;
         private SolutionItem _selectedSolutionItem;
         private ObservableCollection<SolutionItem> _solutionItems;
         private SolutionPersisterService _solutionService;
+
+        public bool IsClosable { get; private set; }
 
         private SolutionPersisterService PersisterService
         {
@@ -32,6 +34,8 @@ namespace VsSolutionPersister
 
         public string GitBranchName { get { return PersisterService.GetCurrentGitBranchName(); } }
 
+        public string GitRootFolder { get { return PersisterService.GetCurrentRootGitFolder(); } }
+
         public string StartPageUrl
         {
             get { return _startPageUrl; }
@@ -40,6 +44,16 @@ namespace VsSolutionPersister
                 _startPageUrl = value;
                 PersisterService.SaveSolutionStartpageUrl(value);
                 SendPropertyChanged("StartPageUrl");
+            }
+        }
+
+        public string GitCommitMessage
+        {
+            get { return _gitCommitMessage; }
+            set
+            {
+                _gitCommitMessage = value;
+                SendPropertyChanged("GitCommitMessage");
             }
         }
 
@@ -66,6 +80,12 @@ namespace VsSolutionPersister
                 if (SelectedSolutionItem == null)
                     return;
 
+                using (new WaitCursor())
+                {
+                    GitService.CheckoutBranch(GitRootFolder, SelectedSolutionItem.GitBranchName);
+                    GitCommitMessage = GitService.GetLastCommitMessage(GitRootFolder);
+                }
+
                 SolutionItems.ToList().ForEach(item => item.IsSelected = false);
                 SelectedSolutionItem.IsSelected = true;
                 SaveSolutionXmlItems();
@@ -88,10 +108,13 @@ namespace VsSolutionPersister
 
         public ICommand SolutionItemSaveCommand { get; private set; }
         public ICommand SolutionItemDeleteCommand { get; private set; }
+        public ICommand GitCommitAmendCommand { get; private set; }
 
 
         public MainViewModel()
         {
+            IsClosable = true;
+
             if (Tools.IsWindowOpenForProcessNamePartAndTitlePart("devenv", SolutionName, 
                         () => MessageBox.Show( string.Format("Bitte schließen Sie am Visual Studio die Solution '{0}'", SolutionName), 
                                                 Assembly.GetExecutingAssembly().FullName.Split(',')[0] + " - Info", MessageBoxButton.OK, MessageBoxImage.Hand)))
@@ -102,6 +125,7 @@ namespace VsSolutionPersister
 
             SolutionItemSaveCommand = new DelegateCommand(e => SolutionItemSave(), e => true);
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string) e), e => true);
+            GitCommitAmendCommand = new DelegateCommand(e => GitAmendCommitMessage(), e => GitCommitMessage.IsNotNullOrEmpty());
 
             SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
             var defaultView = CollectionViewSource.GetDefaultView(SolutionItems);
@@ -115,6 +139,23 @@ namespace VsSolutionPersister
 
             SelectCurrentSolutionItem();
             _ctorCreated = true;
+        }
+
+        public bool AllowSelectionChange()
+        {
+            using (new WaitCursor())
+            {
+                if (GitService.GetLastCommitMessage(GitRootFolder).NotNullOrEmpty().Trim() == GitService.DefaultCommitMessage.NotNullOrEmpty().Trim())
+                {
+                    Alert("Please change the default commit message first!");
+                    return false;
+                }
+
+                if (!GitService.StageAndCommitWorkingDirectory(GitRootFolder))
+                    return false;
+            }
+
+            return true;
         }
         
         void SelectCurrentSolutionItem()
@@ -147,9 +188,17 @@ namespace VsSolutionPersister
             SaveSolutionXmlItems();
         }
 
+        void GitAmendCommitMessage()
+        {
+            using (new WaitCursor())
+            {
+                GitService.AmendLastCommit(GitRootFolder, GitCommitMessage);
+            }
+        }
+
         void SolutionItemDelete(string solutionName)
         {
-            if (!Tools.Confirm(string.Format("Delete item '{0}'?", solutionName.Replace("___"," / "))))
+            if (!Confirm(string.Format("Delete item '{0}'?", solutionName.Replace("___"," / "))))
                 return;
 
             var itemToDelete = SolutionItems.First(i => i.Name == solutionName);
@@ -162,6 +211,22 @@ namespace VsSolutionPersister
         void SaveSolutionXmlItems()
         {
             PersisterService.SaveSolutionXmlItems(SolutionItems.ToList());
+        }
+
+        void Alert(string message)
+        {
+            IsClosable = false;
+            MessageBox.Show(message, "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
+            IsClosable = true;
+        }
+
+        bool Confirm(string question)
+        {
+            IsClosable = false;
+            var retVal = Tools.Confirm(question);
+            IsClosable = true;
+
+            return retVal;
         }
     }
 }

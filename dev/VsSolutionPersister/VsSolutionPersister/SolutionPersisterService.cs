@@ -33,6 +33,21 @@ namespace VsSolutionPersister
 
         public string GetCurrentGitBranchName()
         {
+            var path = GetCurrentGitFolder();
+
+            var gitHeadFileName = Path.Combine(path, ".git", "HEAD");
+            if (!File.Exists(gitHeadFileName))
+                return "";
+            var head = File.ReadAllText(gitHeadFileName);
+            var headParts = head.Split('/');
+            if (headParts.None())
+                return "";
+
+            return headParts.Last().Trim();
+        }
+
+        string GetCurrentGitFolder()
+        {
             var path = SolutionPath;
             var gitFolder = "";
             while (gitFolder.IsNullOrEmpty())
@@ -44,16 +59,12 @@ namespace VsSolutionPersister
                     gitFolder = Directory.GetDirectories(path, ".git", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 }
             }
+            return path;
+        }
 
-            var gitHeadFileName = Path.Combine(path, ".git", "HEAD");
-            if (!File.Exists(gitHeadFileName))
-                return "";
-            var head = File.ReadAllText(gitHeadFileName);
-            var headParts = head.Split('/');
-            if (headParts.None())
-                return "";
-
-            return headParts.Last().Trim();
+        public string GetCurrentRootGitFolder()
+        {
+            return new DirectoryInfo(GetCurrentGitFolder()).FullName;
         }
 
         public string GetSolutionStartpageUrl()
