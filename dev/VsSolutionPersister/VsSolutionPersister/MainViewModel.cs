@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Collections.ObjectModel;
@@ -16,7 +18,9 @@ namespace VsSolutionPersister
     public class MainViewModel : ViewModelBase
     {
         private string _startPageUrl;
-        private string _gitCommitMessage;
+        private string _lastCommitMessage;
+        private string _newCommitMessage;
+        private bool _branchIsDirty;
         private readonly bool _ctorCreated;
         private SolutionItem _prevSelectedSolutionItem;
         private SolutionItem _selectedSolutionItem;
@@ -47,13 +51,33 @@ namespace VsSolutionPersister
             }
         }
 
-        public string GitCommitMessage
+        public string LastCommitMessage
         {
-            get { return _gitCommitMessage; }
+            get { return _lastCommitMessage; }
             set
             {
-                _gitCommitMessage = value;
-                SendPropertyChanged("GitCommitMessage");
+                _lastCommitMessage = value;
+                SendPropertyChanged("LastCommitMessage");
+            }
+        }
+
+        public bool BranchIsDirty
+        {
+            get { return _branchIsDirty; }
+            set
+            {
+                _branchIsDirty = value;
+                SendPropertyChanged("BranchIsDirty");
+            }
+        }
+
+        public string NewCommitMessage
+        {
+            get { return _newCommitMessage; }
+            set
+            {
+                _newCommitMessage = value;
+                SendPropertyChanged("NewCommitMessage");
             }
         }
 
@@ -83,7 +107,7 @@ namespace VsSolutionPersister
                 using (new WaitCursor())
                 {
                     GitService.CheckoutBranch(GitRootFolder, SelectedSolutionItem.GitBranchName);
-                    GitCommitMessage = GitService.GetLastCommitMessage(GitRootFolder);
+                    LastCommitMessage = GitService.GetLastCommitMessage(GitRootFolder);
                     SendPropertyChanged("GitBranchName");
                 }
 
@@ -126,7 +150,7 @@ namespace VsSolutionPersister
 
             SolutionItemSaveCommand = new DelegateCommand(e => SolutionItemSave(), e => true);
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string) e), e => true);
-            GitCommitAmendCommand = new DelegateCommand(e => GitAmendCommitMessage(), e => GitCommitMessage.IsNotNullOrEmpty());
+            GitCommitAmendCommand = new DelegateCommand(e => GitAmendCommitMessage(), e => LastCommitMessage.IsNotNullOrEmpty());
 
             SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
             var defaultView = CollectionViewSource.GetDefaultView(SolutionItems);
@@ -139,6 +163,7 @@ namespace VsSolutionPersister
                 PersisterService.SaveSolutionItemFiles(formerSelectedSolutionItem);
 
             SelectCurrentSolutionItem();
+            ShowNewCommitMessageIfIsDirty();
             _ctorCreated = true;
         }
 
@@ -152,9 +177,12 @@ namespace VsSolutionPersister
                     return false;
                 }
 
-                if (!GitService.StageAndCommitWorkingDirectory(GitRootFolder))
+                if (BranchIsDirty && !GitService.StageAndCommitWorkingDirectory(GitRootFolder, NewCommitMessage))
                     return false;
             }
+
+            BranchIsDirty = false;
+            NewCommitMessage = "";
 
             return true;
         }
@@ -162,6 +190,21 @@ namespace VsSolutionPersister
         void SelectCurrentSolutionItem()
         {
             SelectedSolutionItem = SolutionItems.FirstOrDefault(item => item.Name == CreateCurrentSolutionItem().Name);
+        }
+
+        void ShowNewCommitMessageIfIsDirty()
+        {
+            Task.Factory.StartNew(() => Thread.Sleep(100))
+                .ContinueWith(t =>
+                {
+                    using (new WaitCursor())
+                    {
+                        if (!GitService.IsDirty(GitRootFolder))
+                            return;
+
+                        BranchIsDirty = true;
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         SolutionItem CreateCurrentSolutionItem()
@@ -193,7 +236,7 @@ namespace VsSolutionPersister
         {
             using (new WaitCursor())
             {
-                GitService.AmendLastCommit(GitRootFolder, GitCommitMessage);
+                GitService.AmendLastCommit(GitRootFolder, LastCommitMessage);
             }
         }
 

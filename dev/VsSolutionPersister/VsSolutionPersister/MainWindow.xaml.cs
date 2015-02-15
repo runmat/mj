@@ -39,5 +39,13 @@ namespace VsSolutionPersister
             if (ViewModel.IsClosable)
                 Application.Current.Shutdown();
         }
+
+        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(sender is TextBox))
+                return;
+
+            ((TextBox) sender).Focus();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GeneralTools.Models;
 using LibGit2Sharp;
 
 namespace VsSolutionPersister
@@ -46,7 +47,16 @@ namespace VsSolutionPersister
             }
         }
 
-        static public bool StageAndCommitWorkingDirectory(string workingDirectoryPath)
+        public static bool IsDirty(string workingDirectoryPath)
+        {
+            using (var repo = new Repository(workingDirectoryPath))
+            {
+                var status = repo.RetrieveStatus();
+                return status.IsDirty;
+            }
+        }
+
+        static public bool StageAndCommitWorkingDirectory(string workingDirectoryPath, string newCommitMessage)
         {
             using (var repo = new Repository(workingDirectoryPath))
             {
@@ -56,7 +66,7 @@ namespace VsSolutionPersister
                 if (!isDirty)
                     return true;
 
-                var commitMessage = DefaultCommitMessage;
+                var commitMessage = (newCommitMessage.IsNotNullOrEmpty() ? newCommitMessage : DefaultCommitMessage);
 
                 foreach (var entry in status.Modified)
                     repo.Stage(entry.FilePath);
