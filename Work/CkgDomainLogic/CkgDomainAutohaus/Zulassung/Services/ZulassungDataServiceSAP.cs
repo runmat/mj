@@ -193,18 +193,27 @@ namespace CkgDomainLogic.Autohaus.Services
             return true;
         }
 
+        string GetVorgangNummern(List<Vorgang> zulassungen)
+        {
+            foreach (var vorgang in zulassungen)
+            {
+                // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
+                var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+
+                if (blnBelegNrLeer && !GetSapId(vorgang))
+                    return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
+            }
+
+            return "";
+        }
+
         public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             try
             {
-                foreach (var vorgang in zulassungen)
-                {
-                    // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
-                    var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
-
-                    if (blnBelegNrLeer && !GetSapId(vorgang))
-                        return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
-                }
+                var errorMessage = GetVorgangNummern(zulassungen);
+                if (errorMessage.IsNotNullOrEmpty())
+                    return errorMessage;
 
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
@@ -250,7 +259,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
                 SAP.ApplyImport(posList);
 
-                if (adressen.Any())
+                if (adressen.Any(a => a.Name1.IsNotNullOrEmpty()))
                 {
                     var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                     SAP.ApplyImport(adrsList);

@@ -53,7 +53,6 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
         public DateTime? Abmeldedatum { get; set; }
 
-        [Required]
         [StringLength(3)]
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string Zulassungskreis { get; set; }
@@ -144,6 +143,9 @@ namespace CkgDomainLogic.Autohaus.Models
             }
             else
             {
+                if (Zulassungskreis.IsNullOrEmpty())
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationAreaInvalid, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+
                 if (Zulassungsdatum == null)
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
 
@@ -223,3 +225,4 @@ namespace CkgDomainLogic.Autohaus.Models
         }
     }
 }
+
