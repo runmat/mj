@@ -28,6 +28,14 @@ namespace ServicesMvc.Controllers
             return View(BriefversandViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult Schluesselversand(string vins)
+        {
+            BriefversandViewModel.DataMarkForRefresh(vins);
+
+            return View(BriefversandViewModel);
+        }
+
 
         #region Fahrzeug Auswahl
 
