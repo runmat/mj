@@ -228,3 +228,4 @@ namespace CkgDomainLogic.Autohaus.Models
         }
     }
 }
+
