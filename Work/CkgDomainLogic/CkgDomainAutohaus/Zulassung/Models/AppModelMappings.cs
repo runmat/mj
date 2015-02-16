@@ -356,25 +356,6 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        static public ModelMapping<Z_ZLD_AH_AF_ABM_SAVE.GT_ABM, Vorgang> Z_ZLD_AH_AF_ABM_SAVE_GT_ABM_IN_From_Vorgang
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_AF_ABM_SAVE.GT_ABM, Vorgang>(
-                    new Dictionary<string, string>()
-                    , null
-                    , (s, d) =>
-                    {
-                        var defaultKennzeichenLinkeSeite = Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(s.Zulassungsdaten.Zulassungskreis);
-                        
-                        d.ZULBELN = s.BelegNr;
-                        d.AUSWAHL = "A";
-                        d.VE_ERNAM = s.Vorerfasser;
-                        d.ZZKENN = s.Zulassungsdaten.Kennzeichen.NotNullOr(defaultKennzeichenLinkeSeite);
-                    }));
-            }
-        }
-
         #endregion
     }
 }
