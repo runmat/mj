@@ -175,41 +175,6 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveAbmeldungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
-        {
-            try
-            {
-                var errorMessage = GetVorgangNummern(zulassungen);
-                if (errorMessage.IsNotNullOrEmpty())
-                    return errorMessage;
-
-                Z_ZLD_AH_AF_ABM_SAVE.Init(SAP);
-
-                var bakList = AppModelMappings.Z_ZLD_AH_AF_ABM_SAVE_GT_ABM_IN_From_Vorgang.CopyBack(zulassungen).ToList();
-                SAP.ApplyImport(bakList);
-
-                SAP.Execute();
-            }
-            catch (Exception e)
-            {
-                return e.FormatSapSaveException();
-            }
-
-            if (SAP.ResultCode != 0)
-            {
-                var errstring = "";
-                var errList = Z_ZLD_AH_AF_ABM_SAVE.GT_ABM.GetExportList(SAP);
-                if (errList.Count > 0 && errList.Any(e => e.SUBRC != 0))
-                    errstring = string.Join(", ", errList.Select(e => e.MESSAGE));
-
-                return string.Format("{0}{1}", SAP.ResultMessage.FormatSapSaveResultMessage(), errstring.FormatIfNotNull(" ({this})")); 
-            }
-
-            var fileNamesSap = Z_ZLD_AH_AF_ABM_SAVE.GT_FILENAME.GetExportList(SAP);
-
-            return "";
-        }
-
         public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             try
@@ -262,7 +227,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
                 SAP.ApplyImport(posList);
 
-                if (adressen.Any())
+                if (adressen.Any(a => a.Name1.IsNotNullOrEmpty()))
                 {
                     var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                     SAP.ApplyImport(adrsList);

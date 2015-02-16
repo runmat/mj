@@ -28,8 +28,6 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
 
-        string SaveAbmeldungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
-
 
         #region Zulassungs Report
 

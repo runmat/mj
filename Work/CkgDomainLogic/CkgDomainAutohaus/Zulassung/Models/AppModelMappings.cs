@@ -47,6 +47,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.Belegtyp = s.BLTYP;
                             d.MaterialText = s.MAKTX;
                             d.MaterialNr = s.MATNR;
+                            d.IstAbmeldung = s.ABMELDUNG.XToBool();
                         }));
             }
         }

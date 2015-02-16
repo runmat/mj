@@ -428,7 +428,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     {
                         ModusAbmeldung = ModusAbmeldung,
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
-                        Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
+                        Zulassungskreis = null,
                     },
             };
 
@@ -461,10 +461,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            if (ModusAbmeldung)
-                SaveErrorMessage = ZulassungDataService.SaveAbmeldungen(zulassungen, saveDataToSap, saveFromShoppingCart);
-            else
-                SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
