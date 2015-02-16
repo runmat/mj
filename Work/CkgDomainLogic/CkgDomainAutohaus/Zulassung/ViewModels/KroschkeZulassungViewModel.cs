@@ -106,6 +106,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         string GetApplicationConfigValueForCustomer(string configValue)
         {
+            if (LogonContext == null || LogonContext.Customer == null)
+                return "";
+
             var userCustomerId = LogonContext.Customer.CustomerID;
             var userGroupId = 0;
             var appId = HttpContextService.TryGetAppIdFromUrlOrSession();
