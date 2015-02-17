@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -10,14 +13,17 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class Fahrzeugdaten
+    public class Fahrzeugdaten : IValidatableObject
     {
         private string _kostenstelle;
         private string _bestellNr;
         private string _auftragsNr;
 
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
+
         [Required]
-        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
         public string AuftragsNr
         {
             get { return _auftragsNr.NotNullOrEmpty().ToUpper(); }
@@ -57,19 +63,20 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool IstMotorrad { get { return (FahrzeugartId.NotNullOrEmpty().Trim() == "5"); } }
 
-        [LocalizedDisplay(LocalizeConstants.SellerAbbreviation)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungSalesman)]
         public string VerkaeuferKuerzel { get; set; }
 
-        [Required]
-        [LocalizedDisplay(LocalizeConstants.CostCenter)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
         public string Kostenstelle
         {
             get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
             set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
         }
 
+        public bool KostenstelleVisible { get { return  GetZulassungViewModel().FahrzeugdatenKostenstelleIsVisible; } }
+
         [Required]
-        [LocalizedDisplay(LocalizeConstants.OrderCode)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
         public string BestellNr
         {
             get { return _bestellNr.NotNullOrEmpty().ToUpper(); }
@@ -87,6 +94,12 @@ namespace CkgDomainLogic.Autohaus.Models
             s += String.Format("<br/>{0}: {1}", Localize.OrderCode, BestellNr);
 
             return s;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (KostenstelleVisible && Kostenstelle.IsNullOrEmpty())
+                yield return new ValidationResult(Localize.CostcenterRequired, new[] { "Kostenstelle" });
         }
     }
 }

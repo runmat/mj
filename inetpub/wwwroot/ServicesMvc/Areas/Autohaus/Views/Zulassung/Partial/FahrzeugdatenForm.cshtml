@@ -7,7 +7,6 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
     {
         @Html.FormValidationSummary()
-        
 
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
@@ -18,9 +17,12 @@
         @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-        
-        
+        @Html.HiddenFor(m => m.KostenstelleVisible)
+        if (Model.KostenstelleVisible)
+        {
+            @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
+        }
+
         @Html.FormRequiredFieldsSummary()
         
         <script type="text/javascript">

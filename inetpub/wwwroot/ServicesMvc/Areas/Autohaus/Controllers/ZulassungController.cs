@@ -74,6 +74,7 @@ namespace ServicesMvc.Autohaus.Controllers
         void InitModelStatics()
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
