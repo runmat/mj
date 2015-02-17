@@ -207,7 +207,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
         {
             try
             {
@@ -224,7 +224,8 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_SPEICHERN", "X");
 
                 SAP.SetImportParameter("I_FORMULAR", "X");
-                SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
+                if (!modusAbmeldung)
+                    SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
 
                 var positionen = new List<Zusatzdienstleistung>();
                 var adressen = new List<Adressdaten>();
