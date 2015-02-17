@@ -2443,13 +2443,14 @@
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
-    <Compile Include="Areas\Common\lib\Contracts\IDashboardDataService.cs" />
-    <Compile Include="Areas\Common\lib\Models\DashboardItem.cs" />
-    <Compile Include="Areas\Common\lib\Models\DashboardItemUser.cs" />
-    <Compile Include="Areas\Common\lib\Services\DashboardDataServiceSql.cs" />
-    <Compile Include="Areas\Common\lib\Services\DashboardSqlDbContext.cs" />
-    <Compile Include="Areas\Common\lib\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\Common\lib\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemUser.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\IDashboardItemAnnotator.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
