@@ -111,7 +111,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var userCustomerId = LogonContext.Customer.CustomerID;
             var userGroupId = 0;
-            var appId = HttpContextService.TryGetAppIdFromUrlOrSession();
+            var appId = 0;
 
             return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
         }
@@ -340,7 +340,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Abmeldearten { get { return ZulassungDataService.Abmeldearten; } }
+        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
 
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
@@ -351,6 +351,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
+            Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
 
             if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
@@ -482,6 +483,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PartnerDataService.MarkForRefreshAdressen();
 
             PropertyCacheClear(this, m => m.Zulassungsarten);
+            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
@@ -489,6 +491,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
+            if (!ModusAbmeldung && Zulassungsarten.None())
+                return;
+            if (ModusAbmeldung && Abmeldearten.None())
+                return;
+
             SaveDataToErpSystem = saveDataToSap;
             AuftragslisteAvailable = saveDataToSap;
 
