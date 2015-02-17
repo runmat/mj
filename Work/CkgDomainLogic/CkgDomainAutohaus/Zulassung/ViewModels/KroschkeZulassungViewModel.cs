@@ -494,7 +494,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
