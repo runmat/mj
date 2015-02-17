@@ -75,8 +75,9 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
-                return (KennzeichenReserviert ||
-                        (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
+                return !ModusAbmeldung &&
+                            (KennzeichenReserviert ||
+                             (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
             }
         }
 
