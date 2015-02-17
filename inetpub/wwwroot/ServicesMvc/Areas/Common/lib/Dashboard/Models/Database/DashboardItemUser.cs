@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CkgDomainLogic.General.Contracts;
 
 namespace CkgDomainLogic.General.Database.Models
 {
-    public class DashboardItemUser : IDashboardItemUser
+    public class DashboardItemUser
     {
         [Key]
         public int ID { get; set; }
