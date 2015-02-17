@@ -291,9 +291,11 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.STILL_DAT = s.Zulassungsdaten.Abmeldedatum;
 
                             d.BLTYP = s.Zulassungsdaten.Belegtyp;
-                            d.KREISKZ = s.Zulassungsdaten.Zulassungskreis;
-                            d.KREISBEZ = s.Zulassungsdaten.ZulassungskreisBezeichnung;
+                            d.KREISKZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.Zulassungskreis);
+                            d.KREISBEZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.ZulassungskreisBezeichnung);
                             d.ZZEVB = s.Zulassungsdaten.EvbNr;
+
+                            d.VH_KENNZ_RES = s.Zulassungsdaten.VorhandenesKennzeichenReservieren.BoolToX();
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;

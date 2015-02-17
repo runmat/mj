@@ -107,6 +107,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNoReserved)]
         public bool KennzeichenReserviert { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
+        public bool VorhandenesKennzeichenReservieren { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ReservationNo)]
         public string ReservierungsNr { get; set; }
 

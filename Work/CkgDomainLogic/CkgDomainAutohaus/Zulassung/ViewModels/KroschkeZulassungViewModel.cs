@@ -334,6 +334,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
+            Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
 
             if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
