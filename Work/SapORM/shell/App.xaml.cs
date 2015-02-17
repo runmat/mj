@@ -250,6 +250,8 @@ namespace SapORM
             //new FunctionReflector("Z_AHP_CRE_CHG_FZG_AKT_BEST").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883"); 
+            //new FunctionReflector("Z_ZLD_AH_AF_ABM_SAVE").WriteOrmForExportTableStructures(); 
+            
 
             //new FunctionReflector("Z_ZLD_AH_AUSGABE_ZULFORMS").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KREISKZ", "10026883", "B");
             //new FunctionReflector("Z_ZLD_EXPORT_ZULSTEL").WriteOrmForExportTableStructures();

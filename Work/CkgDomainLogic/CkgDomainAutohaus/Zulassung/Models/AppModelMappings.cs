@@ -49,6 +49,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.Belegtyp = s.BLTYP;
                             d.MaterialText = s.MAKTX;
                             d.MaterialNr = s.MATNR;
+                            d.IstAbmeldung = s.ABMELDUNG.XToBool();
                         }));
             }
         }
@@ -346,12 +347,12 @@ namespace CkgDomainLogic.Autohaus.Models
                     new Dictionary<string, string>()
                     , null
                     , (s, d) =>
-                        {
-                            d.ZULBELN = s.BelegNr;
-                            d.LFDNR = s.PositionsNr;
-                            d.MATNR = s.MaterialNr;
-                            d.MENGE = s.Menge;
-                        }));
+                    {
+                        d.ZULBELN = s.BelegNr;
+                        d.LFDNR = s.PositionsNr;
+                        d.MATNR = s.MaterialNr;
+                        d.MENGE = s.Menge;
+                    }));
             }
         }
 

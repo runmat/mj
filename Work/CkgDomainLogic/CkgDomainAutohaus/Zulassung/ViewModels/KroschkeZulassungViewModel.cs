@@ -70,7 +70,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 return;
                             }
 
-                            if (entry.Key == "OptionenDienstleistungen")
+                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "HalterAdresse")
                                 return;
 
                             abmeldungsDict.Add(entry.Key, entry.Value);
@@ -440,7 +440,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     {
                         ModusAbmeldung = ModusAbmeldung,
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
-                        Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
+                        Zulassungskreis = null,
                     },
             };
 
