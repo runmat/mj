@@ -70,7 +70,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 return;
                             }
 
-                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "HalterAdresse")
+                            if (entry.Key == "OptionenDienstleistungen")
                                 return;
 
                             abmeldungsDict.Add(entry.Key, entry.Value);
