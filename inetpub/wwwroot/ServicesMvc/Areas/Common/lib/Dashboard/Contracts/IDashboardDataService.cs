@@ -4,6 +4,8 @@ namespace CkgDomainLogic.General.Contracts
 {
     public interface IDashboardDataService
     {
-        IEnumerable<IDashboardItem> GetDashboardItems();
+        IList<IDashboardItem> GetDashboardItems(string userName);
+
+        void ApplyVisibilityAndSortAnnotatorItems(IList<IDashboardItem> items, IList<int> itemIds);
     }
 }

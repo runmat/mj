@@ -4,6 +4,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using CkgDomainLogic.General.Database.Models;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
@@ -39,21 +40,21 @@ namespace CkgDomainLogic.General.Services
                     ?? DashboardItemsUser.Add(new DashboardItemUser { UserName = userName });
         }
 
-        public IEnumerable<DashboardItemUser> DashboardItemsUserGet(string userName)
+        public IEnumerable<DashboardItemAnnotator> DashboardAnnotatorItemsUserGet(string userName)
         {
             var item = GetDashboardItemUser(userName);
 
-            if (item.ItemsXml == null)
-                return new List<DashboardItemUser>();
+            if (item.AnnotatorItemsXml == null)
+                return new List<DashboardItemAnnotator>();
 
-            return XmlService.XmlDeserializeFromString<List<DashboardItemUser>>(item.ItemsXml);
+            return XmlService.XmlDeserializeFromString<List<DashboardItemAnnotator>>(item.AnnotatorItemsXml);
         }
 
-        public void DashboardItemsUserSave(string userName, IEnumerable<DashboardItemUser> userItems)
+        public void DashboardAnnotatorItemsUserSave(string userName, IEnumerable<DashboardItemAnnotator> userItems)
         {
             var item = GetDashboardItemUser(userName);
 
-            item.ItemsXml = XmlService.XmlSerializeToString(userItems);
+            item.AnnotatorItemsXml = (userItems == null ? null : XmlService.XmlSerializeToString(userItems));
             SaveChanges();
         }
     }

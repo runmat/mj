@@ -7,6 +7,6 @@ namespace CkgDomainLogic.General.Database.Models
         [Key]
         public string UserName { get; set; }
 
-        public string ItemsXml { get; set; }
+        public string AnnotatorItemsXml { get; set; }
     }
 }

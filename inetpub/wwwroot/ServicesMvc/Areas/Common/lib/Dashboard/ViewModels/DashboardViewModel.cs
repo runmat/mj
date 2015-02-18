@@ -20,7 +20,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public List<IDashboardItem> DashboardItems
         {
-            get { return PropertyCacheGet(() => DataService.GetDashboardItems().ToList()); }
+            get { return PropertyCacheGet(() => DataService.GetDashboardItems(LogonContext.UserName).ToList()); }
         }
         
         public void DataInit()
