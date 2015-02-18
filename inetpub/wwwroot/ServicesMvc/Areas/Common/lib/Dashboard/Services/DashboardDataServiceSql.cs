@@ -15,21 +15,28 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             var ct = CreateDbContext();
 
-            var list = ct.GetDashboardItems().Cast<IDashboardItem>().ToList();
-            PrepareAnnotatorItems(ct, list, userName);
+            var items = ct.GetDashboardItems().Cast<IDashboardItem>().ToList();
+            PrepareAnnotatorItems(ct, items, userName);
 
-            return list.Where(item => item.IsUserVisible).OrderBy(item => item.UserSort).ToList();
+            return items.OrderBy(item => item.UserSort).ToList();
         }
 
-        public void SaveGetDashboardItems(IList<IDashboardItem> items, string userName, string commaSeparatedIds)
+        public void SaveDashboardItems(IList<IDashboardItem> items, string userName, string commaSeparatedIds)
         {
             var ct = CreateDbContext();
+
+            IList<int> ids = null;
+            if (commaSeparatedIds.IsNotNullOrEmpty())
+                ids = commaSeparatedIds.Split(',').Select(s => s.ToInt()).ToList();
+
+            HideAllAnnotatorItems(items);
+            ApplyVisibilityAndSortAnnotatorItems(items, ids, true);
 
             var annotatorItems = items.OrderBy(item => item.UserSort).Select(item => item.ItemAnnotator);
             ct.DashboardAnnotatorItemsUserSave(userName, annotatorItems);
         }
 
-        void PrepareAnnotatorItems(DashboardSqlDbContext ct, IList<IDashboardItem> items, string userName)
+        static void PrepareAnnotatorItems(DashboardSqlDbContext ct, IList<IDashboardItem> items, string userName)
         {
             foreach (var item in items)
             {
@@ -42,22 +49,21 @@ namespace CkgDomainLogic.DomainCommon.Services
             }
 
             var annotatorItems = ct.DashboardAnnotatorItemsUserGet(userName);
+            if (annotatorItems == null || annotatorItems.None())
+                return;
 
-            var itemIds = items.OrderBy(i => i.InitialSort).Select(i => i.ID);
-            if (annotatorItems != null && annotatorItems.Any())
-                itemIds = annotatorItems.Where(i => i.IsUserVisible).OrderBy(i => i.UserSort).Select(i => i.ItemID);
+            var visibleItemIds = annotatorItems.Where(i => i.IsUserVisible).OrderBy(i => i.UserSort).Select(i => i.ItemID);
+            var hiddenItemIds = annotatorItems.Where(i => !i.IsUserVisible).Select(i => i.ItemID);
 
-            ApplyVisibilityAndSortAnnotatorItems(userName, items, itemIds.ToList());
+            if (hiddenItemIds.Any())
+                ApplyVisibilityAndSortAnnotatorItems(items, hiddenItemIds.ToList(), false);
+
+            if (visibleItemIds.Any())
+                ApplyVisibilityAndSortAnnotatorItems(items, visibleItemIds.ToList(), true);
         }
 
-        public void ApplyVisibilityAndSortAnnotatorItems(string userName, IList<IDashboardItem> items, IList<int> itemIds)
+        static void ApplyVisibilityAndSortAnnotatorItems(IList<IDashboardItem> items, IList<int> itemIds, bool setVisible)
         {
-            foreach (var item in items)
-            {
-                item.ItemAnnotator.IsUserVisible = false;
-                item.ItemAnnotator.UserSort = 0;
-            }
-
             if (itemIds == null)
                 return;
 
@@ -68,16 +74,28 @@ namespace CkgDomainLogic.DomainCommon.Services
                 if (item == null)
                     continue;
 
-                item.ItemAnnotator.IsUserVisible = true;
+                item.ItemAnnotator.IsUserVisible = setVisible;
                 if (!item.ItemAnnotator.IsUserVisible)
+                {
+                    item.ItemAnnotator.UserSort = 0;
                     continue;
+                }
 
                 sort += 10;
                 item.ItemAnnotator.UserSort = sort;
             }
         }
 
-        private static DashboardSqlDbContext CreateDbContext()
+        static void HideAllAnnotatorItems(IList<IDashboardItem> items)
+        {
+            foreach (var item in items)
+            {
+                item.ItemAnnotator.IsUserVisible = false;
+                item.ItemAnnotator.UserSort = 0;
+            }
+        }
+
+        static DashboardSqlDbContext CreateDbContext()
         {
             return new DashboardSqlDbContext();
         }
