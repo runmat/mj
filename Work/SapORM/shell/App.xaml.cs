@@ -250,6 +250,8 @@ namespace SapORM
             //new FunctionReflector("Z_AHP_CRE_CHG_FZG_AKT_BEST").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883"); 
+            //new FunctionReflector("Z_ZLD_AH_AF_ABM_SAVE").WriteOrmForExportTableStructures(); 
+            
 
             //new FunctionReflector("Z_ZLD_AH_AUSGABE_ZULFORMS").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KREISKZ", "10026883", "B");
             //new FunctionReflector("Z_ZLD_EXPORT_ZULSTEL").WriteOrmForExportTableStructures();
@@ -1411,18 +1413,22 @@ namespace SapORM
 
         static void AhpZullisteTest()
         {
-            var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
-                        "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
-                            "",
-                            "LUEG_BOCHUM",
-                            "1010",
-                            "4340",
-                            DateTime.Today.AddMonths(-2),
-                            DateTime.Today,
-                            "1"
-                        );
+            var list2 = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(Sap);
 
-            var listCount = list.Count;
+            var hhs = list2.Where(l => l.ZKREIS.ToUpper().StartsWith("HAMBURG")).ToList();
+
+            //var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
+            //            "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
+            //                "",
+            //                "LUEG_BOCHUM",
+            //                "1010",
+            //                "4340",
+            //                DateTime.Today.AddMonths(-2),
+            //                DateTime.Today,
+            //                "1"
+            //            );
+
+            //var listCount = list.Count;
         }
 
         #region Chart Table Export
