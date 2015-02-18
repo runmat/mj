@@ -134,6 +134,7 @@ namespace VsSolutionPersister
         public ICommand SolutionItemSaveCommand { get; private set; }
         public ICommand SolutionItemDeleteCommand { get; private set; }
         public ICommand GitCommitAmendCommand { get; private set; }
+        public ICommand GitCreateAndExecuteCommitCommand { get; private set; }
 
 
         public MainViewModel()
@@ -151,6 +152,7 @@ namespace VsSolutionPersister
             SolutionItemSaveCommand = new DelegateCommand(e => SolutionItemSave(), e => true);
             SolutionItemDeleteCommand = new DelegateCommand(e => SolutionItemDelete((string) e), e => true);
             GitCommitAmendCommand = new DelegateCommand(e => GitAmendCommitMessage(), e => LastCommitMessage.IsNotNullOrEmpty());
+            GitCreateAndExecuteCommitCommand = new DelegateCommand(e => GitCreateAndExecuteCommit(), e => NewCommitMessage.IsNotNullOrEmpty());
 
             SolutionItems = new ObservableCollection<SolutionItem>(PersisterService.LoadSolutionItems());
             var defaultView = CollectionViewSource.GetDefaultView(SolutionItems);
@@ -168,6 +170,11 @@ namespace VsSolutionPersister
         }
 
         public bool AllowSelectionChange()
+        {
+            return EnsureCleanGitFolder();
+        }
+
+        bool EnsureCleanGitFolder()
         {
             using (new WaitCursor())
             {
@@ -238,6 +245,11 @@ namespace VsSolutionPersister
             {
                 GitService.AmendLastCommit(GitRootFolder, LastCommitMessage);
             }
+        }
+
+        void GitCreateAndExecuteCommit()
+        {
+            EnsureCleanGitFolder();
         }
 
         void SolutionItemDelete(string solutionName)
