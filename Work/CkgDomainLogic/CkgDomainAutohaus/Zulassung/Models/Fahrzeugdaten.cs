@@ -67,6 +67,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string VerkaeuferKuerzel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
+        [RequiredConditional]
         public string Kostenstelle
         {
             get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
