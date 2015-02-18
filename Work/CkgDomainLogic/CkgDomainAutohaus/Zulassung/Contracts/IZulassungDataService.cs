@@ -24,9 +24,11 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         Bankdaten GetBankdaten(string iban);
 
-        string GetZulassungskreis(Vorgang zulassung);
+        void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen);
+        
+        void GetZulassungsKennzeichen(string kreis, out string kennzeichen);
 
-        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung);
 
 
         #region Zulassungs Report
