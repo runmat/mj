@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Services;
@@ -30,7 +31,7 @@ namespace CkgDomainLogic.General.Services
 
         public IEnumerable<DashboardItem> GetDashboardItems()
         {
-            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem where ChartJsonOptions is not null order by Sort");
+            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem where ChartJsonOptions is not null order by InitialSort");
         }
 
 
@@ -40,7 +41,7 @@ namespace CkgDomainLogic.General.Services
                     ?? DashboardItemsUser.Add(new DashboardItemUser { UserName = userName });
         }
 
-        public IEnumerable<DashboardItemAnnotator> DashboardAnnotatorItemsUserGet(string userName)
+        public IEnumerable<IDashboardItemAnnotator> DashboardAnnotatorItemsUserGet(string userName)
         {
             var item = GetDashboardItemUser(userName);
 
@@ -50,11 +51,11 @@ namespace CkgDomainLogic.General.Services
             return XmlService.XmlDeserializeFromString<List<DashboardItemAnnotator>>(item.AnnotatorItemsXml);
         }
 
-        public void DashboardAnnotatorItemsUserSave(string userName, IEnumerable<DashboardItemAnnotator> userItems)
+        public void DashboardAnnotatorItemsUserSave(string userName, IEnumerable<IDashboardItemAnnotator> userItems)
         {
             var item = GetDashboardItemUser(userName);
 
-            item.AnnotatorItemsXml = (userItems == null ? null : XmlService.XmlSerializeToString(userItems));
+            item.AnnotatorItemsXml = (userItems == null ? null : XmlService.XmlSerializeToString(userItems.Cast<DashboardItemAnnotator>().ToList()));
             SaveChanges();
         }
     }

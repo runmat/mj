@@ -35,5 +35,13 @@ namespace ServicesMvc.Common.Controllers
         {
             return Json(ViewModel.GetBarChartData(id));
         }
+
+        [HttpPost]
+        public ActionResult DashboardItemsSave(string commaSeparatedIds)
+        {
+            ViewModel.DashboardItemsSave(commaSeparatedIds);
+
+            return new EmptyResult();
+        }
     }
 }

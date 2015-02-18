@@ -22,6 +22,7 @@
     </li> 
 
     <a class="margin-left-50" href="#" onclick="return AddWidget(9);">Add Widget</a> 
+    <a class="margin-left-10" href="#" onclick="return Save();">Save</a> 
 </h3>
 
 
@@ -151,6 +152,20 @@
                     setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
                 }
             });
+    }
+
+    function Save() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "DashboardItemsSave",
+                data: { commaSeparatedIds: "1,2,3" },
+                loadingShow: false,
+                success: function (result) {
+                }
+            });
+
+        return false;
     }
 
     function AddWidget(rawWidgetId) {
