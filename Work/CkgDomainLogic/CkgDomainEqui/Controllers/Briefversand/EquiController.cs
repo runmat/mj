@@ -33,7 +33,7 @@ namespace ServicesMvc.Controllers
         {
             BriefversandViewModel.DataMarkForRefresh(vins);
 
-            return View(BriefversandViewModel);
+            return View("Briefversand", BriefversandViewModel);
         }
 
 
