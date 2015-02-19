@@ -15,6 +15,6 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string Belegtyp { get; set; }
 
-        public bool IstAbmeldung { get { return Belegtyp.NotNullOrEmpty().ToUpper() == "AA"; } }
+        public bool IstAbmeldung { get; set; }
     }
 }
