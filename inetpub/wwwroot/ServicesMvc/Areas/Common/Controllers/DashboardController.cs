@@ -9,6 +9,7 @@ using GeneralTools.Models;
 
 namespace ServicesMvc.Common.Controllers
 {
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
     public class DashboardController : CkgDomainController
     {
         public override string DataContextKey { get { return "DashboardViewModel"; } }
@@ -30,11 +31,12 @@ namespace ServicesMvc.Common.Controllers
             return View(ViewModel);
         }
 
-        public ActionResult ShowReportForDashboardItem(int id)
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
+        public ActionResult ShowReportForDashboardItem(int id, string timestamp)
         {
             var redirectUrl = ViewModel.DashboardPrepareReportForItem(id);
 
-            return RedirectPermanent(redirectUrl);
+            return Redirect(redirectUrl);
         }
 
         [HttpPost]
