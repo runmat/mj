@@ -9,5 +9,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string Zulassungskreis { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string ZulassungsKennzeichen { get; set; }
     }
 }
