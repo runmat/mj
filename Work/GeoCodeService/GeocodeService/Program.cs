@@ -9,6 +9,8 @@ namespace GeodeService
     {
         static void Main(string[] args)
         {
+            Common.BingKey = ConfigurationManager.AppSettings["BingKey"];
+
             // define server object
             LIC.SetLic("5DVZ5588DC-25444");
             RFCServer s = new RFCServer();
