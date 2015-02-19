@@ -63,7 +63,10 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             Rechnungsdaten = new Rechnungsdaten();
             BankAdressdaten = new BankAdressdaten();
-            Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
+            Fahrzeugdaten = new Fahrzeugdaten
+                {
+                    FahrzeugartId = "1",
+                };
             Halterdaten = new Adresse { Land = "DE", Kennung = "HALTER" };
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
