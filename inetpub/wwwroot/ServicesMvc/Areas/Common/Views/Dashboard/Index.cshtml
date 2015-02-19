@@ -11,12 +11,17 @@
             <i class="icon-angle-down"></i>
         </a>
         <ul class="dropdown-menu">
+            
+            @{ var cssClassEmptyItem = (@Model.HiddenDashboardItems.None() ? "" : "hide"); }
+            <li id="li_dropdown_empty" class="@cssClassEmptyItem"><a href="#" onclick="return false;"><i class="icon-bar-chart"></i> (aktuell keine Einträge ausgeblendet) </a></li>
+            
             @foreach (var dashBoardItem in Model.DashboardItems)
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
                 
                 <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
+
         </ul>
     </li> 
 </h3>
@@ -72,12 +77,6 @@
         });
 
         DashboardChainInit();
-
-        $(".badge").click(function () {
-            $(".badge").toggle("highlight", function () {
-                $(".badge").show();
-            });
-        });
     }
 
     function DashboardChainInit() {
@@ -125,7 +124,7 @@
             });
     }
 
-    function SaveDashboardItems() {
+    function SaveDashboardItems(numberOfItemsChanged) {
 
         var commaSeparatedIds = $.map($("#myDashboard li"), function (item) {
             return $(item).attr("id").replace(/id_/g, "");
@@ -138,8 +137,18 @@
                 data: { commaSeparatedIds: commaSeparatedIds },
                 loadingShow: false,
                 success: function (result) {
-                    //alert(result.visibleItemsCount);
                     $("#badgeVisibleItemsCount").html(result.hiddenItemsCount);
+
+                    if (numberOfItemsChanged){
+                        $(".badge").toggle("highlight", function () {
+                            $(".badge").show();
+                        });
+
+                        if (result.hiddenItemsCount == 0)
+                            $("#li_dropdown_empty").show();
+                        else
+                            $("#li_dropdown_empty").hide();
+                    }
                 }
             });
 
@@ -195,16 +204,16 @@
 
     function DashboardWidgetEventAdd(id) {
         $("#li_dropdown_" + id).hide();
-        SaveDashboardItems();
+        SaveDashboardItems(true);
     }
 
     function DashboardWidgetEventRemove(id) {
         $("#li_dropdown_" + id).show();
-        SaveDashboardItems();
+        SaveDashboardItems(true);
     }
     
     function DashboardWidgetEventOrderChanged(id) {
-        SaveDashboardItems();
+        SaveDashboardItems(false);
     }
 
 </script>
