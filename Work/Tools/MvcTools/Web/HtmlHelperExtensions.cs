@@ -80,8 +80,8 @@ namespace MvcTools.Web
 
             if (metadata.ContainerType != null)
             {
-                isRequired = metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(RequiredAttribute), false).Any();
-                //isRequired = metadata.IsRequired;
+                isRequired = metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(RequiredAttribute), false).Any() ||
+                             metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(RequiredConditionalAttribute), false).Any();
             }
 
             var asteriskTag = new TagBuilder("span") { InnerHtml = "&nbsp;" };

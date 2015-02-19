@@ -31,6 +31,9 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
 
+        public List<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> ZulassungskreisKennzeichen { get { return PropertyCacheGet(() => LoadZulassungskreisKennzeichenFromSap().ToList()); } }
+        
+
         private static ZulassungSqlDbContext CreateDbContext()
         {
             return new ZulassungSqlDbContext();
@@ -50,6 +53,7 @@ namespace CkgDomainLogic.Autohaus.Services
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
             PropertyCacheClear(this, m => m.Zulassungskreise);
+            PropertyCacheClear(this, m => m.ZulassungskreisKennzeichen);
         }
 
         private IEnumerable<Kunde> LoadKundenFromSap()
@@ -103,16 +107,44 @@ namespace CkgDomainLogic.Autohaus.Services
             return AppModelMappings.Z_ZLD_AH_MATERIAL_GT_MAT_To_Material.Copy(sapList);
         }
 
-        public string GetZulassungskreis(Vorgang zulassung)
+        static string GetKreis(Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST sapItem)
         {
+            return (sapItem.KREISKZ.IsNotNullOrEmpty() ? sapItem.KREISKZ : sapItem.ZKFZKZ).ToUpper();
+        }
+
+        public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
+        {
+            kreis = "";
+            kennzeichen = "";
+            if (zulassung == null || zulassung.Halterdaten == null)
+                return;
+
             Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", zulassung.Halterdaten.PLZ, zulassung.Halterdaten.Ort);
 
             var sapList = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithExecute(SAP);
 
+            kreis = kennzeichen = "";
             if (SAP.ResultCode == 0 && sapList.Count > 0)
-                return sapList[0].ZKFZKZ;
+            {
+                var sapItem = sapList[0];
+                kreis = GetKreis(sapItem);
+                kennzeichen = sapItem.ZKFZKZ;
+            }
+        }
 
-            return "";
+        public void GetZulassungsKennzeichen(string kreis, out string kennzeichen)
+        {
+            var sapList = ZulassungskreisKennzeichen;
+
+            kennzeichen = "";
+            var sapItem = sapList.FirstOrDefault(s => GetKreis(s) == kreis.NotNullOrEmpty().ToUpper());
+            if (sapItem != null)
+                kennzeichen = sapItem.ZKFZKZ;
+        }
+
+        private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
+        {
+            return Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(SAP);
         }
 
         private IEnumerable<Zusatzdienstleistung> LoadZusatzdienstleistungenFromSap()
@@ -161,18 +193,27 @@ namespace CkgDomainLogic.Autohaus.Services
             return true;
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
+        string GetVorgangNummern(List<Vorgang> zulassungen)
+        {
+            foreach (var vorgang in zulassungen)
+            {
+                // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
+                var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
+
+                if (blnBelegNrLeer && !GetSapId(vorgang))
+                    return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
+            }
+
+            return "";
+        }
+
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
         {
             try
             {
-                foreach (var vorgang in zulassungen)
-                {
-                    // Vorgang, Belegnummer für Hauptvorgang (GT_BAK)
-                    var blnBelegNrLeer = (string.IsNullOrEmpty(vorgang.BelegNr) || vorgang.BelegNr.TrimStart('0').Length == 0);
-
-                    if (blnBelegNrLeer && !GetSapId(vorgang))
-                        return Localize.SaveFailed + ": " + Localize.UnableToRetrieveNewRecordIdFromSap;
-                }
+                var errorMessage = GetVorgangNummern(zulassungen);
+                if (errorMessage.IsNotNullOrEmpty())
+                    return errorMessage;
 
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
@@ -183,7 +224,8 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_SPEICHERN", "X");
 
                 SAP.SetImportParameter("I_FORMULAR", "X");
-                SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
+                if (!modusAbmeldung)
+                    SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
 
                 var positionen = new List<Zusatzdienstleistung>();
                 var adressen = new List<Adressdaten>();
@@ -218,7 +260,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 var posList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_POS_IN_From_Zusatzdienstleistung.CopyBack(positionen).ToList();
                 SAP.ApplyImport(posList);
 
-                if (adressen.Any())
+                if (adressen.Any(a => a.Name1.IsNotNullOrEmpty()))
                 {
                     var adrsList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_ADRS_IN_From_Adressdaten.CopyBack(adressen).ToList();
                     SAP.ApplyImport(adrsList);

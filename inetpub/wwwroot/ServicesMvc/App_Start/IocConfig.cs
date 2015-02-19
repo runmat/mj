@@ -37,6 +37,8 @@ using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
+using CkgDomainLogic.Zanf.Contracts;
+using CkgDomainLogic.Zanf.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -175,6 +177,7 @@ namespace ServicesMvc
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
 
