@@ -62,8 +62,13 @@
                     ui.item.startPosition = ui.item.index();
                 },
                 update: function (event, ui) {
-                    console.log(event, ui);
                     var newPosition = ui.item.index();
+                    console.log(_dashboardData[newPosition].widgetId.replace);
+                    try {
+                        DashboardWidgetEventOrderChanged(_dashboardData[newPosition].widgetId.replace(/id_/g, ""));
+                    }
+                    catch (e) { }
+                    
                     _dashboardData.splice.apply(
 							_dashboardData,
 							[newPosition, 0].concat(_dashboardData.splice(ui.item.startPosition, 1))
