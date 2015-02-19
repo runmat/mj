@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public DateRange AuftragsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months, true)); } set { PropertyCacheSet(value); } }
+        public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days, true)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.Reference1)]
         public string Referenz1 { get; set; }

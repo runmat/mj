@@ -125,6 +125,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
             };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -150,6 +151,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
             };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -173,6 +175,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
             };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -192,6 +195,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
             };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -212,6 +216,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
             };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -232,6 +237,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     ZulassungsDatumRange = new DateRange(DateRangeType.Last60Days, true)
                 };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 
@@ -259,6 +265,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
                 };
+            DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
 

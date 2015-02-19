@@ -30,6 +30,13 @@ namespace ServicesMvc.Common.Controllers
             return View(ViewModel);
         }
 
+        public ActionResult ShowReportForDashboardItem(int id)
+        {
+            var redirectUrl = ViewModel.DashboardPrepareReportForItem(id);
+
+            return RedirectPermanent(redirectUrl);
+        }
+
         [HttpPost]
         public ActionResult GetBarChartData(string id)
         {

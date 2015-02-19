@@ -13,7 +13,7 @@
         <ul class="dropdown-menu">
             
             @{ var cssClassEmptyItem = (@Model.HiddenDashboardItems.None() ? "" : "hide"); }
-            <li id="li_dropdown_empty" class="@cssClassEmptyItem"><a href="#" onclick="return false;"><i class="icon-bar-chart"></i> (aktuell keine Einträge ausgeblendet) </a></li>
+            <li id="li_dropdown_empty" class="@cssClassEmptyItem"><a href="#" onclick="return false;"><i class="icon-bar-chart"></i> (aktuell keine Einträge zum Einblenden verfügbar) </a></li>
             
             @foreach (var dashBoardItem in Model.DashboardItems)
             {
@@ -26,7 +26,10 @@
     </li> 
 </h3>
 
-
+@foreach (var dashBoardItem in Model.DashboardItems)
+{
+    <a class="margin-right-10" target="report_@dashBoardItem.ID" href="ShowReportForDashboardItem/@dashBoardItem.ID">Report @dashBoardItem.ID</a>
+}
 
 <ul id="myDashboard">
 </ul>
