@@ -10,11 +10,6 @@
             onResize();
         });
         onResize();
-
-        var url = '@Html.Raw(Model.XarisUrl)';
-        //alert(url);
-        var ifr = document.getElementById('ifrMvcApp');
-        setTimeout(function () { ifr.src = url; }, 10);
     }
 
     function isIeAndVersion() {
@@ -50,4 +45,4 @@
 </script>
 
 <a target='_blank' href='@Html.Raw(Model.XarisUrl)'>Sepia im seaparaten Tab...</a>
-<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src=""></iframe>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src="@Html.Raw(Model.XarisUrl)"></iframe>
