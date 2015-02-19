@@ -93,7 +93,7 @@
     <Content Include="forms\Kennzeichenbestellung.aspx" />
     <Content Include="forms\DownloadFile.aspx" />
     <Content Include="forms\Infocenter.aspx" />
-    <Content Include="forms\PrintDialogKundenformular.aspx" />
+    <Content Include="forms\PrintDialogKundenformulare.aspx" />
     <Content Include="forms\Kurzzeitzulassung.aspx" />
     <Content Include="forms\Neuzulassung.aspx" />
     <Content Include="forms\PrintDialog.aspx" />
@@ -406,12 +406,12 @@
     <Compile Include="forms\Infocenter.aspx.designer.cs">
       <DependentUpon>Infocenter.aspx</DependentUpon>
     </Compile>
-    <Compile Include="forms\PrintDialogKundenformular.aspx.cs">
-      <DependentUpon>PrintDialogKundenformular.aspx</DependentUpon>
+    <Compile Include="forms\PrintDialogKundenformulare.aspx.cs">
+      <DependentUpon>PrintDialogKundenformulare.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="forms\PrintDialogKundenformular.aspx.designer.cs">
-      <DependentUpon>PrintDialogKundenformular.aspx</DependentUpon>
+    <Compile Include="forms\PrintDialogKundenformulare.aspx.designer.cs">
+      <DependentUpon>PrintDialogKundenformulare.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\Kurzzeitzulassung.aspx.cs">
       <DependentUpon>Kurzzeitzulassung.aspx</DependentUpon>
@@ -694,7 +694,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_ConfigurationName="Release" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2012/9/4" />
+      <UserProperties BuildVersion_StartDate="2012/9/4" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_ConfigurationName="Release" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
