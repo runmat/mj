@@ -138,6 +138,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public void DataMarkForRefreshSchadenfallStatusAlle()
         {
+			PropertyCacheClear(this, m => m.SchadenfallStatusArten);
             PropertyCacheClear(this, m => m.SchadenStatusAlle);
             PropertyCacheClear(this, m => m.SchadenStatusAlleFiltered);
         }
