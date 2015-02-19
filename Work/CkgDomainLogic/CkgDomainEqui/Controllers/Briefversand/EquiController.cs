@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Equi.ViewModels;
@@ -23,19 +24,28 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Briefversand(string vins)
         {
-            BriefversandViewModel.DataMarkForRefresh(vins);
-
-            return View(BriefversandViewModel);
+            return ExplicitVersand(vins, BriefversandModus.Brief);
         }
 
         [CkgApplication]
         public ActionResult Schluesselversand(string vins)
         {
+            return ExplicitVersand(vins, BriefversandModus.Schluessel);
+        }
+
+        [CkgApplication]
+        public ActionResult BriefSchluesselversand(string vins)
+        {
+            return ExplicitVersand(vins, BriefversandModus.BriefMitSchluessel);
+        }
+
+        ActionResult ExplicitVersand(string vins, BriefversandModus modus)
+        {
+            BriefversandViewModel.VersandModus = modus;
             BriefversandViewModel.DataMarkForRefresh(vins);
 
             return View("Briefversand", BriefversandViewModel);
         }
-
 
         #region Fahrzeug Auswahl
 
@@ -203,7 +213,6 @@ namespace ServicesMvc.Controllers
         {
             BriefversandViewModel.DataMarkForRefreshVersandoptionen();
             BriefversandViewModel.DataMarkForRefreshVersandgruende();
-            BriefversandViewModel.VersandOptionen.AufAbmeldungWartenAvailable = BriefversandViewModel.VersandOptionAufAbmeldungWartenAvailable;
 
             return PartialView("Briefversand/VersandOptionen", BriefversandViewModel);
         }

@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.Equi.Contracts;
+using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -10,8 +14,11 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Equi.Models
 {
-    public class VersandOptionen
+    public class VersandOptionen : IValidatableObject
     {
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<BriefversandViewModel> GetViewModel { get; set; }
+
         [XmlIgnore]
         public Fahrzeugbrief SelectedFahrzeug { get; set; }
 
@@ -41,8 +48,8 @@ namespace CkgDomainLogic.Equi.Models
         [MaxLength(60)]
         public string Bemerkung { get; set; }
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
-        [Required]
         public string VersandGrundKey { get; set; }
 
         public VersandGrund VersandGrund
@@ -66,7 +73,11 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(" ")]
         public bool AufAbmeldungWarten { get; set; }
 
-        public bool AufAbmeldungWartenAvailable { get; set; }
+        public bool AufAbmeldungWartenAvailable { get { return GetViewModel != null && GetViewModel().VersandOptionAufAbmeldungWartenAvailable; } }
+
+        public BriefversandModus VersandModus { get { return (GetViewModel == null ? BriefversandModus.Brief : GetViewModel().VersandModus); } }
+
+        public bool VersandGrundIsRequired { get { return VersandModus != BriefversandModus.Schluessel; } }
 
         [ModelMappingCompareIgnore]
         public bool IsValid { get; set; }
@@ -84,6 +95,12 @@ namespace CkgDomainLogic.Equi.Models
             s += string.Format("<br/><br/>{0}: {1}", Localize.CauseOfDispatch, VersandGrund.Bezeichnung);
 
             return s;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (VersandGrundIsRequired && VersandGrundKey.IsNullOrEmpty())
+                yield return new ValidationResult(Localize.ThisFieldIsRequired, new[] { "VersandGrundKey" });
         }
     }
 }

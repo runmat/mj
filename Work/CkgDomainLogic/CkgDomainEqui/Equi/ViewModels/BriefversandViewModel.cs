@@ -21,6 +21,16 @@ namespace CkgDomainLogic.Equi.ViewModels
 {
     public class BriefversandViewModel : CkgBaseViewModel
     {
+        public BriefversandModus VersandModus
+        {
+            get { return PropertyCacheGet(() => BriefversandModus.Brief); } 
+            set
+            {
+                PropertyCacheSet(value);
+                BriefbestandDataService.FahrzeugbriefeZumVersandModus = value;
+            }
+        }  
+
         [XmlIgnore]
         public IBriefbestandDataService BriefbestandDataService { get { return CacheGet<IBriefbestandDataService>(); } }
 
