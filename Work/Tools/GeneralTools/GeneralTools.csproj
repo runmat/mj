@@ -122,6 +122,7 @@
     <Compile Include="Models\Attributes\GridExportIgnoreAttribute.cs" />
     <Compile Include="Models\Attributes\LengthAttribute.cs" />
     <Compile Include="Models\Attributes\LocalizedDisplayAttribute.cs" />
+    <Compile Include="Models\Attributes\RequiredConditionalAttribute.cs" />
     <Compile Include="Models\Attributes\UpperCaseAttribute.cs" />
     <Compile Include="Models\Attributes\LowerCaseAttribute.cs" />
     <Compile Include="Models\Attributes\RequiredAsGroupAttribute.cs" />
