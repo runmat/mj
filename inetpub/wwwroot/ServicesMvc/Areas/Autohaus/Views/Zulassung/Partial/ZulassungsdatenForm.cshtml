@@ -20,6 +20,9 @@
             @Html.HiddenFor(m => m.ZulassungsartMatNr)
             @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
             @Html.HiddenFor(m => m.Zulassungskreis)
+
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+            @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
         }
         else
         {
