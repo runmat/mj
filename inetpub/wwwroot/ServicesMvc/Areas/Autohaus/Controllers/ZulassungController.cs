@@ -74,6 +74,7 @@ namespace ServicesMvc.Autohaus.Controllers
         void InitModelStatics()
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
 
@@ -249,13 +250,20 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult LoadKfzKreisAusHalterAdresse()
         {
-            return Json(new { kfzKreis = ViewModel.LoadKfzKreisAusHalterAdresse() });
+            string zulassungsKreis;
+            string zulassungsKennzeichen;
+            ViewModel.LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
+            
+            return Json(new { kfzKreis = zulassungsKreis });
         }
 
         [HttpPost]
         public ActionResult GetKennzeichenLinkeSeite(string zulassungsKreis)
         {
-            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis) });
+            string zulassungsKennzeichen;
+            ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
+
+            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
         }
 
         #endregion
