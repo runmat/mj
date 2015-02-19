@@ -77,6 +77,21 @@ namespace AutohausPortal.forms
 
 
             }
+            else if (Request.Params.Get("__EVENTTARGET") == "RadWindow1")
+            {
+                if ((Session["RedirectToAuftragsliste"] != null) && ((bool)Session["RedirectToAuftragsliste"]))
+                {
+                    Session["RedirectToAuftragsliste"] = null;
+                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                }
+                else
+                {
+                    //Schließen des Druckdialogs: PrintDialogKundenformular.aspx
+                    RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                    downloaddoc.Visible = false;
+                    downloaddoc.VisibleOnPageLoad = false;
+                }
+            }
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "Form1",
             "<script type='text/javascript'>openform1();</script>", false);
         }
@@ -302,7 +317,8 @@ namespace AutohausPortal.forms
                     else { return; lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!"; }
 
                     objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
-                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                    ShowKundenformulare(true);
+                    return;
                 }
 
                 ClearForm();
@@ -310,6 +326,7 @@ namespace AutohausPortal.forms
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Daten erfolgreich gespeichert.";
+                    ShowKundenformulare();
                 }
                 else
                 {
@@ -318,6 +335,25 @@ namespace AutohausPortal.forms
                 Session["objVorerf"] = objVorerf;
             }
             else { proofInserted(); }
+        }
+
+        private void ShowKundenformulare(bool redirect = false)
+        {
+            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            if (objVorerf.Status == 0)
+            {
+                Session["objVorerf"] = objVorerf;
+                Session["RedirectToAuftragsliste"] = redirect;
+                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+                RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                downloaddoc.Visible = true;
+                downloaddoc.VisibleOnPageLoad = true;
+            }
+            else
+            {
+                lblMessage.Text += " (" + objVorerf.Message + ")";
+                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
+            }
         }
 
         /// <summary>
