@@ -4240,6 +4240,10 @@
     <Content Include="Views\Zanf\ZanfReport\ZanfGrid.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfSuche.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfKlaerfalltext.cshtml" />
+    <Content Include="Views\Zanf\ReportZulassungsunterlagen.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Grid.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
