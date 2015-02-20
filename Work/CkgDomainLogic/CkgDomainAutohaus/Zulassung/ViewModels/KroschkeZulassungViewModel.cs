@@ -111,7 +111,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var userCustomerId = LogonContext.Customer.CustomerID;
             var userGroupId = 0;
-            var appId = 0;
+            var appId = LogonContext.GetAppIdCurrent();
 
             return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
         }
