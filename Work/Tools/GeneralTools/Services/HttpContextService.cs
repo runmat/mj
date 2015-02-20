@@ -45,35 +45,6 @@ namespace GeneralTools.Services
             }
         }
 
-        public static int TryGetAppIdFromUrlOrSession()
-        {
-            var appID = 0;
-
-            if (HttpContext.Current != null)
-            {
-                // try to obtain "appID"
-                // => .. from Request QueryString
-                var cp = HttpContext.Current.Request["cp"];
-
-                // => .. or from Session
-                if (String.IsNullOrEmpty(cp) && HttpContext.Current.Session != null &&
-                    HttpContext.Current.Session["cp"] != null)
-                    cp = HttpContext.Current.Session["cp"].ToString();
-
-                if (!String.IsNullOrEmpty(cp) && cp.Split('_').Length >= 5)
-                {
-                    var userContextParams = cp.Split('_');
-                    appID = userContextParams[0].ToInt();
-                }
-                else if (HttpContext.Current.Session != null && HttpContext.Current.Session["LastAppID"] != null)
-                {
-                    appID = HttpContext.Current.Session["LastAppID"].ToString().ToInt(0);
-                }
-            }
-
-            return appID;
-        }
-
         public static void TrySessionSetUserData(int appID, int userID, int customerID, int kunnr, int portalType)
         {
             if (HttpContext.Current != null && HttpContext.Current.Session != null)
