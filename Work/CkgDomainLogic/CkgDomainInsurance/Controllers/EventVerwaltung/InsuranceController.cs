@@ -317,7 +317,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult TerminSchadenfallEdit(int id)
+        public ActionResult TerminSchadenfallMove(int id)
         {
             EventsViewModel.InsertMode = false;
             ModelState.Clear();
@@ -378,6 +378,7 @@ namespace ServicesMvc.Controllers
                         boxArt = boxArt,
                         title = (t.IsBlockerDummyTermin ? "Blocker" : string.Format("{0} {1}", t.SchadenfallKennzeichen, t.Schadenfall.Nachname)),
                         isBlocker = t.IsBlockerDummyTermin,
+                        isCurrentEditing = (!EventsViewModel.InsertMode && t.ID == termin.ID),
 
                         startDateString = t.Datum.ToJsonDateTimeString(),
                         start = t.Datum.ToJsonDateString(),
@@ -424,6 +425,7 @@ namespace ServicesMvc.Controllers
                             key = timeThisDay.ToShortDateString(),
                             boxArt = boxArt,
                             title = title,
+                            isCurrentEditing = (!EventsViewModel.InsertMode && normalTermine.Any(t => t.ID == termin.ID)),
 
                             startDateString = timeThisDay.ToJsonDateString(),
                             start = timeThisDay.ToJsonDateString(),
@@ -447,6 +449,14 @@ namespace ServicesMvc.Controllers
         public ActionResult TerminSchadenfallKalenderEditElement(string boxArt, string key, string startDateString, int startTimeHours, int startTimeMinutes, int endTimeHours, int endTimeMinutes)
         {
             EventsViewModel.TerminCurrentPrepare(boxArt, key, startDateString, startTimeHours, startTimeMinutes, endTimeHours, endTimeMinutes);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
+        }
+        
+        [HttpPost]
+        public ActionResult TerminSchadenfallKalenderEditElementFromSchadenfallId(int id)
+        {
+            EventsViewModel.TerminCurrentPrepareFromSchadenfallId(id);
 
             return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
         }

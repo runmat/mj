@@ -126,6 +126,9 @@
         display: inline-block;
     }
     
+    span.calendar-termin-editmode-header {
+        font-weight: bold;
+    }
 </style>
 
 
@@ -176,6 +179,7 @@
                     }, 300);
 
                 }, 600);
+                $($(".schadenakte-termine")[0]).trigger("click");
             }, 300);
 
         }, 1500);
@@ -286,7 +290,7 @@
     }
 
     function VorgangDelete(id) {
-        if (!confirm('@Localize.ConfirmOccurenceDeletion'))
+        if (!confirm('@Localize.ConfirmOccurenceDeletion.ToJavascriptString()'))
             return;
 
         $.ajax({
@@ -533,20 +537,37 @@
         });
     }
     
-    function TerminSchadenfallEdit(id) {
+    function TerminSchadenfallMove(id) {
         $.ajax({
             type: "POST",
-            url: "TerminSchadenfallEdit",
+            url: "TerminSchadenfallMove",
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                TerminSchadenfallKalenderDetails(result);
+                TerminSchadenfallKalenderDetails(result, 'move');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
             }
         });
     }
+    
+    function TerminSchadenfallEdit(id) {
+        $.ajax({
+            type: "POST",
+            url: "TerminSchadenfallKalenderEditElementFromSchadenfallId",
+            data: {
+                id: id
+            },
+            loadingShow: true,
+            success: function (result) {
+                TerminSchadenfallEditDetails(result, 'from-id');
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }    
 
     function TerminSchadenfallKalenderEditElement(calEvent) {
         $.ajax({
@@ -563,7 +584,7 @@
             },
             loadingShow: true,
             success: function (result) {
-                TerminSchadenfallEditDetails(result);
+                TerminSchadenfallEditDetails(result, 'from-calendar');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
@@ -571,15 +592,29 @@
         });
     }
 
-    function TerminSchadenfallEditDetails(result) {
+    var _terminSchadenfallEditDetails_ModeComingFrom = '';
+
+    function TerminSchadenfallEditDetails(result, modeComingFrom) {
+        _terminSchadenfallEditDetails_ModeComingFrom = modeComingFrom;
+        
         $("#divTerminSchadenfallEdit").html(result);
         TerminSchadenfallEditPreparePrivate();
-        $("#divTerminSchadenfallKalender").slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
+
+        var divToHide = (modeComingFrom == "from-calendar") ? $("#divTerminSchadenfallKalender") : GetSchadenfallDiv();
+        divToHide.slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
         BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminDetails)");
     }
     
     function TerminSchadenfallEditDetailsClose(updateCalendar, useSaveMessage) {
-        $("#divTerminSchadenfallEdit").slideUp(200, function () { $("#divTerminSchadenfallKalender").slideDown(200); });
+
+        var divToShow = $("#divTerminSchadenfallKalender");
+        if (_terminSchadenfallEditDetails_ModeComingFrom != "from-calendar") {
+            divToShow = GetSchadenfallDiv();
+            FilterGrid("TerminSchadenfallGrid");
+        }
+        $("#divTerminSchadenfallEdit").slideUp(200, function () { divToShow.slideDown(200); });
+        
+        
         BreadcrumbsMovePrev();
 
         if (typeof (updateCalendar) !== 'undefined' && updateCalendar) {
@@ -597,7 +632,7 @@
     }
 
     function TerminSchadenfallDelete(id) {
-        if (!confirm("@Localize.AppointmentConfirmDeletion"))
+        if (!confirm("@Localize.AppointmentConfirmDeletion.ToJavascriptString()"))
             return;
 
         $.ajax({
@@ -647,7 +682,7 @@
                     return;
                 }
 
-                TerminSchadenfallKalenderDetails(result);
+                TerminSchadenfallKalenderDetails(result, 'create');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
@@ -700,6 +735,14 @@
         $(".re-termin-vorschlaege-auswahl-div").slideUp(200);
     }
     
+    function GetSchadenfallDiv() {
+        return ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == ""
+            ? $("#divSchadenakte")
+            : $("#divTerminSchadenfallInit"));
+    }
+    
+    function TerminSchadenfallKalenderDetails(result, mode) {
+        var divToHide = GetSchadenfallDiv();
     function ReTerminVorschlagSelect(terminID) {
         $.ajax({
             type: "POST",
@@ -730,6 +773,8 @@
                             ? $("#divSchadenakte") 
                             : $("#divTerminSchadenfallInit"));
         $("#divTerminSchadenfallKalender").html(result);
+
+        $(".calendar-termin-editmode-header").html(mode == 'create' ? '@Localize.AppointmentNew' : '@Localize.AppointmentEdit');
 
         divToHide.slideUp(200, function () {
             $("#divTerminSchadenfallKalender").slideDown(200);
@@ -1077,8 +1122,7 @@
                                     }
 
                                     $.each(result, function (e, item) {
-                                        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                                        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                                        CalendarCreateItem(item);
                                     });
 
                                     callback(result);
@@ -1092,6 +1136,11 @@
             }
         };
     } ();
+
+    function CalendarCreateItem(item) {
+        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
+        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+    }
 
     function CalendarFormatBackgroundReadOnlySlots(date) {
         $.each($(".fc-slot-div"), function (i, elem) {
@@ -1141,8 +1190,7 @@
                 }
 
                 $.each(result, function (e, item) {
-                    item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                    item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                    CalendarCreateItem(item);
                 });
 
                 // success: fetched all appointments for one date but for all(!) boxes

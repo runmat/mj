@@ -641,6 +641,11 @@ namespace CkgDomainLogic.Insurance.ViewModels
             termin.ZeitBis = string.Format("{0:00}:{1:00}", endTimeHours, endTimeMinutes);
         }
 
+        public void TerminCurrentPrepareFromSchadenfallId(int id)
+        {
+            TerminGet(id);
+        }
+
         public TerminSchadenfall TerminCurrentSave(ModelStateDictionary modelState, List<TerminSchadenfall> termine)
         {
             var termin = TerminCurrent;
