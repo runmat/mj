@@ -282,6 +282,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Zeit = HhMmFromSap(s.UZEIT);
                         d.User = s.BENUTZER;
                         d.Kommentar = s.TEXT;
+                        d.StatusFarbe = s.FARBE_STATUS;
                     }
                 ));
             }
@@ -326,6 +327,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Sort = s.REIHENFOLGE.ToInt();
                         d.Optional = s.OPTIONAL;
                         d.Bezeichnung = s.TEXT;
+                        d.ArtFarbe = s.FARBE_STATUS;
                     }
                 ));
             }

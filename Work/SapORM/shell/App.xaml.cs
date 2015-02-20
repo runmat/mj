@@ -9,6 +9,7 @@ using SapORM.Services;
 using SapORM.Models;
 using SapORM.Contracts;
 using GeneralTools.Models;
+using WebTools.Services;
 
 namespace SapORM
 {
@@ -29,6 +30,8 @@ namespace SapORM
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            //var encryptedHourAndDate = UserSecurityService.UrlRemoteEncryptHourAndDate();
 
             FunctionReflector.DataService = Sap;
 

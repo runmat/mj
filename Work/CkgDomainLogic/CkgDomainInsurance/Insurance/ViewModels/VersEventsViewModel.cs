@@ -138,7 +138,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public void DataMarkForRefreshSchadenfallStatusAlle()
         {
-			PropertyCacheClear(this, m => m.SchadenfallStatusArten);
+            PropertyCacheClear(this, m => m.SchadenfallStatusArten);
             PropertyCacheClear(this, m => m.SchadenStatusAlle);
             PropertyCacheClear(this, m => m.SchadenStatusAlleFiltered);
         }
@@ -278,6 +278,20 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                             LogonContext.Organization.OrganizationReference.ToSapKunnr() == schadenfall.VersicherungID.ToSapKunnr() )
                         .Select(schadenfall =>
                         {
+                            var thisStatusWerteWithNulls = GetSchadenfallStatusWerteWithNulls(schadenfall.ID)
+                                .Where(statusWerte => statusWerte.VersSchadenfallID == schadenfall.ID)
+                                    .OrderBy(art => art.Sort).ThenBy(art => art.StatusArtID).ToArray();
+
+                            var thisValidStatusWerte = thisStatusWerteWithNulls.Where(s => s.Datum != null).ToArray();
+                            var currentStatus = thisValidStatusWerte.LastOrDefault();
+                            var currentStatusText = "";
+                            if (currentStatus != null)
+                            {
+                                var zeroBasedCurrentStatusIndex = thisStatusWerteWithNulls.ToList().IndexOf(currentStatus);
+                                if (zeroBasedCurrentStatusIndex >= 0)
+                                    currentStatusText = SchadenfallStatusAlleGetHeaderText(zeroBasedCurrentStatusIndex + 1);
+                            }
+
                             var statusAlle = new SchadenfallStatusAlle
                                 {
                                     VersSchadenfallID = schadenfall.ID,
@@ -285,11 +299,9 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                     Kennzeichen = schadenfall.Kennzeichen,
                                     VersicherungName = schadenfall.VersicherungName,
                                     Referenznummer = schadenfall.Referenznummer,
+                                    CurrentStatusText = currentStatusText,
+                                    CurrentStatusFarbe = (currentStatus == null ? "" : currentStatus.StatusFarbe),
                                 };
-
-                            var thisStatusWerteWithNulls = GetSchadenfallStatusWerteWithNulls(schadenfall.ID)
-                                .Where(statusWerte => statusWerte.VersSchadenfallID == schadenfall.ID)
-                                    .OrderBy(art => art.Sort).ThenBy(art => art.StatusArtID).ToArray();
 
                             for (var i = 0; i < thisStatusWerteWithNulls.Length; i++)
                             {

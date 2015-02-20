@@ -23,6 +23,12 @@ namespace CkgDomainLogic.Insurance.Models
 
         public int Sort { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CurrentStatus)]
+        public string CurrentStatusText { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string CurrentStatusFarbe { get; set; }
+
         public DateTime? Status1 { get; set; }
         public DateTime? Status2 { get; set; }
         public DateTime? Status3 { get; set; }

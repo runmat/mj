@@ -21,13 +21,16 @@
                 columns.XBound(c => c.VersicherungName);
                 columns.XBound(c => c.Referenznummer);
 
+                columns.XBound(c => c.CurrentStatusText);
+                columns.XBound(c => c.CurrentStatusFarbe).Visible(false);
+
                 for (var i = 1; i <= 30; i++)
                 {
                     columns.XBound(string.Format("Status{0}", i)).Title(Model.SchadenfallStatusAlleGetHeaderText(i)).Visible(Model.SchadenfallStatusAlleIsStatusVisible(i));
                 }
             })
         .XAutoColumnConfiguration()
-        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_SchadenStatusAlleGrid"))
         .XPageSize(10)
         .XSort(sortOrder => sortOrder.Add(c => c.Sort).Ascending())
         .XToolBar("Insurance")
