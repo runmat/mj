@@ -121,5 +121,14 @@ namespace ServicesMvc.Controllers
 
             return View(AdressenPflegeViewModel);
         }
+
+        [HttpPost]
+        public ActionResult AdressenKennungChange(AdressenPflegeViewModel model)
+        {
+            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennungTemp);
+            ModelState.Clear();
+
+            return PartialView("Partial/AdressenGruppeKennungSelect", AdressenPflegeViewModel);
+        }
     }
 }

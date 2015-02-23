@@ -10,15 +10,31 @@
 
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
+        InitRadiobuttonHandler();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
     }
     
+    function AdressenKennungChangeFinish() {
+        //alert('ok');
+        FormPrepareAjax();
+        InitRadiobuttonHandler();
+        TryAddressGridRefresh();
+    }
+
+    function InitRadiobuttonHandler() {
+        $(":radio").click(function () {
+            $("#SearchFilterForm").submit();
+        });
+    }
+    
 </script>
 
 <h3 class="page-title">Adressenverwaltung <small></small></h3>
+
+@Html.Partial("Partial/AdressenGruppeKennungSelect", Model)
 
 @Html.Partial("AdressenPflege/AdressenGrid")
 
