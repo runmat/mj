@@ -76,6 +76,26 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public string AppTitle
+        {
+            get
+            {
+                switch (VersandModus)
+                {
+                    case BriefversandModus.Brief:
+                        return Localize.Equi_Briefversand;
+                    
+                    case BriefversandModus.Schluessel:
+                        return Localize.Equi_Schluesselversand;
+                    
+                    case BriefversandModus.BriefMitSchluessel:
+                        return Localize.Equi_BriefSchluesselversand;
+                }
+
+                return "";
+            }
+        }
+
         [XmlIgnore]
         public string ParamVins { get; private set; }
 
@@ -394,8 +414,8 @@ namespace CkgDomainLogic.Equi.ViewModels
             {
                 KundenNr = BriefbestandDataService.ToDataStoreKundenNr(LogonContext.KundenNr),
                 VIN = vin,
-                BriefVersand = true,
-                SchluesselVersand = false,
+                BriefVersand = (VersandModus == BriefversandModus.Brief || VersandModus == BriefversandModus.BriefMitSchluessel),
+                SchluesselVersand = (VersandModus == BriefversandModus.Schluessel),
                 StuecklistenKomponente = stuecklistenCode,
                 AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten),
                 AbcKennzeichen = VersandartOptionen.Versandart,
