@@ -13,8 +13,11 @@
     {
         columns.XBound(c => c.HalterId).Filterable(false).Sortable(false).Title("").ClientTemplate(
                 "<button onclick='ZulassungsUnterlagenEdit(\"<#= data.HalterId #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-            )
-        ;
+            );
+        columns.XBound(c => c.DokumentId).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<a class='btn mini gray pdf tooltips a_btn_mini' " +
+                "data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.DokumentId #>' ></a> "
+            );
         columns.XBound(c => c.HalterName);
         columns.XBound(c => c.HalterOrt);
         columns.XBound(c => c.Vollstaendig);

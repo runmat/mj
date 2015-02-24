@@ -50,6 +50,18 @@ namespace CkgDomainLogic.Zanf.Services
             return AppModelMappings.Z_DPM_READ_ZULDOK_01_GT_DATEN_To_ZulassungsUnterlagen.Copy(sapList);
         }
 
+        public byte[] GetZulassungsUnterlagenAsPdf(string documentId)
+        {
+            Z_DPM_READ_DOK_ARCHIV_01.Init(SAP, "I_DOC_ID, I_ARC_ID", documentId, "ZU");
+
+            SAP.Execute();
+
+            if (SAP.ResultCode == 0)
+                return SAP.GetExportParameterByte("E_XSTRING");
+
+            return null;
+        }
+
         public string SaveZulassungsUnterlagen(ZulassungsUnterlagen zu)
         {
             var erg = "";

@@ -12,6 +12,8 @@ namespace CkgDomainLogic.Zanf.Contracts
 
         void MarkForRefreshZulassungsUnterlagen();
 
+        byte[] GetZulassungsUnterlagenAsPdf(string documentId);
+
         string SaveZulassungsUnterlagen(ZulassungsUnterlagen zu);
     }
 }

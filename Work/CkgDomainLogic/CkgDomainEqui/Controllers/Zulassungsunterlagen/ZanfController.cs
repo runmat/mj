@@ -65,6 +65,13 @@ namespace ServicesMvc.Controllers
             return PartialView("Zulassungsunterlagen/Edit", model);
         }
 
+        public FileContentResult PdfDocumentDownload(string docId)
+        {
+            var pdfBytes = ZulassungsunterlagenViewModel.GetUnterlagenAsPdf(docId);
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.RegistrationDocuments) };
+        }
+
         [HttpPost]
         public ActionResult FilterGridZulassungsUnterlagen(string filterValue, string filterColumns)
         {

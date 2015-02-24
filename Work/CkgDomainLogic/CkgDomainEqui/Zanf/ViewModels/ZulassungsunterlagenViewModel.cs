@@ -25,6 +25,11 @@ namespace CkgDomainLogic.Zanf.ViewModels
             PropertyCacheClear(this, m => m.ZulassungsUnterlagenFiltered);
         }
 
+        public byte[] GetUnterlagenAsPdf(string documentId)
+        {
+            return DataService.GetZulassungsUnterlagenAsPdf(documentId);
+        }
+
         public void SaveZulassungsUnterlagen(ZulassungsUnterlagen zu, ModelStateDictionary state)
         {
             if (zu.Geloescht)
