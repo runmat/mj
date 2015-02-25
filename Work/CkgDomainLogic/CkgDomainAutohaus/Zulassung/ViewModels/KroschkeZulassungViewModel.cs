@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -98,6 +99,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
+        public bool FahrzeugdatenKostenstelleIsVisible
+        {
+            get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
+        }
+
+        string GetApplicationConfigValueForCustomer(string configValue)
+        {
+            if (LogonContext == null || LogonContext.Customer == null)
+                return "";
+
+            var userCustomerId = LogonContext.Customer.CustomerID;
+            var userGroupId = 0;
+            var appId = LogonContext.GetAppIdCurrent();
+
+            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
+        }
 
         public void SetParamFahrzeugAkte(string fin)
         {
@@ -268,22 +285,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             HalterAdresse = model;
 
-            var zulassungsKreis = LoadKfzKreisAusHalterAdresse();
+            string zulassungsKreis;
+            string zulassungsKennzeichen;
+            LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
             Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
-                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
         }
 
-        public string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
-            return Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(zulassungsKreis);
+            return Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen);
         }
 
         static bool KennzeichenIsValid(string kennnzeichen)
@@ -297,9 +316,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.HalterAdressenFiltered);
         }
 
-        public string LoadKfzKreisAusHalterAdresse()
+        public void LoadKfzKreisAusHalterAdresse(out string kreis, out string kennzeichen)
         {
-            return HalterAdresse == null ? "" : ZulassungDataService.GetZulassungskreis(Zulassung);
+            kreis = "";
+            kennzeichen = "";
+            if (HalterAdresse == null)
+                return;
+
+            ZulassungDataService.GetZulassungskreisUndKennzeichen(Zulassung, out kreis, out kennzeichen);
+        }
+
+        public void LoadKfzKennzeichenFromKreis(string kreis, out string kennzeichen)
+        {
+            ZulassungDataService.GetZulassungsKennzeichen(kreis, out kennzeichen);
         }
 
         #endregion
@@ -311,7 +340,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Abmeldearten { get { return ZulassungDataService.Abmeldearten; } }
+        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
 
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
@@ -322,6 +351,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
+            Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
 
             if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
@@ -428,8 +458,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     {
                         ModusAbmeldung = ModusAbmeldung,
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
-                        Zulassungskreis = (!ModusAbmeldung  ? null : "-"),
+                        Zulassungskreis = null,
                     },
+                Fahrzeugdaten = new Fahrzeugdaten
+                    {
+                        FahrzeugartId = "1",
+                    }
             };
 
             DataMarkForRefresh();
@@ -449,6 +483,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PartnerDataService.MarkForRefreshAdressen();
 
             PropertyCacheClear(this, m => m.Zulassungsarten);
+            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
@@ -456,12 +491,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
+            if (!ModusAbmeldung && Zulassungsarten.None())
+                return;
+            if (ModusAbmeldung && Abmeldearten.None())
+                return;
+
             SaveDataToErpSystem = saveDataToSap;
             AuftragslisteAvailable = saveDataToSap;
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

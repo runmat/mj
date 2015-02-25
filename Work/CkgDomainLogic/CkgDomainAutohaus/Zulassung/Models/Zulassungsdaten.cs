@@ -53,7 +53,6 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
         public DateTime? Abmeldedatum { get; set; }
 
-        [Required]
         [StringLength(3)]
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string Zulassungskreis { get; set; }
@@ -76,14 +75,15 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
-                return (KennzeichenReserviert ||
-                        (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
+                return !ModusAbmeldung &&
+                            (KennzeichenReserviert ||
+                             (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
             }
         }
 
-        public static string ZulassungskreisToKennzeichenLinkeSeite(string zulassungsKreis)
+        public static string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
-            return string.Format("{0}-", zulassungsKreis.NotNullOrEmpty().ToUpper().RemoveDigits());
+            return kennzeichen.NotNullOrEmpty().ToUpper().RemoveDigits().AppendIfNotNull("-");
         }
 
         public static bool KennzeichenIsValid(string kennnzeichen)
@@ -107,6 +107,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNoReserved)]
         public bool KennzeichenReserviert { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
+        public bool VorhandenesKennzeichenReservieren { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReservationNo)]
         public string ReservierungsNr { get; set; }
@@ -144,20 +147,17 @@ namespace CkgDomainLogic.Autohaus.Models
             }
             else
             {
+                if (Zulassungskreis.IsNullOrEmpty())
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationAreaInvalid, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+
                 if (Zulassungsdatum == null)
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
 
                 if (ZulassungsartMatNr.IsNullOrEmpty())
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr" });
 
-                if (!IstKurzzeitzulassung(ZulassungsartMatNr) && !IstZollzulassung(ZulassungsartMatNr) && string.IsNullOrEmpty(EvbNr))
-                    yield return new ValidationResult(Localize.EvbNumberRequired, new[] { "EvbNr" });
-
                 if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
-
-                if (KennzeichenReserviert && (string.IsNullOrEmpty(ReservierungsName) || string.IsNullOrEmpty(ReservierungsNr)))
-                    yield return new ValidationResult(Localize.ReservationDataRequired, new[] { "ReservierungsName", "ReservierungsNr" });
             }
 
             foreach (var dateResult in ValidateWochenendeUndFeiertage(Zulassungsdatum, "Zulassungsdatum").ToList())
@@ -226,3 +226,4 @@ namespace CkgDomainLogic.Autohaus.Models
         }
     }
 }
+

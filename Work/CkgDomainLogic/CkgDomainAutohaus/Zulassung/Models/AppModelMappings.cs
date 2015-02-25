@@ -1,4 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
+
+using System;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -47,6 +49,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.Belegtyp = s.BLTYP;
                             d.MaterialText = s.MAKTX;
                             d.MaterialNr = s.MATNR;
+                            d.IstAbmeldung = s.ABMELDUNG.XToBool();
                         }));
             }
         }
@@ -61,6 +64,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         {
                             d.KbaNr = s.KBANR;
                             d.Zulassungskreis = s.ZKFZKZ;
+                            d.ZulassungsKennzeichen = s.KREISKZ;
                         }));
             }
         }
@@ -250,8 +254,6 @@ namespace CkgDomainLogic.Autohaus.Models
                     , null
                     , (s, d) =>
                         {
-                            var defaultKennzeichenLinkeSeite = Zulassungsdaten.ZulassungskreisToKennzeichenLinkeSeite(s.Zulassungsdaten.Zulassungskreis);
-
                             d.ZULBELN = s.BelegNr;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
@@ -284,20 +286,25 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZREFNR1 = s.Halter.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
-                            
-                            d.ZZZLDAT = s.Zulassungsdaten.Zulassungsdatum;
-                            d.STILL_DAT = s.Zulassungsdaten.Abmeldedatum;
+
+                            d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
+                            d.STILL_DAT = null;
 
                             d.BLTYP = s.Zulassungsdaten.Belegtyp;
-                            d.KREISKZ = s.Zulassungsdaten.Zulassungskreis;
-                            d.KREISBEZ = s.Zulassungsdaten.ZulassungskreisBezeichnung;
+                            d.KREISKZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.Zulassungskreis);
+                            d.KREISBEZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.ZulassungskreisBezeichnung);
                             d.ZZEVB = s.Zulassungsdaten.EvbNr;
+
+                            d.VH_KENNZ_RES = s.Zulassungsdaten.VorhandenesKennzeichenReservieren.BoolToX();
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
-                            d.ZZKENN = s.Zulassungsdaten.Kennzeichen.NotNullOr(defaultKennzeichenLinkeSeite);
-                            d.WU_KENNZ2 = s.Zulassungsdaten.Wunschkennzeichen2.NotNullOr(defaultKennzeichenLinkeSeite);
-                            d.WU_KENNZ3 = s.Zulassungsdaten.Wunschkennzeichen3.NotNullOr(defaultKennzeichenLinkeSeite);
+
+                            Func<string, string> formatKennzeichen = (kennzeichen => kennzeichen.NotNullOr(Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen)));
+
+                            d.ZZKENN = formatKennzeichen(s.Zulassungsdaten.Kennzeichen);
+                            d.WU_KENNZ2 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen2);
+                            d.WU_KENNZ3 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen3);
 
                             // Optionen/Dienstleistungen
                             d.EINKENN_JN = s.OptionenDienstleistungen.NurEinKennzeichen.BoolToX();
@@ -307,7 +314,6 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.SAISON_END = s.OptionenDienstleistungen.SaisonEnde;
                             d.BEMERKUNG = s.OptionenDienstleistungen.Bemerkung;
                             d.KENNZ_VH = s.OptionenDienstleistungen.KennzeichenVorhanden.BoolToX();
-                            d.VH_KENNZ_RES = s.OptionenDienstleistungen.VorhandenesKennzeichenReservieren.BoolToX();
                             d.HALTE_DAUER = s.OptionenDienstleistungen.HaltedauerBis;
                             d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen; 
                         }));
@@ -342,12 +348,12 @@ namespace CkgDomainLogic.Autohaus.Models
                     new Dictionary<string, string>()
                     , null
                     , (s, d) =>
-                        {
-                            d.ZULBELN = s.BelegNr;
-                            d.LFDNR = s.PositionsNr;
-                            d.MATNR = s.MaterialNr;
-                            d.MENGE = s.Menge;
-                        }));
+                    {
+                        d.ZULBELN = s.BelegNr;
+                        d.LFDNR = s.PositionsNr;
+                        d.MATNR = s.MaterialNr;
+                        d.MENGE = s.Menge;
+                    }));
             }
         }
 

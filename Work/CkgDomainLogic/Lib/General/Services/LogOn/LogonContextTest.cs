@@ -14,14 +14,14 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
 {
-    public class LogonContextTest : Store, ILogonContextDataService 
+    public class LogonContextTest : Store, ILogonContextDataService
     {
         public string CurrentGridColumns { get; set; }
 
         public ILocalizationService LocalizationService { get; private set; }
 
         public List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return new List<IMaintenanceSecurityRuleDataProvider>(); } }
-        
+
         public MaintenanceResult MaintenanceInfo { get { return PropertyCacheGet(() => new MaintenanceResult()); } set { PropertyCacheSet(value); } }
 
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
@@ -65,12 +65,12 @@ namespace CkgDomainLogic.General.Services
         }
 
         public string FullName { get { return FirstName.IsNullOrEmpty() ? LastName : string.Format("{0}, {1}", LastName, FirstName); } }
-        
+
         public string AppUrl { get; set; }
 
         private string _userID = "1";
-        public string UserID 
-        { 
+        public string UserID
+        {
             get { return _userID; }
             set { _userID = value; }
         }
@@ -82,29 +82,29 @@ namespace CkgDomainLogic.General.Services
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
             if (User != null)
-                Customer = ct.GetCustomer(User.CustomerID); 
-            else 
+                Customer = ct.GetCustomer(User.CustomerID);
+            else
                 Customer = new Customer
-                    {
-                        CustomerID = 209,
-                        Customername = "Test-Kunde",
-                        KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"],
-                        AccountingArea = 1010,
-                    };
-            
-            Organization= new Organization
                 {
-                    AllOrganizations =  false,
                     CustomerID = 209,
-                    OrganizationID = 266,
-                    OrganizationName = "LUEG_BOCHUM",
-                    OrganizationReference = "240072",
-                    OrganizationReference2 = "4340",
-                }; 
+                    Customername = "Test-Kunde",
+                    KUNNR = ConfigurationManager.AppSettings["LogonContextTestKundenNr"],
+                    AccountingArea = 1010,
+                };
+
+            Organization = new Organization
+            {
+                AllOrganizations = true,
+                CustomerID = 209,
+                OrganizationID = 266,
+                OrganizationName = "Standard",
+                OrganizationReference = "240145",
+                OrganizationReference2 = "4174",
+            };
 
             LocalizationService = localizationService;
 
-            Group = new UserGroup {GroupName = "Standard", GroupID = 52, CustomerID = 0};
+            Group = new UserGroup { GroupName = "Standard", GroupID = 52, CustomerID = 0 };
         }
 
         public string GetLoginUrl(string urlEncodedReturnUrl)
@@ -163,25 +163,25 @@ namespace CkgDomainLogic.General.Services
 
         public List<ApplicationType> AppTypes { get; set; }
 
-        public User User 
-        { 
+        public User User
+        {
             get
             {
                 return PropertyCacheGet(() =>
-                    {
-                        var userName = ConfigurationManager.AppSettings["LogonContextTestUserName"];
-                        var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], userName);
+                {
+                    var userName = ConfigurationManager.AppSettings["LogonContextTestUserName"];
+                    var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], userName);
 
-                        return ct.User;
-                    });
-            }  
-            set { PropertyCacheSet(value); } 
+                    return ct.User;
+                });
+            }
+            set { PropertyCacheSet(value); }
         }
 
         public Customer Customer { get; set; }
 
         public string CustomerName { get { return "Test-Kunde"; } }
-        
+
         public UserGroup Group { get; set; }
 
         public Organization Organization { get; set; }
@@ -189,7 +189,7 @@ namespace CkgDomainLogic.General.Services
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
         public bool AppFavoritesEditMode { get; set; }
-        
+
         public bool AppFavoritesEditSwitchOneFavorite(int appID)
         {
             return false;
@@ -198,7 +198,7 @@ namespace CkgDomainLogic.General.Services
         public string ReturnUrl { get; set; }
 
         public ISecurityService SecurityService { get; set; }
-        
+
         public string LogoutUrl { get; set; }
 
         public void AppUrlQueryAndStore()
@@ -270,13 +270,13 @@ namespace CkgDomainLogic.General.Services
             return customerNo;
         }
 
-        public void DataContextPersist(object dataContext) 
+        public void DataContextPersist(object dataContext)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
             ct.DataContextPersist(dataContext);
         }
 
-        public object DataContextRestore(string typeName) 
+        public object DataContextRestore(string typeName)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
             return ct.DataContextRestore(typeName);
@@ -390,5 +390,10 @@ namespace CkgDomainLogic.General.Services
         public string PersistanceKey { get { return UserName; } }
 
         public IPersistanceService PersistanceService { get; set; }
+
+        public int GetAppIdCurrent()
+        {
+            return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
     }
 }

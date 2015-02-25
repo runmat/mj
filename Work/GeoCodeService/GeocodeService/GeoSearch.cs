@@ -17,8 +17,6 @@ namespace GeodeService
         {
             try
             {
-                // Set a Bing Maps key before making a request
-                string key = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
                 double Geo_Start_X = 0;
                 double Geo_Start_Y = 0;
                 double Geo_Ziel_X = 0;
@@ -60,7 +58,7 @@ namespace GeodeService
 
                     // Set the credentials using a valid Bing Maps key
                     routeRequest.Credentials = new RouteService.Credentials();
-                    routeRequest.Credentials.ApplicationId = key;
+                    routeRequest.Credentials.ApplicationId = Common.BingKey;
 
                     // Set the start, stop, and end points
                     RouteService.Waypoint[] waypoints = new RouteService.Waypoint[2];
@@ -121,12 +119,11 @@ namespace GeodeService
         {
             try
             {
-                string key = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
                 GeocodeRequest geocodeRequest = new GeocodeRequest();
 
                 // Set the credentials using a valid Bing Maps key
                 geocodeRequest.Credentials = new Credentials();
-                geocodeRequest.Credentials.ApplicationId = key;
+                geocodeRequest.Credentials.ApplicationId = Common.BingKey;
 
                 // Set the full address query
                 geocodeRequest.Address = new Address();
@@ -267,8 +264,6 @@ namespace GeodeService
         {
             try
             {
-                // Set a Bing Maps key before making a request
-                string key = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
                 double Geo_Start_X = 0;
                 double Geo_Start_Y = 0;
                 double Geo_Ziel_X = 0;
@@ -306,7 +301,7 @@ namespace GeodeService
 
                     // Set the credentials using a valid Bing Maps key
                     routeRequest.Credentials = new RouteService.Credentials();
-                    routeRequest.Credentials.ApplicationId = key;
+                    routeRequest.Credentials.ApplicationId = Common.BingKey;
                     // Set the start, stop, and end points
                     RouteService.Waypoint[] waypoints = new RouteService.Waypoint[2];
                     waypoints[0] = new RouteService.Waypoint();
@@ -366,8 +361,6 @@ namespace GeodeService
         {
             try
             {
-                // Set a Bing Maps key before making a request
-                string key = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
                 double Geo_Start_X = 0;
                 double Geo_Start_Y = 0;
                 double Geo_Ziel_X = 0;
@@ -406,7 +399,7 @@ namespace GeodeService
 
                     // Set the credentials using a valid Bing Maps key
                     routeRequest.Credentials = new RouteService.Credentials();
-                    routeRequest.Credentials.ApplicationId = key;
+                    routeRequest.Credentials.ApplicationId = Common.BingKey;
                     // Set the start, stop, and end points
                     RouteService.Waypoint[] waypoints = new RouteService.Waypoint[2];
                     waypoints[0] = new RouteService.Waypoint();
@@ -493,12 +486,11 @@ namespace GeodeService
         {
             try
             {
-                string key = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
                 GeocodeRequest geocodeRequest = new GeocodeRequest();
 
                 // Set the credentials using a valid Bing Maps key
                 geocodeRequest.Credentials = new Credentials();
-                geocodeRequest.Credentials.ApplicationId = key;
+                geocodeRequest.Credentials.ApplicationId = Common.BingKey;
 
                 // Set the full address query
                 geocodeRequest.Address = new Address();

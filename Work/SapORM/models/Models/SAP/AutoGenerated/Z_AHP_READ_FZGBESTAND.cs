@@ -87,6 +87,8 @@ namespace SapORM.Models
 
 			public string FAREF2 { get; set; }
 
+			public string KOSTL { get; set; }
+
 			public static GT_WEBOUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEBOUT
@@ -119,6 +121,7 @@ namespace SapORM.Models
 					AUFNR = (string)row["AUFNR"],
 					FAREF1 = (string)row["FAREF1"],
 					FAREF2 = (string)row["FAREF2"],
+					KOSTL = (string)row["KOSTL"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

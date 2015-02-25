@@ -381,6 +381,8 @@ namespace SapORM.Models
 
 			public string FAREF2 { get; set; }
 
+			public string KOSTL { get; set; }
+
 			public static GT_WEB_BESTAND Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_BESTAND
@@ -413,6 +415,7 @@ namespace SapORM.Models
 					AUFNR = (string)row["AUFNR"],
 					FAREF1 = (string)row["FAREF1"],
 					FAREF2 = (string)row["FAREF2"],
+					KOSTL = (string)row["KOSTL"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
