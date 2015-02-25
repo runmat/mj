@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Equi.Contracts;
@@ -32,16 +33,27 @@ namespace CkgDomainLogic.Equi.Services
         {
             get
             {
+                var ref1 = DatenFilter.SelektionsfilterReferenz1;
+
                 if (DatenFilter.SelektionsfilterLagerbestand && DatenFilter.SelektionsfilterTempVersendete)
                 {
+                    if (!String.IsNullOrEmpty(ref1))
+                        return FahrzeugbriefeGesamt.Where(b => b.Referenz1 == ref1).ToList();
+
                     return FahrzeugbriefeGesamt;
                 }
                 if (DatenFilter.SelektionsfilterLagerbestand)
                 {
+                    if (!String.IsNullOrEmpty(ref1))
+                        return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen != "1" && b.Referenz1 == ref1).ToList();
+
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen != "1").ToList();
                 }
                 if (DatenFilter.SelektionsfilterTempVersendete)
                 {
+                    if (!String.IsNullOrEmpty(ref1))
+                        return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1" && b.Referenz1 == ref1).ToList();
+
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1").ToList();
                 }
                 return new List<Fahrzeugbrief>();

@@ -104,7 +104,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         private void GetCurrentAppID()
         {
-            CurrentAppID = HttpContextService.TryGetAppIdFromUrlOrSession();
+            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
 
         private bool SendStatusMail()
