@@ -317,7 +317,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             {
                 return new GeneralEntity
                 {
-                    Title = "Ihre Beauftragung",
+                    Title = "Ihre Beauftragung für " + AppTitle,
                     Body = BeauftragungBezeichnung,
                     Tag = "SummaryMainItem"
                 };
