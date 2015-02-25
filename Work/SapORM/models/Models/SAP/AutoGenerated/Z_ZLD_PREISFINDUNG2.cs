@@ -111,6 +111,18 @@ namespace SapORM.Models
 
 			public string INFO_TEXT { get; set; }
 
+			public string ZL_RL_FRBNR_HIN { get; set; }
+
+			public string ZL_RL_FRBNR_ZUR { get; set; }
+
+			public string NACHBEARBEITEN { get; set; }
+
+			public string LTEXT_NR { get; set; }
+
+			public string MOBUSER { get; set; }
+
+			public string ZZEVB { get; set; }
+
 			public static GT_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK
@@ -155,6 +167,12 @@ namespace SapORM.Models
 					FLIEGER = (string)row["FLIEGER"],
 					BEB_STATUS = (string)row["BEB_STATUS"],
 					INFO_TEXT = (string)row["INFO_TEXT"],
+					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
+					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
+					NACHBEARBEITEN = (string)row["NACHBEARBEITEN"],
+					LTEXT_NR = (string)row["LTEXT_NR"],
+					MOBUSER = (string)row["MOBUSER"],
+					ZZEVB = (string)row["ZZEVB"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

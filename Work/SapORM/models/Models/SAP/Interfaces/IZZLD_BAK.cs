@@ -66,6 +66,10 @@ namespace SapORM.Models
 
         string RE_JN { get; set; }
 
+        string ZL_RL_FRBNR_HIN { get; set; }
+
+        string ZL_RL_FRBNR_ZUR { get; set; }
+
         string ZL_LIFNR { get; set; }
 
         string KUNDEBAR_JN { get; set; }
@@ -82,6 +86,14 @@ namespace SapORM.Models
 
         string BEB_STATUS { get; set; }
 
+        string NACHBEARBEITEN { get; set; }
+
+        string MOBUSER { get; set; }
+
+        string ZZEVB { get; set; }
+
         string INFO_TEXT { get; set; }
+
+        string LTEXT_NR { get; set; }
     }
 }

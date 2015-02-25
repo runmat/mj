@@ -8,7 +8,7 @@ namespace SapORM.Models
 
         }
 
-        public partial class GT_IMP_POS : IZZLD_POS
+        public partial class GT_IMP_POS : IZZLD_POS_2
         {
 
         }
@@ -19,6 +19,11 @@ namespace SapORM.Models
         }
 
         public partial class GT_IMP_ADRS : IZZLD_ADRS
+        {
+
+        }
+
+        public partial class GT_EX_ERRORS : IZZLD_ERROR
         {
 
         }

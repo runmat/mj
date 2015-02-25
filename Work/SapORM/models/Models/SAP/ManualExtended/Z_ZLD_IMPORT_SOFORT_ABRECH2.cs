@@ -3,12 +3,12 @@ namespace SapORM.Models
 {
 	public partial class Z_ZLD_IMPORT_SOFORT_ABRECH2
 	{
-		public partial class GT_IMP_BAK : IZZLD_BAK
-		{
-		    
-		}
+        public partial class GT_IMP_BAK : IZZLD_BAK
+        {
 
-		public partial class GT_IMP_POS : IZZLD_POS
+        }
+
+        public partial class GT_IMP_POS : IZZLD_POS_2
 		{
 
 		}
@@ -22,5 +22,10 @@ namespace SapORM.Models
 		{
 		    
 		}
+
+        public partial class GT_EX_ERRORS : IZZLD_ERROR
+        {
+
+        }
 	}
 }

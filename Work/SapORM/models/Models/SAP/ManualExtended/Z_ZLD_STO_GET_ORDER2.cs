@@ -18,7 +18,7 @@ namespace SapORM.Models
 		    
 		}
 
-		public partial class GT_POS : IZZLD_POS
+		public partial class GT_POS : IZZLD_POS_2
 		{
 
 		}

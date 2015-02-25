@@ -35,6 +35,8 @@ namespace SapORM.Models
         public string EC_JN { get; set; }
         public string BAR_JN { get; set; }
         public string RE_JN { get; set; }
+        public string ZL_RL_FRBNR_HIN { get; set; }
+        public string ZL_RL_FRBNR_ZUR { get; set; }
         public string ZL_LIFNR { get; set; }
         public string KUNDEBAR_JN { get; set; }
         public string LOEKZ { get; set; }
@@ -43,6 +45,10 @@ namespace SapORM.Models
         public string PRALI_PRINT { get; set; }
         public string FLIEGER { get; set; }
         public string BEB_STATUS { get; set; }
+        public string NACHBEARBEITEN { get; set; }
+        public string MOBUSER { get; set; }
+        public string ZZEVB { get; set; }
         public string INFO_TEXT { get; set; }
+        public string LTEXT_NR { get; set; }
     }
 }
