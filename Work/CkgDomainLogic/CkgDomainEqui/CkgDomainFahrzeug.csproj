@@ -101,7 +101,6 @@
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
     <Compile Include="Controllers\Mahnsperre\EquiController.cs" />
-    <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Controllers\VersandAbweichungen\EquipController.cs" />
     <Compile Include="Controllers\Zanf\ZanfController.cs" />
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
