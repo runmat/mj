@@ -1,0 +1,18 @@
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\AsposeTest.exe
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\AsposeTest.pdb
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\obj\x86\Debug\AsposeTest.csprojResolveAssemblyReference.cache
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\obj\x86\Debug\AsposeTest.exe
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\obj\x86\Debug\AsposeTest.pdb
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\AsposeTest.exe.config
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\SpreadsheetLight.dll
+C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\AsposeTest\bin\Debug\SpreadsheetLight.pdb
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\AsposeTest.exe.config
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\obj\x86\Debug\AsposeTest.exe
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\obj\x86\Debug\AsposeTest.pdb
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\AsposeTest.exe
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\AsposeTest.pdb
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\SpreadsheetLight.dll
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\bin\Debug\SpreadsheetLight.pdb
+C:\Users\JenzenM\Documents\mj\dev\ExcelExportWithSubtotals\AsposeTest\obj\x86\Debug\AsposeTest.csprojResolveAssemblyReference.cache

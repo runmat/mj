@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ArrayOfArrayOfArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ArrayOfArrayOfString>
+    <ArrayOfString>
+      <string>C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\SpreadsheetLight\CellFunctions.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\SpreadsheetLight\MiscFunctions.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\SpreadsheetLight\misc\SLTool.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\SpreadsheetLight\SLDocument.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>C:\Users\JenzenM\Documents\Visual Studio 2010\Projects\SpreadsheetLight\misc\SLSimpleTheme.cs</string>
+    </ArrayOfString>
+  </ArrayOfArrayOfString>
+</ArrayOfArrayOfArrayOfString>
