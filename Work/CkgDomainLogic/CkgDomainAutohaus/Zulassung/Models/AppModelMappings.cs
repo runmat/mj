@@ -286,9 +286,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZREFNR1 = s.Halter.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
-                            
-                            d.ZZZLDAT = s.Zulassungsdaten.Zulassungsdatum;
-                            d.STILL_DAT = s.Zulassungsdaten.Abmeldedatum;
+
+                            d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
+                            d.STILL_DAT = null;
 
                             d.BLTYP = s.Zulassungsdaten.Belegtyp;
                             d.KREISKZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.Zulassungskreis);
@@ -314,7 +314,6 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.SAISON_END = s.OptionenDienstleistungen.SaisonEnde;
                             d.BEMERKUNG = s.OptionenDienstleistungen.Bemerkung;
                             d.KENNZ_VH = s.OptionenDienstleistungen.KennzeichenVorhanden.BoolToX();
-                            d.VH_KENNZ_RES = s.OptionenDienstleistungen.VorhandenesKennzeichenReservieren.BoolToX();
                             d.HALTE_DAUER = s.OptionenDienstleistungen.HaltedauerBis;
                             d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen; 
                         }));

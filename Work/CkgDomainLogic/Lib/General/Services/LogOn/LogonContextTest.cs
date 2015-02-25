@@ -390,5 +390,10 @@ namespace CkgDomainLogic.General.Services
         public string PersistanceKey { get { return UserName; } }
 
         public IPersistanceService PersistanceService { get; set; }
+
+        public int GetAppIdCurrent()
+        {
+            return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
     }
 }
