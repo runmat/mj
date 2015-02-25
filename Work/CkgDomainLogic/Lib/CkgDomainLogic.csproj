@@ -134,6 +134,7 @@
     <Compile Include="General\Services\CkgGeneralDataServiceTest.cs" />
     <Compile Include="General\Services\CkgGeneralDataService.cs" />
     <Compile Include="General\Services\DbContextExtensions.cs" />
+    <Compile Include="General\Services\LogOn\LogonContextHelper.cs" />
     <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
     <Compile Include="General\Services\Persistance\PersistanceServiceSql.cs" />
     <Compile Include="General\Services\Persistance\PersistanceSqlDbContext.cs" />

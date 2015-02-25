@@ -50,7 +50,14 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (LogonContext.UserApps == null)
                 return items.ToList();
 
-            return items.Where(item => LogonContext.UserApps.Any(userApp => userApp.AppURL.ToLower().Contains(item.RelatedAppUrl.ToLower()))).ToList();
+            return items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+        }
+
+        static bool UserAppUrlContainsUrl(string userAppUrl, string url)
+        {
+            var translatedAppUrl = LogonContextHelper.ExtractUrlFromUserApp(userAppUrl);
+            url = url.ToLower().SubstringTry(4);
+            return translatedAppUrl.ToLower().Contains(url);
         }
 
         public void DashboardItemsSave(string commaSeparatedIds)
