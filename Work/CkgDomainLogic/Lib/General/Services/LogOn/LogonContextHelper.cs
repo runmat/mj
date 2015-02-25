@@ -28,7 +28,7 @@ namespace CkgDomainLogic.General.Services
             return userAppCurrent.AppID;
         }
 
-        static string ExtractUrlFromUserApp(string userAppUrl)
+        public static string ExtractUrlFromUserApp(string userAppUrl)
         {
             userAppUrl = userAppUrl.NotNullOrEmpty().ToLower().Replace("%2f", "/").Replace("=mvc/", "=");
             var index = userAppUrl.IndexOf("url=", StringComparison.CurrentCultureIgnoreCase);
