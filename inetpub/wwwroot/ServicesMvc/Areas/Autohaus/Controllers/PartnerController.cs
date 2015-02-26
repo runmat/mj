@@ -70,11 +70,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.ValidateSearch(ModelState.AddModelError);
 
             if (ModelState.IsValid)
-            {
                 ViewModel.LoadPartners();
-                if (ViewModel.Partners.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
 
             return PartialView("Partial/PartnerSuche", ViewModel.PartnerSelektor);
         }
