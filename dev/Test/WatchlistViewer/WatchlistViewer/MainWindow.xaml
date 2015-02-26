@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="Manual"
         Top="0" Left="1200" Topmost="True"
-        WindowStyle="ToolWindow"
+        WindowStyle="ToolWindow" ShowInTaskbar="False"
         Title="Watchlist Viewer" Height="80" Width="525">
     <StackPanel Orientation="Horizontal">
 

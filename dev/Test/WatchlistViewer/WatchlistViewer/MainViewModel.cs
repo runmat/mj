@@ -19,7 +19,7 @@ namespace WatchlistViewer
             WatchlistShowCommand = new DelegateCommand(e => WatchlistShow(), e => true);
             WatchlistHideCommand = new DelegateCommand(e => WatchlistHide(), e => true);
 
-            //FirefoxWebDriver.InvokeWatchlist();
+            FirefoxWebDriver.InvokeWatchlist();
         }
 
         void WatchlistShow()
