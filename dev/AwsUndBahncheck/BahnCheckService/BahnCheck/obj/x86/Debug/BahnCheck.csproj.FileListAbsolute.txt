@@ -34,3 +34,5 @@ C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\Ba
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheck\bin\Debug\WebDriver.Support.xml
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheck\bin\Debug\BahnCheckDatabase.dll
 C:\Users\Administrator\Documents\Visual Studio 2010\Projects\BahnCheckService\BahnCheck\bin\Debug\BahnCheckDatabase.pdb
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\BahnCheckService\BahnCheck\obj\x86\Debug\BahnCheck.exe
+C:\Users\JenzenM\Documents\mj\dev\AwsUndBahncheck\BahnCheckService\BahnCheck\obj\x86\Debug\BahnCheck.pdb
