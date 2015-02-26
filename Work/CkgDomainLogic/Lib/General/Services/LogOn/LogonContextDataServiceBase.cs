@@ -385,5 +385,10 @@ namespace CkgDomainLogic.General.Services
         {
             
         }
+
+        public int GetAppIdCurrent()
+        {
+            return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
     }
 }

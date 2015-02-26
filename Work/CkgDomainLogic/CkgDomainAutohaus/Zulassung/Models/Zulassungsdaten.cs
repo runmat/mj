@@ -156,9 +156,6 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (ZulassungsartMatNr.IsNullOrEmpty())
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr" });
 
-                if (!IstKurzzeitzulassung(ZulassungsartMatNr) && !IstZollzulassung(ZulassungsartMatNr) && string.IsNullOrEmpty(EvbNr))
-                    yield return new ValidationResult(Localize.EvbNumberRequired, new[] { "EvbNr" });
-
                 if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
             }
