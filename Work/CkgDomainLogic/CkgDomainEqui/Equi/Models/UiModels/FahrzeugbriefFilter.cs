@@ -10,5 +10,7 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.TempDispatchedPlur)]
         public bool SelektionsfilterTempVersendete { get; set; }
+
+        public string SelektionsfilterReferenz1 { get; set; }
     }
 }
