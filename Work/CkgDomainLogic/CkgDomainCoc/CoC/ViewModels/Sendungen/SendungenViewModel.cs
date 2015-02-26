@@ -192,7 +192,7 @@ namespace CkgDomainLogic.CoC.ViewModels
 
         private void GetCurrentAppID()
         {
-            CurrentAppID = HttpContextService.TryGetAppIdFromUrlOrSession();
+            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
     }
 }
