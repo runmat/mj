@@ -151,7 +151,7 @@
 
         BreadcrumbsMoveFirst(_breadCrumbInitial);
 
-        //Test();
+        Test();
     }
 
     function Test() {
@@ -166,19 +166,18 @@
             setTimeout(function () {
                 $($(".schadenakte-termine")[0]).trigger("click");
     
-                setTimeout(function () {
-                    $("#TerminSchadenfallGrid .debug").trigger("click");
-                    
-                    setTimeout(function () {
-                        $(":radio[value=RE]").uniformRadioCheck();
-                        
-                        setTimeout(function () {
-                            $("#divTerminSchadenfallInit .debug").trigger("click");
-                        }, 100);
+//                setTimeout(function () {
+//                    $("#TerminSchadenfallGrid .debug").trigger("click");
+//                    
+//                    setTimeout(function () {
+//                        $(":radio[value=RE]").uniformRadioCheck();
+//                        
+//                        setTimeout(function () {
+//                            $("#divTerminSchadenfallInit .debug").trigger("click");
+//                        }, 100);
+//                    }, 300);
+//                }, 600);
 
-                    }, 300);
-
-                }, 600);
                 $($(".schadenakte-termine")[0]).trigger("click");
             }, 300);
 
@@ -766,12 +765,11 @@
         });  
     }
 
-    function TerminSchadenfallKalenderDetails(result) {
+    function TerminSchadenfallKalenderDetails(result, mode) {
         var divToHide = ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == "" 
-                            ? $("#divSchadenakte") 
+                            ? $("#divSchadenakte")
                             : $("#divTerminSchadenfallInit"));
         $("#divTerminSchadenfallKalender").html(result);
-
         $(".calendar-termin-editmode-header").html(mode == 'create' ? '@Localize.AppointmentNew' : '@Localize.AppointmentEdit');
 
         divToHide.slideUp(200, function () {
